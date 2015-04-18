@@ -131,7 +131,7 @@ shortcut_manager::do_init_data ()
   init (tr ("Clear Workspace"), "main_edit:clear_workspace", QKeySequence ());
 
   // debug
-  init (tr ("Step Over"), "main_debug:step_over",
+  init (tr ("Step"), "main_debug:step_over",
         QKeySequence (prefix + Qt::Key_F10));
   init (tr ("Step Into"), "main_debug:step_into",
         QKeySequence (prefix + Qt::Key_F11));
@@ -167,14 +167,14 @@ shortcut_manager::do_init_data ()
         prefix + ctrl + Qt::Key_4);
   init (tr ("Documentation"), "main_window:doc",
         prefix + ctrl + Qt::Key_5);
-  init (tr ("Reset Window Layout"), "main_window:reset", QKeySequence ());
+  init (tr ("Reset Default Window Layout"), "main_window:reset", QKeySequence ());
 
   // help
   init (tr ("Show Ondisk Documentation"), "main_help:ondisk_doc",
         QKeySequence ());
   init (tr ("Show Online Documentation"), "main_help:online_doc",
         QKeySequence ());
-  init (tr ("Report a Bug"), "main_help:report_bug", QKeySequence ());
+  init (tr ("Report Bug"), "main_help:report_bug", QKeySequence ());
   init (tr ("Octave Packages"), "main_help:packages", QKeySequence ());
   init (tr ("Share Code"), "main_help:agora", QKeySequence ());
   init (tr ("Contribute to Octave"), "main_help:contribute", QKeySequence ());
@@ -195,7 +195,7 @@ shortcut_manager::do_init_data ()
   init (tr ("Save File As"), "editor_file:save_as", QKeySequence::SaveAs);
   init (tr ("Close"), "editor_file:close", QKeySequence::Close);
   init (tr ("Close All"), "editor_file:close_all", QKeySequence ());
-  init (tr ("Close Other"), "editor_file:close_other", QKeySequence ());
+  init (tr ("Close Other Files"), "editor_file:close_other", QKeySequence ());
   init (tr ("Print"), "editor_file:print", QKeySequence::Print);
 
   // edit
@@ -225,7 +225,7 @@ shortcut_manager::do_init_data ()
         QKeySequence (ctrl + Qt::Key_D));
   init (tr ("Transpose Line"), "editor_edit:transpose_line",
         QKeySequence (ctrl + Qt::Key_T));
-  init (tr ("Completion List"), "editor_edit:completion_list",
+  init (tr ("Show Completion List"), "editor_edit:completion_list",
         QKeySequence (ctrl + Qt::Key_Space));
 
   init (tr ("Comment Selection"), "editor_edit:comment_selection",
@@ -249,11 +249,11 @@ shortcut_manager::do_init_data ()
         QKeySequence (ctrl_shift + Qt::Key_Tab));
 #endif
 
-  init (tr ("Convert Line Ednings to Windows"), "editor_edit:conv_eol_winows",
+  init (tr ("Convert Line Endings to Windows"), "editor_edit:conv_eol_winows",
         QKeySequence ());
-  init (tr ("Convert Line Ednings to Unix"), "editor_edit:conv_eol_unix",
+  init (tr ("Convert Line Endings to Unix"), "editor_edit:conv_eol_unix",
         QKeySequence ());
-  init (tr ("Convert Line Ednings to Mac"), "editor_edit:conv_eol_mac",
+  init (tr ("Convert Line Endings to Mac"), "editor_edit:conv_eol_mac",
         QKeySequence ());
 
   init (tr ("Goto Line"), "editor_edit:goto_line",
@@ -278,7 +278,7 @@ shortcut_manager::do_init_data ()
   // view
   init (tr ("Show Line Numbers"), "editor_view:show_line_numbers",
         QKeySequence ());
-  init (tr ("Show White Spaces"), "editor_view:show_white_spaces",
+  init (tr ("Show Whitespace Characters"), "editor_view:show_white_spaces",
         QKeySequence ());
   init (tr ("Show Line Endings"), "editor_view:show_eol_chars", QKeySequence ());
   init (tr ("Show Indentation Guides"), "editor_view:show_ind_guides",
@@ -292,7 +292,7 @@ shortcut_manager::do_init_data ()
         QKeySequence (ctrl + Qt::Key_Underscore));
 #else
   init (tr ("Zoom Normal"), "editor_view:zoom_normal",
-        QKeySequence (ctrl_alt + Qt::Key_0));
+        QKeySequence (ctrl + Qt::Key_Period));
 #endif
 
   // debug

@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 4.0.0-rc2.
+corresponds to GNU Octave version 4.0.0-rc3.
 
 * Menu:
 
@@ -939,61 +939,63 @@ Ronald van der Meer      Júlio Hoffimann         Ed Meyer
                          Mendes
 Thorsten Meyer           Stefan Miereis           Petr Mikulik
 Mike Miller              Serviscope Minor         Stefan Monnier
-Antoine Moreau           Kai P. Mueller           Hannes Müller
-Victor Munoz             PrasannaKumar            Iain Murray
-                         Muralidharan
-Carmen Navarrete         Todd Neal                Philip Nienhuis
-Al Niessner              Felipe G. Nievinski      Rick Niles
-Takuji Nishimura         Kai Noda                 Patrick Noffke
-Eric Norum               Krzesimir Nowak          Michael O'Brien
-Peter O'Gorman           Thorsten Ohl             Kai T. Ohlhus
-Arno Onken               Valentin                 Luis F. Ortiz
-                         Ortega-Clavero
-Carl Osterwisch          Janne Olavi              Scott Pakin
-                         Paanajärvi
-Jason Alan Palmer        Gabriele Pannocchia      Sylvain Pelissier
-Rolando Pereira          Per Persson              Primozz Peterlin
-Jim Peterson             Danilo Piazzalunga       Nicholas Piper
-Elias Pipping            Robert Platt             Hans Ekkehard Plesser
-Sergey Plotnikov         Tom Poage                Nathan Podlich
-Orion Poplawski          Ondrej Popp              Jef Poskanzer
-Francesco Potortì       Konstantinos Poulios     Jarno Rajahalme
-Eduardo Ramos            Pooja Rao                James B. Rawlings
-Eric S. Raymond          Balint Reczey            Joshua Redstone
-Lukas Reichlin           Michael Reifenberger     Jens Restemeier
-Anthony Richardson       Jason Riedy              E. Joshua Rigler
-Sander van Rijn          Petter Risholm           Matthew W. Roberts
+Antoine Moreau           Kai P. Mueller           Armin Müller
+Hannes Müller           Victor Munoz             PrasannaKumar
+                                                  Muralidharan
+Iain Murray              Carmen Navarrete         Todd Neal
+Philip Nienhuis          Al Niessner              Felipe G. Nievinski
+Rick Niles               Takuji Nishimura         Kai Noda
+Patrick Noffke           Eric Norum               Krzesimir Nowak
+Michael O'Brien          Peter O'Gorman           Thorsten Ohl
+Kai T. Ohlhus            Arno Onken               Valentin
+                                                  Ortega-Clavero
+Luis F. Ortiz            Carl Osterwisch          Janne Olavi
+                                                  Paanajärvi
+Scott Pakin              José Luis García       Jason Alan Palmer
+                         Pallero
+Gabriele Pannocchia      Sylvain Pelissier        Rolando Pereira
+Per Persson              Primozz Peterlin         Jim Peterson
+Danilo Piazzalunga       Nicholas Piper           Elias Pipping
+Robert Platt             Hans Ekkehard Plesser    Sergey Plotnikov
+Tom Poage                Nathan Podlich           Orion Poplawski
+Ondrej Popp              Jef Poskanzer            Francesco Potortì
+Konstantinos Poulios     Jarno Rajahalme          Eduardo Ramos
+Pooja Rao                James B. Rawlings        Eric S. Raymond
+Balint Reczey            Joshua Redstone          Lukas Reichlin
+Michael Reifenberger     Jens Restemeier          Anthony Richardson
+Jason Riedy              E. Joshua Rigler         Sander van Rijn
+Petter Risholm           Matthew W. Roberts       Dmitry Roshchin
 Peter Rosin              Andrew Ross              Fabio Rossi
-Mark van Rossum          Joe Rothweiler           Kevin Ruland
-Kristian Rumberg         Ryan Rusaw               Olli Saarela
-Toni Saarela             Juhani Saastamoinen      Radek Salac
-Mike Sander              Ben Sapp                 Aleksej Saushev
-Alois Schlögl           Michel D. Schmid         Julian Schnidder
-Sebastian Schoeps        Nicol N. Schraudolph     Sebastian Schubert
-Lasse Schuirmann         Ludwig Schwardt          Thomas L. Scofield
-Daniel J. Sebald         Dmitri A. Sergatskov     Vanya Sergeev
-Marko Seric              Ahsan Ali Shahid         Baylis Shanks
-Andriy Shinkarchuck      Robert T. Short          Joseph P. Skudlarek
-John Smith               Julius Smith             Shan G. Smith
-Peter L. Sondergaard     Joerg Specht             Quentin H. Spencer
-Christoph Spiel          David Spies              Richard Stallman
-Russell Standish         Brett Stewart            Doug Stewart
-Jonathan Stickel         Judd Storrs              Thomas Stuart
-Ivan Sutoris             John Swensen             Daisuke Takago
-Ariel Tankus             Falk Tannhäuser         Duncan Temple Lang
-Matthew Tenny            Kris Thielemans          Georg Thimm
-Corey Thomasson          Olaf Till                Christophe Tournery
-Thomas Treichl           Karsten Trulsen          David Turner
-Frederick Umminger       Utkarsh Upadhyay         Stefan van der Walt
-Peter Van Wieren         James R. Van Zandt       Risto Vanhanen
-Gregory Vanuxem          Mihas Varantsou          Ivana Varekova
-Sébastien Villemot      Marco Vitetta            Daniel Wagenaar
-Thomas Walter            Andreas Weber            Olaf Weber
-Thomas Weber             Rik Wehbring             Bob Weigel
-Andreas Weingessel       Martin Weiser            Michael Weitzel
-David Wells              Joachim Wiesemann        Fook Fah Yap
-Sean Young               Johannes Zarl            Michael Zeising
-Federico Zenith          Alex Zvoleff
+Mark van Rossum          Joe Rothweiler           David Rörich
+Kevin Ruland             Kristian Rumberg         Ryan Rusaw
+Olli Saarela             Toni Saarela             Juhani Saastamoinen
+Radek Salac              Mike Sander              Ben Sapp
+Aleksej Saushev          Alois Schlögl           Michel D. Schmid
+Julian Schnidder         Sebastian Schoeps        Nicol N. Schraudolph
+Sebastian Schubert       Lasse Schuirmann         Ludwig Schwardt
+Thomas L. Scofield       Daniel J. Sebald         Dmitri A. Sergatskov
+Vanya Sergeev            Marko Seric              Ahsan Ali Shahid
+Baylis Shanks            Andriy Shinkarchuck      Robert T. Short
+Joseph P. Skudlarek      John Smith               Julius Smith
+Shan G. Smith            Peter L. Sondergaard     Joerg Specht
+Quentin H. Spencer       Christoph Spiel          David Spies
+Richard Stallman         Russell Standish         Brett Stewart
+Doug Stewart             Jonathan Stickel         Judd Storrs
+Thomas Stuart            Ivan Sutoris             John Swensen
+Daisuke Takago           Ariel Tankus             Falk Tannhäuser
+Duncan Temple Lang       Matthew Tenny            Kris Thielemans
+Georg Thimm              Corey Thomasson          Olaf Till
+Christophe Tournery      Thomas Treichl           Karsten Trulsen
+David Turner             Frederick Umminger       Utkarsh Upadhyay
+Stefan van der Walt      Peter Van Wieren         James R. Van Zandt
+Risto Vanhanen           Gregory Vanuxem          Mihas Varantsou
+Ivana Varekova           Sébastien Villemot      Marco Vitetta
+Daniel Wagenaar          Thomas Walter            Andreas Weber
+Olaf Weber               Thomas Weber             Rik Wehbring
+Bob Weigel               Andreas Weingessel       Martin Weiser
+Michael Weitzel          David Wells              Joachim Wiesemann
+Fook Fah Yap             Sean Young               Johannes Zarl
+Michael Zeising          Federico Zenith          Alex Zvoleff
 
    Special thanks to the following people and organizations for
 supporting the development of Octave:
@@ -1155,7 +1157,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 4.0.0-rc2.
+   This document corresponds to Octave version 4.0.0-rc3.
 
 * Menu:
 
@@ -5879,21 +5881,33 @@ general regular expressions, the following functions come with Octave.
      See also: *note index: XREFindex, *note strsplit: XREFstrsplit,
      *note strchr: XREFstrchr, *note isspace: XREFisspace.
 
- -- Function File: [CSTR] = strsplit (S)
- -- Function File: [CSTR] = strsplit (S, DEL)
+ -- Function File: [CSTR] = strsplit (STR)
+ -- Function File: [CSTR] = strsplit (STR, DEL)
  -- Function File: [CSTR] = strsplit (..., NAME, VALUE)
  -- Function File: [CSTR, MATCHES] = strsplit (...)
-     Split the string S using the delimiters specified by DEL and return
-     a cell string array of substrings.  If a delimiter is not specified
-     the string, S, is split at whitespace.  The delimiter, DEL may be a
-     string, a scalar cell string, or cell string array.  By default,
-     consecutive delimiters in the input string S are collapsed into
-     one.
+     Split the string STR using the delimiters specified by DEL and
+     return a cell string array of substrings.
 
-     The second output, MATCHES, returns the delimiters which were
-     matched in the original string.
+     If a delimiter is not specified the string is split at whitespace
+     '{" ", "\f", "\n", "\r", "\t", "\v"}'.  Otherwise, the delimiter,
+     DEL must be a string or cell array of strings.  By default,
+     consecutive delimiters in the input string S are collapsed into one
+     resulting in a single split.
 
-     Example:
+     Supported NAME/VALUE pair arguments are:
+
+        * COLLAPSEDELIMITERS which may take the value of 'true'
+          (default) or 'false'.
+
+        * DELIMITERTYPE which may take the value of "simple" (default)
+          or "regularexpression".  A simple delimiter matches the text
+          exactly as written.  Otherwise, the syntax for regular
+          expressions outlined in 'regexp' is used.
+
+     The optional second output, MATCHES, returns the delimiters which
+     were matched in the original string.
+
+     Examples with simple delimiters:
 
           strsplit ("a b c")
                 =>
@@ -5911,7 +5925,7 @@ general regular expressions, the following functions come with Octave.
                       [1,3] = c
                     }
 
-          strsplit ("a foo b,bar c", {"\s", "foo", "bar"})
+          strsplit ("a foo b,bar c", {" ", ",", "foo", "bar"})
                 =>
                     {
                       [1,1] = a
@@ -5919,7 +5933,7 @@ general regular expressions, the following functions come with Octave.
                       [1,3] = c
                     }
 
-          strsplit ("a,,b, c", {",", " "}, false)
+          strsplit ("a,,b, c", {",", " "}, "collapsedelimiters", false)
                 =>
                     {
                       [1,1] = a
@@ -5930,18 +5944,9 @@ general regular expressions, the following functions come with Octave.
                     }
 
 
-     Supported NAME/VALUE pair arguments are;
+     Examples with regularexpression delimiters:
 
-        * COLLAPSEDELIMITERS may take the value of TRUE or FALSE with
-          the default being FALSE.
-
-        * DELIMITERTYPE may take the value of 'simple' or
-          'regularexpression'.  The default is DELIMITERTYPE is
-          'simple'.
-
-     Example:
-
-          strsplit ("a foo b,bar c", ",|\\s|foo|bar", "delimitertype", "regularexpression")
+          strsplit ("a foo b,bar c", ',|\s|foo|bar', "delimitertype", "regularexpression")
           =>
           {
                       [1,1] = a
@@ -5949,7 +5954,7 @@ general regular expressions, the following functions come with Octave.
                       [1,3] = c
           }
 
-          strsplit ("a,,b, c", "[, ]", false, "delimitertype", "regularexpression")
+          strsplit ("a,,b, c", '[, ]', "collapsedelimiters", false, "delimitertype", "regularexpression")
           =>
           {
                       [1,1] = a
@@ -6279,11 +6284,11 @@ general regular expressions, the following functions come with Octave.
      '\B'
           Match within a word
 
-     Implementation Note: For compatibility with MATLAB, ordinary escape
-     sequences (e.g., "\n" => newline) are processed in PAT regardless
-     of whether PAT has been defined within single quotes.  Use a second
-     backslash to stop interpolation of the escape sequence (e.g.,
-     "\\n") or use the 'regexptranslate' function.
+     Implementation Note: For compatibility with MATLAB, escape
+     sequences in PAT (e.g., "\n" => newline) are expanded even when PAT
+     has been defined with single quotes.  To disable expansion use a
+     second backslash before the escape sequence (e.g., "\\n") or use
+     the 'regexptranslate' function.
 
      The outputs of 'regexp' default to the order given below
 
@@ -6421,11 +6426,11 @@ general regular expressions, the following functions come with Octave.
      'warnings'
           This option is present for compatibility but is ignored.
 
-     Implementation Note: For compatibility with MATLAB, ordinary escape
-     sequences (e.g., "\n" => newline) are processed in both PAT and
-     REPSTR regardless of whether they were defined within single
-     quotes.  Use a second backslash to stop interpolation of the escape
-     sequence (e.g., "\\n") or use the 'regexptranslate' function.
+     Implementation Note: For compatibility with MATLAB, escape
+     sequences in PAT (e.g., "\n" => newline) are expanded even when PAT
+     has been defined with single quotes.  To disable expansion use a
+     second backslash before the escape sequence (e.g., "\\n") or use
+     the 'regexptranslate' function.
 
      See also: *note regexp: XREFregexp, *note regexpi: XREFregexpi,
      *note strrep: XREFstrrep.

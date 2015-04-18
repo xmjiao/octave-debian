@@ -17823,11 +17823,11 @@ If the named preference or group does not exist, it is added.
 @deftypefnx {Function File} {@var{c} =} intersect (@var{a}, @var{b}, "rows")
 @deftypefnx {Function File} {[@var{c}, @var{ia}, @var{ib}] =} intersect (@dots{})
 
-Return the elements common to both @var{a} and @var{b} sorted in ascending
-order.
+Return the unique elements common to both @var{a} and @var{b} sorted in
+ascending order.
 
-If @var{a} and @var{b} are both column vectors then return a column vector;
-Otherwise, return a row vector.  The inputs may also be cell arrays of
+If @var{a} and @var{b} are both row vectors then return a row vector;
+Otherwise, return a column vector.  The inputs may also be cell arrays of
 strings.
 
 If the optional input @qcode{"rows"} is given then return the common rows of
@@ -17912,11 +17912,11 @@ matrix to use this argument.
 @deftypefn  {Function File} {@var{c} =} setdiff (@var{a}, @var{b})
 @deftypefnx {Function File} {@var{c} =} setdiff (@var{a}, @var{b}, "rows")
 @deftypefnx {Function File} {[@var{c}, @var{ia}] =} setdiff (@dots{})
-Return the elements in @var{a} that are not in @var{b} sorted in
+Return the unique elements in @var{a} that are not in @var{b} sorted in
 ascending order.
 
-If @var{a} and @var{b} are both column vectors return a column vector;
-Otherwise, return a row vector.  The inputs may also be cell arrays of
+If @var{a} is a row vector return a column vector;
+Otherwise, return a column vector.  The inputs may also be cell arrays of
 strings.
 
 If the optional input @qcode{"rows"} is given then return the rows in
@@ -17934,11 +17934,11 @@ If requested, return the index vector @var{ia} such that
 @deftypefnx {Function File} {@var{c} =} setxor (@var{a}, @var{b}, "rows")
 @deftypefnx {Function File} {[@var{c}, @var{ia}, @var{ib}] =} setxor (@dots{})
 
-Return the elements exclusive to sets @var{a} or @var{b} sorted in
+Return the unique elements exclusive to sets @var{a} or @var{b} sorted in
 ascending order.
 
-If @var{a} and @var{b} are both column vectors return a column vector;
-Otherwise, return a row vector.  The inputs may also be cell arrays of
+If @var{a} and @var{b} are both row vectors then return a row vector;
+Otherwise, return a column vector.  The inputs may also be cell arrays of
 strings.
 
 If the optional input @qcode{"rows"} is given then return the rows exclusive
@@ -17958,11 +17958,11 @@ whose union is @var{c}.
 @deftypefnx {Function File} {@var{c} =} union (@var{a}, @var{b}, "rows")
 @deftypefnx {Function File} {[@var{c}, @var{ia}, @var{ib}] =} union (@dots{})
 
-Return the elements that are in either @var{a} or @var{b} sorted in
-ascending order with duplicates removed.
+Return the unique elements that are in either @var{a} or @var{b} sorted in
+ascending order.
 
-If @var{a} and @var{b} are both column vectors return a column vector;
-Otherwise, return a row vector.  The inputs may also be cell arrays of
+If @var{a} and @var{b} are both row vectors then return a row vector;
+Otherwise, return a column vector.  The inputs may also be cell arrays of
 strings.
 
 If the optional input @qcode{"rows"} is given then return rows that are in
@@ -24935,21 +24935,35 @@ strmatch ("apple", ["apple  "; "apple juice"; "an apple"], "exact")
 strsplit
 @c strsplit scripts/strings/strsplit.m
 -*- texinfo -*-
-@deftypefn  {Function File} {[@var{cstr}] =} strsplit (@var{s})
-@deftypefnx {Function File} {[@var{cstr}] =} strsplit (@var{s}, @var{del})
+@deftypefn  {Function File} {[@var{cstr}] =} strsplit (@var{str})
+@deftypefnx {Function File} {[@var{cstr}] =} strsplit (@var{str}, @var{del})
 @deftypefnx {Function File} {[@var{cstr}] =} strsplit (@dots{}, @var{name}, @var{value})
 @deftypefnx {Function File} {[@var{cstr}, @var{matches}] =} strsplit (@dots{})
-Split the string @var{s} using the delimiters specified by @var{del}
-and return a cell string array of substrings.  If a delimiter is not
-specified the string, @var{s}, is split at whitespace.  The delimiter,
-@var{del} may be a string, a scalar cell string, or cell string array.
-By default, consecutive delimiters in the input string @var{s} are
-collapsed into one.
+Split the string @var{str} using the delimiters specified by @var{del}
+and return a cell string array of substrings.
 
-The second output, @var{matches}, returns the delimiters which were matched
-in the original string.
+If a delimiter is not specified the string is split at whitespace
+@code{@{" ", "\f", "\n", "\r", "\t", "\v"@}}.  Otherwise, the delimiter,
+@var{del} must be a string or cell array of strings.  By default,
+consecutive delimiters in the input string @var{s} are collapsed into one
+resulting in a single split.
 
-Example:
+Supported @var{name}/@var{value} pair arguments are:
+
+@itemize
+@item @var{collapsedelimiters} which may take the value of @code{true}
+(default) or @code{false}.
+
+@item @var{delimitertype} which may take the value of @qcode{"simple"}
+(default) or @qcode{"regularexpression"}.  A simple delimiter matches the
+text exactly as written.  Otherwise, the syntax for regular expressions
+outlined in @code{regexp} is used.
+@end itemize
+
+The optional second output, @var{matches}, returns the delimiters which were
+matched in the original string.
+
+Examples with simple delimiters:
 
 @example
 strsplit ("a b c")
@@ -24968,7 +24982,7 @@ strsplit ("a,b,c", ",")
             [1,3] = c
           @}
 
-strsplit ("a foo b,bar c", @{"\s", "foo", "bar"@})
+strsplit ("a foo b,bar c", @{" ", ",", "foo", "bar"@})
       @result{}
           @{
             [1,1] = a
@@ -24976,7 +24990,7 @@ strsplit ("a foo b,bar c", @{"\s", "foo", "bar"@})
             [1,3] = c
           @}
 
-strsplit ("a,,b, c", @{",", " "@}, false)
+strsplit ("a,,b, c", @{",", " "@}, "collapsedelimiters", false)
       @result{}
           @{
             [1,1] = a
@@ -24988,21 +25002,10 @@ strsplit ("a,,b, c", @{",", " "@}, false)
 
 @end example
 
-Supported @var{name}/@var{value} pair arguments are;
-
-@itemize
-@item @var{collapsedelimiters} may take the value of @var{true} or
-@var{false} with the default being @var{false}.
-
-@item @var{delimitertype} may take the value of @code{simple} or
-@code{regularexpression}.  The default is @var{delimitertype} is
-@code{simple}.
-@end itemize
-
-Example:
+Examples with regularexpression delimiters:
 
 @smallexample
-strsplit ("a foo b,bar c", ",|\\s|foo|bar", "delimitertype", "regularexpression")
+strsplit ("a foo b,bar c", ',|\s|foo|bar', "delimitertype", "regularexpression")
 @result{}
 @{
             [1,1] = a
@@ -25010,7 +25013,7 @@ strsplit ("a foo b,bar c", ",|\\s|foo|bar", "delimitertype", "regularexpression"
             [1,3] = c
 @}
 
-strsplit ("a,,b, c", "[, ]", false, "delimitertype", "regularexpression")
+strsplit ("a,,b, c", '[, ]', "collapsedelimiters", false, "delimitertype", "regularexpression")
 @result{}
 @{
             [1,1] = a

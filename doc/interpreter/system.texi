@@ -2725,6 +2725,19 @@ occurred.
 @end deftypefn
 
 
+@c get_home_directory libinterp/corefcn/sysdep.cc
+@anchor{XREFget_home_directory}
+@deftypefn {Built-in Function} {@var{homedir} =} get_home_directory ()
+Return the current home directory.
+
+On most systems, this is equivalent to @code{getenv ("HOME")}.  On Windows
+systems, if the environment variable @env{HOME} is not set then it is
+equivalent to
+@code{fullfile (getenv ("HOMEDRIVE"), getenv ("HOMEPATH"))}
+@seealso{@ref{XREFgetenv,,getenv}}
+@end deftypefn
+
+
 @node Current Working Directory
 @section Current Working Directory
 

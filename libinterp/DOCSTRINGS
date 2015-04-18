@@ -5393,11 +5393,11 @@ error (err_msg);
 which will only stop execution if an error has been found.
 
 Implementation Note: For compatibility with @sc{matlab}, escape
-sequences (e.g., "\n" => newline) are processed in @var{template}
-regardless of whether @var{template} has been defined within single quotes
-as long as there are two or more input arguments.
-Use a second backslash to stop interpolation of the escape sequence (e.g.,
-"\\n") or use the @code{regexptranslate} function.
+sequences in @var{template} (e.g., "\n" => newline) are processed
+regardless of whether @var{template} has been defined with single quotes,
+as long as there are two or more input arguments.  To disable escape sequence
+expansion use a second backslash before the sequence (e.g., "\\n") or
+use the @code{regexptranslate} function.
 @seealso{warning, lasterror}
 @end deftypefn
 warning
@@ -5455,11 +5455,11 @@ function.  The @qcode{"local"} option is ignored if used in the top-level
 workspace.
 
 Implementation Note: For compatibility with @sc{matlab}, escape
-sequences (e.g., "\n" => newline) are processed in @var{template}
-regardless of whether @var{template} has been defined within single quotes
-as long as there are two or more input arguments.
-Use a second backslash to stop interpolation of the escape sequence (e.g.,
-"\\n") or use the @code{regexptranslate} function.
+sequences in @var{template} (e.g., "\n" => newline) are processed
+regardless of whether @var{template} has been defined with single quotes,
+as long as there are two or more input arguments.  To disable escape sequence
+expansion use a second backslash before the sequence (e.g., "\\n") or
+use the @code{regexptranslate} function.
 @seealso{warning_ids, lastwarn, error}
 @end deftypefn
 lasterror
@@ -5979,6 +5979,10 @@ If @var{fid} is omitted, the output is written to @code{stdout} making the
 function exactly equivalent to @code{printf}.
 
 The optional output returns the number of bytes written to the file.
+
+Implementation Note: For compatability with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"\\n"} => newline) are expanded even
+when the template string is defined with single quotes.
 @seealso{fputs, fdisp, fwrite, fscanf, printf, sprintf, fopen}
 @end deftypefn
 printf
@@ -5993,6 +5997,10 @@ characters printed.
 See the Formatted Output section of the GNU Octave manual for a
 complete description of the syntax of the template string.
 @end ifclear
+
+Implementation Note: For compatability with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"\\n"} => newline) are expanded even
+when the template string is defined with single quotes.
 @seealso{fprintf, sprintf, scanf}
 @end deftypefn
 fputs
@@ -6031,6 +6039,10 @@ string.  Unlike the C library function, which requires you to provide a
 suitably sized string as an argument, Octave's @code{sprintf} function
 returns the string, automatically sized to hold all of the items
 converted.
+
+Implementation Note: For compatability with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"\\n"} => newline) are expanded even
+when the template string is defined with single quotes.
 @seealso{printf, fprintf, sscanf}
 @end deftypefn
 fscanf
@@ -11466,11 +11478,11 @@ Match the end of a word
 Match within a word
 @end table
 
-Implementation Note: For compatibility with @sc{matlab}, ordinary escape
-sequences (e.g., @qcode{"\n"} => newline) are processed in @var{pat}
-regardless of whether @var{pat} has been defined within single quotes.  Use
-a second backslash to stop interpolation of the escape sequence (e.g.,
-"\\n") or use the @code{regexptranslate} function.
+Implementation Note: For compatibility with @sc{matlab}, escape sequences
+in @var{pat} (e.g., @qcode{"\\n"} => newline) are expanded even when
+@var{pat} has been defined with single quotes.  To disable expansion use
+a second backslash before the escape sequence (e.g., "\\n") or use the
+@code{regexptranslate} function.
 
 The outputs of @code{regexp} default to the order given below
 
@@ -11622,11 +11634,11 @@ This option is present for compatibility but is ignored.
 
 @end table
 
-Implementation Note: For compatibility with @sc{matlab}, ordinary escape
-sequences (e.g., @qcode{"\n"} => newline) are processed in both @var{pat}
-and @var{repstr} regardless of whether they were defined within single
-quotes.  Use a second backslash to stop interpolation of the escape sequence
-(e.g., "\\n") or use the @code{regexptranslate} function.
+Implementation Note: For compatibility with @sc{matlab}, escape sequences
+in @var{pat} (e.g., @qcode{"\\n"} => newline) are expanded even when
+@var{pat} has been defined with single quotes.  To disable expansion use
+a second backslash before the escape sequence (e.g., "\\n") or use the
+@code{regexptranslate} function.
 @seealso{regexp, regexpi, strrep}
 @end deftypefn
 schur
@@ -13367,6 +13379,18 @@ tilde_expand ("~/bin")
      @result{} "/home/jwe/bin"
 @end group
 @end example
+@end deftypefn
+get_home_directory
+@c get_home_directory libinterp/corefcn/sysdep.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {@var{homedir} =} get_home_directory ()
+Return the current home directory.
+
+On most systems, this is equivalent to @code{getenv ("HOME")}.  On Windows
+systems, if the environment variable @env{HOME} is not set then it is
+equivalent to
+@code{fullfile (getenv ("HOMEDRIVE"), getenv ("HOMEPATH"))}
+@seealso{getenv}
 @end deftypefn
 have_window_system
 @c have_window_system libinterp/corefcn/sysdep.cc

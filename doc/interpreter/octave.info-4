@@ -8144,20 +8144,3 @@ matrix can be indexed by a permutation vector (or two vectors), giving
 again a permutation matrix.  Any other operations do not generally yield
 a permutation matrix and will thus trigger the implicit conversion.
 
-
-File: octave.info,  Node: Function Support,  Next: Example Code,  Prev: Matrix Algebra,  Up: Diagonal and Permutation Matrices
-
-21.3 Functions That Are Aware of These Matrices
-===============================================
-
-This section lists the built-in functions that are aware of diagonal and
-permutation matrices on input, or can return them as output.  Passed to
-other functions, these matrices will in general trigger an implicit
-conversion.  (Of course, user-defined dynamically linked functions may
-also work with diagonal or permutation matrices).
-
-* Menu:
-
-* Diagonal Matrix Functions::
-* Permutation Matrix Functions::
-

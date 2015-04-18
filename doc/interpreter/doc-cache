@@ -1,8 +1,8 @@
-# doc-cache created by Octave 4.0.0-rc2
+# doc-cache created by Octave 4.0.0-rc3
 # name: cache
 # type: cell
 # rows: 3
-# columns: 1621
+# columns: 1622
 # name: <cell-element>
 # type: sq_string
 # elements: 1
@@ -27030,17 +27030,17 @@ intersect
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 669
+# length: 673
  -- Function File: C = intersect (A, B)
  -- Function File: C = intersect (A, B, "rows")
  -- Function File: [C, IA, IB] = intersect (...)
 
-     Return the elements common to both A and B sorted in ascending
-     order.
+     Return the unique elements common to both A and B sorted in
+     ascending order.
 
-     If A and B are both column vectors then return a column vector;
-     Otherwise, return a row vector.  The inputs may also be cell arrays
-     of strings.
+     If A and B are both row vectors then return a row vector;
+     Otherwise, return a column vector.  The inputs may also be cell
+     arrays of strings.
 
      If the optional input "rows" is given then return the common rows
      of A and B.  The inputs must be 2-D matrices to use this option.
@@ -27054,8 +27054,8 @@ See also: unique, union, setdiff, setxor, ismember.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 70
-Return the elements common to both A and B sorted in ascending  order.
+# length: 77
+Return the unique elements common to both A and B sorted in  ascending order.
 
 
 
@@ -27161,16 +27161,15 @@ setdiff
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 647
+# length: 638
  -- Function File: C = setdiff (A, B)
  -- Function File: C = setdiff (A, B, "rows")
  -- Function File: [C, IA] = setdiff (...)
-     Return the elements in A that are not in B sorted in ascending
-     order.
+     Return the unique elements in A that are not in B sorted in
+     ascending order.
 
-     If A and B are both column vectors return a column vector;
-     Otherwise, return a row vector.  The inputs may also be cell arrays
-     of strings.
+     If A is a row vector return a column vector; Otherwise, return a
+     column vector.  The inputs may also be cell arrays of strings.
 
      If the optional input "rows" is given then return the rows in A
      that are not in B.  The inputs must be 2-D matrices to use this
@@ -27185,8 +27184,8 @@ setdiff
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 70
-Return the elements in A that are not in B sorted in ascending  order.
+# length: 77
+Return the unique elements in A that are not in B sorted in  ascending order.
 
 
 
@@ -27200,17 +27199,17 @@ setxor
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 707
+# length: 716
  -- Function File: C = setxor (A, B)
  -- Function File: C = setxor (A, B, "rows")
  -- Function File: [C, IA, IB] = setxor (...)
 
-     Return the elements exclusive to sets A or B sorted in ascending
-     order.
+     Return the unique elements exclusive to sets A or B sorted in
+     ascending order.
 
-     If A and B are both column vectors return a column vector;
-     Otherwise, return a row vector.  The inputs may also be cell arrays
-     of strings.
+     If A and B are both row vectors then return a row vector;
+     Otherwise, return a column vector.  The inputs may also be cell
+     arrays of strings.
 
      If the optional input "rows" is given then return the rows
      exclusive to sets A and B.  The inputs must be 2-D matrices to use
@@ -27226,8 +27225,8 @@ setxor
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 72
-Return the elements exclusive to sets A or B sorted in ascending  order.
+# length: 79
+Return the unique elements exclusive to sets A or B sorted in  ascending order.
 
 
 
@@ -27241,17 +27240,17 @@ union
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 725
+# length: 710
  -- Function File: C = union (A, B)
  -- Function File: C = union (A, B, "rows")
  -- Function File: [C, IA, IB] = union (...)
 
-     Return the elements that are in either A or B sorted in ascending
-     order with duplicates removed.
+     Return the unique elements that are in either A or B sorted in
+     ascending order.
 
-     If A and B are both column vectors return a column vector;
-     Otherwise, return a row vector.  The inputs may also be cell arrays
-     of strings.
+     If A and B are both row vectors then return a row vector;
+     Otherwise, return a column vector.  The inputs may also be cell
+     arrays of strings.
 
      If the optional input "rows" is given then return rows that are in
      either A or B.  The inputs must be 2-D matrices to use this option.
@@ -27266,8 +27265,8 @@ union
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 97
-Return the elements that are in either A or B sorted in ascending  order with duplicates removed.
+# length: 80
+Return the unique elements that are in either A or B sorted in  ascending order.
 
 
 
@@ -37865,22 +37864,34 @@ strsplit
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2948
- -- Function File: [CSTR] = strsplit (S)
- -- Function File: [CSTR] = strsplit (S, DEL)
+# length: 3237
+ -- Function File: [CSTR] = strsplit (STR)
+ -- Function File: [CSTR] = strsplit (STR, DEL)
  -- Function File: [CSTR] = strsplit (..., NAME, VALUE)
  -- Function File: [CSTR, MATCHES] = strsplit (...)
-     Split the string S using the delimiters specified by DEL and return
-     a cell string array of substrings.  If a delimiter is not specified
-     the string, S, is split at whitespace.  The delimiter, DEL may be a
-     string, a scalar cell string, or cell string array.  By default,
-     consecutive delimiters in the input string S are collapsed into
-     one.
+     Split the string STR using the delimiters specified by DEL and
+     return a cell string array of substrings.
 
-     The second output, MATCHES, returns the delimiters which were
-     matched in the original string.
+     If a delimiter is not specified the string is split at whitespace
+     '{" ", "\f", "\n", "\r", "\t", "\v"}'.  Otherwise, the delimiter,
+     DEL must be a string or cell array of strings.  By default,
+     consecutive delimiters in the input string S are collapsed into one
+     resulting in a single split.
 
-     Example:
+     Supported NAME/VALUE pair arguments are:
+
+        * COLLAPSEDELIMITERS which may take the value of 'true'
+          (default) or 'false'.
+
+        * DELIMITERTYPE which may take the value of "simple" (default)
+          or "regularexpression".  A simple delimiter matches the text
+          exactly as written.  Otherwise, the syntax for regular
+          expressions outlined in 'regexp' is used.
+
+     The optional second output, MATCHES, returns the delimiters which
+     were matched in the original string.
+
+     Examples with simple delimiters:
 
           strsplit ("a b c")
                 =>
@@ -37898,7 +37909,7 @@ strsplit
                       [1,3] = c
                     }
 
-          strsplit ("a foo b,bar c", {"\s", "foo", "bar"})
+          strsplit ("a foo b,bar c", {" ", ",", "foo", "bar"})
                 =>
                     {
                       [1,1] = a
@@ -37906,7 +37917,7 @@ strsplit
                       [1,3] = c
                     }
 
-          strsplit ("a,,b, c", {",", " "}, false)
+          strsplit ("a,,b, c", {",", " "}, "collapsedelimiters", false)
                 =>
                     {
                       [1,1] = a
@@ -37917,18 +37928,9 @@ strsplit
                     }
 
 
-     Supported NAME/VALUE pair arguments are;
+     Examples with regularexpression delimiters:
 
-        * COLLAPSEDELIMITERS may take the value of TRUE or FALSE with
-          the default being FALSE.
-
-        * DELIMITERTYPE may take the value of 'simple' or
-          'regularexpression'.  The default is DELIMITERTYPE is
-          'simple'.
-
-     Example:
-
-          strsplit ("a foo b,bar c", ",|\\s|foo|bar", "delimitertype", "regularexpression")
+          strsplit ("a foo b,bar c", ',|\s|foo|bar', "delimitertype", "regularexpression")
           =>
           {
                       [1,1] = a
@@ -37936,7 +37938,7 @@ strsplit
                       [1,3] = c
           }
 
-          strsplit ("a,,b, c", "[, ]", false, "delimitertype", "regularexpression")
+          strsplit ("a,,b, c", '[, ]', "collapsedelimiters", false, "delimitertype", "regularexpression")
           =>
           {
                       [1,1] = a
@@ -37972,8 +37974,8 @@ strsplit
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 103
-Split the string S using the delimiters specified by DEL and return  a cell string array of substrings.
+# length: 105
+Split the string STR using the delimiters specified by DEL and  return a cell string array of substrings.
 
 
 
@@ -48470,7 +48472,7 @@ error
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2728
+# length: 2739
  -- Built-in Function: error (TEMPLATE, ...)
  -- Built-in Function: error (ID, TEMPLATE, ...)
      Format the optional arguments under the control of the template
@@ -48529,11 +48531,11 @@ error
      which will only stop execution if an error has been found.
 
      Implementation Note: For compatibility with MATLAB, escape
-     sequences (e.g., "\n" => newline) are processed in TEMPLATE
-     regardless of whether TEMPLATE has been defined within single
-     quotes as long as there are two or more input arguments.  Use a
-     second backslash to stop interpolation of the escape sequence
-     (e.g., "\\n") or use the 'regexptranslate' function.
+     sequences in TEMPLATE (e.g., "\n" => newline) are processed
+     regardless of whether TEMPLATE has been defined with single quotes,
+     as long as there are two or more input arguments.  To disable
+     escape sequence expansion use a second backslash before the
+     sequence (e.g., "\\n") or use the 'regexptranslate' function.
 
      See also: warning, lasterror.
    
@@ -48557,7 +48559,7 @@ warning
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2788
+# length: 2799
  -- Built-in Function: warning (TEMPLATE, ...)
  -- Built-in Function: warning (ID, TEMPLATE, ...)
  -- Built-in Function: warning ("on", ID)
@@ -48604,11 +48606,11 @@ warning
      used in the top-level workspace.
 
      Implementation Note: For compatibility with MATLAB, escape
-     sequences (e.g., "\n" => newline) are processed in TEMPLATE
-     regardless of whether TEMPLATE has been defined within single
-     quotes as long as there are two or more input arguments.  Use a
-     second backslash to stop interpolation of the escape sequence
-     (e.g., "\\n") or use the 'regexptranslate' function.
+     sequences in TEMPLATE (e.g., "\n" => newline) are processed
+     regardless of whether TEMPLATE has been defined with single quotes,
+     as long as there are two or more input arguments.  To disable
+     escape sequence expansion use a second backslash before the
+     sequence (e.g., "\\n") or use the 'regexptranslate' function.
 
      See also: warning_ids, lastwarn, error.
    
@@ -49532,7 +49534,7 @@ fprintf
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 549
+# length: 760
  -- Built-in Function: fprintf (FID, TEMPLATE, ...)
  -- Built-in Function: fprintf (TEMPLATE, ...)
  -- Built-in Function: NUMBYTES = fprintf (...)
@@ -49544,6 +49546,11 @@ fprintf
 
      The optional output returns the number of bytes written to the
      file.
+
+     Implementation Note: For compatability with MATLAB, escape
+     sequences in the template string (e.g., "\n" => newline) are
+     expanded even when the template string is defined with single
+     quotes.
 
      See also: fputs, fdisp, fwrite, fscanf, printf, sprintf, fopen.
    
@@ -49567,7 +49574,7 @@ printf
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 382
+# length: 593
  -- Built-in Function: printf (TEMPLATE, ...)
      Print optional arguments under the control of the template string
      TEMPLATE to the stream 'stdout' and return the number of characters
@@ -49575,6 +49582,11 @@ printf
 
      See the Formatted Output section of the GNU Octave manual for a
      complete description of the syntax of the template string.
+
+     Implementation Note: For compatability with MATLAB, escape
+     sequences in the template string (e.g., "\n" => newline) are
+     expanded even when the template string is defined with single
+     quotes.
 
      See also: fprintf, sprintf, scanf.
    
@@ -49664,13 +49676,18 @@ sprintf
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 393
+# length: 604
  -- Built-in Function: sprintf (TEMPLATE, ...)
      This is like 'printf', except that the output is returned as a
      string.  Unlike the C library function, which requires you to
      provide a suitably sized string as an argument, Octave's 'sprintf'
      function returns the string, automatically sized to hold all of the
      items converted.
+
+     Implementation Note: For compatability with MATLAB, escape
+     sequences in the template string (e.g., "\n" => newline) are
+     expanded even when the template string is defined with single
+     quotes.
 
      See also: printf, fprintf, sscanf.
    
@@ -57847,7 +57864,7 @@ regexp
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 5577
+# length: 5556
  -- Built-in Function: [S, E, TE, M, T, NM, SP] = regexp (STR, PAT)
  -- Built-in Function: [...] = regexp (STR, PAT, "OPT1", ...)
      Regular expression string matching.  Search for PAT in STR and
@@ -57934,11 +57951,11 @@ regexp
      '\B'
           Match within a word
 
-     Implementation Note: For compatibility with MATLAB, ordinary escape
-     sequences (e.g., "\n" => newline) are processed in PAT regardless
-     of whether PAT has been defined within single quotes.  Use a second
-     backslash to stop interpolation of the escape sequence (e.g.,
-     "\\n") or use the 'regexptranslate' function.
+     Implementation Note: For compatibility with MATLAB, escape
+     sequences in PAT (e.g., "\n" => newline) are expanded even when PAT
+     has been defined with single quotes.  To disable expansion use a
+     second backslash before the escape sequence (e.g., "\\n") or use
+     the 'regexptranslate' function.
 
      The outputs of 'regexp' default to the order given below
 
@@ -58093,7 +58110,7 @@ regexprep
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1145
+# length: 1111
  -- Built-in Function: OUTSTR = regexprep (STRING, PAT, REPSTR)
  -- Built-in Function: OUTSTR = regexprep (STRING, PAT, REPSTR, "OPT1",
           ...)
@@ -58117,11 +58134,11 @@ regexprep
      'warnings'
           This option is present for compatibility but is ignored.
 
-     Implementation Note: For compatibility with MATLAB, ordinary escape
-     sequences (e.g., "\n" => newline) are processed in both PAT and
-     REPSTR regardless of whether they were defined within single
-     quotes.  Use a second backslash to stop interpolation of the escape
-     sequence (e.g., "\\n") or use the 'regexptranslate' function.
+     Implementation Note: For compatibility with MATLAB, escape
+     sequences in PAT (e.g., "\n" => newline) are expanded even when PAT
+     has been defined with single quotes.  To disable expansion use a
+     second backslash before the escape sequence (e.g., "\\n") or use
+     the 'regexptranslate' function.
 
      See also: regexp, regexpi, strrep.
    
@@ -61463,6 +61480,37 @@ tilde_expand
 # elements: 1
 # length: 34
 Perform tilde expansion on STRING.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 18
+get_home_directory
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 348
+ -- Built-in Function: HOMEDIR = get_home_directory ()
+     Return the current home directory.
+
+     On most systems, this is equivalent to 'getenv ("HOME")'.  On
+     Windows systems, if the environment variable 'HOME' is not set then
+     it is equivalent to 'fullfile (getenv ("HOMEDRIVE"), getenv
+     ("HOMEPATH"))'
+
+     See also: getenv.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 34
+Return the current home directory.
 
 
 

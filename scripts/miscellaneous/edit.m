@@ -125,7 +125,8 @@ function ret = edit (varargin)
 
   ## Pick up globals or default them.
 
-  persistent FUNCTION = struct ("HOME", fullfile (default_home, "octave"),
+  persistent FUNCTION = struct ("HOME",
+                                fullfile (get_home_directory (), "octave"),
                                 "AUTHOR", default_user(1),
                                 "EMAIL", [],
                                 "LICENSE", "GPL",
@@ -164,7 +165,7 @@ function ret = edit (varargin)
         return;
       case "HOME"
         if (! isempty (stateval) && stateval(1) == "~")
-          stateval = [ default_home, stateval(2:end) ];
+          stateval = [ get_home_directory, stateval(2:end) ];
         endif
         FUNCTION.HOME = stateval;
         return;
@@ -517,20 +518,6 @@ SUCH DAMAGE.\
 
 endfunction
 
-function retval = default_home ()
-
-  retval = getenv ("HOME");
-  if (isempty (retval))
-    retval = glob ("~");
-    if (! isempty (retval))
-      retval = retval{1};
-    else
-      retval = "";
-    endif
-  endif
-
-endfunction
-
 ## Return the name associated with the current user ID.
 ##
 ## If LONG_FORM is 1, return the full name.  This will be the
@@ -559,12 +546,9 @@ endfunction
 
 function do_edit (editor, file, mode)
 
-  ## Give the hook function a chance.
-  ## If that fails, fall back on running an editor with the system function.
-
-  status = __octave_link_edit_file__ (file);
-
-  if (! status)
+  if (isguirunning ())
+    __octave_link_edit_file__ (file);
+  else
     system (sprintf (undo_string_escapes (editor), ['"' file '"']), [], mode);
   endif
 

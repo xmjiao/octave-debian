@@ -4659,11 +4659,11 @@ to 'error' will be executed.
      which will only stop execution if an error has been found.
 
      Implementation Note: For compatibility with MATLAB, escape
-     sequences (e.g., "\n" => newline) are processed in TEMPLATE
-     regardless of whether TEMPLATE has been defined within single
-     quotes as long as there are two or more input arguments.  Use a
-     second backslash to stop interpolation of the escape sequence
-     (e.g., "\\n") or use the 'regexptranslate' function.
+     sequences in TEMPLATE (e.g., "\n" => newline) are processed
+     regardless of whether TEMPLATE has been defined with single quotes,
+     as long as there are two or more input arguments.  To disable
+     escape sequence expansion use a second backslash before the
+     sequence (e.g., "\\n") or use the 'regexptranslate' function.
 
      See also: *note warning: XREFwarning, *note lasterror:
      XREFlasterror.
@@ -5067,11 +5067,11 @@ available as a namespace for user's own warnings.
      used in the top-level workspace.
 
      Implementation Note: For compatibility with MATLAB, escape
-     sequences (e.g., "\n" => newline) are processed in TEMPLATE
-     regardless of whether TEMPLATE has been defined within single
-     quotes as long as there are two or more input arguments.  Use a
-     second backslash to stop interpolation of the escape sequence
-     (e.g., "\\n") or use the 'regexptranslate' function.
+     sequences in TEMPLATE (e.g., "\n" => newline) are processed
+     regardless of whether TEMPLATE has been defined with single quotes,
+     as long as there are two or more input arguments.  To disable
+     escape sequence expansion use a second backslash before the
+     sequence (e.g., "\\n") or use the 'regexptranslate' function.
 
      See also: *note warning_ids: XREFwarning_ids, *note lastwarn:
      XREFlastwarn, *note error: XREFerror.
@@ -7597,6 +7597,10 @@ modeled after the C language functions of the same name, but they
 interpret the format template differently in order to improve the
 performance of printing vector and matrix values.
 
+   Implementation Note: For compatability with MATLAB, escape sequences
+in the template string (e.g., "\n" => newline) are expanded even when
+the template string is defined with single quotes.
+
  -- Built-in Function: printf (TEMPLATE, ...)
      Print optional arguments under the control of the template string
      TEMPLATE to the stream 'stdout' and return the number of characters
@@ -7604,6 +7608,11 @@ performance of printing vector and matrix values.
 
      See the Formatted Output section of the GNU Octave manual for a
      complete description of the syntax of the template string.
+
+     Implementation Note: For compatability with MATLAB, escape
+     sequences in the template string (e.g., "\n" => newline) are
+     expanded even when the template string is defined with single
+     quotes.
 
      See also: *note fprintf: XREFfprintf, *note sprintf: XREFsprintf,
      *note scanf: XREFscanf.
@@ -7620,6 +7629,11 @@ performance of printing vector and matrix values.
      The optional output returns the number of bytes written to the
      file.
 
+     Implementation Note: For compatability with MATLAB, escape
+     sequences in the template string (e.g., "\n" => newline) are
+     expanded even when the template string is defined with single
+     quotes.
+
      See also: *note fputs: XREFfputs, *note fdisp: XREFfdisp, *note
      fwrite: XREFfwrite, *note fscanf: XREFfscanf, *note printf:
      XREFprintf, *note sprintf: XREFsprintf, *note fopen: XREFfopen.
@@ -7630,6 +7644,11 @@ performance of printing vector and matrix values.
      provide a suitably sized string as an argument, Octave's 'sprintf'
      function returns the string, automatically sized to hold all of the
      items converted.
+
+     Implementation Note: For compatability with MATLAB, escape
+     sequences in the template string (e.g., "\n" => newline) are
+     expanded even when the template string is defined with single
+     quotes.
 
      See also: *note printf: XREFprintf, *note fprintf: XREFfprintf,
      *note sscanf: XREFsscanf.

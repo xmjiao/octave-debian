@@ -1,5 +1,6 @@
 /*
 
+
 Copyright (C) 2007-2015 Shai Ayal
 Copyright (C) 2014-2015 Andreas Weber
 
@@ -503,6 +504,11 @@ public:
       }
   }
 
+  void update_position (uimenu::properties& uimenup, int pos)
+  {
+    uimenup.get_property ("position").set (octave_value (static_cast<double> (pos)), true, false);
+  }
+
   void add_entry (uimenu::properties& uimenup)
   {
 
@@ -555,9 +561,11 @@ public:
 
   void add_to_menu (uimenu::properties& uimenup)
   {
+    std::vector<int> delayed_menus;
     Matrix kids = find_uimenu_children (uimenup);
     int len = kids.length ();
     std::string fltk_label = uimenup.get_fltk_label ();
+    int count = 0;
 
     add_entry (uimenup);
     update_foregroundcolor (uimenup);
@@ -574,15 +582,39 @@ public:
           {
             uimenu::properties& kprop = dynamic_cast<uimenu::properties&>
                                         (kgo.get_properties ());
+
+            // if no pos yet, delay adding menu until after other menus
+            int pos = kprop.get_position ();
+            if (pos <= 0)
+              delayed_menus.push_back ((len - (ii + 1))); 
+            else
+             {
+               add_to_menu (kprop);
+             }
+          }
+      }
+
+    // create any delayed menus
+    for (size_t ii = 0; ii < delayed_menus.size (); ii++)
+      {
+        graphics_object kgo = gh_manager::get_object (kids (delayed_menus[ii]));
+
+        if (kgo.valid_object ())
+          {
+            uimenu::properties& kprop = dynamic_cast<uimenu::properties&>
+                                        (kgo.get_properties ());
             add_to_menu (kprop);
+            update_position (kprop, ++count);
           }
       }
   }
 
   void add_to_menu (figure::properties& figp)
   {
+    std::vector<int> delayed_menus;
     Matrix kids = find_uimenu_children (figp);
     int len = kids.length ();
+    int count = 0;
     menubar->clear ();
     for (octave_idx_type ii = 0; ii < len; ii++)
       {
@@ -592,7 +624,30 @@ public:
           {
             uimenu::properties& kprop = dynamic_cast<uimenu::properties&>
                                         (kgo.get_properties ());
+
+            // if no pos yet, delay adding menu until after other menus
+            int pos = kprop.get_position ();
+            if (pos <= 0)
+              delayed_menus.push_back ((len - (ii + 1))); 
+            else
+             {
+               add_to_menu (kprop);
+               update_position (kprop, ++count);
+             }
+          }
+      }
+
+    // create any delayed menus
+    for (size_t ii = 0; ii < delayed_menus.size (); ii++)
+      {
+        graphics_object kgo = gh_manager::get_object (kids (delayed_menus[ii]));
+
+        if (kgo.valid_object ())
+          {
+            uimenu::properties& kprop = dynamic_cast<uimenu::properties&>
+                                        (kgo.get_properties ());
             add_to_menu (kprop);
+            update_position (kprop, ++count);
           }
       }
   }
@@ -1454,15 +1509,16 @@ private:
 
               set_currentpoint (pos_x, pos_y);
 
-              if (Fl::event_button () == FL_LEFT_MOUSE
-                  && Fl::event_shift ())
-                fp.set_selectiontype ("extend");
-              else if ((Fl::event_button () == FL_LEFT_MOUSE
-                        && Fl::event_ctrl ())
-                       || Fl::event_button () == FL_RIGHT_MOUSE)
-                fp.set_selectiontype ("alternate");
-              else if (Fl::event_clicks ())
+              if (Fl::event_clicks ())
                 fp.set_selectiontype ("open");
+              else if (Fl::event_button () == FL_MIDDLE_MOUSE
+                       || (Fl::event_button () == FL_LEFT_MOUSE
+                           && Fl::event_shift ()))
+                fp.set_selectiontype ("extend");
+              else if (Fl::event_button () == FL_RIGHT_MOUSE
+                       || (Fl::event_button () == FL_LEFT_MOUSE
+                           && Fl::event_ctrl ()))
+                fp.set_selectiontype ("alt");
               else
                 fp.set_selectiontype ("normal");
 
@@ -1628,6 +1684,7 @@ private:
                   set_on_ax_obj ("xlimmode", "auto");
                   set_on_ax_obj ("ylimmode", "auto");
                   set_on_ax_obj ("zlimmode", "auto");
+                  mark_modified ();
                   return 1;
                 }
               if (Fl::event_button () == 3)
@@ -2273,6 +2330,9 @@ Undocumented internal function.  Calls Fl::check ()\n\
 {
 #ifdef HAVE_FLTK
   Fl::check ();
+
+  if (Vdrawnow_requested)
+    Fdrawnow ();
 #else
   error ("__fltk_check__: not available without OpenGL and FLTK libraries");
 #endif

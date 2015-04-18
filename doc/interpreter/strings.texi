@@ -1112,21 +1112,35 @@ strtok ("this is the life")
 
 @c strsplit scripts/strings/strsplit.m
 @anchor{XREFstrsplit}
-@deftypefn  {Function File} {[@var{cstr}] =} strsplit (@var{s})
-@deftypefnx {Function File} {[@var{cstr}] =} strsplit (@var{s}, @var{del})
+@deftypefn  {Function File} {[@var{cstr}] =} strsplit (@var{str})
+@deftypefnx {Function File} {[@var{cstr}] =} strsplit (@var{str}, @var{del})
 @deftypefnx {Function File} {[@var{cstr}] =} strsplit (@dots{}, @var{name}, @var{value})
 @deftypefnx {Function File} {[@var{cstr}, @var{matches}] =} strsplit (@dots{})
-Split the string @var{s} using the delimiters specified by @var{del}
-and return a cell string array of substrings.  If a delimiter is not
-specified the string, @var{s}, is split at whitespace.  The delimiter,
-@var{del} may be a string, a scalar cell string, or cell string array.
-By default, consecutive delimiters in the input string @var{s} are
-collapsed into one.
+Split the string @var{str} using the delimiters specified by @var{del}
+and return a cell string array of substrings.
 
-The second output, @var{matches}, returns the delimiters which were matched
-in the original string.
+If a delimiter is not specified the string is split at whitespace
+@code{@{" ", "\f", "\n", "\r", "\t", "\v"@}}.  Otherwise, the delimiter,
+@var{del} must be a string or cell array of strings.  By default,
+consecutive delimiters in the input string @var{s} are collapsed into one
+resulting in a single split.
 
-Example:
+Supported @var{name}/@var{value} pair arguments are:
+
+@itemize
+@item @var{collapsedelimiters} which may take the value of @code{true}
+(default) or @code{false}.
+
+@item @var{delimitertype} which may take the value of @qcode{"simple"}
+(default) or @qcode{"regularexpression"}.  A simple delimiter matches the
+text exactly as written.  Otherwise, the syntax for regular expressions
+outlined in @code{regexp} is used.
+@end itemize
+
+The optional second output, @var{matches}, returns the delimiters which were
+matched in the original string.
+
+Examples with simple delimiters:
 
 @example
 strsplit ("a b c")
@@ -1145,7 +1159,7 @@ strsplit ("a,b,c", ",")
             [1,3] = c
           @}
 
-strsplit ("a foo b,bar c", @{"\s", "foo", "bar"@})
+strsplit ("a foo b,bar c", @{" ", ",", "foo", "bar"@})
       @result{}
           @{
             [1,1] = a
@@ -1153,7 +1167,7 @@ strsplit ("a foo b,bar c", @{"\s", "foo", "bar"@})
             [1,3] = c
           @}
 
-strsplit ("a,,b, c", @{",", " "@}, false)
+strsplit ("a,,b, c", @{",", " "@}, "collapsedelimiters", false)
       @result{}
           @{
             [1,1] = a
@@ -1165,21 +1179,10 @@ strsplit ("a,,b, c", @{",", " "@}, false)
 
 @end example
 
-Supported @var{name}/@var{value} pair arguments are;
-
-@itemize
-@item @var{collapsedelimiters} may take the value of @var{true} or
-@var{false} with the default being @var{false}.
-
-@item @var{delimitertype} may take the value of @code{simple} or
-@code{regularexpression}.  The default is @var{delimitertype} is
-@code{simple}.
-@end itemize
-
-Example:
+Examples with regularexpression delimiters:
 
 @smallexample
-strsplit ("a foo b,bar c", ",|\\s|foo|bar", "delimitertype", "regularexpression")
+strsplit ("a foo b,bar c", ',|\s|foo|bar', "delimitertype", "regularexpression")
 @result{}
 @{
             [1,1] = a
@@ -1187,7 +1190,7 @@ strsplit ("a foo b,bar c", ",|\\s|foo|bar", "delimitertype", "regularexpression"
             [1,3] = c
 @}
 
-strsplit ("a,,b, c", "[, ]", false, "delimitertype", "regularexpression")
+strsplit ("a,,b, c", '[, ]', "collapsedelimiters", false, "delimitertype", "regularexpression")
 @result{}
 @{
             [1,1] = a
@@ -1565,11 +1568,11 @@ Match the end of a word
 Match within a word
 @end table
 
-Implementation Note: For compatibility with @sc{matlab}, ordinary escape
-sequences (e.g., @qcode{"\n"} => newline) are processed in @var{pat}
-regardless of whether @var{pat} has been defined within single quotes.  Use
-a second backslash to stop interpolation of the escape sequence (e.g.,
-"\\n") or use the @code{regexptranslate} function.
+Implementation Note: For compatibility with @sc{matlab}, escape sequences
+in @var{pat} (e.g., @qcode{"\\n"} => newline) are expanded even when
+@var{pat} has been defined with single quotes.  To disable expansion use
+a second backslash before the escape sequence (e.g., "\\n") or use the
+@code{regexptranslate} function.
 
 The outputs of @code{regexp} default to the order given below
 
@@ -1723,11 +1726,11 @@ This option is present for compatibility but is ignored.
 
 @end table
 
-Implementation Note: For compatibility with @sc{matlab}, ordinary escape
-sequences (e.g., @qcode{"\n"} => newline) are processed in both @var{pat}
-and @var{repstr} regardless of whether they were defined within single
-quotes.  Use a second backslash to stop interpolation of the escape sequence
-(e.g., "\\n") or use the @code{regexptranslate} function.
+Implementation Note: For compatibility with @sc{matlab}, escape sequences
+in @var{pat} (e.g., @qcode{"\\n"} => newline) are expanded even when
+@var{pat} has been defined with single quotes.  To disable expansion use
+a second backslash before the escape sequence (e.g., "\\n") or use the
+@code{regexptranslate} function.
 @seealso{@ref{XREFregexp,,regexp}, @ref{XREFregexpi,,regexpi}, @ref{XREFstrrep,,strrep}}
 @end deftypefn
 

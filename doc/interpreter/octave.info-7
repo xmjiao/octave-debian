@@ -80,6 +80,16 @@ File: octave.info,  Node: Environment Variables,  Next: Current Working Director
 
      See also: *note setenv: XREFsetenv, *note getenv: XREFgetenv.
 
+ -- Built-in Function: HOMEDIR = get_home_directory ()
+     Return the current home directory.
+
+     On most systems, this is equivalent to 'getenv ("HOME")'.  On
+     Windows systems, if the environment variable 'HOME' is not set then
+     it is equivalent to 'fullfile (getenv ("HOMEDRIVE"), getenv
+     ("HOMEPATH"))'
+
+     See also: *note getenv: XREFgetenv.
+
 
 File: octave.info,  Node: Current Working Directory,  Next: Password Database Functions,  Prev: Environment Variables,  Up: System Utilities
 

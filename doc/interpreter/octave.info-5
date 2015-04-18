@@ -21,6 +21,23 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Function Support,  Next: Example Code,  Prev: Matrix Algebra,  Up: Diagonal and Permutation Matrices
+
+21.3 Functions That Are Aware of These Matrices
+===============================================
+
+This section lists the built-in functions that are aware of diagonal and
+permutation matrices on input, or can return them as output.  Passed to
+other functions, these matrices will in general trigger an implicit
+conversion.  (Of course, user-defined dynamically linked functions may
+also work with diagonal or permutation matrices).
+
+* Menu:
+
+* Diagonal Matrix Functions::
+* Permutation Matrix Functions::
+
+
 File: octave.info,  Node: Diagonal Matrix Functions,  Next: Permutation Matrix Functions,  Up: Function Support
 
 21.3.1 Diagonal Matrix Functions
@@ -7367,12 +7384,12 @@ is very efficient and is of order O(log2(n)) which is preferable to the
  -- Function File: C = intersect (A, B, "rows")
  -- Function File: [C, IA, IB] = intersect (...)
 
-     Return the elements common to both A and B sorted in ascending
-     order.
+     Return the unique elements common to both A and B sorted in
+     ascending order.
 
-     If A and B are both column vectors then return a column vector;
-     Otherwise, return a row vector.  The inputs may also be cell arrays
-     of strings.
+     If A and B are both row vectors then return a row vector;
+     Otherwise, return a column vector.  The inputs may also be cell
+     arrays of strings.
 
      If the optional input "rows" is given then return the common rows
      of A and B.  The inputs must be 2-D matrices to use this option.
@@ -7388,12 +7405,12 @@ XREFismember.
  -- Function File: C = union (A, B, "rows")
  -- Function File: [C, IA, IB] = union (...)
 
-     Return the elements that are in either A or B sorted in ascending
-     order with duplicates removed.
+     Return the unique elements that are in either A or B sorted in
+     ascending order.
 
-     If A and B are both column vectors return a column vector;
-     Otherwise, return a row vector.  The inputs may also be cell arrays
-     of strings.
+     If A and B are both row vectors then return a row vector;
+     Otherwise, return a column vector.  The inputs may also be cell
+     arrays of strings.
 
      If the optional input "rows" is given then return rows that are in
      either A or B.  The inputs must be 2-D matrices to use this option.
@@ -7408,12 +7425,11 @@ XREFismember.
  -- Function File: C = setdiff (A, B)
  -- Function File: C = setdiff (A, B, "rows")
  -- Function File: [C, IA] = setdiff (...)
-     Return the elements in A that are not in B sorted in ascending
-     order.
+     Return the unique elements in A that are not in B sorted in
+     ascending order.
 
-     If A and B are both column vectors return a column vector;
-     Otherwise, return a row vector.  The inputs may also be cell arrays
-     of strings.
+     If A is a row vector return a column vector; Otherwise, return a
+     column vector.  The inputs may also be cell arrays of strings.
 
      If the optional input "rows" is given then return the rows in A
      that are not in B.  The inputs must be 2-D matrices to use this
@@ -7429,12 +7445,12 @@ XREFismember.
  -- Function File: C = setxor (A, B, "rows")
  -- Function File: [C, IA, IB] = setxor (...)
 
-     Return the elements exclusive to sets A or B sorted in ascending
-     order.
+     Return the unique elements exclusive to sets A or B sorted in
+     ascending order.
 
-     If A and B are both column vectors return a column vector;
-     Otherwise, return a row vector.  The inputs may also be cell arrays
-     of strings.
+     If A and B are both row vectors then return a row vector;
+     Otherwise, return a column vector.  The inputs may also be cell
+     arrays of strings.
 
      If the optional input "rows" is given then return the rows
      exclusive to sets A and B.  The inputs must be 2-D matrices to use
@@ -7576,100 +7592,4 @@ algorithm.
 
      See also: *note polyval: XREFpolyval, *note roots: XREFroots, *note
      poly: XREFpoly.
-
-
-File: octave.info,  Node: Finding Roots,  Next: Products of Polynomials,  Prev: Evaluating Polynomials,  Up: Polynomial Manipulations
-
-28.2 Finding Roots
-==================
-
-Octave can find the roots of a given polynomial.  This is done by
-computing the companion matrix of the polynomial (see the 'compan'
-function for a definition), and then finding its eigenvalues.
-
- -- Function File: roots (V)
-
-     For a vector V with N components, return the roots of the
-     polynomial
-
-          v(1) * z^(N-1) + ... + v(N-1) * z + v(N)
-
-     As an example, the following code finds the roots of the quadratic
-     polynomial
-
-          p(x) = x^2 - 5.
-
-          c = [1, 0, -5];
-          roots (c)
-          =>  2.2361
-          => -2.2361
-
-     Note that the true result is +/- sqrt(5) which is roughly +/-
-     2.2361.
-
-     See also: *note poly: XREFpoly, *note compan: XREFcompan, *note
-     fzero: XREFfzero.
-
- -- Function File: Z = polyeig (C0, C1, ..., CL)
- -- Function File: [V, Z] = polyeig (C0, C1, ..., CL)
-
-     Solve the polynomial eigenvalue problem of degree L.
-
-     Given an N*N matrix polynomial 'C(s) = C0 + C1 s + ... + CL s^l'
-     polyeig solves the eigenvalue problem '(C0 + C1 + ... + CL)v = 0'.
-
-     Note that the eigenvalues Z are the zeros of the matrix polynomial.
-     Z is a row vector with N*L elements.  V is a matrix (N x N*L) with
-     columns that correspond to the eigenvectors.
-
-     See also: *note eig: XREFeig, *note eigs: XREFeigs, *note compan:
-     XREFcompan.
-
- -- Function File: compan (C)
-     Compute the companion matrix corresponding to polynomial
-     coefficient vector C.
-
-     The companion matrix is
-
-               _                                                        _
-              |  -c(2)/c(1)   -c(3)/c(1)  ...  -c(N)/c(1)  -c(N+1)/c(1)  |
-              |       1            0      ...       0             0      |
-              |       0            1      ...       0             0      |
-          A = |       .            .      .         .             .      |
-              |       .            .       .        .             .      |
-              |       .            .        .       .             .      |
-              |_      0            0      ...       1             0     _|
-
-     The eigenvalues of the companion matrix are equal to the roots of
-     the polynomial.
-
-     See also: *note roots: XREFroots, *note poly: XREFpoly, *note eig:
-     XREFeig.
-
- -- Function File: [MULTP, IDXP] = mpoles (P)
- -- Function File: [MULTP, IDXP] = mpoles (P, TOL)
- -- Function File: [MULTP, IDXP] = mpoles (P, TOL, REORDER)
-     Identify unique poles in P and their associated multiplicity.  The
-     output is ordered from largest pole to smallest pole.
-
-     If the relative difference of two poles is less than TOL then they
-     are considered to be multiples.  The default value for TOL is
-     0.001.
-
-     If the optional parameter REORDER is zero, poles are not sorted.
-
-     The output MULTP is a vector specifying the multiplicity of the
-     poles.  'MULTP(n)' refers to the multiplicity of the Nth pole
-     'P(IDXP(n))'.
-
-     For example:
-
-          p = [2 3 1 1 2];
-          [m, n] = mpoles (p)
-             => m = [1; 1; 2; 1; 2]
-             => n = [2; 5; 1; 4; 3]
-             => p(n) = [3, 2, 2, 1, 1]
-
-     See also: *note residue: XREFresidue, *note poly: XREFpoly, *note
-     roots: XREFroots, *note conv: XREFconv, *note deconv: XREFdeconv.
 

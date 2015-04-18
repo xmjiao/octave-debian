@@ -46,6 +46,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <QFileDialog>
 
 #include "load-save.h"
+#include "oct-env.h"
 
 class FileTreeViewer : public QTreeView
 {
@@ -108,7 +109,7 @@ files_dock_widget::files_dock_widget (QWidget *p)
     = new QAction (resource_manager::icon ("go-last"),
                    tr ("Set Octave directory"), _navigation_tool_bar);
   _sync_octave_directory_action->setToolTip (
-    tr ("Set Octave directroy to current browser directory"));
+    tr ("Set Octave directory to current browser directory"));
   _sync_octave_directory_action->setEnabled ("false");
 
   QToolButton * popdown_button = new QToolButton ();
@@ -822,7 +823,8 @@ files_dock_widget::notice_settings (const QSettings *settings)
 void
 files_dock_widget::popdownmenu_home (bool)
 {
-  QString dir = qgetenv ("HOME");
+  QString dir = QString::fromStdString (octave_env::get_home_directory ());
+
   if (dir.isEmpty ())
     dir = QDir::homePath ();
 

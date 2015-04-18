@@ -870,6 +870,7 @@ opengl_renderer::draw_axes_planes (const axes::properties& props)
   double xPlaneN = props.get_xPlaneN ();
   double yPlaneN = props.get_yPlaneN ();
   double zPlaneN = props.get_zPlaneN ();
+  bool is2d = props.get_is2D ();
 
   // Axes planes
   set_color (axe_color);
@@ -877,17 +878,20 @@ opengl_renderer::draw_axes_planes (const axes::properties& props)
 
   glBegin (GL_QUADS);
 
-  // X plane
-  glVertex3d (xPlane, yPlaneN, zPlaneN);
-  glVertex3d (xPlane, yPlane, zPlaneN);
-  glVertex3d (xPlane, yPlane, zPlane);
-  glVertex3d (xPlane, yPlaneN, zPlane);
+  if (! is2d)
+    {
+      // X plane
+      glVertex3d (xPlane, yPlaneN, zPlaneN);
+      glVertex3d (xPlane, yPlane, zPlaneN);
+      glVertex3d (xPlane, yPlane, zPlane);
+      glVertex3d (xPlane, yPlaneN, zPlane);
 
-  // Y plane
-  glVertex3d (xPlaneN, yPlane, zPlaneN);
-  glVertex3d (xPlane, yPlane, zPlaneN);
-  glVertex3d (xPlane, yPlane, zPlane);
-  glVertex3d (xPlaneN, yPlane, zPlane);
+      // Y plane
+      glVertex3d (xPlaneN, yPlane, zPlaneN);
+      glVertex3d (xPlane, yPlane, zPlaneN);
+      glVertex3d (xPlane, yPlane, zPlane);
+      glVertex3d (xPlaneN, yPlane, zPlane);
+    }
 
   // Z plane
   glVertex3d (xPlaneN, yPlaneN, zPlane);
@@ -972,37 +976,40 @@ opengl_renderer::draw_axes_boxes (const axes::properties& props)
     }
 
   // Z box
-  set_color (props.get_zcolor_rgb ());
-
-  if (xySym)
+  if (! is2d)
     {
-      glVertex3d (xPlaneN, yPlane, zPlaneN);
-      glVertex3d (xPlaneN, yPlane, zPlane);
-    }
-  else
-    {
-      glVertex3d (xPlane, yPlaneN, zPlaneN);
-      glVertex3d (xPlane, yPlaneN, zPlane);
-    }
-
-  if (props.is_box ())
-    {
-      glVertex3d (xPlane, yPlane, zPlaneN);
-      glVertex3d (xPlane, yPlane, zPlane);
+      set_color (props.get_zcolor_rgb ());
 
       if (xySym)
-        {
-          glVertex3d (xPlane, yPlaneN, zPlaneN);
-          glVertex3d (xPlane, yPlaneN, zPlane);
-        }
-      else
         {
           glVertex3d (xPlaneN, yPlane, zPlaneN);
           glVertex3d (xPlaneN, yPlane, zPlane);
         }
+      else
+        {
+          glVertex3d (xPlane, yPlaneN, zPlaneN);
+          glVertex3d (xPlane, yPlaneN, zPlane);
+        }
 
-      glVertex3d (xPlaneN, yPlaneN, zPlaneN);
-      glVertex3d (xPlaneN, yPlaneN, zPlane);
+      if (props.is_box ())
+        {
+          glVertex3d (xPlane, yPlane, zPlaneN);
+          glVertex3d (xPlane, yPlane, zPlane);
+
+          if (xySym)
+            {
+              glVertex3d (xPlane, yPlaneN, zPlaneN);
+              glVertex3d (xPlane, yPlaneN, zPlane);
+            }
+          else
+            {
+              glVertex3d (xPlaneN, yPlane, zPlaneN);
+              glVertex3d (xPlaneN, yPlane, zPlane);
+            }
+
+          glVertex3d (xPlaneN, yPlaneN, zPlaneN);
+          glVertex3d (xPlaneN, yPlaneN, zPlane);
+        }
     }
 
   glEnd ();
