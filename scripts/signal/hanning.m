@@ -45,11 +45,11 @@ function c = hanning (m, opt)
     error ("hanning: M must be a positive integer");
   endif
 
-  periodic = false;
+  N = m - 1;
   if (nargin == 2)
     switch (opt)
       case "periodic"
-        periodic = true;
+        N = m;
       case "symmetric"
         ## Default option, same as no option specified.
       otherwise
@@ -60,14 +60,8 @@ function c = hanning (m, opt)
   if (m == 1)
     c = 1;
   else
-    if (! periodic)
-      m = m - 1;
-    endif
-    c = 0.5 - 0.5 * cos (2 * pi * (0 : m)' / m);
-  endif
-
-  if (periodic)
-    c = c(1:end-1);
+    m = m - 1;
+    c = 0.5 - 0.5 * cos (2 * pi * (0 : m)' / N);
   endif
 
 endfunction
@@ -75,8 +69,8 @@ endfunction
 
 %!assert (hanning (1), 1);
 %!assert (hanning (2), zeros (2,1));
-%!assert (hanning (16), fliplr (hanning (16)));
-%!assert (hanning (15), fliplr (hanning (15)));
+%!assert (hanning (15), flip (hanning (15)), 5*eps);
+%!assert (hanning (16), flip (hanning (16)), 5*eps);
 %!test
 %! N = 15;
 %! A = hanning (N);
@@ -87,7 +81,7 @@ endfunction
 %!test
 %! N = 16;
 %! A = hanning (N, "periodic");
-%! assert (A (N/2 + 1), 1);
+%! assert (A(N/2 + 1), 1);
 
 %!error hanning ()
 %!error hanning (0.5)

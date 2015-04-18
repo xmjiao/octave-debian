@@ -204,6 +204,10 @@ main_window::focus_changed (QWidget *, QWidget *new_widget)
       // signal to all dock widgets for updating the style
       emit active_dock_changed (_active_dock, dock);
 
+      QList<QDockWidget *> tabbed = tabifiedDockWidgets (dock);
+      if (tabbed.contains (_active_dock))
+        dock->set_predecessor_widget (_active_dock);
+
       if (edit_dock_widget == dock)
         emit editor_focus_changed (true);
       else if (edit_dock_widget == _active_dock)
@@ -1651,17 +1655,8 @@ main_window::construct_file_menu (QMenuBar *p)
 
   file_menu->addSeparator ();
 
-  _preferences_action
-    = file_menu->addAction (resource_manager::icon ("preferences-system"),
-                            tr ("Preferences..."));
-
-  file_menu->addSeparator ();
-
   _exit_action = file_menu->addAction (tr ("Exit"));
   _exit_action->setShortcutContext (Qt::ApplicationShortcut);
-
-  connect (_preferences_action, SIGNAL (triggered ()),
-           this, SLOT (process_settings_dialog_request ()));
 
 #ifdef HAVE_QSCINTILLA
   connect (_open_action, SIGNAL (triggered ()),
@@ -1751,6 +1746,12 @@ main_window::construct_edit_menu (QMenuBar *p)
   _clear_workspace_action
     = edit_menu->addAction (tr ("Clear Workspace"));
 
+  edit_menu->addSeparator ();
+
+  _preferences_action
+    = edit_menu->addAction (resource_manager::icon ("preferences-system"),
+                            tr ("Preferences..."));
+
   connect (_find_files_action, SIGNAL (triggered ()),
            this, SLOT (find_files ()));
 
@@ -1766,6 +1767,9 @@ main_window::construct_edit_menu (QMenuBar *p)
   connect (_clipboard, SIGNAL (changed (QClipboard::Mode)),
            this, SLOT (clipboard_has_changed (QClipboard::Mode)));
   clipboard_has_changed (QClipboard::Clipboard);
+
+  connect (_preferences_action, SIGNAL (triggered ()),
+           this, SLOT (process_settings_dialog_request ()));
 }
 
 QAction *
@@ -1954,7 +1958,7 @@ main_window::construct_news_menu (QMenuBar *p)
 void
 main_window::construct_tool_bar (void)
 {
-  _main_tool_bar = addToolBar ("Main");
+  _main_tool_bar = addToolBar (tr ("Toolbar"));
 
   _main_tool_bar->setObjectName ("MainToolBar");
   _main_tool_bar->addAction (_new_script_action);
@@ -1964,7 +1968,6 @@ main_window::construct_tool_bar (void)
 
   _main_tool_bar->addAction (_copy_action);
   _main_tool_bar->addAction (_paste_action);
-  _main_tool_bar->addAction (_undo_action);
 
   _main_tool_bar->addSeparator ();
 

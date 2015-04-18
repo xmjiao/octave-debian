@@ -65,6 +65,10 @@ modeled after the C language functions of the same name, but they
 interpret the format template differently in order to improve the
 performance of printing vector and matrix values.
 </p>
+<p>Implementation Note: For compatability with <small>MATLAB</small>, escape sequences in
+the template string (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded even
+when the template string is defined with single quotes.
+</p>
 <a name="XREFprintf"></a><dl>
 <dt><a name="index-printf"></a>Built-in Function: <em></em> <strong>printf</strong> <em>(<var>template</var>, &hellip;)</em></dt>
 <dd><p>Print optional arguments under the control of the template string
@@ -73,6 +77,10 @@ characters printed.
 </p>
 <p>See the Formatted Output section of the GNU Octave manual for a
 complete description of the syntax of the template string.
+</p>
+<p>Implementation Note: For compatability with <small>MATLAB</small>, escape sequences in
+the template string (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded even
+when the template string is defined with single quotes.
 </p>
 <p><strong>See also:</strong> <a href="#XREFfprintf">fprintf</a>, <a href="#XREFsprintf">sprintf</a>, <a href="Formatted-Input.html#XREFscanf">scanf</a>.
 </p></dd></dl>
@@ -90,6 +98,10 @@ function exactly equivalent to <code>printf</code>.
 </p>
 <p>The optional output returns the number of bytes written to the file.
 </p>
+<p>Implementation Note: For compatability with <small>MATLAB</small>, escape sequences in
+the template string (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded even
+when the template string is defined with single quotes.
+</p>
 <p><strong>See also:</strong> <a href="Simple-Output.html#XREFfputs">fputs</a>, <a href="Simple-File-I_002fO.html#XREFfdisp">fdisp</a>, <a href="Binary-I_002fO.html#XREFfwrite">fwrite</a>, <a href="Formatted-Input.html#XREFfscanf">fscanf</a>, <a href="#XREFprintf">printf</a>, <a href="#XREFsprintf">sprintf</a>, <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
 </p></dd></dl>
 
@@ -101,6 +113,10 @@ string.  Unlike the C library function, which requires you to provide a
 suitably sized string as an argument, Octave&rsquo;s <code>sprintf</code> function
 returns the string, automatically sized to hold all of the items
 converted.
+</p>
+<p>Implementation Note: For compatability with <small>MATLAB</small>, escape sequences in
+the template string (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded even
+when the template string is defined with single quotes.
 </p>
 <p><strong>See also:</strong> <a href="#XREFprintf">printf</a>, <a href="#XREFfprintf">fprintf</a>, <a href="Formatted-Input.html#XREFsscanf">sscanf</a>.
 </p></dd></dl>

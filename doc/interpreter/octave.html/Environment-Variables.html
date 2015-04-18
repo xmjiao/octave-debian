@@ -96,6 +96,19 @@ occurred.
 </p></dd></dl>
 
 
+<a name="XREFget_005fhome_005fdirectory"></a><dl>
+<dt><a name="index-get_005fhome_005fdirectory"></a>Built-in Function: <em><var>homedir</var> =</em> <strong>get_home_directory</strong> <em>()</em></dt>
+<dd><p>Return the current home directory.
+</p>
+<p>On most systems, this is equivalent to <code>getenv (&quot;HOME&quot;)</code>.  On Windows
+systems, if the environment variable <code>HOME</code> is not set then it is
+equivalent to
+<code>fullfile (getenv (&quot;HOMEDRIVE&quot;), getenv (&quot;HOMEPATH&quot;))</code>
+</p>
+<p><strong>See also:</strong> <a href="#XREFgetenv">getenv</a>.
+</p></dd></dl>
+
+
 
 
 

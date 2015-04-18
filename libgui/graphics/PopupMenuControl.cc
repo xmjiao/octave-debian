@@ -56,6 +56,8 @@ PopupMenuControl::PopupMenuControl (const graphics_object& go, QComboBox *box)
 
   box->addItems (Utils::fromStdString (up.get_string_string ()).split ('|'));
 
+  update (uicontrol::properties::ID_VALUE);
+
   connect (box, SIGNAL (currentIndexChanged (int)),
            SLOT (currentIndexChanged (int)));
 }
@@ -97,20 +99,31 @@ void PopupMenuControl::update (int pId)
       break;
 
     case uicontrol::properties::ID_VALUE:
+      m_blockUpdate = true;
         {
           Matrix value = up.get_value ().matrix_value ();
 
           if (value.numel () > 0)
             {
-              int newIndex = int (value(0)) - 1;
-
-              if (newIndex >= 0 && newIndex < box->count ()
-                  && newIndex != box->currentIndex ())
+              if (value(0) !=  static_cast<int>(value(0)))
                 {
-                  box->setCurrentIndex (newIndex);
+                warning ("popupmenu value should be integer");
+                }
+              else
+                {
+                  int newIndex = int (value(0)) - 1;
+
+                  if (newIndex >= 0 && newIndex < box->count ())
+                    {
+                      if (newIndex != box->currentIndex ())
+                        box->setCurrentIndex (newIndex);
+                    }
+                  else
+                    warning ("popupmenu value not within valid display range");
                 }
             }
         }
+      m_blockUpdate = false;
       break;
 
     default:

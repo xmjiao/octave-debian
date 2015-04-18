@@ -113,13 +113,13 @@ endfunction
 %!   assert (get (ui, "checked"), "off");
 %!   assert (get (ui, "separator"), "off");
 %!   assert (get (ui, "enable"), "on");
-%!   assert (get (ui, "position"), 9);
+%!   assert (get (ui, "position"), 0);
 %! unwind_protect_cleanup
 %!   close (hf);
 %!   graphics_toolkit (toolkit);
 %! end_unwind_protect
 
-## check for top level menus file, edit, and help
+## check for top level menus file and edit
 %!testif HAVE_FLTK
 %! toolkit = graphics_toolkit ("fltk");
 %! hf = figure ("visible", "off");
@@ -128,8 +128,6 @@ endfunction
 %!   assert (ishghandle (uif));
 %!   uie = findall (hf, "label", "&edit");
 %!   assert (ishghandle (uie));
-%!   uih = findall (hf, "label", "&help");
-%!   assert (ishghandle (uih));
 %! unwind_protect_cleanup
 %!   close (hf);
 %!   graphics_toolkit (toolkit);

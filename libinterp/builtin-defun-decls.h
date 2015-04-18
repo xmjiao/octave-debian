@@ -670,6 +670,7 @@ DEFUN_DECL (Fusleep);
 DEFUN_DECL (Fisieee);
 DEFUN_DECL (Fnative_float_format);
 DEFUN_DECL (Ftilde_expand);
+DEFUN_DECL (Fget_home_directory);
 DEFUN_DECL (Fhave_window_system);
 DEFUN_DECL (Ftime);
 DEFUN_DECL (Fgmtime);

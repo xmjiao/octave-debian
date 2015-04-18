@@ -1311,7 +1311,7 @@ Concept Index
 * contributing to Octave:                How You Can Contribute to Octave.
                                                               (line   6)
 * contributors:                          Preface.             (line   6)
-* conversion specifications ('printf'):  Formatted Output.    (line  58)
+* conversion specifications ('printf'):  Formatted Output.    (line  77)
 * conversion specifications ('scanf'):   Formatted Input.     (line  94)
 * copy-on-write:                         Miscellaneous Techniques.
                                                               (line  16)
@@ -4006,9 +4006,9 @@ Function Index
                                                              (line   21)
 * fplot <4>:                             Two-dimensional Function Plotting.
                                                              (line   22)
-* fprintf:                               Formatted Output.   (line   24)
-* fprintf <1>:                           Formatted Output.   (line   25)
-* fprintf <2>:                           Formatted Output.   (line   26)
+* fprintf:                               Formatted Output.   (line   33)
+* fprintf <1>:                           Formatted Output.   (line   34)
+* fprintf <2>:                           Formatted Output.   (line   35)
 * fputs:                                 Simple Output.      (line   16)
 * fputs <1>:                             Simple Output.      (line   17)
 * fractdiff:                             Signal Processing.  (line  544)
@@ -4290,6 +4290,8 @@ Function Index
 * get_first_help_sentence <1>:           Getting Help.       (line  265)
 * get_help_text:                         Getting Help.       (line  250)
 * get_help_text_from_file:               Getting Help.       (line  257)
+* get_home_directory:                    Environment Variables.
+                                                             (line   33)
 * ginput:                                Interacting with Plots.
                                                              (line   11)
 * ginput <1>:                            Interacting with Plots.
@@ -4878,9 +4880,9 @@ Function Index
 * ismac:                                 System Information. (line   81)
 * ismatrix:                              Predicates for Numeric Objects.
                                                              (line   66)
-* ismember:                              Set Operations.     (line  107)
-* ismember <1>:                          Set Operations.     (line  108)
-* ismember <2>:                          Set Operations.     (line  109)
+* ismember:                              Set Operations.     (line  106)
+* ismember <1>:                          Set Operations.     (line  107)
+* ismember <2>:                          Set Operations.     (line  108)
 * ismethod:                              Creating a Class.   (line  120)
 * isna:                                  Missing Data.       (line   32)
 * isnan:                                 Finding Elements and Checking Conditions.
@@ -5787,9 +5789,9 @@ Function Index
 * orth <1>:                              Basic Matrix Functions.
                                                              (line  350)
 * ostrsplit:                             Manipulating Strings.
-                                                             (line  330)
+                                                             (line  333)
 * ostrsplit <1>:                         Manipulating Strings.
-                                                             (line  331)
+                                                             (line  334)
 * output_max_field_width:                Matrices.           (line  130)
 * output_max_field_width <1>:            Matrices.           (line  131)
 * output_max_field_width <2>:            Matrices.           (line  132)
@@ -6121,8 +6123,8 @@ Function Index
 * pow2 <1>:                              Exponents and Logarithms.
                                                              (line   57)
 * power:                                 Arithmetic Ops.     (line  190)
-* powerset:                              Set Operations.     (line  145)
-* powerset <1>:                          Set Operations.     (line  146)
+* powerset:                              Set Operations.     (line  144)
+* powerset <1>:                          Set Operations.     (line  145)
 * ppder:                                 Polynomial Interpolation.
                                                              (line  338)
 * ppder <1>:                             Polynomial Interpolation.
@@ -6179,7 +6181,7 @@ Function Index
                                                              (line  523)
 * printd <1>:                            Two-Dimensional Plots.
                                                              (line  524)
-* printf:                                Formatted Output.   (line   13)
+* printf:                                Formatted Output.   (line   17)
 * print_empty_dimensions:                Empty Matrices.     (line   29)
 * print_empty_dimensions <1>:            Empty Matrices.     (line   30)
 * print_empty_dimensions <2>:            Empty Matrices.     (line   31)
@@ -6617,19 +6619,19 @@ Function Index
 * refreshdata <2>:                       Data Sources in Object Groups.
                                                              (line   13)
 * regexp:                                Manipulating Strings.
-                                                             (line  542)
+                                                             (line  545)
 * regexp <1>:                            Manipulating Strings.
-                                                             (line  543)
+                                                             (line  546)
 * regexpi:                               Manipulating Strings.
-                                                             (line  737)
+                                                             (line  740)
 * regexpi <1>:                           Manipulating Strings.
-                                                             (line  738)
+                                                             (line  741)
 * regexprep:                             Manipulating Strings.
-                                                             (line  747)
+                                                             (line  750)
 * regexprep <1>:                         Manipulating Strings.
-                                                             (line  748)
+                                                             (line  751)
 * regexptranslate:                       Manipulating Strings.
-                                                             (line  779)
+                                                             (line  782)
 * register_graphics_toolkit:             Graphics Toolkits.  (line   38)
 * rehash:                                Manipulating the Load Path.
                                                              (line  125)
@@ -6979,9 +6981,9 @@ Function Index
                                                              (line   29)
 * setpwent:                              Password Database Functions.
                                                              (line   48)
-* setxor:                                Set Operations.     (line   85)
-* setxor <1>:                            Set Operations.     (line   86)
-* setxor <2>:                            Set Operations.     (line   87)
+* setxor:                                Set Operations.     (line   84)
+* setxor <1>:                            Set Operations.     (line   85)
+* setxor <2>:                            Set Operations.     (line   86)
 * shading:                               Three-Dimensional Plots.
                                                              (line  891)
 * shading <1>:                           Three-Dimensional Plots.
@@ -7239,7 +7241,7 @@ Function Index
                                                              (line  335)
 * spring <1>:                            Representing Images.
                                                              (line  336)
-* sprintf:                               Formatted Output.   (line   40)
+* sprintf:                               Formatted Output.   (line   54)
 * spstats:                               Information.        (line   48)
 * spstats <1>:                           Information.        (line   49)
 * spy:                                   Information.        (line  123)
@@ -7390,21 +7392,21 @@ Function Index
 * strncmpi:                              Comparing Strings.  (line   79)
 * strptime:                              Timing Utilities.   (line  306)
 * strread:                               Manipulating Strings.
-                                                             (line  360)
-* strread <1>:                           Manipulating Strings.
-                                                             (line  361)
-* strread <2>:                           Manipulating Strings.
-                                                             (line  362)
-* strread <3>:                           Manipulating Strings.
                                                              (line  363)
-* strread <4>:                           Manipulating Strings.
+* strread <1>:                           Manipulating Strings.
                                                              (line  364)
+* strread <2>:                           Manipulating Strings.
+                                                             (line  365)
+* strread <3>:                           Manipulating Strings.
+                                                             (line  366)
+* strread <4>:                           Manipulating Strings.
+                                                             (line  367)
 * strrep:                                Manipulating Strings.
-                                                             (line  498)
+                                                             (line  501)
 * strrep <1>:                            Manipulating Strings.
-                                                             (line  499)
+                                                             (line  502)
 * strrep <2>:                            Manipulating Strings.
-                                                             (line  500)
+                                                             (line  503)
 * strsplit:                              Manipulating Strings.
                                                              (line  228)
 * strsplit <1>:                          Manipulating Strings.
@@ -7481,9 +7483,9 @@ Function Index
 * subsref:                               Defining Indexing And Indexed Assignment.
                                                              (line   14)
 * substr:                                Manipulating Strings.
-                                                             (line  519)
+                                                             (line  522)
 * substr <1>:                            Manipulating Strings.
-                                                             (line  520)
+                                                             (line  523)
 * substruct:                             Manipulating Structures.
                                                              (line  213)
 * sum:                                   Sums and Products.  (line    6)
@@ -7890,11 +7892,11 @@ Function Index
 * unsetenv:                              Environment Variables.
                                                              (line   25)
 * untabify:                              Manipulating Strings.
-                                                             (line  804)
+                                                             (line  807)
 * untabify <1>:                          Manipulating Strings.
-                                                             (line  805)
+                                                             (line  808)
 * untabify <2>:                          Manipulating Strings.
-                                                             (line  806)
+                                                             (line  809)
 * untar:                                 File Archiving Utilities.
                                                              (line   74)
 * untar <1>:                             File Archiving Utilities.

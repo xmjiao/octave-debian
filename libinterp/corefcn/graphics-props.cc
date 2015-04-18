@@ -5698,7 +5698,7 @@ uimenu::properties::properties (const graphics_handle& mh, const graphics_handle
     enable ("enable", mh, "on"),
     foregroundcolor ("foregroundcolor", mh, color_values (0, 0, 0)),
     label ("label", mh, ""),
-    position ("position", mh, 9),
+    position ("position", mh, 0),
     separator ("separator", mh, "off"),
     fltk_label ("fltk_label", mh, "")
 {
@@ -5859,7 +5859,7 @@ uimenu::properties::factory_defaults (void)
   m["enable"] = "on";
   m["foregroundcolor"] = color_values (0, 0, 0);
   m["label"] = "";
-  m["position"] = 9;
+  m["position"] = 0;
   m["separator"] = "off";
   m["fltk_label"] = "";
 

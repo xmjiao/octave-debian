@@ -129,8 +129,9 @@ Figure::Figure (const graphics_object& go, FigureWindow* win)
   createFigureToolBarAndMenuBar ();
 
   int offset = 0;
-  if (fp.toolbar_is ("figure")
-      || (fp.toolbar_is ("auto") && ! hasUiControlChildren (fp)))
+  if (fp.toolbar_is ("figure") || 
+      (fp.toolbar_is ("auto") && fp.menubar_is ("figure") &&
+       ! hasUiControlChildren (fp)))
     offset += m_figureToolBar->sizeHint ().height ();
   else
     m_figureToolBar->hide ();
@@ -287,15 +288,15 @@ Figure::createFigureToolBarAndMenuBar (void)
            SLOT (setMouseMode (MouseMode)));
   m_figureToolBar->addActions (m_mouseModeGroup->actions ());
 
-  QAction *toggle_axes = m_figureToolBar->addAction ("Axes");
+  QAction *toggle_axes = m_figureToolBar->addAction (tr ("Axes"));
   connect (toggle_axes, SIGNAL (triggered (void)),
            this, SLOT (toggleAxes (void)));
 
-  QAction *toggle_grid = m_figureToolBar->addAction ("Grid");
+  QAction *toggle_grid = m_figureToolBar->addAction (tr ("Grid"));
   connect (toggle_grid, SIGNAL (triggered (void)),
            this, SLOT (toggleGrid (void)));
 
-  QAction *auto_axes = m_figureToolBar->addAction ("Autoscale");
+  QAction *auto_axes = m_figureToolBar->addAction (tr ("Autoscale"));
   connect (auto_axes, SIGNAL (triggered (void)),
            this, SLOT (autoAxes (void)));
 
@@ -440,11 +441,14 @@ Figure::update (int pId)
       else if (fp.toolbar_is ("figure"))
         showFigureToolBar (true);
       else // "auto"
-        showFigureToolBar (! hasUiControlChildren (fp));
+        showFigureToolBar (! hasUiControlChildren (fp) &&
+                           fp.menubar_is ("figure"));
       break;
 
     case figure::properties::ID_MENUBAR:
       showMenuBar (fp.menubar_is ("figure"));
+      if (fp.toolbar_is ("auto"))
+        showFigureToolBar (fp.menubar_is ("figure"));
       break;
 
     case figure::properties::ID_KEYPRESSFCN:

@@ -1003,13 +1003,32 @@ tilde_expand (\"~/bin\")\n\
 
 /*
 %!test
-%! if (isempty (getenv ("HOME")))
-%!   setenv ("HOME", "foobar");
-%! endif
-%! home = getenv ("HOME");
-%! assert (tilde_expand ("~/foobar"), strcat (home, "/foobar"));
+%! home = get_home_directory ();
+%! assert (tilde_expand ("~/foobar"), [home "/foobar"]);
 %! assert (tilde_expand ("/foo/bar"), "/foo/bar");
 %! assert (tilde_expand ("foo/bar"), "foo/bar");
+*/
+
+DEFUN (get_home_directory, , ,
+       "-*- texinfo -*-\n\
+@deftypefn {Built-in Function} {@var{homedir} =} get_home_directory ()\n\
+Return the current home directory.\n\
+\n\
+On most systems, this is equivalent to @code{getenv (\"HOME\")}.  On Windows\n\
+systems, if the environment variable @env{HOME} is not set then it is\n\
+equivalent to\n\
+@code{fullfile (getenv (\"HOMEDRIVE\"), getenv (\"HOMEPATH\"))}\n\
+@seealso{getenv}\n\
+@end deftypefn")
+{
+  return octave_value (octave_env::get_home_directory ());
+}
+
+/*
+%!test
+%! if (! ispc ())
+%!   assert (get_home_directory (), getenv ("HOME")); 
+%! endif
 */
 
 // This function really belongs in display.cc, but including defun.h in

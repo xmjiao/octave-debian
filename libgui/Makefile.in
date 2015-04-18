@@ -2161,7 +2161,7 @@ localstartupfiledir = ${localfcnfiledir}/startup
 # a space, so protect with $(null))
 null = 
 MOC_CPPFLAGS = $(am__append_4)
-MOC_OCTAVE_CPPFLAGS = $(filter-out -mieee, $(AM_CPPFLAGS) $(CPPFLAGS))
+MOC_OCTAVE_CPPFLAGS = $(filter -I% -D% -U%, $(AM_CPPFLAGS) $(CPPFLAGS))
 octlib_LTLIBRARIES = liboctgui.la
 TRANSLATIONS = \
   languages/be_BY.ts \
@@ -2170,6 +2170,7 @@ TRANSLATIONS = \
   languages/es_ES.ts \
   languages/fr_FR.ts \
   languages/it_IT.ts \
+  languages/ja_JP.ts \
   languages/nl_NL.ts \
   languages/pt_BR.ts \
   languages/pt_PT.ts \
@@ -4857,6 +4858,7 @@ define do_subst_default_vals
     -e "s|%OCTAVE_DEFAULT_PAGER%|\"${DEFAULT_PAGER}\"|" \
     -e "s|%OCTAVE_DOC_CACHE_FILE%|\"${doc_cache_file}\"|" \
     -e "s|%OCTAVE_EXEC_PREFIX%|\"${exec_prefix}\"|" \
+    -e "s|%OCTAVE_EXEEXT%|\"${EXEEXT}\"|" \
     -e "s|%OCTAVE_FCNFILEDIR%|\"${fcnfiledir}\"|" \
     -e "s|%OCTAVE_IMAGEDIR%|\"${imagedir}\"|" \
     -e "s|%OCTAVE_INCLUDEDIR%|\"${includedir}\"|" \
@@ -4888,6 +4890,7 @@ define do_subst_default_vals
     -e "s|%OCTAVE_PREFIX%|\"${prefix}\"|" \
     -e "s|%OCTAVE_API_VERSION%|\"${api_version}\"|" \
     -e "s|%OCTAVE_RELEASE%|\"${OCTAVE_RELEASE}\"|" \
+    -e "s|%OCTAVE_SHLEXT%|\"${SHLEXT}\"|" \
     -e "s|%OCTAVE_TEXI_MACROS_FILE%|\"${texi_macros_file}\"|" \
     -e "s|%OCTAVE_VERSION%|\"${version}\"|" && \
   $(simple_move_if_change_rule)

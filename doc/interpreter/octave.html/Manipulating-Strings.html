@@ -331,21 +331,35 @@ and returns a cell array of tokens and remainders.
 
 
 <a name="XREFstrsplit"></a><dl>
-<dt><a name="index-strsplit"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(<var>s</var>)</em></dt>
-<dt><a name="index-strsplit-1"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(<var>s</var>, <var>del</var>)</em></dt>
+<dt><a name="index-strsplit"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(<var>str</var>)</em></dt>
+<dt><a name="index-strsplit-1"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(<var>str</var>, <var>del</var>)</em></dt>
 <dt><a name="index-strsplit-2"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(&hellip;, <var>name</var>, <var>value</var>)</em></dt>
 <dt><a name="index-strsplit-3"></a>Function File: <em>[<var>cstr</var>, <var>matches</var>] =</em> <strong>strsplit</strong> <em>(&hellip;)</em></dt>
-<dd><p>Split the string <var>s</var> using the delimiters specified by <var>del</var>
-and return a cell string array of substrings.  If a delimiter is not
-specified the string, <var>s</var>, is split at whitespace.  The delimiter,
-<var>del</var> may be a string, a scalar cell string, or cell string array.
-By default, consecutive delimiters in the input string <var>s</var> are
-collapsed into one.
+<dd><p>Split the string <var>str</var> using the delimiters specified by <var>del</var>
+and return a cell string array of substrings.
 </p>
-<p>The second output, <var>matches</var>, returns the delimiters which were matched
-in the original string.
+<p>If a delimiter is not specified the string is split at whitespace
+<code>{&quot; &quot;, &quot;\f&quot;, &quot;\n&quot;, &quot;\r&quot;, &quot;\t&quot;, &quot;\v&quot;}</code>.  Otherwise, the delimiter,
+<var>del</var> must be a string or cell array of strings.  By default,
+consecutive delimiters in the input string <var>s</var> are collapsed into one
+resulting in a single split.
 </p>
-<p>Example:
+<p>Supported <var>name</var>/<var>value</var> pair arguments are:
+</p>
+<ul>
+<li> <var>collapsedelimiters</var> which may take the value of <code>true</code>
+(default) or <code>false</code>.
+
+</li><li> <var>delimitertype</var> which may take the value of <code>&quot;simple&quot;</code>
+(default) or <code>&quot;regularexpression&quot;</code>.  A simple delimiter matches the
+text exactly as written.  Otherwise, the syntax for regular expressions
+outlined in <code>regexp</code> is used.
+</li></ul>
+
+<p>The optional second output, <var>matches</var>, returns the delimiters which were
+matched in the original string.
+</p>
+<p>Examples with simple delimiters:
 </p>
 <div class="example">
 <pre class="example">strsplit (&quot;a b c&quot;)
@@ -364,7 +378,7 @@ strsplit (&quot;a,b,c&quot;, &quot;,&quot;)
             [1,3] = c
           }
 
-strsplit (&quot;a foo b,bar c&quot;, {&quot;\s&quot;, &quot;foo&quot;, &quot;bar&quot;})
+strsplit (&quot;a foo b,bar c&quot;, {&quot; &quot;, &quot;,&quot;, &quot;foo&quot;, &quot;bar&quot;})
       &rArr;
           {
             [1,1] = a
@@ -372,7 +386,7 @@ strsplit (&quot;a foo b,bar c&quot;, {&quot;\s&quot;, &quot;foo&quot;, &quot;bar
             [1,3] = c
           }
 
-strsplit (&quot;a,,b, c&quot;, {&quot;,&quot;, &quot; &quot;}, false)
+strsplit (&quot;a,,b, c&quot;, {&quot;,&quot;, &quot; &quot;}, &quot;collapsedelimiters&quot;, false)
       &rArr;
           {
             [1,1] = a
@@ -384,21 +398,10 @@ strsplit (&quot;a,,b, c&quot;, {&quot;,&quot;, &quot; &quot;}, false)
 
 </pre></div>
 
-<p>Supported <var>name</var>/<var>value</var> pair arguments are;
-</p>
-<ul>
-<li> <var>collapsedelimiters</var> may take the value of <var>true</var> or
-<var>false</var> with the default being <var>false</var>.
-
-</li><li> <var>delimitertype</var> may take the value of <code>simple</code> or
-<code>regularexpression</code>.  The default is <var>delimitertype</var> is
-<code>simple</code>.
-</li></ul>
-
-<p>Example:
+<p>Examples with regularexpression delimiters:
 </p>
 <div class="smallexample">
-<pre class="smallexample">strsplit (&quot;a foo b,bar c&quot;, &quot;,|\\s|foo|bar&quot;, &quot;delimitertype&quot;, &quot;regularexpression&quot;)
+<pre class="smallexample">strsplit (&quot;a foo b,bar c&quot;, ',|\s|foo|bar', &quot;delimitertype&quot;, &quot;regularexpression&quot;)
 &rArr;
 {
             [1,1] = a
@@ -406,7 +409,7 @@ strsplit (&quot;a,,b, c&quot;, {&quot;,&quot;, &quot; &quot;}, false)
             [1,3] = c
 }
 
-strsplit (&quot;a,,b, c&quot;, &quot;[, ]&quot;, false, &quot;delimitertype&quot;, &quot;regularexpression&quot;)
+strsplit (&quot;a,,b, c&quot;, '[, ]', &quot;collapsedelimiters&quot;, false, &quot;delimitertype&quot;, &quot;regularexpression&quot;)
 &rArr;
 {
             [1,1] = a
@@ -810,11 +813,11 @@ end (<code>$</code>) of the string.
 </p></dd>
 </dl>
 
-<p>Implementation Note: For compatibility with <small>MATLAB</small>, ordinary escape
-sequences (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are processed in <var>pat</var>
-regardless of whether <var>pat</var> has been defined within single quotes.  Use
-a second backslash to stop interpolation of the escape sequence (e.g.,
-&quot;\\n&quot;) or use the <code>regexptranslate</code> function.
+<p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences
+in <var>pat</var> (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded even when
+<var>pat</var> has been defined with single quotes.  To disable expansion use
+a second backslash before the escape sequence (e.g., &quot;\\n&quot;) or use the
+<code>regexptranslate</code> function.
 </p>
 <p>The outputs of <code>regexp</code> default to the order given below
 </p>
@@ -986,11 +989,11 @@ for the ith set of parentheses in the match string.  For example,
 </dd>
 </dl>
 
-<p>Implementation Note: For compatibility with <small>MATLAB</small>, ordinary escape
-sequences (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are processed in both <var>pat</var>
-and <var>repstr</var> regardless of whether they were defined within single
-quotes.  Use a second backslash to stop interpolation of the escape sequence
-(e.g., &quot;\\n&quot;) or use the <code>regexptranslate</code> function.
+<p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences
+in <var>pat</var> (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded even when
+<var>pat</var> has been defined with single quotes.  To disable expansion use
+a second backslash before the escape sequence (e.g., &quot;\\n&quot;) or use the
+<code>regexptranslate</code> function.
 </p>
 <p><strong>See also:</strong> <a href="#XREFregexp">regexp</a>, <a href="#XREFregexpi">regexpi</a>, <a href="#XREFstrrep">strrep</a>.
 </p></dd></dl>

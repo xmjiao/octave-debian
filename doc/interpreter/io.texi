@@ -1673,6 +1673,10 @@ modeled after the C language functions of the same name, but they
 interpret the format template differently in order to improve the
 performance of printing vector and matrix values.
 
+Implementation Note: For compatability with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"\n"} => newline) are expanded even
+when the template string is defined with single quotes.
+
 @c printf libinterp/corefcn/file-io.cc
 @anchor{XREFprintf}
 @deftypefn {Built-in Function} {} printf (@var{template}, @dots{})
@@ -1684,6 +1688,10 @@ characters printed.
 See the Formatted Output section of the GNU Octave manual for a
 complete description of the syntax of the template string.
 @end ifclear
+
+Implementation Note: For compatability with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"\\n"} => newline) are expanded even
+when the template string is defined with single quotes.
 @seealso{@ref{XREFfprintf,,fprintf}, @ref{XREFsprintf,,sprintf}, @ref{XREFscanf,,scanf}}
 @end deftypefn
 
@@ -1700,6 +1708,10 @@ If @var{fid} is omitted, the output is written to @code{stdout} making the
 function exactly equivalent to @code{printf}.
 
 The optional output returns the number of bytes written to the file.
+
+Implementation Note: For compatability with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"\\n"} => newline) are expanded even
+when the template string is defined with single quotes.
 @seealso{@ref{XREFfputs,,fputs}, @ref{XREFfdisp,,fdisp}, @ref{XREFfwrite,,fwrite}, @ref{XREFfscanf,,fscanf}, @ref{XREFprintf,,printf}, @ref{XREFsprintf,,sprintf}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
@@ -1712,6 +1724,10 @@ string.  Unlike the C library function, which requires you to provide a
 suitably sized string as an argument, Octave's @code{sprintf} function
 returns the string, automatically sized to hold all of the items
 converted.
+
+Implementation Note: For compatability with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"\\n"} => newline) are expanded even
+when the template string is defined with single quotes.
 @seealso{@ref{XREFprintf,,printf}, @ref{XREFfprintf,,fprintf}, @ref{XREFsscanf,,sscanf}}
 @end deftypefn
 

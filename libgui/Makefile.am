@@ -23,8 +23,9 @@ include $(top_srcdir)/build-aux/common.mk
 MOC_CPPFLAGS =
 
 ## Fix for bug #42839 where -mieee CFLAG option is added to CPPFLAGS by gnulib.
-## Eventually gnulib will be appropriately fixed and this hack removed.
-MOC_OCTAVE_CPPFLAGS = $(filter-out -mieee, $(AM_CPPFLAGS) $(CPPFLAGS))
+## Users may also pass other options in CPPFLAGS that moc does not understand.
+## Only keep moc-compatible options -Idir, -Dmacro, and -Umacro.
+MOC_OCTAVE_CPPFLAGS = $(filter -I% -D% -U%, $(AM_CPPFLAGS) $(CPPFLAGS))
 
 octlib_LTLIBRARIES = liboctgui.la
 
@@ -35,6 +36,7 @@ TRANSLATIONS = \
   languages/es_ES.ts \
   languages/fr_FR.ts \
   languages/it_IT.ts \
+  languages/ja_JP.ts \
   languages/nl_NL.ts \
   languages/pt_BR.ts \
   languages/pt_PT.ts \

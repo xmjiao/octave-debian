@@ -1,3 +1,837 @@
+2015-04-10  Rik  <rik@octave.org>
+
+	Add José Luis García Pallero to translators list.
+
+	* translators: José Luis García Pallero to translators list for es_ES.ts.
+
+	Files: libgui/languages/translators
+
+2015-04-07  Tatsuro Matsuoka  <tmacchant@yahoo.co.jp>
+
+	add Japanese translator
+
+	Files: libgui/languages/translators
+
+2015-04-09  Rik  <rik@octave.org>
+
+	Update reference document with Release Tasks.
+
+	* etc/RELEASE.PROCESS: Update with Release Tasks from 4.0 release.
+
+	Files: etc/RELEASE.PROCESS
+
+	Fix failing BIST test for tilde_expand() on Windows (bug #44796).
+
+	* sysdep.cc (Ftilde_expand): Don't use fullfile in BIST test as it
+	replaces all slashes in path with the current file separator.
+
+	Files: libinterp/corefcn/sysdep.cc
+
+	Update language translation files (*.ts).
+
+	* be_BY.ts, de_DE.ts, en_US.ts, es_ES.ts, fr_FR.ts, it_IT.ts, ja_JP.ts,
+	nl_NL.ts, pt_BR.ts, pt_PT.ts, ru_RU.ts, uk_UA.ts, zh_CN.ts:
+	Update from latest source.
+
+	Files: libgui/languages/be_BY.ts libgui/languages/de_DE.ts
+	libgui/languages/en_US.ts libgui/languages/es_ES.ts
+	libgui/languages/fr_FR.ts libgui/languages/it_IT.ts
+	libgui/languages/ja_JP.ts libgui/languages/nl_NL.ts
+	libgui/languages/pt_BR.ts libgui/languages/pt_PT.ts
+	libgui/languages/ru_RU.ts libgui/languages/uk_UA.ts
+	libgui/languages/zh_CN.ts
+
+2015-04-09  Armin Müller  <arm.in@web.de>
+
+	de_DE.ts: Update German translation.
+
+	* de_DE.ts: Update German translation.
+
+	Files: libgui/languages/de_DE.ts
+
+2015-04-09  Rik  <rik@octave.org>
+
+	Redraw FLTK figure after double-click "zoom out".
+
+	* __init_fltk__.cc (handle): Use mark_modified() after setting auto axis limits
+	so that figure will be redrawn.
+
+	Files: libinterp/dldfcn/__init_fltk__.cc
+
+	Redraw FLTK figure after zoom operations on linked axes (bug #44719).
+
+	* __init_fltk__.cc (__fltk_check__): Check status of Vdrawnow_requested and
+	update figure if needed.
+
+	Files: libinterp/dldfcn/__init_fltk__.cc
+
+	Add Japanese translation ja_JP.ts.
+
+	* ja_JP.ts: Japanese language translation from Tatsuro Matsuoka.
+
+	* libgui/Makefile.am: Add ja_JP.ts to build system.
+
+	Files: libgui/Makefile.am libgui/languages/ja_JP.ts
+
+	pt_PT.ts: Update missing translations with those from pt_BR.ts (bug #44743).
+
+	* pt_PT.ts: Use pt_BR.ts which is complete with respect to translations to
+	finalize pt_PT.ts.  Needs review by native speaker.
+
+	Files: libgui/languages/pt_PT.ts
+
+2015-04-09  Avinoam  <Avinoam>
+
+	__go_draw_axes__.m: change computation of number of lines (bug #44683)
+
+	* scripts/plot/util/private/__go_draw_axes__.m: find number of occurences of "\n" in the string and add it to the number of rows
+
+	Files: scripts/plot/util/private/__go_draw_axes__.m
+
+2015-04-09  John W. Eaton  <jwe@octave.org>
+
+	fix tests now that assert ([]) fails
+
+	* uimenu.m: Fix test now that FLTK menu bar doesn't have a Help menu.
+	* isbanded.m: Fix test for [] result to actually test for [].
+
+	Files: scripts/gui/uimenu.m scripts/linear-algebra/isbanded.m
+
+2015-04-09  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	Honor the axes stack order in gl2ps outputs (bug #44765)
+
+	* gl2ps-renderer.h (glps_renderer::draw_axes): new method to init a new sorting
+	  tree in gl2ps each time a new axes is drawn before calling
+	  opengl_renderer::draw_axes.
+	* gl-render.cc (opengl_renderer::draw_axes_planes): don't draw xz and yz planes
+	  when in 2D mode.
+
+	Files: libinterp/corefcn/gl-render.cc libinterp/corefcn/gl2ps-renderer.h
+
+2015-04-09  John W. Eaton  <jwe@octave.org>
+
+	fail if single argument to assert is empty.  (bug #44793)
+
+	* assert.m: Also fail for single empty arguments. New tests.
+	Fix test for assert ([]).
+
+	Files: scripts/testfun/assert.m
+
+2015-04-08  John Donoghue  <john.donoghue@ieee.org>
+
+	update fltk uimenu position when adding to figure
+
+	* libinterp/dldfcn/__init_fltk__.cc
+	  (fltk_uimenu::update_position): new function
+	  (fltk_uimenu::add_to_menu): delay creating menus with pos <= 0, assign position value based on number of menus created.
+
+	* scripts/gui/uimenu.m:
+	  assert position of 0 instead of 9
+
+	Files: libinterp/dldfcn/__init_fltk__.cc scripts/gui/uimenu.m
+
+2015-04-02  John W. Eaton  <jwe@octave.org>
+
+	only insert package names into loader map if package dir exists (bug #43769)
+
+	* load-path.h, load-path.cc (load_path::::is_package): New function.
+	(load_path::dir_info::is_package): New function.
+	(load_path::get_loader): Don't insert name into loader map unless is
+	it is also a +package directory somewhere in the load path.
+	* ov-classdef.cc (cdef_manager::do_find_package_symbol):
+	Undo change from changeset 8fe29850fb74.
+
+	Files: libinterp/corefcn/load-path.cc libinterp/corefcn/load-path.h
+	libinterp/octave-value/ov-classdef.cc
+
+2015-04-08  John W. Eaton  <jwe@octave.org>
+
+	make units other than data work for axes labels and title (bug #35857)
+
+	* graphics.in.h, graphics.cc (base_property::invalidate): New function.
+	(axes::properties::set_defaults): If mode is not "reset", invalidate
+	label and title handles before recreating them.  Don't notify toolkit
+	when recreating label and title handles.  Update label and title
+	positions after they are created.
+	(convert_label_position): New static function.
+	(axes::properties::update_xlabel_position,
+	axes::properties::update_ylabel_position,
+	axes::properties::update_zlabel_position,
+	axes::properties::update_title_position): Return early if object
+	is not valid.  Call convert_label_position to handle units other than
+	"data".
+	(text::properties::update_units): Preserve "auto" positionmode.
+	(gh_manager::do_make_graphics_handle): Call override_defaults here for
+	newly created objects.  If creating an axes object, also call
+	override_defaults for the axes label and title objects.
+	(graphics_object::override_defaults): New function.
+	(figure::figure, axes::axes, line::line, text::text, image::image,
+	patch::patch, surface::surface, hggroup::hggroup, uimenu::uimenu,
+	uicontextmenu::uicontextmenu, uicontrol::uicontrol, uipanel::uipanel,
+	uitoolbar::uitoolbar, uipushtool::uipushtool,
+	uitoggletool::uitoggletool):
+	Don't call override_defaults from constructor.
+
+	Files: libinterp/corefcn/graphics.cc libinterp/corefcn/graphics.in.h
+
+2015-04-08  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	ru_RU.ts: Add translations from Dmitry Roshchin
+
+	Files: libgui/languages/ru_RU.ts
+
+2015-04-08  Rik  <rik@octave.org>
+
+	Stop two compiler warnings in GUI code.
+
+	* EditControl.cc (editingFinished): Delete unused variable up.
+
+	* workspace-model.cc (setData): Comment out unused input parameter debug.
+
+	Files: libgui/graphics/EditControl.cc libgui/src/workspace-model.cc
+
+	__osmesa_print__.cc: Increase non-critical relative tolerance in BIST test.
+
+	* __osmesa_print__.cc: Increase tolerance on generated size of output file.
+	This could differ quite a bit due to different MESA versions, etc.
+
+	Files: libinterp/dldfcn/__osmesa_print__.cc
+
+	Fix deadlock condition on error in drawnow() (bug #44759).
+
+	* graphics.cc (Fdrawnow): When an error is encountered, use gh_manager::unlock
+	to release lock *before* returning from function.
+
+	Files: libinterp/corefcn/graphics.cc
+
+	Second fix for exist() should return 1 for java objects (bug #44764).
+
+	* ov-java.h: Overload is_constant() function to return true for
+	java octave-values.
+
+	Files: libinterp/octave-value/ov-java.h
+
+2015-04-08  John Donoghue  <John Donoghue>
+
+	Set default uimenu position property to 0 (Bug #44770)
+
+	* libinterp/corefcn/graphics.in.h: set postion property from 9 to 0
+
+	Files: libinterp/corefcn/graphics.in.h
+
+2015-04-07  Rik  <rik@octave.org>
+
+	maint: Merge away accidental head.
+
+	Files: 
+
+	exist() should return 1 for java objects (bug #44764).
+
+	* ov-java.h: Overload is_object() function to return true for
+	java octave-values.
+
+	Files: libinterp/octave-value/ov-java.h
+
+2015-04-06  Felipe G. Nievinski  <fgnievinski@gmail.com>
+
+	* pt_BR.ts: update of translation
+
+	Files: libgui/languages/pt_BR.ts
+
+2015-04-07  Rik  <rik@octave.org>
+
+	Document expansion of escape sequences in single quotes (bug #44745).
+
+	* io.txi: Note that all *printf functions expand escape sequences.
+
+	* error.cc (Ferror, Fwarning): Note that escape sequences are expanded.
+
+	* file-io.cc (Fprintf, Ffprintf, Fsprintf): Note that escape sequences are
+	expanded.
+
+	* regexp.cc (Fregexp, Fregexprep): Note that escape sequences are expanded.
+
+	Files: doc/interpreter/io.txi libinterp/corefcn/error.cc libinterp/corefcn
+	/file-io.cc libinterp/corefcn/regexp.cc
+
+	Don't zoom in for 'Z-' setting and rectangle drag (bug #44437).
+
+	* Canvas.cc (canvasMouseReleaseEvent): Check m_mouseMode is ZoomInMode
+	before zooming.
+
+	Files: libgui/graphics/Canvas.cc
+
+2015-04-07  John Donoghue  <John Donoghue>
+
+	GUI: Move preferences to edit menu (Bug #44725)
+
+	* libgui/src/main-window.cc
+	  (main_window::construct_file_menu): remove preferences menu
+	  (main_window::construct_edit_menu): add preferences menu
+
+	Files: libgui/src/main-window.cc
+
+2015-04-07  Rik  <rik@octave.org>
+
+	Accept, but warn about unimplemented Matlab print options (bug #44760).
+
+	* __print_parse_opts__.m: Accept, but Warn about '-opengl', '-painters', and
+	'-noui' options.
+
+	Files: scripts/plot/util/private/__print_parse_opts__.m
+
+2015-04-07  John Donoghue  <John Donoghue>
+
+	QT Text/EditControl: support String cells (Bug 44749)
+
+	* libgui/graphics/QtHandlesUtils.cc/h
+	  (toCellString): New function
+
+	* libgui/graphics/EditControl.cc
+	  (EditControl::init): set text as string_vector
+	  (EditControl::updateMultiLine): set text as string_vector
+	  (EditControl::returnPressed): set String as cells
+	  (EditControl::editingFinished): set String as cells
+
+	* libgui/graphics/TextControl.cc
+	  (TextControl::TextControl): set text as string vector
+	  (TextControl::update): set text as string vector
+
+	Files: libgui/graphics/EditControl.cc libgui/graphics/QtHandlesUtils.cc
+	libgui/graphics/QtHandlesUtils.h libgui/graphics/TextControl.cc
+
+2015-04-06  Mike Miller  <mtmiller@octave.org>
+
+	build: Fix build error with user-supplied CPPFLAGS (bug #44754)
+
+	* libgui/Makefile.am: Use GNU Makefile filter command to include only
+	CPPFLAGS options that are expected to be recognized by the MOC command.
+
+	Files: libgui/Makefile.am
+
+2015-04-06  Philip Nienhuis  <prnienhuis@users.sf.net>
+
+	strread.m: properly process traling delimiters in case of
+	           MultipleDelimsAsOne parameter (bug #44750)
+
+	Files: scripts/io/strread.m
+
+2015-04-06  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	Skip z axes rendering when in 2D mode (bug #44752)
+
+	* gl-render.cc (opengl_renderer::draw_axes_boxes): skip z axes rendering when in 2D mode
+
+	Files: libinterp/corefcn/gl-render.cc
+
+2015-04-06  Carnë Draug  <carandraug@octave.org>
+
+	fieldnames.m: back out cset 68aec55f5eb6, bug is still present (bug #42710)
+
+	Files: scripts/general/fieldnames.m
+
+	fieldnames.m: remove FIXME comment since it has already been fixed (bug #42710)
+
+	Files: scripts/general/fieldnames.m
+
+2015-04-06  John Donoghue  <John Donoghue>
+
+	Allow bool_scalar types for graphics array properties (Bug #44699)
+
+	* libinterp/corefcn/graphics.cc
+	  (array_property::validate): set xok to true also if is bool_scalar
+
+	Files: libinterp/corefcn/graphics.cc
+
+2015-04-06  Rik  <rik@octave.org>
+
+	linsolve.m: Calculate solution in a BLAS-optimized way (bug #44722).
+
+	* linsolve.m: When transpose option is given, forward the transpose flag to
+	BLAS rather than calculating the transpose in Octave and then forwarding the
+	left-division operator to BLAS.  Fixes inconsistency in BIST tests.
+
+	Files: scripts/linear-algebra/linsolve.m
+
+2015-04-06  Torsten  <ttl@justmail.de>
+
+	* translators: added Felipe for pt_BR translation
+
+	Files: libgui/languages/translators
+
+2015-04-06  Carnë Draug  <carandraug@octave.org>
+
+	isa: check parent class of java objects (bug #42702)
+
+	* libinterp/octave-value/ov-java.h, libinterp/octave-value/ov-java.cc
+	(octave_java::is_instance_of): implement method since the one in the
+	parent octave_class is not able to handle java.
+	* libinterp/octave-value/ov-class.cc: add tests.
+
+	Files: libinterp/octave-value/ov-class.cc libinterp/octave-value/ov-java.cc
+	libinterp/octave-value/ov-java.h
+
+2015-04-05  Felipe G. Nievinski  <fgnievinski@gmail.com>
+
+	Consistent strings between keyboard shortcuts and main window
+
+	* shortcut-manager.cc (do_init_data): use same strings for shortcuts as
+	  for the menus in the main window
+
+	Files: libgui/src/shortcut-manager.cc
+
+2015-04-04  Mike Miller  <mtmiller@octave.org>
+
+	blackman, hamming, hanning: Simplify handling of periodic window option
+
+	* blackman.m, hamming.m, hanning.m: Simplify logic for handling periodic
+	or symmetric window option.
+
+	Files: scripts/signal/blackman.m scripts/signal/hamming.m
+	scripts/signal/hanning.m
+
+	Fix tests for bartlett, blackman, hamming, and hanning
+
+	* bartlett.m, blackman.m, hamming.m, hanning.m: Replace useless fliplr
+	with flip to properly test symmetry of column vectors, add necessary
+	tolerances.  Clean up coding style.
+
+	Files: scripts/signal/bartlett.m scripts/signal/blackman.m
+	scripts/signal/hamming.m scripts/signal/hanning.m
+
+2015-04-02  Rik  <rik@octave.org>
+
+	Document get_home_directory in Octave manual and NEWS file.
+
+	* NEWS: Add get_home_directory to list of new functions.
+
+	* system.txi: Add get_home_directory to manual.
+
+	* sysdep.cc(Fget_home_directory): Use preferred docstring format of single line
+	summary sentence followed by second paragragh of explanation.  Add BIST test.
+
+	Files: NEWS doc/interpreter/system.txi libinterp/corefcn/sysdep.cc
+
+	test.m: Don't run interactive demo blocks in batch mode.
+
+	* test.m: Only run demo blocks if "verbose" reporting is set and we are in
+	interactive mode.
+
+	Files: scripts/testfun/test.m
+
+2015-04-02  John Donoghue  <John Donoghue>
+
+	PopupMenuControl: check value is integer (Bug #44678)
+
+	* libgui/graphics/PopupMenuControl.cc:
+	  (PopupMenuControl::update): check value is integer and warn if not
+
+	Files: libgui/graphics/PopupMenuControl.cc
+
+	Fix warning from changeset 519eb032ac35
+
+	* libgui/graphics/PopupMenuControl.cc
+	  (PopupMenuControl::update): dont warn if value is same as current value
+
+	Files: libgui/graphics/PopupMenuControl.cc
+
+2015-03-31  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	Fix fontname search, fontweight and fontangle for printing (bug #44668)
+
+	* gl2ps-renderer.cc (glps_renderer::set_font): make fontame matching case insensitive
+	* gl2ps-renderer.cc (glps_renderer::set_font): also add supported bold and
+	  italic fonts.
+
+	Files: libinterp/corefcn/gl2ps-renderer.cc
+
+2015-04-02  Rik  <rik@octave.org>
+
+	Fix edit() not opening an editor when cmdline arg --no-gui given (bug #44695).
+
+	edit.m (do_edit): Use isguirunning() to decide whether to call
+	__octave_link_edit_file__ or external system call.
+
+	Files: scripts/miscellaneous/edit.m
+
+2015-04-02  John W. Eaton  <jwe@octave.org>
+
+	maint: Merge away accidental head.
+
+	Files: 
+
+	use get_home_directory instead of getenv ("HOME") (bug #44694)
+
+	* files-dock-widget.cc (files_dock_widget::popdownmenu_home):
+	Use get_home_directory instead of getenv ("HOME") for the benefit of
+	Windows systems which may not have HOME set in the environment.
+	* kpse.cc (kpse_tilde_expand): Likewise.
+	* prefdir.m: Likewise.
+	* system.tst: Likewise.
+	* edit.m: Use get_home_directory instead of default_home.
+	(default_home): Delete subfunction.
+
+	Files: libgui/src/files-dock-widget.cc liboctave/util/kpse.cc
+	scripts/miscellaneous/edit.m scripts/prefs/prefdir.m test/system.tst
+
+	* sysdep.cc (Fget_home_directory): New function.
+
+	Files: libinterp/corefcn/sysdep.cc
+
+2015-04-02  John Donoghue  <John Donoghue>
+
+	Check value set for PopuMenuControl and ButtonControl
+
+	* libgui/graphics/ButtonControl.cc
+	  (ButtonControl::update) if toggle button, check value is 0 or 1 and warn otherwise
+
+	* libgui/graphics/PopupMenuControl.cc
+	  (PopupMenuControl::update) if value is outside valid index, show warning
+
+	Files: libgui/graphics/ButtonControl.cc libgui/graphics/PopupMenuControl.cc
+
+2015-04-02  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	de_DE.ts: Finish german translation of GUI strings
+
+	* de_DE.ts: Merge translations from Armin Müller and
+	  David Rörich, now complete.
+
+	* contributors.in: Add David Rörich
+
+	Files: doc/interpreter/contributors.in libgui/languages/de_DE.ts
+
+2015-04-01  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	Fix toolbar and menubar interaction at figure initialization (bug #44686)
+
+	* Figure.cc (Figure::Figure): when toolbar property is "auto", only show it if
+	  the menubar is also shown.
+
+	Files: libgui/graphics/Figure.cc
+
+2015-04-01  John W. Eaton  <jwe@octave.org>
+
+	remove permutation matrix operators added in cset b646413c3d0e (bug #44316)
+
+	Files: libinterp/operators/op-pm-sm.cc
+
+2015-04-01  John Donoghue  <John Donoghue>
+
+	Qt EditControl: do callback always on return pressed (Bug #44690)
+
+	* libgui/graphics/TextEdit.h
+	  (returnPressed): new signal
+
+	* libgui/graphics/TextEdit.cpp
+	  (TextEdit::keyPressEvent): emit returnPressed instread of editingFinished
+
+	* libgui/graphics/EditControl.cc
+	  (EditControl::returnPressed): new function
+	  (EditControl::EditControl): connect edit control returnPressed to our returnPressed.
+
+	Files: libgui/graphics/EditControl.cc libgui/graphics/EditControl.h
+	libgui/graphics/TextEdit.cc libgui/graphics/TextEdit.h
+
+	Qt PopupMenuControl: son creation se index to Value, and dont fire callback on programatic value set (Bug #44687)
+
+	* libgui/graphics/PopupMenuControl.cc
+	  (PopupMenuControl::PopupMenuControl): call update to ID_VALUE
+	  (PopupMenuControl::update): set m_blockUpdate whilst in update for ID_VALUE
+
+	Files: libgui/graphics/PopupMenuControl.cc
+
+	Qt Canvas: set selection type to 'open' on double click (Bug #44669)
+
+	* libgui/graphics/Canvas.cc
+	  (canvasMouseDoubleClickEvent): move autoscale if left mouse and zoom,pan.rotate mode call to canvasMousePressEvent
+	    and call canvasMousePressEvent on double click.
+	  (canvasMousePressEvent) set isdlbclick flag if even type was MouseDlbClickEvent, pass doubleclick to figureSelectionType calls,
+	    and if double click on left mouse occured in zoom,rotate,pan mode, then autoscale.
+
+	Files: libgui/graphics/Canvas.cc
+
+2015-04-01  Dmitry Roshchin  <dmitry@roshchin.org>
+
+	ru_RU.ts: Update translations for 4.0 release.
+
+	* contributors.in: Add Dmitry Roshchin to list of contributors.
+
+	* ru_RU.ts: Update translations for 4.0 release.
+
+	Files: doc/interpreter/contributors.in libgui/languages/ru_RU.ts
+
+2015-04-01  Rik  <rik@octave.org>
+
+	Mark GUI strings from Qt figure toolbar for translation.
+
+	* Figure.cc (createFigureToolBarAndMenuBar): Mark "Axes", "Grid", and
+	"Autoscale" strings for translation.
+
+	Files: libgui/graphics/Figure.cc
+
+2015-04-01  John W. Eaton  <jwe@octave.org>
+
+	maint: Merge away accidental head.
+
+	Files: libgui/graphics/Canvas.cc libgui/graphics/Figure.cc
+
+2015-04-01  Rik  <rik@octave.org>
+
+	Fix several typos in GUI strings (bug #44681).
+
+	* file-editor.cc (construct): "White Spaces" => "Whitespace Characters".
+
+	* settings-dialog.ui: " Normal" => "Normal".  Eliminate useless space.
+
+	* shortcut-manager.cc (do_init_data): "White Spaces" => "Whitespace Characters".
+
+	* welcome-wizard.cc (final_page): "commnity" => "community".
+
+	Files: libgui/src/m-editor/file-editor.cc libgui/src/settings-dialog.ui
+	libgui/src/shortcut-manager.cc libgui/src/welcome-wizard.cc
+
+2015-03-31  Rik  <rik@octave.org>
+
+	Add missing translation call to GUI "Editor" tab.
+
+	* file-editor.cc (construct): Use tr() call on title text "Editor".
+
+	Files: libgui/src/m-editor/file-editor.cc
+
+	Fix two typos in GUI strings (bug #44681).
+
+	* files-dock-widget.cc (files_dock_widget): "directroy" => "directory".
+
+	* shortcut-manager.cc (do_init_data): "Ednings" => "Endings"
+
+	Files: libgui/src/files-dock-widget.cc libgui/src/shortcut-manager.cc
+
+	Fix ginput to return button number with Qt toolkit (bug #44676).
+
+	* Canvas.cc (canvasMousePressEvent): Supply "button_number (event)" as first
+	argument when running post_callback() for "windowbuttondownfcn".
+
+	Files: libgui/graphics/Canvas.cc
+
+	Fix FLTK SelectionType for Middle Button and double clicks (bug #44669).
+
+	* __init_fltk__.cc (handle): Check event for FL_MIDDLE_BUTTON and return
+	"extend" if found.  Use Fl::event_clicks to check for double click before
+	any other button processing and return "open" if found.
+
+	Files: libinterp/dldfcn/__init_fltk__.cc
+
+2015-03-30  Rik  <rik@octave.org>
+
+	es_ES.ts: Update Spanish translation file.
+
+	* contributors.in: Add José Luis García Pallero to list of contributors.
+
+	* es_ES.ts: Update Spanish translation file (José Luis García Pallero).
+
+	Files: doc/interpreter/contributors.in libgui/languages/es_ES.ts
+
+	run.m: Use single quotes so that '\' isn't an escape sequence (bug #44671).
+
+	* run.m: Use single quotes around script name that is sourced so that windows
+	directory separator '\' isn't interpreted as an escape sequence.
+
+	Files: scripts/miscellaneous/run.m
+
+2015-03-29  Rik  <rik@octave.org>
+
+	Allow logical arguments to stem() function (bug #44659).
+
+	* __stem__.m: Use isnumeric and islogical to validate inputs to stem function.
+
+	Files: scripts/plot/draw/private/__stem__.m
+
+	it_IT.ts: Correct non-compiling translation in previous cset.
+
+	* it_IT.ts: Use i with grave accent rather than &igrave; which doesn't compile.
+
+	Files: libgui/languages/it_IT.ts
+
+	it_IT.ts: Update Italian translation file.
+
+	* it_IT.ts: Updated translation from
+	Giorgio De Nunzio <giorgio.denunzio@unisalento.it>.
+
+	Files: libgui/languages/it_IT.ts
+
+2015-03-29  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	contributors.in: Adding Armin Müller for german translation
+
+	Files: doc/interpreter/contributors.in
+
+	de_DE.ts: Adding german translations from David and Armin
+
+	Files: libgui/languages/de_DE.ts
+
+2015-03-28  Rik  <rik@octave.org>
+
+	Issue error when trying to print a figure with no axes object (bug #44655).
+
+	* print.m: Check for an axes object as a child of the figure object to be
+	printed.
+
+	Files: scripts/plot/util/print.m
+
+	strsplit.m: Overhaul function and fix bug #44641.
+
+	* strsplit.m: Rewrite docstring.  Match variables in documentation to those in
+	function.  Change undocumented 3rd argument to only accept logical args.
+	Use single quotes around regexp patterns to avoid lots of backslash escaping.
+	Define is_simple variable to avoid repeated strncmpi calls.  Escape special
+	regexp characters in "simple" split expressions (bug #44641).  Wrap some BIST
+	tests to less than 80 columns.  Add BIST tests for bug #44641.
+
+	Files: scripts/strings/strsplit.m
+
+2015-03-28  Avinoam  <Avinoam>
+
+	it_IT.ts: typo in Italian translation
+	* libgui/languages/it_IT.ts: change termianle to terminale
+
+	Files: libgui/languages/it_IT.ts
+
+2015-03-27  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	Don't reset toolkit when the name hasn't changed
+
+	* graphics.in.h (figure::properties::set___graphics_toolkit__ ()): do not
+	  reset the value of the __graphics_toolkit__ if it doesn't change.
+	  Avoids the figure to be finalized/re-initialized.
+
+	Files: libinterp/corefcn/graphics.in.h
+
+2015-03-25  John Donoghue  <John Donoghue>
+
+	octave-config: add EXEEXT and SHLEXT variables to -p
+
+	* build-aux/common.mk
+	  (do_subst_default_vals) Add OCTAVE_EXEEXT and OCTAVE_SHLEXT
+
+	* src/octave-config.in.cc
+	  (help_msg): add string EXEEXT, SHLEXT to help string
+	  (initialize): initialize variables for EXEEXT, SHLEXT
+
+	Files: build-aux/common.mk src/octave-config.in.cc
+
+2015-03-25  Torsten  <ttl@justmail.de>
+
+	remove undo-button from main toolbar and rename toolbar title
+
+	* main-window.cc (construct_tool_bar): rename toolbar;
+	  (construct_tool_bar): no undo button
+
+	Files: libgui/src/main-window.cc
+
+	* shortcut-manager.cc (do_init_data): new default shortcut for zoom normal (bug #44627)
+
+	Files: libgui/src/shortcut-manager.cc
+
+	save and restore previously active widget in a tabbed stack (bug #42980)
+
+	* main-window.cc (focus_changed): store previous widget as predecessor
+	  if new widget is tabbed togehter with the previous one;
+
+	* octave-dock-widget.cc (octave_dock_widget): initialize predecessor to 0;
+	  (set_predecessor_widget): new oublic method for setting the predecessor;
+	  (set_focus_predecessor): if predecessor is defined which means that this
+	  wigdet was tabbed with predecessor, set focus to predecessor;
+	  (make_window): call set_focus_predecessor;
+	  (closeEvent): moved here from header file, call set_focus_predecessor
+
+	* octave-dock-widget.h: new public function set_predecessor_widget,
+	  closeEvent moved to octave_dock_widget.cc, new private function
+	  set_focus_predecessor (), new variable _predecessor_widget holding the
+	  previously active widget in the tabbed stack
+
+	Files: libgui/src/main-window.cc libgui/src/octave-dock-widget.cc
+	libgui/src/octave-dock-widget.h
+
+2015-03-24  Torsten  <ttl@justmail.de>
+
+	extend sorting of workspave view widget
+
+	* workspace-view.cc (workspace_view): get last sort configuration from
+	  settings file;
+	  (~workspace_view): save current sort settings into file;
+
+	Files: libgui/src/workspace-view.cc
+
+2015-02-25  Stefan Miereis  <stefan.miereis@gmx.de>
+
+	enabled sorting by parameter name in workspace view (bug #44217)
+
+	* workspace-view (constructor): enable sorting and clicking, set default order
+
+	Files: libgui/src/workspace-view.cc
+
+2015-03-23  Rik  <rik@octave.org>
+
+	findobj.m: Stop warning message when using -regexp option (bug #44610).
+
+	* findobj.m: Rename temporary variable from 'foo' to 'found' for clarity.
+	Set match to true if found is not empty.
+
+	Files: scripts/plot/util/findobj.m
+
+	pcolor.m: Stop error message from some non-meshgrid plots (bug #44615).
+
+	* pcolor.m: Check that xlimits and ylimits are monotically increasing before
+	calling xlim() or ylim().
+
+	Files: scripts/plot/draw/pcolor.m
+
+2015-03-22  Avinoam  <Avinoam>
+
+	__w2mpth__.m: fix typos
+
+	* scripts/miscellaneous/private/__w2mpth__.m: change __w2mpth to __w2mpth__
+
+	Files: scripts/miscellaneous/private/__w2mpth__.m
+
+2015-03-23  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	Handle "auto" value of figure "toolbar" property (bug #44573)
+
+	* Figure.cc (Figure::update): when handling a change in "menubar" or "toolbar" property, take toolbar "auto" value into account.
+
+	Files: libgui/graphics/Figure.cc
+
+2015-03-22  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	Fix right click zoom in fltk after cset f134ee404041 (bug #44522)
+
+	* __init_fltk__.cc (plot_window::handle): replace "alternate", which is not an allowed value for "selectiontype" after cset f134ee404041, by "alt"
+
+	Files: libinterp/dldfcn/__init_fltk__.cc
+
+2015-03-21  Philip Nienhuis  <prnienhuis@users.sf.net>
+
+	scripts/miscellaneous/private/__w2mpth__.m: comment out tests (bug #44581)
+
+	Files: scripts/miscellaneous/private/__w2mpth__.m
+
+2015-03-20  Rik  <rik@octave.org>
+
+	Return a column vector by default for Matlab compatibility (bug #44425, bug #44453).
+	Document that only unique elements are returned from set functions.
+
+	* NEWS: Announce change in default orientation of return values.
+
+	* intersect.m, setdiff.m, setxor.m, union.m: Return a column vector by default
+	unless the input is explicitly a row vector.  Change docstring to note that only
+	unique, non-duplicative elements are returned.
+
+	Files: NEWS scripts/set/intersect.m scripts/set/setdiff.m
+	scripts/set/setxor.m scripts/set/union.m
+
 2015-03-20  John W. Eaton  <jwe@octave.org>
 
 	Added tag rc-4-0-0-2 for changeset eba80000fa0d

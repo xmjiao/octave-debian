@@ -82,11 +82,11 @@ function which is of order O(n).
 <dt><a name="index-intersect-1"></a>Function File: <em><var>c</var> =</em> <strong>intersect</strong> <em>(<var>a</var>, <var>b</var>, &quot;rows&quot;)</em></dt>
 <dt><a name="index-intersect-2"></a>Function File: <em>[<var>c</var>, <var>ia</var>, <var>ib</var>] =</em> <strong>intersect</strong> <em>(&hellip;)</em></dt>
 <dd>
-<p>Return the elements common to both <var>a</var> and <var>b</var> sorted in ascending
-order.
+<p>Return the unique elements common to both <var>a</var> and <var>b</var> sorted in
+ascending order.
 </p>
-<p>If <var>a</var> and <var>b</var> are both column vectors then return a column vector;
-Otherwise, return a row vector.  The inputs may also be cell arrays of
+<p>If <var>a</var> and <var>b</var> are both row vectors then return a row vector;
+Otherwise, return a column vector.  The inputs may also be cell arrays of
 strings.
 </p>
 <p>If the optional input <code>&quot;rows&quot;</code> is given then return the common rows of
@@ -105,11 +105,11 @@ strings.
 <dt><a name="index-union-1"></a>Function File: <em><var>c</var> =</em> <strong>union</strong> <em>(<var>a</var>, <var>b</var>, &quot;rows&quot;)</em></dt>
 <dt><a name="index-union-2"></a>Function File: <em>[<var>c</var>, <var>ia</var>, <var>ib</var>] =</em> <strong>union</strong> <em>(&hellip;)</em></dt>
 <dd>
-<p>Return the elements that are in either <var>a</var> or <var>b</var> sorted in
-ascending order with duplicates removed.
+<p>Return the unique elements that are in either <var>a</var> or <var>b</var> sorted in
+ascending order.
 </p>
-<p>If <var>a</var> and <var>b</var> are both column vectors return a column vector;
-Otherwise, return a row vector.  The inputs may also be cell arrays of
+<p>If <var>a</var> and <var>b</var> are both row vectors then return a row vector;
+Otherwise, return a column vector.  The inputs may also be cell arrays of
 strings.
 </p>
 <p>If the optional input <code>&quot;rows&quot;</code> is given then return rows that are in
@@ -129,11 +129,11 @@ whose union is <var>c</var>.
 <dt><a name="index-setdiff"></a>Function File: <em><var>c</var> =</em> <strong>setdiff</strong> <em>(<var>a</var>, <var>b</var>)</em></dt>
 <dt><a name="index-setdiff-1"></a>Function File: <em><var>c</var> =</em> <strong>setdiff</strong> <em>(<var>a</var>, <var>b</var>, &quot;rows&quot;)</em></dt>
 <dt><a name="index-setdiff-2"></a>Function File: <em>[<var>c</var>, <var>ia</var>] =</em> <strong>setdiff</strong> <em>(&hellip;)</em></dt>
-<dd><p>Return the elements in <var>a</var> that are not in <var>b</var> sorted in
+<dd><p>Return the unique elements in <var>a</var> that are not in <var>b</var> sorted in
 ascending order.
 </p>
-<p>If <var>a</var> and <var>b</var> are both column vectors return a column vector;
-Otherwise, return a row vector.  The inputs may also be cell arrays of
+<p>If <var>a</var> is a row vector return a column vector;
+Otherwise, return a column vector.  The inputs may also be cell arrays of
 strings.
 </p>
 <p>If the optional input <code>&quot;rows&quot;</code> is given then return the rows in
@@ -152,11 +152,11 @@ this option.
 <dt><a name="index-setxor-1"></a>Function File: <em><var>c</var> =</em> <strong>setxor</strong> <em>(<var>a</var>, <var>b</var>, &quot;rows&quot;)</em></dt>
 <dt><a name="index-setxor-2"></a>Function File: <em>[<var>c</var>, <var>ia</var>, <var>ib</var>] =</em> <strong>setxor</strong> <em>(&hellip;)</em></dt>
 <dd>
-<p>Return the elements exclusive to sets <var>a</var> or <var>b</var> sorted in
+<p>Return the unique elements exclusive to sets <var>a</var> or <var>b</var> sorted in
 ascending order.
 </p>
-<p>If <var>a</var> and <var>b</var> are both column vectors return a column vector;
-Otherwise, return a row vector.  The inputs may also be cell arrays of
+<p>If <var>a</var> and <var>b</var> are both row vectors then return a row vector;
+Otherwise, return a column vector.  The inputs may also be cell arrays of
 strings.
 </p>
 <p>If the optional input <code>&quot;rows&quot;</code> is given then return the rows exclusive

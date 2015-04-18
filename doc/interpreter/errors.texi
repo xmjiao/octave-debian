@@ -153,11 +153,11 @@ error (err_msg);
 which will only stop execution if an error has been found.
 
 Implementation Note: For compatibility with @sc{matlab}, escape
-sequences (e.g., "\n" => newline) are processed in @var{template}
-regardless of whether @var{template} has been defined within single quotes
-as long as there are two or more input arguments.
-Use a second backslash to stop interpolation of the escape sequence (e.g.,
-"\\n") or use the @code{regexptranslate} function.
+sequences in @var{template} (e.g., "\n" => newline) are processed
+regardless of whether @var{template} has been defined with single quotes,
+as long as there are two or more input arguments.  To disable escape sequence
+expansion use a second backslash before the sequence (e.g., "\\n") or
+use the @code{regexptranslate} function.
 @seealso{@ref{XREFwarning,,warning}, @ref{XREFlasterror,,lasterror}}
 @end deftypefn
 
@@ -636,11 +636,11 @@ function.  The @qcode{"local"} option is ignored if used in the top-level
 workspace.
 
 Implementation Note: For compatibility with @sc{matlab}, escape
-sequences (e.g., "\n" => newline) are processed in @var{template}
-regardless of whether @var{template} has been defined within single quotes
-as long as there are two or more input arguments.
-Use a second backslash to stop interpolation of the escape sequence (e.g.,
-"\\n") or use the @code{regexptranslate} function.
+sequences in @var{template} (e.g., "\n" => newline) are processed
+regardless of whether @var{template} has been defined with single quotes,
+as long as there are two or more input arguments.  To disable escape sequence
+expansion use a second backslash before the sequence (e.g., "\\n") or
+use the @code{regexptranslate} function.
 @seealso{@ref{XREFwarning_ids,,warning_ids}, @ref{XREFlastwarn,,lastwarn}, @ref{XREFerror,,error}}
 @end deftypefn
 
