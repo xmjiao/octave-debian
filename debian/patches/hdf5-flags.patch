@@ -3,13 +3,14 @@ Author: Gilles Filippini <pini@debian.org>
 Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=756689
 Forwarded: no
 Reviewed-by: Sébastien Villemot <sebastien@debian.org>
-Last-Update: 2014-08-14
+Reviewed-by: Rafael Laboissiere <rafael@laboissiere.net>
+Last-Update: 2015-04-18
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/libgui/src/module.mk
 +++ b/libgui/src/module.mk
-@@ -172,6 +172,7 @@ src_libgui_src_la_CPPFLAGS = \
-   $(AM_CPPFLAGS) \
+@@ -175,6 +175,7 @@ src_libgui_src_la_CPPFLAGS = \
+   $(FONTCONFIG_CPPFLAGS) \
    @OCTGUI_DLL_DEFS@ \
    @QT_CPPFLAGS@ \
 +  @HDF5_CPPFLAGS@ \
