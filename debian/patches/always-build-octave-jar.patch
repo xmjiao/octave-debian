@@ -3,7 +3,8 @@ Description: Ensure that octave.jar is built even if java is disabled
  want octave-common to contain octave.jar if built on those archs.
 Author: Sébastien Villemot <sebastien@debian.org>
 Forwarded: not-needed
-Last-Update: 2014-02-24
+Reviewed-by: Rafael Laboissiere <rafael@laboissiere.net>
+Last-Update: 2015-04-18
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/scripts/java/module.mk
@@ -15,7 +16,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  FCN_FILE_DIRS += java
  
  java_FCN_FILES = \
-@@ -16,13 +19,10 @@ PKG_ADD_FILES += java/PKG_ADD
+@@ -17,13 +20,10 @@ PKG_ADD_FILES += java/PKG_ADD
  
  DIRSTAMP_FILES += java/$(octave_dirstamp)
  
@@ -29,7 +30,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  JAVA_SRC = \
    $(org_octave_dir)/ClassHelper.java \
    $(org_octave_dir)/OctClassLoader.java \
-@@ -33,7 +33,6 @@ JAVA_SRC = \
+@@ -34,7 +34,6 @@ JAVA_SRC = \
    $(org_octave_dir)/DlgListener.java \
    $(org_octave_dir)/TeXtranslator.java \
    $(org_octave_dir)/TeXcode.java
@@ -37,14 +38,16 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  
  JAVA_CLASSES = $(JAVA_SRC:.java=.class)
  
-@@ -63,11 +62,9 @@ java/images.stamp: $(srcdir_java_JAVA_IM
- 	fi
+@@ -64,13 +63,11 @@ java/images.stamp: $(srcdir_java_JAVA_IM
+ 	fi && \
  	touch $@
  
 -if AMCOND_HAVE_JAVA
  java/octave.jar: java/images.stamp $(java_JAVA_CLASSES)
- 	( cd java; "$(JAR)" cf octave.jar.t $(JAVA_CLASSES) $(JAVA_IMAGES) )
- 	mv $@.t $@
+ 	$(AM_V_GEN)rm -f $@-t $@ && \
+ 	( cd java; \
+ 	  "$(JAR)" cf octave.jar-t $(JAVA_CLASSES) $(JAVA_IMAGES) ) && \
+ 	mv $@-t $@
 -endif
  
  EXTRA_DIST += $(JAR_FILES) $(java_JAVA_SRC) $(java_JAVA_IMAGES)
