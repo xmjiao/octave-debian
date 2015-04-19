@@ -208,7 +208,7 @@ License: BSD-3-clause
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 
-Files: liboctave/cruft/opdepack/*
+Files: liboctave/cruft/odepack/*
 Copyright: none
 License: public-domain
  Written by Alan C. Hindmarsh
@@ -313,7 +313,7 @@ License: GPL-2+ with Libtool exception
 
 Files: aclocal.m4
        m4/00gnulib.m4
-       m4/absolute_header.m4
+       m4/absolute-header.m4
        m4/base64.m4
        m4/canonicalize.m4
        m4/ceil.m4
