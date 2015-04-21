@@ -60,7 +60,7 @@ override_dh_auto_test:
 # override normal dh_compress call to avoid compressing .pdf files
 # also, avoid the compression of the info files (see Bug#762078)
 override_dh_compress:
-	dh_compress -O--parallel --exclude=.pdf --exclude=octave.info
+	dh_compress -O--parallel --exclude=.pdf
 
 # override this call, so we do not pass the --parallel option to it; 
 # "make -j2 install" does not work as of now
