@@ -5,7 +5,6 @@ no_pdf_in_print.diff
 add_info_dir_categories
 mkoctfile-mpi.diff
 dblquad-s390x.diff
-hurd_path_max.diff
 always-build-octave-jar.patch
 hdf5-flags.patch
 hdf5-mkoctfile.patch
