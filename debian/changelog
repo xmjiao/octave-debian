@@ -1,3 +1,31 @@
+octave (4.0.0~rc3-1) UNRELEASED; urgency=low
+
+  [ Rafael Laboissiere ]
+  * Imported Upstream version 4.0.0~rc3
+    In this new upstream version, the config.log file generated at build
+    time is no longer included in octave-common (Closes: #759426).
+  * d/p/drop_versioned_binaries.diff: Refresh for new upstream version
+  * d/p/install_libraries_publically: Refresh for new upstream version
+  * d/p/dblquad-s390x.diff: Refresh for new upstream version
+  * d/p/always-build-octave-jar.patch: Refresh for new upstream version
+  * d/p/hdf5-flags.patch: Refresh for new upstream version
+  * d/p/mkoctfile-infinite-loop.patch: Drop patch (applied upstream)
+  * d/liboctave-dev.examples: Adjust for new upstream layout
+  * Build-Depends on Qt4 libraries (needed for new GUI)
+  * Build-Depends on zip and unzip (needed for unit testing in zip.m)
+  * Add myself to Uploaders
+  * Build-Depends on MesaOS (needed for OpenGL offscreen rendering)
+  * Bump Breaks relationships for packages shipping .oct files
+  * d/rules: compress info files, complying with the Policy.
+    The upstream problem of GUI freeze when accessing the compressed info
+    files has been fixed upstream. (Closes: #764809)
+
+  [ Sébastien Villemot ]
+  * debian/copyright: reflect upstream changes.
+  * d/p/hurd_path_max.diff: drop patch (applied upstream).
+
+ -- Rafael Laboissiere <rafael@laboissiere.net>  Wed, 22 Apr 2015 06:25:00 -0300
+
 octave (3.8.2-4) unstable; urgency=medium
 
   * mkoctfile-infinite-loop.patch: fix infinite loop of mkoctfile -M on
