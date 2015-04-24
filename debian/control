@@ -67,8 +67,8 @@ Recommends: gnuplot-x11 | gnuplot-qt, libopenblas-base | libatlas3-base,
 Suggests: octave-info,
  octave-doc,
  octave-htmldoc,
-Conflicts: octave3.2, octave-java
-Replaces: octave3.2, octave-java
+Conflicts: octave-java
+Replaces: octave-java
 Breaks: dynare (<= 4.4.3-1),
   h5utils (<= 1.12.1-2.1),
   libsbml5-octave (<= 5.8.0-2),
@@ -186,8 +186,6 @@ Description: HTML documentation on the GNU Octave language
 Package: octave-info
 Architecture: all
 Depends: info, ${misc:Depends}
-Conflicts: octave3.2-info
-Replaces: octave3.2-info
 Section: doc
 Description: GNU Info documentation on the GNU Octave language
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
@@ -220,8 +218,6 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  libgl1-mesa-dev | libgl-dev,
  libblas-dev (>=1.2-7) | libblas.so, liblapack-dev (>=3.2.1-7) | liblapack.so,
  libfftw3-dev, gfortran, gcc, g++
-Conflicts: octave3.2-headers
-Replaces: octave3.2-headers
 Section: libdevel
 Description: Development files for the GNU Octave language
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily

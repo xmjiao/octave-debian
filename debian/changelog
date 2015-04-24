@@ -29,6 +29,7 @@ octave (4.0.0~rc3-1) UNRELEASED; urgency=low
   * Bump SONAME of liboctave (2->3).
     - d/p/bump-soname.patch: patch to anticipate the bump by upstream.
     - d/control, d/liboctave?.install: rename the package
+  * Remove obsolete Conflicts/Replaces against octave3.2* packages.
 
  -- Rafael Laboissiere <rafael@laboissiere.net>  Wed, 22 Apr 2015 06:25:00 -0300
 
