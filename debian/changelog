@@ -25,6 +25,7 @@ octave (4.0.0~rc3-1) UNRELEASED; urgency=low
   * debian/copyright: reflect upstream changes.
   * d/p/hurd_path_max.diff: drop patch (applied upstream).
   * d/p/dblquad-s390x.diff: drop patch (no longer needed).
+  * Add entry in d/NEWS (GUI now by default, pkg autoload disabled).
 
  -- Rafael Laboissiere <rafael@laboissiere.net>  Wed, 22 Apr 2015 06:25:00 -0300
 

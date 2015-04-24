@@ -1,3 +1,18 @@
+octave (4.0.0~rc3-1) experimental; urgency=low
+
+  A graphical user interface is now the default when running Octave
+  interactively.  The start-up option --no-gui will run the familiar
+  command line interface, and still allows use of the GUI dialogs and
+  qt plotting toolkit.  The option --no-gui-libs runs a minimalist
+  command line interface that does not link with the Qt libraries and
+  uses the fltk toolkit for plotting.
+
+  Starting with this release, the Octave add-ons packaged in Debian will
+  no longer autoload by default. You may need to adapt existing scripts,
+  by adding "pkg load <package>" statements.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Fri, 24 Apr 2015 15:32:45 +0200
+
 octave (3.8.1-2) unstable; urgency=medium
 
   The just-it-time (JIT) compiler has been disabled in this version,
