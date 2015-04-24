@@ -7,3 +7,4 @@ mkoctfile-mpi.diff
 always-build-octave-jar.patch
 hdf5-flags.patch
 hdf5-mkoctfile.patch
+bump-soname.patch
