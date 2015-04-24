@@ -1,4 +1,4 @@
-octave (4.0.0~rc3-1) UNRELEASED; urgency=low
+octave (4.0.0~rc3-1) experimental; urgency=low
 
   [ Rafael Laboissiere ]
   * Imported Upstream version 4.0.0~rc3
@@ -33,7 +33,7 @@ octave (4.0.0~rc3-1) UNRELEASED; urgency=low
   * Reactivate java support on armhf. It had been incorrectly disabled:
     the testsuite crash was actually caused by #767138, not by java.
 
- -- Rafael Laboissiere <rafael@laboissiere.net>  Wed, 22 Apr 2015 06:25:00 -0300
+ -- Sébastien Villemot <sebastien@debian.org>  Fri, 24 Apr 2015 16:08:00 +0200
 
 octave (3.8.2-4) unstable; urgency=medium
 
