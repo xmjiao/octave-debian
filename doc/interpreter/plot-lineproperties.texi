@@ -65,7 +65,7 @@ Color of the line object.  @xref{Colors, , colorspec}.
 @anchor{XREFlinecreatefcn}
 @cindex line createfcn
 @item @code{createfcn}: string | function handle, def. @code{[](0x0)}
-Callback function executed immediately after line has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultlinecreatefcn", 'disp ("line created!")') }.
+Callback function executed immediately after line has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultlinecreatefcn", 'disp ("line created!")')}.
 
 
 @anchor{XREFlinedeletefcn}
@@ -178,8 +178,8 @@ Class name of the graphics object.  @code{type} is always @qcode{"line"}
 
 @anchor{XREFlineuicontextmenu}
 @cindex line uicontextmenu
-@item @code{uicontextmenu}: def. @code{[](0x0)}
-
+@item @code{uicontextmenu}: graphics handle, def. @code{[](0x0)}
+Graphics handle of the uicontextmenu object that is currently associated to this line object.
 
 
 @anchor{XREFlineuserdata}

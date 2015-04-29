@@ -28,10 +28,12 @@ along with Octave; see the file COPYING.  If not, see
 #include <QActionEvent>
 #include <QActionGroup>
 #include <QApplication>
+#include <QClipboard>
 #include <QEvent>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QFrame>
+#include <QImage>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
@@ -46,6 +48,10 @@ along with Octave; see the file COPYING.  If not, see
 #include "FigureWindow.h"
 #include "MouseModeActionGroup.h"
 #include "QtHandlesUtils.h"
+
+#include "file-ops.h"
+#include "unwind-prot.h"
+#include "utils.h"
 
 #include "octave-qt-link.h"
 
@@ -313,12 +319,8 @@ Figure::createFigureToolBarAndMenuBar (void)
 
   QMenu* editMenu = m_menuBar->addMenu (tr ("&Edit"));
   editMenu->menuAction ()->setObjectName ("builtinMenu");
-  editMenu->addAction (tr ("Cop&y"), this, SLOT (editCopy (void)),
-                       Qt::CTRL|Qt::Key_C)->setEnabled (false);
-  editMenu->addAction (tr ("Cu&t"), this, SLOT (editCut (void)),
-                       Qt::CTRL|Qt::Key_X)->setEnabled (false);
-  editMenu->addAction (tr ("&Paste"), this, SLOT (editPaste(void)),
-                       Qt::CTRL|Qt::Key_V)->setEnabled (false);
+  editMenu->addAction (tr ("Cop&y"), this, SLOT (editCopy (bool)),
+                       Qt::CTRL|Qt::Key_C);
   editMenu->addSeparator ();
   editMenu->addActions (m_mouseModeGroup->actions ());
 
@@ -813,6 +815,26 @@ Figure::save_figure_callback (const std::string& file)
 {
   Ffeval (ovl ("print", file));
 }
+
+void
+Figure::copy_figure_callback (const std::string& format)
+{
+  std::string msg;
+
+  std::string file = octave_tempnam ("", "oct-", msg) + "." + format;
+
+  if (file.empty ())
+    {
+      // Report error?
+      return;
+    }
+
+  std::string device = "-d" + format;
+
+  Ffeval (ovl ("print", file, device));
+
+  octave_link::copy_image_to_clipboard (file);
+}
   
 void
 Figure::fileSaveFigureAs (void)
@@ -827,18 +849,27 @@ Figure::fileCloseFigure (void)
 }
 
 void
-Figure::editCopy (void)
+Figure::editCopy (bool /* choose_format */)
 {
-}
+  QString format = "png";
 
-void
-Figure::editCut (void)
-{
-}
+#if 0
 
-void
-Figure::editPaste (void)
-{
+  // FIXME: allow choice of image formats.
+
+  if (choose_format)
+    {
+      QFileInfo finfo (file);
+
+      format = QFileDialog::getSaveFileName (qWidget<FigureWindow> (),
+                                           tr ("Save Figure As"),
+                                           finfo.absoluteFilePath (), 0, 0,
+                                           QFileDialog::DontUseNativeDialog);
+    }
+#endif
+
+  octave_link::post_event (this, &Figure::copy_figure_callback,
+                           format.toStdString ());
 }
 
 void

@@ -1,4 +1,4 @@
-# doc-cache created by Octave 4.0.0-rc3
+# doc-cache created by Octave 4.0.0-rc4
 # name: cache
 # type: cell
 # rows: 3
@@ -7058,22 +7058,27 @@ inpolygon
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 316
+# length: 479
+ -- Function File: IN = inpolygon (X, Y, XV, YV)
  -- Function File: [IN, ON] = inpolygon (X, Y, XV, YV)
 
-     For a polygon defined by vertex points '(XV, YV)', determine if the
-     points '(X, Y)' are inside or outside the polygon.  The variables
-     X, Y, must have the same dimension.  The optional output ON gives
-     the points that are on the polygon.
+     For a polygon defined by vertex points '(XV, YV)', return true if
+     the points '(X, Y)' are inside (or on the boundary) of the polygon;
+     Otherwise, return false.
 
+     The variables X, Y, must have the same dimension.  The optional
+     output ON returns true if the points are exactly on the polygon
+     edge, and false otherwise.
+
+     See also: delaunay.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 119
-For a polygon defined by vertex points '(XV, YV)', determine if the  points '(X, Y)' are inside or outside the polygon.
+# length: 160
+For a polygon defined by vertex points '(XV, YV)', return true if  the points '(X, Y)' are inside (or on the boundary) of the polygon;  Otherwise, return false.
 
 
 
@@ -7087,16 +7092,25 @@ rectint
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 457
+# length: 970
  -- Function File: AREA = rectint (A, B)
+     Compute area or volume of intersection of rectangles or ND boxes.
 
      Compute the area of intersection of rectangles in A and rectangles
-     in B.  Rectangles are defined as [x y width height] where x and y
-     are the minimum values of the two orthogonal dimensions.
+     in B.  N dimensional boxes are supported in which case the volume,
+     or hypervolume is computed according to the number of dimensions.
 
-     If A or B are matrices, then the output, AREA, is a matrix where
-     the i-th row corresponds to the i-th row of a and the j-th column
-     corresponds to the j-th row of b.
+     2 dimensional rectangles are defined as '[xpos ypos width height]'
+     where xpos and ypos are the position of the bottom left corner.
+     Higher dimensions are supported where the coordinates for the
+     minimum value of each dimension follow the length of the box in
+     that dimension, e.g., '[xpos ypos zpos kpos ... width height depth
+     k_length ...]'.
+
+     Each row of A and B define a rectangle, and if both define multiple
+     rectangles, then the output, AREA, is a matrix where the i-th row
+     corresponds to the i-th row of a and the j-th column corresponds to
+     the j-th row of b.
 
      See also: polyarea.
    
@@ -7105,8 +7119,8 @@ rectint
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 73
-Compute the area of intersection of rectangles in A and rectangles  in B.
+# length: 65
+Compute area or volume of intersection of rectangles or ND boxes.
 
 
 
@@ -7250,9 +7264,10 @@ errordlg
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 517
+# length: 700
  -- Function File: H = errordlg (MSG)
  -- Function File: H = errordlg (MSG, TITLE)
+ -- Function File: H = errordlg (MSG, TITLE, CREATEMODE)
      Display MSG using an error dialog box.
 
      The message may have multiple lines separated by newline characters
@@ -7261,6 +7276,9 @@ errordlg
      set the dialog caption.  The default title is "Error Dialog".
 
      The return value is always 1.
+
+     Compatibility Note: The optional argument CREATEMODE is accepted
+     for MATLAB compatibility, but is not implemented.
 
      See also: helpdlg, inputdlg, listdlg, msgbox, questdlg, warndlg.
    
@@ -7526,10 +7544,11 @@ msgbox
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 657
+# length: 831
  -- Function File: H = msgbox (MSG)
  -- Function File: H = msgbox (MSG, TITLE)
  -- Function File: H = msgbox (MSG, TITLE, ICON)
+ -- Function File: H = msgbox (..., CREATEMODE)
      Display MSG using a message dialog box.
 
      The message may have multiple lines separated by newline characters
@@ -7541,6 +7560,9 @@ msgbox
      "none" (default), "error", "help", or "warn".
 
      The return value is always 1.
+
+     Compatibility Note: The optional argument CREATEMODE is accepted
+     for MATLAB compatibility, but is not implemented.
 
      See also: errordlg, helpdlg, inputdlg, listdlg, questdlg, warndlg.
    
@@ -8112,15 +8134,21 @@ warndlg
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 465
+# length: 683
  -- Function File: H = warndlg (MSG)
  -- Function File: H = warndlg (MSG, TITLE)
+ -- Function File: H = warndlg (MSG, TITLE, CREATEMODE)
      Display MSG using a warning dialog box.
 
      The message may have multiple lines separated by newline characters
      ("\n"), or it may be a cellstr array with one element for each
      line.  The optional input TITLE (character string) can be used to
      set the dialog caption.  The default title is "Warning Dialog".
+
+     The return value is always 1.
+
+     Compatibility Note: The optional argument CREATEMODE is accepted
+     for MATLAB compatibility, but is not implemented.
 
      See also: helpdlg, inputdlg, listdlg, questdlg.
    
@@ -8300,28 +8328,31 @@ lookfor
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1226
+# length: 1251
  -- Command: lookfor STR
  -- Command: lookfor -all STR
- -- Function File: [FUNC, HELPSTRING] = lookfor (STR)
- -- Function File: [FUNC, HELPSTRING] = lookfor ("-all", STR)
-     Search for the string STR in all functions found in the current
-     function search path.  By default, 'lookfor' searches for STR in
-     the first sentence of the help string of each function found.  The
-     entire help text of each function can be searched if the "-all"
-     argument is supplied.  All searches are case insensitive.
+ -- Function File: [FCN, HELP1STR] = lookfor (STR)
+ -- Function File: [FCN, HELP1STR] = lookfor ("-all", STR)
+     Search for the string STR in all functions using the current
+     function search path.
 
-     Called with no output arguments, 'lookfor' prints the list of
-     matching functions to the terminal.  Otherwise, the output
-     arguments FUNC and HELPSTRING define the matching functions and the
-     first sentence of each of their help strings.
+     By default, 'lookfor' looks for STR in the first sentence of the
+     help string for each function found.  The entire help text of each
+     function can be searched by using the "-all" argument.  All
+     searches are case insensitive.
 
-     The ability of 'lookfor' to correctly identify the first sentence
-     of the help text is dependent on the format of the function's help.
-     All Octave core functions are correctly formatted, but the same can
-     not be guaranteed for external packages and user-supplied
-     functions.  Therefore, the use of the "-all" argument may be
-     necessary to find related functions that are not a part of Octave.
+     When called with no output arguments, 'lookfor' prints the list of
+     matching functions to the terminal.  Otherwise, the output argument
+     FCNS contains the function names and HELP1STR contains the first
+     sentence from the help string of each function.
+
+     Programming Note: The ability of 'lookfor' to correctly identify
+     the first sentence of the help text is dependent on the format of
+     the function's help.  All Octave core functions are correctly
+     formatted, but the same can not be guaranteed for external packages
+     and user-supplied functions.  Therefore, the use of the "-all"
+     argument may be necessary to find related functions that are not a
+     part of Octave.
 
      See also: help, doc, which.
    
@@ -8330,8 +8361,8 @@ lookfor
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 86
-Search for the string STR in all functions found in the current  function search path.
+# length: 83
+Search for the string STR in all functions using the current  function search path.
 
 
 
@@ -10011,7 +10042,7 @@ rgb2ind
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 976
+# length: 975
  -- Function File: [X, MAP] = rgb2ind (RGB)
  -- Function File: [X, MAP] = rgb2ind (R, G, B)
      Convert an image in red-green-blue (RGB) color space to an indexed
@@ -10029,7 +10060,7 @@ rgb2ind
      equal to the number of rows in MAP) in order
 
      Multi-dimensional indexed images (of size MxNx3xK) are also
-     supported, both via a single input (RGB) or its three colour
+     supported, both via a single input (RGB) or its three color
      channels as separate variables.
 
      See also: ind2rgb, rgb2hsv, rgb2ntsc.
@@ -10381,7 +10412,7 @@ dlmwrite
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1656
+# length: 1669
  -- Function File: dlmwrite (FILE, M)
  -- Function File: dlmwrite (FILE, M, DELIM, R, C)
  -- Function File: dlmwrite (FILE, M, KEY, VAL ...)
@@ -10415,7 +10446,7 @@ dlmwrite
           The character(s) to use to separate each row.  Three special
           cases exist for this option.  "unix" is changed into "\n",
           "pc" is changed into "\r\n", and "mac" is changed into "\r".
-          Other values for this option are kept as is.
+          Any other value is used directly as the newline separator.
 
      "roffset"
           See R above.
@@ -10430,7 +10461,7 @@ dlmwrite
 
           dlmwrite ("file.csv", reshape (1:16, 4, 4));
 
-          dlmwrite ("file.tex", a, "delimiter", "&", "newline", "\\n")
+          dlmwrite ("file.tex", a, "delimiter", "&", "newline", "\n")
 
      See also: dlmread, csvread, csvwrite.
    
@@ -10561,7 +10592,7 @@ strread
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 5022
+# length: 5025
  -- Function File: [A, ...] = strread (STR)
  -- Function File: [A, ...] = strread (STR, FORMAT)
  -- Function File: [A, ...] = strread (STR, FORMAT, FORMAT_REPEAT)
@@ -10679,10 +10710,10 @@ strread
           Any character in VALUE will be interpreted as whitespace and
           trimmed; the string defining whitespace must be enclosed in
           double quotes for proper processing of special characters like
-          \t.  The default value for whitespace = " \b\r\n\t" (note the
-          space).  Unless whitespace is set to " (empty) AND at least
-          one "%s" format conversion specifier is supplied, a space is
-          always part of whitespace.
+          "\t".  The default value for whitespace is " \b\r\n\t" (note
+          the space).  Unless whitespace is set to " (empty) AND at
+          least one "%s" format conversion specifier is supplied, a
+          space is always part of whitespace.
 
      When the number of words in STR doesn't match an exact multiple of
      the number of format conversion specifiers, strread's behavior
@@ -15285,7 +15316,7 @@ warning_ids
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 10764
+# length: 10772
 'Octave:abbreviated-property-match'
      By default, the 'Octave:abbreviated-property-match' warning is
      enabled.
@@ -15406,10 +15437,10 @@ warning_ids
 
 'Octave:language-extension'
      Print warnings when using features that are unique to the Octave
-     language and may be still be missing in MATLAB.  By default, the
-     'Octave:language-extension' warning is disabled.  The -traditional
-     or -braindead startup options for Octave may also be of use, *note
-     Command Line Options::.
+     language and that may still be missing in MATLAB.  By default, the
+     'Octave:language-extension' warning is disabled.  The
+     '--traditional' or '--braindead' startup options for Octave may
+     also be of use, *note Command Line Options::.
 
 'Octave:load-file-in-path'
      By default, the 'Octave:load-file-in-path' warning is enabled.
@@ -23631,11 +23662,13 @@ close
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1043
+# length: 1250
  -- Command: close
  -- Command: close (H)
+ -- Command: close H
  -- Command: close all
  -- Command: close all hidden
+ -- Command: close all force
      Close figure window(s).
 
      When called with no arguments, close the current figure.  This is
@@ -23647,6 +23680,10 @@ close
 
      If the argument "all hidden" is given then all figures, including
      hidden ones, are closed.
+
+     If the argument "all force" is given then all figures are closed
+     even when "closerequestfcn" has been altered to prevent closing the
+     window.
 
      Implementation Note: 'close' operates by calling the function
      specified by the "closerequestfcn" property for each figure.  By
@@ -24187,7 +24224,7 @@ ginput
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 670
+# length: 894
  -- Function File: [X, Y, BUTTONS] = ginput (N)
  -- Function File: [X, Y, BUTTONS] = ginput ()
      Return the position and type of mouse button clicks and/or key
@@ -24201,6 +24238,11 @@ ginput
      clicked in the units of the current axes.  The return value BUTTON
      is 1, 2, or 3 for the left, middle, or right button.  If a key is
      pressed the ASCII value is returned in BUTTON.
+
+     Implementation Note: 'ginput' is intenteded for 2-D plots.  For 3-D
+     plots see the CURRENTPOINT property of the current axes which can
+     be transformed with knowledge of the current 'view' into data
+     units.
 
      See also: gtext, waitforbuttonpress.
    
@@ -41930,7 +41972,7 @@ besselj
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2158
+# length: 2163
  -- Built-in Function: [J, IERR] = besselj (ALPHA, X, OPT)
  -- Built-in Function: [Y, IERR] = bessely (ALPHA, X, OPT)
  -- Built-in Function: [I, IERR] = besseli (ALPHA, X, OPT)
@@ -41939,27 +41981,27 @@ besselj
      Compute Bessel or Hankel functions of various kinds:
 
      'besselj'
-          Bessel functions of the first kind.  If the argument OPT is
-          supplied, the result is multiplied by 'exp (-abs (imag (X)))'.
+          Bessel functions of the first kind.  If the argument OPT is 1
+          or true, the result is multiplied by 'exp (-abs (imag (X)))'.
 
      'bessely'
-          Bessel functions of the second kind.  If the argument OPT is
-          supplied, the result is multiplied by 'exp (-abs (imag (X)))'.
+          Bessel functions of the second kind.  If the argument OPT is 1
+          or true, the result is multiplied by 'exp (-abs (imag (X)))'.
 
      'besseli'
 
           Modified Bessel functions of the first kind.  If the argument
-          OPT is supplied, the result is multiplied by 'exp (-abs (real
+          OPT is 1 or true, the result is multiplied by 'exp (-abs (real
           (X)))'.
 
      'besselk'
 
           Modified Bessel functions of the second kind.  If the argument
-          OPT is supplied, the result is multiplied by 'exp (X)'.
+          OPT is 1 or true, the result is multiplied by 'exp (X)'.
 
      'besselh'
           Compute Hankel functions of the first (K = 1) or second (K =
-          2) kind.  If the argument OPT is supplied, the result is
+          2) kind.  If the argument OPT is 1 or true, the result is
           multiplied by 'exp (-I*X)' for K = 1 or 'exp (I*X)' for K = 2.
 
      If ALPHA is a scalar, the result is the same size as X.  If X is a
@@ -49547,7 +49589,7 @@ fprintf
      The optional output returns the number of bytes written to the
      file.
 
-     Implementation Note: For compatability with MATLAB, escape
+     Implementation Note: For compatibility with MATLAB, escape
      sequences in the template string (e.g., "\n" => newline) are
      expanded even when the template string is defined with single
      quotes.
@@ -49583,7 +49625,7 @@ printf
      See the Formatted Output section of the GNU Octave manual for a
      complete description of the syntax of the template string.
 
-     Implementation Note: For compatability with MATLAB, escape
+     Implementation Note: For compatibility with MATLAB, escape
      sequences in the template string (e.g., "\n" => newline) are
      expanded even when the template string is defined with single
      quotes.
@@ -49684,7 +49726,7 @@ sprintf
      function returns the string, automatically sized to hold all of the
      items converted.
 
-     Implementation Note: For compatability with MATLAB, escape
+     Implementation Note: For compatibility with MATLAB, escape
      sequences in the template string (e.g., "\n" => newline) are
      expanded even when the template string is defined with single
      quotes.
@@ -50353,14 +50395,14 @@ P_tmpdir
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 421
+# length: 422
  -- Built-in Function: P_tmpdir ()
      Return the name of the host system's *default* directory for
      temporary files.
 
      Programming Note: The value returned by 'P_tmpdir' is always the
      default location.  This value may not agree with that returned from
-     'tempdir' if the user has overriden the default with the 'TMPDIR'
+     'tempdir' if the user has overridden the default with the 'TMPDIR'
      environment variable.
 
      See also: tempdir, tempname, mkstemp, tmpfile.
@@ -51539,7 +51581,7 @@ addproperty
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2633
+# length: 2637
  -- Built-in Function: addproperty (NAME, H, TYPE)
  -- Built-in Function: addproperty (NAME, H, TYPE, ARG, ...)
      Create a new property named NAME in graphics object H.  TYPE
@@ -51592,7 +51634,7 @@ addproperty
      TYPE may also be the concatenation of a core object type and a
      valid property name for that object type.  The property created
      then has the same characteristics as the referenced property (type,
-     possible values, hidden state...).  This allows to clone an
+     possible values, hidden state...).  This allows one to clone an
      existing property into the graphics object H.
 
      Examples:
@@ -62808,15 +62850,20 @@ isindex
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 442
+# length: 654
  -- Built-in Function: isindex (IND)
  -- Built-in Function: isindex (IND, N)
-     Return true if IND is a valid index.  Valid indices are either
-     positive integers (although possibly of real data type), or logical
-     arrays.  If present, N specifies the maximum extent of the
-     dimension to be indexed.  When possible the internal result is
-     cached so that subsequent indexing using IND will not perform the
-     check again.
+     Return true if IND is a valid index.
+
+     Valid indices are either positive integers (although possibly of
+     real data type), or logical arrays.  If present, N specifies the
+     maximum extent of the dimension to be indexed.  When possible the
+     internal result is cached so that subsequent indexing using IND
+     will not perform the check again.
+
+     Implementation Note: Strings are first converted to double values
+     before the checks for valid indices are made.  Unless a string
+     contains the NULL character "\0", it will always be a valid index.
    
 
 
@@ -63272,7 +63319,7 @@ whos_line_format
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1969
+# length: 1970
  -- Built-in Function: VAL = whos_line_format ()
  -- Built-in Function: OLD_VAL = whos_line_format (NEW_VAL)
  -- Built-in Function: whos_line_format (NEW_VAL, "local")
@@ -63328,8 +63375,9 @@ whos_line_format
      the leftmost column.  'left-min' specifies the minimum field width
      to the left of the specified balance column.
 
-     The default format is " %a:4; %ln:6; %cs:16:6:1; %rb:12;
-     %lc:-1;\n".
+     The default format is:
+
+     " %a:4; %ln:6; %cs:16:6:1; %rb:12; %lc:-1;\n"
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it

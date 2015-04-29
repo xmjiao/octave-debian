@@ -78,6 +78,10 @@ was clicked in the units of the current axes.  The return value <var>button</var
 is 1, 2, or 3 for the left, middle, or right button.  If a key is pressed
 the ASCII value is returned in <var>button</var>.
 </p>
+<p>Implementation Note: <code>ginput</code> is intenteded for 2-D plots.  For 3-D
+plots see the <var>currentpoint</var> property of the current axes which can be
+transformed with knowledge of the current <code>view</code> into data units.
+</p>
 <p><strong>See also:</strong> <a href="#XREFgtext">gtext</a>, <a href="#XREFwaitforbuttonpress">waitforbuttonpress</a>.
 </p></dd></dl>
 

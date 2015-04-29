@@ -445,7 +445,7 @@ Additional properties can be added with the 'addproperty' function.
      TYPE may also be the concatenation of a core object type and a
      valid property name for that object type.  The property created
      then has the same characteristics as the referenced property (type,
-     possible values, hidden state...).  This allows to clone an
+     possible values, hidden state...).  This allows one to clone an
      existing property into the graphics object H.
 
      Examples:
@@ -4100,27 +4100,27 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      Compute Bessel or Hankel functions of various kinds:
 
      'besselj'
-          Bessel functions of the first kind.  If the argument OPT is
-          supplied, the result is multiplied by 'exp (-abs (imag (X)))'.
+          Bessel functions of the first kind.  If the argument OPT is 1
+          or true, the result is multiplied by 'exp (-abs (imag (X)))'.
 
      'bessely'
-          Bessel functions of the second kind.  If the argument OPT is
-          supplied, the result is multiplied by 'exp (-abs (imag (X)))'.
+          Bessel functions of the second kind.  If the argument OPT is 1
+          or true, the result is multiplied by 'exp (-abs (imag (X)))'.
 
      'besseli'
 
           Modified Bessel functions of the first kind.  If the argument
-          OPT is supplied, the result is multiplied by 'exp (-abs (real
+          OPT is 1 or true, the result is multiplied by 'exp (-abs (real
           (X)))'.
 
      'besselk'
 
           Modified Bessel functions of the second kind.  If the argument
-          OPT is supplied, the result is multiplied by 'exp (X)'.
+          OPT is 1 or true, the result is multiplied by 'exp (X)'.
 
      'besselh'
           Compute Hankel functions of the first (K = 1) or second (K =
-          2) kind.  If the argument OPT is supplied, the result is
+          2) kind.  If the argument OPT is 1 or true, the result is
           multiplied by 'exp (-I*X)' for K = 1 or 'exp (I*X)' for K = 2.
 
      If ALPHA is a scalar, the result is the same size as X.  If X is a
@@ -8097,50 +8097,4 @@ Subtraction works analogically.
 '.*', './', '.\' or '.^', an implicit conversion to full matrix will
 take place.  This is not always strictly necessary but chosen to
 facilitate better consistency with MATLAB.
-
-
-File: octave.info,  Node: Expressions Involving Permutation Matrices,  Prev: Expressions Involving Diagonal Matrices,  Up: Matrix Algebra
-
-21.2.2 Expressions Involving Permutation Matrices
--------------------------------------------------
-
-If P is a permutation matrix and M a matrix, the expression 'P*M' will
-permute the rows of M.  Similarly, 'M*P' will yield a column
-permutation.  Matrix division 'P\M' and 'M/P' can be used to do inverse
-permutation.
-
-   The previously described syntax for creating permutation matrices can
-actually help an user to understand the connection between a permutation
-matrix and a permuting vector.  Namely, the following holds, where 'I =
-eye (n)' is an identity matrix:
-
-       I(p,:) * M = (I*M) (p,:) = M(p,:)
-
-   Similarly,
-
-       M * I(:,p) = (M*I) (:,p) = M(:,p)
-
-   The expressions 'I(p,:)' and 'I(:,p)' are permutation matrices.
-
-   A permutation matrix can be transposed (or conjugate-transposed,
-which is the same, because a permutation matrix is never complex),
-inverting the permutation, or equivalently, turning a row-permutation
-matrix into a column-permutation one.  For permutation matrices,
-transpose is equivalent to inversion, thus 'P\M' is equivalent to
-'P'*M'.  Transpose of a permutation matrix (or inverse) is a
-constant-time operation, flipping only a flag internally, and thus the
-choice between the two above equivalent expressions for inverse
-permuting is completely up to the user's taste.
-
-   Multiplication and division by permutation matrices works efficiently
-also when combined with sparse matrices, i.e., 'P*S', where P is a
-permutation matrix and S is a sparse matrix permutes the rows of the
-sparse matrix and returns a sparse matrix.  The expressions 'S*P',
-'P\S', 'S/P' work analogically.
-
-   Two permutation matrices can be multiplied or divided (if their sizes
-match), performing a composition of permutations.  Also a permutation
-matrix can be indexed by a permutation vector (or two vectors), giving
-again a permutation matrix.  Any other operations do not generally yield
-a permutation matrix and will thus trigger the implicit conversion.
 

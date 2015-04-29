@@ -351,9 +351,9 @@ resulting in a single split.
 (default) or <code>false</code>.
 
 </li><li> <var>delimitertype</var> which may take the value of <code>&quot;simple&quot;</code>
-(default) or <code>&quot;regularexpression&quot;</code>.  A simple delimiter matches the
-text exactly as written.  Otherwise, the syntax for regular expressions
-outlined in <code>regexp</code> is used.
+(default) or <code>&quot;regularexpression&quot;</code>.  A simple delimiter
+matches the text exactly as written.  Otherwise, the syntax for regular
+expressions outlined in <code>regexp</code> is used.
 </li></ul>
 
 <p>The optional second output, <var>matches</var>, returns the delimiters which were
@@ -619,8 +619,10 @@ If false (0), return an error.
 <dt><code>&quot;whitespace&quot;</code></dt>
 <dd><p>Any character in <var>value</var> will be interpreted as whitespace and
 trimmed; the string defining whitespace must be enclosed in double
-quotes for proper processing of special characters like \t.
-The default value for whitespace = <code>&quot; \b\r\n\t&quot;</code> (note the space).
+quotes for proper processing of special characters like
+<code>&quot;\t&quot;</code>.  The default value for whitespace is
+<code>&quot; \b\r\n\t&quot;</code>
+(note the space).
 Unless whitespace is set to &rdquo; (empty) AND at least one <code>&quot;%s&quot;</code> format
 conversion specifier is supplied, a space is always part of whitespace.
 </p>
@@ -814,10 +816,11 @@ end (<code>$</code>) of the string.
 </dl>
 
 <p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences
-in <var>pat</var> (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded even when
-<var>pat</var> has been defined with single quotes.  To disable expansion use
-a second backslash before the escape sequence (e.g., &quot;\\n&quot;) or use the
-<code>regexptranslate</code> function.
+in <var>pat</var> (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded
+even when <var>pat</var> has been defined with single quotes.  To disable
+expansion use a second backslash before the escape sequence (e.g.,
+&quot;\\n&quot;) or use the <code>regexptranslate</code>
+function.
 </p>
 <p>The outputs of <code>regexp</code> default to the order given below
 </p>
@@ -990,10 +993,11 @@ for the ith set of parentheses in the match string.  For example,
 </dl>
 
 <p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences
-in <var>pat</var> (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded even when
-<var>pat</var> has been defined with single quotes.  To disable expansion use
-a second backslash before the escape sequence (e.g., &quot;\\n&quot;) or use the
-<code>regexptranslate</code> function.
+in <var>pat</var> (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are expanded
+even when <var>pat</var> has been defined with single quotes.  To disable
+expansion use a second backslash before the escape sequence (e.g.,
+&quot;\\n&quot;) or use the <code>regexptranslate</code>
+function.
 </p>
 <p><strong>See also:</strong> <a href="#XREFregexp">regexp</a>, <a href="#XREFregexpi">regexpi</a>, <a href="#XREFstrrep">strrep</a>.
 </p></dd></dl>

@@ -476,9 +476,11 @@ of the argument list:
 </dd>
 <dt><code>&quot;newline&quot;</code></dt>
 <dd><p>The character(s) to use to separate each row.  Three special cases
-exist for this option.  <code>&quot;unix&quot;</code> is changed into <code>&quot;\n&quot;</code>,
-<code>&quot;pc&quot;</code> is changed into <code>&quot;\r\n&quot;</code>, and <code>&quot;mac&quot;</code> is changed
-into <code>&quot;\r&quot;</code>.  Other values for this option are kept as is.
+exist for this option.  <code>&quot;unix&quot;</code> is changed into
+<code>&quot;\n&quot;</code>, <code>&quot;pc&quot;</code> is changed into
+<code>&quot;\r\n&quot;</code>, and <code>&quot;mac&quot;</code> is changed
+into <code>&quot;\r&quot;</code>.  Any other value is used directly as the
+newline separator.
 </p>
 </dd>
 <dt><code>&quot;roffset&quot;</code></dt>
@@ -500,7 +502,7 @@ format string (as used by fprintf) or a number of significant digits.
 </pre></div>
 
 <div class="example">
-<pre class="example">dlmwrite (&quot;file.tex&quot;, a, &quot;delimiter&quot;, &quot;&amp;&quot;, &quot;newline&quot;, &quot;\\n&quot;)
+<pre class="example">dlmwrite (&quot;file.tex&quot;, a, &quot;delimiter&quot;, &quot;&amp;&quot;, &quot;newline&quot;, &quot;\n&quot;)
 </pre></div>
 
 
@@ -594,7 +596,8 @@ supports two more:
 The first <var>value</var> number of lines of <var>filename</var> are skipped.
 
 </li><li> <code>&quot;endofline&quot;</code>:
-Specify a single character or <code>&quot;\r\n&quot;</code>.  If no value is given, it
+Specify a single character or
+<code>&quot;\r\n&quot;</code>.  If no value is given, it
 will be inferred from the file.  If set to &quot;&quot; (empty string) EOLs are
 ignored as delimiters.
 </li></ul>
@@ -636,10 +639,10 @@ of the same class in the output cell array.  A value of 0 or false (default)
 leaves output in distinct columns.
 
 </li><li> <code>&quot;endofline&quot;</code>:
-Specify <code>&quot;\r&quot;</code>, <code>&quot;\n&quot;</code> or <code>&quot;\r\n&quot;</code> (for CR, LF, or
-CRLF).  If no value is given, it will be inferred from the file.  If set
-to &quot;&quot; (empty string) EOLs are ignored as delimiters and added to
-whitespace.
+Specify <code>&quot;\r&quot;</code>, <code>&quot;\n&quot;</code> or
+<code>&quot;\r\n&quot;</code> (for CR, LF, or CRLF).  If no
+value is given, it will be inferred from the file.  If set to &quot;&quot; (empty
+string) EOLs are ignored as delimiters and added to whitespace.
 
 </li><li> <code>&quot;headerlines&quot;</code>:
 The first <var>value</var> number of lines of <var>fid</var> are skipped.

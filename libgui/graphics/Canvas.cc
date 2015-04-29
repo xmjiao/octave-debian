@@ -27,6 +27,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <QApplication>
 #include <QBitmap>
 #include <QCursor>
+#include <QInputDialog>
 #include <QList>
 #include <QMouseEvent>
 #include <QWheelEvent>
@@ -38,7 +39,12 @@ along with Octave; see the file COPYING.  If not, see
 #include "GLCanvas.h"
 #include "QtHandlesUtils.h"
 
+#include "annotation-dialog.h"
+
 #include "gl2ps-renderer.h"
+#include "octave-qt-link.h"
+
+#include "builtin-defun-decls.h"
 
 namespace QtHandles
 {
@@ -108,6 +114,11 @@ Canvas::print (const QString& file_cmd, const QString& term)
     }
 }
 
+/*
+   Two updateCurrentPoint() routines are required:
+   1) Used for QMouseEvents where cursor position data is in callback from Qt.
+   2) Used for QKeyEvents where cursor position must be determined.
+*/
 void
 Canvas::updateCurrentPoint(const graphics_object& fig,
                            const graphics_object& obj, QMouseEvent* event)
@@ -146,6 +157,54 @@ Canvas::updateCurrentPoint(const graphics_object& fig,
     }
 }
 
+void
+Canvas::updateCurrentPoint(const graphics_object& fig,
+                           const graphics_object& obj)
+{
+  gh_manager::auto_lock lock;
+
+  gh_manager::post_set (fig.get_handle (), "currentpoint",
+                        Utils::figureCurrentPoint (fig), false);
+
+  Matrix children = obj.get_properties ().get_children ();
+  octave_idx_type num_children = children.numel ();
+
+  for (int i = 0; i < num_children; i++)
+    {
+      graphics_object childObj (gh_manager::get_object (children(i)));
+
+      if (childObj.isa ("axes"))
+        {
+          // FIXME: QCursor::pos() may give inaccurate results with asynchronous
+          //        window systems like X11 over ssh.
+          QWidget *w = qWidget ();
+          QPoint p = w->mapFromGlobal (QCursor::pos ());
+          axes::properties& ap = Utils::properties<axes> (childObj);
+          Matrix x_zlim = ap.get_transform_zlim ();
+          graphics_xform x_form = ap.get_transform ();
+
+          ColumnVector p1 = x_form.untransform (p.x (), p.y (), x_zlim(0));
+          ColumnVector p2 = x_form.untransform (p.x (), p.y (), x_zlim(1));
+
+          Matrix cp (2, 3, 0.0);
+
+          cp(0,0) = p1(0); cp(0,1) = p1(1); cp(0,2) = p1(2);
+          cp(1,0) = p2(0); cp(1,1) = p2(1); cp(1,2) = p2(2);
+
+          gh_manager::post_set (childObj.get_handle (), "currentpoint", cp,
+                                false);
+        }
+    }
+}
+
+void
+Canvas::annotation_callback (const octave_value_list& args)
+{
+  Ffeval (ovl ("annotation").append (args));
+
+  redraw ();
+}
+  
 void
 Canvas::canvasToggleAxes (const graphics_handle& handle)
 {
@@ -264,7 +323,7 @@ Canvas::canvasPaintEvent (void)
 
       draw (m_handle);
 
-      if (m_mouseMode == ZoomInMode && m_mouseAxes.ok ())
+      if ((m_mouseMode == ZoomInMode && m_mouseAxes.ok ()) || m_rectMode)
         drawZoomBox (m_mouseAnchor, m_mouseCurrent);
     }
 }
@@ -365,7 +424,7 @@ Canvas::canvasMouseMoveEvent (QMouseEvent* event)
             redraw (true);
           }
           break;
-
+        case TextMode:
         case ZoomInMode:
         case ZoomOutMode:
           m_mouseCurrent = event->pos ();
@@ -458,7 +517,7 @@ Canvas::canvasMousePressEvent (QMouseEvent* event)
       graphics_object currentObj, axesObj;
       QList<graphics_object> axesList;
 
-      Matrix children = obj.get_properties ().get_children ();
+      Matrix children = obj.get_properties ().get_all_children ();
       octave_idx_type num_children = children.numel ();
 
       for (int i = 0; i < num_children; i++)
@@ -504,7 +563,7 @@ Canvas::canvasMousePressEvent (QMouseEvent* event)
                     axesObj = *it;
                 }
 
-              if (axesObj)
+              if (axesObj && currentObj)
                 break;
             }
 
@@ -556,14 +615,27 @@ Canvas::canvasMousePressEvent (QMouseEvent* event)
           break;
 
         case TextMode:
-          // Handle text insertion here.
+          {
+            if (event->modifiers () == Qt::NoModifier)
+              {
+                switch (event->buttons ())
+                  {
+                  case Qt::LeftButton:
+                    m_mouseAnchor = m_mouseCurrent = event->pos ();
+                    m_mouseAxes = axesObj.get_handle ();
+                    m_mouseMode = newMouseMode;
+                    m_rectMode = true;
+                  }
+              }
+            redraw (false);
+          }
           break;
 
         case PanMode:
         case RotateMode:
         case ZoomInMode:
         case ZoomOutMode:
-          if (axesObj)
+          if (axesObj && axesObj.get_properties ().handlevisibility_is ("on"))
             {
               bool redraw_figure = true;
 
@@ -588,10 +660,18 @@ Canvas::canvasMousePressEvent (QMouseEvent* event)
                       m_mouseAnchor = m_mouseCurrent = event->pos ();
                       m_mouseAxes = axesObj.get_handle ();
                       m_mouseMode = newMouseMode;
+                      m_clickMode = newMouseMode == ZoomInMode;
                       break;
 
                     case Qt::RightButton:
-                      Utils::properties<axes> (axesObj).unzoom ();
+                      if (newMouseMode == ZoomInMode)
+                        {
+                          m_mouseAnchor = m_mouseCurrent = event->pos ();
+                          m_mouseAxes = axesObj.get_handle ();
+                          m_mouseMode = newMouseMode;
+                          m_clickMode = false;
+                        }
+
                       break;
 
                     case Qt::MidButton:
@@ -613,7 +693,13 @@ Canvas::canvasMousePressEvent (QMouseEvent* event)
                   switch (event->buttons ())
                     {
                     case Qt::LeftButton:
-                      Utils::properties<axes> (axesObj).unzoom ();
+                      if (newMouseMode == ZoomInMode)
+                        {
+                          m_mouseAnchor = m_mouseCurrent = event->pos ();
+                          m_mouseAxes = axesObj.get_handle ();
+                          m_mouseMode = newMouseMode;
+                          m_clickMode = false;
+                        }
                       break;
 
                     default:
@@ -655,7 +741,7 @@ Canvas::canvasMouseReleaseEvent (QMouseEvent* event)
 
           if (m_mouseAnchor == event->pos ())
             {
-              double factor = m_mouseMode == ZoomInMode ? 2.0 : 0.5;
+              double factor = m_clickMode ? 2.0 : 0.5;
 
               ColumnVector p1 = ap.pixel2coord (event->x (), event->y ());
 
@@ -696,7 +782,38 @@ Canvas::canvasMouseReleaseEvent (QMouseEvent* event)
                                      "windowbuttonupfcn");
         }
     }
+  else if (m_mouseMode == TextMode)
+    {
+      gh_manager::auto_lock lock;
+      
+      graphics_object figObj = 
+        gh_manager::get_object (m_handle).get_ancestor ("figure");
+      if (figObj.valid_object ())
+        {          
+          QWidget *w = qWidget ();
+          if (w)
+            {
+              Matrix bb = figObj.get ("position").matrix_value ();
+              bb(0) = m_mouseAnchor.x () / bb(2);
+              bb(1) = 1.0 - (m_mouseAnchor.y () / bb(3));
+              bb(2) = (event->x () - m_mouseAnchor.x ()) / bb(2);
+              bb(3) = (m_mouseAnchor.y () - event->y ()) / bb(3);
 
+              octave_value_list props = ovl("textbox", bb);
+
+              annotation_dialog anno_dlg (w, props);
+            
+              if (anno_dlg.exec () == QDialog::Accepted)
+                {
+                  props = anno_dlg.get_properties ();
+
+                  octave_link::post_event (this, &Canvas::annotation_callback,
+                                           props);
+                }
+            }
+        }
+    }
+  m_rectMode = false;
   m_mouseAxes = graphics_handle ();
   m_mouseMode = NoMode;
 }
@@ -814,6 +931,16 @@ Canvas::canvasKeyPressEvent (QKeyEvent* event)
 {
   if (m_eventMask & KeyPress)
     {
+      gh_manager::auto_lock lock;
+      graphics_object obj = gh_manager::get_object (m_handle);
+
+      if (obj.valid_object ())
+        {
+          graphics_object figObj (obj.get_ancestor ("figure"));
+
+          updateCurrentPoint (figObj, obj);
+        }
+
       octave_scalar_map eventData = Utils::makeKeyEventStruct (event);
 
       gh_manager::post_set (m_handle, "currentcharacter",

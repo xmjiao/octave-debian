@@ -21,6 +21,56 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Integer Conversions,  Next: Floating-Point Conversions,  Prev: Table of Output Conversions,  Up: C-Style I/O Functions
+
+14.2.8 Integer Conversions
+--------------------------
+
+This section describes the options for the '%d', '%i', '%o', '%u', '%x',
+and '%X' conversion specifications.  These conversions print integers in
+various formats.
+
+   The '%d' and '%i' conversion specifications both print an numeric
+argument as a signed decimal number; while '%o', '%u', and '%x' print
+the argument as an unsigned octal, decimal, or hexadecimal number
+(respectively).  The '%X' conversion specification is just like '%x'
+except that it uses the characters 'ABCDEF' as digits instead of
+'abcdef'.
+
+   The following flags are meaningful:
+
+'-'
+     Left-justify the result in the field (instead of the normal
+     right-justification).
+
+'+'
+     For the signed '%d' and '%i' conversions, print a plus sign if the
+     value is positive.
+
+' '
+     For the signed '%d' and '%i' conversions, if the result doesn't
+     start with a plus or minus sign, prefix it with a space character
+     instead.  Since the '+' flag ensures that the result includes a
+     sign, this flag is ignored if you supply both of them.
+
+'#'
+     For the '%o' conversion, this forces the leading digit to be '0',
+     as if by increasing the precision.  For '%x' or '%X', this prefixes
+     a leading '0x' or '0X' (respectively) to the result.  This doesn't
+     do anything useful for the '%d', '%i', or '%u' conversions.
+
+'0'
+     Pad the field with zeros instead of spaces.  The zeros are placed
+     after any indication of sign or base.  This flag is ignored if the
+     '-' flag is also specified, or if a precision is specified.
+
+   If a precision is supplied, it specifies the minimum number of digits
+to appear; leading zeros are produced if necessary.  If you don't
+specify a precision, the number is printed with as many digits as it
+needs.  If you convert a value of zero with an explicit precision of
+zero, then no characters at all are produced.
+
+
 File: octave.info,  Node: Floating-Point Conversions,  Next: Other Output Conversions,  Prev: Integer Conversions,  Up: C-Style I/O Functions
 
 14.2.9 Floating-Point Conversions
@@ -652,7 +702,7 @@ be deleted, so this step need not be executed manually.
 
      Programming Note: The value returned by 'P_tmpdir' is always the
      default location.  This value may not agree with that returned from
-     'tempdir' if the user has overriden the default with the 'TMPDIR'
+     'tempdir' if the user has overridden the default with the 'TMPDIR'
      environment variable.
 
      See also: *note tempdir: XREFtempdir, *note tempname: XREFtempname,
@@ -5247,8 +5297,10 @@ window, call the 'close' function.
 
  -- Command: close
  -- Command: close (H)
+ -- Command: close H
  -- Command: close all
  -- Command: close all hidden
+ -- Command: close all force
      Close figure window(s).
 
      When called with no arguments, close the current figure.  This is
@@ -5260,6 +5312,10 @@ window, call the 'close' function.
 
      If the argument "all hidden" is given then all figures, including
      hidden ones, are closed.
+
+     If the argument "all force" is given then all figures are closed
+     even when "closerequestfcn" has been altered to prevent closing the
+     window.
 
      Implementation Note: 'close' operates by calling the function
      specified by the "closerequestfcn" property for each figure.  By
@@ -5816,6 +5872,11 @@ populated with specific user commands via the 'uimenu' function.
      clicked in the units of the current axes.  The return value BUTTON
      is 1, 2, or 3 for the left, middle, or right button.  If a key is
      pressed the ASCII value is returned in BUTTON.
+
+     Implementation Note: 'ginput' is intenteded for 2-D plots.  For 3-D
+     plots see the CURRENTPOINT property of the current axes which can
+     be transformed with knowledge of the current 'view' into data
+     units.
 
      See also: *note gtext: XREFgtext, *note waitforbuttonpress:
      XREFwaitforbuttonpress.
@@ -6753,7 +6814,7 @@ The 'root figure' properties are:
 'type' (read-only): string
      Class name of the graphics object.  'type' is always "root"
 
-'uicontextmenu': def. '[](0x0)'
+'uicontextmenu': graphics handle, def. '[](0x0)'
      'uicontextmenu' is unused.
 
 'units': "centimeters" | "inches" | "normalized" | {"pixels"} | "points"
@@ -6802,7 +6863,7 @@ The 'figure' properties are:
      Callback function executed immediately after figure has been
      created.  Function is set by using default property on root object,
      e.g., 'set (0, "defaultfigurecreatefcn", 'disp ("figure
-     created!")') '.
+     created!")')'.
 
 'currentaxes': graphics handle, def. '[](0x0)'
      Handle to the graphics object of the current axes.
@@ -6951,7 +7012,9 @@ The 'figure' properties are:
 'type' (read-only): string
      Class name of the graphics object.  'type' is always "figure"
 
-'uicontextmenu': def. '[](0x0)'
+'uicontextmenu': graphics handle, def. '[](0x0)'
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this figure object.
 
 'units': "centimeters" | "characters" | "inches" | "normalized" | {"pixels"} | "points"
      The unit used to compute the 'position' and 'outerposition'
@@ -7063,7 +7126,7 @@ The 'axes' properties are:
 'createfcn': string | function handle, def. '[](0x0)'
      Callback function executed immediately after axes has been created.
      Function is set by using default property on root object, e.g.,
-     'set (0, "defaultaxescreatefcn", 'disp ("axes created!")') '.
+     'set (0, "defaultaxescreatefcn", 'disp ("axes created!")')'.
 
 'currentpoint': 2-by-3 matrix, def. 2-by-3 double
      Matrix '[xf, yf, zf; xb, yb, zb]' which holds the coordinates (in
@@ -7182,7 +7245,9 @@ The 'axes' properties are:
 'type' (read-only): string
      Class name of the graphics object.  'type' is always "axes"
 
-'uicontextmenu': def. '[](0x0)'
+'uicontextmenu': graphics handle, def. '[](0x0)'
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this axes object.
 
 'units': "centimeters" | "characters" | "inches" | {"normalized"} | "pixels" | "points"
 
@@ -7340,7 +7405,7 @@ The 'line' properties are:
 'createfcn': string | function handle, def. '[](0x0)'
      Callback function executed immediately after line has been created.
      Function is set by using default property on root object, e.g.,
-     'set (0, "defaultlinecreatefcn", 'disp ("line created!")') '.
+     'set (0, "defaultlinecreatefcn", 'disp ("line created!")')'.
 
 'deletefcn': string | function handle, def. '[](0x0)'
      Callback function executed immediately before line is deleted.
@@ -7398,7 +7463,9 @@ The 'line' properties are:
 'type' (read-only): string
      Class name of the graphics object.  'type' is always "line"
 
-'uicontextmenu': def. '[](0x0)'
+'uicontextmenu': graphics handle, def. '[](0x0)'
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this line object.
 
 'userdata': Any Octave data, def. '[](0x0)'
      User-defined data to associate with the graphics object.
@@ -7457,7 +7524,7 @@ The 'text' properties are:
 'createfcn': string | function handle, def. '[](0x0)'
      Callback function executed immediately after text has been created.
      Function is set by using default property on root object, e.g.,
-     'set (0, "defaulttextcreatefcn", 'disp ("text created!")') '.
+     'set (0, "defaulttextcreatefcn", 'disp ("text created!")')'.
 
 'deletefcn': string | function handle, def. '[](0x0)'
      Callback function executed immediately before text is deleted.
@@ -7539,7 +7606,9 @@ The 'text' properties are:
 'type' (read-only): string
      Class name of the graphics object.  'type' is always "text"
 
-'uicontextmenu': def. '[](0x0)'
+'uicontextmenu': graphics handle, def. '[](0x0)'
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this text object.
 
 'units': "centimeters" | {"data"} | "inches" | "normalized" | "pixels" | "points"
 
@@ -7589,8 +7658,8 @@ The 'image' properties are:
 'createfcn': string | function handle, def. '[](0x0)'
      Callback function executed immediately after image has been
      created.  Function is set by using default property on root object,
-     e.g., 'set (0, "defaultimagecreatefcn", 'disp ("image created!")')
-     '.
+     e.g., 'set (0, "defaultimagecreatefcn", 'disp ("image
+     created!")')'.
 
 'deletefcn': string | function handle, def. '[](0x0)'
      Callback function executed immediately before image is deleted.
@@ -7622,7 +7691,9 @@ The 'image' properties are:
 'type' (read-only): string
      Class name of the graphics object.  'type' is always "image"
 
-'uicontextmenu': def. '[](0x0)'
+'uicontextmenu': graphics handle, def. '[](0x0)'
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this image object.
 
 'userdata': Any Octave data, def. '[](0x0)'
      User-defined data to associate with the graphics object.
@@ -7697,8 +7768,8 @@ The 'patch' properties are:
 'createfcn': string | function handle, def. '[](0x0)'
      Callback function executed immediately after patch has been
      created.  Function is set by using default property on root object,
-     e.g., 'set (0, "defaultpatchcreatefcn", 'disp ("patch created!")')
-     '.
+     e.g., 'set (0, "defaultpatchcreatefcn", 'disp ("patch
+     created!")')'.
 
 'deletefcn': string | function handle, def. '[](0x0)'
      Callback function executed immediately before patch is deleted.
@@ -7795,7 +7866,9 @@ The 'patch' properties are:
 'type' (read-only): string
      Class name of the graphics object.  'type' is always "patch"
 
-'uicontextmenu': def. '[](0x0)'
+'uicontextmenu': graphics handle, def. '[](0x0)'
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this patch object.
 
 'userdata': Any Octave data, def. '[](0x0)'
      User-defined data to associate with the graphics object.
@@ -7862,7 +7935,7 @@ The 'surface' properties are:
      Callback function executed immediately after surface has been
      created.  Function is set by using default property on root object,
      e.g., 'set (0, "defaultsurfacecreatefcn", 'disp ("surface
-     created!")') '.
+     created!")')'.
 
 'deletefcn': string | function handle, def. '[](0x0)'
      Callback function executed immediately before surface is deleted.
@@ -7954,7 +8027,9 @@ The 'surface' properties are:
 'type' (read-only): string
      Class name of the graphics object.  'type' is always "surface"
 
-'uicontextmenu': def. '[](0x0)'
+'uicontextmenu': graphics handle, def. '[](0x0)'
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this surface object.
 
 'userdata': Any Octave data, def. '[](0x0)'
      User-defined data to associate with the graphics object.

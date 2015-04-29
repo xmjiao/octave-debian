@@ -53,9 +53,6 @@ MouseModeActionGroup::MouseModeActionGroup (QObject* xparent)
   m_actions.append (new QAction (QIcon (":/images/select.png"),
                                  tr ("Select"), this));
 
-  m_actions[4]->setEnabled (false);
-  m_actions[5]->setEnabled (false);
-
   foreach (QAction* a, m_actions)
     {
       a->setCheckable (true);
@@ -86,8 +83,14 @@ MouseModeActionGroup::actionToggled (bool checked)
         {
           m_current = m_actions[i];
           for (int j = 0; j < m_actions.size (); j++)
-            if (j != i)
-              m_actions[j]->setChecked (false);
+            {
+              // SelectMode cancels all the others but the button
+              // doesn't remain highlighed.
+
+              if (j != i || i+1 == SelectMode)
+                m_actions[j]->setChecked (false);
+            }
+
           emit modeChanged (static_cast<MouseMode> (i+1));
         }
     }
@@ -97,7 +100,13 @@ void
 MouseModeActionGroup::setMode (MouseMode mode)
 {
   for (int i = 0; i < m_actions.size (); i++)
-    m_actions[i]->setChecked (i == mode - 1);
+    m_actions[i]->setChecked (i+1 == mode);
+
+  // SelectMode cancels all the others but the button doesn't remain
+  // highlighed.
+
+  if (mode == SelectMode)
+    m_actions[SelectMode-1]->setChecked (false);
 }
   
 };

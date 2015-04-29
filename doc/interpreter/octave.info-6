@@ -1694,23 +1694,38 @@ area.  A simplified version of 'polyarea' for rectangles is available
 with 'rectint'
 
  -- Function File: AREA = rectint (A, B)
+     Compute area or volume of intersection of rectangles or ND boxes.
 
      Compute the area of intersection of rectangles in A and rectangles
-     in B.  Rectangles are defined as [x y width height] where x and y
-     are the minimum values of the two orthogonal dimensions.
+     in B.  N dimensional boxes are supported in which case the volume,
+     or hypervolume is computed according to the number of dimensions.
 
-     If A or B are matrices, then the output, AREA, is a matrix where
-     the i-th row corresponds to the i-th row of a and the j-th column
-     corresponds to the j-th row of b.
+     2 dimensional rectangles are defined as '[xpos ypos width height]'
+     where xpos and ypos are the position of the bottom left corner.
+     Higher dimensions are supported where the coordinates for the
+     minimum value of each dimension follow the length of the box in
+     that dimension, e.g., '[xpos ypos zpos kpos ... width height depth
+     k_length ...]'.
+
+     Each row of A and B define a rectangle, and if both define multiple
+     rectangles, then the output, AREA, is a matrix where the i-th row
+     corresponds to the i-th row of a and the j-th column corresponds to
+     the j-th row of b.
 
      See also: *note polyarea: XREFpolyarea.
 
+ -- Function File: IN = inpolygon (X, Y, XV, YV)
  -- Function File: [IN, ON] = inpolygon (X, Y, XV, YV)
 
-     For a polygon defined by vertex points '(XV, YV)', determine if the
-     points '(X, Y)' are inside or outside the polygon.  The variables
-     X, Y, must have the same dimension.  The optional output ON gives
-     the points that are on the polygon.
+     For a polygon defined by vertex points '(XV, YV)', return true if
+     the points '(X, Y)' are inside (or on the boundary) of the polygon;
+     Otherwise, return false.
+
+     The variables X, Y, must have the same dimension.  The optional
+     output ON returns true if the points are exactly on the polygon
+     edge, and false otherwise.
+
+     See also: *note delaunay: XREFdelaunay.
 
    An example of the use of 'inpolygon' might be
 
@@ -2964,12 +2979,12 @@ large amount of image formats in science and its commonly closed nature,
 it is impossible to have a library capable of reading them all.  Because
 of this, the function 'imformats' keeps a configurable list of available
 formats, their extensions, and what functions should the image IO
-functions use.  This allows to expand Octave's image IO capabilities by
-creating functions aimed at acting on specific file formats.
+functions use.  This allows one to expand Octave's image IO capabilities
+by creating functions aimed at acting on specific file formats.
 
    While it would be possible to call the extra functions directly,
-properly configuring Octave with 'imformats' allows to keep a consistent
-code that is abstracted from file formats.
+properly configuring Octave with 'imformats' allows one to keep a
+consistent code that is abstracted from file formats.
 
    It is important to note that a file format is not actually defined by
 its file extension and that 'GraphicsMagick' is capable to read and
@@ -3251,7 +3266,7 @@ color map must be of class 'double' with values between 0 and 1.
      equal to the number of rows in MAP) in order
 
      Multi-dimensional indexed images (of size MxNx3xK) are also
-     supported, both via a single input (RGB) or its three colour
+     supported, both via a single input (RGB) or its three color
      channels as separate variables.
 
      See also: *note ind2rgb: XREFind2rgb, *note rgb2hsv: XREFrgb2hsv,

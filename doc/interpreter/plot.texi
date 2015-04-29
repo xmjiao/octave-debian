@@ -5060,8 +5060,10 @@ features from a plot without clearing the entire figure.
 @anchor{XREFclose}
 @deftypefn  {Command} {} close
 @deftypefnx {Command} {} close (@var{h})
+@deftypefnx {Command} {} close @var{h}
 @deftypefnx {Command} {} close all
 @deftypefnx {Command} {} close all hidden
+@deftypefnx {Command} {} close all force
 Close figure window(s).
 
 When called with no arguments, close the current figure.  This is equivalent
@@ -5073,6 +5075,10 @@ If the argument @qcode{"all"} is given then all figures with visible handles
 
 If the argument @qcode{"all hidden"} is given then all figures, including
 hidden ones, are closed.
+
+If the argument @qcode{"all force"} is given then all figures are closed
+even when @qcode{"closerequestfcn"} has been altered to prevent closing
+the window.
 
 Implementation Note: @code{close} operates by calling the function specified
 by the @qcode{"closerequestfcn"} property for each figure.  By default, the
@@ -5873,6 +5879,10 @@ The return values @var{x}, @var{y} are the coordinates where the mouse
 was clicked in the units of the current axes.  The return value @var{button}
 is 1, 2, or 3 for the left, middle, or right button.  If a key is pressed
 the ASCII value is returned in @var{button}.
+
+Implementation Note: @code{ginput} is intenteded for 2-D plots.  For 3-D
+plots see the @var{currentpoint} property of the current axes which can be
+transformed with knowledge of the current @code{view} into data units.
 @seealso{@ref{XREFgtext,,gtext}, @ref{XREFwaitforbuttonpress,,waitforbuttonpress}}
 @end deftypefn
 
@@ -7474,8 +7484,8 @@ additional set of accepted string values (like a radio property).
 @var{type} may also be the concatenation of a core object type and
 a valid property name for that object type.  The property created
 then has the same characteristics as the referenced property (type,
-possible values, hidden state@dots{}).  This allows to clone an existing
-property into the graphics object @var{h}.
+possible values, hidden state@dots{}).  This allows one to clone an
+existing property into the graphics object @var{h}.
 
 Examples:
 

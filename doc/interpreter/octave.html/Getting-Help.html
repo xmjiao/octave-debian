@@ -117,26 +117,27 @@ using the command <kbd>C-h</kbd>.
 <a name="XREFlookfor"></a><dl>
 <dt><a name="index-lookfor"></a>Command: <em></em> <strong>lookfor</strong> <em><var>str</var></em></dt>
 <dt><a name="index-lookfor-1"></a>Command: <em></em> <strong>lookfor</strong> <em>-all <var>str</var></em></dt>
-<dt><a name="index-lookfor-2"></a>Function File: <em>[<var>func</var>, <var>helpstring</var>] =</em> <strong>lookfor</strong> <em>(<var>str</var>)</em></dt>
-<dt><a name="index-lookfor-3"></a>Function File: <em>[<var>func</var>, <var>helpstring</var>] =</em> <strong>lookfor</strong> <em>(&quot;-all&quot;, <var>str</var>)</em></dt>
-<dd><p>Search for the string <var>str</var> in all functions found in the current
-function search path.  By default, <code>lookfor</code> searches for <var>str</var>
-in the first sentence of the help string of each function found.  The entire
-help text of each function can be searched if the <code>&quot;-all&quot;</code> argument is
-supplied.  All searches are case insensitive.
+<dt><a name="index-lookfor-2"></a>Function File: <em>[<var>fcn</var>, <var>help1str</var>] =</em> <strong>lookfor</strong> <em>(<var>str</var>)</em></dt>
+<dt><a name="index-lookfor-3"></a>Function File: <em>[<var>fcn</var>, <var>help1str</var>] =</em> <strong>lookfor</strong> <em>(&quot;-all&quot;, <var>str</var>)</em></dt>
+<dd><p>Search for the string <var>str</var> in all functions using the current function
+search path.
 </p>
-<p>Called with no output arguments, <code>lookfor</code> prints the list of
-matching functions to the terminal.  Otherwise, the output arguments
-<var>func</var> and <var>helpstring</var> define the matching functions and the
-first sentence of each of their help strings.
+<p>By default, <code>lookfor</code> looks for <var>str</var> in the first sentence of the
+help string for each function found.  The entire help text of each function
+can be searched by using the <code>&quot;-all&quot;</code> argument.  All searches are case
+insensitive.
 </p>
-<p>The ability of <code>lookfor</code> to correctly identify the first
-sentence of the help text is dependent on the format of the
-function&rsquo;s help.  All Octave core functions are correctly
-formatted, but the same can not be guaranteed for external packages and
-user-supplied functions.  Therefore, the use of the <code>&quot;-all&quot;</code>
-argument may be necessary to find related functions that are not a part of
-Octave.
+<p>When called with no output arguments, <code>lookfor</code> prints the list of
+matching functions to the terminal.  Otherwise, the output argument
+<var>fcns</var> contains the function names and <var>help1str</var> contains the first
+sentence from the help string of each function.
+</p>
+<p>Programming Note: The ability of <code>lookfor</code> to correctly identify the
+first sentence of the help text is dependent on the format of the function&rsquo;s
+help.  All Octave core functions are correctly formatted, but the same can
+not be guaranteed for external packages and user-supplied functions.
+Therefore, the use of the <code>&quot;-all&quot;</code> argument may be necessary to find
+related functions that are not a part of Octave.
 </p>
 <p><strong>See also:</strong> <a href="#XREFhelp">help</a>, <a href="#XREFdoc">doc</a>, <a href="Status-of-Variables.html#XREFwhich">which</a>.
 </p></dd></dl>

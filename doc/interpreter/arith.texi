@@ -1622,26 +1622,26 @@ Compute Bessel or Hankel functions of various kinds:
 
 @table @code
 @item besselj
-Bessel functions of the first kind.  If the argument @var{opt} is supplied,
-the result is multiplied by @code{exp (-abs (imag (@var{x})))}.
+Bessel functions of the first kind.  If the argument @var{opt} is 1 or true,
+the result is multiplied by @w{@code{exp (-abs (imag (@var{x})))}}.
 
 @item bessely
-Bessel functions of the second kind.  If the argument @var{opt} is supplied,
+Bessel functions of the second kind.  If the argument @var{opt} is 1 or true,
 the result is multiplied by @code{exp (-abs (imag (@var{x})))}.
 
 @item besseli
 
-Modified Bessel functions of the first kind.  If the argument @var{opt} is
-supplied, the result is multiplied by @code{exp (-abs (real (@var{x})))}.
+Modified Bessel functions of the first kind.  If the argument @var{opt} is 1
+or true, the result is multiplied by @code{exp (-abs (real (@var{x})))}.
 
 @item besselk
 
-Modified Bessel functions of the second kind.  If the argument @var{opt} is
-supplied, the result is multiplied by @code{exp (@var{x})}.
+Modified Bessel functions of the second kind.  If the argument @var{opt} is 1
+or true, the result is multiplied by @code{exp (@var{x})}.
 
 @item besselh
 Compute Hankel functions of the first (@var{k} = 1) or second (@var{k}
-= 2) kind.  If the argument @var{opt} is supplied, the result is multiplied
+= 2) kind.  If the argument @var{opt} is 1 or true, the result is multiplied
 by @code{exp (-I*@var{x})} for @var{k} = 1 or @code{exp (I*@var{x})} for
 @var{k} = 2.
 @end table

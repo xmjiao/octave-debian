@@ -360,11 +360,16 @@ moving from one column to next, filling up all rows in each column.
 @anchor{XREFisindex}
 @deftypefn  {Built-in Function} {} isindex (@var{ind})
 @deftypefnx {Built-in Function} {} isindex (@var{ind}, @var{n})
-Return true if @var{ind} is a valid index.  Valid indices are
-either positive integers (although possibly of real data type), or logical
-arrays.  If present, @var{n} specifies the maximum extent of the dimension
-to be indexed.  When possible the internal result is cached so that
-subsequent indexing using @var{ind} will not perform the check again.
+Return true if @var{ind} is a valid index.
+
+Valid indices are either positive integers (although possibly of real data
+type), or logical arrays.  If present, @var{n} specifies the maximum extent
+of the dimension to be indexed.  When possible the internal result is cached
+so that subsequent indexing using @var{ind} will not perform the check again.
+
+Implementation Note: Strings are first converted to double values before the
+checks for valid indices are made.  Unless a string contains the NULL
+character @nospell{"\0"}, it will always be a valid index.
 @end deftypefn
 
 
