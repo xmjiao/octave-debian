@@ -291,6 +291,7 @@ graphics_libgui_graphics_la_LIBADD =
 am__dirstamp = $(am__leading_dot)dirstamp
 am_graphics_libgui_graphics_la_OBJECTS =  \
 	graphics/graphics_libgui_graphics_la-__init_qt__.lo \
+	graphics/graphics_libgui_graphics_la-annotation-dialog.lo \
 	graphics/graphics_libgui_graphics_la-Backend.lo \
 	graphics/graphics_libgui_graphics_la-BaseControl.lo \
 	graphics/graphics_libgui_graphics_la-ButtonControl.lo \
@@ -515,6 +516,7 @@ am__objects_6 = $(am__objects_5) src/src_libgui_src_la-moc-dialog.lo \
 	src/qtinfo/src_libgui_src_la-moc-parser.lo \
 	src/qtinfo/src_libgui_src_la-moc-webinfo.lo \
 	src/src_libgui_src_la-moc-octave-dock-widget.lo \
+	graphics/src_libgui_src_la-moc-annotation-dialog.lo \
 	graphics/src_libgui_src_la-moc-Backend.lo \
 	graphics/src_libgui_src_la-moc-ButtonControl.lo \
 	graphics/src_libgui_src_la-moc-ContextMenu.lo \
@@ -2185,11 +2187,11 @@ EXTRA_DIST = default-qt-settings.in $(TRANSLATIONS) src/module.mk \
 	graphics/images/README graphics/images/pan.png \
 	graphics/images/rotate.png graphics/images/select.png \
 	graphics/images/zoom-in.png graphics/images/zoom-out.png \
-	qterminal-module.mk
+	$(octave_gui_graphics_UI) qterminal-module.mk
 CLEANFILES = $(octave_gui_MOC) $(octave_gui_UI_H) $(octave_gui_RC) \
 	$(octave_gui_graphics_MOC) $(octave_gui_graphics_RC) \
-	$(qterminal_libqterminal_la_MOC)
-BUILT_SOURCES = $(octave_gui_UI_H)
+	$(octave_gui_graphics_UI_H) $(qterminal_libqterminal_la_MOC)
+BUILT_SOURCES = $(octave_gui_UI_H) $(octave_gui_graphics_UI_H)
 noinst_HEADERS = src/dialog.h src/octave-dock-widget.h \
 	src/documentation-dock-widget.h src/files-dock-widget.h \
 	src/history-dock-widget.h src/m-editor/file-editor-interface.h \
@@ -2203,7 +2205,8 @@ noinst_HEADERS = src/dialog.h src/octave-dock-widget.h \
 	src/terminal-dock-widget.h src/color-picker.h \
 	src/welcome-wizard.h src/find-files-dialog.h \
 	src/find-files-model.h src/workspace-model.h \
-	src/workspace-view.h graphics/__init_qt__.h graphics/Backend.h \
+	src/workspace-view.h graphics/__init_qt__.h \
+	graphics/annotation-dialog.h graphics/Backend.h \
 	graphics/BaseControl.h graphics/ButtonControl.h \
 	graphics/Canvas.h graphics/CheckBoxControl.h \
 	graphics/Container.h graphics/ContextMenu.h \
@@ -2318,15 +2321,16 @@ octave_gui_MOC = $(am__append_1) src/moc-dialog.cc \
 	src/moc-workspace-view.cc src/moc-find-files-dialog.cc \
 	src/moc-find-files-model.cc src/qtinfo/moc-parser.cc \
 	src/qtinfo/moc-webinfo.cc src/moc-octave-dock-widget.cc \
-	graphics/moc-Backend.cc graphics/moc-ButtonControl.cc \
-	graphics/moc-ContextMenu.cc graphics/moc-EditControl.cc \
-	graphics/moc-Figure.cc graphics/moc-FigureWindow.cc \
-	graphics/moc-ListBoxControl.cc graphics/moc-Menu.cc \
-	graphics/moc-MouseModeActionGroup.cc graphics/moc-Object.cc \
-	graphics/moc-ObjectFactory.cc graphics/moc-ObjectProxy.cc \
-	graphics/moc-PopupMenuControl.cc graphics/moc-PushTool.cc \
-	graphics/moc-SliderControl.cc graphics/moc-TextEdit.cc \
-	graphics/moc-ToggleTool.cc graphics/moc-ToolBar.cc
+	graphics/moc-annotation-dialog.cc graphics/moc-Backend.cc \
+	graphics/moc-ButtonControl.cc graphics/moc-ContextMenu.cc \
+	graphics/moc-EditControl.cc graphics/moc-Figure.cc \
+	graphics/moc-FigureWindow.cc graphics/moc-ListBoxControl.cc \
+	graphics/moc-Menu.cc graphics/moc-MouseModeActionGroup.cc \
+	graphics/moc-Object.cc graphics/moc-ObjectFactory.cc \
+	graphics/moc-ObjectProxy.cc graphics/moc-PopupMenuControl.cc \
+	graphics/moc-PushTool.cc graphics/moc-SliderControl.cc \
+	graphics/moc-TextEdit.cc graphics/moc-ToggleTool.cc \
+	graphics/moc-ToolBar.cc
 octave_gui_RC = src/qrc-resource.cc
 octave_gui_UI = \
   src/settings-dialog.ui
@@ -2388,9 +2392,14 @@ src_libgui_src_la_CPPFLAGS = \
 
 src_libgui_src_la_CFLAGS = $(AM_CFLAGS) $(WARN_CFLAGS)
 src_libgui_src_la_CXXFLAGS = $(AM_CXXFLAGS) $(WARN_CXXFLAGS)
+octave_gui_graphics_UI = \
+  graphics/annotation-dialog.ui
+
+octave_gui_graphics_UI_H = $(patsubst graphics/%.ui, graphics/ui-%.h, $(octave_gui_graphics_UI))
 octave_gui_graphics_RC = graphics/qrc-qthandles.cc
 graphics_libgui_graphics_la_SOURCES = \
   graphics/__init_qt__.cc \
+  graphics/annotation-dialog.cc \
   graphics/Backend.cc \
   graphics/BaseControl.cc \
   graphics/ButtonControl.cc \
@@ -2572,7 +2581,7 @@ liboctgui_la_LIBADD = \
 
 
 # Increment these as needed and according to the rules in the libtool manual:
-liboctgui_current = 0
+liboctgui_current = 1
 liboctgui_revision = 0
 liboctgui_age = 0
 liboctgui_version_info = $(liboctgui_current):$(liboctgui_revision):$(liboctgui_age)
@@ -2681,6 +2690,8 @@ graphics/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) graphics/$(DEPDIR)
 	@: > graphics/$(DEPDIR)/$(am__dirstamp)
 graphics/graphics_libgui_graphics_la-__init_qt__.lo:  \
+	graphics/$(am__dirstamp) graphics/$(DEPDIR)/$(am__dirstamp)
+graphics/graphics_libgui_graphics_la-annotation-dialog.lo:  \
 	graphics/$(am__dirstamp) graphics/$(DEPDIR)/$(am__dirstamp)
 graphics/graphics_libgui_graphics_la-Backend.lo:  \
 	graphics/$(am__dirstamp) graphics/$(DEPDIR)/$(am__dirstamp)
@@ -3001,6 +3012,8 @@ src/qtinfo/src_libgui_src_la-moc-webinfo.lo:  \
 	src/qtinfo/$(DEPDIR)/$(am__dirstamp)
 src/src_libgui_src_la-moc-octave-dock-widget.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
+graphics/src_libgui_src_la-moc-annotation-dialog.lo:  \
+	graphics/$(am__dirstamp) graphics/$(DEPDIR)/$(am__dirstamp)
 graphics/src_libgui_src_la-moc-Backend.lo: graphics/$(am__dirstamp) \
 	graphics/$(DEPDIR)/$(am__dirstamp)
 graphics/src_libgui_src_la-moc-ButtonControl.lo:  \
@@ -3096,6 +3109,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/graphics_libgui_graphics_la-ToggleTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/graphics_libgui_graphics_la-ToolBar.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/graphics_libgui_graphics_la-__init_qt__.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/graphics_libgui_graphics_la-annotation-dialog.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/graphics_libgui_graphics_la-gl-select.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/graphics_libgui_graphics_la-qrc-qthandles.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/src_libgui_src_la-moc-Backend.Plo@am__quote@
@@ -3116,6 +3130,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/src_libgui_src_la-moc-TextEdit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/src_libgui_src_la-moc-ToggleTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/src_libgui_src_la-moc-ToolBar.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@graphics/$(DEPDIR)/src_libgui_src_la-moc-annotation-dialog.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@qterminal/libqterminal/$(DEPDIR)/qterminal_libqterminal_la-QTerminal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@qterminal/libqterminal/$(DEPDIR)/qterminal_libqterminal_la-moc-QTerminal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@qterminal/libqterminal/unix/$(DEPDIR)/qterminal_libqterminal_la-BlockArray.Plo@am__quote@
@@ -3230,6 +3245,13 @@ graphics/graphics_libgui_graphics_la-__init_qt__.lo: graphics/__init_qt__.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='graphics/__init_qt__.cc' object='graphics/graphics_libgui_graphics_la-__init_qt__.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(graphics_libgui_graphics_la_CPPFLAGS) $(CPPFLAGS) $(graphics_libgui_graphics_la_CXXFLAGS) $(CXXFLAGS) -c -o graphics/graphics_libgui_graphics_la-__init_qt__.lo `test -f 'graphics/__init_qt__.cc' || echo '$(srcdir)/'`graphics/__init_qt__.cc
+
+graphics/graphics_libgui_graphics_la-annotation-dialog.lo: graphics/annotation-dialog.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(graphics_libgui_graphics_la_CPPFLAGS) $(CPPFLAGS) $(graphics_libgui_graphics_la_CXXFLAGS) $(CXXFLAGS) -MT graphics/graphics_libgui_graphics_la-annotation-dialog.lo -MD -MP -MF graphics/$(DEPDIR)/graphics_libgui_graphics_la-annotation-dialog.Tpo -c -o graphics/graphics_libgui_graphics_la-annotation-dialog.lo `test -f 'graphics/annotation-dialog.cc' || echo '$(srcdir)/'`graphics/annotation-dialog.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) graphics/$(DEPDIR)/graphics_libgui_graphics_la-annotation-dialog.Tpo graphics/$(DEPDIR)/graphics_libgui_graphics_la-annotation-dialog.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='graphics/annotation-dialog.cc' object='graphics/graphics_libgui_graphics_la-annotation-dialog.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(graphics_libgui_graphics_la_CPPFLAGS) $(CPPFLAGS) $(graphics_libgui_graphics_la_CXXFLAGS) $(CXXFLAGS) -c -o graphics/graphics_libgui_graphics_la-annotation-dialog.lo `test -f 'graphics/annotation-dialog.cc' || echo '$(srcdir)/'`graphics/annotation-dialog.cc
 
 graphics/graphics_libgui_graphics_la-Backend.lo: graphics/Backend.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(graphics_libgui_graphics_la_CPPFLAGS) $(CPPFLAGS) $(graphics_libgui_graphics_la_CXXFLAGS) $(CXXFLAGS) -MT graphics/graphics_libgui_graphics_la-Backend.lo -MD -MP -MF graphics/$(DEPDIR)/graphics_libgui_graphics_la-Backend.Tpo -c -o graphics/graphics_libgui_graphics_la-Backend.lo `test -f 'graphics/Backend.cc' || echo '$(srcdir)/'`graphics/Backend.cc
@@ -4035,6 +4057,13 @@ src/src_libgui_src_la-moc-octave-dock-widget.lo: src/moc-octave-dock-widget.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/moc-octave-dock-widget.cc' object='src/src_libgui_src_la-moc-octave-dock-widget.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(src_libgui_src_la_CPPFLAGS) $(CPPFLAGS) $(src_libgui_src_la_CXXFLAGS) $(CXXFLAGS) -c -o src/src_libgui_src_la-moc-octave-dock-widget.lo `test -f 'src/moc-octave-dock-widget.cc' || echo '$(srcdir)/'`src/moc-octave-dock-widget.cc
+
+graphics/src_libgui_src_la-moc-annotation-dialog.lo: graphics/moc-annotation-dialog.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(src_libgui_src_la_CPPFLAGS) $(CPPFLAGS) $(src_libgui_src_la_CXXFLAGS) $(CXXFLAGS) -MT graphics/src_libgui_src_la-moc-annotation-dialog.lo -MD -MP -MF graphics/$(DEPDIR)/src_libgui_src_la-moc-annotation-dialog.Tpo -c -o graphics/src_libgui_src_la-moc-annotation-dialog.lo `test -f 'graphics/moc-annotation-dialog.cc' || echo '$(srcdir)/'`graphics/moc-annotation-dialog.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) graphics/$(DEPDIR)/src_libgui_src_la-moc-annotation-dialog.Tpo graphics/$(DEPDIR)/src_libgui_src_la-moc-annotation-dialog.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='graphics/moc-annotation-dialog.cc' object='graphics/src_libgui_src_la-moc-annotation-dialog.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(src_libgui_src_la_CPPFLAGS) $(CPPFLAGS) $(src_libgui_src_la_CXXFLAGS) $(CXXFLAGS) -c -o graphics/src_libgui_src_la-moc-annotation-dialog.lo `test -f 'graphics/moc-annotation-dialog.cc' || echo '$(srcdir)/'`graphics/moc-annotation-dialog.cc
 
 graphics/src_libgui_src_la-moc-Backend.lo: graphics/moc-Backend.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(src_libgui_src_la_CPPFLAGS) $(CPPFLAGS) $(src_libgui_src_la_CXXFLAGS) $(CXXFLAGS) -MT graphics/src_libgui_src_la-moc-Backend.lo -MD -MP -MF graphics/$(DEPDIR)/src_libgui_src_la-moc-Backend.Tpo -c -o graphics/src_libgui_src_la-moc-Backend.lo `test -f 'graphics/moc-Backend.cc' || echo '$(srcdir)/'`graphics/moc-Backend.cc

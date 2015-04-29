@@ -1047,6 +1047,30 @@ box (JNIEnv* jni_env, jobject jobj, jclass jcls)
           break;
         }
 
+#define BOX_PRIMITIVE_ARRAY(JAVA_TYPE, JAVA_ID, JAVA_TYPE_CAP, OCTAVE_ID) \
+      cls = jni_env->FindClass (JAVA_ID); \
+      if (jni_env->IsInstanceOf (jobj, cls)) \
+        { \
+          const JAVA_TYPE ## Array jarr = reinterpret_cast<JAVA_TYPE ## Array> (jobj); \
+          const jsize len = jni_env->GetArrayLength (jarr); \
+          OCTAVE_ID ## NDArray d (dim_vector (len, 1)); \
+          JAVA_TYPE * buffer = reinterpret_cast<JAVA_TYPE *> (d.fortran_vec ()); \
+          jni_env->Get ## JAVA_TYPE_CAP ## ArrayRegion (jarr, 0, len, buffer); \
+          retval = d; \
+          break; \
+        }
+
+BOX_PRIMITIVE_ARRAY (jboolean, "[Z", Boolean, bool)
+BOX_PRIMITIVE_ARRAY (jchar,    "[C", Char,    char)
+BOX_PRIMITIVE_ARRAY (jbyte,    "[B", Byte,    int8)
+BOX_PRIMITIVE_ARRAY (jshort,   "[S", Short,   int16)
+BOX_PRIMITIVE_ARRAY (jint,     "[I", Int,     int32)
+BOX_PRIMITIVE_ARRAY (jlong,    "[J", Long,    int64)
+BOX_PRIMITIVE_ARRAY (jfloat,   "[F", Float,   Float)
+BOX_PRIMITIVE_ARRAY (jdouble,  "[D", Double,  )
+
+#undef BOX_PRIMITIVE_ARRAY
+
       if (Vjava_matrix_autoconversion)
         {
           cls = find_octave_class (jni_env, "org/octave/Matrix");
@@ -1237,11 +1261,11 @@ box_more (JNIEnv* jni_env, jobject jobj, jclass jcls)
   return retval;
 }
 
-int
+bool
 unbox (JNIEnv* jni_env, const octave_value& val, jobject_ref& jobj,
        jclass_ref& jcls)
 {
-  int found = 1;
+  bool found = true;
 
   if (val.is_java ())
     {
@@ -1257,44 +1281,60 @@ unbox (JNIEnv* jni_env, const octave_value& val, jobject_ref& jobj,
       jobj = jni_env->NewStringUTF (s.c_str ());
       jcls = jni_env->GetObjectClass (jobj);
     }
-  else if (val.is_real_scalar ())
+  else if (val.numel () > 1 && val.dims ().is_vector ())
     {
-      if (val.is_double_type ())
-        {
-          double dval = val.double_value ();
-          jclass_ref dcls (jni_env, jni_env->FindClass ("java/lang/Double"));
-          jfieldID fid = jni_env->GetStaticFieldID (dcls, "TYPE", "Ljava/lang/Class;");
-          jmethodID mid = jni_env->GetMethodID (dcls, "<init>", "(D)V");
-          jcls = reinterpret_cast<jclass> (jni_env->GetStaticObjectField (dcls, fid));
-          jobj = jni_env->NewObject (dcls, mid, dval);
+#define IF_UNBOX_PRIMITIVE_ARRAY(CHECK_TYPE, METHOD_TYPE, OCTAVE_TYPE, JAVA_TYPE, JAVA_TYPE_CAP) \
+      if (val.is_ ## CHECK_TYPE ## _type ()) \
+        { \
+          const OCTAVE_TYPE ## NDArray v = val.METHOD_TYPE ## array_value (); \
+          JAVA_TYPE ## Array jarr = jni_env->New ## JAVA_TYPE_CAP ## Array (v.numel ()); \
+          const JAVA_TYPE* jv = reinterpret_cast<const JAVA_TYPE*> (v.data ()); \
+          jni_env->Set ## JAVA_TYPE_CAP ## ArrayRegion (jarr, 0, v.numel (), jv); \
+          jobj = reinterpret_cast<jobject> (jarr); \
+          jcls = jni_env->GetObjectClass (jobj); \
         }
-      else if (val.is_bool_type ())
-        {
-          bool bval = val.bool_value ();
-          jclass_ref bcls (jni_env, jni_env->FindClass ("java/lang/Boolean"));
-          jfieldID fid = jni_env->GetStaticFieldID (bcls, "TYPE", "Ljava/lang/Class;");
-          jmethodID mid = jni_env->GetMethodID (bcls, "<init>", "(Z)V");
-          jcls = reinterpret_cast<jclass> (jni_env->GetStaticObjectField (bcls, fid));
-          jobj = jni_env->NewObject (bcls, mid, bval);
-        }
-      else
-        {
-          float fval = val.float_scalar_value ();
-          jclass_ref fcls (jni_env, jni_env->FindClass ("java/lang/Float"));
-          jfieldID fid = jni_env->GetStaticFieldID (fcls, "TYPE", "Ljava/lang/Class;");
-          jmethodID mid = jni_env->GetMethodID (fcls, "<init>", "(F)V");
-          jcls = reinterpret_cast<jclass> (jni_env->GetStaticObjectField (fcls, fid));
-          jobj = jni_env->NewObject (fcls, mid, fval);
-        }
+
+      // Note that we do NOT handle char here because they are unboxed
+      // into a String[], not into a char array
+           IF_UNBOX_PRIMITIVE_ARRAY(bool,   bool_,   bool,   jboolean, Boolean)
+      else IF_UNBOX_PRIMITIVE_ARRAY(float,  float_,  Float,  jfloat,   Float)
+      else IF_UNBOX_PRIMITIVE_ARRAY(int8,   int8_,   int8,   jbyte,    Byte)
+      else IF_UNBOX_PRIMITIVE_ARRAY(uint8,  uint8_,  uint8,  jbyte,    Byte)
+      else IF_UNBOX_PRIMITIVE_ARRAY(int16,  int16_,  int16,  jshort,   Short)
+      else IF_UNBOX_PRIMITIVE_ARRAY(uint16, uint16_, uint16, jshort,   Short)
+      else IF_UNBOX_PRIMITIVE_ARRAY(int32,  int32_,  int32,  jint,     Int)
+      else IF_UNBOX_PRIMITIVE_ARRAY(uint32, uint32_, uint32, jint,     Int)
+      else IF_UNBOX_PRIMITIVE_ARRAY(int64,  int64_,  int64,  jlong,    Long)
+      else IF_UNBOX_PRIMITIVE_ARRAY(uint64, uint64_, uint64, jlong,    Long)
+
+#undef IF_UNBOX_PRIMITIVE_ARRAY
     }
-  else if (val.is_integer_type () && val.is_scalar_type ())
+  else if (val.is_real_scalar () || val.is_bool_scalar ())
     {
-      int32_t ival = val.int32_scalar_value ();
-      jclass_ref icls (jni_env, jni_env->FindClass ("java/lang/Integer"));
-      jfieldID fid = jni_env->GetStaticFieldID (icls, "TYPE", "Ljava/lang/Class;");
-      jmethodID mid = jni_env->GetMethodID (icls, "<init>", "(I)V");
-      jcls = reinterpret_cast<jclass> (jni_env->GetStaticObjectField (icls, fid));
-      jobj = jni_env->NewObject (icls, mid, ival);
+#define IF_UNBOX_PRIMITIVE_SCALAR(CHECK_TYPE, OCTAVE_TYPE, METHOD_TYPE, JAVA_TYPE, JAVA_CON) \
+      if (val.is_ ## CHECK_TYPE ## _type ()) \
+        { \
+          const OCTAVE_TYPE ov = val.METHOD_TYPE ## _value (); \
+          jclass_ref dcls (jni_env, jni_env->FindClass (JAVA_TYPE)); \
+          const jfieldID fid = jni_env->GetStaticFieldID (dcls, "TYPE", "Ljava/lang/Class;"); \
+          const jmethodID mid = jni_env->GetMethodID (dcls, "<init>", JAVA_CON); \
+          jcls = reinterpret_cast<jclass> (jni_env->GetStaticObjectField (dcls, fid)); \
+          jobj = jni_env->NewObject (dcls, mid, ov); \
+         }
+
+           IF_UNBOX_PRIMITIVE_SCALAR(double, double,   double,        "java/lang/Double",  "(D)V")
+      else IF_UNBOX_PRIMITIVE_SCALAR(float,  float,    float,         "java/lang/Float",   "(F)V")
+      else IF_UNBOX_PRIMITIVE_SCALAR(bool,   bool,     bool,          "java/lang/Boolean", "(Z)V")
+      else IF_UNBOX_PRIMITIVE_SCALAR(int8,   int8_t,   int8_scalar,   "java/lang/Byte",    "(B)V")
+      else IF_UNBOX_PRIMITIVE_SCALAR(uint8,  uint8_t,  uint8_scalar,  "java/lang/Byte",    "(B)V")
+      else IF_UNBOX_PRIMITIVE_SCALAR(int16,  int16_t,  int16_scalar,  "java/lang/Short",   "(S)V")
+      else IF_UNBOX_PRIMITIVE_SCALAR(uint16, uint16_t, uint16_scalar, "java/lang/Short",   "(S)V")
+      else IF_UNBOX_PRIMITIVE_SCALAR(int32,  int32_t,  int32_scalar,  "java/lang/Int",     "(I)V")
+      else IF_UNBOX_PRIMITIVE_SCALAR(uint32, uint32_t, uint32_scalar, "java/lang/Int",     "(I)V")
+      else IF_UNBOX_PRIMITIVE_SCALAR(int64,  int64_t,  int64_scalar,  "java/lang/Long",    "(L)V")
+      else IF_UNBOX_PRIMITIVE_SCALAR(uint64, uint64_t, uint64_scalar, "java/lang/Long",    "(L)V")
+
+#undef IF_UNBOX_PRIMITIVE_SCALAR
     }
   else if (val.is_empty ())
     {
@@ -1369,7 +1409,7 @@ unbox (JNIEnv* jni_env, const octave_value& val, jobject_ref& jobj,
         }
       else
         {
-          found = 0;
+          found = false;
           error ("cannot convert matrix of type '%s'", val.class_name ().c_str ());
         }
     }
@@ -1401,11 +1441,11 @@ unbox (JNIEnv* jni_env, const octave_value& val, jobject_ref& jobj,
   return found;
 }
 
-int
+bool
 unbox (JNIEnv* jni_env, const octave_value_list& args,
        jobjectArray_ref& jobjs, jobjectArray_ref& jclss)
 {
-  int found = 1;
+  bool found = true;
 
   jclass_ref ocls (jni_env, jni_env->FindClass ("java/lang/Object"));
   jclass_ref ccls (jni_env, jni_env->FindClass ("java/lang/Class"));
@@ -1421,11 +1461,9 @@ unbox (JNIEnv* jni_env, const octave_value_list& args,
       jobject_ref jobj (jni_env);
       jclass_ref jcls (jni_env);
 
-      if (! unbox (jni_env, args(i), jobj, jcls))
-        {
-          found = 0;
-          break;
-        }
+      found = unbox (jni_env, args(i), jobj, jcls);
+      if (! found)
+        break;
 
       jni_env->SetObjectArrayElement (jobjs, i, jobj);
       jni_env->SetObjectArrayElement (jclss, i, jcls);
@@ -1513,18 +1551,12 @@ Java_org_octave_Octave_call (JNIEnv *env, jclass, jstring funcName,
     varargin(i) = box (env, env->GetObjectArrayElement (argin, i), 0);
 
   varargout = feval (fname, varargin, nargout);
+  if (error_state)
+    return false;
 
-  if (! error_state)
-    {
-      jobjectArray_ref out_objs (env, argout), out_clss (env);
-
-      out_objs.detach ();
-
-      if (unbox (env, varargout, out_objs, out_clss))
-        return true;
-    }
-
-  return false;
+  jobjectArray_ref out_objs (env, argout), out_clss (env);
+  out_objs.detach ();
+  return unbox (env, varargout, out_objs, out_clss);
 }
 
 JNIEXPORT void JNICALL
@@ -2437,3 +2469,22 @@ Return true if @var{x} is a Java object.\n\
   return retval;
 }
 
+/*
+## Check automatic conversion of java primitive arrays into octave types
+%!assert (javaObject ("java.lang.String", "hello").getBytes (),
+%!        int8 ([104 101 108 108 111]'))
+
+## Check automatic conversion of octave types into java primitive arrays
+## Note that uint8 are casted into int8
+%!assert (javaMethod ("binarySearch", "java.util.Arrays", [90 100 255], 255), 2)
+%!assert (javaMethod ("binarySearch", "java.util.Arrays", uint8  ([90 100 255]), uint8  (255)) < 0)
+%!assert (javaMethod ("binarySearch", "java.util.Arrays", uint8  ([90 100 128]), uint8  (128)) < 0)
+%!assert (javaMethod ("binarySearch", "java.util.Arrays", uint8  ([90 100 127]), uint8  (127)), 2)
+%!assert (javaMethod ("binarySearch", "java.util.Arrays", uint16 ([90 100 128]), uint16 (128)), 2)
+
+## Check we can create objects that wrap java literals (bug #38821)
+%!assert (class (javaObject ("java.lang.Byte", uint8 (1))), "java.lang.Byte");
+%!assert (class (javaObject ("java.lang.Byte", int8 (1))), "java.lang.Byte");
+%!assert (class (javaObject ("java.lang.Short", uint16 (1))), "java.lang.Short");
+%!assert (class (javaObject ("java.lang.Short", int16 (1))), "java.lang.Short");
+*/

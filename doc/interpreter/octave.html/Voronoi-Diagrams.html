@@ -198,15 +198,23 @@ available with <code>rectint</code>
 </p>
 <a name="XREFrectint"></a><dl>
 <dt><a name="index-rectint"></a>Function File: <em><var>area</var> =</em> <strong>rectint</strong> <em>(<var>a</var>, <var>b</var>)</em></dt>
-<dd>
-<p>Compute the area of intersection of rectangles in <var>a</var> and
-rectangles in <var>b</var>.  Rectangles are defined as [x y width height]
-where x and y are the minimum values of the two orthogonal
-dimensions.
+<dd><p>Compute area or volume of intersection of rectangles or ND boxes.
 </p>
-<p>If <var>a</var> or <var>b</var> are matrices, then the output, <var>area</var>, is a
-matrix where the i-th row corresponds to the i-th row of a and the j-th
-column corresponds to the j-th row of b.
+<p>Compute the area of intersection of rectangles in <var>a</var> and
+rectangles in <var>b</var>.  N dimensional boxes are supported in which
+case the volume, or hypervolume is computed according to the number
+of dimensions.
+</p>
+<p>2 dimensional rectangles are defined as <code>[xpos ypos width height]</code>
+where xpos and ypos are the position of the bottom left corner.
+Higher dimensions are supported where the coordinates for the minimum
+value of each dimension follow the length of the box in that dimension,
+e.g., <code>[xpos ypos zpos kpos &hellip; width height depth k_length &hellip;]</code>.
+</p>
+<p>Each row of <var>a</var> and <var>b</var> define a rectangle, and if both define
+multiple rectangles, then the output, <var>area</var>, is a matrix where
+the i-th row corresponds to the i-th row of a and the j-th column
+corresponds to the j-th row of b.
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFpolyarea">polyarea</a>.
@@ -214,14 +222,19 @@ column corresponds to the j-th row of b.
 
 
 <a name="XREFinpolygon"></a><dl>
-<dt><a name="index-inpolygon"></a>Function File: <em>[<var>in</var>, <var>on</var>] =</em> <strong>inpolygon</strong> <em>(<var>x</var>, <var>y</var>, <var>xv</var>, <var>yv</var>)</em></dt>
+<dt><a name="index-inpolygon"></a>Function File: <em><var>in</var> =</em> <strong>inpolygon</strong> <em>(<var>x</var>, <var>y</var>, <var>xv</var>, <var>yv</var>)</em></dt>
+<dt><a name="index-inpolygon-1"></a>Function File: <em>[<var>in</var>, <var>on</var>] =</em> <strong>inpolygon</strong> <em>(<var>x</var>, <var>y</var>, <var>xv</var>, <var>yv</var>)</em></dt>
 <dd>
-<p>For a polygon defined by vertex points <code>(<var>xv</var>, <var>yv</var>)</code>, determine
-if the points <code>(<var>x</var>, <var>y</var>)</code> are inside or outside the polygon.
-The variables <var>x</var>, <var>y</var>, must have the same dimension.  The optional
-output <var>on</var> gives the points that are on the polygon.
+<p>For a polygon defined by vertex points <code>(<var>xv</var>, <var>yv</var>)</code>, return
+true if the points <code>(<var>x</var>, <var>y</var>)</code> are inside (or on the boundary)
+of the polygon; Otherwise, return false.
 </p>
-</dd></dl>
+<p>The variables <var>x</var>, <var>y</var>, must have the same dimension.  The optional
+output <var>on</var> returns true if the points are exactly on the polygon
+edge, and false otherwise.
+</p>
+<p><strong>See also:</strong> <a href="Delaunay-Triangulation.html#XREFdelaunay">delaunay</a>.
+</p></dd></dl>
 
 
 <p>An example of the use of <code>inpolygon</code> might be

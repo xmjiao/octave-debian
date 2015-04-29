@@ -64,6 +64,8 @@ public:
   bool do_confirm_shutdown (void);
   bool do_exit (int status);
 
+  bool do_copy_image_to_clipboard (const std::string& file);
+
   bool do_edit_file (const std::string& file);
   bool do_prompt_new_edit_file (const std::string& file);
 
@@ -137,6 +139,8 @@ public:
   QWaitCondition waitcondition;
   void shutdown_confirmation (bool sd) {_shutdown_confirm_result = sd;}
 
+  void update_directory (void);
+
 private:
 
   bool _shutdown_confirm_result;
@@ -153,9 +157,14 @@ private:
 
   octave_interpreter *command_interpreter;
 
+  QString _current_directory;
+  bool    _new_dir;
+
 signals:
 
   void execute_interpreter_signal (void);
+
+  void copy_image_to_clipboard_signal (const QString& file, bool remove_file);
 
   void edit_file_signal (const QString& file);
 

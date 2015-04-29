@@ -672,6 +672,25 @@ main_window::process_settings_dialog_request (const QString& desired_tab)
 }
 
 void
+main_window::copy_image_to_clipboard (const QString& file, bool remove_file)
+{
+  QClipboard *clipboard = QApplication::clipboard ();
+
+  QImage img (file);
+
+  if (img.isNull ())
+    {
+      // Report error?
+      return;
+    }
+
+  clipboard->setImage (img);
+
+  if (remove_file)
+    QFile::remove (file);
+}
+
+void
 main_window::request_reload_settings ()
 {
   QSettings *settings = resource_manager::get_settings ();
@@ -794,10 +813,16 @@ main_window::confirm_shutdown_octave (void)
 #endif
     }
 
+  // Wait for link thread to go to sleep state.
+  _octave_qt_link->mutex.lock ();
+
   _octave_qt_link->shutdown_confirmation (closenow);
+
+  _octave_qt_link->mutex.unlock ();
 
   // Awake the worker thread so that it continues shutting down (or not).
   _octave_qt_link->waitcondition.wakeAll ();
+
 }
 
 void
@@ -1517,6 +1542,10 @@ main_window::construct_octave_qt_link (void)
                SIGNAL (show_preferences_signal (void)),
                this, SLOT (process_settings_dialog_request ()));
 
+      connect (_octave_qt_link,
+               SIGNAL (copy_image_to_clipboard_signal (const QString&, bool)),
+               this, SLOT (copy_image_to_clipboard (const QString&, bool)));
+
 #ifdef HAVE_QSCINTILLA
       connect (_octave_qt_link,
                SIGNAL (edit_file_signal (const QString&)),
@@ -2112,6 +2141,7 @@ void
 main_window::change_directory_callback (const std::string& directory)
 {
   Fcd (ovl (directory));
+  _octave_qt_link->update_directory ();
 }
 
 // The next callbacks are invoked by GUI buttons.  Those buttons

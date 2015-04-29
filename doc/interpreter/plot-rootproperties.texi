@@ -232,7 +232,7 @@ Class name of the graphics object.  @code{type} is always @qcode{"root"}
 
 @anchor{XREFrootuicontextmenu}
 @cindex root uicontextmenu
-@item @code{uicontextmenu}: def. @code{[](0x0)}
+@item @code{uicontextmenu}: graphics handle, def. @code{[](0x0)}
 @code{uicontextmenu} is unused.
 
 

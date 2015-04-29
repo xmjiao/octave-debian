@@ -141,11 +141,12 @@ error (err_msg);
 <p>which will only stop execution if an error has been found.
 </p>
 <p>Implementation Note: For compatibility with <small>MATLAB</small>, escape
-sequences in <var>template</var> (e.g., &quot;\n&quot; =&gt; newline) are processed
-regardless of whether <var>template</var> has been defined with single quotes,
-as long as there are two or more input arguments.  To disable escape sequence
-expansion use a second backslash before the sequence (e.g., &quot;\\n&quot;) or
-use the <code>regexptranslate</code> function.
+sequences in <var>template</var> (e.g., <code>&quot;\n&quot;</code> =&gt;
+newline) are processed regardless of whether <var>template</var> has been defined
+with single quotes, as long as there are two or more input arguments.  To
+disable escape sequence expansion use a second backslash before the sequence
+(e.g., &quot;\\n&quot;) or use the
+<code>regexptranslate</code> function.
 </p>
 <p><strong>See also:</strong> <a href="Issuing-Warnings.html#XREFwarning">warning</a>, <a href="Catching-Errors.html#XREFlasterror">lasterror</a>.
 </p></dd></dl>

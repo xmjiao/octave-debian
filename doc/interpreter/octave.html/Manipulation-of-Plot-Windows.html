@@ -301,8 +301,10 @@ features from a plot without clearing the entire figure.
 <a name="XREFclose"></a><dl>
 <dt><a name="index-close"></a>Command: <em></em> <strong>close</strong></dt>
 <dt><a name="index-close-1"></a>Command: <em></em> <strong>close</strong> <em>(<var>h</var>)</em></dt>
-<dt><a name="index-close-2"></a>Command: <em></em> <strong>close</strong> <em>all</em></dt>
-<dt><a name="index-close-3"></a>Command: <em></em> <strong>close</strong> <em>all hidden</em></dt>
+<dt><a name="index-close-2"></a>Command: <em></em> <strong>close</strong> <em><var>h</var></em></dt>
+<dt><a name="index-close-3"></a>Command: <em></em> <strong>close</strong> <em>all</em></dt>
+<dt><a name="index-close-4"></a>Command: <em></em> <strong>close</strong> <em>all hidden</em></dt>
+<dt><a name="index-close-5"></a>Command: <em></em> <strong>close</strong> <em>all force</em></dt>
 <dd><p>Close figure window(s).
 </p>
 <p>When called with no arguments, close the current figure.  This is equivalent
@@ -314,6 +316,10 @@ of graphics handles, then close each figure in <var>h</var>.
 </p>
 <p>If the argument <code>&quot;all hidden&quot;</code> is given then all figures, including
 hidden ones, are closed.
+</p>
+<p>If the argument <code>&quot;all force&quot;</code> is given then all figures are closed
+even when <code>&quot;closerequestfcn&quot;</code> has been altered to prevent closing
+the window.
 </p>
 <p>Implementation Note: <code>close</code> operates by calling the function specified
 by the <code>&quot;closerequestfcn&quot;</code> property for each figure.  By default, the

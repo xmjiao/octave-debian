@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 4.0.0-rc3.
+corresponds to GNU Octave version 4.0.0-rc4.
 
 * Menu:
 
@@ -1157,7 +1157,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 4.0.0-rc3.
+   This document corresponds to Octave version 4.0.0-rc4.
 
 * Menu:
 
@@ -2069,25 +2069,28 @@ document the functions you write.
 
  -- Command: lookfor STR
  -- Command: lookfor -all STR
- -- Function File: [FUNC, HELPSTRING] = lookfor (STR)
- -- Function File: [FUNC, HELPSTRING] = lookfor ("-all", STR)
-     Search for the string STR in all functions found in the current
-     function search path.  By default, 'lookfor' searches for STR in
-     the first sentence of the help string of each function found.  The
-     entire help text of each function can be searched if the "-all"
-     argument is supplied.  All searches are case insensitive.
+ -- Function File: [FCN, HELP1STR] = lookfor (STR)
+ -- Function File: [FCN, HELP1STR] = lookfor ("-all", STR)
+     Search for the string STR in all functions using the current
+     function search path.
 
-     Called with no output arguments, 'lookfor' prints the list of
-     matching functions to the terminal.  Otherwise, the output
-     arguments FUNC and HELPSTRING define the matching functions and the
-     first sentence of each of their help strings.
+     By default, 'lookfor' looks for STR in the first sentence of the
+     help string for each function found.  The entire help text of each
+     function can be searched by using the "-all" argument.  All
+     searches are case insensitive.
 
-     The ability of 'lookfor' to correctly identify the first sentence
-     of the help text is dependent on the format of the function's help.
-     All Octave core functions are correctly formatted, but the same can
-     not be guaranteed for external packages and user-supplied
-     functions.  Therefore, the use of the "-all" argument may be
-     necessary to find related functions that are not a part of Octave.
+     When called with no output arguments, 'lookfor' prints the list of
+     matching functions to the terminal.  Otherwise, the output argument
+     FCNS contains the function names and HELP1STR contains the first
+     sentence from the help string of each function.
+
+     Programming Note: The ability of 'lookfor' to correctly identify
+     the first sentence of the help text is dependent on the format of
+     the function's help.  All Octave core functions are correctly
+     formatted, but the same can not be guaranteed for external packages
+     and user-supplied functions.  Therefore, the use of the "-all"
+     argument may be necessary to find related functions that are not a
+     part of Octave.
 
      See also: *note help: XREFhelp, *note doc: XREFdoc, *note which:
      XREFwhich.
@@ -6133,10 +6136,10 @@ general regular expressions, the following functions come with Octave.
           Any character in VALUE will be interpreted as whitespace and
           trimmed; the string defining whitespace must be enclosed in
           double quotes for proper processing of special characters like
-          \t.  The default value for whitespace = " \b\r\n\t" (note the
-          space).  Unless whitespace is set to " (empty) AND at least
-          one "%s" format conversion specifier is supplied, a space is
-          always part of whitespace.
+          "\t".  The default value for whitespace is " \b\r\n\t" (note
+          the space).  Unless whitespace is set to " (empty) AND at
+          least one "%s" format conversion specifier is supplied, a
+          space is always part of whitespace.
 
      When the number of words in STR doesn't match an exact multiple of
      the number of format conversion specifiers, strread's behavior
@@ -8842,8 +8845,9 @@ about what is in memory, as the following shows.
      the leftmost column.  'left-min' specifies the minimum field width
      to the left of the specified balance column.
 
-     The default format is " %a:4; %ln:6; %cs:16:6:1; %rb:12;
-     %lc:-1;\n".
+     The default format is:
+
+     " %a:4; %ln:6; %cs:16:6:1; %rb:12; %lc:-1;\n"
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it

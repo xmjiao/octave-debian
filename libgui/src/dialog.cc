@@ -62,12 +62,17 @@ QUIWidgetCreator::~QUIWidgetCreator (void)
 void
 QUIWidgetCreator::dialog_button_clicked (QAbstractButton *button)
 {
+  // Wait for link thread to go to sleep state.
+  mutex.lock ();
+
   // Store the value so that builtin functions can retrieve.
   if (button)
     dialog_button = button->text ();
 
   // The value should always be 1 for the Octave functions.
   dialog_result = 1;
+
+  mutex.unlock ();
 
   // Wake up Octave process so that it continues.
   waitcondition.wakeAll ();
@@ -78,9 +83,14 @@ void
 QUIWidgetCreator::list_select_finished (const QIntList& selected,
                                         int button_pressed)
 {
+  // Wait for link thread to go to sleep state.
+  mutex.lock ();
+
   // Store the value so that builtin functions can retrieve.
   *list_index = selected;
   dialog_result = button_pressed;
+
+  mutex.unlock ();
 
   // Wake up Octave process so that it continues.
   waitcondition.wakeAll ();
@@ -90,9 +100,14 @@ QUIWidgetCreator::list_select_finished (const QIntList& selected,
 void
 QUIWidgetCreator::input_finished (const QStringList& input, int button_pressed)
 {
+  // Wait for link thread to go to sleep state.
+  mutex.lock ();
+
   // Store the value so that builtin functions can retrieve.
   *string_list = input;
   dialog_result = button_pressed;
+
+  mutex.unlock ();
 
   // Wake up Octave process so that it continues.
   waitcondition.wakeAll ();
@@ -102,10 +117,15 @@ void
 QUIWidgetCreator::filedialog_finished (const QStringList& files,
                                        const QString& path, int filterindex)
 {
+  // Wait for link thread to go to sleep state.
+  mutex.lock ();
+
   // Store the value so that builtin functions can retrieve.
   *string_list = files;
   dialog_result = filterindex;
   *path_name = path;
+
+  mutex.unlock ();
 
   // Wake up Octave process so that it continues.
   waitcondition.wakeAll ();
@@ -193,14 +213,10 @@ ListDialog::ListDialog (const QStringList& list, const QString& mode,
   QListView *view = new QListView;
   view->setModel (model);
 
-  if (mode == "Single")
+  if (mode == "single")
     view->setSelectionMode (QAbstractItemView::SingleSelection);
-  else if (mode == "Multiple")
+  else if (mode == "multiple")
     view->setSelectionMode (QAbstractItemView::ExtendedSelection);
-//  else if ()
-//    view->setSelectionMode (QAbstractItemView::ContiguousSelection);
-//  else if ()
-//    view->setSelectionMode (QAbstractItemView::MultiSelection);
   else
     view->setSelectionMode (QAbstractItemView::NoSelection);
 
@@ -249,7 +265,7 @@ ListDialog::ListDialog (const QStringList& list, const QString& mode,
     }
   listLayout->addWidget (view);
   QPushButton *select_all = new QPushButton (tr ("Select All"));
-  select_all->setEnabled (mode == "Multiple");
+  select_all->setEnabled (mode == "multiple");
   listLayout->addWidget (select_all);
 
   QPushButton *buttonOk = new QPushButton (ok_string);

@@ -272,12 +272,17 @@ result.
 
  -- Built-in Function: isindex (IND)
  -- Built-in Function: isindex (IND, N)
-     Return true if IND is a valid index.  Valid indices are either
-     positive integers (although possibly of real data type), or logical
-     arrays.  If present, N specifies the maximum extent of the
-     dimension to be indexed.  When possible the internal result is
-     cached so that subsequent indexing using IND will not perform the
-     check again.
+     Return true if IND is a valid index.
+
+     Valid indices are either positive integers (although possibly of
+     real data type), or logical arrays.  If present, N specifies the
+     maximum extent of the dimension to be indexed.  When possible the
+     internal result is cached so that subsequent indexing using IND
+     will not perform the check again.
+
+     Implementation Note: Strings are first converted to double values
+     before the checks for valid indices are made.  Unless a string
+     contains the NULL character "\0", it will always be a valid index.
 
  -- Built-in Function: VAL = allow_noninteger_range_as_index ()
  -- Built-in Function: OLD_VAL = allow_noninteger_range_as_index
@@ -5210,10 +5215,10 @@ warnings.
 
 'Octave:language-extension'
      Print warnings when using features that are unique to the Octave
-     language and may be still be missing in MATLAB.  By default, the
-     'Octave:language-extension' warning is disabled.  The -traditional
-     or -braindead startup options for Octave may also be of use, *note
-     Command Line Options::.
+     language and that may still be missing in MATLAB.  By default, the
+     'Octave:language-extension' warning is disabled.  The
+     '--traditional' or '--braindead' startup options for Octave may
+     also be of use, *note Command Line Options::.
 
 'Octave:load-file-in-path'
      By default, the 'Octave:load-file-in-path' warning is enabled.
@@ -6950,7 +6955,7 @@ separated lists.
           The character(s) to use to separate each row.  Three special
           cases exist for this option.  "unix" is changed into "\n",
           "pc" is changed into "\r\n", and "mac" is changed into "\r".
-          Other values for this option are kept as is.
+          Any other value is used directly as the newline separator.
 
      "roffset"
           See R above.
@@ -6965,7 +6970,7 @@ separated lists.
 
           dlmwrite ("file.csv", reshape (1:16, 4, 4));
 
-          dlmwrite ("file.tex", a, "delimiter", "&", "newline", "\\n")
+          dlmwrite ("file.tex", a, "delimiter", "&", "newline", "\n")
 
      See also: *note dlmread: XREFdlmread, *note csvread: XREFcsvread,
      *note csvwrite: XREFcsvwrite.
@@ -7597,7 +7602,7 @@ modeled after the C language functions of the same name, but they
 interpret the format template differently in order to improve the
 performance of printing vector and matrix values.
 
-   Implementation Note: For compatability with MATLAB, escape sequences
+   Implementation Note: For compatibility with MATLAB, escape sequences
 in the template string (e.g., "\n" => newline) are expanded even when
 the template string is defined with single quotes.
 
@@ -7609,7 +7614,7 @@ the template string is defined with single quotes.
      See the Formatted Output section of the GNU Octave manual for a
      complete description of the syntax of the template string.
 
-     Implementation Note: For compatability with MATLAB, escape
+     Implementation Note: For compatibility with MATLAB, escape
      sequences in the template string (e.g., "\n" => newline) are
      expanded even when the template string is defined with single
      quotes.
@@ -7629,7 +7634,7 @@ the template string is defined with single quotes.
      The optional output returns the number of bytes written to the
      file.
 
-     Implementation Note: For compatability with MATLAB, escape
+     Implementation Note: For compatibility with MATLAB, escape
      sequences in the template string (e.g., "\n" => newline) are
      expanded even when the template string is defined with single
      quotes.
@@ -7645,7 +7650,7 @@ the template string is defined with single quotes.
      function returns the string, automatically sized to hold all of the
      items converted.
 
-     Implementation Note: For compatability with MATLAB, escape
+     Implementation Note: For compatibility with MATLAB, escape
      sequences in the template string (e.g., "\n" => newline) are
      expanded even when the template string is defined with single
      quotes.
@@ -7864,54 +7869,4 @@ for all the conversion specifications in the template string, or if the
 arguments are not of the correct types, the results are unpredictable.
 If you supply more arguments than conversion specifications, the extra
 argument values are simply ignored; this is sometimes useful.
-
-
-File: octave.info,  Node: Integer Conversions,  Next: Floating-Point Conversions,  Prev: Table of Output Conversions,  Up: C-Style I/O Functions
-
-14.2.8 Integer Conversions
---------------------------
-
-This section describes the options for the '%d', '%i', '%o', '%u', '%x',
-and '%X' conversion specifications.  These conversions print integers in
-various formats.
-
-   The '%d' and '%i' conversion specifications both print an numeric
-argument as a signed decimal number; while '%o', '%u', and '%x' print
-the argument as an unsigned octal, decimal, or hexadecimal number
-(respectively).  The '%X' conversion specification is just like '%x'
-except that it uses the characters 'ABCDEF' as digits instead of
-'abcdef'.
-
-   The following flags are meaningful:
-
-'-'
-     Left-justify the result in the field (instead of the normal
-     right-justification).
-
-'+'
-     For the signed '%d' and '%i' conversions, print a plus sign if the
-     value is positive.
-
-' '
-     For the signed '%d' and '%i' conversions, if the result doesn't
-     start with a plus or minus sign, prefix it with a space character
-     instead.  Since the '+' flag ensures that the result includes a
-     sign, this flag is ignored if you supply both of them.
-
-'#'
-     For the '%o' conversion, this forces the leading digit to be '0',
-     as if by increasing the precision.  For '%x' or '%X', this prefixes
-     a leading '0x' or '0X' (respectively) to the result.  This doesn't
-     do anything useful for the '%d', '%i', or '%u' conversions.
-
-'0'
-     Pad the field with zeros instead of spaces.  The zeros are placed
-     after any indication of sign or base.  This flag is ignored if the
-     '-' flag is also specified, or if a precision is specified.
-
-   If a precision is supplied, it specifies the minimum number of digits
-to appear; leading zeros are produced if necessary.  If you don't
-specify a precision, the number is printed with as many digits as it
-needs.  If you convert a value of zero with an explicit precision of
-zero, then no characters at all are produced.
 

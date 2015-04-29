@@ -447,13 +447,12 @@ error_2 (const char *id, const char *fmt, va_list args, bool with_cfn = false)
 
   error_1 (std::cerr, "error", id, fmt, args, with_cfn);
 
-  if (error_state != -2 && ! symbol_table::at_top_level ()
-      && ! discard_error_messages)
+  bool in_user_code = octave_call_stack::caller_user_code () != 0;
+
+  if (error_state != -2 && in_user_code && ! discard_error_messages)
     pr_where ("error");
 
-  if (interactive
-      && Vdebug_on_error && init_state == 0
-      && octave_call_stack::caller_user_code ())
+  if (interactive && Vdebug_on_error && init_state == 0 && in_user_code)
     {
       unwind_protect frame;
       frame.protect_var (Vdebug_on_error);
@@ -637,17 +636,21 @@ warning_1 (const char *id, const char *fmt, va_list args)
     {
       vwarning ("warning", id, fmt, args);
 
-      if (! symbol_table::at_top_level ()
-          && Vbacktrace_on_warning
-          && ! warning_state
+      bool in_user_code = octave_call_stack::caller_user_code () != 0;
+
+      bool fmt_suppresses_backtrace = false;
+      size_t fmt_len = fmt ? strlen (fmt) : 0;
+      fmt_suppresses_backtrace = (fmt_len > 0 && fmt[fmt_len-1] == '\n');
+
+      if (! fmt_suppresses_backtrace && in_user_code
+          && Vbacktrace_on_warning && ! warning_state
           && ! discard_warning_messages)
         pr_where ("warning");
 
       warning_state = 1;
 
       if ((interactive || forced_interactive)
-          && Vdebug_on_warning
-          && octave_call_stack::caller_user_code ())
+          && Vdebug_on_warning && in_user_code)
         {
           unwind_protect frame;
           frame.protect_var (Vdebug_on_warning);
@@ -1093,11 +1096,12 @@ error (err_msg);\n\
 which will only stop execution if an error has been found.\n\
 \n\
 Implementation Note: For compatibility with @sc{matlab}, escape\n\
-sequences in @var{template} (e.g., \"\\n\" => newline) are processed\n\
-regardless of whether @var{template} has been defined with single quotes,\n\
-as long as there are two or more input arguments.  To disable escape sequence\n\
-expansion use a second backslash before the sequence (e.g., \"\\\\n\") or\n\
-use the @code{regexptranslate} function.\n\
+sequences in @var{template} (e.g., @qcode{\"@xbackslashchar{}n\"} =>\n\
+newline) are processed regardless of whether @var{template} has been defined\n\
+with single quotes, as long as there are two or more input arguments.  To\n\
+disable escape sequence expansion use a second backslash before the sequence\n\
+(e.g., \"@xbackslashchar{}@xbackslashchar{}n\") or use the\n\
+@code{regexptranslate} function.\n\
 @seealso{warning, lasterror}\n\
 @end deftypefn")
 {
@@ -1392,11 +1396,12 @@ function.  The @qcode{\"local\"} option is ignored if used in the top-level\n\
 workspace.\n\
 \n\
 Implementation Note: For compatibility with @sc{matlab}, escape\n\
-sequences in @var{template} (e.g., \"\\n\" => newline) are processed\n\
-regardless of whether @var{template} has been defined with single quotes,\n\
-as long as there are two or more input arguments.  To disable escape sequence\n\
-expansion use a second backslash before the sequence (e.g., \"\\\\n\") or\n\
-use the @code{regexptranslate} function.\n\
+sequences in @var{template} (e.g., @qcode{\"@xbackslashchar{}n\"} =>\n\
+newline) are processed regardless of whether @var{template} has been defined\n\
+with single quotes, as long as there are two or more input arguments.  To\n\
+disable escape sequence expansion use a second backslash before the sequence\n\
+(e.g., \"@xbackslashchar{}@xbackslashchar{}n\") or use the\n\
+@code{regexptranslate} function.\n\
 @seealso{warning_ids, lastwarn, error}\n\
 @end deftypefn")
 {

@@ -140,8 +140,8 @@ to your '.emacs' file.
    You can use either 'plain' Emacs Info or the function 'octave-help'
 as your Octave info reader (for 'help -i').  In the former case, use
 'info_program ("info-emacs-info")'.  The latter is perhaps more
-attractive because it allows to look up keys in the indices of _several_
-info files related to Octave (provided that the Emacs variable
+attractive because it allows one to look up keys in the indices of
+_several_ info files related to Octave (provided that the Emacs variable
 'octave-help-files' is set correctly).  In this case, use 'info_program
 ("info-emacs-octave-help")'.
 
@@ -1167,51 +1167,51 @@ Concept Index
 * axes title:                            Axes Properties.     (line 183)
 * axes type:                             Axes Properties.     (line 186)
 * axes uicontextmenu:                    Axes Properties.     (line 189)
-* axes units:                            Axes Properties.     (line 191)
-* axes userdata:                         Axes Properties.     (line 193)
-* axes view:                             Axes Properties.     (line 196)
-* axes visible:                          Axes Properties.     (line 200)
-* axes xaxislocation:                    Axes Properties.     (line 203)
-* axes xcolor:                           Axes Properties.     (line 205)
-* axes xdir:                             Axes Properties.     (line 208)
-* axes xgrid:                            Axes Properties.     (line 210)
-* axes xlabel:                           Axes Properties.     (line 213)
-* axes xlim:                             Axes Properties.     (line 216)
-* axes xlimmode:                         Axes Properties.     (line 221)
-* axes xminorgrid:                       Axes Properties.     (line 223)
-* axes xminortick:                       Axes Properties.     (line 226)
-* axes xscale:                           Axes Properties.     (line 228)
-* axes xtick:                            Axes Properties.     (line 230)
-* axes xticklabel:                       Axes Properties.     (line 234)
-* axes xticklabelmode:                   Axes Properties.     (line 238)
-* axes xtickmode:                        Axes Properties.     (line 240)
-* axes yaxislocation:                    Axes Properties.     (line 242)
-* axes ycolor:                           Axes Properties.     (line 244)
-* axes ydir:                             Axes Properties.     (line 247)
-* axes ygrid:                            Axes Properties.     (line 249)
-* axes ylabel:                           Axes Properties.     (line 252)
-* axes ylim:                             Axes Properties.     (line 255)
-* axes ylimmode:                         Axes Properties.     (line 260)
-* axes yminorgrid:                       Axes Properties.     (line 262)
-* axes yminortick:                       Axes Properties.     (line 265)
-* axes yscale:                           Axes Properties.     (line 267)
-* axes ytick:                            Axes Properties.     (line 269)
-* axes yticklabel:                       Axes Properties.     (line 273)
-* axes yticklabelmode:                   Axes Properties.     (line 277)
-* axes ytickmode:                        Axes Properties.     (line 279)
-* axes zcolor:                           Axes Properties.     (line 281)
-* axes zdir:                             Axes Properties.     (line 284)
-* axes zgrid:                            Axes Properties.     (line 286)
-* axes zlabel:                           Axes Properties.     (line 289)
-* axes zlim:                             Axes Properties.     (line 292)
-* axes zlimmode:                         Axes Properties.     (line 297)
-* axes zminorgrid:                       Axes Properties.     (line 299)
-* axes zminortick:                       Axes Properties.     (line 302)
-* axes zscale:                           Axes Properties.     (line 304)
-* axes ztick:                            Axes Properties.     (line 306)
-* axes zticklabel:                       Axes Properties.     (line 310)
-* axes zticklabelmode:                   Axes Properties.     (line 314)
-* axes ztickmode:                        Axes Properties.     (line 316)
+* axes units:                            Axes Properties.     (line 193)
+* axes userdata:                         Axes Properties.     (line 195)
+* axes view:                             Axes Properties.     (line 198)
+* axes visible:                          Axes Properties.     (line 202)
+* axes xaxislocation:                    Axes Properties.     (line 205)
+* axes xcolor:                           Axes Properties.     (line 207)
+* axes xdir:                             Axes Properties.     (line 210)
+* axes xgrid:                            Axes Properties.     (line 212)
+* axes xlabel:                           Axes Properties.     (line 215)
+* axes xlim:                             Axes Properties.     (line 218)
+* axes xlimmode:                         Axes Properties.     (line 223)
+* axes xminorgrid:                       Axes Properties.     (line 225)
+* axes xminortick:                       Axes Properties.     (line 228)
+* axes xscale:                           Axes Properties.     (line 230)
+* axes xtick:                            Axes Properties.     (line 232)
+* axes xticklabel:                       Axes Properties.     (line 236)
+* axes xticklabelmode:                   Axes Properties.     (line 240)
+* axes xtickmode:                        Axes Properties.     (line 242)
+* axes yaxislocation:                    Axes Properties.     (line 244)
+* axes ycolor:                           Axes Properties.     (line 246)
+* axes ydir:                             Axes Properties.     (line 249)
+* axes ygrid:                            Axes Properties.     (line 251)
+* axes ylabel:                           Axes Properties.     (line 254)
+* axes ylim:                             Axes Properties.     (line 257)
+* axes ylimmode:                         Axes Properties.     (line 262)
+* axes yminorgrid:                       Axes Properties.     (line 264)
+* axes yminortick:                       Axes Properties.     (line 267)
+* axes yscale:                           Axes Properties.     (line 269)
+* axes ytick:                            Axes Properties.     (line 271)
+* axes yticklabel:                       Axes Properties.     (line 275)
+* axes yticklabelmode:                   Axes Properties.     (line 279)
+* axes ytickmode:                        Axes Properties.     (line 281)
+* axes zcolor:                           Axes Properties.     (line 283)
+* axes zdir:                             Axes Properties.     (line 286)
+* axes zgrid:                            Axes Properties.     (line 288)
+* axes zlabel:                           Axes Properties.     (line 291)
+* axes zlim:                             Axes Properties.     (line 294)
+* axes zlimmode:                         Axes Properties.     (line 299)
+* axes zminorgrid:                       Axes Properties.     (line 301)
+* axes zminortick:                       Axes Properties.     (line 304)
+* axes zscale:                           Axes Properties.     (line 306)
+* axes ztick:                            Axes Properties.     (line 308)
+* axes zticklabel:                       Axes Properties.     (line 312)
+* axes zticklabelmode:                   Axes Properties.     (line 316)
+* axes ztickmode:                        Axes Properties.     (line 318)
 * axes __modified__:                     Axes Properties.     (line   8)
 * bar series:                            Bar Series.          (line   6)
 * batch processing:                      Executable Octave Programs.
@@ -1351,19 +1351,19 @@ Concept Index
 * diagonal matrix expressions:           Expressions Involving Diagonal Matrices.
                                                               (line   6)
 * dialog, displaying a help dialog:      Dialog Box Functions.
-                                                              (line  43)
+                                                              (line  51)
 * dialog, displaying a list dialog:      Dialog Box Functions.
-                                                              (line 100)
+                                                              (line 108)
 * dialog, displaying a question dialog:  Dialog Box Functions.
-                                                              (line 156)
+                                                              (line 164)
 * dialog, displaying a warning dialog:   Dialog Box Functions.
                                                               (line   9)
 * dialog, displaying a warning dialog <1>: Dialog Box Functions.
-                                                              (line 187)
+                                                              (line 195)
 * dialog, displaying an error dialog:    Dialog Box Functions.
-                                                              (line  28)
+                                                              (line  32)
 * dialog, displaying an input dialog:    Dialog Box Functions.
-                                                              (line  58)
+                                                              (line  66)
 * diary of commands and output:          Diary and Echo Commands.
                                                               (line   6)
 * differential equations:                Differential Equations.
@@ -1517,21 +1517,21 @@ Concept Index
 * figure toolbar:                        Figure Properties.   (line 181)
 * figure type:                           Figure Properties.   (line 184)
 * figure uicontextmenu:                  Figure Properties.   (line 187)
-* figure units:                          Figure Properties.   (line 189)
-* figure userdata:                       Figure Properties.   (line 193)
-* figure visible:                        Figure Properties.   (line 196)
-* figure windowbuttondownfcn:            Figure Properties.   (line 199)
-* figure windowbuttonmotionfcn:          Figure Properties.   (line 202)
-* figure windowbuttonupfcn:              Figure Properties.   (line 205)
-* figure windowkeypressfcn:              Figure Properties.   (line 212)
-* figure windowkeyreleasefcn:            Figure Properties.   (line 214)
-* figure windowscrollwheelfcn:           Figure Properties.   (line 216)
-* figure windowstyle:                    Figure Properties.   (line 218)
-* figure wvisual:                        Figure Properties.   (line 220)
-* figure wvisualmode:                    Figure Properties.   (line 222)
-* figure xdisplay:                       Figure Properties.   (line 224)
-* figure xvisual:                        Figure Properties.   (line 226)
-* figure xvisualmode:                    Figure Properties.   (line 228)
+* figure units:                          Figure Properties.   (line 191)
+* figure userdata:                       Figure Properties.   (line 195)
+* figure visible:                        Figure Properties.   (line 198)
+* figure windowbuttondownfcn:            Figure Properties.   (line 201)
+* figure windowbuttonmotionfcn:          Figure Properties.   (line 204)
+* figure windowbuttonupfcn:              Figure Properties.   (line 207)
+* figure windowkeypressfcn:              Figure Properties.   (line 214)
+* figure windowkeyreleasefcn:            Figure Properties.   (line 216)
+* figure windowscrollwheelfcn:           Figure Properties.   (line 218)
+* figure windowstyle:                    Figure Properties.   (line 220)
+* figure wvisual:                        Figure Properties.   (line 222)
+* figure wvisualmode:                    Figure Properties.   (line 224)
+* figure xdisplay:                       Figure Properties.   (line 226)
+* figure xvisual:                        Figure Properties.   (line 228)
+* figure xvisualmode:                    Figure Properties.   (line 230)
 * figure __modified__:                   Figure Properties.   (line   8)
 * finding minimums:                      Minimizers.          (line   6)
 * finish.m:                              Quitting Octave.     (line   6)
@@ -1630,10 +1630,10 @@ Concept Index
 * image tag:                             Image Properties.    (line  65)
 * image type:                            Image Properties.    (line  68)
 * image uicontextmenu:                   Image Properties.    (line  71)
-* image userdata:                        Image Properties.    (line  73)
-* image visible:                         Image Properties.    (line  76)
-* image xdata:                           Image Properties.    (line  79)
-* image ydata:                           Image Properties.    (line  86)
+* image userdata:                        Image Properties.    (line  75)
+* image visible:                         Image Properties.    (line  78)
+* image xdata:                           Image Properties.    (line  81)
+* image ydata:                           Image Properties.    (line  88)
 * image __modified__:                    Image Properties.    (line   8)
 * improving Octave:                      Bug Criteria.        (line  28)
 * improving Octave <1>:                  Sending Patches.     (line   6)
@@ -1702,14 +1702,14 @@ Concept Index
 * line tag:                              Line Properties.     (line  81)
 * line type:                             Line Properties.     (line  84)
 * line uicontextmenu:                    Line Properties.     (line  87)
-* line userdata:                         Line Properties.     (line  89)
-* line visible:                          Line Properties.     (line  92)
-* line xdata:                            Line Properties.     (line  95)
-* line xdatasource:                      Line Properties.     (line  98)
-* line ydata:                            Line Properties.     (line 101)
-* line ydatasource:                      Line Properties.     (line 104)
-* line zdata:                            Line Properties.     (line 107)
-* line zdatasource:                      Line Properties.     (line 110)
+* line userdata:                         Line Properties.     (line  91)
+* line visible:                          Line Properties.     (line  94)
+* line xdata:                            Line Properties.     (line  97)
+* line xdatasource:                      Line Properties.     (line 100)
+* line ydata:                            Line Properties.     (line 103)
+* line ydatasource:                      Line Properties.     (line 106)
+* line zdata:                            Line Properties.     (line 109)
+* line zdatasource:                      Line Properties.     (line 112)
 * line __modified__:                     Line Properties.     (line   8)
 * linear algebra:                        Linear Algebra.      (line   6)
 * linear algebra, techniques:            Techniques Used for Linear Algebra.
@@ -1889,13 +1889,13 @@ Concept Index
 * patch tag:                             Patch Properties.    (line 145)
 * patch type:                            Patch Properties.    (line 148)
 * patch uicontextmenu:                   Patch Properties.    (line 151)
-* patch userdata:                        Patch Properties.    (line 153)
-* patch vertexnormals:                   Patch Properties.    (line 156)
-* patch vertices:                        Patch Properties.    (line 158)
-* patch visible:                         Patch Properties.    (line 160)
-* patch xdata:                           Patch Properties.    (line 163)
-* patch ydata:                           Patch Properties.    (line 165)
-* patch zdata:                           Patch Properties.    (line 167)
+* patch userdata:                        Patch Properties.    (line 155)
+* patch vertexnormals:                   Patch Properties.    (line 158)
+* patch vertices:                        Patch Properties.    (line 160)
+* patch visible:                         Patch Properties.    (line 162)
+* patch xdata:                           Patch Properties.    (line 165)
+* patch ydata:                           Patch Properties.    (line 167)
+* patch zdata:                           Patch Properties.    (line 169)
 * patch __modified__:                    Patch Properties.    (line   8)
 * patches, submitting:                   Sending Patches.     (line   6)
 * path, adding to classpath:             Java Interface Functions.
@@ -2148,15 +2148,15 @@ Concept Index
 * surface tag:                           Surface Properties.  (line 135)
 * surface type:                          Surface Properties.  (line 138)
 * surface uicontextmenu:                 Surface Properties.  (line 141)
-* surface userdata:                      Surface Properties.  (line 143)
-* surface vertexnormals:                 Surface Properties.  (line 146)
-* surface visible:                       Surface Properties.  (line 148)
-* surface xdata:                         Surface Properties.  (line 151)
-* surface xdatasource:                   Surface Properties.  (line 153)
-* surface ydata:                         Surface Properties.  (line 155)
-* surface ydatasource:                   Surface Properties.  (line 157)
-* surface zdata:                         Surface Properties.  (line 159)
-* surface zdatasource:                   Surface Properties.  (line 161)
+* surface userdata:                      Surface Properties.  (line 145)
+* surface vertexnormals:                 Surface Properties.  (line 148)
+* surface visible:                       Surface Properties.  (line 150)
+* surface xdata:                         Surface Properties.  (line 153)
+* surface xdatasource:                   Surface Properties.  (line 155)
+* surface ydata:                         Surface Properties.  (line 157)
+* surface ydatasource:                   Surface Properties.  (line 159)
+* surface zdata:                         Surface Properties.  (line 161)
+* surface zdatasource:                   Surface Properties.  (line 163)
 * surface __modified__:                  Surface Properties.  (line   8)
 * 'switch' statement:                    The switch Statement.
                                                               (line   6)
@@ -2208,10 +2208,10 @@ Concept Index
 * text tag:                              Text Properties.     (line 109)
 * text type:                             Text Properties.     (line 112)
 * text uicontextmenu:                    Text Properties.     (line 115)
-* text units:                            Text Properties.     (line 117)
-* text userdata:                         Text Properties.     (line 119)
-* text verticalalignment:                Text Properties.     (line 122)
-* text visible:                          Text Properties.     (line 124)
+* text units:                            Text Properties.     (line 119)
+* text userdata:                         Text Properties.     (line 121)
+* text verticalalignment:                Text Properties.     (line 124)
+* text visible:                          Text Properties.     (line 126)
 * text __modified__:                     Text Properties.     (line   8)
 * tips:                                  Tips and Standards.  (line   6)
 * toolkit customization:                 Customizing Toolkit Behavior.
@@ -2306,9 +2306,9 @@ Function Index
 * all <1>:                               Finding Elements and Checking Conditions.
                                                              (line   32)
 * allchild:                              Graphics Objects.   (line  437)
-* allow_noninteger_range_as_index:       Advanced Indexing.  (line  168)
-* allow_noninteger_range_as_index <1>:   Advanced Indexing.  (line  169)
-* allow_noninteger_range_as_index <2>:   Advanced Indexing.  (line  171)
+* allow_noninteger_range_as_index:       Advanced Indexing.  (line  173)
+* allow_noninteger_range_as_index <1>:   Advanced Indexing.  (line  174)
+* allow_noninteger_range_as_index <2>:   Advanced Indexing.  (line  176)
 * amd:                                   Mathematical Considerations.
                                                              (line  120)
 * amd <1>:                               Mathematical Considerations.
@@ -2591,9 +2591,9 @@ Function Index
 * bsxfun:                                Broadcasting.       (line   85)
 * builtin:                               Overloading and Autoloading.
                                                              (line   14)
-* built_in_docstrings_file:              Getting Help.       (line  202)
-* built_in_docstrings_file <1>:          Getting Help.       (line  203)
-* built_in_docstrings_file <2>:          Getting Help.       (line  204)
+* built_in_docstrings_file:              Getting Help.       (line  205)
+* built_in_docstrings_file <1>:          Getting Help.       (line  206)
+* built_in_docstrings_file <2>:          Getting Help.       (line  207)
 * bunzip2:                               File Archiving Utilities.
                                                              (line    6)
 * bunzip2 <1>:                           File Archiving Utilities.
@@ -2800,7 +2800,7 @@ Function Index
                                                              (line   18)
 * clc:                                   Cursor Motion.      (line   59)
 * clear:                                 Status of Variables.
-                                                             (line  257)
+                                                             (line  258)
 * clf:                                   Manipulation of Plot Windows.
                                                              (line  154)
 * clf <1>:                               Manipulation of Plot Windows.
@@ -2822,9 +2822,13 @@ Function Index
                                                              (line  223)
 * close <3>:                             Manipulation of Plot Windows.
                                                              (line  224)
-* close <4>:                             FTP Objects.        (line   34)
+* close <4>:                             Manipulation of Plot Windows.
+                                                             (line  225)
+* close <5>:                             Manipulation of Plot Windows.
+                                                             (line  226)
+* close <6>:                             FTP Objects.        (line   34)
 * closereq:                              Manipulation of Plot Windows.
-                                                             (line  247)
+                                                             (line  253)
 * cmpermute:                             Representing Images.
                                                              (line  486)
 * cmpermute <1>:                         Representing Images.
@@ -3404,10 +3408,10 @@ Function Index
 * dmperm <1>:                            Mathematical Considerations.
                                                              (line  362)
 * doc:                                   Getting Help.       (line   41)
-* doc_cache_create:                      Getting Help.       (line  236)
-* doc_cache_file:                        Getting Help.       (line  179)
-* doc_cache_file <1>:                    Getting Help.       (line  180)
-* doc_cache_file <2>:                    Getting Help.       (line  181)
+* doc_cache_create:                      Getting Help.       (line  239)
+* doc_cache_file:                        Getting Help.       (line  182)
+* doc_cache_file <1>:                    Getting Help.       (line  183)
+* doc_cache_file <2>:                    Getting Help.       (line  184)
 * dos:                                   Controlling Subprocesses.
                                                              (line   72)
 * dos <1>:                               Controlling Subprocesses.
@@ -3597,9 +3601,11 @@ Function Index
 * errorbar <9>:                          Two-Dimensional Plots.
                                                              (line 1048)
 * errordlg:                              Dialog Box Functions.
-                                                             (line   28)
+                                                             (line   32)
 * errordlg <1>:                          Dialog Box Functions.
-                                                             (line   29)
+                                                             (line   33)
+* errordlg <2>:                          Dialog Box Functions.
+                                                             (line   34)
 * etime:                                 Timing Utilities.   (line  357)
 * etree:                                 Information.        (line  135)
 * etree <1>:                             Information.        (line  136)
@@ -3631,9 +3637,9 @@ Function Index
 * EXEC_PATH <2>:                         Controlling Subprocesses.
                                                              (line  208)
 * exist:                                 Status of Variables.
-                                                             (line  181)
-* exist <1>:                             Status of Variables.
                                                              (line  182)
+* exist <1>:                             Status of Variables.
+                                                             (line  183)
 * exit:                                  Quitting Octave.    (line   14)
 * exit <1>:                              Quitting Octave.    (line   15)
 * exp:                                   Exponents and Logarithms.
@@ -4286,10 +4292,10 @@ Function Index
 * getrusage:                             System Information. (line  252)
 * getuid:                                Process ID Information.
                                                              (line   18)
-* get_first_help_sentence:               Getting Help.       (line  264)
-* get_first_help_sentence <1>:           Getting Help.       (line  265)
-* get_help_text:                         Getting Help.       (line  250)
-* get_help_text_from_file:               Getting Help.       (line  257)
+* get_first_help_sentence:               Getting Help.       (line  267)
+* get_first_help_sentence <1>:           Getting Help.       (line  268)
+* get_help_text:                         Getting Help.       (line  253)
+* get_help_text_from_file:               Getting Help.       (line  260)
 * get_home_directory:                    Environment Variables.
                                                              (line   33)
 * ginput:                                Interacting with Plots.
@@ -4375,15 +4381,15 @@ Function Index
                                                              (line   53)
 * gt:                                    Comparison Ops.     (line   68)
 * gtext:                                 Interacting with Plots.
-                                                             (line   38)
+                                                             (line   43)
 * gtext <1>:                             Interacting with Plots.
-                                                             (line   39)
+                                                             (line   44)
 * gtext <2>:                             Interacting with Plots.
-                                                             (line   40)
+                                                             (line   45)
 * gtext <3>:                             Interacting with Plots.
-                                                             (line   41)
+                                                             (line   46)
 * gtext <4>:                             Interacting with Plots.
-                                                             (line   42)
+                                                             (line   47)
 * guidata:                               GUI Utility Functions.
                                                              (line   15)
 * guidata <1>:                           GUI Utility Functions.
@@ -4417,9 +4423,9 @@ Function Index
 * help <2>:                              Getting Help.       (line   16)
 * help <3>:                              Getting Help.       (line   17)
 * helpdlg:                               Dialog Box Functions.
-                                                             (line   43)
+                                                             (line   51)
 * helpdlg <1>:                           Dialog Box Functions.
-                                                             (line   44)
+                                                             (line   52)
 * hess:                                  Matrix Factorizations.
                                                              (line  139)
 * hess <1>:                              Matrix Factorizations.
@@ -4675,27 +4681,28 @@ Function Index
                                                              (line   72)
 * inferiorto:                            Precedence of Objects.
                                                              (line   21)
-* info:                                  Getting Help.       (line   93)
-* info_file:                             Getting Help.       (line  103)
-* info_file <1>:                         Getting Help.       (line  104)
-* info_file <2>:                         Getting Help.       (line  105)
-* info_program:                          Getting Help.       (line  122)
-* info_program <1>:                      Getting Help.       (line  123)
-* info_program <2>:                      Getting Help.       (line  124)
+* info:                                  Getting Help.       (line   96)
+* info_file:                             Getting Help.       (line  106)
+* info_file <1>:                         Getting Help.       (line  107)
+* info_file <2>:                         Getting Help.       (line  108)
+* info_program:                          Getting Help.       (line  125)
+* info_program <1>:                      Getting Help.       (line  126)
+* info_program <2>:                      Getting Help.       (line  127)
 * inline:                                Inline Functions.   (line   19)
 * inline <1>:                            Inline Functions.   (line   20)
 * inline <2>:                            Inline Functions.   (line   21)
-* inpolygon:                             Voronoi Diagrams.   (line  129)
+* inpolygon:                             Voronoi Diagrams.   (line  138)
+* inpolygon <1>:                         Voronoi Diagrams.   (line  139)
 * input:                                 Terminal Input.     (line   11)
 * input <1>:                             Terminal Input.     (line   12)
 * inputdlg:                              Dialog Box Functions.
-                                                             (line   58)
+                                                             (line   66)
 * inputdlg <1>:                          Dialog Box Functions.
-                                                             (line   59)
+                                                             (line   67)
 * inputdlg <2>:                          Dialog Box Functions.
-                                                             (line   60)
+                                                             (line   68)
 * inputdlg <3>:                          Dialog Box Functions.
-                                                             (line   61)
+                                                             (line   69)
 * inputname:                             Defining Functions. (line  174)
 * inputParser:                           Multiple Return Values.
                                                              (line  401)
@@ -5169,7 +5176,7 @@ Function Index
 * linspace <1>:                          Special Utility Matrices.
                                                              (line  120)
 * listdlg:                               Dialog Box Functions.
-                                                             (line  100)
+                                                             (line  108)
 * list_in_columns:                       Terminal Output.    (line   36)
 * list_primes:                           Utility Functions.  (line  466)
 * list_primes <1>:                       Utility Functions.  (line  467)
@@ -5349,9 +5356,9 @@ Function Index
 * magic:                                 Famous Matrices.    (line  377)
 * mahalanobis:                           Basic Statistical Functions.
                                                              (line  168)
-* makeinfo_program:                      Getting Help.       (line  143)
-* makeinfo_program <1>:                  Getting Help.       (line  144)
-* makeinfo_program <2>:                  Getting Help.       (line  145)
+* makeinfo_program:                      Getting Help.       (line  146)
+* makeinfo_program <1>:                  Getting Help.       (line  147)
+* makeinfo_program <2>:                  Getting Help.       (line  148)
 * make_absolute_filename:                Filesystem Utilities.
                                                              (line  534)
 * manova:                                Tests.              (line  270)
@@ -5547,6 +5554,8 @@ Function Index
                                                              (line   10)
 * msgbox <2>:                            Dialog Box Functions.
                                                              (line   11)
+* msgbox <3>:                            Dialog Box Functions.
+                                                             (line   12)
 * mtimes:                                Arithmetic Ops.     (line  163)
 * mtimes <1>:                            Arithmetic Ops.     (line  164)
 * mu2lin:                                Audio Data Processing.
@@ -5619,8 +5628,8 @@ Function Index
                                                              (line   50)
 * newplot <3>:                           Manipulation of Plot Windows.
                                                              (line   51)
-* news:                                  Getting Help.       (line   83)
-* news <1>:                              Getting Help.       (line   84)
+* news:                                  Getting Help.       (line   86)
+* news <1>:                              Getting Help.       (line   87)
 * nextpow2:                              Exponents and Logarithms.
                                                              (line   65)
 * nnz:                                   Information.        (line   26)
@@ -5799,7 +5808,7 @@ Function Index
 * output_precision <1>:                  Matrices.           (line  146)
 * output_precision <2>:                  Matrices.           (line  147)
 * pack:                                  Status of Variables.
-                                                             (line  318)
+                                                             (line  319)
 * PAGER:                                 Paging Screen Output.
                                                              (line   35)
 * PAGER <1>:                             Paging Screen Output.
@@ -6351,15 +6360,15 @@ Function Index
 * quantile <3>:                          Descriptive Statistics.
                                                              (line  298)
 * questdlg:                              Dialog Box Functions.
-                                                             (line  156)
+                                                             (line  164)
 * questdlg <1>:                          Dialog Box Functions.
-                                                             (line  157)
+                                                             (line  165)
 * questdlg <2>:                          Dialog Box Functions.
-                                                             (line  158)
+                                                             (line  166)
 * questdlg <3>:                          Dialog Box Functions.
-                                                             (line  159)
+                                                             (line  167)
 * questdlg <4>:                          Dialog Box Functions.
-                                                             (line  160)
+                                                             (line  168)
 * quit:                                  Quitting Octave.    (line   16)
 * quit <1>:                              Quitting Octave.    (line   17)
 * quiver:                                Two-Dimensional Plots.
@@ -7501,9 +7510,9 @@ Function Index
 * sumsq <1>:                             Sums and Products.  (line   86)
 * superiorto:                            Precedence of Objects.
                                                              (line   13)
-* suppress_verbose_help_message:         Getting Help.       (line  220)
-* suppress_verbose_help_message <1>:     Getting Help.       (line  221)
-* suppress_verbose_help_message <2>:     Getting Help.       (line  222)
+* suppress_verbose_help_message:         Getting Help.       (line  223)
+* suppress_verbose_help_message <1>:     Getting Help.       (line  224)
+* suppress_verbose_help_message <2>:     Getting Help.       (line  225)
 * surf:                                  Three-Dimensional Plots.
                                                              (line  184)
 * surf <1>:                              Three-Dimensional Plots.
@@ -7667,9 +7676,9 @@ Function Index
                                                              (line  102)
 * tetramesh <3>:                         Plotting the Triangulation.
                                                              (line  103)
-* texi_macros_file:                      Getting Help.       (line  159)
-* texi_macros_file <1>:                  Getting Help.       (line  160)
-* texi_macros_file <2>:                  Getting Help.       (line  161)
+* texi_macros_file:                      Getting Help.       (line  162)
+* texi_macros_file <1>:                  Getting Help.       (line  163)
+* texi_macros_file <2>:                  Getting Help.       (line  164)
 * text:                                  Plot Annotations.   (line  138)
 * text <1>:                              Plot Annotations.   (line  139)
 * text <2>:                              Plot Annotations.   (line  140)
@@ -7780,11 +7789,11 @@ Function Index
 * tsearchn:                              Identifying Points in Triangulation.
                                                              (line   63)
 * type:                                  Status of Variables.
-                                                             (line  330)
-* type <1>:                              Status of Variables.
                                                              (line  331)
-* type <2>:                              Status of Variables.
+* type <1>:                              Status of Variables.
                                                              (line  332)
+* type <2>:                              Status of Variables.
+                                                             (line  333)
 * typecast:                              Built-in Data Types.
                                                              (line   82)
 * typeinfo:                              Data Types.         (line   18)
@@ -7806,9 +7815,9 @@ Function Index
 * uigetfile <4>:                         I/O Dialogs.        (line   25)
 * uigetfile <5>:                         I/O Dialogs.        (line   26)
 * uimenu:                                Interacting with Plots.
-                                                             (line   59)
+                                                             (line   64)
 * uimenu <1>:                            Interacting with Plots.
-                                                             (line   60)
+                                                             (line   65)
 * uint16:                                Integer Data Types. (line   59)
 * uint32:                                Integer Data Types. (line   73)
 * uint64:                                Integer Data Types. (line   87)
@@ -8001,15 +8010,17 @@ Function Index
 * waitfor <3>:                           GUI Utility Functions.
                                                              (line   90)
 * waitforbuttonpress:                    Interacting with Plots.
-                                                             (line   28)
+                                                             (line   33)
 * waitforbuttonpress <1>:                Interacting with Plots.
-                                                             (line   29)
+                                                             (line   34)
 * waitpid:                               Controlling Subprocesses.
                                                              (line  280)
 * warndlg:                               Dialog Box Functions.
-                                                             (line  187)
+                                                             (line  195)
 * warndlg <1>:                           Dialog Box Functions.
-                                                             (line  188)
+                                                             (line  196)
+* warndlg <2>:                           Dialog Box Functions.
+                                                             (line  197)
 * warning:                               Issuing Warnings.   (line   33)
 * warning <1>:                           Issuing Warnings.   (line   34)
 * warning <2>:                           Issuing Warnings.   (line   35)
@@ -8018,7 +8029,7 @@ Function Index
 * warning <5>:                           Issuing Warnings.   (line   38)
 * warning <6>:                           Issuing Warnings.   (line   39)
 * warning <7>:                           Issuing Warnings.   (line   40)
-* warranty:                              Getting Help.       (line   96)
+* warranty:                              Getting Help.       (line   99)
 * waterfall:                             Three-Dimensional Plots.
                                                              (line  957)
 * waterfall <1>:                         Three-Dimensional Plots.
@@ -8076,13 +8087,13 @@ Function Index
 * WEXITSTATUS:                           Controlling Subprocesses.
                                                              (line  345)
 * what:                                  Status of Variables.
-                                                             (line  350)
-* what <1>:                              Status of Variables.
                                                              (line  351)
-* what <2>:                              Status of Variables.
+* what <1>:                              Status of Variables.
                                                              (line  352)
+* what <2>:                              Status of Variables.
+                                                             (line  353)
 * which:                                 Status of Variables.
-                                                             (line  344)
+                                                             (line  345)
 * white:                                 Representing Images.
                                                              (line  351)
 * white <1>:                             Representing Images.

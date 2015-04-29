@@ -135,7 +135,7 @@ clipped in its parent axes limits.";
         s.doc = "Callback function executed immediately after __objname__ \
 has been created.  Function is set by using default property on root object, \
 e.g., @code{set (0, \"default__objname__createfcn\", \
-'disp (\"__objname__ created!\")') }.";
+'disp (\"__objname__ created!\")')}.";
         s.valid = valid_fcn;
 
       case "deletefcn"
@@ -166,6 +166,10 @@ always @qcode{\"__objname__\"}";
         s.printdefault = false;
 
       case "uicontextmenu"
+        s.doc = "Graphics handle of the uicontextmenu object that is \
+currently associated to this __objname__ object.";
+        s.valid = valid_handle;
+        
       case "userdata"
         s.doc = "User-defined data to associate with the graphics object.";
         s.valid = "Any Octave data";

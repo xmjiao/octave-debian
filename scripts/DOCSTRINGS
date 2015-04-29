@@ -3965,27 +3965,39 @@ values.
 inpolygon
 @c inpolygon scripts/geometry/inpolygon.m
 -*- texinfo -*-
-@deftypefn {Function File} {[@var{in}, @var{on}] =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{yv})
+@deftypefn  {Function File} {@var{in} =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{yv})
+@deftypefnx {Function File} {[@var{in}, @var{on}] =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{yv})
 
-For a polygon defined by vertex points @code{(@var{xv}, @var{yv})}, determine
-if the points @code{(@var{x}, @var{y})} are inside or outside the polygon.
+For a polygon defined by vertex points @code{(@var{xv}, @var{yv})}, return
+true if the points @code{(@var{x}, @var{y})} are inside (or on the boundary)
+of the polygon; Otherwise, return false.
+
 The variables @var{x}, @var{y}, must have the same dimension.  The optional
-output @var{on} gives the points that are on the polygon.
-
+output @var{on} returns true if the points are exactly on the polygon
+edge, and false otherwise.
+@seealso{delaunay}
 @end deftypefn
 rectint
 @c rectint scripts/geometry/rectint.m
 -*- texinfo -*-
 @deftypefn {Function File} {@var{area} =} rectint (@var{a}, @var{b})
+Compute area or volume of intersection of rectangles or ND boxes.
 
 Compute the area of intersection of rectangles in @var{a} and
-rectangles in @var{b}.  Rectangles are defined as [x y width height]
-where x and y are the minimum values of the two orthogonal
-dimensions.
+rectangles in @var{b}.  N dimensional boxes are supported in which
+case the volume, or hypervolume is computed according to the number
+of dimensions.
 
-If @var{a} or @var{b} are matrices, then the output, @var{area}, is a
-matrix where the i-th row corresponds to the i-th row of a and the j-th
-column corresponds to the j-th row of b.
+2 dimensional rectangles are defined as @code{[xpos ypos width height]}
+where xpos and ypos are the position of the bottom left corner.
+Higher dimensions are supported where the coordinates for the minimum
+value of each dimension follow the length of the box in that dimension,
+e.g., @code{[xpos ypos zpos kpos @dots{} width height depth k_length @dots{}]}.
+
+Each row of @var{a} and @var{b} define a rectangle, and if both define
+multiple rectangles, then the output, @var{area}, is a matrix where
+the i-th row corresponds to the i-th row of a and the j-th column
+corresponds to the j-th row of b.
 
 @seealso{polyarea}
 @end deftypefn
@@ -4075,6 +4087,7 @@ default arguments in @var{options}.  Use a null string to pass no arguments.
 -*- texinfo -*-
 @deftypefn  {Function File} {@var{h} =} errordlg (@var{msg})
 @deftypefnx {Function File} {@var{h} =} errordlg (@var{msg}, @var{title})
+@deftypefnx {Function File} {@var{h} =} errordlg (@var{msg}, @var{title}, @var{createmode})
 Display @var{msg} using an error dialog box.
 
 The message may have multiple lines separated by newline characters
@@ -4083,6 +4096,10 @@ line.  The optional input @var{title} (character string) can be used to
 set the dialog caption.  The default title is @qcode{"Error Dialog"}.
 
 The return value is always 1.
+
+Compatibility Note: The optional argument @var{createmode} is accepted for
+@sc{matlab} compatibility, but is not implemented.
+
 @seealso{helpdlg, inputdlg, listdlg, msgbox, questdlg, warndlg}
 @end deftypefn
 guidata
@@ -4245,10 +4262,11 @@ endif
 @deftypefn  {Function File} {@var{h} =} msgbox (@var{msg})
 @deftypefnx {Function File} {@var{h} =} msgbox (@var{msg}, @var{title})
 @deftypefnx {Function File} {@var{h} =} msgbox (@var{msg}, @var{title}, @var{icon})
+@deftypefnx {Function File} {@var{h} =} msgbox (@dots{}, @var{createmode})
 Display @var{msg} using a message dialog box.
 
 The message may have multiple lines separated by newline characters
-(@qcode{"\n"}), or it may be a cellstr array with one element for each
+("\n"), or it may be a cellstr array with one element for each
 line.  The optional input @var{title} (character string) can be used to
 decorate the dialog caption.
 
@@ -4257,6 +4275,10 @@ It can be one of @qcode{"none"} (default), @qcode{"error"},
 @qcode{"help"}, or @qcode{"warn"}.
 
 The return value is always 1.
+
+Compatibility Note: The optional argument @var{createmode} is accepted for
+@sc{matlab} compatibility, but is not implemented.
+
 @seealso{errordlg, helpdlg, inputdlg, listdlg, questdlg, warndlg}
 @end deftypefn
 questdlg
@@ -4557,12 +4579,18 @@ key was pressed.
 -*- texinfo -*-
 @deftypefn  {Function File} {@var{h} =} warndlg (@var{msg})
 @deftypefnx {Function File} {@var{h} =} warndlg (@var{msg}, @var{title})
+@deftypefnx {Function File} {@var{h} =} warndlg (@var{msg}, @var{title}, @var{createmode})
 Display @var{msg} using a warning dialog box.
 
 The message may have multiple lines separated by newline characters
 ("\n"), or it may be a cellstr array with one element for each
 line.  The optional input @var{title} (character string) can be used to
 set the dialog caption.  The default title is @qcode{"Warning Dialog"}.
+
+The return value is always 1.
+
+Compatibility Note: The optional argument @var{createmode} is accepted for
+@sc{matlab} compatibility, but is not implemented.
 
 @seealso{helpdlg, inputdlg, listdlg, questdlg}
 @end deftypefn
@@ -4682,26 +4710,27 @@ these type @kbd{help comma} or @kbd{help semicolon}.
 -*- texinfo -*-
 @deftypefn  {Command} {} lookfor @var{str}
 @deftypefnx {Command} {} lookfor -all @var{str}
-@deftypefnx {Function File} {[@var{func}, @var{helpstring}] =} lookfor (@var{str})
-@deftypefnx {Function File} {[@var{func}, @var{helpstring}] =} lookfor ("-all", @var{str})
-Search for the string @var{str} in all functions found in the current
-function search path.  By default, @code{lookfor} searches for @var{str}
-in the first sentence of the help string of each function found.  The entire
-help text of each function can be searched if the @qcode{"-all"} argument is
-supplied.  All searches are case insensitive.
+@deftypefnx {Function File} {[@var{fcn}, @var{help1str}] =} lookfor (@var{str})
+@deftypefnx {Function File} {[@var{fcn}, @var{help1str}] =} lookfor ("-all", @var{str})
+Search for the string @var{str} in all functions using the current function
+search path.
 
-Called with no output arguments, @code{lookfor} prints the list of
-matching functions to the terminal.  Otherwise, the output arguments
-@var{func} and @var{helpstring} define the matching functions and the
-first sentence of each of their help strings.
+By default, @code{lookfor} looks for @var{str} in the first sentence of the
+help string for each function found.  The entire help text of each function
+can be searched by using the @qcode{"-all"} argument.  All searches are case
+insensitive.
 
-The ability of @code{lookfor} to correctly identify the first
-sentence of the help text is dependent on the format of the
-function's help.  All Octave core functions are correctly
-formatted, but the same can not be guaranteed for external packages and
-user-supplied functions.  Therefore, the use of the @qcode{"-all"}
-argument may be necessary to find related functions that are not a part of
-Octave.
+When called with no output arguments, @code{lookfor} prints the list of
+matching functions to the terminal.  Otherwise, the output argument
+@var{fcns} contains the function names and @var{help1str} contains the first
+sentence from the help string of each function.
+
+Programming Note: The ability of @code{lookfor} to correctly identify the
+first sentence of the help text is dependent on the format of the function's
+help.  All Octave core functions are correctly formatted, but the same can
+not be guaranteed for external packages and user-supplied functions.
+Therefore, the use of the @qcode{"-all"} argument may be necessary to find
+related functions that are not a part of Octave.
 @seealso{help, doc, which}
 @end deftypefn
 print_usage
@@ -4937,7 +4966,7 @@ The argument @var{n} must be a scalar and corresponds to the lenght of the
 colormap.  Defaults to the length of the current colormap.
 
 Development of this colormap is described in @cite{Green, D. A., 2011,
-"A colour scheme for the display of astronomical intensity images",
+"A @nospell{colour} scheme for the display of astronomical intensity images",
 Bulletin of the Astronomical Society of India, 39, 289.}.
 
 @seealso{colormap}
@@ -5669,7 +5698,7 @@ number of unique colors in the image (which will be equal to the number
 of rows in @var{map}) in order
 
 Multi-dimensional indexed images (of size @nospell{MxNx3xK}) are also
-supported, both via a single input (@var{rgb}) or its three colour channels
+supported, both via a single input (@var{rgb}) or its three color channels
 as separate variables.
 
 @seealso{ind2rgb, rgb2hsv, rgb2ntsc}
@@ -5859,9 +5888,11 @@ See @var{delim} above.
 
 @item @qcode{"newline"}
 The character(s) to use to separate each row.  Three special cases
-exist for this option.  @qcode{"unix"} is changed into @qcode{"\n"},
-@qcode{"pc"} is changed into @qcode{"\r\n"}, and @qcode{"mac"} is changed
-into @qcode{"\r"}.  Other values for this option are kept as is.
+exist for this option.  @qcode{"unix"} is changed into
+@qcode{"@xbackslashchar{}n"}, @qcode{"pc"} is changed into
+@qcode{"@xbackslashchar{}r@xbackslashchar{}n"}, and @qcode{"mac"} is changed
+into @qcode{"@xbackslashchar{}r"}.  Any other value is used directly as the
+newline separator.
 
 @item @qcode{"roffset"}
 See @var{r} above.
@@ -5879,7 +5910,7 @@ dlmwrite ("file.csv", reshape (1:16, 4, 4));
 @end example
 
 @example
-dlmwrite ("file.tex", a, "delimiter", "&", "newline", "\\n")
+dlmwrite ("file.tex", a, "delimiter", "&", "newline", "\n")
 @end example
 
 @seealso{dlmread, csvread, csvwrite}
@@ -6075,8 +6106,10 @@ If false (0), return an error.
 @item @qcode{"whitespace"}
 Any character in @var{value} will be interpreted as whitespace and
 trimmed; the string defining whitespace must be enclosed in double
-quotes for proper processing of special characters like \t.
-The default value for whitespace = @qcode{" \b\r\n\t"} (note the space).
+quotes for proper processing of special characters like
+@qcode{"@xbackslashchar{}t"}.  The default value for whitespace is
+@qcode{" @xbackslashchar{}b@xbackslashchar{}r@xbackslashchar{}n@xbackslashchar{}t"}
+(note the space).
 Unless whitespace is set to '' (empty) AND at least one @qcode{"%s"} format
 conversion specifier is supplied, a space is always part of whitespace.
 
@@ -6087,11 +6120,11 @@ of the number of format conversion specifiers, strread's behavior
 depends on the last character of @var{str}:
 
 @table @asis
-@item last character = @qcode{"\n"}
+@item last character = @qcode{"@xbackslashchar{}n"}
 Data columns are padded with empty fields or Nan so that all columns
 have equal length
 
-@item last character is not @qcode{"\n"}
+@item last character is not @qcode{"@xbackslashchar{}n"}
 Data columns are not padded; strread returns columns of unequal length
 
 @end table
@@ -6124,10 +6157,10 @@ of the same class in the output cell array.  A value of 0 or false (default)
 leaves output in distinct columns.
 
 @item @qcode{"endofline"}:
-Specify @qcode{"\r"}, @qcode{"\n"} or @qcode{"\r\n"} (for CR, LF, or
-CRLF).  If no value is given, it will be inferred from the file.  If set
-to "" (empty string) EOLs are ignored as delimiters and added to
-whitespace.
+Specify @qcode{"@xbackslashchar{}r"}, @qcode{"@xbackslashchar{}n"} or
+@qcode{"@xbackslashchar{}r@xbackslashchar{}n"} (for CR, LF, or CRLF).  If no
+value is given, it will be inferred from the file.  If set to "" (empty
+string) EOLs are ignored as delimiters and added to whitespace.
 
 @item @qcode{"headerlines"}:
 The first @var{value} number of lines of @var{fid} are skipped.
@@ -6181,7 +6214,8 @@ supports two more:
 The first @var{value} number of lines of @var{filename} are skipped.
 
 @item @qcode{"endofline"}:
-Specify a single character or @qcode{"\r\n"}.  If no value is given, it
+Specify a single character or
+@qcode{"@xbackslashchar{}r@xbackslashchar{}n"}.  If no value is given, it
 will be inferred from the file.  If set to "" (empty string) EOLs are
 ignored as delimiters.
 @end itemize
@@ -9094,10 +9128,10 @@ By default, the @code{Octave:imag-to-real} warning is disabled.
 
 @item Octave:language-extension
 Print warnings when using features that are unique to the Octave
-language and may be still be missing in @sc{Matlab}.
+language and that may still be missing in @sc{matlab}.
 By default, the @code{Octave:language-extension} warning is disabled.
-The --traditional or --braindead startup options for Octave may also
-be of use, @pxref{Command Line Options}.
+The @option{--traditional} or @option{--braindead} startup options for
+Octave may also be of use, @pxref{Command Line Options}.
 
 @item Octave:load-file-in-path
 By default, the @code{Octave:load-file-in-path} warning is enabled.
@@ -15568,8 +15602,10 @@ window that was cleared.
 -*- texinfo -*-
 @deftypefn  {Command} {} close
 @deftypefnx {Command} {} close (@var{h})
+@deftypefnx {Command} {} close @var{h}
 @deftypefnx {Command} {} close all
 @deftypefnx {Command} {} close all hidden
+@deftypefnx {Command} {} close all force
 Close figure window(s).
 
 When called with no arguments, close the current figure.  This is equivalent
@@ -15581,6 +15617,10 @@ If the argument @qcode{"all"} is given then all figures with visible handles
 
 If the argument @qcode{"all hidden"} is given then all figures, including
 hidden ones, are closed.
+
+If the argument @qcode{"all force"} is given then all figures are closed
+even when @qcode{"closerequestfcn"} has been altered to prevent closing
+the window.
 
 Implementation Note: @code{close} operates by calling the function specified
 by the @qcode{"closerequestfcn"} property for each figure.  By default, the
@@ -15891,6 +15931,10 @@ The return values @var{x}, @var{y} are the coordinates where the mouse
 was clicked in the units of the current axes.  The return value @var{button}
 is 1, 2, or 3 for the left, middle, or right button.  If a key is pressed
 the ASCII value is returned in @var{button}.
+
+Implementation Note: @code{ginput} is intenteded for 2-D plots.  For 3-D
+plots see the @var{currentpoint} property of the current axes which can be
+transformed with knowledge of the current @code{view} into data units.
 @seealso{gtext, waitforbuttonpress}
 @end deftypefn
 __gnuplot_drawnow__
@@ -19771,13 +19815,13 @@ References:
 
 @enumerate
 @item
-R. Freund and N. Nachtigal, @cite{QMR: a quasi-minimal residual
-method for non-Hermitian linear systems}, Numerische Mathematik,
+@nospell{R. Freund and N. Nachtigal}, @cite{QMR: a quasi-minimal residual
+method for non-Hermitian linear systems}, @nospell{Numerische Mathematik},
 1991, 60, pp. 315-339.
 
 @item
-R. Barrett, M. Berry, T. Chan, J. Demmel, J. Donato, J. Dongarra,
-V. Eijkhour, R. Pozo, C. Romine, and H. van der Vorst,
+@nospell{ R. Barrett, M. Berry, T. Chan, J. Demmel, J. Donato, J. Dongarra},
+@nospell{ V. Eijkhour, R. Pozo, C. Romine, and H. van der Vorst},
 @cite{Templates for the solution of linear systems: Building blocks
 for iterative methods}, SIAM, 2nd ed., 1994.
 @end enumerate
@@ -24955,9 +24999,9 @@ Supported @var{name}/@var{value} pair arguments are:
 (default) or @code{false}.
 
 @item @var{delimitertype} which may take the value of @qcode{"simple"}
-(default) or @qcode{"regularexpression"}.  A simple delimiter matches the
-text exactly as written.  Otherwise, the syntax for regular expressions
-outlined in @code{regexp} is used.
+(default) or @nospell{@qcode{"regularexpression"}}.  A simple delimiter
+matches the text exactly as written.  Otherwise, the syntax for regular
+expressions outlined in @code{regexp} is used.
 @end itemize
 
 The optional second output, @var{matches}, returns the delimiters which were
@@ -25002,7 +25046,7 @@ strsplit ("a,,b, c", @{",", " "@}, "collapsedelimiters", false)
 
 @end example
 
-Examples with regularexpression delimiters:
+Examples with @nospell{regularexpression} delimiters:
 
 @smallexample
 strsplit ("a foo b,bar c", ',|\s|foo|bar', "delimitertype", "regularexpression")

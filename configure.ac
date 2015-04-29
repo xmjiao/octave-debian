@@ -19,14 +19,14 @@ dnl Copyright (C) 1993-2015 John W. Eaton
 ### <http://www.gnu.org/licenses/>.
 
 AC_PREREQ([2.63])
-AC_INIT([GNU Octave], [4.0.0-rc3], [http://octave.org/bugs.html], [octave])
+AC_INIT([GNU Octave], [4.0.0-rc4], [http://octave.org/bugs.html], [octave])
 
 dnl Note that the version number is duplicated here and in AC_INIT
 dnl because AC_INIT requires it to be static, not computed from
 dnl shell variables.
 OCTAVE_MAJOR_VERSION=4
 OCTAVE_MINOR_VERSION=0
-OCTAVE_PATCH_VERSION=0-rc3
+OCTAVE_PATCH_VERSION=0-rc4
 
 dnl PACKAGE_VERSION is set by the AC_INIT VERSION arg
 OCTAVE_VERSION="$PACKAGE_VERSION"
@@ -47,7 +47,7 @@ OCTAVE_RELEASE_DATE="2015-03-20"
 ## libinterp, perhaps we should be computing the "api version" from
 ## those versions numbers in some way instead of setting it
 ## independently here.
-OCTAVE_API_VERSION="api-v49+"
+OCTAVE_API_VERSION="api-v50+"
 
 AC_SUBST(OCTAVE_MAJOR_VERSION)
 AC_SUBST(OCTAVE_MINOR_VERSION)
@@ -2850,10 +2850,10 @@ if test $build_gui = yes; then
   fi
 
   if test $build_gui = yes; then
-    AC_CHECK_TOOLS(MOC, [moc-qt5 moc-qt4 moc])
-    AC_CHECK_TOOLS(UIC, [uic-qt5 uic-qt4 uic])
-    AC_CHECK_TOOLS(RCC, [rcc-qt5 rcc-qt4 rcc])
-    AC_CHECK_TOOLS(LRELEASE, [lrelease-qt5 lrelease-qt4 lrelease])
+    AC_CHECK_TOOLS(MOC, [moc-qt4 moc])
+    AC_CHECK_TOOLS(UIC, [uic-qt4 uic])
+    AC_CHECK_TOOLS(RCC, [rcc-qt4 rcc])
+    AC_CHECK_TOOLS(LRELEASE, [lrelease-qt4 lrelease])
     if test -n "$MOC" && test -n "$UIC" && test -n "$RCC" && test -n "$LRELEASE"; then
       AC_DEFINE(HAVE_QT, 1,
         [Define to 1 if Qt is available (libraries, developer header files, utility programs (moc, uic, rcc, and lrelease))])

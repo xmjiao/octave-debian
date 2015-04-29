@@ -674,15 +674,23 @@ available with @code{rectint}
 @c rectint scripts/geometry/rectint.m
 @anchor{XREFrectint}
 @deftypefn {Function File} {@var{area} =} rectint (@var{a}, @var{b})
+Compute area or volume of intersection of rectangles or ND boxes.
 
 Compute the area of intersection of rectangles in @var{a} and
-rectangles in @var{b}.  Rectangles are defined as [x y width height]
-where x and y are the minimum values of the two orthogonal
-dimensions.
+rectangles in @var{b}.  N dimensional boxes are supported in which
+case the volume, or hypervolume is computed according to the number
+of dimensions.
 
-If @var{a} or @var{b} are matrices, then the output, @var{area}, is a
-matrix where the i-th row corresponds to the i-th row of a and the j-th
-column corresponds to the j-th row of b.
+2 dimensional rectangles are defined as @code{[xpos ypos width height]}
+where xpos and ypos are the position of the bottom left corner.
+Higher dimensions are supported where the coordinates for the minimum
+value of each dimension follow the length of the box in that dimension,
+e.g., @code{[xpos ypos zpos kpos @dots{} width height depth k_length @dots{}]}.
+
+Each row of @var{a} and @var{b} define a rectangle, and if both define
+multiple rectangles, then the output, @var{area}, is a matrix where
+the i-th row corresponds to the i-th row of a and the j-th column
+corresponds to the j-th row of b.
 
 @seealso{@ref{XREFpolyarea,,polyarea}}
 @end deftypefn
@@ -690,13 +698,17 @@ column corresponds to the j-th row of b.
 
 @c inpolygon scripts/geometry/inpolygon.m
 @anchor{XREFinpolygon}
-@deftypefn {Function File} {[@var{in}, @var{on}] =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{yv})
+@deftypefn  {Function File} {@var{in} =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{yv})
+@deftypefnx {Function File} {[@var{in}, @var{on}] =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{yv})
 
-For a polygon defined by vertex points @code{(@var{xv}, @var{yv})}, determine
-if the points @code{(@var{x}, @var{y})} are inside or outside the polygon.
+For a polygon defined by vertex points @code{(@var{xv}, @var{yv})}, return
+true if the points @code{(@var{x}, @var{y})} are inside (or on the boundary)
+of the polygon; Otherwise, return false.
+
 The variables @var{x}, @var{y}, must have the same dimension.  The optional
-output @var{on} gives the points that are on the polygon.
-
+output @var{on} returns true if the points are exactly on the polygon
+edge, and false otherwise.
+@seealso{@ref{XREFdelaunay,,delaunay}}
 @end deftypefn
 
 

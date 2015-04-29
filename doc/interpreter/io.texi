@@ -969,9 +969,11 @@ See @var{delim} above.
 
 @item @qcode{"newline"}
 The character(s) to use to separate each row.  Three special cases
-exist for this option.  @qcode{"unix"} is changed into @qcode{"\n"},
-@qcode{"pc"} is changed into @qcode{"\r\n"}, and @qcode{"mac"} is changed
-into @qcode{"\r"}.  Other values for this option are kept as is.
+exist for this option.  @qcode{"unix"} is changed into
+@qcode{"@xbackslashchar{}n"}, @qcode{"pc"} is changed into
+@qcode{"@xbackslashchar{}r@xbackslashchar{}n"}, and @qcode{"mac"} is changed
+into @qcode{"@xbackslashchar{}r"}.  Any other value is used directly as the
+newline separator.
 
 @item @qcode{"roffset"}
 See @var{r} above.
@@ -989,7 +991,7 @@ dlmwrite ("file.csv", reshape (1:16, 4, 4));
 @end example
 
 @example
-dlmwrite ("file.tex", a, "delimiter", "&", "newline", "\\n")
+dlmwrite ("file.tex", a, "delimiter", "&", "newline", "\n")
 @end example
 
 @seealso{@ref{XREFdlmread,,dlmread}, @ref{XREFcsvread,,csvread}, @ref{XREFcsvwrite,,csvwrite}}
@@ -1083,7 +1085,8 @@ supports two more:
 The first @var{value} number of lines of @var{filename} are skipped.
 
 @item @qcode{"endofline"}:
-Specify a single character or @qcode{"\r\n"}.  If no value is given, it
+Specify a single character or
+@qcode{"@xbackslashchar{}r@xbackslashchar{}n"}.  If no value is given, it
 will be inferred from the file.  If set to "" (empty string) EOLs are
 ignored as delimiters.
 @end itemize
@@ -1125,10 +1128,10 @@ of the same class in the output cell array.  A value of 0 or false (default)
 leaves output in distinct columns.
 
 @item @qcode{"endofline"}:
-Specify @qcode{"\r"}, @qcode{"\n"} or @qcode{"\r\n"} (for CR, LF, or
-CRLF).  If no value is given, it will be inferred from the file.  If set
-to "" (empty string) EOLs are ignored as delimiters and added to
-whitespace.
+Specify @qcode{"@xbackslashchar{}r"}, @qcode{"@xbackslashchar{}n"} or
+@qcode{"@xbackslashchar{}r@xbackslashchar{}n"} (for CR, LF, or CRLF).  If no
+value is given, it will be inferred from the file.  If set to "" (empty
+string) EOLs are ignored as delimiters and added to whitespace.
 
 @item @qcode{"headerlines"}:
 The first @var{value} number of lines of @var{fid} are skipped.
@@ -1673,9 +1676,9 @@ modeled after the C language functions of the same name, but they
 interpret the format template differently in order to improve the
 performance of printing vector and matrix values.
 
-Implementation Note: For compatability with @sc{matlab}, escape sequences in
-the template string (e.g., @qcode{"\n"} => newline) are expanded even
-when the template string is defined with single quotes.
+Implementation Note: For compatibility with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"@xbackslashchar{}n"} => newline) are
+expanded even when the template string is defined with single quotes.
 
 @c printf libinterp/corefcn/file-io.cc
 @anchor{XREFprintf}
@@ -1689,9 +1692,9 @@ See the Formatted Output section of the GNU Octave manual for a
 complete description of the syntax of the template string.
 @end ifclear
 
-Implementation Note: For compatability with @sc{matlab}, escape sequences in
-the template string (e.g., @qcode{"\\n"} => newline) are expanded even
-when the template string is defined with single quotes.
+Implementation Note: For compatibility with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"@xbackslashchar{}n"} => newline) are
+expanded even when the template string is defined with single quotes.
 @seealso{@ref{XREFfprintf,,fprintf}, @ref{XREFsprintf,,sprintf}, @ref{XREFscanf,,scanf}}
 @end deftypefn
 
@@ -1709,9 +1712,9 @@ function exactly equivalent to @code{printf}.
 
 The optional output returns the number of bytes written to the file.
 
-Implementation Note: For compatability with @sc{matlab}, escape sequences in
-the template string (e.g., @qcode{"\\n"} => newline) are expanded even
-when the template string is defined with single quotes.
+Implementation Note: For compatibility with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"@xbackslashchar{}n"} => newline) are
+expanded even when the template string is defined with single quotes.
 @seealso{@ref{XREFfputs,,fputs}, @ref{XREFfdisp,,fdisp}, @ref{XREFfwrite,,fwrite}, @ref{XREFfscanf,,fscanf}, @ref{XREFprintf,,printf}, @ref{XREFsprintf,,sprintf}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
@@ -1725,9 +1728,9 @@ suitably sized string as an argument, Octave's @code{sprintf} function
 returns the string, automatically sized to hold all of the items
 converted.
 
-Implementation Note: For compatability with @sc{matlab}, escape sequences in
-the template string (e.g., @qcode{"\\n"} => newline) are expanded even
-when the template string is defined with single quotes.
+Implementation Note: For compatibility with @sc{matlab}, escape sequences in
+the template string (e.g., @qcode{"@xbackslashchar{}n"} => newline) are
+expanded even when the template string is defined with single quotes.
 @seealso{@ref{XREFprintf,,printf}, @ref{XREFfprintf,,fprintf}, @ref{XREFsscanf,,sscanf}}
 @end deftypefn
 
@@ -2688,7 +2691,7 @@ temporary files.
 
 Programming Note: The value returned by @code{P_tmpdir} is always the
 default location.  This value may not agree with that returned from
-@code{tempdir} if the user has overriden the default with the @env{TMPDIR}
+@code{tempdir} if the user has overridden the default with the @env{TMPDIR}
 environment variable.
 @seealso{@ref{XREFtempdir,,tempdir}, @ref{XREFtempname,,tempname}, @ref{XREFmkstemp,,mkstemp}, @ref{XREFtmpfile,,tmpfile}}
 @end deftypefn

@@ -34,6 +34,8 @@ class QMouseEvent;
 class QWheelEvent;
 class QWidget;
 
+class octave_value_list;
+
 namespace QtHandles
 {
 
@@ -81,7 +83,9 @@ protected:
     : m_handle (handle),
       m_redrawBlocked (false),
       m_mouseMode (NoMode),
-      m_eventMask (0)
+      m_clickMode (false),
+      m_eventMask (0),
+      m_rectMode (false)
     { }
 
   void canvasToggleAxes (const graphics_handle& handle);
@@ -98,15 +102,21 @@ protected:
 
   void updateCurrentPoint (const graphics_object& fig,
                            const graphics_object& obj, QMouseEvent *event);
+  void updateCurrentPoint (const graphics_object& fig,
+                           const graphics_object& obj);
+
+  void annotation_callback (const octave_value_list& args);
 
 private:
   graphics_handle m_handle;
   bool m_redrawBlocked;
   MouseMode m_mouseMode;
+  bool m_clickMode;              // True: ZoomIn, False: ZoomOut
   QPoint m_mouseAnchor;
   QPoint m_mouseCurrent;
   graphics_handle m_mouseAxes;
   int m_eventMask;
+  bool m_rectMode;
 };
 
 }; // namespace QtHandles

@@ -138,11 +138,12 @@ function.  The <code>&quot;local&quot;</code> option is ignored if used in the t
 workspace.
 </p>
 <p>Implementation Note: For compatibility with <small>MATLAB</small>, escape
-sequences in <var>template</var> (e.g., &quot;\n&quot; =&gt; newline) are processed
-regardless of whether <var>template</var> has been defined with single quotes,
-as long as there are two or more input arguments.  To disable escape sequence
-expansion use a second backslash before the sequence (e.g., &quot;\\n&quot;) or
-use the <code>regexptranslate</code> function.
+sequences in <var>template</var> (e.g., <code>&quot;\n&quot;</code> =&gt;
+newline) are processed regardless of whether <var>template</var> has been defined
+with single quotes, as long as there are two or more input arguments.  To
+disable escape sequence expansion use a second backslash before the sequence
+(e.g., &quot;\\n&quot;) or use the
+<code>regexptranslate</code> function.
 </p>
 <p><strong>See also:</strong> <a href="#XREFwarning_005fids">warning_ids</a>, <a href="#XREFlastwarn">lastwarn</a>, <a href="Raising-Errors.html#XREFerror">error</a>.
 </p></dd></dl>
@@ -309,10 +310,10 @@ By default, the <code>Octave:imag-to-real</code> warning is disabled.
 </dd>
 <dt><code>Octave:language-extension</code></dt>
 <dd><p>Print warnings when using features that are unique to the Octave
-language and may be still be missing in <small>MATLAB</small>.
+language and that may still be missing in <small>MATLAB</small>.
 By default, the <code>Octave:language-extension</code> warning is disabled.
-The &ndash;traditional or &ndash;braindead startup options for Octave may also
-be of use, see <a href="Command-Line-Options.html#Command-Line-Options">Command Line Options</a>.
+The <samp>--traditional</samp> or <samp>--braindead</samp> startup options for
+Octave may also be of use, see <a href="Command-Line-Options.html#Command-Line-Options">Command Line Options</a>.
 </p>
 </dd>
 <dt><code>Octave:load-file-in-path</code></dt>

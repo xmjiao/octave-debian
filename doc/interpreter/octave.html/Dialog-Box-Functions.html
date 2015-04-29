@@ -66,10 +66,11 @@ of dialog box.
 <dt><a name="index-msgbox"></a>Function File: <em><var>h</var> =</em> <strong>msgbox</strong> <em>(<var>msg</var>)</em></dt>
 <dt><a name="index-msgbox-1"></a>Function File: <em><var>h</var> =</em> <strong>msgbox</strong> <em>(<var>msg</var>, <var>title</var>)</em></dt>
 <dt><a name="index-msgbox-2"></a>Function File: <em><var>h</var> =</em> <strong>msgbox</strong> <em>(<var>msg</var>, <var>title</var>, <var>icon</var>)</em></dt>
+<dt><a name="index-msgbox-3"></a>Function File: <em><var>h</var> =</em> <strong>msgbox</strong> <em>(&hellip;, <var>createmode</var>)</em></dt>
 <dd><p>Display <var>msg</var> using a message dialog box.
 </p>
 <p>The message may have multiple lines separated by newline characters
-(<code>&quot;\n&quot;</code>), or it may be a cellstr array with one element for each
+(&quot;\n&quot;), or it may be a cellstr array with one element for each
 line.  The optional input <var>title</var> (character string) can be used to
 decorate the dialog caption.
 </p>
@@ -79,6 +80,10 @@ It can be one of <code>&quot;none&quot;</code> (default), <code>&quot;error&quot
 </p>
 <p>The return value is always 1.
 </p>
+<p>Compatibility Note: The optional argument <var>createmode</var> is accepted for
+<small>MATLAB</small> compatibility, but is not implemented.
+</p>
+
 <p><strong>See also:</strong> <a href="#XREFerrordlg">errordlg</a>, <a href="#XREFhelpdlg">helpdlg</a>, <a href="#XREFinputdlg">inputdlg</a>, <a href="#XREFlistdlg">listdlg</a>, <a href="#XREFquestdlg">questdlg</a>, <a href="#XREFwarndlg">warndlg</a>.
 </p></dd></dl>
 
@@ -87,6 +92,7 @@ It can be one of <code>&quot;none&quot;</code> (default), <code>&quot;error&quot
 <a name="XREFerrordlg"></a><dl>
 <dt><a name="index-errordlg"></a>Function File: <em><var>h</var> =</em> <strong>errordlg</strong> <em>(<var>msg</var>)</em></dt>
 <dt><a name="index-errordlg-1"></a>Function File: <em><var>h</var> =</em> <strong>errordlg</strong> <em>(<var>msg</var>, <var>title</var>)</em></dt>
+<dt><a name="index-errordlg-2"></a>Function File: <em><var>h</var> =</em> <strong>errordlg</strong> <em>(<var>msg</var>, <var>title</var>, <var>createmode</var>)</em></dt>
 <dd><p>Display <var>msg</var> using an error dialog box.
 </p>
 <p>The message may have multiple lines separated by newline characters
@@ -96,6 +102,10 @@ set the dialog caption.  The default title is <code>&quot;Error Dialog&quot;</co
 </p>
 <p>The return value is always 1.
 </p>
+<p>Compatibility Note: The optional argument <var>createmode</var> is accepted for
+<small>MATLAB</small> compatibility, but is not implemented.
+</p>
+
 <p><strong>See also:</strong> <a href="#XREFhelpdlg">helpdlg</a>, <a href="#XREFinputdlg">inputdlg</a>, <a href="#XREFlistdlg">listdlg</a>, <a href="#XREFmsgbox">msgbox</a>, <a href="#XREFquestdlg">questdlg</a>, <a href="#XREFwarndlg">warndlg</a>.
 </p></dd></dl>
 
@@ -274,12 +284,18 @@ the dialog will have only these two buttons.
 <a name="XREFwarndlg"></a><dl>
 <dt><a name="index-warndlg"></a>Function File: <em><var>h</var> =</em> <strong>warndlg</strong> <em>(<var>msg</var>)</em></dt>
 <dt><a name="index-warndlg-1"></a>Function File: <em><var>h</var> =</em> <strong>warndlg</strong> <em>(<var>msg</var>, <var>title</var>)</em></dt>
+<dt><a name="index-warndlg-2"></a>Function File: <em><var>h</var> =</em> <strong>warndlg</strong> <em>(<var>msg</var>, <var>title</var>, <var>createmode</var>)</em></dt>
 <dd><p>Display <var>msg</var> using a warning dialog box.
 </p>
 <p>The message may have multiple lines separated by newline characters
 (&quot;\n&quot;), or it may be a cellstr array with one element for each
 line.  The optional input <var>title</var> (character string) can be used to
 set the dialog caption.  The default title is <code>&quot;Warning Dialog&quot;</code>.
+</p>
+<p>The return value is always 1.
+</p>
+<p>Compatibility Note: The optional argument <var>createmode</var> is accepted for
+<small>MATLAB</small> compatibility, but is not implemented.
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFhelpdlg">helpdlg</a>, <a href="#XREFinputdlg">inputdlg</a>, <a href="#XREFlistdlg">listdlg</a>, <a href="#XREFquestdlg">questdlg</a>.
