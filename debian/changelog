@@ -1,3 +1,18 @@
+octave (4.0.0-1) experimental; urgency=low
+
+  [ Sébastien Villemot ]
+  * Imported Upstream version 4.0.0
+  * d/watch: support the xz extension for upstream tarball.
+
+  [ Rafael Laboissiere ]
+  * Build-Depends on libsndfile1-dev and portaudio19-dev.
+    This makes the audioinfo, audioread and audiowrite functions for
+    reading and writing audio files, as well as the audioplayer,
+    audiorecorder classes and audiodevinfo function for audio playback and
+    recording fully functional.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Thu, 04 Jun 2015 14:17:23 +0200
+
 octave (4.0.0~rc4-1) experimental; urgency=low
 
   * Imported Upstream version 4.0.0~rc4
