@@ -5,7 +5,7 @@ missing pdflib (closes: #478677)
 
 --- a/scripts/plot/util/print.m
 +++ b/scripts/plot/util/print.m
-@@ -176,6 +176,9 @@
+@@ -172,6 +172,9 @@
  ##
  ##   @item pdf
  ##     Portable document format

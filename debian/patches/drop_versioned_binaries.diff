@@ -37,7 +37,7 @@ Last-Update: 2015-04-17
              {
 --- a/scripts/miscellaneous/mkoctfile.m
 +++ b/scripts/miscellaneous/mkoctfile.m
-@@ -149,7 +149,7 @@ function [output, status] = mkoctfile (v
+@@ -148,7 +148,7 @@ function [output, status] = mkoctfile (v
    ext = octave_config_info ("EXEEXT");
  
    shell_script = fullfile (bindir,
