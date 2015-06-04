@@ -70,9 +70,12 @@ been computed and stored in a string, which is exactly what the
 <dt><a name="index-eval"></a>Built-in Function: <em></em> <strong>eval</strong> <em>(<var>try</var>)</em></dt>
 <dt><a name="index-eval-1"></a>Built-in Function: <em></em> <strong>eval</strong> <em>(<var>try</var>, <var>catch</var>)</em></dt>
 <dd><p>Parse the string <var>try</var> and evaluate it as if it were an Octave
-program.  If that fails, evaluate the optional string <var>catch</var>.
-The string <var>try</var> is evaluated in the current context,
-so any results remain available after <code>eval</code> returns.
+program.
+</p>
+<p>If execution fails, evaluate the optional string <var>catch</var>.
+</p>
+<p>The string <var>try</var> is evaluated in the current context, so any results
+remain available after <code>eval</code> returns.
 </p>
 <p>The following example creates the variable <var>A</var> with the approximate
 value of 3.1416 in the current workspace.

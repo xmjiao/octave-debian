@@ -139,13 +139,11 @@ automatically.
 @c vectorize libinterp/octave-value/ov-fcn-inline.cc
 @anchor{XREFvectorize}
 @deftypefn {Built-in Function} {} vectorize (@var{fun})
-Create a vectorized version of the inline function @var{fun}
-by replacing all occurrences of @code{*}, @code{/}, etc., with
-@code{.*}, @code{./}, etc.
+Create a vectorized version of the inline function @var{fun} by replacing
+all occurrences of @code{*}, @code{/}, etc., with @code{.*}, @code{./}, etc.
 
-This may be useful, for example, when using inline functions with
-numerical integration or optimization where a vector-valued function
-is expected.
+This may be useful, for example, when using inline functions with numerical
+integration or optimization where a vector-valued function is expected.
 
 @example
 @group
@@ -391,14 +389,15 @@ For functions that are not written with broadcasting semantics,
 @c bsxfun libinterp/corefcn/bsxfun.cc
 @anchor{XREFbsxfun}
 @deftypefn {Built-in Function} {} bsxfun (@var{f}, @var{A}, @var{B})
-The binary singleton expansion function applier performs broadcasting,
-that is, applies a binary function @var{f} element-by-element to two
+The binary singleton expansion function performs broadcasting,
+that is, it applies a binary function @var{f} element-by-element to two
 array arguments @var{A} and @var{B}, and expands as necessary
-singleton dimensions in either input argument.  @var{f} is a function
-handle, inline function, or string containing the name of the function
-to evaluate.  The function @var{f} must be capable of accepting two
-column-vector arguments of equal length, or one column vector argument
-and a scalar.
+singleton dimensions in either input argument.
+
+@var{f} is a function handle, inline function, or string containing the name
+of the function to evaluate.  The function @var{f} must be capable of
+accepting two column-vector arguments of equal length, or one column vector
+argument and a scalar.
 
 The dimensions of @var{A} and @var{B} must be equal or singleton.  The
 singleton dimensions of the arrays will be expanded to the same
@@ -537,9 +536,11 @@ array, cell, or struct.
 @deftypefnx {Function File} {} arrayfun (@dots{}, "UniformOutput", @var{val})
 @deftypefnx {Function File} {} arrayfun (@dots{}, "ErrorHandler", @var{errfunc})
 
-Execute a function on each element of an array.  This is useful for
-functions that do not accept array arguments.  If the function does
-accept array arguments it is better to call the function directly.
+Execute a function on each element of an array.
+
+This is useful for functions that do not accept array arguments.  If the
+function does accept array arguments it is better to call the function
+directly.
 
 The first input argument @var{func} can be a string, a function
 handle, an inline function, or an anonymous function.  The input
@@ -646,9 +647,10 @@ arrayfun (@@str2num, [1234],
 @anchor{XREFspfun}
 @deftypefn {Function File} {@var{y} =} spfun (@var{f}, @var{S})
 Compute @code{f(@var{S})} for the nonzero values of @var{S}.
-This results in a sparse matrix with the same structure as
-@var{S}.  The function @var{f} can be passed as a string, a
-function handle, or an inline function.
+
+This results in a sparse matrix with the same structure as @var{S}.  The
+function @var{f} can be passed as a string, a function handle, or an
+inline function.
 @seealso{@ref{XREFarrayfun,,arrayfun}, @ref{XREFcellfun,,cellfun}, @ref{XREFstructfun,,structfun}}
 @end deftypefn
 
@@ -665,8 +667,10 @@ function handle, or an inline function.
 @deftypefnx {Built-in Function} {} cellfun (@dots{}, "UniformOutput", @var{val})
 
 Evaluate the function named @var{name} on the elements of the cell array
-@var{C}.  Elements in @var{C} are passed on to the named function
-individually.  The function @var{name} can be one of the functions
+@var{C}.
+
+Elements in @var{C} are passed on to the named function individually.  The
+function @var{name} can be one of the functions
 
 @table @code
 @item isempty
@@ -702,7 +706,7 @@ Return 1 for elements of @var{class}.
 Additionally, @code{cellfun} accepts an arbitrary function @var{func}
 in the form of an inline function, function handle, or the name of a
 function (in a character string).  The function can take one or more
-arguments, with the inputs arguments given by @var{C}, @var{D}, etc.  
+arguments, with the inputs arguments given by @var{C}, @var{D}, etc.
 Equally the function can return one or more output arguments.  For example:
 
 @example
@@ -801,18 +805,17 @@ Evaluate the function named @var{name} on the fields of the structure
 @var{S}.  The fields of @var{S} are passed to the function @var{func}
 individually.
 
-@code{structfun} accepts an arbitrary function @var{func} in the form of
-an inline function, function handle, or the name of a function (in a
-character string).  In the case of a character string argument, the
-function must accept a single argument named @var{x}, and it must return
-a string value.  If the function returns more than one argument, they are
-returned as separate output variables.
+@code{structfun} accepts an arbitrary function @var{func} in the form of an
+inline function, function handle, or the name of a function (in a character
+string).  In the case of a character string argument, the function must
+accept a single argument named @var{x}, and it must return a string value.
+If the function returns more than one argument, they are returned as
+separate output variables.
 
-If the parameter @qcode{"UniformOutput"} is set to true (the default),
-then the function must return a single element which will be concatenated
-into the return value.  If @qcode{"UniformOutput"} is false, the outputs
-are placed into a structure with the same fieldnames as the input
-structure.
+If the parameter @qcode{"UniformOutput"} is set to true (the default), then
+the function must return a single element which will be concatenated into
+the return value.  If @qcode{"UniformOutput"} is false, the outputs are
+placed into a structure with the same fieldnames as the input structure.
 
 @example
 @group
@@ -828,9 +831,8 @@ structfun (@@(x) regexp (x, '(\w+)$', "matches")@{1@}, s,
 @end group
 @end example
 
-Given the parameter @qcode{"ErrorHandler"}, @var{errfunc} defines a
-function to call in case @var{func} generates an error.  The form of the
-function is
+Given the parameter @qcode{"ErrorHandler"}, @var{errfunc} defines a function
+to call in case @var{func} generates an error.  The form of the function is
 
 @example
 function [@dots{}] = errfunc (@var{se}, @dots{})
@@ -870,12 +872,13 @@ useful.
 @deftypefnx {Function File} {} accumarray (@var{subs}, @var{vals}, @dots{})
 
 Create an array by accumulating the elements of a vector into the
-positions defined by their subscripts.  The subscripts are defined by
-the rows of the matrix @var{subs} and the values by @var{vals}.  Each
-row of @var{subs} corresponds to one of the values in @var{vals}.  If
-@var{vals} is a scalar, it will be used for each of the row of
-@var{subs}.  If @var{subs} is a cell array of vectors, all vectors
-must be of the same length, and the subscripts in the @var{k}th
+positions defined by their subscripts.
+
+The subscripts are defined by the rows of the matrix @var{subs} and the
+values by @var{vals}.  Each row of @var{subs} corresponds to one of the
+values in @var{vals}.  If @var{vals} is a scalar, it will be used for each
+of the row of @var{subs}.  If @var{subs} is a cell array of vectors, all
+vectors must be of the same length, and the subscripts in the @var{k}th
 vector must correspond to the @var{k}th dimension of the result.
 
 The size of the matrix will be determined by the subscripts
@@ -979,6 +982,7 @@ accumarray calls and compute the results in a vectorized manner.
 @deftypefn {Function File} {} accumdim (@var{subs}, @var{vals}, @var{dim}, @var{n}, @var{func}, @var{fillval})
 Create an array by accumulating the slices of an array into the
 positions defined by their subscripts along a specified dimension.
+
 The subscripts are defined by the index vector @var{subs}.
 The dimension is specified by @var{dim}.  If not given, it defaults
 to the first non-singleton dimension.  The length of @var{subs} must
@@ -1052,7 +1056,7 @@ to anyone not working directly on the implementation of the JIT compiler.
 Query or set the internal variable that enables Octave's JIT compiler.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFjit_startcnt,,jit_startcnt}, @ref{XREFdebug_jit,,debug_jit}}
 @end deftypefn
@@ -1064,14 +1068,16 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {@var{old_val} =} jit_startcnt (@var{new_val})
 @deftypefnx {Built-in Function} {} jit_startcnt (@var{new_val}, "local")
 Query or set the internal variable that determines whether JIT compilation
-will take place for a specific loop.  Because compilation is a costly
-operation it does not make sense to employ JIT when the loop count is low.
-By default only loops with greater than 1000 iterations will be accelerated.
+will take place for a specific loop.
+
+Because compilation is a costly operation it does not make sense to employ
+JIT when the loop count is low.  By default only loops with greater than
+1000 iterations will be accelerated.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
-@seealso{@ref{XREFjit_enable,,jit_enable}, @ref{XREFdebug_jit,,debug_jit}}
+@seealso{@ref{XREFjit_enable,,jit_enable}, @ref{XREFjit_failcnt,,jit_failcnt}, @ref{XREFdebug_jit,,debug_jit}}
 @end deftypefn
 
 
@@ -1080,11 +1086,11 @@ The original variable value is restored when exiting the function.
 @deftypefn  {Built-in Function} {@var{val} =} jit_failcnt ()
 @deftypefnx {Built-in Function} {@var{old_val} =} jit_failcnt (@var{new_val})
 @deftypefnx {Built-in Function} {} jit_failcnt (@var{new_val}, "local")
-Query or set the internal variable that counts the number of
-JIT fail exceptions for Octave's JIT compiler.
+Query or set the internal variable that counts the number of JIT fail
+exceptions for Octave's JIT compiler.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFjit_enable,,jit_enable}, @ref{XREFjit_startcnt,,jit_startcnt}, @ref{XREFdebug_jit,,debug_jit}}
 @end deftypefn
@@ -1099,7 +1105,7 @@ Query or set the internal variable that determines whether
 debugging/tracing is enabled for Octave's JIT compiler.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFjit_enable,,jit_enable}, @ref{XREFjit_startcnt,,jit_startcnt}}
 @end deftypefn

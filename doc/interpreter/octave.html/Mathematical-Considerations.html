@@ -183,22 +183,23 @@ reorder the matrix to maximize performance.
 <dt><a name="index-amd"></a>Loadable Function: <em><var>p</var> =</em> <strong>amd</strong> <em>(<var>S</var>)</em></dt>
 <dt><a name="index-amd-1"></a>Loadable Function: <em><var>p</var> =</em> <strong>amd</strong> <em>(<var>S</var>, <var>opts</var>)</em></dt>
 <dd>
-<p>Return the approximate minimum degree permutation of a matrix.  This
-permutation such that the Cholesky&nbsp;factorization of <code><var>S</var>
-(<var>p</var>, <var>p</var>)</code> tends to be sparser than the Cholesky&nbsp;factorization
-of <var>S</var> itself.  <code>amd</code> is typically faster than <code>symamd</code> but
-serves a similar purpose.
+<p>Return the approximate minimum degree permutation of a matrix.
 </p>
-<p>The optional parameter <var>opts</var> is a structure that controls the
-behavior of <code>amd</code>.  The fields of the structure are
+<p>This is a permutation such that the Cholesky&nbsp;factorization of
+<code><var>S</var> (<var>p</var>, <var>p</var>)</code> tends to be sparser than the
+Cholesky&nbsp;factorization of <var>S</var> itself.  <code>amd</code> is typically
+faster than <code>symamd</code> but serves a similar purpose.
+</p>
+<p>The optional parameter <var>opts</var> is a structure that controls the behavior
+of <code>amd</code>.  The fields of the structure are
 </p>
 <dl compact="compact">
 <dt><var>opts</var>.dense</dt>
 <dd><p>Determines what <code>amd</code> considers to be a dense row or column of the
 input matrix.  Rows or columns with more than <code>max (16, (dense *
 sqrt (<var>n</var>)))</code> entries, where <var>n</var> is the order of the matrix <var>S</var>,
-are ignored by <code>amd</code> during the calculation of the permutation
-The value of dense must be a positive scalar and its default value is 10.0
+are ignored by <code>amd</code> during the calculation of the permutation.
+The value of dense must be a positive scalar and the default value is 10.0
 </p>
 </dd>
 <dt><var>opts</var>.aggressive</dt>
@@ -208,8 +209,8 @@ absorption.  The default is not to perform aggressive absorption.
 </dl>
 
 <p>The author of the code itself is Timothy A. Davis
-<a href="mailto:davis@cise.ufl.edu">davis@cise.ufl.edu</a>, University of Florida (see
-<a href="http://www.cise.ufl.edu/research/sparse/amd">http://www.cise.ufl.edu/research/sparse/amd</a>).
+<a href="mailto:davis@cise.ufl.edu">davis@cise.ufl.edu</a>, University of Florida
+(see <a href="http://www.cise.ufl.edu/research/sparse/amd">http://www.cise.ufl.edu/research/sparse/amd</a>).
 </p>
 <p><strong>See also:</strong> <a href="#XREFsymamd">symamd</a>, <a href="#XREFcolamd">colamd</a>.
 </p></dd></dl>
@@ -222,16 +223,16 @@ absorption.  The default is not to perform aggressive absorption.
 <dt><a name="index-ccolamd-3"></a>Loadable Function: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>ccolamd</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Constrained column approximate minimum degree permutation.
-<code><var>p</var> = ccolamd (<var>S</var>)</code> returns the column approximate minimum
+</p>
+<p><code><var>p</var> = ccolamd (<var>S</var>)</code> returns the column approximate minimum
 degree permutation vector for the sparse matrix <var>S</var>.  For a non-symmetric
-matrix
-<var>S</var>,
-<code><var>S</var>(:, <var>p</var>)</code> tends to have sparser LU&nbsp;factors than
-<var>S</var>.  <code>chol (<var>S</var>(:, <var>p</var>)' * <var>S</var>(:, <var>p</var>))</code> also
-tends to be sparser than <code>chol (<var>S</var>' * <var>S</var>)</code>.  <code><var>p</var> =
-ccolamd (<var>S</var>, 1)</code> optimizes the ordering for <code>lu (<var>S</var>(:,
-<var>p</var>))</code>.  The ordering is followed by a column elimination tree
-post-ordering.
+matrix <var>S</var>, <code><var>S</var>(:, <var>p</var>)</code> tends to have sparser
+LU&nbsp;factors than <var>S</var>.
+<code>chol (<var>S</var>(:, <var>p</var>)' * <var>S</var>(:, <var>p</var>))</code> also tends to be
+sparser than <code>chol (<var>S</var>' * <var>S</var>)</code>.
+<code><var>p</var> = ccolamd (<var>S</var>, 1)</code> optimizes the ordering for
+<code>lu (<var>S</var>(:, <var>p</var>))</code>.  The ordering is followed by a column
+elimination tree post-ordering.
 </p>
 <p><var>knobs</var> is an optional 1-element to 5-element input vector, with a
 default value of <code>[0 10 10 1 0]</code> if not present or empty.  Entries not
@@ -240,18 +241,19 @@ present are set to their defaults.
 <dl compact="compact">
 <dt><code><var>knobs</var>(1)</code></dt>
 <dd><p>if nonzero, the ordering is optimized for <code>lu (S(:, p))</code>.  It will be a
-poor ordering for <code>chol (<var>S</var>(:, <var>p</var>)' * <var>S</var>(:,
-<var>p</var>))</code>.  This is the most important knob for ccolamd.
+poor ordering for <code>chol (<var>S</var>(:, <var>p</var>)' * <var>S</var>(:, <var>p</var>))</code>.
+This is the most important knob for ccolamd.
 </p>
 </dd>
 <dt><code><var>knobs</var>(2)</code></dt>
-<dd><p>if <var>S</var> is m-by-n, rows with more than <code>max (16, <var>knobs</var>(2) *
-sqrt (n))</code> entries are ignored.
+<dd><p>if <var>S</var> is m-by-n, rows with more than
+<code>max (16, <var>knobs</var>(2) * sqrt (n))</code> entries are ignored.
 </p>
 </dd>
 <dt><code><var>knobs</var>(3)</code></dt>
-<dd><p>columns with more than <code>max (16, <var>knobs</var>(3) * sqrt (min (<var>m</var>,
-<var>n</var>)))</code> entries are ignored and ordered last in the output permutation
+<dd><p>columns with more than
+<code>max (16, <var>knobs</var>(3) * sqrt (min (<var>m</var>, <var>n</var>)))</code> entries are
+ignored and ordered last in the output permutation
 (subject to the cmember constraints).
 </p>
 </dd>
@@ -318,8 +320,9 @@ ccolamd, csymamd, amd, colamd, symamd, and other related orderings.
 <dt><a name="index-colamd-2"></a>Loadable Function: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>colamd</strong> <em>(<var>S</var>)</em></dt>
 <dt><a name="index-colamd-3"></a>Loadable Function: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>colamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
 <dd>
-<p>Column approximate minimum degree permutation.
-<code><var>p</var> = colamd (<var>S</var>)</code> returns the column approximate minimum
+<p>Compute the column approximate minimum degree permutation.
+</p>
+<p><code><var>p</var> = colamd (<var>S</var>)</code> returns the column approximate minimum
 degree permutation vector for the sparse matrix <var>S</var>.  For a
 non-symmetric matrix <var>S</var>, <code><var>S</var>(:,<var>p</var>)</code> tends to have
 sparser LU&nbsp;factors than <var>S</var>.  The Cholesky&nbsp;factorization of
@@ -360,7 +363,7 @@ is printed, and no output arguments (<var>p</var> or <var>stats</var>) are retur
 <small>COLAMD</small> is thus a simple way to check a sparse matrix to see if it&rsquo;s
 valid.
 </p>
-<p><code><var>stats</var>(4:7)</code> provide information if COLAMD was able to
+<p><code><var>stats</var>(4:7)</code> provide information if <small>COLAMD</small> was able to
 continue.  The matrix is OK if <code><var>stats</var>(4)</code> is zero, or 1 if
 invalid.  <code><var>stats</var>(5)</code> is the rightmost column index that is
 unsorted or contains duplicate entries, or zero if no such column exists.
@@ -384,10 +387,12 @@ Xerox PARC, and Esmond Ng, Oak Ridge National Laboratory.  (see
 <a name="XREFcolperm"></a><dl>
 <dt><a name="index-colperm"></a>Function File: <em><var>p</var> =</em> <strong>colperm</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Return the column permutations such that the columns of
-<code><var>s</var> (:, <var>p</var>)</code> are ordered in terms of increase number
-of nonzero elements.  If <var>s</var> is symmetric, then <var>p</var> is chosen
-such that <code><var>s</var> (<var>p</var>, <var>p</var>)</code> orders the rows and
-columns with increasing number of nonzeros elements.
+<code><var>s</var> (:, <var>p</var>)</code> are ordered in terms of increasing number of
+nonzero elements.
+</p>
+<p>If <var>s</var> is symmetric, then <var>p</var> is chosen such that
+<code><var>s</var> (<var>p</var>, <var>p</var>)</code> orders the rows and columns with
+increasing number of nonzeros elements.
 </p></dd></dl>
 
 
@@ -397,17 +402,18 @@ columns with increasing number of nonzeros elements.
 <dt><a name="index-csymamd-2"></a>Loadable Function: <em><var>p</var> =</em> <strong>csymamd</strong> <em>(<var>S</var>, <var>knobs</var>, <var>cmember</var>)</em></dt>
 <dt><a name="index-csymamd-3"></a>Loadable Function: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>csymamd</strong> <em>(&hellip;)</em></dt>
 <dd>
-<p>For a symmetric positive definite matrix <var>S</var>, returns the permutation
+<p>For a symmetric positive definite matrix <var>S</var>, return the permutation
 vector <var>p</var> such that <code><var>S</var>(<var>p</var>,<var>p</var>)</code> tends to have a
-sparser Cholesky&nbsp;factor than <var>S</var>.  Sometimes <code>csymamd</code> works
-well for symmetric indefinite matrices too.  The matrix <var>S</var> is assumed
-to be symmetric; only the strictly lower triangular part is referenced.
-<var>S</var> must be square.  The ordering is followed by an elimination tree
-post-ordering.
+sparser Cholesky&nbsp;factor than <var>S</var>.
+</p>
+<p>Sometimes <code>csymamd</code> works well for symmetric indefinite matrices too. 
+The matrix <var>S</var> is assumed to be symmetric; only the strictly lower
+triangular part is referenced.  <var>S</var> must be square.  The ordering is
+followed by an elimination tree post-ordering.
 </p>
 <p><var>knobs</var> is an optional 1-element to 3-element input vector, with a
-default value of <code>[10 1 0]</code> if present or empty.  Entries not
-present are set to their defaults.
+default value of <code>[10 1 0]</code>.  Entries not present are set to their
+defaults.
 </p>
 <dl compact="compact">
 <dt><code><var>knobs</var>(1)</code></dt>
@@ -433,8 +439,9 @@ output permutation <var>p</var>, rows/columns in set 1 appear first, followed
 by all rows/columns in set 2, and so on.  <code><var>cmember</var> = ones (1,n)</code>
 if not present or empty.  <code>csymamd (<var>S</var>,[],1:n)</code> returns <code>1:n</code>.
 </p>
-<p><code><var>p</var> = csymamd (<var>S</var>)</code> is about the same as <code><var>p</var> =
-symamd (<var>S</var>)</code>.  <var>knobs</var> and its default values differ.
+<p><code><var>p</var> = csymamd (<var>S</var>)</code> is about the same as
+<code><var>p</var> = symamd (<var>S</var>)</code>.  <var>knobs</var> and its default values
+differ.
 </p>
 <p><code><var>stats</var>(4:7)</code> provide information if CCOLAMD was able to
 continue.  The matrix is OK if <code><var>stats</var>(4)</code> is zero, or 1 if
@@ -491,25 +498,27 @@ ACM Trans. Math. Software, 16(4):303-324, 1990.
 <dd>
 <p>For a symmetric positive definite matrix <var>S</var>, returns the permutation
 vector p such that <code><var>S</var>(<var>p</var>, <var>p</var>)</code> tends to have a
-sparser Cholesky&nbsp;factor than <var>S</var>.  Sometimes <code>symamd</code> works
-well for symmetric indefinite matrices too.  The matrix <var>S</var> is assumed
-to be symmetric; only the strictly lower triangular part is referenced.
-<var>S</var> must be square.
+sparser Cholesky&nbsp;factor than <var>S</var>.
+</p>
+<p>Sometimes <code>symamd</code> works well for symmetric indefinite matrices too. 
+The matrix <var>S</var> is assumed to be symmetric; only the strictly lower
+triangular part is referenced.  <var>S</var> must be square.
 </p>
 <p><var>knobs</var> is an optional one- to two-element input vector.  If <var>S</var> is
 n-by-n, then rows and columns with more than
 <code>max (16,<var>knobs</var>(1)*sqrt(n))</code> entries are removed prior to ordering,
 and ordered last in the output permutation <var>p</var>.  No rows/columns are
 removed if <code><var>knobs</var>(1) &lt; 0</code>.  If <code><var>knobs</var> (2)</code> is nonzero,
-<code>stats</code> and <var>knobs</var> are printed.  The default is <code><var>knobs</var>
-= [10 0]</code>.  Note that <var>knobs</var> differs from earlier versions of symamd.
+<code>stats</code> and <var>knobs</var> are printed.  The default is
+<code><var>knobs</var> = [10 0]</code>.  Note that <var>knobs</var> differs from earlier
+versions of <code>symamd</code>.
 </p>
 <p><var>stats</var> is an optional 20-element output vector that provides data
 about the ordering and the validity of the input matrix <var>S</var>.  Ordering
-statistics are in <code><var>stats</var>(1:3)</code>.  <code><var>stats</var>(1) =
-<var>stats</var>(2)</code> is the number of dense or empty rows and columns
-ignored by SYMAMD and <code><var>stats</var>(3)</code> is the number of garbage
-collections performed on the internal data structure used by SYMAMD
+statistics are in <code><var>stats</var>(1:3)</code>.
+<code><var>stats</var>(1) = <var>stats</var>(2)</code> is the number of dense or empty rows
+and columns ignored by SYMAMD and <code><var>stats</var>(3)</code> is the number of
+garbage collections performed on the internal data structure used by SYMAMD
 (roughly of size <code>8.4 * nnz (tril (<var>S</var>, -1)) + 9 * <var>n</var></code>
 integers).
 </p>
@@ -550,15 +559,16 @@ Xerox PARC, and Esmond Ng, Oak Ridge National Laboratory.  (see
 <a name="XREFsymrcm"></a><dl>
 <dt><a name="index-symrcm"></a>Loadable Function: <em><var>p</var> =</em> <strong>symrcm</strong> <em>(<var>S</var>)</em></dt>
 <dd><p>Return the symmetric reverse Cuthill-McKee permutation of <var>S</var>.
-<var>p</var> is a permutation vector such that
-<code><var>S</var>(<var>p</var>, <var>p</var>)</code> tends to have its diagonal elements
-closer to the diagonal than <var>S</var>.  This is a good preordering for LU
-or Cholesky&nbsp;factorization of matrices that come from &ldquo;long, skinny&rdquo;
+</p>
+<p><var>p</var> is a permutation vector such that
+<code><var>S</var>(<var>p</var>, <var>p</var>)</code> tends to have its diagonal elements closer
+to the diagonal than <var>S</var>.  This is a good preordering for LU or
+Cholesky&nbsp;factorization of matrices that come from &ldquo;long, skinny&rdquo;
 problems.  It works for both symmetric and asymmetric <var>S</var>.
 </p>
-<p>The algorithm represents a heuristic approach to the NP-complete
-bandwidth minimization problem.  The implementation is based in the
-descriptions found in
+<p>The algorithm represents a heuristic approach to the NP-complete bandwidth
+minimization problem.  The implementation is based in the descriptions found
+in
 </p>
 <p>E. Cuthill, J. McKee. <cite>Reducing the Bandwidth of Sparse
 Symmetric Matrices</cite>. Proceedings of the 24th ACM National Conference,

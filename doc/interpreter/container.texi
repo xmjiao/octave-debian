@@ -178,7 +178,7 @@ Query or set the internal variable that specifies the number of
 structure levels to display.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFprint_struct_array_contents,,print_struct_array_contents}}
 @end deftypefn
@@ -192,13 +192,13 @@ The original variable value is restored when exiting the function.
 Query or set the internal variable that specifies whether to print struct
 array contents.
 
-If true, values of struct array elements are printed.
-This variable does not affect scalar structures whose elements are always
-printed.  In both cases, however, printing will be limited to
-the number of levels specified by @var{struct_levels_to_print}.
+If true, values of struct array elements are printed.  This variable does
+not affect scalar structures whose elements are always printed.  In both
+cases, however, printing will be limited to the number of levels specified
+by @var{struct_levels_to_print}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFstruct_levels_to_print,,struct_levels_to_print}}
 @end deftypefn
@@ -534,16 +534,17 @@ struct ("field1", @{@{1, "one"@}@}, "field2", 2)
 @deftypefnx {Built-in Function} {@var{s} =} struct (@var{field1}, @var{value1}, @var{field2}, @var{value2}, @dots{})
 @deftypefnx {Built-in Function} {@var{s} =} struct (@var{obj})
 
-Create a scalar or array structure and initialize its values.  The
-@var{field1}, @var{field2}, @dots{} variables are strings specifying the
-names of the fields and the @var{value1}, @var{value2}, @dots{}
-variables can be of any type.
+Create a scalar or array structure and initialize its values.
 
-If the values are cell arrays, create a structure array and initialize
-its values.  The dimensions of each cell array of values must match.
-Singleton cells and non-cell values are repeated so that they fill
-the entire array.  If the cells are empty, create an empty structure
-array with the specified field names.
+The @var{field1}, @var{field2}, @dots{} variables are strings specifying the
+names of the fields and the @var{value1}, @var{value2}, @dots{} variables
+can be of any type.
+
+If the values are cell arrays, create a structure array and initialize its
+values.  The dimensions of each cell array of values must match.  Singleton
+cells and non-cell values are repeated so that they fill the entire array. 
+If the cells are empty, create an empty structure array with the specified
+field names.
 
 If the argument is an object, return the underlying struct.
 
@@ -574,7 +575,7 @@ struct ("foo", @{1, 2, 3@})
 @noindent
 The first case is an ordinary scalar struct---one field, one value.  The
 second produces an empty struct array with one field and no values, since
-s being passed an empty cell array of struct array values.  When the value is
+being passed an empty cell array of struct array values.  When the value is
 a cell array containing a single entry, this becomes a scalar struct with
 that single entry as the value of the field.  That single entry happens
 to be an empty cell array.
@@ -618,8 +619,8 @@ Return the number of fields of the structure @var{s}.
 Return a cell array of strings with the names of the fields in the
 specified input.
 
-When the input is a structure @var{struct}, the names are the elements
-of the structure.
+When the input is a structure @var{struct}, the names are the elements of
+the structure.
 
 When the input is an Octave object @var{obj}, the names are the public
 properties of the object.
@@ -891,8 +892,9 @@ be converted to another type of container before being treated.
 @anchor{XREFstruct2cell}
 @deftypefn {Built-in Function} {@var{c} =} struct2cell (@var{s})
 Create a new cell array from the objects stored in the struct object.
-If @var{f} is the number of fields in the structure, the resulting
-cell array will have a dimension vector corresponding to
+
+If @var{f} is the number of fields in the structure, the resulting cell
+array will have a dimension vector corresponding to
 @code{[@var{f} size(@var{s})]}.  For example:
 
 @example
@@ -1010,9 +1012,11 @@ function.
 @anchor{XREFcelldisp}
 @deftypefn  {Function File} {} celldisp (@var{c})
 @deftypefnx {Function File} {} celldisp (@var{c}, @var{name})
-Recursively display the contents of a cell array.  By default the values
-are displayed with the name of the variable @var{c}.  However, this name
-can be replaced with the variable @var{name}.  For example:
+Recursively display the contents of a cell array.
+
+By default the values are displayed with the name of the variable @var{c}.
+However, this name can be replaced with the variable @var{name}.  For
+example:
 
 @example
 @group
@@ -1115,9 +1119,9 @@ object, such as @ref{XREFlength,,length}, @ref{XREFnumel,, numel},
 Create a new cell array object.
 
 If invoked with a single scalar integer argument, return a square
-@nospell{NxN} cell array.  If invoked with two or more scalar
-integer arguments, or a vector of integer values, return an array with
-the given dimensions.
+@nospell{NxN} cell array.  If invoked with two or more scalar integer
+arguments, or a vector of integer values, return an array with the given
+dimensions.
 @seealso{@ref{XREFcellstr,,cellstr}, @ref{XREFmat2cell,,mat2cell}, @ref{XREFnum2cell,,num2cell}, @ref{XREFstruct2cell,,struct2cell}}
 @end deftypefn
 
@@ -1130,9 +1134,11 @@ is possible to convert numerical arrays into cell arrays using the
 @anchor{XREFnum2cell}
 @deftypefn  {Built-in Function} {@var{C} =} num2cell (@var{A})
 @deftypefnx {Built-in Function} {@var{C} =} num2cell (@var{A}, @var{dim})
-Convert the numeric matrix @var{A} to a cell array.  If @var{dim} is
-defined, the value @var{C} is of dimension 1 in this dimension and the
-elements of @var{A} are placed into @var{C} in slices.  For example:
+Convert the numeric matrix @var{A} to a cell array.
+
+If @var{dim} is defined, the value @var{C} is of dimension 1 in this
+dimension and the elements of @var{A} are placed into @var{C} in slices.
+For example:
 
 @example
 @group
@@ -1166,12 +1172,14 @@ num2cell ([1,2;3,4],1)
 @deftypefn  {Built-in Function} {@var{C} =} mat2cell (@var{A}, @var{m}, @var{n})
 @deftypefnx {Built-in Function} {@var{C} =} mat2cell (@var{A}, @var{d1}, @var{d2}, @dots{})
 @deftypefnx {Built-in Function} {@var{C} =} mat2cell (@var{A}, @var{r})
-Convert the matrix @var{A} to a cell array.  If @var{A} is 2-D, then
-it is required that @code{sum (@var{m}) == size (@var{A}, 1)} and
+Convert the matrix @var{A} to a cell array.
+
+If @var{A} is 2-D, then it is required that
+@code{sum (@var{m}) == size (@var{A}, 1)} and
 @code{sum (@var{n}) == size (@var{A}, 2)}.  Similarly, if @var{A} is
-multi-dimensional and the number of dimensional arguments is equal
-to the dimensions of @var{A}, then it is required that @code{sum (@var{di})
-== size (@var{A}, i)}.
+multi-dimensional and the number of dimensional arguments is equal to the
+dimensions of @var{A}, then it is required that
+@code{sum (@var{di}) == size (@var{A}, i)}.
 
 Given a single dimensional argument @var{r}, the other dimensional
 arguments are assumed to equal @code{size (@var{A},@var{i})}.
@@ -1210,8 +1218,9 @@ mat2cell (reshape (1:16,4,4), [3,1], [3,1])
 @deftypefn {Built-in Function} {@var{sl} =} cellslices (@var{x}, @var{lb}, @var{ub}, @var{dim})
 Given an array @var{x}, this function produces a cell array of slices from
 the array determined by the index vectors @var{lb}, @var{ub}, for lower and
-upper bounds, respectively.  In other words, it is equivalent to the
-following code:
+upper bounds, respectively.
+
+In other words, it is equivalent to the following code:
 
 @example
 @group
@@ -1368,6 +1377,8 @@ to the objects within each cell array entry and returns the requested values.
 @c cellindexmat libinterp/corefcn/cellfun.cc
 @anchor{XREFcellindexmat}
 @deftypefn {Built-in Function} {@var{y} =} cellindexmat (@var{x}, @var{varargin})
+Perform indexing of matrices in a cell array.
+
 Given a cell array of matrices @var{x}, this function computes
 
 @example
@@ -1412,8 +1423,8 @@ c = cellstr (a)
 @c cellstr libinterp/octave-value/ov-cell.cc
 @anchor{XREFcellstr}
 @deftypefn {Built-in Function} {@var{cstr} =} cellstr (@var{strmat})
-Create a new cell array object from the elements of the string
-array @var{strmat}.
+Create a new cell array object from the elements of the string array
+@var{strmat}.
 
 Each row of @var{strmat} becomes an element of @var{cstr}.  Any trailing
 spaces in a row are deleted before conversion.
@@ -1455,8 +1466,8 @@ cell array of strings.
 @c iscellstr libinterp/octave-value/ov-cell.cc
 @anchor{XREFiscellstr}
 @deftypefn {Built-in Function} {} iscellstr (@var{cell})
-Return true if every element of the cell array @var{cell} is a
-character string.
+Return true if every element of the cell array @var{cell} is a character
+string.
 @seealso{@ref{XREFischar,,ischar}}
 @end deftypefn
 
@@ -1479,9 +1490,10 @@ using the @code{cell2mat} and @code{cell2struct} functions.
 @anchor{XREFcell2mat}
 @deftypefn {Function File} {@var{m} =} cell2mat (@var{c})
 Convert the cell array @var{c} into a matrix by concatenating all
-elements of @var{c} into a hyperrectangle.  Elements of @var{c} must
-be numeric, logical, or char matrices; or cell arrays; or structs; and
-@code{cat} must be able to concatenate them together.
+elements of @var{c} into a hyperrectangle.
+
+Elements of @var{c} must be numeric, logical, or char matrices; or cell
+arrays; or structs; and @code{cat} must be able to concatenate them together.
 @seealso{@ref{XREFmat2cell,,mat2cell}, @ref{XREFnum2cell,,num2cell}}
 @end deftypefn
 
@@ -1490,10 +1502,12 @@ be numeric, logical, or char matrices; or cell arrays; or structs; and
 @anchor{XREFcell2struct}
 @deftypefn  {Built-in Function} {} cell2struct (@var{cell}, @var{fields})
 @deftypefnx {Built-in Function} {} cell2struct (@var{cell}, @var{fields}, @var{dim})
-Convert @var{cell} to a structure.  The number of fields in @var{fields}
-must match the number of elements in @var{cell} along dimension @var{dim},
-that is @code{numel (@var{fields}) == size (@var{cell}, @var{dim})}.
-If @var{dim} is omitted, a value of 1 is assumed.
+Convert @var{cell} to a structure.
+
+The number of fields in @var{fields} must match the number of elements in
+@var{cell} along dimension @var{dim}, that is
+@code{numel (@var{fields}) == size (@var{cell}, @var{dim})}.  If @var{dim}
+is omitted, a value of 1 is assumed.
 
 @example
 @group

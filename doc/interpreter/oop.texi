@@ -188,6 +188,7 @@ The available methods of a class can be displayed with the
 
 Return a cell array containing the names of the methods for the
 object @var{obj} or the named class @var{classname}.
+
 @var{obj} may be an Octave class object or a Java object.
 
 @seealso{@ref{XREFfieldnames,,fieldnames}}
@@ -231,8 +232,10 @@ then Octave will printed nothing when displaying the contents of a class.
 @c display scripts/general/display.m
 @anchor{XREFdisplay}
 @deftypefn {Function File} {} display (@var{a})
-Display the contents of an object.  If @var{a} is an object of the
-class @qcode{"myclass"}, then @code{display} is called in a case like
+Display the contents of an object.
+
+If @var{a} is an object of the class @qcode{"myclass"}, then @code{display}
+is called in a case like
 
 @example
 myclass (@dots{})
@@ -391,6 +394,7 @@ initialized before it is saved.  This can be done with the
 @anchor{XREFsaveobj}
 @deftypefn {Function File} {@var{b} =} saveobj (@var{a})
 Method of a class to manipulate an object prior to saving it to a file.
+
 The function @code{saveobj} is called when the object @var{a} is saved
 using the @code{save} function.  An example of the use of @code{saveobj}
 might be to remove fields of the object that don't make sense to be saved
@@ -422,6 +426,7 @@ fields are reinserted into the user object.
 @anchor{XREFloadobj}
 @deftypefn {Function File} {@var{b} =} loadobj (@var{a})
 Method of a class to manipulate an object after loading it from a file.
+
 The function @code{loadobj} is called when the object @var{a} is loaded
 using the @code{load} function.  An example of the use of @code{saveobj}
 might be to add fields to an object that don't make sense to be saved.
@@ -463,17 +468,15 @@ determined by the @code{subsref} method.
 @c subsref libinterp/octave-value/ov.cc
 @anchor{XREFsubsref}
 @deftypefn {Built-in Function} {} subsref (@var{val}, @var{idx})
-Perform the subscripted element selection operation according to
-the subscript specified by @var{idx}.
+Perform the subscripted element selection operation according to the
+subscript specified by @var{idx}.
 
-The subscript @var{idx} is expected to be a structure array with
-fields @samp{type} and @samp{subs}.  Valid values for @samp{type}
-are @samp{"()"}, @samp{"@{@}"}, and @samp{"."}.
-The @samp{subs} field may be either @samp{":"} or a cell array
-of index values.
+The subscript @var{idx} is expected to be a structure array with fields
+@samp{type} and @samp{subs}.  Valid values for @samp{type} are
+@samp{"()"}, @samp{"@{@}"}, and @samp{"."}.  The @samp{subs} field may
+be either @samp{":"} or a cell array of index values.
 
-The following example shows how to extract the first two columns of
-a matrix
+The following example shows how to extract the first two columns of a matrix
 
 @example
 @group
@@ -493,8 +496,8 @@ subsref (val, idx)
 @noindent
 Note that this is the same as writing @code{val(:,1:2)}.
 
-If @var{idx} is an empty structure array with fields @samp{type}
-and @samp{subs}, return @var{val}.
+If @var{idx} is an empty structure array with fields @samp{type} and
+@samp{subs}, return @var{val}.
 @seealso{@ref{XREFsubsasgn,,subsasgn}, @ref{XREFsubstruct,,substruct}}
 @end deftypefn
 
@@ -553,17 +556,16 @@ The equivalent functionality for subscripted assignments uses the
 @c subsasgn libinterp/octave-value/ov.cc
 @anchor{XREFsubsasgn}
 @deftypefn {Built-in Function} {} subsasgn (@var{val}, @var{idx}, @var{rhs})
-Perform the subscripted assignment operation according to
-the subscript specified by @var{idx}.
+Perform the subscripted assignment operation according to the subscript
+specified by @var{idx}.
 
-The subscript @var{idx} is expected to be a structure array with
-fields @samp{type} and @samp{subs}.  Valid values for @samp{type}
-are @samp{"()"}, @samp{"@{@}"}, and @samp{"."}.
-The @samp{subs} field may be either @samp{":"} or a cell array
-of index values.
+The subscript @var{idx} is expected to be a structure array with fields
+@samp{type} and @samp{subs}.  Valid values for @samp{type} are
+@samp{"()"}, @samp{"@{@}"}, and @samp{"."}.  The @samp{subs} field may
+be either @samp{":"} or a cell array of index values.
 
-The following example shows how to set the two first columns of a
-3-by-3 matrix to zero.
+The following example shows how to set the two first columns of a 3-by-3
+matrix to zero.
 
 @example
 @group
@@ -579,8 +581,8 @@ subsasgn (val, idx, 0)
 
 Note that this is the same as writing @code{val(:,1:2) = 0}.
 
-If @var{idx} is an empty structure array with fields @samp{type}
-and @samp{subs}, return @var{rhs}.
+If @var{idx} is an empty structure array with fields @samp{type} and
+@samp{subs}, return @var{rhs}.
 @seealso{@ref{XREFsubsref,,subsref}, @ref{XREFsubstruct,,substruct}}
 @end deftypefn
 
@@ -596,7 +598,7 @@ If true, Octave will attempt to eliminate the redundant copying when calling
 the subsasgn method of a user-defined class.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @end deftypefn
 
@@ -647,12 +649,13 @@ and this is controlled with the @code{subsindex} function.
 @c subsindex scripts/general/subsindex.m
 @anchor{XREFsubsindex}
 @deftypefn {Function File} {@var{idx} =} subsindex (@var{a})
-Convert an object to an index vector.  When @var{a} is a class object
-defined with a class constructor, then @code{subsindex} is the
-overloading method that allows the conversion of this class object to
-a valid indexing vector.  It is important to note that
-@code{subsindex} must return a zero-based real integer vector of the
-class @qcode{"double"}.  For example, if the class constructor
+Convert an object to an index vector.
+
+When @var{a} is a class object defined with a class constructor, then
+@code{subsindex} is the overloading method that allows the conversion of
+this class object to a valid indexing vector.  It is important to note that
+@code{subsindex} must return a zero-based real integer vector of the class
+@qcode{"double"}.  For example, if the class constructor
 
 @example
 @group
@@ -1036,6 +1039,7 @@ to a function or operator.  To do this the @code{superiorto} and
 @deftypefn {Built-in Function} {} superiorto (@var{class_name}, @dots{})
 When called from a class constructor, mark the object currently
 constructed as having a higher precedence than @var{class_name}.
+
 More that one such class can be specified in a single call.
 This function may only be called from a class constructor.
 @seealso{@ref{XREFinferiorto,,inferiorto}}
@@ -1047,6 +1051,7 @@ This function may only be called from a class constructor.
 @deftypefn {Built-in Function} {} inferiorto (@var{class_name}, @dots{})
 When called from a class constructor, mark the object currently
 constructed as having a lower precedence than @var{class_name}.
+
 More that one such class can be specified in a single call.
 This function may only be called from a class constructor.
 @seealso{@ref{XREFsuperiorto,,superiorto}}

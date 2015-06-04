@@ -204,7 +204,7 @@ Canvas::annotation_callback (const octave_value_list& args)
 
   redraw ();
 }
-  
+
 void
 Canvas::canvasToggleAxes (const graphics_handle& handle)
 {
@@ -253,24 +253,22 @@ Canvas::canvasToggleGrid (const graphics_handle& handle)
         {
           axes::properties& ap = Utils::properties<axes> (ax);
 
-          if (ap.handlevisibility_is ("on") && ap.is_visible ())
-            {
-              std::string tmp;
+          std::string tmp;
 
-              // If any grid is off, then turn them all on.  If they are all
-              // on, then turn them off.
+          // If any grid is off, then turn them all on.  If they are all
+          // on, then turn them off.
 
-              std::string state = ((ap.get_xgrid () == "off"
-                                    || ap.get_ygrid () == "off"
-                                    || ap.get_zgrid () == "off")
-                                   ? "on" : "off");
+          std::string state = ((ap.get_xgrid () == "off"
+                                || ap.get_ygrid () == "off"
+                                || ap.get_zgrid () == "off")
+                               ? "on" : "off");
 
-              ap.set_xgrid (state);
-              ap.set_ygrid (state);
-              ap.set_zgrid (state);
+          ap.set_xgrid (state);
+          ap.set_ygrid (state);
+          ap.set_zgrid (state);
 
-              redraw (true);
-            }
+          redraw (true);
+            
         }
     }
 }
@@ -304,12 +302,9 @@ Canvas::canvasAutoAxes (const graphics_handle& handle)
         {
           axes::properties& ap = Utils::properties<axes> (ax);
 
-          if (ap.handlevisibility_is ("on") && ap.is_visible ())
-            {
-              autoscale_axes (ap);
+          autoscale_axes (ap);
 
-              redraw (true);
-            }
+          redraw (true);
         }
     }
 }
@@ -785,11 +780,11 @@ Canvas::canvasMouseReleaseEvent (QMouseEvent* event)
   else if (m_mouseMode == TextMode)
     {
       gh_manager::auto_lock lock;
-      
-      graphics_object figObj = 
+
+      graphics_object figObj =
         gh_manager::get_object (m_handle).get_ancestor ("figure");
       if (figObj.valid_object ())
-        {          
+        {
           QWidget *w = qWidget ();
           if (w)
             {
@@ -802,7 +797,7 @@ Canvas::canvasMouseReleaseEvent (QMouseEvent* event)
               octave_value_list props = ovl("textbox", bb);
 
               annotation_dialog anno_dlg (w, props);
-            
+
               if (anno_dlg.exec () == QDialog::Accepted)
                 {
                   props = anno_dlg.get_properties ();

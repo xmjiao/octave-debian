@@ -157,11 +157,13 @@ function.
 <dt><a name="index-merge"></a>Built-in Function: <em></em> <strong>merge</strong> <em>(<var>mask</var>, <var>tval</var>, <var>fval</var>)</em></dt>
 <dt><a name="index-ifelse"></a>Built-in Function: <em></em> <strong>ifelse</strong> <em>(<var>mask</var>, <var>tval</var>, <var>fval</var>)</em></dt>
 <dd><p>Merge elements of <var>true_val</var> and <var>false_val</var>, depending on the
-value of <var>mask</var>.  If <var>mask</var> is a logical scalar, the other two
-arguments can be arbitrary values.  Otherwise, <var>mask</var> must be a logical
-array, and <var>tval</var>, <var>fval</var> should be arrays of matching class, or
-cell arrays.  In the scalar mask case, <var>tval</var> is returned if <var>mask</var>
-is true, otherwise <var>fval</var> is returned.
+value of <var>mask</var>.
+</p>
+<p>If <var>mask</var> is a logical scalar, the other two arguments can be arbitrary
+values.  Otherwise, <var>mask</var> must be a logical array, and <var>tval</var>,
+<var>fval</var> should be arrays of matching class, or cell arrays.  In the
+scalar mask case, <var>tval</var> is returned if <var>mask</var> is true, otherwise
+<var>fval</var> is returned.
 </p>
 <p>In the array mask case, both <var>tval</var> and <var>fval</var> must be either
 scalars or arrays with dimensions equal to <var>mask</var>.  The result is
@@ -172,8 +174,8 @@ constructed as follows:
 result(! mask) = fval(! mask);
 </pre></div>
 
-<p><var>mask</var> can also be arbitrary numeric type, in which case
-it is first converted to logical.
+<p><var>mask</var> can also be arbitrary numeric type, in which case it is first
+converted to logical.
 </p>
 <p><strong>See also:</strong> <a href="Logical-Values.html#XREFlogical">logical</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFdiff">diff</a>.
 </p></dd></dl>

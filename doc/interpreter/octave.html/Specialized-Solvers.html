@@ -66,26 +66,25 @@ Previous: <a href="Functions-of-a-Matrix.html#Functions-of-a-Matrix" accesskey="
 <dd><p>Solve <code>A x = b</code> using the Bi-conjugate gradient iterative method.
 </p>
 <ul class="no-bullet">
-<li>- <var>rtol</var> is the relative tolerance, if not given
-or set to [] the default value 1e-6 is used.
+<li>- <var>rtol</var> is the relative tolerance, if not given or set to [] the
+default value 1e-6 is used.
 
-</li><li>- <var>maxit</var> the maximum number of outer iterations,
-if not given or set to [] the default value
-<code>min (20, numel (b))</code> is used.
+</li><li>- <var>maxit</var> the maximum number of outer iterations, if not given or
+set to [] the default value <code>min (20, numel (b))</code> is used.
 
-</li><li>- <var>x0</var> the initial guess, if not given or set to []
-the default value <code>zeros (size (b))</code> is used.
+</li><li>- <var>x0</var> the initial guess, if not given or set to [] the default
+value <code>zeros (size (b))</code> is used.
 </li></ul>
 
-<p><var>A</var> can be passed as a matrix or as a function handle or
-inline function <code>f</code> such that <code>f(x, &quot;notransp&quot;) = A*x</code>
-and <code>f(x, &quot;transp&quot;) = A'*x</code>.
+<p><var>A</var> can be passed as a matrix or as a function handle or inline function
+<code>f</code> such that <code>f(x, &quot;notransp&quot;) = A*x</code> and
+<code>f(x, &quot;transp&quot;) = A'*x</code>.
 </p>
-<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.
-Both <var>M1</var> and <var>M2</var> can be passed as a matrix or as
-a function handle or inline function <code>g</code> such that
-<code>g(x, &quot;notransp&quot;) = M1 \ x</code> or <code>g(x, &quot;notransp&quot;) = M2 \ x</code> and
-<code>g(x, &quot;transp&quot;) = M1' \ x</code> or <code>g(x, &quot;transp&quot;) = M2' \ x</code>.
+<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.  Both <var>M1</var>
+and <var>M2</var> can be passed as a matrix or as a function handle or inline
+function <code>g</code> such that <code>g(x, &quot;notransp&quot;) = M1 \ x</code> or
+<code>g(x, &quot;notransp&quot;) = M2 \ x</code> and <code>g(x, &quot;transp&quot;) = M1' \ x</code> or
+<code>g(x, &quot;transp&quot;) = M2' \ x</code>.
 </p>
 <p>If called with more than one output parameter
 </p>
@@ -124,24 +123,22 @@ iteration.
 method.
 </p>
 <ul class="no-bullet">
-<li>- <var>rtol</var> is the relative tolerance, if not given or set to
-[] the default value 1e-6 is used.
+<li>- <var>rtol</var> is the relative tolerance, if not given or set to [] the
+default value 1e-6 is used.
 
-</li><li>- <var>maxit</var> the maximum number of outer iterations, if not
-given or set to [] the default value <code>min (20, numel (b))</code> is
-used.
+</li><li>- <var>maxit</var> the maximum number of outer iterations, if not given or
+set to [] the default value <code>min (20, numel (b))</code> is used.
 
-</li><li>- <var>x0</var> the initial guess, if not given or set to [] the
-default value <code>zeros (size (b))</code> is used.
+</li><li>- <var>x0</var> the initial guess, if not given or set to [] the default
+value <code>zeros (size (b))</code> is used.
 </li></ul>
 
-<p><var>A</var> can be passed as a matrix or as a function handle or
-inline function <code>f</code> such that <code>f(x) = A*x</code>.
+<p><var>A</var> can be passed as a matrix or as a function handle or inline
+function <code>f</code> such that <code>f(x) = A*x</code>.
 </p>
-<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.
-Both <var>M1</var> and <var>M2</var> can be passed as a matrix or as a function
-handle or inline function <code>g</code> such that <code>g(x) = M1 \ x</code> or
-<code>g(x) = M2 \ x</code>.
+<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.  Both <var>M1</var>
+and <var>M2</var> can be passed as a matrix or as a function handle or inline
+function <code>g</code> such that <code>g(x) = M1 \ x</code> or <code>g(x) = M2 \ x</code>.
 </p>
 <p>If called with more than one output parameter
 </p>
@@ -180,24 +177,22 @@ iteration.
 Conjugate Gradients Squared method.
 </p>
 <ul class="no-bullet">
-<li>- <var>rtol</var> is the relative tolerance, if not given or set to []
-the default value 1e-6 is used.
+<li>- <var>rtol</var> is the relative tolerance, if not given or set to [] the
+default value 1e-6 is used.
 
-</li><li>- <var>maxit</var> the maximum number of outer iterations, if not
-given or set to [] the default value <code>min (20, numel (b))</code> is
-used.
+</li><li>- <var>maxit</var> the maximum number of outer iterations, if not given or
+set to [] the default value <code>min (20, numel (b))</code> is used.
 
-</li><li>- <var>x0</var> the initial guess, if not given or set to [] the
-default value <code>zeros (size (b))</code> is used.
+</li><li>- <var>x0</var> the initial guess, if not given or set to [] the default
+value <code>zeros (size (b))</code> is used.
 </li></ul>
 
-<p><var>A</var> can be passed as a matrix or as a function handle or
-inline function <code>f</code> such that <code>f(x) = A*x</code>.
+<p><var>A</var> can be passed as a matrix or as a function handle or inline
+function <code>f</code> such that <code>f(x) = A*x</code>.
 </p>
-<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.
-Both <var>M1</var> and <var>M2</var> can be passed as a matrix or as a function
-handle or inline function <code>g</code> such that <code>g(x) = M1 \ x</code> or
-<code>g(x) = M2 \ x</code>.
+<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.  Both <var>M1</var>
+and <var>M2</var> can be passed as a matrix or as a function handle or inline
+function <code>g</code> such that <code>g(x) = M1 \ x</code> or <code>g(x) = M2 \ x</code>.
 </p>
 <p>If called with more than one output parameter
 </p>
@@ -231,16 +226,15 @@ each iteration.
 <dt><a name="index-gmres"></a>Function File: <em><var>x</var> =</em> <strong>gmres</strong> <em>(<var>A</var>, <var>b</var>, <var>m</var>, <var>rtol</var>, <var>maxit</var>, <var>M1</var>, <var>M2</var>, <var>x0</var>)</em></dt>
 <dt><a name="index-gmres-1"></a>Function File: <em><var>x</var> =</em> <strong>gmres</strong> <em>(<var>A</var>, <var>b</var>, <var>m</var>, <var>rtol</var>, <var>maxit</var>, <var>P</var>)</em></dt>
 <dt><a name="index-gmres-2"></a>Function File: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>] =</em> <strong>gmres</strong> <em>(&hellip;)</em></dt>
-<dd><p>Solve <code>A x = b</code> using the Preconditioned GMRES iterative method
-with restart, a.k.a. PGMRES(m).
+<dd><p>Solve <code>A x = b</code> using the Preconditioned GMRES iterative method with
+restart, a.k.a. PGMRES(m).
 </p>
 <ul class="no-bullet">
 <li>- <var>rtol</var> is the relative tolerance,
 if not given or set to [] the default value 1e-6 is used.
 
-</li><li>- <var>maxit</var> is the maximum number of outer iterations,
-if not given or set to [] the default value
-<code>min (10, numel (b) / restart)</code> is used.
+</li><li>- <var>maxit</var> is the maximum number of outer iterations, if not given or
+set to [] the default value <code>min (10, numel (b) / restart)</code> is used.
 
 </li><li>- <var>x0</var> is the initial guess,
 if not given or set to [] the default value <code>zeros (size (b))</code> is used.
@@ -249,12 +243,12 @@ if not given or set to [] the default value <code>zeros (size (b))</code> is use
 if not given or set to [] the default value <code>numel (b)</code> is used.
 </li></ul>
 
-<p>Argument <var>A</var> can be passed as a matrix, function handle, or
-inline function <code>f</code> such that <code>f(x) = A*x</code>.
+<p>Argument <var>A</var> can be passed as a matrix, function handle, or inline
+function <code>f</code> such that <code>f(x) = A*x</code>.
 </p>
-<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.
-Both <var>M1</var> and <var>M2</var> can be passed as a matrix, function handle, or
-inline function <code>g</code> such that <code>g(x) = M1\x</code> or <code>g(x) = M2\x</code>.
+<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.  Both <var>M1</var>
+and <var>M2</var> can be passed as a matrix, function handle, or inline function
+<code>g</code> such that <code>g(x) = M1\x</code> or <code>g(x) = M2\x</code>.
 </p>
 <p>Besides the vector <var>x</var>, additional outputs are:
 </p>
@@ -286,30 +280,29 @@ iteration.
 <dt><a name="index-qmr"></a>Function File: <em><var>x</var> =</em> <strong>qmr</strong> <em>(<var>A</var>, <var>b</var>, <var>rtol</var>, <var>maxit</var>, <var>M1</var>, <var>M2</var>, <var>x0</var>)</em></dt>
 <dt><a name="index-qmr-1"></a>Function File: <em><var>x</var> =</em> <strong>qmr</strong> <em>(<var>A</var>, <var>b</var>, <var>rtol</var>, <var>maxit</var>, <var>P</var>)</em></dt>
 <dt><a name="index-qmr-2"></a>Function File: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>] =</em> <strong>qmr</strong> <em>(<var>A</var>, <var>b</var>, &hellip;)</em></dt>
-<dd><p>Solve <code>A x = b</code> using the Quasi-Minimal Residual iterative
-method (without look-ahead).
+<dd><p>Solve <code>A x = b</code> using the Quasi-Minimal Residual iterative method
+(without look-ahead).
 </p>
 <ul class="no-bullet">
-<li>- <var>rtol</var> is the relative tolerance, if not given
-or set to [] the default value 1e-6 is used.
+<li>- <var>rtol</var> is the relative tolerance, if not given or set to [] the
+default value 1e-6 is used.
 
-</li><li>- <var>maxit</var> the maximum number of outer iterations,
-if not given or set to [] the default value
-<code>min (20, numel (b))</code> is used.
+</li><li>- <var>maxit</var> the maximum number of outer iterations, if not given or
+set to [] the default value <code>min (20, numel (b))</code> is used.
 
-</li><li>- <var>x0</var> the initial guess, if not given or set to []
-the default value <code>zeros (size (b))</code> is used.
+</li><li>- <var>x0</var> the initial guess, if not given or set to [] the default
+value <code>zeros (size (b))</code> is used.
 </li></ul>
 
-<p><var>A</var> can be passed as a matrix or as a function handle or
-inline function <code>f</code> such that <code>f(x, &quot;notransp&quot;) = A*x</code>
-and <code>f(x, &quot;transp&quot;) = A'*x</code>.
+<p><var>A</var> can be passed as a matrix or as a function handle or inline
+function <code>f</code> such that <code>f(x, &quot;notransp&quot;) = A*x</code> and
+<code>f(x, &quot;transp&quot;) = A'*x</code>.
 </p>
-<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.
-Both <var>M1</var> and <var>M2</var> can be passed as a matrix or as
-a function handle or inline function <code>g</code> such that
-<code>g(x, &quot;notransp&quot;) = M1 \ x</code> or <code>g(x, &quot;notransp&quot;) = M2 \ x</code> and
-<code>g(x, &quot;transp&quot;) = M1' \ x</code> or <code>g(x, &quot;transp&quot;) = M2' \ x</code>.
+<p>The preconditioner <var>P</var> is given as <code>P = M1 * M2</code>.  Both <var>M1</var>
+and <var>M2</var> can be passed as a matrix or as a function handle or inline
+function <code>g</code> such that <code>g(x, &quot;notransp&quot;) = M1 \ x</code> or
+<code>g(x, &quot;notransp&quot;) = M2 \ x</code> and <code>g(x, &quot;transp&quot;) = M1' \ x</code> or
+<code>g(x, &quot;transp&quot;) = M2' \ x</code>.
 </p>
 <p>If called with more than one output parameter
 </p>

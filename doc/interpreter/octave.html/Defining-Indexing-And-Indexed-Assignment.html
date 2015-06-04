@@ -69,17 +69,15 @@ determined by the <code>subsref</code> method.
 </p>
 <a name="XREFsubsref"></a><dl>
 <dt><a name="index-subsref"></a>Built-in Function: <em></em> <strong>subsref</strong> <em>(<var>val</var>, <var>idx</var>)</em></dt>
-<dd><p>Perform the subscripted element selection operation according to
-the subscript specified by <var>idx</var>.
+<dd><p>Perform the subscripted element selection operation according to the
+subscript specified by <var>idx</var>.
 </p>
-<p>The subscript <var>idx</var> is expected to be a structure array with
-fields &lsquo;<samp>type</samp>&rsquo; and &lsquo;<samp>subs</samp>&rsquo;.  Valid values for &lsquo;<samp>type</samp>&rsquo;
-are &lsquo;<samp>&quot;()&quot;</samp>&rsquo;, &lsquo;<samp>&quot;{}&quot;</samp>&rsquo;, and &lsquo;<samp>&quot;.&quot;</samp>&rsquo;.
-The &lsquo;<samp>subs</samp>&rsquo; field may be either &lsquo;<samp>&quot;:&quot;</samp>&rsquo; or a cell array
-of index values.
+<p>The subscript <var>idx</var> is expected to be a structure array with fields
+&lsquo;<samp>type</samp>&rsquo; and &lsquo;<samp>subs</samp>&rsquo;.  Valid values for &lsquo;<samp>type</samp>&rsquo; are
+&lsquo;<samp>&quot;()&quot;</samp>&rsquo;, &lsquo;<samp>&quot;{}&quot;</samp>&rsquo;, and &lsquo;<samp>&quot;.&quot;</samp>&rsquo;.  The &lsquo;<samp>subs</samp>&rsquo; field may
+be either &lsquo;<samp>&quot;:&quot;</samp>&rsquo; or a cell array of index values.
 </p>
-<p>The following example shows how to extract the first two columns of
-a matrix
+<p>The following example shows how to extract the first two columns of a matrix
 </p>
 <div class="example">
 <pre class="example">val = magic (3)
@@ -96,8 +94,8 @@ subsref (val, idx)
 
 <p>Note that this is the same as writing <code>val(:,1:2)</code>.
 </p>
-<p>If <var>idx</var> is an empty structure array with fields &lsquo;<samp>type</samp>&rsquo;
-and &lsquo;<samp>subs</samp>&rsquo;, return <var>val</var>.
+<p>If <var>idx</var> is an empty structure array with fields &lsquo;<samp>type</samp>&rsquo; and
+&lsquo;<samp>subs</samp>&rsquo;, return <var>val</var>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFsubsasgn">subsasgn</a>, <a href="Manipulating-Structures.html#XREFsubstruct">substruct</a>.
 </p></dd></dl>
@@ -154,17 +152,16 @@ endfunction
 </p>
 <a name="XREFsubsasgn"></a><dl>
 <dt><a name="index-subsasgn"></a>Built-in Function: <em></em> <strong>subsasgn</strong> <em>(<var>val</var>, <var>idx</var>, <var>rhs</var>)</em></dt>
-<dd><p>Perform the subscripted assignment operation according to
-the subscript specified by <var>idx</var>.
+<dd><p>Perform the subscripted assignment operation according to the subscript
+specified by <var>idx</var>.
 </p>
-<p>The subscript <var>idx</var> is expected to be a structure array with
-fields &lsquo;<samp>type</samp>&rsquo; and &lsquo;<samp>subs</samp>&rsquo;.  Valid values for &lsquo;<samp>type</samp>&rsquo;
-are &lsquo;<samp>&quot;()&quot;</samp>&rsquo;, &lsquo;<samp>&quot;{}&quot;</samp>&rsquo;, and &lsquo;<samp>&quot;.&quot;</samp>&rsquo;.
-The &lsquo;<samp>subs</samp>&rsquo; field may be either &lsquo;<samp>&quot;:&quot;</samp>&rsquo; or a cell array
-of index values.
+<p>The subscript <var>idx</var> is expected to be a structure array with fields
+&lsquo;<samp>type</samp>&rsquo; and &lsquo;<samp>subs</samp>&rsquo;.  Valid values for &lsquo;<samp>type</samp>&rsquo; are
+&lsquo;<samp>&quot;()&quot;</samp>&rsquo;, &lsquo;<samp>&quot;{}&quot;</samp>&rsquo;, and &lsquo;<samp>&quot;.&quot;</samp>&rsquo;.  The &lsquo;<samp>subs</samp>&rsquo; field may
+be either &lsquo;<samp>&quot;:&quot;</samp>&rsquo; or a cell array of index values.
 </p>
-<p>The following example shows how to set the two first columns of a
-3-by-3 matrix to zero.
+<p>The following example shows how to set the two first columns of a 3-by-3
+matrix to zero.
 </p>
 <div class="example">
 <pre class="example">val = magic (3);
@@ -178,8 +175,8 @@ subsasgn (val, idx, 0)
 
 <p>Note that this is the same as writing <code>val(:,1:2) = 0</code>.
 </p>
-<p>If <var>idx</var> is an empty structure array with fields &lsquo;<samp>type</samp>&rsquo;
-and &lsquo;<samp>subs</samp>&rsquo;, return <var>rhs</var>.
+<p>If <var>idx</var> is an empty structure array with fields &lsquo;<samp>type</samp>&rsquo; and
+&lsquo;<samp>subs</samp>&rsquo;, return <var>rhs</var>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFsubsref">subsref</a>, <a href="Manipulating-Structures.html#XREFsubstruct">substruct</a>.
 </p></dd></dl>
@@ -195,7 +192,7 @@ and &lsquo;<samp>subs</samp>&rsquo;, return <var>rhs</var>.
 the subsasgn method of a user-defined class.
 </p>
 <p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 </p></dd></dl>
 
@@ -238,12 +235,13 @@ and this is controlled with the <code>subsindex</code> function.
 </p>
 <a name="XREFsubsindex"></a><dl>
 <dt><a name="index-subsindex"></a>Function File: <em><var>idx</var> =</em> <strong>subsindex</strong> <em>(<var>a</var>)</em></dt>
-<dd><p>Convert an object to an index vector.  When <var>a</var> is a class object
-defined with a class constructor, then <code>subsindex</code> is the
-overloading method that allows the conversion of this class object to
-a valid indexing vector.  It is important to note that
-<code>subsindex</code> must return a zero-based real integer vector of the
-class <code>&quot;double&quot;</code>.  For example, if the class constructor
+<dd><p>Convert an object to an index vector.
+</p>
+<p>When <var>a</var> is a class object defined with a class constructor, then
+<code>subsindex</code> is the overloading method that allows the conversion of
+this class object to a valid indexing vector.  It is important to note that
+<code>subsindex</code> must return a zero-based real integer vector of the class
+<code>&quot;double&quot;</code>.  For example, if the class constructor
 </p>
 <div class="example">
 <pre class="example">function b = myclass (a)

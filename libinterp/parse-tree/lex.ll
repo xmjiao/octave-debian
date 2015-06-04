@@ -1899,8 +1899,9 @@ DEFUN (iskeyword, args, ,
   "-*- texinfo -*-\n\
 @deftypefn  {Built-in Function} {} iskeyword ()\n\
 @deftypefnx {Built-in Function} {} iskeyword (@var{name})\n\
-Return true if @var{name} is an Octave keyword.  If @var{name}\n\
-is omitted, return a list of keywords.\n\
+Return true if @var{name} is an Octave keyword.\n\
+\n\
+If @var{name} is omitted, return a list of keywords.\n\
 @seealso{isvarname, exist}\n\
 @end deftypefn")
 {
@@ -2894,8 +2895,7 @@ octave_base_lexer::handle_identifier (void)
 
   // If we are expecting a structure element, avoid recognizing
   // keywords and other special names and return STRUCT_ELT, which is
-  // a string that is also a valid identifier.  But first, we have to
-  // decide whether to insert a comma.
+  // a string that is also a valid identifier.
 
   if (looking_at_indirect_ref)
     {
@@ -2906,13 +2906,11 @@ octave_base_lexer::handle_identifier (void)
 
       current_input_column += flex_yyleng ();
 
-      assert (! at_beginning_of_statement);
-
       return STRUCT_ELT;
     }
 
   // If tok is a keyword token, then is_keyword_token will set
-  // at_beginning_of_statement.  For example, if tok is and IF
+  // at_beginning_of_statement.  For example, if tok is an IF
   // token, then at_beginning_of_statement will be false.
 
   int kw_token = is_keyword_token (tok);

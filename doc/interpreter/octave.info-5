@@ -21,6 +21,131 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Explicit and Implicit Conversions,  Prev: Creating Permutation Matrices,  Up: Basic Usage
+
+21.1.3 Explicit and Implicit Conversions
+----------------------------------------
+
+The diagonal and permutation matrices are special objects in their own
+right.  A number of operations and built-in functions are defined for
+these matrices to use special, more efficient code than would be used
+for a full matrix in the same place.  Examples are given in further
+sections.
+
+   To facilitate smooth mixing with full matrices, backward
+compatibility, and compatibility with MATLAB, the diagonal and
+permutation matrices should allow any operation that works on full
+matrices, and will either treat it specially, or implicitly convert
+themselves to full matrices.
+
+   Instances include matrix indexing, except for extracting a single
+element or a leading submatrix, indexed assignment, or applying most
+mapper functions, such as "exp".
+
+   An explicit conversion to a full matrix can be requested using the
+built-in function "full".  It should also be noted that the diagonal and
+permutation matrix objects will cache the result of the conversion after
+it is first requested (explicitly or implicitly), so that subsequent
+conversions will be very cheap.
+
+
+File: octave.info,  Node: Matrix Algebra,  Next: Function Support,  Prev: Basic Usage,  Up: Diagonal and Permutation Matrices
+
+21.2 Linear Algebra with Diagonal/Permutation Matrices
+======================================================
+
+As has been already said, diagonal and permutation matrices make it
+possible to use efficient algorithms while preserving natural linear
+algebra syntax.  This section describes in detail the operations that
+are treated specially when performed on these special matrix objects.
+
+* Menu:
+
+* Expressions Involving Diagonal Matrices::
+* Expressions Involving Permutation Matrices::
+
+
+File: octave.info,  Node: Expressions Involving Diagonal Matrices,  Next: Expressions Involving Permutation Matrices,  Up: Matrix Algebra
+
+21.2.1 Expressions Involving Diagonal Matrices
+----------------------------------------------
+
+Assume D is a diagonal matrix.  If M is a full matrix, then 'D*M' will
+scale the rows of M.  That means, if 'S = D*M', then for each pair of
+indices i,j it holds
+
+     S(i,j) = D(i,i) * M(i,j).
+
+   Similarly, 'M*D' will do a column scaling.
+
+   The matrix D may also be rectangular, m-by-n where 'm != n'.  If 'm <
+n', then the expression 'D*M' is equivalent to
+
+     D(:,1:m) * M(1:m,:),
+
+i.e., trailing 'n-m' rows of M are ignored.  If 'm > n', then 'D*M' is
+equivalent to
+
+     [D(1:n,n) * M; zeros(m-n, columns (M))],
+
+i.e., null rows are appended to the result.  The situation for
+right-multiplication 'M*D' is analogous.
+
+   The expressions 'D \ M' and 'M / D' perform inverse scaling.  They
+are equivalent to solving a diagonal (or rectangular diagonal) in a
+least-squares minimum-norm sense.  In exact arithmetic, this is
+equivalent to multiplying by a pseudoinverse.  The pseudoinverse of a
+rectangular diagonal matrix is again a rectangular diagonal matrix with
+swapped dimensions, where each nonzero diagonal element is replaced by
+its reciprocal.  The matrix division algorithms do, in fact, use
+division rather than multiplication by reciprocals for better numerical
+accuracy; otherwise, they honor the above definition.  Note that a
+diagonal matrix is never truncated due to ill-conditioning; otherwise,
+it would not be of much use for scaling.  This is typically consistent
+with linear algebra needs.  A full matrix that only happens to be
+diagonal (and is thus not a special object) is of course treated
+normally.
+
+   Multiplication and division by diagonal matrices work efficiently
+also when combined with sparse matrices, i.e., 'D*S', where D is a
+diagonal matrix and S is a sparse matrix scales the rows of the sparse
+matrix and returns a sparse matrix.  The expressions 'S*D', 'D\S', 'S/D'
+work analogically.
+
+   If D1 and D2 are both diagonal matrices, then the expressions
+
+     D1 + D2
+     D1 - D2
+     D1 * D2
+     D1 / D2
+     D1 \ D2
+
+again produce diagonal matrices, provided that normal dimension matching
+rules are obeyed.  The relations used are same as described above.
+
+   Also, a diagonal matrix D can be multiplied or divided by a scalar,
+or raised to a scalar power if it is square, producing diagonal matrix
+result in all cases.
+
+   A diagonal matrix can also be transposed or conjugate-transposed,
+giving the expected result.  Extracting a leading submatrix of a
+diagonal matrix, i.e., 'D(1:m,1:n)', will produce a diagonal matrix,
+other indexing expressions will implicitly convert to full matrix.
+
+   Adding a diagonal matrix to a full matrix only operates on the
+diagonal elements.  Thus,
+
+     A = A + eps * eye (n)
+
+is an efficient method of augmenting the diagonal of a matrix.
+Subtraction works analogically.
+
+   When involved in expressions with other element-by-element operators,
+'.*', './', '.\' or '.^', an implicit conversion to full matrix will
+take place.  This is not always strictly necessary but chosen to
+facilitate better consistency with MATLAB.
+
+
 File: octave.info,  Node: Expressions Involving Permutation Matrices,  Prev: Expressions Involving Diagonal Matrices,  Up: Matrix Algebra
 
 21.2.2 Expressions Involving Permutation Matrices
@@ -448,9 +573,13 @@ defined.
  -- Function File: B = spdiags (A, D)
  -- Function File: A = spdiags (V, D, A)
  -- Function File: A = spdiags (V, D, M, N)
-     A generalization of the function 'diag'.  Called with a single
-     input argument, the nonzero diagonals D of A are extracted.  With
-     two arguments the diagonals to extract are given by the vector D.
+     A generalization of the function 'diag'.
+
+     Called with a single input argument, the nonzero diagonals D of A
+     are extracted.
+
+     With two arguments the diagonals to extract are given by the vector
+     D.
 
      The other two forms of 'spdiags' modify the input matrix by
      replacing the diagonals.  They use the columns of V to replace the
@@ -489,8 +618,9 @@ defined.
      *note eye: XREFeye.
 
  -- Function File: R = spones (S)
-     Replace the nonzero entries of S with ones.  This creates a sparse
-     matrix with the same structure as S.
+     Replace the nonzero entries of S with ones.
+
+     This creates a sparse matrix with the same structure as S.
 
      See also: *note sparse: XREFsparse, *note sprand: XREFsprand, *note
      sprandn: XREFsprandn, *note sprandsym: XREFsprandsym, *note spfun:
@@ -604,8 +734,8 @@ much as possible to minimize the number of assignments and reduce the
 number of memory allocations.
 
  -- Built-in Function: FM = full (SM)
-     Return a full storage matrix from a sparse, diagonal, permutation
-     matrix, or a range.
+     Return a full storage matrix from a sparse, diagonal, or
+     permutation matrix, or a range.
 
      See also: *note sparse: XREFsparse, *note issparse: XREFissparse.
 
@@ -648,7 +778,7 @@ number of memory allocations.
  -- Built-in Function: S = sparse (M, N)
  -- Built-in Function: S = sparse (I, J, S, M, N, "unique")
  -- Built-in Function: S = sparse (I, J, SV, M, N, NZMAX)
-     Create a sparse matrix from a full matrix or row, column, value
+     Create a sparse matrix from a full matrix, or row, column, value
      triplets.
 
      If A is a full matrix, convert it to a sparse matrix
@@ -763,7 +893,7 @@ of elements, the mean and the variance of each column.
 
      Note that Octave tends to crop unused memory at the first
      opportunity for sparse objects.  Thus, in general the value of
-     'nzmax' will be the the same as 'nnz' except for some cases of
+     'nzmax' will be the same as 'nnz' except for some cases of
      user-created sparse objects.
 
      See also: *note nnz: XREFnnz, *note spalloc: XREFspalloc, *note
@@ -772,6 +902,7 @@ of elements, the mean and the variance of each column.
  -- Function File: [COUNT, MEAN, VAR] = spstats (S)
  -- Function File: [COUNT, MEAN, VAR] = spstats (S, J)
      Return the stats for the nonzero elements of the sparse matrix S.
+
      COUNT is the number of nonzeros in each column, MEAN is the mean of
      the nonzeros in each column, and VAR is the variance of the
      nonzeros in each column.
@@ -866,9 +997,10 @@ command 'treeplot (etree (A))' if 'A' is symmetric or 'treeplot (etree
      Plot the sparsity pattern of the sparse matrix X.
 
      If the argument MARKERSIZE is given as a scalar value, it is used
-     to determine the point size in the plot.  If the string LINE_SPEC
-     is given it is passed to 'plot' and determines the appearance of
-     the plot.
+     to determine the point size in the plot.
+
+     If the string LINE_SPEC is given it is passed to 'plot' and
+     determines the appearance of the plot.
 
      See also: *note plot: XREFplot, *note gplot: XREFgplot.
 
@@ -876,11 +1008,13 @@ command 'treeplot (etree (A))' if 'A' is symmetric or 'treeplot (etree
  -- Loadable Function: P = etree (S, TYP)
  -- Loadable Function: [P, Q] = etree (S, TYP)
 
-     Return the elimination tree for the matrix S.  By default S is
-     assumed to be symmetric and the symmetric elimination tree is
-     returned.  The argument TYP controls whether a symmetric or column
-     elimination tree is returned.  Valid values of TYP are "sym" or
-     "col", for symmetric or column elimination tree respectively.
+     Return the elimination tree for the matrix S.
+
+     By default S is assumed to be symmetric and the symmetric
+     elimination tree is returned.  The argument TYP controls whether a
+     symmetric or column elimination tree is returned.  Valid values of
+     TYP are "sym" or "col", for symmetric or column elimination tree
+     respectively.
 
      Called with a second argument, 'etree' also returns the postorder
      permutations on the tree.
@@ -888,17 +1022,20 @@ command 'treeplot (etree (A))' if 'A' is symmetric or 'treeplot (etree
  -- Function File: etreeplot (A)
  -- Function File: etreeplot (A, NODE_STYLE, EDGE_STYLE)
      Plot the elimination tree of the matrix A or A+A' if A in not
-     symmetric.  The optional parameters NODE_STYLE and EDGE_STYLE
-     define the output style.
+     symmetric.
+
+     The optional parameters NODE_STYLE and EDGE_STYLE define the output
+     style.
 
      See also: *note treeplot: XREFtreeplot, *note gplot: XREFgplot.
 
  -- Function File: gplot (A, XY)
  -- Function File: gplot (A, XY, LINE_STYLE)
  -- Function File: [X, Y] = gplot (A, XY)
-     Plot a graph defined by A and XY in the graph theory sense.  A is
-     the adjacency matrix of the array to be plotted and XY is an N-by-2
-     matrix containing the coordinates of the nodes of the graph.
+     Plot a graph defined by A and XY in the graph theory sense.
+
+     A is the adjacency matrix of the array to be plotted and XY is an
+     N-by-2 matrix containing the coordinates of the nodes of the graph.
 
      The optional parameter LINE_STYLE defines the output style for the
      plot.  Called with no output arguments the graph is plotted
@@ -910,19 +1047,28 @@ command 'treeplot (etree (A))' if 'A' is symmetric or 'treeplot (etree
 
  -- Function File: treeplot (TREE)
  -- Function File: treeplot (TREE, NODE_STYLE, EDGE_STYLE)
-     Produce a graph of tree or forest.  The first argument is vector of
-     predecessors, optional parameters NODE_STYLE and EDGE_STYLE define
-     the output style.  The complexity of the algorithm is O(n) in terms
-     of is time and memory requirements.
+     Produce a graph of tree or forest.
+
+     The first argument is vector of predecessors.
+
+     The optional parameters NODE_STYLE and EDGE_STYLE define the output
+     plot style.
+
+     The complexity of the algorithm is O(n) in terms of is time and
+     memory requirements.
 
      See also: *note etreeplot: XREFetreeplot, *note gplot: XREFgplot.
 
  -- Function File: treelayout (TREE)
  -- Function File: treelayout (TREE, PERMUTATION)
-     treelayout lays out a tree or a forest.  The first argument TREE is
-     a vector of predecessors, optional parameter PERMUTATION is an
-     optional postorder permutation.  The complexity of the algorithm is
-     O(n) in terms of time and memory requirements.
+     treelayout lays out a tree or a forest.
+
+     The first argument TREE is a vector of predecessors.
+
+     The parameter PERMUTATION is an optional postorder permutation.
+
+     The complexity of the algorithm is O(n) in terms of time and memory
+     requirements.
 
      See also: *note etreeplot: XREFetreeplot, *note gplot: XREFgplot,
      *note treeplot: XREFtreeplot.
@@ -1046,7 +1192,9 @@ full representation.
  -- Built-in Function: sparse_auto_mutate (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will automatically mutate sparse matrices to full matrices to save
-     memory.  For example:
+     memory.
+
+     For example:
 
           s = speye (3);
           sparse_auto_mutate (false);
@@ -1240,10 +1388,11 @@ reorder the matrix to maximize performance.
  -- Loadable Function: P = amd (S, OPTS)
 
      Return the approximate minimum degree permutation of a matrix.
-     This permutation such that the Cholesky factorization of 'S (P, P)'
-     tends to be sparser than the Cholesky factorization of S itself.
-     'amd' is typically faster than 'symamd' but serves a similar
-     purpose.
+
+     This is a permutation such that the Cholesky factorization of 'S
+     (P, P)' tends to be sparser than the Cholesky factorization of S
+     itself.  'amd' is typically faster than 'symamd' but serves a
+     similar purpose.
 
      The optional parameter OPTS is a structure that controls the
      behavior of 'amd'.  The fields of the structure are
@@ -1253,8 +1402,8 @@ reorder the matrix to maximize performance.
           the input matrix.  Rows or columns with more than 'max (16,
           (dense * sqrt (N)))' entries, where N is the order of the
           matrix S, are ignored by 'amd' during the calculation of the
-          permutation The value of dense must be a positive scalar and
-          its default value is 10.0
+          permutation.  The value of dense must be a positive scalar and
+          the default value is 10.0
 
      OPTS.aggressive
           If this value is a nonzero scalar, then 'amd' performs
@@ -1272,8 +1421,9 @@ reorder the matrix to maximize performance.
  -- Loadable Function: P = ccolamd (S, KNOBS, CMEMBER)
  -- Loadable Function: [P, STATS] = ccolamd (...)
 
-     Constrained column approximate minimum degree permutation.  'P =
-     ccolamd (S)' returns the column approximate minimum degree
+     Constrained column approximate minimum degree permutation.
+
+     'P = ccolamd (S)' returns the column approximate minimum degree
      permutation vector for the sparse matrix S.  For a non-symmetric
      matrix S, 'S(:, P)' tends to have sparser LU factors than S.  'chol
      (S(:, P)' * S(:, P))' also tends to be sparser than 'chol (S' *
@@ -1352,10 +1502,11 @@ reorder the matrix to maximize performance.
  -- Loadable Function: [P, STATS] = colamd (S)
  -- Loadable Function: [P, STATS] = colamd (S, KNOBS)
 
-     Column approximate minimum degree permutation.  'P = colamd (S)'
-     returns the column approximate minimum degree permutation vector
-     for the sparse matrix S.  For a non-symmetric matrix S, 'S(:,P)'
-     tends to have sparser LU factors than S.  The
+     Compute the column approximate minimum degree permutation.
+
+     'P = colamd (S)' returns the column approximate minimum degree
+     permutation vector for the sparse matrix S.  For a non-symmetric
+     matrix S, 'S(:,P)' tends to have sparser LU factors than S.  The
      Cholesky factorization of 'S(:,P)' * S(:,P)' also tends to be
      sparser than that of 'S' * S'.
 
@@ -1415,25 +1566,28 @@ reorder the matrix to maximize performance.
 
  -- Function File: P = colperm (S)
      Return the column permutations such that the columns of 'S (:, P)'
-     are ordered in terms of increase number of nonzero elements.  If S
-     is symmetric, then P is chosen such that 'S (P, P)' orders the rows
-     and columns with increasing number of nonzeros elements.
+     are ordered in terms of increasing number of nonzero elements.
+
+     If S is symmetric, then P is chosen such that 'S (P, P)' orders the
+     rows and columns with increasing number of nonzeros elements.
 
  -- Loadable Function: P = csymamd (S)
  -- Loadable Function: P = csymamd (S, KNOBS)
  -- Loadable Function: P = csymamd (S, KNOBS, CMEMBER)
  -- Loadable Function: [P, STATS] = csymamd (...)
 
-     For a symmetric positive definite matrix S, returns the permutation
+     For a symmetric positive definite matrix S, return the permutation
      vector P such that 'S(P,P)' tends to have a sparser Cholesky factor
-     than S.  Sometimes 'csymamd' works well for symmetric indefinite
-     matrices too.  The matrix S is assumed to be symmetric; only the
-     strictly lower triangular part is referenced.  S must be square.
-     The ordering is followed by an elimination tree post-ordering.
+     than S.
+
+     Sometimes 'csymamd' works well for symmetric indefinite matrices
+     too.  The matrix S is assumed to be symmetric; only the strictly
+     lower triangular part is referenced.  S must be square.  The
+     ordering is followed by an elimination tree post-ordering.
 
      KNOBS is an optional 1-element to 3-element input vector, with a
-     default value of '[10 1 0]' if present or empty.  Entries not
-     present are set to their defaults.
+     default value of '[10 1 0]'.  Entries not present are set to their
+     defaults.
 
      'KNOBS(1)'
           If S is n-by-n, then rows and columns with more than
@@ -1503,10 +1657,11 @@ reorder the matrix to maximize performance.
 
      For a symmetric positive definite matrix S, returns the permutation
      vector p such that 'S(P, P)' tends to have a sparser
-     Cholesky factor than S.  Sometimes 'symamd' works well for
-     symmetric indefinite matrices too.  The matrix S is assumed to be
-     symmetric; only the strictly lower triangular part is referenced.
-     S must be square.
+     Cholesky factor than S.
+
+     Sometimes 'symamd' works well for symmetric indefinite matrices
+     too.  The matrix S is assumed to be symmetric; only the strictly
+     lower triangular part is referenced.  S must be square.
 
      KNOBS is an optional one- to two-element input vector.  If S is
      n-by-n, then rows and columns with more than 'max
@@ -1514,7 +1669,7 @@ reorder the matrix to maximize performance.
      ordered last in the output permutation P.  No rows/columns are
      removed if 'KNOBS(1) < 0'.  If 'KNOBS (2)' is nonzero, 'stats' and
      KNOBS are printed.  The default is 'KNOBS = [10 0]'.  Note that
-     KNOBS differs from earlier versions of symamd.
+     KNOBS differs from earlier versions of 'symamd'.
 
      STATS is an optional 20-element output vector that provides data
      about the ordering and the validity of the input matrix S.
@@ -1560,11 +1715,13 @@ reorder the matrix to maximize performance.
      See also: *note colperm: XREFcolperm, *note colamd: XREFcolamd.
 
  -- Loadable Function: P = symrcm (S)
-     Return the symmetric reverse Cuthill-McKee permutation of S.  P is
-     a permutation vector such that 'S(P, P)' tends to have its diagonal
-     elements closer to the diagonal than S.  This is a good preordering
-     for LU or Cholesky factorization of matrices that come from "long,
-     skinny" problems.  It works for both symmetric and asymmetric S.
+     Return the symmetric reverse Cuthill-McKee permutation of S.
+
+     P is a permutation vector such that 'S(P, P)' tends to have its
+     diagonal elements closer to the diagonal than S.  This is a good
+     preordering for LU or Cholesky factorization of matrices that come
+     from "long, skinny" problems.  It works for both symmetric and
+     asymmetric S.
 
      The algorithm represents a heuristic approach to the NP-complete
      bandwidth minimization problem.  The implementation is based in the
@@ -1673,20 +1830,24 @@ matrix incorrectly will lead to unpredictable results, and so
  -- Function File: N = normest (A, TOL)
  -- Function File: [N, C] = normest (...)
      Estimate the 2-norm of the matrix A using a power series analysis.
+
      This is typically used for large matrices, where the cost of
      calculating 'norm (A)' is prohibitive and an approximation to the
      2-norm is acceptable.
 
      TOL is the tolerance to which the 2-norm is calculated.  By default
-     TOL is 1e-6.  C returns the number of iterations needed for
+     TOL is 1e-6.
+
+     The optional output C returns the number of iterations needed for
      'normest' to converge.
 
  -- Function File: [EST, V, W, ITER] = onenormest (A, T)
  -- Function File: [EST, V, W, ITER] = onenormest (APPLY, APPLY_T, N, T)
 
      Apply Higham and Tisseur's randomized block 1-norm estimator to
-     matrix A using T test vectors.  If T exceeds 5, then only 5 test
-     vectors are used.
+     matrix A using T test vectors.
+
+     If T exceeds 5, then only 5 test vectors are used.
 
      If the matrix is not explicit, e.g., when estimating the norm of
      'inv (A)' given an LU factorization, 'onenormest' applies A and its
@@ -1720,8 +1881,9 @@ matrix incorrectly will lead to unpredictable results, and so
           N, T)
 
      Estimate the 1-norm condition number of a matrix A using T test
-     vectors using a randomized 1-norm estimator.  If T exceeds 5, then
-     only 5 test vectors are used.
+     vectors using a randomized 1-norm estimator.
+
+     If T exceeds 5, then only 5 test vectors are used.
 
      If the matrix is not explicit, e.g., when estimating the condition
      number of A given an LU factorization, 'condest' uses the following
@@ -1770,11 +1932,12 @@ matrix incorrectly will lead to unpredictable results, and so
  -- Built-in Function: spparms ("tight")
  -- Built-in Function: spparms (KEY, VAL)
      Query or set the parameters used by the sparse solvers and
-     factorization functions.  The first four calls above get
-     information about the current settings, while the others change the
-     current settings.  The parameters are stored as pairs of keys and
-     values, where the values are all floats and the keys are one of the
-     following strings:
+     factorization functions.
+
+     The first four calls above get information about the current
+     settings, while the others change the current settings.  The
+     parameters are stored as pairs of keys and values, where the values
+     are all floats and the keys are one of the following strings:
 
      'spumoni'
           Printing level of debugging information of the solvers
@@ -1834,12 +1997,13 @@ matrix incorrectly will lead to unpredictable results, and so
 
  -- Loadable Function: P = sprank (S)
 
-     Calculate the structural rank of the sparse matrix S.  Note that
-     only the structure of the matrix is used in this calculation based
-     on a Dulmage-Mendelsohn permutation to block triangular form.  As
-     such the numerical rank of the matrix S is bounded by 'sprank (S)
-     >= rank (S)'.  Ignoring floating point errors 'sprank (S) == rank
-     (S)'.
+     Calculate the structural rank of the sparse matrix S.
+
+     Note that only the structure of the matrix is used in this
+     calculation based on a Dulmage-Mendelsohn permutation to block
+     triangular form.  As such the numerical rank of the matrix S is
+     bounded by 'sprank (S) >= rank (S)'.  Ignoring floating point
+     errors 'sprank (S) == rank (S)'.
 
      See also: *note dmperm: XREFdmperm.
 
@@ -1848,7 +2012,8 @@ matrix incorrectly will lead to unpredictable results, and so
  -- Loadable Function: [...] = symbfact (S, TYP, MODE)
 
      Perform a symbolic factorization analysis on the sparse matrix S.
-     Where
+
+     The input variables are
 
      S
           S is a complex or real sparse matrix.
@@ -1959,8 +2124,10 @@ and vectors.
  -- Function File: [V, D, FLAG] = eigs (A, ...)
  -- Function File: [V, D, FLAG] = eigs (AF, N, ...)
      Calculate a limited number of eigenvalues and eigenvectors of A,
-     based on a selection criteria.  The number of eigenvalues and
-     eigenvectors to calculate is given by K and defaults to 6.
+     based on a selection criteria.
+
+     The number of eigenvalues and eigenvectors to calculate is given by
+     K and defaults to 6.
 
      By default, 'eigs' solve the equation 'A * v = lambda * v', where
      'lambda' is a scalar representing one of the eigenvalues, and 'v'
@@ -2100,8 +2267,9 @@ and vectors.
  -- Function File: [U, S, V] = svds (...)
  -- Function File: [U, S, V, FLAG] = svds (...)
 
-     Find a few singular values of the matrix A.  The singular values
-     are calculated using
+     Find a few singular values of the matrix A.
+
+     The singular values are calculated using
 
           [M, N] = size (A);
           S = eigs ([sparse(M, M), A;
@@ -2173,8 +2341,9 @@ functions to solve sparse linear equations using iterative techniques.
  -- Function File: [X, FLAG, RELRES, ITER, RESVEC, EIGEST] = pcg (...)
 
      Solve the linear system of equations 'A * X = B' by means of the
-     Preconditioned Conjugate Gradient iterative method.  The input
-     arguments are
+     Preconditioned Conjugate Gradient iterative method.
+
+     The input arguments are
 
         * A can be either a square (preferably sparse) matrix or a
           function handle, inline function or string containing the name
@@ -2317,8 +2486,9 @@ functions to solve sparse linear equations using iterative techniques.
  -- Function File: [X, FLAG, RELRES, ITER, RESVEC] = pcr (...)
 
      Solve the linear system of equations 'A * X = B' by means of the
-     Preconditioned Conjugate Residuals iterative method.  The input
-     arguments are
+     Preconditioned Conjugate Residuals iterative method.
+
+     The input arguments are
 
         * A can be either a square (preferably sparse) matrix or a
           function handle, inline function or string containing the name
@@ -2353,8 +2523,9 @@ functions to solve sparse linear equations using iterative techniques.
 
      The arguments which follow X0 are treated as parameters, and passed
      in a proper way to any of the functions (A or M) which are passed
-     to 'pcr'.  See the examples below for further details.  The output
-     arguments are
+     to 'pcr'.  See the examples below for further details.
+
+     The output arguments are
 
         * X is the computed approximation to the solution of 'A * X =
           B'.
@@ -2362,7 +2533,7 @@ functions to solve sparse linear equations using iterative techniques.
         * FLAG reports on the convergence.  'FLAG = 0' means the
           solution converged and the tolerance criterion given by TOL is
           satisfied.  'FLAG = 1' means that the MAXIT limit for the
-          iteration count was reached.  'FLAG = 3' reports t 'pcr'
+          iteration count was reached.  'FLAG = 3' reports a 'pcr'
           breakdown, see [1] for details.
 
         * RELRES is the ratio of the final residual to its initial
@@ -2939,9 +3110,11 @@ example:
  -- Built-in Function: Q = quad (F, A, B, TOL, SING)
  -- Built-in Function: [Q, IER, NFUN, ERR] = quad (...)
      Numerically evaluate the integral of F from A to B using Fortran
-     routines from QUADPACK.  F is a function handle, inline function,
-     or a string containing the name of the function to evaluate.  The
-     function must have the form 'y = f (x)' where Y and X are scalars.
+     routines from QUADPACK.
+
+     F is a function handle, inline function, or a string containing the
+     name of the function to evaluate.  The function must have the form
+     'y = f (x)' where Y and X are scalars.
 
      A and B are the lower and upper limits of integration.  Either or
      both may be infinite.
@@ -2957,9 +3130,13 @@ example:
      The optional argument SING is a vector of values at which the
      integrand is known to be singular.
 
-     The result of the integration is returned in Q.  IER contains an
-     integer error code (0 indicates a successful integration).  NFUN
-     indicates the number of function evaluations that were made, and
+     The result of the integration is returned in Q.
+
+     IER contains an integer error code (0 indicates a successful
+     integration).
+
+     NFUN indicates the number of function evaluations that were made.
+
      ERR contains an estimate of the error in the solution.
 
      The function 'quad_options' can set other optional parameters for
@@ -2977,11 +3154,15 @@ example:
  -- Built-in Function: quad_options ()
  -- Built-in Function: val = quad_options (OPT)
  -- Built-in Function: quad_options (OPT, VAL)
-     Query or set options for the function 'quad'.  When called with no
-     arguments, the names of all available options and their current
-     values are displayed.  Given one argument, return the value of the
-     corresponding option.  When called with two arguments,
-     'quad_options' set the option OPT to value VAL.
+     Query or set options for the function 'quad'.
+
+     When called with no arguments, the names of all available options
+     and their current values are displayed.
+
+     Given one argument, return the value of the option OPT.
+
+     When called with two arguments, 'quad_options' sets the option OPT
+     to value VAL.
 
      Options include
 
@@ -3009,17 +3190,18 @@ example:
  -- Function File: [Q, NFUN] = quadv (...)
 
      Numerically evaluate the integral of F from A to B using an
-     adaptive Simpson's rule.  F is a function handle, inline function,
-     or string containing the name of the function to evaluate.  'quadv'
-     is a vectorized version of 'quad' and the function defined by F
-     must accept a scalar or vector as input and return a scalar,
-     vector, or array as output.
+     adaptive Simpson's rule.
+
+     F is a function handle, inline function, or string containing the
+     name of the function to evaluate.  'quadv' is a vectorized version
+     of 'quad' and the function defined by F must accept a scalar or
+     vector as input and return a scalar, vector, or array as output.
 
      A and B are the lower and upper limits of integration.  Both limits
      must be finite.
 
      The optional argument TOL defines the tolerance used to stop the
-     adaptation procedure.  The default value is 1e^{-6}.
+     adaptation procedure.  The default value is 1e-6.
 
      The algorithm used by 'quadv' involves recursively subdividing the
      integration interval and applying Simpson's rule on each
@@ -3033,12 +3215,13 @@ example:
      F.  To use default values for TOL and TRACE, one may pass empty
      matrices ([]).
 
-     The result of the integration is returned in Q.  NFUN indicates the
-     number of function evaluations that were made.
+     The result of the integration is returned in Q
+
+     NFUN indicates the number of function evaluations that were made.
 
      Note: 'quadv' is written in Octave's scripting language and can be
-     used recursively in 'dblquad' and 'triplequad', unlike the similar
-     'quad' function.
+     used recursively in 'dblquad' and 'triplequad', unlike the 'quad'
+     function.
 
      See also: *note quad: XREFquad, *note quadl: XREFquadl, *note
      quadgk: XREFquadgk, *note quadcc: XREFquadcc, *note trapz:
@@ -3051,10 +3234,12 @@ example:
  -- Function File: Q = quadl (F, A, B, TOL, TRACE, P1, P2, ...)
 
      Numerically evaluate the integral of F from A to B using an
-     adaptive Lobatto rule.  F is a function handle, inline function, or
-     string containing the name of the function to evaluate.  The
-     function F must be vectorized and return a vector of output values
-     if given a vector of input values.
+     adaptive Lobatto rule.
+
+     F is a function handle, inline function, or string containing the
+     name of the function to evaluate.  The function F must be
+     vectorized and return a vector of output values when given a vector
+     of input values.
 
      A and B are the lower and upper limits of integration.  Both limits
      must be finite.
@@ -3088,15 +3273,12 @@ example:
  -- Function File: [Q, ERR] = quadgk (...)
 
      Numerically evaluate the integral of F from A to B using adaptive
-     Gauss-Konrod quadrature.  F is a function handle, inline function,
-     or string containing the name of the function to evaluate.  The
-     formulation is based on a proposal by L.F. Shampine, '"Vectorized
-     adaptive quadrature in MATLAB", Journal of Computational and
-     Applied Mathematics, pp131-140, Vol 211, Issue 2, Feb 2008' where
-     all function evaluations at an iteration are calculated with a
-     single call to F.  Therefore, the function F must be vectorized and
-     must accept a vector of input values X and return an output vector
-     representing the function evaluations at the given values of X.
+     Gauss-Konrod quadrature.
+
+     F is a function handle, inline function, or string containing the
+     name of the function to evaluate.  The function F must be
+     vectorized and return a vector of output values when given a vector
+     of input values.
 
      A and B are the lower and upper limits of integration.  Either or
      both limits may be infinite or contain weak end singularities.
@@ -3110,7 +3292,7 @@ example:
      should do the same.
 
      The optional argument TOL defines the absolute tolerance used to
-     stop the integration procedure.  The default value is 1e^{-10}.
+     stop the integration procedure.  The default value is 1e-10.
 
      The algorithm used by 'quadgk' involves subdividing the integration
      interval and evaluating each subinterval.  If TRACE is true then
@@ -3164,11 +3346,16 @@ example:
                   [1-1i, -1,-1i, -1+1i])
 
      integrates 'log (z)' along the square defined by '[1+1i, 1-1i,
-     -1-1i, -1+1i]'
+     -1-1i, -1+1i]'.
 
-     The result of the integration is returned in Q.  ERR is an
-     approximate bound on the error in the integral 'abs (Q - I)', where
-     I is the exact value of the integral.
+     The result of the integration is returned in Q.
+
+     ERR is an approximate bound on the error in the integral 'abs (Q -
+     I)', where I is the exact value of the integral.
+
+     Reference: L.F. Shampine, '"Vectorized adaptive quadrature in
+     MATLAB"', Journal of Computational and Applied Mathematics, pp.
+     131-140, Vol 211, Issue 2, Feb 2008.
 
      See also: *note quad: XREFquad, *note quadv: XREFquadv, *note
      quadl: XREFquadl, *note quadcc: XREFquadcc, *note trapz: XREFtrapz,
@@ -3178,13 +3365,13 @@ example:
  -- Function File: Q = quadcc (F, A, B, TOL)
  -- Function File: Q = quadcc (F, A, B, TOL, SING)
  -- Function File: [Q, ERR, NR_POINTS] = quadcc (...)
-     Numerically evaluate the integral of F from A to B using the
-     doubly-adaptive Clenshaw-Curtis quadrature described by P. Gonnet
-     in 'Increasing the Reliability of Adaptive Quadrature Using
-     Explicit Interpolants'.  F is a function handle, inline function,
-     or string containing the name of the function to evaluate.  The
-     function F must be vectorized and must return a vector of output
-     values if given a vector of input values.  For example,
+     Numerically evaluate the integral of F from A to B using
+     doubly-adaptive Clenshaw-Curtis quadrature.
+
+     F is a function handle, inline function, or string containing the
+     name of the function to evaluate.  The function F must be
+     vectorized and must return a vector of output values if given a
+     vector of input values.  For example,
 
           f = @(x) x .* sin (1./x) .* sqrt (abs (1 - x));
 
@@ -3206,12 +3393,16 @@ example:
 
           int = quadcc (f, a, b, 1.0e-6, [ 1 ]);
 
-     The result of the integration is returned in Q.  ERR is an estimate
-     of the absolute integration error and NR_POINTS is the number of
-     points at which the integrand was evaluated.  If the adaptive
-     integration did not converge, the value of ERR will be larger than
-     the requested tolerance.  Therefore, it is recommended to verify
-     this value for difficult integrands.
+     The result of the integration is returned in Q.
+
+     ERR is an estimate of the absolute integration error.
+
+     NR_POINTS is the number of points at which the integrand was
+     evaluated.
+
+     If the adaptive integration did not converge, the value of ERR will
+     be larger than the requested tolerance.  Therefore, it is
+     recommended to verify this value for difficult integrands.
 
      'quadcc' is capable of dealing with non-numeric values of the
      integrand such as 'NaN' or 'Inf'.  If the integral diverges, and
@@ -3279,19 +3470,23 @@ must remain aware of this issue when using 'trapz'.
  -- Function File: Q = trapz (..., DIM)
 
      Numerically evaluate the integral of points Y using the trapezoidal
-     method.  'trapz (Y)' computes the integral of Y along the first
+     method.
+
+     'trapz (Y)' computes the integral of Y along the first
      non-singleton dimension.  When the argument X is omitted an equally
      spaced X vector with unit spacing (1) is assumed.  'trapz (X, Y)'
      evaluates the integral with respect to the spacing in X and the
      values in Y.  This is useful if the points in Y have been sampled
-     unevenly.  If the optional DIM argument is given, operate along
-     this dimension.
+     unevenly.
 
-     If X is not specified then unit spacing will be used.  To scale the
-     integral to the correct value you must multiply by the actual
-     spacing value (deltaX). As an example, the integral of x^3 over the
-     range [0, 1] is x^4/4 or 0.25.  The following code uses 'trapz' to
-     calculate the integral in three different ways.
+     If the optional DIM argument is given, operate along this
+     dimension.
+
+     Application Note: If X is not specified then unit spacing will be
+     used.  To scale the integral to the correct value you must multiply
+     by the actual spacing value (deltaX). As an example, the integral
+     of x^3 over the range [0, 1] is x^4/4 or 0.25.  The following code
+     uses 'trapz' to calculate the integral in three different ways.
 
           x = 0:0.1:1;
           y = x.^3;
@@ -3307,21 +3502,25 @@ must remain aware of this issue when using 'trapz'.
  -- Function File: Q = cumtrapz (Y)
  -- Function File: Q = cumtrapz (X, Y)
  -- Function File: Q = cumtrapz (..., DIM)
-
      Cumulative numerical integration of points Y using the trapezoidal
-     method.  'cumtrapz (Y)' computes the cumulative integral of Y along
-     the first non-singleton dimension.  Where 'trapz' reports only the
-     overall integral sum, 'cumtrapz' reports the current partial sum
-     value at each point of Y.  When the argument X is omitted an
-     equally spaced X vector with unit spacing (1) is assumed.
-     'cumtrapz (X, Y)' evaluates the integral with respect to the
-     spacing in X and the values in Y.  This is useful if the points in
-     Y have been sampled unevenly.  If the optional DIM argument is
-     given, operate along this dimension.
+     method.
 
-     If X is not specified then unit spacing will be used.  To scale the
-     integral to the correct value you must multiply by the actual
-     spacing value (deltaX).
+     'cumtrapz (Y)' computes the cumulative integral of Y along the
+     first non-singleton dimension.  Where 'trapz' reports only the
+     overall integral sum, 'cumtrapz' reports the current partial sum
+     value at each point of Y.
+
+     When the argument X is omitted an equally spaced X vector with unit
+     spacing (1) is assumed.  'cumtrapz (X, Y)' evaluates the integral
+     with respect to the spacing in X and the values in Y.  This is
+     useful if the points in Y have been sampled unevenly.
+
+     If the optional DIM argument is given, operate along this
+     dimension.
+
+     Application Note: If X is not specified then unit spacing will be
+     used.  To scale the integral to the correct value you must multiply
+     by the actual spacing value (deltaX).
 
      See also: *note trapz: XREFtrapz, *note cumsum: XREFcumsum.
 
@@ -3333,9 +3532,10 @@ File: octave.info,  Node: Orthogonal Collocation,  Next: Functions of Multiple V
 
  -- Built-in Function: [R, AMAT, BMAT, Q] = colloc (N, "left", "right")
      Compute derivative and integral weight matrices for orthogonal
-     collocation using the subroutines given in J. Villadsen and M. L.
-     Michelsen, 'Solution of Differential Equation Models by Polynomial
-     Approximation'.
+     collocation.
+
+     Reference: J. Villadsen, M. L. Michelsen, 'Solution of Differential
+     Equation Models by Polynomial Approximation'.
 
    Here is an example of using 'colloc' to generate weight matrices for
 solving the second order differential equation U' - ALPHA * U" = 0 with
@@ -3405,11 +3605,12 @@ example:
  -- Function File: dblquad (F, XA, XB, YA, YB, TOL)
  -- Function File: dblquad (F, XA, XB, YA, YB, TOL, QUADF)
  -- Function File: dblquad (F, XA, XB, YA, YB, TOL, QUADF, ...)
-     Numerically evaluate the double integral of F.  F is a function
-     handle, inline function, or string containing the name of the
-     function to evaluate.  The function F must have the form z = f(x,y)
-     where X is a vector and Y is a scalar.  It should return a vector
-     of the same length and orientation as X.
+     Numerically evaluate the double integral of F.
+
+     F is a function handle, inline function, or string containing the
+     name of the function to evaluate.  The function F must have the
+     form z = f(x,y) where X is a vector and Y is a scalar.  It should
+     return a vector of the same length and orientation as X.
 
      XA, YA and XB, YB are the lower and upper limits of integration for
      x and y respectively.  The underlying integrator determines whether
@@ -3434,19 +3635,20 @@ example:
  -- Function File: triplequad (F, XA, XB, YA, YB, ZA, ZB, TOL, QUADF)
  -- Function File: triplequad (F, XA, XB, YA, YB, ZA, ZB, TOL, QUADF,
           ...)
-     Numerically evaluate the triple integral of F.  F is a function
-     handle, inline function, or string containing the name of the
-     function to evaluate.  The function F must have the form w =
-     f(x,y,z) where either X or Y is a vector and the remaining inputs
-     are scalars.  It should return a vector of the same length and
-     orientation as X or Y.
+     Numerically evaluate the triple integral of F.
+
+     F is a function handle, inline function, or string containing the
+     name of the function to evaluate.  The function F must have the
+     form w = f(x,y,z) where either X or Y is a vector and the remaining
+     inputs are scalars.  It should return a vector of the same length
+     and orientation as X or Y.
 
      XA, YA, ZA and XB, YB, ZB are the lower and upper limits of
      integration for x, y, and z respectively.  The underlying
      integrator determines whether infinite bounds are accepted.
 
      The optional argument TOL defines the absolute tolerance used to
-     integrate each sub-integral.  The default value is 1e^{-6}.
+     integrate each sub-integral.  The default value is 1e-6.
 
      The optional argument QUADF specifies which underlying integrator
      function to use.  Any choice but 'quad' is available and the
@@ -3510,7 +3712,9 @@ using Hindmarsh's ODE solver LSODE.
 
  -- Built-in Function: [X, ISTATE, MSG] = lsode (FCN, X_0, T)
  -- Built-in Function: [X, ISTATE, MSG] = lsode (FCN, X_0, T, T_CRIT)
-     Solve the set of differential equations
+     Ordinary Differential Equation (ODE) solver.
+
+     The set of differential equations to solve is
 
           dx
           -- = f (x, t)
@@ -3583,11 +3787,15 @@ using Hindmarsh's ODE solver LSODE.
  -- Built-in Function: lsode_options ()
  -- Built-in Function: val = lsode_options (OPT)
  -- Built-in Function: lsode_options (OPT, VAL)
-     Query or set options for the function 'lsode'.  When called with no
-     arguments, the names of all available options and their current
-     values are displayed.  Given one argument, return the value of the
-     corresponding option.  When called with two arguments,
-     'lsode_options' set the option OPT to value VAL.
+     Query or set options for the function 'lsode'.
+
+     When called with no arguments, the names of all available options
+     and their current values are displayed.
+
+     Given one argument, return the value of the option OPT.
+
+     When called with two arguments, 'lsode_options' sets the option OPT
+     to value VAL.
 
      Options include
 
@@ -3758,11 +3966,15 @@ Petzold's DAE solver DASPK.
  -- Built-in Function: daspk_options ()
  -- Built-in Function: val = daspk_options (OPT)
  -- Built-in Function: daspk_options (OPT, VAL)
-     Query or set options for the function 'daspk'.  When called with no
-     arguments, the names of all available options and their current
-     values are displayed.  Given one argument, return the value of the
-     corresponding option.  When called with two arguments,
-     'daspk_options' set the option OPT to value VAL.
+     Query or set options for the function 'daspk'.
+
+     When called with no arguments, the names of all available options
+     and their current values are displayed.
+
+     Given one argument, return the value of the option OPT.
+
+     When called with two arguments, 'daspk_options' sets the option OPT
+     to value VAL.
 
      Options include
 
@@ -3990,11 +4202,15 @@ which can be used to solve DAEs with constraints (stopping conditions).
  -- Built-in Function: dassl_options ()
  -- Built-in Function: val = dassl_options (OPT)
  -- Built-in Function: dassl_options (OPT, VAL)
-     Query or set options for the function 'dassl'.  When called with no
-     arguments, the names of all available options and their current
-     values are displayed.  Given one argument, return the value of the
-     corresponding option.  When called with two arguments,
-     'dassl_options' set the option OPT to value VAL.
+     Query or set options for the function 'dassl'.
+
+     When called with no arguments, the names of all available options
+     and their current values are displayed.
+
+     Given one argument, return the value of the option OPT.
+
+     When called with two arguments, 'dassl_options' sets the option OPT
+     to value VAL.
 
      Options include
 
@@ -4153,11 +4369,15 @@ which can be used to solve DAEs with constraints (stopping conditions).
  -- Built-in Function: dasrt_options ()
  -- Built-in Function: val = dasrt_options (OPT)
  -- Built-in Function: dasrt_options (OPT, VAL)
-     Query or set options for the function 'dasrt'.  When called with no
-     arguments, the names of all available options and their current
-     values are displayed.  Given one argument, return the value of the
-     corresponding option.  When called with two arguments,
-     'dasrt_options' set the option OPT to value VAL.
+     Query or set options for the function 'dasrt'.
+
+     When called with no arguments, the names of all available options
+     and their current values are displayed.
+
+     Given one argument, return the value of the option OPT.
+
+     When called with two arguments, 'dasrt_options' sets the option OPT
+     to value VAL.
 
      Options include
 
@@ -4235,8 +4455,9 @@ The 'glpk' function also supports variations of this problem.
 
  -- Function File: [XOPT, FMIN, ERRNUM, EXTRA] = glpk (C, A, B, LB, UB,
           CTYPE, VARTYPE, SENSE, PARAM)
-     Solve a linear program using the GNU GLPK library.  Given three
-     arguments, 'glpk' solves the following standard LP:
+     Solve a linear program using the GNU GLPK library.
+
+     Given three arguments, 'glpk' solves the following standard LP:
 
           min C'*x
 
@@ -4650,7 +4871,9 @@ Octave can also solve Quadratic Programming problems, this is
  -- Function File: [X, OBJ, INFO, LAMBDA] = qp (X0, H, Q, A, B, LB, UB,
           A_LB, A_IN, A_UB)
  -- Function File: [X, OBJ, INFO, LAMBDA] = qp (..., OPTIONS)
-     Solve the quadratic program
+     Solve a quadratic program (QP).
+
+     Solve the quadratic program defined by
 
           min 0.5 x'*H*x + x'*q
            x
@@ -4709,9 +4932,12 @@ Octave can also solve Quadratic Programming problems, this is
  -- Function File: [X, MINVAL, EXITFLAG, OUTPUT] = pqpnonneg (...)
  -- Function File: [X, MINVAL, EXITFLAG, OUTPUT, LAMBDA] = pqpnonneg
           (...)
-     Minimize '1/2*x'*c*x + d'*x' subject to 'X >= 0'.  C and D must be
-     real, and C must be symmetric and positive definite.  X0 is an
-     optional initial guess for X.
+     Minimize '1/2*x'*c*x + d'*x' subject to 'X >= 0'.
+
+     C ## and D must be real, and C must be symmetric and positive
+     definite.
+
+     X0 is an optional initial guess for X.
 
      Outputs:
 
@@ -4756,6 +4982,9 @@ successive quadratic programming solver.
  -- Function File: [...] = sqp (X0, PHI, G, H, LB, UB)
  -- Function File: [...] = sqp (X0, PHI, G, H, LB, UB, MAXITER)
  -- Function File: [...] = sqp (X0, PHI, G, H, LB, UB, MAXITER, TOL)
+     Minimize an objective function using sequential quadratic
+     programming (SQP).
+
      Solve the nonlinear program
 
           min phi (x)
@@ -4886,10 +5115,11 @@ operators, or the 'ols' function.  In the general case where the noise
 is assumed to be anisotropic the 'gls' is needed.
 
  -- Function File: [BETA, SIGMA, R] = ols (Y, X)
-     Ordinary least squares estimation for the multivariate model y = x*b + e
-     with mean (e) = 0 and cov (vec (e)) = kron (s, I).  where y is a t
-     by p matrix, x is a t by k matrix, b is a k by p matrix, and e is a
-     t by p matrix.
+     Ordinary least squares estimation.
+
+     OLS applies to the multivariate model y = x*b + e with mean (e) = 0
+     and cov (vec (e)) = kron (s, I).  where y is a t by p matrix, x is
+     a t by k matrix, b is a k by p matrix, and e is a t by p matrix.
 
      Each row of Y and X is an observation and each column a variable.
 
@@ -4914,10 +5144,12 @@ is assumed to be anisotropic the 'gls' is needed.
      See also: *note gls: XREFgls, *note pinv: XREFpinv.
 
  -- Function File: [BETA, V, R] = gls (Y, X, O)
-     Generalized least squares estimation for the multivariate model y = x*b + e
-     with mean (e) = 0 and cov (vec (e)) = (s^2) o, where y is a t by p
-     matrix, x is a t by k matrix, b is a k by p matrix, e is a t by p
-     matrix, and o is a t*p by t*p matrix.
+     Generalized least squares model.
+
+     Perform a generalized least squares estimation for the multivariate
+     model y = x*b + e with mean (e) = 0 and cov (vec (e)) = (s^2) o,
+     where y is a t by p matrix, x is a t by k matrix, b is a k by p
+     matrix, e is a t by p matrix, and o is a t*p by t*p matrix.
 
      Each row of Y and X is an observation and each column a variable.
      The return values BETA, V, and R are defined as follows.
@@ -4943,10 +5175,15 @@ is assumed to be anisotropic the 'gls' is needed.
           (...)
  -- Function File: [X, RESNORM, RESIDUAL, EXITFLAG, OUTPUT, LAMBDA] =
           lsqnonneg (...)
-     Minimize 'norm (C*X - d)' subject to 'X >= 0'.  C and D must be
-     real.  X0 is an optional initial guess for X.  Currently,
-     'lsqnonneg' recognizes these options: "MaxIter", "TolX". For a
-     description of these options, see *note optimset: XREFoptimset.
+     Minimize 'norm (C*X - d)' subject to 'X >= 0'.
+
+     C and D must be real.
+
+     X0 is an optional initial guess for X.
+
+     Currently, 'lsqnonneg' recognizes these options: "MaxIter", "TolX".
+     For a description of these options, see *note optimset:
+     XREFoptimset.
 
      Outputs:
 
@@ -4985,9 +5222,11 @@ is assumed to be anisotropic the 'gls' is needed.
  -- Function File: X = lscov (A, B, V, ALG)
  -- Function File: [X, STDX, MSE, S] = lscov (...)
 
-     Compute a generalized linear least squares fit.  Estimate X under
-     the model B = AX + W, where the noise W is assumed to follow a
-     normal distribution with covariance matrix {\sigma^2} V.
+     Compute a generalized linear least squares fit.
+
+     Estimate X under the model B = AX + W, where the noise W is assumed
+     to follow a normal distribution with covariance matrix {\sigma^2}
+     V.
 
      If the size of the coefficient matrix A is n-by-p, the size of the
      vector/array of constant terms B must be n-by-k.
@@ -5006,11 +5245,11 @@ is assumed to be anisotropic the 'gls' is needed.
      scale factors (\sigma^2); and S (p-by-p, or p-by-p-by-k if k > 1),
      the error covariance of X.
 
-     Reference: Golub and Van Loan (1996), Matrix Computations (3rd
-     Ed.), Johns Hopkins, Section 5.6.3
+     Reference: Golub and Van Loan (1996), 'Matrix Computations (3rd
+     Ed.)', Johns Hopkins, Section 5.6.3
 
-See also: *note ols: XREFols, *note gls: XREFgls, *note lsqnonneg:
-XREFlsqnonneg.
+     See also: *note ols: XREFols, *note gls: XREFgls, *note lsqnonneg:
+     XREFlsqnonneg.
 
  -- Function File: optimset ()
  -- Function File: OPTIONS = optimset ()
@@ -5169,10 +5408,15 @@ corresponding to the central tendency of the data.
  -- Function File: mean (X, DIM, OPT)
      Compute the mean of the elements of the vector X.
 
+     The mean is defined as
+
           mean (x) = SUM_i x(i) / N
 
      If X is a matrix, compute the mean for each column and return them
      in a row vector.
+
+     If the optional argument DIM is given, operate along this
+     dimension.
 
      The optional argument OPT selects the type of mean to compute.  The
      following options are recognized:
@@ -5186,9 +5430,6 @@ corresponding to the central tendency of the data.
      "h"
           Compute the harmonic mean.
 
-     If the optional argument DIM is given, operate along this
-     dimension.
-
      Both DIM and OPT are optional.  If both are supplied, either may
      appear first.
 
@@ -5196,16 +5437,19 @@ corresponding to the central tendency of the data.
 
  -- Function File: median (X)
  -- Function File: median (X, DIM)
-     Compute the median value of the elements of the vector X.  If the
-     elements of X are sorted, the median is defined as
+     Compute the median value of the elements of the vector X.
+
+     When the elements of X are sorted, the median is defined as
 
                         x(ceil(N/2))             N odd
           median (x) =
                        (x(N/2) + x((N/2)+1))/2   N even
 
      If X is a matrix, compute the median value for each column and
-     return them in a row vector.  If the optional DIM argument is
-     given, operate along this dimension.
+     return them in a row vector.
+
+     If the optional DIM argument is given, operate along this
+     dimension.
 
      See also: *note mean: XREFmean, *note mode: XREFmode.
 
@@ -5213,6 +5457,7 @@ corresponding to the central tendency of the data.
  -- Function File: mode (X, DIM)
  -- Function File: [M, F, C] = mode (...)
      Compute the most frequently occurring value in a dataset (mode).
+
      'mode' determines the frequency of values along the first
      non-singleton dimension and returns the value with the highest
      frequency.  If two, or more, values have the same frequency 'mode'
@@ -5222,8 +5467,10 @@ corresponding to the central tendency of the data.
      dimension.
 
      The return variable F is the number of occurrences of the mode in
-     in the dataset.  The cell array C contains all of the elements with
-     the maximum frequency.
+     the dataset.
+
+     The cell array C contains all of the elements with the maximum
+     frequency.
 
      See also: *note mean: XREFmean, *note median: XREFmedian.
 
@@ -5235,9 +5482,10 @@ provides several functions for measuring dispersion.
  -- Function File: range (X)
  -- Function File: range (X, DIM)
      Return the range, i.e., the difference between the maximum and the
-     minimum of the input data.  If X is a vector, the range is
-     calculated over the elements of X.  If X is a matrix, the range is
-     calculated over each column of X.
+     minimum of the input data.
+
+     If X is a vector, the range is calculated over the elements of X.
+     If X is a matrix, the range is calculated over each column of X.
 
      If the optional argument DIM is given, operate along this
      dimension.
@@ -5251,8 +5499,10 @@ provides several functions for measuring dispersion.
  -- Function File: iqr (X)
  -- Function File: iqr (X, DIM)
      Return the interquartile range, i.e., the difference between the
-     upper and lower quartile of the input data.  If X is a matrix, do
-     the above for first non-singleton dimension of X.
+     upper and lower quartile of the input data.
+
+     If X is a matrix, do the above for first non-singleton dimension of
+     X.
 
      If the optional argument DIM is given, operate along this
      dimension.
@@ -5265,6 +5515,8 @@ provides several functions for measuring dispersion.
  -- Function File: meansq (X)
  -- Function File: meansq (X, DIM)
      Compute the mean square of the elements of the vector X.
+
+     The mean square is defined as
 
           meansq (x) = 1/N SUM_i x(i)^2
 
@@ -5281,6 +5533,8 @@ provides several functions for measuring dispersion.
  -- Function File: std (X, OPT)
  -- Function File: std (X, OPT, DIM)
      Compute the standard deviation of the elements of the vector X.
+
+     The standard deviation is defined as
 
           std (x) = sqrt ( 1/(N-1) SUM_i (x(i) - mean(x))^2 )
 
@@ -5317,6 +5571,8 @@ allowing arbitrary shape measures to be developed.
  -- Function File: var (X, OPT, DIM)
      Compute the variance of the elements of the vector X.
 
+     The variance is defined as
+
           var (x) = 1/(N-1) SUM_i (x(i) - mean(x))^2
 
      If X is a matrix, compute the variance for each column and return
@@ -5345,7 +5601,9 @@ allowing arbitrary shape measures to be developed.
  -- Function File: skewness (X)
  -- Function File: skewness (X, FLAG)
  -- Function File: skewness (X, FLAG, DIM)
-     Compute the sample skewness of the elements of X:
+     Compute the sample skewness of the elements of X.
+
+     The sample skewness is defined as
 
                          mean ((X - mean (X)).^3)
           skewness (X) = ------------------------.
@@ -5374,7 +5632,9 @@ allowing arbitrary shape measures to be developed.
  -- Function File: kurtosis (X)
  -- Function File: kurtosis (X, FLAG)
  -- Function File: kurtosis (X, FLAG, DIM)
-     Compute the sample kurtosis of the elements of X:
+     Compute the sample kurtosis of the elements of X.
+
+     The sample kurtosis is defined as
 
                mean ((X - mean (X)).^4)
           k1 = ------------------------
@@ -5414,6 +5674,9 @@ allowing arbitrary shape measures to be developed.
      If X is a matrix, return the row vector containing the P-th central
      moment of each column.
 
+     If the optional argument DIM is given, operate along this
+     dimension.
+
      The optional string TYPE specifies the type of moment to be
      computed.  Valid options are:
 
@@ -5437,9 +5700,6 @@ allowing arbitrary shape measures to be developed.
           defined as
 
                1/N SUM_i ( abs (x(i)) )^p
-
-     If the optional argument DIM is given, operate along this
-     dimension.
 
      If both TYPE and DIM are given they may appear in any order.
 
@@ -5526,17 +5786,19 @@ allowing arbitrary shape measures to be developed.
  -- Function File: Q = prctile (X, P)
  -- Function File: Q = prctile (X, P, DIM)
      For a sample X, compute the quantiles, Q, corresponding to the
-     cumulative probability values, P, in percent.  All non-numeric
-     values (NaNs) of X are ignored.
+     cumulative probability values, P, in percent.
 
      If X is a matrix, compute the percentiles for each column and
      return them in a matrix, such that the i-th row of Y contains the
      P(i)th percentiles of each column of X.
 
      If P is unspecified, return the quantiles for '[0 25 50 75 100]'.
+
      The optional argument DIM determines the dimension along which the
      percentiles are calculated.  If DIM is omitted it defaults to the
-     the first non-singleton dimension.
+     first non-singleton dimension.
+
+     Programming Note: All non-numeric values (NaNs) of X are ignored.
 
      See also: *note quantile: XREFquantile.
 
@@ -5550,8 +5812,10 @@ allowing arbitrary shape measures to be developed.
      of the elements of the vector X.
 
      If X is a matrix, calculate statistics over the first non-singleton
-     dimension.  If the optional argument DIM is given, operate along
-     this dimension.
+     dimension.
+
+     If the optional argument DIM is given, operate along this
+     dimension.
 
      See also: *note min: XREFmin, *note max: XREFmax, *note median:
      XREFmedian, *note mean: XREFmean, *note std: XREFstd, *note
@@ -5570,27 +5834,43 @@ statistics.
 
  -- Function File: center (X)
  -- Function File: center (X, DIM)
-     If X is a vector, subtract its mean.  If X is a matrix, do the
-     above for each column.  If the optional argument DIM is given,
-     operate along this dimension.
+     Center data by subtracting its mean.
+
+     If X is a vector, subtract its mean.
+
+     If X is a matrix, do the above for each column.
+
+     If the optional argument DIM is given, operate along this
+     dimension.
+
+     Programming Note: 'center' has obvious application for normalizing
+     statistical data.  It is also useful for improving the precision of
+     general numerical calculations.  Whenever there is a large value
+     that is common to a batch of data, the mean can be subtracted off,
+     the calculation performed, and then the mean added back to obtain
+     the final answer.
 
      See also: *note zscore: XREFzscore.
 
- -- Function File: [Z, MU, SIGMA] = zscore (X)
- -- Function File: [Z, MU, SIGMA] = zscore (X, OPT)
- -- Function File: [Z, MU, SIGMA] = zscore (X, OPT, DIM)
+ -- Function File: Z = zscore (X)
+ -- Function File: Z = zscore (X, OPT)
+ -- Function File: Z = zscore (X, OPT, DIM)
+ -- Function File: [Z, MU, SIGMA] = zscore (...)
+     Compute the Z score of X
+
      If X is a vector, subtract its mean and divide by its standard
      deviation.  If the standard deviation is zero, divide by 1 instead.
+
      The optional parameter OPT determines the normalization to use when
-     computing the standard deviation and is the same as the
+     computing the standard deviation and has the same definition as the
      corresponding parameter for 'std'.
 
-     If X is a matrix, do the above along the first non-singleton
+     If X is a matrix, calculate along the first non-singleton
      dimension.  If the third optional argument DIM is given, operate
      along this dimension.
 
-     The mean and standard deviation along DIM are given in MU and SIGMA
-     respectively.
+     The optional outputs MU and SIGMA contain the mean and standard
+     deviation.
 
      See also: *note mean: XREFmean, *note std: XREFstd, *note center:
      XREFcenter.
@@ -5598,7 +5878,7 @@ statistics.
  -- Function File: N = histc (X, EDGES)
  -- Function File: N = histc (X, EDGES, DIM)
  -- Function File: [N, IDX] = histc (...)
-     Produce histogram counts.
+     Compute histogram counts.
 
      When X is a vector, the function counts the number of elements of X
      that fall in the histogram bins defined by EDGES.  This must be a
@@ -5689,8 +5969,10 @@ statistics.
 
  -- Function File: ranks (X, DIM)
      Return the ranks of X along the first non-singleton dimension
-     adjusted for ties.  If the optional argument DIM is given, operate
-     along this dimension.
+     adjusted for ties.
+
+     If the optional argument DIM is given, operate along this
+     dimension.
 
      See also: *note spearman: XREFspearman, *note kendall: XREFkendall.
 
@@ -5702,38 +5984,57 @@ statistics.
      If the optional argument DIM is given then operate along this
      dimension.
 
+     See also: *note runlength: XREFrunlength.
+
+ -- Function File: count = runlength (X)
  -- Function File: [count, value] = runlength (X)
-     Find the lengths of all sequences of common values.  Return the
-     vector of lengths and the value that was repeated.
+     Find the lengths of all sequences of common values.
+
+     COUNT is a vector with the lengths of each repeated value.
+
+     The optional output VALUE contains the value that was repeated in
+     the sequence.
 
           runlength ([2, 2, 0, 4, 4, 4, 0, 1, 1, 1, 1])
           =>  [2, 1, 3, 1, 4]
 
+     See also: *note run_count: XREFrun_count.
+
  -- Function File: probit (P)
-     For each component of P, return the probit (the quantile of the
-     standard normal distribution) of P.
+     Return the probit (the quantile of the standard normal
+     distribution) for each element of P.
+
+     See also: *note logit: XREFlogit.
 
  -- Function File: logit (P)
-     For each component of P, return the logit of P defined as
+     Compute the logit for each value of P
+
+     The logit is defined as
 
           logit (P) = log (P / (1-P))
 
-     See also: *note logistic_cdf: XREFlogistic_cdf.
+     See also: *note probit: XREFprobit, *note logistic_cdf:
+     XREFlogistic_cdf.
 
  -- Function File: cloglog (X)
-     Return the complementary log-log function of X, defined as
+     Return the complementary log-log function of X.
+
+     The complementary log-log function is defined as
 
           cloglog (x) = - log (- log (X))
 
  -- Function File: mahalanobis (X, Y)
      Return the Mahalanobis' D-square distance between the multivariate
-     samples X and Y, which must have the same number of components
-     (columns), but may have a different number of observations (rows).
+     samples X and Y.
+
+     The data X and Y must have the same number of components (columns),
+     but may have a different number of observations (rows).
 
  -- Function File: [T, L_X] = table (X)
  -- Function File: [T, L_X, L_Y] = table (X, Y)
-     Create a contingency table T from data vectors.  The L_X and L_Y
-     vectors are the corresponding levels.
+     Create a contingency table T from data vectors.
+
+     The L_X and L_Y vectors are the corresponding levels.
 
      Currently, only 1- and 2-dimensional tables are supported.
 
@@ -5789,8 +6090,10 @@ function as described in *note Two-Dimensional Plots::.
      the sample comes from F, the pairs will approximately follow a
      straight line.
 
-     The default for DIST is the standard normal distribution.  The
-     optional argument PARAMS contains a list of parameters of DIST.
+     The default for DIST is the standard normal distribution.
+
+     The optional argument PARAMS contains a list of parameters of DIST.
+
      For example, for a probability plot of the uniform distribution on
      [2,4] and X, use
 
@@ -5799,7 +6102,7 @@ function as described in *note Two-Dimensional Plots::.
      DIST can be any string for which a function DIST_CDF that
      calculates the CDF of distribution DIST exists.
 
-     If no output arguments are given, the data are plotted directly.
+     If no output is requested then the data are plotted immediately.
 
 
 File: octave.info,  Node: Correlation and Regression Analysis,  Next: Distributions,  Prev: Statistical Plots,  Up: Statistics
@@ -5834,7 +6137,7 @@ File: octave.info,  Node: Correlation and Regression Analysis,  Next: Distributi
           normalize with N, this provides the second moment around the
           mean
 
-     MATLAB compatibility: Octave always computes the covariance matrix.
+     Compatibility Note:: Octave always computes the covariance matrix.
      For two inputs, however, MATLAB will calculate 'cov (X(:), Y(:))'
      whenever the number of elements in X and Y are equal.  This will
      result in a scalar rather than a matrix output.  Code relying on
@@ -6026,22 +6329,25 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
  -- Function File: cauchy_pdf (X, LOCATION, SCALE)
      For each element of X, compute the probability density function
      (PDF) at X of the Cauchy distribution with location parameter
-     LOCATION and scale parameter SCALE > 0.  Default values are
-     LOCATION = 0, SCALE = 1.
+     LOCATION and scale parameter SCALE > 0.
+
+     Default values are LOCATION = 0, SCALE = 1.
 
  -- Function File: cauchy_cdf (X)
  -- Function File: cauchy_cdf (X, LOCATION, SCALE)
      For each element of X, compute the cumulative distribution function
      (CDF) at X of the Cauchy distribution with location parameter
-     LOCATION and scale parameter SCALE.  Default values are LOCATION =
-     0, SCALE = 1.
+     LOCATION and scale parameter SCALE.
+
+     Default values are LOCATION = 0, SCALE = 1.
 
  -- Function File: cauchy_inv (X)
  -- Function File: cauchy_inv (X, LOCATION, SCALE)
      For each element of X, compute the quantile (the inverse of the
      CDF) at X of the Cauchy distribution with location parameter
-     LOCATION and scale parameter SCALE.  Default values are LOCATION =
-     0, SCALE = 1.
+     LOCATION and scale parameter SCALE.
+
+     Default values are LOCATION = 0, SCALE = 1.
 
  -- Function File: chi2pdf (X, N)
      For each element of X, compute the probability density function
@@ -6151,19 +6457,21 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
 
  -- Function File: hygepdf (X, T, M, N)
      Compute the probability density function (PDF) at X of the
-     hypergeometric distribution with parameters T, M, and N.  This is
-     the probability of obtaining X marked items when randomly drawing a
-     sample of size N without replacement from a population of total
-     size T containing M marked items.
+     hypergeometric distribution with parameters T, M, and N.
+
+     This is the probability of obtaining X marked items when randomly
+     drawing a sample of size N without replacement from a population of
+     total size T containing M marked items.
 
      The parameters T, M, and N must be positive integers with M and N
      not greater than T.
 
  -- Function File: hygecdf (X, T, M, N)
      Compute the cumulative distribution function (CDF) at X of the
-     hypergeometric distribution with parameters T, M, and N.  This is
-     the probability of obtaining not more than X marked items when
-     randomly drawing a sample of size N without replacement from a
+     hypergeometric distribution with parameters T, M, and N.
+
+     This is the probability of obtaining not more than X marked items
+     when randomly drawing a sample of size N without replacement from a
      population of total size T containing M marked items.
 
      The parameters T, M, and N must be positive integers with M and N
@@ -6172,16 +6480,20 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
  -- Function File: hygeinv (X, T, M, N)
      For each element of X, compute the quantile (the inverse of the
      CDF) at X of the hypergeometric distribution with parameters T, M,
-     and N.  This is the probability of obtaining X marked items when
-     randomly drawing a sample of size N without replacement from a
-     population of total size T containing M marked items.
+     and N.
+
+     This is the probability of obtaining X marked items when randomly
+     drawing a sample of size N without replacement from a population of
+     total size T containing M marked items.
 
      The parameters T, M, and N must be positive integers with M and N
      not greater than T.
 
  -- Function File: kolmogorov_smirnov_cdf (X, TOL)
      Return the cumulative distribution function (CDF) at X of the
-     Kolmogorov-Smirnov distribution,
+     Kolmogorov-Smirnov distribution.
+
+     This is defined as
 
                    Inf
           Q(x) =   SUM    (-1)^k exp (-2 k^2 x^2)
@@ -6220,9 +6532,10 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
  -- Function File: lognpdf (X, MU, SIGMA)
      For each element of X, compute the probability density function
      (PDF) at X of the lognormal distribution with parameters MU and
-     SIGMA.  If a random variable follows this distribution, its
-     logarithm is normally distributed with mean MU and standard
-     deviation SIGMA.
+     SIGMA.
+
+     If a random variable follows this distribution, its logarithm is
+     normally distributed with mean MU and standard deviation SIGMA.
 
      Default values are MU = 0, SIGMA = 1.
 
@@ -6230,9 +6543,10 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
  -- Function File: logncdf (X, MU, SIGMA)
      For each element of X, compute the cumulative distribution function
      (CDF) at X of the lognormal distribution with parameters MU and
-     SIGMA.  If a random variable follows this distribution, its
-     logarithm is normally distributed with mean MU and standard
-     deviation SIGMA.
+     SIGMA.
+
+     If a random variable follows this distribution, its logarithm is
+     normally distributed with mean MU and standard deviation SIGMA.
 
      Default values are MU = 0, SIGMA = 1.
 
@@ -6240,9 +6554,10 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
  -- Function File: logninv (X, MU, SIGMA)
      For each element of X, compute the quantile (the inverse of the
      CDF) at X of the lognormal distribution with parameters MU and
-     SIGMA.  If a random variable follows this distribution, its
-     logarithm is normally distributed with mean MU and standard
-     deviation SIGMA.
+     SIGMA.
+
+     If a random variable follows this distribution, its logarithm is
+     normally distributed with mean MU and standard deviation SIGMA.
 
      Default values are MU = 0, SIGMA = 1.
 
@@ -6309,7 +6624,7 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
 
  -- Function File: poisscdf (X, LAMBDA)
      For each element of X, compute the cumulative distribution function
-     (CDF) at X of the Poisson distribution with parameter lambda.
+     (CDF) at X of the Poisson distribution with parameter LAMBDA.
 
  -- Function File: poissinv (X, LAMBDA)
      For each element of X, compute the quantile (the inverse of the
@@ -6338,13 +6653,15 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
  -- Function File: tcdf (X, N)
      For each element of X, compute the cumulative distribution function
      (CDF) at X of the t (Student) distribution with N degrees of
-     freedom, i.e., PROB (t(N) <= X).
+     freedom.
 
  -- Function File: tinv (X, N)
      For each element of X, compute the quantile (the inverse of the
      CDF) at X of the t (Student) distribution with N degrees of
-     freedom.  This function is analogous to looking in a table for the
-     t-value of a single-tailed distribution.
+     freedom.
+
+     This function is analogous to looking in a table for the t-value of
+     a single-tailed distribution.
 
  -- Function File: unidpdf (X, N)
      For each element of X, compute the probability density function
@@ -6390,8 +6707,9 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
  -- Function File: wblpdf (X, SCALE)
  -- Function File: wblpdf (X, SCALE, SHAPE)
      Compute the probability density function (PDF) at X of the Weibull
-     distribution with scale parameter SCALE and shape parameter SHAPE
-     which is given by
+     distribution with scale parameter SCALE and shape parameter SHAPE.
+
+     This is given by
 
           shape * scale^(-shape) * x^(shape-1) * exp (-(x/scale)^shape)
 
@@ -6404,7 +6722,9 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
  -- Function File: wblcdf (X, SCALE, SHAPE)
      Compute the cumulative distribution function (CDF) at X of the
      Weibull distribution with scale parameter SCALE and shape parameter
-     SHAPE, which is
+     SHAPE.
+
+     This is defined as
 
           1 - exp (-(x/scale)^shape)
 
@@ -6459,9 +6779,10 @@ p-values corresponds to a successful test.  Usually a test hypothesis is
 accepted if the p-value exceeds 0.05.
 
  -- Function File: [PVAL, F, DF_B, DF_W] = anova (Y, G)
-     Perform a one-way analysis of variance (ANOVA). The goal is to test
-     whether the population means of data taken from K different groups
-     are all equal.
+     Perform a one-way analysis of variance (ANOVA).
+
+     The goal is to test whether the population means of data taken from
+     K different groups are all equal.
 
      Data may be given in a single vector Y with groups specified by a
      corresponding vector of group labels G (e.g., numbers from 1 to K).
@@ -6480,6 +6801,8 @@ accepted if the p-value exceeds 0.05.
 
      If no output argument is given, the standard one-way ANOVA table is
      printed.
+
+     See also: *note manova: XREFmanova.
 
  -- Function File: [PVAL, CHISQ, DF] = bartlett_test (X1, ...)
      Perform a Bartlett test for the homogeneity of variances in the
@@ -6511,9 +6834,10 @@ accepted if the p-value exceeds 0.05.
 
  -- Function File: [PVAL, CHISQ, DF] = chisquare_test_independence (X)
      Perform a chi-square test for independence based on the contingency
-     table X.  Under the null hypothesis of independence, CHISQ
-     approximately has a chi-square distribution with DF degrees of
-     freedom.
+     table X.
+
+     Under the null hypothesis of independence, CHISQ approximately has
+     a chi-square distribution with DF degrees of freedom.
 
      The p-value (1 minus the CDF of this distribution at chisq) of the
      test is returned in PVAL.
@@ -6530,7 +6854,7 @@ accepted if the p-value exceeds 0.05.
 
      The optional argument string METHOD specifies which correlation
      coefficient to use for testing.  If METHOD is "pearson" (default),
-     the (usual) Pearson's product moment correlation coefficient is
+     the (usual) Pearson's produt moment correlation coefficient is
      used.  In this case, the data should come from a bivariate normal
      distribution.  Otherwise, the other two methods offer nonparametric
      alternatives.  If METHOD is "kendall", then Kendall's rank
@@ -6612,8 +6936,9 @@ accepted if the p-value exceeds 0.05.
  -- Function File: [PVAL, KS] = kolmogorov_smirnov_test (X, DIST,
           PARAMS, ALT)
      Perform a Kolmogorov-Smirnov test of the null hypothesis that the
-     sample X comes from the (continuous) distribution dist.  I.e., if F
-     and G are the CDFs corresponding to the sample and dist,
+     sample X comes from the (continuous) distribution DIST.
+
+     if F and G are the CDFs corresponding to the sample and dist,
      respectively, then the null is that F == G.
 
      The optional argument PARAMS contains a list of parameters of DIST.
@@ -6622,8 +6947,8 @@ accepted if the p-value exceeds 0.05.
 
           kolmogorov_smirnov_test (x, "unif", 2, 4)
 
-     DIST can be any string for which a function DIST_CDF that
-     calculates the CDF of distribution DIST exists.
+     DIST can be any string for which a function DISTCDF that calculates
+     the CDF of distribution DIST exists.
 
      With the optional argument string ALT, the alternative of interest
      can be selected.  If ALT is "!=" or "<>", the null is tested
@@ -6642,8 +6967,10 @@ accepted if the p-value exceeds 0.05.
  -- Function File: [PVAL, KS, D] = kolmogorov_smirnov_test_2 (X, Y, ALT)
      Perform a 2-sample Kolmogorov-Smirnov test of the null hypothesis
      that the samples X and Y come from the same (continuous)
-     distribution.  I.e., if F and G are the CDFs corresponding to the X
-     and Y samples, respectively, then the null is that F == G.
+     distribution.
+
+     If F and G are the CDFs corresponding to the X and Y samples,
+     respectively, then the null is that F == G.
 
      With the optional argument string ALT, the alternative of interest
      can be selected.  If ALT is "!=" or "<>", the null is tested
@@ -6691,11 +7018,12 @@ accepted if the p-value exceeds 0.05.
      If no output argument is given, the p-value is displayed.
 
  -- Function File: manova (X, G)
-     Perform a one-way multivariate analysis of variance (MANOVA). The
-     goal is to test whether the p-dimensional population means of data
-     taken from K different groups are all equal.  All data are assumed
-     drawn independently from p-dimensional normal distributions with
-     the same covariance matrix.
+     Perform a one-way multivariate analysis of variance (MANOVA).
+
+     The goal is to test whether the p-dimensional population means of
+     data taken from K different groups are all equal.  All data are
+     assumed drawn independently from p-dimensional normal distributions
+     with the same covariance matrix.
 
      The data matrix is given by X.  As usual, rows are observations and
      columns are variables.  The vector G specifies the corresponding
@@ -6703,6 +7031,8 @@ accepted if the p-value exceeds 0.05.
 
      The LR test statistic (Wilks' Lambda) and approximate p-values are
      computed and displayed.
+
+     See also: *note anova: XREFanova.
 
  -- Function File: [PVAL, CHISQ, DF] = mcnemar_test (X)
      For a square contingency table X of data cross-classified on the
@@ -6722,9 +7052,10 @@ accepted if the p-value exceeds 0.05.
  -- Function File: [PVAL, Z] = prop_test_2 (X1, N1, X2, N2, ALT)
      If X1 and N1 are the counts of successes and trials in one sample,
      and X2 and N2 those in a second one, test the null hypothesis that
-     the success probabilities P1 and P2 are the same.  Under the null,
-     the test statistic Z approximately follows a standard normal
-     distribution.
+     the success probabilities P1 and P2 are the same.
+
+     Under the null, the test statistic Z approximately follows a
+     standard normal distribution.
 
      With the optional argument string ALT, the alternative of interest
      can be selected.  If ALT is "!=" or "<>", the null is tested
@@ -6740,8 +7071,10 @@ accepted if the p-value exceeds 0.05.
 
  -- Function File: [PVAL, CHISQ] = run_test (X)
      Perform a chi-square test with 6 degrees of freedom based on the
-     upward runs in the columns of X.  Can be used to test whether X
-     contains independent data.
+     upward runs in the columns of X.
+
+     'run_test' can be used to decide whether X contains independent
+     data.
 
      The p-value of the test is returned in PVAL.
 
@@ -6749,9 +7082,10 @@ accepted if the p-value exceeds 0.05.
 
  -- Function File: [PVAL, B, N] = sign_test (X, Y, ALT)
      For two matched-pair samples X and Y, perform a sign test of the
-     null hypothesis PROB (X > Y) == PROB (X < Y) == 1/2.  Under the
-     null, the test statistic B roughly follows a binomial distribution
-     with parameters 'N = sum (X != Y)' and P = 1/2.
+     null hypothesis PROB (X > Y) == PROB (X < Y) == 1/2.
+
+     Under the null, the test statistic B roughly follows a binomial
+     distribution with parameters 'N = sum (X != Y)' and P = 1/2.
 
      With the optional argument 'alt', the alternative of interest can
      be selected.  If ALT is "!=" or "<>", the null hypothesis is tested
@@ -6769,6 +7103,7 @@ accepted if the p-value exceeds 0.05.
  -- Function File: [PVAL, T, DF] = t_test (X, M, ALT)
      For a sample X from a normal distribution with unknown mean and
      variance, perform a t-test of the null hypothesis 'mean (X) == M'.
+
      Under the null, the test statistic T follows a Student distribution
      with 'DF = length (X) - 1' degrees of freedom.
 
@@ -6787,9 +7122,10 @@ accepted if the p-value exceeds 0.05.
  -- Function File: [PVAL, T, DF] = t_test_2 (X, Y, ALT)
      For two samples x and y from normal distributions with unknown
      means and unknown equal variances, perform a two-sample t-test of
-     the null hypothesis of equal means.  Under the null, the test
-     statistic T follows a Student distribution with DF degrees of
-     freedom.
+     the null hypothesis of equal means.
+
+     Under the null, the test statistic T follows a Student distribution
+     with DF degrees of freedom.
 
      With the optional argument string ALT, the alternative of interest
      can be selected.  If ALT is "!=" or "<>", the null is tested
@@ -6805,9 +7141,10 @@ accepted if the p-value exceeds 0.05.
 
  -- Function File: [PVAL, T, DF] = t_test_regression (Y, X, RR, R, ALT)
      Perform a t test for the null hypothesis 'RR * B = R' in a
-     classical normal regression model 'Y = X * B + E'.  Under the null,
-     the test statistic T follows a T distribution with DF degrees of
-     freedom.
+     classical normal regression model 'Y = X * B + E'.
+
+     Under the null, the test statistic T follows a T distribution with
+     DF degrees of freedom.
 
      If R is omitted, a value of 0 is assumed.
 
@@ -6825,10 +7162,11 @@ accepted if the p-value exceeds 0.05.
 
  -- Function File: [PVAL, Z] = u_test (X, Y, ALT)
      For two samples X and Y, perform a Mann-Whitney U-test of the null
-     hypothesis PROB (X > Y) == 1/2 == PROB (X < Y).  Under the null,
-     the test statistic Z approximately follows a standard normal
-     distribution.  Note that this test is equivalent to the Wilcoxon
-     rank-sum test.
+     hypothesis PROB (X > Y) == 1/2 == PROB (X < Y).
+
+     Under the null, the test statistic Z approximately follows a
+     standard normal distribution.  Note that this test is equivalent to
+     the Wilcoxon rank-sum test.
 
      With the optional argument string ALT, the alternative of interest
      can be selected.  If ALT is "!=" or "<>", the null is tested
@@ -6845,9 +7183,10 @@ accepted if the p-value exceeds 0.05.
  -- Function File: [PVAL, F, DF_NUM, DF_DEN] = var_test (X, Y, ALT)
      For two samples X and Y from normal distributions with unknown
      means and unknown variances, perform an F-test of the null
-     hypothesis of equal variances.  Under the null, the test statistic
-     F follows an F-distribution with DF_NUM and DF_DEN degrees of
-     freedom.
+     hypothesis of equal variances.
+
+     Under the null, the test statistic F follows an F-distribution with
+     DF_NUM and DF_DEN degrees of freedom.
 
      With the optional argument string ALT, the alternative of interest
      can be selected.  If ALT is "!=" or "<>", the null is tested
@@ -6864,9 +7203,10 @@ accepted if the p-value exceeds 0.05.
  -- Function File: [PVAL, T, DF] = welch_test (X, Y, ALT)
      For two samples X and Y from normal distributions with unknown
      means and unknown and not necessarily equal variances, perform a
-     Welch test of the null hypothesis of equal means.  Under the null,
-     the test statistic T approximately follows a Student distribution
-     with DF degrees of freedom.
+     Welch test of the null hypothesis of equal means.
+
+     Under the null, the test statistic T approximately follows a
+     Student distribution with DF degrees of freedom.
 
      With the optional argument string ALT, the alternative of interest
      can be selected.  If ALT is "!=" or "<>", the null is tested
@@ -6882,9 +7222,10 @@ accepted if the p-value exceeds 0.05.
 
  -- Function File: [PVAL, Z] = wilcoxon_test (X, Y, ALT)
      For two matched-pair sample vectors X and Y, perform a Wilcoxon
-     signed-rank test of the null hypothesis PROB (X > Y) == 1/2.  Under
-     the null, the test statistic Z approximately follows a standard
-     normal distribution when N > 25.
+     signed-rank test of the null hypothesis PROB (X > Y) == 1/2.
+
+     Under the null, the test statistic Z approximately follows a
+     standard normal distribution when N > 25.
 
      *Caution:* This function assumes a normal distribution for Z and
      thus is invalid for N <= 25.
@@ -6904,8 +7245,10 @@ accepted if the p-value exceeds 0.05.
  -- Function File: [PVAL, Z] = z_test (X, M, V, ALT)
      Perform a Z-test of the null hypothesis 'mean (X) == M' for a
      sample X from a normal distribution with unknown mean and known
-     variance V.  Under the null, the test statistic Z follows a
-     standard normal distribution.
+     variance V.
+
+     Under the null, the test statistic Z follows a standard normal
+     distribution.
 
      With the optional argument string ALT, the alternative of interest
      can be selected.  If ALT is "!=" or "<>", the null is tested
@@ -6922,8 +7265,10 @@ accepted if the p-value exceeds 0.05.
  -- Function File: [PVAL, Z] = z_test_2 (X, Y, V_X, V_Y, ALT)
      For two samples X and Y from normal distributions with unknown
      means and known variances V_X and V_Y, perform a Z-test of the
-     hypothesis of equal means.  Under the null, the test statistic Z
-     follows a standard normal distribution.
+     hypothesis of equal means.
+
+     Under the null, the test statistic Z follows a standard normal
+     distribution.
 
      With the optional argument string ALT, the alternative of interest
      can be selected.  If ALT is "!=" or "<>", the null is tested
@@ -7302,7 +7647,9 @@ Wiener Process                'wienrnd'
  -- Function File: unidrnd (N, [SZ])
      Return a matrix of random samples from the discrete uniform
      distribution which assumes the integer values 1-N with equal
-     probability.  N may be a scalar or a multi-dimensional array.
+     probability.
+
+     N may be a scalar or a multi-dimensional array.
 
      When called with a single size argument, return a square matrix
      with the dimension specified.  When called with more than one
@@ -7350,11 +7697,13 @@ Wiener Process                'wienrnd'
 
  -- Function File: wienrnd (T, D, N)
      Return a simulated realization of the D-dimensional Wiener Process
-     on the interval [0, T].  If D is omitted, D = 1 is used.  The first
-     column of the return matrix contains time, the remaining columns
-     contain the Wiener process.
+     on the interval [0, T].
 
-     The optional parameter N gives the number of summands used for
+     If D is omitted, D = 1 is used.  The first column of the return
+     matrix contains time, the remaining columns contain the Wiener
+     process.
+
+     The optional parameter N defines the number of summands used for
      simulating the process over an interval of length 1.  If N is
      omitted, N = 1000 is used.
 
@@ -7402,240 +7751,4 @@ input to a set before proceeding.
 * Menu:
 
 * Set Operations::
-
-
-File: octave.info,  Node: Set Operations,  Up: Sets
-
-27.1 Set Operations
-===================
-
-Octave supports several basic set operations.  Octave can compute the
-union, intersection, and difference of two sets.  Octave also supports
-the _Exclusive Or_ set operation.
-
-   The functions for set operations all work in the same way by
-accepting two input sets and returning a third set.  As an example,
-assume that 'a' and 'b' contains two sets, then
-
-     union (a, b)
-
-computes the union of the two sets.
-
-   Finally, determining whether elements belong to a set can be done
-with the 'ismember' function.  Because sets are ordered this operation
-is very efficient and is of order O(log2(n)) which is preferable to the
-'find' function which is of order O(n).
-
- -- Function File: C = intersect (A, B)
- -- Function File: C = intersect (A, B, "rows")
- -- Function File: [C, IA, IB] = intersect (...)
-
-     Return the unique elements common to both A and B sorted in
-     ascending order.
-
-     If A and B are both row vectors then return a row vector;
-     Otherwise, return a column vector.  The inputs may also be cell
-     arrays of strings.
-
-     If the optional input "rows" is given then return the common rows
-     of A and B.  The inputs must be 2-D matrices to use this option.
-
-     If requested, return index vectors IA and IB such that 'C = A(IA)'
-     and 'C = B(IB)'.
-
-See also: *note unique: XREFunique, *note union: XREFunion, *note
-setdiff: XREFsetdiff, *note setxor: XREFsetxor, *note ismember:
-XREFismember.
-
- -- Function File: C = union (A, B)
- -- Function File: C = union (A, B, "rows")
- -- Function File: [C, IA, IB] = union (...)
-
-     Return the unique elements that are in either A or B sorted in
-     ascending order.
-
-     If A and B are both row vectors then return a row vector;
-     Otherwise, return a column vector.  The inputs may also be cell
-     arrays of strings.
-
-     If the optional input "rows" is given then return rows that are in
-     either A or B.  The inputs must be 2-D matrices to use this option.
-
-     The optional outputs IA and IB are index vectors such that 'A(IA)'
-     and 'B(IB)' are disjoint sets whose union is C.
-
-     See also: *note unique: XREFunique, *note intersect: XREFintersect,
-     *note setdiff: XREFsetdiff, *note setxor: XREFsetxor, *note
-     ismember: XREFismember.
-
- -- Function File: C = setdiff (A, B)
- -- Function File: C = setdiff (A, B, "rows")
- -- Function File: [C, IA] = setdiff (...)
-     Return the unique elements in A that are not in B sorted in
-     ascending order.
-
-     If A is a row vector return a column vector; Otherwise, return a
-     column vector.  The inputs may also be cell arrays of strings.
-
-     If the optional input "rows" is given then return the rows in A
-     that are not in B.  The inputs must be 2-D matrices to use this
-     option.
-
-     If requested, return the index vector IA such that 'C = A(IA)'.
-
-     See also: *note unique: XREFunique, *note union: XREFunion, *note
-     intersect: XREFintersect, *note setxor: XREFsetxor, *note ismember:
-     XREFismember.
-
- -- Function File: C = setxor (A, B)
- -- Function File: C = setxor (A, B, "rows")
- -- Function File: [C, IA, IB] = setxor (...)
-
-     Return the unique elements exclusive to sets A or B sorted in
-     ascending order.
-
-     If A and B are both row vectors then return a row vector;
-     Otherwise, return a column vector.  The inputs may also be cell
-     arrays of strings.
-
-     If the optional input "rows" is given then return the rows
-     exclusive to sets A and B.  The inputs must be 2-D matrices to use
-     this option.
-
-     If requested, return index vectors IA and IB such that 'A(IA)' and
-     'B(IB)' are disjoint sets whose union is C.
-
-     See also: *note unique: XREFunique, *note union: XREFunion, *note
-     intersect: XREFintersect, *note setdiff: XREFsetdiff, *note
-     ismember: XREFismember.
-
- -- Function File: TF = ismember (A, S)
- -- Function File: TF = ismember (A, S, "rows")
- -- Function File: [TF, S_IDX] = ismember (...)
-
-     Return a logical matrix TF with the same shape as A which is true
-     (1) if the element in A is found in S and false (0) if it is not.
-
-     If a second output argument is requested then the index into S of
-     each matching element is also returned.
-
-          a = [3, 10, 1];
-          s = [0:9];
-          [tf, s_idx] = ismember (a, s)
-               => tf = [1, 0, 1]
-               => s_idx = [4, 0, 2]
-
-     The inputs A and S may also be cell arrays.
-
-          a = {"abc"};
-          s = {"abc", "def"};
-          [tf, s_idx] = ismember (a, s)
-               => tf = [1, 0]
-               => s_idx = [1, 0]
-
-     If the optional third argument "rows" is given then compare rows in
-     A with rows in S.  The inputs must be 2-D matrices with the same
-     number of columns to use this option.
-
-          a = [1:3; 5:7; 4:6];
-          s = [0:2; 1:3; 2:4; 3:5; 4:6];
-          [tf, s_idx] = ismember (a, s, "rows")
-               => tf = logical ([1; 0; 1])
-               => s_idx = [2; 0; 5];
-
-     See also: *note lookup: XREFlookup, *note unique: XREFunique, *note
-     union: XREFunion, *note intersect: XREFintersect, *note setdiff:
-     XREFsetdiff, *note setxor: XREFsetxor.
-
- -- Function File: powerset (A)
- -- Function File: powerset (A, "rows")
-     Compute the powerset (all subsets) of the set A.
-
-     The set A must be a numerical matrix or a cell array of strings.
-     The output will always be a cell array of either vectors or
-     strings.
-
-     With the optional second argument "rows", each row of the set A is
-     considered one element of the set.  The input must be a 2-D numeric
-     matrix to use this argument.
-
-     See also: *note unique: XREFunique, *note union: XREFunion, *note
-     intersect: XREFintersect, *note setdiff: XREFsetdiff, *note setxor:
-     XREFsetxor, *note ismember: XREFismember.
-
-
-File: octave.info,  Node: Polynomial Manipulations,  Next: Interpolation,  Prev: Sets,  Up: Top
-
-28 Polynomial Manipulations
-***************************
-
-In Octave, a polynomial is represented by its coefficients (arranged in
-descending order).  For example, a vector C of length N+1 corresponds to
-the following polynomial of order N
-
-     p(x) = C(1) x^N + ... + C(N) x + C(N+1).
-
-* Menu:
-
-* Evaluating Polynomials::
-* Finding Roots::
-* Products of Polynomials::
-* Derivatives / Integrals / Transforms::
-* Polynomial Interpolation::
-* Miscellaneous Functions::
-
-
-File: octave.info,  Node: Evaluating Polynomials,  Next: Finding Roots,  Up: Polynomial Manipulations
-
-28.1 Evaluating Polynomials
-===========================
-
-The value of a polynomial represented by the vector C can be evaluated
-at the point X very easily, as the following example shows:
-
-     N = length (c) - 1;
-     val = dot (x.^(N:-1:0), c);
-
-While the above example shows how easy it is to compute the value of a
-polynomial, it isn't the most stable algorithm.  With larger polynomials
-you should use more elegant algorithms, such as Horner's Method, which
-is exactly what the Octave function 'polyval' does.
-
-   In the case where X is a square matrix, the polynomial given by C is
-still well-defined.  As when X is a scalar the obvious implementation is
-easily expressed in Octave, but also in this case more elegant
-algorithms perform better.  The 'polyvalm' function provides such an
-algorithm.
-
- -- Function File: Y = polyval (P, X)
- -- Function File: Y = polyval (P, X, [], MU)
- -- Function File: [Y, DY] = polyval (P, X, S)
- -- Function File: [Y, DY] = polyval (P, X, S, MU)
-
-     Evaluate the polynomial P at the specified values of X.  When MU is
-     present, evaluate the polynomial for (X-MU(1))/MU(2).  If X is a
-     vector or matrix, the polynomial is evaluated for each of the
-     elements of X.
-
-     In addition to evaluating the polynomial, the second output
-     represents the prediction interval, Y +/- DY, which contains at
-     least 50% of the future predictions.  To calculate the prediction
-     interval, the structured variable S, originating from 'polyfit',
-     must be supplied.
-
-     See also: *note polyvalm: XREFpolyvalm, *note polyaffine:
-     XREFpolyaffine, *note polyfit: XREFpolyfit, *note roots: XREFroots,
-     *note poly: XREFpoly.
-
- -- Function File: polyvalm (C, X)
-     Evaluate a polynomial in the matrix sense.
-
-     'polyvalm (C, X)' will evaluate the polynomial in the matrix sense,
-     i.e., matrix multiplication is used instead of element by element
-     multiplication as used in 'polyval'.
-
-     The argument X must be a square matrix.
-
-     See also: *note polyval: XREFpolyval, *note roots: XREFroots, *note
-     poly: XREFpoly.
 

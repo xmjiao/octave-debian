@@ -76,9 +76,8 @@ pan mode on or off.
 <p>Given the option <code>&quot;xon&quot;</code> or <code>&quot;yon&quot;</code>, enable pan mode
 for the x or y axis only.
 </p>
-<p>If the first argument <var>hfig</var> is a figure, then operate on
-the given figure rather than the current figure as returned by
-<code>gcf</code>.
+<p>If the first argument <var>hfig</var> is a figure, then operate on the given
+figure rather than the current figure as returned by <code>gcf</code>.
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFrotate3d">rotate3d</a>, <a href="#XREFzoom">zoom</a>.
@@ -88,17 +87,17 @@ the given figure rather than the current figure as returned by
 <a name="XREFrotate"></a><dl>
 <dt><a name="index-rotate"></a>Function File: <em></em> <strong>rotate</strong> <em>(<var>h</var>, <var>dir</var>, <var>alpha</var>)</em></dt>
 <dt><a name="index-rotate-1"></a>Function File: <em></em> <strong>rotate</strong> <em>(&hellip;, <var>origin</var>)</em></dt>
-<dd><p>Rotate the plot object <var>h</var> through <var>alpha</var> degrees around
-the line with direction <var>dir</var> and origin <var>origin</var>.
+<dd><p>Rotate the plot object <var>h</var> through <var>alpha</var> degrees around the line
+with direction <var>dir</var> and origin <var>origin</var>.
 </p>
-<p>The default value of <var>origin</var> is the center of the axes
-object that is the parent of <var>h</var>.
+<p>The default value of <var>origin</var> is the center of the axes object that is
+the parent of <var>h</var>.
 </p>
-<p>If <var>h</var> is a vector of handles, they must all have the same
-parent axes object.
+<p>If <var>h</var> is a vector of handles, they must all have the same parent axes
+object.
 </p>
-<p>Graphics objects that may be rotated are lines, surfaces, patches,
-and images.
+<p>Graphics objects that may be rotated are lines, surfaces, patches, and
+images.
 </p></dd></dl>
 
 
@@ -114,9 +113,8 @@ rotate mode on or off.
 </p>
 <p>With no arguments, toggle the current rotate mode on or off.
 </p>
-<p>If the first argument <var>hfig</var> is a figure, then operate on
-the given figure rather than the current figure as returned by
-<code>gcf</code>.
+<p>If the first argument <var>hfig</var> is a figure, then operate on the given
+figure rather than the current figure as returned by <code>gcf</code>.
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFpan">pan</a>, <a href="#XREFzoom">zoom</a>.
@@ -133,31 +131,30 @@ the given figure rather than the current figure as returned by
 <dt><a name="index-zoom-6"></a>Command: <em></em> <strong>zoom</strong> <em>out</em></dt>
 <dt><a name="index-zoom-7"></a>Command: <em></em> <strong>zoom</strong> <em>reset</em></dt>
 <dt><a name="index-zoom-8"></a>Command: <em></em> <strong>zoom</strong> <em>(<var>hfig</var>, <var>option</var>)</em></dt>
-<dd><p>Zoom the current axes object or control the interactive zoom mode of
-a figure in the GUI.
+<dd><p>Zoom the current axes object or control the interactive zoom mode of a
+figure in the GUI.
 </p>
-<p>Given a numeric argument greater than zero, zoom by the given factor.
-If the zoom factor is greater than one, zoom in on the plot.  If the
-factor is less than one, zoom out.  If the zoom factor is a two- or
-three-element vector, then the elements specify the zoom factors for
-the x, y, and z axes respectively.
+<p>Given a numeric argument greater than zero, zoom by the given factor.  If
+the zoom factor is greater than one, zoom in on the plot.  If the factor
+is less than one, zoom out.  If the zoom factor is a two- or three-element
+vector, then the elements specify the zoom factors for the x, y, and z
+axes respectively.
 </p>
-<p>Given the option <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>, set the interactive
-zoom mode on or off.
+<p>Given the option <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>, set the interactive zoom
+mode on or off.
 </p>
 <p>With no arguments, toggle the current zoom mode on or off.
 </p>
-<p>Given the option <code>&quot;xon&quot;</code> or <code>&quot;yon&quot;</code>, enable zoom mode
-for the x or y axis only.
+<p>Given the option <code>&quot;xon&quot;</code> or <code>&quot;yon&quot;</code>, enable zoom mode for the
+x or y-axis only.
 </p>
 <p>Given the option <code>&quot;out&quot;</code>, zoom to the initial zoom setting.
 </p>
-<p>Given the option <code>&quot;reset&quot;</code>, store the current zoom setting so
-that <code>zoom out</code> will return to this zoom level.
+<p>Given the option <code>&quot;reset&quot;</code>, store the current zoom setting so that
+<code>zoom out</code> will return to this zoom level.
 </p>
-<p>If the first argument <var>hfig</var> is a figure, then operate on
-the given figure rather than the current figure as returned by
-<code>gcf</code>.
+<p>If the first argument <var>hfig</var> is a figure, then operate on the given
+figure rather than the current figure as returned by <code>gcf</code>.
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFpan">pan</a>, <a href="#XREFrotate3d">rotate3d</a>.

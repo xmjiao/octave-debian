@@ -21,8 +21,9 @@
 ## @deftypefnx {Function File} {[@var{est}, @var{v}, @var{w}, @var{iter}] =} onenormest (@var{apply}, @var{apply_t}, @var{n}, @var{t})
 ##
 ## Apply @nospell{Higham and Tisseur's} randomized block 1-norm estimator to
-## matrix @var{A} using @var{t} test vectors.  If @var{t} exceeds 5, then
-## only 5 test vectors are used.
+## matrix @var{A} using @var{t} test vectors.
+##
+## If @var{t} exceeds 5, then only 5 test vectors are used.
 ##
 ## If the matrix is not explicit, e.g., when estimating the norm of
 ## @code{inv (@var{A})} given an LU@tie{}factorization, @code{onenormest}
@@ -31,11 +32,10 @@
 ## @var{n} by @var{t}.  The implicit version requires an explicit dimension
 ## @var{n}.
 ##
-## Returns the norm estimate @var{est}, two vectors @var{v} and
-## @var{w} related by norm
-## @code{(@var{w}, 1) = @var{est} * norm (@var{v}, 1)},
-## and the number of iterations @var{iter}.  The number of
-## iterations is limited to 10 and is at least 2.
+## Returns the norm estimate @var{est}, two vectors @var{v} and @var{w} related
+## by norm @code{(@var{w}, 1) = @var{est} * norm (@var{v}, 1)}, and the number
+## of iterations @var{iter}.  The number of iterations is limited to 10 and is
+## at least 2.
 ##
 ## References:
 ##
@@ -55,40 +55,40 @@
 ## @seealso{condest, norm, cond}
 ## @end deftypefn
 
-## Code originally licensed under
+## Code originally licensed under:
 ##
-##  Copyright (c) 2007, Regents of the University of California
-##  All rights reserved.
+## Copyright (c) 2007, Regents of the University of California
+## All rights reserved.
 ##
-##  Redistribution and use in source and binary forms, with or without
-##  modification, are permitted provided that the following conditions
-##  are met:
+## Redistribution and use in source and binary forms, with or without
+## modification, are permitted provided that the following conditions
+## are met:
 ##
-##     * Redistributions of source code must retain the above copyright
-##       notice, this list of conditions and the following disclaimer.
+##    * Redistributions of source code must retain the above copyright
+##      notice, this list of conditions and the following disclaimer.
 ##
-##     * Redistributions in binary form must reproduce the above
-##       copyright notice, this list of conditions and the following
-##       disclaimer in the documentation and/or other materials provided
-##       with the distribution.
+##    * Redistributions in binary form must reproduce the above
+##      copyright notice, this list of conditions and the following
+##      disclaimer in the documentation and/or other materials provided
+##      with the distribution.
 ##
-##     * Neither the name of the University of California, Berkeley nor
-##       the names of its contributors may be used to endorse or promote
-##       products derived from this software without specific prior
-##       written permission.
+##    * Neither the name of the University of California, Berkeley nor
+##      the names of its contributors may be used to endorse or promote
+##      products derived from this software without specific prior
+##      written permission.
 ##
-##  THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS''
-##  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
-##  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-##  PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS AND
-##  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-##  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-##  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
-##  USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-##  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-##  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
-##  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-##  SUCH DAMAGE.
+## THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS''
+## AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+## TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+## PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS AND
+## CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+## USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+## ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+## OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+## OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+## SUCH DAMAGE.
 
 ## Author: Jason Riedy <ejr@cs.berkeley.edu>
 ## Keywords: linear-algebra norm estimation

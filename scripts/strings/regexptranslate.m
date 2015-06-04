@@ -18,16 +18,17 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} regexptranslate (@var{op}, @var{s})
-## Translate a string for use in a regular expression.  This may
-## include either wildcard replacement or special character escaping.
+## Translate a string for use in a regular expression.
+##
+## This may include either wildcard replacement or special character escaping.
+##
 ## The behavior is controlled by @var{op} which can take the following
 ## values
 ##
 ## @table @asis
 ## @item @qcode{"wildcard"}
-## The wildcard characters @code{.}, @code{*}, and @code{?} are replaced
-## with wildcards that are appropriate for a regular expression.
-## For example:
+## The wildcard characters @code{.}, @code{*}, and @code{?} are replaced with
+## wildcards that are appropriate for a regular expression.  For example:
 ##
 ## @example
 ## @group
@@ -63,11 +64,11 @@ function y = regexptranslate (op, s)
 
   op = tolower (op);
   if (strcmp ("wildcard", op))
-    y = regexprep (regexprep (regexprep (s, '\.', '\.'),
-                                            '\*', '.*'),
-                                            '\?', '.');
+    y = strrep (strrep (strrep (s, '.', '\.'),
+                                   '*', '.*'),
+                                   '?', '.');
   elseif (strcmp ("escape", op))
-    y = regexprep (s, '([^\w])', '\\$1');
+    y = regexprep (s, '([][(){}.*+?^$|\\])', '\\$1');
   else
     error ("regexptranslate: invalid operation OP");
   endif
@@ -76,7 +77,7 @@ endfunction
 
 
 %!assert (regexptranslate ("wildcard", "/a*b?c."), "/a.*b.c\\.")
-%!assert (regexptranslate ("escape", '$.?[abc]'), '\$\.\?\[abc\]')
+%!assert (regexptranslate ("escape", '^.?[abc]$'), '\^\.\?\[abc\]\$')
 
 ## Test input validation
 %!error <Invalid call to regexptranslate> regexptranslate ()

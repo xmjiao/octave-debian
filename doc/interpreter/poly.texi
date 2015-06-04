@@ -80,17 +80,19 @@ provides such an algorithm.
 @deftypefnx {Function File} {[@var{y}, @var{dy}] =} polyval (@var{p}, @var{x}, @var{s})
 @deftypefnx {Function File} {[@var{y}, @var{dy}] =} polyval (@var{p}, @var{x}, @var{s}, @var{mu})
 
-Evaluate the polynomial @var{p} at the specified values of @var{x}.  When
-@var{mu} is present, evaluate the polynomial for
-(@var{x}-@var{mu}(1))/@var{mu}(2).
+Evaluate the polynomial @var{p} at the specified values of @var{x}.
+
 If @var{x} is a vector or matrix, the polynomial is evaluated for each of
 the elements of @var{x}.
 
-In addition to evaluating the polynomial, the second output
-represents the prediction interval, @var{y} +/- @var{dy}, which
-contains at least 50% of the future predictions.  To calculate the
-prediction interval, the structured variable @var{s}, originating
-from @code{polyfit}, must be supplied.
+When @var{mu} is present, evaluate the polynomial for
+(@var{x}-@var{mu}(1))/@var{mu}(2).
+
+In addition to evaluating the polynomial, the second output represents the
+prediction interval, @var{y} +/- @var{dy}, which contains at least 50% of
+the future predictions.  To calculate the prediction interval, the
+structured variable @var{s}, originating from @code{polyfit}, must be
+supplied.
 
 @seealso{@ref{XREFpolyvalm,,polyvalm}, @ref{XREFpolyaffine,,polyaffine}, @ref{XREFpolyfit,,polyfit}, @ref{XREFroots,,roots}, @ref{XREFpoly,,poly}}
 @end deftypefn
@@ -119,19 +121,21 @@ for a definition), and then finding its eigenvalues.
 
 @c roots scripts/polynomial/roots.m
 @anchor{XREFroots}
-@deftypefn {Function File} {} roots (@var{v})
+@deftypefn {Function File} {} roots (@var{c})
 
-For a vector @var{v} with @math{N} components, return
-the roots of the polynomial
+Compute the roots of the polynomial @var{c}.
+
+For a vector @var{c} with @math{N} components, return the roots of the
+polynomial
 @tex
 $$
-v_1 z^{N-1} + \cdots + v_{N-1} z + v_N.
+c_1 x^{N-1} + \cdots + c_{N-1} x + c_N.
 $$
 @end tex
 @ifnottex
 
 @example
-v(1) * z^(N-1) + @dots{} + v(N-1) * z + v(N)
+c(1) * x^(N-1) + @dots{} + c(N-1) * x + c(N)
 @end example
 
 @end ifnottex
@@ -184,8 +188,11 @@ $\pm 2.2361$.
 Solve the polynomial eigenvalue problem of degree @var{l}.
 
 Given an @var{n*n} matrix polynomial
+
 @code{@var{C}(s) = @var{C0} + @var{C1} s + @dots{} + @var{Cl} s^l}
-polyeig solves the eigenvalue problem
+
+@code{polyeig} solves the eigenvalue problem
+
 @code{(@var{C0} + @var{C1} + @dots{} + @var{Cl})v = 0}.
 
 Note that the eigenvalues @var{z} are the zeros of the matrix polynomial.
@@ -200,8 +207,8 @@ eigenvectors.
 @c compan scripts/polynomial/compan.m
 @anchor{XREFcompan}
 @deftypefn {Function File} {} compan (@var{c})
-Compute the companion matrix corresponding to polynomial coefficient
-vector @var{c}.
+Compute the companion matrix corresponding to polynomial coefficient vector
+@var{c}.
 
 The companion matrix is
 @tex
@@ -242,17 +249,17 @@ polynomial.
 @deftypefn  {Function File} {[@var{multp}, @var{idxp}] =} mpoles (@var{p})
 @deftypefnx {Function File} {[@var{multp}, @var{idxp}] =} mpoles (@var{p}, @var{tol})
 @deftypefnx {Function File} {[@var{multp}, @var{idxp}] =} mpoles (@var{p}, @var{tol}, @var{reorder})
-Identify unique poles in @var{p} and their associated multiplicity.  The
-output is ordered from largest pole to smallest pole.
+Identify unique poles in @var{p} and their associated multiplicity.
 
-If the relative difference of two poles is less than @var{tol} then
-they are considered to be multiples.  The default value for @var{tol}
-is 0.001.
+The output is ordered from largest pole to smallest pole.
+
+If the relative difference of two poles is less than @var{tol} then they are
+considered to be multiples.  The default value for @var{tol} is 0.001.
 
 If the optional parameter @var{reorder} is zero, poles are not sorted.
 
-The output @var{multp} is a vector specifying the multiplicity of the
-poles.  @code{@var{multp}(n)} refers to the multiplicity of the Nth pole
+The output @var{multp} is a vector specifying the multiplicity of the poles.
+@code{@var{multp}(n)} refers to the multiplicity of the Nth pole
 @code{@var{p}(@var{idxp}(n))}.
 
 For example:
@@ -303,9 +310,10 @@ Return the central part of the convolution with the same size as @var{a}.
 @anchor{XREFconvn}
 @deftypefn  {Built-in Function} {@var{C} =} convn (@var{A}, @var{B})
 @deftypefnx {Built-in Function} {@var{C} =} convn (@var{A}, @var{B}, @var{shape})
-Return the n-D convolution of @var{A} and @var{B}.  The size of the result
-is determined by the optional @var{shape} argument which takes the following
-values
+Return the n-D convolution of @var{A} and @var{B}.
+
+The size of the result is determined by the optional @var{shape} argument
+which takes the following values
 
 @table @asis
 @item @var{shape} = @qcode{"full"}
@@ -345,9 +353,10 @@ a remainder polynomial of lowest order.
 @deftypefn  {Built-in Function} {} conv2 (@var{A}, @var{B})
 @deftypefnx {Built-in Function} {} conv2 (@var{v1}, @var{v2}, @var{m})
 @deftypefnx {Built-in Function} {} conv2 (@dots{}, @var{shape})
-Return the 2-D convolution of @var{A} and @var{B}.  The size of the result
-is determined by the optional @var{shape} argument which takes the following
-values
+Return the 2-D convolution of @var{A} and @var{B}.
+
+The size of the result is determined by the optional @var{shape} argument
+which takes the following values
 
 @table @asis
 @item @var{shape} = @qcode{"full"}
@@ -375,9 +384,12 @@ When the third argument is a matrix, return the convolution of the matrix
 @deftypefn  {Function File} {@var{q} =} polygcd (@var{b}, @var{a})
 @deftypefnx {Function File} {@var{q} =} polygcd (@var{b}, @var{a}, @var{tol})
 
-Find the greatest common divisor of two polynomials.  This is equivalent
-to the polynomial found by multiplying together all the common roots.
-Together with deconv, you can reduce a ratio of two polynomials.
+Find the greatest common divisor of two polynomials.
+
+This is equivalent to the polynomial found by multiplying together all the
+common roots.  Together with deconv, you can reduce a ratio of two
+polynomials.
+
 The tolerance @var{tol} defaults to @code{sqrt (eps)}.
 
 @strong{Caution:} This is a numerically unstable algorithm and should not
@@ -404,6 +416,8 @@ deconv (poly (1:8), polygcd (poly (1:8), poly (3:12))) - poly (1:2)
 @deftypefnx {Function File} {[@var{b}, @var{a}] =} residue (@var{r}, @var{p}, @var{k}, @var{e})
 The first calling form computes the partial fraction expansion for the
 quotient of the polynomials, @var{b} and @var{a}.
+
+The quotient is defined as
 @tex
 $$
 {B(s)\over A(s)} = \sum_{m=1}^M {r_m\over (s-p_m)^e_m}
@@ -414,18 +428,18 @@ $$
 
 @example
 @group
-B(s)    M       r(m)         N
----- = SUM -------------  + SUM k(i)*s^(N-i)
-A(s)   m=1 (s-p(m))^e(m)    i=1
+B(s)    M       r(m)        N
+---- = SUM ------------- + SUM k(i)*s^(N-i)
+A(s)   m=1 (s-p(m))^e(m)   i=1
 @end group
 @end example
 
 @end ifnottex
 @noindent
-where @math{M} is the number of poles (the length of the @var{r},
-@var{p}, and @var{e}), the @var{k} vector is a polynomial of order @math{N-1}
-representing the direct contribution, and the @var{e} vector specifies
-the multiplicity of the m-th residue's pole.
+where @math{M} is the number of poles (the length of the @var{r}, @var{p},
+and @var{e}), the @var{k} vector is a polynomial of order @math{N-1}
+representing the direct contribution, and the @var{e} vector specifies the
+multiplicity of the m-th residue's pole.
 
 For example,
 
@@ -460,11 +474,11 @@ $$
 
 @end ifnottex
 
-The second calling form performs the inverse operation and computes
-the reconstituted quotient of polynomials, @var{b}(s)/@var{a}(s),
-from the partial fraction expansion; represented by the residues,
-poles, and a direct polynomial specified by @var{r}, @var{p} and
-@var{k}, and the pole multiplicity @var{e}.
+The second calling form performs the inverse operation and computes the
+reconstituted quotient of polynomials, @var{b}(s)/@var{a}(s), from the
+partial fraction expansion; represented by the residues, poles, and a direct
+polynomial specified by @var{r}, @var{p} and @var{k}, and the pole
+multiplicity @var{e}.
 
 If the multiplicity, @var{e}, is not explicitly specified the multiplicity is
 determined by the function @code{mpoles}.
@@ -543,8 +557,11 @@ area = polyval (integral, 3) - polyval (integral, 0)
 @deftypefnx {Function File} {[@var{k}] =} polyder (@var{a}, @var{b})
 @deftypefnx {Function File} {[@var{q}, @var{d}] =} polyder (@var{b}, @var{a})
 Return the coefficients of the derivative of the polynomial whose
-coefficients are given by the vector @var{p}.  If a pair of polynomials
-is given, return the derivative of the product @math{@var{a}*@var{b}}.
+coefficients are given by the vector @var{p}.
+
+If a pair of polynomials is given, return the derivative of the product
+@math{@var{a}*@var{b}}.
+
 If two inputs and two outputs are given, return the derivative of the
 polynomial quotient @math{@var{b}/@var{a}}.  The quotient numerator is
 in @var{q} and the denominator in @var{d}.
@@ -557,8 +574,10 @@ in @var{q} and the denominator in @var{d}.
 @deftypefn  {Function File} {} polyint (@var{p})
 @deftypefnx {Function File} {} polyint (@var{p}, @var{k})
 Return the coefficients of the integral of the polynomial whose
-coefficients are represented by the vector @var{p}.  The variable
-@var{k} is the constant of integration, which by default is set to zero.
+coefficients are represented by the vector @var{p}.
+
+The variable @var{k} is the constant of integration, which by default is
+set to zero.
 @seealso{@ref{XREFpolyder,,polyder}, @ref{XREFpolyval,,polyval}}
 @end deftypefn
 
@@ -567,9 +586,10 @@ coefficients are represented by the vector @var{p}.  The variable
 @anchor{XREFpolyaffine}
 @deftypefn {Function File} {} polyaffine (@var{f}, @var{mu})
 Return the coefficients of the polynomial vector @var{f} after an affine
-transformation.  If @var{f} is the vector representing the polynomial f(x),
-then @code{@var{g} = polyaffine (@var{f}, @var{mu})} is the vector
-representing:
+transformation.
+
+If @var{f} is the vector representing the polynomial f(x), then
+@code{@var{g} = polyaffine (@var{f}, @var{mu})} is the vector representing:
 
 @example
 g(x) = f( (x - @var{mu}(1)) / @var{mu}(2) )
@@ -598,9 +618,10 @@ is what the @code{polyfit} function does.
 @deftypefnx {Function File} {[@var{p}, @var{s}, @var{mu}] =} polyfit (@var{x}, @var{y}, @var{n})
 Return the coefficients of a polynomial @var{p}(@var{x}) of degree
 @var{n} that minimizes the least-squares-error of the fit to the points
-@code{[@var{x}, @var{y}]}.  If @var{n} is a logical vector, it is used
-as a mask to selectively force the corresponding polynomial
-coefficients to be used or ignored.
+@code{[@var{x}, @var{y}]}.
+
+If @var{n} is a logical vector, it is used as a mask to selectively force
+the corresponding polynomial coefficients to be used or ignored.
 
 The polynomial coefficients are returned in a row vector.
 
@@ -630,15 +651,18 @@ The values of the polynomial for each value of @var{x}.
 
 The second output may be used by @code{polyval} to calculate the
 statistical error limits of the predicted values.  In particular, the
-standard deviation of @var{p} coefficients is given by @*
+standard deviation of @var{p} coefficients is given by
+
 @code{sqrt (diag (s.C)/s.df)*s.normr}.
 
-When the third output, @var{mu}, is present the
-coefficients, @var{p}, are associated with a polynomial in
-@var{xhat} = (@var{x}-@var{mu}(1))/@var{mu}(2).
-Where @var{mu}(1) = mean (@var{x}), and @var{mu}(2) = std (@var{x}).
-This linear transformation of @var{x} improves the numerical
-stability of the fit.
+When the third output, @var{mu}, is present the coefficients, @var{p}, are
+associated with a polynomial in
+
+@code{@var{xhat} = (@var{x} - @var{mu}(1)) / @var{mu}(2)} @*
+where @var{mu}(1) = mean (@var{x}), and @var{mu}(2) = std (@var{x}).
+
+This linear transformation of @var{x} improves the numerical stability of
+the fit.
 @seealso{@ref{XREFpolyval,,polyval}, @ref{XREFpolyaffine,,polyaffine}, @ref{XREFroots,,roots}, @ref{XREFvander,,vander}, @ref{XREFzscore,,zscore}}
 @end deftypefn
 
@@ -659,12 +683,10 @@ data.
 @deftypefnx {Function File} {@var{pp} =} splinefit (@dots{}, "constraints", @var{constraints})
 
 Fit a piecewise cubic spline with breaks (knots) @var{breaks} to the
-noisy data, @var{x} and @var{y}.  @var{x} is a vector, and @var{y}
-is a vector or N-D array.  If @var{y} is an N-D array, then @var{x}(j)
-is matched to @var{y}(:,@dots{},:,j).
+noisy data, @var{x} and @var{y}.
 
-The fitted spline is returned as a piecewise polynomial, @var{pp}, and
-may be evaluated using @code{ppval}.
+@var{x} is a vector, and @var{y} is a vector or N-D array.  If @var{y} is an
+N-D array, then @var{x}(j) is matched to @var{y}(:,@dots{},:,j).
 
 @var{p} is a positive integer defining the number of intervals along @var{x},
 and @var{p}+1 is the number of breaks.  The number of points in each interval
@@ -680,19 +702,22 @@ if robust fitting is to be applied to reduce the influence of outlying
 data points.  Three iterations of weighted least squares are performed.
 Weights are computed from previous residuals.  The sensitivity of outlier
 identification is controlled by the property @var{beta}.  The value of
-@var{beta} is stricted to the range, 0 < @var{beta} < 1.  The default
+@var{beta} is restricted to the range, 0 < @var{beta} < 1.  The default
 value is @var{beta} = 1/2.  Values close to 0 give all data equal
 weighting.  Increasing values of @var{beta} reduce the influence of
 outlying data.  Values close to unity may cause instability or rank
 deficiency.
+
+The fitted spline is returned as a piecewise polynomial, @var{pp}, and
+may be evaluated using @code{ppval}.
 
 The splines are constructed of polynomials with degree @var{order}.
 The default is a cubic, @var{order}=3.  A spline with P pieces has
 P+@var{order} degrees of freedom.  With periodic boundary conditions
 the degrees of freedom are reduced to P.
 
-The optional property, @var{constaints}, is a structure specifying
-linear constraints on the fit.  The structure has three fields, @qcode{"xc"},
+The optional property, @var{constaints}, is a structure specifying linear
+constraints on the fit.  The structure has three fields, @qcode{"xc"},
 @qcode{"yc"}, and @qcode{"cc"}.
 
 @table @asis
@@ -953,24 +978,24 @@ plot (xi, yi);
 @deftypefnx {Function File} {@var{pp} =} mkpp (@var{breaks}, @var{coefs}, @var{d})
 
 Construct a piecewise polynomial (pp) structure from sample points
-@var{breaks} and coefficients @var{coefs}.  @var{breaks} must be a vector of
-strictly increasing values.  The number of intervals is given by
-@code{@var{ni} = length (@var{breaks}) - 1}.
-When @var{m} is the polynomial order @var{coefs} must be of
-size: @var{ni} x @var{m} + 1.
+@var{breaks} and coefficients @var{coefs}.
 
-The i-th row of @var{coefs},
-@code{@var{coefs} (@var{i},:)}, contains the coefficients for the polynomial
-over the @var{i}-th interval, ordered from highest (@var{m}) to
-lowest (@var{0}).
+@var{breaks} must be a vector of strictly increasing values.  The number of
+intervals is given by @code{@var{ni} = length (@var{breaks}) - 1}.
+
+When @var{m} is the polynomial order @var{coefs} must be of size:
+@var{ni} x @var{m} + 1.
+
+The i-th row of @var{coefs}, @code{@var{coefs} (@var{i},:)}, contains the
+coefficients for the polynomial over the @var{i}-th interval, ordered from
+highest (@var{m}) to lowest (@var{0}).
 
 @var{coefs} may also be a multi-dimensional array, specifying a vector-valued
 or array-valued polynomial.  In that case the polynomial order is defined
-by the length of the last dimension of @var{coefs}.
-The size of first dimension(s) are given by the scalar or
-vector @var{d}.  If @var{d} is not given it is set to @code{1}.
-In any case @var{coefs} is reshaped to a 2-D matrix of
-size @code{[@var{ni}*prod(@var{d} @var{m})] }
+by the length of the last dimension of @var{coefs}.  The size of first
+dimension(s) are given by the scalar or vector @var{d}.  If @var{d} is not
+given it is set to @code{1}.  In any case @var{coefs} is reshaped to a 2-D
+matrix of size @code{[@var{ni}*prod(@var{d} @var{m})] }
 
 @seealso{@ref{XREFunmkpp,,unmkpp}, @ref{XREFppval,,ppval}, @ref{XREFspline,,spline}, @ref{XREFpchip,,pchip}, @ref{XREFppder,,ppder}, @ref{XREFppint,,ppint}, @ref{XREFppjumps,,ppjumps}}
 @end deftypefn
@@ -981,6 +1006,7 @@ size @code{[@var{ni}*prod(@var{d} @var{m})] }
 @deftypefn {Function File} {[@var{x}, @var{p}, @var{n}, @var{k}, @var{d}] =} unmkpp (@var{pp})
 
 Extract the components of a piecewise polynomial structure @var{pp}.
+
 The components are:
 
 @table @asis
@@ -988,11 +1014,11 @@ The components are:
 Sample points.
 
 @item @var{p}
-Polynomial coefficients for points in sample interval.  @code{@var{p}
-(@var{i}, :)} contains the coefficients for the polynomial over
-interval @var{i} ordered from highest to lowest.  If @code{@var{d} >
-1}, @code{@var{p} (@var{r}, @var{i}, :)} contains the coefficients for
-the r-th polynomial defined on interval @var{i}.
+Polynomial coefficients for points in sample interval.
+@code{@var{p} (@var{i}, :)} contains the coefficients for the polynomial
+over interval @var{i} ordered from highest to lowest.  If
+@code{@var{d} > 1}, @code{@var{p} (@var{r}, @var{i}, :)} contains the
+coefficients for the r-th polynomial defined on interval @var{i}.
 
 @item @var{n}
 Number of polynomial pieces.
@@ -1012,11 +1038,11 @@ Number of polynomials defined for each interval.
 @anchor{XREFppval}
 @deftypefn {Function File} {@var{yi} =} ppval (@var{pp}, @var{xi})
 Evaluate the piecewise polynomial structure @var{pp} at the points @var{xi}.
-If @var{pp} describes a scalar polynomial function, the result is an
-array of the same shape as @var{xi}.
-Otherwise, the size of the result is @code{[pp.dim, length(@var{xi})]} if
-@var{xi} is a vector, or @code{[pp.dim, size(@var{xi})]} if it is a
-multi-dimensional array.
+
+If @var{pp} describes a scalar polynomial function, the result is an array
+of the same shape as @var{xi}.  Otherwise, the size of the result is
+@code{[pp.dim, length(@var{xi})]} if @var{xi} is a vector, or
+@code{[pp.dim, size(@var{xi})]} if it is a multi-dimensional array.
 @seealso{@ref{XREFmkpp,,mkpp}, @ref{XREFunmkpp,,unmkpp}, @ref{XREFspline,,spline}, @ref{XREFpchip,,pchip}}
 @end deftypefn
 
@@ -1026,7 +1052,9 @@ multi-dimensional array.
 @deftypefn  {Function File} {ppd =} ppder (pp)
 @deftypefnx {Function File} {ppd =} ppder (pp, m)
 Compute the piecewise @var{m}-th derivative of a piecewise polynomial
-struct @var{pp}.  If @var{m} is omitted the first derivative is calculated.
+struct @var{pp}.
+
+If @var{m} is omitted the first derivative is calculated.
 @seealso{@ref{XREFmkpp,,mkpp}, @ref{XREFppval,,ppval}, @ref{XREFppint,,ppint}}
 @end deftypefn
 
@@ -1036,6 +1064,7 @@ struct @var{pp}.  If @var{m} is omitted the first derivative is calculated.
 @deftypefn  {Function File} {@var{ppi} =} ppint (@var{pp})
 @deftypefnx {Function File} {@var{ppi} =} ppint (@var{pp}, @var{c})
 Compute the integral of the piecewise polynomial struct @var{pp}.
+
 @var{c}, if given, is the constant of integration.
 @seealso{@ref{XREFmkpp,,mkpp}, @ref{XREFppval,,ppval}, @ref{XREFppder,,ppder}}
 @end deftypefn
@@ -1045,6 +1074,7 @@ Compute the integral of the piecewise polynomial struct @var{pp}.
 @anchor{XREFppjumps}
 @deftypefn {Function File} {@var{jumps} =} ppjumps (@var{pp})
 Evaluate the boundary jumps of a piecewise polynomial.
+
 If there are @math{n} intervals, and the dimensionality of @var{pp} is
 @math{d}, the resulting array has dimensions @code{[d, n-1]}.
 @seealso{@ref{XREFmkpp,,mkpp}}
@@ -1060,9 +1090,10 @@ If there are @math{n} intervals, and the dimensionality of @var{pp} is
 @deftypefnx {Function File} {} poly (@var{x})
 If @var{A} is a square @math{N}-by-@math{N} matrix, @code{poly (@var{A})}
 is the row vector of the coefficients of @code{det (z * eye (N) - A)},
-the characteristic polynomial of @var{A}.  For example,
-the following code finds the eigenvalues of @var{A} which are the roots of
-@code{poly (@var{A})}.
+the characteristic polynomial of @var{A}.
+
+For example, the following code finds the eigenvalues of @var{A} which are
+the roots of @code{poly (@var{A})}.
 
 @example
 @group
@@ -1079,9 +1110,10 @@ eigenvalues.
 
 If @var{x} is a vector, @code{poly (@var{x})} is a vector of the
 coefficients of the polynomial whose roots are the elements of @var{x}.
-That is, if @var{c} is a polynomial, then the elements of @code{@var{d} =
-roots (poly (@var{c}))} are contained in @var{c}.  The vectors @var{c} and
-@var{d} are not identical, however, due to sorting and numerical errors.
+That is, if @var{c} is a polynomial, then the elements of
+@code{@var{d} = roots (poly (@var{c}))} are contained in @var{c}.  The
+vectors @var{c} and @var{d} are not identical, however, due to sorting and
+numerical errors.
 @seealso{@ref{XREFroots,,roots}, @ref{XREFeig,,eig}}
 @end deftypefn
 
@@ -1091,7 +1123,9 @@ roots (poly (@var{c}))} are contained in @var{c}.  The vectors @var{c} and
 @deftypefn  {Function File} {} polyout (@var{c})
 @deftypefnx {Function File} {} polyout (@var{c}, @var{x})
 @deftypefnx {Function File} {@var{str} =} polyout (@dots{})
-Write formatted polynomial
+Display a formatted version of the polynomial @var{c}.
+
+The formatted polynomial
 @tex
 $$ c(x) = c_1 x^n + \ldots + c_n x + c_{n+1} $$
 @end tex
@@ -1102,8 +1136,10 @@ c(x) = c(1) * x^n + @dots{} + c(n) x + c(n+1)
 @end example
 
 @end ifnottex
-and return it as a string or write it to the screen (if @var{nargout} is
-zero).  @var{x} defaults to the string @qcode{"s"}.
+is returned as a string or written to the screen if @code{nargout} is zero.
+
+The second argument @var{x} specifies the variable name to use for each term
+and defaults to the string @qcode{"s"}.
 @seealso{@ref{XREFpolyreduce,,polyreduce}}
 @end deftypefn
 

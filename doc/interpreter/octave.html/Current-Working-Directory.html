@@ -59,10 +59,10 @@ Next: <a href="Password-Database-Functions.html#Password-Database-Functions" acc
 <h3 class="section">36.8 Current Working Directory</h3>
 
 <a name="XREFcd"></a><dl>
-<dt><a name="index-cd-3"></a>Command: <em></em> <strong>cd</strong> <em><var>dir</var></em></dt>
-<dt><a name="index-cd-4"></a>Command: <em></em> <strong>cd</strong></dt>
-<dt><a name="index-cd-5"></a>Built-in Function: <em><var>old_dir</var> =</em> <strong>cd</strong> <em><var>dir</var></em></dt>
-<dt><a name="index-chdir-1"></a>Command: <em></em> <strong>chdir</strong> <em>&hellip;</em></dt>
+<dt><a name="index-cd-2"></a>Command: <em></em> <strong>cd</strong> <em><var>dir</var></em></dt>
+<dt><a name="index-cd-3"></a>Command: <em></em> <strong>cd</strong></dt>
+<dt><a name="index-cd-4"></a>Built-in Function: <em><var>old_dir</var> =</em> <strong>cd</strong> <em>(<var>dir</var>)</em></dt>
+<dt><a name="index-chdir"></a>Command: <em></em> <strong>chdir</strong> <em>&hellip;</em></dt>
 <dd><p>Change the current working directory to <var>dir</var>.
 </p>
 <p>If <var>dir</var> is omitted, the current directory is changed to the user&rsquo;s home
@@ -177,8 +177,8 @@ characters &lsquo;<samp>*</samp>&rsquo;, &lsquo;<samp>?</samp>&rsquo;, &lsquo;<s
 wildcard character the wildcard must be escaped using the backslash operator
 &lsquo;<samp>\</samp>&rsquo;.
 </p>
-<p>Note that for symbolic links, <code>dir</code> returns information about
-the file that the symbolic link points to rather than the link itself.
+<p>Note that for symbolic links, <code>dir</code> returns information about the
+file that the symbolic link points to rather than the link itself.
 However, if the link points to a nonexistent file, <code>dir</code> returns
 information about the link.
 </p>

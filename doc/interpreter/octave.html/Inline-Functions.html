@@ -80,17 +80,16 @@ functions in all new code.
 <dt><a name="index-inline-2"></a>Built-in Function: <em></em> <strong>inline</strong> <em>(<var>str</var>, <var>n</var>)</em></dt>
 <dd><p>Create an inline function from the character string <var>str</var>.
 </p>
-<p>If called with a single argument, the arguments of the generated
-function are extracted from the function itself.  The generated
-function arguments will then be in alphabetical order.  It should
-be noted that i, and j are ignored as arguments due to the
-ambiguity between their use as a variable or their use as an inbuilt
-constant.  All arguments followed by a parenthesis are considered
-to be functions.  If no arguments are found, a function taking a single
-argument named <code>x</code> will be created.
+<p>If called with a single argument, the arguments of the generated function
+are extracted from the function itself.  The generated function arguments
+will then be in alphabetical order.  It should be noted that i and j are
+ignored as arguments due to the ambiguity between their use as a variable or
+their use as an built-in constant.  All arguments followed by a parenthesis
+are considered to be functions.  If no arguments are found, a function
+taking a single argument named <code>x</code> will be created.
 </p>
-<p>If the second and subsequent arguments are character strings,
-they are the names of the arguments of the function.
+<p>If the second and subsequent arguments are character strings, they are the
+names of the arguments of the function.
 </p>
 <p>If the second argument is an integer <var>n</var>, the arguments are
 <code>&quot;x&quot;</code>, <code>&quot;P1&quot;</code>, &hellip;, <code>&quot;P<var>N</var>&quot;</code>.
@@ -106,8 +105,8 @@ functions from strings is through the use of anonymous functions
 
 <a name="XREFargnames"></a><dl>
 <dt><a name="index-argnames"></a>Built-in Function: <em></em> <strong>argnames</strong> <em>(<var>fun</var>)</em></dt>
-<dd><p>Return a cell array of character strings containing the names of
-the arguments of the inline function <var>fun</var>.
+<dd><p>Return a cell array of character strings containing the names of the
+arguments of the inline function <var>fun</var>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFinline">inline</a>, <a href="#XREFformula">formula</a>, <a href="Basic-Vectorization.html#XREFvectorize">vectorize</a>.
 </p></dd></dl>

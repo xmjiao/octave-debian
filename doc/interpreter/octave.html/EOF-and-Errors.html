@@ -100,14 +100,14 @@ end-of-file condition.
 <p>If an error condition exists then return a string <var>msg</var> describing the
 error.  Otherwise, return an empty string <code>&quot;&quot;</code>.
 </p>
+<p>The second input <code>&quot;clear&quot;</code> is optional.  If supplied, the error
+state on the stream will be cleared.
+</p>
 <p>The optional second output is a numeric indication of the error status.
 <var>err</var> is 1 if an error condition has been encountered and 0 otherwise.
 </p>
 <p>Note that <code>ferror</code> indicates if an error has already occurred, not
 whether the next operation will result in an error condition.
-</p>
-<p>The second input <code>&quot;clear&quot;</code> is optional.  If supplied, the error
-state on the stream will be cleared.
 </p>
 <p><strong>See also:</strong> <a href="#XREFfclear">fclear</a>, <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
 </p></dd></dl>
@@ -125,7 +125,9 @@ state on the stream will be cleared.
 <a name="XREFfreport"></a><dl>
 <dt><a name="index-freport"></a>Built-in Function: <em></em> <strong>freport</strong> <em>()</em></dt>
 <dd><p>Print a list of which files have been opened, and whether they are open
-for reading, writing, or both.  For example:
+for reading, writing, or both.
+</p>
+<p>For example:
 </p>
 <div class="example">
 <pre class="example">freport ()

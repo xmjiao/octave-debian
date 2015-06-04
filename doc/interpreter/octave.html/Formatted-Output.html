@@ -109,10 +109,11 @@ expanded even when the template string is defined with single quotes.
 <a name="XREFsprintf"></a><dl>
 <dt><a name="index-sprintf"></a>Built-in Function: <em></em> <strong>sprintf</strong> <em>(<var>template</var>, &hellip;)</em></dt>
 <dd><p>This is like <code>printf</code>, except that the output is returned as a
-string.  Unlike the C library function, which requires you to provide a
-suitably sized string as an argument, Octave&rsquo;s <code>sprintf</code> function
-returns the string, automatically sized to hold all of the items
-converted.
+string.
+</p>
+<p>Unlike the C library function, which requires you to provide a suitably
+sized string as an argument, Octave&rsquo;s <code>sprintf</code> function returns the
+string, automatically sized to hold all of the items converted.
 </p>
 <p>Implementation Note: For compatibility with <small>MATLAB</small>, escape sequences in
 the template string (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are

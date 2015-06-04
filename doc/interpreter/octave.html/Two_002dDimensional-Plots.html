@@ -645,12 +645,14 @@ Ch. 3, <cite>Exploratory Data Analysis</cite> by J. W. Tukey, Addison-Wesley, 19
 <dt><a name="index-printd"></a>Function File: <em></em> <strong>printd</strong> <em>(<var>obj</var>, <var>filename</var>)</em></dt>
 <dt><a name="index-printd-1"></a>Function File: <em><var>out_file</var> =</em> <strong>printd</strong> <em>(&hellip;)</em></dt>
 <dd>
-<p>Convert any object acceptable to <code>disp</code> into the format
-selected by the suffix of <var>filename</var>.  If the return argument
-<var>out_file</var> is given, the name of the created file is returned.
+<p>Convert any object acceptable to <code>disp</code> into the format selected by
+the suffix of <var>filename</var>.
 </p>
-<p>This function is intended to facilitate manipulation of the output
-of functions such as <code>stemleaf</code>.
+<p>If the return argument <var>out_file</var> is given, the name of the created
+file is returned.
+</p>
+<p>This function is intended to facilitate manipulation of the output of
+functions such as <code>stemleaf</code>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFstemleaf">stemleaf</a>.
 </p></dd></dl>
@@ -907,14 +909,14 @@ scatter (x, y, [], sqrt (x.^2 + y.^2));
 <dt><a name="index-plotmatrix-4"></a>Function File: <em>[<var>h</var>, <var>ax</var>, <var>bigax</var>, <var>p</var>, <var>pax</var>] =</em> <strong>plotmatrix</strong> <em>(&hellip;)</em></dt>
 <dd><p>Scatter plot of the columns of one matrix against another.
 </p>
-<p>Given the arguments <var>x</var> and <var>y</var>, that have a matching number of
+<p>Given the arguments <var>x</var> and <var>y</var> that have a matching number of
 rows, <code>plotmatrix</code> plots a set of axes corresponding to
 </p>
 <div class="example">
 <pre class="example">plot (<var>x</var>(:, i), <var>y</var>(:, j))
 </pre></div>
 
-<p>Given a single argument <var>x</var> this is equivalent to
+<p>When called with a single argument <var>x</var> this is equivalent to
 </p>
 <div class="example">
 <pre class="example">plotmatrix (<var>x</var>, <var>x</var>)
@@ -931,11 +933,14 @@ rather than the current axes returned by <code>gca</code>.
 </p>
 <p>The optional return value <var>h</var> provides handles to the individual
 graphics objects in the scatter plots, whereas <var>ax</var> returns the
-handles to the scatter plot axis objects.  <var>bigax</var> is a hidden
-axis object that surrounds the other axes, such that the commands
-<code>xlabel</code>, <code>title</code>, etc., will be associated with this hidden
-axis.  Finally, <var>p</var> returns the graphics objects associated with
-the histogram and <var>pax</var> the corresponding axes objects.
+handles to the scatter plot axis objects.
+</p>
+<p><var>bigax</var> is a hidden axis object that surrounds the other axes, such
+that the commands <code>xlabel</code>, <code>title</code>, etc., will be associated
+with this hidden axis.
+</p>
+<p>Finally, <var>p</var> returns the graphics objects associated with the histogram
+and <var>pax</var> the corresponding axes objects.
 </p>
 <p>Example:
 </p>
@@ -1054,7 +1059,8 @@ Any markers defined by <var>style</var> are ignored.
 <p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
 rather than the current axes returned by <code>gca</code>.
 </p>
-<p>The optional output <var>c</var> are the contour levels in <code>contourc</code> format.
+<p>The optional output <var>c</var> contains the contour levels in <code>contourc</code>
+format.
 </p>
 <p>The optional return value <var>h</var> is a graphics handle to the hggroup
 comprising the contour lines.
@@ -1098,7 +1104,8 @@ Any markers defined by <var>style</var> are ignored.
 <p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
 rather than the current axes returned by <code>gca</code>.
 </p>
-<p>The optional output <var>c</var> are the contour levels in <code>contourc</code> format.
+<p>The optional output <var>c</var> contains the contour levels in <code>contourc</code>
+format.
 </p>
 <p>The optional return value <var>h</var> is a graphics handle to the hggroup
 comprising the contour lines.
@@ -1145,7 +1152,7 @@ contour lines in the following format
 length of <var>lenn</var>.
 </p>
 <p>The optional return value <var>lev</var> is a vector with the Z values of
-of the contour levels.
+the contour levels.
 </p>
 <p>Example:
 </p>
@@ -1386,8 +1393,8 @@ and <var>y</var> errorbars from <var>y</var>-<var>ly</var> to <var>y</var>+<var>
 <dt><a name="index-semilogxerr-7"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>fmt</var>, <var>xn</var>, <var>yn</var>, &hellip;)</em></dt>
 <dt><a name="index-semilogxerr-8"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dt><a name="index-semilogxerr-9"></a>Function File: <em><var>h</var> =</em> <strong>semilogxerr</strong> <em>(&hellip;)</em></dt>
-<dd><p>Produce 2-D plots using a logarithmic scale for the x-axis and
-errorbars at each data point.
+<dd><p>Produce 2-D plots using a logarithmic scale for the x-axis and errorbars
+at each data point.
 </p>
 <p>Many different combinations of arguments are possible.  The most common
 form is
@@ -1420,8 +1427,8 @@ rather than the current axes returned by <code>gca</code>.
 <dt><a name="index-semilogyerr-7"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>fmt</var>, <var>xn</var>, <var>yn</var>, &hellip;)</em></dt>
 <dt><a name="index-semilogyerr-8"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dt><a name="index-semilogyerr-9"></a>Function File: <em><var>h</var> =</em> <strong>semilogyerr</strong> <em>(&hellip;)</em></dt>
-<dd><p>Produce 2-D plots using a logarithmic scale for the y-axis and
-errorbars at each data point.
+<dd><p>Produce 2-D plots using a logarithmic scale for the y-axis and errorbars
+at each data point.
 </p>
 <p>Many different combinations of arguments are possible.  The most common
 form is
@@ -1601,9 +1608,11 @@ in the pie plot to represent the missing, unspecified percentage.
 <dt><a name="index-quiver-5"></a>Function File: <em></em> <strong>quiver</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dt><a name="index-quiver-6"></a>Function File: <em><var>h</var> =</em> <strong>quiver</strong> <em>(&hellip;)</em></dt>
 <dd>
+<p>Plot a 2-D vector field with arrows.
+</p>
 <p>Plot the (<var>u</var>, <var>v</var>) components of a vector field in
-an (<var>x</var>, <var>y</var>) meshgrid.  If the grid is uniform, you can
-specify <var>x</var> and <var>y</var> as vectors.
+an (<var>x</var>, <var>y</var>) meshgrid.  If the grid is uniform then <var>x</var> and
+<var>y</var> can be specified as vectors.
 </p>
 <p>If <var>x</var> and <var>y</var> are undefined they are assumed to be
 <code>(1:<var>m</var>, 1:<var>n</var>)</code> where
@@ -1648,9 +1657,11 @@ set (h, &quot;maxheadsize&quot;, 0.33);
 <dt><a name="index-quiver3-5"></a>Function File: <em></em> <strong>quiver3</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dt><a name="index-quiver3-6"></a>Function File: <em><var>h</var> =</em> <strong>quiver3</strong> <em>(&hellip;)</em></dt>
 <dd>
+<p>Plot a 3-D vector field with arrows.
+</p>
 <p>Plot the (<var>u</var>, <var>v</var>, <var>w</var>) components of a vector field in
-an (<var>x</var>, <var>y</var>, <var>z</var>) meshgrid.  If the grid is uniform, you
-can specify <var>x</var>, <var>y</var>, and <var>z</var> as vectors.
+an (<var>x</var>, <var>y</var>, <var>z</var>) meshgrid.  If the grid is uniform then
+<var>x</var>, <var>y</var>, and <var>z</var> can be specified as vectors.
 </p>
 <p>If <var>x</var>, <var>y</var>, and <var>z</var> are undefined they are assumed to be
 <code>(1:<var>m</var>, 1:<var>n</var>, 1:<var>p</var>)</code> where <code>[<var>m</var>, <var>n</var>] =
@@ -1801,8 +1812,8 @@ surface object.
 <dt><a name="index-area-5"></a>Function File: <em><var>h</var> =</em> <strong>area</strong> <em>(&hellip;)</em></dt>
 <dd><p>Area plot of the columns of <var>y</var>.
 </p>
-<p>This plot shows the contributions of each column value to the row sum.  It
-is functionally similar to <code>plot (<var>x</var>, cumsum (<var>y</var>, 2))</code>,
+<p>This plot shows the contributions of each column value to the row sum.
+It is functionally similar to <code>plot (<var>x</var>, cumsum (<var>y</var>, 2))</code>,
 except that the area under the curve is shaded.
 </p>
 <p>If the <var>x</var> argument is omitted it defaults to <code>1:rows (<var>y</var>)</code>.
@@ -1887,8 +1898,9 @@ axis equal
 <dt><a name="index-comet-2"></a>Function File: <em></em> <strong>comet</strong> <em>(<var>x</var>, <var>y</var>, <var>p</var>)</em></dt>
 <dt><a name="index-comet-3"></a>Function File: <em></em> <strong>comet</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dd><p>Produce a simple comet style animation along the trajectory provided by
-the input coordinate vectors (<var>x</var>, <var>y</var>).  If <var>x</var> is not
-specified it defaults to the indices of <var>y</var>.
+the input coordinate vectors (<var>x</var>, <var>y</var>).
+</p>
+<p>If <var>x</var> is not specified it defaults to the indices of <var>y</var>.
 </p>
 <p>The speed of the comet may be controlled by <var>p</var>, which represents the
 time each point is displayed before moving to the next one.  The default for
@@ -1907,8 +1919,10 @@ rather than the current axes returned by <code>gca</code>.
 <dt><a name="index-comet3-2"></a>Function File: <em></em> <strong>comet3</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>p</var>)</em></dt>
 <dt><a name="index-comet3-3"></a>Function File: <em></em> <strong>comet3</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dd><p>Produce a simple comet style animation along the trajectory provided by
-the input coordinate vectors (<var>x</var>, <var>y</var>, <var>z</var>).  If only <var>z</var>
-is specified then <var>x</var>, <var>y</var> default to the indices of <var>z</var>.
+the input coordinate vectors (<var>x</var>, <var>y</var>, <var>z</var>).
+</p>
+<p>If only <var>z</var> is specified then <var>x</var>, <var>y</var> default to the indices
+of <var>z</var>.
 </p>
 <p>The speed of the comet may be controlled by <var>p</var>, which represents the
 time each point is displayed before moving to the next one.  The default for
@@ -1930,8 +1944,8 @@ rather than the current axes returned by <code>gca</code>.
 </p>
 <p>Support for N-dimensional images or movies is given when <var>f</var> is a
 struct array.  In such cases, <var>x</var> will be a MxNx1xK or MxNx3xK
-for indexed and RGB movies respectively, with each frame concatenated on
-the 4th dimension.
+for indexed and RGB movies respectively, with each frame concatenated
+along the 4th dimension.
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFim2frame">im2frame</a>.
@@ -1947,8 +1961,9 @@ the 4th dimension.
 <code>&quot;colormap&quot;</code>.
 </p>
 <p>Support for N-dimensional images is given when each image projection,
-matrix sizes of MxN and MxNx3 for RGB images, is concatenated on
-the fourth dimension.  In such cases, the returned value is a struct array.
+matrix sizes of MxN and MxNx3 for RGB images, is concatenated
+along the fourth dimension.  In such cases, the returned value is a struct
+array.
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFframe2im">frame2im</a>.

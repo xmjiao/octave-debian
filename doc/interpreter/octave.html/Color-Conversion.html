@@ -112,8 +112,8 @@ The reference matrix for the transformation is
 </pre></div>
 
 <p>as documented in <a href="http://en.wikipedia.org/wiki/YIQ">http://en.wikipedia.org/wiki/YIQ</a> and truncated to 3
-significant figures.  Note: The FCC version of NTSC uses only 2
-significant digits and is slightly different.
+significant figures.  Note: The FCC version of NTSC uses only 2 significant
+digits and is slightly different.
 </p>
 <p><strong>See also:</strong> <a href="#XREFntsc2rgb">ntsc2rgb</a>, <a href="#XREFrgb2hsv">rgb2hsv</a>, <a href="Representing-Images.html#XREFrgb2ind">rgb2ind</a>.
 </p></dd></dl>
@@ -126,15 +126,15 @@ significant digits and is slightly different.
 red-green-blue (RGB) color space.
 </p>
 <p>Implementation Note:
-The conversion matrix is chosen to be the inverse of the
-matrix used for rgb2ntsc such that
+The conversion matrix is chosen to be the inverse of the matrix used for
+rgb2ntsc such that
 </p>
 <div class="example">
 <pre class="example">x == ntsc2rgb (rgb2ntsc (x))
 </pre></div>
 
-<p><small>MATLAB</small> uses a slightly different matrix where rounding
-means the equality above does not hold.
+<p><small>MATLAB</small> uses a slightly different matrix where rounding means the
+equality above does not hold.
 </p>
 <p><strong>See also:</strong> <a href="#XREFrgb2ntsc">rgb2ntsc</a>, <a href="#XREFhsv2rgb">hsv2rgb</a>, <a href="Representing-Images.html#XREFind2rgb">ind2rgb</a>.
 </p></dd></dl>

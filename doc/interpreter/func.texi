@@ -322,9 +322,11 @@ command line.
 @deftypefnx {Built-in Function} {@var{old_val} =} silent_functions (@var{new_val})
 @deftypefnx {Built-in Function} {} silent_functions (@var{new_val}, "local")
 Query or set the internal variable that controls whether internal
-output from a function is suppressed.  If this option is disabled,
-Octave will display the results produced by evaluating expressions
-within a function body that are not terminated with a semicolon.
+output from a function is suppressed.
+
+If this option is disabled, Octave will display the results produced by
+evaluating expressions within a function body that are not terminated with
+a semicolon.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.
@@ -387,17 +389,18 @@ of the return values or several at once in a cell array.
 @anchor{XREFnthargout}
 @deftypefn  {Function File} {} nthargout (@var{n}, @var{func}, @dots{})
 @deftypefnx {Function File} {} nthargout (@var{n}, @var{ntot}, @var{func}, @dots{})
-Return the @var{n}th output argument of function given by the
-function handle or string @var{func}.  Any arguments after @var{func}
-are passed to @var{func}.  The total number of arguments to call
-@var{func} with can be passed in @var{ntot}; by default @var{ntot}
-is @var{n}.  The input @var{n} can also be a vector of indices of the
-output, in which case the output will be a cell array of the
+Return the @var{n}th output argument of the function specified by the
+function handle or string @var{func}.
+
+Any additional arguments are passed directly to @var{func}.  The total
+number of arguments to call @var{func} with can be passed in @var{ntot}; by
+default @var{ntot} is @var{n}.  The input @var{n} can also be a vector of
+indices of the output, in which case the output will be a cell array of the
 requested output arguments.
 
-The intended use @code{nthargout} is to avoid intermediate variables.
-For example, when finding the indices of the maximum entry of a
-matrix, the following two compositions of nthargout
+The intended use @code{nthargout} is to avoid intermediate variables.  For
+example, when finding the indices of the maximum entry of a matrix, the
+following two compositions of nthargout
 
 @example
 @group
@@ -421,8 +424,8 @@ are completely equivalent to the following lines:
 @end group
 @end example
 
-It can also be helpful to have all output arguments in a single cell
-in the following manner:
+It can also be helpful to have all output arguments in a single cell in the
+following manner:
 
 @example
 @var{USV} = nthargout ([1:3], @@svd, hilb (5));
@@ -556,13 +559,14 @@ available which provide similar error checking.
 @c narginchk scripts/general/narginchk.m
 @anchor{XREFnarginchk}
 @deftypefn {Function File} {} narginchk (@var{minargs}, @var{maxargs})
-Check for correct number of arguments or generate an error message if
-the number of arguments in the calling function is outside the range
-@var{minargs} and @var{maxargs}.  Otherwise, do nothing.
+Check for correct number of input arguments.
 
-Both @var{minargs} and @var{maxargs} need to be scalar numeric
-values.  Zero, Inf and negative values are all allowed, and
-@var{minargs} and @var{maxargs} may be equal.
+Generate an error message if the number of arguments in the calling function
+is outside the range @var{minargs} and @var{maxargs}.  Otherwise, do nothing.
+
+Both @var{minargs} and @var{maxargs} must be scalar numeric values.  Zero,
+Inf, and negative values are all allowed, and @var{minargs} and @var{maxargs}
+may be equal.
 
 Note that this function evaluates @code{nargin} on the caller.
 
@@ -578,20 +582,20 @@ Note that this function evaluates @code{nargin} on the caller.
 @deftypefnx {Function File} {@var{msgstruct} =} nargoutchk (@var{minargs}, @var{maxargs}, @var{nargs}, "struct")
 Check for correct number of output arguments.
 
-On the first form, returns an error unless the number of arguments in its
-caller is between the values of @var{minargs} and @var{maxargs}.  It does
-nothing otherwise.  Note that this function evaluates the value of
-@code{nargout} on the caller so its value must have not been tampered with.
+In the first form, return an error if the number of arguments is not between
+@var{minargs} and @var{maxargs}.  Otherwise, do nothing.  Note that this
+function evaluates the value of @code{nargout} on the caller so its value
+must have not been tampered with.
 
-Both @var{minargs} and @var{maxargs} need to be a numeric scalar.  Zero, Inf
+Both @var{minargs} and @var{maxargs} must be numeric scalars.  Zero, Inf,
 and negative are all valid, and they can have the same value.
 
-For backward compatibility reasons, the other forms return an appropriate
-error message string (or structure) if the number of outputs requested is
+For backwards compatibility, the other forms return an appropriate error
+message string (or structure) if the number of outputs requested is
 invalid.
 
-This is useful for checking to see that the number of output
-arguments supplied to a function is within an acceptable range.
+This is useful for checking to that the number of output arguments supplied
+to a function is within an acceptable range.
 @seealso{@ref{XREFnarginchk,,narginchk}, @ref{XREFerror,,error}, @ref{XREFnargout,,nargout}, @ref{XREFnargin,,nargin}}
 @end deftypefn
 
@@ -1021,8 +1025,10 @@ print_arguments (1, "two", 3);
 @deftypefn  {Function File} {[@var{reg}, @var{prop}] =} parseparams (@var{params})
 @deftypefnx {Function File} {[@var{reg}, @var{var1}, @dots{}] =} parseparams (@var{params}, @var{name1}, @var{default1}, @dots{})
 Return in @var{reg} the cell elements of @var{param} up to the first
-string element and in @var{prop} all remaining elements beginning
-with the first string element.  For example:
+string element and in @var{prop} all remaining elements beginning with the
+first string element.
+
+For example:
 
 @example
 @group
@@ -1040,16 +1046,18 @@ prop =
 @end group
 @end example
 
-The parseparams function may be used to separate regular numeric
-arguments from additional arguments given as property/value pairs of
-the @var{varargin} cell array.
+The parseparams function may be used to separate regular numeric arguments
+from additional arguments given as property/value pairs of the
+@var{varargin} cell array.
 
 In the second form of the call, available options are specified directly
-with their default values given as name-value pairs.
-If @var{params} do not form name-value pairs, or if an option occurs
-that does not match any of the available options, an error occurs.
-When called from an m-file function, the error is prefixed with the
-name of the caller function.
+with their default values given as name-value pairs.  If @var{params} do
+not form name-value pairs, or if an option occurs that does not match any
+of the available options, an error occurs.
+
+When called from an m-file function, the error is prefixed with the name
+of the caller function.
+
 The matching of options is case-insensitive.
 
 @seealso{@ref{XREFvarargin,,varargin}, @ref{XREFinputParser,,inputParser}}
@@ -1157,7 +1165,8 @@ and is handled the same as any other parameter name.
 @deftypefnx {Function File} {[@var{r1}, @var{r2}, @dots{}, @var{rn}] =} deal (@var{a1}, @var{a2}, @dots{}, @var{an})
 
 Copy the input parameters into the corresponding output parameters.
-If only one input parameter is supplied, its value is copied to each
+
+If only a single input parameter is supplied, its value is copied to each
 of the outputs.
 
 For example,
@@ -1384,24 +1393,23 @@ ignore the time stamps for all function files.  Passing
 @deftypefnx {Command} {@var{value} =} edit get @var{field}
 Edit the named function, or change editor settings.
 
-If @code{edit} is called with the name of a file or function as
-its argument it will be opened in the text editor defined by @env{EDITOR}.
+If @code{edit} is called with the name of a file or function as its
+argument it will be opened in the text editor defined by @env{EDITOR}.
 
 @itemize @bullet
 @item
-If the function @var{name} is available in a file on your path and
-that file is modifiable, then it will be edited in place.  If it
-is a system function, then it will first be copied to the directory
-@env{HOME} (see below) and then edited.
-If no file is found, then the m-file
-variant, ending with ".m", will be considered.  If still no file
-is found, then variants with a leading "@@" and then with both a
-leading "@@" and trailing ".m" will be considered.
+If the function @var{name} is available in a file on your path and that
+file is modifiable, then it will be edited in place.  If it is a system
+function, then it will first be copied to the directory @env{HOME} (see
+below) and then edited.  If no file is found, then the m-file variant,
+ending with @qcode{".m"}, will be considered.  If still no file is found,
+then variants with a leading @qcode{"@@"} and then with both a leading
+@qcode{"@@"} and trailing @qcode{".m"} will be considered.
 
 @item
-If @var{name} is the name of a function defined in the interpreter but
-not in an m-file, then an m-file will be created in @env{HOME}
-to contain that function along with its current definition.
+If @var{name} is the name of a function defined in the interpreter but not
+in an m-file, then an m-file will be created in @env{HOME} to contain that
+function along with its current definition.
 
 @item
 If @code{@var{name}.cc} is specified, then it will search for
@@ -1417,34 +1425,35 @@ directory as the filename.  If @file{@var{name}.ext} is not modifiable,
 it will be copied to @env{HOME} before editing.
 
 @strong{Warning:} You may need to clear @var{name} before the new definition
-is available.  If you are editing a .cc file, you will need
-to execute @code{mkoctfile @file{@var{name}.cc}} before the definition
-will be available.
+is available.  If you are editing a .cc file, you will need to execute
+@code{mkoctfile @file{@var{name}.cc}} before the definition will be
+available.
 @end itemize
 
-If @code{edit} is called with @var{field} and @var{value} variables,
-the value of the control field @var{field} will be set to @var{value}.
-If an output argument is requested and the first input argument is @code{get}
+If @code{edit} is called with @var{field} and @var{value} variables, the
+value of the control field @var{field} will be set to @var{value}.  If an
+output argument is requested and the first input argument is @code{get}
 then @code{edit} will return the value of the control field @var{field}.
 If the control field does not exist, edit will return a structure
-containing all fields and values.  Thus, @code{edit get all} returns
-a complete control structure.
+containing all fields and values.  Thus, @code{edit get all} returns a
+complete control structure.
+
 The following control fields are used:
 
 @table @samp
 @item home
-This is the location of user local m-files.  Be sure it is in your
-path.  The default is @file{~/octave}.
+This is the location of user local m-files.  Be sure it is in your path.
+The default is @file{~/octave}.
 
 @item author
-This is the name to put after the "## Author:" field of new functions.
-By default it guesses from the @code{gecos} field of the password database.
+This is the name to put after the "## Author:" field of new functions.  By
+default it guesses from the @code{gecos} field of the password database.
 
 @item email
-This is the e-mail address to list after the name in the author field.
-By default it guesses @code{<$LOGNAME@@$HOSTNAME>}, and if @code{$HOSTNAME}
-is not defined it uses @code{uname -n}.  You probably want to override this.
-Be sure to use the format @code{<user@@host>}.
+This is the e-mail address to list after the name in the author field.  By
+default it guesses @code{<$LOGNAME@@$HOSTNAME>}, and if @code{$HOSTNAME}
+is not defined it uses @code{uname -n}.  You probably want to override
+this.  Be sure to use the format @code{@email{user@@host}}.
 
 @item license
 
@@ -1486,10 +1495,13 @@ whether they are modifiable or not.  The default is @code{false}.
 @deftypefnx {Built-in Function} {} mfilename ("fullpathext")
 Return the name of the currently executing file.
 
-When called from outside an m-file return the empty string.  Given the
-argument @qcode{"fullpath"}, include the directory part of the file name,
-but not the extension.  Given the argument @qcode{"fullpathext"}, include
-the directory part of the file name and the extension.
+When called from outside an m-file return the empty string.
+
+Given the argument @qcode{"fullpath"}, include the directory part of the
+file name, but not the extension.
+
+Given the argument @qcode{"fullpathext"}, include the directory part of
+the file name and the extension.
 @end deftypefn
 
 
@@ -1499,15 +1511,17 @@ the directory part of the file name and the extension.
 @deftypefnx {Built-in Function} {@var{old_val} =} ignore_function_time_stamp (@var{new_val})
 Query or set the internal variable that controls whether Octave checks
 the time stamp on files each time it looks up functions defined in
-function files.  If the internal variable is set to @qcode{"system"},
-Octave will not automatically recompile function files in subdirectories of
-@file{@var{octave-home}/lib/@var{version}} if they have changed since
-they were last compiled, but will recompile other function files in the
-search path if they change.  If set to @qcode{"all"}, Octave will not
-recompile any function files unless their definitions are removed with
-@code{clear}.  If set to @qcode{"none"}, Octave will always check time
-stamps on files to determine whether functions defined in function files
-need to recompiled.
+function files.
+
+If the internal variable is set to @qcode{"system"}, Octave will not
+automatically recompile function files in subdirectories of
+@file{@var{octave-home}/lib/@var{version}} if they have changed since they were last compiled, but will recompile other function files in the search path if they change.
+
+If set to @qcode{"all"}, Octave will not recompile any function files
+unless their definitions are removed with @code{clear}.
+
+If set to @qcode{"none"}, Octave will always check time stamps on files to
+determine whether functions defined in function files need to recompiled.
 @end deftypefn
 
 
@@ -1546,8 +1560,9 @@ After this the directory @samp{~/Octave} will be searched for functions.
 @anchor{XREFaddpath}
 @deftypefn  {Built-in Function} {} addpath (@var{dir1}, @dots{})
 @deftypefnx {Built-in Function} {} addpath (@var{dir1}, @dots{}, @var{option})
-Add named directories to the function search path.  If
-@var{option} is @qcode{"-begin"} or 0 (the default), prepend the
+Add named directories to the function search path.
+
+If @var{option} is @qcode{"-begin"} or 0 (the default), prepend the
 directory name to the current path.  If @var{option} is @qcode{"-end"}
 or 1, append the directory name to the current path.
 Directories added to the path must exist.
@@ -1567,8 +1582,9 @@ addpath ("dir1:/dir2:~/dir3")
 @deftypefn  {Built-in Function} {} genpath (@var{dir})
 @deftypefnx {Built-in Function} {} genpath (@var{dir}, @var{skip}, @dots{})
 Return a path constructed from @var{dir} and all its subdirectories.
-If additional string parameters are given, the resulting path will
-exclude directories with those names.
+
+If additional string parameters are given, the resulting path will exclude
+directories with those names.
 @end deftypefn
 
 
@@ -1676,15 +1692,16 @@ Reinitialize Octave's load path directory cache.
 
 Return the absolute name of @var{file} if it can be found in
 the list of directories specified by @code{path}.
+
 If no file is found, return an empty character string.
 
-If the first argument is a cell array of strings, search each
-directory of the loadpath for element of the cell array and return
-the first that matches.
+If the first argument is a cell array of strings, search each directory of
+the loadpath for element of the cell array and return the first that
+matches.
 
-If the second optional argument @qcode{"all"} is supplied, return
-a cell array containing the list of all files that have the same
-name in the path.  If no files are found, return an empty cell array.
+If the second optional argument @qcode{"all"} is supplied, return a cell
+array containing the list of all files that have the same name in the path.
+If no files are found, return an empty cell array.
 @seealso{@ref{XREFfile_in_path,,file_in_path}, @ref{XREFdir_in_loadpath,,dir_in_loadpath}, @ref{XREFpath,,path}}
 @end deftypefn
 
@@ -1711,15 +1728,16 @@ Return the command line path variable.
 @anchor{XREFdir_in_loadpath}
 @deftypefn  {Built-in Function} {} dir_in_loadpath (@var{dir})
 @deftypefnx {Built-in Function} {} dir_in_loadpath (@var{dir}, "all")
-Return the full name of the path element matching @var{dir}.  The
-match is performed at the end of each path element.  For example, if
+Return the full name of the path element matching @var{dir}.
+
+The match is performed at the end of each path element.  For example, if
 @var{dir} is @qcode{"foo/bar"}, it matches the path element
 @nospell{@qcode{"/some/dir/foo/bar"}}, but not
 @nospell{@qcode{"/some/dir/foo/bar/baz"}}
 @nospell{@qcode{"/some/dir/allfoo/bar"}}.
 
-The second argument is optional.  If it is supplied, return a cell array
-containing all name matches rather than just the first.
+If the optional second argument is supplied, return a cell array containing
+all name matches rather than just the first.
 @seealso{@ref{XREFfile_in_path,,file_in_path}, @ref{XREFfile_in_loadpath,,file_in_loadpath}, @ref{XREFpath,,path}}
 @end deftypefn
 
@@ -1947,12 +1965,12 @@ type.  The @code{builtin} function exists for this purpose.
 @c builtin libinterp/parse-tree/oct-parse.cc
 @anchor{XREFbuiltin}
 @deftypefn {Built-in Function} {[@dots{}] =} builtin (@var{f}, @dots{})
-Call the base function @var{f} even if @var{f} is overloaded to
-another function for the given type signature.
+Call the base function @var{f} even if @var{f} is overloaded to another
+function for the given type signature.
 
-This is normally useful when doing object-oriented programming and there
-is a requirement to call one of Octave's base functions rather than
-the overloaded one of a new class.
+This is normally useful when doing object-oriented programming and there is
+a requirement to call one of Octave's base functions rather than the
+overloaded one of a new class.
 
 A trivial example which redefines the @code{sin} function to be the
 @code{cos} function shows how @code{builtin} works.
@@ -1992,15 +2010,15 @@ file a certain function will be found.
 @deftypefnx {Built-in Function} {} autoload (@dots{}, "remove")
 Define @var{function} to autoload from @var{file}.
 
-The second argument, @var{file}, should be an absolute file name or
-a file name in the same directory as the function or script from which
-the autoload command was run.  @var{file} @emph{should not} depend on the
-Octave load path.
+The second argument, @var{file}, should be an absolute file name or a file
+name in the same directory as the function or script from which the autoload
+command was run.  @var{file} @emph{should not} depend on the Octave load
+path.
 
-Normally, calls to @code{autoload} appear in PKG_ADD script files that
-are evaluated when a directory is added to Octave's load path.  To
-avoid having to hardcode directory names in @var{file}, if @var{file}
-is in the same directory as the PKG_ADD script then
+Normally, calls to @code{autoload} appear in PKG_ADD script files that are
+evaluated when a directory is added to Octave's load path.  To avoid having
+to hardcode directory names in @var{file}, if @var{file} is in the same
+directory as the PKG_ADD script then
 
 @example
 autoload ("foo", "bar.oct");
@@ -2099,8 +2117,9 @@ Lock the current function into memory so that it can't be cleared.
 @anchor{XREFmunlock}
 @deftypefn  {Built-in Function} {} munlock ()
 @deftypefnx {Built-in Function} {} munlock (@var{fcn})
-Unlock the named function @var{fcn}.  If no function is named
-then unlock the current function.
+Unlock the named function @var{fcn}.
+
+If no function is named then unlock the current function.
 @seealso{@ref{XREFmlock,,mlock}, @ref{XREFmislocked,,mislocked}, @ref{XREFpersistent,,persistent}}
 @end deftypefn
 
@@ -2109,8 +2128,9 @@ then unlock the current function.
 @anchor{XREFmislocked}
 @deftypefn  {Built-in Function} {} mislocked ()
 @deftypefnx {Built-in Function} {} mislocked (@var{fcn})
-Return true if the named function @var{fcn} is locked.  If no function is
-named then return true if the current function is locked.
+Return true if the named function @var{fcn} is locked.
+
+If no function is named then return true if the current function is locked.
 @seealso{@ref{XREFmlock,,mlock}, @ref{XREFmunlock,,munlock}, @ref{XREFpersistent,,persistent}}
 @end deftypefn
 
@@ -2347,7 +2367,7 @@ Return true if @var{x} is a function handle.
 Return a structure containing information about the function handle
 @var{fcn_handle}.
 
-The structure @var{s} always contains these 3 fields:
+The structure @var{s} always contains these three fields:
 
 @table @asis
 @item function
@@ -2392,8 +2412,8 @@ particular output.
 @c func2str libinterp/octave-value/ov-fcn-handle.cc
 @anchor{XREFfunc2str}
 @deftypefn {Built-in Function} {} func2str (@var{fcn_handle})
-Return a string containing the name of the function referenced by
-the function handle @var{fcn_handle}.
+Return a string containing the name of the function referenced by the
+function handle @var{fcn_handle}.
 @seealso{@ref{XREFstr2func,,str2func}, @ref{XREFfunctions,,functions}}
 @end deftypefn
 
@@ -2403,6 +2423,7 @@ the function handle @var{fcn_handle}.
 @deftypefn  {Built-in Function} {} str2func (@var{fcn_name})
 @deftypefnx {Built-in Function} {} str2func (@var{fcn_name}, "global")
 Return a function handle constructed from the string @var{fcn_name}.
+
 If the optional @qcode{"global"} argument is passed, locally visible
 functions are ignored in the lookup.
 @seealso{@ref{XREFfunc2str,,func2str}, @ref{XREFinline,,inline}}
@@ -2517,17 +2538,16 @@ functions in all new code.
 @deftypefnx {Built-in Function} {} inline (@var{str}, @var{n})
 Create an inline function from the character string @var{str}.
 
-If called with a single argument, the arguments of the generated
-function are extracted from the function itself.  The generated
-function arguments will then be in alphabetical order.  It should
-be noted that i, and j are ignored as arguments due to the
-ambiguity between their use as a variable or their use as an inbuilt
-constant.  All arguments followed by a parenthesis are considered
-to be functions.  If no arguments are found, a function taking a single
-argument named @code{x} will be created.
+If called with a single argument, the arguments of the generated function
+are extracted from the function itself.  The generated function arguments
+will then be in alphabetical order.  It should be noted that i and j are
+ignored as arguments due to the ambiguity between their use as a variable or
+their use as an built-in constant.  All arguments followed by a parenthesis
+are considered to be functions.  If no arguments are found, a function
+taking a single argument named @code{x} will be created.
 
-If the second and subsequent arguments are character strings,
-they are the names of the arguments of the function.
+If the second and subsequent arguments are character strings, they are the
+names of the arguments of the function.
 
 If the second argument is an integer @var{n}, the arguments are
 @qcode{"x"}, @qcode{"P1"}, @dots{}, @qcode{"P@var{N}"}.
@@ -2543,8 +2563,8 @@ functions from strings is through the use of anonymous functions
 @c argnames libinterp/octave-value/ov-fcn-inline.cc
 @anchor{XREFargnames}
 @deftypefn {Built-in Function} {} argnames (@var{fun})
-Return a cell array of character strings containing the names of
-the arguments of the inline function @var{fun}.
+Return a cell array of character strings containing the names of the
+arguments of the inline function @var{fun}.
 @seealso{@ref{XREFinline,,inline}, @ref{XREFformula,,formula}, @ref{XREFvectorize,,vectorize}}
 @end deftypefn
 

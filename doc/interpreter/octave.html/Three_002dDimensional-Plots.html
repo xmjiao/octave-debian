@@ -219,13 +219,14 @@ surface object.
 
 <a name="XREFhidden"></a><dl>
 <dt><a name="index-hidden"></a>Command: <em></em> <strong>hidden</strong></dt>
-<dt><a name="index-hidden-1"></a>Command: <em></em> <strong>hidden</strong> <em>&quot;on&quot;</em></dt>
-<dt><a name="index-hidden-2"></a>Command: <em></em> <strong>hidden</strong> <em>&quot;off&quot;</em></dt>
+<dt><a name="index-hidden-1"></a>Command: <em></em> <strong>hidden</strong> <em>on</em></dt>
+<dt><a name="index-hidden-2"></a>Command: <em></em> <strong>hidden</strong> <em>off</em></dt>
 <dt><a name="index-hidden-3"></a>Function File: <em><var>mode</var> =</em> <strong>hidden</strong> <em>(&hellip;)</em></dt>
 <dd><p>Control mesh hidden line removal.
 </p>
 <p>When called with no argument the hidden line removal state is toggled.
-When called with one of the modes <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code> the state
+</p>
+<p>When called with one of the modes <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code> the state
 is set accordingly.
 </p>
 <p>The optional output argument <var>mode</var> is the current state.
@@ -334,8 +335,7 @@ properties.
 <dt><a name="index-surfl-5"></a>Function File: <em></em> <strong>surfl</strong> <em>(&hellip;, &quot;light&quot;)</em></dt>
 <dt><a name="index-surfl-6"></a>Function File: <em></em> <strong>surfl</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dt><a name="index-surfl-7"></a>Function File: <em><var>h</var> =</em> <strong>surfl</strong> <em>(&hellip;)</em></dt>
-<dd>
-<p>Plot a 3-D surface using shading based on various lighting models.
+<dd><p>Plot a 3-D surface using shading based on various lighting models.
 </p>
 <p>The surface mesh is plotted using shaded rectangles.  The vertices of the
 rectangles [<var>x</var>, <var>y</var>] are typically the output of <code>meshgrid</code>.
@@ -438,6 +438,8 @@ normal to the surface at the meshgridded points.
 <dt><a name="index-isosurface-5"></a>Function File: <em>[<var>f</var>, <var>v</var>, <var>c</var>] =</em> <strong>isosurface</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>iso</var>, <var>col</var>)</em></dt>
 <dt><a name="index-isosurface-6"></a>Function File: <em></em> <strong>isosurface</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>iso</var>, <var>col</var>, <var>opt</var>)</em></dt>
 <dd>
+<p>Calculate isosurface of 3-D data.
+</p>
 <p>If called with one output argument and the first input argument
 <var>val</var> is a three-dimensional array that contains the data of an
 isosurface geometry and the second input argument <var>iso</var> keeps the
@@ -535,6 +537,8 @@ set (gca, &quot;PlotBoxAspectRatioMode&quot;, &quot;manual&quot;, ...
 <dt><a name="index-isonormals-4"></a>Function File: <em>[<var>n</var>] =</em> <strong>isonormals</strong> <em>(&hellip;, &quot;negate&quot;)</em></dt>
 <dt><a name="index-isonormals-5"></a>Function File: <em></em> <strong>isonormals</strong> <em>(&hellip;, <var>p</var>)</em></dt>
 <dd>
+<p>Calculate normals to an isosurface.
+</p>
 <p>If called with one output argument and the first input argument
 <var>val</var> is a three-dimensional array that contains the data for an
 isosurface geometry and the second input argument <var>v</var> keeps the
@@ -613,6 +617,8 @@ isofinish (p);
 <dt><a name="index-isocolors-4"></a>Function File: <em>[<var>cd</var>] =</em> <strong>isocolors</strong> <em>(&hellip;, <var>p</var>)</em></dt>
 <dt><a name="index-isocolors-5"></a>Function File: <em></em> <strong>isocolors</strong> <em>(&hellip;)</em></dt>
 <dd>
+<p>Compute isosurface colors.
+</p>
 <p>If called with one output argument and the first input argument
 <var>c</var> is a three-dimensional array that contains color values and
 the second input argument <var>v</var> keeps the vertices of a geometry
@@ -809,12 +815,13 @@ to determine the proper input format.
 <a name="XREFndgrid"></a><dl>
 <dt><a name="index-ndgrid"></a>Function File: <em>[<var>y1</var>, <var>y2</var>, &hellip;, <var>y</var>n] =</em> <strong>ndgrid</strong> <em>(<var>x1</var>, <var>x2</var>, &hellip;, <var>x</var>n)</em></dt>
 <dt><a name="index-ndgrid-1"></a>Function File: <em>[<var>y1</var>, <var>y2</var>, &hellip;, <var>y</var>n] =</em> <strong>ndgrid</strong> <em>(<var>x</var>)</em></dt>
-<dd><p>Given n vectors <var>x1</var>, &hellip;, <var>x</var>n, <code>ndgrid</code> returns
-n arrays of dimension n.  The elements of the i-th output argument
-contains the elements of the vector <var>x</var>i repeated over all
-dimensions different from the i-th dimension.  Calling ndgrid with
-only one input argument <var>x</var> is equivalent to calling ndgrid with
-all n input arguments equal to <var>x</var>:
+<dd><p>Given n vectors <var>x1</var>, &hellip;, <var>x</var>n, <code>ndgrid</code> returns n
+arrays of dimension n.
+</p>
+<p>The elements of the i-th output argument contains the elements of the
+vector <var>x</var>i repeated over all dimensions different from the i-th
+dimension.  Calling ndgrid with only one input argument <var>x</var> is
+equivalent to calling ndgrid with all n input arguments equal to <var>x</var>:
 </p>
 <p>[<var>y1</var>, <var>y2</var>, &hellip;, <var>y</var>n] = ndgrid (<var>x</var>, &hellip;, <var>x</var>)
 </p>
@@ -1007,7 +1014,7 @@ slice (x, y, z, v, xi, yi, zi);
 <dt><a name="index-ribbon-2"></a>Function File: <em></em> <strong>ribbon</strong> <em>(<var>x</var>, <var>y</var>, <var>width</var>)</em></dt>
 <dt><a name="index-ribbon-3"></a>Function File: <em></em> <strong>ribbon</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dt><a name="index-ribbon-4"></a>Function File: <em><var>h</var> =</em> <strong>ribbon</strong> <em>(&hellip;)</em></dt>
-<dd><p>Plot a ribbon plot for the columns of <var>y</var> vs. <var>x</var>.
+<dd><p>Draw a ribbon plot for the columns of <var>y</var> vs. <var>x</var>.
 </p>
 <p>The optional parameter <var>width</var> specifies the width of a single ribbon
 (default is 0.75).  If <var>x</var> is omitted, a vector containing the

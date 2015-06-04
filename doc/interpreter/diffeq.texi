@@ -64,7 +64,9 @@ using @nospell{Hindmarsh's} ODE solver @sc{lsode}.
 @anchor{XREFlsode}
 @deftypefn  {Built-in Function} {[@var{x}, @var{istate}, @var{msg}] =} lsode (@var{fcn}, @var{x_0}, @var{t})
 @deftypefnx {Built-in Function} {[@var{x}, @var{istate}, @var{msg}] =} lsode (@var{fcn}, @var{x_0}, @var{t}, @var{t_crit})
-Solve the set of differential equations
+Ordinary Differential Equation (ODE) solver.
+
+The set of differential equations to solve is
 @tex
 $$ {dx \over dt} = f (x, t) $$
 with
@@ -183,10 +185,13 @@ parameters for @code{lsode}.
 @deftypefnx {Built-in Function} {val =} lsode_options (@var{opt})
 @deftypefnx {Built-in Function} {} lsode_options (@var{opt}, @var{val})
 Query or set options for the function @code{lsode}.
+
 When called with no arguments, the names of all available options and
 their current values are displayed.
-Given one argument, return the value of the corresponding option.
-When called with two arguments, @code{lsode_options} set the option
+
+Given one argument, return the value of the option @var{opt}.
+
+When called with two arguments, @code{lsode_options} sets the option
 @var{opt} to value @var{val}.
 
 Options include
@@ -436,10 +441,13 @@ parameters for @code{daspk}.
 @deftypefnx {Built-in Function} {val =} daspk_options (@var{opt})
 @deftypefnx {Built-in Function} {} daspk_options (@var{opt}, @var{val})
 Query or set options for the function @code{daspk}.
+
 When called with no arguments, the names of all available options and
 their current values are displayed.
-Given one argument, return the value of the corresponding option.
-When called with two arguments, @code{daspk_options} set the option
+
+Given one argument, return the value of the option @var{opt}.
+
+When called with two arguments, @code{daspk_options} sets the option
 @var{opt} to value @var{val}.
 
 Options include
@@ -715,10 +723,13 @@ parameters for @code{dassl}.
 @deftypefnx {Built-in Function} {val =} dassl_options (@var{opt})
 @deftypefnx {Built-in Function} {} dassl_options (@var{opt}, @var{val})
 Query or set options for the function @code{dassl}.
+
 When called with no arguments, the names of all available options and
 their current values are displayed.
-Given one argument, return the value of the corresponding option.
-When called with two arguments, @code{dassl_options} set the option
+
+Given one argument, return the value of the option @var{opt}.
+
+When called with two arguments, @code{dassl_options} sets the option
 @var{opt} to value @var{val}.
 
 Options include
@@ -924,10 +935,13 @@ parameters for @code{dasrt}.
 @deftypefnx {Built-in Function} {val =} dasrt_options (@var{opt})
 @deftypefnx {Built-in Function} {} dasrt_options (@var{opt}, @var{val})
 Query or set options for the function @code{dasrt}.
+
 When called with no arguments, the names of all available options and
 their current values are displayed.
-Given one argument, return the value of the corresponding option.
-When called with two arguments, @code{dasrt_options} set the option
+
+Given one argument, return the value of the option @var{opt}.
+
+When called with two arguments, @code{dasrt_options} sets the option
 @var{opt} to value @var{val}.
 
 Options include

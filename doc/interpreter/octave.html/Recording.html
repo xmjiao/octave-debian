@@ -64,16 +64,18 @@ Next: <a href="Data-Retrieval.html#Data-Retrieval" accesskey="n" rel="next">Data
 <dt><a name="index-record"></a>Function File: <em></em> <strong>record</strong> <em>(<var>recorder</var>)</em></dt>
 <dt><a name="index-record-1"></a>Function File: <em></em> <strong>record</strong> <em>(<var>recorder</var>, <var>length</var>)</em></dt>
 <dd><p>Record audio without blocking using the audiorecorder object
-<var>recorder</var> until stopped or paused by the <var>stop</var> or
-<var>pause</var> method.  Given the optional argument <var>length</var>, record
-for <var>length</var> seconds.
+<var>recorder</var> until stopped or paused by the <var>stop</var> or <var>pause</var>
+method.
+</p>
+<p>Given the optional argument <var>length</var>, record for <var>length</var> seconds.
 </p></dd></dl>
 
 
 <a name="XREF_0040audiorecorder_002frecordblocking"></a><dl>
 <dt><a name="index-recordblocking"></a>Function File: <em></em> <strong>recordblocking</strong> <em>(<var>recorder</var>, <var>length</var>)</em></dt>
-<dd><p>Record audio with blocking (synchronous I/O).  You must specify the
-length of the recording in seconds.
+<dd><p>Record audio with blocking (synchronous I/O).
+</p>
+<p>The length of the recording in seconds (<var>length</var>) must be specified.
 </p></dd></dl>
 
 
@@ -91,15 +93,14 @@ length of the recording in seconds.
 
 <a name="XREF_0040audiorecorder_002fstop"></a><dl>
 <dt><a name="index-stop-1"></a>Function File: <em></em> <strong>stop</strong> <em>(<var>recorder</var>)</em></dt>
-<dd><p>Stop the audiorecorder object <var>recorder</var> and clean up any audio
-streams.
+<dd><p>Stop the audiorecorder object <var>recorder</var> and clean up any audio streams.
 </p></dd></dl>
 
 
 <a name="XREF_0040audiorecorder_002fisrecording"></a><dl>
 <dt><a name="index-isrecording"></a>Function File: <em></em> <strong>isrecording</strong> <em>(<var>recorder</var>)</em></dt>
-<dd><p>Return 1 if the audiorecorder object <var>recorder</var> is currently
-recording audio and 0 otherwise.
+<dd><p>Return true if the audiorecorder object <var>recorder</var> is currently recording
+audio and false otherwise.
 </p></dd></dl>
 
 

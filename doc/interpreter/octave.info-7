@@ -32,20 +32,32 @@ File: octave.info,  Node: Process ID Information,  Next: Environment Variables, 
  -- Built-in Function: pid = getpid ()
      Return the process id of the current process.
 
+     See also: *note getppid: XREFgetppid.
+
  -- Built-in Function: pid = getppid ()
      Return the process id of the parent process.
+
+     See also: *note getpid: XREFgetpid.
 
  -- Built-in Function: euid = geteuid ()
      Return the effective user id of the current process.
 
+     See also: *note getuid: XREFgetuid.
+
  -- Built-in Function: uid = getuid ()
      Return the real user id of the current process.
+
+     See also: *note geteuid: XREFgeteuid.
 
  -- Built-in Function: egid = getegid ()
      Return the effective group id of the current process.
 
+     See also: *note getgid: XREFgetgid.
+
  -- Built-in Function: gid = getgid ()
      Return the real group id of the current process.
+
+     See also: *note getegid: XREFgetegid.
 
 
 File: octave.info,  Node: Environment Variables,  Next: Current Working Directory,  Prev: Process ID Information,  Up: System Utilities
@@ -54,7 +66,9 @@ File: octave.info,  Node: Environment Variables,  Next: Current Working Director
 ==========================
 
  -- Built-in Function: getenv (VAR)
-     Return the value of the environment variable VAR.  For example,
+     Return the value of the environment variable VAR.
+
+     For example,
 
           getenv ("PATH")
 
@@ -98,7 +112,7 @@ File: octave.info,  Node: Current Working Directory,  Next: Password Database Fu
 
  -- Command: cd DIR
  -- Command: cd
- -- Built-in Function: OLD_DIR = cd DIR
+ -- Built-in Function: OLD_DIR = cd (DIR)
  -- Command: chdir ...
      Change the current working directory to DIR.
 
@@ -249,25 +263,43 @@ is referred to as a PW_STRUCT.
 
  -- Built-in Function: PW_STRUCT = getpwent ()
      Return a structure containing an entry from the password database,
-     opening it if necessary.  Once the end of the data has been
-     reached, 'getpwent' returns 0.
+     opening it if necessary.
+
+     Once the end of the data has been reached, 'getpwent' returns 0.
+
+     See also: *note setpwent: XREFsetpwent, *note endpwent:
+     XREFendpwent.
 
  -- Built-in Function: PW_STRUCT = getpwuid (UID).
      Return a structure containing the first entry from the password
-     database with the user ID UID.  If the user ID does not exist in
-     the database, 'getpwuid' returns 0.
+     database with the user ID UID.
+
+     If the user ID does not exist in the database, 'getpwuid' returns
+     0.
+
+     See also: *note getpwnam: XREFgetpwnam.
 
  -- Built-in Function: PW_STRUCT = getpwnam (NAME)
      Return a structure containing the first entry from the password
-     database with the user name NAME.  If the user name does not exist
-     in the database, 'getpwname' returns 0.
+     database with the user name NAME.
+
+     If the user name does not exist in the database, 'getpwname'
+     returns 0.
+
+     See also: *note getpwuid: XREFgetpwuid.
 
  -- Built-in Function: setpwent ()
      Return the internal pointer to the beginning of the password
      database.
 
+     See also: *note getpwent: XREFgetpwent, *note endpwent:
+     XREFendpwent.
+
  -- Built-in Function: endpwent ()
      Close the password database.
+
+     See also: *note getpwent: XREFgetpwent, *note setpwent:
+     XREFsetpwent.
 
 
 File: octave.info,  Node: Group Database Functions,  Next: System Information,  Prev: Password Database Functions,  Up: System Utilities
@@ -295,23 +327,41 @@ is referred to as a GRP_STRUCT.
 
  -- Built-in Function: GRP_STRUCT = getgrent ()
      Return an entry from the group database, opening it if necessary.
+
      Once the end of data has been reached, 'getgrent' returns 0.
+
+     See also: *note setgrent: XREFsetgrent, *note endgrent:
+     XREFendgrent.
 
  -- Built-in Function: GRP_STRUCT = getgrgid (GID).
      Return the first entry from the group database with the group ID
-     GID.  If the group ID does not exist in the database, 'getgrgid'
-     returns 0.
+     GID.
+
+     If the group ID does not exist in the database, 'getgrgid' returns
+     0.
+
+     See also: *note getgrnam: XREFgetgrnam.
 
  -- Built-in Function: GRP_STRUCT = getgrnam (NAME)
      Return the first entry from the group database with the group name
-     NAME.  If the group name does not exist in the database, 'getgrnam'
+     NAME.
+
+     If the group name does not exist in the database, 'getgrnam'
      returns 0.
+
+     See also: *note getgrgid: XREFgetgrgid.
 
  -- Built-in Function: setgrent ()
      Return the internal pointer to the beginning of the group database.
 
+     See also: *note getgrent: XREFgetgrent, *note endgrent:
+     XREFendgrent.
+
  -- Built-in Function: endgrent ()
      Close the group database.
+
+     See also: *note getgrent: XREFgetgrent, *note setgrent:
+     XREFsetgrent.
 
 
 File: octave.info,  Node: System Information,  Next: Hashing Functions,  Prev: Group Database Functions,  Up: System Utilities
@@ -351,7 +401,9 @@ File: octave.info,  Node: System Information,  Next: Hashing Functions,  Prev: G
      ispc: XREFispc.
 
  -- Built-in Function: [UTS, ERR, MSG] = uname ()
-     Return system information in the structure.  For example:
+     Return system information in the structure.
+
+     For example:
 
           uname ()
              => {
@@ -379,7 +431,7 @@ File: octave.info,  Node: System Information,  Next: Hashing Functions,  Prev: G
           processors available to the current process.
 
      'overridable'
-          likewise, but overridable through the 'OMP_NUM_THREADS'
+          same as 'current', but overridable through the 'OMP_NUM_THREADS'
           environment variable.
 
  -- Function File: ispc ()
@@ -402,8 +454,9 @@ File: octave.info,  Node: System Information,  Next: Hashing Functions,  Prev: G
 
  -- Built-in Function: isieee ()
      Return true if your computer _claims_ to conform to the IEEE
-     standard for floating point calculations.  No actual tests are
-     performed.
+     standard for floating point calculations.
+
+     No actual tests are performed.
 
  -- Function File: isdeployed ()
      Return true if the current program has been compiled and is running
@@ -567,10 +620,12 @@ File: octave.info,  Node: System Information,  Next: Hashing Functions,  Prev: G
 
  -- Built-in Function: getrusage ()
      Return a structure containing a number of statistics about the
-     current Octave process.  Not all fields are available on all
-     systems.  If it is not possible to get CPU time statistics, the CPU
-     time slots are set to zero.  Other missing data are replaced by
-     NaN.  The list of possible fields is:
+     current Octave process.
+
+     Not all fields are available on all systems.  If it is not possible
+     to get CPU time statistics, the CPU time slots are set to zero.
+     Other missing data are replaced by NaN.  The list of possible
+     fields is:
 
      'idrss'
           Unshared data size.
@@ -651,9 +706,10 @@ strings and files.  An example of the use of 'md5sum' function might be
 
  -- Built-in Function: md5sum (FILE)
  -- Built-in Function: md5sum (STR, OPT)
-     Calculate the MD5 sum of the file FILE.  If the second parameter
-     OPT exists and is true, then calculate the MD5 sum of the string
-     STR.
+     Calculate the MD5 sum of the file FILE.
+
+     If the second parameter OPT exists and is true, then calculate the
+     MD5 sum of the string STR.
 
 
 File: octave.info,  Node: Java Interface,  Next: Packages,  Prev: System Utilities,  Up: Top
@@ -701,6 +757,7 @@ call Java methods which return results to Octave.
  -- Function File: JARY = javaArray (CLASSNAME, M, N, ...)
 
      Create a Java array of size SZ with elements of class CLASSNAME.
+
      CLASSNAME may be a Java object representing a class or a string
      containing the fully qualified class name.  The size of the object
      may also be specified with individual integer arguments M, N, etc.
@@ -761,12 +818,13 @@ fields with 'java_get'.  An example of both styles is shown below.
      =>  3.4028e+38
 
  -- Function File: VAL = java_get (OBJ, NAME)
-     Get the value of the field NAME of the Java object OBJ.  For static
-     fields, OBJ can be a string representing the fully qualified name
-     of the corresponding class.
+     Get the value of the field NAME of the Java object OBJ.
+
+     For static fields, OBJ can be a string representing the fully
+     qualified name of the corresponding class.
 
      When OBJ is a regular Java object, structure-like indexing can be
-     used as a shortcut syntax.  For instance, the two following
+     used as a shortcut syntax.  For instance, the following two
      statements are equivalent
 
             java_get (x, "field1")
@@ -776,12 +834,13 @@ fields with 'java_get'.  An example of both styles is shown below.
      XREFjavaMethod, *note javaObject: XREFjavaObject.
 
  -- Function File: OBJ = java_set (OBJ, NAME, VAL)
-     Set the value of the field NAME of the Java object OBJ to VAL.  For
-     static fields, OBJ can be a string representing the fully qualified
-     named of the corresponding Java class.
+     Set the value of the field NAME of the Java object OBJ to VAL.
+
+     For static fields, OBJ can be a string representing the fully
+     qualified named of the corresponding Java class.
 
      When OBJ is a regular Java object, structure-like indexing can be
-     used as a shortcut syntax.  For instance, the two following
+     used as a shortcut syntax.  For instance, the following two
      statements are equivalent
 
             java_set (x, "field1", val)
@@ -815,9 +874,10 @@ styles is shown below.
  -- Built-in Function: RET = javaMethod (METHODNAME, OBJ)
  -- Built-in Function: RET = javaMethod (METHODNAME, OBJ, ARG1, ...)
      Invoke the method METHODNAME on the Java object OBJ with the
-     arguments ARG1, ... For static methods, OBJ can be a string
-     representing the fully qualified name of the corresponding class.
-     The function returns the result of the method invocation.
+     arguments ARG1, ....
+
+     For static methods, OBJ can be a string representing the fully
+     qualified name of the corresponding class.
 
      When OBJ is a regular Java object, structure-like indexing can be
      used as a shortcut syntax.  For instance, the two following
@@ -825,6 +885,8 @@ styles is shown below.
 
             ret = javaMethod ("method1", x, 1.0, "a string")
             ret = x.method1 (1.0, "a string")
+
+     'javaMethod' returns the result of the method invocation.
 
      See also: *note methods: XREFmethods, *note javaObject:
      XREFjavaObject.
@@ -851,7 +913,7 @@ code to execute.
 
         * If two output valuesDPATH and SPATH are requested, the first
           variable will contain the dynamic classpath and the second
-          will be contain the static classpath.
+          will contain the static classpath.
 
      If called with a single input parameter WHAT:
 
@@ -871,6 +933,7 @@ code to execute.
  -- Function File: javaaddpath (CLSPATH)
  -- Function File: javaaddpath (CLSPATH1, ...)
      Add CLSPATH to the dynamic class path of the Java virtual machine.
+
      CLSPATH may either be a directory where '.class' files are found,
      or a '.jar' file containing Java classes.  Multiple paths may be
      added at once by specifying additional arguments.
@@ -881,9 +944,11 @@ code to execute.
  -- Function File: javarmpath (CLSPATH)
  -- Function File: javarmpath (CLSPATH1, ...)
      Remove CLSPATH from the dynamic class path of the Java virtual
-     machine.  CLSPATH may either be a directory where '.class' files
-     are found, or a '.jar' file containing Java classes.  Multiple
-     paths may be removed at once by specifying additional arguments.
+     machine.
+
+     CLSPATH may either be a directory where '.class' files are found,
+     or a '.jar' file containing Java classes.  Multiple paths may be
+     removed at once by specifying additional arguments.
 
      See also: *note javaaddpath: XREFjavaaddpath, *note javaclasspath:
      XREFjavaclasspath.
@@ -911,24 +976,24 @@ interface between Octave and the Java Virtual Machine.
      "swing"
           Swing components for lightweight GUIs.
 
-     If FEATURE is supported and:
+     If FEATURE is supported and
 
-        * No output argument is requested:
+        * no output argument is requested:
 
           Return an empty string
 
-        * An output argument is requested:
+        * an output argument is requested:
 
           Return a struct with fields "feature" and "identifier" both
           empty
 
-     If FEATURE is not supported and:
+     If FEATURE is not supported and
 
-        * No output argument is requested:
+        * no output argument is requested:
 
-          Emit an error message.
+          Emit an error message
 
-        * An output argument is requested:
+        * an output argument is requested:
 
           Return a struct with field "feature" set to FEATURE and field
           "identifier" set to COMPONENT
@@ -943,7 +1008,7 @@ interface between Octave and the Java Virtual Machine.
      desktop.  Other features may be available if Octave was compiled
      with the Java Interface and Java is installed.
 
-     See also: *note error: XREFerror, *note usejava: XREFusejava.
+     See also: *note usejava: XREFusejava, *note error: XREFerror.
 
  -- Function File: usejava (FEATURE)
      Return true if the Java element FEATURE is available.
@@ -1014,8 +1079,9 @@ interface between Octave and the Java Virtual Machine.
  -- Built-in Function: OLD_VAL = java_matrix_autoconversion (NEW_VAL)
  -- Built-in Function: java_matrix_autoconversion (NEW_VAL, "local")
      Query or set the internal variable that controls whether Java
-     arrays are automatically converted to Octave matrices.  The default
-     value is false.
+     arrays are automatically converted to Octave matrices.
+
+     The default value is false.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -1030,6 +1096,7 @@ interface between Octave and the Java Virtual Machine.
  -- Built-in Function: java_unsigned_autoconversion (NEW_VAL, "local")
      Query or set the internal variable that controls how integer
      classes are converted when 'java_matrix_autoconversion' is enabled.
+
      When enabled, Java arrays of class Byte or Integer are converted to
      matrices of class uint8 or uint32 respectively.  The default value
      is true.
@@ -1075,8 +1142,10 @@ of dialog box.
 
      The message may have multiple lines separated by newline characters
      ("\n"), or it may be a cellstr array with one element for each
-     line.  The optional input TITLE (character string) can be used to
-     decorate the dialog caption.
+     line.
+
+     The optional input TITLE (character string) can be used to decorate
+     the dialog caption.
 
      The optional argument ICON selects a dialog icon.  It can be one of
      "none" (default), "error", "help", or "warn".
@@ -1097,8 +1166,10 @@ of dialog box.
 
      The message may have multiple lines separated by newline characters
      ("\n"), or it may be a cellstr array with one element for each
-     line.  The optional input TITLE (character string) can be used to
-     set the dialog caption.  The default title is "Error Dialog".
+     line.
+
+     The optional input TITLE (character string) can be used to set the
+     dialog caption.  The default title is "Error Dialog".
 
      The return value is always 1.
 
@@ -1115,8 +1186,10 @@ of dialog box.
 
      The message may have multiple lines separated by newline characters
      ("\n"), or it may be a cellstr array with one element for each
-     line.  The optional input TITLE (character string) can be used to
-     set the dialog caption.  The default title is "Help Dialog".
+     line.
+
+     The optional input TITLE (character string) can be used to set the
+     dialog caption.  The default title is "Help Dialog".
 
      The return value is always 1.
 
@@ -1169,8 +1242,10 @@ of dialog box.
  -- Function File: [SEL, OK] = listdlg (KEY, VALUE, ...)
      Return user inputs from a list dialog box in a vector of selection
      indices SEL and a flag OK indicating how the user closed the dialog
-     box.  The value of OK is 1 if the user closed the box with the OK
-     button, otherwise it is 0 and SEL is empty.
+     box.
+
+     The value of OK is 1 if the user closed the box with the OK button,
+     otherwise it is 0 and SEL is empty.
 
      The indices in SEL are 1-based.
 
@@ -1236,8 +1311,10 @@ of dialog box.
 
      The message may have multiple lines separated by newline characters
      ("\n"), or it may be a cellstr array with one element for each
-     line.  The optional TITLE (character string) can be used to
-     decorate the dialog caption.
+     line.
+
+     The optional TITLE (character string) can be used to decorate the
+     dialog caption.
 
      The string DEFAULT identifies the default button, which is
      activated by pressing the <ENTER> key.  It must match one of the
@@ -1260,8 +1337,10 @@ of dialog box.
 
      The message may have multiple lines separated by newline characters
      ("\n"), or it may be a cellstr array with one element for each
-     line.  The optional input TITLE (character string) can be used to
-     set the dialog caption.  The default title is "Warning Dialog".
+     line.
+
+     The optional input TITLE (character string) can be used to set the
+     dialog caption.  The default title is "Warning Dialog".
 
      The return value is always 1.
 
@@ -2206,10 +2285,11 @@ using 'missing_component_hook'.
  -- Built-in Function: OLD_VAL = missing_component_hook (NEW_VAL)
  -- Built-in Function: missing_component_hook (NEW_VAL, "local")
      Query or set the internal variable that specifies the function to
-     call when a component of Octave is missing.  This can be useful for
-     packagers that may split the Octave installation into multiple
-     sub-packages, for example, to provide a hint to users for how to
-     install the missing components.
+     call when a component of Octave is missing.
+
+     This can be useful for packagers that may split the Octave
+     installation into multiple sub-packages, for example, to provide a
+     hint to users for how to install the missing components.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -2602,8 +2682,7 @@ can
      which has the same characteristics as the vector returned from
      'size'.  For example:
 
-          dim_vector dv (2);
-          dv(0) = 2; dv(1) = 3;  // 2 rows, 3 columns
+          dim_vector dv (2, 3);  // 2 rows, 3 columns
           Matrix a (dv);
 
      This can be used on all matrix and array types.
@@ -5000,25 +5079,34 @@ path and the user will have to remember to type 'test ("funcname.cc")'.
      'assert (COND, ERRMSG, ...)'
      'assert (COND, MSG_ID, ERRMSG, ...)'
           Called with a single argument COND, 'assert' produces an error
-          if COND is false (numeric zero).  Any additional arguments are
-          passed to the 'error' function for processing.
+          if COND is false (numeric zero).
+
+          Any additional arguments are passed to the 'error' function
+          for processing.
 
      'assert (OBSERVED, EXPECTED)'
           Produce an error if observed is not the same as expected.
+
           Note that OBSERVED and EXPECTED can be scalars, vectors,
           matrices, strings, cell arrays, or structures.
 
      'assert (OBSERVED, EXPECTED, TOL)'
           Produce an error if observed is not the same as expected but
-          equality comparison for numeric data uses a tolerance TOL.  If
-          TOL is positive then it is an absolute tolerance which will
+          equality comparison for numeric data uses a tolerance TOL.
+
+          If TOL is positive then it is an absolute tolerance which will
           produce an error if 'abs (OBSERVED - EXPECTED) > abs (TOL)'.
+
           If TOL is negative then it is a relative tolerance which will
           produce an error if 'abs (OBSERVED - EXPECTED) > abs (TOL *
-          EXPECTED)'.  If EXPECTED is zero TOL will always be
-          interpreted as an absolute tolerance.  If TOL is not scalar
-          its dimensions must agree with those of OBSERVED and EXPECTED
-          and tests are performed on an element-by-element basis.
+          EXPECTED)'.
+
+          If EXPECTED is zero TOL will always be interpreted as an
+          absolute tolerance.
+
+          If TOL is not scalar its dimensions must agree with those of
+          OBSERVED and EXPECTED and tests are performed on an
+          element-by-element basis.
 
      See also: *note fail: XREFfail, *note test: XREFtest, *note error:
      XREFerror, *note isequal: XREFisequal.
@@ -5066,8 +5154,9 @@ B.2 Demonstration Functions
  -- Function File: demo ("NAME")
  -- Function File: demo ("NAME", N)
 
-     Run example code block N associated with the function NAME.  If N
-     is not specified, all examples are run.
+     Run example code block N associated with the function NAME.
+
+     If N is not specified, all examples are run.
 
      The preferred location for example code blocks is embedded within
      the script m-file immediately following the code that it exercises.
@@ -5131,8 +5220,9 @@ B.2 Demonstration Functions
  -- Function File: [S, IDX] = example (...)
 
      Display the code for example N associated with the function NAME,
-     but do not run it.  If N is not specified, all examples are
-     displayed.
+     but do not run it.
+
+     If N is not specified, all examples are displayed.
 
      When called with output arguments, the examples are returned in the
      form of a string S, with IDX indicating the ending position of the
@@ -5172,7 +5262,9 @@ B.2 Demonstration Functions
  -- Function File: [ORDER, N, T_F, T_F2] = speed (...)
 
      Determine the execution time of an expression (F) for various input
-     values (N).  The N are log-spaced from 1 to MAX_N.  For each N, an
+     values (N).
+
+     The N are log-spaced from 1 to MAX_N.  For each N, an
      initialization expression (INIT) is computed to create any data
      needed for the test.  If a second expression (F2) is given then the
      execution times of the two expressions are compared.  When called
@@ -5489,12 +5581,18 @@ by Octave.  Here are some tips for the writing of documentation strings.
    * An internal variable or subroutine of an Octave program might as
      well have a documentation string.
 
-   * The first line of the documentation string should consist of one or
-     two complete sentences that stand on their own as a summary.
+   * The first line of the documentation string should consist of a
+     summary of the function.
 
-     The documentation string can have additional lines that expand on
-     the details of how to use the function or variable.  The additional
-     lines should also be made up of complete sentences.
+     Subsequent lines may expand the general nature of the function.
+
+     After the introduction there should be paragraphs describing the
+     meaning and usage of each input, followed by the meaning and usage
+     of each output.
+
+     Finally, there may be more general information such as notes about
+     the algorithm used, references to scientific papers, notes about
+     any incompatibilities with MATLAB, etc.
 
    * For consistency, phrase the verb in the first sentence of a
      documentation string as an infinitive with "to" omitted.  For
@@ -7547,325 +7645,4 @@ installation of Octave.
      'config.status' file.  By default, 'CPPFLAGS' and 'LDFLAGS' are
      empty, 'CFLAGS' and 'CXXFLAGS' are set to "-g -O" and 'FFLAGS' is
      set to "-O".
-
-
-File: octave.info,  Node: Emacs Octave Support,  Next: Grammar and Parser,  Prev: Installation,  Up: Top
-
-Appendix H Emacs Octave Support
-*******************************
-
-The development of Octave code can greatly be facilitated using Emacs
-with Octave mode, a major mode for editing Octave files which can e.g.
-automatically indent the code, do some of the typing (with Abbrev mode)
-and show keywords, comments, strings, etc. in different faces (with
-Font-lock mode on devices that support it).
-
-   It is also possible to run Octave from within Emacs, either by
-directly entering commands at the prompt in a buffer in Inferior Octave
-mode, or by interacting with Octave from within a file with Octave code.
-This is useful in particular for debugging Octave code.
-
-   Finally, you can convince Octave to use the Emacs info reader for
-'help -i'.
-
-   All functionality is provided by the Emacs Lisp package EOS (for
-"Emacs Octave Support").  This chapter describes how to set up and use
-this package.
-
-   Please contact <Kurt.Hornik@wu-wien.ac.at> if you have any questions
-or suggestions on using EOS.
-
-* Menu:
-
-* Installing EOS::
-* Using Octave Mode::
-* Running Octave from Within Emacs::
-* Using the Emacs Info Reader for Octave::
-
-
-File: octave.info,  Node: Installing EOS,  Next: Using Octave Mode,  Up: Emacs Octave Support
-
-H.1 Installing EOS
-==================
-
-The Emacs package EOS consists of the three files 'octave-mod.el',
-'octave-inf.el', and 'octave-hlp.el'.  These files, or better yet their
-byte-compiled versions, should be somewhere in your Emacs load-path.
-
-   If you have GNU Emacs with a version number at least as high as
-19.35, you are all set up, because EOS is respectively will be part of
-GNU Emacs as of version 19.35.
-
-   Otherwise, copy the three files from the 'emacs' subdirectory of the
-Octave distribution to a place where Emacs can find them (this depends
-on how your Emacs was installed).  Byte-compile them for speed if you
-want.
-
-
-File: octave.info,  Node: Using Octave Mode,  Next: Running Octave from Within Emacs,  Prev: Installing EOS,  Up: Emacs Octave Support
-
-H.2 Using Octave Mode
-=====================
-
-If you are lucky, your sysadmins have already arranged everything so
-that Emacs automatically goes into Octave mode whenever you visit an
-Octave code file as characterized by its extension '.m'.  If not,
-proceed as follows.
-
-  1. To begin using Octave mode for all '.m' files you visit, add the
-     following lines to a file loaded by Emacs at startup time,
-     typically your '~/.emacs' file:
-
-          (autoload 'octave-mode "octave-mod" nil t)
-          (setq auto-mode-alist
-                (cons '("\\.m$" . octave-mode) auto-mode-alist))
-
-  2. Finally, to turn on the abbrevs, auto-fill and font-lock features
-     automatically, also add the following lines to one of the Emacs
-     startup files:
-          (add-hook 'octave-mode-hook
-                    (lambda ()
-                      (abbrev-mode 1)
-                      (auto-fill-mode 1)
-                      (if (eq window-system 'x)
-                          (font-lock-mode 1))))
-     See the Emacs manual for more information about how to customize
-     Font-lock mode.
-
-   In Octave mode, the following special Emacs commands can be used in
-addition to the standard Emacs commands.
-
-'C-h m'
-     Describe the features of Octave mode.
-
-'LFD'
-     Reindent the current Octave line, insert a newline and indent the
-     new line ('octave-reindent-then-newline-and-indent').  An abbrev
-     before point is expanded if 'abbrev-mode' is non-'nil'.
-
-'TAB'
-     Indents current Octave line based on its contents and on previous
-     lines ('indent-according-to-mode').
-
-';'
-     Insert an "electric" semicolon ('octave-electric-semi').  If
-     'octave-auto-indent' is non-'nil', reindent the current line.  If
-     'octave-auto-newline' is non-'nil', automagically insert a newline
-     and indent the new line.
-
-'`'
-     Start entering an abbreviation ('octave-abbrev-start').  If Abbrev
-     mode is turned on, typing '`C-h' or '`?' lists all abbrevs.  Any
-     other key combination is executed normally.  Note that all Octave
-     abbrevs start with a grave accent.
-
-'M-LFD'
-     Break line at point and insert continuation marker and alignment
-     ('octave-split-line').
-
-'M-TAB'
-     Perform completion on Octave symbol preceding point, comparing that
-     symbol against Octave's reserved words and built-in variables
-     ('octave-complete-symbol').
-
-'M-C-a'
-     Move backward to the beginning of a function
-     ('octave-beginning-of-defun').  With prefix argument N, do it that
-     many times if N is positive; otherwise, move forward to the N-th
-     following beginning of a function.
-
-'M-C-e'
-     Move forward to the end of a function ('octave-end-of-defun').
-     With prefix argument N, do it that many times if N is positive;
-     otherwise, move back to the N-th preceding end of a function.
-
-'M-C-h'
-     Puts point at beginning and mark at the end of the current Octave
-     function, i.e., the one containing point or following point
-     ('octave-mark-defun').
-
-'M-C-q'
-     Properly indents the Octave function which contains point
-     ('octave-indent-defun').
-
-'M-;'
-     If there is no comment already on this line, create a code-level
-     comment (started by two comment characters) if the line is empty,
-     or an in-line comment (started by one comment character) otherwise
-     ('octave-indent-for-comment').  Point is left after the start of
-     the comment which is properly aligned.
-
-'C-c ;'
-     Puts the comment character '#' (more precisely, the string value of
-     'octave-comment-start') at the beginning of every line in the
-     region ('octave-comment-region').  With just 'C-u' prefix argument,
-     uncomment each line in the region.  A numeric prefix argument N
-     means use N comment characters.
-
-'C-c :'
-     Uncomments every line in the region ('octave-uncomment-region').
-
-'C-c C-p'
-     Move one line of Octave code backward, skipping empty and comment
-     lines ('octave-previous-code-line').  With numeric prefix argument
-     N, move that many code lines backward (forward if N is negative).
-
-'C-c C-n'
-     Move one line of Octave code forward, skipping empty and comment
-     lines ('octave-next-code-line').  With numeric prefix argument N,
-     move that many code lines forward (backward if N is negative).
-
-'C-c C-a'
-     Move to the 'real' beginning of the current line
-     ('octave-beginning-of-line').  If point is in an empty or comment
-     line, simply go to its beginning; otherwise, move backwards to the
-     beginning of the first code line which is not inside a continuation
-     statement, i.e., which does not follow a code line ending in '...'
-     or '\', or is inside an open parenthesis list.
-
-'C-c C-e'
-     Move to the 'real' end of the current line ('octave-end-of-line').
-     If point is in a code line, move forward to the end of the first
-     Octave code line which does not end in '...' or '\' or is inside an
-     open parenthesis list.  Otherwise, simply go to the end of the
-     current line.
-
-'C-c M-C-n'
-     Move forward across one balanced begin-end block of Octave code
-     ('octave-forward-block').  With numeric prefix argument N, move
-     forward across N such blocks (backward if N is negative).
-
-'C-c M-C-p'
-     Move back across one balanced begin-end block of Octave code
-     ('octave-backward-block').  With numeric prefix argument N, move
-     backward across N such blocks (forward if N is negative).
-
-'C-c M-C-d'
-     Move forward down one begin-end block level of Octave code
-     ('octave-down-block').  With numeric prefix argument, do it that
-     many times; a negative argument means move backward, but still go
-     down one level.
-
-'C-c M-C-u'
-     Move backward out of one begin-end block level of Octave code
-     ('octave-backward-up-block').  With numeric prefix argument, do it
-     that many times; a negative argument means move forward, but still
-     to a less deep spot.
-
-'C-c M-C-h'
-     Put point at the beginning of this block, mark at the end
-     ('octave-mark-block').  The block marked is the one that contains
-     point or follows point.
-
-'C-c ]'
-     Close the current block on a separate line ('octave-close-block').
-     An error is signaled if no block to close is found.
-
-'C-c f'
-     Insert a function skeleton, prompting for the function's name,
-     arguments and return values which have to be entered without
-     parentheses ('octave-insert-defun').
-
-'C-c C-h'
-     Search the function, operator and variable indices of all info
-     files with documentation for Octave for entries ('octave-help').
-     If used interactively, the entry is prompted for with completion.
-     If multiple matches are found, one can cycle through them using the
-     standard ',' ('Info-index-next') command of the Info reader.
-
-     The variable 'octave-help-files' is a list of files to search
-     through and defaults to '("octave").  If there is also an Octave
-     Local Guide with corresponding info file, say, 'octave-LG', you can
-     have 'octave-help' search both files by
-          (setq octave-help-files '("octave" "octave-LG"))
-     in one of your Emacs startup files.
-
-   A common problem is that the <RET> key does _not_ indent the line to
-where the new text should go after inserting the newline.  This is
-because the standard Emacs convention is that <RET> (aka 'C-m') just
-adds a newline, whereas <LFD> (aka 'C-j') adds a newline and indents it.
-This is particularly inconvenient for users with keyboards which do not
-have a special <LFD> key at all; in such cases, it is typically more
-convenient to use <RET> as the <LFD> key (rather than typing 'C-j').
-
-   You can make <RET> do this by adding
-     (define-key octave-mode-map "\C-m"
-       'octave-reindent-then-newline-and-indent)
-to one of your Emacs startup files.  Another, more generally applicable
-solution is
-     (defun RET-behaves-as-LFD ()
-       (let ((x (key-binding "\C-j")))
-         (local-set-key "\C-m" x)))
-     (add-hook 'octave-mode-hook 'RET-behaves-as-LFD)
-(this works for all modes by adding to the startup hooks, without having
-to know the particular binding of <RET> in that mode!).  Similar
-considerations apply for using <M-RET> as <M-LFD>.  As Barry A. Warsaw
-<bwarsaw@cnri.reston.va.us> says in the documentation for his 'cc-mode',
-"This is a very common question.  ':-)' If you want this to be the
-default behavior, don't lobby me, lobby RMS!"
-
-   The following variables can be used to customize Octave mode.
-
-'octave-auto-indent'
-     Non-'nil' means auto-indent the current line after a semicolon or
-     space.  Default is 'nil'.
-
-'octave-auto-newline'
-     Non-'nil' means auto-insert a newline and indent after semicolons
-     are typed.  The default value is 'nil'.
-
-'octave-blink-matching-block'
-     Non-'nil' means show matching begin of block when inserting a
-     space, newline or ';' after an else or end keyword.  Default is
-     't'.  This is an extremely useful feature for automatically
-     verifying that the keywords match--if they don't, an error message
-     is displayed.
-
-'octave-block-offset'
-     Extra indentation applied to statements in block structures.
-     Default is 2.
-
-'octave-continuation-offset'
-     Extra indentation applied to Octave continuation lines.  Default is
-     4.
-
-'octave-continuation-string'
-     String used for Octave continuation lines.  Normally '\'.
-
-'octave-mode-startup-message'
-     If 't' (default), a startup message is displayed when Octave mode
-     is called.
-
-   If Font Lock mode is enabled, Octave mode will display
-
-   * strings in 'font-lock-string-face'
-
-   * comments in 'font-lock-comment-face'
-
-   * the Octave reserved words (such as all block keywords) and the text
-     functions (such as 'cd' or 'who') which are also reserved using
-     'font-lock-keyword-face'
-
-   * the built-in operators ('&&', '==', ...) using
-     'font-lock-reference-face'
-
-   * and the function names in function declarations in
-     'font-lock-function-name-face'.
-
-   There is also rudimentary support for Imenu (currently, function
-names can be indexed).
-
-   You can generate TAGS files for Emacs from Octave '.m' files using
-the shell script 'octave-tags' that is installed alongside your copy of
-Octave.
-
-   Customization of Octave mode can be performed by modification of the
-variable 'octave-mode-hook'.  If the value of this variable is
-non-'nil', turning on Octave mode calls its value.
-
-   If you discover a problem with Octave mode, you can conveniently send
-a bug report using 'C-c C-b' ('octave-submit-bug-report').  This
-automatically sets up a mail buffer with version information already
-added.  You just need to add a description of the problem, including a
-reproducible test case and send the message.
 

@@ -81,8 +81,9 @@ variable.
 <a name="XREFisnumeric"></a><dl>
 <dt><a name="index-isnumeric"></a>Built-in Function: <em></em> <strong>isnumeric</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>Return true if <var>x</var> is a numeric object, i.e., an integer, real, or
-complex array.  Logical and character arrays are not considered to be
-numeric.
+complex array.
+</p>
+<p>Logical and character arrays are not considered to be numeric.
 </p>
 <p><strong>See also:</strong> <a href="Integer-Data-Types.html#XREFisinteger">isinteger</a>, <a href="#XREFisfloat">isfloat</a>, <a href="#XREFisreal">isreal</a>, <a href="#XREFiscomplex">iscomplex</a>, <a href="#XREFislogical">islogical</a>, <a href="Character-Arrays.html#XREFischar">ischar</a>, <a href="Basic-Usage-of-Cell-Arrays.html#XREFiscell">iscell</a>, <a href="Creating-Structures.html#XREFisstruct">isstruct</a>, <a href="Built_002din-Data-Types.html#XREFisa">isa</a>.
 </p></dd></dl>
@@ -100,7 +101,8 @@ numeric.
 <a name="XREFisfloat"></a><dl>
 <dt><a name="index-isfloat"></a>Built-in Function: <em></em> <strong>isfloat</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>Return true if <var>x</var> is a floating-point numeric object.
-Objects of class double or single are floating-point objects.
+</p>
+<p>Objects of class double or single are floating-point objects.
 </p>
 <p><strong>See also:</strong> <a href="Integer-Data-Types.html#XREFisinteger">isinteger</a>, <a href="Character-Arrays.html#XREFischar">ischar</a>, <a href="#XREFislogical">islogical</a>, <a href="#XREFisnumeric">isnumeric</a>, <a href="Built_002din-Data-Types.html#XREFisa">isa</a>.
 </p></dd></dl>
@@ -109,7 +111,8 @@ Objects of class double or single are floating-point objects.
 <a name="XREFisreal"></a><dl>
 <dt><a name="index-isreal"></a>Built-in Function: <em></em> <strong>isreal</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>Return true if <var>x</var> is a non-complex matrix or scalar.
-For compatibility with <small>MATLAB</small>, this includes logical and character
+</p>
+<p>For compatibility with <small>MATLAB</small>, this includes logical and character
 matrices.
 </p>
 <p><strong>See also:</strong> <a href="#XREFiscomplex">iscomplex</a>, <a href="#XREFisnumeric">isnumeric</a>, <a href="Built_002din-Data-Types.html#XREFisa">isa</a>.
@@ -182,7 +185,8 @@ consequence a 1x1 array, or scalar, is also a vector.
 by <var>tol</var>.
 </p>
 <p>The default tolerance is zero (uses faster code).
-Matrix <var>A</var> is considered symmetric if
+</p>
+<p>Matrix <var>A</var> is considered symmetric if
 <code>norm (<var>A</var> - <var>A</var>.', Inf) / norm (<var>A</var>, Inf) &lt; <var>tol</var></code>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFishermitian">ishermitian</a>, <a href="#XREFisdefinite">isdefinite</a>.
@@ -196,7 +200,8 @@ Matrix <var>A</var> is considered symmetric if
 <var>tol</var>.
 </p>
 <p>The default tolerance is zero (uses faster code).
-Matrix <var>A</var> is considered symmetric if
+</p>
+<p>Matrix <var>A</var> is considered symmetric if
 <code>norm (<var>A</var> - <var>A</var>', Inf) / norm (<var>A</var>, Inf) &lt; <var>tol</var></code>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFissymmetric">issymmetric</a>, <a href="#XREFisdefinite">isdefinite</a>.
@@ -208,8 +213,9 @@ Matrix <var>A</var> is considered symmetric if
 <dt><a name="index-isdefinite-1"></a>Function File: <em></em> <strong>isdefinite</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
 <dd><p>Return 1 if <var>A</var> is symmetric positive definite within the
 tolerance specified by <var>tol</var> or 0 if <var>A</var> is symmetric
-positive semidefinite.  Otherwise, return -1.  If <var>tol</var>
-is omitted, use a tolerance of
+positive semidefinite.  Otherwise, return -1.
+</p>
+<p>If <var>tol</var> is omitted, use a tolerance of
 <code>100 * eps * norm (<var>A</var>, &quot;fro&quot;)</code>
 </p>
 <p><strong>See also:</strong> <a href="#XREFissymmetric">issymmetric</a>, <a href="#XREFishermitian">ishermitian</a>.
@@ -240,8 +246,8 @@ above the main diagonal.
 <dt><a name="index-istril"></a>Function File: <em></em> <strong>istril</strong> <em>(<var>A</var>)</em></dt>
 <dd><p>Return true if <var>A</var> is a lower triangular matrix.
 </p>
-<p>A lower triangular matrix has nonzero entries only on the main diagonal
-and below.
+<p>A lower triangular matrix has nonzero entries only on the main diagonal and
+below.
 </p>
 <p><strong>See also:</strong> <a href="#XREFistriu">istriu</a>, <a href="#XREFisbanded">isbanded</a>, <a href="#XREFisdiag">isdiag</a>, <a href="Rearranging-Matrices.html#XREFtril">tril</a>, <a href="Basic-Matrix-Functions.html#XREFbandwidth">bandwidth</a>.
 </p></dd></dl>
@@ -251,8 +257,8 @@ and below.
 <dt><a name="index-istriu"></a>Function File: <em></em> <strong>istriu</strong> <em>(<var>A</var>)</em></dt>
 <dd><p>Return true if <var>A</var> is an upper triangular matrix.
 </p>
-<p>An upper triangular matrix has nonzero entries only on the main diagonal
-and above.
+<p>An upper triangular matrix has nonzero entries only on the main diagonal and
+above.
 </p>
 <p><strong>See also:</strong> <a href="#XREFisdiag">isdiag</a>, <a href="#XREFisbanded">isbanded</a>, <a href="#XREFistril">istril</a>, <a href="Rearranging-Matrices.html#XREFtriu">triu</a>, <a href="Basic-Matrix-Functions.html#XREFbandwidth">bandwidth</a>.
 </p></dd></dl>
@@ -260,8 +266,8 @@ and above.
 
 <a name="XREFisprime"></a><dl>
 <dt><a name="index-isprime"></a>Function File: <em></em> <strong>isprime</strong> <em>(<var>x</var>)</em></dt>
-<dd><p>Return a logical array which is true where the elements of <var>x</var> are
-prime numbers and false where they are not.
+<dd><p>Return a logical array which is true where the elements of <var>x</var> are prime
+numbers and false where they are not.
 </p>
 <p>A prime number is conventionally defined as a positive integer greater than
 1 (e.g., 2, 3, &hellip;) which is divisible only by itself and 1.  Octave

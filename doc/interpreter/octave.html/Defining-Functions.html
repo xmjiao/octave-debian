@@ -269,9 +269,11 @@ command line.
 <dt><a name="index-silent_005ffunctions-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>silent_functions</strong> <em>(<var>new_val</var>)</em></dt>
 <dt><a name="index-silent_005ffunctions-2"></a>Built-in Function: <em></em> <strong>silent_functions</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that controls whether internal
-output from a function is suppressed.  If this option is disabled,
-Octave will display the results produced by evaluating expressions
-within a function body that are not terminated with a semicolon.
+output from a function is suppressed.
+</p>
+<p>If this option is disabled, Octave will display the results produced by
+evaluating expressions within a function body that are not terminated with
+a semicolon.
 </p>
 <p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
 variable is changed locally for the function and any subroutines it calls.

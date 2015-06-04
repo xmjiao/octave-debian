@@ -144,12 +144,11 @@ is <code>&quot;NA&quot;</code>.
 <p>Interpolate reference data <var>x</var>, <var>y</var>, <var>z</var>, <var>v</var> to determine
 <var>vi</var> at the coordinates <var>xi</var>, <var>yi</var>, <var>zi</var>.  The reference
 data <var>x</var>, <var>y</var>, <var>z</var> can be matrices, as returned by
-<code>meshgrid</code>, in which case the sizes of
-<var>x</var>, <var>y</var>, <var>z</var>, and <var>v</var> must be equal.  If <var>x</var>, <var>y</var>,
-<var>z</var> are vectors describing a cubic grid then
-<code>length (<var>x</var>) == columns (<var>v</var>)</code>,
-<code>length (<var>y</var>) == rows (<var>v</var>)</code>,
-and <code>length (<var>z</var>) == size (<var>v</var>, 3)</code>.  In either case the input
+<code>meshgrid</code>, in which case the sizes of <var>x</var>, <var>y</var>, <var>z</var>, and
+<var>v</var> must be equal.  If <var>x</var>, <var>y</var>, <var>z</var> are vectors describing
+a cubic grid then <code>length (<var>x</var>) == columns (<var>v</var>)</code>,
+<code>length (<var>y</var>) == rows (<var>v</var>)</code>, and
+<code>length (<var>z</var>) == size (<var>v</var>, 3)</code>.  In either case the input
 data must be strictly monotonic.
 </p>
 <p>If called without <var>x</var>, <var>y</var>, <var>z</var>, and just a single reference
@@ -209,7 +208,8 @@ any other <var>method</var> is <code>&quot;NA&quot;</code>.
 <dt><a name="index-interpn-5"></a>Function File: <em><var>vi</var> =</em> <strong>interpn</strong> <em>(&hellip;, <var>method</var>, <var>extrapval</var>)</em></dt>
 <dd>
 <p>Perform <var>n</var>-dimensional interpolation, where <var>n</var> is at least two.
-Each element of the <var>n</var>-dimensional array <var>v</var> represents a value
+</p>
+<p>Each element of the <var>n</var>-dimensional array <var>v</var> represents a value
 at a location given by the parameters <var>x1</var>, <var>x2</var>, &hellip;, <var>xn</var>.
 The parameters <var>x1</var>, <var>x2</var>, &hellip;, <var>xn</var> are either
 <var>n</var>-dimensional arrays of the same size as the array <var>v</var> in

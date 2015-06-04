@@ -72,12 +72,13 @@ interpolation are <code>griddata</code>, <code>griddata3</code> and <code>gridda
 <dt><a name="index-griddata-2"></a>Function File: <em>[<var>xi</var>, <var>yi</var>, <var>zi</var>] =</em> <strong>griddata</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Generate a regular mesh from irregular data using interpolation.
-The function is defined by <code><var>z</var> = f (<var>x</var>, <var>y</var>)</code>.
-Inputs <code><var>x</var>, <var>y</var>, <var>z</var></code> are vectors of the same length
-or <code><var>x</var>, <var>y</var></code> are vectors and <code><var>z</var></code> is matrix.
 </p>
-<p>The interpolation points are all <code>(<var>xi</var>, <var>yi</var>)</code>.  If
-<var>xi</var>, <var>yi</var> are vectors then they are made into a 2-D mesh.
+<p>The function is defined by <code><var>z</var> = f (<var>x</var>, <var>y</var>)</code>.  Inputs
+<code><var>x</var>, <var>y</var>, <var>z</var></code> are vectors of the same length or
+<code><var>x</var>, <var>y</var></code> are vectors and <code><var>z</var></code> is matrix.
+</p>
+<p>The interpolation points are all <code>(<var>xi</var>, <var>yi</var>)</code>.  If <var>xi</var>,
+<var>yi</var> are vectors then they are made into a 2-D mesh.
 </p>
 <p>The interpolation method can be <code>&quot;nearest&quot;</code>, <code>&quot;cubic&quot;</code> or
 <code>&quot;linear&quot;</code>.  If method is omitted it defaults to <code>&quot;linear&quot;</code>.
@@ -92,7 +93,8 @@ or <code><var>x</var>, <var>y</var></code> are vectors and <code><var>z</var></c
 <dt><a name="index-griddata3-2"></a>Function File: <em><var>vi</var> =</em> <strong>griddata3</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>v</var>, <var>xi</var>, <var>yi</var>, <var>zi</var>, <var>method</var>, <var>options</var>)</em></dt>
 <dd>
 <p>Generate a regular mesh from irregular data using interpolation.
-The function is defined by <code><var>v</var> = f (<var>x</var>, <var>y</var>, <var>z</var>)</code>.
+</p>
+<p>The function is defined by <code><var>v</var> = f (<var>x</var>, <var>y</var>, <var>z</var>)</code>.
 The interpolation points are specified by <var>xi</var>, <var>yi</var>, <var>zi</var>.
 </p>
 <p>The interpolation method can be <code>&quot;nearest&quot;</code> or <code>&quot;linear&quot;</code>.
@@ -113,7 +115,8 @@ values.
 <dt><a name="index-griddatan-2"></a>Function File: <em><var>yi</var> =</em> <strong>griddatan</strong> <em>(<var>x</var>, <var>y</var>, <var>xi</var>, <var>method</var>, <var>options</var>)</em></dt>
 <dd>
 <p>Generate a regular mesh from irregular data using interpolation.
-The function is defined by <code><var>y</var> = f (<var>x</var>)</code>.
+</p>
+<p>The function is defined by <code><var>y</var> = f (<var>x</var>)</code>.
 The interpolation points are all <var>xi</var>.
 </p>
 <p>The interpolation method can be <code>&quot;nearest&quot;</code> or <code>&quot;linear&quot;</code>.

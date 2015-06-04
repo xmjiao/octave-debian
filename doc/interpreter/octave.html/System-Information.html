@@ -64,8 +64,8 @@ Next: <a href="Hashing-Functions.html#Hashing-Functions" accesskey="n" rel="next
 <dt><a name="index-computer-2"></a>Function File: <em>[<var>c</var>, <var>maxsize</var>] =</em> <strong>computer</strong> <em>()</em></dt>
 <dt><a name="index-computer-3"></a>Function File: <em>[<var>c</var>, <var>maxsize</var>, <var>endian</var>] =</em> <strong>computer</strong> <em>()</em></dt>
 <dt><a name="index-computer-4"></a>Function File: <em><var>arch</var> =</em> <strong>computer</strong> <em>(&quot;arch&quot;)</em></dt>
-<dd><p>Print or return a string of the form <var>cpu</var>-<var>vendor</var>-<var>os</var>
-that identifies the type of computer that Octave is running on.
+<dd><p>Print or return a string of the form <var>cpu</var>-<var>vendor</var>-<var>os</var> that
+identifies the type of computer that Octave is running on.
 </p>
 <p>If invoked with an output argument, the value is returned instead of
 printed.  For example:
@@ -78,13 +78,13 @@ mycomp = computer ()
    &rArr; mycomp = &quot;i586-pc-linux-gnu&quot;
 </pre></div>
 
-<p>If two output arguments are requested, also return the maximum number
-of elements for an array.  This will depend on whether Octave has been
+<p>If two output arguments are requested, also return the maximum number of
+elements for an array.  This will depend on whether Octave has been
 compiled with 32-bit or 64-bit index vectors.
 </p>
-<p>If three output arguments are requested, also return the byte order
-of the current system as a character (<code>&quot;B&quot;</code> for big-endian or
-<code>&quot;L&quot;</code> for little-endian).
+<p>If three output arguments are requested, also return the byte order of the
+current system as a character (<code>&quot;B&quot;</code> for big-endian or <code>&quot;L&quot;</code>
+for little-endian).
 </p>
 <p>If the argument <code>&quot;arch&quot;</code> is specified, return a string indicating the
 architecture of the computer on which Octave is running.
@@ -95,7 +95,9 @@ architecture of the computer on which Octave is running.
 
 <a name="XREFuname"></a><dl>
 <dt><a name="index-uname"></a>Built-in Function: <em>[<var>uts</var>, <var>err</var>, <var>msg</var>] =</em> <strong>uname</strong> <em>()</em></dt>
-<dd><p>Return system information in the structure.  For example:
+<dd><p>Return system information in the structure.
+</p>
+<p>For example:
 </p>
 <div class="example">
 <pre class="example">uname ()
@@ -132,8 +134,8 @@ are counted as follows:
 </p>
 </dd>
 <dt><code>overridable</code></dt>
-<dd><p>likewise, but overridable through the <code><span class="nolinebreak">OMP_NUM_THREADS</span></code><!-- /@w --> environment
-variable.
+<dd><p>same as <code>current</code>, but overridable through the <code><span class="nolinebreak">OMP_NUM_THREADS</span></code><!-- /@w -->
+environment variable.
 </p></dd>
 </dl>
 </dd></dl>
@@ -166,7 +168,9 @@ variable.
 <a name="XREFisieee"></a><dl>
 <dt><a name="index-isieee"></a>Built-in Function: <em></em> <strong>isieee</strong> <em>()</em></dt>
 <dd><p>Return true if your computer <em>claims</em> to conform to the IEEE standard
-for floating point calculations.  No actual tests are performed.
+for floating point calculations.
+</p>
+<p>No actual tests are performed.
 </p></dd></dl>
 
 
@@ -186,7 +190,6 @@ the Octave interpreter.
 </p>
 <p><code>isstudent</code> always returns false in Octave.
 </p>
-
 <p><strong>See also:</strong> <a href="Logical-Values.html#XREFfalse">false</a>.
 </p></dd></dl>
 
@@ -195,7 +198,6 @@ the Octave interpreter.
 <dt><a name="index-OCTAVE_005fHOME"></a>Built-in Function: <em></em> <strong>OCTAVE_HOME</strong> <em>()</em></dt>
 <dd><p>Return the name of the top-level Octave installation directory.
 </p>
-
 <p><strong>See also:</strong> <a href="Controlling-Subprocesses.html#XREFEXEC_005fPATH">EXEC_PATH</a>, <a href="Loading-and-Saving-Images.html#XREFIMAGE_005fPATH">IMAGE_PATH</a>.
 </p></dd></dl>
 
@@ -204,8 +206,8 @@ the Octave interpreter.
 <dt><a name="index-matlabroot"></a>Function File: <em></em> <strong>matlabroot</strong> <em>()</em></dt>
 <dd><p>Return the name of the top-level Octave installation directory.
 </p>
-<p>This is an alias for the function <code><span class="nolinebreak">OCTAVE_HOME</span></code><!-- /@w --> provided
-for compatibility.
+<p>This is an alias for the function <code><span class="nolinebreak">OCTAVE_HOME</span></code><!-- /@w --> provided for
+compatibility.
 </p>
 <p><strong>See also:</strong> <a href="#XREFOCTAVE_005fHOME">OCTAVE_HOME</a>.
 </p></dd></dl>
@@ -274,16 +276,15 @@ following fields.
 <dt><a name="index-compare_005fversions"></a>Function File: <em></em> <strong>compare_versions</strong> <em>(<var>v1</var>, <var>v2</var>, <var>operator</var>)</em></dt>
 <dd><p>Compare two version strings using the given <var>operator</var>.
 </p>
-<p>This function assumes that versions <var>v1</var> and <var>v2</var> are
-arbitrarily long strings made of numeric and period characters
-possibly followed by an arbitrary string (e.g., <code>&quot;1.2.3&quot;</code>,
-<code>&quot;0.3&quot;</code>, <code>&quot;0.1.2+&quot;</code>, or <code>&quot;1.2.3.4-test1&quot;</code>).
+<p>This function assumes that versions <var>v1</var> and <var>v2</var> are arbitrarily
+long strings made of numeric and period characters possibly followed by an
+arbitrary string (e.g., <code>&quot;1.2.3&quot;</code>, <code>&quot;0.3&quot;</code>, <code>&quot;0.1.2+&quot;</code>,
+or <code>&quot;1.2.3.4-test1&quot;</code>).
 </p>
-<p>The version is first split into numeric and character portions
-and then the parts are padded to be the same length (i.e., <code>&quot;1.1&quot;</code>
-would be padded to be <code>&quot;1.1.0&quot;</code> when being compared with
-<code>&quot;1.1.1&quot;</code>, and separately, the character parts of the strings are
-padded with nulls).
+<p>The version is first split into numeric and character portions and then
+the parts are padded to be the same length (i.e., <code>&quot;1.1&quot;</code> would be
+padded to be <code>&quot;1.1.0&quot;</code> when being compared with <code>&quot;1.1.1&quot;</code>, and
+separately, the character parts of the strings are padded with nulls).
 </p>
 <p>The operator can be any logical operator from the set
 </p>
@@ -383,10 +384,11 @@ specified option.
 <a name="XREFgetrusage"></a><dl>
 <dt><a name="index-getrusage"></a>Built-in Function: <em></em> <strong>getrusage</strong> <em>()</em></dt>
 <dd><p>Return a structure containing a number of statistics about the current
-Octave process.  Not all fields are available on all systems.  If it is
-not possible to get CPU time statistics, the CPU time slots are set to
-zero.  Other missing data are replaced by NaN.  The list of possible
-fields is:
+Octave process.
+</p>
+<p>Not all fields are available on all systems.  If it is not possible to get
+CPU time statistics, the CPU time slots are set to zero.  Other missing data
+are replaced by NaN.  The list of possible fields is:
 </p>
 <dl compact="compact">
 <dt><code>idrss</code></dt>

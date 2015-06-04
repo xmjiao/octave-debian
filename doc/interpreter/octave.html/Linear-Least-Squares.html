@@ -69,16 +69,17 @@ the <code>gls</code> is needed.
 </p>
 <a name="XREFols"></a><dl>
 <dt><a name="index-ols"></a>Function File: <em>[<var>beta</var>, <var>sigma</var>, <var>r</var>] =</em> <strong>ols</strong> <em>(<var>y</var>, <var>x</var>)</em></dt>
-<dd><p>Ordinary least squares estimation for the multivariate model
+<dd><p>Ordinary least squares estimation.
+</p>
+<p>OLS applies to the multivariate model
 <em>y = x*b + e</em><!-- /@w --> with
 <em>mean (e) = 0</em> and <em>cov (vec (e)) = kron (s, I)</em>.
- where
-<em>y</em> is a <em>t</em> by <em>p</em> matrix, <em>x</em> is a <em>t</em> by
-<em>k</em> matrix, <em>b</em> is a <em>k</em> by <em>p</em> matrix, and
-<em>e</em> is a <em>t</em> by <em>p</em> matrix.
+where
+<em>y</em> is a <em>t</em> by <em>p</em> matrix, <em>x</em> is a <em>t</em> by <em>k</em>
+matrix, <em>b</em> is a <em>k</em> by <em>p</em> matrix, and <em>e</em> is a
+<em>t</em> by <em>p</em> matrix.
 </p>
-<p>Each row of <var>y</var> and <var>x</var> is an observation and each column a
-variable.
+<p>Each row of <var>y</var> and <var>x</var> is an observation and each column a variable.
 </p>
 <p>The return values <var>beta</var>, <var>sigma</var>, and <var>r</var> are defined as
 follows.
@@ -113,10 +114,12 @@ Otherwise, <code><var>beta</var> = pinv (<var>x</var>) * <var>y</var></code> whe
 
 <a name="XREFgls"></a><dl>
 <dt><a name="index-gls"></a>Function File: <em>[<var>beta</var>, <var>v</var>, <var>r</var>] =</em> <strong>gls</strong> <em>(<var>y</var>, <var>x</var>, <var>o</var>)</em></dt>
-<dd><p>Generalized least squares estimation for the multivariate model
+<dd><p>Generalized least squares model.
+</p>
+<p>Perform a generalized least squares estimation for the multivariate model
 <em>y = x*b + e</em><!-- /@w --> with <em>mean (e) = 0</em> and
 <em>cov (vec (e)) = (s^2) o</em>,
- where
+where
 <em>y</em> is a <em>t</em> by <em>p</em> matrix, <em>x</em> is a <em>t</em> by
 <em>k</em> matrix, <em>b</em> is a <em>k</em> by <em>p</em> matrix, <em>e</em>
 is a <em>t</em> by <em>p</em> matrix, and <em>o</em> is a <em>t*p</em> by
@@ -154,11 +157,15 @@ defined as follows.
 <dt><a name="index-lsqnonneg-6"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>, <var>output</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
 <dt><a name="index-lsqnonneg-7"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>, <var>output</var>, <var>lambda</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
 <dd><p>Minimize <code>norm (<var>c</var>*<var>x</var> - d)</code> subject to
-<code><var>x</var> &gt;= 0</code>.  <var>c</var> and <var>d</var> must be real.  <var>x0</var> is an
-optional initial guess for <var>x</var>.
-Currently, <code>lsqnonneg</code>
-recognizes these options: <code>&quot;MaxIter&quot;</code>, <code>&quot;TolX&quot;</code>.
-For a description of these options, see <a href="#XREFoptimset">optimset</a>.
+<code><var>x</var> &gt;= 0</code>.
+</p>
+<p><var>c</var> and <var>d</var> must be real.
+</p>
+<p><var>x0</var> is an optional initial guess for <var>x</var>.
+</p>
+<p>Currently, <code>lsqnonneg</code> recognizes these options: <code>&quot;MaxIter&quot;</code>,
+<code>&quot;TolX&quot;</code>.  For a description of these options, see
+<a href="#XREFoptimset">optimset</a>.
 </p>
 <p>Outputs:
 </p>
@@ -173,10 +180,10 @@ For a description of these options, see <a href="#XREFoptimset">optimset</a>.
 </p>
 </li><li> exitflag
 
-<p>An indicator of convergence.  0 indicates that the iteration count
-was exceeded, and therefore convergence was not reached; &gt;0 indicates
-that the algorithm converged.  (The algorithm is stable and will
-converge given enough iterations.)
+<p>An indicator of convergence.  0 indicates that the iteration count was
+exceeded, and therefore convergence was not reached; &gt;0 indicates that the
+algorithm converged.  (The algorithm is stable and will converge given
+enough iterations.)
 </p>
 </li><li> output
 
@@ -204,7 +211,8 @@ converge given enough iterations.)
 <dt><a name="index-lscov-3"></a>Function File: <em>[<var>x</var>, <var>stdx</var>, <var>mse</var>, <var>S</var>] =</em> <strong>lscov</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Compute a generalized linear least squares fit.
-Estimate <var>x</var> under the model <var>b</var> = <var>A</var><var>x</var> + <var>w</var>,
+</p>
+<p>Estimate <var>x</var> under the model <var>b</var> = <var>A</var><var>x</var> + <var>w</var>,
 where the noise <var>w</var> is assumed to follow a normal distribution
 with covariance matrix <em>{\sigma^2} V</em>.
 </p>
@@ -212,27 +220,26 @@ with covariance matrix <em>{\sigma^2} V</em>.
 size of the vector/array of constant terms <var>b</var> must be n-by-k.
 </p>
 <p>The optional input argument <var>V</var> may be a n-by-1 vector of positive
-weights (inverse variances), or a n-by-n symmetric positive
-semidefinite matrix representing the covariance of <var>b</var>.  If
-<var>V</var> is not supplied, the ordinary least squares solution is
-returned.
+weights (inverse variances), or a n-by-n symmetric positive semidefinite
+matrix representing the covariance of <var>b</var>.  If <var>V</var> is not
+supplied, the ordinary least squares solution is returned.
 </p>
-<p>The <var>alg</var> input argument, a guidance on solution method to use,
-is currently ignored.
+<p>The <var>alg</var> input argument, a guidance on solution method to use, is
+currently ignored.
 </p>
-<p>Besides the least-squares estimate matrix <var>x</var> (p-by-k), the
-function also returns <var>stdx</var> (p-by-k), the error standard
-deviation of estimated <var>x</var>; <var>mse</var> (k-by-1), the estimated
-data error covariance scale factors (<em>\sigma^2</em>); and <var>S</var>
-(p-by-p, or p-by-p-by-k if k &gt; 1), the error covariance of <var>x</var>.
+<p>Besides the least-squares estimate matrix <var>x</var> (p-by-k), the function
+also returns <var>stdx</var> (p-by-k), the error standard deviation of
+estimated <var>x</var>; <var>mse</var> (k-by-1), the estimated data error covariance
+scale factors (<em>\sigma^2</em>); and <var>S</var> (p-by-p, or p-by-p-by-k if k
+&gt; 1), the error covariance of <var>x</var>.
 </p>
 <p>Reference: Golub and Van Loan (1996),
-Matrix Computations (3rd Ed.), Johns Hopkins, Section 5.6.3
+<cite>Matrix Computations (3rd Ed.)</cite>, Johns Hopkins, Section 5.6.3
 </p>
-</dd></dl>
 
 <p><strong>See also:</strong> <a href="#XREFols">ols</a>, <a href="#XREFgls">gls</a>, <a href="#XREFlsqnonneg">lsqnonneg</a>.
-</p>
+</p></dd></dl>
+
 
 <a name="XREFoptimset"></a><dl>
 <dt><a name="index-optimset"></a>Function File: <em></em> <strong>optimset</strong> <em>()</em></dt>

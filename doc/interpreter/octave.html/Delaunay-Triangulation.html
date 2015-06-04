@@ -131,13 +131,14 @@ The N-dimensional extension of a triangulation is called a tessellation.
 <dt><a name="index-delaunayn"></a>Function File: <em><var>T</var> =</em> <strong>delaunayn</strong> <em>(<var>pts</var>)</em></dt>
 <dt><a name="index-delaunayn-1"></a>Function File: <em><var>T</var> =</em> <strong>delaunayn</strong> <em>(<var>pts</var>, <var>options</var>)</em></dt>
 <dd><p>Compute the Delaunay triangulation for an N-dimensional set of points.
-The Delaunay triangulation is a tessellation of the convex hull of a set
-of points such that no N-sphere defined by the N-triangles contains
-any other points from the set.
+</p>
+<p>The Delaunay triangulation is a tessellation of the convex hull of a set of
+points such that no N-sphere defined by the N-triangles contains any other
+points from the set.
 </p>
 <p>The input matrix <var>pts</var> of size [n, dim] contains n points in a space of
-dimension dim.  The return matrix <var>T</var> has size [m, dim+1].  Each row
-of <var>T</var> contains a set of indices back into the original set of points
+dimension dim.  The return matrix <var>T</var> has size [m, dim+1].  Each row of
+<var>T</var> contains a set of indices back into the original set of points
 <var>pts</var> which describes a simplex of dimension dim.  For example, a 2-D
 simplex is a triangle and 3-D simplex is a tetrahedron.
 </p>
