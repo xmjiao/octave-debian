@@ -321,10 +321,9 @@ result.
 @deftypefnx {Function File} {@var{ind} =} sub2ind (@var{dims}, @var{s1}, @var{s2}, @dots{}, @var{sN})
 Convert subscripts to a linear index.
 
-The following example shows how to convert the two-dimensional
-index @code{(2,3)} of a 3-by-3 matrix to a linear index.  The matrix
-is linearly indexed moving from one column to next, filling up
-all rows in each column.
+The following example shows how to convert the two-dimensional index
+@code{(2,3)} of a 3-by-3 matrix to a linear index.  The matrix is linearly
+indexed moving from one column to next, filling up all rows in each column.
 
 @example
 @group
@@ -363,9 +362,11 @@ moving from one column to next, filling up all rows in each column.
 Return true if @var{ind} is a valid index.
 
 Valid indices are either positive integers (although possibly of real data
-type), or logical arrays.  If present, @var{n} specifies the maximum extent
-of the dimension to be indexed.  When possible the internal result is cached
-so that subsequent indexing using @var{ind} will not perform the check again.
+type), or logical arrays.
+
+If present, @var{n} specifies the maximum extent of the dimension to be
+indexed.  When possible the internal result is cached so that subsequent
+indexing using @var{ind} will not perform the check again.
 
 Implementation Note: Strings are first converted to double values before the
 checks for valid indices are made.  Unless a string contains the NULL
@@ -379,12 +380,14 @@ character @nospell{"\0"}, it will always be a valid index.
 @deftypefnx {Built-in Function} {@var{old_val} =} allow_noninteger_range_as_index (@var{new_val})
 @deftypefnx {Built-in Function} {} allow_noninteger_range_as_index (@var{new_val}, "local")
 Query or set the internal variable that controls whether non-integer
-ranges are allowed as indices.  This might be useful for @sc{matlab}
-compatibility; however, it is still not entirely compatible because
-@sc{matlab} treats the range expression differently in different contexts.
+ranges are allowed as indices.
+
+This might be useful for @sc{matlab} compatibility; however, it is still not
+entirely compatible because @sc{matlab} treats the range expression
+differently in different contexts.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @end deftypefn
 
@@ -565,8 +568,10 @@ the recursion depth and prevents Octave from recursing infinitely.
 @deftypefnx {Built-in Function} {@var{old_val} =} max_recursion_depth (@var{new_val})
 @deftypefnx {Built-in Function} {} max_recursion_depth (@var{new_val}, "local")
 Query or set the internal limit on the number of times a function may
-be called recursively.  If the limit is exceeded, an error message is
-printed and control returns to the top level.
+be called recursively.
+
+If the limit is exceeded, an error message is printed and control returns to
+the top level.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.
@@ -747,6 +752,7 @@ useful in this case.
 @anchor{XREFctranspose}
 @deftypefn {Built-in Function} {} ctranspose (@var{x})
 Return the complex conjugate transpose of @var{x}.
+
 This function and @tcode{x'} are equivalent.
 @seealso{@ref{XREFtranspose,,transpose}}
 @end deftypefn
@@ -757,6 +763,7 @@ This function and @tcode{x'} are equivalent.
 @anchor{XREFldivide}
 @deftypefn {Built-in Function} {} ldivide (@var{x}, @var{y})
 Return the element-by-element left division of @var{x} and @var{y}.
+
 This function and @w{@tcode{x .@xbackslashchar{} y}} are equivalent.
 @seealso{@ref{XREFrdivide,,rdivide}, @ref{XREFmldivide,,mldivide}, @ref{XREFtimes,,times}, @ref{XREFplus,,plus}}
 @end deftypefn
@@ -776,6 +783,7 @@ This function and @w{@tcode{x - y}} are equivalent.
 @anchor{XREFmldivide}
 @deftypefn {Built-in Function} {} mldivide (@var{x}, @var{y})
 Return the matrix left division of @var{x} and @var{y}.
+
 This function and @w{@tcode{x @xbackslashchar{} y}} are equivalent.
 @seealso{@ref{XREFmrdivide,,mrdivide}, @ref{XREFldivide,,ldivide}, @ref{XREFrdivide,,rdivide}}
 @end deftypefn
@@ -787,6 +795,7 @@ This function and @w{@tcode{x @xbackslashchar{} y}} are equivalent.
 @anchor{XREFmpower}
 @deftypefn {Built-in Function} {} mpower (@var{x}, @var{y})
 Return the matrix power operation of @var{x} raised to the @var{y} power.
+
 This function and @w{@tcode{x ^ y}} are equivalent.
 @seealso{@ref{XREFpower,,power}, @ref{XREFmtimes,,mtimes}, @ref{XREFplus,,plus}, @ref{XREFminus,,minus}}
 @end deftypefn
@@ -797,6 +806,7 @@ This function and @w{@tcode{x ^ y}} are equivalent.
 @anchor{XREFmrdivide}
 @deftypefn {Built-in Function} {} mrdivide (@var{x}, @var{y})
 Return the matrix right division of @var{x} and @var{y}.
+
 This function and @w{@tcode{x / y}} are equivalent.
 @seealso{@ref{XREFmldivide,,mldivide}, @ref{XREFrdivide,,rdivide}, @ref{XREFplus,,plus}, @ref{XREFminus,,minus}}
 @end deftypefn
@@ -808,6 +818,7 @@ This function and @w{@tcode{x / y}} are equivalent.
 @deftypefn  {Built-in Function} {} mtimes (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} mtimes (@var{x1}, @var{x2}, @dots{})
 Return the matrix multiplication product of inputs.
+
 This function and @w{@tcode{x * y}} are equivalent.
 If more arguments are given, the multiplication is applied
 cumulatively from left to right:
@@ -827,6 +838,7 @@ At least one argument is required.
 @deftypefn  {Built-in Function} {} plus (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} plus (@var{x1}, @var{x2}, @dots{})
 This function and @w{@tcode{x + y}} are equivalent.
+
 If more arguments are given, the summation is applied
 cumulatively from left to right:
 
@@ -845,12 +857,14 @@ At least one argument is required.
 @anchor{XREFpower}
 @deftypefn {Built-in Function} {} power (@var{x}, @var{y})
 Return the element-by-element operation of @var{x} raised to the
-@var{y} power.  If several complex results are possible,
-returns the one with smallest non-negative argument (angle).  Use
-@code{realpow}, @code{realsqrt}, @code{cbrt}, or @code{nthroot} if a
-real result is preferred.
+@var{y} power.
 
 This function and @w{@tcode{x .^ y}} are equivalent.
+
+If several complex results are possible, returns the one with smallest
+non-negative argument (angle).  Use @code{realpow}, @code{realsqrt},
+@code{cbrt}, or @code{nthroot} if a real result is preferred.
+
 @seealso{@ref{XREFmpower,,mpower}, @ref{XREFrealpow,,realpow}, @ref{XREFrealsqrt,,realsqrt}, @ref{XREFcbrt,,cbrt}, @ref{XREFnthroot,,nthroot}}
 @end deftypefn
 
@@ -860,6 +874,7 @@ This function and @w{@tcode{x .^ y}} are equivalent.
 @anchor{XREFrdivide}
 @deftypefn {Built-in Function} {} rdivide (@var{x}, @var{y})
 Return the element-by-element right division of @var{x} and @var{y}.
+
 This function and @w{@tcode{x ./ y}} are equivalent.
 @seealso{@ref{XREFldivide,,ldivide}, @ref{XREFmrdivide,,mrdivide}, @ref{XREFtimes,,times}, @ref{XREFplus,,plus}}
 @end deftypefn
@@ -871,6 +886,7 @@ This function and @w{@tcode{x ./ y}} are equivalent.
 @deftypefn  {Built-in Function} {} times (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} times (@var{x1}, @var{x2}, @dots{})
 Return the element-by-element multiplication product of inputs.
+
 This function and @w{@tcode{x .* y}} are equivalent.
 If more arguments are given, the multiplication is applied
 cumulatively from left to right:
@@ -889,6 +905,7 @@ At least one argument is required.
 @anchor{XREFtranspose}
 @deftypefn {Built-in Function} {} transpose (@var{x})
 Return the transpose of @var{x}.
+
 This function and @tcode{x.'} are equivalent.
 @seealso{@ref{XREFctranspose,,ctranspose}}
 @end deftypefn
@@ -997,6 +1014,7 @@ function, not with the comparison operators listed above.
 @anchor{XREFeq}
 @deftypefn {Built-in Function} {} eq (@var{x}, @var{y})
 Return true if the two inputs are equal.
+
 This function is equivalent to @w{@code{x == y}}.
 @seealso{@ref{XREFne,,ne}, @ref{XREFisequal,,isequal}, @ref{XREFle,,le}, @ref{XREFge,,ge}, @ref{XREFgt,,gt}, @ref{XREFne,,ne}, @ref{XREFlt,,lt}}
 @end deftypefn
@@ -1062,6 +1080,7 @@ This function is equivalent to @w{@code{x < y}}.
 @anchor{XREFne}
 @deftypefn {Built-in Function} {} ne (@var{x}, @var{y})
 Return true if the two inputs are not equal.
+
 This function is equivalent to @w{@code{x != y}}.
 @seealso{@ref{XREFeq,,eq}, @ref{XREFisequal,,isequal}, @ref{XREFle,,le}, @ref{XREFge,,ge}, @ref{XREFlt,,lt}}
 @end deftypefn
@@ -1324,11 +1343,13 @@ function.
 @deftypefn  {Built-in Function} {} merge (@var{mask}, @var{tval}, @var{fval})
 @deftypefnx {Built-in Function} {} ifelse (@var{mask}, @var{tval}, @var{fval})
 Merge elements of @var{true_val} and @var{false_val}, depending on the
-value of @var{mask}.  If @var{mask} is a logical scalar, the other two
-arguments can be arbitrary values.  Otherwise, @var{mask} must be a logical
-array, and @var{tval}, @var{fval} should be arrays of matching class, or
-cell arrays.  In the scalar mask case, @var{tval} is returned if @var{mask}
-is true, otherwise @var{fval} is returned.
+value of @var{mask}.
+
+If @var{mask} is a logical scalar, the other two arguments can be arbitrary
+values.  Otherwise, @var{mask} must be a logical array, and @var{tval},
+@var{fval} should be arrays of matching class, or cell arrays.  In the
+scalar mask case, @var{tval} is returned if @var{mask} is true, otherwise
+@var{fval} is returned.
 
 In the array mask case, both @var{tval} and @var{fval} must be either
 scalars or arrays with dimensions equal to @var{mask}.  The result is
@@ -1341,8 +1362,8 @@ result(! mask) = fval(! mask);
 @end group
 @end example
 
-@var{mask} can also be arbitrary numeric type, in which case
-it is first converted to logical.
+@var{mask} can also be arbitrary numeric type, in which case it is first
+converted to logical.
 @seealso{@ref{XREFlogical,,logical}, @ref{XREFdiff,,diff}}
 @end deftypefn
 

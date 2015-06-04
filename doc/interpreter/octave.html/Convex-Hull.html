@@ -90,9 +90,12 @@ default arguments in <var>options</var>.  Use a null string to pass no arguments
 <dt><a name="index-convhulln"></a>Loadable Function: <em><var>h</var> =</em> <strong>convhulln</strong> <em>(<var>pts</var>)</em></dt>
 <dt><a name="index-convhulln-1"></a>Loadable Function: <em><var>h</var> =</em> <strong>convhulln</strong> <em>(<var>pts</var>, <var>options</var>)</em></dt>
 <dt><a name="index-convhulln-2"></a>Loadable Function: <em>[<var>h</var>, <var>v</var>] =</em> <strong>convhulln</strong> <em>(&hellip;)</em></dt>
-<dd><p>Compute the convex hull of the set of points <var>pts</var> which is a matrix
-of size [n, dim] containing n points in a space of dimension dim.
-The hull <var>h</var> is an index vector into the set of points and specifies
+<dd><p>Compute the convex hull of the set of points <var>pts</var>.
+</p>
+<p><var>pts</var> is a matrix of size [n, dim] containing n points in a space of
+dimension dim.
+</p>
+<p>The hull <var>h</var> is an index vector into the set of points and specifies
 which points form the enclosing hull.
 </p>
 <p>An optional second argument, which must be a string or cell array of strings,

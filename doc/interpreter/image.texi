@@ -74,37 +74,35 @@ imwrite (J, "my_output_image.img");
 @deftypefnx {Function File} {[@dots{}] =} imread (@dots{}, @var{param1}, @var{val1}, @dots{})
 Read images from various file formats.
 
-Reads an image as a matrix from the file @var{filename}.  If there is
-no file @var{filename}, and @var{ext} was specified, it will look for
-a file with the extension @var{ext}.  Finally, it will attempt to download
-and read an image from @var{url}.
+Read an image as a matrix from the file @var{filename}.  If there is no file
+@var{filename}, and @var{ext} was specified, it will look for a file with
+the extension @var{ext}.  Finally, it will attempt to download and read an
+image from @var{url}.
 
-The size and class of the output depends on the
-format of the image.  A color image is returned as an
-@nospell{MxNx3} matrix.  Gray-level and black-and-white images are
-of size @nospell{MxN}.  Multipage images will have an additional 4th
-dimension.
+The size and class of the output depends on the format of the image.  A
+color image is returned as an @nospell{MxNx3} matrix.  Gray-level and
+black-and-white images are of size @nospell{MxN}.  Multipage images will
+have an additional 4th dimension.
 
-The bit depth of the image determines the
-class of the output: @qcode{"uint8"}, @qcode{"uint16"} or @qcode{"single"}
-for gray and color, and @qcode{"logical"} for black and white.
-Note that indexed images always return the indexes for a colormap,
-independent if @var{map} is a requested output.  To obtain the actual
-RGB image, use @code{ind2rgb}.  When more than one indexed image is being
-read, @var{map} is obtained from the first.  In some rare cases this
-may be incorrect and @code{imfinfo} can be used to obtain the colormap of
-each image.
+The bit depth of the image determines the class of the output:
+@qcode{"uint8"}, @qcode{"uint16"} or @qcode{"single"} for gray and color,
+and @qcode{"logical"} for black and white.  Note that indexed images always
+return the indexes for a colormap, independent if @var{map} is a requested
+output.  To obtain the actual RGB image, use @code{ind2rgb}.  When more
+than one indexed image is being read, @var{map} is obtained from the
+first.  In some rare cases this may be incorrect and @code{imfinfo} can be
+used to obtain the colormap of each image.
 
 See the Octave manual for more information in representing images.
 
-Some file formats, such as TIFF and GIF, are able to store multiple
-images in a single file.  @var{idx} can be a scalar or vector
-specifying the index of the images to read.  By default, Octave
-will only read the first page.
+Some file formats, such as TIFF and GIF, are able to store multiple images
+in a single file.  @var{idx} can be a scalar or vector specifying the
+index of the images to read.  By default, Octave will only read the first
+page.
 
-Depending on the file format, it is possible to configure the reading
-of images with @var{param}, @var{val} pairs.  The following options
-are supported:
+Depending on the file format, it is possible to configure the reading of
+images with @var{param}, @var{val} pairs.  The following options are
+supported:
 
 @table @samp
 @item @qcode{"Frames"} or @qcode{"Index"}
@@ -113,15 +111,15 @@ in this way, its value can also be the string @qcode{"all"}.
 
 @item @qcode{"Info"}
 This option exists for @sc{matlab} compatibility and has no effect.  For
-maximum performance while reading multiple images from a single file,
-use the Index option.
+maximum performance while reading multiple images from a single file, use
+the Index option.
 
 @item @qcode{"PixelRegion"}
-Controls the image region that is read.  Takes as value a cell array
-with two arrays of 3 elements @code{@{@var{rows} @var{cols}@}}.  The
-elements in the array are the start, increment and end pixel to be
-read.  If the increment value is omitted, defaults to 1.  For example,
-the following are all equivalent:
+Controls the image region that is read.  Takes as value a cell array with
+two arrays of 3 elements @code{@{@var{rows} @var{cols}@}}.  The elements
+in the array are the start, increment and end pixel to be read.  If the
+increment value is omitted, defaults to 1.  For example, the following are
+all equivalent:
 
 @example
 @group
@@ -156,17 +154,16 @@ to determine the format.  The actual supported formats are dependent on
 options made during the build of Octave.  Use @code{imformats} to check
 the support of the different image formats.
 
-Depending on the file format, it is possible to configure the writing
-of images with @var{param}, @var{val} pairs.  The following options
-are supported:
+Depending on the file format, it is possible to configure the writing of
+images with @var{param}, @var{val} pairs.  The following options are
+supported:
 
 @table @samp
 @item Alpha
 Alpha (transparency) channel for the image.  This must be a matrix with
 same class, and number of rows and columns of @var{img}.  In case of a
 multipage image, the size of the 4th dimension must also match and the third
-dimension must be a singleton.  By default, image will be completely
-opaque.
+dimension must be a singleton.  By default, image will be completely opaque.
 
 @item DelayTime
 For formats that accept animations (such as GIF), controls for how long a
@@ -176,8 +173,8 @@ equal to the number of frames in @var{im}.  The value is in seconds, must
 be between 0 and 655.35, and defaults to 0.5.
 
 @item DisposalMethod
-For formats that accept animations (such as GIF), controls what happens
-to a frame before drawing the next one.  Its value can be one of the
+For formats that accept animations (such as GIF), controls what happens to
+a frame before drawing the next one.  Its value can be one of the
 following strings: "doNotSpecify" (default); "leaveInPlace"; "restoreBG";
 and "restorePrevious", or a cell array of those string with length equal
 to the number of frames in @var{img}.
@@ -191,21 +188,21 @@ it plays the complete sequence 3 times).  This option is ignored when there
 is only a single image at the end of writing the file.
 
 @item Quality
-Set the quality of the compression.  The value should be an
-integer between 0 and 100, with larger values indicating higher visual
-quality and lower compression.  Defaults to 75.
+Set the quality of the compression.  The value should be an integer
+between 0 and 100, with larger values indicating higher visual quality and
+lower compression.  Defaults to 75.
 
 @item WriteMode
-Some file formats, such as TIFF and GIF, are able to store multiple
-images in a single file.  This option specifies if @var{img} should be
-appended to the file (if it exists) or if a new file should be created
-for it (possibly overwriting an existing file).  The value should be
-the string @qcode{"Overwrite"} (default), or @qcode{"Append"}.
+Some file formats, such as TIFF and GIF, are able to store multiple images
+in a single file.  This option specifies if @var{img} should be appended
+to the file (if it exists) or if a new file should be created for it
+(possibly overwriting an existing file).  The value should be the string
+@qcode{"Overwrite"} (default), or @qcode{"Append"}.
 
 Despite this option, the most efficient method of writing a multipage
-image is to pass a 4 dimensional @var{img} to @code{imwrite}, the
-same matrix that could be expected when using @code{imread} with the
-option @qcode{"Index"} set to @qcode{"all"}.
+image is to pass a 4 dimensional @var{img} to @code{imwrite}, the same
+matrix that could be expected when using @code{imread} with the option
+@qcode{"Index"} set to @qcode{"all"}.
 
 @end table
 
@@ -222,7 +219,7 @@ Query or set the internal variable that specifies a colon separated
 list of directories in which to search for image files.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 
 @seealso{@ref{XREFEXEC_PATH,,EXEC_PATH}, @ref{XREFOCTAVE_HOME,,OCTAVE_HOME}}
@@ -285,8 +282,8 @@ Units of image resolution.  Value is @qcode{"Inch"},
 @qcode{"Centimeter"}, or @qcode{"undefined"}.
 
 @item DelayTime
-Time in 1/100ths of a second (0 to 65535) which must expire before displaying
-the next image in an animated sequence.
+Time in 1/100ths of a second (0 to 65535) which must expire before
+displaying the next image in an animated sequence.
 
 @item LoopCount
 Number of iterations to loop an animation.
@@ -339,8 +336,8 @@ The manufacturer of the recording equipment.  This is the manufacture of the
 the image.
 
 @item Model
-The model name or model number of the recording equipment as mentioned
-on the field @qcode{"Make"}.
+The model name or model number of the recording equipment as mentioned on
+the field @qcode{"Make"}.
 
 @item DateTime
 The date and time of image creation as defined by the Exif standard, i.e.,
@@ -430,9 +427,9 @@ Logical value if format supports alpha channel (transparency or matte).
 Logical value if format supports multipage (multiple images per file).
 @end table
 
-It is possible to change the way Octave manages file formats with the options
-@qcode{"add"}, @qcode{"remove"}, and @qcode{"update"}, and supplying a
-structure @var{format} with the required fields.  The option
+It is possible to change the way Octave manages file formats with the
+options @qcode{"add"}, @qcode{"remove"}, and @qcode{"update"}, and supplying
+a structure @var{format} with the required fields.  The option
 @qcode{"factory"} resets the configuration to the default.
 
 This can be used by Octave packages to extend the image reading capabilities
@@ -461,20 +458,18 @@ shows the image given in the first input argument.
 Display the image @var{im}, where @var{im} can be a 2-dimensional
 (grayscale image) or a 3-dimensional (RGB image) matrix.
 
-If @var{limits} is a 2-element vector @code{[@var{low}, @var{high}]},
-the image is shown using a display range between @var{low} and
-@var{high}.  If an empty matrix is passed for @var{limits}, the
-display range is computed as the range between the minimal and the
-maximal value in the image.
+If @var{limits} is a 2-element vector @code{[@var{low}, @var{high}]}, the
+image is shown using a display range between @var{low} and @var{high}.  If
+an empty matrix is passed for @var{limits}, the display range is computed
+as the range between the minimal and the maximal value in the image.
 
 If @var{map} is a valid color map, the image will be shown as an indexed
 image using the supplied color map.
 
-If a file name is given instead of an image, the file will be read and
-shown.
+If a file name is given instead of an image, the file will be read and shown.
 
-If given, the parameter @var{string_param1} has value
-@var{value1}.  @var{string_param1} can be any of the following:
+If given, the parameter @var{string_param1} has value @var{value1}.
+@var{string_param1} can be any of the following:
 
 @table @asis
 @item @qcode{"displayrange"}
@@ -485,15 +480,13 @@ If given, the parameter @var{string_param1} has value
 
 @item @qcode{"xdata"}
 If @var{value1} is a two element vector, it must contain horizontal axis
-limits in the form [xmin xmax]; Otherwise @var{value1} must be a
-vector and only the first and last elements will be used for xmin and
-xmax respectively.
+limits in the form [xmin xmax]; Otherwise @var{value1} must be a vector and
+only the first and last elements will be used for xmin and xmax respectively.
 
 @item @qcode{"ydata"}
 If @var{value1} is a two element vector, it must contain vertical axis
-limits in the form [ymin ymax]; Otherwise @var{value1} must be a
-vector and only the first and last elements will be used for ymin and
-ymax respectively.
+limits in the form [ymin ymax]; Otherwise @var{value1} must be a vector and
+only the first and last elements will be used for ymin and ymax respectively.
 
 @end table
 
@@ -512,6 +505,7 @@ The optional return value @var{h} is a graphics handle to the image.
 Display a matrix as an indexed color image.
 
 The elements of @var{img} are indices into the current colormap.
+
 @var{x} and @var{y} are optional 2-element vectors, @w{@code{[min, max]}},
 which specify the range for the axis labels.  If a range is specified as
 @w{@code{[max, min]}} then the image will be reversed along that axis.  For
@@ -554,10 +548,11 @@ and inserts it in the current axes.
 @deftypefnx {Function File} {} imagesc ("@var{prop1}", @var{val1}, @dots{})
 @deftypefnx {Function File} {} imagesc (@var{hax}, @dots{})
 @deftypefnx {Function File} {@var{h} =} imagesc (@dots{})
-Display a scaled version of the matrix @var{img} as a color image.  The
-colormap is scaled so that the entries of the matrix occupy the entire
-colormap.  If @code{@var{climits} = [@var{lo}, @var{hi}]} is given, then that
-range is set to the @qcode{"clim"} of the current axes.
+Display a scaled version of the matrix @var{img} as a color image.
+
+The colormap is scaled so that the entries of the matrix occupy the entire
+colormap.  If @code{@var{climits} = [@var{lo}, @var{hi}]} is given, then
+that range is set to the @qcode{"clim"} of the current axes.
 
 The axis values corresponding to the matrix elements are specified in
 @var{x} and @var{y}, either as pairs giving the minimum and maximum
@@ -609,10 +604,9 @@ between 0 and 1.
 @deftypefn {Function File} {} iscolormap (@var{cmap})
 Return true if @var{cmap} is a colormap.
 
-A colormap is a real matrix with @var{n} rows and 3 columns.
-Each row represents a single color.  The columns contain red, green,
-and blue intensities respectively.  All entries must be between 0 and 1
-inclusive.
+A colormap is a real matrix with @var{n} rows and 3 columns.  Each row
+represents a single color.  The columns contain red, green, and blue
+intensities respectively.  All entries must be between 0 and 1 inclusive.
 @seealso{@ref{XREFcolormap,,colormap}, @ref{XREFrgbplot,,rgbplot}}
 @end deftypefn
 
@@ -627,11 +621,11 @@ inclusive.
 Convert a grayscale or binary intensity image to an indexed image.
 
 The indexed image will consist of @var{n} different intensity values.
-If not given @var{n} defaults to 64 for grayscale images or 2 for
-binary black and white images.
+If not given @var{n} defaults to 64 for grayscale images or 2 for binary
+black and white images.
 
-The output @var{img} is of class uint8 if @var{n} is less than or
-equal to 256; Otherwise the return class is uint16.
+The output @var{img} is of class uint8 if @var{n} is less than or equal to
+256; Otherwise the return class is uint16.
 @seealso{@ref{XREFind2gray,,ind2gray}, @ref{XREFrgb2ind,,rgb2ind}}
 @end deftypefn
 
@@ -779,8 +773,9 @@ option.
 @anchor{XREFautumn}
 @deftypefn  {Function File} {@var{map} =} autumn ()
 @deftypefnx {Function File} {@var{map} =} autumn (@var{n})
-Create color colormap.  This colormap ranges from red through orange
-to yellow.
+Create color colormap.
+This colormap ranges from red through orange to yellow.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -793,6 +788,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefnx {Function File} {@var{map} =} bone (@var{n})
 Create color colormap.  This colormap varies from black to white with
 gray-blue shades.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -804,10 +800,12 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefn  {Function File} {@var{map} =} colorcube ()
 @deftypefnx {Function File} {@var{map} =} colorcube (@var{n})
 Create color colormap.  This colormap is composed of as many equally
-spaced colors (not grays) in the RGB color space as possible.  If there
-are not a perfect number @var{n} of regularly spaced colors then the
+spaced colors (not grays) in the RGB color space as possible.
+
+If there are not a perfect number @var{n} of regularly spaced colors then the
 remaining entries in the colormap are gradients of pure red, green, blue,
 and gray.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -819,6 +817,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefn  {Function File} {@var{map} =} cool ()
 @deftypefnx {Function File} {@var{map} =} cool (@var{n})
 Create color colormap.  The colormap varies from cyan to magenta.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -829,8 +828,9 @@ If unspecified, the length of the current colormap, or 64, is used.
 @anchor{XREFcopper}
 @deftypefn  {Function File} {@var{map} =} copper ()
 @deftypefnx {Function File} {@var{map} =} copper (@var{n})
-Create color colormap.  This colormap varies from black to
-a light copper tone.
+Create color colormap.  This colormap varies from black to a light copper
+tone.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -853,12 +853,12 @@ brightness of each channel according to the NTSC specifications from 1953.
 rgbplot (cubehelix (256))
 @end example
 
-The argument @var{n} must be a scalar and corresponds to the lenght of the
-colormap.  Defaults to the length of the current colormap.
+The argument @var{n} must be a scalar.
+If unspecified, the length of the current colormap, or 64, is used.
 
-Development of this colormap is described in @cite{Green, D. A., 2011,
-"A @nospell{colour} scheme for the display of astronomical intensity images",
-Bulletin of the Astronomical Society of India, 39, 289.}.
+Reference: Green, D. A., 2011,
+@cite{"A @nospell{colour} scheme for the display of astronomical intensity
+images"}, Bulletin of the Astronomical Society of India, 39, 289.
 
 @seealso{@ref{XREFcolormap,,colormap}}
 @end deftypefn
@@ -868,8 +868,9 @@ Bulletin of the Astronomical Society of India, 39, 289.}.
 @anchor{XREFflag}
 @deftypefn  {Function File} {@var{map} =} flag ()
 @deftypefnx {Function File} {@var{map} =} flag (@var{n})
-Create color colormap.  This colormap cycles through red, white, blue,
-and black with each index change.
+Create color colormap.  This colormap cycles through red, white, blue, and
+black with each index change.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -880,8 +881,9 @@ If unspecified, the length of the current colormap, or 64, is used.
 @anchor{XREFgray}
 @deftypefn  {Function File} {@var{map} =} gray ()
 @deftypefnx {Function File} {@var{map} =} gray (@var{n})
-Create gray colormap.  This colormap varies from black to white with
-shades of gray.
+Create gray colormap.  This colormap varies from black to white with shades
+of gray.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -894,6 +896,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefnx {Function File} {@var{map} =} hot (@var{n})
 Create color colormap.  This colormap ranges from black through dark red,
 red, orange, yellow, to white.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -905,6 +908,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefn {Function File} {} hsv (@var{n})
 Create color colormap.  This colormap begins with red, changes through
 yellow, green, cyan, blue, and magenta, before returning to red.
+
 It is useful for displaying periodic functions.  The map is obtained by
 linearly varying the hue through all possible values while keeping constant
 maximum saturation and value.  The equivalent code is
@@ -922,6 +926,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefnx {Function File} {@var{map} =} jet (@var{n})
 Create color colormap.  This colormap ranges from dark blue through blue,
 cyan, green, yellow, red, to dark red.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -935,6 +940,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 Create color colormap.  This colormap is composed of the list of colors
 in the current axes @qcode{"ColorOrder"} property.  The default is blue,
 green, red, cyan, pink, yellow, and gray.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -947,6 +953,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefnx {Function File} {@var{map} =} ocean (@var{n})
 Create color colormap.  This colormap varies from black to white with shades
 of blue.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -958,7 +965,10 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefn  {Function File} {@var{map} =} pink ()
 @deftypefnx {Function File} {@var{map} =} pink (@var{n})
 Create color colormap.  This colormap varies from black to white with
-shades of gray-pink.  It gives a sepia tone when used on grayscale images.
+shades of gray-pink.
+
+This colormap gives a sepia tone when used on grayscale images.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -971,6 +981,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefnx {Function File} {@var{map} =} prism (@var{n})
 Create color colormap.  This colormap cycles through red, orange, yellow,
 green, blue and violet with each index change.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -983,6 +994,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefnx {Function File} {@var{map} =} rainbow (@var{n})
 Create color colormap.  This colormap ranges from red through orange,
 yellow, green, blue, to violet.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -994,6 +1006,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefn  {Function File} {@var{map} =} spring ()
 @deftypefnx {Function File} {@var{map} =} spring (@var{n})
 Create color colormap.  This colormap varies from magenta to yellow.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -1005,6 +1018,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefn  {Function File} {@var{map} =} summer ()
 @deftypefnx {Function File} {@var{map} =} summer (@var{n})
 Create color colormap.  This colormap varies from green to yellow.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -1016,8 +1030,9 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefn  {Function File} {@var{map} =} white ()
 @deftypefnx {Function File} {@var{map} =} white (@var{n})
 Create color colormap.  This colormap is completely white.
-The argument @var{n} should be a scalar.  If it
-is omitted, the length of the current colormap or 64 is assumed.
+
+The argument @var{n} must be a scalar.
+If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
 @end deftypefn
 
@@ -1027,6 +1042,7 @@ is omitted, the length of the current colormap or 64 is assumed.
 @deftypefn  {Function File} {@var{map} =} winter ()
 @deftypefnx {Function File} {@var{map} =} winter (@var{n})
 Create color colormap.  This colormap varies from blue to green.
+
 The argument @var{n} must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -1037,8 +1053,9 @@ If unspecified, the length of the current colormap, or 64, is used.
 @anchor{XREFcontrast}
 @deftypefn  {Function File} {@var{cmap} =} contrast (@var{x})
 @deftypefnx {Function File} {@var{cmap} =} contrast (@var{x}, @var{n})
-Return a gray colormap that maximizes the contrast in an image.  The
-returned colormap will have @var{n} rows.  If @var{n} is not defined
+Return a gray colormap that maximizes the contrast in an image.
+
+The returned colormap will have @var{n} rows.  If @var{n} is not defined
 then the size of the current colormap is used.
 @seealso{@ref{XREFcolormap,,colormap}, @ref{XREFbrighten,,brighten}}
 @end deftypefn
@@ -1051,13 +1068,19 @@ of line or patch objects to be set.  @code{gmap40} is chiefly useful to gnuplot
 4.0 users, and particularly in conjunction with the @var{bar}, @var{surf},
 and @var{contour} functions.
 
-@c gmap40 scripts/image/gmap40.m
+@c gmap40 scripts/deprecated/gmap40.m
 @anchor{XREFgmap40}
 @deftypefn  {Function File} {@var{map} =} gmap40 ()
 @deftypefnx {Function File} {@var{map} =} gmap40 (@var{n})
+
+@code{gmap40} is deprecated and will be removed in Octave version 4.4.
+
 Create color colormap.  The colormap consists of red, green, blue, yellow,
-magenta and cyan.  This colormap is specifically designed for users of
-gnuplot 4.0 where these 6 colors are the allowable ones for patch objects.
+magenta and cyan.
+
+This colormap is specifically designed for users of gnuplot 4.0 where these
+6 colors are the allowable ones for patch objects.
+
 The argument @var{n} must be a scalar.
 If unspecified, a length of 6 is assumed.  Larger values of @var{n} result
 in a repetition of the above colors.
@@ -1070,16 +1093,20 @@ replace it.
 
 @c brighten scripts/image/brighten.m
 @anchor{XREFbrighten}
-@deftypefn  {Function File} {@var{map_out} =} brighten (@var{map}, @var{beta})
-@deftypefnx {Function File} {@var{map_out} =} brighten (@var{beta})
+@deftypefn  {Function File} {@var{map_out} =} brighten (@var{beta})
+@deftypefnx {Function File} {@var{map_out} =} brighten (@var{map}, @var{beta})
 @deftypefnx {Function File} {@var{map_out} =} brighten (@var{h}, @var{beta})
-Brighten or darken a colormap.  If the @var{map} argument is omitted, the
-function is applied to the current colormap.  The first argument can also be
-a valid graphics handle @var{h}, in which case @code{brighten} is applied to
-the colormap associated with this handle.
+@deftypefnx {Function File} {} brighten (@dots{})
+Brighten or darken a colormap.
 
-The argument @var{beta} must be a scalar between -1 and 1, where a
-negative value darkens and a positive value brightens the colormap.
+The argument @var{beta} must be a scalar between -1 and 1, where a negative
+value darkens and a positive value brightens the colormap.
+
+If the @var{map} argument is omitted, the function is applied to the current
+colormap.
+
+The first argument can also be a valid graphics handle @var{h}, in which
+case @code{brighten} is applied to the colormap associated with this handle.
 
 If no output is specified then the result is written to the current colormap.
 @seealso{@ref{XREFcolormap,,colormap}, @ref{XREFcontrast,,contrast}}
@@ -1093,11 +1120,12 @@ If no output is specified then the result is written to the current colormap.
 @deftypefnx {Function File} {} spinmap (@var{t}, @var{inc})
 @deftypefnx {Function File} {} spinmap ("inf")
 Cycle the colormap for @var{t} seconds with a color increment of @var{inc}.
+
 Both parameters are optional.  The default cycle time is 5 seconds and the
 default increment is 2.  If the option @qcode{"inf"} is given then cycle
 continuously until @kbd{Control-C} is pressed.
 
-When rotating the original color 1 becomes color 2, color 2 becomes
+When rotating, the original color 1 becomes color 2, color 2 becomes
 color 3, etc.  A positive or negative increment is allowed and a higher
 value of @var{inc} will cause faster cycling through the colormap.
 @seealso{@ref{XREFcolormap,,colormap}}
@@ -1176,8 +1204,8 @@ the colormap @var{map} and returns a new colormap @var{newmap}.  It also
 returns the indexed image @var{Y} which is the equivalent of the original
 input image @var{X} when displayed using @var{newmap}.
 
-When called with an optional third argument the order of colors in the
-new colormap is defined by @var{index}.
+When called with an optional third argument the order of colors in the new
+colormap is defined by @var{index}.
 
 @strong{Caution:} @code{index} should not have repeated elements or the
 function will fail.
@@ -1273,8 +1301,8 @@ The reference matrix for the transformation is
 
 @noindent
 as documented in @url{http://en.wikipedia.org/wiki/YIQ} and truncated to 3
-significant figures.  Note: The FCC version of NTSC uses only 2
-significant digits and is slightly different.
+significant figures.  Note: The FCC version of NTSC uses only 2 significant
+digits and is slightly different.
 @seealso{@ref{XREFntsc2rgb,,ntsc2rgb}, @ref{XREFrgb2hsv,,rgb2hsv}, @ref{XREFrgb2ind,,rgb2ind}}
 @end deftypefn
 
@@ -1287,15 +1315,15 @@ Transform a colormap or image from luminance-chrominance (NTSC) space to
 red-green-blue (RGB) color space.
 
 Implementation Note:
-The conversion matrix is chosen to be the inverse of the
-matrix used for rgb2ntsc such that
+The conversion matrix is chosen to be the inverse of the matrix used for
+rgb2ntsc such that
 
 @example
 x == ntsc2rgb (rgb2ntsc (x))
 @end example
 
-@sc{matlab} uses a slightly different matrix where rounding
-means the equality above does not hold.
+@sc{matlab} uses a slightly different matrix where rounding means the
+equality above does not hold.
 @seealso{@ref{XREFrgb2ntsc,,rgb2ntsc}, @ref{XREFhsv2rgb,,hsv2rgb}, @ref{XREFind2rgb,,ind2rgb}}
 @end deftypefn
 

@@ -62,8 +62,9 @@ identifier is reserved by Octave.
 @anchor{XREFiskeyword}
 @deftypefn  {Built-in Function} {} iskeyword ()
 @deftypefnx {Built-in Function} {} iskeyword (@var{name})
-Return true if @var{name} is an Octave keyword.  If @var{name}
-is omitted, return a list of keywords.
+Return true if @var{name} is an Octave keyword.
+
+If @var{name} is omitted, return a list of keywords.
 @seealso{@ref{XREFisvarname,,isvarname}, @ref{XREFexist,,exist}}
 @end deftypefn
 
@@ -87,18 +88,18 @@ from being evaluated periodically.
 @deftypefn  {Built-in Function} {@var{id} =} add_input_event_hook (@var{fcn})
 @deftypefnx {Built-in Function} {@var{id} =} add_input_event_hook (@var{fcn}, @var{data})
 Add the named function or function handle @var{fcn} to the list of functions
-to call periodically when Octave is waiting for input.  The function should
-have the form
+to call periodically when Octave is waiting for input.
+
+The function should have the form
 
 @example
 @var{fcn} (@var{data})
 @end example
 
-If @var{data} is omitted, Octave calls the function without any
-arguments.
+If @var{data} is omitted, Octave calls the function without any arguments.
 
-The returned identifier may be used to remove the function handle from
-the list of input hook functions.
+The returned identifier may be used to remove the function handle from the
+list of input hook functions.
 @seealso{@ref{XREFremove_input_event_hook,,remove_input_event_hook}}
 @end deftypefn
 
@@ -128,7 +129,7 @@ Query or set the internal variable that specifies the function to call when
 an unknown identifier is requested.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFmissing_component_hook,,missing_component_hook}}
 @end deftypefn

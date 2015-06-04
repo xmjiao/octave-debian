@@ -97,10 +97,13 @@ Convert @var{x} to double precision type.
 @anchor{XREFcomplex}
 @deftypefn  {Built-in Function} {} complex (@var{x})
 @deftypefnx {Built-in Function} {} complex (@var{re}, @var{im})
-Return a complex result from real arguments.  With 1 real argument @var{x},
-return the complex result @code{@var{x} + 0i}.  With 2 real arguments,
-return the complex result @code{@var{re} + @var{im}}.  @code{complex} can
-often be more convenient than expressions such as @code{a + i*b}.
+Return a complex value from real arguments.
+
+With 1 real argument @var{x}, return the complex result @code{@var{x} + 0i}.
+
+With 2 real arguments, return the complex result @code{@var{re} + @var{im}}.
+@code{complex} can often be more convenient than expressions such as
+@code{a + i*b}.
 For example:
 
 @example
@@ -303,6 +306,7 @@ may limit the maximum size of matrices to something smaller.
 @anchor{XREFsizemax}
 @deftypefn {Built-in Function} {} sizemax ()
 Return the largest value allowed for the size of an array.
+
 If Octave is compiled with 64-bit indexing, the result is of class int64,
 otherwise it is of class int32.  The maximum array size is slightly
 smaller than the maximum value allowable for the relevant class as reported
@@ -327,7 +331,7 @@ Query or set the internal variable that specifies the maximum width
 of a numeric output field.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFformat,,format}, @ref{XREFfixed_point_format,,fixed_point_format}, @ref{XREFoutput_precision,,output_precision}}
 @end deftypefn
@@ -342,7 +346,7 @@ Query or set the internal variable that specifies the minimum number of
 significant figures to display for numeric output.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFformat,,format}, @ref{XREFfixed_point_format,,fixed_point_format}, @ref{XREFoutput_max_field_width,,output_max_field_width}}
 @end deftypefn
@@ -359,11 +363,12 @@ the @code{format} function.  @xref{Basic Input and Output}.
 @deftypefnx {Built-in Function} {@var{old_val} =} split_long_rows (@var{new_val})
 @deftypefnx {Built-in Function} {} split_long_rows (@var{new_val}, "local")
 Query or set the internal variable that controls whether rows of a matrix
-may be split when displayed to a terminal window.  If the rows are split,
-Octave will display the matrix in a series of smaller pieces, each of
-which can fit within the limits of your terminal width and each set of
-rows is labeled so that you can easily see which columns are currently
-being displayed.  For example:
+may be split when displayed to a terminal window.
+
+If the rows are split, Octave will display the matrix in a series of smaller
+pieces, each of which can fit within the limits of your terminal width and
+each set of rows is labeled so that you can easily see which columns are
+currently being displayed.  For example:
 
 @example
 @group
@@ -383,7 +388,7 @@ ans =
 @end example
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFformat,,format}}
 @end deftypefn
@@ -430,7 +435,7 @@ of the possibility for confusion you should be careful about enabling
 @code{fixed_point_format}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFformat,,format}, @ref{XREFoutput_max_field_width,,output_max_field_width}, @ref{XREFoutput_precision,,output_precision}}
 @end deftypefn
@@ -493,9 +498,10 @@ empty matrix symbol, @samp{[]}.  The built-in variable
 @deftypefn  {Built-in Function} {@var{val} =} print_empty_dimensions ()
 @deftypefnx {Built-in Function} {@var{old_val} =} print_empty_dimensions (@var{new_val})
 @deftypefnx {Built-in Function} {} print_empty_dimensions (@var{new_val}, "local")
-Query or set the internal variable that controls whether the
-dimensions of empty matrices are printed along with the empty matrix
-symbol, @samp{[]}.  For example, the expression
+Query or set the internal variable that controls whether the dimensions of
+empty matrices are printed along with the empty matrix symbol, @samp{[]}.
+
+For example, the expression
 
 @example
 zeros (3, 0)
@@ -509,7 +515,7 @@ ans = [](3x0)
 @end example
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFformat,,format}}
 @end deftypefn
@@ -587,8 +593,10 @@ This space saving optimization may be disabled using the function
 @deftypefnx {Built-in Function} {@var{old_val} =} disable_range (@var{new_val})
 @deftypefnx {Built-in Function} {} disable_range (@var{new_val}, "local")
 Query or set the internal variable that controls whether ranges are stored
-in a special space-efficient format.  The default value is true.  If this
-option is disabled Octave will store ranges as full matrices.
+in a special space-efficient format.
+
+The default value is true.  If this option is disabled Octave will store
+ranges as full matrices.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.
@@ -711,6 +719,7 @@ when converted.
 @anchor{XREFisinteger}
 @deftypefn {Built-in Function} {} isinteger (@var{x})
 Return true if @var{x} is an integer object (int8, uint8, int16, etc.).
+
 Note that @w{@code{isinteger (14)}} is false because numeric constants in
 Octave are double precision floating point values.
 @seealso{@ref{XREFisfloat,,isfloat}, @ref{XREFischar,,ischar}, @ref{XREFislogical,,islogical}, @ref{XREFisnumeric,,isnumeric}, @ref{XREFisa,,isa}}
@@ -785,6 +794,7 @@ Convert @var{x} to unsigned 64-bit integer type.
 @anchor{XREFintmax}
 @deftypefn {Built-in Function} {} intmax (@var{type})
 Return the largest integer that can be represented in an integer type.
+
 The variable @var{type} can be
 
 @table @code
@@ -822,6 +832,7 @@ The default for @var{type} is @code{int32}.
 @anchor{XREFintmin}
 @deftypefn {Built-in Function} {} intmin (@var{type})
 Return the smallest integer that can be represented in an integer type.
+
 The variable @var{type} can be
 
 @table @code
@@ -861,10 +872,11 @@ The default for @var{type} is @code{int32}.
 @deftypefnx {Built-in Function} {} flintmax ("double")
 @deftypefnx {Built-in Function} {} flintmax ("single")
 Return the largest integer that can be represented consecutively in a
-floating point value.  The default class is @qcode{"double"}, but
-@qcode{"single"} is a valid option.  On IEEE-754 compatible systems,
-@code{flintmax} is @w{@math{2^53}} for @qcode{"double"} and
-@w{@math{2^24}} for @qcode{"single"}.
+floating point value.
+
+The default class is @qcode{"double"}, but @qcode{"single"} is a valid
+option.  On IEEE-754 compatible systems, @code{flintmax} is @w{@math{2^53}}
+for @qcode{"double"} and @w{@math{2^24}} for @qcode{"single"}.
 @seealso{@ref{XREFbitmax,,bitmax}, @ref{XREFintmax,,intmax}, @ref{XREFrealmax,,realmax}, @ref{XREFrealmin,,realmin}}
 @end deftypefn
 
@@ -957,10 +969,11 @@ values of individual bits are @code{bitset} and @code{bitget}.
 @anchor{XREFbitset}
 @deftypefn  {Function File} {@var{C} =} bitset (@var{A}, @var{n})
 @deftypefnx {Function File} {@var{C} =} bitset (@var{A}, @var{n}, @var{val})
-Set or reset bit(s) @var{n} of unsigned integers in @var{A}.
+Set or reset bit(s) @var{n} of the unsigned integers in @var{A}.
+
 @var{val} = 0 resets and @var{val} = 1 sets the bits.
-The lowest significant bit is: @var{n} = 1.  All variables must be the
-same size or scalars.
+The least significant bit is @var{n} = 1.  All variables must be the same
+size or scalars.
 
 @example
 @group
@@ -975,8 +988,9 @@ dec2bin (bitset (10, 1))
 @c bitget scripts/general/bitget.m
 @anchor{XREFbitget}
 @deftypefn {Function File} {@var{c} =} bitget (@var{A}, @var{n})
-Return the status of bit(s) @var{n} of unsigned integers in @var{A}
-the lowest significant bit is @var{n} = 1.
+Return the status of bit(s) @var{n} of the unsigned integers in @var{A}.
+
+The least significant bit is @var{n} = 1.
 
 @example
 @group
@@ -1023,7 +1037,9 @@ the function @code{bitmax}.
 @deftypefnx {Built-in Function} {} bitmax ("double")
 @deftypefnx {Built-in Function} {} bitmax ("single")
 Return the largest integer that can be represented within a floating point
-value.  The default class is @qcode{"double"}, but @qcode{"single"} is a
+value.
+
+The default class is @qcode{"double"}, but @qcode{"single"} is a
 valid option.  On IEEE-754 compatible systems, @code{bitmax} is
 @w{@math{2^{53} - 1}} for @qcode{"double"} and @w{@math{2^{24} -1}} for
 @qcode{"single"}.
@@ -1041,6 +1057,7 @@ operators.
 @anchor{XREFbitand}
 @deftypefn {Built-in Function} {} bitand (@var{x}, @var{y})
 Return the bitwise AND of non-negative integers.
+
 @var{x}, @var{y} must be in the range [0,bitmax]
 @seealso{@ref{XREFbitor,,bitor}, @ref{XREFbitxor,,bitxor}, @ref{XREFbitset,,bitset}, @ref{XREFbitget,,bitget}, @ref{XREFbitcmp,,bitcmp}, @ref{XREFbitshift,,bitshift}, @ref{XREFbitmax,,bitmax}}
 @end deftypefn
@@ -1050,6 +1067,7 @@ Return the bitwise AND of non-negative integers.
 @anchor{XREFbitor}
 @deftypefn {Built-in Function} {} bitor (@var{x}, @var{y})
 Return the bitwise OR of non-negative integers.
+
 @var{x}, @var{y} must be in the range [0,bitmax]
 @seealso{@ref{XREFbitor,,bitor}, @ref{XREFbitxor,,bitxor}, @ref{XREFbitset,,bitset}, @ref{XREFbitget,,bitget}, @ref{XREFbitcmp,,bitcmp}, @ref{XREFbitshift,,bitshift}, @ref{XREFbitmax,,bitmax}}
 @end deftypefn
@@ -1059,6 +1077,7 @@ Return the bitwise OR of non-negative integers.
 @anchor{XREFbitxor}
 @deftypefn {Built-in Function} {} bitxor (@var{x}, @var{y})
 Return the bitwise XOR of non-negative integers.
+
 @var{x}, @var{y} must be in the range [0,bitmax]
 @seealso{@ref{XREFbitand,,bitand}, @ref{XREFbitor,,bitor}, @ref{XREFbitset,,bitset}, @ref{XREFbitget,,bitget}, @ref{XREFbitcmp,,bitcmp}, @ref{XREFbitshift,,bitshift}, @ref{XREFbitmax,,bitmax}}
 @end deftypefn
@@ -1072,8 +1091,9 @@ bitwise 'not' operator is @code{bitcmp}.
 @c bitcmp scripts/general/bitcmp.m
 @anchor{XREFbitcmp}
 @deftypefn {Function File} {} bitcmp (@var{A}, @var{k})
-Return the @var{k}-bit complement of integers in @var{A}.  If
-@var{k} is omitted @code{k = log2 (bitmax) + 1} is assumed.
+Return the @var{k}-bit complement of integers in @var{A}.
+
+If @var{k} is omitted @code{k = log2 (bitmax) + 1} is assumed.
 
 @example
 @group
@@ -1096,10 +1116,11 @@ Octave also includes the ability to left-shift and right-shift values bitwise.
 @anchor{XREFbitshift}
 @deftypefn  {Built-in Function} {} bitshift (@var{a}, @var{k})
 @deftypefnx {Built-in Function} {} bitshift (@var{a}, @var{k}, @var{n})
-Return a @var{k} bit shift of @var{n}-digit unsigned
-integers in @var{a}.  A positive @var{k} leads to a left shift;
-A negative value to a right shift.  If @var{n} is omitted it defaults
-to log2(bitmax)+1.
+Return a @var{k} bit shift of @var{n}-digit unsigned integers in @var{a}.
+
+A positive @var{k} leads to a left shift; A negative value to a right shift.
+
+If @var{n} is omitted it defaults to log2(bitmax)+1.
 @var{n} must be in the range [1,log2(bitmax)+1] usually [1,33].
 
 @example
@@ -1186,9 +1207,9 @@ or @code{false} functions.
 @deftypefn {Built-in Function} {} logical (@var{x})
 Convert the numeric object @var{x} to logical type.
 
-Any nonzero values will be converted to true (1) while zero values
-will be converted to false (0).  The non-numeric value NaN cannot be
-converted and will produce an error.
+Any nonzero values will be converted to true (1) while zero values will be
+converted to false (0).  The non-numeric value NaN cannot be converted and
+will produce an error.
 
 Compatibility Note: Octave accepts complex values as input, whereas
 @sc{matlab} issues an error.
@@ -1202,10 +1223,12 @@ Compatibility Note: Octave accepts complex values as input, whereas
 @deftypefnx {Built-in Function} {} true (@var{n}, @var{m})
 @deftypefnx {Built-in Function} {} true (@var{n}, @var{m}, @var{k}, @dots{})
 Return a matrix or N-dimensional array whose elements are all logical 1.
+
 If invoked with a single scalar integer argument, return a square
-matrix of the specified size.  If invoked with two or more scalar
-integer arguments, or a vector of integer values, return an array with
-given dimensions.
+matrix of the specified size.
+
+If invoked with two or more scalar integer arguments, or a vector of integer
+values, return an array with given dimensions.
 @seealso{@ref{XREFfalse,,false}}
 @end deftypefn
 
@@ -1216,10 +1239,12 @@ given dimensions.
 @deftypefnx {Built-in Function} {} false (@var{n}, @var{m})
 @deftypefnx {Built-in Function} {} false (@var{n}, @var{m}, @var{k}, @dots{})
 Return a matrix or N-dimensional array whose elements are all logical 0.
+
 If invoked with a single scalar integer argument, return a square
-matrix of the specified size.  If invoked with two or more scalar
-integer arguments, or a vector of integer values, return an array with
-given dimensions.
+matrix of the specified size.
+
+If invoked with two or more scalar integer arguments, or a vector of integer
+values, return an array with given dimensions.
 @seealso{@ref{XREFtrue,,true}}
 @end deftypefn
 
@@ -1334,8 +1359,9 @@ variable.
 @anchor{XREFisnumeric}
 @deftypefn {Built-in Function} {} isnumeric (@var{x})
 Return true if @var{x} is a numeric object, i.e., an integer, real, or
-complex array.  Logical and character arrays are not considered to be
-numeric.
+complex array.
+
+Logical and character arrays are not considered to be numeric.
 @seealso{@ref{XREFisinteger,,isinteger}, @ref{XREFisfloat,,isfloat}, @ref{XREFisreal,,isreal}, @ref{XREFiscomplex,,iscomplex}, @ref{XREFislogical,,islogical}, @ref{XREFischar,,ischar}, @ref{XREFiscell,,iscell}, @ref{XREFisstruct,,isstruct}, @ref{XREFisa,,isa}}
 @end deftypefn
 
@@ -1353,6 +1379,7 @@ Return true if @var{x} is a logical object.
 @anchor{XREFisfloat}
 @deftypefn {Built-in Function} {} isfloat (@var{x})
 Return true if @var{x} is a floating-point numeric object.
+
 Objects of class double or single are floating-point objects.
 @seealso{@ref{XREFisinteger,,isinteger}, @ref{XREFischar,,ischar}, @ref{XREFislogical,,islogical}, @ref{XREFisnumeric,,isnumeric}, @ref{XREFisa,,isa}}
 @end deftypefn
@@ -1362,6 +1389,7 @@ Objects of class double or single are floating-point objects.
 @anchor{XREFisreal}
 @deftypefn {Built-in Function} {} isreal (@var{x})
 Return true if @var{x} is a non-complex matrix or scalar.
+
 For compatibility with @sc{matlab}, this includes logical and character
 matrices.
 @seealso{@ref{XREFiscomplex,,iscomplex}, @ref{XREFisnumeric,,isnumeric}, @ref{XREFisa,,isa}}
@@ -1435,6 +1463,7 @@ Return true if @var{A} is a symmetric matrix within the tolerance specified
 by @var{tol}.
 
 The default tolerance is zero (uses faster code).
+
 Matrix @var{A} is considered symmetric if
 @code{norm (@var{A} - @var{A}.', Inf) / norm (@var{A}, Inf) < @var{tol}}.
 @seealso{@ref{XREFishermitian,,ishermitian}, @ref{XREFisdefinite,,isdefinite}}
@@ -1449,6 +1478,7 @@ Return true if @var{A} is Hermitian within the tolerance specified by
 @var{tol}.
 
 The default tolerance is zero (uses faster code).
+
 Matrix @var{A} is considered symmetric if
 @code{norm (@var{A} - @var{A}', Inf) / norm (@var{A}, Inf) < @var{tol}}.
 @seealso{@ref{XREFissymmetric,,issymmetric}, @ref{XREFisdefinite,,isdefinite}}
@@ -1461,8 +1491,9 @@ Matrix @var{A} is considered symmetric if
 @deftypefnx {Function File} {} isdefinite (@var{A}, @var{tol})
 Return 1 if @var{A} is symmetric positive definite within the
 tolerance specified by @var{tol} or 0 if @var{A} is symmetric
-positive semidefinite.  Otherwise, return -1.  If @var{tol}
-is omitted, use a tolerance of
+positive semidefinite.  Otherwise, return -1.
+
+If @var{tol} is omitted, use a tolerance of
 @code{100 * eps * norm (@var{A}, "fro")}
 @seealso{@ref{XREFissymmetric,,issymmetric}, @ref{XREFishermitian,,ishermitian}}
 @end deftypefn
@@ -1493,8 +1524,8 @@ Return true if @var{A} is a diagonal matrix.
 @deftypefn {Function File} {} istril (@var{A})
 Return true if @var{A} is a lower triangular matrix.
 
-A lower triangular matrix has nonzero entries only on the main diagonal
-and below.
+A lower triangular matrix has nonzero entries only on the main diagonal and
+below.
 @seealso{@ref{XREFistriu,,istriu}, @ref{XREFisbanded,,isbanded}, @ref{XREFisdiag,,isdiag}, @ref{XREFtril,,tril}, @ref{XREFbandwidth,,bandwidth}}
 @end deftypefn
 
@@ -1504,8 +1535,8 @@ and below.
 @deftypefn {Function File} {} istriu (@var{A})
 Return true if @var{A} is an upper triangular matrix.
 
-An upper triangular matrix has nonzero entries only on the main diagonal
-and above.
+An upper triangular matrix has nonzero entries only on the main diagonal and
+above.
 @seealso{@ref{XREFisdiag,,isdiag}, @ref{XREFisbanded,,isbanded}, @ref{XREFistril,,istril}, @ref{XREFtriu,,triu}, @ref{XREFbandwidth,,bandwidth}}
 @end deftypefn
 
@@ -1513,8 +1544,8 @@ and above.
 @c isprime scripts/specfun/isprime.m
 @anchor{XREFisprime}
 @deftypefn {Function File} {} isprime (@var{x})
-Return a logical array which is true where the elements of @var{x} are
-prime numbers and false where they are not.
+Return a logical array which is true where the elements of @var{x} are prime
+numbers and false where they are not.
 
 A prime number is conventionally defined as a positive integer greater than
 1 (e.g., 2, 3, @dots{}) which is divisible only by itself and 1.  Octave

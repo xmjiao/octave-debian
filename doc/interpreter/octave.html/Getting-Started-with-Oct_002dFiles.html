@@ -71,15 +71,15 @@ command is available from within Octave or at the shell command line.
 <dt><a name="index-mkoctfile-1"></a>Command: <em></em> <strong>mkoctfile</strong> <em>[-options] file &hellip;</em></dt>
 <dt><a name="index-mkoctfile-2"></a>Function File: <em>[<var>output</var>, <var>status</var>] =</em> <strong>mkoctfile</strong> <em>(&hellip;)</em></dt>
 <dd>
-<p>The <code>mkoctfile</code> function compiles source code written in C,
-C++, or Fortran.  Depending on the options used with <code>mkoctfile</code>, the
+<p>The <code>mkoctfile</code> function compiles source code written in C, C++, or
+Fortran.  Depending on the options used with <code>mkoctfile</code>, the
 compiled code can be called within Octave or can be used as a stand-alone
 application.
 </p>
 <p><code>mkoctfile</code> can be called from the shell prompt or from the Octave
-prompt.  Calling it from the Octave prompt simply delegates the
-call to the shell prompt.  The output is stored in the <var>output</var>
-variable and the exit status in the <var>status</var> variable.
+prompt.  Calling it from the Octave prompt simply delegates the call to
+the shell prompt.  The output is stored in the <var>output</var> variable and
+the exit status in the <var>status</var> variable.
 </p>
 <p><code>mkoctfile</code> accepts the following options, all of which are optional
 except for the file name of the code you wish to compile:
@@ -130,9 +130,8 @@ separators.
 </dd>
 <dt>&lsquo;<samp>-o FILE</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>--output FILE</samp>&rsquo;</dt>
-<dd><p>Output file name.  Default extension is .oct
-(or .mex if &lsquo;<samp>--mex</samp>&rsquo; is specified) unless linking
-a stand-alone executable.
+<dd><p>Output file name.  Default extension is .oct (or .mex if &lsquo;<samp>--mex</samp>&rsquo; is
+specified) unless linking a stand-alone executable.
 </p>
 </dd>
 <dt>&lsquo;<samp>-p VAR</samp>&rsquo;</dt>
@@ -175,8 +174,8 @@ a stand-alone executable.
 </p>
 </dd>
 <dt>&lsquo;<samp>--mex</samp>&rsquo;</dt>
-<dd><p>Assume we are creating a MEX file.  Set the default output extension
-to &quot;.mex&quot;.
+<dd><p>Assume we are creating a MEX file.  Set the default output extension to
+&quot;.mex&quot;.
 </p>
 </dd>
 <dt>&lsquo;<samp>-s</samp>&rsquo;</dt>

@@ -21,12 +21,12 @@
 ## @deftypefnx {Function File} {@var{filelist} =} gzip (@var{files}, @var{dir})
 ## Compress the list of files and directories specified in @var{files}.
 ##
-## @var{files} is a character array or cell array of strings.  Shell
-## wildcards in the filename such as @samp{*} or @samp{?} are accepted and
-## expanded.  Each file is compressed separately and a new file with a
-## @file{".gz"} extension is created.  The original files are not modified,
-## but existing compressed files will be silently overwritten.  If a directory
-## is specified then @code{gzip} recursively compresses all files in the
+## @var{files} is a character array or cell array of strings.  Shell wildcards
+## in the filename such as @samp{*} or @samp{?} are accepted and expanded.
+## Each file is compressed separately and a new file with a @file{".gz"}
+## extension is created.  The original files are not modified, but existing
+## compressed files will be silently overwritten.  If a directory is
+## specified then @code{gzip} recursively compresses all files in the
 ## directory.
 ##
 ## If @var{dir} is defined the compressed files are placed in this directory,

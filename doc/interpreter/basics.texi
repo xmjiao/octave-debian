@@ -472,11 +472,11 @@ atexit ("last_words");
 @noindent
 will print the message @qcode{"Bye bye"} when Octave exits.
 
-The additional argument @var{flag} will register or unregister
-@var{fcn} from the list of functions to be called when Octave
-exits.  If @var{flag} is true, the function is registered, and if
-@var{flag} is false, it is unregistered.  For example,
-after registering the function @code{last_words} above,
+The additional argument @var{flag} will register or unregister @var{fcn}
+from the list of functions to be called when Octave exits.  If @var{flag} is
+true, the function is registered, and if @var{flag} is false, it is
+unregistered.  For example, after registering the function @code{last_words}
+above,
 
 @example
 atexit ("last_words", false);
@@ -487,9 +487,8 @@ will remove the function from the list and Octave will not call
 @code{last_words} when it exits.
 
 Note that @code{atexit} only removes the first occurrence of a function
-from the list, so if a function was placed in the list multiple
-times with @code{atexit}, it must also be removed from the list
-multiple times.
+from the list, so if a function was placed in the list multiple times with
+@code{atexit}, it must also be removed from the list multiple times.
 @seealso{@ref{XREFquit,,quit}}
 @end deftypefn
 
@@ -518,15 +517,15 @@ Display the help text for @var{name}.
 For example, the command @kbd{help help} prints a short message describing
 the @code{help} command.
 
-Given the single argument @code{--list}, list all operators,
-keywords, built-in functions, and loadable functions available
-in the current session of Octave.
+Given the single argument @code{--list}, list all operators, keywords,
+built-in functions, and loadable functions available in the current session
+of Octave.
 
-Given the single argument @code{.}, list all operators available
-in the current session of Octave.
+Given the single argument @code{.}, list all operators available in the
+current session of Octave.
 
-If invoked without any arguments, @code{help} display instructions
-on how to access help from the command line.
+If invoked without any arguments, @code{help} display instructions on how to
+access help from the command line.
 
 The help command can provide information about most operators, for example
 @code{help +}, but not the comma and semicolon characters which are used
@@ -538,17 +537,18 @@ these type @kbd{help comma} or @kbd{help semicolon}.
 
 @c doc scripts/help/doc.m
 @anchor{XREFdoc}
-@deftypefn {Command} {} doc @var{function_name}
-Display documentation for the function @var{function_name}
-directly from an online version of
-the printed manual, using the GNU Info browser.  If invoked without
-any arguments, the manual is shown from the beginning.
+@deftypefn  {Command} {} doc @var{function_name}
+@deftypefnx {Command} {} doc
+Display documentation for the function @var{function_name} directly from an
+online version of the printed manual, using the GNU Info browser.
 
-For example, the command @kbd{doc rand} starts the GNU Info browser
-at the @code{rand} node in the online version of the manual.
+If invoked without an argument, the manual is shown from the beginning.
 
-Once the GNU Info browser is running, help for using it is available
-using the command @kbd{C-h}.
+For example, the command @kbd{doc rand} starts the GNU Info browser at the
+@code{rand} node in the online version of the manual.
+
+Once the GNU Info browser is running, help for using it is available using
+the command @kbd{C-h}.
 @seealso{@ref{XREFhelp,,help}}
 @end deftypefn
 
@@ -559,13 +559,13 @@ using the command @kbd{C-h}.
 @deftypefnx {Command} {} lookfor -all @var{str}
 @deftypefnx {Function File} {[@var{fcn}, @var{help1str}] =} lookfor (@var{str})
 @deftypefnx {Function File} {[@var{fcn}, @var{help1str}] =} lookfor ("-all", @var{str})
-Search for the string @var{str} in all functions using the current function
-search path.
+Search for the string @var{str} in the documentation of all functions in the
+current function search path.
 
-By default, @code{lookfor} looks for @var{str} in the first sentence of the
-help string for each function found.  The entire help text of each function
-can be searched by using the @qcode{"-all"} argument.  All searches are case
-insensitive.
+By default, @code{lookfor} looks for @var{str} in just the first sentence of
+the help string for each function found.  The entire help text of each
+function can be searched by using the @qcode{"-all"} argument.  All searches
+are case insensitive.
 
 When called with no output arguments, @code{lookfor} prints the list of
 matching functions to the terminal.  Otherwise, the output argument
@@ -578,7 +578,10 @@ help.  All Octave core functions are correctly formatted, but the same can
 not be guaranteed for external packages and user-supplied functions.
 Therefore, the use of the @qcode{"-all"} argument may be necessary to find
 related functions that are not a part of Octave.
-@seealso{@ref{XREFhelp,,help}, @ref{XREFdoc,,doc}, @ref{XREFwhich,,which}}
+
+The speed of lookup is greatly enhanced by having a cached documentation
+file.  See @code{doc_cache_create} for more information.
+@seealso{@ref{XREFhelp,,help}, @ref{XREFdoc,,doc}, @ref{XREFwhich,,which}, @ref{XREFpath,,path}, @ref{XREFdoc_cache_create,,doc_cache_create}}
 @end deftypefn
 
 
@@ -592,6 +595,7 @@ function.
 Display the current NEWS file for Octave or an installed package.
 
 When called without an argument, display the NEWS file for Octave.
+
 When given a package name @var{package}, display the current NEWS file for
 that package.
 @seealso{@ref{XREFver,,ver}, @ref{XREFpkg,,pkg}}
@@ -622,15 +626,17 @@ found.
 @deftypefnx {Built-in Function} {@var{old_val} =} info_file (@var{new_val})
 @deftypefnx {Built-in Function} {} info_file (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
-Octave info file.  The default value is
+Octave info file.
+
+The default value is
 @file{@var{octave-home}/info/octave.info}, in
 which @var{octave-home} is the root directory of the Octave installation.
 The default value may be overridden by the environment variable
 @w{@env{OCTAVE_INFO_FILE}}, or the command line argument
-@samp{--info-file FNAME}.
+@option{--info-file FNAME}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFinfo_program,,info_program}, @ref{XREFdoc,,doc}, @ref{XREFhelp,,help}, @ref{XREFmakeinfo_program,,makeinfo_program}}
 @end deftypefn
@@ -642,17 +648,19 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {@var{old_val} =} info_program (@var{new_val})
 @deftypefnx {Built-in Function} {} info_program (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
-info program to run.  The default value is
+info program to run.
+
+The default value is
 @file{@var{octave-home}/libexec/octave/@var{version}/exec/@var{arch}/info}
 in which @var{octave-home} is the root directory of the Octave installation,
-@var{version} is the Octave version number, and @var{arch}
-is the system type (for example, @code{i686-pc-linux-gnu}).  The
-default value may be overridden by the environment variable
+@var{version} is the Octave version number, and @var{arch} is the system
+type (for example, @code{i686-pc-linux-gnu}).  The default value may be
+overridden by the environment variable
 @w{@env{OCTAVE_INFO_PROGRAM}}, or the command line argument
-@samp{--info-program NAME}.
+@option{--info-program NAME}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFinfo_file,,info_file}, @ref{XREFdoc,,doc}, @ref{XREFhelp,,help}, @ref{XREFmakeinfo_program,,makeinfo_program}}
 @end deftypefn
@@ -665,10 +673,12 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {} makeinfo_program (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 program that Octave runs to format help text containing
-Texinfo markup commands.  The default value is @code{makeinfo}.
+Texinfo markup commands.
+
+The default value is @code{makeinfo}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFtexi_macros_file,,texi_macros_file}, @ref{XREFinfo_file,,info_file}, @ref{XREFinfo_program,,info_program}, @ref{XREFdoc,,doc}, @ref{XREFhelp,,help}}
 @end deftypefn
@@ -681,16 +691,18 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {} texi_macros_file (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 file containing Texinfo macros that are prepended to documentation strings
-before they are passed to makeinfo.  The default value is 
+before they are passed to makeinfo.
+
+The default value is
 @file{@var{octave-home}/share/octave/@var{version}/etc/macros.texi},
 in which @var{octave-home} is the root directory of the Octave installation,
 and @var{version} is the Octave version number.
 The default value may be overridden by the environment variable
 @w{@env{OCTAVE_TEXI_MACROS_FILE}}, or the command line argument
-@samp{--texi-macros-file FNAME}.
+@option{--texi-macros-file FNAME}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFmakeinfo_program,,makeinfo_program}}
 @end deftypefn
@@ -702,19 +714,22 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {@var{old_val} =} doc_cache_file (@var{new_val})
 @deftypefnx {Built-in Function} {} doc_cache_file (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
-Octave documentation cache file.  A cache file significantly improves
-the performance of the @code{lookfor} command.  The default value is 
+Octave documentation cache file.
+
+A cache file significantly improves the performance of the @code{lookfor}
+command.  The default value is
 @file{@var{octave-home}/share/octave/@var{version}/etc/doc-cache},
 in which @var{octave-home} is the root directory of the Octave installation,
 and @var{version} is the Octave version number.
 The default value may be overridden by the environment variable
 @w{@env{OCTAVE_DOC_CACHE_FILE}}, or the command line argument
-@samp{--doc-cache-file FNAME}.
+@option{--doc-cache-file FNAME}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFdoc_cache_create,,doc_cache_create}, @ref{XREFlookfor,,lookfor}, @ref{XREFinfo_program,,info_program}, @ref{XREFdoc,,doc}, @ref{XREFhelp,,help}, @ref{XREFmakeinfo_program,,makeinfo_program}}
+@seealso{@ref{XREFlookfor,,lookfor}}
 @end deftypefn
 
 
@@ -725,13 +740,14 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {} built_in_docstrings_file (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 file containing docstrings for built-in Octave functions.
+
 The default value is
 @file{@var{octave-home}/share/octave/@var{version}/etc/built-in-docstrings},
 in which @var{octave-home} is the root directory of the Octave installation,
-and @var{version} is the Octave version number.
-The default value may be overridden by the environment variable
+and @var{version} is the Octave version number.  The default value may be
+overridden by the environment variable
 @w{@env{OCTAVE_BUILT_IN_DOCSTRINGS_FILE}}, or the command line argument
-@samp{--built-in-docstrings-file FNAME}.
+@option{--built-in-docstrings-file FNAME}.
 
 Note: This variable is only used when Octave is initializing itself.
 Modifying it during a running session of Octave will have no effect.
@@ -748,7 +764,7 @@ will add additional help information to the end of the output from
 the @code{help} command and usage messages for built-in commands.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @end deftypefn
 
@@ -759,13 +775,17 @@ and because they may occasionally be useful for users.
 
 @c doc_cache_create scripts/help/doc_cache_create.m
 @anchor{XREFdoc_cache_create}
-@deftypefn {Function File} {} doc_cache_create (@var{out_file}, @var{directory})
-Generate documentation caches for all functions in a given directory.
+@deftypefn  {Function File} {} doc_cache_create (@var{out_file}, @var{directory})
+@deftypefnx {Function File} {} doc_cache_create (@var{out_file})
+@deftypefnx {Function File} {} doc_cache_create ()
+Generate documentation cache for all functions in @var{directory}.
 
-A documentation cache is generated for all functions in @var{directory}.
-The
-resulting cache is saved in the file @var{out_file}.
-The cache is used to speed up @code{lookfor}.
+A documentation cache is generated for all functions in @var{directory}
+which may be a single string or a cell array of strings.  The cache is used
+to speed up the function @code{lookfor}.
+
+The cache is saved in the file @var{out_file} which defaults to the value
+@file{doc-cache} if not given.
 
 If no directory is given (or it is the empty matrix), a cache for built-in
 operators, etc. is generated.
@@ -782,6 +802,7 @@ Return the raw help text of function @var{name}.
 The raw help text is returned in @var{text} and the format in @var{format}
 The format is a string which is one of @qcode{"texinfo"},
 @qcode{"html"}, or @qcode{"plain text"}.
+@seealso{@ref{XREFget_help_text_from_file,,get_help_text_from_file}}
 @end deftypefn
 
 
@@ -793,19 +814,21 @@ Return the raw help text from the file @var{fname}.
 The raw help text is returned in @var{text} and the format in @var{format}
 The format is a string which is one of @qcode{"texinfo"},
 @qcode{"html"}, or @qcode{"plain text"}.
+@seealso{@ref{XREFget_help_text,,get_help_text}}
 @end deftypefn
 
 
 @c get_first_help_sentence scripts/help/get_first_help_sentence.m
 @anchor{XREFget_first_help_sentence}
-@deftypefn  {Function File} {[@var{text}, @var{status}] =} get_first_help_sentence (@var{name})
-@deftypefnx {Function File} {[@var{text}, @var{status}] =} get_first_help_sentence (@var{name}, @var{max_len})
+@deftypefn  {Function File} {@var{text} =} get_first_help_sentence (@var{name})
+@deftypefnx {Function File} {@var{text} =} get_first_help_sentence (@var{name}, @var{max_len})
+@deftypefnx {Function File} {[@var{text}, @var{status}] =} get_first_help_sentence (@dots{})
 Return the first sentence of a function's help text.
 
-The first sentence is defined as the text after the function
-declaration until either the first period (".") or the first appearance of
-two consecutive newlines ("\n\n").  The text is truncated to a maximum
-length of @var{max_len}, which defaults to 80.
+The first sentence is defined as the text after the function declaration
+until either the first period (".") or the first appearance of two
+consecutive newlines ("\n\n").  The text is truncated to a maximum length of
+@var{max_len}, which defaults to 80.
 
 The optional output argument @var{status} returns the status reported by
 @code{makeinfo}.  If only one output argument is requested, and @var{status}
@@ -1042,11 +1065,12 @@ List the possible completions of the text before the cursor.
 @deftypefnx {Built-in Function} {@var{old_val} =} completion_append_char (@var{new_val})
 @deftypefnx {Built-in Function} {} completion_append_char (@var{new_val}, "local")
 Query or set the internal character variable that is appended to
-successful command-line completion attempts.  The default
-value is @qcode{" "} (a single space).
+successful command-line completion attempts.
+
+The default value is @qcode{" "} (a single space).
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @end deftypefn
 
@@ -1121,7 +1145,9 @@ re-running chunks of commands from the history list.
 @deftypefnx {Built-in Function} {@var{h} =} history ()
 @deftypefnx {Built-in Function} {@var{h} =} history (@var{opt1}, @dots{})
 If invoked with no arguments, @code{history} displays a list of commands
-that you have executed.  Valid options are:
+that you have executed.
+
+Valid options are:
 
 @table @code
 @item   @var{n}
@@ -1151,6 +1177,7 @@ typed without displaying line numbers, use the command
 
 If invoked with a single output argument, the history will be saved to that
 argument as a cell string and will not be output to screen.
+@seealso{@ref{XREFedit_history,,edit_history}, @ref{XREFrun_history,,run_history}}
 @end deftypefn
 
 
@@ -1159,8 +1186,7 @@ argument as a cell string and will not be output to screen.
 @deftypefn  {Command} {} edit_history
 @deftypefnx {Command} {} edit_history @var{cmd_number}
 @deftypefnx {Command} {} edit_history @var{first} @var{last}
-Edit the history list using the editor named by the variable
-@w{@env{EDITOR}}.
+Edit the history list using the editor named by the variable @env{EDITOR}.
 
 The commands to be edited are first copied to a temporary file.  When you
 exit the editor, Octave executes the commands that remain in the file.  It
@@ -1187,7 +1213,7 @@ edit_history -1
 When using ranges, specifying a larger number for the first command than the
 last command reverses the list of commands before they are placed in the
 buffer to be edited.
-@seealso{@ref{XREFrun_history,,run_history}}
+@seealso{@ref{XREFrun_history,,run_history}, @ref{XREFhistory,,history}}
 @end deftypefn
 
 
@@ -1199,11 +1225,12 @@ buffer to be edited.
 Run commands from the history list.
 
 When invoked with no arguments, run the previously executed command;
+
 With one argument, run the specified command @var{cmd_number};
+
 With two arguments, run the list of commands between @var{first} and
 @var{last}.  Command number specifiers may also be negative where -1
-refers to the most recently executed command.
-For example, the command
+refers to the most recently executed command.  For example, the command
 
 @example
 @group
@@ -1239,7 +1266,7 @@ run_history -1 -2
 @end group
 @end example
 
-@seealso{@ref{XREFedit_history,,edit_history}}
+@seealso{@ref{XREFedit_history,,edit_history}, @ref{XREFhistory,,history}}
 @end deftypefn
 
 
@@ -1256,7 +1283,7 @@ Query or set the internal variable that controls whether commands entered
 on the command line are saved in the history file.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFhistory_control,,history_control}, @ref{XREFhistory_file,,history_file}, @ref{XREFhistory_size,,history_size}, @ref{XREFhistory_timestamp_format_string,,history_timestamp_format_string}}
 @end deftypefn
@@ -1267,9 +1294,10 @@ The original variable value is restored when exiting the function.
 @deftypefn  {Built-in Function} {@var{val} =} history_control ()
 @deftypefnx {Built-in Function} {@var{old_val} =} history_control (@var{new_val})
 Query or set the internal variable that specifies how commands are saved
-to the history list.  The default value is an empty character string,
-but may be overridden by the environment variable
-@w{@env{OCTAVE_HISTCONTROL}}.
+to the history list.
+
+The default value is an empty character string, but may be overridden by the
+environment variable @w{@env{OCTAVE_HISTCONTROL}}.
 
 The value of @code{history_control} is a colon-separated list of values
 controlling how commands are saved on the history list.  If the list
@@ -1291,9 +1319,10 @@ the history list, subject to the value of @code{history_save}.
 @deftypefn  {Built-in Function} {@var{val} =} history_file ()
 @deftypefnx {Built-in Function} {@var{old_val} =} history_file (@var{new_val})
 Query or set the internal variable that specifies the name of the
-file used to store command history.  The default value is
-@file{~/.octave_hist}, but may be overridden by the environment
-variable @w{@env{OCTAVE_HISTFILE}}.
+file used to store command history.
+
+The default value is @file{~/.octave_hist}, but may be overridden by the
+environment variable @w{@env{OCTAVE_HISTFILE}}.
 @seealso{@ref{XREFhistory_size,,history_size}, @ref{XREFhistory_save,,history_save}, @ref{XREFhistory_timestamp_format_string,,history_timestamp_format_string}}
 @end deftypefn
 
@@ -1303,8 +1332,10 @@ variable @w{@env{OCTAVE_HISTFILE}}.
 @deftypefn  {Built-in Function} {@var{val} =} history_size ()
 @deftypefnx {Built-in Function} {@var{old_val} =} history_size (@var{new_val})
 Query or set the internal variable that specifies how many entries
-to store in the history file.  The default value is @code{1000},
-but may be overridden by the environment variable @w{@env{OCTAVE_HISTSIZE}}.
+to store in the history file.
+
+The default value is @code{1000}, but may be overridden by the environment
+variable @w{@env{OCTAVE_HISTSIZE}}.
 @seealso{@ref{XREFhistory_file,,history_file}, @ref{XREFhistory_timestamp_format_string,,history_timestamp_format_string}, @ref{XREFhistory_save,,history_save}}
 @end deftypefn
 
@@ -1316,15 +1347,16 @@ but may be overridden by the environment variable @w{@env{OCTAVE_HISTSIZE}}.
 @deftypefnx {Built-in Function} {} history_timestamp_format_string (@var{new_val}, "local")
 Query or set the internal variable that specifies the format string
 for the comment line that is written to the history file when Octave
-exits.  The format string is passed to @code{strftime}.  The default
-value is
+exits.
+
+The format string is passed to @code{strftime}.  The default value is
 
 @example
 "# Octave VERSION, %a %b %d %H:%M:%S %Y %Z <USER@@HOST>"
 @end example
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFstrftime,,strftime}, @ref{XREFhistory_file,,history_file}, @ref{XREFhistory_size,,history_size}, @ref{XREFhistory_save,,history_save}}
 @end deftypefn
@@ -1338,12 +1370,11 @@ The original variable value is restored when exiting the function.
 Query or set the internal variable that specifies the default text editor.
 
 The default value is taken from the environment variable @w{@env{EDITOR}}
-when Octave starts.  If the
-environment variable is not initialized, @w{@env{EDITOR}} will be set to
-@qcode{"emacs"}.
+when Octave starts.  If the environment variable is not initialized,
+@w{@env{EDITOR}} will be set to @qcode{"emacs"}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 
 @seealso{@ref{XREFedit,,edit}, @ref{XREFedit_history,,edit_history}}
@@ -1368,9 +1399,10 @@ the command line behavior.
 @c readline_read_init_file libinterp/corefcn/input.cc
 @anchor{XREFreadline_read_init_file}
 @deftypefn {Built-in Function} {} readline_read_init_file (@var{file})
-Read the readline library initialization file @var{file}.  If
-@var{file} is omitted, read the default initialization file (normally
-@file{~/.inputrc}).
+Read the readline library initialization file @var{file}.
+
+If @var{file} is omitted, read the default initialization file
+(normally @file{~/.inputrc}).
 
 @xref{Readline Init File, , , readline, GNU Readline Library},
 for details.
@@ -1382,6 +1414,7 @@ for details.
 @anchor{XREFreadline_re_read_init_file}
 @deftypefn {Built-in Function} {} readline_re_read_init_file ()
 Re-read the last readline library initialization file that was read.
+
 @xref{Readline Init File, , , readline, GNU Readline Library},
 for details.
 @seealso{@ref{XREFreadline_read_init_file,,readline_read_init_file}}
@@ -1449,8 +1482,10 @@ A backslash.
 @deftypefn  {Built-in Function} {@var{val} =} PS1 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS1 (@var{new_val})
 @deftypefnx {Built-in Function} {} PS1 (@var{new_val}, "local")
-Query or set the primary prompt string.  When executing interactively,
-Octave displays the primary prompt when it is ready to read a command.
+Query or set the primary prompt string.
+
+When executing interactively, Octave displays the primary prompt when it is
+ready to read a command.
 
 The default value of the primary prompt string is @qcode{"octave:\#> "}.
 To change it, use a command like
@@ -1476,7 +1511,7 @@ PS1 ("\\[\\033[01;31m\\]\\s:\\#> \\[\\033[0m\\]")
 will give the default Octave prompt a red coloring.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFPS2,,PS2}, @ref{XREFPS4,,PS4}}
 @end deftypefn
@@ -1487,15 +1522,16 @@ The original variable value is restored when exiting the function.
 @deftypefn  {Built-in Function} {@var{val} =} PS2 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS2 (@var{new_val})
 @deftypefnx {Built-in Function} {} PS2 (@var{new_val}, "local")
-Query or set the secondary prompt string.  The secondary prompt is
-printed when Octave is expecting additional input to complete a
-command.  For example, if you are typing a @code{for} loop that spans several
-lines, Octave will print the secondary prompt at the beginning of
-each line after the first.  The default value of the secondary prompt
+Query or set the secondary prompt string.
+
+The secondary prompt is printed when Octave is expecting additional input to
+complete a command.  For example, if you are typing a @code{for} loop that
+spans several lines, Octave will print the secondary prompt at the beginning
+of each line after the first.  The default value of the secondary prompt
 string is @qcode{"> "}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFPS1,,PS1}, @ref{XREFPS4,,PS4}}
 @end deftypefn
@@ -1508,11 +1544,12 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {} PS4 (@var{new_val}, "local")
 Query or set the character string used to prefix output produced
 when echoing commands is enabled.
+
 The default value is @qcode{"+ "}.
 @xref{Diary and Echo Commands}, for a description of echoing commands.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFecho,,echo}, @ref{XREFecho_executing_commands,,echo_executing_commands}, @ref{XREFPS1,,PS1}, @ref{XREFPS2,,PS2}}
 @end deftypefn
@@ -1564,9 +1601,14 @@ some kinds of problems.
 
 @c echo libinterp/corefcn/input.cc
 @anchor{XREFecho}
-@deftypefn {Command} {} echo options
-Control whether commands are displayed as they are executed.  Valid
-options are:
+@deftypefn  {Command} {} echo
+@deftypefnx {Command} {} echo on
+@deftypefnx {Command} {} echo off
+@deftypefnx {Command} {} echo on all
+@deftypefnx {Command} {} echo off all
+Control whether commands are displayed as they are executed.
+
+Valid options are:
 
 @table @code
 @item on
@@ -1595,6 +1637,7 @@ With no arguments, @code{echo} toggles the current echo state.
 @deftypefnx {Built-in Function} {@var{old_val} =} echo_executing_commands (@var{new_val})
 @deftypefnx {Built-in Function} {} echo_executing_commands (@var{new_val}, "local")
 Query or set the internal variable that controls the echo state.
+
 It may be the sum of the following values:
 
 @table @asis
@@ -1615,7 +1658,7 @@ The value of @code{echo_executing_commands} may be set by the @kbd{echo}
 command or the command line option @option{--echo-commands}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @end deftypefn
 

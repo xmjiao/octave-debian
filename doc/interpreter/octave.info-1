@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 4.0.0-rc4.
+corresponds to GNU Octave version 4.0.0.
 
 * Menu:
 
@@ -1066,10 +1066,11 @@ below on how to use 'citation'.
      publications.
 
      When called without an argument, display information on how to cite
-     the core GNU Octave system.  When given a package name PACKAGE,
-     display information on citing the specific named package.  Note
-     that some packages may not yet have instructions on how to cite
-     them.
+     the core GNU Octave system.
+
+     When given a package name PACKAGE, display information on citing
+     the specific named package.  Note that some packages may not yet
+     have instructions on how to cite them.
 
      The GNU Octave developers and its active community of package
      authors have invested a lot of time and effort in creating GNU
@@ -1143,10 +1144,9 @@ and nonlinear equations, numerical linear algebra, statistical analysis,
 and for performing other numerical experiments.  It may also be used as
 a batch-oriented language for automated data processing.
 
-   Until recently GNU Octave provided a command-line interface with
-graphical results displayed in separate windows.  The current version
-(version 3.8, released in late 2013) also provides, by default, a
-graphical user interface.
+   Until recently GNU Octave provided a command-line interface only with
+graphical plots displayed in separate windows.  However, by default the
+current version runs with a graphical user interface.
 
    GNU Octave is freely redistributable software.  You may redistribute
 it and/or modify it under the terms of the GNU General Public License as
@@ -1157,7 +1157,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 4.0.0-rc4.
+   This document corresponds to Octave version 4.0.0.
 
 * Menu:
 
@@ -1172,19 +1172,19 @@ File: octave.info,  Node: Running Octave,  Next: Simple Examples,  Up: Introduct
 ==================
 
 On most systems, Octave is started with the shell command 'octave'.
-This, by default, starts the graphical user interface (GUI). The central
-window in the GUI is the Octave command-line interface.  Octave displays
-an initial message and then a prompt indicating it is ready to accept
-input.  If you have chosen the traditional command-line interface only
-the command prompt appears.  In any case, you can immediately begin
-typing Octave commands.
+This starts the graphical user interface (GUI). The central window in
+the GUI is the Octave command-line interface.  In this window Octave
+displays an initial message and then a prompt indicating it is ready to
+accept input.  If you have chosen the traditional command-line interface
+then only the command prompt appears in the same window that was running
+a shell.  In any case, you can immediately begin typing Octave commands.
 
    If you get into trouble, you can usually interrupt Octave by typing
 'Control-C' (written 'C-c' for short).  'C-c' gets its name from the
 fact that you type it by holding down <CTRL> and then pressing <c>.
 Doing this will normally return you to Octave's prompt.
 
-   To exit Octave, type 'quit', or 'exit' at the Octave prompt.
+   To exit Octave, type 'quit' or 'exit' at the Octave prompt.
 
    On systems that support job control, you can suspend Octave by
 sending it a 'SIGTSTP' signal, usually by typing 'C-z'.
@@ -1199,7 +1199,7 @@ The following chapters describe all of Octave's features in detail, but
 before doing that, it might be helpful to give a sampling of some of its
 capabilities.
 
-   If you are new to Octave, I recommend that you try these examples to
+   If you are new to Octave, we recommend that you try these examples to
 begin learning Octave by using it.  Lines marked like so, 'octave:13>',
 are lines you type, ending each with a carriage return.  Octave will
 respond with an answer, or by displaying a graph.
@@ -1373,10 +1373,10 @@ create a separate window to display the plot.
    To save a plot once it has been displayed on the screen, use the
 print command.  For example,
 
-     print -deps foo.eps
+     print -dpdf foo.pdf
 
-will create a file called 'foo.eps' that contains a rendering of the
-current plot in Encapsulated PostScript format.  The command
+will create a file called 'foo.pdf' that contains a rendering of the
+current plot in Portable Document Format.  The command
 
      help print
 
@@ -1406,12 +1406,12 @@ because both forms of the documentation are created from the same input
 file.
 
    In order to get good help you first need to know the name of the
-command that you want to use.  This name of the function may not always
+command that you want to use.  The name of this function may not always
 be obvious, but a good place to start is to type 'help --list'.  This
 will show you all the operators, keywords, built-in functions, and
 loadable functions available in the current session of Octave.  An
-alternative is to search the documentation using the 'lookfor' function.
-This function is described in *note Getting Help::.
+alternative is to search the documentation using the 'lookfor' function
+(described in *note Getting Help::).
 
    Once you know the name of the function you wish to use, you can get
 more help on the function by simply including the name as an argument to
@@ -1423,7 +1423,7 @@ will display the help text for the 'plot' function.
 
    Octave sends output that is too long to fit on one screen through a
 pager like 'less' or 'more'.  Type a <RET> to advance one line, a <SPC>
-to advance one page, and <q> to exit the pager.
+to advance one page, and <q> to quit the pager.
 
    The part of Octave's help facility that allows you to read the
 complete text of the printed manual from within Octave normally uses a
@@ -1460,7 +1460,7 @@ form: FIRST-NUMBER.  Commands that you type at the shell prompt appear
 in this font or form: 'octave --no-init-file'.  Commands that you type
 at the Octave prompt sometimes appear in this font or form: 'foo --bar
 --baz'.  Specific keys on your keyboard appear in this font or form:
-<ANY>.
+<RET>.
 
 
 File: octave.info,  Node: Evaluation Notation,  Next: Printing Notation,  Prev: Fonts,  Up: Conventions
@@ -1539,8 +1539,10 @@ File: octave.info,  Node: Format of Descriptions,  Prev: Error Messages,  Up: Co
 Functions and commands are described in this manual in a uniform format.
 The first line of a description contains the name of the item followed
 by its arguments, if any.  The category--function, command, or
-whatever--appears at the beginning of the line.  The description follows
-on succeeding lines, sometimes with examples.
+whatever--appears at the beginning of the line.  If there are multiple
+ways to invoke the function then each allowable form is listed.
+
+   The description follows on succeeding lines, sometimes with examples.
 
 * Menu:
 
@@ -1558,14 +1560,24 @@ appears first.  It is followed on the same line by a list of parameters.
 The names used for the parameters are also used in the body of the
 description.
 
+   After all of the calling forms have been enumerated, the next line is
+a concise one-sentence summary of the function.
+
+   After the summary there may be documentation on the inputs and
+outputs, examples of function usage, notes about the algorithm used, and
+references to related functions.
+
    Here is a description of an imaginary function 'foo':
 
  -- Function File: foo (X)
  -- Function File: foo (X, Y)
  -- Function File: foo (X, Y, ...)
      The function 'foo' subtracts X from Y, then adds the remaining
-     arguments to the result.  If Y is not supplied, then the number 19
-     is used by default.
+     arguments to the result.
+
+     If Y is not supplied, then the number 19 is used by default.
+
+     Example:
 
           foo (1, [3, 5], 3, 9)
                => [ 14, 16 ]
@@ -1578,6 +1590,8 @@ description.
           ==
           X - W + Y + ...
 
+     See also: bar
+
    Any parameter whose name contains the name of a type (e.g., INTEGER
 or MATRIX) is expected to be of that type.  Parameters named OBJECT may
 be of any type.  Parameters with other sorts of names (e.g., NEW_FILE)
@@ -1586,8 +1600,8 @@ sections, features common to parameters of several functions are
 described at the beginning.
 
    Functions in Octave may be defined in several different ways.  The
-category name for functions may include another name that indicates the
-way that the function is defined.  These additional tags include
+category name for functions may include a tag that indicates the way
+that the function is defined.  These additional tags include
 
 Function File
      The function described is defined using Octave commands stored in a
@@ -1616,15 +1630,31 @@ File: octave.info,  Node: A Sample Command Description,  Prev: A Sample Function
 Command descriptions have a format similar to function descriptions,
 except that the word 'Function' is replaced by 'Command'.  Commands are
 functions that may be called without surrounding their arguments in
-parentheses.  For example, here is the description for Octave's 'cd'
+parentheses.  For example, here is the description for Octave's 'diary'
 command:
 
- -- Command: cd dir
- -- Command: chdir dir
-     Change the current working directory to DIR.  For example, 'cd
-     ~/octave' changes the current working directory to '~/octave'.  If
-     the directory does not exist, an error message is printed and the
-     working directory is not changed.
+ -- Command: diary
+ -- Command: diary on
+ -- Command: diary off
+ -- Command: diary FILENAME
+     Record a list of all commands _and_ the output they produce, mixed
+     together just as they appear on the terminal.
+
+     Valid options are:
+
+     on
+          Start recording a session in a file called 'diary' in the
+          current working directory.
+
+     off
+          Stop recording the session in the diary file.
+
+     FILENAME
+          Record the session in the file named FILENAME.
+
+     With no arguments, 'diary' toggles the current diary state.
+
+     See also: history.
 
 
 File: octave.info,  Node: Getting Started,  Next: Data Types,  Prev: Introduction,  Up: Top
@@ -2054,10 +2084,13 @@ document the functions you write.
      which: XREFwhich, *note info: XREFinfo.
 
  -- Command: doc FUNCTION_NAME
+ -- Command: doc
      Display documentation for the function FUNCTION_NAME directly from
      an online version of the printed manual, using the GNU Info
-     browser.  If invoked without any arguments, the manual is shown
-     from the beginning.
+     browser.
+
+     If invoked without an argument, the manual is shown from the
+     beginning.
 
      For example, the command 'doc rand' starts the GNU Info browser at
      the 'rand' node in the online version of the manual.
@@ -2071,12 +2104,12 @@ document the functions you write.
  -- Command: lookfor -all STR
  -- Function File: [FCN, HELP1STR] = lookfor (STR)
  -- Function File: [FCN, HELP1STR] = lookfor ("-all", STR)
-     Search for the string STR in all functions using the current
-     function search path.
+     Search for the string STR in the documentation of all functions in
+     the current function search path.
 
-     By default, 'lookfor' looks for STR in the first sentence of the
-     help string for each function found.  The entire help text of each
-     function can be searched by using the "-all" argument.  All
+     By default, 'lookfor' looks for STR in just the first sentence of
+     the help string for each function found.  The entire help text of
+     each function can be searched by using the "-all" argument.  All
      searches are case insensitive.
 
      When called with no output arguments, 'lookfor' prints the list of
@@ -2092,8 +2125,12 @@ document the functions you write.
      argument may be necessary to find related functions that are not a
      part of Octave.
 
+     The speed of lookup is greatly enhanced by having a cached
+     documentation file.  See 'doc_cache_create' for more information.
+
      See also: *note help: XREFhelp, *note doc: XREFdoc, *note which:
-     XREFwhich.
+     XREFwhich, *note path: XREFpath, *note doc_cache_create:
+     XREFdoc_cache_create.
 
    To see what is new in the current release of Octave, use the 'news'
 function.
@@ -2103,6 +2140,7 @@ function.
      Display the current NEWS file for Octave or an installed package.
 
      When called without an argument, display the NEWS file for Octave.
+
      When given a package name PACKAGE, display the current NEWS file
      for that package.
 
@@ -2122,11 +2160,13 @@ found.
  -- Built-in Function: OLD_VAL = info_file (NEW_VAL)
  -- Built-in Function: info_file (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
-     Octave info file.  The default value is
-     'OCTAVE-HOME/info/octave.info', in which OCTAVE-HOME is the root
-     directory of the Octave installation.  The default value may be
-     overridden by the environment variable 'OCTAVE_INFO_FILE', or the
-     command line argument '--info-file FNAME'.
+     Octave info file.
+
+     The default value is 'OCTAVE-HOME/info/octave.info', in which
+     OCTAVE-HOME is the root directory of the Octave installation.  The
+     default value may be overridden by the environment variable
+     'OCTAVE_INFO_FILE', or the command line argument '--info-file
+     FNAME'.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -2140,7 +2180,9 @@ found.
  -- Built-in Function: OLD_VAL = info_program (NEW_VAL)
  -- Built-in Function: info_program (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
-     info program to run.  The default value is
+     info program to run.
+
+     The default value is
      'OCTAVE-HOME/libexec/octave/VERSION/exec/ARCH/info' in which
      OCTAVE-HOME is the root directory of the Octave installation,
      VERSION is the Octave version number, and ARCH is the system type
@@ -2161,7 +2203,9 @@ found.
  -- Built-in Function: makeinfo_program (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      program that Octave runs to format help text containing Texinfo
-     markup commands.  The default value is 'makeinfo'.
+     markup commands.
+
+     The default value is 'makeinfo'.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -2177,7 +2221,9 @@ found.
  -- Built-in Function: texi_macros_file (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      file containing Texinfo macros that are prepended to documentation
-     strings before they are passed to makeinfo.  The default value is
+     strings before they are passed to makeinfo.
+
+     The default value is
      'OCTAVE-HOME/share/octave/VERSION/etc/macros.texi', in which
      OCTAVE-HOME is the root directory of the Octave installation, and
      VERSION is the Octave version number.  The default value may be
@@ -2195,9 +2241,11 @@ found.
  -- Built-in Function: OLD_VAL = doc_cache_file (NEW_VAL)
  -- Built-in Function: doc_cache_file (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
-     Octave documentation cache file.  A cache file significantly
-     improves the performance of the 'lookfor' command.  The default
-     value is 'OCTAVE-HOME/share/octave/VERSION/etc/doc-cache', in which
+     Octave documentation cache file.
+
+     A cache file significantly improves the performance of the
+     'lookfor' command.  The default value is
+     'OCTAVE-HOME/share/octave/VERSION/etc/doc-cache', in which
      OCTAVE-HOME is the root directory of the Octave installation, and
      VERSION is the Octave version number.  The default value may be
      overridden by the environment variable 'OCTAVE_DOC_CACHE_FILE', or
@@ -2213,12 +2261,15 @@ found.
      doc: XREFdoc, *note help: XREFhelp, *note makeinfo_program:
      XREFmakeinfo_program.
 
+     See also: *note lookfor: XREFlookfor.
+
  -- Built-in Function: VAL = built_in_docstrings_file ()
  -- Built-in Function: OLD_VAL = built_in_docstrings_file (NEW_VAL)
  -- Built-in Function: built_in_docstrings_file (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
-     file containing docstrings for built-in Octave functions.  The
-     default value is
+     file containing docstrings for built-in Octave functions.
+
+     The default value is
      'OCTAVE-HOME/share/octave/VERSION/etc/built-in-docstrings', in
      which OCTAVE-HOME is the root directory of the Octave installation,
      and VERSION is the Octave version number.  The default value may be
@@ -2247,12 +2298,16 @@ generating the documentation.  They are documented here for completeness
 and because they may occasionally be useful for users.
 
  -- Function File: doc_cache_create (OUT_FILE, DIRECTORY)
-     Generate documentation caches for all functions in a given
-     directory.
+ -- Function File: doc_cache_create (OUT_FILE)
+ -- Function File: doc_cache_create ()
+     Generate documentation cache for all functions in DIRECTORY.
 
-     A documentation cache is generated for all functions in DIRECTORY.
-     The resulting cache is saved in the file OUT_FILE.  The cache is
-     used to speed up 'lookfor'.
+     A documentation cache is generated for all functions in DIRECTORY
+     which may be a single string or a cell array of strings.  The cache
+     is used to speed up the function 'lookfor'.
+
+     The cache is saved in the file OUT_FILE which defaults to the value
+     'doc-cache' if not given.
 
      If no directory is given (or it is the empty matrix), a cache for
      built-in operators, etc.  is generated.
@@ -2267,6 +2322,9 @@ and because they may occasionally be useful for users.
      format is a string which is one of "texinfo", "html", or "plain
      text".
 
+     See also: *note get_help_text_from_file:
+     XREFget_help_text_from_file.
+
  -- Built-in Function: [TEXT, FORMAT] = get_help_text_from_file (FNAME)
      Return the raw help text from the file FNAME.
 
@@ -2274,9 +2332,11 @@ and because they may occasionally be useful for users.
      format is a string which is one of "texinfo", "html", or "plain
      text".
 
- -- Function File: [TEXT, STATUS] = get_first_help_sentence (NAME)
- -- Function File: [TEXT, STATUS] = get_first_help_sentence (NAME,
-          MAX_LEN)
+     See also: *note get_help_text: XREFget_help_text.
+
+ -- Function File: TEXT = get_first_help_sentence (NAME)
+ -- Function File: TEXT = get_first_help_sentence (NAME, MAX_LEN)
+ -- Function File: [TEXT, STATUS] = get_first_help_sentence (...)
      Return the first sentence of a function's help text.
 
      The first sentence is defined as the text after the function
@@ -2511,8 +2571,9 @@ names for you.
  -- Built-in Function: OLD_VAL = completion_append_char (NEW_VAL)
  -- Built-in Function: completion_append_char (NEW_VAL, "local")
      Query or set the internal character variable that is appended to
-     successful command-line completion attempts.  The default value is
-     " " (a single space).
+     successful command-line completion attempts.
+
+     The default value is " " (a single space).
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -2582,7 +2643,9 @@ re-running chunks of commands from the history list.
  -- Built-in Function: H = history ()
  -- Built-in Function: H = history (OPT1, ...)
      If invoked with no arguments, 'history' displays a list of commands
-     that you have executed.  Valid options are:
+     that you have executed.
+
+     Valid options are:
 
      'N'
      '-N'
@@ -2612,6 +2675,9 @@ re-running chunks of commands from the history list.
      If invoked with a single output argument, the history will be saved
      to that argument as a cell string and will not be output to screen.
 
+     See also: *note edit_history: XREFedit_history, *note run_history:
+     XREFrun_history.
+
  -- Command: edit_history
  -- Command: edit_history CMD_NUMBER
  -- Command: edit_history FIRST LAST
@@ -2640,7 +2706,8 @@ re-running chunks of commands from the history list.
      than the last command reverses the list of commands before they are
      placed in the buffer to be edited.
 
-     See also: *note run_history: XREFrun_history.
+     See also: *note run_history: XREFrun_history, *note history:
+     XREFhistory.
 
  -- Command: run_history
  -- Command: run_history CMD_NUMBER
@@ -2648,7 +2715,10 @@ re-running chunks of commands from the history list.
      Run commands from the history list.
 
      When invoked with no arguments, run the previously executed
-     command; With one argument, run the specified command CMD_NUMBER;
+     command;
+
+     With one argument, run the specified command CMD_NUMBER;
+
      With two arguments, run the list of commands between FIRST and
      LAST.  Command number specifiers may also be negative where -1
      refers to the most recently executed command.  For example, the
@@ -2675,7 +2745,8 @@ re-running chunks of commands from the history list.
            2
            1
 
-     See also: *note edit_history: XREFedit_history.
+     See also: *note edit_history: XREFedit_history, *note history:
+     XREFhistory.
 
 Octave also allows you customize the details of when, where, and how
 history is saved.
@@ -2699,9 +2770,10 @@ history is saved.
  -- Built-in Function: VAL = history_control ()
  -- Built-in Function: OLD_VAL = history_control (NEW_VAL)
      Query or set the internal variable that specifies how commands are
-     saved to the history list.  The default value is an empty character
-     string, but may be overridden by the environment variable
-     'OCTAVE_HISTCONTROL'.
+     saved to the history list.
+
+     The default value is an empty character string, but may be
+     overridden by the environment variable 'OCTAVE_HISTCONTROL'.
 
      The value of 'history_control' is a colon-separated list of values
      controlling how commands are saved on the history list.  If the
@@ -2724,9 +2796,10 @@ history is saved.
  -- Built-in Function: VAL = history_file ()
  -- Built-in Function: OLD_VAL = history_file (NEW_VAL)
      Query or set the internal variable that specifies the name of the
-     file used to store command history.  The default value is
-     '~/.octave_hist', but may be overridden by the environment variable
-     'OCTAVE_HISTFILE'.
+     file used to store command history.
+
+     The default value is '~/.octave_hist', but may be overridden by the
+     environment variable 'OCTAVE_HISTFILE'.
 
      See also: *note history_size: XREFhistory_size, *note history_save:
      XREFhistory_save, *note history_timestamp_format_string:
@@ -2735,8 +2808,10 @@ history is saved.
  -- Built-in Function: VAL = history_size ()
  -- Built-in Function: OLD_VAL = history_size (NEW_VAL)
      Query or set the internal variable that specifies how many entries
-     to store in the history file.  The default value is '1000', but may
-     be overridden by the environment variable 'OCTAVE_HISTSIZE'.
+     to store in the history file.
+
+     The default value is '1000', but may be overridden by the
+     environment variable 'OCTAVE_HISTSIZE'.
 
      See also: *note history_file: XREFhistory_file, *note
      history_timestamp_format_string:
@@ -2750,8 +2825,9 @@ history is saved.
           "local")
      Query or set the internal variable that specifies the format string
      for the comment line that is written to the history file when
-     Octave exits.  The format string is passed to 'strftime'.  The
-     default value is
+     Octave exits.
+
+     The format string is passed to 'strftime'.  The default value is
 
           "# Octave VERSION, %a %b %d %H:%M:%S %Y %Z <USER@HOST>"
 
@@ -2798,8 +2874,9 @@ exact command syntax).  The default configuration file is normally
 changing the command line behavior.
 
  -- Built-in Function: readline_read_init_file (FILE)
-     Read the readline library initialization file FILE.  If FILE is
-     omitted, read the default initialization file (normally
+     Read the readline library initialization file FILE.
+
+     If FILE is omitted, read the default initialization file (normally
      '~/.inputrc').
 
      *Note (readline)Readline Init File::, for details.
@@ -2809,7 +2886,9 @@ changing the command line behavior.
 
  -- Built-in Function: readline_re_read_init_file ()
      Re-read the last readline library initialization file that was
-     read.  *Note (readline)Readline Init File::, for details.
+     read.
+
+     *Note (readline)Readline Init File::, for details.
 
      See also: *note readline_read_init_file:
      XREFreadline_read_init_file.
@@ -2873,9 +2952,10 @@ decoded as follows:
  -- Built-in Function: VAL = PS1 ()
  -- Built-in Function: OLD_VAL = PS1 (NEW_VAL)
  -- Built-in Function: PS1 (NEW_VAL, "local")
-     Query or set the primary prompt string.  When executing
-     interactively, Octave displays the primary prompt when it is ready
-     to read a command.
+     Query or set the primary prompt string.
+
+     When executing interactively, Octave displays the primary prompt
+     when it is ready to read a command.
 
      The default value of the primary prompt string is "octave:\#> ".
      To change it, use a command like
@@ -2904,12 +2984,13 @@ decoded as follows:
  -- Built-in Function: VAL = PS2 ()
  -- Built-in Function: OLD_VAL = PS2 (NEW_VAL)
  -- Built-in Function: PS2 (NEW_VAL, "local")
-     Query or set the secondary prompt string.  The secondary prompt is
-     printed when Octave is expecting additional input to complete a
-     command.  For example, if you are typing a 'for' loop that spans
-     several lines, Octave will print the secondary prompt at the
-     beginning of each line after the first.  The default value of the
-     secondary prompt string is "> ".
+     Query or set the secondary prompt string.
+
+     The secondary prompt is printed when Octave is expecting additional
+     input to complete a command.  For example, if you are typing a
+     'for' loop that spans several lines, Octave will print the
+     secondary prompt at the beginning of each line after the first.
+     The default value of the secondary prompt string is "> ".
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -2922,9 +3003,10 @@ decoded as follows:
  -- Built-in Function: OLD_VAL = PS4 (NEW_VAL)
  -- Built-in Function: PS4 (NEW_VAL, "local")
      Query or set the character string used to prefix output produced
-     when echoing commands is enabled.  The default value is "+ ".
-     *Note Diary and Echo Commands::, for a description of echoing
-     commands.
+     when echoing commands is enabled.
+
+     The default value is "+ ".  *Note Diary and Echo Commands::, for a
+     description of echoing commands.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -2972,9 +3054,14 @@ Octave produces in a separate file.
 they are being evaluated.  This can be especially helpful for debugging
 some kinds of problems.
 
- -- Command: echo options
-     Control whether commands are displayed as they are executed.  Valid
-     options are:
+ -- Command: echo
+ -- Command: echo on
+ -- Command: echo off
+ -- Command: echo on all
+ -- Command: echo off all
+     Control whether commands are displayed as they are executed.
+
+     Valid options are:
 
      'on'
           Enable echoing of commands as they are executed in script
@@ -2998,6 +3085,7 @@ some kinds of problems.
  -- Built-in Function: OLD_VAL = echo_executing_commands (NEW_VAL)
  -- Built-in Function: echo_executing_commands (NEW_VAL, "local")
      Query or set the internal variable that controls the echo state.
+
      It may be the sum of the following values:
 
      1
@@ -3299,9 +3387,10 @@ data type for Octave.
  -- Built-in Function: typeinfo ()
  -- Built-in Function: typeinfo (EXPR)
 
-     Return the type of the expression EXPR, as a string.  If EXPR is
-     omitted, return a cell array of strings containing all the
-     currently installed data types.
+     Return the type of the expression EXPR, as a string.
+
+     If EXPR is omitted, return a cell array of strings containing all
+     the currently installed data types.
 
      See also: *note class: XREFclass, *note isa: XREFisa.
 
@@ -3330,9 +3419,11 @@ use of the following functions.
  -- Function File: CLASSNAME = class (OBJ)
  -- Function File: class (S, ID)
  -- Function File: class (S, ID, P, ...)
-     Return the class of the object OBJ or create a class with fields
-     from structure S and name (string) ID.  Additional arguments name a
-     list of parent classes from which the new class is derived.
+     Return the class of the object OBJ, or create a class with fields
+     from structure S and name (string) ID.
+
+     Additional arguments name a list of parent classes from which the
+     new class is derived.
 
      See also: *note typeinfo: XREFtypeinfo, *note isa: XREFisa.
 
@@ -3415,16 +3506,20 @@ use of the following functions.
           "double complex"
           "single complex"
 
-     the last two are reserved for CLASS; they indicate that a
+     the last two are only used with CLASS; they indicate that a
      complex-valued result is requested.  Complex arrays are stored in
      memory as consecutive pairs of real numbers.  The sizes of integer
      types are given by their bit counts.  Both logical and char are
      typically one byte wide; however, this is not guaranteed by C++.
      If your system is IEEE conformant, single and double will be 4
      bytes and 8 bytes wide, respectively.  "logical" is not allowed for
-     CLASS.  If the input is a row vector, the return value is a row
-     vector, otherwise it is a column vector.  If the bit length of X is
-     not divisible by that of CLASS, an error occurs.
+     CLASS.
+
+     If the input is a row vector, the return value is a row vector,
+     otherwise it is a column vector.
+
+     If the bit length of X is not divisible by that of CLASS, an error
+     occurs.
 
      An example of the use of typecast on a little-endian machine is
 
@@ -3469,8 +3564,10 @@ use of the following functions.
      The number of elements of X should be divisible by the bit length
      of CLASS.  If it is not, excess bits are discarded.  Bits come in
      increasing order of significance, i.e., 'x(1)' is bit 0, 'x(2)' is
-     bit 1, etc.  The result is a row vector if X is a row vector,
-     otherwise it is a column vector.
+     bit 1, etc.
+
+     The result is a row vector if X is a row vector, otherwise it is a
+     column vector.
 
      See also: *note bitunpack: XREFbitunpack, *note typecast:
      XREFtypecast.
@@ -3550,18 +3647,24 @@ data is represented as a special case of the representation of 'NaN'.
      values, use the 'isna' function.
 
      When called with no arguments, return a scalar with the value 'NA'.
+
      When called with a single argument, return a square matrix with the
-     dimension specified.  When called with more than one scalar
-     argument the first two arguments are taken as the number of rows
-     and columns and any further arguments specify additional matrix
-     dimensions.  The optional argument CLASS specifies the return type
-     and may be either "double" or "single".
+     dimension specified.
+
+     When called with more than one scalar argument the first two
+     arguments are taken as the number of rows and columns and any
+     further arguments specify additional matrix dimensions.
+
+     The optional argument CLASS specifies the return type and may be
+     either "double" or "single".
 
      See also: *note isna: XREFisna.
 
  -- Mapping Function: isna (X)
      Return a logical array which is true where the elements of X are NA
-     (missing) values and false where they are not.  For example:
+     (missing) values and false where they are not.
+
+     For example:
 
           isna ([13, Inf, NA, NaN])
                => [ 0, 0, 1, 0 ]
@@ -3630,9 +3733,10 @@ structure type doesn't have rows or columns, so the 'rows' and 'columns'
 functions return -1 for structure arguments.
 
  -- Built-in Function: ndims (A)
-     Return the number of dimensions of A.  For any array, the result
-     will always be larger than or equal to 2.  Trailing singleton
-     dimensions are not counted.
+     Return the number of dimensions of A.
+
+     For any array, the result will always be greater than or equal to
+     2.  Trailing singleton dimensions are not counted.
 
           ndims (ones (4, 1, 2, 1))
               => 3
@@ -3656,9 +3760,10 @@ functions return -1 for structure arguments.
 
  -- Built-in Function: numel (A)
  -- Built-in Function: numel (A, IDX1, IDX2, ...)
-     Return the number of elements in the object A.  Optionally, if
-     indices IDX1, IDX2, ... are supplied, return the number of elements
-     that would result from the indexing
+     Return the number of elements in the object A.
+
+     Optionally, if indices IDX1, IDX2, ... are supplied, return the
+     number of elements that would result from the indexing
 
           A(IDX1, IDX2, ...)
 
@@ -3715,16 +3820,18 @@ functions return -1 for structure arguments.
 
  -- Built-in Function: isempty (A)
      Return true if A is an empty matrix (any one of its dimensions is
-     zero).  Otherwise, return false.
+     zero).
 
      See also: *note isnull: XREFisnull, *note isa: XREFisa.
 
  -- Built-in Function: isnull (X)
      Return true if X is a special null matrix, string, or single quoted
-     string.  Indexed assignment with such a value on the right-hand
-     side should delete array elements.  This function should be used
-     when overloading indexed assignment for user-defined classes
-     instead of 'isempty', to distinguish the cases:
+     string.
+
+     Indexed assignment with such a value on the right-hand side should
+     delete array elements.  This function should be used when
+     overloading indexed assignment for user-defined classes instead of
+     'isempty', to distinguish the cases:
 
      'A(I) = []'
           This should delete elements if 'I' is nonempty.
@@ -3740,17 +3847,19 @@ functions return -1 for structure arguments.
      See also: *note whos: XREFwhos.
 
  -- Built-in Function: size_equal (A, B, ...)
-     Return true if the dimensions of all arguments agree.  Trailing
-     singleton dimensions are ignored.  Called with a single or no
-     argument, size_equal returns true.
+     Return true if the dimensions of all arguments agree.
+
+     Trailing singleton dimensions are ignored.  When called with a
+     single or no argument 'size_equal' returns true.
 
      See also: *note size: XREFsize, *note numel: XREFnumel, *note
      ndims: XREFndims.
 
  -- Built-in Function: squeeze (X)
-     Remove singleton dimensions from X and return the result.  Note
-     that for compatibility with MATLAB, all objects have a minimum of
-     two dimensions and row vectors are left unchanged.
+     Remove singleton dimensions from X and return the result.
+
+     Note that for compatibility with MATLAB, all objects have a minimum
+     of two dimensions and row vectors are left unchanged.
 
      See also: *note reshape: XREFreshape.
 
@@ -3809,10 +3918,13 @@ forms are equivalent.
 
  -- Built-in Function: complex (X)
  -- Built-in Function: complex (RE, IM)
-     Return a complex result from real arguments.  With 1 real argument
-     X, return the complex result 'X + 0i'.  With 2 real arguments,
-     return the complex result 'RE + IM'.  'complex' can often be more
-     convenient than expressions such as 'a + i*b'.  For example:
+     Return a complex value from real arguments.
+
+     With 1 real argument X, return the complex result 'X + 0i'.
+
+     With 2 real arguments, return the complex result 'RE + IM'.
+     'complex' can often be more convenient than expressions such as 'a
+     + i*b'.  For example:
 
           complex ([1, 2], [3, 4])
             => [ 1 + 3i   2 + 4i ]
@@ -3946,8 +4058,9 @@ available on your machine, may limit the maximum size of matrices to
 something smaller.
 
  -- Built-in Function: sizemax ()
-     Return the largest value allowed for the size of an array.  If
-     Octave is compiled with 64-bit indexing, the result is of class
+     Return the largest value allowed for the size of an array.
+
+     If Octave is compiled with 64-bit indexing, the result is of class
      int64, otherwise it is of class int32.  The maximum array size is
      slightly smaller than the maximum value allowable for the relevant
      class as reported by 'intmax'.
@@ -4000,9 +4113,10 @@ Basic Input and Output::.
  -- Built-in Function: OLD_VAL = split_long_rows (NEW_VAL)
  -- Built-in Function: split_long_rows (NEW_VAL, "local")
      Query or set the internal variable that controls whether rows of a
-     matrix may be split when displayed to a terminal window.  If the
-     rows are split, Octave will display the matrix in a series of
-     smaller pieces, each of which can fit within the limits of your
+     matrix may be split when displayed to a terminal window.
+
+     If the rows are split, Octave will display the matrix in a series
+     of smaller pieces, each of which can fit within the limits of your
      terminal width and each set of rows is labeled so that you can
      easily see which columns are currently being displayed.  For
      example:
@@ -4107,7 +4221,9 @@ empty matrix symbol, '[]'.  The built-in variable
  -- Built-in Function: print_empty_dimensions (NEW_VAL, "local")
      Query or set the internal variable that controls whether the
      dimensions of empty matrices are printed along with the empty
-     matrix symbol, '[]'.  For example, the expression
+     matrix symbol, '[]'.
+
+     For example, the expression
 
           zeros (3, 0)
 
@@ -4178,9 +4294,10 @@ defines Y to be of type 'matrix' and occupies 88 bytes of memory.
  -- Built-in Function: OLD_VAL = disable_range (NEW_VAL)
  -- Built-in Function: disable_range (NEW_VAL, "local")
      Query or set the internal variable that controls whether ranges are
-     stored in a special space-efficient format.  The default value is
-     true.  If this option is disabled Octave will store ranges as full
-     matrices.
+     stored in a special space-efficient format.
+
+     The default value is true.  If this option is disabled Octave will
+     store ranges as full matrices.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -4290,6 +4407,7 @@ when converted.
 
  -- Built-in Function: isinteger (X)
      Return true if X is an integer object (int8, uint8, int16, etc.).
+
      Note that 'isinteger (14)' is false because numeric constants in
      Octave are double precision floating point values.
 
@@ -4355,7 +4473,9 @@ when converted.
 
  -- Built-in Function: intmax (TYPE)
      Return the largest integer that can be represented in an integer
-     type.  The variable TYPE can be
+     type.
+
+     The variable TYPE can be
 
      'int8'
           signed 8-bit integer.
@@ -4388,7 +4508,9 @@ when converted.
 
  -- Built-in Function: intmin (TYPE)
      Return the smallest integer that can be represented in an integer
-     type.  The variable TYPE can be
+     type.
+
+     The variable TYPE can be
 
      'int8'
           signed 8-bit integer.
@@ -4423,9 +4545,11 @@ when converted.
  -- Built-in Function: flintmax ("double")
  -- Built-in Function: flintmax ("single")
      Return the largest integer that can be represented consecutively in
-     a floating point value.  The default class is "double", but
-     "single" is a valid option.  On IEEE-754 compatible systems,
-     'flintmax' is 2^53 for "double" and 2^24 for "single".
+     a floating point value.
+
+     The default class is "double", but "single" is a valid option.  On
+     IEEE-754 compatible systems, 'flintmax' is 2^53 for "double" and 2^24
+     for "single".
 
      See also: *note bitmax: XREFbitmax, *note intmax: XREFintmax, *note
      realmax: XREFrealmax, *note realmin: XREFrealmin.
@@ -4511,9 +4635,10 @@ values of individual bits are 'bitset' and 'bitget'.
 
  -- Function File: C = bitset (A, N)
  -- Function File: C = bitset (A, N, VAL)
-     Set or reset bit(s) N of unsigned integers in A.  VAL = 0 resets
-     and VAL = 1 sets the bits.  The lowest significant bit is: N = 1.
-     All variables must be the same size or scalars.
+     Set or reset bit(s) N of the unsigned integers in A.
+
+     VAL = 0 resets and VAL = 1 sets the bits.  The least significant
+     bit is N = 1.  All variables must be the same size or scalars.
 
           dec2bin (bitset (10, 1))
             => 1011
@@ -4523,8 +4648,9 @@ values of individual bits are 'bitset' and 'bitget'.
      XREFbitcmp, *note bitshift: XREFbitshift, *note bitmax: XREFbitmax.
 
  -- Function File: C = bitget (A, N)
-     Return the status of bit(s) N of unsigned integers in A the lowest
-     significant bit is N = 1.
+     Return the status of bit(s) N of the unsigned integers in A.
+
+     The least significant bit is N = 1.
 
           bitget (100, 8:-1:1)
           => 0  1  1  0  0  1  0  0
@@ -4561,9 +4687,11 @@ the function 'bitmax'.
  -- Built-in Function: bitmax ("double")
  -- Built-in Function: bitmax ("single")
      Return the largest integer that can be represented within a
-     floating point value.  The default class is "double", but "single"
-     is a valid option.  On IEEE-754 compatible systems, 'bitmax' is 2^{53} - 1
-     for "double" and 2^{24} -1 for "single".
+     floating point value.
+
+     The default class is "double", but "single" is a valid option.  On
+     IEEE-754 compatible systems, 'bitmax' is 2^{53} - 1 for "double"
+     and 2^{24} -1 for "single".
 
      See also: *note flintmax: XREFflintmax, *note intmax: XREFintmax,
      *note realmax: XREFrealmax, *note realmin: XREFrealmin.
@@ -4575,24 +4703,27 @@ previously discussed.
 or' operators.
 
  -- Built-in Function: bitand (X, Y)
-     Return the bitwise AND of non-negative integers.  X, Y must be in
-     the range [0,bitmax]
+     Return the bitwise AND of non-negative integers.
+
+     X, Y must be in the range [0,bitmax]
 
      See also: *note bitor: XREFbitor, *note bitxor: XREFbitxor, *note
      bitset: XREFbitset, *note bitget: XREFbitget, *note bitcmp:
      XREFbitcmp, *note bitshift: XREFbitshift, *note bitmax: XREFbitmax.
 
  -- Built-in Function: bitor (X, Y)
-     Return the bitwise OR of non-negative integers.  X, Y must be in
-     the range [0,bitmax]
+     Return the bitwise OR of non-negative integers.
+
+     X, Y must be in the range [0,bitmax]
 
      See also: *note bitor: XREFbitor, *note bitxor: XREFbitxor, *note
      bitset: XREFbitset, *note bitget: XREFbitget, *note bitcmp:
      XREFbitcmp, *note bitshift: XREFbitshift, *note bitmax: XREFbitmax.
 
  -- Built-in Function: bitxor (X, Y)
-     Return the bitwise XOR of non-negative integers.  X, Y must be in
-     the range [0,bitmax]
+     Return the bitwise XOR of non-negative integers.
+
+     X, Y must be in the range [0,bitmax]
 
      See also: *note bitand: XREFbitand, *note bitor: XREFbitor, *note
      bitset: XREFbitset, *note bitget: XREFbitget, *note bitcmp:
@@ -4604,8 +4735,9 @@ sense, the mask against which the value is negated must be defined.
 Octave's bitwise 'not' operator is 'bitcmp'.
 
  -- Function File: bitcmp (A, K)
-     Return the K-bit complement of integers in A.  If K is omitted 'k =
-     log2 (bitmax) + 1' is assumed.
+     Return the K-bit complement of integers in A.
+
+     If K is omitted 'k = log2 (bitmax) + 1' is assumed.
 
           bitcmp (7,4)
             => 8
@@ -4624,10 +4756,13 @@ bitwise.
 
  -- Built-in Function: bitshift (A, K)
  -- Built-in Function: bitshift (A, K, N)
-     Return a K bit shift of N-digit unsigned integers in A.  A positive
-     K leads to a left shift; A negative value to a right shift.  If N
-     is omitted it defaults to log2(bitmax)+1.  N must be in the range
-     [1,log2(bitmax)+1] usually [1,33].
+     Return a K bit shift of N-digit unsigned integers in A.
+
+     A positive K leads to a left shift; A negative value to a right
+     shift.
+
+     If N is omitted it defaults to log2(bitmax)+1.  N must be in the
+     range [1,log2(bitmax)+1] usually [1,33].
 
           bitshift (eye (3), 1)
           =>
@@ -4708,10 +4843,13 @@ logical values, or by using the 'true' or 'false' functions.
  -- Built-in Function: true (N, M)
  -- Built-in Function: true (N, M, K, ...)
      Return a matrix or N-dimensional array whose elements are all
-     logical 1.  If invoked with a single scalar integer argument,
-     return a square matrix of the specified size.  If invoked with two
-     or more scalar integer arguments, or a vector of integer values,
-     return an array with given dimensions.
+     logical 1.
+
+     If invoked with a single scalar integer argument, return a square
+     matrix of the specified size.
+
+     If invoked with two or more scalar integer arguments, or a vector
+     of integer values, return an array with given dimensions.
 
      See also: *note false: XREFfalse.
 
@@ -4719,10 +4857,13 @@ logical values, or by using the 'true' or 'false' functions.
  -- Built-in Function: false (N, M)
  -- Built-in Function: false (N, M, K, ...)
      Return a matrix or N-dimensional array whose elements are all
-     logical 0.  If invoked with a single scalar integer argument,
-     return a square matrix of the specified size.  If invoked with two
-     or more scalar integer arguments, or a vector of integer values,
-     return an array with given dimensions.
+     logical 0.
+
+     If invoked with a single scalar integer argument, return a square
+     matrix of the specified size.
+
+     If invoked with two or more scalar integer arguments, or a vector
+     of integer values, return an array with given dimensions.
 
      See also: *note true: XREFtrue.
 
@@ -4812,8 +4953,9 @@ variable.
 
  -- Built-in Function: isnumeric (X)
      Return true if X is a numeric object, i.e., an integer, real, or
-     complex array.  Logical and character arrays are not considered to
-     be numeric.
+     complex array.
+
+     Logical and character arrays are not considered to be numeric.
 
      See also: *note isinteger: XREFisinteger, *note isfloat:
      XREFisfloat, *note isreal: XREFisreal, *note iscomplex:
@@ -4830,16 +4972,18 @@ variable.
      XREFisnumeric, *note isa: XREFisa.
 
  -- Built-in Function: isfloat (X)
-     Return true if X is a floating-point numeric object.  Objects of
-     class double or single are floating-point objects.
+     Return true if X is a floating-point numeric object.
+
+     Objects of class double or single are floating-point objects.
 
      See also: *note isinteger: XREFisinteger, *note ischar: XREFischar,
      *note islogical: XREFislogical, *note isnumeric: XREFisnumeric,
      *note isa: XREFisa.
 
  -- Built-in Function: isreal (X)
-     Return true if X is a non-complex matrix or scalar.  For
-     compatibility with MATLAB, this includes logical and character
+     Return true if X is a non-complex matrix or scalar.
+
+     For compatibility with MATLAB, this includes logical and character
      matrices.
 
      See also: *note iscomplex: XREFiscomplex, *note isnumeric:
@@ -4899,9 +5043,10 @@ variable.
      Return true if A is a symmetric matrix within the tolerance
      specified by TOL.
 
-     The default tolerance is zero (uses faster code).  Matrix A is
-     considered symmetric if 'norm (A - A.', Inf) / norm (A, Inf) <
-     TOL'.
+     The default tolerance is zero (uses faster code).
+
+     Matrix A is considered symmetric if 'norm (A - A.', Inf) / norm (A,
+     Inf) < TOL'.
 
      See also: *note ishermitian: XREFishermitian, *note isdefinite:
      XREFisdefinite.
@@ -4911,8 +5056,10 @@ variable.
      Return true if A is Hermitian within the tolerance specified by
      TOL.
 
-     The default tolerance is zero (uses faster code).  Matrix A is
-     considered symmetric if 'norm (A - A', Inf) / norm (A, Inf) < TOL'.
+     The default tolerance is zero (uses faster code).
+
+     Matrix A is considered symmetric if 'norm (A - A', Inf) / norm (A,
+     Inf) < TOL'.
 
      See also: *note issymmetric: XREFissymmetric, *note isdefinite:
      XREFisdefinite.
@@ -4921,8 +5068,9 @@ variable.
  -- Function File: isdefinite (A, TOL)
      Return 1 if A is symmetric positive definite within the tolerance
      specified by TOL or 0 if A is symmetric positive semidefinite.
-     Otherwise, return -1.  If TOL is omitted, use a tolerance of '100 *
-     eps * norm (A, "fro")'
+     Otherwise, return -1.
+
+     If TOL is omitted, use a tolerance of '100 * eps * norm (A, "fro")'
 
      See also: *note issymmetric: XREFissymmetric, *note ishermitian:
      XREFishermitian.
@@ -5188,8 +5336,10 @@ character using the 'string_fill_char' function.
  -- Built-in Function: OLD_VAL = string_fill_char (NEW_VAL)
  -- Built-in Function: string_fill_char (NEW_VAL, "local")
      Query or set the internal variable used to pad all rows of a
-     character matrix to the same length; It must be a single character.
-     The default value is " " (a single space).  For example:
+     character matrix to the same length.
+
+     The value must be a single character and the default is " " (a
+     single space).  For example:
 
           string_fill_char ("X");
           [ "these"; "are"; "strings" ]
@@ -5220,7 +5370,9 @@ The function 'blanks' creates a string of a given length consisting only
 of blank characters (ASCII code 32).
 
  -- Function File: blanks (N)
-     Return a string of N blanks, for example:
+     Return a string of N blanks.
+
+     For example:
 
           blanks (10);
           whos ans
@@ -5333,10 +5485,12 @@ horzcat: XREFhorzcat, and *note vertcat: XREFvertcat.
  -- Built-in Function: char (S1, S2, ...)
  -- Built-in Function: char (CELL_ARRAY)
      Create a string array from one or more numeric matrices, character
-     matrices, or cell arrays.  Arguments are concatenated vertically.
-     The returned values are padded with blanks as needed to make each
-     row of the string array have the same length.  Empty input strings
-     are significant and will concatenated in the output.
+     matrices, or cell arrays.
+
+     Arguments are concatenated vertically.  The returned values are
+     padded with blanks as needed to make each row of the string array
+     have the same length.  Empty input strings are significant and will
+     concatenated in the output.
 
      For numerical input, each element is converted to the corresponding
      ASCII character.  A range error results if an input is outside the
@@ -5362,11 +5516,12 @@ horzcat: XREFhorzcat, and *note vertcat: XREFvertcat.
  -- Built-in Function: strvcat (S1, S2, ...)
  -- Built-in Function: strvcat (CELL_ARRAY)
      Create a character array from one or more numeric matrices,
-     character matrices, or cell arrays.  Arguments are concatenated
-     vertically.  The returned values are padded with blanks as needed
-     to make each row of the string array have the same length.  Unlike
-     'char', empty strings are removed and will not appear in the
-     output.
+     character matrices, or cell arrays.
+
+     Arguments are concatenated vertically.  The returned values are
+     padded with blanks as needed to make each row of the string array
+     have the same length.  Unlike 'char', empty strings are removed and
+     will not appear in the output.
 
      For numerical input, each element is converted to the corresponding
      ASCII character.  A range error results if an input is outside the
@@ -5389,12 +5544,14 @@ horzcat: XREFhorzcat, and *note vertcat: XREFvertcat.
 
  -- Function File: strcat (S1, S2, ...)
      Return a string containing all the arguments concatenated
-     horizontally.  If the arguments are cell strings, 'strcat' returns
-     a cell string with the individual cells concatenated.  For
-     numerical input, each element is converted to the corresponding
-     ASCII character.  Trailing white space for any character string
-     input is eliminated before the strings are concatenated.  Note that
-     cell string values do *not* have whitespace trimmed.
+     horizontally.
+
+     If the arguments are cell strings, 'strcat' returns a cell string
+     with the individual cells concatenated.  For numerical input, each
+     element is converted to the corresponding ASCII character.
+     Trailing white space for any character string input is eliminated
+     before the strings are concatenated.  Note that cell string values
+     do *not* have whitespace trimmed.
 
      For example:
 
@@ -5426,7 +5583,9 @@ horzcat: XREFhorzcat, and *note vertcat: XREFvertcat.
 
  -- Function File: cstrcat (S1, S2, ...)
      Return a string containing all the arguments concatenated
-     horizontally.  Trailing white space is preserved.  For example:
+     horizontally with trailing white space preserved.
+
+     For example:
 
           cstrcat ("ab   ", "cd")
                 => "ab   cd"
@@ -5456,9 +5615,10 @@ function (*note Formatted Output::, *note sprintf: XREFsprintf.).
 
  -- Function File: S = mat2str (X, N)
  -- Function File: S = mat2str (X, N, "class")
-     Format real, complex, and logical matrices as strings.  The
-     returned string may be used to reconstruct the original matrix by
-     using the 'eval' function.
+     Format real, complex, and logical matrices as strings.
+
+     The returned string may be used to reconstruct the original matrix
+     by using the 'eval' function.
 
      The precision of the values is given by N.  If N is a scalar then
      both real and imaginary parts of the matrix are printed to the same
@@ -5492,10 +5652,11 @@ function (*note Formatted Output::, *note sprintf: XREFsprintf.).
  -- Function File: num2str (X, PRECISION)
  -- Function File: num2str (X, FORMAT)
      Convert a number (or array) to a string (or a character array).
+
      The optional second argument may either give the number of
      significant digits (PRECISION) to be used in the output or a format
      template string (FORMAT) as in 'sprintf' (*note Formatted
-     Output::).  'num2str' can also handle complex numbers.
+     Output::).  'num2str' can also process complex numbers.
 
      Examples:
 
@@ -5677,9 +5838,11 @@ to replace all blank characters with underscores.
 general regular expressions, the following functions come with Octave.
 
  -- Function File: deblank (S)
-     Remove trailing whitespace and nulls from S.  If S is a matrix,
-     DEBLANK trims each row to the length of longest string.  If S is a
-     cell array of strings, operate recursively on each string element.
+     Remove trailing whitespace and nulls from S.
+
+     If S is a matrix, DEBLANK trims each row to the length of longest
+     string.  If S is a cell array of strings, operate recursively on
+     each string element.
 
      Examples:
 
@@ -5692,9 +5855,12 @@ general regular expressions, the following functions come with Octave.
      See also: *note strtrim: XREFstrtrim.
 
  -- Function File: strtrim (S)
-     Remove leading and trailing whitespace from S.  If S is a matrix,
-     STRTRIM trims each row to the length of longest string.  If S is a
-     cell array of strings, operate recursively on each string element.
+     Remove leading and trailing whitespace from S.
+
+     If S is a matrix, STRTRIM trims each row to the length of longest
+     string.  If S is a cell array of strings, operate recursively on
+     each string element.
+
      For example:
 
           strtrim ("    abc  ")
@@ -5706,17 +5872,20 @@ general regular expressions, the following functions come with Octave.
      See also: *note deblank: XREFdeblank.
 
  -- Function File: strtrunc (S, N)
-     Truncate the character string S to length N.  If S is a character
-     matrix, then the number of columns is adjusted.  If S is a cell
-     array of strings, then the operation is performed on each cell
-     element and the new cell array is returned.
+     Truncate the character string S to length N.
+
+     If S is a character matrix, then the number of columns is adjusted.
+
+     If S is a cell array of strings, then the operation is performed on
+     each cell element and the new cell array is returned.
 
  -- Function File: findstr (S, T)
  -- Function File: findstr (S, T, OVERLAP)
      Return the vector of all positions in the longer of the two strings
-     S and T where an occurrence of the shorter of the two starts.  If
-     the optional argument OVERLAP is true, the returned vector can
-     include overlapping positions (this is the default).  For example:
+     S and T where an occurrence of the shorter of the two starts.
+
+     If the optional argument OVERLAP is true (default), the returned
+     vector can include overlapping positions.  For example:
 
           findstr ("ababab", "a")
                => [1, 3, 5];
@@ -5736,8 +5905,10 @@ general regular expressions, the following functions come with Octave.
  -- Function File: IDX = strchr (STR, CHARS, N, DIRECTION)
  -- Function File: [I, J] = strchr (...)
      Search for the string STR for occurrences of characters from the
-     set CHARS.  The return value(s), as well as the N and DIRECTION
-     arguments behave identically as in 'find'.
+     set CHARS.
+
+     The return value(s), as well as the N and DIRECTION arguments
+     behave identically as in 'find'.
 
      This will be faster than using regexp in most cases.
 
@@ -5746,8 +5917,9 @@ general regular expressions, the following functions come with Octave.
  -- Function File: index (S, T)
  -- Function File: index (S, T, DIRECTION)
      Return the position of the first occurrence of the string T in the
-     string S, or 0 if no occurrence is found.  S may also be a string
-     array or cell array of strings.
+     string S, or 0 if no occurrence is found.
+
+     S may also be a string array or cell array of strings.
 
      For example:
 
@@ -5761,8 +5933,9 @@ general regular expressions, the following functions come with Octave.
 
  -- Function File: rindex (S, T)
      Return the position of the last occurrence of the character string
-     T in the character string S, or 0 if no occurrence is found.  S may
-     also be a string array or cell array of strings.
+     T in the character string S, or 0 if no occurrence is found.
+
+     S may also be a string array or cell array of strings.
 
      For example:
 
@@ -5782,6 +5955,7 @@ general regular expressions, the following functions come with Octave.
 
      If there is no such occurrence, or if PATTERN is longer than STR,
      or if PATTERN itself is empty, then IDX is the empty array '[]'.
+
      The optional argument "overlaps" determines whether the pattern can
      match at every position in STR (true), or only for unique
      occurrences of the complete pattern (false).  The default is true.
@@ -5817,8 +5991,8 @@ general regular expressions, the following functions come with Octave.
      Join the elements of the cell string array, CSTR, into a single
      string.
 
-     If no DELIMITER is specified, the elements of CSTR separated by a
-     space.
+     If no DELIMITER is specified, the elements of CSTR are separated by
+     a space.
 
      If DELIMITER is specified as a string, the cell string array is
      joined using the string.  Escape sequences are supported.
@@ -5834,11 +6008,14 @@ general regular expressions, the following functions come with Octave.
 
  -- Function File: strmatch (S, A)
  -- Function File: strmatch (S, A, "exact")
-     Return indices of entries of A which begin with the string S.  The
-     second argument A must be a string, character matrix, or a cell
-     array of strings.  If the third argument "exact" is not given, then
-     S only needs to match A up to the length of S.  Trailing spaces and
-     nulls in S and A are ignored when matching.
+     Return indices of entries of A which begin with the string S.
+
+     The second argument A must be a string, character matrix, or a cell
+     array of strings.
+
+     If the third argument "exact" is not given, then S only needs to
+     match A up to the length of S.  Trailing spaces and nulls in S and
+     A are ignored when matching.
 
      For example:
 
@@ -5864,12 +6041,17 @@ general regular expressions, the following functions come with Octave.
  -- Function File: [TOK, REM] = strtok (STR, DELIM)
 
      Find all characters in the string STR up to, but not including, the
-     first character which is in the string DELIM.  If REM is requested,
-     it contains the remainder of the string, starting at the first
-     delimiter.  Leading delimiters are ignored.  If DELIM is not
-     specified, whitespace is assumed.  STR may also be a cell array of
-     strings in which case the function executes on every individual
-     string and returns a cell array of tokens and remainders.
+     first character which is in the string DELIM.
+
+     STR may also be a cell array of strings in which case the function
+     executes on every individual string and returns a cell array of
+     tokens and remainders.
+
+     Leading delimiters are ignored.  If DELIM is not specified,
+     whitespace is assumed.
+
+     If REM is requested, it contains the remainder of the string,
+     starting at the first delimiter.
 
      Examples:
 
@@ -5992,9 +6174,11 @@ general regular expressions, the following functions come with Octave.
  -- Function File: [CSTR] = ostrsplit (S, SEP)
  -- Function File: [CSTR] = ostrsplit (S, SEP, STRIP_EMPTY)
      Split the string S using one or more separators SEP and return a
-     cell array of strings.  Consecutive separators and separators at
-     boundaries result in empty strings, unless STRIP_EMPTY is true.
-     The default value of STRIP_EMPTY is false.
+     cell array of strings.
+
+     Consecutive separators and separators at boundaries result in empty
+     strings, unless STRIP_EMPTY is true.  The default value of
+     STRIP_EMPTY is false.
 
      2-D character arrays are split at separators and at the original
      column boundaries.
@@ -6137,7 +6321,7 @@ general regular expressions, the following functions come with Octave.
           trimmed; the string defining whitespace must be enclosed in
           double quotes for proper processing of special characters like
           "\t".  The default value for whitespace is " \b\r\n\t" (note
-          the space).  Unless whitespace is set to " (empty) AND at
+          the space).  Unless whitespace is set to "" (empty) AND at
           least one "%s" format conversion specifier is supplied, a
           space is always part of whitespace.
 
@@ -6203,9 +6387,10 @@ general regular expressions, the following functions come with Octave.
 
  -- Built-in Function: [S, E, TE, M, T, NM, SP] = regexp (STR, PAT)
  -- Built-in Function: [...] = regexp (STR, PAT, "OPT1", ...)
-     Regular expression string matching.  Search for PAT in STR and
-     return the positions and substrings of any matches, or empty values
-     if there are none.
+     Regular expression string matching.
+
+     Search for PAT in STR and return the positions and substrings of
+     any matches, or empty values if there are none.
 
      The matched pattern PAT can include any of the standard regex
      operators, including:
@@ -6399,10 +6584,11 @@ general regular expressions, the following functions come with Octave.
  -- Built-in Function: [S, E, TE, M, T, NM, SP] = regexpi (STR, PAT)
  -- Built-in Function: [...] = regexpi (STR, PAT, "OPT1", ...)
 
-     Case insensitive regular expression string matching.  Search for
-     PAT in STR and return the positions and substrings of any matches,
-     or empty values if there are none.  *Note regexp: XREFregexp, for
-     details on the syntax of the search pattern.
+     Case insensitive regular expression string matching.
+
+     Search for PAT in STR and return the positions and substrings of
+     any matches, or empty values if there are none.  *Note regexp:
+     XREFregexp, for details on the syntax of the search pattern.
 
      See also: *note regexp: XREFregexp.
 
@@ -6439,8 +6625,11 @@ general regular expressions, the following functions come with Octave.
      *note strrep: XREFstrrep.
 
  -- Function File: regexptranslate (OP, S)
-     Translate a string for use in a regular expression.  This may
-     include either wildcard replacement or special character escaping.
+     Translate a string for use in a regular expression.
+
+     This may include either wildcard replacement or special character
+     escaping.
+
      The behavior is controlled by OP which can take the following
      values
 
@@ -6466,10 +6655,12 @@ general regular expressions, the following functions come with Octave.
  -- Function File: untabify (T)
  -- Function File: untabify (T, TW)
  -- Function File: untabify (T, TW, DEBLANK)
-     Replace TAB characters in T, with spaces.  The tab width is
-     specified by TW, or defaults to eight.  The input, T, may be either
-     a 2-D character array, or a cell array of character strings.  The
-     output is the same class as the input.
+     Replace TAB characters in T with spaces.
+
+     The input, T, may be either a 2-D character array, or a cell array
+     of character strings.  The output is the same class as the input.
+
+     The tab width is specified by TW, and defaults to eight.
 
      If the optional argument DEBLANK is true, then the spaces will be
      removed from the end of the character data.
@@ -6503,7 +6694,9 @@ hexadecimal number to a floating point number.
 
  -- Function File: bin2dec (S)
      Return the decimal number corresponding to the binary number
-     represented by the string S.  For example:
+     represented by the string S.
+
+     For example:
 
           bin2dec ("1110")
                => 14
@@ -6525,7 +6718,9 @@ hexadecimal number to a floating point number.
 
  -- Function File: dec2bin (D, LEN)
      Return a binary number corresponding to the non-negative integer D,
-     as a string of ones and zeros.  For example:
+     as a string of ones and zeros.
+
+     For example:
 
           dec2bin (14)
                => "1110"
@@ -6542,7 +6737,9 @@ hexadecimal number to a floating point number.
 
  -- Function File: dec2hex (D, LEN)
      Return the hexadecimal string corresponding to the non-negative
-     integer D.  For example:
+     integer D.
+
+     For example:
 
           dec2hex (2748)
                => "ABC"
@@ -6559,7 +6756,9 @@ hexadecimal number to a floating point number.
 
  -- Function File: hex2dec (S)
      Return the integer corresponding to the hexadecimal number
-     represented by the string S.  For example:
+     represented by the string S.
+
+     For example:
 
           hex2dec ("12B")
                 => 299
@@ -6626,7 +6825,9 @@ hexadecimal number to a floating point number.
  -- Built-in Function: S = num2hex (N)
      Typecast a double or single precision number or vector to a 8 or 16
      character hexadecimal string of the IEEE 754 representation of the
-     number.  For example:
+     number.
+
+     For example:
 
           num2hex ([-1, 1, e, Inf])
           => "bff0000000000000
@@ -6649,8 +6850,10 @@ hexadecimal number to a floating point number.
  -- Built-in Function: N = hex2num (S)
  -- Built-in Function: N = hex2num (S, CLASS)
      Typecast the 16 character hexadecimal character string to an IEEE
-     754 double precision number.  If fewer than 16 characters are given
-     the strings are right padded with '0' characters.
+     754 double precision number.
+
+     If fewer than 16 characters are given the strings are right padded
+     with '0' characters.
 
      Given a string matrix, 'hex2num' treats each row as a separate
      number.
@@ -6715,8 +6918,9 @@ hexadecimal number to a floating point number.
  -- Function File: strjust (S)
  -- Function File: strjust (S, POS)
      Return the text, S, justified according to POS, which may be
-     "left", "center", or "right".  If POS is omitted it defaults to
-     "right".
+     "left", "center", or "right".
+
+     If POS is omitted it defaults to "right".
 
      Null characters are replaced by spaces.  All other character data
      are treated as non-white space.
@@ -6736,7 +6940,9 @@ hexadecimal number to a floating point number.
  -- Function File: X = str2num (S)
  -- Function File: [X, STATE] = str2num (S)
      Convert the string (or character array) S to a number (or an
-     array).  Examples:
+     array).
+
+     Examples:
 
           str2num ("3.141596")
                 => 3.141596
@@ -6758,7 +6964,9 @@ hexadecimal number to a floating point number.
      See also: *note str2double: XREFstr2double, *note eval: XREFeval.
 
  -- Mapping Function: toascii (S)
-     Return ASCII representation of S in a matrix.  For example:
+     Return ASCII representation of S in a matrix.
+
+     For example:
 
           toascii ("ASCII")
                => [ 65, 83, 67, 73, 73 ]
@@ -6770,7 +6978,9 @@ hexadecimal number to a floating point number.
  -- Mapping Function: lower (S)
      Return a copy of the string or cell string S, with each uppercase
      character replaced by the corresponding lowercase one;
-     non-alphabetic characters are left unchanged.  For example:
+     non-alphabetic characters are left unchanged.
+
+     For example:
 
           tolower ("MiXeD cAsE 123")
                 => "mixed case 123"
@@ -6781,7 +6991,9 @@ hexadecimal number to a floating point number.
  -- Mapping Function: upper (S)
      Return a copy of the string or cell string S, with each lowercase
      character replaced by the corresponding uppercase one;
-     non-alphabetic characters are left unchanged.  For example:
+     non-alphabetic characters are left unchanged.
+
+     For example:
 
           toupper ("MiXeD cAsE 123")
                 => "MIXED CASE 123"
@@ -6789,10 +7001,17 @@ hexadecimal number to a floating point number.
      See also: *note tolower: XREFtolower.
 
  -- Built-in Function: do_string_escapes (STRING)
-     Convert special characters in STRING to their escaped forms.
+     Convert escape sequences in STRING to the characters they
+     represent.
+
+     Escape sequences begin with a leading backslash ('\') followed by
+     1-3 characters (.e.g., "\n" => newline).
+
+     See also: *note undo_string_escapes: XREFundo_string_escapes.
 
  -- Built-in Function: undo_string_escapes (S)
      Convert special characters in strings back to their escaped forms.
+
      For example, the expression
 
           bell = "\a";
@@ -6811,6 +7030,8 @@ hexadecimal number to a floating point number.
      replaces the unprintable alert character with its printable
      representation.
 
+     See also: *note do_string_escapes: XREFdo_string_escapes.
+
 
 File: octave.info,  Node: Character Class Functions,  Prev: String Conversions,  Up: Strings
 
@@ -6828,8 +7049,9 @@ corresponding character in the string array.  For example:
 
  -- Mapping Function: isalnum (S)
      Return a logical array which is true where the elements of S are
-     letters or digits and false where they are not.  This is equivalent
-     to ('isalpha (S) | isdigit (S)').
+     letters or digits and false where they are not.
+
+     This is equivalent to ('isalpha (S) | isdigit (S)').
 
      See also: *note isalpha: XREFisalpha, *note isdigit: XREFisdigit,
      *note ispunct: XREFispunct, *note isspace: XREFisspace, *note
@@ -6837,8 +7059,9 @@ corresponding character in the string array.  For example:
 
  -- Mapping Function: isalpha (S)
      Return a logical array which is true where the elements of S are
-     letters and false where they are not.  This is equivalent to
-     ('islower (S) | isupper (S)').
+     letters and false where they are not.
+
+     This is equivalent to ('islower (S) | isupper (S)').
 
      See also: *note isdigit: XREFisdigit, *note ispunct: XREFispunct,
      *note isspace: XREFisspace, *note iscntrl: XREFiscntrl, *note
@@ -6847,8 +7070,9 @@ corresponding character in the string array.  For example:
 
  -- Function File: isletter (S)
      Return a logical array which is true where the elements of S are
-     letters and false where they are not.  This is an alias for the
-     'isalpha' function.
+     letters and false where they are not.
+
+     This is an alias for the 'isalpha' function.
 
      See also: *note isalpha: XREFisalpha, *note isdigit: XREFisdigit,
      *note ispunct: XREFispunct, *note isspace: XREFisspace, *note
@@ -6924,7 +7148,9 @@ corresponding character in the string array.  For example:
      they are not.
 
  -- Function File: isstrprop (STR, PROP)
-     Test character string properties.  For example:
+     Test character string properties.
+
+     For example:
 
           isstrprop ("abc123", "alpha")
           => [1, 1, 1, 0, 0, 0]
@@ -7414,9 +7640,10 @@ following example:
  -- Built-in Function: S = struct (FIELD1, VALUE1, FIELD2, VALUE2, ...)
  -- Built-in Function: S = struct (OBJ)
 
-     Create a scalar or array structure and initialize its values.  The
-     FIELD1, FIELD2, ... variables are strings specifying the names of
-     the fields and the VALUE1, VALUE2, ... variables can be of any
+     Create a scalar or array structure and initialize its values.
+
+     The FIELD1, FIELD2, ... variables are strings specifying the names
+     of the fields and the VALUE1, VALUE2, ... variables can be of any
      type.
 
      If the values are cell arrays, create a structure array and
@@ -7449,7 +7676,7 @@ following example:
 
      The first case is an ordinary scalar struct--one field, one value.
      The second produces an empty struct array with one field and no
-     values, since s being passed an empty cell array of struct array
+     values, since being passed an empty cell array of struct array
      values.  When the value is a cell array containing a single entry,
      this becomes a scalar struct with that single entry as the value of
      the field.  That single entry happens to be an empty cell array.
@@ -7725,9 +7952,11 @@ might be converted to another type of container before being treated.
 
  -- Built-in Function: C = struct2cell (S)
      Create a new cell array from the objects stored in the struct
-     object.  If F is the number of fields in the structure, the
-     resulting cell array will have a dimension vector corresponding to
-     '[F size(S)]'.  For example:
+     object.
+
+     If F is the number of fields in the structure, the resulting cell
+     array will have a dimension vector corresponding to '[F size(S)]'.
+     For example:
 
           s = struct ("name", {"Peter", "Hannah", "Robert"},
                      "age", {23, 16, 3});
@@ -7826,9 +8055,11 @@ function.
 
  -- Function File: celldisp (C)
  -- Function File: celldisp (C, NAME)
-     Recursively display the contents of a cell array.  By default the
-     values are displayed with the name of the variable C.  However,
-     this name can be replaced with the variable NAME.  For example:
+     Recursively display the contents of a cell array.
+
+     By default the values are displayed with the name of the variable
+     C.  However, this name can be replaced with the variable NAME.  For
+     example:
 
           c = {1, 2, {31, 32}};
           celldisp (c, "b")
@@ -7924,9 +8155,10 @@ the 'num2cell', 'mat2cell' and 'cellslices' functions.
 
  -- Built-in Function: C = num2cell (A)
  -- Built-in Function: C = num2cell (A, DIM)
-     Convert the numeric matrix A to a cell array.  If DIM is defined,
-     the value C is of dimension 1 in this dimension and the elements of
-     A are placed into C in slices.  For example:
+     Convert the numeric matrix A to a cell array.
+
+     If DIM is defined, the value C is of dimension 1 in this dimension
+     and the elements of A are placed into C in slices.  For example:
 
           num2cell ([1,2;3,4])
              =>
@@ -7952,11 +8184,12 @@ the 'num2cell', 'mat2cell' and 'cellslices' functions.
  -- Built-in Function: C = mat2cell (A, M, N)
  -- Built-in Function: C = mat2cell (A, D1, D2, ...)
  -- Built-in Function: C = mat2cell (A, R)
-     Convert the matrix A to a cell array.  If A is 2-D, then it is
-     required that 'sum (M) == size (A, 1)' and 'sum (N) == size (A,
-     2)'.  Similarly, if A is multi-dimensional and the number of
-     dimensional arguments is equal to the dimensions of A, then it is
-     required that 'sum (DI) == size (A, i)'.
+     Convert the matrix A to a cell array.
+
+     If A is 2-D, then it is required that 'sum (M) == size (A, 1)' and
+     'sum (N) == size (A, 2)'.  Similarly, if A is multi-dimensional and
+     the number of dimensional arguments is equal to the dimensions of
+     A, then it is required that 'sum (DI) == size (A, i)'.
 
      Given a single dimensional argument R, the other dimensional
      arguments are assumed to equal 'size (A,I)'.
@@ -7991,8 +8224,9 @@ the 'num2cell', 'mat2cell' and 'cellslices' functions.
  -- Built-in Function: SL = cellslices (X, LB, UB, DIM)
      Given an array X, this function produces a cell array of slices
      from the array determined by the index vectors LB, UB, for lower
-     and upper bounds, respectively.  In other words, it is equivalent
-     to the following code:
+     and upper bounds, respectively.
+
+     In other words, it is equivalent to the following code:
 
           n = length (lb);
           sl = cell (1, n);
@@ -8120,6 +8354,8 @@ matrix indexing to the objects within each cell array entry and returns
 the requested values.
 
  -- Built-in Function: Y = cellindexmat (X, VARARGIN)
+     Perform indexing of matrices in a cell array.
+
      Given a cell array of matrices X, this function computes
 
           Y = cell (size (X));
@@ -8214,19 +8450,22 @@ using the 'cell2mat' and 'cell2struct' functions.
 
  -- Function File: M = cell2mat (C)
      Convert the cell array C into a matrix by concatenating all
-     elements of C into a hyperrectangle.  Elements of C must be
-     numeric, logical, or char matrices; or cell arrays; or structs; and
-     'cat' must be able to concatenate them together.
+     elements of C into a hyperrectangle.
+
+     Elements of C must be numeric, logical, or char matrices; or cell
+     arrays; or structs; and 'cat' must be able to concatenate them
+     together.
 
      See also: *note mat2cell: XREFmat2cell, *note num2cell:
      XREFnum2cell.
 
  -- Built-in Function: cell2struct (CELL, FIELDS)
  -- Built-in Function: cell2struct (CELL, FIELDS, DIM)
-     Convert CELL to a structure.  The number of fields in FIELDS must
-     match the number of elements in CELL along dimension DIM, that is
-     'numel (FIELDS) == size (CELL, DIM)'.  If DIM is omitted, a value
-     of 1 is assumed.
+     Convert CELL to a structure.
+
+     The number of fields in FIELDS must match the number of elements in
+     CELL along dimension DIM, that is 'numel (FIELDS) == size (CELL,
+     DIM)'.  If DIM is omitted, a value of 1 is assumed.
 
           A = cell2struct ({"Peter", "Hannah", "Robert";
                              185, 170, 168},
@@ -8570,7 +8809,9 @@ value of 'x' at the top level remains unchanged, because the function
 works with a _copy_ of its argument.
 
  -- Built-in Function: isglobal (NAME)
-     Return true if NAME is a globally visible variable.  For example:
+     Return true if NAME is a globally visible variable.
+
+     For example:
 
           global x
           isglobal ("x")
@@ -8705,12 +8946,14 @@ about what is in memory, as the following shows.
  -- Command: who option pattern ...
  -- Command: C = who ("pattern", ...)
      List currently defined variables matching the given patterns.
+
      Valid pattern syntax is the same as described for the 'clear'
      command.  If no patterns are supplied, all variables are listed.
+
      By default, only variables visible in the local scope are
      displayed.
 
-     The following are valid options but may not be combined.
+     The following are valid options, but may not be combined.
 
      'global'
           List variables in the global scope rather than the current
@@ -8736,12 +8979,14 @@ about what is in memory, as the following shows.
  -- Command: whos
  -- Command: whos pattern ...
  -- Command: whos option pattern ...
- -- Command: S = whos ("pattern", ...)
+ -- Built-in Function: S = whos ("pattern", ...)
      Provide detailed information on currently defined variables
-     matching the given patterns.  Options and pattern syntax are the
-     same as for the 'who' command.  Extended information about each
-     variable is summarized in a table with the following default
-     entries.
+     matching the given patterns.
+
+     Options and pattern syntax are the same as for the 'who' command.
+
+     Extended information about each variable is summarized in a table
+     with the following default entries.
 
      Attr
           Attributes of the listed variable.  Possible attributes are:
@@ -8943,6 +9188,7 @@ function allows this.
 
  -- Command: clear [options] pattern ...
      Delete the names matching the given patterns from the symbol table.
+
      The pattern may contain the following special characters:
 
      '?'
@@ -8965,8 +9211,9 @@ function allows this.
      and end with the letter 'r'.
 
      If 'clear' is called without any arguments, all user-defined
-     variables (local and global) are cleared from the symbol table.  If
-     'clear' is called with at least one argument, only the visible
+     variables (local and global) are cleared from the symbol table.
+
+     If 'clear' is called with at least one argument, only the visible
      names matching the arguments are cleared.  For example, suppose you
      have defined a function 'foo', and then hidden it by performing the
      assignment 'foo = 2'.  Executing the command 'clear foo' once will
@@ -8977,20 +9224,20 @@ function allows this.
      The following options are available in both long and short form
 
      '-all, -a'
-          Clears all local and global user-defined variables and all
+          Clear all local and global user-defined variables and all
           functions from the symbol table.
 
      '-exclusive, -x'
-          Clears the variables that don't match the following pattern.
+          Clear the variables that don't match the following pattern.
 
      '-functions, -f'
-          Clears the function names and the built-in symbols names.
+          Clear the function names and the built-in symbols names.
 
      '-global, -g'
-          Clears the global symbol names.
+          Clear global symbol names.
 
      '-variables, -v'
-          Clears the local variable names.
+          Clear local variable names.
 
      '-classes, -c'
           Clears the class structure table and clears all objects.
@@ -9001,6 +9248,9 @@ function allows this.
 
      With the exception of 'exclusive', all long options can be used
      without the dash as well.
+
+     See also: *note who: XREFwho, *note whos: XREFwhos, *note exist:
+     XREFexist.
 
  -- Function File: pack ()
      Consolidate workspace memory in MATLAB.
@@ -9029,8 +9279,10 @@ only useful during development of programs, and not within a program.
      corresponds to the contents of each requested function.
 
  -- Command: which name ...
-     Display the type of each NAME.  If NAME is defined from a function
-     file, the full name of the file is also displayed.
+     Display the type of each NAME.
+
+     If NAME is defined from a function file, the full name of the file
+     is also displayed.
 
      See also: *note help: XREFhelp, *note lookfor: XREFlookfor.
 

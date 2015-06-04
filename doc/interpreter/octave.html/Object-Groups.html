@@ -112,7 +112,8 @@ function.
 <dt><a name="index-addproperty"></a>Built-in Function: <em></em> <strong>addproperty</strong> <em>(<var>name</var>, <var>h</var>, <var>type</var>)</em></dt>
 <dt><a name="index-addproperty-1"></a>Built-in Function: <em></em> <strong>addproperty</strong> <em>(<var>name</var>, <var>h</var>, <var>type</var>, <var>arg</var>, &hellip;)</em></dt>
 <dd><p>Create a new property named <var>name</var> in graphics object <var>h</var>.
-<var>type</var> determines the type of the property to create.  <var>args</var>
+</p>
+<p><var>type</var> determines the type of the property to create.  <var>args</var>
 usually contains the default value of the property, but additional
 arguments might be given, depending on the type of the property.
 </p>
@@ -195,9 +196,10 @@ callback function that is executed when the property is altered.
 <a name="XREFaddlistener"></a><dl>
 <dt><a name="index-addlistener"></a>Built-in Function: <em></em> <strong>addlistener</strong> <em>(<var>h</var>, <var>prop</var>, <var>fcn</var>)</em></dt>
 <dd><p>Register <var>fcn</var> as listener for the property <var>prop</var> of the graphics
-object <var>h</var>.  Property listeners are executed (in order of registration)
-when the property is set.  The new value is already available when the
-listeners are executed.
+object <var>h</var>.
+</p>
+<p>Property listeners are executed (in order of registration) when the property
+is set.  The new value is already available when the listeners are executed.
 </p>
 <p><var>prop</var> must be a string naming a valid property in <var>h</var>.
 </p>
@@ -228,9 +230,10 @@ addlistener (gcf, &quot;position&quot;, {@my_listener, &quot;my string&quot;})
 <a name="XREFdellistener"></a><dl>
 <dt><a name="index-dellistener"></a>Built-in Function: <em></em> <strong>dellistener</strong> <em>(<var>h</var>, <var>prop</var>, <var>fcn</var>)</em></dt>
 <dd><p>Remove the registration of <var>fcn</var> as a listener for the property
-<var>prop</var> of the graphics object <var>h</var>.  The function <var>fcn</var> must
-be the same variable (not just the same value), as was passed to the
-original call to <code>addlistener</code>.
+<var>prop</var> of the graphics object <var>h</var>.
+</p>
+<p>The function <var>fcn</var> must be the same variable (not just the same value),
+as was passed to the original call to <code>addlistener</code>.
 </p>
 <p>If <var>fcn</var> is not defined then all listener functions of <var>prop</var>
 are removed.
@@ -321,8 +324,8 @@ set (h2, &quot;linestyle&quot;, &quot;--&quot;);
 <a name="XREFlinkaxes"></a><dl>
 <dt><a name="index-linkaxes"></a>Function File: <em></em> <strong>linkaxes</strong> <em>(<var>hax</var>)</em></dt>
 <dt><a name="index-linkaxes-1"></a>Function File: <em></em> <strong>linkaxes</strong> <em>(<var>hax</var>, <var>optstr</var>)</em></dt>
-<dd><p>Link the axis limits of 2-D plots such that a change in one is
-propagated to the others.
+<dd><p>Link the axis limits of 2-D plots such that a change in one is propagated
+to the others.
 </p>
 <p>The axes handles to be linked are passed as the first argument <var>hax</var>.
 </p>

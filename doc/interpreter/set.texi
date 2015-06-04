@@ -138,9 +138,8 @@ whose union is @var{c}.
 Return the unique elements in @var{a} that are not in @var{b} sorted in
 ascending order.
 
-If @var{a} is a row vector return a column vector;
-Otherwise, return a column vector.  The inputs may also be cell arrays of
-strings.
+If @var{a} is a row vector return a column vector; Otherwise, return a
+column vector.  The inputs may also be cell arrays of strings.
 
 If the optional input @qcode{"rows"} is given then return the rows in
 @var{a} that are not in @var{b}.  The inputs must be 2-D matrices to use
@@ -239,9 +238,9 @@ Compute the powerset (all subsets) of the set @var{a}.
 The set @var{a} must be a numerical matrix or a cell array of strings.  The
 output will always be a cell array of either vectors or strings.
 
-With the optional second argument @qcode{"rows"}, each row of the set @var{a}
-is considered one element of the set.  The input must be a 2-D numeric
-matrix to use this argument.
+With the optional argument @qcode{"rows"}, each row of the set @var{a} is
+considered one element of the set.  The input must be a 2-D numeric matrix
+to use this argument.
 
 @seealso{@ref{XREFunique,,unique}, @ref{XREFunion,,union}, @ref{XREFintersect,,intersect}, @ref{XREFsetdiff,,setdiff}, @ref{XREFsetxor,,setxor}, @ref{XREFismember,,ismember}}
 @end deftypefn

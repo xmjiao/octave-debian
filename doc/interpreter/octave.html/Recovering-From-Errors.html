@@ -86,7 +86,8 @@ endfunction  # rand generator state restored by onCleanup
 <a name="XREFonCleanup"></a><dl>
 <dt><a name="index-onCleanup"></a>Built-in Function: <em><var>obj</var> =</em> <strong>onCleanup</strong> <em>(<var>function</var>)</em></dt>
 <dd><p>Create a special object that executes a given function upon destruction.
-If the object is copied to multiple variables (or cell or struct array
+</p>
+<p>If the object is copied to multiple variables (or cell or struct array
 elements) or returned from a function, <var>function</var> will be executed after
 clearing the last copy of the object.  Note that if multiple local onCleanup
 variables are created, the order in which they are called is unspecified.

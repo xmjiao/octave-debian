@@ -85,13 +85,12 @@ examined or further processed by other routines or tools.
 </p>
 <dl compact="compact">
 <dt><code>profile on</code></dt>
-<dd><p>Start the profiler, clearing all previously collected data if there
-is any.
+<dd><p>Start the profiler, clearing all previously collected data if there is any.
 </p>
 </dd>
 <dt><code>profile off</code></dt>
 <dd><p>Stop profiling.  The collected data can later be retrieved and examined
-with calls like <code>S = profile (&quot;info&quot;)</code>.
+with <code>T = profile (&quot;info&quot;)</code>.
 </p>
 </dd>
 <dt><code>profile clear</code></dt>
@@ -99,25 +98,25 @@ with calls like <code>S = profile (&quot;info&quot;)</code>.
 </p>
 </dd>
 <dt><code>profile resume</code></dt>
-<dd><p>Restart profiling without cleaning up the old data and instead
-all newly collected statistics are added to the already existing ones.
+<dd><p>Restart profiling without clearing the old data.  All newly collected
+statistics are added to the existing ones.
 </p>
 </dd>
 <dt><code><var>S</var> = profile (&quot;status&quot;)</code></dt>
-<dd><p>Return a structure filled with certain information about the current status
-of the profiler.  At the moment, the only field is <code>ProfilerStatus</code>
-which is either <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>.
+<dd><p>Return a structure with information about the current status of the profiler.
+At the moment, the only field is <code>ProfilerStatus</code> which is either
+<code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>.
 </p>
 </dd>
 <dt><code><var>T</var> = profile (&quot;info&quot;)</code></dt>
-<dd><p>Return the collected profiling statistics in the structure <var>T</var>.
-The flat profile is returned in the field <code>FunctionTable</code> which is an
+<dd><p>Return the collected profiling statistics in the structure <var>T</var>.  The
+flat profile is returned in the field <code>FunctionTable</code> which is an
 array of structures, each entry corresponding to a function which was called
-and for which profiling statistics are present.  Furthermore, the field
-<code>Hierarchical</code> contains the hierarchical call-tree.  Each node
-has an index into the <code>FunctionTable</code> identifying the function it
-corresponds to as well as data fields for number of calls and time spent
-at this level in the call-tree.
+and for which profiling statistics are present.  In addition, the field
+<code>Hierarchical</code> contains the hierarchical call tree.  Each node has an
+index into the <code>FunctionTable</code> identifying the function it corresponds
+to as well as data fields for number of calls and time spent at this level
+in the call tree.
 </p>
 <p><strong>See also:</strong> <a href="#XREFprofshow">profshow</a>, <a href="#XREFprofexplore">profexplore</a>.
 </p></dd>

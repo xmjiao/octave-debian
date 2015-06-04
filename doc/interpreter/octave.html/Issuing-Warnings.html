@@ -96,7 +96,9 @@ is available as a namespace for user&rsquo;s own warnings.
 <dt><a name="index-warning-5"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(&quot;error&quot;, <var>id</var>)</em></dt>
 <dt><a name="index-warning-6"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(<var>state</var>, &quot;backtrace&quot;)</em></dt>
 <dt><a name="index-warning-7"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(<var>state</var>, <var>id</var>, &quot;local&quot;)</em></dt>
-<dd><p>Format the optional arguments under the control of the template string
+<dd><p>Display a warning message or control the behavior of Octave&rsquo;s warning system.
+</p>
+<p>Format the optional arguments under the control of the template string
 <var>template</var> using the same rules as the <code>printf</code> family of
 functions (see <a href="Formatted-Output.html#Formatted-Output">Formatted Output</a>) and print the resulting message
 on the <code>stderr</code> stream.  The message is prefixed by the character
@@ -142,7 +144,7 @@ sequences in <var>template</var> (e.g., <code>&quot;\n&quot;</code> =&gt;
 newline) are processed regardless of whether <var>template</var> has been defined
 with single quotes, as long as there are two or more input arguments.  To
 disable escape sequence expansion use a second backslash before the sequence
-(e.g., &quot;\\n&quot;) or use the
+(e.g., <code>&quot;\\n&quot;</code>) or use the
 <code>regexptranslate</code> function.
 </p>
 <p><strong>See also:</strong> <a href="#XREFwarning_005fids">warning_ids</a>, <a href="#XREFlastwarn">lastwarn</a>, <a href="Raising-Errors.html#XREFerror">error</a>.
@@ -153,10 +155,14 @@ disable escape sequence expansion use a second backslash before the sequence
 <dt><a name="index-lastwarn"></a>Built-in Function: <em>[<var>msg</var>, <var>msgid</var>] =</em> <strong>lastwarn</strong> <em>()</em></dt>
 <dt><a name="index-lastwarn-1"></a>Built-in Function: <em></em> <strong>lastwarn</strong> <em>(<var>msg</var>)</em></dt>
 <dt><a name="index-lastwarn-2"></a>Built-in Function: <em></em> <strong>lastwarn</strong> <em>(<var>msg</var>, <var>msgid</var>)</em></dt>
-<dd><p>Query or set the last warning message.  When called without input arguments,
-return the last warning message and message identifier.  With one
-argument, set the last warning message to <var>msg</var>.  With two arguments,
-also set the last message identifier.
+<dd><p>Query or set the last warning message.
+</p>
+<p>When called without input arguments, return the last warning message and
+message identifier.
+</p>
+<p>With one argument, set the last warning message to <var>msg</var>.
+</p>
+<p>With two arguments, also set the last message identifier.
 </p>
 <p><strong>See also:</strong> <a href="#XREFwarning">warning</a>, <a href="Catching-Errors.html#XREFlasterror">lasterror</a>, <a href="Catching-Errors.html#XREFlasterr">lasterr</a>.
 </p></dd></dl>

@@ -104,11 +104,11 @@ atexit (&quot;last_words&quot;);
 
 <p>will print the message <code>&quot;Bye bye&quot;</code> when Octave exits.
 </p>
-<p>The additional argument <var>flag</var> will register or unregister
-<var>fcn</var> from the list of functions to be called when Octave
-exits.  If <var>flag</var> is true, the function is registered, and if
-<var>flag</var> is false, it is unregistered.  For example,
-after registering the function <code>last_words</code> above,
+<p>The additional argument <var>flag</var> will register or unregister <var>fcn</var>
+from the list of functions to be called when Octave exits.  If <var>flag</var> is
+true, the function is registered, and if <var>flag</var> is false, it is
+unregistered.  For example, after registering the function <code>last_words</code>
+above,
 </p>
 <div class="example">
 <pre class="example">atexit (&quot;last_words&quot;, false);
@@ -118,9 +118,8 @@ after registering the function <code>last_words</code> above,
 <code>last_words</code> when it exits.
 </p>
 <p>Note that <code>atexit</code> only removes the first occurrence of a function
-from the list, so if a function was placed in the list multiple
-times with <code>atexit</code>, it must also be removed from the list
-multiple times.
+from the list, so if a function was placed in the list multiple times with
+<code>atexit</code>, it must also be removed from the list multiple times.
 </p>
 <p><strong>See also:</strong> <a href="#XREFquit">quit</a>.
 </p></dd></dl>

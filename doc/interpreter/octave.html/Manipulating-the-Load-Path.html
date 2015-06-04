@@ -78,8 +78,9 @@ code adds &lsquo;<samp>~/Octave</samp>&rsquo; to the load path.
 <a name="XREFaddpath"></a><dl>
 <dt><a name="index-addpath"></a>Built-in Function: <em></em> <strong>addpath</strong> <em>(<var>dir1</var>, &hellip;)</em></dt>
 <dt><a name="index-addpath-1"></a>Built-in Function: <em></em> <strong>addpath</strong> <em>(<var>dir1</var>, &hellip;, <var>option</var>)</em></dt>
-<dd><p>Add named directories to the function search path.  If
-<var>option</var> is <code>&quot;-begin&quot;</code> or 0 (the default), prepend the
+<dd><p>Add named directories to the function search path.
+</p>
+<p>If <var>option</var> is <code>&quot;-begin&quot;</code> or 0 (the default), prepend the
 directory name to the current path.  If <var>option</var> is <code>&quot;-end&quot;</code>
 or 1, append the directory name to the current path.
 Directories added to the path must exist.
@@ -99,8 +100,9 @@ directory names separated by <code>pathsep</code> are also accepted.  For exampl
 <dt><a name="index-genpath"></a>Built-in Function: <em></em> <strong>genpath</strong> <em>(<var>dir</var>)</em></dt>
 <dt><a name="index-genpath-1"></a>Built-in Function: <em></em> <strong>genpath</strong> <em>(<var>dir</var>, <var>skip</var>, &hellip;)</em></dt>
 <dd><p>Return a path constructed from <var>dir</var> and all its subdirectories.
-If additional string parameters are given, the resulting path will
-exclude directories with those names.
+</p>
+<p>If additional string parameters are given, the resulting path will exclude
+directories with those names.
 </p></dd></dl>
 
 
@@ -206,15 +208,16 @@ The possible sources, in order of preference, are:
 <dd>
 <p>Return the absolute name of <var>file</var> if it can be found in
 the list of directories specified by <code>path</code>.
-If no file is found, return an empty character string.
 </p>
-<p>If the first argument is a cell array of strings, search each
-directory of the loadpath for element of the cell array and return
-the first that matches.
+<p>If no file is found, return an empty character string.
 </p>
-<p>If the second optional argument <code>&quot;all&quot;</code> is supplied, return
-a cell array containing the list of all files that have the same
-name in the path.  If no files are found, return an empty cell array.
+<p>If the first argument is a cell array of strings, search each directory of
+the loadpath for element of the cell array and return the first that
+matches.
+</p>
+<p>If the second optional argument <code>&quot;all&quot;</code> is supplied, return a cell
+array containing the list of all files that have the same name in the path.
+If no files are found, return an empty cell array.
 </p>
 <p><strong>See also:</strong> <a href="Filesystem-Utilities.html#XREFfile_005fin_005fpath">file_in_path</a>, <a href="#XREFdir_005fin_005floadpath">dir_in_loadpath</a>, <a href="#XREFpath">path</a>.
 </p></dd></dl>
@@ -241,15 +244,16 @@ name in the path.  If no files are found, return an empty cell array.
 <a name="XREFdir_005fin_005floadpath"></a><dl>
 <dt><a name="index-dir_005fin_005floadpath"></a>Built-in Function: <em></em> <strong>dir_in_loadpath</strong> <em>(<var>dir</var>)</em></dt>
 <dt><a name="index-dir_005fin_005floadpath-1"></a>Built-in Function: <em></em> <strong>dir_in_loadpath</strong> <em>(<var>dir</var>, &quot;all&quot;)</em></dt>
-<dd><p>Return the full name of the path element matching <var>dir</var>.  The
-match is performed at the end of each path element.  For example, if
+<dd><p>Return the full name of the path element matching <var>dir</var>.
+</p>
+<p>The match is performed at the end of each path element.  For example, if
 <var>dir</var> is <code>&quot;foo/bar&quot;</code>, it matches the path element
 <code>&quot;/some/dir/foo/bar&quot;</code>, but not
 <code>&quot;/some/dir/foo/bar/baz&quot;</code>
 <code>&quot;/some/dir/allfoo/bar&quot;</code>.
 </p>
-<p>The second argument is optional.  If it is supplied, return a cell array
-containing all name matches rather than just the first.
+<p>If the optional second argument is supplied, return a cell array containing
+all name matches rather than just the first.
 </p>
 <p><strong>See also:</strong> <a href="Filesystem-Utilities.html#XREFfile_005fin_005fpath">file_in_path</a>, <a href="#XREFfile_005fin_005floadpath">file_in_loadpath</a>, <a href="#XREFpath">path</a>.
 </p></dd></dl>

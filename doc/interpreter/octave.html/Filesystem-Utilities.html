@@ -93,8 +93,8 @@ identifier.  Note that the status code is exactly opposite that of the
 <dd><p>Change the name of file <var>old</var> to <var>new</var>.
 </p>
 <p>If successful, <var>err</var> is 0 and <var>msg</var> is an empty string.
-Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a
-system-dependent error message.
+Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a system-dependent
+error message.
 </p>
 <p><strong>See also:</strong> <a href="#XREFmovefile">movefile</a>, <a href="#XREFcopyfile">copyfile</a>, <a href="Current-Working-Directory.html#XREFls">ls</a>, <a href="Current-Working-Directory.html#XREFdir">dir</a>.
 </p></dd></dl>
@@ -126,8 +126,10 @@ identifier.  Note that the status code is exactly opposite that of the
 <dd><p>Delete the file named <var>file</var>.
 </p>
 <p>If successful, <var>err</var> is 0 and <var>msg</var> is an empty string.
-Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a
-system-dependent error message.
+Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a system-dependent
+error message.
+</p>
+<p><strong>See also:</strong> <a href="Manipulation-of-Plot-Windows.html#XREFdelete">delete</a>, <a href="#XREFrmdir">rmdir</a>.
 </p></dd></dl>
 
 
@@ -137,8 +139,8 @@ system-dependent error message.
 <dd><p>Create a new link (also known as a hard link) to an existing file.
 </p>
 <p>If successful, <var>err</var> is 0 and <var>msg</var> is an empty string.
-Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a
-system-dependent error message.
+Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a system-dependent
+error message.
 </p>
 <p><strong>See also:</strong> <a href="#XREFsymlink">symlink</a>, <a href="#XREFunlink">unlink</a>, <a href="#XREFreadlink">readlink</a>, <a href="#XREFlstat">lstat</a>.
 </p></dd></dl>
@@ -150,8 +152,8 @@ system-dependent error message.
 <dd><p>Create a symbolic link <var>new</var> which contains the string <var>old</var>.
 </p>
 <p>If successful, <var>err</var> is 0 and <var>msg</var> is an empty string.
-Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a
-system-dependent error message.
+Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a system-dependent
+error message.
 </p>
 <p><strong>See also:</strong> <a href="#XREFlink">link</a>, <a href="#XREFunlink">unlink</a>, <a href="#XREFreadlink">readlink</a>, <a href="#XREFlstat">lstat</a>.
 </p></dd></dl>
@@ -185,7 +187,10 @@ character strings (&quot;&quot;).  Otherwise, <var>status</var> is 0, <var>msg</
 system-dependent error message, and <var>msgid</var> contains a unique message
 identifier.
 </p>
-<p><strong>See also:</strong> <a href="#XREFrmdir">rmdir</a>, <a href="Current-Working-Directory.html#XREFpwd">pwd</a>, <a href="Current-Working-Directory.html#XREFcd">cd</a>.
+<p>When creating a directory permissions will be set to
+<code>0777 - <var>umask</var></code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrmdir">rmdir</a>, <a href="Current-Working-Directory.html#XREFpwd">pwd</a>, <a href="Current-Working-Directory.html#XREFcd">cd</a>, <a href="#XREFumask">umask</a>.
 </p></dd></dl>
 
 
@@ -195,14 +200,15 @@ identifier.
 <dt><a name="index-rmdir-2"></a>Built-in Function: <em>[<var>status</var>, <var>msg</var>, <var>msgid</var>] =</em> <strong>rmdir</strong> <em>(&hellip;)</em></dt>
 <dd><p>Remove the directory named <var>dir</var>.
 </p>
+<p>If the optional second parameter is supplied with value <code>&quot;s&quot;</code>,
+recursively remove all subdirectories as well.
+</p>
 <p>If successful, <var>status</var> is 1, and <var>msg</var>, <var>msgid</var> are empty
 character strings (&quot;&quot;).  Otherwise, <var>status</var> is 0, <var>msg</var> contains a
 system-dependent error message, and <var>msgid</var> contains a unique message
 identifier.
 </p>
-<p>If the optional second parameter is supplied with value <code>&quot;s&quot;</code>,
-recursively remove all subdirectories as well.
-</p>
+
 <p><strong>See also:</strong> <a href="#XREFmkdir">mkdir</a>, <a href="#XREFconfirm_005frecursive_005frmdir">confirm_recursive_rmdir</a>, <a href="Current-Working-Directory.html#XREFpwd">pwd</a>.
 </p></dd></dl>
 
@@ -215,7 +221,7 @@ recursively remove all subdirectories as well.
 will ask for confirmation before recursively removing a directory tree.
 </p>
 <p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 </p>
 <p><strong>See also:</strong> <a href="#XREFrmdir">rmdir</a>.
@@ -223,15 +229,19 @@ The original variable value is restored when exiting the function.
 
 
 <a name="XREFmkfifo"></a><dl>
-<dt><a name="index-mkfifo"></a>Built-in Function: <em></em> <strong>mkfifo</strong> <em>(<var>name</var>, <var>mode</var>)</em></dt>
+<dt><a name="index-mkfifo"></a>Built-in Function: <em><var>err</var> =</em> <strong>mkfifo</strong> <em>(<var>name</var>, <var>mode</var>)</em></dt>
 <dt><a name="index-mkfifo-1"></a>Built-in Function: <em>[<var>err</var>, <var>msg</var>] =</em> <strong>mkfifo</strong> <em>(<var>name</var>, <var>mode</var>)</em></dt>
-<dd><p>Create a FIFO special file named <var>name</var> with file mode <var>mode</var>
+<dd><p>Create a FIFO special file named <var>name</var> with file mode <var>mode</var>.
+</p>
+<p><var>mode</var> is interpreted as a decimal number (<em>not</em> octal) and is
+subject to umask processing.  The final calculated mode is
+<code><var>mode</var> - <var>umask</var></code>.
 </p>
 <p>If successful, <var>err</var> is 0 and <var>msg</var> is an empty string.
-Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a
-system-dependent error message.
+Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a system-dependent
+error message.
 </p>
-<p><strong>See also:</strong> <a href="Controlling-Subprocesses.html#XREFpipe">pipe</a>.
+<p><strong>See also:</strong> <a href="Controlling-Subprocesses.html#XREFpipe">pipe</a>, <a href="#XREFumask">umask</a>.
 </p></dd></dl>
 
 
@@ -239,11 +249,18 @@ system-dependent error message.
 <dt><a name="index-umask"></a>Built-in Function: <em></em> <strong>umask</strong> <em>(<var>mask</var>)</em></dt>
 <dd><p>Set the permission mask for file creation.
 </p>
-<p>The parameter <var>mask</var> is an integer, interpreted as an octal number.  If
-successful, returns the previous value of the mask (as an integer to be
+<p>The parameter <var>mask</var> is an integer, interpreted as an octal number.
+</p>
+<p>If successful, returns the previous value of the mask (as an integer to be
 interpreted as an octal number); otherwise an error message is printed.
 </p>
-<p><strong>See also:</strong> <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>, <a href="#XREFmkdir">mkdir</a>.
+<p>The permission mask is a UNIX concept used when creating new objects on a
+file system such as files, directories, or named FIFOs.  The object to be
+created has base permissions in an octal number <var>mode</var> which are
+modified according to the octal value of <var>mask</var>.  The final permissions
+for the new object are <code><var>mode</var> - <var>mask</var></code>.
+</p>
+<p><strong>See also:</strong> <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>, <a href="#XREFmkdir">mkdir</a>, <a href="#XREFmkfifo">mkfifo</a>.
 </p></dd></dl>
 
 
@@ -320,14 +337,14 @@ returned from <code>time</code>.  See <a href="Timing-Utilities.html#Timing-Util
 </p></dd>
 </dl>
 
-<p>If the call is successful <var>err</var> is 0 and <var>msg</var> is an empty
-string.  If the file does not exist, or some other error occurs, <var>info</var>
-is an empty matrix, <var>err</var> is -1, and <var>msg</var> contains the
+<p>If the call is successful <var>err</var> is 0 and <var>msg</var> is an empty string.
+If the file does not exist, or some other error occurs, <var>info</var> is an
+empty matrix, <var>err</var> is -1, and <var>msg</var> contains the
 corresponding system error message.
 </p>
-<p>If <var>file</var> is a symbolic link, <code>stat</code> will return information
-about the actual file that is referenced by the link.  Use <code>lstat</code>
-if you want information about the symbolic link itself.
+<p>If <var>file</var> is a symbolic link, <code>stat</code> will return information about
+the actual file that is referenced by the link.  Use <code>lstat</code> if you
+want information about the symbolic link itself.
 </p>
 <p>For example:
 </p>
@@ -432,8 +449,8 @@ if you want information about the symbolic link itself.
 <dt><a name="index-fileattrib"></a>Function File: <em>[<var>status</var>, <var>result</var>, <var>msgid</var>] =</em> <strong>fileattrib</strong> <em>(<var>file</var>)</em></dt>
 <dd><p>Return information about <var>file</var>.
 </p>
-<p>If successful, <var>status</var> is 1, with <var>result</var> containing a
-structure with the following fields:
+<p>If successful, <var>status</var> is 1, with <var>result</var> containing a structure
+with the following fields:
 </p>
 <dl compact="compact">
 <dt><code>Name</code></dt>
@@ -459,33 +476,29 @@ structure with the following fields:
 <dt><code>UserRead</code></dt>
 <dt><code>GroupRead</code></dt>
 <dt><code>OtherRead</code></dt>
-<dd><p>True if the user (group; other users) has read permission for
-<var>file</var>.
+<dd><p>True if the user (group; other users) has read permission for <var>file</var>.
 </p>
 </dd>
 <dt><code>UserWrite</code></dt>
 <dt><code>GroupWrite</code></dt>
 <dt><code>OtherWrite</code></dt>
-<dd><p>True if the user (group; other users) has write permission for
-<var>file</var>.
+<dd><p>True if the user (group; other users) has write permission for <var>file</var>.
 </p>
 </dd>
 <dt><code>UserExecute</code></dt>
 <dt><code>GroupExecute</code></dt>
 <dt><code>OtherExecute</code></dt>
-<dd><p>True if the user (group; other users) has execute permission for
-<var>file</var>.
+<dd><p>True if the user (group; other users) has execute permission for <var>file</var>.
 </p></dd>
 </dl>
 
-<p>If an attribute does not apply (i.e., archive on a Unix system) then
-the field is set to NaN.
+<p>If an attribute does not apply (i.e., archive on a Unix system) then the
+field is set to NaN.
 </p>
-<p>With no input arguments, return information about the current
-directory.
+<p>With no input arguments, return information about the current directory.
 </p>
-<p>If <var>file</var> contains globbing characters, return information about
-all the matching files.
+<p>If <var>file</var> contains globbing characters, return information about all
+the matching files.
 </p>
 <p><strong>See also:</strong> <a href="#XREFglob">glob</a>.
 </p></dd></dl>
@@ -507,8 +520,8 @@ strings.
 </p>
 <p>If an error occurs, return an empty cell array in <var>files</var>.
 If successful, <var>err</var> is 0 and <var>msg</var> is an empty string.
-Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a
-system-dependent error message.
+Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a system-dependent
+error message.
 </p>
 <p><strong>See also:</strong> <a href="Current-Working-Directory.html#XREFls">ls</a>, <a href="Current-Working-Directory.html#XREFdir">dir</a>, <a href="#XREFglob">glob</a>, <a href="Status-of-Variables.html#XREFwhat">what</a>.
 </p></dd></dl>
@@ -518,9 +531,12 @@ system-dependent error message.
 <dt><a name="index-glob"></a>Built-in Function: <em></em> <strong>glob</strong> <em>(<var>pattern</var>)</em></dt>
 <dd><p>Given an array of pattern strings (as a char array or a cell array) in
 <var>pattern</var>, return a cell array of file names that match any of
-them, or an empty cell array if no patterns match.  The pattern strings are
-interpreted as filename globbing patterns (as they are used by Unix shells).
-Within a pattern
+them, or an empty cell array if no patterns match.
+</p>
+<p>The pattern strings are interpreted as filename globbing patterns (as they
+are used by Unix shells).
+</p>
+<p>Within a pattern
 </p>
 <dl compact="compact">
 <dt><code>*</code></dt>
@@ -569,23 +585,23 @@ glob (&quot;file[12]&quot;)
 <a name="XREFfile_005fin_005fpath"></a><dl>
 <dt><a name="index-file_005fin_005fpath"></a>Built-in Function: <em></em> <strong>file_in_path</strong> <em>(<var>path</var>, <var>file</var>)</em></dt>
 <dt><a name="index-file_005fin_005fpath-1"></a>Built-in Function: <em></em> <strong>file_in_path</strong> <em>(<var>path</var>, <var>file</var>, &quot;all&quot;)</em></dt>
-<dd><p>Return the absolute name of <var>file</var> if it can be found in
-<var>path</var>.  The value of <var>path</var> should be a colon-separated list of
-directories in the format described for <code>path</code>.  If no file
-is found, return an empty character string.  For example:
+<dd><p>Return the absolute name of <var>file</var> if it can be found in <var>path</var>.
+</p>
+<p>The value of <var>path</var> should be a colon-separated list of directories in
+the format described for <code>path</code>.  If no file is found, return an empty
+character string.  For example:
 </p>
 <div class="example">
 <pre class="example">file_in_path (EXEC_PATH, &quot;sh&quot;)
      &rArr; &quot;/bin/sh&quot;
 </pre></div>
 
-<p>If the second argument is a cell array of strings, search each
-directory of the path for element of the cell array and return
-the first that matches.
+<p>If the second argument is a cell array of strings, search each directory of
+the path for element of the cell array and return the first that matches.
 </p>
-<p>If the third optional argument <code>&quot;all&quot;</code> is supplied, return
-a cell array containing the list of all files that have the same
-name in the path.  If no files are found, return an empty cell array.
+<p>If the third optional argument <code>&quot;all&quot;</code> is supplied, return a cell
+array containing the list of all files that have the same name in the path.
+If no files are found, return an empty cell array.
 </p>
 <p><strong>See also:</strong> <a href="Manipulating-the-Load-Path.html#XREFfile_005fin_005floadpath">file_in_loadpath</a>, <a href="Manipulating-the-Load-Path.html#XREFdir_005fin_005floadpath">dir_in_loadpath</a>, <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>.
 </p></dd></dl>
@@ -610,7 +626,9 @@ It is &lsquo;<samp>/</samp>&rsquo; (forward slash) under UNIX or Mac&nbsp;OS&nbs
 <dt><a name="index-filemarker-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>filemarker</strong> <em>(<var>new_val</var>)</em></dt>
 <dt><a name="index-filemarker-2"></a>Built-in Function: <em></em> <strong>filemarker</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the character used to separate the filename from the subfunction
-names contained within the file.  By default this is the character &lsquo;<samp>&gt;</samp>&rsquo;.
+names contained within the file.
+</p>
+<p>By default this is the character &lsquo;<samp>&gt;</samp>&rsquo;.
 This can be used in a generic manner to interact with subfunctions.
 For example,
 </p>
@@ -653,8 +671,8 @@ to check whether the filename or directory specified actually exists.
 <dt><a name="index-fullfile-1"></a>Function File: <em><var>filenames</var> =</em> <strong>fullfile</strong> <em>(&hellip;, <var>files</var>)</em></dt>
 <dd><p>Build complete filename from separate parts.
 </p>
-<p>Joins any number of path components intelligently.  The return value
-is the concatenation of each component with exactly one file separator
+<p>Joins any number of path components intelligently.  The return value is
+the concatenation of each component with exactly one file separator
 between each non empty part and at most one leading and/or trailing file
 separator.
 </p>
@@ -668,9 +686,9 @@ filepaths, one for each element in the last component, e.g.:
     /home/username/data/f3.csv
 </pre></div>
 
-<p>On Windows systems, while forward slash file separators do work, they
-are replaced by backslashes; in addition drive letters are stripped of
-leading file separators to obtain a valid file path.
+<p>On Windows systems, while forward slash file separators do work, they are
+replaced by backslashes; in addition drive letters are stripped of leading
+file separators to obtain a valid file path.
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFfileparts">fileparts</a>, <a href="#XREFfilesep">filesep</a>.
@@ -679,13 +697,16 @@ leading file separators to obtain a valid file path.
 
 <a name="XREFtilde_005fexpand"></a><dl>
 <dt><a name="index-tilde_005fexpand"></a>Built-in Function: <em></em> <strong>tilde_expand</strong> <em>(<var>string</var>)</em></dt>
-<dd><p>Perform tilde expansion on <var>string</var>.  If <var>string</var> begins with a
-tilde character, (&lsquo;<samp>~</samp>&rsquo;), all of the characters preceding the first
-slash (or all characters, if there is no slash) are treated as a
-possible user name, and the tilde and the following characters up to the
-slash are replaced by the home directory of the named user.  If the
-tilde is followed immediately by a slash, the tilde is replaced by the
-home directory of the user running Octave.  For example:
+<dd><p>Perform tilde expansion on <var>string</var>.
+</p>
+<p>If <var>string</var> begins with a tilde character, (&lsquo;<samp>~</samp>&rsquo;), all of the
+characters preceding the first slash (or all characters, if there is no
+slash) are treated as a possible user name, and the tilde and the following
+characters up to the slash are replaced by the home directory of the named
+user.  If the tilde is followed immediately by a slash, the tilde is
+replaced by the home directory of the user running Octave.
+</p>
+<p>For example:
 </p>
 <div class="example">
 <pre class="example">tilde_expand (&quot;~joeuser/bin&quot;)
@@ -698,8 +719,9 @@ tilde_expand (&quot;~/bin&quot;)
 
 <a name="XREFcanonicalize_005ffile_005fname"></a><dl>
 <dt><a name="index-canonicalize_005ffile_005fname"></a>Built-in Function: <em>[<var>cname</var>, <var>status</var>, <var>msg</var>] =</em> <strong>canonicalize_file_name</strong> <em>(<var>fname</var>)</em></dt>
-<dd><p>Return the canonical name of file <var>fname</var>.  If the file does not exist
-the empty string (&quot;&quot;) is returned.
+<dd><p>Return the canonical name of file <var>fname</var>.
+</p>
+<p>If the file does not exist the empty string (&quot;&quot;) is returned.
 </p>
 <p><strong>See also:</strong> <a href="#XREFmake_005fabsolute_005ffilename">make_absolute_filename</a>, <a href="#XREFis_005fabsolute_005ffilename">is_absolute_filename</a>, <a href="#XREFis_005frooted_005frelative_005ffilename">is_rooted_relative_filename</a>.
 </p></dd></dl>
@@ -708,7 +730,9 @@ the empty string (&quot;&quot;) is returned.
 <a name="XREFmake_005fabsolute_005ffilename"></a><dl>
 <dt><a name="index-make_005fabsolute_005ffilename"></a>Built-in Function: <em></em> <strong>make_absolute_filename</strong> <em>(<var>file</var>)</em></dt>
 <dd><p>Return the full name of <var>file</var> beginning from the root of the file
-system.  No check is done for the existence of <var>file</var>.
+system.
+</p>
+<p>No check is done for the existence of <var>file</var>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFcanonicalize_005ffile_005fname">canonicalize_file_name</a>, <a href="#XREFis_005fabsolute_005ffilename">is_absolute_filename</a>, <a href="#XREFis_005frooted_005frelative_005ffilename">is_rooted_relative_filename</a>, <a href="#XREFisdir">isdir</a>.
 </p></dd></dl>
@@ -741,8 +765,7 @@ Trash).
 </p>
 <p>Programming Note: This function is provided for <small>MATLAB</small> compatibility,
 but recycling is not implemented in Octave.  To help avoid accidental data
-loss an error will be raised if an attempt is made to enable file
-recycling.
+loss an error will be raised if an attempt is made to enable file recycling.
 </p>
 <p><strong>See also:</strong> <a href="Manipulation-of-Plot-Windows.html#XREFdelete">delete</a>, <a href="#XREFrmdir">rmdir</a>.
 </p></dd></dl>

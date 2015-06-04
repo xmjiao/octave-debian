@@ -1,3 +1,1231 @@
+2015-05-23  John W. Eaton  <jwe@octave.org>
+
+	Version 4.0.0 released.
+
+	* configure.ac (OCTAVE_VERSION): Now 4.0.0.
+	(OCTAVE_MAJOR_VERSION): Now 4.
+	(OCTAVE_MINOR_VERSION): Now 0.
+	(OCTAVE_PATCH_VERSION): Now 0.
+	(OCTAVE_RELEASE_DATE): Set to 2015-05-23.
+
+	Files: configure.ac
+
+2015-05-24  Philip Nienhuis  <prnienhuis@users.sf.net>
+
+	textread.m: fix texinfo header syntax after commit 481fa65e5cab
+
+	Files: scripts/io/textread.m
+
+	textscan.m: adapt format repeat counter when reading from file before invoking strread.m (bug #45047)
+
+	Files: scripts/io/textscan.m
+
+	textread.m, textscan.m: Fix handling of format repeat count (bug #45047)
+	*    textread.m: Clarify docstring describing format repeat count argument
+	                 Add examples
+	                 Fix bug occurring when last read line has no trailing EOL
+	                 Add tests
+	*    textcan.m:  Fix bug occurring when last read line has no trailing EOL
+
+	Files: scripts/io/textread.m scripts/io/textscan.m
+
+2015-05-23  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	Let grid and autoscale buttons work when the axes is invisible (bug #44436)
+
+	* Canvas.cc (Canvas::canvasAutoAxes, Canvas::canvasToggleGrid) don't check that the axes "visible" property is on when handling grid and autoscale actions. "handlevisibility" is "on" anyway as we are dealing with the currentaxes.
+
+	Files: libgui/graphics/Canvas.cc
+
+2015-05-21  Rik  <rik@octave.org>
+
+	Return an empty matrix, not error, from dlmread when file is empty (bug #45156).
+
+	* dlmread.cc (Fdlmread): Only extract data from matrix if there is data to
+	extract.  Otherwise, return a null matrix.
+
+	Files: libinterp/corefcn/dlmread.cc
+
+2015-05-20  Piotr Held  <pjheld@gmail.com>
+
+	doxygen: document Array::length() and similar methods (bug #45138)
+
+	* liboctave/array/Array.h: make special note that Array::length() is different
+	from length() at the Octave interpreter.  Also document capacity, nelem, and
+	numel.
+
+	Files: liboctave/array/Array.h
+
+2015-05-20  Philip Nienhuis  <prnienhuis@users.sf.net>
+
+	strread.m: properly process format repeat counter, add tests
+
+	Files: scripts/io/strread.m
+
+2015-05-19  Piotr Held  <pjheld@gmail.com>
+
+	doxygen: improve dim_vector constructor documentation (bug #45105)
+
+	* liboctave/array/dim-vector.h: improve documentation for contructor so it
+	is picked up by doxygen.
+
+	Files: liboctave/array/dim-vector.h
+
+2015-05-19  Rik  <rik@octave.org>
+
+	fplot.m: Document requirement of accepting vector inputs (bug #42050).
+
+	fplot.m: Document requirement of accepting vector inputs.
+
+	Files: scripts/plot/draw/fplot.m
+
+2015-05-19  Philip Nienhuis  <prnienhuis@users.sf.net>
+
+	textread.m: properly initialize endofline if specified by user (bug #45046)
+
+	Files: scripts/io/textread.m
+
+2015-05-18  Mike Miller  <mtmiller@octave.org>
+
+	Update make_int example to current octave_base_value API (bug #45136)
+
+	* make_int.cc (octave_integer::print): Make non-const.  Add a newline
+	for consistency with core library conventions.
+
+	Files: examples/code/make_int.cc
+
+2015-05-17  Rik  <rik@octave.org>
+
+	Update citation for Octave software to version 4.0.0.
+
+	* CITATION: Update version to 4.0.0.  Update publication date to 2015.
+	Remove referencess to publisher and ISBN.
+
+	Files: CITATION
+
+	doc: Document that mkfifo's mode argument is in decimal (bug #45054).
+
+	* dirfns.cc (Fmkdir): Document that umask is applied to the mode bits of a
+	newly created directory.
+
+	* file-io.cc (Ffopen): Document that umask is applied to the mode bits of a
+	newly created file.
+	* file-io.cc (Fumask): Add brief explanation of umask and UNIX permission bits.
+
+	* syscalls.cc (Fmkfifo): Document that mode is in decimal and subject to umask
+	processing.
+
+	Files: libinterp/corefcn/dirfns.cc libinterp/corefcn/file-io.cc
+	libinterp/corefcn/syscalls.cc
+
+2015-05-14  Rik  <rik@octave.org>
+
+	doc: Remove extra spaces at start of docstring which show up in Info format.
+
+	* intro.txi: Use blank line between end of example and seealso.
+
+	* utils.cc: Remove stray comment from previous cset.
+
+	* annotation.m: Overhaul docstring.
+
+	* subspace.m: Re-indent academic reference.
+
+	* condest.m: Remove blank column of spaces in front of license.
+
+	* onenormest.m: Remove blank column of spaces in front of license.
+
+	* sinc.m: Remove extra single space at start of line.
+
+	* invhilb.m: Remove extra single space at start of line.
+
+	* gls.m: Remove extra single space at start of line.
+
+	* ols.m: Remove extra single space at start of line.
+
+	Files: doc/interpreter/intro.txi libinterp/corefcn/utils.cc scripts/linear-
+	algebra/condest.m scripts/linear-algebra/onenormest.m scripts
+	/linear-algebra/subspace.m scripts/plot/appearance/annotation.m
+	scripts/signal/sinc.m scripts/special-matrix/invhilb.m
+	scripts/statistics/base/gls.m scripts/statistics/base/ols.m
+
+2015-05-14  John W. Eaton  <jwe@octave.org>
+
+	only force indirect OpenGL rendering on Windows systems (bug #44916)
+
+	* GLCanvas.cc (GLCanvas::GLCanvas): Limit indirect rendering to
+	Windows systems.
+
+	Files: libgui/graphics/GLCanvas.cc
+
+	allow keywords as structure fields again (bug #45092)
+
+	* lex.ll (handle_identifier): Don't throw error if structure field is
+	a keyword.  Don't abort if at_beginning_of_statement is true.
+
+	Files: libinterp/parse-tree/lex.ll
+
+2015-05-13  Piotr Held  <pjheld@gmail.com>
+
+	external.txi: Fix example case for dim_vector (bug #45100).
+
+	Files: doc/interpreter/external.txi
+
+2015-05-13  Torsten  <ttl@justmail.de>
+
+	make action shortcuts available in floating widgets (bug #45078)
+
+	* main-window.cc (construct): emit a list of actions which should also
+	  be available in dock widgets
+
+	* main-window.h: new signal for the list of actions
+
+	* octave-dock-widget.cc (octave_dock_widget): connect new signal with
+	  action list to the related new slot;
+	  (add_actions): new slot for adding main windows actions
+
+	* octave-dock-widget.h: new slot
+
+	Files: libgui/src/main-window.cc libgui/src/main-window.h libgui/src
+	/octave-dock-widget.cc libgui/src/octave-dock-widget.h
+
+2015-05-13  Tatsuro Matsuoka  <tmacchant@yahoo.co.jp>
+
+	ja_JP.ts: Update japanese translation (patch #8642)
+
+	Files: libgui/languages/ja_JP.ts
+
+2015-05-13  John W. Eaton  <jwe@octave.org>
+
+	don't crash if structure field is keyword (bug #45092)
+
+	* lex.ll (handle_identiier): Emit specific error if structure field is
+	a keyword.  Error instead of aborting if at_beginning_of_statement is
+	true when parsting a structure field.
+
+	Files: libinterp/parse-tree/lex.ll
+
+2015-05-12  Rik  <rik@octave.org>
+
+	doc: Remove typo of same word twice in a row.
+
+	* data.cc (nzmax), mappers.cc (isinf), contourc.m, cylinder.m, ellipsoid.m:
+	Remove typo of same word twice in a row.
+
+	Files: libinterp/corefcn/data.cc libinterp/corefcn/mappers.cc
+	scripts/plot/draw/contourc.m scripts/plot/draw/cylinder.m
+	scripts/plot/draw/ellipsoid.m
+
+	regexptranslate.m: Fix 'escape' option list of special chars (bug #45084).
+	Also speed up 'wildcard' option by 44% by using strrep rather than regexprep.
+
+	* regexptranslate.m: Explicitly list all all special regexp chars in the
+	regular expression which escapes them.  Replace regexprep calls with strrep
+	function calls in 'wildcard' option processing.
+
+	Files: scripts/strings/regexptranslate.m
+
+	maint: Remove unnecessary whitespace at end of lines.
+
+	* libgui/Makefile.am, libgui/graphics/Canvas.cc,
+	libgui/graphics/EditControl.cc, libgui/graphics/Figure.cc,
+	libgui/graphics/MouseModeActionGroup.cc, libgui/graphics/annotation-dialog.cc,
+	libgui/graphics/annotation-dialog.h, libgui/graphics/gl-select.cc,
+	libgui/graphics/module.mk, libgui/kb-layouts/default.keytab,
+	libgui/kb-layouts/linux.keytab, libgui/kb-layouts/vt420pc.keytab,
+	libgui/src/m-editor/find-dialog.cc, libgui/src/main-window.cc,
+	libgui/src/octave-qt-link.cc, libgui/src/octave-qt-link.h,
+	libgui/src/shortcut-manager.h, libinterp/corefcn/error.cc,
+	libinterp/corefcn/find.cc, libinterp/corefcn/gl2ps-renderer.cc,
+	libinterp/corefcn/graphics.cc, libinterp/corefcn/graphics.in.h,
+	libinterp/corefcn/octave-link.cc, libinterp/corefcn/quadcc.cc,
+	libinterp/corefcn/strfns.cc, libinterp/corefcn/syscalls.cc,
+	libinterp/corefcn/sysdep.cc, libinterp/corefcn/urlwrite.cc,
+	libinterp/corefcn/utils.cc, libinterp/corefcn/variables.cc,
+	libinterp/dldfcn/__init_fltk__.cc, libinterp/dldfcn/ccolamd.cc,
+	libinterp/dldfcn/colamd.cc, libinterp/octave-value/ov-bool-sparse.cc,
+	libinterp/octave-value/ov-classdef.cc, libinterp/octave-value/ov-re-sparse.cc,
+	libinterp/octave-value/ov-struct.cc, libinterp/parse-tree/pt-arg-list.cc,
+	scripts/audio/@audiorecorder/play.m, scripts/audio/wavwrite.m,
+	scripts/general/cart2sph.m, scripts/geometry/inpolygon.m,
+	scripts/gui/listdlg.m, scripts/gui/msgbox.m,
+	scripts/gui/private/message_dialog.m, scripts/help/get_first_help_sentence.m,
+	scripts/help/lookfor.m, scripts/image/imshow.m, scripts/io/strread.m,
+	scripts/java/javamem.m, scripts/miscellaneous/dir.m,
+	scripts/miscellaneous/edit.m, scripts/miscellaneous/genvarname.m,
+	scripts/miscellaneous/gzip.m, scripts/miscellaneous/private/__w2mpth__.m,
+	scripts/plot/appearance/annotation.m, scripts/plot/draw/colorbar.m,
+	scripts/plot/draw/quiver3.m, scripts/plot/util/hold.m,
+	scripts/plot/util/print.m, scripts/polynomial/mkpp.m,
+	scripts/polynomial/polyder.m, scripts/polynomial/spline.m,
+	scripts/polynomial/unmkpp.m, scripts/signal/arma_rnd.m, scripts/sparse/gplot.m,
+	scripts/statistics/tests/t_test.m,
+	scripts/statistics/tests/t_test_regression.m, scripts/strings/mat2str.m,
+	scripts/strings/strsplit.m, scripts/strings/strtrunc.m,
+	scripts/strings/untabify.m, scripts/testfun/assert.m:
+	maint: Remove unnecessary whitespace at end of lines.
+
+	Files: libgui/Makefile.am libgui/graphics/Canvas.cc
+	libgui/graphics/EditControl.cc libgui/graphics/Figure.cc
+	libgui/graphics/MouseModeActionGroup.cc libgui/graphics/annotation-
+	dialog.cc libgui/graphics/annotation-dialog.h libgui/graphics/gl-
+	select.cc libgui/graphics/module.mk libgui/kb-layouts/default.keytab
+	libgui/kb-layouts/linux.keytab libgui/kb-layouts/vt420pc.keytab
+	libgui/src/m-editor/find-dialog.cc libgui/src/main-window.cc
+	libgui/src/octave-qt-link.cc libgui/src/octave-qt-link.h libgui/src
+	/shortcut-manager.h libinterp/corefcn/error.cc
+	libinterp/corefcn/find.cc libinterp/corefcn/gl2ps-renderer.cc
+	libinterp/corefcn/graphics.cc libinterp/corefcn/graphics.in.h
+	libinterp/corefcn/octave-link.cc libinterp/corefcn/quadcc.cc
+	libinterp/corefcn/strfns.cc libinterp/corefcn/syscalls.cc
+	libinterp/corefcn/sysdep.cc libinterp/corefcn/urlwrite.cc
+	libinterp/corefcn/utils.cc libinterp/corefcn/variables.cc
+	libinterp/dldfcn/__init_fltk__.cc libinterp/dldfcn/ccolamd.cc
+	libinterp/dldfcn/colamd.cc libinterp/octave-value/ov-bool-sparse.cc
+	libinterp/octave-value/ov-classdef.cc libinterp/octave-value/ov-re-
+	sparse.cc libinterp/octave-value/ov-struct.cc libinterp/parse-tree
+	/pt-arg-list.cc scripts/audio/@audiorecorder/play.m
+	scripts/audio/wavwrite.m scripts/general/cart2sph.m
+	scripts/geometry/inpolygon.m scripts/gui/listdlg.m
+	scripts/gui/msgbox.m scripts/gui/private/message_dialog.m
+	scripts/help/get_first_help_sentence.m scripts/help/lookfor.m
+	scripts/image/imshow.m scripts/io/strread.m scripts/java/javamem.m
+	scripts/miscellaneous/dir.m scripts/miscellaneous/edit.m
+	scripts/miscellaneous/genvarname.m scripts/miscellaneous/gzip.m
+	scripts/miscellaneous/private/__w2mpth__.m
+	scripts/plot/appearance/annotation.m scripts/plot/draw/colorbar.m
+	scripts/plot/draw/quiver3.m scripts/plot/util/hold.m
+	scripts/plot/util/print.m scripts/polynomial/mkpp.m
+	scripts/polynomial/polyder.m scripts/polynomial/spline.m
+	scripts/polynomial/unmkpp.m scripts/signal/arma_rnd.m
+	scripts/sparse/gplot.m scripts/statistics/tests/t_test.m
+	scripts/statistics/tests/t_test_regression.m
+	scripts/strings/mat2str.m scripts/strings/strsplit.m
+	scripts/strings/strtrunc.m scripts/strings/untabify.m
+	scripts/testfun/assert.m
+
+	normest.m: Fix function to run with sparse complex inputs (bug #45080).
+
+	* normest.m: Convert trace value to full (non-sparse) before using it to set
+	the rand seed.
+
+	Files: scripts/linear-algebra/normest.m
+
+2015-05-11  Rik  <rik@octave.org>
+
+	doc: Clean up several deftypefn entries of Command type.
+
+	* dirfns.cc (Fcd): Add parentheses to function calling form.
+
+	* input.cc (Fecho): List each Command calling form.
+
+	* variables.cc (Fwhos): Use "Built-in Function" for functional calling form.
+
+	* box.m: List no argument form first.
+
+	* hidden.m: Remove quotes from "on"/"off" arguments to command.
+
+	Files: libinterp/corefcn/dirfns.cc libinterp/corefcn/input.cc
+	libinterp/corefcn/variables.cc scripts/plot/appearance/box.m
+	scripts/plot/appearance/hidden.m
+
+	intro.txi: Improve documentation in introductory chapter.
+
+	* intro.txi: Use 'diary' instead of 'cd' as an example of a command.
+	Format sample function docstring to match modern usage.
+	Improve phrasing of a few sentences.
+
+	Files: doc/interpreter/intro.txi
+
+2015-05-10  Rik  <rik@octave.org>
+
+	doc: Rewrite guidelines for crafting docstrings.
+
+	* tips.txi: Rewrite guidelines for crafting docstrings.
+
+	Files: doc/interpreter/tips.txi
+
+	doc: Update more docstrings to have one sentence summary as first line.
+	Reviewed statistics/ and @ftp/ in scripts directory.
+
+	* scripts/@ftp/ascii.m, scripts/@ftp/binary.m, scripts/@ftp/cd.m,
+	scripts/@ftp/dir.m, scripts/@ftp/ftp.m, scripts/@ftp/mget.m,
+	scripts/@ftp/mput.m, scripts/statistics/base/center.m,
+	scripts/statistics/base/cloglog.m, scripts/statistics/base/cov.m,
+	scripts/statistics/base/gls.m, scripts/statistics/base/histc.m,
+	scripts/statistics/base/iqr.m, scripts/statistics/base/kendall.m,
+	scripts/statistics/base/kurtosis.m, scripts/statistics/base/logit.m,
+	scripts/statistics/base/lscov.m, scripts/statistics/base/mahalanobis.m,
+	scripts/statistics/base/mean.m, scripts/statistics/base/meansq.m,
+	scripts/statistics/base/median.m, scripts/statistics/base/mode.m,
+	scripts/statistics/base/moment.m, scripts/statistics/base/ols.m,
+	scripts/statistics/base/ppplot.m, scripts/statistics/base/prctile.m,
+	scripts/statistics/base/probit.m, scripts/statistics/base/range.m,
+	scripts/statistics/base/ranks.m, scripts/statistics/base/run_count.m,
+	scripts/statistics/base/runlength.m, scripts/statistics/base/skewness.m,
+	scripts/statistics/base/spearman.m, scripts/statistics/base/statistics.m,
+	scripts/statistics/base/std.m, scripts/statistics/base/table.m,
+	scripts/statistics/base/var.m, scripts/statistics/base/zscore.m,
+	scripts/statistics/distributions/betainv.m,
+	scripts/statistics/distributions/binoinv.m,
+	scripts/statistics/distributions/binopdf.m,
+	scripts/statistics/distributions/cauchy_cdf.m,
+	scripts/statistics/distributions/cauchy_inv.m,
+	scripts/statistics/distributions/cauchy_pdf.m,
+	scripts/statistics/distributions/chi2cdf.m,
+	scripts/statistics/distributions/chi2inv.m,
+	scripts/statistics/distributions/chi2pdf.m,
+	scripts/statistics/distributions/discrete_cdf.m,
+	scripts/statistics/distributions/discrete_inv.m,
+	scripts/statistics/distributions/discrete_pdf.m,
+	scripts/statistics/distributions/empirical_cdf.m,
+	scripts/statistics/distributions/empirical_inv.m,
+	scripts/statistics/distributions/empirical_pdf.m,
+	scripts/statistics/distributions/expcdf.m,
+	scripts/statistics/distributions/expinv.m,
+	scripts/statistics/distributions/exppdf.m,
+	scripts/statistics/distributions/finv.m,
+	scripts/statistics/distributions/fpdf.m,
+	scripts/statistics/distributions/gamcdf.m,
+	scripts/statistics/distributions/gaminv.m,
+	scripts/statistics/distributions/gampdf.m,
+	scripts/statistics/distributions/geoinv.m,
+	scripts/statistics/distributions/geopdf.m,
+	scripts/statistics/distributions/hygecdf.m,
+	scripts/statistics/distributions/hygeinv.m,
+	scripts/statistics/distributions/hygepdf.m,
+	scripts/statistics/distributions/kolmogorov_smirnov_cdf.m,
+	scripts/statistics/distributions/laplace_cdf.m,
+	scripts/statistics/distributions/laplace_inv.m,
+	scripts/statistics/distributions/laplace_pdf.m,
+	scripts/statistics/distributions/logistic_inv.m,
+	scripts/statistics/distributions/logncdf.m,
+	scripts/statistics/distributions/logninv.m,
+	scripts/statistics/distributions/lognpdf.m,
+	scripts/statistics/distributions/nbincdf.m,
+	scripts/statistics/distributions/nbininv.m,
+	scripts/statistics/distributions/nbinpdf.m,
+	scripts/statistics/distributions/nbinrnd.m,
+	scripts/statistics/distributions/normcdf.m,
+	scripts/statistics/distributions/norminv.m,
+	scripts/statistics/distributions/normpdf.m,
+	scripts/statistics/distributions/poisscdf.m,
+	scripts/statistics/distributions/poissinv.m,
+	scripts/statistics/distributions/poisspdf.m,
+	scripts/statistics/distributions/stdnormal_cdf.m,
+	scripts/statistics/distributions/stdnormal_pdf.m,
+	scripts/statistics/distributions/tcdf.m,
+	scripts/statistics/distributions/tinv.m,
+	scripts/statistics/distributions/tpdf.m,
+	scripts/statistics/distributions/unidcdf.m,
+	scripts/statistics/distributions/unidinv.m,
+	scripts/statistics/distributions/unidpdf.m,
+	scripts/statistics/distributions/unidrnd.m,
+	scripts/statistics/distributions/unifcdf.m,
+	scripts/statistics/distributions/unifinv.m,
+	scripts/statistics/distributions/wblcdf.m,
+	scripts/statistics/distributions/wblinv.m,
+	scripts/statistics/distributions/wblpdf.m,
+	scripts/statistics/distributions/wienrnd.m,
+	scripts/statistics/models/private/logistic_regression_derivatives.m,
+	scripts/statistics/models/private/logistic_regression_likelihood.m,
+	scripts/statistics/tests/anova.m,
+	scripts/statistics/tests/chisquare_test_homogeneity.m,
+	scripts/statistics/tests/chisquare_test_independence.m,
+	scripts/statistics/tests/cor_test.m,
+	scripts/statistics/tests/f_test_regression.m,
+	scripts/statistics/tests/hotelling_test.m,
+	scripts/statistics/tests/kolmogorov_smirnov_test.m,
+	scripts/statistics/tests/kolmogorov_smirnov_test_2.m,
+	scripts/statistics/tests/kruskal_wallis_test.m,
+	scripts/statistics/tests/manova.m, scripts/statistics/tests/mcnemar_test.m,
+	scripts/statistics/tests/prop_test_2.m, scripts/statistics/tests/run_test.m,
+	scripts/statistics/tests/sign_test.m, scripts/statistics/tests/t_test.m,
+	scripts/statistics/tests/t_test_2.m,
+	scripts/statistics/tests/t_test_regression.m,
+	scripts/statistics/tests/u_test.m, scripts/statistics/tests/var_test.m,
+	scripts/statistics/tests/welch_test.m,
+	scripts/statistics/tests/wilcoxon_test.m, scripts/statistics/tests/z_test.m,
+	scripts/statistics/tests/z_test_2.m:
+	Update more docstrings to have one sentence summary as first line.
+
+	Files: scripts/@ftp/ascii.m scripts/@ftp/binary.m scripts/@ftp/cd.m
+	scripts/@ftp/dir.m scripts/@ftp/ftp.m scripts/@ftp/mget.m
+	scripts/@ftp/mput.m scripts/statistics/base/center.m
+	scripts/statistics/base/cloglog.m scripts/statistics/base/cov.m
+	scripts/statistics/base/gls.m scripts/statistics/base/histc.m
+	scripts/statistics/base/iqr.m scripts/statistics/base/kendall.m
+	scripts/statistics/base/kurtosis.m scripts/statistics/base/logit.m
+	scripts/statistics/base/lscov.m
+	scripts/statistics/base/mahalanobis.m scripts/statistics/base/mean.m
+	scripts/statistics/base/meansq.m scripts/statistics/base/median.m
+	scripts/statistics/base/mode.m scripts/statistics/base/moment.m
+	scripts/statistics/base/ols.m scripts/statistics/base/ppplot.m
+	scripts/statistics/base/prctile.m scripts/statistics/base/probit.m
+	scripts/statistics/base/range.m scripts/statistics/base/ranks.m
+	scripts/statistics/base/run_count.m
+	scripts/statistics/base/runlength.m
+	scripts/statistics/base/skewness.m
+	scripts/statistics/base/spearman.m
+	scripts/statistics/base/statistics.m scripts/statistics/base/std.m
+	scripts/statistics/base/table.m scripts/statistics/base/var.m
+	scripts/statistics/base/zscore.m
+	scripts/statistics/distributions/betainv.m
+	scripts/statistics/distributions/binoinv.m
+	scripts/statistics/distributions/binopdf.m
+	scripts/statistics/distributions/cauchy_cdf.m
+	scripts/statistics/distributions/cauchy_inv.m
+	scripts/statistics/distributions/cauchy_pdf.m
+	scripts/statistics/distributions/chi2cdf.m
+	scripts/statistics/distributions/chi2inv.m
+	scripts/statistics/distributions/chi2pdf.m
+	scripts/statistics/distributions/discrete_cdf.m
+	scripts/statistics/distributions/discrete_inv.m
+	scripts/statistics/distributions/discrete_pdf.m
+	scripts/statistics/distributions/empirical_cdf.m
+	scripts/statistics/distributions/empirical_inv.m
+	scripts/statistics/distributions/empirical_pdf.m
+	scripts/statistics/distributions/expcdf.m
+	scripts/statistics/distributions/expinv.m
+	scripts/statistics/distributions/exppdf.m
+	scripts/statistics/distributions/finv.m
+	scripts/statistics/distributions/fpdf.m
+	scripts/statistics/distributions/gamcdf.m
+	scripts/statistics/distributions/gaminv.m
+	scripts/statistics/distributions/gampdf.m
+	scripts/statistics/distributions/geoinv.m
+	scripts/statistics/distributions/geopdf.m
+	scripts/statistics/distributions/hygecdf.m
+	scripts/statistics/distributions/hygeinv.m
+	scripts/statistics/distributions/hygepdf.m
+	scripts/statistics/distributions/kolmogorov_smirnov_cdf.m
+	scripts/statistics/distributions/laplace_cdf.m
+	scripts/statistics/distributions/laplace_inv.m
+	scripts/statistics/distributions/laplace_pdf.m
+	scripts/statistics/distributions/logistic_inv.m
+	scripts/statistics/distributions/logncdf.m
+	scripts/statistics/distributions/logninv.m
+	scripts/statistics/distributions/lognpdf.m
+	scripts/statistics/distributions/nbincdf.m
+	scripts/statistics/distributions/nbininv.m
+	scripts/statistics/distributions/nbinpdf.m
+	scripts/statistics/distributions/nbinrnd.m
+	scripts/statistics/distributions/normcdf.m
+	scripts/statistics/distributions/norminv.m
+	scripts/statistics/distributions/normpdf.m
+	scripts/statistics/distributions/poisscdf.m
+	scripts/statistics/distributions/poissinv.m
+	scripts/statistics/distributions/poisspdf.m
+	scripts/statistics/distributions/stdnormal_cdf.m
+	scripts/statistics/distributions/stdnormal_pdf.m
+	scripts/statistics/distributions/tcdf.m
+	scripts/statistics/distributions/tinv.m
+	scripts/statistics/distributions/tpdf.m
+	scripts/statistics/distributions/unidcdf.m
+	scripts/statistics/distributions/unidinv.m
+	scripts/statistics/distributions/unidpdf.m
+	scripts/statistics/distributions/unidrnd.m
+	scripts/statistics/distributions/unifcdf.m
+	scripts/statistics/distributions/unifinv.m
+	scripts/statistics/distributions/wblcdf.m
+	scripts/statistics/distributions/wblinv.m
+	scripts/statistics/distributions/wblpdf.m
+	scripts/statistics/distributions/wienrnd.m
+	scripts/statistics/models/private/logistic_regression_derivatives.m
+	scripts/statistics/models/private/logistic_regression_likelihood.m
+	scripts/statistics/tests/anova.m
+	scripts/statistics/tests/chisquare_test_homogeneity.m
+	scripts/statistics/tests/chisquare_test_independence.m
+	scripts/statistics/tests/cor_test.m
+	scripts/statistics/tests/f_test_regression.m
+	scripts/statistics/tests/hotelling_test.m
+	scripts/statistics/tests/kolmogorov_smirnov_test.m
+	scripts/statistics/tests/kolmogorov_smirnov_test_2.m
+	scripts/statistics/tests/kruskal_wallis_test.m
+	scripts/statistics/tests/manova.m
+	scripts/statistics/tests/mcnemar_test.m
+	scripts/statistics/tests/prop_test_2.m
+	scripts/statistics/tests/run_test.m
+	scripts/statistics/tests/sign_test.m
+	scripts/statistics/tests/t_test.m
+	scripts/statistics/tests/t_test_2.m
+	scripts/statistics/tests/t_test_regression.m
+	scripts/statistics/tests/u_test.m
+	scripts/statistics/tests/var_test.m
+	scripts/statistics/tests/welch_test.m
+	scripts/statistics/tests/wilcoxon_test.m
+	scripts/statistics/tests/z_test.m
+	scripts/statistics/tests/z_test_2.m
+
+2015-05-09  Rik  <rik@octave.org>
+
+	doc: Update more docstrings to have one sentence summary as first line.
+	Reviewed plot/ and gui/ in scripts directory.
+
+	* scripts/gui/errordlg.m, scripts/gui/helpdlg.m, scripts/gui/inputdlg.m,
+	scripts/gui/listdlg.m, scripts/gui/msgbox.m,
+	scripts/gui/private/__get_funcname__.m,
+	scripts/gui/private/__uiobject_split_args__.m, scripts/gui/questdlg.m,
+	scripts/gui/uigetdir.m, scripts/gui/uigetfile.m, scripts/gui/uiwait.m,
+	scripts/gui/waitbar.m, scripts/gui/warndlg.m,
+	scripts/plot/appearance/annotation.m, scripts/plot/appearance/axis.m,
+	scripts/plot/appearance/box.m, scripts/plot/appearance/caxis.m,
+	scripts/plot/appearance/datetick.m, scripts/plot/appearance/hidden.m,
+	scripts/plot/appearance/legend.m, scripts/plot/appearance/xlim.m,
+	scripts/plot/appearance/ylim.m, scripts/plot/appearance/zlim.m,
+	scripts/plot/draw/area.m, scripts/plot/draw/comet.m,
+	scripts/plot/draw/comet3.m, scripts/plot/draw/contour.m,
+	scripts/plot/draw/contourf.m, scripts/plot/draw/isocolors.m,
+	scripts/plot/draw/isonormals.m, scripts/plot/draw/isosurface.m,
+	scripts/plot/draw/plotmatrix.m, scripts/plot/draw/quiver.m,
+	scripts/plot/draw/quiver3.m, scripts/plot/draw/ribbon.m,
+	scripts/plot/draw/semilogxerr.m, scripts/plot/draw/semilogyerr.m,
+	scripts/plot/draw/sphere.m, scripts/plot/draw/surfl.m,
+	scripts/plot/draw/tetramesh.m, scripts/plot/util/allchild.m,
+	scripts/plot/util/ancestor.m, scripts/plot/util/axes.m,
+	scripts/plot/util/colstyle.m, scripts/plot/util/frame2im.m,
+	scripts/plot/util/gnuplot_binary.in, scripts/plot/util/hgsave.m,
+	scripts/plot/util/im2frame.m, scripts/plot/util/isaxes.m,
+	scripts/plot/util/isfigure.m, scripts/plot/util/linkaxes.m,
+	scripts/plot/util/ndgrid.m, scripts/plot/util/pan.m, scripts/plot/util/print.m,
+	scripts/plot/util/printd.m, scripts/plot/util/private/__add_default_menu__.m,
+	scripts/plot/util/rotate.m, scripts/plot/util/rotate3d.m,
+	scripts/plot/util/saveas.m, scripts/plot/util/struct2hdl.m,
+	scripts/plot/util/subplot.m, scripts/plot/util/zoom.m:
+	Update more docstrings to have one sentence summary as first line.
+
+	Files: scripts/gui/errordlg.m scripts/gui/helpdlg.m scripts/gui/inputdlg.m
+	scripts/gui/listdlg.m scripts/gui/msgbox.m
+	scripts/gui/private/__get_funcname__.m
+	scripts/gui/private/__uiobject_split_args__.m scripts/gui/questdlg.m
+	scripts/gui/uigetdir.m scripts/gui/uigetfile.m scripts/gui/uiwait.m
+	scripts/gui/waitbar.m scripts/gui/warndlg.m
+	scripts/plot/appearance/annotation.m scripts/plot/appearance/axis.m
+	scripts/plot/appearance/box.m scripts/plot/appearance/caxis.m
+	scripts/plot/appearance/datetick.m scripts/plot/appearance/hidden.m
+	scripts/plot/appearance/legend.m scripts/plot/appearance/xlim.m
+	scripts/plot/appearance/ylim.m scripts/plot/appearance/zlim.m
+	scripts/plot/draw/area.m scripts/plot/draw/comet.m
+	scripts/plot/draw/comet3.m scripts/plot/draw/contour.m
+	scripts/plot/draw/contourf.m scripts/plot/draw/isocolors.m
+	scripts/plot/draw/isonormals.m scripts/plot/draw/isosurface.m
+	scripts/plot/draw/plotmatrix.m scripts/plot/draw/quiver.m
+	scripts/plot/draw/quiver3.m scripts/plot/draw/ribbon.m
+	scripts/plot/draw/semilogxerr.m scripts/plot/draw/semilogyerr.m
+	scripts/plot/draw/sphere.m scripts/plot/draw/surfl.m
+	scripts/plot/draw/tetramesh.m scripts/plot/util/allchild.m
+	scripts/plot/util/ancestor.m scripts/plot/util/axes.m
+	scripts/plot/util/colstyle.m scripts/plot/util/frame2im.m
+	scripts/plot/util/gnuplot_binary.in scripts/plot/util/hgsave.m
+	scripts/plot/util/im2frame.m scripts/plot/util/isaxes.m
+	scripts/plot/util/isfigure.m scripts/plot/util/linkaxes.m
+	scripts/plot/util/ndgrid.m scripts/plot/util/pan.m
+	scripts/plot/util/print.m scripts/plot/util/printd.m
+	scripts/plot/util/private/__add_default_menu__.m
+	scripts/plot/util/rotate.m scripts/plot/util/rotate3d.m
+	scripts/plot/util/saveas.m scripts/plot/util/struct2hdl.m
+	scripts/plot/util/subplot.m scripts/plot/util/zoom.m
+
+	doc: Update more docstrings to have one sentence summary as first line.
+	Reviewed libinterp/corefcn directory.
+
+	* libinterp/corefcn/__ilu__.cc, libinterp/corefcn/balance.cc,
+	libinterp/corefcn/besselj.cc, libinterp/corefcn/betainc.cc,
+	libinterp/corefcn/bitfcns.cc, libinterp/corefcn/bsxfun.cc,
+	libinterp/corefcn/cellfun.cc, libinterp/corefcn/colloc.cc,
+	libinterp/corefcn/conv2.cc, libinterp/corefcn/data.cc,
+	libinterp/corefcn/debug.cc, libinterp/corefcn/defaults.cc,
+	libinterp/corefcn/det.cc, libinterp/corefcn/dirfns.cc,
+	libinterp/corefcn/dlmread.cc, libinterp/corefcn/dot.cc,
+	libinterp/corefcn/eig.cc, libinterp/corefcn/error.cc,
+	libinterp/corefcn/fft2.cc, libinterp/corefcn/fftn.cc,
+	libinterp/corefcn/file-io.cc, libinterp/corefcn/filter.cc,
+	libinterp/corefcn/find.cc, libinterp/corefcn/gammainc.cc,
+	libinterp/corefcn/gcd.cc, libinterp/corefcn/getgrent.cc,
+	libinterp/corefcn/getpwent.cc, libinterp/corefcn/getrusage.cc,
+	libinterp/corefcn/graphics.cc, libinterp/corefcn/help.cc,
+	libinterp/corefcn/hex2num.cc, libinterp/corefcn/input.cc,
+	libinterp/corefcn/inv.cc, libinterp/corefcn/kron.cc,
+	libinterp/corefcn/load-path.cc, libinterp/corefcn/load-save.cc,
+	libinterp/corefcn/lookup.cc, libinterp/corefcn/ls-oct-ascii.cc,
+	libinterp/corefcn/lsode.cc, libinterp/corefcn/lu.cc,
+	libinterp/corefcn/luinc.cc, libinterp/corefcn/mappers.cc,
+	libinterp/corefcn/matrix_type.cc, libinterp/corefcn/max.cc,
+	libinterp/corefcn/md5sum.cc, libinterp/corefcn/mgorth.cc,
+	libinterp/corefcn/nproc.cc, libinterp/corefcn/oct-hist.cc,
+	libinterp/corefcn/ordschur.cc, libinterp/corefcn/pager.cc,
+	libinterp/corefcn/pinv.cc, libinterp/corefcn/pr-output.cc,
+	libinterp/corefcn/pt-jit.cc, libinterp/corefcn/quad.cc,
+	libinterp/corefcn/quadcc.cc, libinterp/corefcn/qz.cc,
+	libinterp/corefcn/rand.cc, libinterp/corefcn/rcond.cc,
+	libinterp/corefcn/regexp.cc, libinterp/corefcn/schur.cc,
+	libinterp/corefcn/sighandlers.cc, libinterp/corefcn/sparse.cc,
+	libinterp/corefcn/spparms.cc, libinterp/corefcn/str2double.cc,
+	libinterp/corefcn/strfind.cc, libinterp/corefcn/strfns.cc,
+	libinterp/corefcn/sub2ind.cc, libinterp/corefcn/svd.cc,
+	libinterp/corefcn/symtab.cc, libinterp/corefcn/syscalls.cc,
+	libinterp/corefcn/sysdep.cc, libinterp/corefcn/time.cc,
+	libinterp/corefcn/toplev.cc, libinterp/corefcn/tril.cc,
+	libinterp/corefcn/tsearch.cc, libinterp/corefcn/typecast.cc,
+	libinterp/corefcn/urlwrite.cc, libinterp/corefcn/utils.cc,
+	libinterp/corefcn/variables.cc, scripts/polynomial/spline.m:
+	Update more docstrings to have one sentence summary as first line.
+
+	Files: libinterp/corefcn/__ilu__.cc libinterp/corefcn/balance.cc
+	libinterp/corefcn/besselj.cc libinterp/corefcn/betainc.cc
+	libinterp/corefcn/bitfcns.cc libinterp/corefcn/bsxfun.cc
+	libinterp/corefcn/cellfun.cc libinterp/corefcn/colloc.cc
+	libinterp/corefcn/conv2.cc libinterp/corefcn/data.cc
+	libinterp/corefcn/debug.cc libinterp/corefcn/defaults.cc
+	libinterp/corefcn/det.cc libinterp/corefcn/dirfns.cc
+	libinterp/corefcn/dlmread.cc libinterp/corefcn/dot.cc
+	libinterp/corefcn/eig.cc libinterp/corefcn/error.cc
+	libinterp/corefcn/fft2.cc libinterp/corefcn/fftn.cc
+	libinterp/corefcn/file-io.cc libinterp/corefcn/filter.cc
+	libinterp/corefcn/find.cc libinterp/corefcn/gammainc.cc
+	libinterp/corefcn/gcd.cc libinterp/corefcn/getgrent.cc
+	libinterp/corefcn/getpwent.cc libinterp/corefcn/getrusage.cc
+	libinterp/corefcn/graphics.cc libinterp/corefcn/help.cc
+	libinterp/corefcn/hex2num.cc libinterp/corefcn/input.cc
+	libinterp/corefcn/inv.cc libinterp/corefcn/kron.cc libinterp/corefcn
+	/load-path.cc libinterp/corefcn/load-save.cc
+	libinterp/corefcn/lookup.cc libinterp/corefcn/ls-oct-ascii.cc
+	libinterp/corefcn/lsode.cc libinterp/corefcn/lu.cc
+	libinterp/corefcn/luinc.cc libinterp/corefcn/mappers.cc
+	libinterp/corefcn/matrix_type.cc libinterp/corefcn/max.cc
+	libinterp/corefcn/md5sum.cc libinterp/corefcn/mgorth.cc
+	libinterp/corefcn/nproc.cc libinterp/corefcn/oct-hist.cc
+	libinterp/corefcn/ordschur.cc libinterp/corefcn/pager.cc
+	libinterp/corefcn/pinv.cc libinterp/corefcn/pr-output.cc
+	libinterp/corefcn/pt-jit.cc libinterp/corefcn/quad.cc
+	libinterp/corefcn/quadcc.cc libinterp/corefcn/qz.cc
+	libinterp/corefcn/rand.cc libinterp/corefcn/rcond.cc
+	libinterp/corefcn/regexp.cc libinterp/corefcn/schur.cc
+	libinterp/corefcn/sighandlers.cc libinterp/corefcn/sparse.cc
+	libinterp/corefcn/spparms.cc libinterp/corefcn/str2double.cc
+	libinterp/corefcn/strfind.cc libinterp/corefcn/strfns.cc
+	libinterp/corefcn/sub2ind.cc libinterp/corefcn/svd.cc
+	libinterp/corefcn/symtab.cc libinterp/corefcn/syscalls.cc
+	libinterp/corefcn/sysdep.cc libinterp/corefcn/time.cc
+	libinterp/corefcn/toplev.cc libinterp/corefcn/tril.cc
+	libinterp/corefcn/tsearch.cc libinterp/corefcn/typecast.cc
+	libinterp/corefcn/urlwrite.cc libinterp/corefcn/utils.cc
+	libinterp/corefcn/variables.cc scripts/polynomial/spline.m
+
+2015-05-07  John Donoghue  <John Donoghue>
+
+	Default uicontextmenu visible to 'off' (Bug #44939)
+
+	* libinterp/corefcn/graphics.in.h
+	  (uicontextmenu::init) set visible property to off.
+
+	Files: libinterp/corefcn/graphics.in.h
+
+2015-05-06  John W. Eaton  <jwe@octave.org>
+
+	use indirect rendering for OpenGL graphics (bug #44916)
+
+	* GLCanvas.cc (GLCanvas::GLCanvas): Use indirect rendering.
+
+	Files: libgui/graphics/GLCanvas.cc
+
+2015-05-04  Rik  <rik@octave.org>
+
+	doc: Update more docstrings to have one sentence summary as first line.
+	Reviewed optimization, polynomial, signal script directories.
+
+	* scripts/optimization/fminbnd.m, scripts/optimization/fminsearch.m,
+	scripts/optimization/fminunc.m, scripts/optimization/fsolve.m,
+	scripts/optimization/fzero.m, scripts/optimization/glpk.m,
+	scripts/optimization/lsqnonneg.m, scripts/optimization/pqpnonneg.m,
+	scripts/optimization/qp.m, scripts/optimization/sqp.m,
+	scripts/polynomial/compan.m, scripts/polynomial/mkpp.m,
+	scripts/polynomial/mpoles.m, scripts/polynomial/pchip.m,
+	scripts/polynomial/poly.m, scripts/polynomial/polyaffine.m,
+	scripts/polynomial/polyder.m, scripts/polynomial/polyeig.m,
+	scripts/polynomial/polyfit.m, scripts/polynomial/polygcd.m,
+	scripts/polynomial/polyint.m, scripts/polynomial/polyout.m,
+	scripts/polynomial/polyval.m, scripts/polynomial/ppder.m,
+	scripts/polynomial/ppint.m, scripts/polynomial/ppjumps.m,
+	scripts/polynomial/ppval.m, scripts/polynomial/residue.m,
+	scripts/polynomial/roots.m, scripts/polynomial/spline.m,
+	scripts/polynomial/splinefit.m, scripts/polynomial/unmkpp.m,
+	scripts/signal/arch_fit.m, scripts/signal/arch_rnd.m,
+	scripts/signal/arma_rnd.m, scripts/signal/autoreg_matrix.m,
+	scripts/signal/bartlett.m, scripts/signal/blackman.m, scripts/signal/detrend.m,
+	scripts/signal/diffpara.m, scripts/signal/durbinlevinson.m,
+	scripts/signal/fftconv.m, scripts/signal/fftfilt.m, scripts/signal/fftshift.m,
+	scripts/signal/filter2.m, scripts/signal/freqz.m, scripts/signal/hamming.m,
+	scripts/signal/hanning.m, scripts/signal/hurst.m, scripts/signal/ifftshift.m,
+	scripts/signal/periodogram.m, scripts/signal/sinc.m, scripts/signal/sinetone.m,
+	scripts/signal/sinewave.m, scripts/signal/spectral_adf.m,
+	scripts/signal/spectral_xdf.m, scripts/signal/spencer.m, scripts/signal/stft.m,
+	scripts/signal/synthesis.m, scripts/signal/unwrap.m,
+	scripts/signal/yulewalker.m:
+	Update more docstrings to have one sentence summary as first line.
+
+	Files: scripts/optimization/fminbnd.m scripts/optimization/fminsearch.m
+	scripts/optimization/fminunc.m scripts/optimization/fsolve.m
+	scripts/optimization/fzero.m scripts/optimization/glpk.m
+	scripts/optimization/lsqnonneg.m scripts/optimization/pqpnonneg.m
+	scripts/optimization/qp.m scripts/optimization/sqp.m
+	scripts/polynomial/compan.m scripts/polynomial/mkpp.m
+	scripts/polynomial/mpoles.m scripts/polynomial/pchip.m
+	scripts/polynomial/poly.m scripts/polynomial/polyaffine.m
+	scripts/polynomial/polyder.m scripts/polynomial/polyeig.m
+	scripts/polynomial/polyfit.m scripts/polynomial/polygcd.m
+	scripts/polynomial/polyint.m scripts/polynomial/polyout.m
+	scripts/polynomial/polyval.m scripts/polynomial/ppder.m
+	scripts/polynomial/ppint.m scripts/polynomial/ppjumps.m
+	scripts/polynomial/ppval.m scripts/polynomial/residue.m
+	scripts/polynomial/roots.m scripts/polynomial/spline.m
+	scripts/polynomial/splinefit.m scripts/polynomial/unmkpp.m
+	scripts/signal/arch_fit.m scripts/signal/arch_rnd.m
+	scripts/signal/arma_rnd.m scripts/signal/autoreg_matrix.m
+	scripts/signal/bartlett.m scripts/signal/blackman.m
+	scripts/signal/detrend.m scripts/signal/diffpara.m
+	scripts/signal/durbinlevinson.m scripts/signal/fftconv.m
+	scripts/signal/fftfilt.m scripts/signal/fftshift.m
+	scripts/signal/filter2.m scripts/signal/freqz.m
+	scripts/signal/hamming.m scripts/signal/hanning.m
+	scripts/signal/hurst.m scripts/signal/ifftshift.m
+	scripts/signal/periodogram.m scripts/signal/sinc.m
+	scripts/signal/sinetone.m scripts/signal/sinewave.m
+	scripts/signal/spectral_adf.m scripts/signal/spectral_xdf.m
+	scripts/signal/spencer.m scripts/signal/stft.m
+	scripts/signal/synthesis.m scripts/signal/unwrap.m
+	scripts/signal/yulewalker.m
+
+	doc: Update more docstrings to have one sentence summary as first line.
+	Reviewed miscellaneous, sparse, strings in scripts directory.
+
+	* scripts/miscellaneous/bzip2.m, scripts/miscellaneous/citation.m,
+	scripts/miscellaneous/compare_versions.m, scripts/miscellaneous/computer.m,
+	scripts/miscellaneous/debug.m, scripts/miscellaneous/dir.m,
+	scripts/miscellaneous/edit.m, scripts/miscellaneous/error_ids.m,
+	scripts/miscellaneous/fileattrib.m, scripts/miscellaneous/fullfile.m,
+	scripts/miscellaneous/genvarname.m, scripts/miscellaneous/gzip.m,
+	scripts/miscellaneous/mkoctfile.m, scripts/miscellaneous/news.m,
+	scripts/miscellaneous/open.m, scripts/miscellaneous/parseparams.m,
+	scripts/miscellaneous/recycle.m, scripts/miscellaneous/run.m,
+	scripts/miscellaneous/swapbytes.m, scripts/miscellaneous/tar.m,
+	scripts/miscellaneous/tmpnam.m, scripts/miscellaneous/unpack.m,
+	scripts/miscellaneous/what.m, scripts/sparse/bicg.m, scripts/sparse/bicgstab.m,
+	scripts/sparse/cgs.m, scripts/sparse/colperm.m, scripts/sparse/eigs.m,
+	scripts/sparse/etreeplot.m, scripts/sparse/gmres.m, scripts/sparse/gplot.m,
+	scripts/sparse/ichol.m, scripts/sparse/ilu.m, scripts/sparse/pcg.m,
+	scripts/sparse/pcr.m, scripts/sparse/qmr.m, scripts/sparse/spaugment.m,
+	scripts/sparse/spconvert.m, scripts/sparse/spdiags.m, scripts/sparse/spfun.m,
+	scripts/sparse/spones.m, scripts/sparse/sprandsym.m, scripts/sparse/spstats.m,
+	scripts/sparse/spy.m, scripts/sparse/svds.m, scripts/sparse/treelayout.m,
+	scripts/sparse/treeplot.m, scripts/strings/base2dec.m,
+	scripts/strings/bin2dec.m, scripts/strings/blanks.m, scripts/strings/cstrcat.m,
+	scripts/strings/deblank.m, scripts/strings/dec2base.m,
+	scripts/strings/dec2bin.m, scripts/strings/dec2hex.m,
+	scripts/strings/findstr.m, scripts/strings/hex2dec.m, scripts/strings/index.m,
+	scripts/strings/isletter.m, scripts/strings/isstrprop.m,
+	scripts/strings/mat2str.m, scripts/strings/ostrsplit.m,
+	scripts/strings/regexptranslate.m, scripts/strings/rindex.m,
+	scripts/strings/str2num.m, scripts/strings/strcat.m, scripts/strings/strchr.m,
+	scripts/strings/strjoin.m, scripts/strings/strjust.m,
+	scripts/strings/strmatch.m, scripts/strings/strsplit.m,
+	scripts/strings/strtok.m, scripts/strings/strtrim.m,
+	scripts/strings/strtrunc.m, scripts/strings/substr.m,
+	scripts/strings/untabify.m, scripts/time/datenum.m:
+	Update more docstrings to have one sentence summary as first line.
+
+	Files: scripts/miscellaneous/bzip2.m scripts/miscellaneous/citation.m
+	scripts/miscellaneous/compare_versions.m
+	scripts/miscellaneous/computer.m scripts/miscellaneous/debug.m
+	scripts/miscellaneous/dir.m scripts/miscellaneous/edit.m
+	scripts/miscellaneous/error_ids.m scripts/miscellaneous/fileattrib.m
+	scripts/miscellaneous/fullfile.m scripts/miscellaneous/genvarname.m
+	scripts/miscellaneous/gzip.m scripts/miscellaneous/mkoctfile.m
+	scripts/miscellaneous/news.m scripts/miscellaneous/open.m
+	scripts/miscellaneous/parseparams.m scripts/miscellaneous/recycle.m
+	scripts/miscellaneous/run.m scripts/miscellaneous/swapbytes.m
+	scripts/miscellaneous/tar.m scripts/miscellaneous/tmpnam.m
+	scripts/miscellaneous/unpack.m scripts/miscellaneous/what.m
+	scripts/sparse/bicg.m scripts/sparse/bicgstab.m scripts/sparse/cgs.m
+	scripts/sparse/colperm.m scripts/sparse/eigs.m
+	scripts/sparse/etreeplot.m scripts/sparse/gmres.m
+	scripts/sparse/gplot.m scripts/sparse/ichol.m scripts/sparse/ilu.m
+	scripts/sparse/pcg.m scripts/sparse/pcr.m scripts/sparse/qmr.m
+	scripts/sparse/spaugment.m scripts/sparse/spconvert.m
+	scripts/sparse/spdiags.m scripts/sparse/spfun.m
+	scripts/sparse/spones.m scripts/sparse/sprandsym.m
+	scripts/sparse/spstats.m scripts/sparse/spy.m scripts/sparse/svds.m
+	scripts/sparse/treelayout.m scripts/sparse/treeplot.m
+	scripts/strings/base2dec.m scripts/strings/bin2dec.m
+	scripts/strings/blanks.m scripts/strings/cstrcat.m
+	scripts/strings/deblank.m scripts/strings/dec2base.m
+	scripts/strings/dec2bin.m scripts/strings/dec2hex.m
+	scripts/strings/findstr.m scripts/strings/hex2dec.m
+	scripts/strings/index.m scripts/strings/isletter.m
+	scripts/strings/isstrprop.m scripts/strings/mat2str.m
+	scripts/strings/ostrsplit.m scripts/strings/regexptranslate.m
+	scripts/strings/rindex.m scripts/strings/str2num.m
+	scripts/strings/strcat.m scripts/strings/strchr.m
+	scripts/strings/strjoin.m scripts/strings/strjust.m
+	scripts/strings/strmatch.m scripts/strings/strsplit.m
+	scripts/strings/strtok.m scripts/strings/strtrim.m
+	scripts/strings/strtrunc.m scripts/strings/substr.m
+	scripts/strings/untabify.m scripts/time/datenum.m
+
+2015-05-03  Rik  <rik@octave.org>
+
+	doc: Update more docstrings to have one sentence summary as first line.
+	Reviewed build-aux, libinterp/dldfcn, libinterp/octave-value,
+	libinterp/parse-tree directories.
+
+	* build-aux/mk-opts.pl, libinterp/dldfcn/__magick_read__.cc,
+	libinterp/dldfcn/amd.cc, libinterp/dldfcn/audiodevinfo.cc,
+	libinterp/dldfcn/audioread.cc, libinterp/dldfcn/ccolamd.cc,
+	libinterp/dldfcn/chol.cc, libinterp/dldfcn/colamd.cc,
+	libinterp/dldfcn/convhulln.cc, libinterp/dldfcn/dmperm.cc,
+	libinterp/dldfcn/fftw.cc, libinterp/dldfcn/qr.cc, libinterp/dldfcn/symbfact.cc,
+	libinterp/dldfcn/symrcm.cc, libinterp/octave-value/ov-base.cc,
+	libinterp/octave-value/ov-bool-mat.cc, libinterp/octave-value/ov-cell.cc,
+	libinterp/octave-value/ov-class.cc, libinterp/octave-value/ov-fcn-handle.cc,
+	libinterp/octave-value/ov-fcn-inline.cc, libinterp/octave-value/ov-java.cc,
+	libinterp/octave-value/ov-null-mat.cc, libinterp/octave-value/ov-oncleanup.cc,
+	libinterp/octave-value/ov-range.cc, libinterp/octave-value/ov-struct.cc,
+	libinterp/octave-value/ov-typeinfo.cc, libinterp/octave-value/ov-usr-fcn.cc,
+	libinterp/octave-value/ov.cc, libinterp/parse-tree/lex.ll,
+	libinterp/parse-tree/oct-parse.in.yy, libinterp/parse-tree/pt-binop.cc,
+	libinterp/parse-tree/pt-eval.cc, libinterp/parse-tree/pt-mat.cc:
+	doc: Update more docstrings to have one sentence summary as first line.
+
+	Files: build-aux/mk-opts.pl libinterp/dldfcn/__magick_read__.cc
+	libinterp/dldfcn/amd.cc libinterp/dldfcn/audiodevinfo.cc
+	libinterp/dldfcn/audioread.cc libinterp/dldfcn/ccolamd.cc
+	libinterp/dldfcn/chol.cc libinterp/dldfcn/colamd.cc
+	libinterp/dldfcn/convhulln.cc libinterp/dldfcn/dmperm.cc
+	libinterp/dldfcn/fftw.cc libinterp/dldfcn/qr.cc
+	libinterp/dldfcn/symbfact.cc libinterp/dldfcn/symrcm.cc libinterp
+	/octave-value/ov-base.cc libinterp/octave-value/ov-bool-mat.cc
+	libinterp/octave-value/ov-cell.cc libinterp/octave-value/ov-class.cc
+	libinterp/octave-value/ov-fcn-handle.cc libinterp/octave-value/ov-
+	fcn-inline.cc libinterp/octave-value/ov-java.cc libinterp/octave-
+	value/ov-null-mat.cc libinterp/octave-value/ov-oncleanup.cc
+	libinterp/octave-value/ov-range.cc libinterp/octave-value/ov-
+	struct.cc libinterp/octave-value/ov-typeinfo.cc libinterp/octave-
+	value/ov-usr-fcn.cc libinterp/octave-value/ov.cc libinterp/parse-
+	tree/lex.ll libinterp/parse-tree/oct-parse.in.yy libinterp/parse-
+	tree/pt-binop.cc libinterp/parse-tree/pt-eval.cc libinterp/parse-
+	tree/pt-mat.cc
+
+	doc: Update more docstrings to have one sentence summary as first line.
+	Reviewed specfun, special-matrix, testfun, and time script directories.
+
+	* scripts/specfun/expint.m, scripts/specfun/isprime.m,
+	scripts/specfun/legendre.m, scripts/specfun/primes.m,
+	scripts/specfun/reallog.m, scripts/specfun/realsqrt.m,
+	scripts/special-matrix/gallery.m, scripts/special-matrix/hadamard.m,
+	scripts/special-matrix/hankel.m, scripts/special-matrix/hilb.m,
+	scripts/special-matrix/invhilb.m, scripts/special-matrix/magic.m,
+	scripts/special-matrix/pascal.m, scripts/special-matrix/rosser.m,
+	scripts/special-matrix/toeplitz.m, scripts/special-matrix/vander.m,
+	scripts/special-matrix/wilkinson.m, scripts/testfun/assert.m,
+	scripts/testfun/demo.m, scripts/testfun/example.m, scripts/testfun/fail.m,
+	scripts/testfun/rundemos.m, scripts/testfun/runtests.m,
+	scripts/testfun/speed.m, scripts/time/asctime.m, scripts/time/calendar.m,
+	scripts/time/clock.m, scripts/time/ctime.m, scripts/time/datenum.m,
+	scripts/time/datestr.m, scripts/time/datevec.m, scripts/time/etime.m,
+	scripts/time/is_leap_year.m, scripts/time/now.m, scripts/time/weekday.m:
+	Update more docstrings to have one sentence summary as first line.
+
+	Files: scripts/specfun/expint.m scripts/specfun/isprime.m
+	scripts/specfun/legendre.m scripts/specfun/primes.m
+	scripts/specfun/reallog.m scripts/specfun/realsqrt.m scripts
+	/special-matrix/gallery.m scripts/special-matrix/hadamard.m scripts
+	/special-matrix/hankel.m scripts/special-matrix/hilb.m scripts
+	/special-matrix/invhilb.m scripts/special-matrix/magic.m scripts
+	/special-matrix/pascal.m scripts/special-matrix/rosser.m scripts
+	/special-matrix/toeplitz.m scripts/special-matrix/vander.m scripts
+	/special-matrix/wilkinson.m scripts/testfun/assert.m
+	scripts/testfun/demo.m scripts/testfun/example.m
+	scripts/testfun/fail.m scripts/testfun/rundemos.m
+	scripts/testfun/runtests.m scripts/testfun/speed.m
+	scripts/time/asctime.m scripts/time/calendar.m scripts/time/clock.m
+	scripts/time/ctime.m scripts/time/datenum.m scripts/time/datestr.m
+	scripts/time/datevec.m scripts/time/etime.m
+	scripts/time/is_leap_year.m scripts/time/now.m
+	scripts/time/weekday.m
+
+	doc: Update more docstrings to have one sentence summary as first line.
+	Reviewed io, java, linear-algebra, prefs, and set script directories.
+
+	* scripts/io/beep.m, scripts/io/dlmwrite.m, scripts/io/importdata.m,
+	scripts/io/strread.m, scripts/io/textread.m, scripts/java/javaArray.m,
+	scripts/java/java_get.m, scripts/java/java_set.m, scripts/java/javaaddpath.m,
+	scripts/java/javachk.m, scripts/java/javaclasspath.m, scripts/java/javamem.m,
+	scripts/java/javarmpath.m, scripts/linear-algebra/bandwidth.m,
+	scripts/linear-algebra/commutation_matrix.m, scripts/linear-algebra/cond.m,
+	scripts/linear-algebra/condest.m, scripts/linear-algebra/cross.m,
+	scripts/linear-algebra/duplication_matrix.m, scripts/linear-algebra/expm.m,
+	scripts/linear-algebra/housh.m, scripts/linear-algebra/isdefinite.m,
+	scripts/linear-algebra/ishermitian.m, scripts/linear-algebra/issymmetric.m,
+	scripts/linear-algebra/istril.m, scripts/linear-algebra/istriu.m,
+	scripts/linear-algebra/krylov.m, scripts/linear-algebra/logm.m,
+	scripts/linear-algebra/normest.m, scripts/linear-algebra/null.m,
+	scripts/linear-algebra/onenormest.m, scripts/linear-algebra/orth.m,
+	scripts/linear-algebra/qzhess.m, scripts/linear-algebra/rank.m,
+	scripts/linear-algebra/rref.m, scripts/linear-algebra/vech.m,
+	scripts/path/matlabroot.m, scripts/prefs/addpref.m, scripts/prefs/getpref.m,
+	scripts/prefs/ispref.m, scripts/prefs/rmpref.m, scripts/prefs/setpref.m,
+	scripts/set/powerset.m, scripts/set/setdiff.m:
+	Update more docstrings to have one sentence summary as first line.
+
+	Files: scripts/io/beep.m scripts/io/dlmwrite.m scripts/io/importdata.m
+	scripts/io/strread.m scripts/io/textread.m scripts/java/javaArray.m
+	scripts/java/java_get.m scripts/java/java_set.m
+	scripts/java/javaaddpath.m scripts/java/javachk.m
+	scripts/java/javaclasspath.m scripts/java/javamem.m
+	scripts/java/javarmpath.m scripts/linear-algebra/bandwidth.m scripts
+	/linear-algebra/commutation_matrix.m scripts/linear-algebra/cond.m
+	scripts/linear-algebra/condest.m scripts/linear-algebra/cross.m
+	scripts/linear-algebra/duplication_matrix.m scripts/linear-
+	algebra/expm.m scripts/linear-algebra/housh.m scripts/linear-
+	algebra/isdefinite.m scripts/linear-algebra/ishermitian.m scripts
+	/linear-algebra/issymmetric.m scripts/linear-algebra/istril.m
+	scripts/linear-algebra/istriu.m scripts/linear-algebra/krylov.m
+	scripts/linear-algebra/logm.m scripts/linear-algebra/normest.m
+	scripts/linear-algebra/null.m scripts/linear-algebra/onenormest.m
+	scripts/linear-algebra/orth.m scripts/linear-algebra/qzhess.m
+	scripts/linear-algebra/rank.m scripts/linear-algebra/rref.m scripts
+	/linear-algebra/vech.m scripts/path/matlabroot.m
+	scripts/prefs/addpref.m scripts/prefs/getpref.m
+	scripts/prefs/ispref.m scripts/prefs/rmpref.m
+	scripts/prefs/setpref.m scripts/set/powerset.m scripts/set/setdiff.m
+
+	gmap40.m: Deprecate function.
+	Function is specifically for gnuplot-4.0 support, but Octave already requires
+	version 4.2.5.
+	* scripts/deprecated/gmap40.m: Moved from image/ directory.  Add warning
+	when run.  Add deprecation notice to docstring.
+
+	* scripts/deprecated/module.mk: Add gmap40.m to build system.
+
+	* scripts/image/module.mk: Remove gmap40.m from image dir build system.
+
+	* scripts/image/gmap40.m: Moved to deprecated/ directory.
+
+	Files: scripts/deprecated/gmap40.m scripts/deprecated/module.mk
+	scripts/image/gmap40.m scripts/image/module.mk
+
+	doc: Update docstrings to have one sentence summary as first line.
+	Update scripts in audio, elfun, general, geometry, and image directories.
+
+	* scripts/audio/@audioplayer/__get_properties__.m,
+	scripts/audio/@audioplayer/audioplayer.m, scripts/audio/@audioplayer/get.m,
+	scripts/audio/@audioplayer/isplaying.m, scripts/audio/@audioplayer/play.m,
+	scripts/audio/@audioplayer/playblocking.m, scripts/audio/@audioplayer/set.m,
+	scripts/audio/@audioplayer/subsasgn.m, scripts/audio/@audioplayer/subsref.m,
+	scripts/audio/@audiorecorder/audiorecorder.m,
+	scripts/audio/@audiorecorder/get.m,
+	scripts/audio/@audiorecorder/getaudiodata.m,
+	scripts/audio/@audiorecorder/getplayer.m,
+	scripts/audio/@audiorecorder/isrecording.m,
+	scripts/audio/@audiorecorder/play.m, scripts/audio/@audiorecorder/record.m,
+	scripts/audio/@audiorecorder/recordblocking.m,
+	scripts/audio/@audiorecorder/set.m, scripts/audio/@audiorecorder/stop.m,
+	scripts/audio/@audiorecorder/subsasgn.m,
+	scripts/audio/@audiorecorder/subsref.m, scripts/audio/lin2mu.m,
+	scripts/audio/mu2lin.m, scripts/audio/record.m, scripts/audio/sound.m,
+	scripts/audio/soundsc.m, scripts/audio/wavread.m, scripts/audio/wavwrite.m,
+	scripts/elfun/cosd.m, scripts/elfun/sind.m, scripts/elfun/tand.m,
+	scripts/general/accumarray.m, scripts/general/accumdim.m,
+	scripts/general/bitcmp.m, scripts/general/bitget.m, scripts/general/bitset.m,
+	scripts/general/blkdiag.m, scripts/general/cart2pol.m,
+	scripts/general/cart2sph.m, scripts/general/cell2mat.m,
+	scripts/general/celldisp.m, scripts/general/chop.m,
+	scripts/general/circshift.m, scripts/general/common_size.m,
+	scripts/general/cplxpair.m, scripts/general/cumtrapz.m,
+	scripts/general/dblquad.m, scripts/general/deal.m, scripts/general/del2.m,
+	scripts/general/display.m, scripts/general/divergence.m,
+	scripts/general/fieldnames.m, scripts/general/flip.m,
+	scripts/general/flipdim.m, scripts/general/fliplr.m, scripts/general/flipud.m,
+	scripts/general/gradient.m, scripts/general/interp3.m,
+	scripts/general/interpft.m, scripts/general/interpn.m,
+	scripts/general/loadobj.m, scripts/general/logspace.m,
+	scripts/general/methods.m, scripts/general/nargchk.m,
+	scripts/general/narginchk.m, scripts/general/nargoutchk.m,
+	scripts/general/nextpow2.m, scripts/general/nthargout.m,
+	scripts/general/num2str.m, scripts/general/pol2cart.m,
+	scripts/general/polyarea.m, scripts/general/postpad.m,
+	scripts/general/prepad.m, scripts/general/profile.m, scripts/general/quadgk.m,
+	scripts/general/quadl.m, scripts/general/quadv.m, scripts/general/randi.m,
+	scripts/general/rat.m, scripts/general/repmat.m, scripts/general/rot90.m,
+	scripts/general/rotdim.m, scripts/general/saveobj.m, scripts/general/shift.m,
+	scripts/general/shiftdim.m, scripts/general/sortrows.m,
+	scripts/general/sph2cart.m, scripts/general/structfun.m,
+	scripts/general/subsindex.m, scripts/general/trapz.m,
+	scripts/general/triplequad.m, scripts/geometry/delaunayn.m,
+	scripts/geometry/dsearch.m, scripts/geometry/dsearchn.m,
+	scripts/geometry/griddata.m, scripts/geometry/griddata3.m,
+	scripts/geometry/griddatan.m, scripts/geometry/inpolygon.m,
+	scripts/geometry/rectint.m, scripts/geometry/tsearchn.m,
+	scripts/geometry/voronoi.m, scripts/geometry/voronoin.m,
+	scripts/help/__unimplemented__.m, scripts/help/doc.m,
+	scripts/help/doc_cache_create.m, scripts/help/get_first_help_sentence.m,
+	scripts/help/help.m, scripts/help/lookfor.m, scripts/help/print_usage.m,
+	scripts/help/type.m, scripts/help/which.m, scripts/image/autumn.m,
+	scripts/image/bone.m, scripts/image/brighten.m, scripts/image/cmpermute.m,
+	scripts/image/colorcube.m, scripts/image/contrast.m, scripts/image/cool.m,
+	scripts/image/copper.m, scripts/image/cubehelix.m, scripts/image/flag.m,
+	scripts/image/gmap40.m, scripts/image/gray.m, scripts/image/gray2ind.m,
+	scripts/image/hot.m, scripts/image/hsv.m, scripts/image/image.m,
+	scripts/image/imagesc.m, scripts/image/imfinfo.m, scripts/image/imformats.m,
+	scripts/image/imread.m, scripts/image/imshow.m, scripts/image/imwrite.m,
+	scripts/image/iscolormap.m, scripts/image/jet.m, scripts/image/lines.m,
+	scripts/image/ntsc2rgb.m, scripts/image/ocean.m, scripts/image/pink.m,
+	scripts/image/prism.m, scripts/image/rainbow.m, scripts/image/rgb2ntsc.m,
+	scripts/image/spinmap.m, scripts/image/spring.m, scripts/image/summer.m,
+	scripts/image/white.m, scripts/image/winter.m:
+	Update docstrings to have one sentence summary as first line.
+	Re-structure to have line lengths <= 80 chars.
+
+	Files: scripts/audio/@audioplayer/__get_properties__.m
+	scripts/audio/@audioplayer/audioplayer.m
+	scripts/audio/@audioplayer/get.m
+	scripts/audio/@audioplayer/isplaying.m
+	scripts/audio/@audioplayer/play.m
+	scripts/audio/@audioplayer/playblocking.m
+	scripts/audio/@audioplayer/set.m
+	scripts/audio/@audioplayer/subsasgn.m
+	scripts/audio/@audioplayer/subsref.m
+	scripts/audio/@audiorecorder/audiorecorder.m
+	scripts/audio/@audiorecorder/get.m
+	scripts/audio/@audiorecorder/getaudiodata.m
+	scripts/audio/@audiorecorder/getplayer.m
+	scripts/audio/@audiorecorder/isrecording.m
+	scripts/audio/@audiorecorder/play.m
+	scripts/audio/@audiorecorder/record.m
+	scripts/audio/@audiorecorder/recordblocking.m
+	scripts/audio/@audiorecorder/set.m
+	scripts/audio/@audiorecorder/stop.m
+	scripts/audio/@audiorecorder/subsasgn.m
+	scripts/audio/@audiorecorder/subsref.m scripts/audio/lin2mu.m
+	scripts/audio/mu2lin.m scripts/audio/record.m scripts/audio/sound.m
+	scripts/audio/soundsc.m scripts/audio/wavread.m
+	scripts/audio/wavwrite.m scripts/elfun/cosd.m scripts/elfun/sind.m
+	scripts/elfun/tand.m scripts/general/accumarray.m
+	scripts/general/accumdim.m scripts/general/bitcmp.m
+	scripts/general/bitget.m scripts/general/bitset.m
+	scripts/general/blkdiag.m scripts/general/cart2pol.m
+	scripts/general/cart2sph.m scripts/general/cell2mat.m
+	scripts/general/celldisp.m scripts/general/chop.m
+	scripts/general/circshift.m scripts/general/common_size.m
+	scripts/general/cplxpair.m scripts/general/cumtrapz.m
+	scripts/general/dblquad.m scripts/general/deal.m
+	scripts/general/del2.m scripts/general/display.m
+	scripts/general/divergence.m scripts/general/fieldnames.m
+	scripts/general/flip.m scripts/general/flipdim.m
+	scripts/general/fliplr.m scripts/general/flipud.m
+	scripts/general/gradient.m scripts/general/interp3.m
+	scripts/general/interpft.m scripts/general/interpn.m
+	scripts/general/loadobj.m scripts/general/logspace.m
+	scripts/general/methods.m scripts/general/nargchk.m
+	scripts/general/narginchk.m scripts/general/nargoutchk.m
+	scripts/general/nextpow2.m scripts/general/nthargout.m
+	scripts/general/num2str.m scripts/general/pol2cart.m
+	scripts/general/polyarea.m scripts/general/postpad.m
+	scripts/general/prepad.m scripts/general/profile.m
+	scripts/general/quadgk.m scripts/general/quadl.m
+	scripts/general/quadv.m scripts/general/randi.m
+	scripts/general/rat.m scripts/general/repmat.m
+	scripts/general/rot90.m scripts/general/rotdim.m
+	scripts/general/saveobj.m scripts/general/shift.m
+	scripts/general/shiftdim.m scripts/general/sortrows.m
+	scripts/general/sph2cart.m scripts/general/structfun.m
+	scripts/general/subsindex.m scripts/general/trapz.m
+	scripts/general/triplequad.m scripts/geometry/delaunayn.m
+	scripts/geometry/dsearch.m scripts/geometry/dsearchn.m
+	scripts/geometry/griddata.m scripts/geometry/griddata3.m
+	scripts/geometry/griddatan.m scripts/geometry/inpolygon.m
+	scripts/geometry/rectint.m scripts/geometry/tsearchn.m
+	scripts/geometry/voronoi.m scripts/geometry/voronoin.m
+	scripts/help/__unimplemented__.m scripts/help/doc.m
+	scripts/help/doc_cache_create.m
+	scripts/help/get_first_help_sentence.m scripts/help/help.m
+	scripts/help/lookfor.m scripts/help/print_usage.m
+	scripts/help/type.m scripts/help/which.m scripts/image/autumn.m
+	scripts/image/bone.m scripts/image/brighten.m
+	scripts/image/cmpermute.m scripts/image/colorcube.m
+	scripts/image/contrast.m scripts/image/cool.m scripts/image/copper.m
+	scripts/image/cubehelix.m scripts/image/flag.m
+	scripts/image/gmap40.m scripts/image/gray.m scripts/image/gray2ind.m
+	scripts/image/hot.m scripts/image/hsv.m scripts/image/image.m
+	scripts/image/imagesc.m scripts/image/imfinfo.m
+	scripts/image/imformats.m scripts/image/imread.m
+	scripts/image/imshow.m scripts/image/imwrite.m
+	scripts/image/iscolormap.m scripts/image/jet.m scripts/image/lines.m
+	scripts/image/ntsc2rgb.m scripts/image/ocean.m scripts/image/pink.m
+	scripts/image/prism.m scripts/image/rainbow.m
+	scripts/image/rgb2ntsc.m scripts/image/spinmap.m
+	scripts/image/spring.m scripts/image/summer.m scripts/image/white.m
+	scripts/image/winter.m
+
+2015-05-01  Rik  <rik@octave.org>
+
+	Check for a modern version of sndfile in configure scripts (bug #44976).
+
+	* configure.ac: Call OCTAVE_CHECK_LIB_SNDFILE_OK after first determining that
+	sndfile library exists.
+
+	* m4/acinclude.m4 (OCTAVE_CHECK_LIB_SNDFILE_OK): New macro to check for a modern
+	version of lib sndfile with Ogg support.
+
+	Files: configure.ac m4/acinclude.m4
+
+	Don't run Java BIST tests if HAVA_JAVA is false.
+
+	* ov-java.cc: use 'testif HAVE_JAVA' around BIST tests.
+
+	Files: libinterp/octave-value/ov-java.cc
+
+2015-05-01  Orion Poplawski  <orion@cora.nwra.com>
+
+	Allow Qt GUI to compile on ARM CPU architectures (bug #44970).
+
+	* QtHandlesUtils.cc (toRGB): Instantiate a temporary array of qreal which is
+	used for the return results of getRgbF().  Copy data from qreal into octave Matrix
+	of base type double.
+
+	Files: libgui/graphics/QtHandlesUtils.cc
+
+2015-05-01  Rik  <rik@octave.org>
+
+	Fix loading of ASCII files with NA values in final column (bug #44967).
+
+	* lo-utils.cc (read_inf_nan_na): Check that last character read was not an EOF
+	indicator (-1) before attempting to put it back on the stream.
+
+	Files: liboctave/util/lo-utils.cc
+
+2015-05-01  Torsten  <ttl@justmail.de>
+
+	fix checking copy shortcut in terminal when no setting available (bug #44968)
+
+	* QTerminal.cc (notice_settings): check for empty copy shortcut from settings
+	  file and take the default in this case
+
+	Files: libgui/qterminal/libqterminal/QTerminal.cc
+
+2015-04-29  Rik  <rik@octave.org>
+
+	close.m: Silently accept null argument for Matlab compatibility.
+
+	* close.m: Check isempty (arg1) and don't complain if arg1 is null.
+
+	Files: scripts/plot/util/close.m
+
+2015-04-29  John W. Eaton  <jwe@octave.org>
+
+	maint: Merge away extra head.
+
+	Files: 
+
 2015-04-28  John W. Eaton  <jwe@octave.org>
 
 	Added tag rc-4-0-0-4 for changeset 42bb3a776c9f
@@ -7,6 +1235,24 @@
 	maint: Bump version number for 4.0.0-rc4.
 
 	Files: configure.ac
+
+2015-04-28  Rik  <rik@octave.org>
+
+	Don't save "warning: " prefix in lastwarn() message.
+
+	* error.cc (vwarning): Save base_msg (without "warning: ") to Vlast_warning_message.
+	* error.cc (error_1): Use std::string operators rather than strsave to strip
+	"\n" from fmt string.  Simpler syntax avoids having to delete [] memory created
+	with new.
+	* error.cc (warning_1): Strip trailing newline from fmt string as error_1 does.
+
+	* fail.m: Fix input validation which allowed nonsensical second input with 3
+	args.  Don't post-process warning or error messages from lastwarn or lasterr.
+	Add BIST test for input validation.
+
+	Files: libinterp/corefcn/error.cc scripts/testfun/fail.m
+
+2015-04-28  John W. Eaton  <jwe@octave.org>
 
 	maint: Merge default to stable in preparation for 4.0.0 release.
 
@@ -4629,15 +5875,6 @@
 
 	Files: 
 
-2013-02-13  Rik  <rik@octave.org>
-
-	Fix building when --disable-docs argument given.
-
-	* scripts/Makefile.am: use AMCOND_BUILD_DOCS to decide
-	whether to build .DOCSTRINGS
-
-	Files: scripts/Makefile.am
-
 2013-02-11  John W. Eaton  <jwe@octave.org>
 
 	Added tag rc-3-6-4-2 for changeset cc5a7d1233f3
@@ -4655,6 +5892,15 @@
 	* sqp.m: Relax tolerance in test.
 
 	Files: scripts/optimization/sqp.m
+
+2013-02-13  Rik  <rik@octave.org>
+
+	Fix building when --disable-docs argument given.
+
+	* scripts/Makefile.am: use AMCOND_BUILD_DOCS to decide
+	whether to build .DOCSTRINGS
+
+	Files: scripts/Makefile.am
 
 2013-02-11  Stefan Mahr  <dac922@gmx.de>
 

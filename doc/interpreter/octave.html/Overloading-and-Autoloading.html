@@ -68,12 +68,12 @@ type.  The <code>builtin</code> function exists for this purpose.
 </p>
 <a name="XREFbuiltin"></a><dl>
 <dt><a name="index-builtin"></a>Built-in Function: <em>[&hellip;] =</em> <strong>builtin</strong> <em>(<var>f</var>, &hellip;)</em></dt>
-<dd><p>Call the base function <var>f</var> even if <var>f</var> is overloaded to
-another function for the given type signature.
+<dd><p>Call the base function <var>f</var> even if <var>f</var> is overloaded to another
+function for the given type signature.
 </p>
-<p>This is normally useful when doing object-oriented programming and there
-is a requirement to call one of Octave&rsquo;s base functions rather than
-the overloaded one of a new class.
+<p>This is normally useful when doing object-oriented programming and there is
+a requirement to call one of Octave&rsquo;s base functions rather than the
+overloaded one of a new class.
 </p>
 <p>A trivial example which redefines the <code>sin</code> function to be the
 <code>cos</code> function shows how <code>builtin</code> works.
@@ -110,15 +110,15 @@ file a certain function will be found.
 <dt><a name="index-autoload-2"></a>Built-in Function: <em></em> <strong>autoload</strong> <em>(&hellip;, &quot;remove&quot;)</em></dt>
 <dd><p>Define <var>function</var> to autoload from <var>file</var>.
 </p>
-<p>The second argument, <var>file</var>, should be an absolute file name or
-a file name in the same directory as the function or script from which
-the autoload command was run.  <var>file</var> <em>should not</em> depend on the
-Octave load path.
+<p>The second argument, <var>file</var>, should be an absolute file name or a file
+name in the same directory as the function or script from which the autoload
+command was run.  <var>file</var> <em>should not</em> depend on the Octave load
+path.
 </p>
-<p>Normally, calls to <code>autoload</code> appear in PKG_ADD script files that
-are evaluated when a directory is added to Octave&rsquo;s load path.  To
-avoid having to hardcode directory names in <var>file</var>, if <var>file</var>
-is in the same directory as the PKG_ADD script then
+<p>Normally, calls to <code>autoload</code> appear in PKG_ADD script files that are
+evaluated when a directory is added to Octave&rsquo;s load path.  To avoid having
+to hardcode directory names in <var>file</var>, if <var>file</var> is in the same
+directory as the PKG_ADD script then
 </p>
 <div class="example">
 <pre class="example">autoload (&quot;foo&quot;, &quot;bar.oct&quot;);

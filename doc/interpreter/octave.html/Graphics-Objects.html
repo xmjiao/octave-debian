@@ -141,8 +141,8 @@ Instead of calling <code>line</code>, use <code>plot</code>.  Or use <code>surf<
 <dt><a name="index-axes-1"></a>Function File: <em></em> <strong>axes</strong> <em>(<var>property</var>, <var>value</var>, &hellip;)</em></dt>
 <dt><a name="index-axes-2"></a>Function File: <em></em> <strong>axes</strong> <em>(<var>hax</var>)</em></dt>
 <dt><a name="index-axes-3"></a>Function File: <em><var>h</var> =</em> <strong>axes</strong> <em>(&hellip;)</em></dt>
-<dd><p>Create an axes object and return a handle to it, or set the current
-axes to <var>hax</var>.
+<dd><p>Create an axes object and return a handle to it, or set the current axes
+to <var>hax</var>.
 </p>
 <p>Called without any arguments, or with <var>property</var>/<var>value</var> pairs,
 construct a new axes.  For accepted properties and corresponding
@@ -286,9 +286,9 @@ to an axes or figure, use the functions <code>ishandle</code>, <code>isaxes</cod
 <dt><a name="index-ishandle"></a>Built-in Function: <em></em> <strong>ishandle</strong> <em>(<var>h</var>)</em></dt>
 <dd><p>Return true if <var>h</var> is a graphics handle and false otherwise.
 </p>
-<p><var>h</var> may also be a matrix of handles in which case a logical
-array is returned that is true where the elements of <var>h</var> are
-graphics handles and false where they are not.
+<p><var>h</var> may also be a matrix of handles in which case a logical array is
+returned that is true where the elements of <var>h</var> are graphics handles and
+false where they are not.
 </p>
 <p><strong>See also:</strong> <a href="#XREFisaxes">isaxes</a>, <a href="#XREFisfigure">isfigure</a>.
 </p></dd></dl>
@@ -309,9 +309,8 @@ compatibility with <small>MATLAB</small>.
 <dt><a name="index-isaxes"></a>Function File: <em></em> <strong>isaxes</strong> <em>(<var>h</var>)</em></dt>
 <dd><p>Return true if <var>h</var> is an axes graphics handle and false otherwise.
 </p>
-<p>If <var>h</var> is a matrix then return a logical array which is true where
-the elements of <var>h</var> are axes graphics handles and false where
-they are not.
+<p>If <var>h</var> is a matrix then return a logical array which is true where the
+elements of <var>h</var> are axes graphics handles and false where they are not.
 </p>
 <p><strong>See also:</strong> <a href="#XREFisaxes">isaxes</a>, <a href="#XREFishandle">ishandle</a>.
 </p></dd></dl>
@@ -321,9 +320,8 @@ they are not.
 <dt><a name="index-isfigure"></a>Function File: <em></em> <strong>isfigure</strong> <em>(<var>h</var>)</em></dt>
 <dd><p>Return true if <var>h</var> is a figure graphics handle and false otherwise.
 </p>
-<p>If <var>h</var> is a matrix then return a logical array which is true where
-the elements of <var>h</var> are figure graphics handles and false where
-they are not.
+<p>If <var>h</var> is a matrix then return a logical array which is true where the
+elements of <var>h</var> are figure graphics handles and false where they are not.
 </p>
 <p><strong>See also:</strong> <a href="#XREFisaxes">isaxes</a>, <a href="#XREFishandle">ishandle</a>.
 </p></dd></dl>
@@ -483,9 +481,12 @@ name) then only the defaults for the requested property are returned.
 <dt><a name="index-get"></a>Built-in Function: <em><var>val</var> =</em> <strong>get</strong> <em>(<var>h</var>)</em></dt>
 <dt><a name="index-get-1"></a>Built-in Function: <em><var>val</var> =</em> <strong>get</strong> <em>(<var>h</var>, <var>p</var>)</em></dt>
 <dd><p>Return the value of the named property <var>p</var> from the graphics handle
-<var>h</var>.  If <var>p</var> is omitted, return the complete property list for
-<var>h</var>.  If <var>h</var> is a vector, return a cell array including the property
-values or lists respectively.
+<var>h</var>.
+</p>
+<p>If <var>p</var> is omitted, return the complete property list for <var>h</var>.
+</p>
+<p>If <var>h</var> is a vector, return a cell array including the property values or
+lists respectively.
 </p>
 <p><strong>See also:</strong> <a href="#XREFset">set</a>.
 </p></dd></dl>
@@ -499,7 +500,8 @@ values or lists respectively.
 <dt><a name="index-set-4"></a>Built-in Function: <em><var>all_value_list</var> =</em> <strong>set</strong> <em>(<var>h</var>)</em></dt>
 <dd><p>Set named property values for the graphics handle (or vector of graphics
 handles) <var>h</var>.
-There are three ways to give the property names and values:
+</p>
+<p>There are three ways to give the property names and values:
 </p>
 <ul>
 <li> as a comma separated list of <var>property</var>, <var>value</var> pairs
@@ -557,9 +559,10 @@ being <code>&quot;portrait&quot;</code>.
 <dt><a name="index-ancestor"></a>Function File: <em><var>parent</var> =</em> <strong>ancestor</strong> <em>(<var>h</var>, <var>type</var>)</em></dt>
 <dt><a name="index-ancestor-1"></a>Function File: <em><var>parent</var> =</em> <strong>ancestor</strong> <em>(<var>h</var>, <var>type</var>, &quot;toplevel&quot;)</em></dt>
 <dd><p>Return the first ancestor of handle object <var>h</var> whose type matches
-<var>type</var>, where <var>type</var> is a character string.  If <var>type</var> is a
-cell array of strings, return the first parent whose type matches
-any of the given type strings.
+<var>type</var>, where <var>type</var> is a character string.
+</p>
+<p>If <var>type</var> is a cell array of strings, return the first parent whose
+type matches any of the given type strings.
 </p>
 <p>If the handle object <var>h</var> itself is of type <var>type</var>, return <var>h</var>.
 </p>
@@ -576,10 +579,11 @@ of the first (nearest) one.
 <dd><p>Find all children, including hidden children, of a graphics object.
 </p>
 <p>This function is similar to <code>get (h, &quot;children&quot;)</code>, but also returns
-hidden objects (HandleVisibility = <code>&quot;off&quot;</code>).  If <var>handles</var> is a
-scalar, <var>h</var> will be a vector.  Otherwise, <var>h</var> will be a cell
-matrix of the same size as <var>handles</var> and each cell will contain a
-vector of handles.
+hidden objects (HandleVisibility = <code>&quot;off&quot;</code>).
+</p>
+<p>If <var>handles</var> is a scalar, <var>h</var> will be a vector.  Otherwise,
+<var>h</var> will be a cell matrix of the same size as <var>handles</var> and each
+cell will contain a vector of handles.
 </p>
 <p><strong>See also:</strong> <a href="Searching-Properties.html#XREFfindall">findall</a>, <a href="Searching-Properties.html#XREFfindobj">findobj</a>, <a href="#XREFget">get</a>, <a href="#XREFset">set</a>.
 </p></dd></dl>
@@ -631,14 +635,15 @@ of the object, and its children, associated with the handle, <var>h</var>.
 <dd><p>Construct a graphics handle object <var>h</var> from the structure <var>s</var>.
 </p>
 <p>The structure must contain the fields <code>&quot;handle&quot;</code>, <code>&quot;type&quot;</code>,
-<code>&quot;children&quot;</code>, <code>&quot;properties&quot;</code>, and <code>&quot;special&quot;</code>.  If the
-handle of an existing figure or axes is specified, <var>p</var>, the new object
-will be created as a child of that object.  If no parent handle is provided
-then a new figure and the necessary children will be constructed using the
-default values from the root figure.
+<code>&quot;children&quot;</code>, <code>&quot;properties&quot;</code>, and <code>&quot;special&quot;</code>.
 </p>
-<p>A third boolean argument <var>hilev</var> can be passed to specify whether
-the function should preserve listeners/callbacks, e.g., for legends or
+<p>If the handle of an existing figure or axes is specified, <var>p</var>, the new
+object will be created as a child of that object.  If no parent handle is
+provided then a new figure and the necessary children will be constructed
+using the default values from the root figure.
+</p>
+<p>A third boolean argument <var>hilev</var> can be passed to specify whether the
+function should preserve listeners/callbacks, e.g., for legends or
 hggroups.  The default is false.
 </p>
 <p><strong>See also:</strong> <a href="#XREFhdl2struct">hdl2struct</a>, <a href="Printing-and-Saving-Plots.html#XREFhgload">hgload</a>, <a href="Searching-Properties.html#XREFfindobj">findobj</a>.

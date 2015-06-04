@@ -115,11 +115,19 @@ be plotted manually with <code>plot (<var>x</var>, <var>y</var>)</code>.
 fplot (&quot;[cos(x), sin(x)]&quot;, [0, 2*pi])
 </pre></div>
 
-<p>Note: <code>fplot</code> works best with continuous functions.  Functions with
+<p>Programming Notes:
+</p>
+<p><code>fplot</code> works best with continuous functions.  Functions with
 discontinuities are unlikely to plot well.  This restriction may be removed
 in the future.
 </p>
-<p><strong>See also:</strong> <a href="#XREFezplot">ezplot</a>, <a href="Two_002dDimensional-Plots.html#XREFplot">plot</a>.
+<p><code>fplot</code> requires that the function accept and return a vector argument.
+Consider this when writing user-defined functions and use <code>.*</code>,
+<code>./</code>, etc.  See the function <code>vectorize</code> for potentially
+converting inline or anonymous functions to vectorized versions.
+</p> 
+
+<p><strong>See also:</strong> <a href="#XREFezplot">ezplot</a>, <a href="Two_002dDimensional-Plots.html#XREFplot">plot</a>, <a href="Basic-Vectorization.html#XREFvectorize">vectorize</a>.
 </p></dd></dl>
 
 

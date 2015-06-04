@@ -59,11 +59,13 @@ the functions @code{debug_on_interrupt}, @code{debug_on_warning}, and
 @deftypefnx {Built-in Function} {} debug_on_interrupt (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will try
 to enter debugging mode when it receives an interrupt signal (typically
-generated with @kbd{C-c}).  If a second interrupt signal is received
-before reaching the debugging mode, a normal interrupt will occur.
+generated with @kbd{C-c}).
+
+If a second interrupt signal is received before reaching the debugging mode,
+a normal interrupt will occur.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFdebug_on_error,,debug_on_error}, @ref{XREFdebug_on_warning,,debug_on_warning}}
 @end deftypefn
@@ -78,7 +80,7 @@ Query or set the internal variable that controls whether Octave will try
 to enter the debugger when a warning is encountered.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFdebug_on_error,,debug_on_error}, @ref{XREFdebug_on_interrupt,,debug_on_interrupt}}
 @end deftypefn
@@ -90,12 +92,13 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {@var{old_val} =} debug_on_error (@var{new_val})
 @deftypefnx {Built-in Function} {} debug_on_error (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will try
-to enter the debugger when an error is encountered.  This will also
-inhibit printing of the normal traceback message (you will only see
-the top-level error message).
+to enter the debugger when an error is encountered.
+
+This will also inhibit printing of the normal traceback message (you will
+only see the top-level error message).
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFdebug_on_warning,,debug_on_warning}, @ref{XREFdebug_on_interrupt,,debug_on_interrupt}}
 @end deftypefn
@@ -121,8 +124,8 @@ any additional code use @code{dbquit}.
 @c dbquit libinterp/corefcn/debug.cc
 @anchor{XREFdbquit}
 @deftypefn {Command} {} dbquit
-Quit debugging mode immediately without further code execution and
-return to the Octave prompt.
+Quit debugging mode immediately without further code execution and return to
+the Octave prompt.
 @seealso{@ref{XREFdbcont,,dbcont}, @ref{XREFdbstep,,dbstep}}
 @end deftypefn
 
@@ -202,9 +205,10 @@ be queried with @code{dbstatus}.
 @deftypefnx {Built-in Function} {@var{brk_list} =} dbstatus ("@var{func}")
 Report the location of active breakpoints.
 
-When called with no input or output arguments, print the list of
-all functions with breakpoints and the line numbers where those
-breakpoints are set.
+When called with no input or output arguments, print the list of all
+functions with breakpoints and the line numbers where those breakpoints are
+set.
+
 If a function name @var{func} is specified then only report breakpoints
 for the named function.
 
@@ -314,9 +318,10 @@ use of the @code{keyboard} function.
 @anchor{XREFkeyboard}
 @deftypefn  {Built-in Function} {} keyboard ()
 @deftypefnx {Built-in Function} {} keyboard ("@var{prompt}")
-This function is normally used for simple debugging.  When the
-@code{keyboard} function is executed, Octave prints a prompt and waits
-for user input.  The input strings are then evaluated and the results
+Stop m-file execution and enter debug mode.
+
+When the @code{keyboard} function is executed, Octave prints a prompt and
+waits for user input.  The input strings are then evaluated and the results
 are printed.  This makes it possible to examine the values of variables
 within a function, and to assign new values if necessary.  To leave the
 prompt and return to normal execution type @samp{return} or @samp{dbcont}.
@@ -344,8 +349,8 @@ Octave entered debug mode.
 @c dbwhere libinterp/corefcn/debug.cc
 @anchor{XREFdbwhere}
 @deftypefn {Command} {} dbwhere
-In debugging mode, report the current file and line number where
-execution is stopped.
+In debugging mode, report the current file and line number where execution
+is stopped.
 @seealso{@ref{XREFdbstatus,,dbstatus}, @ref{XREFdbcont,,dbcont}, @ref{XREFdbstep,,dbstep}, @ref{XREFdbup,,dbup}}
 @end deftypefn
 
@@ -363,9 +368,11 @@ execution is stopped.
 Display a script file with line numbers.
 
 When called with no arguments in debugging mode, display the script file
-currently being debugged.  An optional range specification can be used to
-list only a portion of the file.  The special keyword @qcode{"end"} is a
-valid line number specification for the last line of the file.
+currently being debugged.
+
+An optional range specification can be used to list only a portion of the
+file.  The special keyword @qcode{"end"} is a valid line number
+specification for the last line of the file.
 
 When called with the name of a function, list that script file with line
 numbers.
@@ -378,8 +385,9 @@ numbers.
 @deftypefn  {Command} {} dblist
 @deftypefnx {Command} {} dblist @var{n}
 In debugging mode, list @var{n} lines of the function being debugged
-centered around the current line to be executed.  If unspecified @var{n}
-defaults to 10 (+/- 5 lines)
+centered around the current line to be executed.
+
+If unspecified @var{n} defaults to 10 (+/- 5 lines)
 @seealso{@ref{XREFdbwhere,,dbwhere}, @ref{XREFdbtype,,dbtype}}
 @end deftypefn
 
@@ -406,13 +414,16 @@ the command @code{dbstep}.
 @deftypefnx {Command} {} dbstep out
 @deftypefnx {Command} {} dbnext @dots{}
 In debugging mode, execute the next @var{n} lines of code.
-If @var{n} is omitted, execute the next single line of code.
-If the next line of code is itself defined in terms of an m-file remain in
-the existing function.
+
+If @var{n} is omitted, execute the next single line of code.  If the next
+line of code is itself defined in terms of an m-file remain in the existing
+function.
 
 Using @code{dbstep in} will cause execution of the next line to step into
-any m-files defined on the next line.  Using @code{dbstep out} will cause
-execution to continue until the current function returns.
+any m-files defined on the next line.
+
+Using @code{dbstep out} will cause execution to continue until the current
+function returns.
 
 @code{dbnext} is an alias for @code{dbstep}.
 @seealso{@ref{XREFdbcont,,dbcont}, @ref{XREFdbquit,,dbquit}}
@@ -441,11 +452,14 @@ series of function calls and at what level debugging is currently taking place.
 @deftypefnx {Command} {} dbstack @var{-completenames}
 @deftypefnx {Built-in Function} {[@var{stack}, @var{idx}] =} dbstack (@dots{})
 Display or return current debugging function stack information.
+
 With optional argument @var{n}, omit the @var{n} innermost stack frames.
 
 Although accepted, the argument @var{-completenames} is silently ignored.
-Octave always returns absolute file names.  The arguments @var{n} and
-@var{-completenames} can be both specified in any order.
+Octave always returns absolute file names.
+
+The arguments @var{n} and @var{-completenames} can be both specified in any
+order.
 
 The optional return argument @var{stack} is a struct array with the
 following fields:
@@ -481,6 +495,7 @@ struct array is currently active.
 @deftypefn  {Command} {} dbup
 @deftypefnx {Command} {} dbup @var{n}
 In debugging mode, move up the execution stack @var{n} frames.
+
 If @var{n} is omitted, move up one frame.
 @seealso{@ref{XREFdbstack,,dbstack}, @ref{XREFdbdown,,dbdown}}
 @end deftypefn
@@ -491,6 +506,7 @@ If @var{n} is omitted, move up one frame.
 @deftypefn  {Command} {} dbdown
 @deftypefnx {Command} {} dbdown @var{n}
 In debugging mode, move down the execution stack @var{n} frames.
+
 If @var{n} is omitted, move down one frame.
 @seealso{@ref{XREFdbstack,,dbstack}, @ref{XREFdbup,,dbup}}
 @end deftypefn
@@ -527,34 +543,33 @@ Control the built-in profiler.
 
 @table @code
 @item profile on
-Start the profiler, clearing all previously collected data if there
-is any.
+Start the profiler, clearing all previously collected data if there is any.
 
 @item profile off
 Stop profiling.  The collected data can later be retrieved and examined
-with calls like @code{S = profile ("info")}.
+with @code{T = profile ("info")}.
 
 @item profile clear
 Clear all collected profiler data.
 
 @item profile resume
-Restart profiling without cleaning up the old data and instead
-all newly collected statistics are added to the already existing ones.
+Restart profiling without clearing the old data.  All newly collected
+statistics are added to the existing ones.
 
 @item @var{S} = profile ("status")
-Return a structure filled with certain information about the current status
-of the profiler.  At the moment, the only field is @code{ProfilerStatus}
-which is either @qcode{"on"} or @qcode{"off"}.
+Return a structure with information about the current status of the profiler.
+At the moment, the only field is @code{ProfilerStatus} which is either
+@qcode{"on"} or @qcode{"off"}.
 
 @item @var{T} = profile ("info")
-Return the collected profiling statistics in the structure @var{T}.
-The flat profile is returned in the field @code{FunctionTable} which is an
+Return the collected profiling statistics in the structure @var{T}.  The
+flat profile is returned in the field @code{FunctionTable} which is an
 array of structures, each entry corresponding to a function which was called
-and for which profiling statistics are present.  Furthermore, the field
-@code{Hierarchical} contains the hierarchical call-tree.  Each node
-has an index into the @code{FunctionTable} identifying the function it
-corresponds to as well as data fields for number of calls and time spent
-at this level in the call-tree.
+and for which profiling statistics are present.  In addition, the field
+@code{Hierarchical} contains the hierarchical call tree.  Each node has an
+index into the @code{FunctionTable} identifying the function it corresponds
+to as well as data fields for number of calls and time spent at this level
+in the call tree.
 @seealso{@ref{XREFprofshow,,profshow}, @ref{XREFprofexplore,,profexplore}}
 @end table
 @end deftypefn

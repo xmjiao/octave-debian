@@ -71,9 +71,10 @@ and @dfn{disable_permutation_matrix}.
 @deftypefnx {Built-in Function} {@var{old_val} =} disable_diagonal_matrix (@var{new_val})
 @deftypefnx {Built-in Function} {} disable_diagonal_matrix (@var{new_val}, "local")
 Query or set the internal variable that controls whether diagonal
-matrices are stored in a special space-efficient format.  The default
-value is true.  If this option is disabled Octave will store diagonal
-matrices as full matrices.
+matrices are stored in a special space-efficient format.
+
+The default value is true.  If this option is disabled Octave will store
+diagonal matrices as full matrices.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.
@@ -88,9 +89,10 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {@var{old_val} =} disable_permutation_matrix (@var{new_val})
 @deftypefnx {Built-in Function} {} disable_permutation_matrix (@var{new_val}, "local")
 Query or set the internal variable that controls whether permutation
-matrices are stored in a special space-efficient format.  The default
-value is true.  If this option is disabled Octave will store permutation
-matrices as full matrices.
+matrices are stored in a special space-efficient format.
+
+The default value is true.  If this option is disabled Octave will store
+permutation matrices as full matrices.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.

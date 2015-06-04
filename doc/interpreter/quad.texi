@@ -162,10 +162,11 @@ quadcc (f, 0, Inf)
 @deftypefnx {Built-in Function} {@var{q} =} quad (@var{f}, @var{a}, @var{b}, @var{tol}, @var{sing})
 @deftypefnx {Built-in Function} {[@var{q}, @var{ier}, @var{nfun}, @var{err}] =} quad (@dots{})
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b} using
-Fortran routines from @w{@sc{quadpack}}.  @var{f} is a function handle,
-inline function, or a string containing the name of the function to
-evaluate.  The function must have the form @code{y = f (x)} where @var{y} and
-@var{x} are scalars.
+Fortran routines from @w{@sc{quadpack}}.
+
+@var{f} is a function handle, inline function, or a string containing the
+name of the function to evaluate.  The function must have the form @code{y =
+f (x)} where @var{y} and @var{x} are scalars.
 
 @var{a} and @var{b} are the lower and upper limits of integration.  Either
 or both may be infinite.
@@ -181,14 +182,18 @@ approximately @math{1.5e^{-8}}.
 The optional argument @var{sing} is a vector of values at which the
 integrand is known to be singular.
 
-The result of the integration is returned in @var{q}.  @var{ier}
-contains an integer error code (0 indicates a successful integration).
-@var{nfun} indicates the number of function evaluations that were
-made, and @var{err} contains an estimate of the error in the
-solution.
+The result of the integration is returned in @var{q}.
 
-The function @code{quad_options} can set other optional
-parameters for @code{quad}.
+@var{ier} contains an integer error code (0 indicates a successful
+integration).
+
+@var{nfun} indicates the number of function evaluations that were
+made.
+
+@var{err} contains an estimate of the error in the solution.
+
+The function @code{quad_options} can set other optional parameters for
+@code{quad}.
 
 Note: because @code{quad} is written in Fortran it cannot be called
 recursively.  This prevents its use in integrating over more than one
@@ -203,10 +208,13 @@ variable by routines @code{dblquad} and @code{triplequad}.
 @deftypefnx {Built-in Function} {val =} quad_options (@var{opt})
 @deftypefnx {Built-in Function} {} quad_options (@var{opt}, @var{val})
 Query or set options for the function @code{quad}.
+
 When called with no arguments, the names of all available options and
 their current values are displayed.
-Given one argument, return the value of the corresponding option.
-When called with two arguments, @code{quad_options} set the option
+
+Given one argument, return the value of the option @var{opt}.
+
+When called with two arguments, @code{quad_options} sets the option
 @var{opt} to value @var{val}.
 
 Options include
@@ -242,17 +250,17 @@ tolerance is zero, the relative tolerance must be greater than or equal to
 
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
 using an adaptive Simpson's rule.
-@var{f} is a function handle, inline function, or string
-containing the name of the function to evaluate.
-@code{quadv} is a vectorized version of @code{quad} and the function
-defined by @var{f} must accept a scalar or vector as input and return a
-scalar, vector, or array as output.
+
+@var{f} is a function handle, inline function, or string containing the name
+of the function to evaluate.  @code{quadv} is a vectorized version of
+@code{quad} and the function defined by @var{f} must accept a scalar or
+vector as input and return a scalar, vector, or array as output.
 
 @var{a} and @var{b} are the lower and upper limits of integration.  Both
 limits must be finite.
 
-The optional argument @var{tol} defines the tolerance used to stop
-the adaptation procedure.  The default value is @math{1e^{-6}}.
+The optional argument @var{tol} defines the tolerance used to stop the
+adaptation procedure.  The default value is 1e-6.
 
 The algorithm used by @code{quadv} involves recursively subdividing the
 integration interval and applying Simpson's rule on each subinterval.
@@ -265,12 +273,13 @@ Additional arguments @var{p1}, etc., are passed directly to the function
 @var{f}.  To use default values for @var{tol} and @var{trace}, one may pass
 empty matrices ([]).
 
-The result of the integration is returned in @var{q}.  @var{nfun} indicates
-the number of function evaluations that were made.
+The result of the integration is returned in @var{q}
+
+@var{nfun} indicates the number of function evaluations that were made.
 
 Note: @code{quadv} is written in Octave's scripting language and can be
 used recursively in @code{dblquad} and @code{triplequad}, unlike the
-similar @code{quad} function.
+@code{quad} function.
 @seealso{@ref{XREFquad,,quad}, @ref{XREFquadl,,quadl}, @ref{XREFquadgk,,quadgk}, @ref{XREFquadcc,,quadcc}, @ref{XREFtrapz,,trapz}, @ref{XREFdblquad,,dblquad}, @ref{XREFtriplequad,,triplequad}}
 @end deftypefn
 
@@ -282,12 +291,12 @@ similar @code{quad} function.
 @deftypefnx {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace})
 @deftypefnx {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace}, @var{p1}, @var{p2}, @dots{})
 
-Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
-using an adaptive Lobatto rule.
-@var{f} is a function handle, inline function, or string
-containing the name of the function to evaluate.
-The function @var{f} must be vectorized and return a vector of output values
-if given a vector of input values.
+Numerically evaluate the integral of @var{f} from @var{a} to @var{b} using
+an adaptive Lobatto rule.
+
+@var{f} is a function handle, inline function, or string containing the name
+of the function to evaluate.  The function @var{f} must be vectorized and
+return a vector of output values when given a vector of input values.
 
 @var{a} and @var{b} are the lower and upper limits of integration.  Both
 limits must be finite.
@@ -296,10 +305,9 @@ The optional argument @var{tol} defines the relative tolerance with which
 to perform the integration.  The default value is @code{eps}.
 
 The algorithm used by @code{quadl} involves recursively subdividing the
-integration interval.
-If @var{trace} is defined then for each subinterval display: (1) the left
-end of the subinterval, (2) the length of the subinterval, (3) the
-approximation of the integral over the subinterval.
+integration interval.  If @var{trace} is defined then for each subinterval
+display: (1) the left end of the subinterval, (2) the length of the
+subinterval, (3) the approximation of the integral over the subinterval.
 
 Additional arguments @var{p1}, etc., are passed directly to the function
 @var{f}.  To use default values for @var{tol} and @var{trace}, one may pass
@@ -322,40 +330,33 @@ Revisited}, BIT Vol. 40, No. 1, March 2000, pp. 84--101.
 
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
 using adaptive Gauss-Konrod quadrature.
-@var{f} is a function handle, inline function, or string
-containing the name of the function to evaluate.
-The formulation is based on a proposal by @nospell{L.F. Shampine},
-@cite{"Vectorized adaptive quadrature in @sc{matlab}", Journal of
-Computational and Applied Mathematics, pp131-140, Vol 211, Issue 2,
-Feb 2008} where all function evaluations at an iteration are
-calculated with a single call to @var{f}.  Therefore, the function
-@var{f} must be vectorized and must accept a vector of input values @var{x}
-and return an output vector representing the function evaluations at the
-given values of @var{x}.
+
+@var{f} is a function handle, inline function, or string containing the name
+of the function to evaluate.  The function @var{f} must be vectorized and
+return a vector of output values when given a vector of input values.
 
 @var{a} and @var{b} are the lower and upper limits of integration.  Either
-or both limits may be infinite or contain weak end singularities.
-Variable transformation will be used to treat any infinite intervals and
-weaken the singularities.  For example:
+or both limits may be infinite or contain weak end singularities.  Variable
+transformation will be used to treat any infinite intervals and weaken the
+singularities.  For example:
 
 @example
 quadgk (@@(x) 1 ./ (sqrt (x) .* (x + 1)), 0, Inf)
 @end example
 
 @noindent
-Note that the formulation of the integrand uses the
-element-by-element operator @code{./} and all user functions to
-@code{quadgk} should do the same.
+Note that the formulation of the integrand uses the element-by-element
+operator @code{./} and all user functions to @code{quadgk} should do the
+same.
 
 The optional argument @var{tol} defines the absolute tolerance used to stop
-the integration procedure.  The default value is @math{1e^{-10}}.
+the integration procedure.  The default value is 1e-10.
 
-The algorithm used by @code{quadgk} involves subdividing the
-integration interval and evaluating each subinterval.
-If @var{trace} is true then after computing each of these partial
-integrals display: (1) the number of subintervals at this step,
-(2) the current estimate of the error @var{err}, (3) the current estimate
-for the integral @var{q}.
+The algorithm used by @code{quadgk} involves subdividing the integration
+interval and evaluating each subinterval.  If @var{trace} is true then after
+computing each of these partial integrals display: (1) the number of
+subintervals at this step, (2) the current estimate of the error @var{err},
+(3) the current estimate for the integral @var{q}.
 
 Alternatively, properties of @code{quadgk} can be passed to the function as
 pairs @qcode{"@var{prop}", @var{val}}.  Valid properties are
@@ -370,18 +371,18 @@ Define the relative error tolerance for the quadrature.  The default
 relative tolerance is 1e-5.
 
 @item MaxIntervalCount
-@code{quadgk} initially subdivides the interval on which to perform
-the quadrature into 10 intervals.  Subintervals that have an
-unacceptable error are subdivided and re-evaluated.  If the number of
-subintervals exceeds 650 subintervals at any point then a poor
-convergence is signaled and the current estimate of the integral is
-returned.  The property @qcode{"MaxIntervalCount"} can be used to alter the
-number of subintervals that can exist before exiting.
+@code{quadgk} initially subdivides the interval on which to perform the
+quadrature into 10 intervals.  Subintervals that have an unacceptable error
+are subdivided and re-evaluated.  If the number of subintervals exceeds 650
+subintervals at any point then a poor convergence is signaled and the
+current estimate of the integral is returned.  The property
+@qcode{"MaxIntervalCount"} can be used to alter the number of subintervals
+that can exist before exiting.
 
 @item WayPoints
 Discontinuities in the first derivative of the function to integrate can be
-flagged with the @qcode{"WayPoints"} property.  This forces the ends of
-a subinterval to fall on the breakpoints of the function and can result in
+flagged with the @qcode{"WayPoints"} property.  This forces the ends of a
+subinterval to fall on the breakpoints of the function and can result in
 significantly improved estimation of the error in the integral, faster
 computation, or both.  For example,
 
@@ -393,14 +394,14 @@ quadgk (@@(x) abs (1 - x.^2), 0, 2, "Waypoints", 1)
 signals the breakpoint in the integrand at @code{@var{x} = 1}.
 
 @item Trace
-If logically true @code{quadgk} prints information on the
-convergence of the quadrature at each iteration.
+If logically true @code{quadgk} prints information on the convergence of the
+quadrature at each iteration.
 @end table
 
 If any of @var{a}, @var{b}, or @var{waypoints} is complex then the
-quadrature is treated as a contour integral along a piecewise
-continuous path defined by the above.  In this case the integral is
-assumed to have no edge singularities.  For example,
+quadrature is treated as a contour integral along a piecewise continuous
+path defined by the above.  In this case the integral is assumed to have no
+edge singularities.  For example,
 
 @example
 @group
@@ -410,13 +411,19 @@ quadgk (@@(z) log (z), 1+1i, 1+1i, "WayPoints",
 @end example
 
 @noindent
-integrates @code{log (z)} along the square defined by @code{[1+1i,
- 1-1i, -1-1i, -1+1i]}
+integrates @code{log (z)} along the square defined by
+@code{[1+1i, 1-1i, -1-1i, -1+1i]}.
 
 The result of the integration is returned in @var{q}.
+
 @var{err} is an approximate bound on the error in the integral
 @code{abs (@var{q} - @var{I})}, where @var{I} is the exact value of the
 integral.
+
+Reference: @nospell{L.F. Shampine},
+@cite{"Vectorized adaptive quadrature in @sc{matlab}"}, Journal of
+Computational and Applied Mathematics, pp. 131--140, Vol 211, Issue 2,
+Feb 2008.
 
 @seealso{@ref{XREFquad,,quad}, @ref{XREFquadv,,quadv}, @ref{XREFquadl,,quadl}, @ref{XREFquadcc,,quadcc}, @ref{XREFtrapz,,trapz}, @ref{XREFdblquad,,dblquad}, @ref{XREFtriplequad,,triplequad}}
 @end deftypefn
@@ -429,13 +436,12 @@ integral.
 @deftypefnx {Function File} {@var{q} =} quadcc (@var{f}, @var{a}, @var{b}, @var{tol}, @var{sing})
 @deftypefnx {Function File} {[@var{q}, @var{err}, @var{nr_points}] =} quadcc (@dots{})
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
-using the doubly-adaptive @nospell{Clenshaw-Curtis} quadrature described by
-@nospell{P. Gonnet} in @cite{Increasing the Reliability of Adaptive
-Quadrature Using Explicit Interpolants}.
-@var{f} is a function handle, inline function, or string
-containing the name of the function to evaluate.
-The function @var{f} must be vectorized and must return a vector of output
-values if given a vector of input values.  For example,
+using doubly-adaptive @nospell{Clenshaw-Curtis} quadrature.
+
+@var{f} is a function handle, inline function, or string containing the name
+of the function to evaluate.  The function @var{f} must be vectorized and
+must return a vector of output values if given a vector of input values.
+For example,
 
 @example
 f = @@(x) x .* sin (1./x) .* sqrt (abs (1 - x));
@@ -462,27 +468,30 @@ int = quadcc (f, a, b, 1.0e-6, [ 1 ]);
 @end example
 
 The result of the integration is returned in @var{q}.
-@var{err} is an estimate of the absolute integration error and
+
+@var{err} is an estimate of the absolute integration error.
+
 @var{nr_points} is the number of points at which the integrand was evaluated.
-If the adaptive integration did not converge, the value of
-@var{err} will be larger than the requested tolerance.  Therefore, it is
-recommended to verify this value for difficult integrands.
 
-@code{quadcc} is capable of dealing with non-numeric
-values of the integrand such as @code{NaN} or @code{Inf}.
-If the integral diverges, and @code{quadcc} detects this,
-then a warning is issued and @code{Inf} or @code{-Inf} is returned.
+If the adaptive integration did not converge, the value of @var{err} will be
+larger than the requested tolerance.  Therefore, it is recommended to verify
+this value for difficult integrands.
 
-Note: @code{quadcc} is a general purpose quadrature algorithm
-and, as such, may be less efficient for a smooth or otherwise
-well-behaved integrand than other methods such as @code{quadgk}.
+@code{quadcc} is capable of dealing with non-numeric values of the integrand
+such as @code{NaN} or @code{Inf}.  If the integral diverges, and
+@code{quadcc} detects this, then a warning is issued and @code{Inf} or
+@code{-Inf} is returned.
+
+Note: @code{quadcc} is a general purpose quadrature algorithm and, as such,
+may be less efficient for a smooth or otherwise well-behaved integrand than
+other methods such as @code{quadgk}.
 
 The algorithm uses @nospell{Clenshaw-Curtis} quadrature rules of increasing
-degree in each interval and bisects the interval if either the
-function does not appear to be smooth or a rule of maximum
-degree has been reached.  The error estimate is computed from the
-L2-norm of the difference between two successive interpolations
-of the integrand over the nodes of the respective quadrature rules.
+degree in each interval and bisects the interval if either the function does
+not appear to be smooth or a rule of maximum degree has been reached.  The
+error estimate is computed from the L2-norm of the difference between two
+successive interpolations of the integrand over the nodes of the respective
+quadrature rules.
 
 Reference: @nospell{P. Gonnet}, @cite{Increasing the Reliability of Adaptive
 Quadrature Using Explicit Interpolants}, ACM Transactions on
@@ -547,19 +556,21 @@ issue when using @code{trapz}.
 
 Numerically evaluate the integral of points @var{y} using the trapezoidal
 method.
+
 @w{@code{trapz (@var{y})}} computes the integral of @var{y} along the first
-non-singleton dimension.  When the argument @var{x} is omitted an
-equally spaced @var{x} vector with unit spacing (1) is assumed.
-@code{trapz (@var{x}, @var{y})} evaluates the integral with respect
-to the spacing in @var{x} and the values in @var{y}.  This is useful if
-the points in @var{y} have been sampled unevenly.
+non-singleton dimension.  When the argument @var{x} is omitted an equally
+spaced @var{x} vector with unit spacing (1) is assumed.
+@code{trapz (@var{x}, @var{y})} evaluates the integral with respect to the
+spacing in @var{x} and the values in @var{y}.  This is useful if the points
+in @var{y} have been sampled unevenly.
+
 If the optional @var{dim} argument is given, operate along this dimension.
 
-If @var{x} is not specified then unit spacing will be used.  To scale
-the integral to the correct value you must multiply by the actual spacing
-value (deltaX).  As an example, the integral of @math{x^3} over the range
-[0, 1] is @math{x^4/4} or 0.25.  The following code uses @code{trapz} to
-calculate the integral in three different ways.
+Application Note: If @var{x} is not specified then unit spacing will be
+used.  To scale the integral to the correct value you must multiply by the
+actual spacing value (deltaX).  As an example, the integral of @math{x^3}
+over the range [0, 1] is @math{x^4/4} or 0.25.  The following code uses
+@code{trapz} to calculate the integral in three different ways.
 
 @example
 @group
@@ -583,22 +594,24 @@ trapz (x, y)
 @deftypefn  {Function File} {@var{q} =} cumtrapz (@var{y})
 @deftypefnx {Function File} {@var{q} =} cumtrapz (@var{x}, @var{y})
 @deftypefnx {Function File} {@var{q} =} cumtrapz (@dots{}, @var{dim})
-
 Cumulative numerical integration of points @var{y} using the trapezoidal
 method.
-@w{@code{cumtrapz (@var{y})}} computes the cumulative integral of @var{y}
-along the first non-singleton dimension.  Where @code{trapz} reports
-only the overall integral sum, @code{cumtrapz} reports the current partial
-sum value at each point of @var{y}.  When the argument @var{x} is omitted
-an equally spaced @var{x} vector with unit spacing (1) is assumed.
-@code{cumtrapz (@var{x}, @var{y})} evaluates the integral with respect to
-the spacing in @var{x} and the values in @var{y}.  This is useful if the
-points in @var{y} have been sampled unevenly.  If the optional @var{dim}
-argument is given, operate along this dimension.
 
-If @var{x} is not specified then unit spacing will be used.  To scale
-the integral to the correct value you must multiply by the actual spacing
-value (deltaX).
+@w{@code{cumtrapz (@var{y})}} computes the cumulative integral of @var{y}
+along the first non-singleton dimension.  Where @code{trapz} reports only
+the overall integral sum, @code{cumtrapz} reports the current partial sum
+value at each point of @var{y}.
+
+When the argument @var{x} is omitted an equally spaced @var{x} vector with
+unit spacing (1) is assumed.  @code{cumtrapz (@var{x}, @var{y})} evaluates
+the integral with respect to the spacing in @var{x} and the values in
+@var{y}.  This is useful if the points in @var{y} have been sampled unevenly.
+
+If the optional @var{dim} argument is given, operate along this dimension.
+
+Application Note: If @var{x} is not specified then unit spacing will be
+used.  To scale the integral to the correct value you must multiply by the
+actual spacing value (deltaX).
 @seealso{@ref{XREFtrapz,,trapz}, @ref{XREFcumsum,,cumsum}}
 @end deftypefn
 
@@ -609,10 +622,10 @@ value (deltaX).
 @c colloc libinterp/corefcn/colloc.cc
 @anchor{XREFcolloc}
 @deftypefn {Built-in Function} {[@var{r}, @var{amat}, @var{bmat}, @var{q}] =} colloc (@var{n}, "left", "right")
-Compute derivative and integral weight matrices for orthogonal
-collocation using the subroutines given in @nospell{J. Villadsen} and
-@nospell{M. L. Michelsen}, @cite{Solution of Differential Equation Models by
-Polynomial Approximation}.
+Compute derivative and integral weight matrices for orthogonal collocation.
+
+Reference: @nospell{J. Villadsen}, @nospell{M. L. Michelsen},
+@cite{Solution of Differential Equation Models by Polynomial Approximation}.
 @end deftypefn
 
 
@@ -722,11 +735,11 @@ I = dblquad (@@(x, y) sin (pi*x.*y) .* sqrt (x.*y), 0, 1, 0, 1)
 @deftypefnx {Function File} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{tol}, @var{quadf})
 @deftypefnx {Function File} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{tol}, @var{quadf}, @dots{})
 Numerically evaluate the double integral of @var{f}.
-@var{f} is a function handle, inline function, or string
-containing the name of the function to evaluate.  The function @var{f} must
-have the form @math{z = f(x,y)} where @var{x} is a vector and @var{y} is a
-scalar.  It should return a vector of the same length and orientation as
-@var{x}.
+
+@var{f} is a function handle, inline function, or string containing the name
+of the function to evaluate.  The function @var{f} must have the form
+@math{z = f(x,y)} where @var{x} is a vector and @var{y} is a scalar.  It
+should return a vector of the same length and orientation as @var{x}.
 
 @var{xa}, @var{ya} and @var{xb}, @var{yb} are the lower and upper limits of
 integration for x and y respectively.  The underlying integrator determines
@@ -753,18 +766,19 @@ matrix ([]).
 @deftypefnx {Function File} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb}, @var{tol}, @var{quadf})
 @deftypefnx {Function File} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb}, @var{tol}, @var{quadf}, @dots{})
 Numerically evaluate the triple integral of @var{f}.
-@var{f} is a function handle, inline function, or string
-containing the name of the function to evaluate.  The function @var{f} must
-have the form @math{w = f(x,y,z)} where either @var{x} or @var{y} is a
-vector and the remaining inputs are scalars.  It should return a vector of
-the same length and orientation as @var{x} or @var{y}.
+
+@var{f} is a function handle, inline function, or string containing the name
+of the function to evaluate.  The function @var{f} must have the form
+@math{w = f(x,y,z)} where either @var{x} or @var{y} is a vector and the
+remaining inputs are scalars.  It should return a vector of the same length
+and orientation as @var{x} or @var{y}.
 
 @var{xa}, @var{ya}, @var{za} and @var{xb}, @var{yb}, @var{zb} are the lower
 and upper limits of integration for x, y, and z respectively.  The
 underlying integrator determines whether infinite bounds are accepted.
 
 The optional argument @var{tol} defines the absolute tolerance used to
-integrate each sub-integral.  The default value is @math{1e^{-6}}.
+integrate each sub-integral.  The default value is 1e-6.
 
 The optional argument @var{quadf} specifies which underlying integrator
 function to use.  Any choice but @code{quad} is available and the default

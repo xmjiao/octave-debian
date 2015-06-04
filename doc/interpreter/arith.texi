@@ -59,8 +59,9 @@ $e^{x}$
 @ifnottex
 @code{e^x}
 @end ifnottex
-for each element of @var{x}.  To compute the matrix
-exponential, see @ref{Linear Algebra}.
+for each element of @var{x}.
+
+To compute the matrix exponential, see @ref{Linear Algebra}.
 @seealso{@ref{XREFlog,,log}}
 @end deftypefn
 
@@ -90,8 +91,9 @@ $\ln{(x)},$
 @ifnottex
 @code{ln (@var{x})},
 @end ifnottex
-for each element of @var{x}.  To compute the
-matrix logarithm, see @ref{Linear Algebra}.
+for each element of @var{x}.
+
+To compute the matrix logarithm, see @ref{Linear Algebra}.
 @seealso{@ref{XREFexp,,exp}, @ref{XREFlog1p,,log1p}, @ref{XREFlog2,,log2}, @ref{XREFlog10,,log10}, @ref{XREFlogspace,,logspace}}
 @end deftypefn
 
@@ -101,8 +103,8 @@ matrix logarithm, see @ref{Linear Algebra}.
 @deftypefn {Function File} {} reallog (@var{x})
 Return the real-valued natural logarithm of each element of @var{x}.
 
-If any element results in a complex return value @code{reallog} aborts
-and issues an error.
+If any element results in a complex return value @code{reallog} aborts and
+issues an error.
 @seealso{@ref{XREFlog,,log}, @ref{XREFrealpow,,realpow}, @ref{XREFrealsqrt,,realsqrt}}
 @end deftypefn
 
@@ -182,9 +184,9 @@ f .* (2 .^ e).
 @c nextpow2 scripts/general/nextpow2.m
 @anchor{XREFnextpow2}
 @deftypefn {Function File} {} nextpow2 (@var{x})
-Compute exponent for smallest power of two larger than input.
+Compute the exponent for the smallest power of two larger than the input.
 
-For each element in the input array @var{x}, returns the first integer
+For each element in the input array @var{x}, return the first integer
 @var{n} such that
 @tex
 $2^n \ge |x|$.
@@ -211,9 +213,11 @@ This is equivalent to @w{@code{@var{x} .^ @var{y}}}, except that
 @c sqrt libinterp/corefcn/mappers.cc
 @anchor{XREFsqrt}
 @deftypefn {Mapping Function} {} sqrt (@var{x})
-Compute the square root of each element of @var{x}.  If @var{x} is negative,
-a complex result is returned.  To compute the matrix square root, see
-@ref{Linear Algebra}.
+Compute the square root of each element of @var{x}.
+
+If @var{x} is negative, a complex result is returned.
+
+To compute the matrix square root, see @ref{Linear Algebra}.
 @seealso{@ref{XREFrealsqrt,,realsqrt}, @ref{XREFnthroot,,nthroot}}
 @end deftypefn
 
@@ -223,8 +227,8 @@ a complex result is returned.  To compute the matrix square root, see
 @deftypefn {Function File} {} realsqrt (@var{x})
 Return the real-valued square root of each element of @var{x}.
 
-If any element results in a complex return value @code{realsqrt} aborts
-and issues an error.
+If any element results in a complex return value @code{realsqrt} aborts and
+issues an error.
 @seealso{@ref{XREFsqrt,,sqrt}, @ref{XREFrealpow,,realpow}, @ref{XREFreallog,,reallog}}
 @end deftypefn
 
@@ -233,6 +237,7 @@ and issues an error.
 @anchor{XREFcbrt}
 @deftypefn {Mapping Function} {} cbrt (@var{x})
 Compute the real cube root of each element of @var{x}.
+
 Unlike @code{@var{x}^(1/3)}, the result will be negative if @var{x} is
 negative.
 @seealso{@ref{XREFnthroot,,nthroot}}
@@ -279,7 +284,9 @@ defined as @code{sqrt (-1)}.
 @c abs libinterp/corefcn/mappers.cc
 @anchor{XREFabs}
 @deftypefn {Mapping Function} {} abs (@var{z})
-Compute the magnitude of @var{z}, defined as
+Compute the magnitude of @var{z}.
+
+The magnitude is defined as
 @tex
 $|z| = \sqrt{x^2 + y^2}$.
 @end tex
@@ -295,6 +302,7 @@ abs (3 + 4i)
      @result{} 5
 @end group
 @end example
+@seealso{@ref{XREFarg,,arg}}
 @end deftypefn
 
 
@@ -302,7 +310,9 @@ abs (3 + 4i)
 @anchor{XREFarg}
 @deftypefn  {Mapping Function} {} arg (@var{z})
 @deftypefnx {Mapping Function} {} angle (@var{z})
-Compute the argument of @var{z}, defined as,
+Compute the argument, i.e., angle of @var{z}.
+
+This is defined as,
 @tex
 $\theta = atan2 (y, x),$
 @end tex
@@ -319,13 +329,16 @@ arg (3 + 4i)
      @result{} 0.92730
 @end group
 @end example
+@seealso{@ref{XREFabs,,abs}}
 @end deftypefn
 
 
 @c conj libinterp/corefcn/mappers.cc
 @anchor{XREFconj}
 @deftypefn {Mapping Function} {} conj (@var{z})
-Return the complex conjugate of @var{z}, defined as
+Return the complex conjugate of @var{z}.
+
+The complex conjugate is defined as
 @tex
 $\bar{z} = x - iy$.
 @end tex
@@ -342,21 +355,23 @@ $\bar{z} = x - iy$.
 @deftypefnx {Function File} {} cplxpair (@var{z}, @var{tol})
 @deftypefnx {Function File} {} cplxpair (@var{z}, @var{tol}, @var{dim})
 Sort the numbers @var{z} into complex conjugate pairs ordered by
-increasing real part.  Place the negative imaginary complex number
-first within each pair.  Place all the real numbers (those with
-@code{abs (imag (@var{z}) / @var{z}) < @var{tol}}) after the
+increasing real part.
+
+The negative imaginary complex numbers are placed first within each pair.
+All real numbers (those with
+@code{abs (imag (@var{z}) / @var{z}) < @var{tol}}) are placed after the
 complex pairs.
 
 If @var{tol} is unspecified the default value is 100*@code{eps}.
 
 By default the complex pairs are sorted along the first non-singleton
-dimension of @var{z}.  If @var{dim} is specified, then the complex
-pairs are sorted along this dimension.
+dimension of @var{z}.  If @var{dim} is specified, then the complex pairs are
+sorted along this dimension.
 
 Signal an error if some complex numbers could not be paired.  Signal an
-error if all complex numbers are not exact conjugates (to within
-@var{tol}).  Note that there is no defined order for pairs with identical
-real parts but differing imaginary parts.
+error if all complex numbers are not exact conjugates (to within @var{tol}).
+Note that there is no defined order for pairs with identical real parts but
+differing imaginary parts.
 @c Set example in small font to prevent overfull line
 
 @smallexample
@@ -593,8 +608,9 @@ Compute the inverse hyperbolic cotangent of each element of @var{x}.
 @anchor{XREFatan2}
 @deftypefn {Mapping Function} {} atan2 (@var{y}, @var{x})
 Compute atan (@var{y} / @var{x}) for corresponding elements of @var{y}
-and @var{x}.  Signal an error if @var{y} and @var{x} do not match in size
-and orientation.
+and @var{x}.
+
+@var{y} and @var{x} must match in size and orientation.
 @seealso{@ref{XREFtan,,tan}, @ref{XREFtand,,tand}, @ref{XREFtanh,,tanh}, @ref{XREFatanh,,atanh}}
 @end deftypefn
 
@@ -616,25 +632,28 @@ cos (pi/2)
 @c sind scripts/elfun/sind.m
 @anchor{XREFsind}
 @deftypefn {Function File} {} sind (@var{x})
-Compute the sine for each element of @var{x} in degrees.  Returns zero
-for elements where @code{@var{x}/180} is an integer.
+Compute the sine for each element of @var{x} in degrees.
+
+Returns zero for elements where @code{@var{x}/180} is an integer.
 @seealso{@ref{XREFasind,,asind}, @ref{XREFsin,,sin}}
 @end deftypefn
 
 @c cosd scripts/elfun/cosd.m
 @anchor{XREFcosd}
 @deftypefn {Function File} {} cosd (@var{x})
-Compute the cosine for each element of @var{x} in degrees.  Returns zero
-for elements where @code{(@var{x}-90)/180} is an integer.
+Compute the cosine for each element of @var{x} in degrees.
+
+Returns zero for elements where @code{(@var{x}-90)/180} is an integer.
 @seealso{@ref{XREFacosd,,acosd}, @ref{XREFcos,,cos}}
 @end deftypefn
 
 @c tand scripts/elfun/tand.m
 @anchor{XREFtand}
 @deftypefn {Function File} {} tand (@var{x})
-Compute the tangent for each element of @var{x} in degrees.  Returns zero
-for elements where @code{@var{x}/180} is an integer and @code{Inf} for
-elements where @code{(@var{x}-90)/180} is an integer.
+Compute the tangent for each element of @var{x} in degrees.
+
+Returns zero for elements where @code{@var{x}/180} is an integer and
+@code{Inf} for elements where @code{(@var{x}-90)/180} is an integer.
 @seealso{@ref{XREFatand,,atand}, @ref{XREFtan,,tan}}
 @end deftypefn
 
@@ -791,8 +810,9 @@ in double precision even for single precision inputs.
 @deftypefnx {Built-in Function} {} cumsum (@dots{}, "native")
 @deftypefnx {Built-in Function} {} cumsum (@dots{}, "double")
 @deftypefnx {Built-in Function} {} cumsum (@dots{}, "extra")
-Cumulative sum of elements along dimension @var{dim}.  If @var{dim}
-is omitted, it defaults to the first non-singleton dimension.
+Cumulative sum of elements along dimension @var{dim}.
+
+If @var{dim} is omitted, it defaults to the first non-singleton dimension.
 
 See @code{sum} for an explanation of the optional parameters
 @qcode{"native"}, @qcode{"double"}, and @qcode{"extra"}.
@@ -804,9 +824,9 @@ See @code{sum} for an explanation of the optional parameters
 @anchor{XREFcumprod}
 @deftypefn  {Built-in Function} {} cumprod (@var{x})
 @deftypefnx {Built-in Function} {} cumprod (@var{x}, @var{dim})
-Cumulative product of elements along dimension @var{dim}.  If
-@var{dim} is omitted, it defaults to the first non-singleton dimension.
+Cumulative product of elements along dimension @var{dim}.
 
+If @var{dim} is omitted, it defaults to the first non-singleton dimension.
 @seealso{@ref{XREFprod,,prod}, @ref{XREFcumsum,,cumsum}}
 @end deftypefn
 
@@ -815,8 +835,9 @@ Cumulative product of elements along dimension @var{dim}.  If
 @anchor{XREFsumsq}
 @deftypefn  {Built-in Function} {} sumsq (@var{x})
 @deftypefnx {Built-in Function} {} sumsq (@var{x}, @var{dim})
-Sum of squares of elements along dimension @var{dim}.  If @var{dim}
-is omitted, it defaults to the first non-singleton dimension.
+Sum of squares of elements along dimension @var{dim}.
+
+If @var{dim} is omitted, it defaults to the first non-singleton dimension.
 
 This function is conceptually equivalent to computing
 
@@ -836,9 +857,12 @@ but it uses less memory and avoids calling @code{conj} if @var{x} is real.
 @c ceil libinterp/corefcn/mappers.cc
 @anchor{XREFceil}
 @deftypefn {Mapping Function} {} ceil (@var{x})
-Return the smallest integer not less than @var{x}.  This is equivalent to
-rounding towards positive infinity.  If @var{x} is
-complex, return @code{ceil (real (@var{x})) + ceil (imag (@var{x})) * I}.
+Return the smallest integer not less than @var{x}.
+
+This is equivalent to rounding towards positive infinity.
+
+If @var{x} is complex, return
+@code{ceil (real (@var{x})) + ceil (imag (@var{x})) * I}.
 
 @example
 @group
@@ -853,8 +877,9 @@ ceil ([-2.7, 2.7])
 @c fix libinterp/corefcn/mappers.cc
 @anchor{XREFfix}
 @deftypefn {Mapping Function} {} fix (@var{x})
-Truncate fractional portion of @var{x} and return the integer portion.  This
-is equivalent to rounding towards zero.  If @var{x} is complex, return
+Truncate fractional portion of @var{x} and return the integer portion.
+
+This is equivalent to rounding towards zero.  If @var{x} is complex, return
 @code{fix (real (@var{x})) + fix (imag (@var{x})) * I}.
 
 @example
@@ -870,8 +895,9 @@ fix ([-2.7, 2.7])
 @c floor libinterp/corefcn/mappers.cc
 @anchor{XREFfloor}
 @deftypefn {Mapping Function} {} floor (@var{x})
-Return the largest integer not greater than @var{x}.  This is equivalent to
-rounding towards negative infinity.  If @var{x} is
+Return the largest integer not greater than @var{x}.
+
+This is equivalent to rounding towards negative infinity.  If @var{x} is
 complex, return @code{floor (real (@var{x})) + floor (imag (@var{x})) * I}.
 
 @example
@@ -887,7 +913,9 @@ floor ([-2.7, 2.7])
 @c round libinterp/corefcn/mappers.cc
 @anchor{XREFround}
 @deftypefn {Mapping Function} {} round (@var{x})
-Return the integer nearest to @var{x}.  If @var{x} is complex, return
+Return the integer nearest to @var{x}.
+
+If @var{x} is complex, return
 @code{round (real (@var{x})) + round (imag (@var{x})) * I}.  If there
 are two nearest integers, return the one further away from zero.
 
@@ -905,7 +933,9 @@ round ([-2.7, 2.7])
 @anchor{XREFroundb}
 @deftypefn {Mapping Function} {} roundb (@var{x})
 Return the integer nearest to @var{x}.  If there are two nearest
-integers, return the even one (banker's rounding).  If @var{x} is complex,
+integers, return the even one (banker's rounding).
+
+If @var{x} is complex,
 return @code{roundb (real (@var{x})) + roundb (imag (@var{x})) * I}.
 @seealso{@ref{XREFround,,round}}
 @end deftypefn
@@ -919,11 +949,10 @@ return @code{roundb (real (@var{x})) + roundb (imag (@var{x})) * I}.
 @deftypefnx {Built-in Function} {} max (@var{x}, @var{y})
 Find maximum values in the array @var{x}.
 
-For a vector argument, return the maximum value.
-For a matrix argument, return a row vector with the maximum value of each
-column.
-For a multi-dimensional array, @code{max} operates along the first
-non-singleton dimension.
+For a vector argument, return the maximum value.  For a matrix argument,
+return a row vector with the maximum value of each column.  For a
+multi-dimensional array, @code{max} operates along the first non-singleton
+dimension.
 
 If the optional third argument @var{dim} is present then operate along
 this dimension.  In this case the second argument is ignored and should be
@@ -966,9 +995,8 @@ max ([-1 i 1 -i])
 because all entries have magnitude 1, but -1 has the largest phase angle
 with value pi.
 
-If called with one input and two output arguments,
-@code{max} also returns the first index of the
-maximum value(s).  Thus,
+If called with one input and two output arguments, @code{max} also returns
+the first index of the maximum value(s).  Thus,
 
 @example
 @group
@@ -989,11 +1017,10 @@ maximum value(s).  Thus,
 @deftypefnx {Built-in Function} {} min (@var{x}, @var{y})
 Find minimum values in the array @var{x}.
 
-For a vector argument, return the minimum value.
-For a matrix argument, return a row vector with the minimum value of each
-column.
-For a multi-dimensional array, @code{min} operates along the first
-non-singleton dimension.
+For a vector argument, return the minimum value.  For a matrix argument,
+return a row vector with the minimum value of each column.  For a
+multi-dimensional array, @code{min} operates along the first non-singleton
+dimension.
 
 If the optional third argument @var{dim} is present then operate along
 this dimension.  In this case the second argument is ignored and should be
@@ -1018,8 +1045,8 @@ min (2:5, pi)
 @end example
 
 @noindent
-compares each element of the range @code{2:5} with @code{pi}, and
-returns a row vector of the minimum values.
+compares each element of the range @code{2:5} with @code{pi}, and returns a
+row vector of the minimum values.
 
 For complex arguments, the magnitude of the elements are used for
 comparison.  If the magnitudes are identical, then the results are ordered
@@ -1036,9 +1063,8 @@ min ([-1 i 1 -i])
 because all entries have magnitude 1, but -i has the smallest phase angle
 with value -pi/2.
 
-If called with one input and two output arguments,
-@code{min} also returns the first index of the
-minimum value(s).  Thus,
+If called with one input and two output arguments, @code{min} also returns
+the first index of the minimum value(s).  Thus,
 
 @example
 @group
@@ -1122,9 +1148,12 @@ iw = 1  2  2  4  4  6
 @deftypefn  {Built-in Function} {} hypot (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} hypot (@var{x}, @var{y}, @var{z}, @dots{})
 Compute the element-by-element square root of the sum of the squares of
-@var{x} and @var{y}.  This is equivalent to
-@code{sqrt (@var{x}.^2 + @var{y}.^2)}, but calculated in a manner that
+@var{x} and @var{y}.
+
+This is equivalent to
+@code{sqrt (@var{x}.^2 + @var{y}.^2)}, but is calculated in a manner that
 avoids overflows for large values of @var{x} or @var{y}.
+
 @code{hypot} can also be called with more than 2 arguments; in this case,
 the arguments are accumulated from left to right:
 
@@ -1147,24 +1176,23 @@ hypot (hypot (hypot (@var{x}, @var{y}), @var{z}), @var{w}), etc.
 @deftypefnx {Function File} {[@dots{}] =} gradient (@var{f}, @var{x0}, @var{s})
 @deftypefnx {Function File} {[@dots{}] =} gradient (@var{f}, @var{x0}, @var{x}, @var{y}, @dots{})
 
-Calculate the gradient of sampled data or a function.  If @var{m}
-is a vector, calculate the one-dimensional gradient of @var{m}.  If
-@var{m} is a matrix the gradient is calculated for each dimension.
+Calculate the gradient of sampled data or a function.
 
-@code{[@var{dx}, @var{dy}] = gradient (@var{m})} calculates the one
-dimensional gradient for @var{x} and @var{y} direction if @var{m} is a
+If @var{m} is a vector, calculate the one-dimensional gradient of @var{m}.
+If @var{m} is a matrix the gradient is calculated for each dimension.
+
+@code{[@var{dx}, @var{dy}] = gradient (@var{m})} calculates the
+one-dimensional gradient for @var{x} and @var{y} direction if @var{m} is a
 matrix.  Additional return arguments can be use for multi-dimensional
 matrices.
 
-A constant spacing between two points can be provided by the
-@var{s} parameter.  If @var{s} is a scalar, it is assumed to be the spacing
-for all dimensions.
-Otherwise, separate values of the spacing can be supplied by
+A constant spacing between two points can be provided by the @var{s}
+parameter.  If @var{s} is a scalar, it is assumed to be the spacing for all
+dimensions.  Otherwise, separate values of the spacing can be supplied by
 the @var{x}, @dots{} arguments.  Scalar values specify an equidistant
-spacing.
-Vector values for the @var{x}, @dots{} arguments specify the coordinate for
-that
-dimension.  The length must match their respective dimension of @var{m}.
+spacing.  Vector values for the @var{x}, @dots{} arguments specify the
+coordinate for that dimension.  The length must match their respective
+dimension of @var{m}.
 
 At boundary points a linear extrapolation is applied.  Interior points
 are calculated with the first approximation of the numerical gradient
@@ -1174,12 +1202,12 @@ y'(i) = 1/(x(i+1)-x(i-1)) * (y(i-1)-y(i+1)).
 @end example
 
 If the first argument @var{f} is a function handle, the gradient of the
-function at the points in @var{x0} is approximated using central
-difference.  For example, @code{gradient (@@cos, 0)} approximates the
-gradient of the cosine function in the point @math{x0 = 0}.  As with
-sampled data, the spacing values between the points from which the
-gradient is estimated can be set via the @var{s} or @var{dx},
-@var{dy}, @dots{} arguments.  By default a spacing of 1 is used.
+function at the points in @var{x0} is approximated using central difference.
+For example, @code{gradient (@@cos, 0)} approximates the gradient of the
+cosine function in the point @math{x0 = 0}.  As with sampled data, the
+spacing values between the points from which the gradient is estimated can
+be set via the @var{s} or @var{dx}, @var{dy}, @dots{} arguments.  By default
+a spacing of 1 is used.
 @seealso{@ref{XREFdiff,,diff}, @ref{XREFdel2,,del2}}
 @end deftypefn
 
@@ -1187,10 +1215,13 @@ gradient is estimated can be set via the @var{s} or @var{dx},
 @c dot libinterp/corefcn/dot.cc
 @anchor{XREFdot}
 @deftypefn {Built-in Function} {} dot (@var{x}, @var{y}, @var{dim})
-Compute the dot product of two vectors.  If @var{x} and @var{y}
-are matrices, calculate the dot products along the first
-non-singleton dimension.  If the optional argument @var{dim} is
-given, calculate the dot products along this dimension.
+Compute the dot product of two vectors.
+
+If @var{x} and @var{y} are matrices, calculate the dot products along the
+first non-singleton dimension.
+
+If the optional argument @var{dim} is given, calculate the dot products
+along this dimension.
 
 This is equivalent to
 @code{sum (conj (@var{X}) .* @var{Y}, @var{dim})},
@@ -1205,8 +1236,16 @@ but avoids forming a temporary array and is faster.  When @var{X} and
 @anchor{XREFcross}
 @deftypefn  {Function File} {} cross (@var{x}, @var{y})
 @deftypefnx {Function File} {} cross (@var{x}, @var{y}, @var{dim})
-Compute the vector cross product of two 3-dimensional vectors
-@var{x} and @var{y}.
+Compute the vector cross product of two 3-dimensional vectors @var{x} and
+@var{y}.
+
+If @var{x} and @var{y} are matrices, the cross product is applied along the
+first dimension with three elements.
+
+The optional argument  @var{dim} forces the cross product to be calculated
+along the specified dimension.
+
+Example Code:
 
 @example
 @group
@@ -1215,10 +1254,6 @@ cross ([1,1,0], [0,1,1])
 @end group
 @end example
 
-If @var{x} and @var{y} are matrices, the cross product is applied
-along the first dimension with 3 elements.  The optional argument
-@var{dim} forces the cross product to be calculated along
-the specified dimension.
 @seealso{@ref{XREFdot,,dot}, @ref{XREFcurl,,curl}, @ref{XREFdivergence,,divergence}}
 @end deftypefn
 
@@ -1231,6 +1266,7 @@ the specified dimension.
 @deftypefnx {Function File} {@var{div} =} divergence (@var{fx}, @var{fy})
 Calculate divergence of a vector field given by the arrays @var{fx},
 @var{fy}, and @var{fz} or @var{fx}, @var{fy} respectively.
+
 @tex
 $$
 div F(x,y,z) = \partial_x{F} + \partial_y{F} + \partial_z{F}
@@ -1300,6 +1336,7 @@ operator $( \nabla^2 )$.
 @ifnottex
 operator.
 @end ifnottex
+
 For a 2-dimensional matrix @var{M} this is defined as
 @tex
 $$d = {1 \over 4} \left( {d^2 \over dx^2} M(x,y) + {d^2 \over dy^2} M(x,y) \right)$$
@@ -1380,7 +1417,7 @@ or scalar.  In this case the greatest common divisor is calculated for each
 element individually.  All elements must be ordinary or Gaussian (complex)
 integers.  Note that for Gaussian integers, the gcd is only unique up to a
 phase factor (multiplication by 1, -1, i, or -i), so an arbitrary greatest
-common divisor amongst four possible is returned.
+common divisor among the four possible is returned.
 
 Optional return arguments @var{v1}, @dots{}, contain integer vectors such
 that,
@@ -1425,8 +1462,9 @@ All elements must be numeric and of the same size or scalar.
 @anchor{XREFchop}
 @deftypefn {Function File} {} chop (@var{x}, @var{ndigits}, @var{base})
 Truncate elements of @var{x} to a length of @var{ndigits} such that the
-resulting numbers are exactly divisible by @var{base}.  If @var{base} is not
-specified it defaults to 10.
+resulting numbers are exactly divisible by @var{base}.
+
+If @var{base} is not specified it defaults to 10.
 
 @example
 @group
@@ -1442,15 +1480,16 @@ chop (-pi, 5, 5)
 @c rem libinterp/corefcn/data.cc
 @anchor{XREFrem}
 @deftypefn {Mapping Function} {} rem (@var{x}, @var{y})
-Return the remainder of the division @code{@var{x} / @var{y}}, computed
-using the expression
+Return the remainder of the division @code{@var{x} / @var{y}}.
+
+The remainder is computed using the expression
 
 @example
 x - y .* fix (x ./ y)
 @end example
 
-An error message is printed if the dimensions of the arguments do not
-agree, or if either of the arguments is complex.
+An error message is printed if the dimensions of the arguments do not agree,
+or if either of the arguments is complex.
 @seealso{@ref{XREFmod,,mod}}
 @end deftypefn
 
@@ -1458,16 +1497,18 @@ agree, or if either of the arguments is complex.
 @c mod libinterp/corefcn/data.cc
 @anchor{XREFmod}
 @deftypefn {Mapping Function} {} mod (@var{x}, @var{y})
-Compute the modulo of @var{x} and @var{y}.  Conceptually this is given by
+Compute the modulo of @var{x} and @var{y}.
+
+Conceptually this is given by
 
 @example
 x - y .* floor (x ./ y)
 @end example
 
 @noindent
-and is written such that the correct modulus is returned for
-integer types.  This function handles negative values correctly.  That
-is, @code{mod (-1, 3)} is 2, not -1, as @code{rem (-1, 3)} returns.
+and is written such that the correct modulus is returned for integer types.
+This function handles negative values correctly.  That is,
+@code{mod (-1, 3)} is 2, not -1, as @code{rem (-1, 3)} returns.
 @code{mod (@var{x}, 0)} returns @var{x}.
 
 An error results if the dimensions of the arguments do not agree, or if
@@ -1481,14 +1522,13 @@ either of the arguments is complex.
 @deftypefn {Function File} {} primes (@var{n})
 Return all primes up to @var{n}.
 
-The output data class (double, single, uint32, etc.) is the same as
-the input class of @var{n}.  The algorithm used is the Sieve of
-Eratosthenes.
+The output data class (double, single, uint32, etc.) is the same as the
+input class of @var{n}.  The algorithm used is the Sieve of Eratosthenes.
 
-Notes: If you need a specific number of primes you can use the
-fact that the distance from one prime to the next is, on average,
-proportional to the logarithm of the prime.  Integrating, one finds
-that there are about @math{k} primes less than
+Notes: If you need a specific number of primes you can use the fact that the
+distance from one prime to the next is, on average, proportional to the
+logarithm of the prime.  Integrating, one finds that there are about
+@math{k} primes less than
 @tex
 $k \log (5 k)$.
 @end tex
@@ -1496,8 +1536,7 @@ $k \log (5 k)$.
 k*log (5*k).
 @end ifnottex
 
-See also @code{list_primes} if you need a specific number @var{n} of
-primes.
+See also @code{list_primes} if you need a specific number @var{n} of primes.
 @seealso{@ref{XREFlist_primes,,list_primes}, @ref{XREFisprime,,isprime}}
 @end deftypefn
 
@@ -1516,7 +1555,9 @@ If @var{n} is unspecified, the first 25 primes are listed.
 @c sign libinterp/corefcn/mappers.cc
 @anchor{XREFsign}
 @deftypefn {Mapping Function} {} sign (@var{x})
-Compute the @dfn{signum} function, which is defined as
+Compute the @dfn{signum} function.
+
+This is defined as
 @tex
 $$
 {\rm sign} (@var{x}) = \cases{1,&$x>0$;\cr 0,&$x=0$;\cr -1,&$x<0$.\cr}
@@ -1536,8 +1577,7 @@ sign (x) =  0, x = 0;
 
 For complex arguments, @code{sign} returns @code{x ./ abs (@var{x})}.
 
-Note that @code{sign (-0.0)} is 0.
-Although IEEE 754 floating point
+Note that @code{sign (-0.0)} is 0.  Although IEEE 754 floating point
 allows zero to be signed, 0.0 and -0.0 compare equal.  If you must test
 whether zero is signed, use the @code{signbit} function.
 @seealso{@ref{XREFsignbit,,signbit}}
@@ -1547,10 +1587,12 @@ whether zero is signed, use the @code{signbit} function.
 @c signbit libinterp/corefcn/mappers.cc
 @anchor{XREFsignbit}
 @deftypefn {Mapping Function} {} signbit (@var{x})
-Return logical true if the value of @var{x} has its sign bit set.
-Otherwise return logical false.  This behavior is consistent with the other
-logical functions.  See@ref{Logical Values}.  The behavior differs from the
-C language function which returns nonzero if the sign bit is set.
+Return logical true if the value of @var{x} has its sign bit set and false
+otherwise.
+
+This behavior is consistent with the other logical functions.
+See @ref{Logical Values}.  The behavior differs from the C language function
+which returns nonzero if the sign bit is set.
 
 This is not the same as @code{x < 0.0}, because IEEE 754 floating point
 allows zero to be signed.  The comparison @code{-0.0 < 0.0} is false,
@@ -1565,8 +1607,7 @@ but @code{signbit (-0.0)} will return a nonzero value.
 @c airy libinterp/corefcn/besselj.cc
 @anchor{XREFairy}
 @deftypefn {Built-in Function} {[@var{a}, @var{ierr}] =} airy (@var{k}, @var{z}, @var{opt})
-Compute Airy functions of the first and second kind, and their
-derivatives.
+Compute Airy functions of the first and second kind, and their derivatives.
 
 @example
 @group
@@ -1713,7 +1754,9 @@ in an efficient manner.
 @c betainc libinterp/corefcn/betainc.cc
 @anchor{XREFbetainc}
 @deftypefn {Mapping Function} {} betainc (@var{x}, @var{a}, @var{b})
-Return the regularized incomplete Beta function,
+Compute the regularized incomplete Beta function.
+
+The regularized incomplete Beta function is defined by
 @tex
 $$
  I (x, a, b) = {1 \over {B (a, b)}} \int_0^x t^{(a-z)} (1-t)^{(b-1)} dt.
@@ -1744,10 +1787,12 @@ compatible dimensions.
 @c betaincinv libinterp/corefcn/betainc.cc
 @anchor{XREFbetaincinv}
 @deftypefn {Mapping Function} {} betaincinv (@var{y}, @var{a}, @var{b})
-Compute the inverse of the incomplete Beta function, i.e., @var{x} such that
+Compute the inverse of the incomplete Beta function.
+
+The inverse is the value @var{x} such that
 
 @example
-@var{y} == betainc (@var{x}, @var{a}, @var{b}) 
+@var{y} == betainc (@var{x}, @var{a}, @var{b})
 @end example
 @seealso{@ref{XREFbetainc,,betainc}, @ref{XREFbeta,,beta}, @ref{XREFbetaln,,betaln}}
 @end deftypefn
@@ -1827,30 +1872,30 @@ Return the commutation matrix
  $K_{m,n}$
 @end tex
 @ifnottex
- K(m,n)
+K(m,n)
 @end ifnottex
- which is the unique
+which is the unique
 @tex
  $m n \times m n$
 @end tex
 @ifnottex
 @var{m}*@var{n} by @var{m}*@var{n}
 @end ifnottex
- matrix such that
+matrix such that
 @tex
  $K_{m,n} \cdot {\rm vec} (A) = {\rm vec} (A^T)$
 @end tex
 @ifnottex
 @math{K(m,n) * vec(A) = vec(A')}
 @end ifnottex
- for all
+for all
 @tex
  $m\times n$
 @end tex
 @ifnottex
 @math{m} by @math{n}
 @end ifnottex
- matrices
+matrices
 @tex
  $A$.
 @end tex
@@ -1865,7 +1910,7 @@ If only one argument @var{m} is given,
 @ifnottex
 @math{K(m,m)}
 @end ifnottex
- is returned.
+is returned.
 
 See @nospell{Magnus and Neudecker} (1988), @cite{Matrix Differential
 Calculus with Applications in Statistics and Econometrics.}
@@ -1882,28 +1927,28 @@ Return the duplication matrix
 @ifnottex
 @nospell{@math{Dn}}
 @end ifnottex
- which is the unique
+which is the unique
 @tex
  $n^2 \times n(n+1)/2$
 @end tex
 @ifnottex
 @math{n^2} by @math{n*(n+1)/2}
 @end ifnottex
- matrix such that
+matrix such that
 @tex
  $D_n * {\rm vech} (A) = {\rm vec} (A)$
 @end tex
 @ifnottex
 @nospell{@math{Dn vech (A) = vec (A)}}
 @end ifnottex
- for all symmetric
+for all symmetric
 @tex
  $n \times n$
 @end tex
 @ifnottex
 @math{n} by @math{n}
 @end ifnottex
- matrices
+matrices
 @tex
  $A$.
 @end tex
@@ -1919,7 +1964,9 @@ Calculus with Applications in Statistics and Econometrics.}
 @c dawson libinterp/corefcn/mappers.cc
 @anchor{XREFdawson}
 @deftypefn {Mapping Function} {} dawson (@var{z})
-Compute the Dawson (scaled imaginary error) function,
+Compute the Dawson (scaled imaginary error) function.
+
+The Dawson function is defined as
 @tex
 $$
  {\sqrt{\pi} \over 2} e^{-z^2} {\rm erfi} (z) \equiv -i {\sqrt{\pi} \over 2} e^{-z^2} {\rm erf} (iz)
@@ -2047,7 +2094,9 @@ Reference: Milton @nospell{Abramowitz} and Irene A. @nospell{Stegun},
 @c erf libinterp/corefcn/mappers.cc
 @anchor{XREFerf}
 @deftypefn {Mapping Function} {} erf (@var{z})
-Compute the error function,
+Compute the error function.
+
+The error function is defined as
 @tex
 $$
  {\rm erf} (z) = {2 \over \sqrt{\pi}}\int_0^z e^{-t^2} dt
@@ -2073,7 +2122,9 @@ erf (z) = --------- *  | e^(-t^2) dt
 @c erfc libinterp/corefcn/mappers.cc
 @anchor{XREFerfc}
 @deftypefn {Mapping Function} {} erfc (@var{z})
-Compute the complementary error function,
+Compute the complementary error function.
+
+The complementary error function is defined as
 @tex
 $1 - {\rm erf} (z)$.
 @end tex
@@ -2087,7 +2138,9 @@ $1 - {\rm erf} (z)$.
 @c erfcx libinterp/corefcn/mappers.cc
 @anchor{XREFerfcx}
 @deftypefn {Mapping Function} {} erfcx (@var{z})
-Compute the scaled complementary error function,
+Compute the scaled complementary error function.
+
+The scaled complementary error function is defined as
 @tex
 $$
  e^{z^2} {\rm erfc} (z) \equiv e^{z^2} (1 - {\rm erf} (z))
@@ -2107,10 +2160,12 @@ exp (z^2) * erfc (z)
 @c erfi libinterp/corefcn/mappers.cc
 @anchor{XREFerfi}
 @deftypefn {Mapping Function} {} erfi (@var{z})
-Compute the imaginary error function,
+Compute the imaginary error function.
+
+The imaginary error function is defined as
 @tex
 $$
- -i {\rm erf} (iz) 
+ -i {\rm erf} (iz)
 $$
 @end tex
 @ifnottex
@@ -2127,7 +2182,9 @@ $$
 @c erfinv libinterp/corefcn/mappers.cc
 @anchor{XREFerfinv}
 @deftypefn {Mapping Function} {} erfinv (@var{x})
-Compute the inverse error function, i.e., @var{y} such that
+Compute the inverse error function.
+
+The inverse error function is defined such that
 
 @example
 erf (@var{y}) == @var{x}
@@ -2139,7 +2196,9 @@ erf (@var{y}) == @var{x}
 @c erfcinv libinterp/corefcn/mappers.cc
 @anchor{XREFerfcinv}
 @deftypefn {Mapping Function} {} erfcinv (@var{x})
-Compute the inverse complementary error function, i.e., @var{y} such that
+Compute the inverse complementary error function.
+
+The inverse complementary error function is defined such that
 
 @example
 erfc (@var{y}) == @var{x}
@@ -2172,7 +2231,7 @@ E_1 (x) = | exp (-t)/t dt
 @end ifnottex
 Note: For compatibility, this functions uses the @sc{matlab} definition
 of the exponential integral.  Most other sources refer to this particular
-value as @math{E_1 (x)}, and the exponential integral is
+value as @math{E_1 (x)}, and the exponential integral as
 @tex
 $$
 {\rm Ei} (x) = - \int_{-x}^\infty {e^{-t} \over t} dt.
@@ -2206,7 +2265,9 @@ $
 @c gamma libinterp/corefcn/mappers.cc
 @anchor{XREFgamma}
 @deftypefn {Mapping Function} {} gamma (@var{z})
-Compute the Gamma function,
+Compute the Gamma function.
+
+The Gamma function is defined as
 @tex
 $$
  \Gamma (z) = \int_0^\infty t^{z-1} e^{-t} dt.
@@ -2240,7 +2301,9 @@ loss of precision.  The final result is then
 @deftypefn  {Mapping Function} {} gammainc (@var{x}, @var{a})
 @deftypefnx {Mapping Function} {} gammainc (@var{x}, @var{a}, "lower")
 @deftypefnx {Mapping Function} {} gammainc (@var{x}, @var{a}, "upper")
-Compute the normalized incomplete gamma function,
+Compute the normalized incomplete gamma function.
+
+This is defined as
 @tex
 $$
  \gamma (x, a) = {1 \over {\Gamma (a)}}\displaystyle{\int_0^x t^{a-1} e^{-t} dt}
@@ -2287,8 +2350,9 @@ gammainc (@var{x}, @var{a}) @equiv{} 1 - gammainc (@var{x}, @var{a}, "upper")
 Compute the Legendre function of degree @var{n} and order
 @var{m} = 0 @dots{} @var{n}.
 
-The value @var{n} must be a real non-negative integer.  @var{x} is a
-vector with real-valued elements in the range [-1, 1].
+The value @var{n} must be a real non-negative integer.
+
+@var{x} is a vector with real-valued elements in the range [-1, 1].
 
 The optional argument @var{normalization} may be one of @qcode{"unnorm"},
 @qcode{"sch"}, or @qcode{"norm"}.  The default if no normalization is given
@@ -2352,10 +2416,10 @@ m=3 |  0.00000 | -1.24229 | -3.24000
 @end group
 @end example
 
-When the optional argument @code{normalization} is @qcode{"sch"},
-compute the Schmidt semi-normalized associated Legendre function.
-The Schmidt semi-normalized associated Legendre function is related
-to the unnormalized Legendre functions by the following:
+When the optional argument @code{normalization} is @qcode{"sch"}, compute
+the Schmidt semi-normalized associated Legendre function.  The Schmidt
+semi-normalized associated Legendre function is related to the unnormalized
+Legendre functions by the following:
 
 For Legendre functions of degree @var{n} and order 0:
 
@@ -2395,10 +2459,10 @@ SP(x) = P(x) * (-1)  * [-------]
 
 @end ifnottex
 
-When the optional argument @var{normalization} is @qcode{"norm"},
-compute the fully normalized associated Legendre function.
-The fully normalized associated Legendre function is related
-to the unnormalized Legendre functions by the following:
+When the optional argument @var{normalization} is @qcode{"norm"}, compute
+the fully normalized associated Legendre function.  The fully normalized
+associated Legendre function is related to the unnormalized Legendre
+functions by the following:
 
 For Legendre functions of degree @var{n} and order @var{m}
 
@@ -2439,8 +2503,10 @@ Return the natural logarithm of the gamma function of @var{x}.
 @deftypefn  {Function File} {@var{s} =} rat (@var{x}, @var{tol})
 @deftypefnx {Function File} {[@var{n}, @var{d}] =} rat (@var{x}, @var{tol})
 
-Find a rational approximation to @var{x} within the tolerance defined
-by @var{tol} using a continued fraction expansion.  For example:
+Find a rational approximation to @var{x} within the tolerance defined by
+@var{tol} using a continued fraction expansion.
+
+For example:
 
 @example
 @group
@@ -2450,8 +2516,8 @@ rat (e) = 3 + 1/(-4 + 1/(2 + 1/(5 + 1/(-2 + 1/(-7)))))
 @end group
 @end example
 
-Called with two arguments returns the numerator and denominator separately
-as two matrices.
+When called with two output arguments return the numerator and denominator
+separately as two matrices.
 @seealso{@ref{XREFrats,,rats}}
 @end deftypefn
 
@@ -2460,7 +2526,8 @@ as two matrices.
 @anchor{XREFrats}
 @deftypefn {Built-in Function} {} rats (@var{x}, @var{len})
 Convert @var{x} into a rational approximation represented as a string.
-You can convert the string back into a matrix as follows:
+
+The string can be converted back into a matrix as follows:
 
 @example
 @group
@@ -2489,16 +2556,18 @@ If the length of the smallest possible rational approximation exceeds
 @deftypefnx {Function File} {[@var{theta}, @var{r}, @var{z}] =} cart2pol (@var{C})
 @deftypefnx {Function File} {@var{P} =} cart2pol (@dots{})
 
-Transform Cartesian to polar or cylindrical coordinates.
+Transform Cartesian coordinates to polar or cylindrical coordinates.
 
-@var{theta} describes the angle relative to the positive x-axis.
-@var{r} is the distance to the z-axis @w{(0, 0, z)}.
-@var{x}, @var{y} (, and @var{z}) must be the same shape, or scalar.
-If called with a single matrix argument then each row of @var{C}
+The inputs @var{x}, @var{y} (, and @var{z}) must be the same shape, or
+scalar.  If called with a single matrix argument then each row of @var{C}
 represents the Cartesian coordinate (@var{x}, @var{y} (, @var{z})).
 
-If only a single return argument is requested then return a matrix
-@var{P} where each row represents one polar/(cylindrical) coordinate
+@var{theta} describes the angle relative to the positive x-axis.
+
+@var{r} is the distance to the z-axis @w{(0, 0, z)}.
+
+If only a single return argument is requested then return a matrix @var{P}
+where each row represents one polar/(cylindrical) coordinate
 (@var{theta}, @var{phi} (, @var{z})).
 @seealso{@ref{XREFpol2cart,,pol2cart}, @ref{XREFcart2sph,,cart2sph}, @ref{XREFsph2cart,,sph2cart}}
 @end deftypefn
@@ -2511,17 +2580,19 @@ If only a single return argument is requested then return a matrix
 @deftypefnx {Function File} {[@var{x}, @var{y}] =} pol2cart (@var{P})
 @deftypefnx {Function File} {[@var{x}, @var{y}, @var{z}] =} pol2cart (@var{P})
 @deftypefnx {Function File} {@var{C} =} pol2cart (@dots{})
-Transform polar or cylindrical to Cartesian coordinates.
+Transform polar or cylindrical coordinates to Cartesian coordinates.
 
-@var{theta}, @var{r}, (and @var{z}) must be the same shape, or scalar.
+The inputs @var{theta}, @var{r}, (and @var{z}) must be the same shape, or
+scalar.  If called with a single matrix argument then each row of @var{P}
+represents the polar/(cylindrical) coordinate (@var{theta}, @var{r}
+(, @var{z})).
+
 @var{theta} describes the angle relative to the positive x-axis.
-@var{r} is the distance to the z-axis (0, 0, z).
-If called with a single matrix argument then each row of @var{P}
-represents the polar/(cylindrical) coordinate (@var{theta}, @var{r} (,
-@var{z})).
 
-If only a single return argument is requested then return a matrix
-@var{C} where each row represents one Cartesian coordinate
+@var{r} is the distance to the z-axis (0, 0, z).
+
+If only a single return argument is requested then return a matrix @var{C}
+where each row represents one Cartesian coordinate
 (@var{x}, @var{y} (, @var{z})).
 @seealso{@ref{XREFcart2pol,,cart2pol}, @ref{XREFsph2cart,,sph2cart}, @ref{XREFcart2sph,,cart2sph}}
 @end deftypefn
@@ -2532,17 +2603,20 @@ If only a single return argument is requested then return a matrix
 @deftypefn  {Function File} {[@var{theta}, @var{phi}, @var{r}] =} cart2sph (@var{x}, @var{y}, @var{z})
 @deftypefnx {Function File} {[@var{theta}, @var{phi}, @var{r}] =} cart2sph (@var{C})
 @deftypefnx {Function File} {@var{S} =} cart2sph (@dots{})
-Transform Cartesian to spherical coordinates.
+Transform Cartesian coordinates to spherical coordinates.
+
+The inputs @var{x}, @var{y}, and @var{z} must be the same shape, or scalar.
+If called with a single matrix argument then each row of @var{C} represents
+the Cartesian coordinate (@var{x}, @var{y}, @var{z}).
 
 @var{theta} describes the angle relative to the positive x-axis.
-@var{phi} is the angle relative to the xy-plane.
-@var{r} is the distance to the origin @w{(0, 0, 0)}.
-@var{x}, @var{y}, and @var{z} must be the same shape, or scalar.
-If called with a single matrix argument then each row of @var{C}
-represents the Cartesian coordinate (@var{x}, @var{y}, @var{z}).
 
-If only a single return argument is requested then return a matrix
-@var{S} where each row represents one spherical coordinate
+@var{phi} is the angle relative to the xy-plane.
+
+@var{r} is the distance to the origin @w{(0, 0, 0)}.
+
+If only a single return argument is requested then return a matrix @var{S}
+where each row represents one spherical coordinate
 (@var{theta}, @var{phi}, @var{r}).
 @seealso{@ref{XREFsph2cart,,sph2cart}, @ref{XREFcart2pol,,cart2pol}, @ref{XREFpol2cart,,pol2cart}}
 @end deftypefn
@@ -2553,17 +2627,20 @@ If only a single return argument is requested then return a matrix
 @deftypefn  {Function File} {[@var{x}, @var{y}, @var{z}] =} sph2cart (@var{theta}, @var{phi}, @var{r})
 @deftypefnx {Function File} {[@var{x}, @var{y}, @var{z}] =} sph2cart (@var{S})
 @deftypefnx {Function File} {@var{C} =} sph2cart (@dots{})
-Transform spherical to Cartesian coordinates.
+Transform spherical coordinates to Cartesian coordinates.
 
-@var{theta} describes the angle relative to the positive x-axis.
-@var{phi} is the angle relative to the xy-plane.
-@var{r} is the distance to the origin @w{(0, 0, 0)}.
-@var{theta}, @var{phi}, and @var{r} must be the same shape, or scalar.
-If called with a single matrix argument then each row of @var{S}
+The inputs @var{theta}, @var{phi}, and @var{r} must be the same shape, or
+scalar.  If called with a single matrix argument then each row of @var{S}
 represents the spherical coordinate (@var{theta}, @var{phi}, @var{r}).
 
-If only a single return argument is requested then return a matrix
-@var{C} where each row represents one Cartesian coordinate
+@var{theta} describes the angle relative to the positive x-axis.
+
+@var{phi} is the angle relative to the xy-plane.
+
+@var{r} is the distance to the origin @w{(0, 0, 0)}.
+
+If only a single return argument is requested then return a matrix @var{C}
+where each row represents one Cartesian coordinate
 (@var{x}, @var{y}, @var{z}).
 @seealso{@ref{XREFcart2sph,,cart2sph}, @ref{XREFpol2cart,,pol2cart}, @ref{XREFcart2pol,,cart2pol}}
 @end deftypefn
@@ -2580,7 +2657,9 @@ If only a single return argument is requested then return a matrix
 @deftypefnx {Built-in Function} {} e (@var{n}, @var{m}, @var{k}, @dots{})
 @deftypefnx {Built-in Function} {} e (@dots{}, @var{class})
 Return a scalar, matrix, or N-dimensional array whose elements are all equal
-to the base of natural logarithms.  The constant
+to the base of natural logarithms.
+
+The constant
 @tex
 $e$ satisfies the equation $\log (e) = 1$.
 @end tex
@@ -2588,11 +2667,15 @@ $e$ satisfies the equation $\log (e) = 1$.
 @samp{e} satisfies the equation @code{log} (e) = 1.
 @end ifnottex
 
-When called with no arguments, return a scalar with the value @math{e}.  When
-called with a single argument, return a square matrix with the dimension
-specified.  When called with more than one scalar argument the first two
-arguments are taken as the number of rows and columns and any further
-arguments specify additional matrix dimensions.
+When called with no arguments, return a scalar with the value @math{e}.
+
+When called with a single argument, return a square matrix with the dimension
+specified.
+
+When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+
 The optional argument @var{class} specifies the return type and may be
 either @qcode{"double"} or @qcode{"single"}.
 @seealso{@ref{XREFlog,,log}, @ref{XREFexp,,exp}, @ref{XREFpi,,pi}, @ref{XREFI,,I}}
@@ -2614,6 +2697,7 @@ diameter($\pi$).
 @ifnottex
 diameter.
 @end ifnottex
+
 Internally, @code{pi} is computed as @samp{4.0 * atan (1.0)}.
 
 When called with no arguments, return a scalar with the value of
@@ -2623,10 +2707,14 @@ $\pi$.
 @ifnottex
 pi.
 @end ifnottex
+
 When called with a single argument, return a square matrix with the dimension
-specified.  When called with more than one scalar argument the first two
-arguments are taken as the number of rows and columns and any further
-arguments specify additional matrix dimensions.
+specified.
+
+When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+
 The optional argument @var{class} specifies the return type and may be
 either @qcode{"double"} or @qcode{"single"}.
 @seealso{@ref{XREFe,,e}, @ref{XREFI,,I}}
@@ -2657,11 +2745,15 @@ $\sqrt{-1}$.
 I, and its equivalents i, j, and J, are functions so any of the names may
 be reused for other purposes (such as i for a counter variable).
 
-When called with no arguments, return a scalar with the value @math{i}.  When
-called with a single argument, return a square matrix with the dimension
-specified.  When called with more than one scalar argument the first two
-arguments are taken as the number of rows and columns and any further
-arguments specify additional matrix dimensions.
+When called with no arguments, return a scalar with the value @math{i}.
+
+When called with a single argument, return a square matrix with the dimension
+specified.
+
+When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+
 The optional argument @var{class} specifies the return type and may be
 either @qcode{"double"} or @qcode{"single"}.
 @seealso{@ref{XREFe,,e}, @ref{XREFpi,,pi}, @ref{XREFlog,,log}, @ref{XREFexp,,exp}}
@@ -2682,8 +2774,8 @@ Return a scalar, matrix or N-dimensional array whose elements are all equal
 to the IEEE representation for positive infinity.
 
 Infinity is produced when results are too large to be represented using the
-the IEEE floating point format for numbers.  Two common examples which
-produce infinity are division by zero and overflow.
+IEEE floating point format for numbers.  Two common examples which produce
+infinity are division by zero and overflow.
 
 @example
 @group
@@ -2693,10 +2785,14 @@ produce infinity are division by zero and overflow.
 @end example
 
 When called with no arguments, return a scalar with the value @samp{Inf}.
+
 When called with a single argument, return a square matrix with the dimension
-specified.  When called with more than one scalar argument the first two
-arguments are taken as the number of rows and columns and any further
-arguments specify additional matrix dimensions.
+specified.
+
+When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+
 The optional argument @var{class} specifies the return type and may be
 either @qcode{"double"} or @qcode{"single"}.
 @seealso{@ref{XREFisinf,,isinf}, @ref{XREFNaN,,NaN}}
@@ -2715,6 +2811,7 @@ either @qcode{"double"} or @qcode{"single"}.
 @deftypefnx {Built-in Function} {} NaN (@dots{}, @var{class})
 Return a scalar, matrix, or N-dimensional array whose elements are all equal
 to the IEEE symbol NaN (Not a Number).
+
 NaN is the result of operations which do not produce a well defined numerical
 result.  Common operations which produce a NaN are arithmetic with infinity
 @tex
@@ -2726,14 +2823,19 @@ result.  Common operations which produce a NaN are arithmetic with infinity
 and any operation involving another NaN value (5 + NaN).
 
 Note that NaN always compares not equal to NaN (NaN != NaN).  This behavior
-is specified by the IEEE standard for floating point arithmetic.  To
-find NaN values, use the @code{isnan} function.
+is specified by the IEEE standard for floating point arithmetic.  To find
+NaN values, use the @code{isnan} function.
 
 When called with no arguments, return a scalar with the value @samp{NaN}.
+
 When called with a single argument, return a square matrix with the dimension
-specified.  When called with more than one scalar argument the first two
-arguments are taken as the number of rows and columns and any further
-arguments specify additional matrix dimensions.
+specified.
+
+When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+
+
 The optional argument @var{class} specifies the return type and may be
 either @qcode{"double"} or @qcode{"single"}.
 @seealso{@ref{XREFisnan,,isnan}, @ref{XREFInf,,Inf}}
@@ -2748,10 +2850,12 @@ either @qcode{"double"} or @qcode{"single"}.
 @deftypefnx {Built-in Function} {} eps (@var{n}, @var{m}, @var{k}, @dots{})
 @deftypefnx {Built-in Function} {} eps (@dots{}, @var{class})
 Return a scalar, matrix or N-dimensional array whose elements are all eps,
-the machine precision.  More precisely, @code{eps} is the relative spacing
-between any two adjacent numbers in the machine's floating point system.
-This number is obviously system dependent.  On machines that support IEEE
-floating point arithmetic, @code{eps} is approximately
+the machine precision.
+
+More precisely, @code{eps} is the relative spacing between any two adjacent
+numbers in the machine's floating point system.  This number is obviously
+system dependent.  On machines that support IEEE floating point arithmetic,
+@code{eps} is approximately
 @tex
 $2.2204\times10^{-16}$ for double precision and $1.1921\times10^{-7}$
 @end tex
@@ -2762,13 +2866,14 @@ for single precision.
 
 When called with no arguments, return a scalar with the value
 @code{eps (1.0)}.
-Given a single argument @var{x}, return the distance between @var{x} and
-the next largest value.
+
+Given a single argument @var{x}, return the distance between @var{x} and the
+next largest value.
+
 When called with more than one argument the first two arguments are taken as
-the number of rows and columns and any further
-arguments specify additional matrix dimensions.
-The optional argument @var{class} specifies the return type and may be
-either @qcode{"double"} or @qcode{"single"}.
+the number of rows and columns and any further arguments specify additional
+matrix dimensions.  The optional argument @var{class} specifies the return
+type and may be either @qcode{"double"} or @qcode{"single"}.
 @seealso{@ref{XREFrealmax,,realmax}, @ref{XREFrealmin,,realmin}, @ref{XREFintmax,,intmax}, @ref{XREFbitmax,,bitmax}}
 @end deftypefn
 
@@ -2780,9 +2885,10 @@ either @qcode{"double"} or @qcode{"single"}.
 @deftypefnx {Built-in Function} {} realmax (@var{n}, @var{m})
 @deftypefnx {Built-in Function} {} realmax (@var{n}, @var{m}, @var{k}, @dots{})
 @deftypefnx {Built-in Function} {} realmax (@dots{}, @var{class})
-Return a scalar, matrix or N-dimensional array whose elements are all equal
-to the largest floating point number that is representable.  The actual
-value is system dependent.  On machines that support IEEE
+Return a scalar, matrix, or N-dimensional array whose elements are all equal
+to the largest floating point number that is representable.
+
+The actual value is system dependent.  On machines that support IEEE
 floating point arithmetic, @code{realmax} is approximately
 @tex
 $1.7977\times10^{308}$ for double precision and $3.4028\times10^{38}$
@@ -2794,10 +2900,14 @@ for single precision.
 
 When called with no arguments, return a scalar with the value
 @code{realmax (@qcode{"double"})}.
+
 When called with a single argument, return a square matrix with the dimension
-specified.  When called with more than one scalar argument the first two
-arguments are taken as the number of rows and columns and any further
-arguments specify additional matrix dimensions.
+specified.
+
+When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+
 The optional argument @var{class} specifies the return type and may be
 either @qcode{"double"} or @qcode{"single"}.
 @seealso{@ref{XREFrealmin,,realmin}, @ref{XREFintmax,,intmax}, @ref{XREFbitmax,,bitmax}, @ref{XREFeps,,eps}}
@@ -2811,8 +2921,9 @@ either @qcode{"double"} or @qcode{"single"}.
 @deftypefnx {Built-in Function} {} realmin (@var{n}, @var{m})
 @deftypefnx {Built-in Function} {} realmin (@var{n}, @var{m}, @var{k}, @dots{})
 @deftypefnx {Built-in Function} {} realmin (@dots{}, @var{class})
-Return a scalar, matrix or N-dimensional array whose elements are all equal
+Return a scalar, matrix, or N-dimensional array whose elements are all equal
 to the smallest normalized floating point number that is representable.
+
 The actual value is system dependent.  On machines that support
 IEEE floating point arithmetic, @code{realmin} is approximately
 @tex
@@ -2825,10 +2936,14 @@ for single precision.
 
 When called with no arguments, return a scalar with the value
 @code{realmin (@qcode{"double"})}.
+
 When called with a single argument, return a square matrix with the dimension
-specified.  When called with more than one scalar argument the first two
-arguments are taken as the number of rows and columns and any further
-arguments specify additional matrix dimensions.
+specified.
+
+When called with more than one scalar argument the first two arguments are
+taken as the number of rows and columns and any further arguments specify
+additional matrix dimensions.
+
 The optional argument @var{class} specifies the return type and may be
 either @qcode{"double"} or @qcode{"single"}.
 @seealso{@ref{XREFrealmax,,realmax}, @ref{XREFintmin,,intmin}, @ref{XREFeps,,eps}}

@@ -127,8 +127,8 @@ and false otherwise.
 <dt><a name="index-uiwait"></a>Function File: <em></em> <strong>uiwait</strong></dt>
 <dt><a name="index-uiwait-1"></a>Function File: <em></em> <strong>uiwait</strong> <em>(<var>h</var>)</em></dt>
 <dt><a name="index-uiwait-2"></a>Function File: <em></em> <strong>uiwait</strong> <em>(<var>h</var>, <var>timeout</var>)</em></dt>
-<dd><p>Suspend program execution until the figure with handle <var>h</var> is
-deleted or <code>uiresume</code> is called.
+<dd><p>Suspend program execution until the figure with handle <var>h</var> is deleted
+or <code>uiresume</code> is called.
 </p>
 <p>When no figure handle is specified this function uses the current figure.
 If the figure handle is invalid or there is no current figure, this
@@ -165,10 +165,10 @@ figure with handle <var>h</var>, this function does nothing.
 <dd><p>Suspend the execution of the current program until a condition is
 satisfied on the graphics handle <var>h</var>.
 </p>
-<p>While the program is suspended graphics events are still being processed
-normally, allowing callbacks to modify the state of graphics objects.  This
-function is reentrant and can be called from a callback, while another
-<code>waitfor</code> call is pending at the top-level.
+<p>While the program is suspended graphics events are still processed normally,
+allowing callbacks to modify the state of graphics objects.  This function
+is reentrant and can be called from a callback, while another <code>waitfor</code>
+call is pending at the top-level.
 </p>
 <p>In the first form, program execution is suspended until the graphics object
 <var>h</var> is destroyed.  If the graphics handle is invalid, the function

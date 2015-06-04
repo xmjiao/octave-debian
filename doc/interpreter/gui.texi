@@ -62,6 +62,7 @@ a file name.
 Open a GUI dialog for selecting a directory.
 
 If @var{init_path} is not given the current working directory is used.
+
 @var{dialog_name} may be used to customize the dialog title.
 @seealso{@ref{XREFuigetfile,,uigetfile}, @ref{XREFuiputfile,,uiputfile}}
 @end deftypefn
@@ -92,8 +93,8 @@ is selected as default file.  Example: @code{uigetfile ("myfun.m")}
 Example: @code{uigetfile ("*.ext")}
 
 @item A 2-column cell array
-containing a file extension in the first column and a brief description
-in the second column.
+containing a file extension in the first column and a brief description in
+the second column.
 Example: @code{uigetfile (@{"*.ext", "My Description";"*.xyz",
 "XYZ-Format"@})}
 
@@ -104,6 +105,7 @@ Formats"@})}
 @end table
 
 @var{dialog_name} can be used to customize the dialog title.
+
 If @var{default_file} is given then it will be selected in the GUI dialog.
 If, in addition, a path is given it is also used as current path.
 
@@ -171,9 +173,12 @@ If, in addition, a path is given it is also used as current path.
 Return a handle @var{h} to a new waitbar object.
 
 The waitbar is filled to fraction @var{frac} which must be in the range
-[0, 1].  The optional message @var{msg} is centered and displayed above the
-waitbar.  The appearance of the waitbar figure window can be configured by
-passing property/value pairs to the function.
+[0, 1].
+
+The optional message @var{msg} is centered and displayed above the waitbar.
+
+The appearance of the waitbar figure window can be configured by passing
+property/value pairs to the function.
 
 When called with a single input the current waitbar, if it exists, is
 updated to the new value @var{frac}.  If there are multiple outstanding
@@ -304,8 +309,8 @@ Return true if Octave is running in GUI mode and false otherwise.
 @deftypefn  {Function File} {} uiwait
 @deftypefnx {Function File} {} uiwait (@var{h})
 @deftypefnx {Function File} {} uiwait (@var{h}, @var{timeout})
-Suspend program execution until the figure with handle @var{h} is
-deleted or @code{uiresume} is called.
+Suspend program execution until the figure with handle @var{h} is deleted
+or @code{uiresume} is called.
 
 When no figure handle is specified this function uses the current figure.
 If the figure handle is invalid or there is no current figure, this
@@ -342,10 +347,10 @@ figure with handle @var{h}, this function does nothing.
 Suspend the execution of the current program until a condition is
 satisfied on the graphics handle @var{h}.
 
-While the program is suspended graphics events are still being processed
-normally, allowing callbacks to modify the state of graphics objects.  This
-function is reentrant and can be called from a callback, while another
-@code{waitfor} call is pending at the top-level.
+While the program is suspended graphics events are still processed normally,
+allowing callbacks to modify the state of graphics objects.  This function
+is reentrant and can be called from a callback, while another @code{waitfor}
+call is pending at the top-level.
 
 In the first form, program execution is suspended until the graphics object
 @var{h} is destroyed.  If the graphics handle is invalid, the function
@@ -381,26 +386,29 @@ In all cases, typing CTRL-C stops program execution immediately.
 
 @c getpref scripts/prefs/getpref.m
 @anchor{XREFgetpref}
-@deftypefn {Function File} {} getpref (@var{group}, @var{pref}, @var{default})
-Return the preference value corresponding to the named preference
-@var{pref} in the preference group @var{group}.
+@deftypefn  {Function File} {} getpref (@var{group}, @var{pref})
+@deftypefnx {Function File} {} getpref (@var{group}, @var{pref}, @var{default})
+@deftypefnx {Function File} {} getpref (@var{group})
+Return the preference value corresponding to the named preference @var{pref}
+in the preference group @var{group}.
 
 The named preference group must be a character string.
 
 If @var{pref} does not exist in @var{group} and @var{default} is
 specified, return @var{default}.
 
-The preference @var{pref} may be a character string or a cell array
-of character strings.  The corresponding default value @var{default}
-may be any value, or, if @var{pref} is a cell array of strings,
-@var{default} must be a cell array of values with the same size as
-@var{pref}.
+The preference @var{pref} may be a character string or a cell array of
+character strings.
 
-If neither @var{pref} nor @var{default} are specified, return a
-structure of preferences for the preference group @var{group}.
+The corresponding default value @var{default} may be any value, or, if
+@var{pref} is a cell array of strings, @var{default} must be a cell array
+of values with the same size as @var{pref}.
 
-If no arguments are specified, return a structure containing all
-groups of preferences and their values.
+If neither @var{pref} nor @var{default} are specified, return a structure
+of preferences for the preference group @var{group}.
+
+If no arguments are specified, return a structure containing all groups of
+preferences and their values.
 @seealso{@ref{XREFaddpref,,addpref}, @ref{XREFsetpref,,setpref}, @ref{XREFispref,,ispref}, @ref{XREFrmpref,,rmpref}}
 @end deftypefn
 
@@ -408,15 +416,17 @@ groups of preferences and their values.
 @c setpref scripts/prefs/setpref.m
 @anchor{XREFsetpref}
 @deftypefn {Function File} {} setpref (@var{group}, @var{pref}, @var{val})
-Set a preference @var{pref} to the given @var{val} in the named
-preference group @var{group}.
+Set a preference @var{pref} to the given @var{val} in the named preference
+group @var{group}.
 
 The named preference group must be a character string.
 
-The preference @var{pref} may be a character string or a cell array
-of character strings.  The corresponding value @var{val} may be any
-value, or, if @var{pref} is a cell array of strings, @var{val}
-must be a cell array of values with the same size as @var{pref}.
+The preference @var{pref} may be a character string or a cell array of
+character strings.
+
+The corresponding value @var{val} may be any value, or, if @var{pref} is a
+cell array of strings, @var{val} must be a cell array of values with the
+same size as @var{pref}.
 
 If the named preference or group does not exist, it is added.
 @seealso{@ref{XREFaddpref,,addpref}, @ref{XREFgetpref,,getpref}, @ref{XREFispref,,ispref}, @ref{XREFrmpref,,rmpref}}
@@ -426,33 +436,32 @@ If the named preference or group does not exist, it is added.
 @c addpref scripts/prefs/addpref.m
 @anchor{XREFaddpref}
 @deftypefn {Function File} {} addpref (@var{group}, @var{pref}, @var{val})
-Add a preference @var{pref} and associated value @var{val} to the
-named preference group @var{group}.
+Add a preference @var{pref} and associated value @var{val} to the named
+preference group @var{group}.
 
 The named preference group must be a character string.
 
-The preference @var{pref} may be a character string or a cell array
-of character strings.  The corresponding value @var{val} may be any
-value, or, if @var{pref} is a cell array of strings, @var{val}
-must be a cell array of values with the same size as @var{pref}.
+The preference @var{pref} may be a character string or a cell array of
+character strings.
+
+The corresponding value @var{val} may be any value, or, if @var{pref} is a
+cell array of strings, @var{val} must be a cell array of values with the
+same size as @var{pref}.
 @seealso{@ref{XREFsetpref,,setpref}, @ref{XREFgetpref,,getpref}, @ref{XREFispref,,ispref}, @ref{XREFrmpref,,rmpref}}
 @end deftypefn
 
 
 @c rmpref scripts/prefs/rmpref.m
 @anchor{XREFrmpref}
-@deftypefn  {Function File} {} rmpref (@var{group})
-@deftypefnx {Function File} {} rmpref (@var{group}, @var{pref})
-Remove the named preference @var{pref} from the preference group
-@var{group}.
+@deftypefn  {Function File} {} rmpref (@var{group}, @var{pref})
+@deftypefnx {Function File} {} rmpref (@var{group})
+Remove the named preference @var{pref} from the preference group @var{group}.
 
 The named preference group must be a character string.
 
-The preference @var{pref} may be a character string or cell array
-of strings.
+The preference @var{pref} may be a character string or cell array of strings.
 
-If @var{pref} is not specified, remove the preference group
-@var{group}.
+If @var{pref} is not specified, remove the preference group @var{group}.
 
 It is an error to remove a nonexistent preference or group.
 @seealso{@ref{XREFaddpref,,addpref}, @ref{XREFispref,,ispref}, @ref{XREFsetpref,,setpref}, @ref{XREFgetpref,,getpref}}
@@ -461,17 +470,18 @@ It is an error to remove a nonexistent preference or group.
 
 @c ispref scripts/prefs/ispref.m
 @anchor{XREFispref}
-@deftypefn {Function File} {} ispref (@var{group}, @var{pref})
-Return true if the named preference @var{pref} exists in the
-preference group @var{group}.
+@deftypefn  {Function File} {} ispref (@var{group}, @var{pref})
+@deftypefnx {Function File} {} ispref (@var{group})
+Return true if the named preference @var{pref} exists in the preference
+group @var{group}.
 
 The named preference group must be a character string.
 
-The preference @var{pref} may be a character string or a cell array
-of character strings.
+The preference @var{pref} may be a character string or a cell array of
+character strings.
 
-If @var{pref} is not specified, return true if the preference
-group @var{group} exists.
+If @var{pref} is not specified, return true if the preference group
+@var{group} exists.
 @seealso{@ref{XREFgetpref,,getpref}, @ref{XREFaddpref,,addpref}, @ref{XREFsetpref,,setpref}, @ref{XREFrmpref,,rmpref}}
 @end deftypefn
 

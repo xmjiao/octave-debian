@@ -70,12 +70,17 @@ should have a documentation string.
 </li><li> An internal variable or subroutine of an Octave program might as well have
 a documentation string.
 
-</li><li> The first line of the documentation string should consist of one or two
-complete sentences that stand on their own as a summary.
+</li><li> The first line of the documentation string should consist of a summary of
+the function.
 
-<p>The documentation string can have additional lines that expand on the
-details of how to use the function or variable.  The additional lines
-should also be made up of complete sentences.
+<p>Subsequent lines may expand the general nature of the function.
+</p>
+<p>After the introduction there should be paragraphs describing the meaning
+and usage of each input, followed by the meaning and usage of each output.
+</p>
+<p>Finally, there may be more general information such as notes about the
+algorithm used, references to scientific papers, notes about any
+incompatibilities with <small>MATLAB</small>, etc.
 </p>
 </li><li> For consistency, phrase the verb in the first sentence of a
 documentation string as an infinitive with &ldquo;to&rdquo; omitted.  For

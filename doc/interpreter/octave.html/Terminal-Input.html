@@ -81,21 +81,21 @@ used for managing an interactive dialog with a user, and the
 </pre></div>
 
 <p>and waits for the user to enter a value.  The string entered by the user
-is evaluated as an expression, so it may be a literal constant, a
-variable name, or any other valid Octave code.
+is evaluated as an expression, so it may be a literal constant, a variable
+name, or any other valid Octave code.
 </p>
 <p>The number of return arguments, their size, and their class depend on the
 expression entered.
 </p>
-<p>If you are only interested in getting a literal string value, you can
-call <code>input</code> with the character string <code>&quot;s&quot;</code> as the second
-argument.  This tells Octave to return the string entered by the user
-directly, without evaluating it first.
+<p>If you are only interested in getting a literal string value, you can call
+<code>input</code> with the character string <code>&quot;s&quot;</code> as the second argument.
+This tells Octave to return the string entered by the user directly, without
+evaluating it first.
 </p>
-<p>Because there may be output waiting to be displayed by the pager, it is
-a good idea to always call <code>fflush (stdout)</code> before calling
-<code>input</code>.  This will ensure that all pending output is written to
-the screen before your prompt.
+<p>Because there may be output waiting to be displayed by the pager, it is a
+good idea to always call <code>fflush (stdout)</code> before calling <code>input</code>.
+ This will ensure that all pending output is written to the screen before
+your prompt.
 </p>
 <p><strong>See also:</strong> <a href="#XREFyes_005for_005fno">yes_or_no</a>, <a href="#XREFkbhit">kbhit</a>, <a href="Timing-Utilities.html#XREFpause">pause</a>, <a href="#XREFmenu">menu</a>, <a href="Dialog-Box-Functions.html#XREFlistdlg">listdlg</a>.
 </p></dd></dl>
@@ -130,7 +130,8 @@ more than will fit easily on one screen.
 <dd><p>Ask the user a yes-or-no question.
 </p>
 <p>Return logical true if the answer is yes or false if the answer is no.
-Takes one argument, <var>prompt</var>, which is the string to display when asking
+</p>
+<p>Takes one argument, <var>prompt</var>, which is the string to display when asking
 the question.  <var>prompt</var> should end in a space; <code>yes-or-no</code> adds the
 string &lsquo;<samp>(yes or no) </samp>&rsquo; to it.  The user must confirm the answer with
 <tt class="key">RET</tt> and can edit it until it has been confirmed.
@@ -149,8 +150,11 @@ carriage return.
 <a name="XREFkbhit"></a><dl>
 <dt><a name="index-kbhit"></a>Built-in Function: <em></em> <strong>kbhit</strong> <em>()</em></dt>
 <dt><a name="index-kbhit-1"></a>Built-in Function: <em></em> <strong>kbhit</strong> <em>(1)</em></dt>
-<dd><p>Read a single keystroke from the keyboard.  If called with an
-argument, don&rsquo;t wait for a keypress.  For example,
+<dd><p>Read a single keystroke from the keyboard.
+</p>
+<p>If called with an argument, don&rsquo;t wait for a keypress.
+</p>
+<p>For example,
 </p>
 <div class="example">
 <pre class="example">x = kbhit ();

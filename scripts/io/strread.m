@@ -32,8 +32,7 @@
 ## been processed.
 ##
 ## The string @var{format} describes how the words in @var{str} should be
-## parsed.
-## It may contain any combination of the following specifiers:
+## parsed.  It may contain any combination of the following specifiers:
 ##
 ## @table @code
 ## @item %s
@@ -83,20 +82,20 @@
 ## [@var{a}, @var{b}, @var{c}] = strread (@var{str}, "%s %s %f");
 ## @end example
 ##
-## Optional numeric argument @var{format_repeat} can be used for
-## limiting the number of items read:
+## Optional numeric argument @var{format_repeat} can be used for limiting the
+## number of items read:
 ##
 ## @table @asis
 ## @item -1
 ## (default) read all of the string until the end.
 ##
 ## @item N
-## Read N times @var{nargout} items.  0 (zero) is an acceptable
-## value for @var{format_repeat}.
+## Read N times @var{nargout} items.  0 (zero) is an acceptable value for
+## @var{format_repeat}.
 ## @end table
 ##
-## The behavior of @code{strread} can be changed via property-value
-## pairs.  The following properties are recognized:
+## The behavior of @code{strread} can be changed via property-value pairs.  The
+## following properties are recognized:
 ##
 ## @table @asis
 ## @item @qcode{"commentstyle"}
@@ -128,8 +127,8 @@
 ##
 ## @item @qcode{"emptyvalue"}:
 ## Value to return for empty numeric values in non-whitespace delimited data.
-## The default is NaN@.  When the data type does not support NaN
-## (int32 for example), then default is zero.
+## The default is NaN@.  When the data type does not support NaN (int32 for
+## example), then default is zero.
 ##
 ## @item @qcode{"multipledelimsasone"}
 ## Treat a series of consecutive delimiters, without whitespace in between,
@@ -145,25 +144,28 @@
 ## If false (0), return an error.
 ##
 ## @item @qcode{"whitespace"}
-## Any character in @var{value} will be interpreted as whitespace and
-## trimmed; the string defining whitespace must be enclosed in double
-## quotes for proper processing of special characters like
-## @qcode{"@xbackslashchar{}t"}.  The default value for whitespace is
-## @qcode{" @xbackslashchar{}b@xbackslashchar{}r@xbackslashchar{}n@xbackslashchar{}t"}
-## (note the space).
-## Unless whitespace is set to '' (empty) AND at least one @qcode{"%s"} format
-## conversion specifier is supplied, a space is always part of whitespace.
+## Any character in @var{value} will be interpreted as whitespace and trimmed;
+## the string defining whitespace must be enclosed in double quotes for proper
+## processing of special characters like @qcode{"@xbackslashchar{}t"}.  The
+## default value for whitespace is
+## @c Note: the next line specifically has a newline which generates a space
+## @c       in the output of qcode, but keeps the next line < 80 characters.
+## @qcode{"
+## @xbackslashchar{}b@xbackslashchar{}r@xbackslashchar{}n@xbackslashchar{}t"}
+## (note the space).  Unless whitespace is set to @qcode{""} (empty) AND at
+## least one @qcode{"%s"} format conversion specifier is supplied, a space is
+## always part of whitespace.
 ##
 ## @end table
 ##
-## When the number of words in @var{str} doesn't match an exact multiple
-## of the number of format conversion specifiers, strread's behavior
-## depends on the last character of @var{str}:
+## When the number of words in @var{str} doesn't match an exact multiple of
+## the number of format conversion specifiers, strread's behavior depends on
+## the last character of @var{str}:
 ##
 ## @table @asis
 ## @item last character = @qcode{"@xbackslashchar{}n"}
-## Data columns are padded with empty fields or Nan so that all columns
-## have equal length
+## Data columns are padded with empty fields or Nan so that all columns have
+## equal length
 ##
 ## @item last character is not @qcode{"@xbackslashchar{}n"}
 ## Data columns are not padded; strread returns columns of unequal length
@@ -701,6 +703,9 @@ function varargout = strread (str, format = "%f", varargin)
         lastline = ...
           min (num_words_per_line * format_repeat_count + m - 1, numel (words));
         data = words(m:num_words_per_line:lastline);
+        if (num_lines > format_repeat_count)
+          num_lines = format_repeat_count;
+        endif
       endif
 
       ## Map to format
@@ -877,6 +882,18 @@ endfunction
 %! a = strread ("a b c, d e, , f", "%s", "delimiter", ",");
 %! assert (a, {"a b c"; "d e"; ""; "f"});
 
+%! ## Format repeat counters w & w/o trailing EOL even within partly read files
+%!test
+%! [a, b] = strread ("10 a 20 b\n 30 c 40", "%d %s", 4);
+%! assert (a, int32 ([10; 20; 30; 40]));
+%! assert (b, {"a"; "b"; "c"});
+%! [a, b] = strread ("10 a 20 b\n 30 c 40\n", "%d %s", 4);
+%! assert (a, int32 ([10; 20; 30; 40]));
+%! assert (b, {"a"; "b"; "c"; ""});
+%! [a, b] = strread ("10 a 20 b\n 30 c 40", "%d %s", 1);
+%! assert (a, int32 (10));
+%! assert (b, {"a"});
+
 %!test
 %! ## Bug #33536
 %! [a, b, c] = strread ("1,,2", "%s%s%s", "delimiter", ",");
@@ -1038,7 +1055,7 @@ endfunction
 %! assert (b, [2; 5; 8]);
 %! assert (c, [3; 6; 9]);
 
-## Test #3 bug #42609
+## Test #4 bug #42609
 %!test
 %! [a, b, c] = strread ("1 2\n3\n4 5\n6\n7 8\n9\n", '%f %f\n%f');
 %! assert (a, [1;4;7]);

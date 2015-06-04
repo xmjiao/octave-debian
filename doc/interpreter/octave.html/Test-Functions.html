@@ -503,29 +503,37 @@ path and the user will have to remember to type
 <dt><code>assert (<var>cond</var>, <var>errmsg</var>)</code></dt>
 <dt><code>assert (<var>cond</var>, <var>errmsg</var>, &hellip;)</code></dt>
 <dt><code>assert (<var>cond</var>, <var>msg_id</var>, <var>errmsg</var>, &hellip;)</code></dt>
-<dd><p>Called with a single argument <var>cond</var>, <code>assert</code> produces an
-error if <var>cond</var> is false (numeric zero).  Any additional arguments are
-passed to the <code>error</code> function for processing.
+<dd><p>Called with a single argument <var>cond</var>, <code>assert</code> produces an error if
+<var>cond</var> is false (numeric zero).
+</p>
+<p>Any additional arguments are passed to the <code>error</code> function for
+processing.
 </p>
 </dd>
 <dt><code>assert (<var>observed</var>, <var>expected</var>)</code></dt>
-<dd><p>Produce an error if observed is not the same as expected.  Note that
-<var>observed</var> and <var>expected</var> can be scalars, vectors, matrices,
-strings, cell arrays, or structures.
+<dd><p>Produce an error if observed is not the same as expected.
+</p>
+<p>Note that <var>observed</var> and <var>expected</var> can be scalars, vectors,
+matrices, strings, cell arrays, or structures.
 </p>
 </dd>
 <dt><code>assert (<var>observed</var>, <var>expected</var>, <var>tol</var>)</code></dt>
 <dd><p>Produce an error if observed is not the same as expected but equality
 comparison for numeric data uses a tolerance <var>tol</var>.
-If <var>tol</var> is positive then it is an absolute tolerance which will produce
+</p>
+<p>If <var>tol</var> is positive then it is an absolute tolerance which will produce
 an error if <code>abs (<var>observed</var> - <var>expected</var>) &gt; abs (<var>tol</var>)</code>.
-If <var>tol</var> is negative then it is a relative tolerance which will produce
+</p>
+<p>If <var>tol</var> is negative then it is a relative tolerance which will produce
 an error if <code>abs (<var>observed</var> - <var>expected</var>) &gt;
 abs (<var>tol</var> * <var>expected</var>)</code>.
-If <var>expected</var> is zero <var>tol</var> will always be interpreted as an
-absolute tolerance.  If <var>tol</var> is not scalar its dimensions must agree
-with those of <var>observed</var> and <var>expected</var> and tests are performed on
-an element-by-element basis.
+</p>
+<p>If <var>expected</var> is zero <var>tol</var> will always be interpreted as an
+absolute tolerance.
+</p>
+<p>If <var>tol</var> is not scalar its dimensions must agree with those of
+<var>observed</var> and <var>expected</var> and tests are performed on an
+element-by-element basis.
 </p></dd>
 </dl>
 
@@ -565,8 +573,8 @@ specified in <var>pattern</var> then the message produced is:
 
 <p>The angle brackets are not part of the output.
 </p>
-<p>When called with the <code>&quot;warning&quot;</code> option <code>fail</code> will produce
-an error if executing the code produces no warning.
+<p>When called with the <code>&quot;warning&quot;</code> option <code>fail</code> will produce an
+error if executing the code produces no warning.
 </p>
 <p><strong>See also:</strong> <a href="#XREFassert">assert</a>, <a href="Raising-Errors.html#XREFerror">error</a>.
 </p></dd></dl>

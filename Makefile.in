@@ -104,10 +104,11 @@ DIST_COMMON = $(srcdir)/build-aux/common.mk $(srcdir)/m4/module.mk \
 	$(top_srcdir)/configure $(am__configure_deps) \
 	$(srcdir)/config.in.h $(srcdir)/oct-conf-post.in.h \
 	$(top_srcdir)/liboctave/cruft/mkf77def.in \
-	$(octinclude_HEADERS) COPYING ChangeLog NEWS README \
+	$(octinclude_HEADERS) COPYING ChangeLog INSTALL NEWS README \
 	build-aux/compile build-aux/config.guess build-aux/config.sub \
-	build-aux/install-sh build-aux/missing build-aux/ltmain.sh \
-	$(top_srcdir)/build-aux/compile \
+	build-aux/depcomp build-aux/install-sh build-aux/mdate-sh \
+	build-aux/missing build-aux/texinfo.tex build-aux/ylwrap \
+	build-aux/ltmain.sh $(top_srcdir)/build-aux/compile \
 	$(top_srcdir)/build-aux/config.guess \
 	$(top_srcdir)/build-aux/config.sub \
 	$(top_srcdir)/build-aux/install-sh \

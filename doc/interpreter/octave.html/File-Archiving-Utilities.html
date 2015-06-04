@@ -77,12 +77,12 @@ than the one where <var>bzfile</var> is located.
 <dt><a name="index-gzip-1"></a>Function File: <em><var>filelist</var> =</em> <strong>gzip</strong> <em>(<var>files</var>, <var>dir</var>)</em></dt>
 <dd><p>Compress the list of files and directories specified in <var>files</var>.
 </p>
-<p><var>files</var> is a character array or cell array of strings.  Shell
-wildcards in the filename such as &lsquo;<samp>*</samp>&rsquo; or &lsquo;<samp>?</samp>&rsquo; are accepted and
-expanded.  Each file is compressed separately and a new file with a
-<samp>&quot;.gz&quot;</samp> extension is created.  The original files are not modified,
-but existing compressed files will be silently overwritten.  If a directory
-is specified then <code>gzip</code> recursively compresses all files in the
+<p><var>files</var> is a character array or cell array of strings.  Shell wildcards
+in the filename such as &lsquo;<samp>*</samp>&rsquo; or &lsquo;<samp>?</samp>&rsquo; are accepted and expanded.
+Each file is compressed separately and a new file with a <samp>&quot;.gz&quot;</samp>
+extension is created.  The original files are not modified, but existing
+compressed files will be silently overwritten.  If a directory is
+specified then <code>gzip</code> recursively compresses all files in the
 directory.
 </p>
 <p>If <var>dir</var> is defined the compressed files are placed in this directory,
@@ -118,10 +118,10 @@ than the one where <var>gzfile</var> is located.
 <dd><p>Pack the list of files and directories specified in <var>files</var> into the
 TAR archive <var>tarfile</var>.
 </p>
-<p><var>files</var> is a character array or cell array of strings.  Shell
-wildcards in the filename such as &lsquo;<samp>*</samp>&rsquo; or &lsquo;<samp>?</samp>&rsquo; are accepted and
-expanded.  Directories are recursively traversed and all files are added to
-the archive.
+<p><var>files</var> is a character array or cell array of strings.  Shell wildcards
+in the filename such as &lsquo;<samp>*</samp>&rsquo; or &lsquo;<samp>?</samp>&rsquo; are accepted and expanded.
+Directories are recursively traversed and all files are added to the
+archive.
 </p>
 <p>If <var>rootdir</var> is defined then any files without absolute pathnames are
 located relative to <var>rootdir</var> rather than the current directory.
@@ -190,8 +190,8 @@ than the one where <var>zipfile</var> is located.
 <var>dir</var>.
 </p>
 <p>If <var>file</var> is a list of strings, then each file is unpacked
-individually.  Shell wildcards in the filename such as &lsquo;<samp>*</samp>&rsquo; or &lsquo;<samp>?</samp>&rsquo;
-are accepted and expanded.
+individually.  Shell wildcards in the filename such as &lsquo;<samp>*</samp>&rsquo; or
+&lsquo;<samp>?</samp>&rsquo; are accepted and expanded.
 </p>
 <p>If <var>dir</var> is not specified or is empty (<code>[]</code>), it defaults to the
 current directory.  If a directory is in the file list, then <var>filetype</var>
@@ -249,11 +249,11 @@ corresponds to a known extension.
 <dt><a name="index-bzip2-1"></a>Function File: <em><var>filelist</var> =</em> <strong>bzip2</strong> <em>(<var>files</var>, <var>dir</var>)</em></dt>
 <dd><p>Compress the list of files specified in <var>files</var>.
 </p>
-<p><var>files</var> is a character array or cell array of strings.  Shell
-wildcards in the filename such as &lsquo;<samp>*</samp>&rsquo; or &lsquo;<samp>?</samp>&rsquo; are accepted and
-expanded.  Each file is compressed separately and a new file with a
-<samp>&quot;.bz2&quot;</samp> extension is created.  The original files are not modified,
-but existing compressed files will be silently overwritten.
+<p><var>files</var> is a character array or cell array of strings.  Shell wildcards
+in the filename such as &lsquo;<samp>*</samp>&rsquo; or &lsquo;<samp>?</samp>&rsquo; are accepted and expanded.
+Each file is compressed separately and a new file with a <samp>&quot;.bz2&quot;</samp>
+extension is created.  The original files are not modified, but existing
+compressed files will be silently overwritten.
 </p>
 <p>If <var>dir</var> is defined the compressed files are placed in this directory,
 rather than the original directory where the uncompressed file resides.

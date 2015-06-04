@@ -513,27 +513,35 @@ Produce an error if the specified condition is not met.
 @itemx assert (@var{cond}, @var{errmsg})
 @itemx assert (@var{cond}, @var{errmsg}, @dots{})
 @itemx assert (@var{cond}, @var{msg_id}, @var{errmsg}, @dots{})
-Called with a single argument @var{cond}, @code{assert} produces an
-error if @var{cond} is false (numeric zero).  Any additional arguments are
-passed to the @code{error} function for processing.
+Called with a single argument @var{cond}, @code{assert} produces an error if
+@var{cond} is false (numeric zero).
+
+Any additional arguments are passed to the @code{error} function for
+processing.
 
 @item assert (@var{observed}, @var{expected})
-Produce an error if observed is not the same as expected.  Note that
-@var{observed} and @var{expected} can be scalars, vectors, matrices,
-strings, cell arrays, or structures.
+Produce an error if observed is not the same as expected.
+
+Note that @var{observed} and @var{expected} can be scalars, vectors,
+matrices, strings, cell arrays, or structures.
 
 @item assert (@var{observed}, @var{expected}, @var{tol})
 Produce an error if observed is not the same as expected but equality
 comparison for numeric data uses a tolerance @var{tol}.
+
 If @var{tol} is positive then it is an absolute tolerance which will produce
 an error if @code{abs (@var{observed} - @var{expected}) > abs (@var{tol})}.
+
 If @var{tol} is negative then it is a relative tolerance which will produce
 an error if @code{abs (@var{observed} - @var{expected}) >
 abs (@var{tol} * @var{expected})}.
+
 If @var{expected} is zero @var{tol} will always be interpreted as an
-absolute tolerance.  If @var{tol} is not scalar its dimensions must agree
-with those of @var{observed} and @var{expected} and tests are performed on
-an element-by-element basis.
+absolute tolerance.
+
+If @var{tol} is not scalar its dimensions must agree with those of
+@var{observed} and @var{expected} and tests are performed on an
+element-by-element basis.
 @end table
 @seealso{@ref{XREFfail,,fail}, @ref{XREFtest,,test}, @ref{XREFerror,,error}, @ref{XREFisequal,,isequal}}
 @end deftypefn
@@ -574,8 +582,8 @@ specified in @var{pattern} then the message produced is:
 
 The angle brackets are not part of the output.
 
-When called with the @qcode{"warning"} option @code{fail} will produce
-an error if executing the code produces no warning.
+When called with the @qcode{"warning"} option @code{fail} will produce an
+error if executing the code produces no warning.
 @seealso{@ref{XREFassert,,assert}, @ref{XREFerror,,error}}
 @end deftypefn
 
@@ -591,6 +599,7 @@ an error if executing the code produces no warning.
 @deftypefnx {Function File} {} demo ("@var{name}", @var{n})
 
 Run example code block @var{n} associated with the function @var{name}.
+
 If @var{n} is not specified, all examples are run.
 
 The preferred location for example code blocks is embedded within the script
@@ -629,20 +638,19 @@ large demo with the code
 @end example
 
 @noindent
-between the sections, but this usage is discouraged.  Other techniques
-to avoid multiple initialization blocks include using multiple plots
-with a new @code{figure} command between each plot, or using @code{subplot}
-to put multiple plots in the same window.
+between the sections, but this usage is discouraged.  Other techniques to
+avoid multiple initialization blocks include using multiple plots with a new
+@code{figure} command between each plot, or using @code{subplot} to put
+multiple plots in the same window.
 
-Finally, because @code{demo} evaluates within a function context it is
-not possible to define new functions within the code.  Anonymous functions
-make a good substitute in most instances.  If function blocks
-@strong{must} be used then the code @code{eval (example ("function", n))}
-will allow Octave to see them.  This has its own problems, however, as
-@code{eval} only evaluates one line or statement at a time.  In this case
-the function declaration must be wrapped with
-@qcode{"if 1 <demo stuff> endif"} where @qcode{"if"} is on the same line
-as @qcode{"demo"}.  For example:
+Finally, because @code{demo} evaluates within a function context it is not
+possible to define new functions within the code.  Anonymous functions make
+a good substitute in most instances.  If function blocks @strong{must} be
+used then the code @code{eval (example ("function", n))} will allow Octave
+to see them.  This has its own problems, however, as @code{eval} only
+evaluates one line or statement at a time.  In this case the function
+declaration must be wrapped with @qcode{"if 1 <demo stuff> endif"} where
+@qcode{"if"} is on the same line as @qcode{"demo"}.  For example:
 
 @example
 @group
@@ -668,8 +676,9 @@ as @qcode{"demo"}.  For example:
 @deftypefnx {Function File} {[@var{s}, @var{idx}] =} example (@dots{})
 
 Display the code for example @var{n} associated with the function
-@var{name}, but do not run it.  If @var{n} is not specified, all examples
-are displayed.
+@var{name}, but do not run it.
+
+If @var{n} is not specified, all examples are displayed.
 
 When called with output arguments, the examples are returned in the form of
 a string @var{s}, with @var{idx} indicating the ending position of the
@@ -689,8 +698,8 @@ Execute built-in demos for all m-files in the specified @var{directory}.
 Demo blocks in any C++ source files (@file{*.cc}) will also be executed
 for use with dynamically linked oct-file functions.
 
-If no directory is specified, operate on all directories in Octave's
-search path for functions.
+If no directory is specified, operate on all directories in Octave's search
+path for functions.
 @seealso{@ref{XREFdemo,,demo}, @ref{XREFruntests,,runtests}, @ref{XREFpath,,path}}
 @end deftypefn
 
@@ -704,8 +713,8 @@ Execute built-in tests for all m-files in the specified @var{directory}.
 Test blocks in any C++ source files (@file{*.cc}) will also be executed
 for use with dynamically linked oct-file functions.
 
-If no directory is specified, operate on all directories in Octave's
-search path for functions.
+If no directory is specified, operate on all directories in Octave's search
+path for functions.
 @seealso{@ref{XREFrundemos,,rundemos}, @ref{XREFtest,,test}, @ref{XREFpath,,path}}
 @end deftypefn
 
@@ -716,12 +725,14 @@ search path for functions.
 @deftypefnx {Function File} {[@var{order}, @var{n}, @var{T_f}, @var{T_f2}] =} speed (@dots{})
 
 Determine the execution time of an expression (@var{f}) for various input
-values (@var{n}).  The @var{n} are log-spaced from 1 to @var{max_n}.  For
-each @var{n}, an initialization expression (@var{init}) is computed to
-create any data needed for the test.  If a second expression (@var{f2}) is
-given then the execution times of the two expressions are compared.  When
-called without output arguments the results are printed to stdout and
-displayed graphically.
+values (@var{n}).
+
+The @var{n} are log-spaced from 1 to @var{max_n}.  For each @var{n}, an
+initialization expression (@var{init}) is computed to create any data needed
+for the test.  If a second expression (@var{f2}) is given then the
+execution times of the two expressions are compared.  When called without
+output arguments the results are printed to stdout and displayed
+graphically.
 
 @table @code
 @item @var{f}
@@ -733,10 +744,10 @@ use @code{[min_n, max_n]} or specify the @var{n} exactly with
 @code{[n1, n2, @dots{}, nk]}.
 
 @item @var{init}
-Initialization expression for function argument values.  Use @var{k}
-for the test number and @var{n} for the size of the test.  This should
-compute values for all variables used by @var{f}.  Note that @var{init} will
-be evaluated first for @math{k = 0}, so things which are constant throughout
+Initialization expression for function argument values.  Use @var{k} for
+the test number and @var{n} for the size of the test.  This should compute
+values for all variables used by @var{f}.  Note that @var{init} will be
+evaluated first for @math{k = 0}, so things which are constant throughout
 the test series can be computed once.  The default value is
 @code{@var{x} = randn (@var{n}, 1)}.
 
@@ -751,8 +762,8 @@ If @var{tol} is negative, the tolerance is a relative one.  The default is
 @code{eps}.  If @var{tol} is @code{Inf}, then no comparison will be made.
 
 @item @var{order}
-The time complexity of the expression @math{O(a*n^p)}.  This
-is a structure with fields @code{a} and @code{p}.
+The time complexity of the expression @math{O(a*n^p)}.  This is a
+structure with fields @code{a} and @code{p}.
 
 @item @var{n}
 The values @var{n} for which the expression was calculated @strong{AND}
@@ -767,17 +778,15 @@ If required, the mean time ratio is simply @code{mean (T_f ./ T_f2)}.
 
 @end table
 
-The slope of the execution time graph shows the approximate
-power of the asymptotic running time @math{O(n^p)}.  This
-power is plotted for the region over which it is approximated
-(the latter half of the graph).  The estimated power is not
-very accurate, but should be sufficient to determine the
-general order of an algorithm.  It should indicate if, for
-example, the implementation is unexpectedly @math{O(n^2)}
-rather than @math{O(n)} because it extends a vector each
-time through the loop rather than pre-allocating storage.
-In the current version of Octave, the following is not the
-expected @math{O(n)}.
+The slope of the execution time graph shows the approximate power of the
+asymptotic running time @math{O(n^p)}.  This power is plotted for the
+region over which it is approximated (the latter half of the graph).  The
+estimated power is not very accurate, but should be sufficient to
+determine the general order of an algorithm.  It should indicate if, for
+example, the implementation is unexpectedly @math{O(n^2)} rather than
+@math{O(n)} because it extends a vector each time through the loop rather
+than pre-allocating storage.  In the current version of Octave, the
+following is not the expected @math{O(n)}.
 
 @example
 speed ("for i = 1:n, y@{i@} = x(i); endfor", "", [1000, 10000])
@@ -793,21 +802,19 @@ speed ("for i = 1:n, y@{i@} = x(i); endfor", ...
 @end group
 @end example
 
-An attempt is made to approximate the cost of individual
-operations, but it is wildly inaccurate.  You can improve the
-stability somewhat by doing more work for each @code{n}.  For
-example:
+An attempt is made to approximate the cost of individual operations, but
+it is wildly inaccurate.  You can improve the stability somewhat by doing
+more work for each @code{n}.  For example:
 
 @example
 speed ("airy(x)", "x = rand (n, 10)", [10000, 100000])
 @end example
 
-When comparing two different expressions (@var{f}, @var{f2}), the slope
-of the line on the speedup ratio graph should be larger than 1 if the new
+When comparing two different expressions (@var{f}, @var{f2}), the slope of
+the line on the speedup ratio graph should be larger than 1 if the new
 expression is faster.  Better algorithms have a shallow slope.  Generally,
-vectorizing an algorithm will not change the slope of the execution
-time graph, but will shift it relative to the original.  For
-example:
+vectorizing an algorithm will not change the slope of the execution time
+graph, but will shift it relative to the original.  For example:
 
 @example
 @group
@@ -830,12 +837,12 @@ speed ("xcorr (x, 15)", "x = rand (20+n, 1);", 100,
 @end group
 @end example
 
-Assuming one of the two versions is in xcorr_orig, this
-would compare their speed and their output values.  Note that the
-FFT version is not exact, so one must specify an acceptable tolerance on
-the comparison @code{100*eps}.  In this case, the comparison should be
-computed relatively, as @code{abs ((@var{x} - @var{y}) ./ @var{y})} rather
-than absolutely as @code{abs (@var{x} - @var{y})}.
+Assuming one of the two versions is in xcorr_orig, this would compare their
+speed and their output values.  Note that the FFT version is not exact, so
+one must specify an acceptable tolerance on the comparison @code{100*eps}.
+In this case, the comparison should be computed relatively, as
+@code{abs ((@var{x} - @var{y}) ./ @var{y})} rather than absolutely as
+@code{abs (@var{x} - @var{y})}.
 
 Type @kbd{example ("speed")} to see some real examples or
 @kbd{demo ("speed")} to run them.

@@ -18,12 +18,13 @@
 
 ## -*- texinfo -*-
 ## @deftypefn  {Command} {} hidden
-## @deftypefnx {Command} {} hidden "on"
-## @deftypefnx {Command} {} hidden "off"
+## @deftypefnx {Command} {} hidden on
+## @deftypefnx {Command} {} hidden off
 ## @deftypefnx {Function File} {@var{mode} =} hidden (@dots{})
 ## Control mesh hidden line removal.
 ##
 ## When called with no argument the hidden line removal state is toggled.
+##
 ## When called with one of the modes @qcode{"on"} or @qcode{"off"} the state
 ## is set accordingly.
 ##

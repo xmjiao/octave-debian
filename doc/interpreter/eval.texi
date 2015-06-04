@@ -34,9 +34,12 @@ been computed and stored in a string, which is exactly what the
 @deftypefn  {Built-in Function} {} eval (@var{try})
 @deftypefnx {Built-in Function} {} eval (@var{try}, @var{catch})
 Parse the string @var{try} and evaluate it as if it were an Octave
-program.  If that fails, evaluate the optional string @var{catch}.
-The string @var{try} is evaluated in the current context,
-so any results remain available after @code{eval} returns.
+program.
+
+If execution fails, evaluate the optional string @var{catch}.
+
+The string @var{try} is evaluated in the current context, so any results
+remain available after @code{eval} returns.
 
 The following example creates the variable @var{A} with the approximate
 value of 3.1416 in the current workspace.
@@ -123,8 +126,10 @@ Variables}, for a description of the @code{exist} function.
 @c feval libinterp/parse-tree/oct-parse.cc
 @anchor{XREFfeval}
 @deftypefn {Built-in Function} {} feval (@var{name}, @dots{})
-Evaluate the function named @var{name}.  Any arguments after the first
-are passed as inputs to the named function.  For example,
+Evaluate the function named @var{name}.
+
+Any arguments after the first are passed as inputs to the named function.
+For example,
 
 @example
 @group
@@ -136,11 +141,10 @@ feval ("acos", -1)
 @noindent
 calls the function @code{acos} with the argument @samp{-1}.
 
-The function @code{feval} can also be used with function handles of
-any sort (@pxref{Function Handles}).  Historically, @code{feval} was
-the only way to call user-supplied functions in strings, but
-function handles are now preferred due to the cleaner syntax they
-offer.  For example,
+The function @code{feval} can also be used with function handles of any sort
+(@pxref{Function Handles}).  Historically, @code{feval} was the only way to
+call user-supplied functions in strings, but function handles are now
+preferred due to the cleaner syntax they offer.  For example,
 
 @example
 @group
@@ -169,9 +173,9 @@ are not necessarily on the user path
 @deftypefnx {Function File} {} run ("@var{script}")
 Run @var{script} in the current workspace.
 
-Scripts which reside in directories specified in Octave's load
-path, and which end with the extension @file{".m"}, can be run simply by
-typing their name.  For scripts not located on the load path, use @code{run}.
+Scripts which reside in directories specified in Octave's load path, and
+which end with the extension @file{".m"}, can be run simply by typing
+their name.  For scripts not located on the load path, use @code{run}.
 
 The file name @var{script} can be a bare, fully qualified, or relative
 filename and with or without a file extension.  If no extension is specified,
@@ -279,9 +283,8 @@ are in the @samp{caller} context and @code{evalin} is not needed.
 @anchor{XREFevalin}
 @deftypefn  {Built-in Function} {} evalin (@var{context}, @var{try})
 @deftypefnx {Built-in Function} {} evalin (@var{context}, @var{try}, @var{catch})
-Like @code{eval}, except that the expressions are evaluated in the
-context @var{context}, which may be either @qcode{"caller"} or
-@qcode{"base"}.
+Like @code{eval}, except that the expressions are evaluated in the context
+@var{context}, which may be either @qcode{"caller"} or @qcode{"base"}.
 @seealso{@ref{XREFeval,,eval}, @ref{XREFassignin,,assignin}}
 @end deftypefn
 

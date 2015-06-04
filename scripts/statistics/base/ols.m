@@ -18,7 +18,9 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {[@var{beta}, @var{sigma}, @var{r}] =} ols (@var{y}, @var{x})
-## Ordinary least squares estimation for the multivariate model
+## Ordinary least squares estimation.
+##
+## OLS applies to the multivariate model
 ## @tex
 ## $y = x b + e$
 ## with
@@ -28,19 +30,18 @@
 ## @w{@math{y = x*b + e}} with
 ## @math{mean (e) = 0} and @math{cov (vec (e)) = kron (s, I)}.
 ## @end ifnottex
-##  where
+## where
 ## @tex
 ## $y$ is a $t \times p$ matrix, $x$ is a $t \times k$ matrix,
 ## $b$ is a $k \times p$ matrix, and $e$ is a $t \times p$ matrix.
 ## @end tex
 ## @ifnottex
-## @math{y} is a @math{t} by @math{p} matrix, @math{x} is a @math{t} by
-## @math{k} matrix, @math{b} is a @math{k} by @math{p} matrix, and
-## @math{e} is a @math{t} by @math{p} matrix.
+## @math{y} is a @math{t} by @math{p} matrix, @math{x} is a @math{t} by @math{k}
+## matrix, @math{b} is a @math{k} by @math{p} matrix, and @math{e} is a
+## @math{t} by @math{p} matrix.
 ## @end ifnottex
 ##
-## Each row of @var{y} and @var{x} is an observation and each column a
-## variable.
+## Each row of @var{y} and @var{x} is an observation and each column a variable.
 ##
 ## The return values @var{beta}, @var{sigma}, and @var{r} are defined as
 ## follows.

@@ -66,7 +66,8 @@ various ways.
 <dt><a name="index-getaudiodata-1"></a>Function File: <em><var>data</var> =</em> <strong>getaudiodata</strong> <em>(<var>recorder</var>, <var>datatype</var>)</em></dt>
 <dd><p>Return recorder audio data as a matrix with values between -1.0 and 1.0
 and with as many columns as there are channels in the recorder.
-Given the optional argument <var>datatype</var>, convert the recorded data
+</p>
+<p>Given the optional argument <var>datatype</var>, convert the recorded data
 to the specified type, which may be one of <code>&quot;double&quot;</code>,
 <code>&quot;single&quot;</code>, <code>&quot;int16&quot;</code>, <code>&quot;int8&quot;</code> or <code>&quot;uint8&quot;</code>.
 </p></dd></dl>
@@ -74,8 +75,8 @@ to the specified type, which may be one of <code>&quot;double&quot;</code>,
 
 <a name="XREF_0040audiorecorder_002fgetplayer"></a><dl>
 <dt><a name="index-getplayer"></a>Function File: <em><var>player</var> =</em> <strong>getplayer</strong> <em>(<var>recorder</var>)</em></dt>
-<dd><p>Return an audioplayer object with data recorded by the audiorecorder
-object <var>recorder</var>.
+<dd><p>Return an audioplayer object with data recorded by the audiorecorder object
+<var>recorder</var>.
 </p></dd></dl>
 
 
@@ -84,9 +85,12 @@ object <var>recorder</var>.
 <dt><a name="index-play-4"></a>Function File: <em><var>player</var> =</em> <strong>play</strong> <em>(<var>recorder</var>, <var>start</var>)</em></dt>
 <dt><a name="index-play-5"></a>Function File: <em><var>player</var> =</em> <strong>play</strong> <em>(<var>recorder</var>, [<var>start</var>, <var>end</var>])</em></dt>
 <dd><p>Play the audio recorded in <var>recorder</var> and return a corresponding
-audioplayer object.  If the optional argument <var>start</var> is
-provided, begin playing <var>start</var> seconds in to the recording.
-If the optional argument <var>end</var> is provided, stop playing at
+audioplayer object.
+</p>
+<p>If the optional argument <var>start</var> is provided, begin playing
+<var>start</var> seconds in to the recording.
+</p>
+<p>If the optional argument <var>end</var> is provided, stop playing at
 <var>end</var> seconds in the recording.
 </p></dd></dl>
 

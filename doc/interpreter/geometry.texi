@@ -115,13 +115,14 @@ The N-dimensional extension of a triangulation is called a tessellation.
 @deftypefn  {Function File} {@var{T} =} delaunayn (@var{pts})
 @deftypefnx {Function File} {@var{T} =} delaunayn (@var{pts}, @var{options})
 Compute the Delaunay triangulation for an N-dimensional set of points.
-The Delaunay triangulation is a tessellation of the convex hull of a set
-of points such that no N-sphere defined by the N-triangles contains
-any other points from the set.
+
+The Delaunay triangulation is a tessellation of the convex hull of a set of
+points such that no N-sphere defined by the N-triangles contains any other
+points from the set.
 
 The input matrix @var{pts} of size [n, dim] contains n points in a space of
-dimension dim.  The return matrix @var{T} has size [m, dim+1].  Each row
-of @var{T} contains a set of indices back into the original set of points
+dimension dim.  The return matrix @var{T} has size [m, dim+1].  Each row of
+@var{T} contains a set of indices back into the original set of points
 @var{pts} which describes a simplex of dimension dim.  For example, a 2-D
 simplex is a triangle and 3-D simplex is a tetrahedron.
 
@@ -282,10 +283,10 @@ object.
 @deftypefnx {Function File} {@var{h} =} tetramesh (@dots{})
 Display the tetrahedrons defined in the m-by-4 matrix @var{T} as 3-D patches.
 
-@var{T} is typically the output of a Delaunay triangulation
-of a 3-D set of points.  Every row of @var{T} contains four indices into
-the n-by-3 matrix @var{X} of the vertices of a tetrahedron.  Every row in
-@var{X} represents one point in 3-D space.
+@var{T} is typically the output of a Delaunay triangulation of a 3-D set
+of points.  Every row of @var{T} contains four indices into the n-by-3
+matrix @var{X} of the vertices of a tetrahedron.  Every row in @var{X}
+represents one point in 3-D space.
 
 The vector @var{C} specifies the color of each tetrahedron as an index
 into the current colormap.  The default value is 1:m where m is the number
@@ -408,20 +409,25 @@ Barycentric coordinates are not explicitly formed.
 @c tsearch libinterp/corefcn/tsearch.cc
 @anchor{XREFtsearch}
 @deftypefn {Built-in Function} {@var{idx} =} tsearch (@var{x}, @var{y}, @var{t}, @var{xi}, @var{yi})
-Search for the enclosing Delaunay convex hull.  For @code{@var{t} =
-delaunay (@var{x}, @var{y})}, finds the index in @var{t} containing the
-points @code{(@var{xi}, @var{yi})}.  For points outside the convex hull,
-@var{idx} is NaN.
+Search for the enclosing Delaunay convex hull.
+
+For @code{@var{t} = delaunay (@var{x}, @var{y})}, finds the index in @var{t}
+containing the points @code{(@var{xi}, @var{yi})}.  For points outside the
+convex hull, @var{idx} is NaN.
 @seealso{@ref{XREFdelaunay,,delaunay}, @ref{XREFdelaunayn,,delaunayn}}
 @end deftypefn
 
 
 @c tsearchn scripts/geometry/tsearchn.m
 @anchor{XREFtsearchn}
-@deftypefn {Function File} {[@var{idx}, @var{p}] =} tsearchn (@var{x}, @var{t}, @var{xi})
-Search for the enclosing Delaunay convex hull.  For @code{@var{t} =
-delaunayn (@var{x})}, finds the index in @var{t} containing the
-points @var{xi}.  For points outside the convex hull, @var{idx} is NaN.
+@deftypefn  {Function File} {@var{idx} =} tsearchn (@var{x}, @var{t}, @var{xi})
+@deftypefnx {Function File} {[@var{idx}, @var{p}] =} tsearchn (@var{x}, @var{t}, @var{xi})
+Search for the enclosing Delaunay convex hull.
+
+For @code{@var{t} = delaunayn (@var{x})}, finds the index in @var{t}
+containing the points @var{xi}.  For points outside the convex hull,
+@var{idx} is NaN.
+
 If requested @code{tsearchn} also returns the Barycentric coordinates @var{p}
 of the enclosing triangles.
 @seealso{@ref{XREFdelaunay,,delaunay}, @ref{XREFdelaunayn,,delaunayn}}
@@ -472,9 +478,10 @@ N-simplex within which the desired point is found.
 @anchor{XREFdsearch}
 @deftypefn  {Function File} {@var{idx} =} dsearch (@var{x}, @var{y}, @var{tri}, @var{xi}, @var{yi})
 @deftypefnx {Function File} {@var{idx} =} dsearch (@var{x}, @var{y}, @var{tri}, @var{xi}, @var{yi}, @var{s})
-Return the index @var{idx} or the closest point in @code{@var{x}, @var{y}}
-to the elements @code{[@var{xi}(:), @var{yi}(:)]}.  The variable @var{s} is
-accepted for compatibility but is ignored.
+Return the index @var{idx} of the closest point in @code{@var{x}, @var{y}}
+to the elements @code{[@var{xi}(:), @var{yi}(:)]}.
+
+The variable @var{s} is accepted for compatibility but is ignored.
 @seealso{@ref{XREFdsearchn,,dsearchn}, @ref{XREFtsearch,,tsearch}}
 @end deftypefn
 
@@ -485,11 +492,12 @@ accepted for compatibility but is ignored.
 @deftypefnx {Function File} {@var{idx} =} dsearchn (@var{x}, @var{tri}, @var{xi}, @var{outval})
 @deftypefnx {Function File} {@var{idx} =} dsearchn (@var{x}, @var{xi})
 @deftypefnx {Function File} {[@var{idx}, @var{d}] =} dsearchn (@dots{})
-Return the index @var{idx} or the closest point in @var{x} to the elements
-@var{xi}.  If @var{outval} is supplied, then the values of @var{xi} that are
-not contained within one of the simplices @var{tri} are set to
-@var{outval}.  Generally, @var{tri} is returned from @code{delaunayn
-(@var{x})}.
+Return the index @var{idx} of the closest point in @var{x} to the elements
+@var{xi}.
+
+If @var{outval} is supplied, then the values of @var{xi} that are not
+contained within one of the simplices @var{tri} are set to @var{outval}.
+Generally, @var{tri} is returned from @code{delaunayn (@var{x})}.
 @seealso{@ref{XREFdsearch,,dsearch}, @ref{XREFtsearch,,tsearch}}
 @end deftypefn
 
@@ -540,20 +548,23 @@ simplices of the Delaunay tessellation.
 @deftypefnx {Function File} {@var{h} =} voronoi (@dots{})
 @deftypefnx {Function File} {[@var{vx}, @var{vy}] =} voronoi (@dots{})
 Plot the Voronoi diagram of points @code{(@var{x}, @var{y})}.
-The Voronoi facets with points at infinity are not drawn.
 
-If @qcode{"linespec"} is given it is used to set the color and line style
-of the plot.  If an axis graphics handle @var{hax} is supplied then the
-Voronoi diagram is drawn on the specified axis rather than in a new
-figure.
+The Voronoi facets with points at infinity are not drawn.
 
 The @var{options} argument, which must be a string or cell array of strings,
 contains options passed to the underlying qhull command.
 See the documentation for the Qhull library for details
 @url{http://www.qhull.org/html/qh-quick.htm#options}.
 
+If @qcode{"linespec"} is given it is used to set the color and line style of
+the plot.
+
+If an axis graphics handle @var{hax} is supplied then the Voronoi diagram is
+drawn on the specified axis rather than in a new figure.
+
 If a single output argument is requested then the Voronoi diagram will be
 plotted and a graphics handle @var{h} to the plot is returned.
+
 [@var{vx}, @var{vy}] = voronoi (@dots{}) returns the Voronoi vertices
 instead of plotting the diagram.
 
@@ -576,8 +587,11 @@ legend ("", "points", "hull");
 @anchor{XREFvoronoin}
 @deftypefn  {Function File} {[@var{C}, @var{F}] =} voronoin (@var{pts})
 @deftypefnx {Function File} {[@var{C}, @var{F}] =} voronoin (@var{pts}, @var{options})
-Compute N-dimensional Voronoi facets.  The input matrix @var{pts}
-of size [n, dim] contains n points in a space of dimension dim.
+Compute N-dimensional Voronoi facets.
+
+The input matrix @var{pts} of size [n, dim] contains n points in a space of
+dimension dim.
+
 @var{C} contains the points of the Voronoi facets.  The list @var{F}
 contains, for each facet, the indices of the Voronoi points.
 
@@ -640,14 +654,15 @@ with the @code{polyarea} and @code{inpolygon} functions respectively.
 @deftypefn  {Function File} {} polyarea (@var{x}, @var{y})
 @deftypefnx {Function File} {} polyarea (@var{x}, @var{y}, @var{dim})
 
-Determine area of a polygon by triangle method.  The variables
-@var{x} and @var{y} define the vertex pairs, and must therefore have
-the same shape.  They can be either vectors or arrays.  If they are
-arrays then the columns of @var{x} and @var{y} are treated separately
-and an area returned for each.
+Determine area of a polygon by triangle method.
 
-If the optional @var{dim} argument is given, then @code{polyarea}
-works along this dimension of the arrays @var{x} and @var{y}.
+The variables @var{x} and @var{y} define the vertex pairs, and must
+therefore have the same shape.  They can be either vectors or arrays.  If
+they are arrays then the columns of @var{x} and @var{y} are treated
+separately and an area returned for each.
+
+If the optional @var{dim} argument is given, then @code{polyarea} works
+along this dimension of the arrays @var{x} and @var{y}.
 
 @end deftypefn
 
@@ -674,23 +689,22 @@ available with @code{rectint}
 @c rectint scripts/geometry/rectint.m
 @anchor{XREFrectint}
 @deftypefn {Function File} {@var{area} =} rectint (@var{a}, @var{b})
-Compute area or volume of intersection of rectangles or ND boxes.
+Compute area or volume of intersection of rectangles or N-D boxes.
 
-Compute the area of intersection of rectangles in @var{a} and
-rectangles in @var{b}.  N dimensional boxes are supported in which
-case the volume, or hypervolume is computed according to the number
-of dimensions.
+Compute the area of intersection of rectangles in @var{a} and rectangles in
+@var{b}.  N-dimensional boxes are supported in which case the volume, or
+hypervolume is computed according to the number of dimensions.
 
-2 dimensional rectangles are defined as @code{[xpos ypos width height]}
-where xpos and ypos are the position of the bottom left corner.
-Higher dimensions are supported where the coordinates for the minimum
-value of each dimension follow the length of the box in that dimension,
-e.g., @code{[xpos ypos zpos kpos @dots{} width height depth k_length @dots{}]}.
+2-dimensional rectangles are defined as @code{[xpos ypos width height]}
+where xpos and ypos are the position of the bottom left corner.  Higher
+dimensions are supported where the coordinates for the minimum value of each
+dimension follow the length of the box in that dimension, e.g.,
+@code{[xpos ypos zpos kpos @dots{} width height depth k_length @dots{}]}.
 
 Each row of @var{a} and @var{b} define a rectangle, and if both define
-multiple rectangles, then the output, @var{area}, is a matrix where
-the i-th row corresponds to the i-th row of a and the j-th column
-corresponds to the j-th row of b.
+multiple rectangles, then the output, @var{area}, is a matrix where the i-th
+row corresponds to the i-th row of a and the j-th column corresponds to the
+j-th row of b.
 
 @seealso{@ref{XREFpolyarea,,polyarea}}
 @end deftypefn
@@ -705,9 +719,10 @@ For a polygon defined by vertex points @code{(@var{xv}, @var{yv})}, return
 true if the points @code{(@var{x}, @var{y})} are inside (or on the boundary)
 of the polygon; Otherwise, return false.
 
-The variables @var{x}, @var{y}, must have the same dimension.  The optional
-output @var{on} returns true if the points are exactly on the polygon
-edge, and false otherwise.
+The input variables @var{x} and @var{y}, must have the same dimension.
+
+The optional output @var{on} returns true if the points are exactly on the
+polygon edge, and false otherwise.
 @seealso{@ref{XREFdelaunay,,delaunay}}
 @end deftypefn
 
@@ -774,8 +789,11 @@ default arguments in @var{options}.  Use a null string to pass no arguments.
 @deftypefn  {Loadable Function} {@var{h} =} convhulln (@var{pts})
 @deftypefnx {Loadable Function} {@var{h} =} convhulln (@var{pts}, @var{options})
 @deftypefnx {Loadable Function} {[@var{h}, @var{v}] =} convhulln (@dots{})
-Compute the convex hull of the set of points @var{pts} which is a matrix
-of size [n, dim] containing n points in a space of dimension dim.
+Compute the convex hull of the set of points @var{pts}.
+
+@var{pts} is a matrix of size [n, dim] containing n points in a space of
+dimension dim.
+
 The hull @var{h} is an index vector into the set of points and specifies
 which points form the enclosing hull.
 
@@ -843,12 +861,13 @@ interpolation are @code{griddata}, @code{griddata3} and @code{griddatan}.
 @deftypefnx {Function File} {[@var{xi}, @var{yi}, @var{zi}] =} griddata (@dots{})
 
 Generate a regular mesh from irregular data using interpolation.
-The function is defined by @code{@var{z} = f (@var{x}, @var{y})}.
-Inputs @code{@var{x}, @var{y}, @var{z}} are vectors of the same length
-or @code{@var{x}, @var{y}} are vectors and @code{@var{z}} is matrix.
 
-The interpolation points are all @code{(@var{xi}, @var{yi})}.  If
-@var{xi}, @var{yi} are vectors then they are made into a 2-D mesh.
+The function is defined by @code{@var{z} = f (@var{x}, @var{y})}.  Inputs
+@code{@var{x}, @var{y}, @var{z}} are vectors of the same length or
+@code{@var{x}, @var{y}} are vectors and @code{@var{z}} is matrix.
+
+The interpolation points are all @code{(@var{xi}, @var{yi})}.  If @var{xi},
+@var{yi} are vectors then they are made into a 2-D mesh.
 
 The interpolation method can be @qcode{"nearest"}, @qcode{"cubic"} or
 @qcode{"linear"}.  If method is omitted it defaults to @qcode{"linear"}.
@@ -863,6 +882,7 @@ The interpolation method can be @qcode{"nearest"}, @qcode{"cubic"} or
 @deftypefnx {Function File} {@var{vi} =} griddata3 (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi}, @var{method}, @var{options})
 
 Generate a regular mesh from irregular data using interpolation.
+
 The function is defined by @code{@var{v} = f (@var{x}, @var{y}, @var{z})}.
 The interpolation points are specified by @var{xi}, @var{yi}, @var{zi}.
 
@@ -884,6 +904,7 @@ values.
 @deftypefnx {Function File} {@var{yi} =} griddatan (@var{x}, @var{y}, @var{xi}, @var{method}, @var{options})
 
 Generate a regular mesh from irregular data using interpolation.
+
 The function is defined by @code{@var{y} = f (@var{x})}.
 The interpolation points are all @var{xi}.
 

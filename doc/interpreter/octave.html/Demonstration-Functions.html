@@ -65,7 +65,8 @@ Previous: <a href="Test-Functions.html#Test-Functions" accesskey="p" rel="prev">
 <dt><a name="index-demo-3"></a>Function File: <em></em> <strong>demo</strong> <em>(&quot;<var>name</var>&quot;, <var>n</var>)</em></dt>
 <dd>
 <p>Run example code block <var>n</var> associated with the function <var>name</var>.
-If <var>n</var> is not specified, all examples are run.
+</p>
+<p>If <var>n</var> is not specified, all examples are run.
 </p>
 <p>The preferred location for example code blocks is embedded within the script
 m-file immediately following the code that it exercises.  Alternatively,
@@ -100,20 +101,19 @@ large demo with the code
 <pre class="example">%! input (&quot;Press &lt;enter&gt; to continue: &quot;, &quot;s&quot;);
 </pre></div>
 
-<p>between the sections, but this usage is discouraged.  Other techniques
-to avoid multiple initialization blocks include using multiple plots
-with a new <code>figure</code> command between each plot, or using <code>subplot</code>
-to put multiple plots in the same window.
+<p>between the sections, but this usage is discouraged.  Other techniques to
+avoid multiple initialization blocks include using multiple plots with a new
+<code>figure</code> command between each plot, or using <code>subplot</code> to put
+multiple plots in the same window.
 </p>
-<p>Finally, because <code>demo</code> evaluates within a function context it is
-not possible to define new functions within the code.  Anonymous functions
-make a good substitute in most instances.  If function blocks
-<strong>must</strong> be used then the code <code>eval (example (&quot;function&quot;, n))</code>
-will allow Octave to see them.  This has its own problems, however, as
-<code>eval</code> only evaluates one line or statement at a time.  In this case
-the function declaration must be wrapped with
-<code>&quot;if 1 &lt;demo stuff&gt; endif&quot;</code> where <code>&quot;if&quot;</code> is on the same line
-as <code>&quot;demo&quot;</code>.  For example:
+<p>Finally, because <code>demo</code> evaluates within a function context it is not
+possible to define new functions within the code.  Anonymous functions make
+a good substitute in most instances.  If function blocks <strong>must</strong> be
+used then the code <code>eval (example (&quot;function&quot;, n))</code> will allow Octave
+to see them.  This has its own problems, however, as <code>eval</code> only
+evaluates one line or statement at a time.  In this case the function
+declaration must be wrapped with <code>&quot;if 1 &lt;demo stuff&gt; endif&quot;</code> where
+<code>&quot;if&quot;</code> is on the same line as <code>&quot;demo&quot;</code>.  For example:
 </p>
 <div class="example">
 <pre class="example">%!demo if 1
@@ -137,8 +137,9 @@ as <code>&quot;demo&quot;</code>.  For example:
 <dt><a name="index-example-4"></a>Function File: <em>[<var>s</var>, <var>idx</var>] =</em> <strong>example</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Display the code for example <var>n</var> associated with the function
-<var>name</var>, but do not run it.  If <var>n</var> is not specified, all examples
-are displayed.
+<var>name</var>, but do not run it.
+</p>
+<p>If <var>n</var> is not specified, all examples are displayed.
 </p>
 <p>When called with output arguments, the examples are returned in the form of
 a string <var>s</var>, with <var>idx</var> indicating the ending position of the
@@ -158,8 +159,8 @@ various examples.
 <p>Demo blocks in any C++ source files (<samp>*.cc</samp>) will also be executed
 for use with dynamically linked oct-file functions.
 </p>
-<p>If no directory is specified, operate on all directories in Octave&rsquo;s
-search path for functions.
+<p>If no directory is specified, operate on all directories in Octave&rsquo;s search
+path for functions.
 </p>
 <p><strong>See also:</strong> <a href="#XREFdemo">demo</a>, <a href="#XREFruntests">runtests</a>, <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>.
 </p></dd></dl>
@@ -173,8 +174,8 @@ search path for functions.
 <p>Test blocks in any C++ source files (<samp>*.cc</samp>) will also be executed
 for use with dynamically linked oct-file functions.
 </p>
-<p>If no directory is specified, operate on all directories in Octave&rsquo;s
-search path for functions.
+<p>If no directory is specified, operate on all directories in Octave&rsquo;s search
+path for functions.
 </p>
 <p><strong>See also:</strong> <a href="#XREFrundemos">rundemos</a>, <a href="Test-Functions.html#XREFtest">test</a>, <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>.
 </p></dd></dl>
@@ -185,12 +186,14 @@ search path for functions.
 <dt><a name="index-speed-1"></a>Function File: <em>[<var>order</var>, <var>n</var>, <var>T_f</var>, <var>T_f2</var>] =</em> <strong>speed</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Determine the execution time of an expression (<var>f</var>) for various input
-values (<var>n</var>).  The <var>n</var> are log-spaced from 1 to <var>max_n</var>.  For
-each <var>n</var>, an initialization expression (<var>init</var>) is computed to
-create any data needed for the test.  If a second expression (<var>f2</var>) is
-given then the execution times of the two expressions are compared.  When
-called without output arguments the results are printed to stdout and
-displayed graphically.
+values (<var>n</var>).
+</p>
+<p>The <var>n</var> are log-spaced from 1 to <var>max_n</var>.  For each <var>n</var>, an
+initialization expression (<var>init</var>) is computed to create any data needed
+for the test.  If a second expression (<var>f2</var>) is given then the
+execution times of the two expressions are compared.  When called without
+output arguments the results are printed to stdout and displayed
+graphically.
 </p>
 <dl compact="compact">
 <dt><code><var>f</var></code></dt>
@@ -204,10 +207,10 @@ use <code>[min_n, max_n]</code> or specify the <var>n</var> exactly with
 </p>
 </dd>
 <dt><code><var>init</var></code></dt>
-<dd><p>Initialization expression for function argument values.  Use <var>k</var>
-for the test number and <var>n</var> for the size of the test.  This should
-compute values for all variables used by <var>f</var>.  Note that <var>init</var> will
-be evaluated first for <em>k = 0</em>, so things which are constant throughout
+<dd><p>Initialization expression for function argument values.  Use <var>k</var> for
+the test number and <var>n</var> for the size of the test.  This should compute
+values for all variables used by <var>f</var>.  Note that <var>init</var> will be
+evaluated first for <em>k = 0</em>, so things which are constant throughout
 the test series can be computed once.  The default value is
 <code><var>x</var> = randn (<var>n</var>, 1)</code>.
 </p>
@@ -225,8 +228,8 @@ If <var>tol</var> is negative, the tolerance is a relative one.  The default is
 </p>
 </dd>
 <dt><code><var>order</var></code></dt>
-<dd><p>The time complexity of the expression <em>O(a*n^p)</em>.  This
-is a structure with fields <code>a</code> and <code>p</code>.
+<dd><p>The time complexity of the expression <em>O(a*n^p)</em>.  This is a
+structure with fields <code>a</code> and <code>p</code>.
 </p>
 </dd>
 <dt><code><var>n</var></code></dt>
@@ -245,17 +248,15 @@ If required, the mean time ratio is simply <code>mean (T_f ./ T_f2)</code>.
 </dd>
 </dl>
 
-<p>The slope of the execution time graph shows the approximate
-power of the asymptotic running time <em>O(n^p)</em>.  This
-power is plotted for the region over which it is approximated
-(the latter half of the graph).  The estimated power is not
-very accurate, but should be sufficient to determine the
-general order of an algorithm.  It should indicate if, for
-example, the implementation is unexpectedly <em>O(n^2)</em>
-rather than <em>O(n)</em> because it extends a vector each
-time through the loop rather than pre-allocating storage.
-In the current version of Octave, the following is not the
-expected <em>O(n)</em>.
+<p>The slope of the execution time graph shows the approximate power of the
+asymptotic running time <em>O(n^p)</em>.  This power is plotted for the
+region over which it is approximated (the latter half of the graph).  The
+estimated power is not very accurate, but should be sufficient to
+determine the general order of an algorithm.  It should indicate if, for
+example, the implementation is unexpectedly <em>O(n^2)</em> rather than
+<em>O(n)</em> because it extends a vector each time through the loop rather
+than pre-allocating storage.  In the current version of Octave, the
+following is not the expected <em>O(n)</em>.
 </p>
 <div class="example">
 <pre class="example">speed (&quot;for i = 1:n, y{i} = x(i); endfor&quot;, &quot;&quot;, [1000, 10000])
@@ -268,21 +269,19 @@ expected <em>O(n)</em>.
        &quot;x = rand (n, 1); y = cell (size (x));&quot;, [1000, 10000])
 </pre></div>
 
-<p>An attempt is made to approximate the cost of individual
-operations, but it is wildly inaccurate.  You can improve the
-stability somewhat by doing more work for each <code>n</code>.  For
-example:
+<p>An attempt is made to approximate the cost of individual operations, but
+it is wildly inaccurate.  You can improve the stability somewhat by doing
+more work for each <code>n</code>.  For example:
 </p>
 <div class="example">
 <pre class="example">speed (&quot;airy(x)&quot;, &quot;x = rand (n, 10)&quot;, [10000, 100000])
 </pre></div>
 
-<p>When comparing two different expressions (<var>f</var>, <var>f2</var>), the slope
-of the line on the speedup ratio graph should be larger than 1 if the new
+<p>When comparing two different expressions (<var>f</var>, <var>f2</var>), the slope of
+the line on the speedup ratio graph should be larger than 1 if the new
 expression is faster.  Better algorithms have a shallow slope.  Generally,
-vectorizing an algorithm will not change the slope of the execution
-time graph, but will shift it relative to the original.  For
-example:
+vectorizing an algorithm will not change the slope of the execution time
+graph, but will shift it relative to the original.  For example:
 </p>
 <div class="example">
 <pre class="example">speed (&quot;sum (x)&quot;, &quot;&quot;, [10000, 100000], ...
@@ -301,12 +300,12 @@ speed (&quot;xcorr (x, 15)&quot;, &quot;x = rand (20+n, 1);&quot;, 100,
        &quot;xcorr_orig (x, n)&quot;, -100*eps)
 </pre></div>
 
-<p>Assuming one of the two versions is in xcorr_orig, this
-would compare their speed and their output values.  Note that the
-FFT version is not exact, so one must specify an acceptable tolerance on
-the comparison <code>100*eps</code>.  In this case, the comparison should be
-computed relatively, as <code>abs ((<var>x</var> - <var>y</var>) ./ <var>y</var>)</code> rather
-than absolutely as <code>abs (<var>x</var> - <var>y</var>)</code>.
+<p>Assuming one of the two versions is in xcorr_orig, this would compare their
+speed and their output values.  Note that the FFT version is not exact, so
+one must specify an acceptable tolerance on the comparison <code>100*eps</code>.
+In this case, the comparison should be computed relatively, as
+<code>abs ((<var>x</var> - <var>y</var>) ./ <var>y</var>)</code> rather than absolutely as
+<code>abs (<var>x</var> - <var>y</var>)</code>.
 </p>
 <p>Type <kbd>example (&quot;speed&quot;)</kbd> to see some real examples or
 <kbd>demo (&quot;speed&quot;)</kbd> to run them.

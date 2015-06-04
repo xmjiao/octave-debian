@@ -21,6 +21,77 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Table of Output Conversions,  Next: Integer Conversions,  Prev: Output Conversion Syntax,  Up: C-Style I/O Functions
+
+14.2.7 Table of Output Conversions
+----------------------------------
+
+Here is a table summarizing what all the different conversions do:
+
+'%d', '%i'
+     Print an integer as a signed decimal number.  *Note Integer
+     Conversions::, for details.  '%d' and '%i' are synonymous for
+     output, but are different when used with 'scanf' for input (*note
+     Table of Input Conversions::).
+
+'%o'
+     Print an integer as an unsigned octal number.  *Note Integer
+     Conversions::, for details.
+
+'%u'
+     Print an integer as an unsigned decimal number.  *Note Integer
+     Conversions::, for details.
+
+'%x', '%X'
+     Print an integer as an unsigned hexadecimal number.  '%x' uses
+     lowercase letters and '%X' uses uppercase.  *Note Integer
+     Conversions::, for details.
+
+'%f'
+     Print a floating-point number in normal (fixed-point) notation.
+     *Note Floating-Point Conversions::, for details.
+
+'%e', '%E'
+     Print a floating-point number in exponential notation.  '%e' uses
+     lowercase letters and '%E' uses uppercase.  *Note Floating-Point
+     Conversions::, for details.
+
+'%g', '%G'
+     Print a floating-point number in either normal (fixed-point) or
+     exponential notation, whichever is more appropriate for its
+     magnitude.  '%g' uses lowercase letters and '%G' uses uppercase.
+     *Note Floating-Point Conversions::, for details.
+
+'%c'
+     Print a single character.  *Note Other Output Conversions::.
+
+'%s'
+     Print a string.  *Note Other Output Conversions::.
+
+'%%'
+     Print a literal '%' character.  *Note Other Output Conversions::.
+
+   If the syntax of a conversion specification is invalid, unpredictable
+things will happen, so don't do this.  In particular, MATLAB allows a
+bare percentage sign '%' with no subsequent conversion character.
+Octave will emit an error and stop if it sees such code.  When the
+string variable to be processed cannot be guaranteed to be free of
+potential format codes it is better to use the two argument form of any
+of the 'printf' functions and set the format string to '%s'.
+Alternatively, for code which is not required to be backwards-compatible
+with MATLAB the Octave function 'puts' or 'disp' can be used.
+
+     printf (strvar);        # Unsafe if strvar contains format codes
+     printf ("%s", strvar);  # Safe
+     puts (strvar);          # Safe
+
+   If there aren't enough function arguments provided to supply values
+for all the conversion specifications in the template string, or if the
+arguments are not of the correct types, the results are unpredictable.
+If you supply more arguments than conversion specifications, the extra
+argument values are simply ignored; this is sometimes useful.
+
+
 File: octave.info,  Node: Integer Conversions,  Next: Floating-Point Conversions,  Prev: Table of Output Conversions,  Up: C-Style I/O Functions
 
 14.2.8 Integer Conversions
@@ -236,10 +307,11 @@ more 'C-like'.
  -- Built-in Function: [V1, V2, ..., COUNT, ERRMSG] = sscanf (STRING,
           TEMPLATE, "C")
      This is like 'fscanf', except that the characters are taken from
-     the string STRING instead of from a stream.  Reaching the end of
-     the string is treated as an end-of-file condition.  In addition to
-     the values returned by 'fscanf', the index of the next character to
-     be read is returned in POS.
+     the string STRING instead of from a stream.
+
+     Reaching the end of the string is treated as an end-of-file
+     condition.  In addition to the values returned by 'fscanf', the
+     index of the next character to be read is returned in POS.
 
      See also: *note fscanf: XREFfscanf, *note scanf: XREFscanf, *note
      sprintf: XREFsprintf.
@@ -672,10 +744,11 @@ be deleted, so this step need not be executed manually.
  -- Built-in Function: FNAME = tempname (DIR, PREFIX)
      Return a unique temporary file name as a string.
 
-     If PREFIX is omitted, a value of "oct-" is used.  If DIR is also
-     omitted, the default directory for temporary files ('P_tmpdir') is
-     used.  If DIR is provided, it must exist, otherwise the default
-     directory for temporary files is used.
+     If PREFIX is omitted, a value of "oct-" is used.
+
+     If DIR is also omitted, the default directory for temporary files
+     ('P_tmpdir') is used.  If DIR is provided, it must exist, otherwise
+     the default directory for temporary files is used.
 
      Programming Note: Because the named file is not opened by
      'tempname', it is possible, though relatively unlikely, that it
@@ -752,15 +825,15 @@ above code.
      If an error condition exists then return a string MSG describing
      the error.  Otherwise, return an empty string "".
 
+     The second input "clear" is optional.  If supplied, the error state
+     on the stream will be cleared.
+
      The optional second output is a numeric indication of the error
      status.  ERR is 1 if an error condition has been encountered and 0
      otherwise.
 
      Note that 'ferror' indicates if an error has already occurred, not
      whether the next operation will result in an error condition.
-
-     The second input "clear" is optional.  If supplied, the error state
-     on the stream will be cleared.
 
      See also: *note fclear: XREFfclear, *note fopen: XREFfopen.
 
@@ -772,7 +845,9 @@ above code.
 
  -- Built-in Function: freport ()
      Print a list of which files have been opened, and whether they are
-     open for reading, writing, or both.  For example:
+     open for reading, writing, or both.
+
+     For example:
 
           freport ()
 
@@ -1450,8 +1525,10 @@ Figure 15.2: Histogram.
  -- Function File: OUT_FILE = printd (...)
 
      Convert any object acceptable to 'disp' into the format selected by
-     the suffix of FILENAME.  If the return argument OUT_FILE is given,
-     the name of the created file is returned.
+     the suffix of FILENAME.
+
+     If the return argument OUT_FILE is given, the name of the created
+     file is returned.
 
      This function is intended to facilitate manipulation of the output
      of functions such as 'stemleaf'.
@@ -1678,12 +1755,12 @@ Figure 15.2: Histogram.
  -- Function File: [H, AX, BIGAX, P, PAX] = plotmatrix (...)
      Scatter plot of the columns of one matrix against another.
 
-     Given the arguments X and Y, that have a matching number of rows,
+     Given the arguments X and Y that have a matching number of rows,
      'plotmatrix' plots a set of axes corresponding to
 
           plot (X(:, i), Y(:, j))
 
-     Given a single argument X this is equivalent to
+     When called with a single argument X this is equivalent to
 
           plotmatrix (X, X)
 
@@ -1698,9 +1775,12 @@ Figure 15.2: Histogram.
 
      The optional return value H provides handles to the individual
      graphics objects in the scatter plots, whereas AX returns the
-     handles to the scatter plot axis objects.  BIGAX is a hidden axis
-     object that surrounds the other axes, such that the commands
-     'xlabel', 'title', etc., will be associated with this hidden axis.
+     handles to the scatter plot axis objects.
+
+     BIGAX is a hidden axis object that surrounds the other axes, such
+     that the commands 'xlabel', 'title', etc., will be associated with
+     this hidden axis.
+
      Finally, P returns the graphics objects associated with the
      histogram and PAX the corresponding axes objects.
 
@@ -1806,7 +1886,8 @@ two-dimensional contour plots from three-dimensional data.
      If the first argument HAX is an axes handle, then plot into this
      axis, rather than the current axes returned by 'gca'.
 
-     The optional output C are the contour levels in 'contourc' format.
+     The optional output C contains the contour levels in 'contourc'
+     format.
 
      The optional return value H is a graphics handle to the hggroup
      comprising the contour lines.
@@ -1847,7 +1928,8 @@ two-dimensional contour plots from three-dimensional data.
      If the first argument HAX is an axes handle, then plot into this
      axis, rather than the current axes returned by 'gca'.
 
-     The optional output C are the contour levels in 'contourc' format.
+     The optional output C contains the contour levels in 'contourc'
+     format.
 
      The optional return value H is a graphics handle to the hggroup
      comprising the contour lines.
@@ -1890,8 +1972,8 @@ two-dimensional contour plots from three-dimensional data.
      in which contour line N has a level (height) of LEVN and length of
      LENN.
 
-     The optional return value LEV is a vector with the Z values of of
-     the contour levels.
+     The optional return value LEV is a vector with the Z values of the
+     contour levels.
 
      Example:
 
@@ -2296,8 +2378,10 @@ Figure 15.4: Polar plot.
  -- Function File: quiver (HAX, ...)
  -- Function File: H = quiver (...)
 
+     Plot a 2-D vector field with arrows.
+
      Plot the (U, V) components of a vector field in an (X, Y) meshgrid.
-     If the grid is uniform, you can specify X and Y as vectors.
+     If the grid is uniform then X and Y can be specified as vectors.
 
      If X and Y are undefined they are assumed to be '(1:M, 1:N)' where
      '[M, N] = size (U)'.
@@ -2336,9 +2420,11 @@ Figure 15.4: Polar plot.
  -- Function File: quiver3 (HAX, ...)
  -- Function File: H = quiver3 (...)
 
+     Plot a 3-D vector field with arrows.
+
      Plot the (U, V, W) components of a vector field in an (X, Y, Z)
-     meshgrid.  If the grid is uniform, you can specify X, Y, and Z as
-     vectors.
+     meshgrid.  If the grid is uniform then X, Y, and Z can be specified
+     as vectors.
 
      If X, Y, and Z are undefined they are assumed to be '(1:M, 1:N,
      1:P)' where '[M, N] = size (U)' and 'P = max (size (W))'.
@@ -2548,8 +2634,9 @@ Figure 15.4: Polar plot.
  -- Function File: comet (X, Y, P)
  -- Function File: comet (HAX, ...)
      Produce a simple comet style animation along the trajectory
-     provided by the input coordinate vectors (X, Y).  If X is not
-     specified it defaults to the indices of Y.
+     provided by the input coordinate vectors (X, Y).
+
+     If X is not specified it defaults to the indices of Y.
 
      The speed of the comet may be controlled by P, which represents the
      time each point is displayed before moving to the next one.  The
@@ -2565,8 +2652,9 @@ Figure 15.4: Polar plot.
  -- Function File: comet3 (X, Y, Z, P)
  -- Function File: comet3 (HAX, ...)
      Produce a simple comet style animation along the trajectory
-     provided by the input coordinate vectors (X, Y, Z).  If only Z is
-     specified then X, Y default to the indices of Z.
+     provided by the input coordinate vectors (X, Y, Z).
+
+     If only Z is specified then X, Y default to the indices of Z.
 
      The speed of the comet may be controlled by P, which represents the
      time each point is displayed before moving to the next one.  The
@@ -2586,7 +2674,7 @@ Figure 15.4: Polar plot.
      Support for N-dimensional images or movies is given when F is a
      struct array.  In such cases, X will be a MxNx1xK or MxNx3xK for
      indexed and RGB movies respectively, with each frame concatenated
-     on the 4th dimension.
+     along the 4th dimension.
 
      See also: *note im2frame: XREFim2frame.
 
@@ -2599,8 +2687,8 @@ Figure 15.4: Polar plot.
 
      Support for N-dimensional images is given when each image
      projection, matrix sizes of MxN and MxNx3 for RGB images, is
-     concatenated on the fourth dimension.  In such cases, the returned
-     value is a struct array.
+     concatenated along the fourth dimension.  In such cases, the
+     returned value is a struct array.
 
      See also: *note frame2im: XREFframe2im.
 
@@ -2755,8 +2843,10 @@ individual axis limits.  Each has the same form.
      Query or set the limits of the x-axis for the current plot.
 
      Called without arguments 'xlim' returns the x-axis limits of the
-     current plot.  With the input query "mode", return the current
-     x-limit calculation mode which is either "auto" or "manual".
+     current plot.
+
+     With the input query "mode", return the current x-limit calculation
+     mode which is either "auto" or "manual".
 
      If passed a 2-element vector [X_LO X_HI], the limits of the x-axis
      are set to these values and the mode is set to "manual".
@@ -2827,11 +2917,19 @@ legend displaying the name of the plotted function.
           fplot (@cos, [0, 2*pi])
           fplot ("[cos(x), sin(x)]", [0, 2*pi])
 
-     Note: 'fplot' works best with continuous functions.  Functions with
+     Programming Notes:
+
+     'fplot' works best with continuous functions.  Functions with
      discontinuities are unlikely to plot well.  This restriction may be
      removed in the future.
 
-     See also: *note ezplot: XREFezplot, *note plot: XREFplot.
+     'fplot' requires that the function accept and return a vector
+     argument.  Consider this when writing user-defined functions and
+     use '.*', './', etc.  See the function 'vectorize' for potentially
+     converting inline or anonymous functions to vectorized versions.
+
+     See also: *note ezplot: XREFezplot, *note plot: XREFplot, *note
+     vectorize: XREFvectorize.
 
    Other functions that can create two-dimensional plots directly from a
 function include 'ezplot', 'ezcontour', 'ezcontourf' and 'ezpolar'.
@@ -3199,14 +3297,16 @@ three-dimensional plots.
      *note colormap: XREFcolormap, *note caxis: XREFcaxis.
 
  -- Command: hidden
- -- Command: hidden "on"
- -- Command: hidden "off"
+ -- Command: hidden on
+ -- Command: hidden off
  -- Function File: MODE = hidden (...)
      Control mesh hidden line removal.
 
      When called with no argument the hidden line removal state is
-     toggled.  When called with one of the modes "on" or "off" the state
-     is set accordingly.
+     toggled.
+
+     When called with one of the modes "on" or "off" the state is set
+     accordingly.
 
      The optional output argument MODE is the current state.
 
@@ -3316,7 +3416,6 @@ three-dimensional plots.
  -- Function File: surfl (..., "light")
  -- Function File: surfl (HAX, ...)
  -- Function File: H = surfl (...)
-
      Plot a 3-D surface using shading based on various lighting models.
 
      The surface mesh is plotted using shaded rectangles.  The vertices
@@ -3411,6 +3510,8 @@ three-dimensional plots.
  -- Function File: [F, V, C] = isosurface (X, Y, Z, VAL, ISO, COL)
  -- Function File: isosurface (X, Y, Z, VAL, ISO, COL, OPT)
 
+     Calculate isosurface of 3-D data.
+
      If called with one output argument and the first input argument VAL
      is a three-dimensional array that contains the data of an
      isosurface geometry and the second input argument ISO keeps the
@@ -3499,6 +3600,8 @@ three-dimensional plots.
  -- Function File: [N] = isonormals (..., "negate")
  -- Function File: isonormals (..., P)
 
+     Calculate normals to an isosurface.
+
      If called with one output argument and the first input argument VAL
      is a three-dimensional array that contains the data for an
      isosurface geometry and the second input argument V keeps the
@@ -3570,6 +3673,8 @@ three-dimensional plots.
  -- Function File: [CD] = isocolors (R, G, B, V)
  -- Function File: [CD] = isocolors (..., P)
  -- Function File: isocolors (...)
+
+     Compute isosurface colors.
 
      If called with one output argument and the first input argument C
      is a three-dimensional array that contains color values and the
@@ -3747,9 +3852,11 @@ three-dimensional plots.
  -- Function File: [Y1, Y2, ..., Yn] = ndgrid (X1, X2, ..., Xn)
  -- Function File: [Y1, Y2, ..., Yn] = ndgrid (X)
      Given n vectors X1, ..., Xn, 'ndgrid' returns n arrays of dimension
-     n.  The elements of the i-th output argument contains the elements
-     of the vector Xi repeated over all dimensions different from the
-     i-th dimension.  Calling ndgrid with only one input argument X is
+     n.
+
+     The elements of the i-th output argument contains the elements of
+     the vector Xi repeated over all dimensions different from the i-th
+     dimension.  Calling ndgrid with only one input argument X is
      equivalent to calling ndgrid with all n input arguments equal to X:
 
      [Y1, Y2, ..., Yn] = ndgrid (X, ..., X)
@@ -3914,7 +4021,7 @@ three-dimensional plots.
  -- Function File: ribbon (X, Y, WIDTH)
  -- Function File: ribbon (HAX, ...)
  -- Function File: H = ribbon (...)
-     Plot a ribbon plot for the columns of Y vs.  X.
+     Draw a ribbon plot for the columns of Y vs.  X.
 
      The optional parameter WIDTH specifies the width of a single ribbon
      (default is 0.75).  If X is omitted, a vector containing the row
@@ -4348,7 +4455,7 @@ File: octave.info,  Node: Three-dimensional Geometric Shapes,  Prev: Three-dimen
      unit z-axis.  The default is [1 1] indicating radius 1 at 'Z == 0'
      and at 'Z == 1'.
 
-     The optional input N determines the number of faces around the the
+     The optional input N determines the number of faces around the
      circumference of the cylinder.  The default value is 20.
 
      If the first argument HAX is an axes handle, then plot into this
@@ -4373,7 +4480,7 @@ File: octave.info,  Node: Three-dimensional Geometric Shapes,  Prev: Three-dimen
  -- Function File: [X, Y, Z] = sphere (...)
      Plot a 3-D unit sphere.
 
-     The optional input N determines the number of faces around the the
+     The optional input N determines the number of faces around the
      circumference of the sphere.  The default value is 20.
 
      If the first argument HAX is an axes handle, then plot into this
@@ -4402,7 +4509,7 @@ File: octave.info,  Node: Three-dimensional Geometric Shapes,  Prev: Three-dimen
      The inputs XC, YC, ZC specify the center of the ellipsoid.  The
      inputs XR, YR, ZR specify the semi-major axis lengths.
 
-     The optional input N determines the number of faces around the the
+     The optional input N determines the number of faces around the
      circumference of the cylinder.  The default value is 20.
 
      If the first argument HAX is an axes handle, then plot into this
@@ -4636,9 +4743,9 @@ objects are drawn in an invisible axes, on top of every other axes.
      *note contour3: XREFcontour3, *note meshc: XREFmeshc, *note surfc:
      XREFsurfc, *note text: XREFtext.
 
+ -- Command: box
  -- Command: box on
  -- Command: box off
- -- Command: box
  -- Function File: box (HAX, ...)
      Control display of the axis border.
 
@@ -4750,106 +4857,109 @@ objects are drawn in an invisible axes, on top of every other axes.
  -- Function File: annotation ("textbox", POS)
  -- Function File: annotation ("rectangle", POS)
  -- Function File: annotation ("ellipse", POS)
- -- Function File: annotation (HF, ...)
  -- Function File: annotation (..., PROP, VAL)
+ -- Function File: annotation (HF, ...)
  -- Function File: H = annotation (...)
      Draw annotations to emphasize parts of a figure.
 
-     You may build a default annotation specifying only the type TYPE of
-     the annotation.  Otherwise you can set the position of the
-     annotation using either X and Y coordinates for line-based
-     annotations or a position vector POS for others.  In any case,
+     You may build a default annotation by specifying only the TYPE of
+     the annotation.
+
+     Otherwise you can select the type of annotation and then set its
+     position using either X and Y coordinates for line-based
+     annotations or a position vector POS for others.  In either case,
      coordinates are interpreted using the "units" property of the
-     annotation objects: the default is "normalized", which means the
+     annotation object.  The default is "normalized", which means the
      lower left hand corner of the figure has coordinates '[0 0]' and
      the upper right hand corner '[1 1]'.
 
-     The figure on which the annotations should be drawn may be
-     specified by providing its graphics handle HF before any other
-     argument.  Otherwise annotations are drawn on the current figure.
+     If the first argument HF is a figure handle, then plot into this
+     figure, rather than the current figure returned by 'gcf'.
 
      Further arguments can be provided in the form of PROP/VAL pairs to
-     customize the annotation appearance and the units in which
-     coordinates are interpreted.  The annotation can also be customized
-     afterward using its graphics handle H and 'set' function.
+     customize the annotation appearance.
+
+     The optional return value H is a graphics handle to the created
+     annotation object.  This can be used with the 'set' function to
+     customize an existing annotation object.
 
      All annotation objects share two properties:
 
-        * "units": the units in which coordinates are interpreted.  Its
-          value may be one of "centimeters" | "characters" | "inches" |
-          "{normalized}" | "pixels" | "points".
+        * "units": the units in which coordinates are interpreted.
+          Its value may be one of "centimeters" | "characters" |
+          "inches" | "{normalized}" | "pixels" | "points".
 
-        * "position": a four elements vector [x0 y0 width height]
-          specifying the coordinates (x0,y0) of the origin of the
-          annotation object, its width and its height.  The width and
-          height may be negative, depending on the orientation of the
-          object.
+        * "position": a four-element vector [x0 y0 width height].
+          The vector specifies the coordinates (x0,y0) of the origin of
+          the annotation object, its width, and its height.  The width
+          and height may be negative, depending on the orientation of
+          the object.
 
      Valid annotation types and their specific properties are described
      below:
 
      "line"
-          Constructs a line.  X and Y must be two elements vectors
+          Constructs a line.  X and Y must be two-element vectors
           specifying the x and y coordinates of the two ends of the
           line.
 
-          The line can be customized using "linewidth", "linestyle" and
-          "color" properties the same way as with 'line' objects.
+          The line can be customized using "linewidth", "linestyle", and
+          "color" properties the same way as for 'line' objects.
 
      "arrow"
           Construct an arrow.  The second point in vectors X and Y
           specifies the arrowhead coordinates.
 
           Besides line properties, the arrowhead can be customized using
-          "headlength", "headwidth" and "headstyle" properties.
+          "headlength", "headwidth", and "headstyle" properties.
           Supported values for "headstyle" property are: ["diamond" |
           "ellipse" | "plain" | "rectangle" | "vback1" | "{vback2}" |
           "vback3"]
 
      "doublearrow"
           Construct a double arrow.  Vectors X and Y specify the
-          arrowheads coordinates.
+          arrowhead coordinates.
 
           The line and the arrowhead can be customized as for arrow
-          annotations but some property names are duplicated:
+          annotations, but some property names are duplicated:
           "head1length"/"head2length", "head1width"/"head2width", etc.
           The index 1 marks the properties of the arrowhead at the first
           point in X and Y coordinates.
 
      "textarrow"
-          Construct an arrow with a text label at the opposite of the
-          arrowhead.
+          Construct an arrow with a text label at the opposite end from
+          the arrowhead.
 
           The line and the arrowhead can be customized as for arrow
           annotations, and the text can be customized using the same
-          properties as 'text' graphics objects.  Note however that some
-          text property names are prefixed with "text" to distinguish
-          arrow and text properties: "textbackgroundcolor", "textcolor",
-          "textedgecolor", "textlinewidth", "textmargin",
+          properties as 'text' graphics objects.  Note, however, that
+          some text property names are prefixed with "text" to
+          distinguish them from arrow properties: "textbackgroundcolor",
+          "textcolor", "textedgecolor", "textlinewidth", "textmargin",
           "textrotation".
 
      "textbox"
-          Construct a box with a text inside.  POS specifies the
+          Construct a box with text inside.  POS specifies the
           "position" property of the annotation.
 
-          You may use "backgroundcolor", "edgecolor", "linestyle" ,
+          You may use "backgroundcolor", "edgecolor", "linestyle", and
           "linewidth" properties to customize the box background color
-          and edges appearance.  A limited set of 'text' objects
-          properties is also available: besides "font..." properties,
+          and edge appearance.  A limited set of 'text' objects
+          properties are also available; Besides "font..." properties,
           you may also use "horizontalalignment" and "verticalalignment"
-          to move the text inside the box.
+          to position the text inside the box.
 
-          Finally the "fitboxtotext" property controls the actual extent
-          of the box.  If "on" (the default) the box limits are fitted
-          to the text extent.
+          Finally, the "fitboxtotext" property controls the actual
+          extent of the box.  If "on" (the default) the box limits are
+          fitted to the text extent.
 
      "rectangle"
           Construct a rectangle.  POS specifies the "position" property
           of the annotation.
 
-          You may use "facecolor", "color", "linestyle" and "linewidth"
+          You may use "facecolor", "color", "linestyle", and "linewidth"
           properties to customize the rectangle background color and
-          edges appearance.
+          edge appearance.
 
      "ellipse"
           Construct an ellipse.  POS specifies the "position" property
@@ -4857,7 +4967,10 @@ objects are drawn in an invisible axes, on top of every other axes.
 
           See "rectangle" annotations for customization.
 
-     See also: *note xlabel: XREFxlabel, *note title: XREFtitle.
+     See also: *note xlabel: XREFxlabel, *note ylabel: XREFylabel, *note
+     zlabel: XREFzlabel, *note title: XREFtitle, *note text: XREFtext,
+     *note gtext: XREFgtext, *note legend: XREFlegend, *note colorbar:
+     XREFcolorbar.
 
 
 File: octave.info,  Node: Multiple Plots on One Page,  Next: Multiple Plot Windows,  Prev: Plot Annotations,  Up: High-Level Plotting
@@ -5061,8 +5174,8 @@ File: octave.info,  Node: Manipulation of Plot Objects,  Next: Manipulation of P
 
      With no arguments, toggle the current zoom mode on or off.
 
-     Given the option "xon" or "yon", enable zoom mode for the x or y
-     axis only.
+     Given the option "xon" or "yon", enable zoom mode for the x or
+     y-axis only.
 
      Given the option "out", zoom to the initial zoom setting.
 
@@ -5087,11 +5200,18 @@ plot window to be updated.
  -- Built-in Function: drawnow ()
  -- Built-in Function: drawnow ("expose")
  -- Built-in Function: drawnow (TERM, FILE, MONO, DEBUG_FILE)
-     Update figure windows and their children.  The event queue is
-     flushed and any callbacks generated are executed.  With the
-     optional argument "expose", only graphic objects are updated and no
-     other events or callbacks are processed.  The third calling form of
-     'drawnow' is for debugging and is undocumented.
+     Update figure windows and their children.
+
+     The event queue is flushed and any callbacks generated are
+     executed.
+
+     With the optional argument "expose", only graphic objects are
+     updated and no other events or callbacks are processed.
+
+     The third calling form of 'drawnow' is for debugging and is
+     undocumented.
+
+     See also: *note refresh: XREFrefresh.
 
    Only figures that are modified will be updated.  The 'refresh'
 function can also be used to cause an update of the current figure, even
@@ -5815,10 +5935,12 @@ object.
  -- Function File: hgsave (H, FILENAME, FMT)
      Save the graphics handle H to the file FILENAME in the format FMT.
 
-     If unspecified, H is the current figure as returned by 'gcf'.  When
-     FILENAME does not have an extension the default filename extension
-     '.ofig' will be appended.  If present, FMT should should be one of
-     the following:
+     If unspecified, H is the current figure as returned by 'gcf'.
+
+     When FILENAME does not have an extension the default filename
+     extension '.ofig' will be appended.
+
+     If present, FMT should be one of the following:
 
         * '-binary', '-float-binary'
 
@@ -6521,9 +6643,12 @@ returned.
  -- Built-in Function: VAL = get (H)
  -- Built-in Function: VAL = get (H, P)
      Return the value of the named property P from the graphics handle
-     H.  If P is omitted, return the complete property list for H.  If H
-     is a vector, return a cell array including the property values or
-     lists respectively.
+     H.
+
+     If P is omitted, return the complete property list for H.
+
+     If H is a vector, return a cell array including the property values
+     or lists respectively.
 
      See also: *note set: XREFset.
 
@@ -6533,8 +6658,9 @@ returned.
  -- Built-in Function: VALUE_LIST = set (H, PROPERTY)
  -- Built-in Function: ALL_VALUE_LIST = set (H)
      Set named property values for the graphics handle (or vector of
-     graphics handles) H.  There are three ways to give the property
-     names and values:
+     graphics handles) H.
+
+     There are three ways to give the property names and values:
 
         * as a comma separated list of PROPERTY, VALUE pairs
 
@@ -6587,9 +6713,10 @@ returned.
  -- Function File: PARENT = ancestor (H, TYPE)
  -- Function File: PARENT = ancestor (H, TYPE, "toplevel")
      Return the first ancestor of handle object H whose type matches
-     TYPE, where TYPE is a character string.  If TYPE is a cell array of
-     strings, return the first parent whose type matches any of the
-     given type strings.
+     TYPE, where TYPE is a character string.
+
+     If TYPE is a cell array of strings, return the first parent whose
+     type matches any of the given type strings.
 
      If the handle object H itself is of type TYPE, return H.
 
@@ -6604,9 +6731,11 @@ returned.
      Find all children, including hidden children, of a graphics object.
 
      This function is similar to 'get (h, "children")', but also returns
-     hidden objects (HandleVisibility = "off").  If HANDLES is a scalar,
-     H will be a vector.  Otherwise, H will be a cell matrix of the same
-     size as HANDLES and each cell will contain a vector of handles.
+     hidden objects (HandleVisibility = "off").
+
+     If HANDLES is a scalar, H will be a vector.  Otherwise, H will be a
+     cell matrix of the same size as HANDLES and each cell will contain
+     a vector of handles.
 
      See also: *note findall: XREFfindall, *note findobj: XREFfindobj,
      *note get: XREFget, *note set: XREFset.
@@ -6647,11 +6776,12 @@ can be made such as modifying a title or legend.
      Construct a graphics handle object H from the structure S.
 
      The structure must contain the fields "handle", "type", "children",
-     "properties", and "special".  If the handle of an existing figure
-     or axes is specified, P, the new object will be created as a child
-     of that object.  If no parent handle is provided then a new figure
-     and the necessary children will be constructed using the default
-     values from the root figure.
+     "properties", and "special".
+
+     If the handle of an existing figure or axes is specified, P, the
+     new object will be created as a child of that object.  If no parent
+     handle is provided then a new figure and the necessary children
+     will be constructed using the default values from the root figure.
 
      A third boolean argument HILEV can be passed to specify whether the
      function should preserve listeners/callbacks, e.g., for legends or
@@ -7885,249 +8015,4 @@ The 'patch' properties are:
 'ydata': vector | matrix, def. '[1; 1; 0]'
 
 'zdata': vector | matrix, def. '[](0x0)'
-
-
-File: octave.info,  Node: Surface Properties,  Prev: Patch Properties,  Up: Graphics Object Properties
-
-15.3.3.8 Surface Properties
-...........................
-
-The 'surface' properties are:
-
-'__modified__': "off" | {"on"}
-
-'alphadata': scalar | matrix, def. '1'
-     Transparency is not yet implemented for surface objects.
-     'alphadata' is unused.
-
-'alphadatamapping': "direct" | "none" | {"scaled"}
-     Transparency is not yet implemented for surface objects.
-     'alphadatamapping' is unused.
-
-'ambientstrength': def. '0.30000'
-     Light is not yet implemented for surface objects.
-     'ambientstrength' is unused.
-
-'backfacelighting': "lit" | {"reverselit"} | "unlit"
-     Light is not yet implemented for surface objects.
-     'backfacelighting' is unused.
-
-'beingdeleted': {"off"} | "on"
-
-'busyaction': "cancel" | {"queue"}
-
-'buttondownfcn': string | function handle, def. '[](0x0)'
-
-'cdata': matrix, def. 3-by-3 double
-
-'cdatamapping': "direct" | {"scaled"}
-
-'cdatasource': def. ""
-
-'children' (read-only): vector of graphics handles, def. '[](0x1)'
-     'children' is unused.
-
-'clipping': "off" | {"on"}
-     If 'clipping' is "on", the surface is clipped in its parent axes
-     limits.
-
-'createfcn': string | function handle, def. '[](0x0)'
-     Callback function executed immediately after surface has been
-     created.  Function is set by using default property on root object,
-     e.g., 'set (0, "defaultsurfacecreatefcn", 'disp ("surface
-     created!")')'.
-
-'deletefcn': string | function handle, def. '[](0x0)'
-     Callback function executed immediately before surface is deleted.
-
-'diffusestrength': def. '0.60000'
-     Light is not yet implemented for surface objects.
-     'diffusestrength' is unused.
-
-'displayname': def. ""
-     Text for the legend entry corresponding to this surface.
-
-'edgealpha': scalar, def. '1'
-     Transparency is not yet implemented for surface objects.
-     'edgealpha' is unused.
-
-'edgecolor': def. '[0 0 0]'
-
-'edgelighting': "flat" | "gouraud" | {"none"} | "phong"
-     Light is not yet implemented for surface objects.  'edgelighting'
-     is unused.
-
-'erasemode': "background" | "none" | {"normal"} | "xor"
-     'erasemode' is unused.
-
-'facealpha': scalar | matrix, def. '1'
-     Transparency is not yet implemented for surface objects.
-     'facealpha' is unused.
-
-'facecolor': {"flat"} | "interp" | "none" | "texturemap"
-
-'facelighting': "flat" | "gouraud" | {"none"} | "phong"
-     Light is not yet implemented for surface objects.  'facelighting'
-     is unused.
-
-'handlevisibility': "callback" | "off" | {"on"}
-     If 'handlevisibility' is "off", the surface's handle is not visible
-     in its parent's "children" property.
-
-'hittest': "off" | {"on"}
-
-'interpreter': "latex" | "none" | {"tex"}
-
-'interruptible': "off" | {"on"}
-
-'linestyle': {"-"} | "-" | "-." | ":" | "none"
-     *Note Line Styles::.
-
-'linewidth': def. '0.50000'
-     *Note line linewidth property: XREFlinelinewidth.
-
-'marker': "*" | "+" | "." | "<" | ">" | "^" | "d" | "diamond" | "h" | "hexagram" | {"none"} | "o" | "p" | "pentagram" | "s" | "square" | "v" | "x"
-     *Note Marker Styles::.
-
-'markeredgecolor': {"auto"} | "flat" | "none"
-     *Note line markeredgecolor property: XREFlinemarkeredgecolor.
-
-'markerfacecolor': "auto" | "flat" | {"none"}
-     *Note line markerfacecolor property: XREFlinemarkerfacecolor.
-
-'markersize': scalar, def. '6'
-     *Note line markersize property: XREFlinemarkersize.
-
-'meshstyle': {"both"} | "column" | "row"
-
-'normalmode': {"auto"} | "manual"
-
-'parent': graphics handle
-     Handle of the parent graphics object.
-
-'selected': {"off"} | "on"
-
-'selectionhighlight': "off" | {"on"}
-
-'specularcolorreflectance': def. '1'
-     Light is not yet implemented for surface objects.
-     'specularcolorreflectance' is unused.
-
-'specularexponent': def. '10'
-     Light is not yet implemented for surface objects.
-     'specularexponent' is unused.
-
-'specularstrength': def. '0.90000'
-     Light is not yet implemented for surface objects.
-     'specularstrength' is unused.
-
-'tag': string, def. ""
-     A user-defined string to label the graphics object.
-
-'type' (read-only): string
-     Class name of the graphics object.  'type' is always "surface"
-
-'uicontextmenu': graphics handle, def. '[](0x0)'
-     Graphics handle of the uicontextmenu object that is currently
-     associated to this surface object.
-
-'userdata': Any Octave data, def. '[](0x0)'
-     User-defined data to associate with the graphics object.
-
-'vertexnormals': def. 3-by-3-by-3 double
-
-'visible': "off" | {"on"}
-     If 'visible' is "off", the surface is not rendered on screen.
-
-'xdata': matrix, def. '[1 2 3]'
-
-'xdatasource': def. ""
-
-'ydata': matrix, def. '[1; 2; 3]'
-
-'ydatasource': def. ""
-
-'zdata': matrix, def. 3-by-3 double
-
-'zdatasource': def. ""
-
-
-File: octave.info,  Node: Searching Properties,  Next: Managing Default Properties,  Prev: Graphics Object Properties,  Up: Graphics Data Structures
-
-15.3.4 Searching Properties
----------------------------
-
- -- Function File: H = findobj ()
- -- Function File: H = findobj (PROP_NAME, PROP_VALUE, ...)
- -- Function File: H = findobj (PROP_NAME, PROP_VALUE, "-LOGICAL_OP",
-          PROP_NAME, PROP_VALUE)
- -- Function File: H = findobj ("-property", PROP_NAME)
- -- Function File: H = findobj ("-regexp", PROP_NAME, PATTERN)
- -- Function File: H = findobj (HLIST, ...)
- -- Function File: H = findobj (HLIST, "flat", ...)
- -- Function File: H = findobj (HLIST, "-depth", D, ...)
-     Find graphics object with specified property values.
-
-     The simplest form is
-
-          findobj (PROP_NAME, PROP_VALUE)
-
-     which returns the handles of all objects which have a property
-     named PROP_NAME that has the value PROP_VALUE.  If multiple
-     property/value pairs are specified then only objects meeting all of
-     the conditions are returned.
-
-     The search can be limited to a particular set of objects and their
-     descendants, by passing a handle or set of handles HLIST as the
-     first argument.
-
-     The depth of the object hierarchy to search can be limited with the
-     "-depth" argument.  An example of searching only three generations
-     of children is:
-
-          findobj (HLIST, "-depth", 3, PROP_NAME, PROP_VALUE)
-
-     Specifying a depth D of 0, limits the search to the set of objects
-     passed in HLIST.  A depth D of 0 is equivalent to the "flat"
-     argument.
-
-     A specified logical operator may be applied to the pairs of
-     PROP_NAME and PROP_VALUE.  The supported logical operators are:
-     "-and", "-or", "-xor", "-not".
-
-     Objects may also be matched by comparing a regular expression to
-     the property values, where property values that match 'regexp
-     (PROP_VALUE, PATTERN)' are returned.
-
-     Finally, objects may be matched by property name only by using the
-     "-property" option.
-
-     Implementation Note: The search only includes objects with visible
-     handles (HandleVisibility = "on").  *Note findall: XREFfindall, to
-     search for all objects including hidden ones.
-
-     See also: *note findall: XREFfindall, *note allchild: XREFallchild,
-     *note get: XREFget, *note set: XREFset.
-
- -- Function File: H = findall ()
- -- Function File: H = findall (PROP_NAME, PROP_VALUE, ...)
- -- Function File: H = findall (PROP_NAME, PROP_VALUE, "-LOGICAL_OP",
-          PROP_NAME, PROP_VALUE)
- -- Function File: H = findall ("-property", PROP_NAME)
- -- Function File: H = findall ("-regexp", PROP_NAME, PATTERN)
- -- Function File: H = findall (HLIST, ...)
- -- Function File: H = findall (HLIST, "flat", ...)
- -- Function File: H = findall (HLIST, "-depth", D, ...)
-     Find graphics object, including hidden ones, with specified
-     property values.
-
-     The return value H is a list of handles to the found graphic
-     objects.
-
-     'findall' performs the same search as 'findobj', but it includes
-     hidden objects (HandleVisibility = "off").  For full documentation,
-     *note findobj: XREFfindobj.
-
-     See also: *note findobj: XREFfindobj, *note allchild: XREFallchild,
-     *note get: XREFget, *note set: XREFset.
 

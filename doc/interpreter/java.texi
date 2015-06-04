@@ -55,8 +55,8 @@ methods which return results to Octave.
 Create a Java object of class @var{classsname}, by calling the class
 constructor with the arguments @var{arg1}, @dots{}
 
-The first example below creates an uninitialized object,
-while the second example supplies an initial argument to the constructor.
+The first example below creates an uninitialized object, while the second
+example supplies an initial argument to the constructor.
 
 @example
 @group
@@ -75,15 +75,15 @@ x = javaObject ("java.lang.StringBuffer", "Initial string")
 @deftypefn  {Function File} {@var{jary} =} javaArray (@var{classname}, @var{sz})
 @deftypefnx {Function File} {@var{jary} =} javaArray (@var{classname}, @var{m}, @var{n}, @dots{})
 
-Create a Java array of size @var{sz} with elements of class
-@var{classname}.  @var{classname} may be a Java object representing a class
-or a string containing the fully qualified class name.  The size of
-the object may also be specified with individual integer arguments
-@var{m}, @var{n}, etc.
+Create a Java array of size @var{sz} with elements of class @var{classname}.
 
-The generated array is uninitialized.  All elements are set to null
-if @var{classname} is a reference type, or to a default value (usually 0)
-if @var{classname} is a primitive type.
+@var{classname} may be a Java object representing a class or a string
+containing the fully qualified class name.  The size of the object may
+also be specified with individual integer arguments @var{m}, @var{n}, etc.
+
+The generated array is uninitialized.  All elements are set to null if
+@var{classname} is a reference type, or to a default value (usually 0) if
+@var{classname} is a primitive type.
 
 Sample code:
 
@@ -156,12 +156,13 @@ java_get ("java.lang.Float", "MAX_VALUE")
 @c java_get scripts/java/java_get.m
 @anchor{XREFjava_get}
 @deftypefn {Function File} {@var{val} =} java_get (@var{obj}, @var{name})
-Get the value of the field @var{name} of the Java object @var{obj}.  For
-static fields, @var{obj} can be a string representing the fully qualified
-name of the corresponding class.
+Get the value of the field @var{name} of the Java object @var{obj}.
+
+For static fields, @var{obj} can be a string representing the fully
+qualified name of the corresponding class.
 
 When @var{obj} is a regular Java object, structure-like indexing can be
-used as a shortcut syntax.  For instance, the two following statements are
+used as a shortcut syntax.  For instance, the following two statements are
 equivalent
 
 @example
@@ -180,11 +181,13 @@ equivalent
 @anchor{XREFjava_set}
 @deftypefn {Function File} {@var{obj} =} java_set (@var{obj}, @var{name}, @var{val})
 Set the value of the field @var{name} of the Java object @var{obj} to
-@var{val}.  For static fields, @var{obj} can be a string representing the
-fully qualified named of the corresponding Java class.
+@var{val}.
+
+For static fields, @var{obj} can be a string representing the fully
+qualified named of the corresponding Java class.
 
 When @var{obj} is a regular Java object, structure-like indexing can be
-used as a shortcut syntax.  For instance, the two following statements are
+used as a shortcut syntax.  For instance, the following two statements are
 equivalent
 
 @example
@@ -235,9 +238,10 @@ javaMethod ("equals", dobj, pi)
 @deftypefn  {Built-in Function} {@var{ret} =} javaMethod (@var{methodname}, @var{obj})
 @deftypefnx {Built-in Function} {@var{ret} =} javaMethod (@var{methodname}, @var{obj}, @var{arg1}, @dots{})
 Invoke the method @var{methodname} on the Java object @var{obj} with the
-arguments @var{arg1}, @dots{}  For static methods, @var{obj} can be a string
-representing the fully qualified name of the corresponding class.  The
-function returns the result of the method invocation.
+arguments @var{arg1}, @dots{}.
+
+For static methods, @var{obj} can be a string representing the fully
+qualified name of the corresponding class.
 
 When @var{obj} is a regular Java object, structure-like indexing can be
 used as a shortcut syntax.  For instance, the two following statements are
@@ -249,6 +253,8 @@ equivalent
   ret = x.method1 (1.0, "a string")
 @end group
 @end example
+
+@code{javaMethod} returns the result of the method invocation.
 
 @seealso{@ref{XREFmethods,,methods}, @ref{XREFjavaObject,,javaObject}}
 @end deftypefn
@@ -279,12 +285,12 @@ If called with no inputs:
 @item If no output is requested, the dynamic and static classpaths are
 printed to the standard output.
 
-@item If one output value @var{dpath} is requested, the result is
-the dynamic classpath.
+@item If one output value @var{dpath} is requested, the result is the
+dynamic classpath.
 
-@item If two output values@var{dpath} and @var{spath} are
-requested, the first variable will contain the dynamic classpath and
-the second will be contain the static classpath.
+@item If two output values@var{dpath} and @var{spath} are requested, the
+first variable will contain the dynamic classpath and the second will
+contain the static classpath.
 @end itemize
 
 If called with a single input parameter @var{what}:
@@ -312,10 +318,11 @@ Return both the static and dynamic classpath in a single cellstr.
 @anchor{XREFjavaaddpath}
 @deftypefn  {Function File} {} javaaddpath (@var{clspath})
 @deftypefnx {Function File} {} javaaddpath (@var{clspath1}, @dots{})
-Add @var{clspath} to the dynamic class path of the Java virtual
-machine.  @var{clspath} may either be a directory where @file{.class}
-files are found, or a @file{.jar} file containing Java classes.
-Multiple paths may be added at once by specifying additional arguments.
+Add @var{clspath} to the dynamic class path of the Java virtual machine.
+
+@var{clspath} may either be a directory where @file{.class} files are
+found, or a @file{.jar} file containing Java classes.  Multiple paths may
+be added at once by specifying additional arguments.
 @seealso{@ref{XREFjavarmpath,,javarmpath}, @ref{XREFjavaclasspath,,javaclasspath}}
 @end deftypefn
 
@@ -327,9 +334,11 @@ Multiple paths may be added at once by specifying additional arguments.
 @deftypefn  {Function File} {} javarmpath (@var{clspath})
 @deftypefnx {Function File} {} javarmpath (@var{clspath1}, @dots{})
 Remove @var{clspath} from the dynamic class path of the Java virtual
-machine.  @var{clspath} may either be a directory where @file{.class}
-files are found, or a @file{.jar} file containing Java classes.
-Multiple paths may be removed at once by specifying additional arguments.
+machine.
+
+@var{clspath} may either be a directory where @file{.class} files are found,
+or a @file{.jar} file containing Java classes.  Multiple paths may be
+removed at once by specifying additional arguments.
 @seealso{@ref{XREFjavaaddpath,,javaaddpath}, @ref{XREFjavaclasspath,,javaclasspath}}
 @end deftypefn
 
@@ -361,36 +370,34 @@ Java Virtual Machine.
 Swing components for lightweight GUIs.
 @end table
 
-If @var{feature} is supported and:
+If @var{feature} is supported and
 
 @itemize @bullet
 @item
-No output argument is requested:
+no output argument is requested:
 
 Return an empty string
 
 @item
-An output argument is requested:
+an output argument is requested:
 
 Return a struct with fields @qcode{"feature"} and @qcode{"identifier"}
 both empty
-
 @end itemize
 
-If @var{feature} is not supported and:
+If @var{feature} is not supported and
 
 @itemize @bullet
 @item
-No output argument is requested:
+no output argument is requested:
 
-Emit an error message.
+Emit an error message
 
 @item
-An output argument is requested:
+an output argument is requested:
 
-Return a struct with field @qcode{"feature"} set to @var{feature} and
-field @qcode{"identifier"} set to @var{component}
-
+Return a struct with field @qcode{"feature"} set to @var{feature} and field
+@qcode{"identifier"} set to @var{component}
 @end itemize
 
 The optional input @var{component} will be used in place of @var{feature}
@@ -403,7 +410,7 @@ their behavior based on the availability of Java.  The feature
 Other features may be available if Octave was compiled with the Java
 Interface and Java is installed.
 
-@seealso{@ref{XREFerror,,error}, @ref{XREFusejava,,usejava}}
+@seealso{@ref{XREFusejava,,usejava}, @ref{XREFerror,,error}}
 @end deftypefn
 
 
@@ -443,44 +450,41 @@ Java Interface and Java is installed.
 @anchor{XREFjavamem}
 @deftypefn  {Function File} {} javamem ()
 @deftypefnx {Function File} {@var{jmem} =} javamem ()
-Show the current memory usage of the Java virtual machine (JVM)
-and run the garbage collector.
+Show the current memory usage of the Java virtual machine (JVM) and run the
+garbage collector.
 
 When no return argument is given the info is printed to the screen.
-Otherwise, the output cell array @var{jmem} contains Maximum, Total,
-and Free memory (in bytes).
+Otherwise, the output cell array @var{jmem} contains Maximum, Total, and
+Free memory (in bytes).
 
-All Java-based routines are run in the JVM's shared memory pool,
-a dedicated and separate part of memory claimed by the JVM from
-your computer's total memory (which comprises physical RAM and
-virtual memory / swap space on hard disk).
+All Java-based routines are run in the JVM's shared memory pool, a
+dedicated and separate part of memory claimed by the JVM from your
+computer's total memory (which comprises physical RAM and virtual memory /
+swap space on hard disk).
 
 The maximum allowable memory usage can be configured using the file
-@file{java.opts}.  The directory where this file resides is
-determined by the environment variable @w{@env{OCTAVE_JAVA_DIR}}.
-If unset, the directory where @file{javaaddpath.m} resides is used instead
-(typically
+@file{java.opts}.  The directory where this file resides is determined by
+the environment variable @w{@env{OCTAVE_JAVA_DIR}}.  If unset, the directory
+where @file{javaaddpath.m} resides is used instead (typically
 @file{@w{@env{OCTAVE_HOME}}/share/octave/@w{@env{OCTAVE_VERSION}}/m/java/}).
 
-@file{java.opts} is a plain text file with one option per line.  The
-default initial memory size and default maximum memory size (which
-are both system dependent) can be overridden like so:
+@file{java.opts} is a plain text file with one option per line.  The default
+initial memory size and default maximum memory size (which are both system
+dependent) can be overridden like so:
 
 @nospell{-Xms64m}
 
 @nospell{-Xmx512m}
 
 (in megabytes in this example).
-You can adapt these values to your own requirements if your system
-has limited available physical memory or if you get Java memory
-errors.
+You can adapt these values to your own requirements if your system has
+limited available physical memory or if you get Java memory errors.
 
-"Total memory" is what the operating system has currently assigned
+@qcode{"Total memory"} is what the operating system has currently assigned
 to the JVM and depends on actual and active memory usage.
-"Free memory" is self-explanatory.  During operation of Java-based
-Octave functions the amount of Total and Free memory will vary,
-due to Java's own cleaning up and your operating system's memory
-management.
+@qcode{"Free memory"} is self-explanatory.  During operation of Java-based
+Octave functions the amount of Total and Free memory will vary, due to
+Java's own cleaning up and your operating system's memory management.
 @end deftypefn
 
 
@@ -490,10 +494,12 @@ management.
 @deftypefnx {Built-in Function} {@var{old_val} =} java_matrix_autoconversion (@var{new_val})
 @deftypefnx {Built-in Function} {} java_matrix_autoconversion (@var{new_val}, "local")
 Query or set the internal variable that controls whether Java arrays are
-automatically converted to Octave matrices.  The default value is false.
+automatically converted to Octave matrices.
+
+The default value is false.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFjava_unsigned_autoconversion,,java_unsigned_autoconversion}, @ref{XREFdebug_java,,debug_java}}
 @end deftypefn
@@ -505,12 +511,13 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {@var{old_val} =} java_unsigned_autoconversion (@var{new_val})
 @deftypefnx {Built-in Function} {} java_unsigned_autoconversion (@var{new_val}, "local")
 Query or set the internal variable that controls how integer classes are
-converted when @code{java_matrix_autoconversion} is enabled.  When enabled,
-Java arrays of class Byte or Integer are converted to matrices of class
-uint8 or uint32 respectively.  The default value is true.
+converted when @code{java_matrix_autoconversion} is enabled.
+
+When enabled, Java arrays of class Byte or Integer are converted to matrices
+of class uint8 or uint32 respectively.  The default value is true.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFjava_matrix_autoconversion,,java_matrix_autoconversion}, @ref{XREFdebug_java,,debug_java}}
 @end deftypefn
@@ -526,7 +533,7 @@ information regarding the initialization of the JVM and any Java exceptions
 is printed.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFjava_matrix_autoconversion,,java_matrix_autoconversion}, @ref{XREFjava_unsigned_autoconversion,,java_unsigned_autoconversion}}
 @end deftypefn
@@ -547,14 +554,15 @@ of dialog box.
 @deftypefnx {Function File} {@var{h} =} msgbox (@dots{}, @var{createmode})
 Display @var{msg} using a message dialog box.
 
-The message may have multiple lines separated by newline characters
-("\n"), or it may be a cellstr array with one element for each
-line.  The optional input @var{title} (character string) can be used to
-decorate the dialog caption.
+The message may have multiple lines separated by newline characters ("\n"),
+or it may be a cellstr array with one element for each line.
+
+The optional input @var{title} (character string) can be used to decorate
+the dialog caption.
 
 The optional argument @var{icon} selects a dialog icon.
-It can be one of @qcode{"none"} (default), @qcode{"error"},
-@qcode{"help"}, or @qcode{"warn"}.
+It can be one of @qcode{"none"} (default), @qcode{"error"}, @qcode{"help"},
+or @qcode{"warn"}.
 
 The return value is always 1.
 
@@ -573,10 +581,11 @@ Compatibility Note: The optional argument @var{createmode} is accepted for
 @deftypefnx {Function File} {@var{h} =} errordlg (@var{msg}, @var{title}, @var{createmode})
 Display @var{msg} using an error dialog box.
 
-The message may have multiple lines separated by newline characters
-("\n"), or it may be a cellstr array with one element for each
-line.  The optional input @var{title} (character string) can be used to
-set the dialog caption.  The default title is @qcode{"Error Dialog"}.
+The message may have multiple lines separated by newline characters ("\n"),
+or it may be a cellstr array with one element for each line.
+
+The optional input @var{title} (character string) can be used to set the
+dialog caption.  The default title is @qcode{"Error Dialog"}.
 
 The return value is always 1.
 
@@ -596,7 +605,9 @@ Display @var{msg} in a help dialog box.
 
 The message may have multiple lines separated by newline characters
 ("\n"), or it may be a cellstr array with one element for each
-line.  The optional input @var{title} (character string) can be used to
+line.
+
+The optional input @var{title} (character string) can be used to
 set the dialog caption.  The default title is @qcode{"Help Dialog"}.
 
 The return value is always 1.
@@ -611,9 +622,9 @@ The return value is always 1.
 @deftypefnx {Function File} {@var{cstr} =} inputdlg (@var{prompt}, @var{title})
 @deftypefnx {Function File} {@var{cstr} =} inputdlg (@var{prompt}, @var{title}, @var{rowscols})
 @deftypefnx {Function File} {@var{cstr} =} inputdlg (@var{prompt}, @var{title}, @var{rowscols}, @var{defaults})
-Return user input from a multi-textfield dialog box in a cell array
-of strings, or an empty cell array if the dialog is closed by the
-Cancel button.
+Return user input from a multi-textfield dialog box in a cell array of
+strings, or an empty cell array if the dialog is closed by the Cancel
+button.
 
 Inputs:
 
@@ -622,28 +633,23 @@ Inputs:
 A cell array with strings labeling each text field.  This input is required.
 
 @item title
-String to use for the caption of the dialog.  The default is @qcode{"Input
-Dialog"}.
+String to use for the caption of the dialog.  The default is
+@qcode{"Input Dialog"}.
 
 @item rowscols
 Specifies the size of the text fields and can take three forms:
 
 @enumerate
-@item a scalar value which defines the number of rows used for each
-text field.
+@item a scalar value which defines the number of rows used for each text field.
 
-@item a vector which defines the individual number of rows
-used for each text field.
+@item a vector which defines the individual number of rows used for each text field.
 
-@item a matrix which defines the individual number of rows and
-columns used for each text field.  In the matrix each row describes
-a single text field.  The first column specifies the number of input
-rows to use and the second column specifies the text field width.
+@item a matrix which defines the individual number of rows and columns used for each text field.  In the matrix each row describes a single text field.  The first column specifies the number of input rows to use and the second column specifies the text field width.
 @end enumerate
 
 @item defaults
-A list of default values to place in each text fields.  It must be
-a cell array of strings with the same size as @var{prompt}.
+A list of default values to place in each text fields.  It must be a cell
+array of strings with the same size as @var{prompt}.
 @end table
 @seealso{@ref{XREFerrordlg,,errordlg}, @ref{XREFhelpdlg,,helpdlg}, @ref{XREFlistdlg,,listdlg}, @ref{XREFmsgbox,,msgbox}, @ref{XREFquestdlg,,questdlg}, @ref{XREFwarndlg,,warndlg}}
 @end deftypefn
@@ -653,11 +659,12 @@ a cell array of strings with the same size as @var{prompt}.
 @c listdlg scripts/gui/listdlg.m
 @anchor{XREFlistdlg}
 @deftypefn {Function File} {[@var{sel}, @var{ok}] =} listdlg (@var{key}, @var{value}, @dots{})
-Return user inputs from a list dialog box in a vector of
-selection indices @var{sel} and a flag @var{ok} indicating how the
-user closed the dialog box.  The value of @var{ok} is 1 if the user
-closed the box with the OK button, otherwise it is 0 and @var{sel} is
-empty.
+Return user inputs from a list dialog box in a vector of selection indices
+@var{sel} and a flag @var{ok} indicating how the user closed the dialog
+box.
+
+The value of @var{ok} is 1 if the user closed the box with the OK button,
+otherwise it is 0 and @var{sel} is empty.
 
 The indices in @var{sel} are 1-based.
 
@@ -674,19 +681,19 @@ a cell array of strings comprising the content of the list.
 can be either @qcode{"Single"} or @qcode{"Multiple"} (default).
 
 @item @qcode{"ListSize"}
-a vector with two elements @var{width} and @var{height} defining
-the size of the list field in pixels.  Default is [160 300].
+a vector with two elements @var{width} and @var{height} defining the size
+of the list field in pixels.  Default is [160 300].
 
 @item @qcode{"InitialValue"}
-a vector containing 1-based indices of preselected elements.  Default
-is 1 (first item).
+a vector containing 1-based indices of preselected elements.
+Default is 1 (first item).
 
 @item @qcode{"Name"}
 a string to be used as the dialog caption.  Default is "".
 
 @item @qcode{"PromptString"}
-a cell array of strings to be displayed above the list field.  Default
-is @{@}.
+a cell array of strings to be displayed above the list field.
+Default is @{@}.
 
 @item @qcode{"OKString"}
 a string used to label the OK button.  Default is @qcode{"OK"}.
@@ -721,27 +728,26 @@ endif
 @deftypefnx {Function File} {@var{btn} =} questdlg (@var{msg}, @var{title}, @var{default})
 @deftypefnx {Function File} {@var{btn} =} questdlg (@var{msg}, @var{title}, @var{btn1}, @var{btn2}, @var{default})
 @deftypefnx {Function File} {@var{btn} =} questdlg (@var{msg}, @var{title}, @var{btn1}, @var{btn2}, @var{btn3}, @var{default})
-Display @var{msg} using a question dialog box and return the caption
-of the activated button.
+Display @var{msg} using a question dialog box and return the caption of
+the activated button.
 
 The dialog may contain two or three buttons which will all close the dialog.
 
-The message may have multiple lines separated by newline characters
-("\n"), or it may be a cellstr array with one element for each
-line.  The optional @var{title} (character string) can be used to
-decorate the dialog caption.
+The message may have multiple lines separated by newline characters ("\n"),
+or it may be a cellstr array with one element for each line.
 
-The string @var{default} identifies the default button,
-which is activated by pressing the @key{ENTER} key.
-It must match one of the strings given in @var{btn1}, @var{btn2}, or
-@var{btn3}.
+The optional @var{title} (character string) can be used to decorate the
+dialog caption.
 
-If only @var{msg} and @var{title} are specified, three buttons with
-the default captions @qcode{"Yes"}, @qcode{"No"}, and @qcode{"Cancel"} are
-used.
+The string @var{default} identifies the default button, which is activated
+by pressing the @key{ENTER} key.  It must match one of the strings given
+in @var{btn1}, @var{btn2}, or @var{btn3}.
 
-If only two button captions, @var{btn1} and @var{btn2}, are specified
-the dialog will have only these two buttons.
+If only @var{msg} and @var{title} are specified, three buttons with the
+default captions @qcode{"Yes"}, @qcode{"No"}, and @qcode{"Cancel"} are used.
+
+If only two button captions, @var{btn1} and @var{btn2}, are specified the
+dialog will have only these two buttons.
 
 @seealso{@ref{XREFerrordlg,,errordlg}, @ref{XREFhelpdlg,,helpdlg}, @ref{XREFinputdlg,,inputdlg}, @ref{XREFlistdlg,,listdlg}, @ref{XREFwarndlg,,warndlg}}
 @end deftypefn
@@ -755,10 +761,11 @@ the dialog will have only these two buttons.
 @deftypefnx {Function File} {@var{h} =} warndlg (@var{msg}, @var{title}, @var{createmode})
 Display @var{msg} using a warning dialog box.
 
-The message may have multiple lines separated by newline characters
-("\n"), or it may be a cellstr array with one element for each
-line.  The optional input @var{title} (character string) can be used to
-set the dialog caption.  The default title is @qcode{"Warning Dialog"}.
+The message may have multiple lines separated by newline characters ("\n"),
+or it may be a cellstr array with one element for each line.
+
+The optional input @var{title} (character string) can be used to set the
+dialog caption.  The default title is @qcode{"Warning Dialog"}.
 
 The return value is always 1.
 

@@ -212,16 +212,18 @@ reconverted to the time domain.
 <dt><a name="index-interpft"></a>Function File: <em></em> <strong>interpft</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
 <dt><a name="index-interpft-1"></a>Function File: <em></em> <strong>interpft</strong> <em>(<var>x</var>, <var>n</var>, <var>dim</var>)</em></dt>
 <dd>
-<p>Fourier interpolation.  If <var>x</var> is a vector, then <var>x</var> is
-resampled with <var>n</var> points.  The data in <var>x</var> is assumed to be
-equispaced.  If <var>x</var> is a matrix or an N-dimensional array, the
-interpolation is performed on each column of <var>x</var>.  If <var>dim</var> is
-specified, then interpolate along the dimension <var>dim</var>.
+<p>Fourier interpolation.
 </p>
-<p><code>interpft</code> assumes that the interpolated function is periodic,
-and so assumptions are made about the endpoints of the interpolation.
+<p>If <var>x</var> is a vector then <var>x</var> is resampled with <var>n</var> points.  The
+data in <var>x</var> is assumed to be equispaced.  If <var>x</var> is a matrix or an
+N-dimensional array, the interpolation is performed on each column of
+<var>x</var>.
 </p>
-
+<p>If <var>dim</var> is specified, then interpolate along the dimension <var>dim</var>.
+</p>
+<p><code>interpft</code> assumes that the interpolated function is periodic, and so
+assumptions are made about the endpoints of the interpolation.
+</p>
 <p><strong>See also:</strong> <a href="#XREFinterp1">interp1</a>.
 </p></dd></dl>
 
@@ -260,18 +262,21 @@ underlie the <code>interp1</code> function can be called directly.
 </p>
 <p>When called with two arguments, return the piecewise polynomial <var>pp</var>
 that may be used with <code>ppval</code> to evaluate the polynomial at specific
-points.  When called with a third input argument, <code>spline</code> evaluates
-the spline at the points <var>xi</var>.  The third calling form <code>spline
-(<var>x</var>, <var>y</var>, <var>xi</var>)</code> is equivalent to <code>ppval (spline
-(<var>x</var>, <var>y</var>), <var>xi</var>)</code>.
+points.
 </p>
-<p>The variable <var>x</var> must be a vector of length <var>n</var>.  <var>y</var> can be
-either a vector or array.  If <var>y</var> is a vector it must have a length of
-either <var>n</var> or <code><var>n</var> + 2</code>.  If the length of <var>y</var> is
-<var>n</var>, then the &quot;not-a-knot&quot; end condition is used.  If the length of
-<var>y</var> is <code><var>n</var> + 2</code>, then the first and last values of the
-vector <var>y</var> are the values of the first derivative of the cubic spline
-at the endpoints.
+<p>When called with a third input argument, <code>spline</code> evaluates the spline
+at the points <var>xi</var>.  The third calling form
+<code>spline (<var>x</var>, <var>y</var>, <var>xi</var>)</code> is equivalent to
+<code>ppval (spline (<var>x</var>, <var>y</var>), <var>xi</var>)</code>.
+</p>
+<p>The variable <var>x</var> must be a vector of length <var>n</var>.
+</p>
+<p><var>y</var> can be either a vector or array.  If <var>y</var> is a vector it must
+have a length of either <var>n</var> or <code><var>n</var> + 2</code>.  If the length of
+<var>y</var> is <var>n</var>, then the <code>&quot;not-a-knot&quot;</code> end condition is used.
+If the length of <var>y</var> is <code><var>n</var> + 2</code>, then the first and last
+values of the vector <var>y</var> are the values of the first derivative of the
+cubic spline at the endpoints.
 </p>
 <p>If <var>y</var> is an array, then the size of <var>y</var> must have the form
 <code>[<var>s1</var>, <var>s2</var>, &hellip;, <var>sk</var>, <var>n</var>]</code>
@@ -280,8 +285,8 @@ or
 The array is reshaped internally to a matrix where the leading
 dimension is given by
 <code><var>s1</var> * <var>s2</var> * &hellip; * <var>sk</var></code>
-and each row of this matrix is then treated separately.  Note that this
-is exactly opposite to <code>interp1</code> but is done for <small>MATLAB</small>
+and each row of this matrix is then treated separately.  Note that this is
+exactly the opposite of <code>interp1</code> but is done for <small>MATLAB</small>
 compatibility.
 </p>
 

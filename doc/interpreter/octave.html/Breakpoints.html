@@ -124,10 +124,11 @@ be queried with <code>dbstatus</code>.
 <dt><a name="index-dbstatus-2"></a>Built-in Function: <em><var>brk_list</var> =</em> <strong>dbstatus</strong> <em>(&quot;<var>func</var>&quot;)</em></dt>
 <dd><p>Report the location of active breakpoints.
 </p>
-<p>When called with no input or output arguments, print the list of
-all functions with breakpoints and the line numbers where those
-breakpoints are set.
-If a function name <var>func</var> is specified then only report breakpoints
+<p>When called with no input or output arguments, print the list of all
+functions with breakpoints and the line numbers where those breakpoints are
+set.
+</p>
+<p>If a function name <var>func</var> is specified then only report breakpoints
 for the named function.
 </p>
 <p>The optional return argument <var>brk_list</var> is a struct array with the
@@ -234,9 +235,10 @@ use of the <code>keyboard</code> function.
 <a name="XREFkeyboard"></a><dl>
 <dt><a name="index-keyboard"></a>Built-in Function: <em></em> <strong>keyboard</strong> <em>()</em></dt>
 <dt><a name="index-keyboard-1"></a>Built-in Function: <em></em> <strong>keyboard</strong> <em>(&quot;<var>prompt</var>&quot;)</em></dt>
-<dd><p>This function is normally used for simple debugging.  When the
-<code>keyboard</code> function is executed, Octave prints a prompt and waits
-for user input.  The input strings are then evaluated and the results
+<dd><p>Stop m-file execution and enter debug mode.
+</p>
+<p>When the <code>keyboard</code> function is executed, Octave prints a prompt and
+waits for user input.  The input strings are then evaluated and the results
 are printed.  This makes it possible to examine the values of variables
 within a function, and to assign new values if necessary.  To leave the
 prompt and return to normal execution type &lsquo;<samp>return</samp>&rsquo; or &lsquo;<samp>dbcont</samp>&rsquo;.
