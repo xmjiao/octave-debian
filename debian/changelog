@@ -1,3 +1,14 @@
+octave (3.8.2-4.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix FTBFS with texinfo 6 (Closes: #790533)
+    - Add texlive-fonts-recommended to build-depends (needed for texinfo 6)
+    - Add debian/patches/dont-use-included-texinfo-texmfcnf and 
+      xbackslash-texinfo.diff (Patches thanks to Norbert Preining and
+      Mike Miller)
+
+ -- Scott Kitterman <scott@kitterman.com>  Wed, 08 Jul 2015 13:36:14 -0400
+
 octave (3.8.2-4) unstable; urgency=medium
 
   * mkoctfile-infinite-loop.patch: fix infinite loop of mkoctfile -M on
