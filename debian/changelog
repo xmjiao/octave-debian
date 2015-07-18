@@ -1,3 +1,16 @@
+octave (4.0.0-2) unstable; urgency=low
+
+  * Upload to unstable.
+  * Fix FTBFS with texinfo 6.
+    - Add texlive-fonts-recommended to build-depends (needed for texinfo 6)
+    - Add debian/patches/dont-use-included-texinfo-texmfcnf.patch and
+      xbackslash-texinfo.patch (Patches thanks to Norbert Preining and
+      Mike Miller) (Closes: #790533)
+  * Replace the long list of Breaks with a single Breaks against liboctave2.
+    This should work now that #671711 is fixed in Jessie and later.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Sat, 18 Jul 2015 14:20:22 +0200
+
 octave (4.0.0-1) experimental; urgency=low
 
   [ Sébastien Villemot ]
