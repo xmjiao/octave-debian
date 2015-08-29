@@ -63,10 +63,10 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-octave/octave.git
 Package: octave
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:Version}),
-         liboctave3 (= ${binary:Version}),
-         default-jre-headless [!armhf !hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !mips !mipsel !sparc]
+         liboctave3 (= ${binary:Version})
 Recommends: gnuplot-x11 | gnuplot-qt, libopenblas-base | libatlas3-base,
- pstoedit
+ pstoedit,
+ default-jre-headless [!armhf !hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !mips !mipsel !sparc]
 Suggests: octave-info,
  octave-doc,
  octave-htmldoc,
