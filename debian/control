@@ -66,10 +66,10 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:
          liboctave3v5 (= ${binary:Version})
 Recommends: gnuplot-x11 | gnuplot-qt, libopenblas-base | libatlas3-base,
  pstoedit,
- default-jre-headless [!hppa !hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !m68k !mips !mipsel !sparc !sparc64]
-Suggests: octave-info,
- octave-doc,
- octave-htmldoc,
+ default-jre-headless [!hppa !hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !m68k !mips !mipsel !sparc !sparc64],
+ octave-info
+Suggests: octave-doc,
+ octave-htmldoc
 Conflicts: octave-java
 Replaces: octave-java
 Breaks: dynare (<< 4.4.3-2),
