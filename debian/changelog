@@ -1,3 +1,18 @@
+octave (4.0.0-4) unstable; urgency=medium
+
+  [ Sébastien Villemot ]
+  * Rename liboctave3 to liboctave3v5 for g++-5 transition. (Closes: #797992)
+  * d/control: promote octave-info to Recommends of octave.
+    It is needed by the GUI help browser. (Closes: #793524)
+
+  [ Mike Miller ]
+  * Downgrade default-jre-headless from Depends to Recommends.
+    Thanks to Alois Schloegl for the suggestion (Closes: #742503)
+  * Disable java on hppa, m68k, and sparc64 ports. Fixes FTBFS on those archs.
+    (Closes: #792869)
+
+ -- Sébastien Villemot <sebastien@debian.org>  Sat, 05 Sep 2015 00:03:52 +0200
+
 octave (4.0.0-3) unstable; urgency=low
 
   * Restore the long list of Breaks with a single Breaks against liboctave2.
