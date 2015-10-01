@@ -229,7 +229,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
  liboctave3v5 (= ${binary:Version}), octave (= ${binary:Version}),
  libreadline-dev | libreadline6-dev | libreadline5-dev, libncurses5-dev,
- libhdf5-dev (>= 1.8.8) | libhdf5-openmpi-dev (>= 1.8.8) | libhdf5-mpich2-dev (>= 1.8.8),
+ libhdf5-dev (>= 1.8.8) | libhdf5-openmpi-dev (>= 1.8.8) | libhdf5-mpich-dev (>= 1.8.8),
  libgl1-mesa-dev | libgl-dev,
  libblas-dev (>=1.2-7) | libblas.so, liblapack-dev (>=3.2.1-7) | liblapack.so,
  libfftw3-dev, gfortran, gcc, g++
