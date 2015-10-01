@@ -1,3 +1,9 @@
+octave (4.0.0-5) unstable; urgency=medium
+
+  * d/control: replace libhdf5-mpich2-dev by libhdf5-mpich-dev.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Thu, 01 Oct 2015 10:05:15 +0200
+
 octave (4.0.0-4) unstable; urgency=medium
 
   [ Sébastien Villemot ]
