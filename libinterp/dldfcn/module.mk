@@ -17,6 +17,8 @@ DLDFCN_SRC = \
   dldfcn/__osmesa_print__.cc \
   dldfcn/__voronoi__.cc \
   dldfcn/amd.cc \
+  dldfcn/audiodevinfo.cc \
+  dldfcn/audioread.cc \
   dldfcn/ccolamd.cc \
   dldfcn/chol.cc \
   dldfcn/colamd.cc \
@@ -25,9 +27,7 @@ DLDFCN_SRC = \
   dldfcn/fftw.cc \
   dldfcn/qr.cc \
   dldfcn/symbfact.cc \
-  dldfcn/symrcm.cc \
-  dldfcn/audioread.cc \
-  dldfcn/audiodevinfo.cc
+  dldfcn/symrcm.cc
 
 DLDFCN_LIBS = $(DLDFCN_SRC:.cc=.la)
 
@@ -107,6 +107,18 @@ dldfcn_amd_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn_amd_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_amd_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
 
+dldfcn_audiodevinfo_la_SOURCES = dldfcn/audiodevinfo.cc
+dldfcn/audiodevinfo.df: CPPFLAGS += $(PORTAUDIO_CPPFLAGS)
+dldfcn_audiodevinfo_la_CPPFLAGS = $(AM_CPPFLAGS) $(PORTAUDIO_CPPFLAGS)
+dldfcn_audiodevinfo_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(PORTAUDIO_LDFLAGS) $(OCT_LINK_OPTS)
+dldfcn_audiodevinfo_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(PORTAUDIO_LIBS) $(OCT_LINK_DEPS)
+
+dldfcn_audioread_la_SOURCES = dldfcn/audioread.cc
+dldfcn/audioread.df: CPPFLAGS += $(SNDFILE_CPPFLAGS)
+dldfcn_audioread_la_CPPFLAGS = $(AM_CPPFLAGS) $(SNDFILE_CPPFLAGS)
+dldfcn_audioread_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SNDFILE_LDFLAGS) $(OCT_LINK_OPTS)
+dldfcn_audioread_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SNDFILE_LIBS) $(OCT_LINK_DEPS)
+
 dldfcn_ccolamd_la_SOURCES = dldfcn/ccolamd.cc
 dldfcn/ccolamd.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
 dldfcn_ccolamd_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
@@ -160,15 +172,3 @@ dldfcn/symrcm.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
 dldfcn_symrcm_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn_symrcm_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_symrcm_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
-
-dldfcn_audioread_la_SOURCES = dldfcn/audioread.cc
-dldfcn/audioread.df: CPPFLAGS += $(SNDFILE_CPPFLAGS)
-dldfcn_audioread_la_CPPFLAGS = $(AM_CPPFLAGS) $(SNDFILE_CPPFLAGS)
-dldfcn_audioread_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SNDFILE_LDFLAGS) $(OCT_LINK_OPTS)
-dldfcn_audioread_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SNDFILE_LIBS) $(OCT_LINK_DEPS)
-
-dldfcn_audiodevinfo_la_SOURCES = dldfcn/audiodevinfo.cc
-dldfcn/audiodevinfo.df: CPPFLAGS += $(PORTAUDIO_CPPFLAGS)
-dldfcn_audiodevinfo_la_CPPFLAGS = $(AM_CPPFLAGS) $(PORTAUDIO_CPPFLAGS)
-dldfcn_audiodevinfo_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(PORTAUDIO_LDFLAGS) $(OCT_LINK_OPTS)
-dldfcn_audiodevinfo_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(PORTAUDIO_LIBS) $(OCT_LINK_DEPS)

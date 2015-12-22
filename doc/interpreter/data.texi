@@ -489,7 +489,7 @@ return the number of elements that would result from the indexing
 @var{a}(@var{idx1}, @var{idx2}, @dots{})
 @end example
 
-Note that the indices do not have to be numerical.  For example,
+Note that the indices do not have to be scalar numbers.  For example,
 
 @example
 @group
@@ -501,6 +501,18 @@ numel (@var{a}, @var{b})
 
 @noindent
 will return 6, as this is the number of ways to index with @var{b}.
+Or the index could be the string @qcode{":"} which represents the colon
+operator.  For example,
+
+@example
+@group
+@var{a} = ones (5, 3);
+numel (@var{a}, 2, ":")
+@end group
+@end example
+
+@noindent
+will return 3 as the second row has three column entries.
 
 This method is also called when an object appears as lvalue with cs-list
 indexing, i.e., @code{object@{@dots{}@}} or @code{object(@dots{}).field}.
@@ -514,9 +526,9 @@ indexing, i.e., @code{object@{@dots{}@}} or @code{object(@dots{}).field}.
 Return the length of the object @var{a}.
 
 The length is 0 for empty objects, 1 for scalars, and the number of elements
-for vectors.  For matrix objects, the length is the number of rows or
-columns, whichever is greater (this odd definition is used for compatibility
-with @sc{matlab}).
+for vectors.  For matrix or N-dimensional objects, the length is the number
+of elements along the largest dimension
+(equivalent to @w{@code{max (size (@var{a}))}}).
 @seealso{@ref{XREFnumel,,numel}, @ref{XREFsize,,size}}
 @end deftypefn
 

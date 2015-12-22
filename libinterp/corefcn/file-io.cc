@@ -668,19 +668,19 @@ must also open the file in binary mode.\n\
 The parameter @var{arch} is a string specifying the default data format\n\
 for the file.  Valid values for @var{arch} are:\n\
 \n\
-@table @samp\n\
-@item native (default)\n\
+@table @asis\n\
+@item @qcode{\"native\"} or @qcode{\"n\"} (default)\n\
 The format of the current machine.\n\
 \n\
-@item ieee-be\n\
+@item @qcode{\"ieee-be\"} or @qcode{\"b\"}\n\
 IEEE big endian format.\n\
 \n\
-@item ieee-le\n\
+@item @qcode{\"ieee-le\"} or @qcode{\"l\"}\n\
 IEEE little endian format.\n\
 @end table\n\
 \n\
 @noindent\n\
-however, conversions are currently only supported for @samp{native}\n\
+However, conversions are currently only supported for @samp{native},\n\
 @samp{ieee-be}, and @samp{ieee-le} formats.\n\
 \n\
 When opening a new file that does not yet exist, permissions will be set to\n\
@@ -1599,17 +1599,22 @@ The optional argument @var{arch} is a string specifying the data format\n\
 for the file.  Valid values are\n\
 \n\
 @table @asis\n\
-@item @qcode{\"native\"}\n\
+@item @qcode{\"native\"} or @qcode{\"n\"}\n\
 The format of the current machine.\n\
 \n\
-@item @qcode{\"ieee-be\"}\n\
+@item @qcode{\"ieee-be\"} or @qcode{\"b\"}\n\
 IEEE big endian.\n\
 \n\
-@item @qcode{\"ieee-le\"}\n\
+@item @qcode{\"ieee-le\"} or @qcode{\"l\"}\n\
 IEEE little endian.\n\
 @end table\n\
 \n\
+If no @var{arch} is given the value used in the call to @code{fopen} which\n\
+created the file descriptor is used.  Otherwise, the value specified with\n\
+@code{fread} overrides that of @code{fopen} and determines the data format.\n\
+\n\
 The output argument @var{val} contains the data read from the file.\n\
+\n\
 The optional return value @var{count} contains the number of elements read.\n\
 @seealso{fwrite, fgets, fgetl, fscanf, fopen}\n\
 @end deftypefn")

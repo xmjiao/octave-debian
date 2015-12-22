@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 5.2 from octave.texi.
+This is octave.info, produced by makeinfo version 6.0 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -1934,10 +1934,8 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      Return the generalized transpose for an N-D array object A.
 
      The permutation vector PERM must contain the elements '1:ndims (A)'
-     (in any order, but each element must appear only once).
-
-     The Nth dimension of A gets remapped to dimension 'PERM(N)'.  For
-     example:
+     (in any order, but each element must appear only once).  The Nth
+     dimension of A gets remapped to dimension 'PERM(N)'.  For example:
 
           X = zeros ([2, 3, 5, 7]);
           size (X)
@@ -2196,9 +2194,10 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 
      Programming Note: nth_element encapsulates the C++ standard library
      algorithms nth_element and partial_sort.  On average, the
-     complexity of the operation is O(M*log(K)), where 'M = size (X, DIM)'
-     and 'K = length (N)'.  This function is intended for cases where
-     the ratio K/M is small; otherwise, it may be better to use 'sort'.
+     complexity of the operation is O(M*log(K)), where
+     'M = size (X, DIM)' and 'K = length (N)'.  This function is
+     intended for cases where the ratio K/M is small; otherwise, it may
+     be better to use 'sort'.
 
      See also: *note sort: XREFsort, *note min: XREFmin, *note max:
      XREFmax.
@@ -2596,9 +2595,9 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
 
      Additional arguments determine the shape of the return matrix.
      When no arguments are specified a single random integer is
-     returned.  If one argument N is specified then a square matrix (N x N)
-     is returned.  Two or more arguments will return a multi-dimensional
-     matrix (M x N x ...).
+     returned.  If one argument N is specified then a square matrix
+     (N x N) is returned.  Two or more arguments will return a
+     multi-dimensional matrix (M x N x ...).
 
      The integer range may optionally be described by a two element
      matrix with a lower and upper bound in which case the returned
@@ -2614,7 +2613,7 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
      Implementation Note: 'randi' relies internally on 'rand' which uses
      class "double" to represent numbers.  This limits the maximum
      integer (IMAX) and range (IMAX - IMIN) to the value returned by the
-     'bitmax' function.  For IEEE floating point numbers this value is
+     'flintmax' function.  For IEEE floating point numbers this value is
      2^{53} - 1.
 
      See also: *note rand: XREFrand.
@@ -3146,8 +3145,8 @@ The following functions return famous matrix forms.
      Construct a Hadamard matrix (Hn) of size N-by-N.
 
      The size N must be of the form 2^k * p in which p is one of 1, 12,
-     20 or 28.  The returned matrix is normalized, meaning 'Hn(:,1) == 1'
-     and 'Hn(1,:) == 1'.
+     20 or 28.  The returned matrix is normalized, meaning
+     'Hn(:,1) == 1' and 'Hn(1,:) == 1'.
 
      Some of the properties of Hadamard matrices are:
 
@@ -4688,13 +4687,13 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
                    1
                   /               dt
           K (m) = | ------------------------------
-                  / sqrt ((1 - t^2)*(1 - m^2*t^2))
+                  / sqrt ((1 - t^2)*(1 - m*t^2))
                  0
 
      Elliptic integrals of the second kind are defined as
 
                    1
-                  /  sqrt (1 - m^2*t^2)
+                  /  sqrt (1 - m*t^2)
           E (m) = |  ------------------ dt
                   /  sqrt (1 - t^2)
                  0
@@ -5913,8 +5912,9 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
  -- Loadable Function: [R1, INFO] = cholinsert (R, J, U)
      Given a Cholesky factorization of a real symmetric or complex
      Hermitian positive definite matrix A = R'*R, R upper triangular,
-     return the Cholesky factorization of A1, where A1(p,p) = A, A1(:,j) = A1(j,:)' = u
-     and p = [1:j-1,j+1:n+1].  u(j) should be positive.
+     return the Cholesky factorization of A1, where A1(p,p) = A,
+     A1(:,j) = A1(j,:)' = u and p = [1:j-1,j+1:n+1].  u(j) should be
+     positive.
 
      On return, INFO is set to
 
@@ -5957,7 +5957,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
 
      The Hessenberg decomposition is 'P * H * P' = A' where P is a
      square unitary matrix ('P' * P = I', using complex-conjugate
-     transposition) and H is upper Hessenberg ('H(i, j) = 0 forall i >=
+     transposition) and H is upper Hessenberg ('H(i, j) = 0 forall i >
      j+1)'.
 
      The Hessenberg decomposition is usually used as the first step in
@@ -7253,20 +7253,14 @@ without change in Octave.  The only exception is code such as
      end_try_catch
 
 that may have relied on matrices of different size producing an error.
-Due to how broadcasting changes semantics with older versions of Octave,
-by default Octave warns if a broadcasting operation is performed.  To
-disable this warning, refer to its ID (*note warning_ids:
-XREFwarning_ids.):
+Because such operation is now valid Octave syntax, this will no longer
+produce an error.  Instead, the following code should be used:
 
-     warning ("off", "Octave:broadcast");
-
-If you want to recover the old behavior and produce an error, turn this
-warning into an error:
-
-     warning ("error", "Octave:broadcast");
-
-For broadcasting on scalars that worked in previous versions of Octave,
-this warning will not be emitted.
+     if (isequal (size (a), size (b)))
+       c = a .* b;
+     else
+       c = a .* a;
+     endif
 
 
 File: octave.info,  Node: Function Application,  Next: Accumulation,  Prev: Broadcasting,  Up: Vectorization and Faster Code Execution
@@ -8402,112 +8396,4 @@ code.
 * Creating Diagonal Matrices::
 * Creating Permutation Matrices::
 * Explicit and Implicit Conversions::
-
-
-File: octave.info,  Node: Creating Diagonal Matrices,  Next: Creating Permutation Matrices,  Up: Basic Usage
-
-21.1.1 Creating Diagonal Matrices
----------------------------------
-
-The most common and easiest way to create a diagonal matrix is using the
-built-in function "diag".  The expression 'diag (v)', with V a vector,
-will create a square diagonal matrix with elements on the main diagonal
-given by the elements of V, and size equal to the length of V.  'diag
-(v, m, n)' can be used to construct a rectangular diagonal matrix.  The
-result of these expressions will be a special diagonal matrix object,
-rather than a general matrix object.
-
-   Diagonal matrix with unit elements can be created using "eye".  Some
-other built-in functions can also return diagonal matrices.  Examples
-include "balance" or "inv".
-
-   Example:
-
-       diag (1:4)
-     =>
-     Diagonal Matrix
-
-        1   0   0   0
-        0   2   0   0
-        0   0   3   0
-        0   0   0   4
-
-       diag (1:3,5,3)
-
-     =>
-     Diagonal Matrix
-
-        1   0   0
-        0   2   0
-        0   0   3
-        0   0   0
-        0   0   0
-
-
-File: octave.info,  Node: Creating Permutation Matrices,  Next: Explicit and Implicit Conversions,  Prev: Creating Diagonal Matrices,  Up: Basic Usage
-
-21.1.2 Creating Permutation Matrices
-------------------------------------
-
-For creating permutation matrices, Octave does not introduce a new
-function, but rather overrides an existing syntax: permutation matrices
-can be conveniently created by indexing an identity matrix by
-permutation vectors.  That is, if Q is a permutation vector of length N,
-the expression
-
-       P = eye (n) (:, q);
-
-will create a permutation matrix - a special matrix object.
-
-     eye (n) (q, :)
-
-will also work (and create a row permutation matrix), as well as
-
-     eye (n) (q1, q2).
-
-   For example:
-
-       eye (4) ([1,3,2,4],:)
-     =>
-     Permutation Matrix
-
-        1   0   0   0
-        0   0   1   0
-        0   1   0   0
-        0   0   0   1
-
-       eye (4) (:,[1,3,2,4])
-     =>
-     Permutation Matrix
-
-        1   0   0   0
-        0   0   1   0
-        0   1   0   0
-        0   0   0   1
-
-   Mathematically, an identity matrix is both diagonal and permutation
-matrix.  In Octave, 'eye (n)' returns a diagonal matrix, because a
-matrix can only have one class.  You can convert this diagonal matrix to
-a permutation matrix by indexing it by an identity permutation, as shown
-below.  This is a special property of the identity matrix; indexing
-other diagonal matrices generally produces a full matrix.
-
-       eye (3)
-     =>
-     Diagonal Matrix
-
-        1   0   0
-        0   1   0
-        0   0   1
-
-       eye(3)(1:3,:)
-     =>
-     Permutation Matrix
-
-        1   0   0
-        0   1   0
-        0   0   1
-
-   Some other built-in functions can also return permutation matrices.
-Examples include "inv" or "lu".
 

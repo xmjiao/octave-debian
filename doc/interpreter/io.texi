@@ -1573,19 +1573,19 @@ must also open the file in binary mode.
 The parameter @var{arch} is a string specifying the default data format
 for the file.  Valid values for @var{arch} are:
 
-@table @samp
-@item native (default)
+@table @asis
+@item @qcode{"native"} or @qcode{"n"} (default)
 The format of the current machine.
 
-@item ieee-be
+@item @qcode{"ieee-be"} or @qcode{"b"}
 IEEE big endian format.
 
-@item ieee-le
+@item @qcode{"ieee-le"} or @qcode{"l"}
 IEEE little endian format.
 @end table
 
 @noindent
-however, conversions are currently only supported for @samp{native}
+However, conversions are currently only supported for @samp{native},
 @samp{ieee-be}, and @samp{ieee-le} formats.
 
 When opening a new file that does not yet exist, permissions will be set to
@@ -2647,17 +2647,22 @@ The optional argument @var{arch} is a string specifying the data format
 for the file.  Valid values are
 
 @table @asis
-@item @qcode{"native"}
+@item @qcode{"native"} or @qcode{"n"}
 The format of the current machine.
 
-@item @qcode{"ieee-be"}
+@item @qcode{"ieee-be"} or @qcode{"b"}
 IEEE big endian.
 
-@item @qcode{"ieee-le"}
+@item @qcode{"ieee-le"} or @qcode{"l"}
 IEEE little endian.
 @end table
 
+If no @var{arch} is given the value used in the call to @code{fopen} which
+created the file descriptor is used.  Otherwise, the value specified with
+@code{fread} overrides that of @code{fopen} and determines the data format.
+
 The output argument @var{val} contains the data read from the file.
+
 The optional return value @var{count} contains the number of elements read.
 @seealso{@ref{XREFfwrite,,fwrite}, @ref{XREFfgets,,fgets}, @ref{XREFfgetl,,fgetl}, @ref{XREFfscanf,,fscanf}, @ref{XREFfopen,,fopen}}
 @end deftypefn

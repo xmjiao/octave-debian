@@ -401,14 +401,14 @@ Canvas::canvasMouseMoveEvent (QMouseEvent* event)
   gh_manager::auto_lock lock;
   graphics_object ax = gh_manager::get_object (m_mouseAxes);
 
-  if (m_mouseMode != NoMode && ax.valid_object ())
+  if (m_mouseMode != NoMode && (ax.valid_object () || m_mouseMode == TextMode))
     {
-      axes::properties& ap = Utils::properties<axes> (ax);
-
       switch (m_mouseMode)
         {
         case RotateMode:
           {
+            axes::properties& ap = Utils::properties<axes> (ax);
+
             ap.rotate3d (m_mouseCurrent.x (), event->x (),
                          m_mouseCurrent.y (), event->y ());
 
@@ -428,6 +428,8 @@ Canvas::canvasMouseMoveEvent (QMouseEvent* event)
 
         case PanMode:
           {
+            axes::properties& ap = Utils::properties<axes> (ax);
+
             graphics_object figObj (ax.get_ancestor ("figure"));
 
             std::string mode = pan_mode (figObj);
@@ -600,9 +602,20 @@ Canvas::canvasMousePressEvent (QMouseEvent* event)
                                      "windowbuttondownfcn",
                                      button_number (event));
 
-          gh_manager::post_callback (currentObj.get_handle (),
-                                     "buttondownfcn",
-                                     button_number (event));
+          if (currentObj.get ("buttondownfcn").is_empty ())
+            {
+              graphics_object parentObj = 
+                gh_manager::get_object (currentObj.get_parent ());
+
+              if (parentObj.valid_object () && parentObj.isa ("hggroup"))
+                gh_manager::post_callback (parentObj.get_handle (),
+                                           "buttondownfcn",
+                                           button_number (event));
+            }
+          else
+            gh_manager::post_callback (currentObj.get_handle (),
+                                       "buttondownfcn",
+                                       button_number (event));
 
           if (event->button () == Qt::RightButton)
             ContextMenu::executeAt (currentObj.get_properties (),
@@ -617,7 +630,6 @@ Canvas::canvasMousePressEvent (QMouseEvent* event)
                   {
                   case Qt::LeftButton:
                     m_mouseAnchor = m_mouseCurrent = event->pos ();
-                    m_mouseAxes = axesObj.get_handle ();
                     m_mouseMode = newMouseMode;
                     m_rectMode = true;
                   }
@@ -794,13 +806,14 @@ Canvas::canvasMouseReleaseEvent (QMouseEvent* event)
               bb(2) = (event->x () - m_mouseAnchor.x ()) / bb(2);
               bb(3) = (m_mouseAnchor.y () - event->y ()) / bb(3);
 
-              octave_value_list props = ovl("textbox", bb);
+              octave_value_list props = ovl ("textbox", bb);
 
               annotation_dialog anno_dlg (w, props);
 
               if (anno_dlg.exec () == QDialog::Accepted)
                 {
                   props = anno_dlg.get_properties ();
+                  props.prepend (figObj.get_handle ().as_octave_value ());
 
                   octave_link::post_event (this, &Canvas::annotation_callback,
                                            props);

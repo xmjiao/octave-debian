@@ -155,7 +155,7 @@ cumulatively from left to right:
 @deftypefn  {Built-in Function} {} diff (@var{x})
 @deftypefnx {Built-in Function} {} diff (@var{x}, @var{k})
 @deftypefnx {Built-in Function} {} diff (@var{x}, @var{k}, @var{dim})
-If @var{x} is a vector of length @math{n}, @code{diff (@var{x})} is the
+If @var{x} is a vector of length @math{n}, @w{@code{diff (@var{x})}} is the
 vector of first differences
 @tex
  $x_2 - x_1, \ldots{}, x_n - x_{n-1}$.
@@ -164,20 +164,20 @@ vector of first differences
  @var{x}(2) - @var{x}(1), @dots{}, @var{x}(n) - @var{x}(n-1).
 @end ifnottex
 
-If @var{x} is a matrix, @code{diff (@var{x})} is the matrix of column
+If @var{x} is a matrix, @w{@code{diff (@var{x})}} is the matrix of column
 differences along the first non-singleton dimension.
 
-The second argument is optional.  If supplied, @code{diff (@var{x},
-@var{k})}, where @var{k} is a non-negative integer, returns the
-@var{k}-th differences.  It is possible that @var{k} is larger than
-the first non-singleton dimension of the matrix.  In this case,
+The second argument is optional.  If supplied,
+@w{@code{diff (@var{x}, @var{k})}}, where @var{k} is a non-negative integer,
+returns the @var{k}-th differences.  It is possible that @var{k} is larger
+than the first non-singleton dimension of the matrix.  In this case,
 @code{diff} continues to take the differences along the next
 non-singleton dimension.
 
 The dimension along which to take the difference can be explicitly
 stated with the optional variable @var{dim}.  In this case the
 @var{k}-th order differences are calculated along this dimension.
-In the case where @var{k} exceeds @code{size (@var{x}, @var{dim})}
+In the case where @var{k} exceeds @w{@code{size (@var{x}, @var{dim})}}
 an empty matrix is returned.
 @seealso{@ref{XREFsort,,sort}, @ref{XREFmerge,,merge}}
 @end deftypefn
@@ -631,9 +631,8 @@ new matrices.  For example:
 Return the generalized transpose for an N-D array object @var{A}.
 
 The permutation vector @var{perm} must contain the elements
-@code{1:ndims (A)} (in any order, but each element must appear only once).
-
-The @var{N}th dimension of @var{A} gets remapped to dimension
+@w{@code{1:ndims (A)}} (in any order, but each element must appear only
+once).  The @var{N}th dimension of @var{A} gets remapped to dimension
 @code{@var{PERM}(@var{N})}.  For example:
 
 @example
@@ -881,8 +880,9 @@ matrix.  For example:
 For equal elements, the indices are such that equal elements are listed
 in the order in which they appeared in the original list.
 
-Sorting of complex entries is done first by magnitude (@code{abs (@var{z})})
-and for any ties by phase angle (@code{angle (z)}).  For example:
+Sorting of complex entries is done first by magnitude
+(@w{@code{abs (@var{z})}}) and for any ties by phase angle
+(@w{@code{angle (z)}}).  For example:
 
 @example
 @group
@@ -1485,7 +1485,7 @@ ri = randi (10, 150, 1)
 Implementation Note: @code{randi} relies internally on @code{rand} which
 uses class @qcode{"double"} to represent numbers.  This limits the maximum
 integer (@var{imax}) and range (@var{imax} - @var{imin}) to the value
-returned by the @code{bitmax} function.  For IEEE floating point numbers
+returned by the @code{flintmax} function.  For IEEE floating point numbers
 this value is @w{@math{2^{53} - 1}}.
 
 @seealso{@ref{XREFrand,,rand}}

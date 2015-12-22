@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 5.2 from octave.texi.
+This is octave.info, produced by makeinfo version 6.0 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 4.0.0.
+corresponds to GNU Octave version 4.0.1-rc1.
 
 * Menu:
 
@@ -871,131 +871,132 @@ Marco Atzeri             Shai Ayal                Roger Banks
 Ben Barrowes             Alexander Barth          David Bateman
 Heinz Bauschke           Julien Bect              Stefan Beller
 Roman Belov              Markus Bergholz          Karl Berry
-David Billinghurst       Don Bindner              Jakub Bogusz
-Moritz Borgmann          Paul Boven               Richard Bovey
-John Bradshaw            Marcus Brinkmann         Max Brister
-Remy Bruno               Clemens Buchacher        Ansgar Burchard
-Marco Caliari            Daniel Calvelo           John C. Campbell
-Juan Pablo Carbajal      Jean-Francois Cardoso    Joao Cardoso
-Larrie Carr              David Castelow           Vincent Cautaerts
-Clinton Chee             Albert Chin-A-Young      Carsten Clark
-Catalin Codreanu         J. D. Cole               Martin Costabel
-Michael Creel            Richard Crozier          Jeff Cunningham
-Martin Dalecki           Jacob Dawid              Jorge Barros de Abreu
-Carlo de Falco           Thomas D. Dean           Philippe Defert
-Bill Denney              Fabian Deutsch           Christos Dimitrakakis
-Pantxo Diribarne         Vivek Dogra              John Donoghue
-David M. Doolin          Carnë Draug             Pascal A. Dupuis
-John W. Eaton            Dirk Eddelbuettel        Pieter Eendebak
-Paul Eggert              Stephen Eglen            Peter Ekberg
-Edmund Grimley Evans     Rolf Fabian              Gunnar Farnebäck
-Massimiliano Fasi        Stephen Fegan            Ramon Garcia Fernandez
-Torsten Finke            Colin Foster             Jose Daniel Munoz
-                                                  Frias
-Brad Froehle             Castor Fu                Eduardo Gallestey
-Walter Gautschi          Klaus Gebhardt           Driss Ghaddab
-Eugenio Gianniti         Nicolo Giorgetti         Arun Giridhar
-Michael D. Godfrey       Michael Goffioul         Glenn Golden
-Tomislav Goles           Keith Goodman            Brian Gough
-Michael C. Grant         Steffen Groot            Etienne Grossmann
-David Grundberg          Kyle Guinn               Vaibhav Gupta
-Peter Gustafson          Kai Habel                Patrick Häcker
-William P. Y.            Jaroslav Hajek           Benjamin Hall
-Hadisoeseno
-Kim Hansen               Søren Hauberg           Dave Hawthorne
-Daniel Heiserer          Martin Helm              Stefan Hepp
-Martin Hepperle          Jordi Gutiérrez         Yozo Hida
-                         Hermoso
-Ryan Hinton              Roman Hodek              A. Scottedward Hodel
-Richard Allan Holcombe   Tom Holroyd              David Hoover
-Kurt Hornik              Christopher Hulbert      Cyril Humbert
-John Hunt                Teemu Ikonen             Alan W. Irwin
-Allan Jacobs             Geoff Jacobsen           Vytautas Jančauskas
-Mats Jansson             Cai Jianming             Steven G. Johnson
-Heikki Junes             Matthias Jüschke        Atsushi Kajita
-Jarkko Kaleva            Avinoam Kalma            Mohamed Kamoun
-Lute Kamstra             Fotios Kasolis           Thomas Kasper
-Joel Keay                Mumit Khan               Paul Kienzle
-Aaron A. King            Erik Kjellson            Arno J. Klaassen
-Alexander Klein          Geoffrey Knauth          Heine Kolltveit
-Ken Kouno                Kacper Kowalik           Daniel Kraft
-Nir Krakauer             Aravindh                 Oyvind Kristiansen
-                         Krishnamoorthy
-Artem Krosheninnikov     Piotr Krzyzanowski       Volker Kuhlmann
-Ilya Kurdyukov           Tetsuro Kurita           Philipp Kutin
-Miroslaw Kwasniak        Rafael Laboissiere       Kai Labusch
-Claude Lacoursiere       Walter Landry            Bill Lash
-Dirk Laurie              Maurice LeBrun           Friedrich Leisch
-Johannes Leuschner       Thorsten Liebig          Jyh-miin Lin
-Timo Lindfors            Benjamin Lindner         Ross Lippert
-David Livings            Sebastien Loisel         Erik de Castro Lopo
-Massimo Lorenzin         Emil Lucretiu            Yi-Hong Lyu
-Hoxide Ma                Colin Macdonald          James Macnicol
-Jens-Uwe Mager           Stefan Mahr              Rob Mahurin
-Alexander Mamonov        Ricardo Marranita        Orestes Mas
-Axel Mathéi             Makoto Matsumoto         Tatsuro Matsuoka
-Christoph Mayer          Laurent Mazet            G. D. McBain
-Ronald van der Meer      Júlio Hoffimann         Ed Meyer
-                         Mendes
-Thorsten Meyer           Stefan Miereis           Petr Mikulik
-Mike Miller              Serviscope Minor         Stefan Monnier
-Antoine Moreau           Kai P. Mueller           Armin Müller
-Hannes Müller           Victor Munoz             PrasannaKumar
-                                                  Muralidharan
-Iain Murray              Carmen Navarrete         Todd Neal
-Philip Nienhuis          Al Niessner              Felipe G. Nievinski
-Rick Niles               Takuji Nishimura         Kai Noda
-Patrick Noffke           Eric Norum               Krzesimir Nowak
-Michael O'Brien          Peter O'Gorman           Thorsten Ohl
-Kai T. Ohlhus            Arno Onken               Valentin
-                                                  Ortega-Clavero
-Luis F. Ortiz            Carl Osterwisch          Janne Olavi
-                                                  Paanajärvi
-Scott Pakin              José Luis García       Jason Alan Palmer
-                         Pallero
-Gabriele Pannocchia      Sylvain Pelissier        Rolando Pereira
-Per Persson              Primozz Peterlin         Jim Peterson
-Danilo Piazzalunga       Nicholas Piper           Elias Pipping
-Robert Platt             Hans Ekkehard Plesser    Sergey Plotnikov
-Tom Poage                Nathan Podlich           Orion Poplawski
-Ondrej Popp              Jef Poskanzer            Francesco Potortì
-Konstantinos Poulios     Jarno Rajahalme          Eduardo Ramos
-Pooja Rao                James B. Rawlings        Eric S. Raymond
-Balint Reczey            Joshua Redstone          Lukas Reichlin
-Michael Reifenberger     Jens Restemeier          Anthony Richardson
-Jason Riedy              E. Joshua Rigler         Sander van Rijn
-Petter Risholm           Matthew W. Roberts       Dmitry Roshchin
-Peter Rosin              Andrew Ross              Fabio Rossi
-Mark van Rossum          Joe Rothweiler           David Rörich
-Kevin Ruland             Kristian Rumberg         Ryan Rusaw
-Olli Saarela             Toni Saarela             Juhani Saastamoinen
-Radek Salac              Mike Sander              Ben Sapp
-Aleksej Saushev          Alois Schlögl           Michel D. Schmid
-Julian Schnidder         Sebastian Schoeps        Nicol N. Schraudolph
-Sebastian Schubert       Lasse Schuirmann         Ludwig Schwardt
-Thomas L. Scofield       Daniel J. Sebald         Dmitri A. Sergatskov
-Vanya Sergeev            Marko Seric              Ahsan Ali Shahid
-Baylis Shanks            Andriy Shinkarchuck      Robert T. Short
-Joseph P. Skudlarek      John Smith               Julius Smith
-Shan G. Smith            Peter L. Sondergaard     Joerg Specht
-Quentin H. Spencer       Christoph Spiel          David Spies
-Richard Stallman         Russell Standish         Brett Stewart
-Doug Stewart             Jonathan Stickel         Judd Storrs
-Thomas Stuart            Ivan Sutoris             John Swensen
-Daisuke Takago           Ariel Tankus             Falk Tannhäuser
-Duncan Temple Lang       Matthew Tenny            Kris Thielemans
-Georg Thimm              Corey Thomasson          Olaf Till
-Christophe Tournery      Thomas Treichl           Karsten Trulsen
-David Turner             Frederick Umminger       Utkarsh Upadhyay
-Stefan van der Walt      Peter Van Wieren         James R. Van Zandt
-Risto Vanhanen           Gregory Vanuxem          Mihas Varantsou
-Ivana Varekova           Sébastien Villemot      Marco Vitetta
-Daniel Wagenaar          Thomas Walter            Andreas Weber
-Olaf Weber               Thomas Weber             Rik Wehbring
-Bob Weigel               Andreas Weingessel       Martin Weiser
-Michael Weitzel          David Wells              Joachim Wiesemann
-Fook Fah Yap             Sean Young               Johannes Zarl
-Michael Zeising          Federico Zenith          Alex Zvoleff
+Ethan Biery              David Billinghurst       Don Bindner
+Jakub Bogusz             Moritz Borgmann          Paul Boven
+Richard Bovey            John Bradshaw            Marcus Brinkmann
+Max Brister              Remy Bruno               Clemens Buchacher
+Ansgar Burchard          Marco Caliari            Daniel Calvelo
+John C. Campbell         Juan Pablo Carbajal      Jean-Francois Cardoso
+Joao Cardoso             Larrie Carr              David Castelow
+Vincent Cautaerts        Clinton Chee             Albert Chin-A-Young
+Carsten Clark            Catalin Codreanu         J. D. Cole
+Martin Costabel          Michael Creel            Richard Crozier
+Jeff Cunningham          Martin Dalecki           Jacob Dawid
+Jorge Barros de Abreu    Carlo de Falco           Thomas D. Dean
+Philippe Defert          Bill Denney              Fabian Deutsch
+Christos Dimitrakakis    Pantxo Diribarne         Vivek Dogra
+John Donoghue            David M. Doolin          Carnë Draug
+Pascal A. Dupuis         John W. Eaton            Dirk Eddelbuettel
+Pieter Eendebak          Paul Eggert              Stephen Eglen
+Peter Ekberg             Edmund Grimley Evans     Rolf Fabian
+Gunnar Farnebäck        Massimiliano Fasi        Stephen Fegan
+Ramon Garcia Fernandez   Torsten Finke            Colin Foster
+Jose Daniel Munoz        Brad Froehle             Castor Fu
+Frias
+Eduardo Gallestey        Walter Gautschi          Klaus Gebhardt
+Driss Ghaddab            Eugenio Gianniti         Nicolo Giorgetti
+Arun Giridhar            Michael D. Godfrey       Michael Goffioul
+Glenn Golden             Tomislav Goles           Keith Goodman
+Brian Gough              Michael C. Grant         Steffen Groot
+Etienne Grossmann        David Grundberg          Kyle Guinn
+Vaibhav Gupta            Peter Gustafson          Kai Habel
+Patrick Häcker          William P. Y.            Jaroslav Hajek
+                         Hadisoeseno
+Benjamin Hall            Kim Hansen               Søren Hauberg
+Dave Hawthorne           Daniel Heiserer          Martin Helm
+Stefan Hepp              Martin Hepperle          Jordi Gutiérrez
+                                                  Hermoso
+Yozo Hida                Ryan Hinton              Roman Hodek
+A. Scottedward Hodel     Richard Allan Holcombe   Tom Holroyd
+David Hoover             Kurt Hornik              Christopher Hulbert
+Cyril Humbert            John Hunt                Teemu Ikonen
+Alan W. Irwin            Allan Jacobs             Geoff Jacobsen
+Vytautas Jančauskas      Nick Jankowski           Mats Jansson
+Cai Jianming             Steven G. Johnson        Heikki Junes
+Matthias Jüschke        Atsushi Kajita           Jarkko Kaleva
+Avinoam Kalma            Mohamed Kamoun           Lute Kamstra
+Fotios Kasolis           Thomas Kasper            Joel Keay
+Mumit Khan               Paul Kienzle             Aaron A. King
+Erik Kjellson            Arno J. Klaassen         Alexander Klein
+Geoffrey Knauth          Heine Kolltveit          Ken Kouno
+Kacper Kowalik           Daniel Kraft             Nir Krakauer
+Aravindh                 Oyvind Kristiansen       Artem Krosheninnikov
+Krishnamoorthy
+Piotr Krzyzanowski       Volker Kuhlmann          Ilya Kurdyukov
+Tetsuro Kurita           Philipp Kutin            Miroslaw Kwasniak
+Rafael Laboissiere       Kai Labusch              Claude Lacoursiere
+Walter Landry            Bill Lash                Dirk Laurie
+Maurice LeBrun           Friedrich Leisch         Johannes Leuschner
+Thorsten Liebig          Jyh-miin Lin             Timo Lindfors
+Benjamin Lindner         Ross Lippert             David Livings
+Sebastien Loisel         Erik de Castro Lopo      Massimo Lorenzin
+Emil Lucretiu            Yi-Hong Lyu              Hoxide Ma
+Colin Macdonald          James Macnicol           Jens-Uwe Mager
+Stefan Mahr              Rob Mahurin              Alexander Mamonov
+Ricardo Marranita        Orestes Mas              Axel Mathéi
+Makoto Matsumoto         Tatsuro Matsuoka         Christoph Mayer
+Laurent Mazet            G. D. McBain             Ronald van der Meer
+Júlio Hoffimann         Ed Meyer                 Thorsten Meyer
+Mendes
+Stefan Miereis           Petr Mikulik             Mike Miller
+Serviscope Minor         Stefan Monnier           Antoine Moreau
+Kai P. Mueller           Armin Müller            Hannes Müller
+Victor Munoz             PrasannaKumar            Iain Murray
+                         Muralidharan
+Carmen Navarrete         Todd Neal                Philip Nienhuis
+Al Niessner              Felipe G. Nievinski      Rick Niles
+Takuji Nishimura         Kai Noda                 Patrick Noffke
+Eric Norum               Krzesimir Nowak          Michael O'Brien
+Peter O'Gorman           Thorsten Ohl             Kai T. Ohlhus
+Arno Onken               Valentin                 Luis F. Ortiz
+                         Ortega-Clavero
+Carl Osterwisch          Janne Olavi              Scott Pakin
+                         Paanajärvi
+José Luis García       Jason Alan Palmer        Gabriele Pannocchia
+Pallero
+Sylvain Pelissier        Rolando Pereira          Per Persson
+Primozz Peterlin         Jim Peterson             Danilo Piazzalunga
+Nicholas Piper           Elias Pipping            Robert Platt
+Hans Ekkehard Plesser    Sergey Plotnikov         Tom Poage
+Nathan Podlich           Orion Poplawski          Ondrej Popp
+Jef Poskanzer            Francesco Potortì       Konstantinos Poulios
+Jarno Rajahalme          Eduardo Ramos            Pooja Rao
+James B. Rawlings        Eric S. Raymond          Balint Reczey
+Joshua Redstone          Lukas Reichlin           Michael Reifenberger
+Jens Restemeier          Anthony Richardson       Jason Riedy
+E. Joshua Rigler         Sander van Rijn          Petter Risholm
+Matthew W. Roberts       Dmitry Roshchin          Peter Rosin
+Andrew Ross              Fabio Rossi              Mark van Rossum
+Joe Rothweiler           David Rörich            Kevin Ruland
+Kristian Rumberg         Ryan Rusaw               Olli Saarela
+Toni Saarela             Juhani Saastamoinen      Radek Salac
+Mike Sander              Ben Sapp                 Aleksej Saushev
+Alois Schlögl           Michel D. Schmid         Julian Schnidder
+Sebastian Schoeps        Nicol N. Schraudolph     Sebastian Schubert
+Lasse Schuirmann         Ludwig Schwardt          Thomas L. Scofield
+Daniel J. Sebald         Dmitri A. Sergatskov     Vanya Sergeev
+Marko Seric              Ahsan Ali Shahid         Baylis Shanks
+Andriy Shinkarchuck      Robert T. Short          Joseph P. Skudlarek
+John Smith               Julius Smith             Shan G. Smith
+Peter L. Sondergaard     Joerg Specht             Quentin H. Spencer
+Christoph Spiel          David Spies              Richard Stallman
+Russell Standish         Brett Stewart            Doug Stewart
+Jonathan Stickel         Judd Storrs              Thomas Stuart
+Ivan Sutoris             John Swensen             Daisuke Takago
+Ariel Tankus             Falk Tannhäuser         Duncan Temple Lang
+Matthew Tenny            Kris Thielemans          Georg Thimm
+Corey Thomasson          Olaf Till                Christophe Tournery
+Thomas Treichl           Karsten Trulsen          David Turner
+Frederick Umminger       Utkarsh Upadhyay         Stefan van der Walt
+Peter Van Wieren         James R. Van Zandt       Risto Vanhanen
+Gregory Vanuxem          Mihas Varantsou          Ivana Varekova
+Sébastien Villemot      Marco Vitetta            Daniel Wagenaar
+Thomas Walter            Andreas Weber            Olaf Weber
+Thomas Weber             Rik Wehbring             Bob Weigel
+Andreas Weingessel       Martin Weiser            Michael Weitzel
+David Wells              Joachim Wiesemann        Fook Fah Yap
+Sean Young               Johannes Zarl            Michael Zeising
+Federico Zenith          Alex Zvoleff
 
    Special thanks to the following people and organizations for
 supporting the development of Octave:
@@ -1157,7 +1158,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 4.0.0.
+   This document corresponds to Octave version 4.0.1-rc1.
 
 * Menu:
 
@@ -1277,7 +1278,7 @@ operator, '\':
 
      X = A \ b
 
-This is conceptually equivalent to 'inv (a) * b', but avoids computing
+This is conceptually equivalent to 'inv (A) * b', but avoids computing
 the inverse of a matrix directly.
 
    If the coefficient matrix is singular, Octave will print a warning
@@ -1727,9 +1728,10 @@ Here is a complete list of the command line options that Octave accepts.
 
 '--doc-cache-file FILENAME'
      Specify the name of the doc cache file to use.  The value of
-     FILENAME specified on the command line will override any value of 'OCTAVE_DOC_CACHE_FILE'
-     found in the environment, but not any commands in the system or
-     user startup files that use the 'doc_cache_file' function.
+     FILENAME specified on the command line will override any value of
+     'OCTAVE_DOC_CACHE_FILE' found in the environment, but not any
+     commands in the system or user startup files that use the
+     'doc_cache_file' function.
 
 '--echo-commands'
 '-x'
@@ -1741,9 +1743,10 @@ Here is a complete list of the command line options that Octave accepts.
 
 '--exec-path PATH'
      Specify the path to search for programs to run.  The value of PATH
-     specified on the command line will override any value of 'OCTAVE_EXEC_PATH'
-     found in the environment, but not any commands in the system or
-     user startup files that set the built-in variable 'EXEC_PATH'.
+     specified on the command line will override any value of
+     'OCTAVE_EXEC_PATH' found in the environment, but not any commands
+     in the system or user startup files that set the built-in variable
+     'EXEC_PATH'.
 
 '--force-gui'
      Force the graphical user interface (GUI) to start.
@@ -1755,21 +1758,24 @@ Here is a complete list of the command line options that Octave accepts.
 
 '--image-path PATH'
      Add path to the head of the search path for images.  The value of
-     PATH specified on the command line will override any value of 'OCTAVE_IMAGE_PATH'
-     found in the environment, but not any commands in the system or
-     user startup files that set the built-in variable 'IMAGE_PATH'.
+     PATH specified on the command line will override any value of
+     'OCTAVE_IMAGE_PATH' found in the environment, but not any commands
+     in the system or user startup files that set the built-in variable
+     'IMAGE_PATH'.
 
 '--info-file FILENAME'
      Specify the name of the info file to use.  The value of FILENAME
-     specified on the command line will override any value of 'OCTAVE_INFO_FILE'
-     found in the environment, but not any commands in the system or
-     user startup files that use the 'info_file' function.
+     specified on the command line will override any value of
+     'OCTAVE_INFO_FILE' found in the environment, but not any commands
+     in the system or user startup files that use the 'info_file'
+     function.
 
 '--info-program PROGRAM'
      Specify the name of the info program to use.  The value of PROGRAM
-     specified on the command line will override any value of 'OCTAVE_INFO_PROGRAM'
-     found in the environment, but not any commands in the system or
-     user startup files that use the 'info_program' function.
+     specified on the command line will override any value of
+     'OCTAVE_INFO_PROGRAM' found in the environment, but not any
+     commands in the system or user startup files that use the
+     'info_program' function.
 
 '--interactive'
 '-i'
@@ -3767,13 +3773,21 @@ functions return -1 for structure arguments.
 
           A(IDX1, IDX2, ...)
 
-     Note that the indices do not have to be numerical.  For example,
+     Note that the indices do not have to be scalar numbers.  For
+     example,
 
           A = 1;
           B = ones (2, 3);
           numel (A, B)
 
-     will return 6, as this is the number of ways to index with B.
+     will return 6, as this is the number of ways to index with B.  Or
+     the index could be the string ":" which represents the colon
+     operator.  For example,
+
+          A = ones (5, 3);
+          numel (A, 2, ":")
+
+     will return 3 as the second row has three column entries.
 
      This method is also called when an object appears as lvalue with
      cs-list indexing, i.e., 'object{...}' or 'object(...).field'.
@@ -3784,9 +3798,9 @@ functions return -1 for structure arguments.
      Return the length of the object A.
 
      The length is 0 for empty objects, 1 for scalars, and the number of
-     elements for vectors.  For matrix objects, the length is the number
-     of rows or columns, whichever is greater (this odd definition is
-     used for compatibility with MATLAB).
+     elements for vectors.  For matrix or N-dimensional objects, the
+     length is the number of elements along the largest dimension
+     (equivalent to 'max (size (A))').
 
      See also: *note numel: XREFnumel, *note size: XREFsize.
 
@@ -3923,8 +3937,8 @@ forms are equivalent.
      With 1 real argument X, return the complex result 'X + 0i'.
 
      With 2 real arguments, return the complex result 'RE + IM'.
-     'complex' can often be more convenient than expressions such as 'a
-     + i*b'.  For example:
+     'complex' can often be more convenient than expressions such as
+     'a + i*b'.  For example:
 
           complex ([1, 2], [3, 4])
             => [ 1 + 3i   2 + 4i ]
@@ -4548,8 +4562,8 @@ when converted.
      a floating point value.
 
      The default class is "double", but "single" is a valid option.  On
-     IEEE-754 compatible systems, 'flintmax' is 2^53 for "double" and 2^24
-     for "single".
+     IEEE 754 compatible systems, 'flintmax' is 2^{53} for "double" and
+     2^{24} for "single".
 
      See also: *note bitmax: XREFbitmax, *note intmax: XREFintmax, *note
      realmax: XREFrealmax, *note realmin: XREFrealmin.
@@ -4690,7 +4704,7 @@ the function 'bitmax'.
      floating point value.
 
      The default class is "double", but "single" is a valid option.  On
-     IEEE-754 compatible systems, 'bitmax' is 2^{53} - 1 for "double"
+     IEEE 754 compatible systems, 'bitmax' is 2^{53} - 1 for "double"
      and 2^{24} -1 for "single".
 
      See also: *note flintmax: XREFflintmax, *note intmax: XREFintmax,
@@ -6296,9 +6310,13 @@ general regular expressions, the following functions come with Octave.
 
      "delimiter"
           Any character in VALUE will be used to split STR into words
-          (default value = any whitespace).
+          (default value = any whitespace).  Note that whitespace is
+          implicitly added to the set of delimiter characters unless a
+          "%s" format conversion specifier is supplied; see "whitespace"
+          parameter below.  The set of delimiter characters cannot be
+          empty; if needed Octave substitutes a space as delimiter.
 
-     "emptyvalue":
+     "emptyvalue"
           Value to return for empty numeric values in non-whitespace
           delimited data.  The default is NaN.  When the data type does
           not support NaN (int32 for example), then default is zero.
@@ -6320,10 +6338,18 @@ general regular expressions, the following functions come with Octave.
           Any character in VALUE will be interpreted as whitespace and
           trimmed; the string defining whitespace must be enclosed in
           double quotes for proper processing of special characters like
-          "\t".  The default value for whitespace is " \b\r\n\t" (note
-          the space).  Unless whitespace is set to "" (empty) AND at
-          least one "%s" format conversion specifier is supplied, a
-          space is always part of whitespace.
+          "\t".  In each data field, multiple consecutive whitespace
+          characters are collapsed into one space and leading and
+          trailing whitespace is removed.  The default value for
+          whitespace is " \b\r\n\t" (note the space).  Whitespace is
+          always added to the set of delimiter characters unless at
+          least one "%s" format conversion specifier is supplied; in
+          that case only whitespace explicitly specified in "delimiter"
+          is retained as delimiter and removed from the set of
+          whitespace characters.  If whitespace characters are to be
+          kept as-is (in e.g., strings), specify an empty value (i.e.,
+          "") for "whitespace"; obviously, whitespace cannot be a
+          delimiter then.
 
      When the number of words in STR doesn't match an exact multiple of
      the number of format conversion specifiers, strread's behavior
@@ -8923,413 +8949,4 @@ variable will be cleared by a simple 'clear' command as the entire
 function definition will be removed from memory.  If you do not want a
 persistent variable to be removed from memory even if the function is
 cleared, you should use the 'mlock' function (*note Function Locking::).
-
-
-File: octave.info,  Node: Status of Variables,  Prev: Persistent Variables,  Up: Variables
-
-7.3 Status of Variables
-=======================
-
-When creating simple one-shot programs it can be very convenient to see
-which variables are available at the prompt.  The function 'who' and its
-siblings 'whos' and 'whos_line_format' will show different information
-about what is in memory, as the following shows.
-
-     str = "A random string";
-     who -variables
-          -| *** local user variables:
-          -|
-          -| __nargin__  str
-
- -- Command: who
- -- Command: who pattern ...
- -- Command: who option pattern ...
- -- Command: C = who ("pattern", ...)
-     List currently defined variables matching the given patterns.
-
-     Valid pattern syntax is the same as described for the 'clear'
-     command.  If no patterns are supplied, all variables are listed.
-
-     By default, only variables visible in the local scope are
-     displayed.
-
-     The following are valid options, but may not be combined.
-
-     'global'
-          List variables in the global scope rather than the current
-          scope.
-
-     '-regexp'
-          The patterns are considered to be regular expressions when
-          matching the variables to display.  The same pattern syntax
-          accepted by the 'regexp' function is used.
-
-     '-file'
-          The next argument is treated as a filename.  All variables
-          found within the specified file are listed.  No patterns are
-          accepted when reading variables from a file.
-
-     If called as a function, return a cell array of defined variable
-     names matching the given patterns.
-
-     See also: *note whos: XREFwhos, *note isglobal: XREFisglobal, *note
-     isvarname: XREFisvarname, *note exist: XREFexist, *note regexp:
-     XREFregexp.
-
- -- Command: whos
- -- Command: whos pattern ...
- -- Command: whos option pattern ...
- -- Built-in Function: S = whos ("pattern", ...)
-     Provide detailed information on currently defined variables
-     matching the given patterns.
-
-     Options and pattern syntax are the same as for the 'who' command.
-
-     Extended information about each variable is summarized in a table
-     with the following default entries.
-
-     Attr
-          Attributes of the listed variable.  Possible attributes are:
-
-          blank
-               Variable in local scope
-
-          'a'
-               Automatic variable.  An automatic variable is one created
-               by the interpreter, for example 'argn'.
-
-          'c'
-               Variable of complex type.
-
-          'f'
-               Formal parameter (function argument).
-
-          'g'
-               Variable with global scope.
-
-          'p'
-               Persistent variable.
-
-     Name
-          The name of the variable.
-
-     Size
-          The logical size of the variable.  A scalar is 1x1, a vector
-          is 1xN or Nx1, a 2-D matrix is MxN.
-
-     Bytes
-          The amount of memory currently used to store the variable.
-
-     Class
-          The class of the variable.  Examples include double, single,
-          char, uint16, cell, and struct.
-
-     The table can be customized to display more or less information
-     through the function 'whos_line_format'.
-
-     If 'whos' is called as a function, return a struct array of defined
-     variable names matching the given patterns.  Fields in the
-     structure describing each variable are: name, size, bytes, class,
-     global, sparse, complex, nesting, persistent.
-
-     See also: *note who: XREFwho, *note whos_line_format:
-     XREFwhos_line_format.
-
- -- Built-in Function: VAL = whos_line_format ()
- -- Built-in Function: OLD_VAL = whos_line_format (NEW_VAL)
- -- Built-in Function: whos_line_format (NEW_VAL, "local")
-     Query or set the format string used by the command 'whos'.
-
-     A full format string is:
-
-          %[modifier]<command>[:width[:left-min[:balance]]];
-
-     The following command sequences are available:
-
-     '%a'
-          Prints attributes of variables (g=global, p=persistent,
-          f=formal parameter, a=automatic variable).
-
-     '%b'
-          Prints number of bytes occupied by variables.
-
-     '%c'
-          Prints class names of variables.
-
-     '%e'
-          Prints elements held by variables.
-
-     '%n'
-          Prints variable names.
-
-     '%s'
-          Prints dimensions of variables.
-
-     '%t'
-          Prints type names of variables.
-
-     Every command may also have an alignment modifier:
-
-     'l'
-          Left alignment.
-
-     'r'
-          Right alignment (default).
-
-     'c'
-          Column-aligned (only applicable to command %s).
-
-     The 'width' parameter is a positive integer specifying the minimum
-     number of columns used for printing.  No maximum is needed as the
-     field will auto-expand as required.
-
-     The parameters 'left-min' and 'balance' are only available when the
-     column-aligned modifier is used with the command '%s'.  'balance'
-     specifies the column number within the field width which will be
-     aligned between entries.  Numbering starts from 0 which indicates
-     the leftmost column.  'left-min' specifies the minimum field width
-     to the left of the specified balance column.
-
-     The default format is:
-
-     " %a:4; %ln:6; %cs:16:6:1; %rb:12; %lc:-1;\n"
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note whos: XREFwhos.
-
-   Instead of displaying which variables are in memory, it is possible
-to determine if a given variable is available.  That way it is possible
-to alter the behavior of a program depending on the existence of a
-variable.  The following example illustrates this.
-
-     if (! exist ("meaning", "var"))
-       disp ("The program has no 'meaning'");
-     endif
-
- -- Built-in Function: C = exist (NAME)
- -- Built-in Function: C = exist (NAME, TYPE)
-     Check for the existence of NAME as a variable, function, file,
-     directory, or class.
-
-     The return code C is one of
-
-     1
-          NAME is a variable.
-
-     2
-          NAME is an absolute file name, an ordinary file in Octave's
-          'path', or (after appending '.m') a function file in Octave's
-          'path'.
-
-     3
-          NAME is a '.oct' or '.mex' file in Octave's 'path'.
-
-     5
-          NAME is a built-in function.
-
-     7
-          NAME is a directory.
-
-     103
-          NAME is a function not associated with a file (entered on the
-          command line).
-
-     0
-          NAME does not exist.
-
-     If the optional argument TYPE is supplied, check only for symbols
-     of the specified type.  Valid types are
-
-     "var"
-          Check only for variables.
-
-     "builtin"
-          Check only for built-in functions.
-
-     "dir"
-          Check only for directories.
-
-     "file"
-          Check only for files and directories.
-
-     "class"
-          Check only for classes.  (Note: This option is accepted, but
-          not currently implemented)
-
-     If no type is given, and there are multiple possible matches for
-     name, 'exist' will return a code according to the following
-     priority list: variable, built-in function, oct-file, directory,
-     file, class.
-
-     'exist' returns 2 if a regular file called NAME is present in
-     Octave's search path.  If you want information about other types of
-     files not on the search path you should use some combination of the
-     functions 'file_in_path' and 'stat' instead.
-
-     See also: *note file_in_loadpath: XREFfile_in_loadpath, *note
-     file_in_path: XREFfile_in_path, *note dir_in_loadpath:
-     XREFdir_in_loadpath, *note stat: XREFstat.
-
-   Usually Octave will manage the memory, but sometimes it can be
-practical to remove variables from memory manually.  This is usually
-needed when working with large variables that fill a substantial part of
-the memory.  On a computer that uses the IEEE floating point format, the
-following program allocates a matrix that requires around 128 MB memory.
-
-     large_matrix = zeros (4000, 4000);
-
-Since having this variable in memory might slow down other computations,
-it can be necessary to remove it manually from memory.  The 'clear'
-function allows this.
-
- -- Command: clear [options] pattern ...
-     Delete the names matching the given patterns from the symbol table.
-
-     The pattern may contain the following special characters:
-
-     '?'
-          Match any single character.
-
-     '*'
-          Match zero or more characters.
-
-     '[ LIST ]'
-          Match the list of characters specified by LIST.  If the first
-          character is '!' or '^', match all characters except those
-          specified by LIST.  For example, the pattern '[a-zA-Z]' will
-          match all lowercase and uppercase alphabetic characters.
-
-     For example, the command
-
-          clear foo b*r
-
-     clears the name 'foo' and all names that begin with the letter 'b'
-     and end with the letter 'r'.
-
-     If 'clear' is called without any arguments, all user-defined
-     variables (local and global) are cleared from the symbol table.
-
-     If 'clear' is called with at least one argument, only the visible
-     names matching the arguments are cleared.  For example, suppose you
-     have defined a function 'foo', and then hidden it by performing the
-     assignment 'foo = 2'.  Executing the command 'clear foo' once will
-     clear the variable definition and restore the definition of 'foo'
-     as a function.  Executing 'clear foo' a second time will clear the
-     function definition.
-
-     The following options are available in both long and short form
-
-     '-all, -a'
-          Clear all local and global user-defined variables and all
-          functions from the symbol table.
-
-     '-exclusive, -x'
-          Clear the variables that don't match the following pattern.
-
-     '-functions, -f'
-          Clear the function names and the built-in symbols names.
-
-     '-global, -g'
-          Clear global symbol names.
-
-     '-variables, -v'
-          Clear local variable names.
-
-     '-classes, -c'
-          Clears the class structure table and clears all objects.
-
-     '-regexp, -r'
-          The arguments are treated as regular expressions as any
-          variables that match will be cleared.
-
-     With the exception of 'exclusive', all long options can be used
-     without the dash as well.
-
-     See also: *note who: XREFwho, *note whos: XREFwhos, *note exist:
-     XREFexist.
-
- -- Function File: pack ()
-     Consolidate workspace memory in MATLAB.
-
-     This function is provided for compatibility, but does nothing in
-     Octave.
-
-     See also: *note clear: XREFclear.
-
-   Information about a function or variable such as its location in the
-file system can also be acquired from within Octave.  This is usually
-only useful during development of programs, and not within a program.
-
- -- Command: type NAME ...
- -- Command: type -q NAME ...
- -- Function File: text = type ("NAME", ...)
-     Display the contents of NAME which may be a file, function
-     (m-file), variable, operator, or keyword.
-
-     'type' normally prepends a header line describing the category of
-     NAME such as function or variable; The '-q' option suppresses this
-     behavior.
-
-     If no output variable is used the contents are displayed on screen.
-     Otherwise, a cell array of strings is returned, where each element
-     corresponds to the contents of each requested function.
-
- -- Command: which name ...
-     Display the type of each NAME.
-
-     If NAME is defined from a function file, the full name of the file
-     is also displayed.
-
-     See also: *note help: XREFhelp, *note lookfor: XREFlookfor.
-
- -- Command: what
- -- Command: what DIR
- -- Function File: w = what (DIR)
-     List the Octave specific files in directory DIR.
-
-     If DIR is not specified then the current directory is used.
-
-     If a return argument is requested, the files found are returned in
-     the structure W.  The structure contains the following fields:
-
-     path
-          Full path to directory DIR
-
-     m
-          Cell array of m-files
-
-     mat
-          Cell array of mat files
-
-     mex
-          Cell array of mex files
-
-     oct
-          Cell array of oct files
-
-     mdl
-          Cell array of mdl files
-
-     slx
-          Cell array of slx files
-
-     p
-          Cell array of p-files
-
-     classes
-          Cell array of class directories ('@CLASSNAME/')
-
-     packages
-          Cell array of package directories ('+PKGNAME/')
-
-     Compatibility Note: Octave does not support mdl, slx, and p files;
-     nor does it support package directories.  'what' will always return
-     an empty list for these categories.
-
-     See also: *note which: XREFwhich, *note ls: XREFls, *note exist:
-     XREFexist.
 

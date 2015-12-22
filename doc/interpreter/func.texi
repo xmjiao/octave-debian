@@ -748,7 +748,7 @@ No value is @var{NaN}, and each is less than or equal to the preceding one.
 @item @qcode{"nonnan"}
 No value is a @code{NaN}.
 
-@item @qcode{"non-negative"}
+@item @qcode{"nonnegative"}
 All values are non negative.
 
 @item @qcode{"nonsparse"}
@@ -2426,6 +2426,10 @@ Return a function handle constructed from the string @var{fcn_name}.
 
 If the optional @qcode{"global"} argument is passed, locally visible
 functions are ignored in the lookup.
+
+Note: @code{str2func} does not currently accept strings which define
+anonymous functions (those which begin with @samp{@@}).
+Use @w{@code{eval (@var{str})}} as a replacement.
 @seealso{@ref{XREFfunc2str,,func2str}, @ref{XREFinline,,inline}}
 @end deftypefn
 

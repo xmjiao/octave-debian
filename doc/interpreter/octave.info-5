@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 5.2 from octave.texi.
+This is octave.info, produced by makeinfo version 6.0 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -19,6 +19,114 @@ permission notice identical to this one.
    Permission is granted to copy and distribute translations of this
 manual into another language, under the above conditions for modified
 versions.
+
+
+File: octave.info,  Node: Creating Diagonal Matrices,  Next: Creating Permutation Matrices,  Up: Basic Usage
+
+21.1.1 Creating Diagonal Matrices
+---------------------------------
+
+The most common and easiest way to create a diagonal matrix is using the
+built-in function "diag".  The expression 'diag (v)', with V a vector,
+will create a square diagonal matrix with elements on the main diagonal
+given by the elements of V, and size equal to the length of V.  'diag
+(v, m, n)' can be used to construct a rectangular diagonal matrix.  The
+result of these expressions will be a special diagonal matrix object,
+rather than a general matrix object.
+
+   Diagonal matrix with unit elements can be created using "eye".  Some
+other built-in functions can also return diagonal matrices.  Examples
+include "balance" or "inv".
+
+   Example:
+
+       diag (1:4)
+     =>
+     Diagonal Matrix
+
+        1   0   0   0
+        0   2   0   0
+        0   0   3   0
+        0   0   0   4
+
+       diag (1:3,5,3)
+
+     =>
+     Diagonal Matrix
+
+        1   0   0
+        0   2   0
+        0   0   3
+        0   0   0
+        0   0   0
+
+
+File: octave.info,  Node: Creating Permutation Matrices,  Next: Explicit and Implicit Conversions,  Prev: Creating Diagonal Matrices,  Up: Basic Usage
+
+21.1.2 Creating Permutation Matrices
+------------------------------------
+
+For creating permutation matrices, Octave does not introduce a new
+function, but rather overrides an existing syntax: permutation matrices
+can be conveniently created by indexing an identity matrix by
+permutation vectors.  That is, if Q is a permutation vector of length N,
+the expression
+
+       P = eye (n) (:, q);
+
+will create a permutation matrix - a special matrix object.
+
+     eye (n) (q, :)
+
+will also work (and create a row permutation matrix), as well as
+
+     eye (n) (q1, q2).
+
+   For example:
+
+       eye (4) ([1,3,2,4],:)
+     =>
+     Permutation Matrix
+
+        1   0   0   0
+        0   0   1   0
+        0   1   0   0
+        0   0   0   1
+
+       eye (4) (:,[1,3,2,4])
+     =>
+     Permutation Matrix
+
+        1   0   0   0
+        0   0   1   0
+        0   1   0   0
+        0   0   0   1
+
+   Mathematically, an identity matrix is both diagonal and permutation
+matrix.  In Octave, 'eye (n)' returns a diagonal matrix, because a
+matrix can only have one class.  You can convert this diagonal matrix to
+a permutation matrix by indexing it by an identity permutation, as shown
+below.  This is a special property of the identity matrix; indexing
+other diagonal matrices generally produces a full matrix.
+
+       eye (3)
+     =>
+     Diagonal Matrix
+
+        1   0   0
+        0   1   0
+        0   0   1
+
+       eye(3)(1:3,:)
+     =>
+     Permutation Matrix
+
+        1   0   0
+        0   1   0
+        0   0   1
+
+   Some other built-in functions can also return permutation matrices.
+Examples include "inv" or "lu".
 
 
 File: octave.info,  Node: Explicit and Implicit Conversions,  Prev: Creating Permutation Matrices,  Up: Basic Usage
@@ -3200,8 +3308,8 @@ example:
      A and B are the lower and upper limits of integration.  Both limits
      must be finite.
 
-     The optional argument TOL defines the tolerance used to stop the
-     adaptation procedure.  The default value is 1e-6.
+     The optional argument TOL defines the absolute tolerance used to
+     stop the adaptation procedure.  The default value is 1e-6.
 
      The algorithm used by 'quadv' involves recursively subdividing the
      integration interval and applying Simpson's rule on each
@@ -5919,8 +6027,8 @@ statistics.
 
      If the first argument is a vector, SET, then generate all
      combinations of the elements of SET, taken K at a time, with one
-     row per combination.  The result C has K columns and 'nchoosek (length (SET), K)'
-     rows.
+     row per combination.  The result C has K columns and
+     'nchoosek (length (SET), K)' rows.
 
      For example:
 
@@ -6669,7 +6777,7 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
      integer values 1-N with equal probability.
 
      Warning: The underlying implementation uses the double class and
-     will only be accurate for N <= 'bitmax' (2^{53} - 1 on IEEE-754
+     will only be accurate for N <= 'bitmax' (2^{53} - 1 on IEEE 754
      compatible systems).
 
  -- Function File: unidcdf (X, N)
@@ -7706,49 +7814,4 @@ Wiener Process                'wienrnd'
      The optional parameter N defines the number of summands used for
      simulating the process over an interval of length 1.  If N is
      omitted, N = 1000 is used.
-
-
-File: octave.info,  Node: Sets,  Next: Polynomial Manipulations,  Prev: Statistics,  Up: Top
-
-27 Sets
-*******
-
-Octave has a number of functions for managing sets of data.  A set is
-defined as a collection of unique elements and is typically represented
-by a vector of numbers sorted in ascending order.  Any vector or matrix
-can be converted to a set by removing duplicates through the use of the
-'unique' function.  However, it isn't necessary to explicitly create a
-set as all of the functions which operate on sets will convert their
-input to a set before proceeding.
-
- -- Function File: unique (X)
- -- Function File: unique (X, "rows")
- -- Function File: [Y, I, J] = unique (...)
- -- Function File: [Y, I, J] = unique (..., "first")
- -- Function File: [Y, I, J] = unique (..., "last")
-     Return the unique elements of X sorted in ascending order.
-
-     If the input X is a column vector then return a column vector;
-     Otherwise, return a row vector.  X may also be a cell array of
-     strings.
-
-     If the optional argument "rows" is given then return the unique
-     rows of X sorted in ascending order.  The input must be a 2-D
-     matrix to use this option.
-
-     If requested, return index vectors I and J such that 'Y = X(I)' and
-     'X = Y(J)'.
-
-     Additionally, if I is a requested output then one of "first" or
-     "last" may be given as an input.  If "last" is specified, return
-     the highest possible indices in I, otherwise, if "first" is
-     specified, return the lowest.  The default is "last".
-
-     See also: *note union: XREFunion, *note intersect: XREFintersect,
-     *note setdiff: XREFsetdiff, *note setxor: XREFsetxor, *note
-     ismember: XREFismember.
-
-* Menu:
-
-* Set Operations::
 

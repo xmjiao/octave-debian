@@ -1980,8 +1980,8 @@ mexFunction (int nlhs, mxArray* plhs[],
   mwIndex i;
   double *vri, *vro;
 
-  if (nrhs != 1 || ! mxIsNumeric (prhs[0]))
-    mexErrMsgTxt ("ARG1 must be a matrix");
+  if (nrhs != 1 || ! mxIsDouble (prhs[0]))
+    mexErrMsgTxt ("ARG1 must be a double matrix");
 
   n = mxGetNumberOfElements (prhs[0]);
   plhs[0] = mxCreateNumericArray (mxGetNumberOfDimensions (prhs[0]),
@@ -2212,7 +2212,7 @@ mexFunction (int nlhs, mxArray* plhs[],
   const char *keys[] = { "this", "that" };
 
   if (nrhs != 1 || ! mxIsStruct (prhs[0]))
-    mexErrMsgTxt ("expects struct");
+    mexErrMsgTxt ("ARG1 must be a struct");
 
   for (i = 0; i < mxGetNumberOfFields (prhs[0]); i++)
     for (j = 0; j < mxGetNumberOfElements (prhs[0]); j++)
@@ -2474,7 +2474,7 @@ mexFunction (int nlhs, mxArray* plhs[],
 
   mexPrintf ("I have %d inputs and %d outputs\n", nrhs, nlhs);
 
-  if (nrhs < 1 || ! mxIsString (prhs[0]))
+  if (nrhs < 1 || ! mxIsChar (prhs[0]))
     mexErrMsgTxt ("ARG1 must be a function name");
 
   str = mxArrayToString (prhs[0]);

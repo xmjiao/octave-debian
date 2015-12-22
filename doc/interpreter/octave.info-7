@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 5.2 from octave.texi.
+This is octave.info, produced by makeinfo version 6.0 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -19,6 +19,638 @@ permission notice identical to this one.
    Permission is granted to copy and distribute translations of this
 manual into another language, under the above conditions for modified
 versions.
+
+
+File: octave.info,  Node: URL Manipulation,  Next: Base64 and Binary Data Transmission,  Prev: FTP Objects,  Up: Networking Utilities
+
+36.4.2 URL Manipulation
+-----------------------
+
+ -- Loadable Function: S = urlread (URL)
+ -- Loadable Function: [S, SUCCESS] = urlread (URL)
+ -- Loadable Function: [S, SUCCESS, MESSAGE] = urlread (URL)
+ -- Loadable Function: [...] = urlread (URL, METHOD, PARAM)
+     Download a remote file specified by its URL and return its content
+     in string S.
+
+     For example:
+
+          s = urlread ("ftp://ftp.octave.org/pub/README");
+
+     The variable SUCCESS is 1 if the download was successful, otherwise
+     it is 0 in which case MESSAGE contains an error message.
+
+     If no output argument is specified and an error occurs, then the
+     error is signaled through Octave's error handling mechanism.
+
+     This function uses libcurl.  Curl supports, among others, the HTTP,
+     FTP and FILE protocols.  Username and password may be specified in
+     the URL.  For example:
+
+          s = urlread ("http://user:password@example.com/file.txt");
+
+     GET and POST requests can be specified by METHOD and PARAM.  The
+     parameter METHOD is either 'get' or 'post' and PARAM is a cell
+     array of parameter and value pairs.  For example:
+
+          s = urlread ("http://www.google.com/search", "get",
+                      {"query", "octave"});
+
+     See also: *note urlwrite: XREFurlwrite.
+
+ -- Loadable Function: urlwrite (URL, LOCALFILE)
+ -- Loadable Function: F = urlwrite (URL, LOCALFILE)
+ -- Loadable Function: [F, SUCCESS] = urlwrite (URL, LOCALFILE)
+ -- Loadable Function: [F, SUCCESS, MESSAGE] = urlwrite (URL, LOCALFILE)
+     Download a remote file specified by its URL and save it as
+     LOCALFILE.
+
+     For example:
+
+          urlwrite ("ftp://ftp.octave.org/pub/README",
+                    "README.txt");
+
+     The full path of the downloaded file is returned in F.
+
+     The variable SUCCESS is 1 if the download was successful, otherwise
+     it is 0 in which case MESSAGE contains an error message.
+
+     If no output argument is specified and an error occurs, then the
+     error is signaled through Octave's error handling mechanism.
+
+     This function uses libcurl.  Curl supports, among others, the HTTP,
+     FTP and FILE protocols.  Username and password may be specified in
+     the URL, for example:
+
+          urlwrite ("http://username:password@example.com/file.txt",
+                    "file.txt");
+
+     GET and POST requests can be specified by METHOD and PARAM.  The
+     parameter METHOD is either 'get' or 'post' and PARAM is a cell
+     array of parameter and value pairs.  For example:
+
+          urlwrite ("http://www.google.com/search", "search.html",
+                    "get", {"query", "octave"});
+
+     See also: *note urlread: XREFurlread.
+
+
+File: octave.info,  Node: Base64 and Binary Data Transmission,  Prev: URL Manipulation,  Up: Networking Utilities
+
+36.4.3 Base64 and Binary Data Transmission
+------------------------------------------
+
+Some transmission channels can not accept binary data.  It is customary
+to encode binary data in Base64 for transmission and to decode the data
+upon reception.
+
+ -- Built-in Function: S = base64_encode (X)
+     Encode a double matrix or array X into the base64 format string S.
+
+     See also: *note base64_decode: XREFbase64_decode.
+
+ -- Built-in Function: X = base64_decode (S)
+ -- Built-in Function: X = base64_decode (S, DIMS)
+     Decode the double matrix or array X from the base64 encoded string
+     S.
+
+     The optional input parameter DIMS should be a vector containing the
+     dimensions of the decoded array.
+
+     See also: *note base64_encode: XREFbase64_encode.
+
+
+File: octave.info,  Node: Controlling Subprocesses,  Next: Process ID Information,  Prev: Networking Utilities,  Up: System Utilities
+
+36.5 Controlling Subprocesses
+=============================
+
+Octave includes some high-level commands like 'system' and 'popen' for
+starting subprocesses.  If you want to run another program to perform
+some task and then look at its output, you will probably want to use
+these functions.
+
+   Octave also provides several very low-level Unix-like functions which
+can also be used for starting subprocesses, but you should probably only
+use them if you can't find any way to do what you need with the
+higher-level functions.
+
+ -- Built-in Function: system ("STRING")
+ -- Built-in Function: system ("STRING", RETURN_OUTPUT)
+ -- Built-in Function: system ("STRING", RETURN_OUTPUT, TYPE)
+ -- Built-in Function: [STATUS, OUTPUT] = system (...)
+     Execute a shell command specified by STRING.
+
+     If the optional argument TYPE is "async", the process is started in
+     the background and the process ID of the child process is returned
+     immediately.  Otherwise, the child process is started and Octave
+     waits until it exits.  If the TYPE argument is omitted, it defaults
+     to the value "sync".
+
+     If SYSTEM is called with one or more output arguments, or if the
+     optional argument RETURN_OUTPUT is true and the subprocess is
+     started synchronously, then the output from the command is returned
+     as a variable.  Otherwise, if the subprocess is executed
+     synchronously, its output is sent to the standard output.  To send
+     the output of a command executed with 'system' through the pager,
+     use a command like
+
+          [output, text] = system ("cmd");
+          disp (text);
+
+     or
+
+          printf ("%s\n", nthargout (2, "system", "cmd"));
+
+     The 'system' function can return two values.  The first is the exit
+     status of the command and the second is any output from the command
+     that was written to the standard output stream.  For example,
+
+          [status, output] = system ("echo foo; exit 2");
+
+     will set the variable 'output' to the string 'foo', and the
+     variable 'status' to the integer '2'.
+
+     For commands run asynchronously, STATUS is the process id of the
+     command shell that is started to run the command.
+
+     See also: *note unix: XREFunix, *note dos: XREFdos.
+
+ -- Function File: unix ("COMMAND")
+ -- Function File: STATUS = unix ("COMMAND")
+ -- Function File: [STATUS, TEXT] = unix ("COMMAND")
+ -- Function File: [...] = unix ("COMMAND", "-echo")
+     Execute a system command if running under a Unix-like operating
+     system, otherwise do nothing.
+
+     Octave waits for the external command to finish before returning
+     the exit status of the program in STATUS and any output in TEXT.
+
+     When called with no output argument, or the "-echo" argument is
+     given, then TEXT is also sent to standard output.
+
+     See also: *note dos: XREFdos, *note system: XREFsystem, *note
+     isunix: XREFisunix, *note ismac: XREFismac, *note ispc: XREFispc.
+
+ -- Function File: dos ("COMMAND")
+ -- Function File: STATUS = dos ("COMMAND")
+ -- Function File: [STATUS, TEXT] = dos ("COMMAND")
+ -- Function File: [...] = dos ("COMMAND", "-echo")
+     Execute a system command if running under a Windows-like operating
+     system, otherwise do nothing.
+
+     Octave waits for the external command to finish before returning
+     the exit status of the program in STATUS and any output in TEXT.
+
+     When called with no output argument, or the "-echo" argument is
+     given, then TEXT is also sent to standard output.
+
+     See also: *note unix: XREFunix, *note system: XREFsystem, *note
+     isunix: XREFisunix, *note ismac: XREFismac, *note ispc: XREFispc.
+
+ -- Function File: OUTPUT = open FILE
+ -- Function File: OUTPUT = open (FILE)
+     Open the file FILE in Octave or in an external application based on
+     the file type as determined by the file name extension.
+
+     Recognized file types are
+
+     '.m'
+          Open file in the editor.
+
+     '.mat'
+          Load the file in the base workspace.
+
+     '.exe'
+          Execute the program (on Windows systems only).
+
+     Other file types are opened in the appropriate external
+     application.
+
+ -- Function File: OUTPUT = perl (SCRIPTFILE)
+ -- Function File: OUTPUT = perl (SCRIPTFILE, ARGUMENT1, ARGUMENT2, ...)
+ -- Function File: [OUTPUT, STATUS] = perl (...)
+     Invoke Perl script SCRIPTFILE, possibly with a list of command line
+     arguments.
+
+     Return output in OUTPUT and optional status in STATUS.  If
+     SCRIPTFILE is not an absolute file name it is searched for in the
+     current directory and then in the Octave loadpath.
+
+     See also: *note system: XREFsystem, *note python: XREFpython.
+
+ -- Function File: OUTPUT = python (SCRIPTFILE)
+ -- Function File: OUTPUT = python (SCRIPTFILE, ARGUMENT1, ARGUMENT2,
+          ...)
+ -- Function File: [OUTPUT, STATUS] = python (...)
+     Invoke Python script SCRIPTFILE, possibly with a list of command
+     line arguments.
+
+     Return output in OUTPUT and optional status in STATUS.  If
+     SCRIPTFILE is not an absolute file name it is searched for in the
+     current directory and then in the Octave loadpath.
+
+     See also: *note system: XREFsystem, *note perl: XREFperl.
+
+ -- Built-in Function: FID = popen (COMMAND, MODE)
+     Start a process and create a pipe.
+
+     The name of the command to run is given by COMMAND.  The argument
+     MODE may be
+
+     '"r"'
+          The pipe will be connected to the standard output of the
+          process, and open for reading.
+
+     '"w"'
+          The pipe will be connected to the standard input of the
+          process, and open for writing.
+
+     The file identifier corresponding to the input or output stream of
+     the process is returned in FID.
+
+     For example:
+
+          fid = popen ("ls -ltr / | tail -3", "r");
+          while (ischar (s = fgets (fid)))
+            fputs (stdout, s);
+          endwhile
+
+             -| drwxr-xr-x  33 root  root  3072 Feb 15 13:28 etc
+             -| drwxr-xr-x   3 root  root  1024 Feb 15 13:28 lib
+             -| drwxrwxrwt  15 root  root  2048 Feb 17 14:53 tmp
+
+     See also: *note popen2: XREFpopen2.
+
+ -- Built-in Function: pclose (FID)
+     Close a file identifier that was opened by 'popen'.
+
+     The function 'fclose' may also be used for the same purpose.
+
+     See also: *note fclose: XREFfclose, *note popen: XREFpopen.
+
+ -- Built-in Function: [IN, OUT, PID] = popen2 (COMMAND, ARGS)
+     Start a subprocess with two-way communication.
+
+     The name of the process is given by COMMAND, and ARGS is an array
+     of strings containing options for the command.
+
+     The file identifiers for the input and output streams of the
+     subprocess are returned in IN and OUT.  If execution of the command
+     is successful, PID contains the process ID of the subprocess.
+     Otherwise, PID is -1.
+
+     For example:
+
+          [in, out, pid] = popen2 ("sort", "-r");
+          fputs (in, "these\nare\nsome\nstrings\n");
+          fclose (in);
+          EAGAIN = errno ("EAGAIN");
+          done = false;
+          do
+            s = fgets (out);
+            if (ischar (s))
+              fputs (stdout, s);
+            elseif (errno () == EAGAIN)
+              sleep (0.1);
+              fclear (out);
+            else
+              done = true;
+            endif
+          until (done)
+          fclose (out);
+          waitpid (pid);
+
+             -| these
+             -| strings
+             -| some
+             -| are
+
+     Note that 'popen2', unlike 'popen', will not "reap" the child
+     process.  If you don't use 'waitpid' to check the child's exit
+     status, it will linger until Octave exits.
+
+     See also: *note popen: XREFpopen, *note waitpid: XREFwaitpid.
+
+ -- Built-in Function: VAL = EXEC_PATH ()
+ -- Built-in Function: OLD_VAL = EXEC_PATH (NEW_VAL)
+ -- Built-in Function: EXEC_PATH (NEW_VAL, "local")
+     Query or set the internal variable that specifies a colon separated
+     list of directories to append to the shell PATH when executing
+     external programs.
+
+     The initial value of is taken from the environment variable
+     'OCTAVE_EXEC_PATH', but that value can be overridden by the command
+     line argument '--exec-path PATH'.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+     See also: *note IMAGE_PATH: XREFIMAGE_PATH, *note OCTAVE_HOME:
+     XREFOCTAVE_HOME.
+
+   In most cases, the following functions simply decode their arguments
+and make the corresponding Unix system calls.  For a complete example of
+how they can be used, look at the definition of the function 'popen2'.
+
+ -- Built-in Function: [PID, MSG] = fork ()
+     Create a copy of the current process.
+
+     Fork can return one of the following values:
+
+     > 0
+          You are in the parent process.  The value returned from 'fork'
+          is the process id of the child process.  You should probably
+          arrange to wait for any child processes to exit.
+
+     0
+          You are in the child process.  You can call 'exec' to start
+          another process.  If that fails, you should probably call
+          'exit'.
+
+     < 0
+          The call to 'fork' failed for some reason.  You must take
+          evasive action.  A system dependent error message will be
+          waiting in MSG.
+
+ -- Built-in Function: [ERR, MSG] = exec (FILE, ARGS)
+     Replace current process with a new process.
+
+     Calling 'exec' without first calling 'fork' will terminate your
+     current Octave process and replace it with the program named by
+     FILE.  For example,
+
+          exec ("ls" "-l")
+
+     will run 'ls' and return you to your shell prompt.
+
+     If successful, 'exec' does not return.  If 'exec' does return, ERR
+     will be nonzero, and MSG will contain a system-dependent error
+     message.
+
+ -- Built-in Function: [READ_FD, WRITE_FD, ERR, MSG] = pipe ()
+     Create a pipe and return the reading and writing ends of the pipe
+     into READ_FD and WRITE_FD respectively.
+
+     If successful, ERR is 0 and MSG is an empty string.  Otherwise, ERR
+     is nonzero and MSG contains a system-dependent error message.
+
+     See also: *note mkfifo: XREFmkfifo.
+
+ -- Built-in Function: [FID, MSG] = dup2 (OLD, NEW)
+     Duplicate a file descriptor.
+
+     If successful, FID is greater than zero and contains the new file
+     ID.  Otherwise, FID is negative and MSG contains a system-dependent
+     error message.
+
+     See also: *note fopen: XREFfopen, *note fclose: XREFfclose, *note
+     fcntl: XREFfcntl.
+
+ -- Built-in Function: [PID, STATUS, MSG] = waitpid (PID, OPTIONS)
+     Wait for process PID to terminate.
+
+     The PID argument can be:
+
+     -1
+          Wait for any child process.
+
+     0
+          Wait for any child process whose process group ID is equal to
+          that of the Octave interpreter process.
+
+     > 0
+          Wait for termination of the child process with ID PID.
+
+     The OPTIONS argument can be a bitwise OR of zero or more of the
+     following constants:
+
+     '0'
+          Wait until signal is received or a child process exits (this
+          is the default if the OPTIONS argument is missing).
+
+     'WNOHANG'
+          Do not hang if status is not immediately available.
+
+     'WUNTRACED'
+          Report the status of any child processes that are stopped, and
+          whose status has not yet been reported since they stopped.
+
+     'WCONTINUE'
+          Return if a stopped child has been resumed by delivery of
+          'SIGCONT'.  This value may not be meaningful on all systems.
+
+     If the returned value of PID is greater than 0, it is the process
+     ID of the child process that exited.  If an error occurs, PID will
+     be less than zero and MSG will contain a system-dependent error
+     message.  The value of STATUS contains additional system-dependent
+     information about the subprocess that exited.
+
+     See also: *note WCONTINUE: XREFWCONTINUE, *note WCOREDUMP:
+     XREFWCOREDUMP, *note WEXITSTATUS: XREFWEXITSTATUS, *note
+     WIFCONTINUED: XREFWIFCONTINUED, *note WIFSIGNALED: XREFWIFSIGNALED,
+     *note WIFSTOPPED: XREFWIFSTOPPED, *note WNOHANG: XREFWNOHANG, *note
+     WSTOPSIG: XREFWSTOPSIG, *note WTERMSIG: XREFWTERMSIG, *note
+     WUNTRACED: XREFWUNTRACED.
+
+ -- Built-in Function: WCONTINUE ()
+     Return the numerical value of the option argument that may be
+     passed to 'waitpid' to indicate that it should also return if a
+     stopped child has been resumed by delivery of a 'SIGCONT' signal.
+
+     See also: *note waitpid: XREFwaitpid, *note WNOHANG: XREFWNOHANG,
+     *note WUNTRACED: XREFWUNTRACED.
+
+ -- Built-in Function: WCOREDUMP (STATUS)
+     Given STATUS from a call to 'waitpid', return true if the child
+     produced a core dump.
+
+     This function should only be employed if 'WIFSIGNALED' returned
+     true.  The macro used to implement this function is not specified
+     in POSIX.1-2001 and is not available on some Unix implementations
+     (e.g., AIX, SunOS).
+
+     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
+     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note
+     WIFSIGNALED: XREFWIFSIGNALED, *note WTERMSIG: XREFWTERMSIG, *note
+     WIFSTOPPED: XREFWIFSTOPPED, *note WSTOPSIG: XREFWSTOPSIG, *note
+     WIFCONTINUED: XREFWIFCONTINUED.
+
+ -- Built-in Function: WEXITSTATUS (STATUS)
+     Given STATUS from a call to 'waitpid', return the exit status of
+     the child.
+
+     This function should only be employed if 'WIFEXITED' returned true.
+
+     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
+     XREFWIFEXITED, *note WIFSIGNALED: XREFWIFSIGNALED, *note WTERMSIG:
+     XREFWTERMSIG, *note WCOREDUMP: XREFWCOREDUMP, *note WIFSTOPPED:
+     XREFWIFSTOPPED, *note WSTOPSIG: XREFWSTOPSIG, *note WIFCONTINUED:
+     XREFWIFCONTINUED.
+
+ -- Built-in Function: WIFCONTINUED (STATUS)
+     Given STATUS from a call to 'waitpid', return true if the child
+     process was resumed by delivery of 'SIGCONT'.
+
+     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
+     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note
+     WIFSIGNALED: XREFWIFSIGNALED, *note WTERMSIG: XREFWTERMSIG, *note
+     WCOREDUMP: XREFWCOREDUMP, *note WIFSTOPPED: XREFWIFSTOPPED, *note
+     WSTOPSIG: XREFWSTOPSIG.
+
+ -- Built-in Function: WIFSIGNALED (STATUS)
+     Given STATUS from a call to 'waitpid', return true if the child
+     process was terminated by a signal.
+
+     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
+     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note WTERMSIG:
+     XREFWTERMSIG, *note WCOREDUMP: XREFWCOREDUMP, *note WIFSTOPPED:
+     XREFWIFSTOPPED, *note WSTOPSIG: XREFWSTOPSIG, *note WIFCONTINUED:
+     XREFWIFCONTINUED.
+
+ -- Built-in Function: WIFSTOPPED (STATUS)
+     Given STATUS from a call to 'waitpid', return true if the child
+     process was stopped by delivery of a signal.
+
+     This is only possible if the call was done using 'WUNTRACED' or
+     when the child is being traced (see ptrace(2)).
+
+     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
+     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note
+     WIFSIGNALED: XREFWIFSIGNALED, *note WTERMSIG: XREFWTERMSIG, *note
+     WCOREDUMP: XREFWCOREDUMP, *note WSTOPSIG: XREFWSTOPSIG, *note
+     WIFCONTINUED: XREFWIFCONTINUED.
+
+ -- Built-in Function: WIFEXITED (STATUS)
+     Given STATUS from a call to 'waitpid', return true if the child
+     terminated normally.
+
+     See also: *note waitpid: XREFwaitpid, *note WEXITSTATUS:
+     XREFWEXITSTATUS, *note WIFSIGNALED: XREFWIFSIGNALED, *note
+     WTERMSIG: XREFWTERMSIG, *note WCOREDUMP: XREFWCOREDUMP, *note
+     WIFSTOPPED: XREFWIFSTOPPED, *note WSTOPSIG: XREFWSTOPSIG, *note
+     WIFCONTINUED: XREFWIFCONTINUED.
+
+ -- Built-in Function: WNOHANG ()
+     Return the numerical value of the option argument that may be
+     passed to 'waitpid' to indicate that it should return its status
+     immediately instead of waiting for a process to exit.
+
+     See also: *note waitpid: XREFwaitpid, *note WUNTRACED:
+     XREFWUNTRACED, *note WCONTINUE: XREFWCONTINUE.
+
+ -- Built-in Function: WSTOPSIG (STATUS)
+     Given STATUS from a call to 'waitpid', return the number of the
+     signal which caused the child to stop.
+
+     This function should only be employed if 'WIFSTOPPED' returned
+     true.
+
+     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
+     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note
+     WIFSIGNALED: XREFWIFSIGNALED, *note WTERMSIG: XREFWTERMSIG, *note
+     WCOREDUMP: XREFWCOREDUMP, *note WIFSTOPPED: XREFWIFSTOPPED, *note
+     WIFCONTINUED: XREFWIFCONTINUED.
+
+ -- Built-in Function: WTERMSIG (STATUS)
+     Given STATUS from a call to 'waitpid', return the number of the
+     signal that caused the child process to terminate.
+
+     This function should only be employed if 'WIFSIGNALED' returned
+     true.
+
+     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
+     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note
+     WIFSIGNALED: XREFWIFSIGNALED, *note WCOREDUMP: XREFWCOREDUMP, *note
+     WIFSTOPPED: XREFWIFSTOPPED, *note WSTOPSIG: XREFWSTOPSIG, *note
+     WIFCONTINUED: XREFWIFCONTINUED.
+
+ -- Built-in Function: WUNTRACED ()
+     Return the numerical value of the option argument that may be
+     passed to 'waitpid' to indicate that it should also return if the
+     child process has stopped but is not traced via the 'ptrace' system
+     call
+
+     See also: *note waitpid: XREFwaitpid, *note WNOHANG: XREFWNOHANG,
+     *note WCONTINUE: XREFWCONTINUE.
+
+ -- Built-in Function: [ERR, MSG] = fcntl (FID, REQUEST, ARG)
+     Change the properties of the open file FID.
+
+     The following values may be passed as REQUEST:
+
+     'F_DUPFD'
+          Return a duplicate file descriptor.
+
+     'F_GETFD'
+          Return the file descriptor flags for FID.
+
+     'F_SETFD'
+          Set the file descriptor flags for FID.
+
+     'F_GETFL'
+          Return the file status flags for FID.  The following codes may
+          be returned (some of the flags may be undefined on some
+          systems).
+
+          'O_RDONLY'
+               Open for reading only.
+
+          'O_WRONLY'
+               Open for writing only.
+
+          'O_RDWR'
+               Open for reading and writing.
+
+          'O_APPEND'
+               Append on each write.
+
+          'O_CREAT'
+               Create the file if it does not exist.
+
+          'O_NONBLOCK'
+               Non-blocking mode.
+
+          'O_SYNC'
+               Wait for writes to complete.
+
+          'O_ASYNC'
+               Asynchronous I/O.
+
+     'F_SETFL'
+          Set the file status flags for FID to the value specified by
+          ARG.  The only flags that can be changed are 'O_APPEND' and
+          'O_NONBLOCK'.
+
+     If successful, ERR is 0 and MSG is an empty string.  Otherwise, ERR
+     is nonzero and MSG contains a system-dependent error message.
+
+     See also: *note fopen: XREFfopen, *note dup2: XREFdup2.
+
+ -- Built-in Function: [ERR, MSG] = kill (PID, SIG)
+     Send signal SIG to process PID.
+
+     If PID is positive, then signal SIG is sent to PID.
+
+     If PID is 0, then signal SIG is sent to every process in the
+     process group of the current process.
+
+     If PID is -1, then signal SIG is sent to every process except
+     process 1.
+
+     If PID is less than -1, then signal SIG is sent to every process in
+     the process group -PID.
+
+     If SIG is 0, then no signal is sent, but error checking is still
+     performed.
+
+     Return 0 if successful, otherwise return -1.
+
+ -- Built-in Function: SIG ()
+     Return a structure containing Unix signal names and their defined
+     values.
 
 
 File: octave.info,  Node: Process ID Information,  Next: Environment Variables,  Prev: Controlling Subprocesses,  Up: System Utilities
@@ -431,8 +1063,8 @@ File: octave.info,  Node: System Information,  Next: Hashing Functions,  Prev: G
           processors available to the current process.
 
      'overridable'
-          same as 'current', but overridable through the 'OMP_NUM_THREADS'
-          environment variable.
+          same as 'current', but overridable through the
+          'OMP_NUM_THREADS' environment variable.
 
  -- Function File: ispc ()
      Return true if Octave is running on a Windows system and false
@@ -2252,8 +2884,9 @@ If the package contains files called 'PKG_ADD' or 'PKG_DEL' the commands
 in these files will be executed when the package is added or removed
 from the users path.  In some situations such files are a bit cumbersome
 to maintain, so the package manager supports automatic creation of such
-files.  If a source file in the package contains a 'PKG_ADD' or 'PKG_DEL'
-directive they will be added to either the 'PKG_ADD' or 'PKG_DEL' files.
+files.  If a source file in the package contains a 'PKG_ADD' or
+'PKG_DEL' directive they will be added to either the 'PKG_ADD' or
+'PKG_DEL' files.
 
    In 'm'-files a 'PKG_ADD' directive looks like this
 
@@ -2592,10 +3225,10 @@ creates a dynamically loaded function.  This macro takes four arguments:
 function name.  First, it must be a valid Octave function name and so
 must be a sequence of letters, digits, and underscores not starting with
 a digit.  Second, as Octave uses the function name to define the
-filename it attempts to find the function in, the function name in the 'DEFUN_DLD'
-macro must match the filename of the oct-file.  Therefore, the above
-function should be in a file 'helloworld.cc', and would be compiled to
-an oct-file using the command
+filename it attempts to find the function in, the function name in the
+'DEFUN_DLD' macro must match the filename of the oct-file.  Therefore,
+the above function should be in a file 'helloworld.cc', and would be
+compiled to an oct-file using the command
 
      mkoctfile helloworld.cc
 
@@ -3513,14 +4146,14 @@ uses 'XSTOPX'.
    If the code calls 'XSTOPX', then the 'F77_XFCN' macro should be used
 to call the underlying Fortran function.  The Fortran exception state
 can then be checked with the global variable
-'f77_exception_encountered'.  If 'XSTOPX' will not be called, then the 'F77_FCN'
-macro should be used instead to call the Fortran code.
+'f77_exception_encountered'.  If 'XSTOPX' will not be called, then the
+'F77_FCN' macro should be used instead to call the Fortran code.
 
    There is no great harm in using 'F77_XFCN' in all cases, except that
 for Fortran code that is short running and executes a large number of
-times, there is potentially an overhead in doing so.  However, if 'F77_FCN'
-is used with code that calls 'XSTOP', Octave can generate a segmentation
-fault.
+times, there is potentially an overhead in doing so.  However, if
+'F77_FCN' is used with code that calls 'XSTOP', Octave can generate a
+segmentation fault.
 
    An example of the inclusion of a Fortran function in an oct-file is
 given in the following example, where the C++ wrapper is
@@ -3804,11 +4437,11 @@ File: octave.info,  Node: Documentation and Test of Oct-Files,  Prev: Exception 
 A.1.13 Documentation and Test of Oct-Files
 ------------------------------------------
 
-The documentation of an oct-file is the fourth string parameter of the 'DEFUN_DLD'
-macro.  This string can be formatted in the same manner as the help
-strings for user functions (*note Documentation Tips::), however there
-are some issue that are particular to the formatting of help strings
-within oct-files.
+The documentation of an oct-file is the fourth string parameter of the
+'DEFUN_DLD' macro.  This string can be formatted in the same manner as
+the help strings for user functions (*note Documentation Tips::),
+however there are some issue that are particular to the formatting of
+help strings within oct-files.
 
    The major issue is that the help string will typically be longer than
 a single line of text, and so the formatting of long help strings needs
@@ -4064,8 +4697,8 @@ below.
        mwIndex i;
        double *vri, *vro;
 
-       if (nrhs != 1 || ! mxIsNumeric (prhs[0]))
-         mexErrMsgTxt ("ARG1 must be a matrix");
+       if (nrhs != 1 || ! mxIsDouble (prhs[0]))
+         mexErrMsgTxt ("ARG1 must be a double matrix");
 
        n = mxGetNumberOfElements (prhs[0]);
        plhs[0] = mxCreateNumericArray (mxGetNumberOfDimensions (prhs[0]),
@@ -4265,7 +4898,7 @@ be found in the file 'mystruct.c' shown below.
        const char *keys[] = { "this", "that" };
 
        if (nrhs != 1 || ! mxIsStruct (prhs[0]))
-         mexErrMsgTxt ("expects struct");
+         mexErrMsgTxt ("ARG1 must be a struct");
 
        for (i = 0; i < mxGetNumberOfFields (prhs[0]); i++)
          for (j = 0; j < mxGetNumberOfElements (prhs[0]); j++)
@@ -4507,7 +5140,7 @@ see in the example below.
 
        mexPrintf ("I have %d inputs and %d outputs\n", nrhs, nlhs);
 
-       if (nrhs < 1 || ! mxIsString (prhs[0]))
+       if (nrhs < 1 || ! mxIsChar (prhs[0]))
          mexErrMsgTxt ("ARG1 must be a function name");
 
        str = mxArrayToString (prhs[0]);
@@ -6904,10 +7537,12 @@ G.1.3 External Packages
 The following external packages are required:
 
 BLAS
-     Basic Linear Algebra Subroutine library
-     (<http://www.netlib.org/blas>).  Accelerated BLAS libraries such as
-     ATLAS (<http://math-atlas.sourceforge.net>) are recommeded for
-     better performance.
+     Basic Linear Algebra Subroutine library.  Accelerated BLAS
+     libraries such as OpenBLAS (<http://www.openblas.net/>) or ATLAS
+     (<http://math-atlas.sourceforge.net>) are recommended for best
+     performance.  The reference implementation
+     (<http://www.netlib.org/blas>) is slow, unmaintained, and suffers
+     from certain bugs in corner case inputs.
 
 LAPACK
      Linear Algebra Package (<http://www.netlib.org/lapack>).
@@ -7470,179 +8105,4 @@ them, although there may be some differences.
         - fontconfig
 
         - fltk
-
-
-File: octave.info,  Node: Installation Problems,  Prev: Compiling Octave with 64-bit Indexing,  Up: Installation
-
-G.4 Installation Problems
-=========================
-
-This section contains a list of problems (and some apparent problems
-that don't really mean anything is wrong) that may show up during
-installation of Octave.
-
-   * On some SCO systems, 'info' fails to compile if 'HAVE_TERMIOS_H' is
-     defined in 'config.h'.  Simply removing the definition from
-     'info/config.h' should allow it to compile.
-
-   * If 'configure' finds 'dlopen', 'dlsym', 'dlclose', and 'dlerror',
-     but not the header file 'dlfcn.h', you need to find the source for
-     the header file and install it in the directory 'usr/include'.
-     This is reportedly a problem with Slackware 3.1.  For Linux/GNU
-     systems, the source for 'dlfcn.h' is in the 'ldso' package.
-
-   * Building '.oct' files doesn't work.
-
-     You should probably have a shared version of 'libstdc++'.  A patch
-     is needed to build shared versions of version 2.7.2 of 'libstdc++'
-     on the HP-PA architecture.  You can find the patch at
-     <ftp://ftp.cygnus.com/pub/g++/libg++-2.7.2-hppa-gcc-fix>.
-
-   * On some DEC alpha systems there may be a problem with the 'libdxml'
-     library, resulting in floating point errors and/or segmentation
-     faults in the linear algebra routines called by Octave.  If you
-     encounter such problems, then you should modify the configure
-     script so that 'SPECIAL_MATH_LIB' is not set to '-ldxml'.
-
-   * On FreeBSD systems Octave may hang while initializing some internal
-     constants.  The fix appears to be to use
-
-          options      GPL_MATH_EMULATE
-
-     rather than
-
-          options      MATH_EMULATE
-
-     in the kernel configuration files (typically found in the directory
-     '/sys/i386/conf').  After making this change, you'll need to
-     rebuild the kernel, install it, and reboot.
-
-   * If you encounter errors like
-
-          passing `void (*)()' as argument 2 of
-            `octave_set_signal_handler(int, void (*)(int))'
-
-     or
-
-          warning: ANSI C++ prohibits conversion from `(int)'
-                   to `(...)'
-
-     while compiling 'sighandlers.cc', you may need to edit some files
-     in the 'gcc' include subdirectory to add proper prototypes for
-     functions there.  For example, Ultrix 4.2 needs proper declarations
-     for the 'signal' function and the 'SIG_IGN' macro in the file
-     'signal.h'.
-
-     On some systems the 'SIG_IGN' macro is defined to be something like
-     this:
-
-          #define  SIG_IGN  (void (*)())1
-
-     when it should really be something like:
-
-          #define  SIG_IGN  (void (*)(int))1
-
-     to match the prototype declaration for the 'signal' function.  This
-     change should also be made for the 'SIG_DFL' and 'SIG_ERR' symbols.
-     It may be necessary to change the definitions in 'sys/signal.h' as
-     well.
-
-     The 'gcc' 'fixincludes' and 'fixproto' scripts should probably fix
-     these problems when 'gcc' installs its modified set of header
-     files, but I don't think that's been done yet.
-
-     *You should not change the files in '/usr/include'*.  You can find
-     the 'gcc' include directory tree by running the command
-
-          gcc -print-libgcc-file-name
-
-     The directory of 'gcc' include files normally begins in the same
-     directory that contains the file 'libgcc.a'.
-
-   * Some of the Fortran subroutines may fail to compile with older
-     versions of the Sun Fortran compiler.  If you get errors like
-
-          zgemm.f:
-                  zgemm:
-          warning: unexpected parent of complex expression subtree
-          zgemm.f, line 245: warning: unexpected parent of complex
-            expression subtree
-          warning: unexpected parent of complex expression subtree
-          zgemm.f, line 304: warning: unexpected parent of complex
-            expression subtree
-          warning: unexpected parent of complex expression subtree
-          zgemm.f, line 327: warning: unexpected parent of complex
-            expression subtree
-          pcc_binval: missing IR_CONV in complex op
-          make[2]: *** [zgemm.o] Error 1
-
-     when compiling the Fortran subroutines in the 'liboctave/cruft'
-     subdirectory, you should either upgrade your compiler or try
-     compiling with optimization turned off.
-
-   * On NeXT systems, if you get errors like this:
-
-          /usr/tmp/cc007458.s:unknown:Undefined local
-                symbol LBB7656
-          /usr/tmp/cc007458.s:unknown:Undefined local
-                symbol LBE7656
-
-     when compiling 'Array.cc' and 'Matrix.cc', try recompiling these
-     files without '-g'.
-
-   * Some people have reported that calls to system() and the pager do
-     not work on SunOS systems.  This is apparently due to having 'G_HAVE_SYS_WAIT'
-     defined to be 0 instead of 1 when compiling 'libg++'.
-
-   * On NeXT systems, linking to 'libsys_s.a' may fail to resolve the
-     following functions
-
-          _tcgetattr
-          _tcsetattr
-          _tcflow
-
-     which are part of 'libposix.a'.  Unfortunately, linking Octave with
-     '-posix' results in the following undefined symbols.
-
-          .destructors_used
-          .constructors_used
-          _objc_msgSend
-          _NXGetDefaultValue
-          _NXRegisterDefaults
-          .objc_class_name_NXStringTable
-          .objc_class_name_NXBundle
-
-     One kluge around this problem is to extract 'termios.o' from
-     'libposix.a', put it in Octave's 'src' directory, and add it to the
-     list of files to link together in the makefile.  Suggestions for
-     better ways to solve this problem are welcome!
-
-   * If Octave crashes immediately with a floating point exception, it
-     is likely that it is failing to initialize the IEEE floating point
-     values for infinity and NaN.
-
-     If your system actually does support IEEE arithmetic, you should be
-     able to fix this problem by modifying the function
-     'octave_ieee_init' in the file 'lo-ieee.cc' to correctly initialize
-     Octave's internal infinity and NaN variables.
-
-     If your system does not support IEEE arithmetic but Octave's
-     configure script incorrectly determined that it does, you can work
-     around the problem by editing the file 'config.h' to not define
-     'HAVE_ISINF', 'HAVE_FINITE', and 'HAVE_ISNAN'.
-
-     In any case, please report this as a bug since it might be possible
-     to modify Octave's configuration script to automatically determine
-     the proper thing to do.
-
-   * If Octave is unable to find a header file because it is installed
-     in a location that is not normally searched by the compiler, you
-     can add the directory to the include search path by specifying (for
-     example) 'CPPFLAGS=-I/some/nonstandard/directory' as an argument to
-     'configure'.  Other variables that can be specified this way are
-     'CFLAGS', 'CXXFLAGS', 'FFLAGS', and 'LDFLAGS'.  Passing them as
-     options to the configure script also records them in the
-     'config.status' file.  By default, 'CPPFLAGS' and 'LDFLAGS' are
-     empty, 'CFLAGS' and 'CXXFLAGS' are set to "-g -O" and 'FFLAGS' is
-     set to "-O".
 

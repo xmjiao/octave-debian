@@ -129,7 +129,7 @@ The function @code{ctime (time)} is equivalent to
 @example
 @group
 ctime (time ())
-   @result{} "Mon Feb 17 01:15:06 1997"
+   @result{} "Mon Feb 17 01:15:06 1997@xbackslashchar{}n"
 @end group
 @end example
 @seealso{@ref{XREFasctime,,asctime}, @ref{XREFtime,,time}, @ref{XREFlocaltime,,localtime}}
@@ -216,14 +216,14 @@ mktime (localtime (time ()))
 @anchor{XREFasctime}
 @deftypefn {Function File} {} asctime (@var{tm_struct})
 Convert a time structure to a string using the following
-format: @qcode{"ddd mmm mm HH:MM:SS yyyy"}.
+format: @qcode{"ddd mmm mm HH:MM:SS yyyy@xbackslashchar{}n"}.
 
 For example:
 
 @example
 @group
 asctime (localtime (time ()))
-     @result{} "Mon Feb 17 01:15:06 1997"
+     @result{} "Mon Feb 17 01:15:06 1997@xbackslashchar{}n"
 @end group
 @end example
 

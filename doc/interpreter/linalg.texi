@@ -453,7 +453,7 @@ LU@tie{}factorization.  Once the matrix has been factorized,
 @deftypefnx {Built-in Function} {} norm (@var{A}, @var{p}, @var{opt})
 Compute the p-norm of the matrix @var{A}.
 
-If the second argument is missing, @code{p = 2} is assumed.
+If the second argument is missing, @w{@code{p = 2}} is assumed.
 
 If @var{A} is a matrix (or sparse matrix):
 
@@ -871,13 +871,13 @@ $$
 A = PHP^T
 $$
 where $P$ is a square unitary matrix ($P^TP = I$), and $H$
-is upper Hessenberg ($H_{i,j} = 0, \forall i \ge j+1$).
+is upper Hessenberg ($H_{i,j} = 0, \forall i > j+1$).
 @end tex
 @ifnottex
 @code{@var{P} * @var{H} * @var{P}' = @var{A}} where @var{P} is a square
 unitary matrix (@code{@var{P}' * @var{P} = I}, using complex-conjugate
 transposition) and @var{H} is upper Hessenberg
-(@code{@var{H}(i, j) = 0 forall i >= j+1)}.
+(@code{@var{H}(i, j) = 0 forall i > j+1)}.
 @end ifnottex
 
 The Hessenberg decomposition is usually used as the first step in an

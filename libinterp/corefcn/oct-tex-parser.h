@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ extern int octave_tex_debug;
 
 /* Value type.  */
 #if ! defined OCTAVE_TEX_STYPE && ! defined OCTAVE_TEX_STYPE_IS_DECLARED
-typedef union OCTAVE_TEX_STYPE OCTAVE_TEX_STYPE;
+
 union OCTAVE_TEX_STYPE
 {
 #line 56 "corefcn/oct-tex-parser.yy" /* yacc.c:1909  */
@@ -117,6 +117,8 @@ union OCTAVE_TEX_STYPE
 
 #line 119 "corefcn/oct-tex-parser.h" /* yacc.c:1909  */
 };
+
+typedef union OCTAVE_TEX_STYPE OCTAVE_TEX_STYPE;
 # define OCTAVE_TEX_STYPE_IS_TRIVIAL 1
 # define OCTAVE_TEX_STYPE_IS_DECLARED 1
 #endif

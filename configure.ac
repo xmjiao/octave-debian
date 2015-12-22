@@ -19,21 +19,21 @@ dnl Copyright (C) 1993-2015 John W. Eaton
 ### <http://www.gnu.org/licenses/>.
 
 AC_PREREQ([2.63])
-AC_INIT([GNU Octave], [4.0.0], [http://octave.org/bugs.html], [octave])
+AC_INIT([GNU Octave], [4.0.1-rc1], [http://octave.org/bugs.html], [octave])
 
 dnl Note that the version number is duplicated here and in AC_INIT
 dnl because AC_INIT requires it to be static, not computed from
 dnl shell variables.
 OCTAVE_MAJOR_VERSION=4
 OCTAVE_MINOR_VERSION=0
-OCTAVE_PATCH_VERSION=0
+OCTAVE_PATCH_VERSION=1-rc1
 
 dnl PACKAGE_VERSION is set by the AC_INIT VERSION arg
 OCTAVE_VERSION="$PACKAGE_VERSION"
 
 OCTAVE_COPYRIGHT="Copyright (C) 2015 John W. Eaton and others."
 
-OCTAVE_RELEASE_DATE="2015-05-26"
+OCTAVE_RELEASE_DATE="2015-12-10"
 
 ## The "API version" is used as a way of checking that interfaces in the
 ## liboctave and libinterp libraries haven't changed in a backwardly
@@ -2160,7 +2160,7 @@ AC_CHECK_HEADERS([curses.h direct.h dlfcn.h floatingpoint.h fpu_control.h])
 AC_CHECK_HEADERS([grp.h ieeefp.h inttypes.h locale.h memory.h ncurses.h])
 AC_CHECK_HEADERS([poll.h pthread.h pwd.h sunmath.h sys/ioctl.h])
 AC_CHECK_HEADERS([sys/param.h sys/poll.h sys/resource.h])
-AC_CHECK_HEADERS([sys/select.h termcap.h])
+AC_CHECK_HEADERS([sys/select.h sys/stropts.h termcap.h])
 
 ## C++ headers
 
@@ -2282,7 +2282,7 @@ AC_CHECK_FUNCS([realpath resolvepath roundl])
 AC_CHECK_FUNCS([select setgrent setpwent siglongjmp strsignal])
 AC_CHECK_FUNCS([tcgetattr tcsetattr tgammaf toascii])
 AC_CHECK_FUNCS([umask waitpid])
-AC_CHECK_FUNCS([_kbhit])
+AC_CHECK_FUNCS([_getch _kbhit])
 
 dnl There are no workarounds in the code for missing these functions.
 AC_CHECK_FUNCS([modf pow sqrt sqrtf], [],

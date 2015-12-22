@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 5.2 from octave.texi.
+This is octave.info, produced by makeinfo version 6.0 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -19,6 +19,51 @@ permission notice identical to this one.
    Permission is granted to copy and distribute translations of this
 manual into another language, under the above conditions for modified
 versions.
+
+
+File: octave.info,  Node: Sets,  Next: Polynomial Manipulations,  Prev: Statistics,  Up: Top
+
+27 Sets
+*******
+
+Octave has a number of functions for managing sets of data.  A set is
+defined as a collection of unique elements and is typically represented
+by a vector of numbers sorted in ascending order.  Any vector or matrix
+can be converted to a set by removing duplicates through the use of the
+'unique' function.  However, it isn't necessary to explicitly create a
+set as all of the functions which operate on sets will convert their
+input to a set before proceeding.
+
+ -- Function File: unique (X)
+ -- Function File: unique (X, "rows")
+ -- Function File: [Y, I, J] = unique (...)
+ -- Function File: [Y, I, J] = unique (..., "first")
+ -- Function File: [Y, I, J] = unique (..., "last")
+     Return the unique elements of X sorted in ascending order.
+
+     If the input X is a column vector then return a column vector;
+     Otherwise, return a row vector.  X may also be a cell array of
+     strings.
+
+     If the optional argument "rows" is given then return the unique
+     rows of X sorted in ascending order.  The input must be a 2-D
+     matrix to use this option.
+
+     If requested, return index vectors I and J such that 'Y = X(I)' and
+     'X = Y(J)'.
+
+     Additionally, if I is a requested output then one of "first" or
+     "last" may be given as an input.  If "last" is specified, return
+     the highest possible indices in I, otherwise, if "first" is
+     specified, return the lowest.  The default is "last".
+
+     See also: *note union: XREFunion, *note intersect: XREFintersect,
+     *note setdiff: XREFsetdiff, *note setxor: XREFsetxor, *note
+     ismember: XREFismember.
+
+* Menu:
+
+* Set Operations::
 
 
 File: octave.info,  Node: Set Operations,  Up: Sets
@@ -3469,12 +3514,12 @@ image given in the first input argument.
      The elements of IMG are indices into the current colormap.
 
      X and Y are optional 2-element vectors, '[min, max]', which specify
-     the range for the axis labels.  If a range is specified as '[max, min]'
-     then the image will be reversed along that axis.  For convenience,
-     X and Y may be specified as N-element vectors matching the length
-     of the data in IMG.  However, only the first and last elements will
-     be used to determine the axis limits.  *Warning:* X and Y are
-     ignored when using gnuplot 4.0 or earlier.
+     the range for the axis labels.  If a range is specified as
+     '[max, min]' then the image will be reversed along that axis.  For
+     convenience, X and Y may be specified as N-element vectors matching
+     the length of the data in IMG.  However, only the first and last
+     elements will be used to determine the axis limits.  *Warning:* X
+     and Y are ignored when using gnuplot 4.0 or earlier.
 
      Multiple property/value pairs may be specified for the image
      object, but they must appear in pairs.
@@ -3937,30 +3982,6 @@ color map must be of class 'double' with values between 0 and 1.
 
      See also: *note colormap: XREFcolormap, *note brighten:
      XREFbrighten.
-
-   An additional colormap is 'gmap40'.  This code map contains only
-colors with integer values of the red, green and blue components.  This
-is a workaround for a limitation of gnuplot 4.0, that does not allow the
-color of line or patch objects to be set.  'gmap40' is chiefly useful to
-gnuplot 4.0 users, and particularly in conjunction with the BAR, SURF,
-and CONTOUR functions.
-
- -- Function File: MAP = gmap40 ()
- -- Function File: MAP = gmap40 (N)
-
-     'gmap40' is deprecated and will be removed in Octave version 4.4.
-
-     Create color colormap.  The colormap consists of red, green, blue,
-     yellow, magenta and cyan.
-
-     This colormap is specifically designed for users of gnuplot 4.0
-     where these 6 colors are the allowable ones for patch objects.
-
-     The argument N must be a scalar.  If unspecified, a length of 6 is
-     assumed.  Larger values of N result in a repetition of the above
-     colors.
-
-     See also: *note colormap: XREFcolormap.
 
    The following three functions modify the existing colormap rather
 than replace it.
@@ -5905,23 +5926,225 @@ The ui* series of functions work best with the 'qt' graphics toolkit,
 although some functionality is available with the 'fltk' toolkit.  There
 is no support for the 'gnuplot' toolkit.
 
- -- Function File: HUI = uicontextmenu ("Name", value, ...)
+ -- Function File: HUI = uicontextmenu (PROPERTY, VALUE, ...)
+ -- Function File: HUI = uicontextmenu (H, PROPERTY, VALUE, ...)
 
- -- Function File: HUI = uicontrol ("Name", value, ...)
- -- Function File: HUI = uicontrol (PARENT, "Name", value, ...)
+     Create a uicontextmenu object and return a handle to it.
+
+     If H is omitted then a uicontextmenu for the current figure is
+     created.  If no figure is available, a new figure is created first.
+
+     If H is given then a uicontextmenu relative to H is created.
+
+     Any provided property value pairs will override the default values
+     of the created uicontextmenu object.
+
+     Examples:
+
+          % create figure and uicontextmenu
+          f = figure;
+          c = uicontextmenu (f);
+
+          % create menus in the context menu
+          m1 = uimenu ("parent",c,"label","Menu item 1","callback","disp('menu item 1')");
+          m2 = uimenu ("parent",c,"label","Menu item 2","callback","disp('menu item 2')");
+
+          % set the context menu for the figure
+          set (f, "uicontextmenu", c);
+
+     See also: *note figure: XREFfigure, *note uimenu: XREFuimenu.
+
+ -- Function File: HUI = uicontrol (PROPERTY, VALUE, ...)
+ -- Function File: HUI = uicontrol (PARENT, PROPERTY, VALUE, ...)
  -- Function File: uicontrol (H)
 
- -- Function File: HUI = uipanel ("Name", value, ...)
- -- Function File: HUI = uipanel (PARENT, "Name", value, ...)
+     Create a uicontrol object and return a handle to it.
 
- -- Function File: HUI = uipushtool ("Name", value, ...)
- -- Function File: HUI = uipushtool (PARENT, "Name", value, ...)
+     uicontrols are used to create simple interactive controls such as
+     push buttons, checkboxes, edit and list controls.
 
- -- Function File: HUI = uitoggletool ("Name", value, ...)
- -- Function File: HUI = uitoggletool (PARENT, "Name", value, ...)
+     If PARENT is omitted then a uicontrol for the current figure is
+     created.  If no figure is available, a new figure is created first.
 
- -- Function File: HUI = uitoolbar ("Name", value, ...)
- -- Function File: HUI = uitoolbar (PARENT, "Name", value, ...)
+     If PARENT is given then a uicontrol relative to PARENT is created.
+
+     Any provided property value pairs will override the default values
+     of the created uicontrol object.
+
+     Control of the type of uicontrol created is through the use of the
+     STYLE property.  If no style property is provided, a push button
+     will be created.
+
+     Valid styles for uicontrol are:
+
+     "checkbox"
+          Create a checkbox control that allows user on/off selection.
+
+     "edit"
+          Create a edit control that allows user input of single or
+          multiple lines of text.
+
+     "listbox"
+          Create a listbox control that displays a lit of items and
+          allows user slelection of single or multiple items.
+
+     "popupmenu"
+          Create a popupmenu control that displays a list of options
+          that can be selected when the user clicks on the control.
+
+     "pushbutton"
+          Create a push button control that allows user to press to
+          cause an action.
+
+     "radiobutton"
+          Create a radio button control intended to be used for mutually
+          exclusive input in a group of of radiobutton controls.
+
+     "slider"
+          Create a slider control that allows user selection from a
+          range of values by sliding knob on the control.
+
+     "text"
+          Create a static text control to display single or multiple
+          lines of text.
+
+     "togglebutton"
+          Create a toggle button control that appears like a push button
+          but allows the user to select between two states.
+
+     Examples:
+
+          % create figure and panel on it
+          f = figure;
+          % create a button (default style)
+          b1 = uicontrol (f, "string", "A Button", "position",[10 10 150 40]);
+          % create an edit control
+          e1 = uicontrol (f, "style", "edit", "string", "editable text", "position",[10 60 300 40]);
+          % create a checkbox
+          c1 = uicontrol (f, "style", "checkbox", "string", "a checkbox", "position",[10 120 150 40]);
+
+     See also: *note figure: XREFfigure, *note uipanel: XREFuipanel.
+
+ -- Function File: HUI = uipanel (PROPERTY, VALUE, ...)
+ -- Function File: HUI = uipanel (PARENT, "PROPERTY, VALUE, ...)
+
+     Create a uipanel object and return a handle to it.
+
+     uipanels are used as containers to group other uicontrol objects.
+
+     If PARENT is omitted then a uipanel for the current figure is
+     created.  If no figure is available, a new figure is created first.
+
+     If PARENT is given then a uipanel relative to PARENT is created.
+
+     Any provided property value pairs will override the default values
+     of the created uipanel object.
+
+     Examples:
+
+          % create figure and panel on it
+          f = figure;
+          p = uipanel ("title", "Panel Title", "position", [.25 .25 .5 .5]);
+
+          % add two buttons to the panel
+          b1 = uicontrol ("parent", p, "string", "A Button", "position",[18 10 150 36]);
+          b2 = uicontrol ("parent", p, "string", "Another Button", "position",[18 60 150 36]);
+
+
+     See also: *note figure: XREFfigure, *note uicontrol: XREFuicontrol.
+
+ -- Function File: HUI = uipushtool (PROPERTY, VALUE, ...)
+ -- Function File: HUI = uipushtool (PARENT, PROPERTY, VALUE, ...)
+
+     Create a uipushtool object and return a handle to it.
+
+     uipushtools are buttons that appear on a figure toolbar.  The
+     button is created with a border that is shown when the user hovers
+     over the button.  An image can be set using the cdata property.
+
+     If PARENT is omitted then a uipushtool for the current figure is
+     created.  If no figure is available, a new figure is created first.
+     If a figure is available, but does not contain a uitoolbar, a
+     uitoolbar will be created.
+
+     If PARENT is given then a uipushtools is created on the PARENT
+     uitoolbar.
+
+     Any provided property value pairs will override the default values
+     of the created uipushtool object.
+
+     Examples:
+
+          % create figure without a default toolbar
+          f = figure ("toolbar", "none");
+          % create empty toolbar
+          t = uitoolbar (f);
+          % create a 19x19x3 black square
+          img=zeros(19,19,3);
+          % add pushtool button to toolbar
+          b = uipushtool (t, "cdata", img);
+
+     See also: *note figure: XREFfigure, *note uitoolbar: XREFuitoolbar,
+     *note uitoggletool: XREFuitoggletool.
+
+ -- Function File: HUI = uitoggletool (PROPERTY, VALUE, ...)
+ -- Function File: HUI = uitoggletool (PARENT, PROPERTY, VALUE, ...)
+
+     Create a uitoggletool object and return a handle to it.
+
+     uitoggletool are togglebuttons that appear on a figure toolbar.
+     The button is created with a border that is shown when the user
+     hovers over the button.  An image can be set using the cdata
+     property.
+
+     If PARENT is omitted then a uitoggletool for the current figure is
+     created.  If no figure is available, a new figure is created first.
+     If a figure is available, but does not contain a uitoolbar, a
+     uitoolbar will be created.
+
+     If PARENT is given then a uitoggletool is created on the PARENT
+     uitoolbar.
+
+     Any provided property value pairs will override the default values
+     of the created uitoggletool object.
+
+     Examples:
+
+          % create figure without a default toolbar
+          f = figure ("toolbar", "none");
+          % create empty toolbar
+          t = uitoolbar (f);
+          % create a 19x19x3 black square
+          img=zeros(19,19,3);
+          % add uitoggletool button to toolbar
+          b = uitoggletool (t, "cdata", img);
+
+     See also: *note figure: XREFfigure, *note uitoolbar: XREFuitoolbar,
+     *note uipushtool: XREFuipushtool.
+
+ -- Function File: HUI = uitoolbar (PROPERTY, VALUE, ...)
+ -- Function File: HUI = uitoolbar (PARENT, PROPERTY, VALUE, ...)
+
+     Create a uitoolbar object and return a handle to it.  A uitoolbar
+     displays uitoggletool and uipushtool buttons.
+
+     If PARENT is omitted then a uitoolbar for the current figure is
+     created.  If no figure is available, a new figure is created first.
+
+     If PARENT is given then a uitoolbar relative to PARENT is created.
+
+     Any provided property value pairs will override the default values
+     of the created uitoolbar object.
+
+     Examples:
+
+          % create figure without a default toolbar
+          f = figure ("toolbar", "none");
+          % create empty toolbar
+          t = uitoolbar (f);
+
+     See also: *note figure: XREFfigure, *note uitoggletool:
+     XREFuitoggletool, *note uipushtool: XREFuipushtool.
 
 
 File: octave.info,  Node: GUI Utility Functions,  Next: User-Defined Preferences,  Prev: UI Elements,  Up: GUI Development
@@ -6283,7 +6506,7 @@ referred to as a TM_STRUCT.
      (time))'.  For example:
 
           ctime (time ())
-             => "Mon Feb 17 01:15:06 1997"
+             => "Mon Feb 17 01:15:06 1997\n"
 
      See also: *note asctime: XREFasctime, *note time: XREFtime, *note
      localtime: XREFlocaltime.
@@ -6361,12 +6584,12 @@ referred to as a TM_STRUCT.
 
  -- Function File: asctime (TM_STRUCT)
      Convert a time structure to a string using the following format:
-     "ddd mmm mm HH:MM:SS yyyy".
+     "ddd mmm mm HH:MM:SS yyyy\n".
 
      For example:
 
           asctime (localtime (time ()))
-               => "Mon Feb 17 01:15:06 1997"
+               => "Mon Feb 17 01:15:06 1997\n"
 
      This is equivalent to 'ctime (time ())'.
 
@@ -7141,8 +7364,8 @@ path names.
 
      'mode'
           File mode, as an integer.  Use the functions 'S_ISREG',
-          'S_ISDIR', 'S_ISCHR', 'S_ISBLK', 'S_ISFIFO', 'S_ISLNK', or 'S_ISSOCK'
-          to extract information from this value.
+          'S_ISDIR', 'S_ISCHR', 'S_ISBLK', 'S_ISFIFO', 'S_ISLNK', or
+          'S_ISSOCK' to extract information from this value.
 
      'modestr'
           File mode, as a string of ten letters or dashes as would be
@@ -7869,636 +8092,4 @@ connection.  All FTP functions take an FTP object as the first argument.
      Remove the remote directory PATH, over the FTP connection F.
 
      F is an FTP object returned by the 'ftp' function.
-
-
-File: octave.info,  Node: URL Manipulation,  Next: Base64 and Binary Data Transmission,  Prev: FTP Objects,  Up: Networking Utilities
-
-36.4.2 URL Manipulation
------------------------
-
- -- Loadable Function: S = urlread (URL)
- -- Loadable Function: [S, SUCCESS] = urlread (URL)
- -- Loadable Function: [S, SUCCESS, MESSAGE] = urlread (URL)
- -- Loadable Function: [...] = urlread (URL, METHOD, PARAM)
-     Download a remote file specified by its URL and return its content
-     in string S.
-
-     For example:
-
-          s = urlread ("ftp://ftp.octave.org/pub/README");
-
-     The variable SUCCESS is 1 if the download was successful, otherwise
-     it is 0 in which case MESSAGE contains an error message.
-
-     If no output argument is specified and an error occurs, then the
-     error is signaled through Octave's error handling mechanism.
-
-     This function uses libcurl.  Curl supports, among others, the HTTP,
-     FTP and FILE protocols.  Username and password may be specified in
-     the URL.  For example:
-
-          s = urlread ("http://user:password@example.com/file.txt");
-
-     GET and POST requests can be specified by METHOD and PARAM.  The
-     parameter METHOD is either 'get' or 'post' and PARAM is a cell
-     array of parameter and value pairs.  For example:
-
-          s = urlread ("http://www.google.com/search", "get",
-                      {"query", "octave"});
-
-     See also: *note urlwrite: XREFurlwrite.
-
- -- Loadable Function: urlwrite (URL, LOCALFILE)
- -- Loadable Function: F = urlwrite (URL, LOCALFILE)
- -- Loadable Function: [F, SUCCESS] = urlwrite (URL, LOCALFILE)
- -- Loadable Function: [F, SUCCESS, MESSAGE] = urlwrite (URL, LOCALFILE)
-     Download a remote file specified by its URL and save it as
-     LOCALFILE.
-
-     For example:
-
-          urlwrite ("ftp://ftp.octave.org/pub/README",
-                    "README.txt");
-
-     The full path of the downloaded file is returned in F.
-
-     The variable SUCCESS is 1 if the download was successful, otherwise
-     it is 0 in which case MESSAGE contains an error message.
-
-     If no output argument is specified and an error occurs, then the
-     error is signaled through Octave's error handling mechanism.
-
-     This function uses libcurl.  Curl supports, among others, the HTTP,
-     FTP and FILE protocols.  Username and password may be specified in
-     the URL, for example:
-
-          urlwrite ("http://username:password@example.com/file.txt",
-                    "file.txt");
-
-     GET and POST requests can be specified by METHOD and PARAM.  The
-     parameter METHOD is either 'get' or 'post' and PARAM is a cell
-     array of parameter and value pairs.  For example:
-
-          urlwrite ("http://www.google.com/search", "search.html",
-                    "get", {"query", "octave"});
-
-     See also: *note urlread: XREFurlread.
-
-
-File: octave.info,  Node: Base64 and Binary Data Transmission,  Prev: URL Manipulation,  Up: Networking Utilities
-
-36.4.3 Base64 and Binary Data Transmission
-------------------------------------------
-
-Some transmission channels can not accept binary data.  It is customary
-to encode binary data in Base64 for transmission and to decode the data
-upon reception.
-
- -- Built-in Function: S = base64_encode (X)
-     Encode a double matrix or array X into the base64 format string S.
-
-     See also: *note base64_decode: XREFbase64_decode.
-
- -- Built-in Function: X = base64_decode (S)
- -- Built-in Function: X = base64_decode (S, DIMS)
-     Decode the double matrix or array X from the base64 encoded string
-     S.
-
-     The optional input parameter DIMS should be a vector containing the
-     dimensions of the decoded array.
-
-     See also: *note base64_encode: XREFbase64_encode.
-
-
-File: octave.info,  Node: Controlling Subprocesses,  Next: Process ID Information,  Prev: Networking Utilities,  Up: System Utilities
-
-36.5 Controlling Subprocesses
-=============================
-
-Octave includes some high-level commands like 'system' and 'popen' for
-starting subprocesses.  If you want to run another program to perform
-some task and then look at its output, you will probably want to use
-these functions.
-
-   Octave also provides several very low-level Unix-like functions which
-can also be used for starting subprocesses, but you should probably only
-use them if you can't find any way to do what you need with the
-higher-level functions.
-
- -- Built-in Function: system ("STRING")
- -- Built-in Function: system ("STRING", RETURN_OUTPUT)
- -- Built-in Function: system ("STRING", RETURN_OUTPUT, TYPE)
- -- Built-in Function: [STATUS, OUTPUT] = system (...)
-     Execute a shell command specified by STRING.
-
-     If the optional argument TYPE is "async", the process is started in
-     the background and the process ID of the child process is returned
-     immediately.  Otherwise, the child process is started and Octave
-     waits until it exits.  If the TYPE argument is omitted, it defaults
-     to the value "sync".
-
-     If SYSTEM is called with one or more output arguments, or if the
-     optional argument RETURN_OUTPUT is true and the subprocess is
-     started synchronously, then the output from the command is returned
-     as a variable.  Otherwise, if the subprocess is executed
-     synchronously, its output is sent to the standard output.  To send
-     the output of a command executed with 'system' through the pager,
-     use a command like
-
-          [output, text] = system ("cmd");
-          disp (text);
-
-     or
-
-          printf ("%s\n", nthargout (2, "system", "cmd"));
-
-     The 'system' function can return two values.  The first is the exit
-     status of the command and the second is any output from the command
-     that was written to the standard output stream.  For example,
-
-          [status, output] = system ("echo foo; exit 2");
-
-     will set the variable 'output' to the string 'foo', and the
-     variable 'status' to the integer '2'.
-
-     For commands run asynchronously, STATUS is the process id of the
-     command shell that is started to run the command.
-
-     See also: *note unix: XREFunix, *note dos: XREFdos.
-
- -- Function File: unix ("COMMAND")
- -- Function File: STATUS = unix ("COMMAND")
- -- Function File: [STATUS, TEXT] = unix ("COMMAND")
- -- Function File: [...] = unix ("COMMAND", "-echo")
-     Execute a system command if running under a Unix-like operating
-     system, otherwise do nothing.
-
-     Octave waits for the external command to finish before returning
-     the exit status of the program in STATUS and any output in TEXT.
-
-     When called with no output argument, or the "-echo" argument is
-     given, then TEXT is also sent to standard output.
-
-     See also: *note dos: XREFdos, *note system: XREFsystem, *note
-     isunix: XREFisunix, *note ismac: XREFismac, *note ispc: XREFispc.
-
- -- Function File: dos ("COMMAND")
- -- Function File: STATUS = dos ("COMMAND")
- -- Function File: [STATUS, TEXT] = dos ("COMMAND")
- -- Function File: [...] = dos ("COMMAND", "-echo")
-     Execute a system command if running under a Windows-like operating
-     system, otherwise do nothing.
-
-     Octave waits for the external command to finish before returning
-     the exit status of the program in STATUS and any output in TEXT.
-
-     When called with no output argument, or the "-echo" argument is
-     given, then TEXT is also sent to standard output.
-
-     See also: *note unix: XREFunix, *note system: XREFsystem, *note
-     isunix: XREFisunix, *note ismac: XREFismac, *note ispc: XREFispc.
-
- -- Function File: OUTPUT = open FILE
- -- Function File: OUTPUT = open (FILE)
-     Open the file FILE in Octave or in an external application based on
-     the file type as determined by the file name extension.
-
-     Recognized file types are
-
-     '.m'
-          Open file in the editor.
-
-     '.mat'
-          Load the file in the base workspace.
-
-     '.exe'
-          Execute the program (on Windows systems only).
-
-     Other file types are opened in the appropriate external
-     application.
-
- -- Function File: OUTPUT = perl (SCRIPTFILE)
- -- Function File: OUTPUT = perl (SCRIPTFILE, ARGUMENT1, ARGUMENT2, ...)
- -- Function File: [OUTPUT, STATUS] = perl (...)
-     Invoke Perl script SCRIPTFILE, possibly with a list of command line
-     arguments.
-
-     Return output in OUTPUT and optional status in STATUS.  If
-     SCRIPTFILE is not an absolute file name it is searched for in the
-     current directory and then in the Octave loadpath.
-
-     See also: *note system: XREFsystem, *note python: XREFpython.
-
- -- Function File: OUTPUT = python (SCRIPTFILE)
- -- Function File: OUTPUT = python (SCRIPTFILE, ARGUMENT1, ARGUMENT2,
-          ...)
- -- Function File: [OUTPUT, STATUS] = python (...)
-     Invoke Python script SCRIPTFILE, possibly with a list of command
-     line arguments.
-
-     Return output in OUTPUT and optional status in STATUS.  If
-     SCRIPTFILE is not an absolute file name it is searched for in the
-     current directory and then in the Octave loadpath.
-
-     See also: *note system: XREFsystem, *note perl: XREFperl.
-
- -- Built-in Function: FID = popen (COMMAND, MODE)
-     Start a process and create a pipe.
-
-     The name of the command to run is given by COMMAND.  The argument
-     MODE may be
-
-     '"r"'
-          The pipe will be connected to the standard output of the
-          process, and open for reading.
-
-     '"w"'
-          The pipe will be connected to the standard input of the
-          process, and open for writing.
-
-     The file identifier corresponding to the input or output stream of
-     the process is returned in FID.
-
-     For example:
-
-          fid = popen ("ls -ltr / | tail -3", "r");
-          while (ischar (s = fgets (fid)))
-            fputs (stdout, s);
-          endwhile
-
-             -| drwxr-xr-x  33 root  root  3072 Feb 15 13:28 etc
-             -| drwxr-xr-x   3 root  root  1024 Feb 15 13:28 lib
-             -| drwxrwxrwt  15 root  root  2048 Feb 17 14:53 tmp
-
-     See also: *note popen2: XREFpopen2.
-
- -- Built-in Function: pclose (FID)
-     Close a file identifier that was opened by 'popen'.
-
-     The function 'fclose' may also be used for the same purpose.
-
-     See also: *note fclose: XREFfclose, *note popen: XREFpopen.
-
- -- Built-in Function: [IN, OUT, PID] = popen2 (COMMAND, ARGS)
-     Start a subprocess with two-way communication.
-
-     The name of the process is given by COMMAND, and ARGS is an array
-     of strings containing options for the command.
-
-     The file identifiers for the input and output streams of the
-     subprocess are returned in IN and OUT.  If execution of the command
-     is successful, PID contains the process ID of the subprocess.
-     Otherwise, PID is -1.
-
-     For example:
-
-          [in, out, pid] = popen2 ("sort", "-r");
-          fputs (in, "these\nare\nsome\nstrings\n");
-          fclose (in);
-          EAGAIN = errno ("EAGAIN");
-          done = false;
-          do
-            s = fgets (out);
-            if (ischar (s))
-              fputs (stdout, s);
-            elseif (errno () == EAGAIN)
-              sleep (0.1);
-              fclear (out);
-            else
-              done = true;
-            endif
-          until (done)
-          fclose (out);
-          waitpid (pid);
-
-             -| these
-             -| strings
-             -| some
-             -| are
-
-     Note that 'popen2', unlike 'popen', will not "reap" the child
-     process.  If you don't use 'waitpid' to check the child's exit
-     status, it will linger until Octave exits.
-
-     See also: *note popen: XREFpopen, *note waitpid: XREFwaitpid.
-
- -- Built-in Function: VAL = EXEC_PATH ()
- -- Built-in Function: OLD_VAL = EXEC_PATH (NEW_VAL)
- -- Built-in Function: EXEC_PATH (NEW_VAL, "local")
-     Query or set the internal variable that specifies a colon separated
-     list of directories to append to the shell PATH when executing
-     external programs.
-
-     The initial value of is taken from the environment variable
-     'OCTAVE_EXEC_PATH', but that value can be overridden by the command
-     line argument '--exec-path PATH'.
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note IMAGE_PATH: XREFIMAGE_PATH, *note OCTAVE_HOME:
-     XREFOCTAVE_HOME.
-
-   In most cases, the following functions simply decode their arguments
-and make the corresponding Unix system calls.  For a complete example of
-how they can be used, look at the definition of the function 'popen2'.
-
- -- Built-in Function: [PID, MSG] = fork ()
-     Create a copy of the current process.
-
-     Fork can return one of the following values:
-
-     > 0
-          You are in the parent process.  The value returned from 'fork'
-          is the process id of the child process.  You should probably
-          arrange to wait for any child processes to exit.
-
-     0
-          You are in the child process.  You can call 'exec' to start
-          another process.  If that fails, you should probably call
-          'exit'.
-
-     < 0
-          The call to 'fork' failed for some reason.  You must take
-          evasive action.  A system dependent error message will be
-          waiting in MSG.
-
- -- Built-in Function: [ERR, MSG] = exec (FILE, ARGS)
-     Replace current process with a new process.
-
-     Calling 'exec' without first calling 'fork' will terminate your
-     current Octave process and replace it with the program named by
-     FILE.  For example,
-
-          exec ("ls" "-l")
-
-     will run 'ls' and return you to your shell prompt.
-
-     If successful, 'exec' does not return.  If 'exec' does return, ERR
-     will be nonzero, and MSG will contain a system-dependent error
-     message.
-
- -- Built-in Function: [READ_FD, WRITE_FD, ERR, MSG] = pipe ()
-     Create a pipe and return the reading and writing ends of the pipe
-     into READ_FD and WRITE_FD respectively.
-
-     If successful, ERR is 0 and MSG is an empty string.  Otherwise, ERR
-     is nonzero and MSG contains a system-dependent error message.
-
-     See also: *note mkfifo: XREFmkfifo.
-
- -- Built-in Function: [FID, MSG] = dup2 (OLD, NEW)
-     Duplicate a file descriptor.
-
-     If successful, FID is greater than zero and contains the new file
-     ID.  Otherwise, FID is negative and MSG contains a system-dependent
-     error message.
-
-     See also: *note fopen: XREFfopen, *note fclose: XREFfclose, *note
-     fcntl: XREFfcntl.
-
- -- Built-in Function: [PID, STATUS, MSG] = waitpid (PID, OPTIONS)
-     Wait for process PID to terminate.
-
-     The PID argument can be:
-
-     -1
-          Wait for any child process.
-
-     0
-          Wait for any child process whose process group ID is equal to
-          that of the Octave interpreter process.
-
-     > 0
-          Wait for termination of the child process with ID PID.
-
-     The OPTIONS argument can be a bitwise OR of zero or more of the
-     following constants:
-
-     '0'
-          Wait until signal is received or a child process exits (this
-          is the default if the OPTIONS argument is missing).
-
-     'WNOHANG'
-          Do not hang if status is not immediately available.
-
-     'WUNTRACED'
-          Report the status of any child processes that are stopped, and
-          whose status has not yet been reported since they stopped.
-
-     'WCONTINUE'
-          Return if a stopped child has been resumed by delivery of
-          'SIGCONT'.  This value may not be meaningful on all systems.
-
-     If the returned value of PID is greater than 0, it is the process
-     ID of the child process that exited.  If an error occurs, PID will
-     be less than zero and MSG will contain a system-dependent error
-     message.  The value of STATUS contains additional system-dependent
-     information about the subprocess that exited.
-
-     See also: *note WCONTINUE: XREFWCONTINUE, *note WCOREDUMP:
-     XREFWCOREDUMP, *note WEXITSTATUS: XREFWEXITSTATUS, *note
-     WIFCONTINUED: XREFWIFCONTINUED, *note WIFSIGNALED: XREFWIFSIGNALED,
-     *note WIFSTOPPED: XREFWIFSTOPPED, *note WNOHANG: XREFWNOHANG, *note
-     WSTOPSIG: XREFWSTOPSIG, *note WTERMSIG: XREFWTERMSIG, *note
-     WUNTRACED: XREFWUNTRACED.
-
- -- Built-in Function: WCONTINUE ()
-     Return the numerical value of the option argument that may be
-     passed to 'waitpid' to indicate that it should also return if a
-     stopped child has been resumed by delivery of a 'SIGCONT' signal.
-
-     See also: *note waitpid: XREFwaitpid, *note WNOHANG: XREFWNOHANG,
-     *note WUNTRACED: XREFWUNTRACED.
-
- -- Built-in Function: WCOREDUMP (STATUS)
-     Given STATUS from a call to 'waitpid', return true if the child
-     produced a core dump.
-
-     This function should only be employed if 'WIFSIGNALED' returned
-     true.  The macro used to implement this function is not specified
-     in POSIX.1-2001 and is not available on some Unix implementations
-     (e.g., AIX, SunOS).
-
-     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
-     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note
-     WIFSIGNALED: XREFWIFSIGNALED, *note WTERMSIG: XREFWTERMSIG, *note
-     WIFSTOPPED: XREFWIFSTOPPED, *note WSTOPSIG: XREFWSTOPSIG, *note
-     WIFCONTINUED: XREFWIFCONTINUED.
-
- -- Built-in Function: WEXITSTATUS (STATUS)
-     Given STATUS from a call to 'waitpid', return the exit status of
-     the child.
-
-     This function should only be employed if 'WIFEXITED' returned true.
-
-     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
-     XREFWIFEXITED, *note WIFSIGNALED: XREFWIFSIGNALED, *note WTERMSIG:
-     XREFWTERMSIG, *note WCOREDUMP: XREFWCOREDUMP, *note WIFSTOPPED:
-     XREFWIFSTOPPED, *note WSTOPSIG: XREFWSTOPSIG, *note WIFCONTINUED:
-     XREFWIFCONTINUED.
-
- -- Built-in Function: WIFCONTINUED (STATUS)
-     Given STATUS from a call to 'waitpid', return true if the child
-     process was resumed by delivery of 'SIGCONT'.
-
-     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
-     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note
-     WIFSIGNALED: XREFWIFSIGNALED, *note WTERMSIG: XREFWTERMSIG, *note
-     WCOREDUMP: XREFWCOREDUMP, *note WIFSTOPPED: XREFWIFSTOPPED, *note
-     WSTOPSIG: XREFWSTOPSIG.
-
- -- Built-in Function: WIFSIGNALED (STATUS)
-     Given STATUS from a call to 'waitpid', return true if the child
-     process was terminated by a signal.
-
-     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
-     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note WTERMSIG:
-     XREFWTERMSIG, *note WCOREDUMP: XREFWCOREDUMP, *note WIFSTOPPED:
-     XREFWIFSTOPPED, *note WSTOPSIG: XREFWSTOPSIG, *note WIFCONTINUED:
-     XREFWIFCONTINUED.
-
- -- Built-in Function: WIFSTOPPED (STATUS)
-     Given STATUS from a call to 'waitpid', return true if the child
-     process was stopped by delivery of a signal.
-
-     This is only possible if the call was done using 'WUNTRACED' or
-     when the child is being traced (see ptrace(2)).
-
-     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
-     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note
-     WIFSIGNALED: XREFWIFSIGNALED, *note WTERMSIG: XREFWTERMSIG, *note
-     WCOREDUMP: XREFWCOREDUMP, *note WSTOPSIG: XREFWSTOPSIG, *note
-     WIFCONTINUED: XREFWIFCONTINUED.
-
- -- Built-in Function: WIFEXITED (STATUS)
-     Given STATUS from a call to 'waitpid', return true if the child
-     terminated normally.
-
-     See also: *note waitpid: XREFwaitpid, *note WEXITSTATUS:
-     XREFWEXITSTATUS, *note WIFSIGNALED: XREFWIFSIGNALED, *note
-     WTERMSIG: XREFWTERMSIG, *note WCOREDUMP: XREFWCOREDUMP, *note
-     WIFSTOPPED: XREFWIFSTOPPED, *note WSTOPSIG: XREFWSTOPSIG, *note
-     WIFCONTINUED: XREFWIFCONTINUED.
-
- -- Built-in Function: WNOHANG ()
-     Return the numerical value of the option argument that may be
-     passed to 'waitpid' to indicate that it should return its status
-     immediately instead of waiting for a process to exit.
-
-     See also: *note waitpid: XREFwaitpid, *note WUNTRACED:
-     XREFWUNTRACED, *note WCONTINUE: XREFWCONTINUE.
-
- -- Built-in Function: WSTOPSIG (STATUS)
-     Given STATUS from a call to 'waitpid', return the number of the
-     signal which caused the child to stop.
-
-     This function should only be employed if 'WIFSTOPPED' returned
-     true.
-
-     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
-     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note
-     WIFSIGNALED: XREFWIFSIGNALED, *note WTERMSIG: XREFWTERMSIG, *note
-     WCOREDUMP: XREFWCOREDUMP, *note WIFSTOPPED: XREFWIFSTOPPED, *note
-     WIFCONTINUED: XREFWIFCONTINUED.
-
- -- Built-in Function: WTERMSIG (STATUS)
-     Given STATUS from a call to 'waitpid', return the number of the
-     signal that caused the child process to terminate.
-
-     This function should only be employed if 'WIFSIGNALED' returned
-     true.
-
-     See also: *note waitpid: XREFwaitpid, *note WIFEXITED:
-     XREFWIFEXITED, *note WEXITSTATUS: XREFWEXITSTATUS, *note
-     WIFSIGNALED: XREFWIFSIGNALED, *note WCOREDUMP: XREFWCOREDUMP, *note
-     WIFSTOPPED: XREFWIFSTOPPED, *note WSTOPSIG: XREFWSTOPSIG, *note
-     WIFCONTINUED: XREFWIFCONTINUED.
-
- -- Built-in Function: WUNTRACED ()
-     Return the numerical value of the option argument that may be
-     passed to 'waitpid' to indicate that it should also return if the
-     child process has stopped but is not traced via the 'ptrace' system
-     call
-
-     See also: *note waitpid: XREFwaitpid, *note WNOHANG: XREFWNOHANG,
-     *note WCONTINUE: XREFWCONTINUE.
-
- -- Built-in Function: [ERR, MSG] = fcntl (FID, REQUEST, ARG)
-     Change the properties of the open file FID.
-
-     The following values may be passed as REQUEST:
-
-     'F_DUPFD'
-          Return a duplicate file descriptor.
-
-     'F_GETFD'
-          Return the file descriptor flags for FID.
-
-     'F_SETFD'
-          Set the file descriptor flags for FID.
-
-     'F_GETFL'
-          Return the file status flags for FID.  The following codes may
-          be returned (some of the flags may be undefined on some
-          systems).
-
-          'O_RDONLY'
-               Open for reading only.
-
-          'O_WRONLY'
-               Open for writing only.
-
-          'O_RDWR'
-               Open for reading and writing.
-
-          'O_APPEND'
-               Append on each write.
-
-          'O_CREAT'
-               Create the file if it does not exist.
-
-          'O_NONBLOCK'
-               Non-blocking mode.
-
-          'O_SYNC'
-               Wait for writes to complete.
-
-          'O_ASYNC'
-               Asynchronous I/O.
-
-     'F_SETFL'
-          Set the file status flags for FID to the value specified by
-          ARG.  The only flags that can be changed are 'O_APPEND' and
-          'O_NONBLOCK'.
-
-     If successful, ERR is 0 and MSG is an empty string.  Otherwise, ERR
-     is nonzero and MSG contains a system-dependent error message.
-
-     See also: *note fopen: XREFfopen, *note dup2: XREFdup2.
-
- -- Built-in Function: [ERR, MSG] = kill (PID, SIG)
-     Send signal SIG to process PID.
-
-     If PID is positive, then signal SIG is sent to PID.
-
-     If PID is 0, then signal SIG is sent to every process in the
-     process group of the current process.
-
-     If PID is -1, then signal SIG is sent to every process except
-     process 1.
-
-     If PID is less than -1, then signal SIG is sent to every process in
-     the process group -PID.
-
-     If SIG is 0, then no signal is sent, but error checking is still
-     performed.
-
-     Return 0 if successful, otherwise return -1.
-
- -- Built-in Function: SIG ()
-     Return a structure containing Unix signal names and their defined
-     values.
 

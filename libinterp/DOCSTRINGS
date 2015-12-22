@@ -354,6 +354,10 @@ Return a function handle constructed from the string @var{fcn_name}.
 
 If the optional @qcode{"global"} argument is passed, locally visible
 functions are ignored in the lookup.
+
+Note: @code{str2func} does not currently accept strings which define
+anonymous functions (those which begin with @samp{@@}).
+Use @w{@code{eval (@var{str})}} as a replacement.
 @seealso{func2str, inline}
 @end deftypefn
 is_function_handle
@@ -1669,7 +1673,7 @@ Return the largest integer that can be represented within a floating point
 value.
 
 The default class is @qcode{"double"}, but @qcode{"single"} is a
-valid option.  On IEEE-754 compatible systems, @code{bitmax} is
+valid option.  On IEEE 754 compatible systems, @code{bitmax} is
 @w{@math{2^{53} - 1}} for @qcode{"double"} and @w{@math{2^{24} -1}} for
 @qcode{"single"}.
 @seealso{flintmax, intmax, realmax, realmin}
@@ -1684,8 +1688,8 @@ Return the largest integer that can be represented consecutively in a
 floating point value.
 
 The default class is @qcode{"double"}, but @qcode{"single"} is a valid
-option.  On IEEE-754 compatible systems, @code{flintmax} is @w{@math{2^53}}
-for @qcode{"double"} and @w{@math{2^24}} for @qcode{"single"}.
+option.  On IEEE 754 compatible systems, @code{flintmax} is @w{@math{2^{53}}}
+for @qcode{"double"} and @w{@math{2^{24}}} for @qcode{"single"}.
 @seealso{bitmax, intmax, realmax, realmin}
 @end deftypefn
 intmax
@@ -2976,14 +2980,14 @@ binary mantissa and exponent so that
 ${1 \over 2} \le \left| f \right| < 1$
 @end tex
 @ifnottex
-@code{1/2 <= abs(f) < 1}
+@w{@code{1/2 <= abs(f) < 1}}
 @end ifnottex
 and @var{e} is an integer.  If
 @tex
 $x = 0$, $f = e = 0$.
 @end tex
 @ifnottex
-@code{x = 0}, @code{f = e = 0}.
+@w{@code{x = 0}}, @w{@code{f = e = 0}}.
 @end ifnottex
 @seealso{pow2, log, log10, exp}
 @end deftypefn
@@ -3198,9 +3202,8 @@ cat (4, ones (2, 2), zeros (2, 2))
 Return the generalized transpose for an N-D array object @var{A}.
 
 The permutation vector @var{perm} must contain the elements
-@code{1:ndims (A)} (in any order, but each element must appear only once).
-
-The @var{N}th dimension of @var{A} gets remapped to dimension
+@w{@code{1:ndims (A)}} (in any order, but each element must appear only
+once).  The @var{N}th dimension of @var{A} gets remapped to dimension
 @code{@var{PERM}(@var{N})}.  For example:
 
 @example
@@ -3245,9 +3248,9 @@ returns the original array @var{A}.
 Return the length of the object @var{a}.
 
 The length is 0 for empty objects, 1 for scalars, and the number of elements
-for vectors.  For matrix objects, the length is the number of rows or
-columns, whichever is greater (this odd definition is used for compatibility
-with @sc{matlab}).
+for vectors.  For matrix or N-dimensional objects, the length is the number
+of elements along the largest dimension
+(equivalent to @w{@code{max (size (@var{a}))}}).
 @seealso{numel, size}
 @end deftypefn
 ndims
@@ -3281,7 +3284,7 @@ return the number of elements that would result from the indexing
 @var{a}(@var{idx1}, @var{idx2}, @dots{})
 @end example
 
-Note that the indices do not have to be numerical.  For example,
+Note that the indices do not have to be scalar numbers.  For example,
 
 @example
 @group
@@ -3293,6 +3296,18 @@ numel (@var{a}, @var{b})
 
 @noindent
 will return 6, as this is the number of ways to index with @var{b}.
+Or the index could be the string @qcode{":"} which represents the colon
+operator.  For example,
+
+@example
+@group
+@var{a} = ones (5, 3);
+numel (@var{a}, 2, ":")
+@end group
+@end example
+
+@noindent
+will return 3 as the second row has three column entries.
 
 This method is also called when an object appears as lvalue with cs-list
 indexing, i.e., @code{object@{@dots{}@}} or @code{object(@dots{}).field}.
@@ -3474,11 +3489,13 @@ Objects of class double or single are floating-point objects.
 @deftypefnx {Built-in Function} {} complex (@var{re}, @var{im})
 Return a complex value from real arguments.
 
-With 1 real argument @var{x}, return the complex result @code{@var{x} + 0i}.
+With 1 real argument @var{x}, return the complex result
+@w{@code{@var{x} + 0i}}.
 
-With 2 real arguments, return the complex result @code{@var{re} + @var{im}}.
+With 2 real arguments, return the complex result
+@w{@code{@var{re} + @var{im}}}.
 @code{complex} can often be more convenient than expressions such as
-@code{a + i*b}.
+@w{@code{a + i*b}}.
 For example:
 
 @example
@@ -3891,7 +3908,7 @@ to the pure imaginary unit, defined as
 $\sqrt{-1}$.
 @end tex
 @ifnottex
-@code{sqrt (-1)}.
+@w{@code{sqrt (-1)}}.
 @end ifnottex
 
 I, and its equivalents i, j, and J, are functions so any of the names may
@@ -4160,7 +4177,7 @@ or a range.
 @deftypefnx {Built-in Function} {} norm (@var{A}, @var{p}, @var{opt})
 Compute the p-norm of the matrix @var{A}.
 
-If the second argument is missing, @code{p = 2} is assumed.
+If the second argument is missing, @w{@code{p = 2}} is assumed.
 
 If @var{A} is a matrix (or sparse matrix):
 
@@ -4585,8 +4602,9 @@ matrix.  For example:
 For equal elements, the indices are such that equal elements are listed
 in the order in which they appeared in the original list.
 
-Sorting of complex entries is done first by magnitude (@code{abs (@var{z})})
-and for any ties by phase angle (@code{angle (z)}).  For example:
+Sorting of complex entries is done first by magnitude
+(@w{@code{abs (@var{z})}}) and for any ties by phase angle
+(@w{@code{angle (z)}}).  For example:
 
 @example
 @group
@@ -4719,7 +4737,7 @@ converted to logical.
 @deftypefn  {Built-in Function} {} diff (@var{x})
 @deftypefnx {Built-in Function} {} diff (@var{x}, @var{k})
 @deftypefnx {Built-in Function} {} diff (@var{x}, @var{k}, @var{dim})
-If @var{x} is a vector of length @math{n}, @code{diff (@var{x})} is the
+If @var{x} is a vector of length @math{n}, @w{@code{diff (@var{x})}} is the
 vector of first differences
 @tex
  $x_2 - x_1, \ldots{}, x_n - x_{n-1}$.
@@ -4728,20 +4746,20 @@ vector of first differences
  @var{x}(2) - @var{x}(1), @dots{}, @var{x}(n) - @var{x}(n-1).
 @end ifnottex
 
-If @var{x} is a matrix, @code{diff (@var{x})} is the matrix of column
+If @var{x} is a matrix, @w{@code{diff (@var{x})}} is the matrix of column
 differences along the first non-singleton dimension.
 
-The second argument is optional.  If supplied, @code{diff (@var{x},
-@var{k})}, where @var{k} is a non-negative integer, returns the
-@var{k}-th differences.  It is possible that @var{k} is larger than
-the first non-singleton dimension of the matrix.  In this case,
+The second argument is optional.  If supplied,
+@w{@code{diff (@var{x}, @var{k})}}, where @var{k} is a non-negative integer,
+returns the @var{k}-th differences.  It is possible that @var{k} is larger
+than the first non-singleton dimension of the matrix.  In this case,
 @code{diff} continues to take the differences along the next
 non-singleton dimension.
 
 The dimension along which to take the difference can be explicitly
 stated with the optional variable @var{dim}.  In this case the
 @var{k}-th order differences are calculated along this dimension.
-In the case where @var{k} exceeds @code{size (@var{x}, @var{dim})}
+In the case where @var{k} exceeds @w{@code{size (@var{x}, @var{dim})}}
 an empty matrix is returned.
 @seealso{sort, merge}
 @end deftypefn
@@ -6120,19 +6138,19 @@ must also open the file in binary mode.
 The parameter @var{arch} is a string specifying the default data format
 for the file.  Valid values for @var{arch} are:
 
-@table @samp
-@item native (default)
+@table @asis
+@item @qcode{"native"} or @qcode{"n"} (default)
 The format of the current machine.
 
-@item ieee-be
+@item @qcode{"ieee-be"} or @qcode{"b"}
 IEEE big endian format.
 
-@item ieee-le
+@item @qcode{"ieee-le"} or @qcode{"l"}
 IEEE little endian format.
 @end table
 
 @noindent
-however, conversions are currently only supported for @samp{native}
+However, conversions are currently only supported for @samp{native},
 @samp{ieee-be}, and @samp{ieee-le} formats.
 
 When opening a new file that does not yet exist, permissions will be set to
@@ -6506,17 +6524,22 @@ The optional argument @var{arch} is a string specifying the data format
 for the file.  Valid values are
 
 @table @asis
-@item @qcode{"native"}
+@item @qcode{"native"} or @qcode{"n"}
 The format of the current machine.
 
-@item @qcode{"ieee-be"}
+@item @qcode{"ieee-be"} or @qcode{"b"}
 IEEE big endian.
 
-@item @qcode{"ieee-le"}
+@item @qcode{"ieee-le"} or @qcode{"l"}
 IEEE little endian.
 @end table
 
+If no @var{arch} is given the value used in the call to @code{fopen} which
+created the file descriptor is used.  Otherwise, the value specified with
+@code{fread} overrides that of @code{fopen} and determines the data format.
+
 The output argument @var{val} contains the data read from the file.
+
 The optional return value @var{count} contains the number of elements read.
 @seealso{fwrite, fgets, fgetl, fscanf, fopen}
 @end deftypefn
@@ -7909,13 +7932,13 @@ $$
 A = PHP^T
 $$
 where $P$ is a square unitary matrix ($P^TP = I$), and $H$
-is upper Hessenberg ($H_{i,j} = 0, \forall i \ge j+1$).
+is upper Hessenberg ($H_{i,j} = 0, \forall i > j+1$).
 @end tex
 @ifnottex
 @code{@var{P} * @var{H} * @var{P}' = @var{A}} where @var{P} is a square
 unitary matrix (@code{@var{P}' * @var{P} = I}, using complex-conjugate
 transposition) and @var{H} is upper Hessenberg
-(@code{@var{H}(i, j) = 0 forall i >= j+1)}.
+(@code{@var{H}(i, j) = 0 forall i > j+1)}.
 @end ifnottex
 
 The Hessenberg decomposition is usually used as the first step in an
@@ -14806,7 +14829,7 @@ indexing using @var{ind} will not perform the check again.
 
 Implementation Note: Strings are first converted to double values before the
 checks for valid indices are made.  Unless a string contains the NULL
-character @nospell{"\0"}, it will always be a valid index.
+character @nospell{"@xbackslashchar{}0"}, it will always be a valid index.
 @end deftypefn
 isstudent
 @c isstudent libinterp/corefcn/utils.cc
@@ -15680,6 +15703,332 @@ The author of the code itself is Timothy A. Davis
 @email{davis@@cise.ufl.edu}, University of Florida
 (see @url{http://www.cise.ufl.edu/research/sparse/amd}).
 @seealso{symamd, colamd}
+@end deftypefn
+audiodevinfo
+@c audiodevinfo libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{devinfo} =} audiodevinfo ()
+
+@deftypefnx {Loadable Function} {@var{devs} =} audiodevinfo (@var{io})
+@deftypefnx {Loadable Function} {@var{name} =} audiodevinfo (@var{io}, @var{id})
+@deftypefnx {Loadable Function} {@var{id} =} audiodevinfo (@var{io}, @var{name})
+@deftypefnx {Loadable Function} {@var{id} =} audiodevinfo (@var{io}, @var{rate}, @var{bits}, @var{chans})
+
+@deftypefnx {Loadable Function} {@var{supports} =} audiodevinfo (@var{io}, @var{id}, @var{rate}, @var{bits}, @var{chans})
+
+Return a structure describing the available audio input and output devices.
+
+The @var{devinfo} structure has two fields @qcode{"input"} and
+@qcode{"output"}.  The value of each field is a structure array with fields
+@qcode{"Name"}, @nospell{"DriverVersion"} and @qcode{"ID"} describing
+an audio device.
+
+If the optional argument @var{io} is 1, return information about input
+devices only.  If it is 0, return information about output devices only.
+
+If the optional argument @var{id} is provided, return information about
+the corresponding device.
+
+If the optional argument @var{name} is provided, return the id of the
+named device.
+
+Given a sampling rate, bits per sample, and number of channels for an input
+or output device, return the ID of the first device that supports playback
+or recording using the specified parameters.
+
+If also given a device ID, return true if the device supports playback or
+recording using those parameters.
+@end deftypefn
+__recorder_audiorecorder__
+@c __recorder_audiorecorder__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {@var{recorder} =} __recorder_audiorecorder__ (@var{fs}, @var{nbits}, @var{channels})
+@deftypefnx {Loadable Function} {@var{recorder} =} __recorder_audiorecorder__ (@var{fs}, @var{nbits}, @var{channels}, @var{id})
+@deftypefnx {Loadable Function} {@var{recorder} =} __recorder_audiorecorder__ (@var{fcn}, @dots{})
+Undocumented internal function.
+@end deftypefn
+__recorder_getaudiodata__
+@c __recorder_getaudiodata__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{data}} __recorder_getaudiodata__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_channels__
+@c __recorder_get_channels__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __recorder_get_channels__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_fs__
+@c __recorder_get_fs__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{fs} =} __recorder_get_fs__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_id__
+@c __recorder_get_id__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{id} =} __recorder_get_id__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_nbits__
+@c __recorder_get_nbits__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{nbits} =} __recorder_get_nbits__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_sample_number__
+@c __recorder_get_sample_number__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __recorder_get_sample_number__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_tag__
+@c __recorder_get_tag__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{tag} =} __recorder_get_tag__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_total_samples__
+@c __recorder_get_total_samples__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __recorder_get_total_samples__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_userdata__
+@c __recorder_get_userdata__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{data} =} __recorder_get_userdata__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_isrecording__
+@c __recorder_isrecording__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_isrecording__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_pause__
+@c __recorder_pause__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_pause__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_recordblocking__
+@c __recorder_recordblocking__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_recordblocking__ (@var{recorder}, @var{seconds})
+Undocumented internal function.
+@end deftypefn
+__recorder_record__
+@c __recorder_record__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {} __recorder_record__ (@var{recorder})
+@deftypefnx {Loadable Function} {} __recorder_record__ (@var{recorder}, @var{seconds})
+Undocumented internal function.
+@end deftypefn
+__recorder_resume__
+@c __recorder_resume__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_resume__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_set_fs__
+@c __recorder_set_fs__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_set_fs__ (@var{recorder}, @var{fs})
+Undocumented internal function.
+@end deftypefn
+__recorder_set_tag__
+@c __recorder_set_tag__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_set_tag__ (@var{recorder}, @var{tag})
+Undocumented internal function.
+@end deftypefn
+__recorder_set_userdata__
+@c __recorder_set_userdata__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_set_userdata__ (@var{recorder}, @var{data})
+Undocumented internal function.
+@end deftypefn
+__recorder_stop__
+@c __recorder_stop__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_stop__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__player_audioplayer__
+@c __player_audioplayer__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {@var{player} =} __player_audioplayer__ (@var{y}, @var{fs})
+@deftypefnx {Loadable Function} {@var{player} =} __player_audioplayer__ (@var{y}, @var{fs}, @var{nbits})
+@deftypefnx {Loadable Function} {@var{player} =} __player_audioplayer__ (@var{y}, @var{fs}, @var{nbits}, @var{id})
+Undocumented internal function.
+@end deftypefn
+__player_get_channels__
+@c __player_get_channels__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __player_get_channels__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_fs__
+@c __player_get_fs__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{fs} =} __player_get_fs__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_id__
+@c __player_get_id__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{id} =} __player_get_id__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_nbits__
+@c __player_get_nbits__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{nbits} =} __player_get_nbits__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_sample_number__
+@c __player_get_sample_number__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __player_get_sample_number__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_tag__
+@c __player_get_tag__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{tag} =} __player_get_tag__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_total_samples__
+@c __player_get_total_samples__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __player_get_total_samples__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_userdata__
+@c __player_get_userdata__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{data} =} __player_get_userdata__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_isplaying__
+@c __player_isplaying__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_isplaying__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_pause__
+@c __player_pause__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_pause__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_playblocking__
+@c __player_playblocking__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {} __player_playblocking__ (@var{player})
+@deftypefnx {Loadable Function} {} __player_playblocking__ (@var{player}, @var{start})
+@deftypefnx {Loadable Function} {} __player_playblocking__ (@var{player}, [@var{start}, @var{end}])
+Undocumented internal function.
+@end deftypefn
+__player_play__
+@c __player_play__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {} __player_play__ (@var{player})
+@deftypefnx {Loadable Function} {} __player_play__ (@var{player}, @var{start})
+@deftypefnx {Loadable Function} {} __player_play__ (@var{player}, [@var{start}, @var{end}])
+Undocumented internal function.
+@end deftypefn
+__player_resume__
+@c __player_resume__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_resume__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_set_fs__
+@c __player_set_fs__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_set_fs__ (@var{player}, @var{fs})
+Undocumented internal function.
+@end deftypefn
+__player_set_tag__
+@c __player_set_tag__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_set_tag__ (@var{player}, @var{tag})
+Undocumented internal function.
+@end deftypefn
+__player_set_userdata__
+@c __player_set_userdata__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_set_userdata__ (@var{player}, @var{data})
+Undocumented internal function.
+@end deftypefn
+__player_stop__
+@c __player_stop__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_stop__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+audioread
+@c audioread libinterp/dldfcn/audioread.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename})
+@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{samples})
+
+@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{datatype})
+@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{samples}, @var{datatype})
+Read the audio file @var{filename} and return the audio data @var{y} and
+sampling rate @var{fs}.
+
+The audio data is stored as matrix with rows corresponding to audio frames
+and columns corresponding to channels.
+
+The optional two-element vector argument @var{samples} specifies starting
+and ending frames.
+
+The optional argument @var{datatype} specifies the datatype to return.
+If it is @qcode{"native"}, then the type of data depends on how the data
+is stored in the audio file.
+@end deftypefn
+audiowrite
+@c audiowrite libinterp/dldfcn/audioread.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {} audiowrite (@var{filename}, @var{y}, @var{fs})
+@deftypefnx {Loadable Function} {} audiowrite (@var{filename}, @var{y}, @var{fs}, @var{name}, @var{value}, @dots{})
+
+Write audio data from the matrix @var{y} to @var{filename} at sampling rate
+@var{fs} with the file format determined by the file extension.
+
+Additional name/value argument pairs may be used to specify the
+following options:
+
+@table @samp
+@item BitsPerSample
+Number of bits per sample, valid values are 8, 16, 24 and 32.  Default is 16.
+
+@item BitRate
+Valid argument name, but ignored.  Left for compatibility with @sc{matlab}.
+
+@item Quality
+Quality setting for the Ogg Vorbis compressor.  Values can range between 0
+and 100 with 100 being the highest quality setting.  Default is 75.
+
+@item Title
+Title for the audio file.
+
+@item Artist
+Artist name.
+
+@item Comment
+Comment.
+@end table
+@end deftypefn
+audioinfo
+@c audioinfo libinterp/dldfcn/audioread.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{info} =} audioinfo (@var{filename})
+Return information about an audio file specified by @var{filename}.
 @end deftypefn
 ccolamd
 @c ccolamd libinterp/dldfcn/ccolamd.cc
@@ -16636,330 +16985,4 @@ Positive Definite Systems}, Prentice Hall Series in Computational
 Mathematics, ISBN 0-13-165274-5, 1981.
 
 @seealso{colperm, colamd, symamd}
-@end deftypefn
-audioread
-@c audioread libinterp/dldfcn/audioread.cc
--*- texinfo -*-
-@deftypefn  {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename})
-@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{samples})
-
-@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{datatype})
-@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{samples}, @var{datatype})
-Read the audio file @var{filename} and return the audio data @var{y} and
-sampling rate @var{fs}.
-
-The audio data is stored as matrix with rows corresponding to audio frames
-and columns corresponding to channels.
-
-The optional two-element vector argument @var{samples} specifies starting
-and ending frames.
-
-The optional argument @var{datatype} specifies the datatype to return.
-If it is @qcode{"native"}, then the type of data depends on how the data
-is stored in the audio file.
-@end deftypefn
-audiowrite
-@c audiowrite libinterp/dldfcn/audioread.cc
--*- texinfo -*-
-@deftypefn  {Loadable Function} {} audiowrite (@var{filename}, @var{y}, @var{fs})
-@deftypefnx {Loadable Function} {} audiowrite (@var{filename}, @var{y}, @var{fs}, @var{name}, @var{value}, @dots{})
-
-Write audio data from the matrix @var{y} to @var{filename} at sampling rate
-@var{fs} with the file format determined by the file extension.
-
-Additional name/value argument pairs may be used to specify the
-following options:
-
-@table @samp
-@item BitsPerSample
-Number of bits per sample, valid values are 8, 16, 24 and 32.  Default is 16.
-
-@item BitRate
-Valid argument name, but ignored.  Left for compatibility with @sc{matlab}.
-
-@item Quality
-Quality setting for the Ogg Vorbis compressor.  Values can range between 0
-and 100 with 100 being the highest quality setting.  Default is 75.
-
-@item Title
-Title for the audio file.
-
-@item Artist
-Artist name.
-
-@item Comment
-Comment.
-@end table
-@end deftypefn
-audioinfo
-@c audioinfo libinterp/dldfcn/audioread.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{info} =} audioinfo (@var{filename})
-Return information about an audio file specified by @var{filename}.
-@end deftypefn
-audiodevinfo
-@c audiodevinfo libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{devinfo} =} audiodevinfo ()
-
-@deftypefnx {Loadable Function} {@var{devs} =} audiodevinfo (@var{io})
-@deftypefnx {Loadable Function} {@var{name} =} audiodevinfo (@var{io}, @var{id})
-@deftypefnx {Loadable Function} {@var{id} =} audiodevinfo (@var{io}, @var{name})
-@deftypefnx {Loadable Function} {@var{id} =} audiodevinfo (@var{io}, @var{rate}, @var{bits}, @var{chans})
-
-@deftypefnx {Loadable Function} {@var{supports} =} audiodevinfo (@var{io}, @var{id}, @var{rate}, @var{bits}, @var{chans})
-
-Return a structure describing the available audio input and output devices.
-
-The @var{devinfo} structure has two fields @qcode{"input"} and
-@qcode{"output"}.  The value of each field is a structure array with fields
-@qcode{"Name"}, @nospell{"DriverVersion"} and @qcode{"ID"} describing
-an audio device.
-
-If the optional argument @var{io} is 1, return information about input
-devices only.  If it is 0, return information about output devices only.
-
-If the optional argument @var{id} is provided, return information about
-the corresponding device.
-
-If the optional argument @var{name} is provided, return the id of the
-named device.
-
-Given a sampling rate, bits per sample, and number of channels for an input
-or output device, return the ID of the first device that supports playback
-or recording using the specified parameters.
-
-If also given a device ID, return true if the device supports playback or
-recording using those parameters.
-@end deftypefn
-__recorder_audiorecorder__
-@c __recorder_audiorecorder__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn  {Loadable Function} {@var{recorder} =} __recorder_audiorecorder__ (@var{fs}, @var{nbits}, @var{channels})
-@deftypefnx {Loadable Function} {@var{recorder} =} __recorder_audiorecorder__ (@var{fs}, @var{nbits}, @var{channels}, @var{id})
-@deftypefnx {Loadable Function} {@var{recorder} =} __recorder_audiorecorder__ (@var{fcn}, @dots{})
-Undocumented internal function.
-@end deftypefn
-__recorder_getaudiodata__
-@c __recorder_getaudiodata__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{data}} __recorder_getaudiodata__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_get_channels__
-@c __recorder_get_channels__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{n} =} __recorder_get_channels__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_get_fs__
-@c __recorder_get_fs__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{fs} =} __recorder_get_fs__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_get_id__
-@c __recorder_get_id__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{id} =} __recorder_get_id__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_get_nbits__
-@c __recorder_get_nbits__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{nbits} =} __recorder_get_nbits__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_get_sample_number__
-@c __recorder_get_sample_number__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{n} =} __recorder_get_sample_number__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_get_tag__
-@c __recorder_get_tag__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{tag} =} __recorder_get_tag__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_get_total_samples__
-@c __recorder_get_total_samples__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{n} =} __recorder_get_total_samples__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_get_userdata__
-@c __recorder_get_userdata__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{data} =} __recorder_get_userdata__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_isrecording__
-@c __recorder_isrecording__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __recorder_isrecording__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_pause__
-@c __recorder_pause__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __recorder_pause__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_recordblocking__
-@c __recorder_recordblocking__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __recorder_recordblocking__ (@var{recorder}, @var{seconds})
-Undocumented internal function.
-@end deftypefn
-__recorder_record__
-@c __recorder_record__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn  {Loadable Function} {} __recorder_record__ (@var{recorder})
-@deftypefnx {Loadable Function} {} __recorder_record__ (@var{recorder}, @var{seconds})
-Undocumented internal function.
-@end deftypefn
-__recorder_resume__
-@c __recorder_resume__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __recorder_resume__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__recorder_set_fs__
-@c __recorder_set_fs__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __recorder_set_fs__ (@var{recorder}, @var{fs})
-Undocumented internal function.
-@end deftypefn
-__recorder_set_tag__
-@c __recorder_set_tag__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __recorder_set_tag__ (@var{recorder}, @var{tag})
-Undocumented internal function.
-@end deftypefn
-__recorder_set_userdata__
-@c __recorder_set_userdata__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __recorder_set_userdata__ (@var{recorder}, @var{data})
-Undocumented internal function.
-@end deftypefn
-__recorder_stop__
-@c __recorder_stop__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __recorder_stop__ (@var{recorder})
-Undocumented internal function.
-@end deftypefn
-__player_audioplayer__
-@c __player_audioplayer__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn  {Loadable Function} {@var{player} =} __player_audioplayer__ (@var{y}, @var{fs})
-@deftypefnx {Loadable Function} {@var{player} =} __player_audioplayer__ (@var{y}, @var{fs}, @var{nbits})
-@deftypefnx {Loadable Function} {@var{player} =} __player_audioplayer__ (@var{y}, @var{fs}, @var{nbits}, @var{id})
-Undocumented internal function.
-@end deftypefn
-__player_get_channels__
-@c __player_get_channels__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{n} =} __player_get_channels__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_get_fs__
-@c __player_get_fs__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{fs} =} __player_get_fs__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_get_id__
-@c __player_get_id__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{id} =} __player_get_id__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_get_nbits__
-@c __player_get_nbits__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{nbits} =} __player_get_nbits__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_get_sample_number__
-@c __player_get_sample_number__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{n} =} __player_get_sample_number__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_get_tag__
-@c __player_get_tag__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{tag} =} __player_get_tag__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_get_total_samples__
-@c __player_get_total_samples__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{n} =} __player_get_total_samples__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_get_userdata__
-@c __player_get_userdata__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{data} =} __player_get_userdata__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_isplaying__
-@c __player_isplaying__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __player_isplaying__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_pause__
-@c __player_pause__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __player_pause__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_playblocking__
-@c __player_playblocking__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn  {Loadable Function} {} __player_playblocking__ (@var{player})
-@deftypefnx {Loadable Function} {} __player_playblocking__ (@var{player}, @var{start})
-@deftypefnx {Loadable Function} {} __player_playblocking__ (@var{player}, [@var{start}, @var{end}])
-Undocumented internal function.
-@end deftypefn
-__player_play__
-@c __player_play__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn  {Loadable Function} {} __player_play__ (@var{player})
-@deftypefnx {Loadable Function} {} __player_play__ (@var{player}, @var{start})
-@deftypefnx {Loadable Function} {} __player_play__ (@var{player}, [@var{start}, @var{end}])
-Undocumented internal function.
-@end deftypefn
-__player_resume__
-@c __player_resume__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __player_resume__ (@var{player})
-Undocumented internal function.
-@end deftypefn
-__player_set_fs__
-@c __player_set_fs__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __player_set_fs__ (@var{player}, @var{fs})
-Undocumented internal function.
-@end deftypefn
-__player_set_tag__
-@c __player_set_tag__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __player_set_tag__ (@var{player}, @var{tag})
-Undocumented internal function.
-@end deftypefn
-__player_set_userdata__
-@c __player_set_userdata__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __player_set_userdata__ (@var{player}, @var{data})
-Undocumented internal function.
-@end deftypefn
-__player_stop__
-@c __player_stop__ libinterp/dldfcn/audiodevinfo.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __player_stop__ (@var{player})
-Undocumented internal function.
 @end deftypefn

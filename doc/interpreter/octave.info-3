@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 5.2 from octave.texi.
+This is octave.info, produced by makeinfo version 6.0 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -655,17 +655,24 @@ the data are read.
      The optional argument ARCH is a string specifying the data format
      for the file.  Valid values are
 
-     "native"
+     "native" or "n"
           The format of the current machine.
 
-     "ieee-be"
+     "ieee-be" or "b"
           IEEE big endian.
 
-     "ieee-le"
+     "ieee-le" or "l"
           IEEE little endian.
 
-     The output argument VAL contains the data read from the file.  The
-     optional return value COUNT contains the number of elements read.
+     If no ARCH is given the value used in the call to 'fopen' which
+     created the file descriptor is used.  Otherwise, the value
+     specified with 'fread' overrides that of 'fopen' and determines the
+     data format.
+
+     The output argument VAL contains the data read from the file.
+
+     The optional return value COUNT contains the number of elements
+     read.
 
      See also: *note fwrite: XREFfwrite, *note fgets: XREFfgets, *note
      fgetl: XREFfgetl, *note fscanf: XREFfscanf, *note fopen: XREFfopen.
@@ -1083,17 +1090,17 @@ Figure 15.1: Simple Two-Dimensional Plot.
      appear in pairs.  These arguments are applied to the line objects
      drawn by 'plot'.  Useful properties to modify are "linestyle",
      "linewidth", "color", "marker", "markersize", "markeredgecolor",
-     "markerfacecolor".
+     "markerfacecolor".  *Note Line Properties::.
 
      The FMT format argument can also be used to control the plot style.
-     The format is composed of three parts: linestyle, markerstyle,
-     color.  When a markerstyle is specified, but no linestyle, only the
-     markers are plotted.  Similarly, if a linestyle is specified, but
-     no markerstyle, then only lines are drawn.  If both are specified
-     then lines and markers will be plotted.  If no FMT and no
-     PROPERTY/VALUE pairs are given, then the default plot style is
-     solid lines with no markers and the color determined by the
-     "colororder" property of the current axes.
+     It is a string composed of four optional parts:
+     "<linestyle><marker><color><;displayname;>".  When a marker is
+     specified, but no linestyle, only the markers are plotted.
+     Similarly, if a linestyle is specified, but no marker, then only
+     lines are drawn.  If both are specified then lines and markers will
+     be plotted.  If no FMT and no PROPERTY/VALUE pairs are given, then
+     the default plot style is solid lines with no markers and the color
+     determined by the "colororder" property of the current axes.
 
      Format arguments:
 
@@ -1104,7 +1111,7 @@ Figure 15.1: Simple Two-Dimensional Plot.
           ':'  Use dotted lines.
           '-.' Use dash-dotted lines.
 
-     markerstyle
+     marker
 
           '+'  crosshair
           'o'  circle
@@ -1130,14 +1137,14 @@ Figure 15.1: Simple Two-Dimensional Plot.
           'c'  Cyan
           'w'  White
 
-     ";key;"
-          Here "key" is the label to use for the plot legend.
+     ";displayname;"
+          Here "displayname" is the label to use for the plot legend.
 
-     The FMT argument may also be used to assign legend keys.  To do so,
-     include the desired label between semicolons after the formatting
-     sequence described above, e.g., "+b;Key Title;".  Note that the
-     last semicolon is required and Octave will generate an error if it
-     is left out.
+     The FMT argument may also be used to assign legend labels.  To do
+     so, include the desired label between semicolons after the
+     formatting sequence described above, e.g., "+b;Key Title;".  Note
+     that the last semicolon is required and Octave will generate an
+     error if it is left out.
 
      Here are some plot examples:
 
@@ -4930,19 +4937,21 @@ objects are drawn in an invisible axes, on top of every other axes.
           Construct an arrow with a text label at the opposite end from
           the arrowhead.
 
-          The line and the arrowhead can be customized as for arrow
-          annotations, and the text can be customized using the same
-          properties as 'text' graphics objects.  Note, however, that
-          some text property names are prefixed with "text" to
-          distinguish them from arrow properties: "textbackgroundcolor",
-          "textcolor", "textedgecolor", "textlinewidth", "textmargin",
+          Use the "string" property to change the text string.  The line
+          and the arrowhead can be customized as for arrow annotations,
+          and the text can be customized using the same properties as
+          'text' graphics objects.  Note, however, that some text
+          property names are prefixed with "text" to distinguish them
+          from arrow properties: "textbackgroundcolor", "textcolor",
+          "textedgecolor", "textlinewidth", "textmargin",
           "textrotation".
 
      "textbox"
           Construct a box with text inside.  POS specifies the
           "position" property of the annotation.
 
-          You may use "backgroundcolor", "edgecolor", "linestyle", and
+          Use the "string" property to change the text string.  You may
+          use "backgroundcolor", "edgecolor", "linestyle", and
           "linewidth" properties to customize the box background color
           and edge appearance.  A limited set of 'text' objects
           properties are also available; Besides "font..." properties,
@@ -7418,7 +7427,7 @@ The 'axes' properties are:
 
 'xscale': {"linear"} | "log"
 
-'xtick': vector, def. 1-by-6 double
+'xtick': vector
      Position of x tick marks.  Setting 'xtick' also forces the
      'xtickmode' property to be set to "manual".
 
@@ -7457,7 +7466,7 @@ The 'axes' properties are:
 
 'yscale': {"linear"} | "log"
 
-'ytick': vector, def. 1-by-6 double
+'ytick': vector
      Position of y tick marks.  Setting 'ytick' also forces the
      'ytickmode' property to be set to "manual".
 
@@ -7494,7 +7503,7 @@ The 'axes' properties are:
 
 'zscale': {"linear"} | "log"
 
-'ztick': vector, def. 1-by-6 double
+'ztick': vector
      Position of z tick marks.  Setting 'ztick' also forces the
      'ztickmode' property to be set to "manual".
 
