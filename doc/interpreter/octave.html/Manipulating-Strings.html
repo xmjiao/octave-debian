@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.0, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Manipulating Strings</title>
 
@@ -19,16 +19,16 @@
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
 blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
-div.indentedblock {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
 div.smalldisplay {margin-left: 3.2em}
 div.smallexample {margin-left: 3.2em}
-div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
 div.smalllisp {margin-left: 3.2em}
-kbd {font-style:oblique}
+kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
@@ -37,10 +37,10 @@ pre.smalldisplay {font-family: inherit; font-size: smaller}
 pre.smallexample {font-size: smaller}
 pre.smallformat {font-family: inherit; font-size: smaller}
 pre.smalllisp {font-size: smaller}
-span.nocodebreak {white-space:nowrap}
-span.nolinebreak {white-space:nowrap}
-span.roman {font-family:serif; font-weight:normal}
-span.sansserif {font-family:sans-serif; font-weight:normal}
+span.nocodebreak {white-space: nowrap}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: serif; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
@@ -48,7 +48,7 @@ ul.no-bullet {list-style: none}
 
 </head>
 
-<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<body lang="en">
 <a name="Manipulating-Strings"></a>
 <div class="header">
 <p>
@@ -613,10 +613,14 @@ is skipped.
 </dd>
 <dt><code>&quot;delimiter&quot;</code></dt>
 <dd><p>Any character in <var>value</var> will be used to split <var>str</var> into words
-(default value = any whitespace).
+(default value = any whitespace).  Note that whitespace is implicitly added
+to the set of delimiter characters unless a <code>&quot;%s&quot;</code> format conversion
+specifier is supplied; see <code>&quot;whitespace&quot;</code> parameter below.  The set
+of delimiter characters cannot be empty; if needed Octave substitutes a
+space as delimiter.
 </p>
 </dd>
-<dt><code>&quot;emptyvalue&quot;</code>:</dt>
+<dt><code>&quot;emptyvalue&quot;</code></dt>
 <dd><p>Value to return for empty numeric values in non-whitespace delimited data.
 The default is NaN.  When the data type does not support NaN (int32 for
 example), then default is zero.
@@ -641,13 +645,19 @@ If false (0), return an error.
 <dt><code>&quot;whitespace&quot;</code></dt>
 <dd><p>Any character in <var>value</var> will be interpreted as whitespace and trimmed;
 the string defining whitespace must be enclosed in double quotes for proper
-processing of special characters like <code>&quot;\t&quot;</code>.  The
-default value for whitespace is
+processing of special characters like <code>&quot;\t&quot;</code>.  In
+each data field, multiple consecutive whitespace characters are collapsed
+into one space and leading and trailing whitespace is removed.  The default
+value for whitespace is
 <code>&quot;
 \b\r\n\t&quot;</code>
-(note the space).  Unless whitespace is set to <code>&quot;&quot;</code> (empty) AND at
-least one <code>&quot;%s&quot;</code> format conversion specifier is supplied, a space is
-always part of whitespace.
+(note the space).  Whitespace is always added to the set of delimiter
+characters unless at least one <code>&quot;%s&quot;</code> format conversion specifier is
+supplied; in that case only whitespace explicitly specified in
+<code>&quot;delimiter&quot;</code> is retained as delimiter and removed from the set of
+whitespace characters.  If whitespace characters are to be kept as-is (in
+e.g., strings), specify an empty value (i.e., <code>&quot;&quot;</code>) for
+<code>&quot;whitespace&quot;</code>; obviously, whitespace cannot be a delimiter then.
 </p>
 </dd>
 </dl>

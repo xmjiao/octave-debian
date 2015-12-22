@@ -196,43 +196,250 @@ There is no support for the @code{gnuplot} toolkit.
 
 @c uicontextmenu scripts/gui/uicontextmenu.m
 @anchor{XREFuicontextmenu}
-@deftypefn {Function File} {@var{hui} =} uicontextmenu ("Name", value, @dots{})
+@deftypefn {Function File} {@var{hui} =} uicontextmenu (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uicontextmenu (@var{h}, @var{property}, @var{value}, @dots{})
+
+Create a uicontextmenu object and return a handle to it.
+
+If @var{h} is omitted then a uicontextmenu for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{h} is given then a uicontextmenu relative to @var{h} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uicontextmenu object.
+
+Examples:
+
+@example
+@group
+% create figure and uicontextmenu
+f = figure;
+c = uicontextmenu (f);
+
+% create menus in the context menu
+m1 = uimenu ("parent",c,"label","Menu item 1","callback","disp('menu item 1')");
+m2 = uimenu ("parent",c,"label","Menu item 2","callback","disp('menu item 2')");
+
+% set the context menu for the figure
+set (f, "uicontextmenu", c);
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuimenu,,uimenu}}
 @end deftypefn
 
 
 @c uicontrol scripts/gui/uicontrol.m
 @anchor{XREFuicontrol}
-@deftypefn  {Function File} {@var{hui} =} uicontrol ("Name", value, @dots{})
-@deftypefnx {Function File} {@var{hui} =} uicontrol (@var{parent}, "Name", value, @dots{})
+@deftypefn  {Function File} {@var{hui} =} uicontrol (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uicontrol (@var{parent}, @var{property}, @var{value}, @dots{})
 @deftypefnx {Function File} {} uicontrol (@var{h})
+
+Create a uicontrol object and return a handle to it.
+
+uicontrols are used to create simple interactive controls such as push buttons, checkboxes, edit and list controls.
+
+If @var{parent} is omitted then a uicontrol for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{parent} is given then a uicontrol relative to @var{parent} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uicontrol object. 
+
+Control of the type of uicontrol created is through the use of the @var{style} property.
+If no style property is provided, a push button will be created.
+
+Valid styles for uicontrol are:
+
+@table @asis
+@item @qcode{"checkbox"}
+Create a checkbox control that allows user on/off selection.
+
+@item @qcode{"edit"}
+Create a edit control that allows user input of single or multiple lines of text.
+
+@item @qcode{"listbox"}
+Create a listbox control that displays a lit of items and allows user slelection of 
+single or multiple items.
+
+@item @qcode{"popupmenu"}
+Create a popupmenu control that displays a list of options that can be selected 
+when the user clicks on the control.
+
+@item @qcode{"pushbutton"}
+Create a push button control that allows user to press to cause an action.
+
+@item @qcode{"radiobutton"}
+Create a radio button control intended to be used for mutually exclusive input in a group of
+of radiobutton controls.
+
+@item @qcode{"slider"}
+Create a slider control that allows user selection from a range of values by sliding 
+knob on the control.
+
+@item @qcode{"text"}
+Create a static text control to display single or multiple lines of text.
+
+@item @qcode{"togglebutton"}
+Create a toggle button control that appears like a push button but allows the user to 
+select between two states.
+
+@end table
+
+Examples:
+
+@example
+@group
+% create figure and panel on it
+f = figure;
+% create a button (default style)
+b1 = uicontrol (f, "string", "A Button", "position",[10 10 150 40]);
+% create an edit control
+e1 = uicontrol (f, "style", "edit", "string", "editable text", "position",[10 60 300 40]);
+% create a checkbox
+c1 = uicontrol (f, "style", "checkbox", "string", "a checkbox", "position",[10 120 150 40]);
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuipanel,,uipanel}}
 @end deftypefn
 
 
 @c uipanel scripts/gui/uipanel.m
 @anchor{XREFuipanel}
-@deftypefn  {Function File} {@var{hui} =} uipanel ("Name", value, @dots{})
-@deftypefnx {Function File} {@var{hui} =} uipanel (@var{parent}, "Name", value, @dots{})
+@deftypefn  {Function File} {@var{hui} =} uipanel (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uipanel (@var{parent}, "@var{property}, @var{value}, @dots{})
+
+Create a uipanel object and return a handle to it.
+
+uipanels are used as containers to group other uicontrol objects.
+
+If @var{parent} is omitted then a uipanel for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{parent} is given then a uipanel relative to @var{parent} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uipanel object.
+
+Examples:
+
+@example
+@group
+% create figure and panel on it
+f = figure;
+p = uipanel ("title", "Panel Title", "position", [.25 .25 .5 .5]);
+
+% add two buttons to the panel
+b1 = uicontrol ("parent", p, "string", "A Button", "position",[18 10 150 36]);
+b2 = uicontrol ("parent", p, "string", "Another Button", "position",[18 60 150 36]);
+
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuicontrol,,uicontrol}}
 @end deftypefn
 
 
 @c uipushtool scripts/gui/uipushtool.m
 @anchor{XREFuipushtool}
-@deftypefn  {Function File} {@var{hui} =} uipushtool ("Name", value, @dots{})
-@deftypefnx {Function File} {@var{hui} =} uipushtool (@var{parent}, "Name", value, @dots{})
+@deftypefn  {Function File} {@var{hui} =} uipushtool (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uipushtool (@var{parent}, @var{property}, @var{value}, @dots{})
+
+Create a uipushtool object and return a handle to it.
+
+uipushtools are buttons that appear on a figure toolbar. The button is created with a border that
+is shown when the user hovers over the button. An image can be set using the cdata property.
+
+If @var{parent} is omitted then a uipushtool for the current figure is
+created. If no figure is available, a new figure is created first.  If a figure is
+available, but does not contain a uitoolbar, a uitoolbar will be created.
+
+If @var{parent} is given then a uipushtools is created on the @var{parent} uitoolbar. 
+
+Any provided property value pairs will override the default values of the created 
+uipushtool object.
+
+Examples:
+
+@example
+@group
+% create figure without a default toolbar
+f = figure ("toolbar", "none");
+% create empty toolbar
+t = uitoolbar (f);
+% create a 19x19x3 black square
+img=zeros(19,19,3);
+% add pushtool button to toolbar
+b = uipushtool (t, "cdata", img);
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuitoolbar,,uitoolbar}, @ref{XREFuitoggletool,,uitoggletool}}
 @end deftypefn
 
 
 @c uitoggletool scripts/gui/uitoggletool.m
 @anchor{XREFuitoggletool}
-@deftypefn  {Function File} {@var{hui} =} uitoggletool ("Name", value, @dots{})
-@deftypefnx {Function File} {@var{hui} =} uitoggletool (@var{parent}, "Name", value, @dots{})
+@deftypefn  {Function File} {@var{hui} =} uitoggletool (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uitoggletool (@var{parent}, @var{property}, @var{value}, @dots{})
+
+Create a uitoggletool object and return a handle to it.
+
+uitoggletool are togglebuttons that appear on a figure toolbar. The button is created with a border that
+is shown when the user hovers over the button. An image can be set using the cdata property.
+
+If @var{parent} is omitted then a uitoggletool for the current figure is
+created. If no figure is available, a new figure is created first.  If a figure is
+available, but does not contain a uitoolbar, a uitoolbar will be created.
+
+If @var{parent} is given then a uitoggletool is created on the @var{parent} uitoolbar. 
+
+Any provided property value pairs will override the default values of the created 
+uitoggletool object.
+
+Examples:
+
+@example
+@group
+% create figure without a default toolbar
+f = figure ("toolbar", "none");
+% create empty toolbar
+t = uitoolbar (f);
+% create a 19x19x3 black square
+img=zeros(19,19,3);
+% add uitoggletool button to toolbar
+b = uitoggletool (t, "cdata", img);
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuitoolbar,,uitoolbar}, @ref{XREFuipushtool,,uipushtool}}
 @end deftypefn
 
 
 @c uitoolbar scripts/gui/uitoolbar.m
 @anchor{XREFuitoolbar}
-@deftypefn  {Function File} {@var{hui} =} uitoolbar ("Name", value, @dots{})
-@deftypefnx {Function File} {@var{hui} =} uitoolbar (@var{parent}, "Name", value, @dots{})
+@deftypefn  {Function File} {@var{hui} =} uitoolbar (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uitoolbar (@var{parent}, @var{property}, @var{value}, @dots{})
+
+Create a uitoolbar object and return a handle to it. A uitoolbar displays uitoggletool and uipushtool buttons.
+
+If @var{parent} is omitted then a uitoolbar for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{parent} is given then a uitoolbar relative to @var{parent} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uitoolbar object. 
+
+Examples:
+
+@example
+@group
+% create figure without a default toolbar 
+f = figure ("toolbar", "none");
+% create empty toolbar
+t = uitoolbar (f);
+@end group
+@end example
+@seealso{@ref{XREFfigure,,figure}, @ref{XREFuitoggletool,,uitoggletool}, @ref{XREFuipushtool,,uipushtool}}
 @end deftypefn
 
 

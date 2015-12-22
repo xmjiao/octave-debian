@@ -3266,8 +3266,8 @@ vector as input and return a scalar, vector, or array as output.
 @var{a} and @var{b} are the lower and upper limits of integration.  Both
 limits must be finite.
 
-The optional argument @var{tol} defines the tolerance used to stop the
-adaptation procedure.  The default value is 1e-6.
+The optional argument @var{tol} defines the absolute tolerance used to stop
+the adaptation procedure.  The default value is 1e-6.
 
 The algorithm used by @code{quadv} involves recursively subdividing the
 integration interval and applying Simpson's rule on each subinterval.
@@ -3321,7 +3321,7 @@ ri = randi (10, 150, 1)
 Implementation Note: @code{randi} relies internally on @code{rand} which
 uses class @qcode{"double"} to represent numbers.  This limits the maximum
 integer (@var{imax}) and range (@var{imax} - @var{imin}) to the value
-returned by the @code{bitmax} function.  For IEEE floating point numbers
+returned by the @code{flintmax} function.  For IEEE floating point numbers
 this value is @w{@math{2^{53} - 1}}.
 
 @seealso{rand}
@@ -3828,7 +3828,7 @@ No value is @var{NaN}, and each is less than or equal to the preceding one.
 @item @qcode{"nonnan"}
 No value is a @code{NaN}.
 
-@item @qcode{"non-negative"}
+@item @qcode{"nonnegative"}
 All values are non negative.
 
 @item @qcode{"nonsparse"}
@@ -4437,14 +4437,111 @@ dialog will have only these two buttons.
 uicontextmenu
 @c uicontextmenu scripts/gui/uicontextmenu.m
 -*- texinfo -*-
-@deftypefn {Function File} {@var{hui} =} uicontextmenu ("Name", value, @dots{})
+@deftypefn {Function File} {@var{hui} =} uicontextmenu (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uicontextmenu (@var{h}, @var{property}, @var{value}, @dots{})
+
+Create a uicontextmenu object and return a handle to it.
+
+If @var{h} is omitted then a uicontextmenu for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{h} is given then a uicontextmenu relative to @var{h} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uicontextmenu object.
+
+Examples:
+
+@example
+@group
+% create figure and uicontextmenu
+f = figure;
+c = uicontextmenu (f);
+
+% create menus in the context menu
+m1 = uimenu ("parent",c,"label","Menu item 1","callback","disp('menu item 1')");
+m2 = uimenu ("parent",c,"label","Menu item 2","callback","disp('menu item 2')");
+
+% set the context menu for the figure
+set (f, "uicontextmenu", c);
+@end group
+@end example
+@seealso{figure, uimenu}
 @end deftypefn
 uicontrol
 @c uicontrol scripts/gui/uicontrol.m
 -*- texinfo -*-
-@deftypefn  {Function File} {@var{hui} =} uicontrol ("Name", value, @dots{})
-@deftypefnx {Function File} {@var{hui} =} uicontrol (@var{parent}, "Name", value, @dots{})
+@deftypefn  {Function File} {@var{hui} =} uicontrol (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uicontrol (@var{parent}, @var{property}, @var{value}, @dots{})
 @deftypefnx {Function File} {} uicontrol (@var{h})
+
+Create a uicontrol object and return a handle to it.
+
+uicontrols are used to create simple interactive controls such as push buttons, checkboxes, edit and list controls.
+
+If @var{parent} is omitted then a uicontrol for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{parent} is given then a uicontrol relative to @var{parent} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uicontrol object. 
+
+Control of the type of uicontrol created is through the use of the @var{style} property.
+If no style property is provided, a push button will be created.
+
+Valid styles for uicontrol are:
+
+@table @asis
+@item @qcode{"checkbox"}
+Create a checkbox control that allows user on/off selection.
+
+@item @qcode{"edit"}
+Create a edit control that allows user input of single or multiple lines of text.
+
+@item @qcode{"listbox"}
+Create a listbox control that displays a lit of items and allows user slelection of 
+single or multiple items.
+
+@item @qcode{"popupmenu"}
+Create a popupmenu control that displays a list of options that can be selected 
+when the user clicks on the control.
+
+@item @qcode{"pushbutton"}
+Create a push button control that allows user to press to cause an action.
+
+@item @qcode{"radiobutton"}
+Create a radio button control intended to be used for mutually exclusive input in a group of
+of radiobutton controls.
+
+@item @qcode{"slider"}
+Create a slider control that allows user selection from a range of values by sliding 
+knob on the control.
+
+@item @qcode{"text"}
+Create a static text control to display single or multiple lines of text.
+
+@item @qcode{"togglebutton"}
+Create a toggle button control that appears like a push button but allows the user to 
+select between two states.
+
+@end table
+
+Examples:
+
+@example
+@group
+% create figure and panel on it
+f = figure;
+% create a button (default style)
+b1 = uicontrol (f, "string", "A Button", "position",[10 10 150 40]);
+% create an edit control
+e1 = uicontrol (f, "style", "edit", "string", "editable text", "position",[10 60 300 40]);
+% create a checkbox
+c1 = uicontrol (f, "style", "checkbox", "string", "a checkbox", "position",[10 120 150 40]);
+@end group
+@end example
+@seealso{figure, uipanel}
 @end deftypefn
 uigetdir
 @c uigetdir scripts/gui/uigetdir.m
@@ -4573,14 +4670,72 @@ uimenu (e, "label", "Toggle &Grid", "accelerator", "g", ...
 uipanel
 @c uipanel scripts/gui/uipanel.m
 -*- texinfo -*-
-@deftypefn  {Function File} {@var{hui} =} uipanel ("Name", value, @dots{})
-@deftypefnx {Function File} {@var{hui} =} uipanel (@var{parent}, "Name", value, @dots{})
+@deftypefn  {Function File} {@var{hui} =} uipanel (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uipanel (@var{parent}, "@var{property}, @var{value}, @dots{})
+
+Create a uipanel object and return a handle to it.
+
+uipanels are used as containers to group other uicontrol objects.
+
+If @var{parent} is omitted then a uipanel for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{parent} is given then a uipanel relative to @var{parent} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uipanel object.
+
+Examples:
+
+@example
+@group
+% create figure and panel on it
+f = figure;
+p = uipanel ("title", "Panel Title", "position", [.25 .25 .5 .5]);
+
+% add two buttons to the panel
+b1 = uicontrol ("parent", p, "string", "A Button", "position",[18 10 150 36]);
+b2 = uicontrol ("parent", p, "string", "Another Button", "position",[18 60 150 36]);
+
+@end group
+@end example
+@seealso{figure, uicontrol}
 @end deftypefn
 uipushtool
 @c uipushtool scripts/gui/uipushtool.m
 -*- texinfo -*-
-@deftypefn  {Function File} {@var{hui} =} uipushtool ("Name", value, @dots{})
-@deftypefnx {Function File} {@var{hui} =} uipushtool (@var{parent}, "Name", value, @dots{})
+@deftypefn  {Function File} {@var{hui} =} uipushtool (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uipushtool (@var{parent}, @var{property}, @var{value}, @dots{})
+
+Create a uipushtool object and return a handle to it.
+
+uipushtools are buttons that appear on a figure toolbar. The button is created with a border that
+is shown when the user hovers over the button. An image can be set using the cdata property.
+
+If @var{parent} is omitted then a uipushtool for the current figure is
+created. If no figure is available, a new figure is created first.  If a figure is
+available, but does not contain a uitoolbar, a uitoolbar will be created.
+
+If @var{parent} is given then a uipushtools is created on the @var{parent} uitoolbar. 
+
+Any provided property value pairs will override the default values of the created 
+uipushtool object.
+
+Examples:
+
+@example
+@group
+% create figure without a default toolbar
+f = figure ("toolbar", "none");
+% create empty toolbar
+t = uitoolbar (f);
+% create a 19x19x3 black square
+img=zeros(19,19,3);
+% add pushtool button to toolbar
+b = uipushtool (t, "cdata", img);
+@end group
+@end example
+@seealso{figure, uitoolbar, uitoggletool}
 @end deftypefn
 uiputfile
 @c uiputfile scripts/gui/uiputfile.m
@@ -4635,14 +4790,66 @@ figure with handle @var{h}, this function does nothing.
 uitoggletool
 @c uitoggletool scripts/gui/uitoggletool.m
 -*- texinfo -*-
-@deftypefn  {Function File} {@var{hui} =} uitoggletool ("Name", value, @dots{})
-@deftypefnx {Function File} {@var{hui} =} uitoggletool (@var{parent}, "Name", value, @dots{})
+@deftypefn  {Function File} {@var{hui} =} uitoggletool (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uitoggletool (@var{parent}, @var{property}, @var{value}, @dots{})
+
+Create a uitoggletool object and return a handle to it.
+
+uitoggletool are togglebuttons that appear on a figure toolbar. The button is created with a border that
+is shown when the user hovers over the button. An image can be set using the cdata property.
+
+If @var{parent} is omitted then a uitoggletool for the current figure is
+created. If no figure is available, a new figure is created first.  If a figure is
+available, but does not contain a uitoolbar, a uitoolbar will be created.
+
+If @var{parent} is given then a uitoggletool is created on the @var{parent} uitoolbar. 
+
+Any provided property value pairs will override the default values of the created 
+uitoggletool object.
+
+Examples:
+
+@example
+@group
+% create figure without a default toolbar
+f = figure ("toolbar", "none");
+% create empty toolbar
+t = uitoolbar (f);
+% create a 19x19x3 black square
+img=zeros(19,19,3);
+% add uitoggletool button to toolbar
+b = uitoggletool (t, "cdata", img);
+@end group
+@end example
+@seealso{figure, uitoolbar, uipushtool}
 @end deftypefn
 uitoolbar
 @c uitoolbar scripts/gui/uitoolbar.m
 -*- texinfo -*-
-@deftypefn  {Function File} {@var{hui} =} uitoolbar ("Name", value, @dots{})
-@deftypefnx {Function File} {@var{hui} =} uitoolbar (@var{parent}, "Name", value, @dots{})
+@deftypefn  {Function File} {@var{hui} =} uitoolbar (@var{property}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uitoolbar (@var{parent}, @var{property}, @var{value}, @dots{})
+
+Create a uitoolbar object and return a handle to it. A uitoolbar displays uitoggletool and uipushtool buttons.
+
+If @var{parent} is omitted then a uitoolbar for the current figure is
+created. If no figure is available, a new figure is created first. 
+
+If @var{parent} is given then a uitoolbar relative to @var{parent} is created. 
+
+Any provided property value pairs will override the default values of the created 
+uitoolbar object. 
+
+Examples:
+
+@example
+@group
+% create figure without a default toolbar 
+f = figure ("toolbar", "none");
+% create empty toolbar
+t = uitoolbar (f);
+@end group
+@end example
+@seealso{figure, uitoggletool, uipushtool}
 @end deftypefn
 uiwait
 @c uiwait scripts/gui/uiwait.m
@@ -5969,9 +6176,9 @@ If unspecified, the length of the current colormap, or 64, is used.
 @deftypefn {Function File} {} beep ()
 Produce a beep from the speaker (or visual bell).
 
-This function sends the alarm character @qcode{"\a"} to the terminal.
-Depending on the user's configuration this may produce an audible beep,
-a visual bell, or nothing at all.
+This function sends the alarm character @qcode{"@xbackslashchar{}a"} to
+the terminal. Depending on the user's configuration this may produce an
+audible beep, a visual bell, or nothing at all.
 @seealso{puts, fputs, printf, fprintf}
 @end deftypefn
 csvread
@@ -6234,9 +6441,13 @@ is skipped.
 
 @item @qcode{"delimiter"}
 Any character in @var{value} will be used to split @var{str} into words
-(default value = any whitespace).
+(default value = any whitespace).  Note that whitespace is implicitly added
+to the set of delimiter characters unless a @qcode{"%s"} format conversion
+specifier is supplied; see @qcode{"whitespace"} parameter below.  The set
+of delimiter characters cannot be empty; if needed Octave substitutes a
+space as delimiter.
 
-@item @qcode{"emptyvalue"}:
+@item @qcode{"emptyvalue"}
 Value to return for empty numeric values in non-whitespace delimited data.
 The default is NaN@.  When the data type does not support NaN (int32 for
 example), then default is zero.
@@ -6257,15 +6468,21 @@ If false (0), return an error.
 @item @qcode{"whitespace"}
 Any character in @var{value} will be interpreted as whitespace and trimmed;
 the string defining whitespace must be enclosed in double quotes for proper
-processing of special characters like @qcode{"@xbackslashchar{}t"}.  The
-default value for whitespace is
+processing of special characters like @qcode{"@xbackslashchar{}t"}.  In
+each data field, multiple consecutive whitespace characters are collapsed
+into one space and leading and trailing whitespace is removed.  The default
+value for whitespace is
 @c Note: the next line specifically has a newline which generates a space
 @c       in the output of qcode, but keeps the next line < 80 characters.
 @qcode{"
 @xbackslashchar{}b@xbackslashchar{}r@xbackslashchar{}n@xbackslashchar{}t"}
-(note the space).  Unless whitespace is set to @qcode{""} (empty) AND at
-least one @qcode{"%s"} format conversion specifier is supplied, a space is
-always part of whitespace.
+(note the space).  Whitespace is always added to the set of delimiter
+characters unless at least one @qcode{"%s"} format conversion specifier is
+supplied; in that case only whitespace explicitly specified in
+@qcode{"delimiter"} is retained as delimiter and removed from the set of
+whitespace characters.  If whitespace characters are to be kept as-is (in
+e.g., strings), specify an empty value (i.e., @qcode{""}) for
+@qcode{"whitespace"}; obviously, whitespace cannot be a delimiter then.
 
 @end table
 
@@ -11298,6 +11515,7 @@ coordinates.
 @item @qcode{"textarrow"}
 Construct an arrow with a text label at the opposite end from the arrowhead.
 
+Use the "string" property to change the text string.
 The line and the arrowhead can be customized as for arrow annotations, and
 the text can be customized using the same properties as @code{text} graphics
 objects.  Note, however, that some text property names are prefixed with
@@ -11310,6 +11528,7 @@ objects.  Note, however, that some text property names are prefixed with
 Construct a box with text inside.  @var{pos} specifies the
 @qcode{"position"} property of the annotation.
 
+Use the "string" property to change the text string.
 You may use @qcode{"backgroundcolor"}, @qcode{"edgecolor"},
 @qcode{"linestyle"}, and @qcode{"linewidth"} properties to customize
 the box background color and edge appearance.  A limited set of @code{text}
@@ -14314,12 +14533,14 @@ Multiple property-value pairs may be specified, but they must appear
 in pairs.  These arguments are applied to the line objects drawn by
 @code{plot}.  Useful properties to modify are @qcode{"linestyle"},
 @qcode{"linewidth"}, @qcode{"color"}, @qcode{"marker"},
-@qcode{"markersize"}, @qcode{"markeredgecolor"}, @qcode{"markerfacecolor"}.
+@qcode{"markersize"}, @qcode{"markeredgecolor"}, @qcode{"markerfacecolor"}.  
+@xref{Line Properties}.  
 
 The @var{fmt} format argument can also be used to control the plot style.
-The format is composed of three parts: linestyle, markerstyle, color.
-When a markerstyle is specified, but no linestyle, only the markers are
-plotted.  Similarly, if a linestyle is specified, but no markerstyle, then
+It is a string composed of four optional parts:
+"<linestyle><marker><color><;displayname;>".
+When a marker is specified, but no linestyle, only the markers are
+plotted.  Similarly, if a linestyle is specified, but no marker, then
 only lines are drawn.  If both are specified then lines and markers will
 be plotted.  If no @var{fmt} and no @var{property}/@var{value} pairs are
 given, then the default plot style is solid lines with no markers and the
@@ -14337,7 +14558,7 @@ Format arguments:
 @item @samp{-.} @tab Use dash-dotted lines.
 @end multitable
 
-@item markerstyle
+@item marker
 
 @multitable @columnfractions 0.06 0.94
 @item @samp{+} @tab crosshair
@@ -14367,11 +14588,11 @@ Format arguments:
 @item @samp{w} @tab White
 @end multitable
 
-@item @qcode{";key;"}
-Here @qcode{"key"} is the label to use for the plot legend.
+@item @qcode{";displayname;"}
+Here @qcode{"displayname"} is the label to use for the plot legend.
 @end table
 
-The @var{fmt} argument may also be used to assign legend keys.
+The @var{fmt} argument may also be used to assign legend labels.
 To do so, include the desired label between semicolons after the
 formatting sequence described above, e.g., @qcode{"+b;Key Title;"}.
 Note that the last semicolon is required and Octave will generate
@@ -20638,7 +20859,7 @@ Elliptic integrals of the first kind are defined as
 
 @tex
 $$
-{\rm K} (m) = \int_0^1 {dt \over \sqrt{(1 - t^2) (1 - m^2 t^2)}}
+{\rm K} (m) = \int_0^1 {dt \over \sqrt{(1 - t^2) (1 - m t^2)}}
 $$
 @end tex
 @ifnottex
@@ -20648,7 +20869,7 @@ $$
          1
         /               dt
 K (m) = | ------------------------------
-        / sqrt ((1 - t^2)*(1 - m^2*t^2))
+        / sqrt ((1 - t^2)*(1 - m*t^2))
        0
 @end group
 @end example
@@ -20659,7 +20880,7 @@ Elliptic integrals of the second kind are defined as
 
 @tex
 $$
-{\rm E} (m) = \int_0^1 {\sqrt{1 - m^2 t^2} \over \sqrt{1 - t^2}} dt
+{\rm E} (m) = \int_0^1 {\sqrt{1 - m t^2} \over \sqrt{1 - t^2}} dt
 $$
 @end tex
 @ifnottex
@@ -20667,7 +20888,7 @@ $$
 @example
 @group
          1
-        /  sqrt (1 - m^2*t^2)
+        /  sqrt (1 - m*t^2)
 E (m) = |  ------------------ dt
         /  sqrt (1 - t^2)
        0
@@ -21834,8 +22055,14 @@ performance of eigenvalue solvers.
 __finish__
 @c __finish__ scripts/startup/__finish__.m
 -*- texinfo -*-
-@deftypefn {Function File} {} __finish__ ()
-Undocumented internal function.
+@deftypefn {Script File} {} __finish__
+Check for the existence of the function/script, @file{finish}, in the
+path or current working directory and execute it.
+
+This function is intended to be excecuted upon a clean exit from Octave.
+This is accomplished in the system script @file{startup/octaverc} by use of
+the built-in function @code{atexit}.
+@seealso{atexit}
 @end deftypefn
 center
 @c center scripts/statistics/base/center.m
@@ -23925,7 +24152,7 @@ the integer values 1--@var{n} with equal probability.
 
 Warning: The underlying implementation uses the double class and will only
 be accurate for @var{n} @leq{} @code{bitmax} (@w{@math{2^{53} - 1}} on
-IEEE-754 compatible systems).
+IEEE 754 compatible systems).
 @end deftypefn
 unifrnd
 @c unifrnd scripts/statistics/distributions/unifrnd.m
@@ -26203,14 +26430,14 @@ Add @var{q} amount of time (with units @var{f}) to the serial datenum,
 -*- texinfo -*-
 @deftypefn {Function File} {} asctime (@var{tm_struct})
 Convert a time structure to a string using the following
-format: @qcode{"ddd mmm mm HH:MM:SS yyyy"}.
+format: @qcode{"ddd mmm mm HH:MM:SS yyyy@xbackslashchar{}n"}.
 
 For example:
 
 @example
 @group
 asctime (localtime (time ()))
-     @result{} "Mon Feb 17 01:15:06 1997"
+     @result{} "Mon Feb 17 01:15:06 1997@xbackslashchar{}n"
 @end group
 @end example
 
@@ -26273,7 +26500,7 @@ The function @code{ctime (time)} is equivalent to
 @example
 @group
 ctime (time ())
-   @result{} "Mon Feb 17 01:15:06 1997"
+   @result{} "Mon Feb 17 01:15:06 1997@xbackslashchar{}n"
 @end group
 @end example
 @seealso{asctime, time, localtime}

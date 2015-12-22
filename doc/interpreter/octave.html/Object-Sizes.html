@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.0, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Object Sizes</title>
 
@@ -19,16 +19,16 @@
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
 blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
-div.indentedblock {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
 div.smalldisplay {margin-left: 3.2em}
 div.smallexample {margin-left: 3.2em}
-div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
 div.smalllisp {margin-left: 3.2em}
-kbd {font-style:oblique}
+kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
@@ -37,10 +37,10 @@ pre.smalldisplay {font-family: inherit; font-size: smaller}
 pre.smallexample {font-size: smaller}
 pre.smallformat {font-family: inherit; font-size: smaller}
 pre.smalllisp {font-size: smaller}
-span.nocodebreak {white-space:nowrap}
-span.nolinebreak {white-space:nowrap}
-span.roman {font-family:serif; font-weight:normal}
-span.sansserif {font-family:sans-serif; font-weight:normal}
+span.nocodebreak {white-space: nowrap}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: serif; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
@@ -48,7 +48,7 @@ ul.no-bullet {list-style: none}
 
 </head>
 
-<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<body lang="en">
 <a name="Object-Sizes"></a>
 <div class="header">
 <p>
@@ -108,7 +108,7 @@ return the number of elements that would result from the indexing
 <pre class="example"><var>a</var>(<var>idx1</var>, <var>idx2</var>, &hellip;)
 </pre></div>
 
-<p>Note that the indices do not have to be numerical.  For example,
+<p>Note that the indices do not have to be scalar numbers.  For example,
 </p>
 <div class="example">
 <pre class="example"><var>a</var> = 1;
@@ -117,6 +117,15 @@ numel (<var>a</var>, <var>b</var>)
 </pre></div>
 
 <p>will return 6, as this is the number of ways to index with <var>b</var>.
+Or the index could be the string <code>&quot;:&quot;</code> which represents the colon
+operator.  For example,
+</p>
+<div class="example">
+<pre class="example"><var>a</var> = ones (5, 3);
+numel (<var>a</var>, 2, &quot;:&quot;)
+</pre></div>
+
+<p>will return 3 as the second row has three column entries.
 </p>
 <p>This method is also called when an object appears as lvalue with cs-list
 indexing, i.e., <code>object{&hellip;}</code> or <code>object(&hellip;).field</code>.
@@ -130,9 +139,9 @@ indexing, i.e., <code>object{&hellip;}</code> or <code>object(&hellip;).field</c
 <dd><p>Return the length of the object <var>a</var>.
 </p>
 <p>The length is 0 for empty objects, 1 for scalars, and the number of elements
-for vectors.  For matrix objects, the length is the number of rows or
-columns, whichever is greater (this odd definition is used for compatibility
-with <small>MATLAB</small>).
+for vectors.  For matrix or N-dimensional objects, the length is the number
+of elements along the largest dimension
+(equivalent to <code>max&nbsp;(size&nbsp;(<var>a</var>))</code><!-- /@w -->).
 </p>
 <p><strong>See also:</strong> <a href="#XREFnumel">numel</a>, <a href="#XREFsize">size</a>.
 </p></dd></dl>

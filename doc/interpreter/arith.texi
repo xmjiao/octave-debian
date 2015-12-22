@@ -144,14 +144,14 @@ binary mantissa and exponent so that
 ${1 \over 2} \le \left| f \right| < 1$
 @end tex
 @ifnottex
-@code{1/2 <= abs(f) < 1}
+@w{@code{1/2 <= abs(f) < 1}}
 @end ifnottex
 and @var{e} is an integer.  If
 @tex
 $x = 0$, $f = e = 0$.
 @end tex
 @ifnottex
-@code{x = 0}, @code{f = e = 0}.
+@w{@code{x = 0}}, @w{@code{f = e = 0}}.
 @end ifnottex
 @seealso{@ref{XREFpow2,,pow2}, @ref{XREFlog,,log}, @ref{XREFlog10,,log10}, @ref{XREFexp,,exp}}
 @end deftypefn
@@ -2047,7 +2047,7 @@ Elliptic integrals of the first kind are defined as
 
 @tex
 $$
-{\rm K} (m) = \int_0^1 {dt \over \sqrt{(1 - t^2) (1 - m^2 t^2)}}
+{\rm K} (m) = \int_0^1 {dt \over \sqrt{(1 - t^2) (1 - m t^2)}}
 $$
 @end tex
 @ifnottex
@@ -2057,7 +2057,7 @@ $$
          1
         /               dt
 K (m) = | ------------------------------
-        / sqrt ((1 - t^2)*(1 - m^2*t^2))
+        / sqrt ((1 - t^2)*(1 - m*t^2))
        0
 @end group
 @end example
@@ -2068,7 +2068,7 @@ Elliptic integrals of the second kind are defined as
 
 @tex
 $$
-{\rm E} (m) = \int_0^1 {\sqrt{1 - m^2 t^2} \over \sqrt{1 - t^2}} dt
+{\rm E} (m) = \int_0^1 {\sqrt{1 - m t^2} \over \sqrt{1 - t^2}} dt
 $$
 @end tex
 @ifnottex
@@ -2076,7 +2076,7 @@ $$
 @example
 @group
          1
-        /  sqrt (1 - m^2*t^2)
+        /  sqrt (1 - m*t^2)
 E (m) = |  ------------------ dt
         /  sqrt (1 - t^2)
        0
@@ -2739,7 +2739,7 @@ to the pure imaginary unit, defined as
 $\sqrt{-1}$.
 @end tex
 @ifnottex
-@code{sqrt (-1)}.
+@w{@code{sqrt (-1)}}.
 @end ifnottex
 
 I, and its equivalents i, j, and J, are functions so any of the names may

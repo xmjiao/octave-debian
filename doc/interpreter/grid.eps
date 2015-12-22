@@ -1,9 +1,9 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: grid.eps
-%%Creator: gnuplot 4.6 patchlevel 6
-%%CreationDate: Tue May 26 12:33:30 2015
+%%Creator: gnuplot 5.0 patchlevel 1
+%%CreationDate: Thu Dec 10 14:05:39 2015
 %%DocumentFonts: (atend)
-%%BoundingBox: 50 50 410 302
+%%BoundingBox: 50 50 319 238
 %%EndComments
 %%BeginProlog
 /gnudict 256 dict def
@@ -18,6 +18,7 @@ gnudict begin
 /Dashlength 2 def
 /Landscape false def
 /Level1 false def
+/Level3 false def
 /Rounded false def
 /ClipToBoundingBox false def
 /SuppressPDFMark false def
@@ -29,11 +30,11 @@ gnudict begin
 %
 /vshift -66 def
 /dl1 {
-  10.0 Dashlength mul mul
+  10.0 Dashlength userlinewidth gnulinewidth div mul mul mul
   Rounded { currentlinewidth 0.75 mul sub dup 0 le { pop 0.01 } if } if
 } def
 /dl2 {
-  10.0 Dashlength mul mul
+  10.0 Dashlength userlinewidth gnulinewidth div mul mul mul
   Rounded { currentlinewidth 0.75 mul add } if
 } def
 /hpt_ 31.5 def
@@ -42,12 +43,12 @@ gnudict begin
 /vpt vpt_ def
 /doclip {
   ClipToBoundingBox {
-    newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
+    newpath 50 50 moveto 319 50 lineto 319 238 lineto 50 238 lineto closepath
     clip
   } if
 } def
 %
-% Gnuplot Prolog Version 4.6 (September 2012)
+% Gnuplot Prolog Version 5.0 (Dec 2014)
 %
 %/SuppressPDFMark true def
 %
@@ -64,11 +65,11 @@ gnudict begin
 /vpt2 vpt 2 mul def
 /hpt2 hpt 2 mul def
 /Lshow {currentpoint stroke M 0 vshift R 
-	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
 /Rshow {currentpoint stroke M dup stringwidth pop neg vshift R
-	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
 /Cshow {currentpoint stroke M dup stringwidth pop -2 div vshift R 
-	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
 /UP {dup vpt_ mul /vpt exch def hpt_ mul /hpt exch def
   /hpt2 hpt 2 mul def /vpt2 vpt 2 mul def} def
 /DL {Color {setrgbcolor Solid {pop []} if 0 setdash}
@@ -82,7 +83,7 @@ gnudict begin
 /PL {stroke userlinewidth setlinewidth
 	Rounded {1 setlinejoin 1 setlinecap} if} def
 3.8 setmiterlimit
-% Default Line colors
+% Classic Line colors (version 5.0)
 /LCw {1 1 1} def
 /LCb {0 0 0} def
 /LCa {0 0 0} def
@@ -95,19 +96,20 @@ gnudict begin
 /LC6 {0 0 0} def
 /LC7 {1 0.3 0} def
 /LC8 {0.5 0.5 0.5} def
-% Default Line Types
+% Default dash patterns (version 5.0)
 /LTw {PL [] 1 setgray} def
 /LTb {BL [] LCb DL} def
 /LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
 /LT0 {PL [] LC0 DL} def
-/LT1 {PL [4 dl1 2 dl2] LC1 DL} def
-/LT2 {PL [2 dl1 3 dl2] LC2 DL} def
-/LT3 {PL [1 dl1 1.5 dl2] LC3 DL} def
-/LT4 {PL [6 dl1 2 dl2 1 dl1 2 dl2] LC4 DL} def
-/LT5 {PL [3 dl1 3 dl2 1 dl1 3 dl2] LC5 DL} def
-/LT6 {PL [2 dl1 2 dl2 2 dl1 6 dl2] LC6 DL} def
-/LT7 {PL [1 dl1 2 dl2 6 dl1 2 dl2 1 dl1 2 dl2] LC7 DL} def
-/LT8 {PL [2 dl1 2 dl2 2 dl1 2 dl2 2 dl1 2 dl2 2 dl1 4 dl2] LC8 DL} def
+/LT1 {PL [2 dl1 3 dl2] LC1 DL} def
+/LT2 {PL [1 dl1 1.5 dl2] LC2 DL} def
+/LT3 {PL [6 dl1 2 dl2 1 dl1 2 dl2] LC3 DL} def
+/LT4 {PL [1 dl1 2 dl2 6 dl1 2 dl2 1 dl1 2 dl2] LC4 DL} def
+/LT5 {PL [4 dl1 2 dl2] LC5 DL} def
+/LT6 {PL [1.5 dl1 1.5 dl2 1.5 dl1 1.5 dl2 1.5 dl1 6 dl2] LC6 DL} def
+/LT7 {PL [3 dl1 3 dl2 1 dl1 3 dl2] LC7 DL} def
+/LT8 {PL [2 dl1 2 dl2 2 dl1 6 dl2] LC8 DL} def
+/SL {[] 0 setdash} def
 /Pnt {stroke [] 0 setdash gsave 1 setlinecap M 0 0 V stroke grestore} def
 /Dia {stroke [] 0 setdash 2 copy vpt add M
   hpt neg vpt neg V hpt vpt neg V
@@ -329,9 +331,14 @@ gnudict begin
 %
 /languagelevel where
  {pop languagelevel} {1} ifelse
- 2 lt
-	{/InterpretLevel1 true def}
-	{/InterpretLevel1 Level1 def}
+dup 2 lt
+	{/InterpretLevel1 true def
+	 /InterpretLevel3 false def}
+	{/InterpretLevel1 Level1 def
+	 2 gt
+	    {/InterpretLevel3 Level3 def}
+	    {/InterpretLevel3 false def}
+	 ifelse }
  ifelse
 %
 % PostScript level 2 pattern fill definitions
@@ -420,16 +427,17 @@ Level1 {Level1PatternFill} {Level2PatternFill} ifelse
 /Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
 dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
 currentdict end definefont pop
+%
 /MFshow {
    { dup 5 get 3 ge
      { 5 get 3 eq {gsave} {grestore} ifelse }
      {dup dup 0 get findfont exch 1 get scalefont setfont
      [ currentpoint ] exch dup 2 get 0 exch R dup 5 get 2 ne {dup dup 6
-     get exch 4 get {Gshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
+     get exch 4 get {textshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
      {dup 3 get {2 get neg 0 exch R pop} {pop aload pop M} ifelse} {dup 5
      get 1 eq {dup 2 get exch dup 3 get exch 6 get stringwidth pop -2 div
      dup 0 R} {dup 6 get stringwidth pop -2 div 0 R 6 get
-     show 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
+     textshow 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
      pop aload pop M} ifelse }ifelse }ifelse }
      ifelse }
    forall} def
@@ -457,15 +465,40 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (grid.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 4.6 patchlevel 6)
+  /Creator (gnuplot 5.0 patchlevel 1)
   /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Tue May 26 12:33:30 2015)
+  /CreationDate (Thu Dec 10 14:05:39 2015)
   /DOCINFO pdfmark
 end
 } ifelse
 end
+%
+% Support for boxed text - Ethan A Merritt May 2005
+%
+/InitTextBox { userdict /TBy2 3 -1 roll put userdict /TBx2 3 -1 roll put
+           userdict /TBy1 3 -1 roll put userdict /TBx1 3 -1 roll put
+	   /Boxing true def } def
+/ExtendTextBox { Boxing
+    { gsave dup false charpath pathbbox
+      dup TBy2 gt {userdict /TBy2 3 -1 roll put} {pop} ifelse
+      dup TBx2 gt {userdict /TBx2 3 -1 roll put} {pop} ifelse
+      dup TBy1 lt {userdict /TBy1 3 -1 roll put} {pop} ifelse
+      dup TBx1 lt {userdict /TBx1 3 -1 roll put} {pop} ifelse
+      grestore } if } def
+/PopTextBox { newpath TBx1 TBxmargin sub TBy1 TBymargin sub M
+               TBx1 TBxmargin sub TBy2 TBymargin add L
+	       TBx2 TBxmargin add TBy2 TBymargin add L
+	       TBx2 TBxmargin add TBy1 TBymargin sub L closepath } def
+/DrawTextBox { PopTextBox stroke /Boxing false def} def
+/FillTextBox { gsave PopTextBox 1 1 1 setrgbcolor fill grestore /Boxing false def} def
+0 0 0 0 InitTextBox
+/TBxmargin 20 def
+/TBymargin 20 def
+/Boxing false def
+/textshow { ExtendTextBox Gshow } def
+%
 %%EndProlog
 %%Page: 1 1
 gnudict begin
@@ -476,7 +509,7 @@ doclip
 0 setgray
 newpath
 (Helvetica) findfont 200 scalefont setfont
-BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 5394.00 3776.00 BoxColFill} if
 gsave % colour palette begin
 /maxcolors 64 def
 /HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
@@ -551,1212 +584,1597 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 }{
   /g {stroke pm3dround pm3dGamma exp setgray} bind def
 } ifelse
+1.000 UL
+LTb
+LCb setrgbcolor
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-1418 1599 M
-3710 73 V
-654 -414 R
--654 414 V
-1418 1599 M
-0 2383 V
-5128 1672 M
-0 2383 V
-5782 1258 M
-0 2383 V
-1418 3982 M
-3710 73 V
-654 -414 R
--654 414 V
-1418 1599 M
--135 -3 V
+LCb setrgbcolor
+1113 1272 M
+2693 51 V
 stroke
-0.00 0.00 0.00 C 1099 1590 M
+LTb
+LCb setrgbcolor
+4281 1032 M
+-475 291 V
+stroke
+LTb
+LCb setrgbcolor
+1113 1272 M
+0 1672 V
+stroke
+LTb
+LCb setrgbcolor
+3806 1323 M
+0 1672 V
+stroke
+LTb
+LCb setrgbcolor
+4281 1032 M
+0 1672 V
+stroke
+LTb
+LCb setrgbcolor
+1113 2944 M
+2693 51 V
+stroke
+LTb
+LCb setrgbcolor
+4281 2704 M
+-475 291 V
+stroke
+LTb
+LCb setrgbcolor
+1113 1272 M
+-140 -3 V
+stroke
+LTb
+LCb setrgbcolor
+3806 1323 M
+140 2 V
+stroke
+LCb setrgbcolor
+783 1263 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5128 1672 M
-135 3 V
-1549 1516 M
--135 -3 V
+LCb setrgbcolor
+1208 1213 M
+-140 -2 V
 stroke
-0.00 0.00 0.00 C 1230 1507 M
+LTb
+LCb setrgbcolor
+3901 1265 M
+140 2 V
+stroke
+LCb setrgbcolor
+878 1205 M
 [ [({}) 200.0 0.0 true true 0 (1.2)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5259 1589 M
-135 3 V
-1680 1433 M
--135 -2 V
+LCb setrgbcolor
+1303 1155 M
+-140 -2 V
 stroke
-0.00 0.00 0.00 C 1361 1425 M
+LTb
+LCb setrgbcolor
+3996 1207 M
+140 2 V
+stroke
+LCb setrgbcolor
+973 1147 M
 [ [({}) 200.0 0.0 true true 0 (1.4)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5389 1506 M
-136 3 V
-1811 1350 M
--136 -2 V
+LCb setrgbcolor
+1398 1097 M
+-140 -2 V
 stroke
-0.00 0.00 0.00 C 1491 1342 M
+LTb
+LCb setrgbcolor
+4091 1148 M
+140 3 V
+stroke
+LCb setrgbcolor
+1068 1089 M
 [ [({}) 200.0 0.0 true true 0 (1.6)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5520 1423 M
-135 3 V
-1941 1268 M
--135 -3 V
+LCb setrgbcolor
+1493 1039 M
+-140 -3 V
 stroke
-0.00 0.00 0.00 C 1622 1259 M
+LTb
+LCb setrgbcolor
+4186 1090 M
+140 3 V
+stroke
+LCb setrgbcolor
+1163 1030 M
 [ [({}) 200.0 0.0 true true 0 (1.8)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5651 1341 M
-135 2 V
-2072 1185 M
--135 -3 V
+LCb setrgbcolor
+1588 981 M
+-140 -3 V
 stroke
-0.00 0.00 0.00 C 1753 1176 M
+LTb
+LCb setrgbcolor
+4281 1032 M
+140 3 V
+stroke
+LCb setrgbcolor
+1258 972 M
 [ [({}) 200.0 0.0 true true 0 (2)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5782 1258 M
-135 3 V
-2072 1185 M
-16 -10 V
-stroke
-0.00 0.00 0.00 C 2108 1153 M
-[ [({}) 200.0 0.0 true true 0 (1)]
-] -66.7 MCshow
-0.500 UL
-LTb
-0.500 UL
-LTb
-1418 1599 M
--15 10 V
-2814 1199 M
-16 -9 V
-stroke
-0.00 0.00 0.00 C 2851 1168 M
-[ [({}) 200.0 0.0 true true 0 (1.2)]
-] -66.7 MCshow
-0.500 UL
-LTb
-0.500 UL
-LTb
-2160 1613 M
--15 10 V
-3557 1214 M
-15 -10 V
-stroke
-0.00 0.00 0.00 C 3593 1182 M
-[ [({}) 200.0 0.0 true true 0 (1.4)]
-] -66.7 MCshow
-0.500 UL
-LTb
-0.500 UL
-LTb
-2902 1628 M
--15 10 V
-4298 1229 M
-15 -10 V
-stroke
-0.00 0.00 0.00 C 4334 1197 M
-[ [({}) 200.0 0.0 true true 0 (1.6)]
-] -66.7 MCshow
-0.500 UL
-LTb
-0.500 UL
-LTb
-3643 1643 M
--15 9 V
-5040 1243 M
+LCb setrgbcolor
+1588 981 M
 15 -9 V
 stroke
-0.00 0.00 0.00 C 5076 1212 M
+LTb
+LCb setrgbcolor
+1113 1272 M
+-16 9 V
+stroke
+LCb setrgbcolor
+1624 950 M
+[ [({}) 200.0 0.0 true true 0 (1)]
+] -66.7 MCshow
+0.500 UL
+LTb
+LCb setrgbcolor
+0.500 UL
+LTb
+LCb setrgbcolor
+2127 991 M
+15 -9 V
+stroke
+LTb
+LCb setrgbcolor
+1652 1282 M
+-16 9 V
+stroke
+LCb setrgbcolor
+2163 961 M
+[ [({}) 200.0 0.0 true true 0 (1.2)]
+] -66.7 MCshow
+0.500 UL
+LTb
+LCb setrgbcolor
+0.500 UL
+LTb
+LCb setrgbcolor
+2666 1002 M
+15 -10 V
+stroke
+LTb
+LCb setrgbcolor
+2191 1292 M
+-16 9 V
+stroke
+LCb setrgbcolor
+2701 971 M
+[ [({}) 200.0 0.0 true true 0 (1.4)]
+] -66.7 MCshow
+0.500 UL
+LTb
+LCb setrgbcolor
+0.500 UL
+LTb
+LCb setrgbcolor
+3203 1012 M
+16 -10 V
+stroke
+LTb
+LCb setrgbcolor
+2728 1302 M
+-15 10 V
+stroke
+LCb setrgbcolor
+3240 981 M
+[ [({}) 200.0 0.0 true true 0 (1.6)]
+] -66.7 MCshow
+0.500 UL
+LTb
+LCb setrgbcolor
+0.500 UL
+LTb
+LCb setrgbcolor
+3742 1022 M
+16 -9 V
+stroke
+LTb
+LCb setrgbcolor
+3267 1313 M
+-15 9 V
+stroke
+LCb setrgbcolor
+3779 991 M
 [ [({}) 200.0 0.0 true true 0 (1.8)]
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-4386 1657 M
--16 10 V
-5782 1258 M
-15 -10 V
+LCb setrgbcolor
+4281 1032 M
+16 -9 V
 stroke
-0.00 0.00 0.00 C 5818 1226 M
+LTb
+LCb setrgbcolor
+3806 1323 M
+-15 9 V
+stroke
+LCb setrgbcolor
+4317 1002 M
 [ [({}) 200.0 0.0 true true 0 (2)]
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5128 1672 M
--16 10 V
-1418 1599 M
+LCb setrgbcolor
+1113 1272 M
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1203 1599 M
+LCb setrgbcolor
+898 1272 M
 [ [({}) 200.0 0.0 true true 0 (10)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5782 1258 M
+LCb setrgbcolor
+4281 1032 M
 88 0 V
-1418 2076 M
+stroke
+LTb
+LCb setrgbcolor
+1113 1606 M
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1203 2076 M
+LCb setrgbcolor
+898 1606 M
 [ [({}) 200.0 0.0 true true 0 (12)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5782 1735 M
+LCb setrgbcolor
+4281 1367 M
 88 0 V
-1418 2553 M
+stroke
+LTb
+LCb setrgbcolor
+1113 1941 M
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1203 2553 M
+LCb setrgbcolor
+898 1941 M
 [ [({}) 200.0 0.0 true true 0 (14)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5782 2212 M
+LCb setrgbcolor
+4281 1702 M
 88 0 V
-1418 3028 M
+stroke
+LTb
+LCb setrgbcolor
+1113 2274 M
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1203 3028 M
+LCb setrgbcolor
+898 2274 M
 [ [({}) 200.0 0.0 true true 0 (16)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5782 2687 M
+LCb setrgbcolor
+4281 2035 M
 88 0 V
-1418 3505 M
+stroke
+LTb
+LCb setrgbcolor
+1113 2609 M
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1203 3505 M
+LCb setrgbcolor
+898 2609 M
 [ [({}) 200.0 0.0 true true 0 (18)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5782 3164 M
+LCb setrgbcolor
+4281 2370 M
 88 0 V
-1418 3982 M
+stroke
+LTb
+LCb setrgbcolor
+1113 2944 M
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1203 3982 M
+LCb setrgbcolor
+898 2944 M
 [ [({}) 200.0 0.0 true true 0 (20)]
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
 LTb
-5782 3641 M
+LCb setrgbcolor
+4281 2704 M
 88 0 V
 1.000 UP
 % Begin plot #1
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 1418 1599 M
-742 14 V
--709 164 V
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1113 1272 M
+539 10 V
+-516 114 V
+-23 -124 V
 % End plot #1
 % Begin plot #2
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 2160 1613 M
-1113 22 V
-2193 1791 L
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1652 1282 M
+808 15 V
+-785 110 V
+-23 -125 V
 % End plot #2
 % Begin plot #3
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 3273 1635 M
-1113 22 V
-3306 1813 L
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2460 1297 M
+807 16 V
+-783 109 V
+-24 -125 V
 % End plot #3
 % Begin plot #4
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 4386 1657 M
-742 15 V
--710 163 V
--32 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3267 1313 M
+539 10 V
+-515 114 V
+-24 -124 V
 % End plot #4
 % Begin plot #5
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 2160 1613 M
-33 178 V
--742 -14 V
-709 -164 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1652 1282 M
+23 125 V
+-539 -11 V
+516 -114 V
 % End plot #5
 % Begin plot #6
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 3273 1635 M
-33 178 V
-2193 1791 L
-3273 1635 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2460 1297 M
+24 125 V
+-809 -15 V
+785 -110 V
 % End plot #6
 % Begin plot #7
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 4386 1657 M
-32 178 V
-3306 1813 L
-4386 1657 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3267 1313 M
+24 124 V
+-807 -15 V
+783 -109 V
 % End plot #7
 % Begin plot #8
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 5128 1672 M
-32 178 V
--742 -15 V
-710 -163 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3806 1323 M
+24 125 V
+-539 -11 V
+515 -114 V
 % End plot #8
 % Begin plot #9
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 1451 1777 M
-742 14 V
--710 164 V
--32 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1136 1396 M
+539 11 V
+-515 114 V
+-24 -125 V
 % End plot #9
 % Begin plot #10
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 2193 1791 M
-1113 22 V
-2226 1969 L
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1675 1407 M
+809 15 V
+-785 110 V
+-24 -125 V
 % End plot #10
 % Begin plot #11
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 3306 1813 M
-1112 22 V
-3339 1991 L
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2484 1422 M
+807 15 V
+-784 110 V
+-23 -125 V
 % End plot #11
 % Begin plot #12
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 4418 1835 M
-742 15 V
--709 163 V
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3291 1437 M
+539 11 V
+-515 114 V
+-24 -125 V
 % End plot #12
 % Begin plot #13
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 2193 1791 M
-33 178 V
--743 -14 V
-710 -164 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1675 1407 M
+24 125 V
+-539 -11 V
+515 -114 V
 % End plot #13
 % Begin plot #14
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 3306 1813 M
-33 178 V
-2226 1969 L
-3306 1813 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2484 1422 M
+23 125 V
+-808 -15 V
+785 -110 V
 % End plot #14
 % Begin plot #15
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 4418 1835 M
-33 178 V
-3339 1991 L
-4418 1835 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3291 1437 M
+24 125 V
+-808 -15 V
+784 -110 V
 % End plot #15
 % Begin plot #16
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 5160 1850 M
-33 178 V
--742 -15 V
-709 -163 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3830 1448 M
+24 125 V
+-539 -11 V
+515 -114 V
 % End plot #16
 % Begin plot #17
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 1483 1955 M
-743 14 V
--677 143 V
--66 -157 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1160 1521 M
+539 11 V
+-491 100 V
+-48 -111 V
 % End plot #17
 % Begin plot #18
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 2226 1969 M
-1113 22 V
-2291 2127 L
--65 -158 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1699 1532 M
+808 15 V
+-760 95 V
+-48 -110 V
 % End plot #18
 % Begin plot #19
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 3339 1991 M
-1112 22 V
-3404 2149 L
--65 -158 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2507 1547 M
+808 15 V
+-760 95 V
+-48 -110 V
 % End plot #19
 % Begin plot #20
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 4451 2013 M
-742 15 V
--677 143 V
--65 -158 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3315 1562 M
+539 11 V
+-492 100 V
+-47 -111 V
 % End plot #20
 % Begin plot #21
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 2226 1969 M
-65 158 V
--742 -15 V
-677 -143 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1699 1532 M
+48 110 V
+-539 -10 V
+491 -100 V
 % End plot #21
 % Begin plot #22
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 3339 1991 M
-65 158 V
-2291 2127 L
-3339 1991 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2507 1547 M
+48 110 V
+-808 -15 V
+760 -95 V
 % End plot #22
 % Begin plot #23
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 4451 2013 M
-65 158 V
-3404 2149 L
-4451 2013 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3315 1562 M
+47 111 V
+-807 -16 V
+760 -95 V
 % End plot #23
 % Begin plot #24
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 5193 2028 M
-66 157 V
--743 -14 V
-677 -143 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3854 1573 M
+47 110 V
+-539 -10 V
+492 -100 V
 % End plot #24
 % Begin plot #25
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 1549 2112 M
-742 15 V
--677 142 V
--65 -157 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1208 1632 M
+539 10 V
+-492 100 V
+-47 -110 V
 % End plot #25
 % Begin plot #26
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 2291 2127 M
-1113 22 V
-2356 2284 L
--65 -157 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1747 1642 M
+808 15 V
+-761 95 V
+-47 -110 V
 % End plot #26
 % Begin plot #27
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 3404 2149 M
-1112 22 V
-3470 2306 L
--66 -157 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2555 1657 M
+807 16 V
+-760 95 V
+-47 -111 V
 % End plot #27
 % Begin plot #28
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 4516 2171 M
-743 14 V
--677 143 V
--66 -157 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3362 1673 M
+539 10 V
+-491 100 V
+-48 -110 V
 % End plot #28
 % Begin plot #29
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 2291 2127 M
-65 157 V
--742 -15 V
-677 -142 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1747 1642 M
+47 110 V
+-539 -10 V
+492 -100 V
 % End plot #29
 % Begin plot #30
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 3404 2149 M
-66 157 V
-2356 2284 L
-3404 2149 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2555 1657 M
+47 111 V
+-808 -16 V
+761 -95 V
 % End plot #30
 % Begin plot #31
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 4516 2171 M
-66 157 V
-3470 2306 L
-4516 2171 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3362 1673 M
+48 110 V
+-808 -15 V
+760 -95 V
 % End plot #31
 % Begin plot #32
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 5259 2185 M
-65 157 V
--742 -14 V
-677 -143 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3901 1683 M
+48 110 V
+-539 -10 V
+491 -100 V
 % End plot #32
 % Begin plot #33
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 1614 2269 M
-742 15 V
--611 300 V
-1614 2269 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1255 1742 M
+539 10 V
+-444 211 V
+-95 -221 V
 % End plot #33
 % Begin plot #34
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 2356 2284 M
-1114 22 V
--983 293 V
-2356 2284 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1794 1752 M
+808 16 V
+-713 205 V
+-95 -221 V
 % End plot #34
 % Begin plot #35
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 3470 2306 M
-1112 22 V
--982 292 V
-3470 2306 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2602 1768 M
+808 15 V
+-713 205 V
+-95 -220 V
 % End plot #35
 % Begin plot #36
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 4582 2328 M
-742 14 V
--611 299 V
-4582 2328 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3410 1783 M
+539 10 V
+-444 210 V
+-95 -220 V
 % End plot #36
 % Begin plot #37
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 2356 2284 M
-131 315 V
--742 -15 V
-611 -300 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1794 1752 M
+95 221 V
+-539 -10 V
+444 -211 V
 % End plot #37
 % Begin plot #38
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 3470 2306 M
-130 314 V
-2487 2599 L
-983 -293 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2602 1768 M
+95 220 V
+-808 -15 V
+713 -205 V
 % End plot #38
 % Begin plot #39
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 4582 2328 M
-131 313 V
-3600 2620 L
-982 -292 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3410 1783 M
+95 220 V
+-808 -15 V
+713 -205 V
 % End plot #39
 % Begin plot #40
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 5324 2342 M
-131 314 V
--742 -15 V
-611 -299 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3949 1793 M
+95 220 V
+-539 -10 V
+444 -210 V
 % End plot #40
 % Begin plot #41
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 1745 2584 M
-742 15 V
--611 299 V
-1745 2584 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1350 1963 M
+539 10 V
+-444 210 V
+-95 -220 V
 % End plot #41
 % Begin plot #42
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 2487 2599 M
-1113 21 V
--982 292 V
-2487 2599 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1889 1973 M
+808 15 V
+-713 205 V
+-95 -220 V
 % End plot #42
 % Begin plot #43
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 3600 2620 M
-1113 21 V
--983 293 V
-3600 2620 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2697 1988 M
+808 15 V
+-713 205 V
+-95 -220 V
 % End plot #43
 % Begin plot #44
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 4713 2641 M
-742 15 V
--611 300 V
-4713 2641 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3505 2003 M
+539 10 V
+-444 211 V
+-95 -221 V
 % End plot #44
 % Begin plot #45
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 2487 2599 M
-131 313 V
--742 -14 V
-611 -299 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1889 1973 M
+95 220 V
+-539 -10 V
+444 -210 V
 % End plot #45
 % Begin plot #46
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 3600 2620 M
-130 314 V
-2618 2912 L
-982 -292 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2697 1988 M
+95 220 V
+-808 -15 V
+713 -205 V
 % End plot #46
 % Begin plot #47
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 4713 2641 M
-131 315 V
-3730 2934 L
-983 -293 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3505 2003 M
+95 221 V
+-808 -16 V
+713 -205 V
 % End plot #47
 % Begin plot #48
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 5455 2656 M
-131 315 V
--742 -15 V
-611 -300 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+4044 2013 M
+95 221 V
+-539 -10 V
+444 -211 V
 % End plot #48
 % Begin plot #49
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 1876 2898 M
-742 14 V
--677 143 V
--65 -157 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1445 2183 M
+539 10 V
+-491 100 V
+-48 -110 V
 % End plot #49
 % Begin plot #50
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 2618 2912 M
-1112 22 V
-2684 3069 L
--66 -157 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1984 2193 M
+808 15 V
+-760 95 V
+-48 -110 V
 % End plot #50
 % Begin plot #51
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 3730 2934 M
-1114 22 V
-3796 3091 L
--66 -157 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2792 2208 M
+808 16 V
+-761 95 V
+-47 -111 V
 % End plot #51
 % Begin plot #52
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 4844 2956 M
-742 15 V
--677 142 V
--65 -157 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3600 2224 M
+539 10 V
+-492 100 V
+-47 -110 V
 % End plot #52
 % Begin plot #53
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 2618 2912 M
-66 157 V
--743 -14 V
-677 -143 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1984 2193 M
+48 110 V
+-539 -10 V
+491 -100 V
 % End plot #53
 % Begin plot #54
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 3730 2934 M
-66 157 V
-2684 3069 L
-3730 2934 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2792 2208 M
+47 111 V
+-807 -16 V
+760 -95 V
 % End plot #54
 % Begin plot #55
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 4844 2956 M
-65 157 V
-3796 3091 L
-4844 2956 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3600 2224 M
+47 110 V
+-808 -15 V
+761 -95 V
 % End plot #55
 % Begin plot #56
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 5586 2971 M
-65 157 V
--742 -15 V
-677 -142 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+4139 2234 M
+47 110 V
+-539 -10 V
+492 -100 V
 % End plot #56
 % Begin plot #57
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 1941 3055 M
-743 14 V
--677 143 V
--66 -157 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1493 2293 M
+539 10 V
+-492 100 V
+-47 -110 V
 % End plot #57
 % Begin plot #58
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 2684 3069 M
-1112 22 V
-2749 3227 L
--65 -158 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2032 2303 M
+807 16 V
+-760 95 V
+-47 -111 V
 % End plot #58
 % Begin plot #59
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 3796 3091 M
-1113 22 V
-3861 3249 L
--65 -158 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2839 2319 M
+808 15 V
+-760 95 V
+-48 -110 V
 % End plot #59
 % Begin plot #60
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 4909 3113 M
-742 15 V
--677 143 V
--65 -158 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3647 2334 M
+539 10 V
+-491 100 V
+-48 -110 V
 % End plot #60
 % Begin plot #61
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 2684 3069 M
-65 158 V
--742 -15 V
-677 -143 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2032 2303 M
+47 111 V
+-539 -11 V
+492 -100 V
 % End plot #61
 % Begin plot #62
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 3796 3091 M
-65 158 V
-2749 3227 L
-3796 3091 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2839 2319 M
+48 110 V
+-808 -15 V
+760 -95 V
 % End plot #62
 % Begin plot #63
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 4909 3113 M
-65 158 V
-3861 3249 L
-4909 3113 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3647 2334 M
+48 110 V
+-808 -15 V
+760 -95 V
 % End plot #63
 % Begin plot #64
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 5651 3128 M
-66 157 V
--743 -14 V
-677 -143 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+4186 2344 M
+48 111 V
+-539 -11 V
+491 -100 V
 % End plot #64
 % Begin plot #65
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 2007 3212 M
-742 15 V
--709 163 V
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1540 2403 M
+539 11 V
+-515 114 V
+-24 -125 V
 % End plot #65
 % Begin plot #66
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 2749 3227 M
-1112 22 V
-2782 3405 L
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2079 2414 M
+808 15 V
+-784 110 V
+-24 -125 V
 % End plot #66
 % Begin plot #67
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 3861 3249 M
-1113 22 V
-3894 3427 L
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2887 2429 M
+808 15 V
+-785 110 V
+-23 -125 V
 % End plot #67
 % Begin plot #68
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 4974 3271 M
-743 14 V
--710 164 V
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3695 2444 M
+539 11 V
+-515 114 V
+-24 -125 V
 % End plot #68
 % Begin plot #69
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 2749 3227 M
-33 178 V
--742 -15 V
-709 -163 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2079 2414 M
+24 125 V
+-539 -11 V
+515 -114 V
 % End plot #69
 % Begin plot #70
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 3861 3249 M
-33 178 V
-2782 3405 L
-3861 3249 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2887 2429 M
+23 125 V
+-807 -15 V
+784 -110 V
 % End plot #70
 % Begin plot #71
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 4974 3271 M
-33 178 V
-3894 3427 L
-4974 3271 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3695 2444 M
+24 125 V
+-809 -15 V
+785 -110 V
 % End plot #71
 % Begin plot #72
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 5717 3285 M
-32 178 V
--742 -14 V
-710 -164 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+4234 2455 M
+24 125 V
+-539 -11 V
+515 -114 V
 % End plot #72
 % Begin plot #73
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 2040 3390 M
-742 15 V
--710 163 V
--32 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+1564 2528 M
+539 11 V
+-515 114 V
+-24 -125 V
 % End plot #73
 % Begin plot #74
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.75 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.75 0.75 C 0.00 0.75 0.75 C 2782 3405 M
-1112 22 V
-2814 3583 L
--32 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2103 2539 M
+807 15 V
+-783 109 V
+-24 -124 V
 % End plot #74
 % Begin plot #75
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.00 0.75 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.00 0.75 C 0.75 0.00 0.75 C 3894 3427 M
-1113 22 V
-3927 3605 L
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2910 2554 M
+809 15 V
+-785 110 V
+-24 -125 V
 % End plot #75
 % Begin plot #76
 %pm3d_map_begin
 stroke
-LT0
-0.75 0.75 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.75 0.75 0.00 C 0.75 0.75 0.00 C 5007 3449 M
-742 14 V
--709 164 V
--33 -178 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3719 2569 M
+539 11 V
+-516 114 V
+-23 -125 V
 % End plot #76
 % Begin plot #77
 %pm3d_map_begin
 stroke
-LT0
-0.25 0.25 0.25 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.25 0.25 0.25 C 0.25 0.25 0.25 C 2782 3405 M
-32 178 V
--742 -15 V
-710 -163 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2103 2539 M
+24 124 V
+-539 -10 V
+515 -114 V
 % End plot #77
 % Begin plot #78
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.00 1.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.00 1.00 C 0.00 0.00 1.00 C 3894 3427 M
-33 178 V
-2814 3583 L
-3894 3427 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+2910 2554 M
+24 125 V
+-807 -16 V
+783 -109 V
 % End plot #78
 % Begin plot #79
 %pm3d_map_begin
 stroke
-LT0
-0.00 0.50 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-0.00 0.50 0.00 C 0.00 0.50 0.00 C 5007 3449 M
-33 178 V
-3927 3605 L
-5007 3449 L
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+3719 2569 M
+23 125 V
+-808 -15 V
+785 -110 V
 % End plot #79
 % Begin plot #80
 %pm3d_map_begin
 stroke
-LT0
-1.00 0.00 0.00 C %pm3d_map_end
+LTb
+LCb setrgbcolor
+%pm3d_map_end
 0.500 UL
-LT0
-1.00 0.00 0.00 C 1.00 0.00 0.00 C 5749 3463 M
-33 178 V
--742 -14 V
-709 -164 V
+LTb
+LCb setrgbcolor
+LCb setrgbcolor
+4258 2580 M
+23 124 V
+-539 -10 V
+516 -114 V
 % End plot #80
 stroke
 LTb
-5782 1258 M
-2072 1185 L
--654 414 R
-654 -414 V
-0 2383 V
--654 414 R
-654 -414 V
-3710 73 R
-2072 3568 L
+LCb setrgbcolor
+4281 1032 M
+1588 981 L
+stroke
+LTb
+LCb setrgbcolor
+1113 1272 M
+1588 981 L
+stroke
+LTb
+LCb setrgbcolor
+1588 981 M
+0 1672 V
+stroke
+LTb
+LCb setrgbcolor
+1113 2944 M
+475 -291 V
+stroke
+LTb
+LCb setrgbcolor
+4281 2704 M
+1588 2653 L
 1.000 UP
 stroke
 grestore % colour palette end

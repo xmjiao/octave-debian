@@ -138,10 +138,12 @@ Texinfo
 The following external packages are required:
 
 BLAS
-     Basic Linear Algebra Subroutine library
-     (<http://www.netlib.org/blas>).  Accelerated BLAS libraries such as
-     ATLAS (<http://math-atlas.sourceforge.net>) are recommeded for
-     better performance.
+     Basic Linear Algebra Subroutine library.  Accelerated BLAS
+     libraries such as OpenBLAS (<http://www.openblas.net/>) or ATLAS
+     (<http://math-atlas.sourceforge.net>) are recommended for best
+     performance.  The reference implementation
+     (<http://www.netlib.org/blas>) is slow, unmaintained, and suffers
+     from certain bugs in corner case inputs.
 
 LAPACK
      Linear Algebra Package (<http://www.netlib.org/lapack>).
@@ -816,8 +818,25 @@ installation of Octave.
      files without '-g'.
 
    * Some people have reported that calls to system() and the pager do
-     not work on SunOS systems.  This is apparently due to having 'G_HAVE_SYS_WAIT'
-     defined to be 0 instead of 1 when compiling 'libg++'.
+     not work on SunOS systems.  This is apparently due to having
+     'G_HAVE_SYS_WAIT' defined to be 0 instead of 1 when compiling
+     'libg++'.
+
+   * On systems where the reference BLAS library is used the following
+     matrix-by-vector multiplication incorrectly handles NaN values of
+     the form 'NaN * 0'.
+
+          [NaN, 1; 0, 0] * [0; 1]
+          =>
+          [ 1
+            0 ]
+
+          correct result =>
+          [ NaN
+            0   ]
+
+     Install a different BLAS library such as OpenBLAS or ATLAS to
+     correct this issue.
 
    * On NeXT systems, linking to 'libsys_s.a' may fail to resolve the
      following functions
@@ -868,6 +887,6 @@ installation of Octave.
      'CFLAGS', 'CXXFLAGS', 'FFLAGS', and 'LDFLAGS'.  Passing them as
      options to the configure script also records them in the
      'config.status' file.  By default, 'CPPFLAGS' and 'LDFLAGS' are
-     empty, 'CFLAGS' and 'CXXFLAGS' are set to "-g -O" and 'FFLAGS' is
+     empty, 'CFLAGS' and 'CXXFLAGS' are set to "-g -O2" and 'FFLAGS' is
      set to "-O".
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.0, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Representing Images</title>
 
@@ -19,16 +19,16 @@
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
 blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
-div.indentedblock {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
 div.smalldisplay {margin-left: 3.2em}
 div.smallexample {margin-left: 3.2em}
-div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
 div.smalllisp {margin-left: 3.2em}
-kbd {font-style:oblique}
+kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
@@ -37,10 +37,10 @@ pre.smalldisplay {font-family: inherit; font-size: smaller}
 pre.smallexample {font-size: smaller}
 pre.smallformat {font-family: inherit; font-size: smaller}
 pre.smalllisp {font-size: smaller}
-span.nocodebreak {white-space:nowrap}
-span.nolinebreak {white-space:nowrap}
-span.roman {font-family:serif; font-weight:normal}
-span.sansserif {font-family:sans-serif; font-weight:normal}
+span.nocodebreak {white-space: nowrap}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: serif; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
@@ -48,7 +48,7 @@ ul.no-bullet {list-style: none}
 
 </head>
 
-<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<body lang="en">
 <a name="Representing-Images"></a>
 <div class="header">
 <p>
@@ -543,33 +543,6 @@ If unspecified, the length of the current colormap, or 64, is used.
 then the size of the current colormap is used.
 </p>
 <p><strong>See also:</strong> <a href="#XREFcolormap">colormap</a>, <a href="#XREFbrighten">brighten</a>.
-</p></dd></dl>
-
-
-<p>An additional colormap is <code>gmap40</code>.  This code map contains only
-colors with integer values of the red, green and blue components.  This
-is a workaround for a limitation of gnuplot 4.0, that does not allow the color
-of line or patch objects to be set.  <code>gmap40</code> is chiefly useful to gnuplot
-4.0 users, and particularly in conjunction with the <var>bar</var>, <var>surf</var>,
-and <var>contour</var> functions.
-</p>
-<a name="XREFgmap40"></a><dl>
-<dt><a name="index-gmap40"></a>Function File: <em><var>map</var> =</em> <strong>gmap40</strong> <em>()</em></dt>
-<dt><a name="index-gmap40-1"></a>Function File: <em><var>map</var> =</em> <strong>gmap40</strong> <em>(<var>n</var>)</em></dt>
-<dd>
-<p><code>gmap40</code> is deprecated and will be removed in Octave version 4.4.
-</p>
-<p>Create color colormap.  The colormap consists of red, green, blue, yellow,
-magenta and cyan.
-</p>
-<p>This colormap is specifically designed for users of gnuplot 4.0 where these
-6 colors are the allowable ones for patch objects.
-</p>
-<p>The argument <var>n</var> must be a scalar.
-If unspecified, a length of 6 is assumed.  Larger values of <var>n</var> result
-in a repetition of the above colors.
-</p>
-<p><strong>See also:</strong> <a href="#XREFcolormap">colormap</a>.
 </p></dd></dl>
 
 

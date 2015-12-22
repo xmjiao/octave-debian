@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.0, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Finding Elements and Checking Conditions</title>
 
@@ -19,16 +19,16 @@
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
 blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
-div.indentedblock {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
 div.smalldisplay {margin-left: 3.2em}
 div.smallexample {margin-left: 3.2em}
-div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
 div.smalllisp {margin-left: 3.2em}
-kbd {font-style:oblique}
+kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
@@ -37,10 +37,10 @@ pre.smalldisplay {font-family: inherit; font-size: smaller}
 pre.smallexample {font-size: smaller}
 pre.smallformat {font-family: inherit; font-size: smaller}
 pre.smalllisp {font-size: smaller}
-span.nocodebreak {white-space:nowrap}
-span.nolinebreak {white-space:nowrap}
-span.roman {font-family:serif; font-weight:normal}
-span.sansserif {font-family:sans-serif; font-weight:normal}
+span.nocodebreak {white-space: nowrap}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: serif; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
@@ -48,7 +48,7 @@ ul.no-bullet {list-style: none}
 
 </head>
 
-<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<body lang="en">
 <a name="Finding-Elements-and-Checking-Conditions"></a>
 <div class="header">
 <p>
@@ -165,24 +165,24 @@ cumulatively from left to right:
 <dt><a name="index-diff"></a>Built-in Function: <em></em> <strong>diff</strong> <em>(<var>x</var>)</em></dt>
 <dt><a name="index-diff-1"></a>Built-in Function: <em></em> <strong>diff</strong> <em>(<var>x</var>, <var>k</var>)</em></dt>
 <dt><a name="index-diff-2"></a>Built-in Function: <em></em> <strong>diff</strong> <em>(<var>x</var>, <var>k</var>, <var>dim</var>)</em></dt>
-<dd><p>If <var>x</var> is a vector of length <em>n</em>, <code>diff (<var>x</var>)</code> is the
+<dd><p>If <var>x</var> is a vector of length <em>n</em>, <code>diff&nbsp;(<var>x</var>)</code><!-- /@w --> is the
 vector of first differences
  <var>x</var>(2) - <var>x</var>(1), &hellip;, <var>x</var>(n) - <var>x</var>(n-1).
 </p>
-<p>If <var>x</var> is a matrix, <code>diff (<var>x</var>)</code> is the matrix of column
+<p>If <var>x</var> is a matrix, <code>diff&nbsp;(<var>x</var>)</code><!-- /@w --> is the matrix of column
 differences along the first non-singleton dimension.
 </p>
-<p>The second argument is optional.  If supplied, <code>diff (<var>x</var>,
-<var>k</var>)</code>, where <var>k</var> is a non-negative integer, returns the
-<var>k</var>-th differences.  It is possible that <var>k</var> is larger than
-the first non-singleton dimension of the matrix.  In this case,
+<p>The second argument is optional.  If supplied,
+<code>diff&nbsp;(<var>x</var>,&nbsp;<var>k</var>)</code><!-- /@w -->, where <var>k</var> is a non-negative integer,
+returns the <var>k</var>-th differences.  It is possible that <var>k</var> is larger
+than the first non-singleton dimension of the matrix.  In this case,
 <code>diff</code> continues to take the differences along the next
 non-singleton dimension.
 </p>
 <p>The dimension along which to take the difference can be explicitly
 stated with the optional variable <var>dim</var>.  In this case the
 <var>k</var>-th order differences are calculated along this dimension.
-In the case where <var>k</var> exceeds <code>size (<var>x</var>, <var>dim</var>)</code>
+In the case where <var>k</var> exceeds <code>size&nbsp;(<var>x</var>,&nbsp;<var>dim</var>)</code><!-- /@w -->
 an empty matrix is returned.
 </p>
 <p><strong>See also:</strong> <a href="Rearranging-Matrices.html#XREFsort">sort</a>, <a href="Short_002dcircuit-Boolean-Operators.html#XREFmerge">merge</a>.
