@@ -1,3 +1,9 @@
+octave (4.0.0-5~bpo80+1) UNRELEASED; urgency=medium
+
+  * Rebuild for jessie-backports
+
+ -- Rafael Laboissiere <rafael@laboissiere.net>  Tue, 29 Dec 2015 13:47:46 -0200
+
 octave (4.0.0-5) unstable; urgency=medium
 
   * d/control: replace libhdf5-mpich2-dev by libhdf5-mpich-dev.
