@@ -1,1 +1,6 @@
 octave-common: extra-license-file usr/share/octave/*/m/miscellaneous/license.m
+
+# The empty directories are created on purpose by the upstream build
+# process
+octave-common: package-contains-empty-directory usr/share/octave/*/site/m/
+octave-common: package-contains-empty-directory usr/share/octave/site/*/m/
