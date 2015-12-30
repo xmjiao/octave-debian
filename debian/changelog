@@ -1,4 +1,4 @@
-octave (4.0.0-5~bpo80+1) UNRELEASED; urgency=medium
+octave (4.0.0-5~bpo8+1) UNRELEASED; urgency=medium
 
   * Rebuild for jessie-backports
 
