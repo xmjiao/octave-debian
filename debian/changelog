@@ -1,8 +1,8 @@
-octave (4.0.0-5~bpo8+1) UNRELEASED; urgency=medium
+octave (4.0.0-5~bpo8+1) jessie-backports; urgency=medium
 
   * Rebuild for jessie-backports
 
- -- Rafael Laboissiere <rafael@laboissiere.net>  Tue, 29 Dec 2015 13:47:46 -0200
+ -- Rafael Laboissiere <rafael@laboissiere.net>  Thu, 31 Dec 2015 11:06:11 +0100
 
 octave (4.0.0-5) unstable; urgency=medium
 
