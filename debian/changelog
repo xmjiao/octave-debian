@@ -1,8 +1,12 @@
 octave (4.0.0-5~bpo8+1) jessie-backports; urgency=medium
 
+  [ Rafael Laboissiere ]
   * Rebuild for jessie-backports
 
- -- Rafael Laboissiere <rafael@laboissiere.net>  Thu, 31 Dec 2015 11:06:11 +0100
+  [ Sébastien Villemot ]
+  * Revert renaming of liboctave3 for g++-5 transition.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Fri, 01 Jan 2016 18:44:22 +0100
 
 octave (4.0.0-5) unstable; urgency=medium
 
