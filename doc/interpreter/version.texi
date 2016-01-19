@@ -1,4 +1,4 @@
-@set UPDATED 28 April 2015
-@set UPDATED-MONTH April 2015
-@set EDITION 4.0.1-rc1
-@set VERSION 4.0.1-rc1
+@set UPDATED 11 December 2015
+@set UPDATED-MONTH December 2015
+@set EDITION 4.0.1-rc2
+@set VERSION 4.0.1-rc2
