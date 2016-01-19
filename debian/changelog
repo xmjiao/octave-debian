@@ -1,5 +1,6 @@
 octave (4.0.1~rc2-1) UNRELEASED; urgency=medium
 
+  [ Rafael Laboissiere ]
   * d/octave.menu: Drop menu file per the tech-ctte decision on Bug#741573
   * d/control: Drop useless build-dependency on gperf
   * d/s/lintian-overrides:
@@ -18,6 +19,9 @@ octave (4.0.1~rc2-1) UNRELEASED; urgency=medium
   * d/rules: Avoid useless call of ldconfig in the triggers script
   * d/octave-htmldoc.menu: Remove obsolete file
   * Imported Upstream version 4.0.1~rc2
+
+  [ Sébastien Villemot ]
+  * Drop octave-dbg package, now rely on automatic debug packages.
 
  -- Rafael Laboissiere <rafael@laboissiere.net>  Mon, 18 Jan 2016 20:06:41 -0200
 
