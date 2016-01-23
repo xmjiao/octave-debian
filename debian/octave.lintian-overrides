@@ -12,3 +12,6 @@ octave: package-contains-empty-directory usr/lib/*/octave/site/exec/*/
 octave: package-contains-empty-directory usr/lib/*/octave/site/oct/api-v*/*/
 octave: package-contains-empty-directory usr/lib/*/octave/site/oct/*/
 octave: package-contains-empty-directory usr/share/octave/packages/
+
+# The call to exit() happens in a private library
+octave: shlib-calls-exit usr/lib/*/octave/*/liboctgui.so.*
