@@ -56,8 +56,8 @@ Build-Depends: automake,
   zip
 Standards-Version: 3.9.6
 Homepage: http://www.octave.org/
-Vcs-Git: git://anonscm.debian.org/pkg-octave/octave.git
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-octave/octave.git
+Vcs-Git: https://alioth.debian.org/anonscm/git/pkg-octave/octave.git
+Vcs-Browser: https://anonscm.debian.org/gitweb/?p=pkg-octave/octave.git
 
 Package: octave
 Architecture: any
