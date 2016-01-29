@@ -17,3 +17,4 @@
 /debian/octave
 /debian/tmp
 /debian/debhelper-build-stamp
+/debian/.debhelper
