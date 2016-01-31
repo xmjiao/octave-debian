@@ -42,7 +42,7 @@ ifneq ($(wildcard /usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial/libhdf5.so),)
 	--with-hdf5-libdir=/usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial
 endif
 
-# Hardening setings:
+# Hardening settings:
 # - provide "bindnow" linker flag in ELF binaries
 # - set position independent executable (PIE) linker flag
 export DEB_BUILD_MAINT_OPTIONS=hardening=+pie,+bindnow
