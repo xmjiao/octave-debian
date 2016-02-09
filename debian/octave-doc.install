@@ -1,0 +1,6 @@
+#!/usr/bin/dh-exec
+doc/liboctave/liboctave.pdf	usr/share/doc/octave
+doc/interpreter/octave.pdf	usr/share/doc/octave
+doc/refcard/refcard-a4.pdf	usr/share/doc/octave
+doc/refcard/refcard-legal.pdf	usr/share/doc/octave
+doc/refcard/refcard-letter.pdf	usr/share/doc/octave
