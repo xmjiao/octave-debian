@@ -1,4 +1,4 @@
-enable_dirs_in_pkg
+octave-pkgbuilddir.patch
 drop_versioned_binaries.diff
 install_libraries_publically
 no_pdf_in_print.diff
