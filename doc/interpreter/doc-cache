@@ -1,4 +1,4 @@
-# doc-cache created by Octave 4.0.1-rc1
+# doc-cache created by Octave 4.0.1-rc4
 # name: cache
 # type: cell
 # rows: 3
@@ -18689,7 +18689,7 @@ patch
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2374
+# length: 2375
  -- Function File: patch ()
  -- Function File: patch (X, Y, C)
  -- Function File: patch (X, Y, Z, C)
@@ -18706,7 +18706,7 @@ patch
 
      If C is a vector of length N then the ith polygon will have a color determined by scaling entry C(i) according to 'caxis' and then indexing into the current colormap.  More complicated coloring situations require directly manipulating patch property/value pairs.
 
-     Instead of specifying polygons by matrices X and Y, it is possible to present a unique list of vertices and then a list of polygon faces created from those vertices.  In this case the "Vertices" matrix will be an Nx2 (2-D patch) or Nx3 (3-D path).  The MxN "Faces" matrix describes M polygons having N vertices--each row describes a single polygon and each column entry is an index into the "Vertices" matrix to identify a vertex.  The patch object can be created by directly passing the property/value pairs "Vertices"/VERTS, "Faces"/FACES as inputs.
+     Instead of specifying polygons by matrices X and Y, it is possible to present a unique list of vertices and then a list of polygon faces created from those vertices.  In this case the "Vertices" matrix will be an Nx2 (2-D patch) or Nx3 (3-D patch).  The MxN "Faces" matrix describes M polygons having N vertices--each row describes a single polygon and each column entry is an index into the "Vertices" matrix to identify a vertex.  The patch object can be created by directly passing the property/value pairs "Vertices"/VERTS, "Faces"/FACES as inputs.
 
      A third input form is to create a structure FV with the fields "vertices", "faces", and optionally "facevertexcdata".
 
@@ -51424,7 +51424,7 @@ rande
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1090
+# length: 1096
  -- Built-in Function: rande (N)
  -- Built-in Function: rande (M, N, ...)
  -- Built-in Function: rande ([M N ...])
@@ -51440,7 +51440,7 @@ rande
 
      The arguments are handled the same as the arguments for 'rand'.
 
-     By default, 'randn' uses the Marsaglia and Tsang "Ziggurat technique" to transform from a uniform to a normal distribution.
+     By default, 'rande' uses the Marsaglia and Tsang "Ziggurat technique" to transform from a uniform to an exponential distribution.
 
      The class of the value returned can be controlled by a trailing "double" or "single" argument.  These are the only valid classes.
 

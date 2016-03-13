@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: interpn.eps
-%%Creator: gnuplot 5.0 patchlevel 1
-%%CreationDate: Mon Jan 18 14:28:16 2016
+%%Creator: gnuplot 5.0 patchlevel 2
+%%CreationDate: Thu Mar 10 15:16:29 2016
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -12,7 +12,7 @@ gnudict begin
 % The following true/false flags may be edited by hand if desired.
 % The unit line width and grayscale image gamma correction may also be changed.
 %
-/Color false def
+/Color true def
 /Blacktext false def
 /Solid false def
 /Dashlength 2 def
@@ -48,7 +48,7 @@ gnudict begin
   } if
 } def
 %
-% Gnuplot Prolog Version 5.0 (Dec 2014)
+% Gnuplot Prolog Version 5.1 (Oct 2015)
 %
 %/SuppressPDFMark true def
 %
@@ -97,8 +97,9 @@ gnudict begin
 /LC7 {1 0.3 0} def
 /LC8 {0.5 0.5 0.5} def
 % Default dash patterns (version 5.0)
+/LTB {BL [] LCb DL} def
 /LTw {PL [] 1 setgray} def
-/LTb {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 /LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
 /LT0 {PL [] LC0 DL} def
 /LT1 {PL [2 dl1 3 dl2] LC1 DL} def
@@ -465,15 +466,14 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (interpn.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 5.0 patchlevel 1)
+  /Creator (gnuplot 5.0 patchlevel 2)
   /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Mon Jan 18 14:28:16 2016)
+  /CreationDate (Thu Mar 10 15:16:29 2016)
   /DOCINFO pdfmark
 end
 } ifelse
-end
 %
 % Support for boxed text - Ethan A Merritt May 2005
 %
@@ -499,6 +499,10 @@ end
 /Boxing false def
 /textshow { ExtendTextBox Gshow } def
 %
+% redundant definitions for compatibility with prologue.ps older than 5.0.2
+/LTB {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
+end
 %%EndProlog
 %%Page: 1 1
 gnudict begin
@@ -586,8 +590,7 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 } ifelse
 1.000 UL
 LTb
-LCb setrgbcolor
-0.500 UL
+1.00 1.00 1.00 C 0.500 UL
 LTb
 LCb setrgbcolor
 1.000 UP
@@ -3845,8 +3848,7 @@ LCb setrgbcolor
 959 1684 M
 -84 35 V
 stroke
-LCb setrgbcolor
-3450 609 M
+0.00 0.00 0.00 C 3450 609 M
 [ [({}) 200.0 0.0 true true 0 (-1)]
 ] -66.7 MLshow
 0.500 UL
@@ -3863,8 +3865,7 @@ LCb setrgbcolor
 4083 873 M
 -84 35 V
 stroke
-LCb setrgbcolor
-4196 793 M
+0.00 0.00 0.00 C 4196 793 M
 [ [({}) 200.0 0.0 true true 0 (-0.5)]
 ] -66.7 MLshow
 0.500 UL
@@ -3881,8 +3882,7 @@ LCb setrgbcolor
 4830 1057 M
 -84 35 V
 stroke
-LCb setrgbcolor
-4944 978 M
+0.00 0.00 0.00 C 4944 978 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MLshow
 0.500 UL
@@ -3899,8 +3899,7 @@ LCb setrgbcolor
 5577 1241 M
 -83 35 V
 stroke
-LCb setrgbcolor
-5691 1162 M
+0.00 0.00 0.00 C 5691 1162 M
 [ [({}) 200.0 0.0 true true 0 (0.5)]
 ] -66.7 MLshow
 0.500 UL
@@ -3922,8 +3921,7 @@ LCb setrgbcolor
 3947 2421 M
 -83 35 V
 stroke
-LCb setrgbcolor
-6438 1346 M
+0.00 0.00 0.00 C 6438 1346 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MLshow
 0.500 UL
@@ -3945,8 +3943,7 @@ LCb setrgbcolor
 6241 1460 M
 70 18 V
 stroke
-LCb setrgbcolor
-3088 667 M
+0.00 0.00 0.00 C 3088 667 M
 [ [({}) 200.0 0.0 true true 0 (-1)]
 ] -66.7 MCshow
 0.500 UL
@@ -3968,8 +3965,7 @@ LCb setrgbcolor
 5668 1701 M
 70 17 V
 stroke
-LCb setrgbcolor
-2514 907 M
+0.00 0.00 0.00 C 2514 907 M
 [ [({}) 200.0 0.0 true true 0 (-0.5)]
 ] -66.7 MCshow
 0.500 UL
@@ -3986,8 +3982,7 @@ LCb setrgbcolor
 2036 1186 M
 70 18 V
 stroke
-LCb setrgbcolor
-1941 1147 M
+0.00 0.00 0.00 C 1941 1147 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MCshow
 0.500 UL
@@ -4014,8 +4009,7 @@ LCb setrgbcolor
 4521 2181 M
 70 17 V
 stroke
-LCb setrgbcolor
-1367 1387 M
+0.00 0.00 0.00 C 1367 1387 M
 [ [({}) 200.0 0.0 true true 0 (0.5)]
 ] -66.7 MCshow
 0.500 UL
@@ -4042,8 +4036,7 @@ LCb setrgbcolor
 3947 2421 M
 70 17 V
 stroke
-LCb setrgbcolor
-794 1628 M
+0.00 0.00 0.00 C 794 1628 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MCshow
 0.500 UL
@@ -4070,8 +4063,7 @@ LCb setrgbcolor
 871 1684 M
 88 0 V
 stroke
-LCb setrgbcolor
-744 1684 M
+0.00 0.00 0.00 C 744 1684 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MRshow
 0.500 UL
@@ -4098,8 +4090,7 @@ LCb setrgbcolor
 871 2208 M
 88 0 V
 stroke
-LCb setrgbcolor
-744 2208 M
+0.00 0.00 0.00 C 744 2208 M
 [ [({}) 200.0 0.0 true true 0 (0.5)]
 ] -66.7 MRshow
 0.500 UL
@@ -4121,8 +4112,7 @@ LCb setrgbcolor
 871 2731 M
 88 0 V
 stroke
-LCb setrgbcolor
-744 2731 M
+0.00 0.00 0.00 C 744 2731 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MRshow
 0.500 UL
@@ -4154,8 +4144,7 @@ LCb setrgbcolor
 871 3255 M
 88 0 V
 stroke
-LCb setrgbcolor
-744 3255 M
+0.00 0.00 0.00 C 744 3255 M
 [ [({}) 200.0 0.0 true true 0 (1.5)]
 ] -66.7 MRshow
 0.500 UL
@@ -4182,8 +4171,7 @@ LCb setrgbcolor
 871 3780 M
 88 0 V
 stroke
-LCb setrgbcolor
-744 3780 M
+0.00 0.00 0.00 C 744 3780 M
 [ [({}) 200.0 0.0 true true 0 (2)]
 ] -66.7 MRshow
 0.500 UL

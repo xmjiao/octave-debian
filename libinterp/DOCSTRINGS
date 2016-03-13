@@ -11647,8 +11647,9 @@ Return a matrix with exponentially distributed random elements.
 
 The arguments are handled the same as the arguments for @code{rand}.
 
-By default, @code{randn} uses the @nospell{Marsaglia and Tsang}
-``Ziggurat technique'' to transform from a uniform to a normal distribution.
+By default, @code{rande} uses the @nospell{Marsaglia and Tsang}
+``Ziggurat technique'' to transform from a uniform to an exponential
+distribution.
 
 The class of the value returned can be controlled by a trailing
 @qcode{"double"} or @qcode{"single"} argument.  These are the only valid

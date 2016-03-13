@@ -1367,6 +1367,9 @@
 /* Define to 1 if you have the <osmesa.h> header file. */
 #undef HAVE_OSMESA_H
 
+/* Define to 1 if C++ allows overload of char, int8_t, and uint8_t types. */
+#undef HAVE_OVERLOAD_CHAR_INT8_TYPES
+
 /* Define to 1 if getcwd works, except it sometimes fails when it shouldn't,
    setting errno to ERANGE, ENAMETOOLONG, or ENOENT. */
 #undef HAVE_PARTLY_WORKING_GETCWD

@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: voronoi.eps
-%%Creator: gnuplot 5.0 patchlevel 1
-%%CreationDate: Mon Jan 18 14:28:16 2016
+%%Creator: gnuplot 5.0 patchlevel 2
+%%CreationDate: Thu Mar 10 15:16:30 2016
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -12,7 +12,7 @@ gnudict begin
 % The following true/false flags may be edited by hand if desired.
 % The unit line width and grayscale image gamma correction may also be changed.
 %
-/Color false def
+/Color true def
 /Blacktext false def
 /Solid false def
 /Dashlength 2 def
@@ -48,7 +48,7 @@ gnudict begin
   } if
 } def
 %
-% Gnuplot Prolog Version 5.0 (Dec 2014)
+% Gnuplot Prolog Version 5.1 (Oct 2015)
 %
 %/SuppressPDFMark true def
 %
@@ -97,8 +97,9 @@ gnudict begin
 /LC7 {1 0.3 0} def
 /LC8 {0.5 0.5 0.5} def
 % Default dash patterns (version 5.0)
+/LTB {BL [] LCb DL} def
 /LTw {PL [] 1 setgray} def
-/LTb {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 /LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
 /LT0 {PL [] LC0 DL} def
 /LT1 {PL [2 dl1 3 dl2] LC1 DL} def
@@ -465,15 +466,14 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (voronoi.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 5.0 patchlevel 1)
+  /Creator (gnuplot 5.0 patchlevel 2)
   /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Mon Jan 18 14:28:16 2016)
+  /CreationDate (Thu Mar 10 15:16:30 2016)
   /DOCINFO pdfmark
 end
 } ifelse
-end
 %
 % Support for boxed text - Ethan A Merritt May 2005
 %
@@ -499,6 +499,10 @@ end
 /Boxing false def
 /textshow { ExtendTextBox Gshow } def
 %
+% redundant definitions for compatibility with prologue.ps older than 5.0.2
+/LTB {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
+end
 %%EndProlog
 %%Page: 1 1
 gnudict begin
@@ -586,8 +590,7 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 } ifelse
 1.000 UL
 LTb
-LCb setrgbcolor
-1.000 660 400 6178 4398 BoxColFill
+1.00 1.00 1.00 C 1.000 660 400 6178 4398 BoxColFill
 0.500 UL
 LTb
 LCb setrgbcolor
@@ -596,8 +599,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 400 M
+0.00 0.00 0.00 C 540 400 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MRshow
 0.500 UL
@@ -608,8 +610,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 1280 M
+0.00 0.00 0.00 C 540 1280 M
 [ [({}) 200.0 0.0 true true 0 (0.2)]
 ] -66.7 MRshow
 0.500 UL
@@ -620,8 +621,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 2160 M
+0.00 0.00 0.00 C 540 2160 M
 [ [({}) 200.0 0.0 true true 0 (0.4)]
 ] -66.7 MRshow
 0.500 UL
@@ -632,8 +632,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 3039 M
+0.00 0.00 0.00 C 540 3039 M
 [ [({}) 200.0 0.0 true true 0 (0.6)]
 ] -66.7 MRshow
 0.500 UL
@@ -644,8 +643,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 3919 M
+0.00 0.00 0.00 C 540 3919 M
 [ [({}) 200.0 0.0 true true 0 (0.8)]
 ] -66.7 MRshow
 0.500 UL
@@ -656,8 +654,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 4799 M
+0.00 0.00 0.00 C 540 4799 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MRshow
 0.500 UL
@@ -668,8 +665,7 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-660 200 M
+0.00 0.00 0.00 C 660 200 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MCshow
 0.500 UL
@@ -680,8 +676,7 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-1896 200 M
+0.00 0.00 0.00 C 1896 200 M
 [ [({}) 200.0 0.0 true true 0 (0.2)]
 ] -66.7 MCshow
 0.500 UL
@@ -692,8 +687,7 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-3132 200 M
+0.00 0.00 0.00 C 3132 200 M
 [ [({}) 200.0 0.0 true true 0 (0.4)]
 ] -66.7 MCshow
 0.500 UL
@@ -704,8 +698,7 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-4367 200 M
+0.00 0.00 0.00 C 4367 200 M
 [ [({}) 200.0 0.0 true true 0 (0.6)]
 ] -66.7 MCshow
 0.500 UL
@@ -716,8 +709,7 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-5603 200 M
+0.00 0.00 0.00 C 5603 200 M
 [ [({}) 200.0 0.0 true true 0 (0.8)]
 ] -66.7 MCshow
 0.500 UL
@@ -728,15 +720,14 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-6839 200 M
+0.00 0.00 0.00 C 6839 200 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MCshow
 0.500 UL
 LTb
 LCb setrgbcolor
 0.500 UL
-LTb
+LTB
 LCb setrgbcolor
 660 4799 N
 660 400 L
@@ -760,15 +751,12 @@ Z stroke
 % Begin plot #1
 0.500 UL
 LTb
-LCb setrgbcolor
-LCb setrgbcolor
-6719 4486 M
+0.00 0.00 1.00 C 0.00 0.00 0.00 C 6719 4486 M
 [ [({}) 200.0 0.0 true true 0 (Delaunay Triangulation)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-LCb setrgbcolor
-3416 4486 M
+0.00 0.00 1.00 C 3416 4486 M
 543 0 V
 1516 3495 M
 2954 969 V
@@ -814,163 +802,139 @@ LCb setrgbcolor
 % Begin plot #2
 stroke
 LTb
-LCb setrgbcolor
-LCb setrgbcolor
-6719 3986 M
+1.00 0.00 0.00 C 0.00 0.00 0.00 C 6719 3986 M
 [ [({}) 200.0 0.0 true true 0 (Voronoi Diagram)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-LCb setrgbcolor
-3416 3986 M
+1.00 0.00 0.00 C 3416 3986 M
 543 0 V
 % End plot #2
 % Begin plot #3
 stroke
 LTb
-LCb setrgbcolor
-6839 1994 M
+1.00 0.00 0.00 C 6839 1994 M
 4874 1787 L
 % End plot #3
 % Begin plot #4
 stroke
 LTb
-LCb setrgbcolor
-6839 4028 M
+1.00 0.00 0.00 C 6839 4028 M
 5277 3439 L
 % End plot #4
 % Begin plot #5
 stroke
 LTb
-LCb setrgbcolor
-4874 1787 M
+1.00 0.00 0.00 C 4874 1787 M
 403 1652 V
 % End plot #5
 % Begin plot #6
 stroke
 LTb
-LCb setrgbcolor
-4874 1787 M
+1.00 0.00 0.00 C 4874 1787 M
 -27 -25 V
 % End plot #6
 % Begin plot #7
 stroke
 LTb
-LCb setrgbcolor
-5277 3439 M
+1.00 0.00 0.00 C 5277 3439 M
 3200 3660 L
 % End plot #7
 % Begin plot #8
 stroke
 LTb
-LCb setrgbcolor
-2254 400 M
+1.00 0.00 0.00 C 2254 400 M
 188 728 V
 % End plot #8
 % Begin plot #9
 stroke
 LTb
-LCb setrgbcolor
-2442 1128 M
+1.00 0.00 0.00 C 2442 1128 M
 5224 451 L
 % End plot #9
 % Begin plot #10
 stroke
 LTb
-LCb setrgbcolor
-2442 1128 M
+1.00 0.00 0.00 C 2442 1128 M
 -10 63 V
 % End plot #10
 % Begin plot #11
 stroke
 LTb
-LCb setrgbcolor
-5224 451 M
+1.00 0.00 0.00 C 5224 451 M
 32 -51 V
 % End plot #11
 % Begin plot #12
 stroke
 LTb
-LCb setrgbcolor
-5224 451 M
+1.00 0.00 0.00 C 5224 451 M
 4847 1762 L
 % End plot #12
 % Begin plot #13
 stroke
 LTb
-LCb setrgbcolor
-4847 1762 M
+1.00 0.00 0.00 C 4847 1762 M
 -830 88 V
 % End plot #13
 % Begin plot #14
 stroke
 LTb
-LCb setrgbcolor
-660 2216 M
+1.00 0.00 0.00 C 660 2216 M
 146 12 V
 % End plot #14
 % Begin plot #15
 stroke
 LTb
-LCb setrgbcolor
-2462 4799 M
+1.00 0.00 0.00 C 2462 4799 M
 3200 3660 L
 % End plot #15
 % Begin plot #16
 stroke
 LTb
-LCb setrgbcolor
-1396 4799 M
+1.00 0.00 0.00 C 1396 4799 M
 806 2228 L
 % End plot #16
 % Begin plot #17
 stroke
 LTb
-LCb setrgbcolor
-3200 3660 M
+1.00 0.00 0.00 C 3200 3660 M
 2809 3073 L
 % End plot #17
 % Begin plot #18
 stroke
 LTb
-LCb setrgbcolor
-806 2228 M
+1.00 0.00 0.00 C 806 2228 M
 319 -22 V
 % End plot #18
 % Begin plot #19
 stroke
 LTb
-LCb setrgbcolor
-2432 1191 M
+1.00 0.00 0.00 C 2432 1191 M
 1585 659 V
 % End plot #19
 % Begin plot #20
 stroke
 LTb
-LCb setrgbcolor
-2432 1191 M
+1.00 0.00 0.00 C 2432 1191 M
 1125 2206 L
 % End plot #20
 % Begin plot #21
 stroke
 LTb
-LCb setrgbcolor
-4017 1850 M
+1.00 0.00 0.00 C 4017 1850 M
 2809 3073 L
 % End plot #21
 % Begin plot #22
 stroke
 LTb
-LCb setrgbcolor
-2809 3073 M
+1.00 0.00 0.00 C 2809 3073 M
 1125 2206 L
 % End plot #22
 % Begin plot #23
 stroke
 3.000 UL
 LTb
-LCb setrgbcolor
-5277 2265 M
+0.00 1.00 0.00 C 5277 2265 M
 -52 0 V
 -52 2 V
 -51 3 V

@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: spchol.eps
-%%Creator: gnuplot 5.0 patchlevel 1
-%%CreationDate: Mon Jan 18 14:28:18 2016
+%%Creator: gnuplot 5.0 patchlevel 2
+%%CreationDate: Thu Mar 10 15:16:33 2016
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -12,7 +12,7 @@ gnudict begin
 % The following true/false flags may be edited by hand if desired.
 % The unit line width and grayscale image gamma correction may also be changed.
 %
-/Color false def
+/Color true def
 /Blacktext false def
 /Solid false def
 /Dashlength 2 def
@@ -48,7 +48,7 @@ gnudict begin
   } if
 } def
 %
-% Gnuplot Prolog Version 5.0 (Dec 2014)
+% Gnuplot Prolog Version 5.1 (Oct 2015)
 %
 %/SuppressPDFMark true def
 %
@@ -97,8 +97,9 @@ gnudict begin
 /LC7 {1 0.3 0} def
 /LC8 {0.5 0.5 0.5} def
 % Default dash patterns (version 5.0)
+/LTB {BL [] LCb DL} def
 /LTw {PL [] 1 setgray} def
-/LTb {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 /LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
 /LT0 {PL [] LC0 DL} def
 /LT1 {PL [2 dl1 3 dl2] LC1 DL} def
@@ -465,15 +466,14 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (spchol.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 5.0 patchlevel 1)
+  /Creator (gnuplot 5.0 patchlevel 2)
   /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Mon Jan 18 14:28:18 2016)
+  /CreationDate (Thu Mar 10 15:16:33 2016)
   /DOCINFO pdfmark
 end
 } ifelse
-end
 %
 % Support for boxed text - Ethan A Merritt May 2005
 %
@@ -499,6 +499,10 @@ end
 /Boxing false def
 /textshow { ExtendTextBox Gshow } def
 %
+% redundant definitions for compatibility with prologue.ps older than 5.0.2
+/LTB {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
+end
 %%EndProlog
 %%Page: 1 1
 gnudict begin
@@ -586,8 +590,7 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 } ifelse
 1.000 UL
 LTb
-LCb setrgbcolor
-1.000 660 400 6178 4398 BoxColFill
+1.00 1.00 1.00 C 1.000 660 400 6178 4398 BoxColFill
 0.500 UL
 LTb
 LCb setrgbcolor
@@ -596,8 +599,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 400 M
+0.00 0.00 0.00 C 540 400 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MRshow
 0.500 UL
@@ -608,8 +610,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 1494 M
+0.00 0.00 0.00 C 540 1494 M
 [ [({}) 200.0 0.0 true true 0 (50)]
 ] -66.7 MRshow
 0.500 UL
@@ -620,8 +621,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 2589 M
+0.00 0.00 0.00 C 540 2589 M
 [ [({}) 200.0 0.0 true true 0 (100)]
 ] -66.7 MRshow
 0.500 UL
@@ -632,8 +632,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 3683 M
+0.00 0.00 0.00 C 540 3683 M
 [ [({}) 200.0 0.0 true true 0 (150)]
 ] -66.7 MRshow
 0.500 UL
@@ -644,8 +643,7 @@ LCb setrgbcolor
 6091 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-540 4777 M
+0.00 0.00 0.00 C 540 4777 M
 [ [({}) 200.0 0.0 true true 0 (200)]
 ] -66.7 MRshow
 0.500 UL
@@ -656,8 +654,7 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-660 200 M
+0.00 0.00 0.00 C 660 200 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MCshow
 0.500 UL
@@ -668,8 +665,7 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-2197 200 M
+0.00 0.00 0.00 C 2197 200 M
 [ [({}) 200.0 0.0 true true 0 (50)]
 ] -66.7 MCshow
 0.500 UL
@@ -680,8 +676,7 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-3734 200 M
+0.00 0.00 0.00 C 3734 200 M
 [ [({}) 200.0 0.0 true true 0 (100)]
 ] -66.7 MCshow
 0.500 UL
@@ -692,8 +687,7 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-5271 200 M
+0.00 0.00 0.00 C 5271 200 M
 [ [({}) 200.0 0.0 true true 0 (150)]
 ] -66.7 MCshow
 0.500 UL
@@ -704,15 +698,14 @@ LCb setrgbcolor
 0 4311 R
 0 -88 V
 stroke
-LCb setrgbcolor
-6808 200 M
+0.00 0.00 0.00 C 6808 200 M
 [ [({}) 200.0 0.0 true true 0 (200)]
 ] -66.7 MCshow
 0.500 UL
 LTb
 LCb setrgbcolor
 0.500 UL
-LTb
+LTB
 LCb setrgbcolor
 660 4799 N
 660 400 L
@@ -728,8 +721,7 @@ LCb setrgbcolor
 0.667 UP
 0.500 UL
 LTb
-LCb setrgbcolor
-691 422 CircleF
+0.00 0.00 1.00 C 691 422 CircleF
 721 422 CircleF
 721 444 CircleF
 752 444 CircleF
