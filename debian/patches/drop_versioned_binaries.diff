@@ -15,26 +15,6 @@ Last-Update: 2015-04-17
  
  uninstall-local: remove-version-links
  
---- a/src/main.in.cc
-+++ b/src/main.in.cc
-@@ -441,7 +441,7 @@ main (int argc, char **argv)
-   std::string file = octave_archlibdir + dir_sep_char + "octave-gui";
- #else
-   std::string file
--    = octave_bindir + dir_sep_char + "octave-cli-" OCTAVE_VERSION;
-+    = octave_bindir + dir_sep_char + "octave-cli";
- #endif
- 
-   char **new_argv = new char * [argc + 1];
-@@ -498,7 +498,7 @@ main (int argc, char **argv)
-           start_gui = false;
-           gui_libs = false;
- 
--          file = octave_bindir + dir_sep_char + "octave-cli-" OCTAVE_VERSION;
-+          file = octave_bindir + dir_sep_char + "octave-cli";
- 
-           if (warn_display)
-             {
 --- a/scripts/miscellaneous/mkoctfile.m
 +++ b/scripts/miscellaneous/mkoctfile.m
 @@ -148,7 +148,7 @@ function [output, status] = mkoctfile (v
