@@ -5,7 +5,7 @@ START-INFO-DIR-ENTRY
 
 END-INFO-DIR-ENTRY
 
-   Copyright (C) 1996-2013 John W. Eaton.
+   Copyright (C) 1996-2016 John W. Eaton.
 
    Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -6989,27 +6989,27 @@ Function Index
 * rande <10>:                            Special Utility Matrices.
                                                              (line  314)
 * randg:                                 Special Utility Matrices.
-                                                             (line  379)
-* randg <1>:                             Special Utility Matrices.
                                                              (line  380)
-* randg <2>:                             Special Utility Matrices.
+* randg <1>:                             Special Utility Matrices.
                                                              (line  381)
-* randg <3>:                             Special Utility Matrices.
+* randg <2>:                             Special Utility Matrices.
                                                              (line  382)
-* randg <4>:                             Special Utility Matrices.
+* randg <3>:                             Special Utility Matrices.
                                                              (line  383)
-* randg <5>:                             Special Utility Matrices.
+* randg <4>:                             Special Utility Matrices.
                                                              (line  384)
-* randg <6>:                             Special Utility Matrices.
+* randg <5>:                             Special Utility Matrices.
                                                              (line  385)
-* randg <7>:                             Special Utility Matrices.
+* randg <6>:                             Special Utility Matrices.
                                                              (line  386)
-* randg <8>:                             Special Utility Matrices.
+* randg <7>:                             Special Utility Matrices.
                                                              (line  387)
-* randg <9>:                             Special Utility Matrices.
+* randg <8>:                             Special Utility Matrices.
                                                              (line  388)
-* randg <10>:                            Special Utility Matrices.
+* randg <9>:                             Special Utility Matrices.
                                                              (line  389)
+* randg <10>:                            Special Utility Matrices.
+                                                             (line  390)
 * randi:                                 Special Utility Matrices.
                                                              (line  241)
 * randi <1>:                             Special Utility Matrices.
@@ -7043,31 +7043,31 @@ Function Index
 * randn <10>:                            Special Utility Matrices.
                                                              (line  285)
 * randp:                                 Special Utility Matrices.
-                                                             (line  332)
-* randp <1>:                             Special Utility Matrices.
                                                              (line  333)
-* randp <2>:                             Special Utility Matrices.
+* randp <1>:                             Special Utility Matrices.
                                                              (line  334)
-* randp <3>:                             Special Utility Matrices.
+* randp <2>:                             Special Utility Matrices.
                                                              (line  335)
-* randp <4>:                             Special Utility Matrices.
+* randp <3>:                             Special Utility Matrices.
                                                              (line  336)
-* randp <5>:                             Special Utility Matrices.
+* randp <4>:                             Special Utility Matrices.
                                                              (line  337)
-* randp <6>:                             Special Utility Matrices.
+* randp <5>:                             Special Utility Matrices.
                                                              (line  338)
-* randp <7>:                             Special Utility Matrices.
+* randp <6>:                             Special Utility Matrices.
                                                              (line  339)
-* randp <8>:                             Special Utility Matrices.
+* randp <7>:                             Special Utility Matrices.
                                                              (line  340)
-* randp <9>:                             Special Utility Matrices.
+* randp <8>:                             Special Utility Matrices.
                                                              (line  341)
-* randp <10>:                            Special Utility Matrices.
+* randp <9>:                             Special Utility Matrices.
                                                              (line  342)
+* randp <10>:                            Special Utility Matrices.
+                                                             (line  343)
 * randperm:                              Special Utility Matrices.
-                                                             (line  492)
-* randperm <1>:                          Special Utility Matrices.
                                                              (line  493)
+* randperm <1>:                          Special Utility Matrices.
+                                                             (line  494)
 * range:                                 Descriptive Statistics.
                                                              (line   88)
 * range <1>:                             Descriptive Statistics.

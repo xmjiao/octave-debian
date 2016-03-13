@@ -200,6 +200,14 @@ function [u, s, v, flag] = svds (A, k, sigma, opts)
     ## less than or equal to zero to within some tolerance scaled by the
     ## norm since if we don't we might end up with too many singular
     ## values.
+    if (b_sigma == 0)
+      if (sum (s>0) < k)
+        ## It may happen that the number of positive s is less than k.
+        ## In this case, take -s (if s in an eigenvalue, so is -s),
+        ## flipped upside-down.
+        s = flipud (-s);
+      endif
+    endif
     tol = norma * opts.tol;
     ind = find (s > tol);
     if (length (ind) < k)
@@ -277,8 +285,8 @@ endfunction
 %! [u2,s2,v2,flag] = svds (A,k,0,opts);
 %! s2 = diag (s2);
 %! assert (flag, !1);
-%! tol = 10 * eps() * norm(s2, 1);
-%! assert (s2, s(k:-1:1), tol);
+%! tol = 100 * eps() * norm(s2, 1);
+%! assert (s2, s(length(s2):-1:1), tol);
 %!
 %!testif HAVE_ARPACK, HAVE_UMFPACK
 %! idx = floor (n/2);

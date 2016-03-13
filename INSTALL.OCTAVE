@@ -540,12 +540,12 @@ system have a 64-bit address space.
    On 64-bit systems, Octave is limited to (approximately) the following
 array sizes when using the default 32-bit indexing mode:
 
-     double:         16GB
-     single:          8GB
-     uint64, int64:  16GB
-     uint32, int32:   8GB
-     uint16, int16:   4GB
-     uint8, int8:     2GB
+     double:         16 GB
+     single:          8 GB
+     uint64, int64:  16 GB
+     uint32, int32:   8 GB
+     uint16, int16:   4 GB
+     uint8, int8:     2 GB
 
    In each case, the limit is really (approximately) 2^{31} elements
 because of the default type of the value used for indexing arrays

@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: hist.eps
-%%Creator: gnuplot 5.0 patchlevel 1
-%%CreationDate: Mon Jan 18 14:28:17 2016
+%%Creator: gnuplot 5.0 patchlevel 2
+%%CreationDate: Thu Mar 10 15:16:31 2016
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -12,7 +12,7 @@ gnudict begin
 % The following true/false flags may be edited by hand if desired.
 % The unit line width and grayscale image gamma correction may also be changed.
 %
-/Color false def
+/Color true def
 /Blacktext false def
 /Solid false def
 /Dashlength 2 def
@@ -48,7 +48,7 @@ gnudict begin
   } if
 } def
 %
-% Gnuplot Prolog Version 5.0 (Dec 2014)
+% Gnuplot Prolog Version 5.1 (Oct 2015)
 %
 %/SuppressPDFMark true def
 %
@@ -97,8 +97,9 @@ gnudict begin
 /LC7 {1 0.3 0} def
 /LC8 {0.5 0.5 0.5} def
 % Default dash patterns (version 5.0)
+/LTB {BL [] LCb DL} def
 /LTw {PL [] 1 setgray} def
-/LTb {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 /LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
 /LT0 {PL [] LC0 DL} def
 /LT1 {PL [2 dl1 3 dl2] LC1 DL} def
@@ -465,15 +466,14 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (hist.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 5.0 patchlevel 1)
+  /Creator (gnuplot 5.0 patchlevel 2)
   /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Mon Jan 18 14:28:17 2016)
+  /CreationDate (Thu Mar 10 15:16:31 2016)
   /DOCINFO pdfmark
 end
 } ifelse
-end
 %
 % Support for boxed text - Ethan A Merritt May 2005
 %
@@ -499,6 +499,10 @@ end
 /Boxing false def
 /textshow { ExtendTextBox Gshow } def
 %
+% redundant definitions for compatibility with prologue.ps older than 5.0.2
+/LTB {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
+end
 %%EndProlog
 %%Page: 1 1
 gnudict begin
@@ -586,8 +590,7 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 } ifelse
 1.000 UL
 LTb
-LCb setrgbcolor
-1.000 980 640 5858 3798 BoxColFill
+1.00 1.00 1.00 C 1.000 980 640 5858 3798 BoxColFill
 0.500 UL
 LTb
 LCb setrgbcolor
@@ -596,8 +599,7 @@ LCb setrgbcolor
 5771 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-860 640 M
+0.00 0.00 0.00 C 860 640 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MRshow
 0.500 UL
@@ -608,8 +610,7 @@ LCb setrgbcolor
 5771 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-860 1400 M
+0.00 0.00 0.00 C 860 1400 M
 [ [({}) 200.0 0.0 true true 0 (200)]
 ] -66.7 MRshow
 0.500 UL
@@ -620,8 +621,7 @@ LCb setrgbcolor
 5771 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-860 2160 M
+0.00 0.00 0.00 C 860 2160 M
 [ [({}) 200.0 0.0 true true 0 (400)]
 ] -66.7 MRshow
 0.500 UL
@@ -632,8 +632,7 @@ LCb setrgbcolor
 5771 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-860 2919 M
+0.00 0.00 0.00 C 860 2919 M
 [ [({}) 200.0 0.0 true true 0 (600)]
 ] -66.7 MRshow
 0.500 UL
@@ -644,8 +643,7 @@ LCb setrgbcolor
 5771 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-860 3679 M
+0.00 0.00 0.00 C 860 3679 M
 [ [({}) 200.0 0.0 true true 0 (800)]
 ] -66.7 MRshow
 0.500 UL
@@ -656,8 +654,7 @@ LCb setrgbcolor
 5771 0 R
 -88 0 V
 stroke
-LCb setrgbcolor
-860 4439 M
+0.00 0.00 0.00 C 860 4439 M
 [ [({}) 200.0 0.0 true true 0 (1000)]
 ] -66.7 MRshow
 0.500 UL
@@ -668,8 +665,7 @@ LCb setrgbcolor
 0 3711 R
 0 -88 V
 stroke
-LCb setrgbcolor
-980 440 M
+0.00 0.00 0.00 C 980 440 M
 [ [({}) 200.0 0.0 true true 0 (-4)]
 ] -66.7 MCshow
 0.500 UL
@@ -680,8 +676,7 @@ LCb setrgbcolor
 0 3711 R
 0 -88 V
 stroke
-LCb setrgbcolor
-1712 440 M
+0.00 0.00 0.00 C 1712 440 M
 [ [({}) 200.0 0.0 true true 0 (-3)]
 ] -66.7 MCshow
 0.500 UL
@@ -692,8 +687,7 @@ LCb setrgbcolor
 0 3711 R
 0 -88 V
 stroke
-LCb setrgbcolor
-2445 440 M
+0.00 0.00 0.00 C 2445 440 M
 [ [({}) 200.0 0.0 true true 0 (-2)]
 ] -66.7 MCshow
 0.500 UL
@@ -704,8 +698,7 @@ LCb setrgbcolor
 0 3711 R
 0 -88 V
 stroke
-LCb setrgbcolor
-3177 440 M
+0.00 0.00 0.00 C 3177 440 M
 [ [({}) 200.0 0.0 true true 0 (-1)]
 ] -66.7 MCshow
 0.500 UL
@@ -716,8 +709,7 @@ LCb setrgbcolor
 0 3711 R
 0 -88 V
 stroke
-LCb setrgbcolor
-3910 440 M
+0.00 0.00 0.00 C 3910 440 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MCshow
 0.500 UL
@@ -728,8 +720,7 @@ LCb setrgbcolor
 0 3711 R
 0 -88 V
 stroke
-LCb setrgbcolor
-4642 440 M
+0.00 0.00 0.00 C 4642 440 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MCshow
 0.500 UL
@@ -740,8 +731,7 @@ LCb setrgbcolor
 0 3711 R
 0 -88 V
 stroke
-LCb setrgbcolor
-5374 440 M
+0.00 0.00 0.00 C 5374 440 M
 [ [({}) 200.0 0.0 true true 0 (2)]
 ] -66.7 MCshow
 0.500 UL
@@ -752,8 +742,7 @@ LCb setrgbcolor
 0 3711 R
 0 -88 V
 stroke
-LCb setrgbcolor
-6107 440 M
+0.00 0.00 0.00 C 6107 440 M
 [ [({}) 200.0 0.0 true true 0 (3)]
 ] -66.7 MCshow
 0.500 UL
@@ -764,15 +753,14 @@ LCb setrgbcolor
 0 3711 R
 0 -88 V
 stroke
-LCb setrgbcolor
-6839 440 M
+0.00 0.00 0.00 C 6839 440 M
 [ [({}) 200.0 0.0 true true 0 (4)]
 ] -66.7 MCshow
 0.500 UL
 LTb
 LCb setrgbcolor
 0.500 UL
-LTb
+LTB
 LCb setrgbcolor
 980 4439 N
 980 640 L
@@ -784,28 +772,24 @@ Z stroke
 0.500 UL
 LTb
 LCb setrgbcolor
-LCb setrgbcolor
-160 2539 M
+0.00 0.00 0.00 C 160 2539 M
 currentpoint gsave translate 90 rotate 0 0 moveto
 [ [({}) 200.0 0.0 true true 0 (Count)]
 ] -66.7 MCshow
 grestore
 LTb
-LCb setrgbcolor
-3909 140 M
+0.00 0.00 0.00 C 3909 140 M
 [ [({}) 200.0 0.0 true true 0 (Value)]
 ] -66.7 MCshow
 LTb
-LCb setrgbcolor
-3909 4739 M
+0.00 0.00 0.00 C 3909 4739 M
 [ [({}) 200.0 0.0 true true 0 (Histogram of 10,000 normally distributed random numbers)]
 ] -66.7 MCshow
 LTb
 % Begin plot #1
 1.000 UL
 LTb
-LCb setrgbcolor
-gsave 1080 640 N 0 11 V 178 0 V 0 -11 V 1 PolyFill
+0.00 0.00 0.50 C gsave 1080 640 N 0 11 V 178 0 V 0 -11 V 1 PolyFill
 1080 640 M
 0 11 V
 178 0 V
@@ -815,8 +799,7 @@ gsave 1080 640 N 0 11 V 178 0 V 0 -11 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-1080 640 M
+0.00 0.00 0.00 C 1080 640 M
 0 11 V
 178 0 V
 0 -11 V
@@ -826,9 +809,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT2
-LCb setrgbcolor
-gsave 1258 640 N 0 8 V 179 0 V 0 -8 V 1 PolyFill
+0.00 0.00 0.50 C gsave 1258 640 N 0 8 V 179 0 V 0 -8 V 1 PolyFill
 1258 640 M
 0 8 V
 179 0 V
@@ -838,8 +819,7 @@ gsave 1258 640 N 0 8 V 179 0 V 0 -8 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-1258 640 M
+0.00 0.00 0.00 C 1258 640 M
 0 8 V
 179 0 V
 0 -8 V
@@ -847,10 +827,9 @@ LCb setrgbcolor
 % End plot #4
 % Begin plot #5
 stroke
-2.000 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-gsave 1437 640 N 0 15 V 178 0 V 0 -15 V 1 PolyFill
+0.00 0.00 0.50 C gsave 1437 640 N 0 15 V 178 0 V 0 -15 V 1 PolyFill
 1437 640 M
 0 15 V
 178 0 V
@@ -860,8 +839,7 @@ gsave 1437 640 N 0 15 V 178 0 V 0 -15 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-1437 640 M
+0.00 0.00 0.00 C 1437 640 M
 0 15 V
 178 0 V
 0 -15 V
@@ -871,9 +849,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT6
-LCb setrgbcolor
-gsave 1615 640 N 0 49 V 178 0 V 0 -49 V 1 PolyFill
+0.00 0.00 0.50 C gsave 1615 640 N 0 49 V 178 0 V 0 -49 V 1 PolyFill
 1615 640 M
 0 49 V
 178 0 V
@@ -883,8 +859,7 @@ gsave 1615 640 N 0 49 V 178 0 V 0 -49 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-1615 640 M
+0.00 0.00 0.00 C 1615 640 M
 0 49 V
 178 0 V
 0 -49 V
@@ -894,9 +869,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT8
-LCb setrgbcolor
-gsave 1793 640 N 0 84 V 178 0 V 0 -84 V 1 PolyFill
+0.00 0.00 0.50 C gsave 1793 640 N 0 84 V 178 0 V 0 -84 V 1 PolyFill
 1793 640 M
 0 84 V
 178 0 V
@@ -906,8 +879,7 @@ gsave 1793 640 N 0 84 V 178 0 V 0 -84 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-1793 640 M
+0.00 0.00 0.00 C 1793 640 M
 0 84 V
 178 0 V
 0 -84 V
@@ -917,9 +889,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT1
-LCb setrgbcolor
-gsave 1971 640 N 0 182 V 178 0 V 0 -182 V 1 PolyFill
+0.00 0.00 0.50 C gsave 1971 640 N 0 182 V 178 0 V 0 -182 V 1 PolyFill
 1971 640 M
 0 182 V
 178 0 V
@@ -929,8 +899,7 @@ gsave 1971 640 N 0 182 V 178 0 V 0 -182 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-1971 640 M
+0.00 0.00 0.00 C 1971 640 M
 0 182 V
 178 0 V
 0 -182 V
@@ -940,9 +909,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT3
-LCb setrgbcolor
-gsave 2149 640 N 0 304 V 178 0 V 0 -304 V 1 PolyFill
+0.00 0.00 0.50 C gsave 2149 640 N 0 304 V 178 0 V 0 -304 V 1 PolyFill
 2149 640 M
 0 304 V
 178 0 V
@@ -952,8 +919,7 @@ gsave 2149 640 N 0 304 V 178 0 V 0 -304 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-2149 640 M
+0.00 0.00 0.00 C 2149 640 M
 0 304 V
 178 0 V
 0 -304 V
@@ -963,9 +929,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT5
-LCb setrgbcolor
-gsave 2327 640 N 0 517 V 179 0 V 0 -517 V 1 PolyFill
+0.00 0.00 0.50 C gsave 2327 640 N 0 517 V 179 0 V 0 -517 V 1 PolyFill
 2327 640 M
 0 517 V
 179 0 V
@@ -975,8 +939,7 @@ gsave 2327 640 N 0 517 V 179 0 V 0 -517 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-2327 640 M
+0.00 0.00 0.00 C 2327 640 M
 0 517 V
 179 0 V
 0 -517 V
@@ -986,9 +949,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT7
-LCb setrgbcolor
-gsave 2506 640 N 0 813 V 178 0 V 0 -813 V 1 PolyFill
+0.00 0.00 0.50 C gsave 2506 640 N 0 813 V 178 0 V 0 -813 V 1 PolyFill
 2506 640 M
 0 813 V
 178 0 V
@@ -998,8 +959,7 @@ gsave 2506 640 N 0 813 V 178 0 V 0 -813 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-2506 640 M
+0.00 0.00 0.00 C 2506 640 M
 0 813 V
 178 0 V
 0 -813 V
@@ -1009,9 +969,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT0
-LCb setrgbcolor
-gsave 2684 640 N 0 1087 V 178 0 V 0 -1087 V 1 PolyFill
+0.00 0.00 0.50 C gsave 2684 640 N 0 1087 V 178 0 V 0 -1087 V 1 PolyFill
 2684 640 M
 0 1087 V
 178 0 V
@@ -1021,8 +979,7 @@ gsave 2684 640 N 0 1087 V 178 0 V 0 -1087 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-2684 640 M
+0.00 0.00 0.00 C 2684 640 M
 0 1087 V
 178 0 V
 0 -1087 V
@@ -1032,9 +989,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT2
-LCb setrgbcolor
-gsave 2862 640 N 0 1584 V 178 0 V 0 -1584 V 1 PolyFill
+0.00 0.00 0.50 C gsave 2862 640 N 0 1584 V 178 0 V 0 -1584 V 1 PolyFill
 2862 640 M
 0 1584 V
 178 0 V
@@ -1044,8 +999,7 @@ gsave 2862 640 N 0 1584 V 178 0 V 0 -1584 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-2862 640 M
+0.00 0.00 0.00 C 2862 640 M
 0 1584 V
 178 0 V
 0 -1584 V
@@ -1055,9 +1009,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT4
-LCb setrgbcolor
-gsave 3040 640 N 0 2184 V 178 0 V 0 -2184 V 1 PolyFill
+0.00 0.00 0.50 C gsave 3040 640 N 0 2184 V 178 0 V 0 -2184 V 1 PolyFill
 3040 640 M
 0 2184 V
 178 0 V
@@ -1067,8 +1019,7 @@ gsave 3040 640 N 0 2184 V 178 0 V 0 -2184 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-3040 640 M
+0.00 0.00 0.00 C 3040 640 M
 0 2184 V
 178 0 V
 0 -2184 V
@@ -1078,9 +1029,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT6
-LCb setrgbcolor
-gsave 3218 640 N 0 2769 V 179 0 V 0 -2769 V 1 PolyFill
+0.00 0.00 0.50 C gsave 3218 640 N 0 2769 V 179 0 V 0 -2769 V 1 PolyFill
 3218 640 M
 0 2769 V
 179 0 V
@@ -1090,8 +1039,7 @@ gsave 3218 640 N 0 2769 V 179 0 V 0 -2769 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-3218 640 M
+0.00 0.00 0.00 C 3218 640 M
 0 2769 V
 179 0 V
 0 -2769 V
@@ -1101,9 +1049,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT8
-LCb setrgbcolor
-gsave 3397 640 N 0 2929 V 178 0 V 0 -2929 V 1 PolyFill
+0.00 0.00 0.50 C gsave 3397 640 N 0 2929 V 178 0 V 0 -2929 V 1 PolyFill
 3397 640 M
 0 2929 V
 178 0 V
@@ -1113,8 +1059,7 @@ gsave 3397 640 N 0 2929 V 178 0 V 0 -2929 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-3397 640 M
+0.00 0.00 0.00 C 3397 640 M
 0 2929 V
 178 0 V
 0 -2929 V
@@ -1124,9 +1069,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT1
-LCb setrgbcolor
-gsave 3575 640 N 0 3343 V 178 0 V 0 -3343 V 1 PolyFill
+0.00 0.00 0.50 C gsave 3575 640 N 0 3343 V 178 0 V 0 -3343 V 1 PolyFill
 3575 640 M
 0 3343 V
 178 0 V
@@ -1136,8 +1079,7 @@ gsave 3575 640 N 0 3343 V 178 0 V 0 -3343 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-3575 640 M
+0.00 0.00 0.00 C 3575 640 M
 0 3343 V
 178 0 V
 0 -3343 V
@@ -1147,9 +1089,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT3
-LCb setrgbcolor
-gsave 3753 640 N 0 3681 V 178 0 V 0 -3681 V 1 PolyFill
+0.00 0.00 0.50 C gsave 3753 640 N 0 3681 V 178 0 V 0 -3681 V 1 PolyFill
 3753 640 M
 0 3681 V
 178 0 V
@@ -1159,8 +1099,7 @@ gsave 3753 640 N 0 3681 V 178 0 V 0 -3681 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-3753 640 M
+0.00 0.00 0.00 C 3753 640 M
 0 3681 V
 178 0 V
 0 -3681 V
@@ -1170,9 +1109,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT5
-LCb setrgbcolor
-gsave 3931 640 N 0 3723 V 178 0 V 0 -3723 V 1 PolyFill
+0.00 0.00 0.50 C gsave 3931 640 N 0 3723 V 178 0 V 0 -3723 V 1 PolyFill
 3931 640 M
 0 3723 V
 178 0 V
@@ -1182,8 +1119,7 @@ gsave 3931 640 N 0 3723 V 178 0 V 0 -3723 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-3931 640 M
+0.00 0.00 0.00 C 3931 640 M
 0 3723 V
 178 0 V
 0 -3723 V
@@ -1193,9 +1129,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT7
-LCb setrgbcolor
-gsave 4109 640 N 0 3487 V 178 0 V 0 -3487 V 1 PolyFill
+0.00 0.00 0.50 C gsave 4109 640 N 0 3487 V 178 0 V 0 -3487 V 1 PolyFill
 4109 640 M
 0 3487 V
 178 0 V
@@ -1205,8 +1139,7 @@ gsave 4109 640 N 0 3487 V 178 0 V 0 -3487 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-4109 640 M
+0.00 0.00 0.00 C 4109 640 M
 0 3487 V
 178 0 V
 0 -3487 V
@@ -1216,9 +1149,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT0
-LCb setrgbcolor
-gsave 4287 640 N 0 3013 V 179 0 V 0 -3013 V 1 PolyFill
+0.00 0.00 0.50 C gsave 4287 640 N 0 3013 V 179 0 V 0 -3013 V 1 PolyFill
 4287 640 M
 0 3013 V
 179 0 V
@@ -1228,8 +1159,7 @@ gsave 4287 640 N 0 3013 V 179 0 V 0 -3013 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-4287 640 M
+0.00 0.00 0.00 C 4287 640 M
 0 3013 V
 179 0 V
 0 -3013 V
@@ -1239,9 +1169,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT2
-LCb setrgbcolor
-gsave 4466 640 N 0 2287 V 178 0 V 0 -2287 V 1 PolyFill
+0.00 0.00 0.50 C gsave 4466 640 N 0 2287 V 178 0 V 0 -2287 V 1 PolyFill
 4466 640 M
 0 2287 V
 178 0 V
@@ -1251,8 +1179,7 @@ gsave 4466 640 N 0 2287 V 178 0 V 0 -2287 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-4466 640 M
+0.00 0.00 0.00 C 4466 640 M
 0 2287 V
 178 0 V
 0 -2287 V
@@ -1262,9 +1189,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT4
-LCb setrgbcolor
-gsave 4644 640 N 0 2002 V 178 0 V 0 -2002 V 1 PolyFill
+0.00 0.00 0.50 C gsave 4644 640 N 0 2002 V 178 0 V 0 -2002 V 1 PolyFill
 4644 640 M
 0 2002 V
 178 0 V
@@ -1274,8 +1199,7 @@ gsave 4644 640 N 0 2002 V 178 0 V 0 -2002 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-4644 640 M
+0.00 0.00 0.00 C 4644 640 M
 0 2002 V
 178 0 V
 0 -2002 V
@@ -1285,9 +1209,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT6
-LCb setrgbcolor
-gsave 4822 640 N 0 1375 V 178 0 V 0 -1375 V 1 PolyFill
+0.00 0.00 0.50 C gsave 4822 640 N 0 1375 V 178 0 V 0 -1375 V 1 PolyFill
 4822 640 M
 0 1375 V
 178 0 V
@@ -1297,8 +1219,7 @@ gsave 4822 640 N 0 1375 V 178 0 V 0 -1375 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-4822 640 M
+0.00 0.00 0.00 C 4822 640 M
 0 1375 V
 178 0 V
 0 -1375 V
@@ -1308,9 +1229,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT8
-LCb setrgbcolor
-gsave 5000 640 N 0 984 V 178 0 V 0 -984 V 1 PolyFill
+0.00 0.00 0.50 C gsave 5000 640 N 0 984 V 178 0 V 0 -984 V 1 PolyFill
 5000 640 M
 0 984 V
 178 0 V
@@ -1320,8 +1239,7 @@ gsave 5000 640 N 0 984 V 178 0 V 0 -984 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-5000 640 M
+0.00 0.00 0.00 C 5000 640 M
 0 984 V
 178 0 V
 0 -984 V
@@ -1331,9 +1249,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT1
-LCb setrgbcolor
-gsave 5178 640 N 0 634 V 179 0 V 0 -634 V 1 PolyFill
+0.00 0.00 0.50 C gsave 5178 640 N 0 634 V 179 0 V 0 -634 V 1 PolyFill
 5178 640 M
 0 634 V
 179 0 V
@@ -1343,8 +1259,7 @@ gsave 5178 640 N 0 634 V 179 0 V 0 -634 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-5178 640 M
+0.00 0.00 0.00 C 5178 640 M
 0 634 V
 179 0 V
 0 -634 V
@@ -1354,9 +1269,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT3
-LCb setrgbcolor
-gsave 5357 640 N 0 365 V 178 0 V 0 -365 V 1 PolyFill
+0.00 0.00 0.50 C gsave 5357 640 N 0 365 V 178 0 V 0 -365 V 1 PolyFill
 5357 640 M
 0 365 V
 178 0 V
@@ -1366,8 +1279,7 @@ gsave 5357 640 N 0 365 V 178 0 V 0 -365 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-5357 640 M
+0.00 0.00 0.00 C 5357 640 M
 0 365 V
 178 0 V
 0 -365 V
@@ -1377,9 +1289,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT5
-LCb setrgbcolor
-gsave 5535 640 N 0 213 V 178 0 V 0 -213 V 1 PolyFill
+0.00 0.00 0.50 C gsave 5535 640 N 0 213 V 178 0 V 0 -213 V 1 PolyFill
 5535 640 M
 0 213 V
 178 0 V
@@ -1389,8 +1299,7 @@ gsave 5535 640 N 0 213 V 178 0 V 0 -213 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-5535 640 M
+0.00 0.00 0.00 C 5535 640 M
 0 213 V
 178 0 V
 0 -213 V
@@ -1400,9 +1309,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT7
-LCb setrgbcolor
-gsave 5713 640 N 0 213 V 178 0 V 0 -213 V 1 PolyFill
+0.00 0.00 0.50 C gsave 5713 640 N 0 213 V 178 0 V 0 -213 V 1 PolyFill
 5713 640 M
 0 213 V
 178 0 V
@@ -1412,8 +1319,7 @@ gsave 5713 640 N 0 213 V 178 0 V 0 -213 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-5713 640 M
+0.00 0.00 0.00 C 5713 640 M
 0 213 V
 178 0 V
 0 -213 V
@@ -1423,9 +1329,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT0
-LCb setrgbcolor
-gsave 5891 640 N 0 65 V 178 0 V 0 -65 V 1 PolyFill
+0.00 0.00 0.50 C gsave 5891 640 N 0 65 V 178 0 V 0 -65 V 1 PolyFill
 5891 640 M
 0 65 V
 178 0 V
@@ -1435,8 +1339,7 @@ gsave 5891 640 N 0 65 V 178 0 V 0 -65 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-5891 640 M
+0.00 0.00 0.00 C 5891 640 M
 0 65 V
 178 0 V
 0 -65 V
@@ -1446,9 +1349,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT2
-LCb setrgbcolor
-gsave 6069 640 N 0 46 V 178 0 V 0 -46 V 1 PolyFill
+0.00 0.00 0.50 C gsave 6069 640 N 0 46 V 178 0 V 0 -46 V 1 PolyFill
 6069 640 M
 0 46 V
 178 0 V
@@ -1458,8 +1359,7 @@ gsave 6069 640 N 0 46 V 178 0 V 0 -46 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-6069 640 M
+0.00 0.00 0.00 C 6069 640 M
 0 46 V
 178 0 V
 0 -46 V
@@ -1469,9 +1369,7 @@ LCb setrgbcolor
 stroke
 1.000 UL
 LTb
-LT4
-LCb setrgbcolor
-gsave 6247 640 N 0 23 V 179 0 V 0 -23 V 1 PolyFill
+0.00 0.00 0.50 C gsave 6247 640 N 0 23 V 179 0 V 0 -23 V 1 PolyFill
 6247 640 M
 0 23 V
 179 0 V
@@ -1481,8 +1379,7 @@ gsave 6247 640 N 0 23 V 179 0 V 0 -23 V 1 PolyFill
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-6247 640 M
+0.00 0.00 0.00 C 6247 640 M
 0 23 V
 179 0 V
 0 -23 V
@@ -1491,8 +1388,7 @@ LCb setrgbcolor
 % Begin plot #61
 stroke
 LTb
-LCb setrgbcolor
-980 640 M
+0.00 0.00 0.00 C 980 640 M
 5859 0 V
 % End plot #61
 stroke

@@ -1,3 +1,283 @@
+2016-03-10  John W. Eaton  <jwe@octave.org>
+
+	bump liboctave, libinterp, and libgui version numbers for release
+
+	* libgui/Makefile.am, libinterp/Makefile.am: Increment current and age
+	version numbers and set revision version number to 0 as recommended by
+	the libtool manual when interfaces have been added.
+	* liboctave/Makefile.am: Increment as recommended by the libtool
+	manual when the library sources change but no interfaces have changed.
+
+	Files: libgui/Makefile.am libinterp/Makefile.am liboctave/Makefile.am
+
+2015-12-28  Marco Caliari  <marco.caliari@univr.it>
+
+	svds.m: Special handling for case of sigma=0 (bug #46683).
+
+	* svds.m: If ARPACK does not return the correct number of positive eigenvalues,
+	then use the negative eigenvalues instead.
+
+	Files: scripts/sparse/svds.m
+
+2016-03-03  Rik  <rik@octave.org>
+
+	patch.m: Fix typo in docstring.
+
+	patch.m: Replace "path" with "patch".
+
+	Files: scripts/plot/draw/patch.m
+
+2016-02-16  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Fix splines and remove unnecessary calculations (bug #47013)
+
+	* spline.m: Apply ".'(:)" where needed, and remove redundant (1:n-1,:)
+
+	Files: scripts/polynomial/spline.m
+
+2016-02-18  Mike Miller  <mtmiller@octave.org>
+
+	doc: Use consistent spacing for memory/storage sizes
+
+	* README, doc/doxyhtml/README, install.txi, fact.m: Insert space between
+	value and size unit label.
+
+	Files: README doc/doxyhtml/README doc/interpreter/install.txi
+	scripts/miscellaneous/fact.m
+
+2016-02-18  John W. Eaton  <jwe@octave.org>
+
+	fix printf regression (bug #47192)
+
+	* oct-stream.cc (printf_value_cache::get_next_value):
+	Flatten character matrices for "%s" format.
+
+	* io.tst: New tests.
+
+	Files: libinterp/corefcn/oct-stream.cc test/io.tst
+
+2016-02-17  Mike Miller  <mtmiller@octave.org>
+
+	Invoke correct version of octave-cli from main driver program
+
+	* main.in.cc (main): Refactor construction of binary filenames, ensure
+	versioned octave-cli binary is called for --no-gui-libs.
+
+	Files: src/main.in.cc
+
+2015-12-12  Ben Abbott  <bpabbott@mac.com>
+
+	For gnuplot 5.x, add the "color" option to the postscript terminal.
+	(bug #42838).
+
+	* scripts/plot/util/private/__gnuplot_has_feature__.m: Add a new feature,
+	"needs_color_with_postscript".
+	* scripts/plot/util/__gnuplot_drawnow__.m: Add the "color" option to the
+	postscript terminal when using gnuplot 5.x.
+
+	Files: scripts/plot/util/__gnuplot_drawnow__.m
+	scripts/plot/util/private/__gnuplot_has_feature__.m
+
+2016-01-16  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Avoid overflow while reshaping large sparse matrices (bug #42850).
+
+	* Sparse.cc (reshape): track quotient and remainder of (i*old_nr)
+	divided by new_nr, instead of evaluating i*old_nr explicitly.
+
+	Files: liboctave/array/Sparse.cc
+
+2016-01-09  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Fix memory corruption allocating to sparse arrays (bug #42825).
+
+	* liboctave/array/Sparse.cc (Sparse<T>::assign): make room by using
+	std::copy_backward.
+
+	Files: liboctave/array/Sparse.cc
+
+2016-02-10  John W. Eaton  <jwe@octave.org>
+
+	* __osmesa_print__.cc: Include system headers with <file.h> syntax.
+
+	Files: libinterp/dldfcn/__osmesa_print__.cc
+
+2016-02-10  Sebastian Schöps  <sebastian@schoeps.org>
+
+	Fix compilation error when building with OSMesa on Mac platforms (patch #8761)
+
+	* __osmesa_print__.cc: Include system headers first to fix compilation error
+	on Mac platforms.
+
+	Files: libinterp/dldfcn/__osmesa_print__.cc
+
+2016-02-09  Mike Miller  <mtmiller@octave.org>
+
+	Disable char/int8_t function overloads where not permitted (bug #45411)
+
+	* configure.ac (HAVE_OVERLOAD_CHAR_INT8_TYPES): Add test and conditional on
+	whether the system allows overloads with char, int8_t, and uint8_t (e.g.
+	Solaris does not).
+	* oct_inttypes.h, oct-stream.cc: Use HAVE_OVERLOAD_CHAR_INT8_TYPES.
+
+	Files: configure.ac libinterp/corefcn/oct-stream.cc liboctave/util/oct-
+	inttypes.h
+
+2016-02-09  Rik  <rik@octave.org>
+
+	Fix cut/paste error in rande documentation (bug #47097).
+
+	* rand.cc (Frande): Refer to rande and exponential distribution in docstring.
+
+	Files: libinterp/corefcn/rand.cc
+
+2016-02-08  Colin Macdonald  <cbm@m.fsf.org>
+
+	Fix regressions caused by ismatrix definition change (partial fix bug #47036).
+
+	* gray2ind.m: Simplify input checks.  Add BIST test.
+
+	* inpolygon.m: Replace ismatrix with isnumeric in input validation.
+	Add BIST tests.  Update copyright date.
+
+	* __stem__.m: Validate single input is a not an N-D array.
+
+	* stem.m: Add BIST test for an N-D array input.
+
+	Files: scripts/geometry/inpolygon.m scripts/image/gray2ind.m
+	scripts/plot/draw/private/__stem__.m scripts/plot/draw/stem.m
+
+2016-02-06  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	doc: Update copyright date in octave.texi (partial fix bug #47058).
+
+	Files: doc/interpreter/octave.texi
+
+2016-01-31  Colin Macdonald  <cbm@m.fsf.org>
+
+	Fix regressions caused by ismatrix definition change (partial fix bug #47036).
+	Replace ismatrix with calls to isnumeric where appropriate.
+
+	Add test for isosurface regression.  In interp2, ismatrix is
+	correct but ndims check unnecessary.
+
+
+	* interp2.m: Remove unneccessary check on ndims when ismatrix used.
+	Clean up indentation.
+
+	* isosurface.m: Replace ismatrix with isnumeric.  Add BIST test.
+
+	Files: scripts/general/interp2.m scripts/plot/draw/isosurface.m
+
+	Fix regression for coordinate transforms on 3-D arrays (partial fix bug #47036).
+	ismatrix changed definitions from 3.8 to 4.0 causing a regression.
+	I replaced these calls with isnumeric.  The meaning is not quite
+	the same as ismatrix was previously true for logical and char: but
+	there is little reason to support those here (anyone calling
+	cart2sph on a char almost certainly has a bug!).
+
+	* cart2pol.m, cart2sph.m, pol2cart.m, sph2cart.m: Replace ismatrix
+	with isnumeric.  Rephrase error messages to mention "array" rather
+	than "matrix" and to include variable namse that are in error.
+	Add BIST tests for NDarrays and input validation.
+
+	Files: scripts/general/cart2pol.m scripts/general/cart2sph.m
+	scripts/general/pol2cart.m scripts/general/sph2cart.m
+
+2016-02-01  Rik  <rik@octave.org>
+
+	Fix regressions caused by ismatrix definition change (partial fix bug #47036).
+
+	* inputdlg.m: Test that linespec isnumeric.
+
+	* uigetfile.m: Check that position property value isnumeric.
+
+	* fminunc.m: Check that x0 isnumeric.
+
+	* fsolve.m: Check that x0 isnumeric.
+
+	* lsqnonneg.m: Check that inputs C & D are both isnumeric and ismatrix.
+
+	* pqpnonneg.m: Check that inputs C & D are both isnumeric and ismatrix.
+
+	* bicg.m: Check input A issquare.  Rephrase error messages.
+
+	* bicgstab.m: Check input A issquare.  Rephrase error messages.
+
+	* cgs.m: Check input A issquare.  Rephrase error messages.
+
+	* gmres.m: Check input A issquare.  Rephrase error messages.
+	Change BIST test to match new error message.
+
+	* qmr.m: Check input A issquare.  Rephrase error messages.
+
+	* spconvert.m: Check nargin first.  Simplify input validation.
+	Wrap long error message to < 80 chars.
+
+	* treeplot.m: Simplify input validation.
+
+	Files: scripts/gui/inputdlg.m scripts/gui/uigetfile.m
+	scripts/optimization/fminunc.m scripts/optimization/fsolve.m
+	scripts/optimization/lsqnonneg.m scripts/optimization/pqpnonneg.m
+	scripts/sparse/bicg.m scripts/sparse/bicgstab.m scripts/sparse/cgs.m
+	scripts/sparse/gmres.m scripts/sparse/qmr.m
+	scripts/sparse/spconvert.m scripts/sparse/treeplot.m
+
+2016-01-30  Rik  <rik@octave.org>
+
+	doc: Correct example errobar code and plot (bug #46972).
+
+	* plot.txi: Correct example code in manual.
+
+	* plotimages.m: Use correct code from manual to generate errorbar plot.
+
+	Files: doc/interpreter/plot.txi doc/interpreter/plotimages.m
+
+2016-01-27  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	__getlegenddata__.m: fix handling of multiple child elements (bug #46835)
+
+	Files: scripts/plot/appearance/__getlegenddata__.m
+
+2016-01-27  Rafael Laboissiere  <rafael@laboissiere.net>
+
+	doc: fix spelling of "unknown".
+
+	* etc/OLD-ChangeLogs/doc-ChangeLog, libinterp/dldfcn/__magick_read__.cc,
+	scripts/image/private/__imwrite__.m: fix spelling of "unknown".
+
+	Files: etc/OLD-ChangeLogs/doc-ChangeLog libinterp/dldfcn/__magick_read__.cc
+	scripts/image/private/__imwrite__.m
+
+2016-01-20  Rik  <rik@octave.org>
+
+	svds.m: Modify BIST test for sigma=0 to reliably pass.
+
+	* svds.m: Only compare whatever was returned from svds to the correct values.
+	This may be fewer values then requested.
+
+	Files: scripts/sparse/svds.m
+
+2016-01-19  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-4-0-1-3 for changeset a58d5e6df908
+
+	Files: .hgtags
+
+	Added tag rc-4-0-1-2 for changeset 0cfcc178432b
+
+	Files: .hgtags
+
+	maint: Bump version number for 4.0.1-rc3.
+
+	Files: configure.ac
+
+2016-01-18  John W. Eaton  <jwe@octave.org>
+
+	maint: Bump version number for 4.0.1-rc2.
+
+	Files: configure.ac
+
 2016-01-16  Rik  <rik@octave.org>
 
 	fzero.m: Correctly choose tolerance (eps) based on class of fun and X0 (bug #46658).

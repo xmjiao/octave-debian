@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: polar.eps
-%%Creator: gnuplot 5.0 patchlevel 1
-%%CreationDate: Mon Jan 18 14:28:17 2016
+%%Creator: gnuplot 5.0 patchlevel 2
+%%CreationDate: Thu Mar 10 15:16:31 2016
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -12,7 +12,7 @@ gnudict begin
 % The following true/false flags may be edited by hand if desired.
 % The unit line width and grayscale image gamma correction may also be changed.
 %
-/Color false def
+/Color true def
 /Blacktext false def
 /Solid false def
 /Dashlength 2 def
@@ -48,7 +48,7 @@ gnudict begin
   } if
 } def
 %
-% Gnuplot Prolog Version 5.0 (Dec 2014)
+% Gnuplot Prolog Version 5.1 (Oct 2015)
 %
 %/SuppressPDFMark true def
 %
@@ -97,8 +97,9 @@ gnudict begin
 /LC7 {1 0.3 0} def
 /LC8 {0.5 0.5 0.5} def
 % Default dash patterns (version 5.0)
+/LTB {BL [] LCb DL} def
 /LTw {PL [] 1 setgray} def
-/LTb {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 /LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
 /LT0 {PL [] LC0 DL} def
 /LT1 {PL [2 dl1 3 dl2] LC1 DL} def
@@ -465,15 +466,14 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (polar.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 5.0 patchlevel 1)
+  /Creator (gnuplot 5.0 patchlevel 2)
   /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Mon Jan 18 14:28:17 2016)
+  /CreationDate (Thu Mar 10 15:16:31 2016)
   /DOCINFO pdfmark
 end
 } ifelse
-end
 %
 % Support for boxed text - Ethan A Merritt May 2005
 %
@@ -499,6 +499,10 @@ end
 /Boxing false def
 /textshow { ExtendTextBox Gshow } def
 %
+% redundant definitions for compatibility with prologue.ps older than 5.0.2
+/LTB {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
+end
 %%EndProlog
 %%Page: 1 1
 gnudict begin
@@ -591,16 +595,14 @@ LCb setrgbcolor
 1.000 UL
 LTb
 LCb setrgbcolor
-LCb setrgbcolor
-3569 4739 M
+0.00 0.00 0.00 C 3569 4739 M
 [ [({}) 200.0 0.0 true true 0 (Example polar plot from 0 to 10*pi)]
 ] -66.7 MCshow
 LTb
 % Begin plot #1
 1.000 UL
 LTb
-LCb setrgbcolor
-gsave 5560 2340 N -16 244 V -49 240 V -81 232 V -110 220 V -139 205 V -166 186 V -188 165 V -210 140 V -226 113 V -239 84 V -249 55 V -254 23 V -255 -8 V -251 -39 V -245 -69 V -233 -99 V -218 -127 V -200 -153 V -177 -175 V -153 -196 V -125 -213 V -96 -227 V -64 -237 V -33 -242 V 0 -245 V 33 -242 V 64 -237 V 96 -227 V 125 -213 V 153 -196 V 177 -175 V 200 -153 V 218 -127 V 233 -99 V 245 -69 V 251 -39 V 255 -8 V 254 23 V 249 55 V 239 84 V 226 113 V 210 140 V 188 165 V 166 186 V 139 205 V 110 220 V 81 232 V 49 240 V 16 245 V 1 PolyFill
+1.00 1.00 1.00 C gsave 5560 2340 N -16 244 V -49 240 V -81 232 V -110 220 V -139 205 V -166 186 V -188 165 V -210 140 V -226 113 V -239 84 V -249 55 V -254 23 V -255 -8 V -251 -39 V -245 -69 V -233 -99 V -218 -127 V -200 -153 V -177 -175 V -153 -196 V -125 -213 V -96 -227 V -64 -237 V -33 -242 V 0 -245 V 33 -242 V 64 -237 V 96 -227 V 125 -213 V 153 -196 V 177 -175 V 200 -153 V 218 -127 V 233 -99 V 245 -69 V 251 -39 V 255 -8 V 254 23 V 249 55 V 239 84 V 226 113 V 210 140 V 188 165 V 166 186 V 139 205 V 110 220 V 81 232 V 49 240 V 16 245 V 1 PolyFill
 5560 2340 M
 -16 244 V
 -49 240 V
@@ -656,8 +658,7 @@ gsave 5560 2340 N -16 244 V -49 240 V -81 232 V -110 220 V -139 205 V -166 186 V
 stroke
 0.500 UL
 LTb
-LCb setrgbcolor
-5560 2340 M
+0.00 0.00 0.00 C 5560 2340 M
 -16 244 V
 -49 240 V
 -81 232 V
@@ -711,9 +712,7 @@ LCb setrgbcolor
 % Begin plot #3
 stroke
 LTb
-LT2
-LCb setrgbcolor
-4067 2340 M
+0.00 0.00 0.00 C 4067 2340 M
 -4 61 V
 -12 60 V
 -20 58 V
@@ -767,9 +766,7 @@ LCb setrgbcolor
 % Begin plot #4
 stroke
 LTb
-LT2
-LCb setrgbcolor
-4565 2340 M
+0.00 0.00 0.00 C 4565 2340 M
 -8 122 V
 -25 120 V
 -40 116 V
@@ -823,9 +820,7 @@ LCb setrgbcolor
 % Begin plot #5
 stroke
 LTb
-LT2
-LCb setrgbcolor
-5062 2340 M
+0.00 0.00 0.00 C 5062 2340 M
 -12 183 V
 -36 180 V
 -61 174 V
@@ -879,8 +874,7 @@ LCb setrgbcolor
 % Begin plot #6
 stroke
 LTb
-LCb setrgbcolor
-5560 2340 M
+0.00 0.00 0.00 C 5560 2340 M
 -16 244 V
 -49 240 V
 -81 232 V
@@ -934,104 +928,79 @@ LCb setrgbcolor
 % Begin plot #7
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 1990 0 V
 % End plot #7
 % Begin plot #8
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 1723 954 V
 % End plot #8
 % Begin plot #9
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 995 1652 V
 % End plot #9
 % Begin plot #10
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 0 1908 V
 % End plot #10
 % Begin plot #11
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 2574 3992 L
 % End plot #11
 % Begin plot #12
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 1846 3294 L
 % End plot #12
 % Begin plot #13
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 -1991 0 V
 % End plot #13
 % Begin plot #14
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 1846 1385 L
 % End plot #14
 % Begin plot #15
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 2574 687 L
 % End plot #15
 % Begin plot #16
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 3569 431 L
 % End plot #16
 % Begin plot #17
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 4565 687 L
 % End plot #17
 % Begin plot #18
 stroke
 LTb
-LT2
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 0.00 C 3570 2340 M
 5293 1385 L
 % End plot #18
 % Begin plot #19
 stroke
 LTb
-LCb setrgbcolor
-3570 2340 M
+0.00 0.00 1.00 C 3570 2340 M
 4 0 V
 5 1 V
 5 3 V
@@ -1355,99 +1324,83 @@ stroke
 LTb
 LCb setrgbcolor
 1.000 UP
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /vshift -66 def
 /{} findfont 200 scalefont setfont
 3693 2902 M
 (10) Lshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 3817 3364 M
 (20) Lshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 3941 3826 M
 (30) Lshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 4065 4288 M
 (40) Lshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 5719 2340 M
 (0) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 5431 3370 M
 (30) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 4644 4125 M
 (60) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 3570 4401 M
 (90) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 2495 4125 M
 (120) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 1708 3370 M
 (150) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 1420 2340 M
 (180) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 1708 1309 M
 (210) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 2495 554 M
 (240) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 3569 278 M
 (270) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 4644 554 M
 (300) Cshow
 /Helvetica findfont 200 scalefont setfont
-LCb setrgbcolor
-/Helvetica findfont 200 scalefont setfont
+0.00 0.00 0.00 C /Helvetica findfont 200 scalefont setfont
 /{} findfont 200 scalefont setfont
 5431 1309 M
 (330) Cshow

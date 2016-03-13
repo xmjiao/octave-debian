@@ -5,7 +5,7 @@ START-INFO-DIR-ENTRY
 
 END-INFO-DIR-ENTRY
 
-   Copyright (C) 1996-2013 John W. Eaton.
+   Copyright (C) 1996-2016 John W. Eaton.
 
    Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 4.0.1-rc2.
+corresponds to GNU Octave version 4.0.1-rc4.
 
 * Menu:
 
@@ -1158,7 +1158,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 4.0.1-rc2.
+   This document corresponds to Octave version 4.0.1-rc4.
 
 * Menu:
 
