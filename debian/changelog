@@ -1,4 +1,4 @@
-octave (4.0.1~rc4-1) UNRELEASED; urgency=medium
+octave (4.0.1~rc4-1) experimental; urgency=low
 
   * Imported Upstream version 4.0.1~rc4
     + This version fixes the interaction with gnuplot v5 (Closes: #805295).
@@ -19,7 +19,7 @@ octave (4.0.1~rc4-1) UNRELEASED; urgency=medium
     directories appearing in the .oct files.
   * d/octave-doc.install: Drop useless call to dh-exec
 
- -- Rafael Laboissiere <rafael@laboissiere.net>  Sun, 13 Mar 2016 21:39:51 -0300
+ -- Rafael Laboissiere <rafael@laboissiere.net>  Mon, 14 Mar 2016 16:01:37 +0100
 
 octave (4.0.1~rc2-1) experimental; urgency=low
 
