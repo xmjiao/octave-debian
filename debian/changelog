@@ -1,3 +1,25 @@
+octave (4.0.1~rc4-1) UNRELEASED; urgency=medium
+
+  * Imported Upstream version 4.0.1~rc4
+    This version fixes the interaction with gnuplot v5 (Closes: #805295).
+  * d/p/drop_versioned_binaries.diff: Refresh for new upstream version
+  * d/control:
+    + Use secure URIs in the Vcs-* fields
+    + Bump Standards-Version to 3.9.7
+  * Install the PDF files of the octave-doc package in /usr/share/doc/octave.
+    This is now recommended by the Debian Policy, version 3.9.7 (section
+    12.3).
+  * d/rules: Avoid triggering the build of oct-gperf.h
+  * d/octave.lintian-overrides: Add override for shlib-calls-exit
+  * d/p/octave-pkgbuilddir.patch: New patch.
+    This patch replaces the patch enable_dirs_in_pkg.  It introduces a
+    better change in pkg/private/install.m that allows packages to be
+    built in place and avoid unreproducible builds due to temporary build
+    directories appearing in the .oct files.
+  * d/octave-doc.install: Drop useless call to dh-exec
+
+ -- Rafael Laboissiere <rafael@laboissiere.net>  Sun, 13 Mar 2016 21:39:51 -0300
+
 octave (4.0.1~rc2-1) experimental; urgency=low
 
   [ Rafael Laboissiere ]
