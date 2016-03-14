@@ -1,6 +1,8 @@
 octave (4.0.1~rc4-1) UNRELEASED; urgency=medium
 
   * Imported Upstream version 4.0.1~rc4
+    + This version fixes the interaction with gnuplot v5 (Closes: #805295).
+    + Also, it also fixes a HDF5 regression (Closes: #815597).
   * d/p/drop_versioned_binaries.diff: Refresh for new upstream version
   * d/control:
     + Use secure URIs in the Vcs-* fields
