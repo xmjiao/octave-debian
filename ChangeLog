@@ -1,4 +1,32 @@
+2016-03-21  John W. Eaton  <jwe@octave.org>
+
+	Version 4.0.1 released.
+
+	* configure.ac (OCTAVE_VERSION): Now 4.0.1.
+	(OCTAVE_PATCH_VERSION): Now 1.
+	(OCTAVE_COPYRIGHT): Update year to 2016.
+	(OCTAVE_RELEASE_DATE): Set to 2016-03-21.
+
+	Files: configure.ac
+
+2016-03-15  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Allow strsplit to use '+' as a delimiter (bug #47403).
+
+	* strsplit.m: Add '+' to regexprep call to escape characters that have special
+	meaning in regexp.
+
+	Files: scripts/strings/strsplit.m
+
 2016-03-10  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-4-0-1-4 for changeset 2b66f30a0de7
+
+	Files: .hgtags
+
+	maint: Bump version number for 4.0.1-rc4.
+
+	Files: configure.ac
 
 	bump liboctave, libinterp, and libgui version numbers for release
 
