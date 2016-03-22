@@ -42,3 +42,14 @@ Last-Update: 2015-04-17
  
      if (! exist (mkoctfile_program, "file"))
        __gripe_missing_component__ ("pkg", "mkoctfile");
+--- a/src/main.in.cc
++++ b/src/main.in.cc
+@@ -433,7 +433,7 @@ main (int argc, char **argv)
+   std::string octave_bindir = get_octave_bindir ();
+   std::string octave_archlibdir = get_octave_archlibdir ();
+   std::string octave_cli
+-    = octave_bindir + dir_sep_char + "octave-cli-" OCTAVE_VERSION;
++    = octave_bindir + dir_sep_char + "octave-cli";
+   std::string octave_gui = octave_archlibdir + dir_sep_char + "octave-gui";
+ 
+ #if defined (HAVE_OCTAVE_GUI)
