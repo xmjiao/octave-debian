@@ -1,3 +1,10 @@
+octave (4.0.1-1) unstable; urgency=medium
+
+  * Imported Upstream version 4.0.1
+  * d/p/drop_versioned_binaries.diff: add back hunk for src/main.in.cc.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Tue, 22 Mar 2016 22:10:04 +0100
+
 octave (4.0.1~rc4-1) experimental; urgency=low
 
   * Imported Upstream version 4.0.1~rc4
