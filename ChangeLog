@@ -1,4 +1,160 @@
+2016-04-20  John W. Eaton  <jwe@octave.org>
+
+	Added tag release-4-0-2 for changeset acaf1e137c5e
+
+	Files: .hgtags
+
+	Version 4.0.2 released.
+
+	* configure.ac: Bump version to 4.0.2.
+	(OCTAVE_PATCH_VERSION): Bump to 2.
+	(OCTAVE_RELEASE_DATE): Update.
+	* liboctave/Makefile.am (liboctave_revision): Increment.
+	* libinterp/Makefile.am (liboctinterp_revision): Increment.
+
+	Files: configure.ac libinterp/Makefile.am liboctave/Makefile.am
+
+2016-04-13  Rik  <rik@octave.org>
+
+	configure.ac: Remove AC_CHECK_FUNC for pipe now that gnulib::pipe used.
+
+	* configure.ac: Remove AC_CHECK_FUNC for pipe after cset 7f3519e6194a.
+
+	Files: configure.ac
+
+2016-04-12  Carnë Draug  <carandraug@octave.org>
+
+	doc: fix on manual the syntax to empty elements from cell array.
+
+	Files: doc/interpreter/container.txi
+
+2016-04-04  John W. Eaton  <jwe@octave.org>
+
+	* octave.texi: Set document encoding to UTF-8.
+
+	Files: doc/interpreter/octave.texi
+
+2016-04-06  Mike Miller  <mtmiller@octave.org>
+
+	Enable the pipe function on Windows (bug #47614)
+
+	* bootstrap.conf (gnulib_modules): Include pipe-posix in the list.
+	* oct-syscalls.cc (octave_syscalls::pipe): Call gnulib::pipe portability
+	wrapper, drop HAVE_PIPE condition.
+
+	Files: bootstrap.conf liboctave/system/oct-syscalls.cc
+
+2016-04-01  John W. Eaton  <jwe@octave.org>
+
+	avoid mulitple definitions of static function-scope vars (bug #47372)
+
+	Some systems (Windows, others?) may generate multiple definitions of
+	function-scope static variables if those functions appear in header
+	files.  This can cause trouble in various ways.  Attempt to avoid the
+	problem by moving functions that contain file-scope varaibles from
+	header files to source files, or by using class-scope static variables
+	instead.  Also attempt to avoid similar problems caused by implicit
+	instantiations of templates that have functions with static variables.
+
+	* Cell.h, Cell.cc (Cell::resize_fill_value):
+	Move definition from header to source file.
+	* oct-map.h, oct-map.cc (octave_fields::nil_rep): Likewise.
+	* ov-base-scalar.h, ov-base-scalar.cc (octave_base_scalar<ST>::dims):
+	Likewise.
+	* ov-fcn-handle.h, ov-fcn-handle.cc (octave_fcn_handle::dims): Likewise.
+	* ov.h, ov.cc (octave_value::nil_rep): Likewise.
+	* Array.h, Array.cc (Array<T>::nil_rep): Likewise.
+	* DiagArray2.h, DiagArray2.cc (DiagArray2<T>::elem,
+	DiagArray2<T>::checkelem): Likewise.
+	* Sparse.h, Sparse.cc (Sparse<T>::nil_rep): Likewise.
+	* dim-vector.h, dim-vector.cc (dim_vector::nil_rep): Likewise.
+	* idx-vector.h, idx-vector.cc (idx_vector::nil_rep,
+	idx_vector::err_rep): Likewise.
+	* oct-inttypes.h, oct-inttypes.cc (octave_int_base<T>::convert_real):
+	Likewise.
+
+	* symtab.h, symtab.cc (octave_value symbol_table::dummy_octave_value,
+	symbol_table::symbol_record symbol_table::dummy_symbol_record): New
+	class-scope static variables.  Use them to eliminate function-scope
+	static variables.
+
+	* ov-int8.cc, ov-int16.cc, ov-int32.cc, ov-int64.cc, ov-uint8.cc,
+	ov-uint16.cc, ov-uint32.cc, ov-uint64.cc, ov-scalar.cc,
+	ov-flt-complex.cc, ov-complex.cc, ov-classdef.cc, ov-bool.cc,
+	Array-jit.cc, Array-os.cc, Array-tc.cc, Array-C.cc, Array-b.cc,
+	Array-ch.cc, Array-d.cc, Array-f.cc, Array-fC.cc, Array-i.cc,
+	Array-idx-vec.cc, Array-s.cc, Array-str.cc, Array-voidp.cc:
+	Prevent impliticit template instantiation.
+
+	* Array-tc.cc: Also instantiate Array<cdef_object>.
+
+	Files: libinterp/corefcn/Cell.cc libinterp/corefcn/Cell.h libinterp/corefcn
+	/oct-map.cc libinterp/corefcn/oct-map.h libinterp/corefcn/symtab.cc
+	libinterp/corefcn/symtab.h libinterp/octave-value/ov-base-scalar.cc
+	libinterp/octave-value/ov-base-scalar.h libinterp/octave-value/ov-
+	bool.cc libinterp/octave-value/ov-classdef.cc libinterp/octave-value
+	/ov-complex.cc libinterp/octave-value/ov-fcn-handle.cc libinterp
+	/octave-value/ov-fcn-handle.h libinterp/octave-value/ov-flt-
+	complex.cc libinterp/octave-value/ov-int16.cc libinterp/octave-value
+	/ov-int32.cc libinterp/octave-value/ov-int64.cc libinterp/octave-
+	value/ov-int8.cc libinterp/octave-value/ov-scalar.cc libinterp
+	/octave-value/ov-uint16.cc libinterp/octave-value/ov-uint32.cc
+	libinterp/octave-value/ov-uint64.cc libinterp/octave-value/ov-
+	uint8.cc libinterp/octave-value/ov.cc libinterp/octave-value/ov.h
+	libinterp/template-inst/Array-jit.cc libinterp/template-inst/Array-
+	os.cc libinterp/template-inst/Array-tc.cc liboctave/array/Array-C.cc
+	liboctave/array/Array-b.cc liboctave/array/Array-ch.cc
+	liboctave/array/Array-d.cc liboctave/array/Array-f.cc
+	liboctave/array/Array-fC.cc liboctave/array/Array-i.cc
+	liboctave/array/Array-idx-vec.cc liboctave/array/Array-s.cc
+	liboctave/array/Array-str.cc liboctave/array/Array-voidp.cc
+	liboctave/array/Array.cc liboctave/array/Array.h
+	liboctave/array/DiagArray2.cc liboctave/array/DiagArray2.h
+	liboctave/array/Sparse.cc liboctave/array/Sparse.h liboctave/array
+	/dim-vector.cc liboctave/array/dim-vector.h liboctave/array/idx-
+	vector.cc liboctave/array/idx-vector.h liboctave/util/oct-
+	inttypes.cc liboctave/util/oct-inttypes.h
+
+2016-03-31  John W. Eaton  <jwe@octave.org>
+
+	* Array-sym.cc: Delete obsolete file.
+
+	Files: libinterp/template-inst/Array-sym.cc
+
+2016-03-29  Rik  <rik@octave.org>
+
+	Initialize variable to stop unstable results for lgamma (bug #47524).
+
+	* lo-specfun.cc (rc_lgamma (double x), rc_lgamma (float x)):
+	Initialize sgngam variable to 0.
+
+	Files: liboctave/numeric/lo-specfun.cc
+
+2016-03-28  John W. Eaton  <jwe@octave.org>
+
+	call openmp function at initialization (bug #47372)
+
+	Calling an openmp function early in Octave's startup process ensures
+	that the openmp library will be linked with Octave and that shared
+	libraries that use openmp may be safely loaded and unloaded.
+
+	* configure.ac: Check for omp.h and omp_get_num_threads.
+	* sysdep.cc: Conditionally include <omp.h>.
+	(sysdep_init) Call omp_get_num_threads if it is available.
+
+	Files: configure.ac libinterp/corefcn/sysdep.cc
+
+2016-03-25  John W. Eaton  <jwe@octave.org>
+
+	macros.texi: Colorized links for PDF files with Texinfo 6.x.
+
+	Files: doc/interpreter/macros.texi
+
 2016-03-21  John W. Eaton  <jwe@octave.org>
+
+	Added tag release-4-0-1 for changeset 5162cdfb56d8
+
+	Files: .hgtags
 
 	Version 4.0.1 released.
 

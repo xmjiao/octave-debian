@@ -1,4 +1,4 @@
-# doc-cache created by Octave 4.0.1
+# doc-cache created by Octave 4.0.2
 # name: cache
 # type: cell
 # rows: 3
@@ -19356,7 +19356,7 @@ rectangle
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1518
+# length: 1517
  -- Function File: rectangle ()
  -- Function File: rectangle (..., "Position", POS)
  -- Function File: rectangle (..., "Curvature", CURV)
@@ -19380,7 +19380,7 @@ rectangle
 
      The optional return value H is a graphics handle to the created rectangle object.
 
-See also: patch, line, cylinder, ellipsoid, sphere.  
+See also: patch, line, cylinder, ellipsoid, sphere. 
 
 
 # name: <cell-element>
@@ -23809,7 +23809,7 @@ intersect
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 648
+# length: 647
  -- Function File: C = intersect (A, B)
  -- Function File: C = intersect (A, B, "rows")
  -- Function File: [C, IA, IB] = intersect (...)
@@ -23822,7 +23822,7 @@ intersect
 
      If requested, return index vectors IA and IB such that 'C = A(IA)' and 'C = B(IB)'.
 
-See also: unique, union, setdiff, setxor, ismember.  
+See also: unique, union, setdiff, setxor, ismember. 
 
 
 # name: <cell-element>
@@ -26480,7 +26480,7 @@ svds
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2207
+# length: 2206
  -- Function File: S = svds (A)
  -- Function File: S = svds (A, K)
  -- Function File: S = svds (A, K, SIGMA)
@@ -26523,7 +26523,7 @@ svds
 
      'svds' is best for finding only a few singular values from a large sparse matrix.  Otherwise, 'svd (full (A))' will likely be more efficient.
 
-See also: svd, eigs.  
+See also: svd, eigs. 
 
 
 # name: <cell-element>
@@ -28590,11 +28590,11 @@ ols
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 906
+# length: 905
  -- Function File: [BETA, SIGMA, R] = ols (Y, X)
      Ordinary least squares estimation.
 
-     OLS applies to the multivariate model y = x*b + e with mean (e) = 0 and cov (vec (e)) = kron (s, I).  where y is a t by p matrix, x is a t by k matrix, b is a k by p matrix, and e is a t by p matrix.
+     OLS applies to the multivariate model y = x*b + e with mean (e) = 0 and cov (vec (e)) = kron (s, I). where y is a t by p matrix, x is a t by k matrix, b is a k by p matrix, and e is a t by p matrix.
 
      Each row of Y and X is an observation and each column a variable.
 
