@@ -54,7 +54,7 @@ Build-Depends: automake,
   xauth,
   xvfb,
   zip
-Standards-Version: 3.9.7
+Standards-Version: 3.9.8
 Homepage: http://www.octave.org/
 Vcs-Git: https://anonscm.debian.org/git/pkg-octave/octave.git
 Vcs-Browser: https://anonscm.debian.org/gitweb/?p=pkg-octave/octave.git
