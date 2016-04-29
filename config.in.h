@@ -380,6 +380,9 @@
 /* Define to 1 when the gnulib module opendir should be tested. */
 #undef GNULIB_TEST_OPENDIR
 
+/* Define to 1 when the gnulib module pipe should be tested. */
+#undef GNULIB_TEST_PIPE
+
 /* Define to 1 when the gnulib module putenv should be tested. */
 #undef GNULIB_TEST_PUTENV
 
@@ -1333,6 +1336,12 @@
 
 /* Define to 1 if you have the <netdb.h> header file. */
 #undef HAVE_NETDB_H
+
+/* Define to 1 if you have the `omp_get_num_threads' function. */
+#undef HAVE_OMP_GET_NUM_THREADS
+
+/* Define to 1 if you have the <omp.h> header file. */
+#undef HAVE_OMP_H
 
 /* Define to 1 if you have the `openat' function. */
 #undef HAVE_OPENAT

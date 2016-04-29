@@ -19,21 +19,21 @@ dnl Copyright (C) 1993-2015 John W. Eaton
 ### <http://www.gnu.org/licenses/>.
 
 AC_PREREQ([2.63])
-AC_INIT([GNU Octave], [4.0.1], [http://octave.org/bugs.html], [octave])
+AC_INIT([GNU Octave], [4.0.2], [http://octave.org/bugs.html], [octave])
 
 dnl Note that the version number is duplicated here and in AC_INIT
 dnl because AC_INIT requires it to be static, not computed from
 dnl shell variables.
 OCTAVE_MAJOR_VERSION=4
 OCTAVE_MINOR_VERSION=0
-OCTAVE_PATCH_VERSION=1
+OCTAVE_PATCH_VERSION=2
 
 dnl PACKAGE_VERSION is set by the AC_INIT VERSION arg
 OCTAVE_VERSION="$PACKAGE_VERSION"
 
 OCTAVE_COPYRIGHT="Copyright (C) 2016 John W. Eaton and others."
 
-OCTAVE_RELEASE_DATE="2016-03-21"
+OCTAVE_RELEASE_DATE="2016-04-20"
 
 ## The "API version" is used as a way of checking that interfaces in the
 ## liboctave and libinterp libraries haven't changed in a backwardly
@@ -450,15 +450,19 @@ if test $check_for_openmp = yes; then
   AX_OPENMP([XTRA_CXXFLAGS="$XTRA_CXXFLAGS $OPENMP_CXXFLAGS"; USE_OPENMP=yes], [])
   AC_LANG_POP(C++)
 fi
-dnl Define here since it is skipped if the first argument to
-dnl AX_OPENMP is not empty.
-if test $USE_OPENMP = yes; then
-  AC_DEFINE(HAVE_OPENMP, 1, [Define if OpenMP is enabled])
-fi
+
 ## Set these for any other tests that may require them.  They will be
 ## reset before output files are generated.
 CFLAGS="$CFLAGS $OPENMP_CFLAGS"
 CXXFLAGS="$CXXFLAGS $OPENMP_CXXFLAGS"
+
+dnl Define here since it is skipped if the first argument to
+dnl AX_OPENMP is not empty.
+if test $USE_OPENMP = yes; then
+  AC_CHECK_HEADERS([omp.h])
+  AC_CHECK_FUNCS([omp_get_num_threads])
+  AC_DEFINE(HAVE_OPENMP, 1, [Define if OpenMP is enabled])
+fi
 
 ### When compiling math for x87, problems may arise in some code comparing
 ### floating-point intermediate results.  The root cause is the extra precision
@@ -2296,7 +2300,7 @@ AC_CHECK_FUNCS([getegid geteuid getgid getgrent getgrgid getgrnam])
 AC_CHECK_FUNCS([getpgrp getpid getppid getpwent getpwuid getuid])
 AC_CHECK_FUNCS([isascii kill])
 AC_CHECK_FUNCS([lgamma lgammaf lgamma_r lgammaf_r])
-AC_CHECK_FUNCS([log1p log1pf pipe])
+AC_CHECK_FUNCS([log1p log1pf])
 AC_CHECK_FUNCS([realpath resolvepath roundl])
 AC_CHECK_FUNCS([select setgrent setpwent siglongjmp strsignal])
 AC_CHECK_FUNCS([tcgetattr tcsetattr tgammaf toascii])

@@ -184,16 +184,16 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/nproc.m4 $(top_srcdir)/m4/off_t.m4 \
 	$(top_srcdir)/m4/open.m4 $(top_srcdir)/m4/openat.m4 \
 	$(top_srcdir)/m4/opendir.m4 $(top_srcdir)/m4/pathmax.m4 \
-	$(top_srcdir)/m4/pkg.m4 $(top_srcdir)/m4/printf.m4 \
-	$(top_srcdir)/m4/putenv.m4 $(top_srcdir)/m4/raise.m4 \
-	$(top_srcdir)/m4/readdir.m4 $(top_srcdir)/m4/readlink.m4 \
-	$(top_srcdir)/m4/realloc.m4 $(top_srcdir)/m4/rename.m4 \
-	$(top_srcdir)/m4/rewinddir.m4 $(top_srcdir)/m4/rmdir.m4 \
-	$(top_srcdir)/m4/round.m4 $(top_srcdir)/m4/roundf.m4 \
-	$(top_srcdir)/m4/same.m4 $(top_srcdir)/m4/save-cwd.m4 \
-	$(top_srcdir)/m4/secure_getenv.m4 $(top_srcdir)/m4/select.m4 \
-	$(top_srcdir)/m4/setenv.m4 $(top_srcdir)/m4/sigaction.m4 \
-	$(top_srcdir)/m4/signal_h.m4 \
+	$(top_srcdir)/m4/pipe.m4 $(top_srcdir)/m4/pkg.m4 \
+	$(top_srcdir)/m4/printf.m4 $(top_srcdir)/m4/putenv.m4 \
+	$(top_srcdir)/m4/raise.m4 $(top_srcdir)/m4/readdir.m4 \
+	$(top_srcdir)/m4/readlink.m4 $(top_srcdir)/m4/realloc.m4 \
+	$(top_srcdir)/m4/rename.m4 $(top_srcdir)/m4/rewinddir.m4 \
+	$(top_srcdir)/m4/rmdir.m4 $(top_srcdir)/m4/round.m4 \
+	$(top_srcdir)/m4/roundf.m4 $(top_srcdir)/m4/same.m4 \
+	$(top_srcdir)/m4/save-cwd.m4 $(top_srcdir)/m4/secure_getenv.m4 \
+	$(top_srcdir)/m4/select.m4 $(top_srcdir)/m4/setenv.m4 \
+	$(top_srcdir)/m4/sigaction.m4 $(top_srcdir)/m4/signal_h.m4 \
 	$(top_srcdir)/m4/signalblocking.m4 $(top_srcdir)/m4/signbit.m4 \
 	$(top_srcdir)/m4/size_max.m4 $(top_srcdir)/m4/sleep.m4 \
 	$(top_srcdir)/m4/socketlib.m4 $(top_srcdir)/m4/sockets.m4 \
@@ -4042,7 +4042,7 @@ nodist_EXTRA_liboctave_la_SOURCES = dummy.cc
 
 # Increment these as needed and according to the rules in the libtool manual:
 liboctave_current = 3
-liboctave_revision = 1
+liboctave_revision = 2
 liboctave_age = 0
 liboctave_version_info = $(liboctave_current):$(liboctave_revision):$(liboctave_age)
 liboctave_la_LDFLAGS = \

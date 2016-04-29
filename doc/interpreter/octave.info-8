@@ -1,11 +1,11 @@
-This is octave.info, produced by makeinfo version 6.0 from octave.texi.
+This is octave.info, produced by makeinfo version 6.1 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
 
 END-INFO-DIR-ENTRY
 
-   Copyright (C) 1996-2016 John W. Eaton.
+   Copyright © 1996-2016 John W. Eaton.
 
    Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -21,39 +21,980 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Bug Tracker,  Next: Bug Reporting,  Prev: Bug Criteria,  Up: Reporting Bugs
+
+F.2.2 Where to Report Bugs
+--------------------------
+
+To report a bug in Octave, submit a bug report to the Octave bug tracker
+<http://bugs.octave.org>.
+
+   *Do not send bug reports to ‘help-octave’*.  Most users of Octave do
+not want to receive bug reports.
+
+
+File: octave.info,  Node: Bug Reporting,  Next: Sending Patches,  Prev: Bug Tracker,  Up: Reporting Bugs
+
+F.2.3 How to Report Bugs
+------------------------
+
+Submit bug reports for Octave to the Octave bug tracker
+<http://bugs.octave.org>.
+
+   The fundamental principle of reporting bugs usefully is this: *report
+all the facts*.  If you are not sure whether to state a fact or leave it
+out, state it!
+
+   Often people omit facts because they think they know what causes the
+problem and they conclude that some details don’t matter.  Thus, you
+might assume that the name of the variable you use in an example does
+not matter.  Well, probably it doesn’t, but one cannot be sure.  Perhaps
+the bug is a stray memory reference which happens to fetch from the
+location where that name is stored in memory; perhaps, if the name were
+different, the contents of that location would fool the interpreter into
+doing the right thing despite the bug.  Play it safe and give a
+specific, complete example.
+
+   Keep in mind that the purpose of a bug report is to enable someone to
+fix the bug if it is not known.  Always write your bug reports on the
+assumption that the bug is not known.
+
+   Sometimes people give a few sketchy facts and ask, “Does this ring a
+bell?” This cannot help us fix a bug.  It is better to send a complete
+bug report to begin with.
+
+   Try to make your bug report self-contained.  If we have to ask you
+for more information, it is best if you include all the previous
+information in your response, as well as the information that was
+missing.
+
+   To enable someone to investigate the bug, you should include all
+these things:
+
+   • The version of Octave.  You can get this by noting the version
+     number that is printed when Octave starts, or running it with the
+     ‘-v’ option.
+
+   • A complete input file that will reproduce the bug.
+
+     A single statement may not be enough of an example—the bug might
+     depend on other details that are missing from the single statement
+     where the error finally occurs.
+
+   • The command arguments you gave Octave to execute that example and
+     observe the bug.  To guarantee you won’t omit something important,
+     list all the options.
+
+     If we were to try to guess the arguments, we would probably guess
+     wrong and then we would not encounter the bug.
+
+   • The type of machine you are using, and the operating system name
+     and version number.
+
+   • The command-line arguments you gave to the ‘configure’ command when
+     you installed the interpreter.
+
+   • A complete list of any modifications you have made to the
+     interpreter source.
+
+     Be precise about these changes—show a context diff for them.
+
+   • Details of any other deviations from the standard procedure for
+     installing Octave.
+
+   • A description of what behavior you observe that you believe is
+     incorrect.  For example, "The interpreter gets a fatal signal," or,
+     "The output produced at line 208 is incorrect."
+
+     Of course, if the bug is that the interpreter gets a fatal signal,
+     then one can’t miss it.  But if the bug is incorrect output, we
+     might not notice unless it is glaringly wrong.
+
+     Even if the problem you experience is a fatal signal, you should
+     still say so explicitly.  Suppose something strange is going on,
+     such as, your copy of the interpreter is out of sync, or you have
+     encountered a bug in the C library on your system.  Your copy might
+     crash and the copy here would not.  If you said to expect a crash,
+     then when the interpreter here fails to crash, we would know that
+     the bug was not happening.  If you don’t say to expect a crash,
+     then we would not know whether the bug was happening.  We would not
+     be able to draw any conclusion from our observations.
+
+     Often the observed symptom is incorrect output when your program is
+     run.  Unfortunately, this is not enough information unless the
+     program is short and simple.  It is very helpful if you can include
+     an explanation of the expected output, and why the actual output is
+     incorrect.
+
+   • If you wish to suggest changes to the Octave source, send them as
+     context diffs.  If you even discuss something in the Octave source,
+     refer to it by context, not by line number, because the line
+     numbers in the development sources probably won’t match those in
+     your sources.
+
+   Here are some things that are not necessary:
+
+   • A description of the envelope of the bug.
+
+     Often people who encounter a bug spend a lot of time investigating
+     which changes to the input file will make the bug go away and which
+     changes will not affect it.  Such information is usually not
+     necessary to enable us to fix bugs in Octave, but if you can find a
+     simpler example to report _instead_ of the original one, that is a
+     convenience.  Errors in the output will be easier to spot, running
+     under the debugger will take less time, etc.  Most Octave bugs
+     involve just one function, so the most straightforward way to
+     simplify an example is to delete all the function definitions
+     except the one in which the bug occurs.
+
+     However, simplification is not vital; if you don’t want to do this,
+     report the bug anyway and send the entire test case you used.
+
+   • A patch for the bug.  Patches can be helpful, but if you find a
+     bug, you should report it, even if you cannot send a fix for the
+     problem.
+
+
+File: octave.info,  Node: Sending Patches,  Prev: Bug Reporting,  Up: Reporting Bugs
+
+F.2.4 Sending Patches for Octave
+--------------------------------
+
+If you would like to write bug fixes or improvements for Octave, that is
+very helpful.  When you send your changes, please follow these
+guidelines to avoid causing extra work for us in studying the patches.
+
+   If you don’t follow these guidelines, your information might still be
+useful, but using it will take extra work.  Maintaining Octave is a lot
+of work in the best of circumstances, and we can’t keep up unless you do
+your best to help.
+
+   • Send an explanation with your changes of what problem they fix or
+     what improvement they bring about.  For a bug fix, just include a
+     copy of the bug report, and explain why the change fixes the bug.
+
+   • Always include a proper bug report for the problem you think you
+     have fixed.  We need to convince ourselves that the change is right
+     before installing it.  Even if it is right, we might have trouble
+     judging it if we don’t have a way to reproduce the problem.
+
+   • Include all the comments that are appropriate to help people
+     reading the source in the future understand why this change was
+     needed.
+
+   • Don’t mix together changes made for different reasons.  Send them
+     _individually_.
+
+     If you make two changes for separate reasons, then we might not
+     want to install them both.  We might want to install just one.
+
+   • Use ‘diff -c’ to make your diffs.  Diffs without context are hard
+     for us to install reliably.  More than that, they make it hard for
+     us to study the diffs to decide whether we want to install them.
+     Unified diff format is better than contextless diffs, but not as
+     easy to read as ‘-c’ format.
+
+     If you have GNU diff, use ‘diff -cp’, which shows the name of the
+     function that each change occurs in.
+
+   • Write the change log entries for your changes.
+
+     Read the ‘ChangeLog’ file to see what sorts of information to put
+     in, and to learn the style that we use.  The purpose of the change
+     log is to show people where to find what was changed.  So you need
+     to be specific about what functions you changed; in large
+     functions, it’s often helpful to indicate where within the function
+     the change was made.
+
+     On the other hand, once you have shown people where to find the
+     change, you need not explain its purpose.  Thus, if you add a new
+     function, all you need to say about it is that it is new.  If you
+     feel that the purpose needs explaining, it probably does—but the
+     explanation will be much more useful if you put it in comments in
+     the code.
+
+     If you would like your name to appear in the header line for who
+     made the change, send us the header line.
+
+
+File: octave.info,  Node: Service,  Prev: Reporting Bugs,  Up: Trouble
+
+F.3 How To Get Help with Octave
+===============================
+
+The mailing list <help@octave.org> exists for the discussion of matters
+related to using and installing Octave.  If would like to join the
+discussion, please send a short note to <help-request@octave.org>.
+
+   *Please do not* send requests to be added or removed from the mailing
+list, or other administrative trivia to the list itself.
+
+   If you think you have found a bug in Octave or in the installation
+procedure, however, you should submit a complete bug report to the
+Octave bug tracker at <http://bugs.octave.org>.  But before you submit a
+bug report, please read <http://www.octave.org/bugs.html> to learn how
+to submit a useful bug report.
+
+
+File: octave.info,  Node: Installation,  Next: Emacs Octave Support,  Prev: Trouble,  Up: Top
+
+Appendix G Installing Octave
+****************************
+
+The procedure for installing Octave from source on a Unix-like system is
+described next.  Building on other platforms will follow similar steps.
+Note that this description applies to Octave releases.  Building the
+development sources from the Mercurial archive requires additional steps
+as described in *note Building the Development Sources::.
+
+* Menu:
+
+* Build Dependencies::
+* Running Configure and Make::
+* Compiling Octave with 64-bit Indexing::
+* Installation Problems::
+
+
+File: octave.info,  Node: Build Dependencies,  Next: Running Configure and Make,  Up: Installation
+
+G.1 Build Dependencies
+======================
+
+Octave is a fairly large program with many build dependencies.  You may
+be able to find pre-packaged versions of the dependencies distributed as
+part of your system, or you may have to build some or all of them
+yourself.
+
+* Menu:
+
+* Obtaining the Dependencies Automatically::
+* Build Tools::
+* External Packages::
+
+
+File: octave.info,  Node: Obtaining the Dependencies Automatically,  Next: Build Tools,  Up: Build Dependencies
+
+G.1.1 Obtaining the Dependencies Automatically
+----------------------------------------------
+
+On some systems you can obtain many of Octave’s build dependencies
+automatically.  The commands for doing this vary by system.  Similarly,
+the names of pre-compiled packages vary by system and do not always
+match exactly the names listed in *note Build Tools:: and *note External
+Packages::.
+
+   You will usually need the development version of an external
+dependency so that you get the libraries and header files for building
+software, not just for running already compiled programs.  These
+packages typically have names that end with the suffix ‘-dev’ or
+‘-devel’.
+
+   On systems with ‘apt-get’ (Debian, Ubuntu, etc.), you may be able to
+install most of the tools and external packages using a command similar
+to
+
+     apt-get build-dep octave
+
+The specific package name may be ‘octave3.2’ or ‘octave3.4’.  The set of
+required tools and external dependencies does not change frequently, so
+it is not important that the version match exactly, but you should use
+the most recent one available.
+
+   On systems with ‘yum’ (Fedora, Red Hat, etc.), you may be able to
+install most of the tools and external packages using a command similar
+to
+
+     yum-builddep octave
+
+The ‘yum-builddep’ utility is part of the ‘yum-utils’ package.
+
+   For either type of system, the package name may include a version
+number.  The set of required tools and external dependencies does not
+change frequently, so it is not important that the version exactly match
+the version you are installing, but you should use the most recent one
+available.
+
+
+File: octave.info,  Node: Build Tools,  Next: External Packages,  Prev: Obtaining the Dependencies Automatically,  Up: Build Dependencies
+
+G.1.2 Build Tools
+-----------------
+
+The following tools are required:
+
+C++, C, and Fortran compilers
+     The Octave sources are primarily written in C++, but some portions
+     are also written in C and Fortran.  The Octave sources are intended
+     to be portable.  Recent versions of the GNU compiler collection
+     (GCC) should work (<http://gcc.gnu.org>).  If you use GCC, you
+     should avoid mixing versions.  For example, be sure that you are
+     not using the obsolete ‘g77’ Fortran compiler with modern versions
+     of ‘gcc’ and ‘g++’.
+
+GNU Make
+     Tool for building software (<http://www.gnu.org/software/make>).
+     Octave’s build system requires GNU Make.  Other versions of Make
+     will not work.  Fortunately, GNU Make is highly portable and easy
+     to install.
+
+AWK, sed, and other Unix utilities
+     Basic Unix system utilities are required for building Octave.  All
+     will be available with any modern Unix system and also on Windows
+     with either Cygwin or MinGW and MSYS.
+
+   Additionally, the following tools may be needed:
+
+Bison
+     Parser generator (<http://www.gnu.org/software/bison>).  You will
+     need Bison if you modify the ‘oct-parse.yy’ source file or if you
+     delete the files that are generated from it.
+
+Flex
+     Lexer analyzer (<http://www.gnu.org/software/flex>).  You will need
+     Flex if you modify the ‘lex.ll’ source file or if you delete the
+     files that are generated from it.
+
+Autoconf
+     Package for software configuration
+     (<http://www.gnu.org/software/autoconf>).  Autoconf is required if
+     you modify Octave’s ‘configure.ac’ file or other files that it
+     requires.
+
+Automake
+     Package for Makefile generation
+     (<http://www.gnu.org/software/automake>).  Automake is required if
+     you modify Octave’s ‘Makefile.am’ files or other files that they
+     depend on.
+
+Libtool
+     Package for building software libraries
+     (<http://www.gnu.org/software/libtool>).  Libtool is required by
+     Automake.
+
+gperf
+     Perfect hash function generator
+     (<http://www.gnu.org/software/gperf>).  You will need gperf if you
+     modify the ‘octave.gperf’ file or if you delete the file that is
+     generated from it.
+
+Texinfo
+     Package for generating online and print documentation
+     (<http://www.gnu.org/software/texinfo>).  You will need Texinfo to
+     build Octave’s documentation or if you modify the documentation
+     source files or the docstring of any Octave function.
+
+
+File: octave.info,  Node: External Packages,  Prev: Build Tools,  Up: Build Dependencies
+
+G.1.3 External Packages
+-----------------------
+
+The following external packages are required:
+
+BLAS
+     Basic Linear Algebra Subroutine library.  Accelerated BLAS
+     libraries such as OpenBLAS (<http://www.openblas.net/>) or ATLAS
+     (<http://math-atlas.sourceforge.net>) are recommended for best
+     performance.  The reference implementation
+     (<http://www.netlib.org/blas>) is slow, unmaintained, and suffers
+     from certain bugs in corner case inputs.
+
+LAPACK
+     Linear Algebra Package (<http://www.netlib.org/lapack>).
+
+PCRE
+     The Perl Compatible Regular Expression library
+     (<http://www.pcre.org>).
+
+   The following external package is optional but strongly recommended:
+
+GNU Readline
+     Command-line editing library (<www.gnu.org/s/readline>).
+
+   If you wish to build Octave without GNU readline installed, you must
+use the ‘--disable-readline’ option when running the configure script.
+
+   The following external software packages are optional but
+recommended:
+
+ARPACK
+     Library for the solution of large-scale eigenvalue problems
+     (<http://forge.scilab.org/index.php/p/arpack-ng>).  ARPACK is
+     required to provide the functions ‘eigs’ and ‘svds’.
+
+cURL
+     Library for transferring data with URL syntax
+     (<http://curl.haxx.se>).  cURL is required to provide the ‘urlread’
+     and ‘urlwrite’ functions and the ‘ftp’ class.
+
+FFTW3
+     Library for computing discrete Fourier transforms
+     (<http://www.fftw.org>).  FFTW3 is used to provide better
+     performance for functions that compute discrete Fourier transforms
+     (‘fft’, ‘ifft’, ‘fft2’, etc.)
+
+FLTK
+     Portable GUI toolkit (<http://www.fltk.org>).  FLTK is currently
+     used to provide windows for Octave’s OpenGL-based graphics
+     functions.
+
+fontconfig
+     Library for configuring and customizing font access
+     (<http://www.freedesktop.org/wiki/Software/fontconfig>).
+     Fontconfig is used to manage fonts for Octave’s OpenGL-based
+     graphics functions.
+
+FreeType
+     Portable font engine (<http://www.freetype.org>).  FreeType is used
+     to perform font rendering for Octave’s OpenGL-based graphics
+     functions.
+
+GLPK
+     GNU Linear Programming Kit (<http://www.gnu.org/software/glpk>).
+     GPLK is required for the function ‘glpk’.
+
+gl2ps
+     OpenGL to PostScript printing library
+     (<http://www.geuz.org/gl2ps/>).  gl2ps is required for printing
+     when using the FLTK toolkit.
+
+gnuplot
+     Interactive graphics program (<http://www.gnuplot.info>).  gnuplot
+     is currently the default graphics renderer for Octave.
+
+GraphicsMagick++
+     Image processing library (<http://www.graphicsmagick.org>).
+     GraphicsMagick++ is used to provide the ‘imread’ and ‘imwrite’
+     functions.
+
+HDF5
+     Library for manipulating portable data files
+     (<http://www.hdfgroup.org/HDF5>).  HDF5 is required for Octave’s
+     ‘load’ and ‘save’ commands to read and write HDF data files.
+
+Java Development Kit
+     Java programming language compiler and libraries.  The OpenJDK free
+     software implementation is recommended
+     (<http://openjdk.java.net/>), although other JDK implementations
+     may work.  Java is required to be able to call Java functions from
+     within Octave.
+
+LLVM
+     Compiler framework, (<http://www.llvm.org>).  LLVM is required for
+     Octave’s experimental just-in-time (JIT) compilation for speeding
+     up the interpreter.
+
+OpenGL
+     API for portable 2-D and 3-D graphics (<http://www.opengl.org>).
+     An OpenGL implementation is required to provide Octave’s
+     OpenGL-based graphics functions.  Octave’s OpenGL-based graphics
+     functions usually outperform the gnuplot-based graphics functions
+     because plot data can be rendered directly instead of sending data
+     and commands to gnuplot for interpretation and rendering.
+
+Qhull
+     Computational geometry library (<http://www.qhull.org>).  Qhull is
+     required to provide the functions ‘convhull’, ‘convhulln’,
+     ‘delaunay’, ‘delaunayn’, ‘voronoi’, and ‘voronoin’.
+
+QRUPDATE
+     QR factorization updating library
+     (<http://sourceforge.net/projects/qrupdate>).  QRUPDATE is used to
+     provide improved performance for the functions ‘qrdelete’,
+     ‘qrinsert’, ‘qrshift’, and ‘qrupdate’.
+
+QScintilla
+     Source code highlighter and manipulator; a Qt port of Scintilla
+     (<http://www.riverbankcomputing.co.uk/software/qscintilla>).
+     QScintilla is used for syntax highlighting and code completion in
+     the GUI.
+
+Qt
+     GUI and utility libraries ().  Qt is required for building the GUI.
+     It is a large framework, but the only components required are the
+     GUI, core, and network modules.
+
+SuiteSparse
+     Sparse matrix factorization library
+     (<http://www.cise.ufl.edu/research/sparse/SuiteSparse>).
+     SuiteSparse is required to provide sparse matrix factorizations and
+     solution of linear equations for sparse systems.
+
+zlib
+     Data compression library (<http://zlib.net>).  The zlib library is
+     required for Octave’s ‘load’ and ‘save’ commands to handle
+     compressed data, including MATLAB v5 MAT files.
+
+
+File: octave.info,  Node: Running Configure and Make,  Next: Compiling Octave with 64-bit Indexing,  Prev: Build Dependencies,  Up: Installation
+
+G.2 Running Configure and Make
+==============================
+
+   • Run the shell script ‘configure’.  This will determine the features
+     your system has (or doesn’t have) and create a file named
+     ‘Makefile’ from each of the files named ‘Makefile.in’.
+
+     Here is a summary of the configure options that are most frequently
+     used when building Octave:
+
+     ‘--help’
+          Print a summary of the options recognized by the configure
+          script.
+
+     ‘--prefix=PREFIX’
+          Install Octave in subdirectories below PREFIX.  The default
+          value of PREFIX is ‘/usr/local’.
+
+     ‘--srcdir=DIR’
+          Look for Octave sources in the directory DIR.
+
+     ‘--enable-64’
+          This is an *experimental* option to enable Octave to use
+          64-bit integers for array dimensions and indexing on 64-bit
+          platforms.  You probably don’t want to use this option unless
+          you know what you are doing.  *Note Compiling Octave with
+          64-bit Indexing::, for more details about building Octave with
+          this option.
+
+     ‘--enable-bounds-check’
+          Enable bounds checking for indexing operators in the internal
+          array classes.  This option is primarily used for debugging
+          Octave.  Building Octave with this option has a negative
+          impact on performance and is not recommended for general use.
+
+     ‘--disable-docs’
+          Disable building all forms of the documentation (Info, PDF,
+          HTML). The default is to build documentation, but your system
+          will need functioning Texinfo and TeX installs for this to
+          succeed.
+
+     ‘--enable-float-truncate’
+          This option allows for truncation of intermediate floating
+          point results in calculations.  It is only necessary for
+          certain platforms.
+
+     ‘--enable-readline’
+          Use the readline library to provide for editing of the command
+          line in terminal environments.  This option is on by default.
+
+     ‘--enable-shared’
+          Create shared libraries (this is the default).  If you are
+          planning to use the dynamic loading features, you will
+          probably want to use this option.  It will make your ‘.oct’
+          files much smaller and on some systems it may be necessary to
+          build shared libraries in order to use dynamically linked
+          functions.
+
+          You may also want to build a shared version of ‘libstdc++’, if
+          your system doesn’t already have one.
+
+     ‘--enable-dl’
+          Use ‘dlopen’ and friends to make Octave capable of dynamically
+          linking externally compiled functions (this is the default if
+          ‘--enable-shared’ is specified).  This option only works on
+          systems that actually have these functions.  If you plan on
+          using this feature, you should probably also use
+          ‘--enable-shared’ to reduce the size of your ‘.oct’ files.
+
+     ‘--with-blas=<lib>’
+          By default, configure looks for the best BLAS matrix libraries
+          on your system, including optimized implementations such as
+          the free ATLAS 3.0, as well as vendor-tuned libraries.  (The
+          use of an optimized BLAS will generally result in
+          several-times faster matrix operations.)  Use this option to
+          specify a particular BLAS library that Octave should use.
+
+     ‘--with-lapack=<lib>’
+          By default, configure looks for the best LAPACK matrix
+          libraries on your system, including optimized implementations
+          such as the free ATLAS 3.0, as well as vendor-tuned libraries.
+          (The use of an optimized LAPACK will generally result in
+          several-times faster matrix operations.)  Use this option to
+          specify a particular LAPACK library that Octave should use.
+
+     ‘--with-magick=<lib>’
+          Select the library to use for image I/O.  The two possible
+          values are "GraphicsMagick" (default) or "ImageMagick".
+
+     ‘--with-sepchar=<char>’
+          Use <char> as the path separation character.  This option can
+          help when running Octave on non-Unix systems.
+
+     ‘--without-amd’
+          Don’t use AMD, disable some sparse matrix functionality.
+
+     ‘--without-camd’
+          Don’t use CAMD, disable some sparse matrix functionality.
+
+     ‘--without-colamd’
+          Don’t use COLAMD, disable some sparse matrix functionality.
+
+     ‘--without-ccolamd’
+          Don’t use CCOLAMD, disable some sparse matrix functionality.
+
+     ‘--without-cholmod’
+          Don’t use CHOLMOD, disable some sparse matrix functionality.
+
+     ‘--without-curl’
+          Don’t use the cURL library, disable the ftp objects, ‘urlread’
+          and ‘urlwrite’ functions.
+
+     ‘--without-cxsparse’
+          Don’t use CXSPARSE, disable some sparse matrix functionality.
+
+     ‘--without-fftw3’
+          Use the included FFTPACK library for computing Fast Fourier
+          Transforms instead of the FFTW3 library.
+
+     ‘--without-fftw3f’
+          Use the included FFTPACK library for computing Fast Fourier
+          Transforms instead of the FFTW3 library when operating on
+          single precision (float) values.
+
+     ‘--without-glpk’
+          Don’t use the GLPK library for linear programming.
+
+     ‘--without-hdf5’
+          Don’t use the HDF5 library, disable reading and writing of
+          HDF5 files.
+
+     ‘--without-opengl’
+          Don’t use OpenGL, disable native graphics toolkit for
+          plotting.  You will need ‘gnuplot’ installed in order to make
+          plots.
+
+     ‘--without-qhull’
+          Don’t use Qhull, disable ‘delaunay’, ‘convhull’, and related
+          functions.
+
+     ‘--without-qrupdate’
+          Don’t use QRUPDATE, disable QR and Cholesky update functions.
+
+     ‘--without-umfpack’
+          Don’t use UMFPACK, disable some sparse matrix functionality.
+
+     ‘--without-zlib’
+          Don’t use the zlib library, disable data file compression and
+          support for recent MAT file formats.
+
+     ‘--without-framework-carbon’
+          Don’t use framework Carbon headers, libraries, or specific
+          source code even if the configure test succeeds (the default
+          is to use Carbon framework if available).  This is a platform
+          specific configure option for Mac systems.
+
+     ‘--without-framework-opengl’
+          Don’t use framework OpenGL headers, libraries, or specific
+          source code even if the configure test succeeds.  If this
+          option is given then OpenGL headers and libraries in standard
+          system locations are tested (the default value is
+          ‘--with-framework-opengl’).  This is a platform specific
+          configure option for Mac systems.
+
+     See the file ‘INSTALL’ for more general information about the
+     command line options used by configure.  That file also contains
+     instructions for compiling in a directory other than the one where
+     the source is located.
+
+   • Run make.
+
+     You will need a recent version of GNU Make as Octave relies on
+     certain features not generally available in all versions of make.
+     Modifying Octave’s makefiles to work with other make programs is
+     probably not worth your time; instead, we simply recommend
+     installing GNU Make.
+
+     There are currently two options for plotting in Octave: (1) the
+     external program gnuplot, or (2) the internal graphics engine using
+     OpenGL and FLTK.  Gnuplot is a command-driven interactive function
+     plotting program.  Gnuplot is copyrighted, but freely
+     distributable.  As of Octave release 3.4, gnuplot is the default
+     option for plotting.  But, the internal graphics engine is nearly
+     100% compatible, certainly for most ordinary plots, and users are
+     encouraged to test it.  It is anticipated that the internal engine
+     will become the default option at the next major release of Octave.
+
+     To compile Octave, you will need a recent version of ‘g++’ or other
+     ANSI C++ compiler.  In addition, you will need a Fortran 77
+     compiler or ‘f2c’.  If you use ‘f2c’, you will need a script like
+     ‘fort77’ that works like a normal Fortran compiler by combining
+     ‘f2c’ with your C compiler in a single script.
+
+     If you plan to modify the parser you will also need GNU ‘bison’ and
+     ‘flex’.  If you modify the documentation, you will need GNU
+     Texinfo.
+
+     GNU Make, ‘gcc’ (and ‘libstdc++’), ‘gnuplot’, ‘bison’, ‘flex’, and
+     Texinfo are all available from many anonymous ftp archives.  The
+     primary site is <ftp.gnu.org>, but it is often very busy.  A list
+     of sites that mirror the software on <ftp.gnu.org> is available by
+     anonymous ftp from <ftp://ftp.gnu.org/pub/gnu/GNUinfo/FTP>.
+
+     Octave requires approximately 1.4 GB of disk storage to unpack and
+     compile from source (significantly less, 400 MB, if you don’t
+     compile with debugging symbols).  To compile without debugging
+     symbols try the command
+
+          make CFLAGS=-O CXXFLAGS=-O LDFLAGS=
+
+     instead of just ‘make’.
+
+   • If you encounter errors while compiling Octave, first see *note
+     Installation Problems:: for a list of known problems and if there
+     is a workaround or solution for your problem.  If not, see *note
+     Trouble:: for information about how to report bugs.
+
+   • Once you have successfully compiled Octave, run ‘make install’.
+
+     This will install a copy of Octave, its libraries, and its
+     documentation in the destination directory.  As distributed, Octave
+     is installed in the following directories.  In the table below,
+     PREFIX defaults to ‘/usr/local’, VERSION stands for the current
+     version number of the interpreter, and ARCH is the type of computer
+     on which Octave is installed (for example, ‘i586-unknown-gnu’).
+
+     ‘PREFIX/bin’
+          Octave and other binaries that people will want to run
+          directly.
+
+     ‘PREFIX/lib/octave-VERSION’
+          Libraries like liboctave.a and liboctinterp.a.
+
+     ‘PREFIX/octave-VERSION/include/octave’
+          Include files distributed with Octave.
+
+     ‘PREFIX/share’
+          Architecture-independent data files.
+
+     ‘PREFIX/share/man/man1’
+          Unix-style man pages describing Octave.
+
+     ‘PREFIX/share/info’
+          Info files describing Octave.
+
+     ‘PREFIX/share/octave/VERSION/m’
+          Function files distributed with Octave.  This includes the
+          Octave version, so that multiple versions of Octave may be
+          installed at the same time.
+
+     ‘PREFIX/libexec/octave/VERSION/exec/ARCH’
+          Executables to be run by Octave rather than the user.
+
+     ‘PREFIX/lib/octave/VERSION/oct/ARCH’
+          Object files that will be dynamically loaded.
+
+     ‘PREFIX/share/octave/VERSION/imagelib’
+          Image files that are distributed with Octave.
+
+
+File: octave.info,  Node: Compiling Octave with 64-bit Indexing,  Next: Installation Problems,  Prev: Running Configure and Make,  Up: Installation
+
+G.3 Compiling Octave with 64-bit Indexing
+=========================================
+
+Note: the following only applies to systems that have 64-bit pointers.
+Configuring Octave with ‘--enable-64’ cannot magically make a 32-bit
+system have a 64-bit address space.
+
+   On 64-bit systems, Octave is limited to (approximately) the following
+array sizes when using the default 32-bit indexing mode:
+
+     double:         16 GB
+     single:          8 GB
+     uint64, int64:  16 GB
+     uint32, int32:   8 GB
+     uint16, int16:   4 GB
+     uint8, int8:     2 GB
+
+   In each case, the limit is really (approximately) 2^{31} elements
+because of the default type of the value used for indexing arrays
+(signed 32-bit integer, corresponding to the size of a Fortran INTEGER
+value).
+
+   Trying to create larger arrays will produce the following error:
+
+     octave:1> a = zeros (1024*1024*1024*3, 1, 'int8');
+     error: memory exhausted or requested size too large
+            for range of Octave's index type --
+            trying to return to prompt
+
+You will obtain this error even if your system has enough memory to
+create this array (4 GB in the above case).
+
+   To use arrays larger than 2 GB, Octave has to be configured with the
+option ‘--enable-64’.  This option is experimental and you are
+encouraged to submit bug reports if you find a problem.  With this
+option, Octave will use 64-bit integers internally for array dimensions
+and indexing.  However, all numerical libraries used by Octave will
+*also* need to use 64-bit integers for array dimensions and indexing.
+In most cases, this means they will need to be compiled from source
+since most (all?)  distributions which package these libraries compile
+them with the default Fortran integer size, which is normally 32-bits
+wide.
+
+   The following instructions were tested with the development version
+of Octave and GCC 4.3.4 on an x86_64 Debian system.
+
+   The versions listed below are the versions used for testing.  If
+newer versions of these packages are available, you should try to use
+them, although there may be some differences.
+
+   All libraries and header files will be installed in subdirectories of
+‘$prefix64’ (you must choose the location of this directory).
+
+   • BLAS and LAPACK (<http://www.netlib.org/lapack>)
+
+     Reference versions for both libraries are included in the reference
+     LAPACK 3.2.1 distribution from <netlib.org>.
+
+        − Copy the file ‘make.inc.example’ and name it ‘make.inc’.  The
+          options ‘-fdefault-integer-8’ and ‘-fPIC’ (on 64-bit CPU) have
+          to be added to the variable ‘OPTS’ and ‘NOOPT’.
+
+        − Once you have compiled this library make sure that you use it
+          for compiling Suite Sparse and Octave.  In the following we
+          assume that you installed the LAPACK library as
+          $prefix64/lib/liblapack.a.
+
+   • QRUPDATE (<http://sourceforge.net/projects/qrupdate>)
+
+     In the ‘Makeconf’ file:
+
+        − Add ‘-fdefault-integer-8’ to ‘FFLAGS’.
+
+        − Adjust the BLAS and LAPACK variables as needed if your 64-bit
+          aware BLAS and LAPACK libraries are in a non-standard
+          location.
+
+        − Set ‘PREFIX’ to the top-level directory of your install tree.
+
+        − Run ‘make solib’ to make a shared library.
+
+        − Run ‘make install’ to install the library.
+
+   • SuiteSparse (<http://www.cise.ufl.edu/research/sparse/SuiteSparse>)
+
+     Pass the following options to ‘make’ to enable 64-bit integers for
+     BLAS library calls.  On 64-bit Windows systems, use
+     ‘-DLONGBLAS="long long"’ instead.
+
+          CFLAGS='-DLONGBLAS=long'
+          CXXFLAGS='-DLONGBLAS=long'
+
+     The SuiteSparse makefiles don’t generate shared libraries.  On some
+     systems, you can generate them by doing something as simple as
+
+          top=$(pwd)
+          for f in *.a; do
+            mkdir tmp
+            cd tmp
+            ar vx ../$f
+            gcc -shared -o ../${f%%.a}.so *.o
+            cd $top
+            rm -rf tmp
+          done
+
+     Other systems may require a different solution.
+
+   • ARPACK (http://forge.scilab.org/index.php/p/arpack-ng/)
+
+        − Add ‘-fdefault-integer-8’ to ‘FFLAGS’ when running configure.
+
+        − Run ‘make’ to build the library.
+
+        − Run ‘make install’ to install the library.
+
+   • ATLAS instead of reference BLAS and LAPACK
+
+     Suggestions on how to compile ATLAS would be most welcome.
+
+   • GLPK
+
+   • Qhull (<http://www.qhull.org>)
+
+     Both GLPK and Qhull use ‘int’ internally so maximum problem sizes
+     may be limited.
+
+   • Octave
+
+     Octave’s 64-bit index support is activated with the configure
+     option ‘--enable-64’.
+
+          ./configure \
+            LD_LIBRARY_PATH="$prefix64/lib" \
+            CPPFLAGS="-I$prefix64/include" LDFLAGS="-L$prefix64/lib" \
+            --enable-64
+
+     You must ensure that all Fortran sources except those in the
+     ‘liboctave/cruft/ranlib’ directory are compiled such that INTEGERS
+     are 8-bytes wide.  If you are using gfortran, the configure script
+     should automatically set the Makefile variable ‘F77_INTEGER_8_FLAG’
+     to ‘-fdefault-integer-8’.  If you are using another compiler, you
+     must set this variable yourself.  You should NOT set this flag in
+     ‘FFLAGS’, otherwise the files in ‘liboctave/cruft/ranlib’ will be
+     miscompiled.
+
+   • Other dependencies
+
+     Probably nothing special needs to be done for the following
+     dependencies.  If you discover that something does need to be done,
+     please submit a bug report.
+
+        − pcre
+
+        − zlib
+
+        − hdf5
+
+        − fftw3
+
+        − cURL
+
+        − GraphicsMagick++
+
+        − OpenGL
+
+        − freetype
+
+        − fontconfig
+
+        − fltk
+
+
 File: octave.info,  Node: Installation Problems,  Prev: Compiling Octave with 64-bit Indexing,  Up: Installation
 
 G.4 Installation Problems
 =========================
 
 This section contains a list of problems (and some apparent problems
-that don't really mean anything is wrong) that may show up during
+that don’t really mean anything is wrong) that may show up during
 installation of Octave.
 
-   * On some SCO systems, 'info' fails to compile if 'HAVE_TERMIOS_H' is
-     defined in 'config.h'.  Simply removing the definition from
-     'info/config.h' should allow it to compile.
+   • On some SCO systems, ‘info’ fails to compile if ‘HAVE_TERMIOS_H’ is
+     defined in ‘config.h’.  Simply removing the definition from
+     ‘info/config.h’ should allow it to compile.
 
-   * If 'configure' finds 'dlopen', 'dlsym', 'dlclose', and 'dlerror',
-     but not the header file 'dlfcn.h', you need to find the source for
-     the header file and install it in the directory 'usr/include'.
+   • If ‘configure’ finds ‘dlopen’, ‘dlsym’, ‘dlclose’, and ‘dlerror’,
+     but not the header file ‘dlfcn.h’, you need to find the source for
+     the header file and install it in the directory ‘usr/include’.
      This is reportedly a problem with Slackware 3.1.  For Linux/GNU
-     systems, the source for 'dlfcn.h' is in the 'ldso' package.
+     systems, the source for ‘dlfcn.h’ is in the ‘ldso’ package.
 
-   * Building '.oct' files doesn't work.
+   • Building ‘.oct’ files doesn’t work.
 
-     You should probably have a shared version of 'libstdc++'.  A patch
-     is needed to build shared versions of version 2.7.2 of 'libstdc++'
+     You should probably have a shared version of ‘libstdc++’.  A patch
+     is needed to build shared versions of version 2.7.2 of ‘libstdc++’
      on the HP-PA architecture.  You can find the patch at
      <ftp://ftp.cygnus.com/pub/g++/libg++-2.7.2-hppa-gcc-fix>.
 
-   * On some DEC alpha systems there may be a problem with the 'libdxml'
+   • On some DEC alpha systems there may be a problem with the ‘libdxml’
      library, resulting in floating point errors and/or segmentation
      faults in the linear algebra routines called by Octave.  If you
      encounter such problems, then you should modify the configure
-     script so that 'SPECIAL_MATH_LIB' is not set to '-ldxml'.
+     script so that ‘SPECIAL_MATH_LIB’ is not set to ‘-ldxml’.
 
-   * On FreeBSD systems Octave may hang while initializing some internal
+   • On FreeBSD systems Octave may hang while initializing some internal
      constants.  The fix appears to be to use
 
           options      GPL_MATH_EMULATE
@@ -63,10 +1004,10 @@ installation of Octave.
           options      MATH_EMULATE
 
      in the kernel configuration files (typically found in the directory
-     '/sys/i386/conf').  After making this change, you'll need to
+     ‘/sys/i386/conf’).  After making this change, you’ll need to
      rebuild the kernel, install it, and reboot.
 
-   * If you encounter errors like
+   • If you encounter errors like
 
           passing `void (*)()' as argument 2 of
             `octave_set_signal_handler(int, void (*)(int))'
@@ -76,13 +1017,13 @@ installation of Octave.
           warning: ANSI C++ prohibits conversion from `(int)'
                    to `(...)'
 
-     while compiling 'sighandlers.cc', you may need to edit some files
-     in the 'gcc' include subdirectory to add proper prototypes for
+     while compiling ‘sighandlers.cc’, you may need to edit some files
+     in the ‘gcc’ include subdirectory to add proper prototypes for
      functions there.  For example, Ultrix 4.2 needs proper declarations
-     for the 'signal' function and the 'SIG_IGN' macro in the file
-     'signal.h'.
+     for the ‘signal’ function and the ‘SIG_IGN’ macro in the file
+     ‘signal.h’.
 
-     On some systems the 'SIG_IGN' macro is defined to be something like
+     On some systems the ‘SIG_IGN’ macro is defined to be something like
      this:
 
           #define  SIG_IGN  (void (*)())1
@@ -91,24 +1032,24 @@ installation of Octave.
 
           #define  SIG_IGN  (void (*)(int))1
 
-     to match the prototype declaration for the 'signal' function.  This
-     change should also be made for the 'SIG_DFL' and 'SIG_ERR' symbols.
-     It may be necessary to change the definitions in 'sys/signal.h' as
+     to match the prototype declaration for the ‘signal’ function.  This
+     change should also be made for the ‘SIG_DFL’ and ‘SIG_ERR’ symbols.
+     It may be necessary to change the definitions in ‘sys/signal.h’ as
      well.
 
-     The 'gcc' 'fixincludes' and 'fixproto' scripts should probably fix
-     these problems when 'gcc' installs its modified set of header
-     files, but I don't think that's been done yet.
+     The ‘gcc’ ‘fixincludes’ and ‘fixproto’ scripts should probably fix
+     these problems when ‘gcc’ installs its modified set of header
+     files, but I don’t think that’s been done yet.
 
-     *You should not change the files in '/usr/include'*.  You can find
-     the 'gcc' include directory tree by running the command
+     *You should not change the files in ‘/usr/include’*.  You can find
+     the ‘gcc’ include directory tree by running the command
 
           gcc -print-libgcc-file-name
 
-     The directory of 'gcc' include files normally begins in the same
-     directory that contains the file 'libgcc.a'.
+     The directory of ‘gcc’ include files normally begins in the same
+     directory that contains the file ‘libgcc.a’.
 
-   * Some of the Fortran subroutines may fail to compile with older
+   • Some of the Fortran subroutines may fail to compile with older
      versions of the Sun Fortran compiler.  If you get errors like
 
           zgemm.f:
@@ -125,50 +1066,50 @@ installation of Octave.
           pcc_binval: missing IR_CONV in complex op
           make[2]: *** [zgemm.o] Error 1
 
-     when compiling the Fortran subroutines in the 'liboctave/cruft'
+     when compiling the Fortran subroutines in the ‘liboctave/cruft’
      subdirectory, you should either upgrade your compiler or try
      compiling with optimization turned off.
 
-   * On NeXT systems, if you get errors like this:
+   • On NeXT systems, if you get errors like this:
 
           /usr/tmp/cc007458.s:unknown:Undefined local
                 symbol LBB7656
           /usr/tmp/cc007458.s:unknown:Undefined local
                 symbol LBE7656
 
-     when compiling 'Array.cc' and 'Matrix.cc', try recompiling these
-     files without '-g'.
+     when compiling ‘Array.cc’ and ‘Matrix.cc’, try recompiling these
+     files without ‘-g’.
 
-   * Some people have reported that calls to system() and the pager do
+   • Some people have reported that calls to system() and the pager do
      not work on SunOS systems.  This is apparently due to having
-     'G_HAVE_SYS_WAIT' defined to be 0 instead of 1 when compiling
-     'libg++'.
+     ‘G_HAVE_SYS_WAIT’ defined to be 0 instead of 1 when compiling
+     ‘libg++’.
 
-   * On systems where the reference BLAS library is used the following
+   • On systems where the reference BLAS library is used the following
      matrix-by-vector multiplication incorrectly handles NaN values of
-     the form 'NaN * 0'.
+     the form ‘NaN * 0’.
 
           [NaN, 1; 0, 0] * [0; 1]
-          =>
+          ⇒
           [ 1
             0 ]
 
-          correct result =>
+          correct result ⇒
           [ NaN
             0   ]
 
      Install a different BLAS library such as OpenBLAS or ATLAS to
      correct this issue.
 
-   * On NeXT systems, linking to 'libsys_s.a' may fail to resolve the
+   • On NeXT systems, linking to ‘libsys_s.a’ may fail to resolve the
      following functions
 
           _tcgetattr
           _tcsetattr
           _tcflow
 
-     which are part of 'libposix.a'.  Unfortunately, linking Octave with
-     '-posix' results in the following undefined symbols.
+     which are part of ‘libposix.a’.  Unfortunately, linking Octave with
+     ‘-posix’ results in the following undefined symbols.
 
           .destructors_used
           .constructors_used
@@ -178,38 +1119,38 @@ installation of Octave.
           .objc_class_name_NXStringTable
           .objc_class_name_NXBundle
 
-     One kluge around this problem is to extract 'termios.o' from
-     'libposix.a', put it in Octave's 'src' directory, and add it to the
+     One kluge around this problem is to extract ‘termios.o’ from
+     ‘libposix.a’, put it in Octave’s ‘src’ directory, and add it to the
      list of files to link together in the makefile.  Suggestions for
      better ways to solve this problem are welcome!
 
-   * If Octave crashes immediately with a floating point exception, it
+   • If Octave crashes immediately with a floating point exception, it
      is likely that it is failing to initialize the IEEE floating point
      values for infinity and NaN.
 
      If your system actually does support IEEE arithmetic, you should be
      able to fix this problem by modifying the function
-     'octave_ieee_init' in the file 'lo-ieee.cc' to correctly initialize
-     Octave's internal infinity and NaN variables.
+     ‘octave_ieee_init’ in the file ‘lo-ieee.cc’ to correctly initialize
+     Octave’s internal infinity and NaN variables.
 
-     If your system does not support IEEE arithmetic but Octave's
+     If your system does not support IEEE arithmetic but Octave’s
      configure script incorrectly determined that it does, you can work
-     around the problem by editing the file 'config.h' to not define
-     'HAVE_ISINF', 'HAVE_FINITE', and 'HAVE_ISNAN'.
+     around the problem by editing the file ‘config.h’ to not define
+     ‘HAVE_ISINF’, ‘HAVE_FINITE’, and ‘HAVE_ISNAN’.
 
      In any case, please report this as a bug since it might be possible
-     to modify Octave's configuration script to automatically determine
+     to modify Octave’s configuration script to automatically determine
      the proper thing to do.
 
-   * If Octave is unable to find a header file because it is installed
+   • If Octave is unable to find a header file because it is installed
      in a location that is not normally searched by the compiler, you
      can add the directory to the include search path by specifying (for
-     example) 'CPPFLAGS=-I/some/nonstandard/directory' as an argument to
-     'configure'.  Other variables that can be specified this way are
-     'CFLAGS', 'CXXFLAGS', 'FFLAGS', and 'LDFLAGS'.  Passing them as
+     example) ‘CPPFLAGS=-I/some/nonstandard/directory’ as an argument to
+     ‘configure’.  Other variables that can be specified this way are
+     ‘CFLAGS’, ‘CXXFLAGS’, ‘FFLAGS’, and ‘LDFLAGS’.  Passing them as
      options to the configure script also records them in the
-     'config.status' file.  By default, 'CPPFLAGS' and 'LDFLAGS' are
-     empty, 'CFLAGS' and 'CXXFLAGS' are set to "-g -O2" and 'FFLAGS' is
+     ‘config.status’ file.  By default, ‘CPPFLAGS’ and ‘LDFLAGS’ are
+     empty, ‘CFLAGS’ and ‘CXXFLAGS’ are set to "-g -O2" and ‘FFLAGS’ is
      set to "-O".
 
 
@@ -230,10 +1171,10 @@ mode, or by interacting with Octave from within a file with Octave code.
 This is useful in particular for debugging Octave code.
 
    Finally, you can convince Octave to use the Emacs info reader for
-'help -i'.
+‘help -i’.
 
    All functionality is provided by the Emacs Lisp package EOS (for
-"Emacs Octave Support").  This chapter describes how to set up and use
+“Emacs Octave Support”).  This chapter describes how to set up and use
 this package.
 
    Please contact <Kurt.Hornik@wu-wien.ac.at> if you have any questions
@@ -252,15 +1193,15 @@ File: octave.info,  Node: Installing EOS,  Next: Using Octave Mode,  Up: Emacs O
 H.1 Installing EOS
 ==================
 
-The Emacs package EOS consists of the three files 'octave-mod.el',
-'octave-inf.el', and 'octave-hlp.el'.  These files, or better yet their
+The Emacs package EOS consists of the three files ‘octave-mod.el’,
+‘octave-inf.el’, and ‘octave-hlp.el’.  These files, or better yet their
 byte-compiled versions, should be somewhere in your Emacs load-path.
 
    If you have GNU Emacs with a version number at least as high as
 19.35, you are all set up, because EOS is respectively will be part of
 GNU Emacs as of version 19.35.
 
-   Otherwise, copy the three files from the 'emacs' subdirectory of the
+   Otherwise, copy the three files from the ‘emacs’ subdirectory of the
 Octave distribution to a place where Emacs can find them (this depends
 on how your Emacs was installed).  Byte-compile them for speed if you
 want.
@@ -273,12 +1214,12 @@ H.2 Using Octave Mode
 
 If you are lucky, your sysadmins have already arranged everything so
 that Emacs automatically goes into Octave mode whenever you visit an
-Octave code file as characterized by its extension '.m'.  If not,
+Octave code file as characterized by its extension ‘.m’.  If not,
 proceed as follows.
 
-  1. To begin using Octave mode for all '.m' files you visit, add the
+  1. To begin using Octave mode for all ‘.m’ files you visit, add the
      following lines to a file loaded by Emacs at startup time,
-     typically your '~/.emacs' file:
+     typically your ‘~/.emacs’ file:
 
           (autoload 'octave-mode "octave-mod" nil t)
           (setq auto-mode-alist
@@ -299,158 +1240,158 @@ proceed as follows.
    In Octave mode, the following special Emacs commands can be used in
 addition to the standard Emacs commands.
 
-'C-h m'
+‘C-h m’
      Describe the features of Octave mode.
 
-'LFD'
+‘LFD’
      Reindent the current Octave line, insert a newline and indent the
-     new line ('octave-reindent-then-newline-and-indent').  An abbrev
-     before point is expanded if 'abbrev-mode' is non-'nil'.
+     new line (‘octave-reindent-then-newline-and-indent’).  An abbrev
+     before point is expanded if ‘abbrev-mode’ is non-‘nil’.
 
-'TAB'
+‘TAB’
      Indents current Octave line based on its contents and on previous
-     lines ('indent-according-to-mode').
+     lines (‘indent-according-to-mode’).
 
-';'
-     Insert an "electric" semicolon ('octave-electric-semi').  If
-     'octave-auto-indent' is non-'nil', reindent the current line.  If
-     'octave-auto-newline' is non-'nil', automagically insert a newline
+‘;’
+     Insert an “electric” semicolon (‘octave-electric-semi’).  If
+     ‘octave-auto-indent’ is non-‘nil’, reindent the current line.  If
+     ‘octave-auto-newline’ is non-‘nil’, automagically insert a newline
      and indent the new line.
 
-'`'
-     Start entering an abbreviation ('octave-abbrev-start').  If Abbrev
-     mode is turned on, typing '`C-h' or '`?' lists all abbrevs.  Any
+‘`’
+     Start entering an abbreviation (‘octave-abbrev-start’).  If Abbrev
+     mode is turned on, typing ‘`C-h’ or ‘`?’ lists all abbrevs.  Any
      other key combination is executed normally.  Note that all Octave
      abbrevs start with a grave accent.
 
-'M-LFD'
+‘M-LFD’
      Break line at point and insert continuation marker and alignment
-     ('octave-split-line').
+     (‘octave-split-line’).
 
-'M-TAB'
+‘M-TAB’
      Perform completion on Octave symbol preceding point, comparing that
-     symbol against Octave's reserved words and built-in variables
-     ('octave-complete-symbol').
+     symbol against Octave’s reserved words and built-in variables
+     (‘octave-complete-symbol’).
 
-'M-C-a'
+‘M-C-a’
      Move backward to the beginning of a function
-     ('octave-beginning-of-defun').  With prefix argument N, do it that
+     (‘octave-beginning-of-defun’).  With prefix argument N, do it that
      many times if N is positive; otherwise, move forward to the N-th
      following beginning of a function.
 
-'M-C-e'
-     Move forward to the end of a function ('octave-end-of-defun').
+‘M-C-e’
+     Move forward to the end of a function (‘octave-end-of-defun’).
      With prefix argument N, do it that many times if N is positive;
      otherwise, move back to the N-th preceding end of a function.
 
-'M-C-h'
+‘M-C-h’
      Puts point at beginning and mark at the end of the current Octave
      function, i.e., the one containing point or following point
-     ('octave-mark-defun').
+     (‘octave-mark-defun’).
 
-'M-C-q'
+‘M-C-q’
      Properly indents the Octave function which contains point
-     ('octave-indent-defun').
+     (‘octave-indent-defun’).
 
-'M-;'
+‘M-;’
      If there is no comment already on this line, create a code-level
      comment (started by two comment characters) if the line is empty,
      or an in-line comment (started by one comment character) otherwise
-     ('octave-indent-for-comment').  Point is left after the start of
+     (‘octave-indent-for-comment’).  Point is left after the start of
      the comment which is properly aligned.
 
-'C-c ;'
-     Puts the comment character '#' (more precisely, the string value of
-     'octave-comment-start') at the beginning of every line in the
-     region ('octave-comment-region').  With just 'C-u' prefix argument,
+‘C-c ;’
+     Puts the comment character ‘#’ (more precisely, the string value of
+     ‘octave-comment-start’) at the beginning of every line in the
+     region (‘octave-comment-region’).  With just ‘C-u’ prefix argument,
      uncomment each line in the region.  A numeric prefix argument N
      means use N comment characters.
 
-'C-c :'
-     Uncomments every line in the region ('octave-uncomment-region').
+‘C-c :’
+     Uncomments every line in the region (‘octave-uncomment-region’).
 
-'C-c C-p'
+‘C-c C-p’
      Move one line of Octave code backward, skipping empty and comment
-     lines ('octave-previous-code-line').  With numeric prefix argument
+     lines (‘octave-previous-code-line’).  With numeric prefix argument
      N, move that many code lines backward (forward if N is negative).
 
-'C-c C-n'
+‘C-c C-n’
      Move one line of Octave code forward, skipping empty and comment
-     lines ('octave-next-code-line').  With numeric prefix argument N,
+     lines (‘octave-next-code-line’).  With numeric prefix argument N,
      move that many code lines forward (backward if N is negative).
 
-'C-c C-a'
-     Move to the 'real' beginning of the current line
-     ('octave-beginning-of-line').  If point is in an empty or comment
+‘C-c C-a’
+     Move to the ‘real’ beginning of the current line
+     (‘octave-beginning-of-line’).  If point is in an empty or comment
      line, simply go to its beginning; otherwise, move backwards to the
      beginning of the first code line which is not inside a continuation
-     statement, i.e., which does not follow a code line ending in '...'
-     or '\', or is inside an open parenthesis list.
+     statement, i.e., which does not follow a code line ending in ‘...’
+     or ‘\’, or is inside an open parenthesis list.
 
-'C-c C-e'
-     Move to the 'real' end of the current line ('octave-end-of-line').
+‘C-c C-e’
+     Move to the ‘real’ end of the current line (‘octave-end-of-line’).
      If point is in a code line, move forward to the end of the first
-     Octave code line which does not end in '...' or '\' or is inside an
+     Octave code line which does not end in ‘...’ or ‘\’ or is inside an
      open parenthesis list.  Otherwise, simply go to the end of the
      current line.
 
-'C-c M-C-n'
+‘C-c M-C-n’
      Move forward across one balanced begin-end block of Octave code
-     ('octave-forward-block').  With numeric prefix argument N, move
+     (‘octave-forward-block’).  With numeric prefix argument N, move
      forward across N such blocks (backward if N is negative).
 
-'C-c M-C-p'
+‘C-c M-C-p’
      Move back across one balanced begin-end block of Octave code
-     ('octave-backward-block').  With numeric prefix argument N, move
+     (‘octave-backward-block’).  With numeric prefix argument N, move
      backward across N such blocks (forward if N is negative).
 
-'C-c M-C-d'
+‘C-c M-C-d’
      Move forward down one begin-end block level of Octave code
-     ('octave-down-block').  With numeric prefix argument, do it that
+     (‘octave-down-block’).  With numeric prefix argument, do it that
      many times; a negative argument means move backward, but still go
      down one level.
 
-'C-c M-C-u'
+‘C-c M-C-u’
      Move backward out of one begin-end block level of Octave code
-     ('octave-backward-up-block').  With numeric prefix argument, do it
+     (‘octave-backward-up-block’).  With numeric prefix argument, do it
      that many times; a negative argument means move forward, but still
      to a less deep spot.
 
-'C-c M-C-h'
+‘C-c M-C-h’
      Put point at the beginning of this block, mark at the end
-     ('octave-mark-block').  The block marked is the one that contains
+     (‘octave-mark-block’).  The block marked is the one that contains
      point or follows point.
 
-'C-c ]'
-     Close the current block on a separate line ('octave-close-block').
+‘C-c ]’
+     Close the current block on a separate line (‘octave-close-block’).
      An error is signaled if no block to close is found.
 
-'C-c f'
-     Insert a function skeleton, prompting for the function's name,
+‘C-c f’
+     Insert a function skeleton, prompting for the function’s name,
      arguments and return values which have to be entered without
-     parentheses ('octave-insert-defun').
+     parentheses (‘octave-insert-defun’).
 
-'C-c C-h'
+‘C-c C-h’
      Search the function, operator and variable indices of all info
-     files with documentation for Octave for entries ('octave-help').
+     files with documentation for Octave for entries (‘octave-help’).
      If used interactively, the entry is prompted for with completion.
      If multiple matches are found, one can cycle through them using the
-     standard ',' ('Info-index-next') command of the Info reader.
+     standard ‘,’ (‘Info-index-next’) command of the Info reader.
 
-     The variable 'octave-help-files' is a list of files to search
-     through and defaults to '("octave").  If there is also an Octave
-     Local Guide with corresponding info file, say, 'octave-LG', you can
-     have 'octave-help' search both files by
+     The variable ‘octave-help-files’ is a list of files to search
+     through and defaults to ’("octave").  If there is also an Octave
+     Local Guide with corresponding info file, say, ‘octave-LG’, you can
+     have ‘octave-help’ search both files by
           (setq octave-help-files '("octave" "octave-LG"))
      in one of your Emacs startup files.
 
    A common problem is that the <RET> key does _not_ indent the line to
 where the new text should go after inserting the newline.  This is
-because the standard Emacs convention is that <RET> (aka 'C-m') just
-adds a newline, whereas <LFD> (aka 'C-j') adds a newline and indents it.
+because the standard Emacs convention is that <RET> (aka ‘C-m’) just
+adds a newline, whereas <LFD> (aka ‘C-j’) adds a newline and indents it.
 This is particularly inconvenient for users with keyboards which do not
 have a special <LFD> key at all; in such cases, it is typically more
-convenient to use <RET> as the <LFD> key (rather than typing 'C-j').
+convenient to use <RET> as the <LFD> key (rather than typing ‘C-j’).
 
    You can make <RET> do this by adding
      (define-key octave-mode-map "\C-m"
@@ -464,71 +1405,71 @@ solution is
 (this works for all modes by adding to the startup hooks, without having
 to know the particular binding of <RET> in that mode!).  Similar
 considerations apply for using <M-RET> as <M-LFD>.  As Barry A. Warsaw
-<bwarsaw@cnri.reston.va.us> says in the documentation for his 'cc-mode',
-"This is a very common question.  ':-)' If you want this to be the
-default behavior, don't lobby me, lobby RMS!"
+<bwarsaw@cnri.reston.va.us> says in the documentation for his ‘cc-mode’,
+“This is a very common question.  ‘:-)’ If you want this to be the
+default behavior, don’t lobby me, lobby RMS!”
 
    The following variables can be used to customize Octave mode.
 
-'octave-auto-indent'
-     Non-'nil' means auto-indent the current line after a semicolon or
-     space.  Default is 'nil'.
+‘octave-auto-indent’
+     Non-‘nil’ means auto-indent the current line after a semicolon or
+     space.  Default is ‘nil’.
 
-'octave-auto-newline'
-     Non-'nil' means auto-insert a newline and indent after semicolons
-     are typed.  The default value is 'nil'.
+‘octave-auto-newline’
+     Non-‘nil’ means auto-insert a newline and indent after semicolons
+     are typed.  The default value is ‘nil’.
 
-'octave-blink-matching-block'
-     Non-'nil' means show matching begin of block when inserting a
-     space, newline or ';' after an else or end keyword.  Default is
-     't'.  This is an extremely useful feature for automatically
-     verifying that the keywords match--if they don't, an error message
+‘octave-blink-matching-block’
+     Non-‘nil’ means show matching begin of block when inserting a
+     space, newline or ‘;’ after an else or end keyword.  Default is
+     ‘t’.  This is an extremely useful feature for automatically
+     verifying that the keywords match—if they don’t, an error message
      is displayed.
 
-'octave-block-offset'
+‘octave-block-offset’
      Extra indentation applied to statements in block structures.
      Default is 2.
 
-'octave-continuation-offset'
+‘octave-continuation-offset’
      Extra indentation applied to Octave continuation lines.  Default is
      4.
 
-'octave-continuation-string'
-     String used for Octave continuation lines.  Normally '\'.
+‘octave-continuation-string’
+     String used for Octave continuation lines.  Normally ‘\’.
 
-'octave-mode-startup-message'
-     If 't' (default), a startup message is displayed when Octave mode
+‘octave-mode-startup-message’
+     If ‘t’ (default), a startup message is displayed when Octave mode
      is called.
 
    If Font Lock mode is enabled, Octave mode will display
 
-   * strings in 'font-lock-string-face'
+   • strings in ‘font-lock-string-face’
 
-   * comments in 'font-lock-comment-face'
+   • comments in ‘font-lock-comment-face’
 
-   * the Octave reserved words (such as all block keywords) and the text
-     functions (such as 'cd' or 'who') which are also reserved using
-     'font-lock-keyword-face'
+   • the Octave reserved words (such as all block keywords) and the text
+     functions (such as ‘cd’ or ‘who’) which are also reserved using
+     ‘font-lock-keyword-face’
 
-   * the built-in operators ('&&', '==', ...) using
-     'font-lock-reference-face'
+   • the built-in operators (‘&&’, ‘==’, ...) using
+     ‘font-lock-reference-face’
 
-   * and the function names in function declarations in
-     'font-lock-function-name-face'.
+   • and the function names in function declarations in
+     ‘font-lock-function-name-face’.
 
    There is also rudimentary support for Imenu (currently, function
 names can be indexed).
 
-   You can generate TAGS files for Emacs from Octave '.m' files using
-the shell script 'octave-tags' that is installed alongside your copy of
+   You can generate TAGS files for Emacs from Octave ‘.m’ files using
+the shell script ‘octave-tags’ that is installed alongside your copy of
 Octave.
 
    Customization of Octave mode can be performed by modification of the
-variable 'octave-mode-hook'.  If the value of this variable is
-non-'nil', turning on Octave mode calls its value.
+variable ‘octave-mode-hook’.  If the value of this variable is
+non-‘nil’, turning on Octave mode calls its value.
 
    If you discover a problem with Octave mode, you can conveniently send
-a bug report using 'C-c C-b' ('octave-submit-bug-report').  This
+a bug report using ‘C-c C-b’ (‘octave-submit-bug-report’).  This
 automatically sets up a mail buffer with version information already
 added.  You just need to add a description of the problem, including a
 reproducible test case and send the message.
@@ -539,84 +1480,84 @@ File: octave.info,  Node: Running Octave from Within Emacs,  Next: Using the Ema
 H.3 Running Octave from Within Emacs
 ====================================
 
-The package 'octave' provides commands for running an inferior Octave
+The package ‘octave’ provides commands for running an inferior Octave
 process in a special Emacs buffer.  Use
      M-x run-octave
 to directly start an inferior Octave process.  If Emacs does not know
 about this command, add the line
      (autoload 'run-octave "octave-inf" nil t)
-to your '.emacs' file.
+to your ‘.emacs’ file.
 
    This will start Octave in a special buffer the name of which is
-specified by the variable 'inferior-octave-buffer' and defaults to
+specified by the variable ‘inferior-octave-buffer’ and defaults to
 "*Inferior Octave*".  From within this buffer, you can interact with the
-inferior Octave process 'as usual', i.e., by entering Octave commands at
+inferior Octave process ‘as usual’, i.e., by entering Octave commands at
 the prompt.  The buffer is in Inferior Octave mode, which is derived
 from the standard Comint mode, a major mode for interacting with an
-inferior interpreter.  See the documentation for 'comint-mode' for more
-details, and use 'C-h b' to find out about available special
+inferior interpreter.  See the documentation for ‘comint-mode’ for more
+details, and use ‘C-h b’ to find out about available special
 keybindings.
 
    You can also communicate with an inferior Octave process from within
 files with Octave code (i.e., buffers in Octave mode), using the
 following commands.
 
-'C-c i l'
+‘C-c i l’
      Send the current line to the inferior Octave process
-     ('octave-send-line').  With positive prefix argument N, send that
-     many lines.  If 'octave-send-line-auto-forward' is non-'nil', go to
+     (‘octave-send-line’).  With positive prefix argument N, send that
+     many lines.  If ‘octave-send-line-auto-forward’ is non-‘nil’, go to
      the next unsent code line.
 
-'C-c i b'
+‘C-c i b’
      Send the current block to the inferior Octave process
-     ('octave-send-block').
+     (‘octave-send-block’).
 
-'C-c i f'
+‘C-c i f’
      Send the current function to the inferior Octave process
-     ('octave-send-defun').
+     (‘octave-send-defun’).
 
-'C-c i r'
+‘C-c i r’
      Send the region to the inferior Octave process
-     ('octave-send-region').
+     (‘octave-send-region’).
 
-'C-c i s'
-     Make sure that 'inferior-octave-buffer' is displayed
-     ('octave-show-process-buffer').
+‘C-c i s’
+     Make sure that ‘inferior-octave-buffer’ is displayed
+     (‘octave-show-process-buffer’).
 
-'C-c i h'
+‘C-c i h’
      Delete all windows that display the inferior Octave buffer
-     ('octave-hide-process-buffer').
+     (‘octave-hide-process-buffer’).
 
-'C-c i k'
+‘C-c i k’
      Kill the inferior Octave process and its buffer
-     ('octave-kill-process').
+     (‘octave-kill-process’).
 
    The effect of the commands which send code to the Octave process can
 be customized by the following variables.
 
-'octave-send-echo-input'
-     Non-'nil' means echo input sent to the inferior Octave process.
-     Default is 't'.
+‘octave-send-echo-input’
+     Non-‘nil’ means echo input sent to the inferior Octave process.
+     Default is ‘t’.
 
-'octave-send-show-buffer'
-     Non-'nil' means display the buffer running the Octave process after
-     sending a command (but without selecting it).  Default is 't'.
+‘octave-send-show-buffer’
+     Non-‘nil’ means display the buffer running the Octave process after
+     sending a command (but without selecting it).  Default is ‘t’.
 
    If you send code and there is no inferior Octave process yet, it will
 be started automatically.
 
    The startup of the inferior Octave process is highly customizable.
-The variable 'inferior-octave-startup-args' can be used for specifying
+The variable ‘inferior-octave-startup-args’ can be used for specifying
 command lines arguments to be passed to Octave on startup as a list of
 strings.  For example, to suppress the startup message and use
-'traditional' mode, set this to '("-q" "-traditional").  You can also
+‘traditional’ mode, set this to ’("-q" "–traditional").  You can also
 specify a startup file of Octave commands to be loaded on startup; note
 that these commands will not produce any visible output in the process
 buffer.  Which file to use is controlled by the variable
-'inferior-octave-startup-file'.  If this is 'nil', the file
-'~/.emacs-octave' is used if it exists.
+‘inferior-octave-startup-file’.  If this is ‘nil’, the file
+‘~/.emacs-octave’ is used if it exists.
 
-   And finally, 'inferior-octave-mode-hook' is run after starting the
+   And finally, ‘inferior-octave-mode-hook’ is run after starting the
 process and putting its buffer into Inferior Octave mode.  Hence, if you
 like the up and down arrow keys to behave in the interaction buffer as
 in the shell, and you want this buffer to use nice colors, add
@@ -627,11 +1568,11 @@ in the shell, and you want this buffer to use nice colors, add
                    'comint-previous-input)
                  (define-key inferior-octave-mode-map [down]
                    'comint-next-input)))
-to your '.emacs' file.  You could also swap the roles of 'C-a'
-('beginning-of-line') and 'C-c C-a' ('comint-bol') using this hook.
+to your ‘.emacs’ file.  You could also swap the roles of ‘C-a’
+(‘beginning-of-line’) and ‘C-c C-a’ (‘comint-bol’) using this hook.
 
      *Note* that if you set your Octave prompts to something different
-     from the defaults, make sure that 'inferior-octave-prompt' matches
+     from the defaults, make sure that ‘inferior-octave-prompt’ matches
      them.  Otherwise, _nothing_ will work, because Emacs will not know
      when Octave is waiting for input, or done sending output.
 
@@ -641,26 +1582,26 @@ File: octave.info,  Node: Using the Emacs Info Reader for Octave,  Prev: Running
 H.4 Using the Emacs Info Reader for Octave
 ==========================================
 
-You may also use the Emacs Info reader with Octave's 'doc' function.
-For this, the package 'gnuserv' needs to be installed.
+You may also use the Emacs Info reader with Octave’s ‘doc’ function.
+For this, the package ‘gnuserv’ needs to be installed.
 
-   If 'gnuserv' is installed, add the lines
+   If ‘gnuserv’ is installed, add the lines
      (autoload 'octave-help "octave-hlp" nil t)
      (require 'gnuserv)
      (gnuserv-start)
-to your '.emacs' file.
+to your ‘.emacs’ file.
 
-   You can use either 'plain' Emacs Info or the function 'octave-help'
-as your Octave info reader (for 'help -i').  In the former case, use
-'info_program ("info-emacs-info")'.  The latter is perhaps more
+   You can use either ‘plain’ Emacs Info or the function ‘octave-help’
+as your Octave info reader (for ‘help -i’).  In the former case, use
+‘info_program ("info-emacs-info")’.  The latter is perhaps more
 attractive because it allows one to look up keys in the indices of
 _several_ info files related to Octave (provided that the Emacs variable
-'octave-help-files' is set correctly).  In this case, use 'info_program
-("info-emacs-octave-help")'.
+‘octave-help-files’ is set correctly).  In this case, use ‘info_program
+("info-emacs-octave-help")’.
 
    If you use Octave from within Emacs, it is best to add these settings
-to your '~/.emacs-octave' startup file (or the file pointed to by the
-Emacs variable 'inferior-octave-startup-file').
+to your ‘~/.emacs-octave’ startup file (or the file pointed to by the
+Emacs variable ‘inferior-octave-startup-file’).
 
 
 File: octave.info,  Node: Grammar and Parser,  Next: Copying,  Prev: Emacs Octave Support,  Up: Top
@@ -669,7 +1610,7 @@ Appendix I Grammar and Parser
 *****************************
 
 This appendix will eventually contain a semi-formal description of
-Octave's language.
+Octave’s language.
 
 * Menu:
 
@@ -685,22 +1626,22 @@ I.1 Keywords
 The following identifiers are keywords, and may not be used as variable
 or function names:
 
-'__FILE__'               '__LINE__'               'break'
-'case'                   'catch'                  'classdef'
-'continue'               'do'                     'else'
-'elseif'                 'end'                    'end_try_catch'
-'end_unwind_protect'     'endclassdef'            'endenumeration'
-'endevents'              'endfor'                 'endfunction'
-'endif'                  'endmethods'             'endparfor'
-'endproperties'          'endswitch'              'endwhile'
-'enumeration'            'events'                 'for'
-'function'               'global'                 'if'
-'methods'                'otherwise'              'parfor'
-'persistent'             'properties'             'return'
-'switch'                 'try'                    'until'
-'unwind_protect'         'unwind_protect_cleanup' 'while'
+‘__FILE__’               ‘__LINE__’               ‘break’
+‘case’                   ‘catch’                  ‘classdef’
+‘continue’               ‘do’                     ‘else’
+‘elseif’                 ‘end’                    ‘end_try_catch’
+‘end_unwind_protect’     ‘endclassdef’            ‘endenumeration’
+‘endevents’              ‘endfor’                 ‘endfunction’
+‘endif’                  ‘endmethods’             ‘endparfor’
+‘endproperties’          ‘endswitch’              ‘endwhile’
+‘enumeration’            ‘events’                 ‘for’
+‘function’               ‘global’                 ‘if’
+‘methods’                ‘otherwise’              ‘parfor’
+‘persistent’             ‘properties’             ‘return’
+‘switch’                 ‘try’                    ‘until’
+‘unwind_protect’         ‘unwind_protect_cleanup’ ‘while’
 
-   The function 'iskeyword' can be used to quickly check whether an
+   The function ‘iskeyword’ can be used to quickly check whether an
 identifier is reserved by Octave.
 
  -- Built-in Function: iskeyword ()
@@ -719,12 +1660,12 @@ I.2 Parser
 
 The parser has a number of variables that affect its internal operation.
 These variables are generally documented in the manual alongside the
-code that they affect.  For example, 'allow_noninteger_range_as_index'
+code that they affect.  For example, ‘allow_noninteger_range_as_index’
 is discussed in the section on index expressions.
 
    In addition, there are three non-specific parser customization
-functions.  'add_input_event_hook' can be used to schedule a user
-function for periodic evaluation.  'remove_input_event_hook' will stop a
+functions.  ‘add_input_event_hook’ can be used to schedule a user
+function for periodic evaluation.  ‘remove_input_event_hook’ will stop a
 user function from being evaluated periodically.
 
  -- Built-in Function: ID = add_input_event_hook (FCN)
@@ -779,7 +1720,7 @@ Appendix J GNU GENERAL PUBLIC LICENSE
 
                         Version 3, 29 June 2007
 
-     Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+     Copyright © 2007 Free Software Foundation, Inc. <http://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies of this
      license document, but changing it is not allowed.
@@ -793,7 +1734,7 @@ and other kinds of works.
    The licenses for most software and other practical works are designed
 to take away your freedom to share and change the works.  By contrast,
 the GNU General Public License is intended to guarantee your freedom to
-share and change all versions of a program--to make sure it remains free
+share and change all versions of a program—to make sure it remains free
 software for all its users.  We, the Free Software Foundation, use the
 GNU General Public License for most of our software; it applies also to
 any other work released this way by its authors.  You can apply it to
@@ -821,16 +1762,16 @@ know their rights.
 (1) assert copyright on the software, and (2) offer you this License
 giving you legal permission to copy, distribute and/or modify it.
 
-   For the developers' and authors' protection, the GPL clearly explains
-that there is no warranty for this free software.  For both users' and
-authors' sake, the GPL requires that modified versions be marked as
+   For the developers’ and authors’ protection, the GPL clearly explains
+that there is no warranty for this free software.  For both users’ and
+authors’ sake, the GPL requires that modified versions be marked as
 changed, so that their problems will not be attributed erroneously to
 authors of previous versions.
 
    Some devices are designed to deny users access to install or run
 modified versions of the software inside them, although the manufacturer
 can do so.  This is fundamentally incompatible with the aim of
-protecting users' freedom to change the software.  The systematic
+protecting users’ freedom to change the software.  The systematic
 pattern of such abuse occurs in the area of products for individuals to
 use, which is precisely where it is most unacceptable.  Therefore, we
 have designed this version of the GPL to prohibit the practice for those
@@ -853,25 +1794,25 @@ TERMS AND CONDITIONS
 
   0. Definitions.
 
-     "This License" refers to version 3 of the GNU General Public
+     “This License” refers to version 3 of the GNU General Public
      License.
 
-     "Copyright" also means copyright-like laws that apply to other
+     “Copyright” also means copyright-like laws that apply to other
      kinds of works, such as semiconductor masks.
 
-     "The Program" refers to any copyrightable work licensed under this
-     License.  Each licensee is addressed as "you".  "Licensees" and
-     "recipients" may be individuals or organizations.
+     “The Program” refers to any copyrightable work licensed under this
+     License.  Each licensee is addressed as “you”.  “Licensees” and
+     “recipients” may be individuals or organizations.
 
-     To "modify" a work means to copy from or adapt all or part of the
+     To “modify” a work means to copy from or adapt all or part of the
      work in a fashion requiring copyright permission, other than the
-     making of an exact copy.  The resulting work is called a "modified
-     version" of the earlier work or a work "based on" the earlier work.
+     making of an exact copy.  The resulting work is called a “modified
+     version” of the earlier work or a work “based on” the earlier work.
 
-     A "covered work" means either the unmodified Program or a work
+     A “covered work” means either the unmodified Program or a work
      based on the Program.
 
-     To "propagate" a work means to do anything with it that, without
+     To “propagate” a work means to do anything with it that, without
      permission, would make you directly or secondarily liable for
      infringement under applicable copyright law, except executing it on
      a computer or modifying a private copy.  Propagation includes
@@ -879,12 +1820,12 @@ TERMS AND CONDITIONS
      available to the public, and in some countries other activities as
      well.
 
-     To "convey" a work means any kind of propagation that enables other
+     To “convey” a work means any kind of propagation that enables other
      parties to make or receive copies.  Mere interaction with a user
      through a computer network, with no transfer of a copy, is not
      conveying.
 
-     An interactive user interface displays "Appropriate Legal Notices"
+     An interactive user interface displays “Appropriate Legal Notices”
      to the extent that it includes a convenient and prominently visible
      feature that (1) displays an appropriate copyright notice, and (2)
      tells the user that there is no warranty for the work (except to
@@ -896,33 +1837,33 @@ TERMS AND CONDITIONS
 
   1. Source Code.
 
-     The "source code" for a work means the preferred form of the work
-     for making modifications to it.  "Object code" means any non-source
+     The “source code” for a work means the preferred form of the work
+     for making modifications to it.  “Object code” means any non-source
      form of a work.
 
-     A "Standard Interface" means an interface that either is an
+     A “Standard Interface” means an interface that either is an
      official standard defined by a recognized standards body, or, in
      the case of interfaces specified for a particular programming
      language, one that is widely used among developers working in that
      language.
 
-     The "System Libraries" of an executable work include anything,
+     The “System Libraries” of an executable work include anything,
      other than the work as a whole, that (a) is included in the normal
      form of packaging a Major Component, but which is not part of that
      Major Component, and (b) serves only to enable use of the work with
      that Major Component, or to implement a Standard Interface for
      which an implementation is available to the public in source code
-     form.  A "Major Component", in this context, means a major
+     form.  A “Major Component”, in this context, means a major
      essential component (kernel, window system, and so on) of the
      specific operating system (if any) on which the executable work
      runs, or a compiler used to produce the work, or an object code
      interpreter used to run it.
 
-     The "Corresponding Source" for a work in object code form means all
+     The “Corresponding Source” for a work in object code form means all
      the source code needed to generate, install, and (for an executable
      work) run the object code and to modify the work, including scripts
      to control those activities.  However, it does not include the
-     work's System Libraries, or general-purpose tools or generally
+     work’s System Libraries, or general-purpose tools or generally
      available free programs which are used unmodified in performing
      those activities but which are not part of the work.  For example,
      Corresponding Source includes interface definition files associated
@@ -966,7 +1907,7 @@ TERMS AND CONDITIONS
      the conditions stated below.  Sublicensing is not allowed; section
      10 makes it unnecessary.
 
-  3. Protecting Users' Legal Rights From Anti-Circumvention Law.
+  3. Protecting Users’ Legal Rights From Anti-Circumvention Law.
 
      No covered work shall be deemed part of an effective technological
      measure under any applicable law fulfilling obligations under
@@ -979,12 +1920,12 @@ TERMS AND CONDITIONS
      circumvention is effected by exercising rights under this License
      with respect to the covered work, and you disclaim any intention to
      limit operation or modification of the work as a means of
-     enforcing, against the work's users, your or third parties' legal
+     enforcing, against the work’s users, your or third parties’ legal
      rights to forbid circumvention of technological measures.
 
   4. Conveying Verbatim Copies.
 
-     You may convey verbatim copies of the Program's source code as you
+     You may convey verbatim copies of the Program’s source code as you
      receive it, in any medium, provided that you conspicuously and
      appropriately publish on each copy an appropriate copyright notice;
      keep intact all notices stating that this License and any
@@ -1008,7 +1949,7 @@ TERMS AND CONDITIONS
        b. The work must carry prominent notices stating that it is
           released under this License and any conditions added under
           section 7.  This requirement modifies the requirement in
-          section 4 to "keep intact all notices".
+          section 4 to “keep intact all notices”.
 
        c. You must license the entire work, as a whole, under this
           License to anyone who comes into possession of a copy.  This
@@ -1028,9 +1969,9 @@ TERMS AND CONDITIONS
      works, which are not by their nature extensions of the covered
      work, and which are not combined with it such as to form a larger
      program, in or on a volume of a storage or distribution medium, is
-     called an "aggregate" if the compilation and its resulting
+     called an “aggregate” if the compilation and its resulting
      copyright are not used to limit the access or legal rights of the
-     compilation's users beyond what the individual works permit.
+     compilation’s users beyond what the individual works permit.
      Inclusion of a covered work in an aggregate does not cause this
      License to apply to the other parts of the aggregate.
 
@@ -1088,13 +2029,13 @@ TERMS AND CONDITIONS
      excluded from the Corresponding Source as a System Library, need
      not be included in conveying the object code work.
 
-     A "User Product" is either (1) a "consumer product", which means
+     A “User Product” is either (1) a “consumer product”, which means
      any tangible personal property which is normally used for personal,
      family, or household purposes, or (2) anything designed or sold for
      incorporation into a dwelling.  In determining whether a product is
      a consumer product, doubtful cases shall be resolved in favor of
      coverage.  For a particular product received by a particular user,
-     "normally used" refers to a typical or common use of that class of
+     “normally used” refers to a typical or common use of that class of
      product, regardless of the status of the particular user or of the
      way in which the particular user actually uses, or expects or is
      expected to use, the product.  A product is a consumer product
@@ -1102,7 +2043,7 @@ TERMS AND CONDITIONS
      industrial or non-consumer uses, unless such uses represent the
      only significant mode of use of the product.
 
-     "Installation Information" for a User Product means any methods,
+     “Installation Information” for a User Product means any methods,
      procedures, authorization keys, or other information required to
      install and execute modified versions of a covered work in that
      User Product from a modified version of its Corresponding Source.
@@ -1138,7 +2079,7 @@ TERMS AND CONDITIONS
 
   7. Additional Terms.
 
-     "Additional permissions" are terms that supplement the terms of
+     “Additional permissions” are terms that supplement the terms of
      this License by making exceptions from one or more of its
      conditions.  Additional permissions that are applicable to the
      entire Program shall be treated as though they were included in
@@ -1183,8 +2124,8 @@ TERMS AND CONDITIONS
           the recipient, for any liability that these contractual
           assumptions directly impose on those licensors and authors.
 
-     All other non-permissive additional terms are considered "further
-     restrictions" within the meaning of section 10.  If the Program as
+     All other non-permissive additional terms are considered “further
+     restrictions” within the meaning of section 10.  If the Program as
      you received it, or any part of it, contains a notice stating that
      it is governed by this License along with a term that is a further
      restriction, you may remove that term.  If a license document
@@ -1250,12 +2191,12 @@ TERMS AND CONDITIONS
      responsible for enforcing compliance by third parties with this
      License.
 
-     An "entity transaction" is a transaction transferring control of an
+     An “entity transaction” is a transaction transferring control of an
      organization, or substantially all assets of one, or subdividing an
      organization, or merging organizations.  If propagation of a
      covered work results from an entity transaction, each party to that
      transaction who receives a copy of the work also receives whatever
-     licenses to the work the party's predecessor in interest had or
+     licenses to the work the party’s predecessor in interest had or
      could give under the previous paragraph, plus a right to possession
      of the Corresponding Source of the work from the predecessor in
      interest, if the predecessor has it or can get it with reasonable
@@ -1272,31 +2213,31 @@ TERMS AND CONDITIONS
 
   11. Patents.
 
-     A "contributor" is a copyright holder who authorizes use under this
+     A “contributor” is a copyright holder who authorizes use under this
      License of the Program or a work on which the Program is based.
-     The work thus licensed is called the contributor's "contributor
-     version".
+     The work thus licensed is called the contributor’s “contributor
+     version”.
 
-     A contributor's "essential patent claims" are all patent claims
+     A contributor’s “essential patent claims” are all patent claims
      owned or controlled by the contributor, whether already acquired or
      hereafter acquired, that would be infringed by some manner,
      permitted by this License, of making, using, or selling its
      contributor version, but do not include claims that would be
      infringed only as a consequence of further modification of the
-     contributor version.  For purposes of this definition, "control"
+     contributor version.  For purposes of this definition, “control”
      includes the right to grant patent sublicenses in a manner
      consistent with the requirements of this License.
 
      Each contributor grants you a non-exclusive, worldwide,
-     royalty-free patent license under the contributor's essential
+     royalty-free patent license under the contributor’s essential
      patent claims, to make, use, sell, offer for sale, import and
      otherwise run, modify and propagate the contents of its contributor
      version.
 
-     In the following three paragraphs, a "patent license" is any
+     In the following three paragraphs, a “patent license” is any
      express agreement or commitment, however denominated, not to
      enforce a patent (such as an express permission to practice a
-     patent or covenant not to sue for patent infringement).  To "grant"
+     patent or covenant not to sue for patent infringement).  To “grant”
      such a patent license to a party means to make such an agreement or
      commitment not to enforce a patent against the party.
 
@@ -1309,9 +2250,9 @@ TERMS AND CONDITIONS
      yourself of the benefit of the patent license for this particular
      work, or (3) arrange, in a manner consistent with the requirements
      of this License, to extend the patent license to downstream
-     recipients.  "Knowingly relying" means you have actual knowledge
+     recipients.  “Knowingly relying” means you have actual knowledge
      that, but for the patent license, your conveying the covered work
-     in a country, or your recipient's use of the covered work in a
+     in a country, or your recipient’s use of the covered work in a
      country, would infringe one or more identifiable patents in that
      country that you have reason to believe are valid.
 
@@ -1323,7 +2264,7 @@ TERMS AND CONDITIONS
      patent license you grant is automatically extended to all
      recipients of the covered work and works based on it.
 
-     A patent license is "discriminatory" if it does not include within
+     A patent license is “discriminatory” if it does not include within
      the scope of its coverage, prohibits the exercise of, or is
      conditioned on the non-exercise of one or more of the rights that
      are specifically granted under this License.  You may not convey a
@@ -1343,7 +2284,7 @@ TERMS AND CONDITIONS
      any implied license or other defenses to infringement that may
      otherwise be available to you under applicable patent law.
 
-  12. No Surrender of Others' Freedom.
+  12. No Surrender of Others’ Freedom.
 
      If conditions are imposed on you (whether by court order, agreement
      or otherwise) that contradict the conditions of this License, they
@@ -1376,7 +2317,7 @@ TERMS AND CONDITIONS
 
      Each version is given a distinguishing version number.  If the
      Program specifies that a certain numbered version of the GNU
-     General Public License "or any later version" applies to it, you
+     General Public License “or any later version” applies to it, you
      have the option of following the terms and conditions either of
      that numbered version or of any later version published by the Free
      Software Foundation.  If the Program does not specify a version
@@ -1385,7 +2326,7 @@ TERMS AND CONDITIONS
 
      If the Program specifies that a proxy can decide which future
      versions of the GNU General Public License can be used, that
-     proxy's public statement of acceptance of a version permanently
+     proxy’s public statement of acceptance of a version permanently
      authorizes you to choose that version for the Program.
 
      Later license versions may give you additional or different
@@ -1397,7 +2338,7 @@ TERMS AND CONDITIONS
 
      THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY
      APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE
-     COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS"
+     COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS”
      WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED,
      INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
      MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE
@@ -1441,7 +2382,7 @@ terms.
    To do so, attach the following notices to the program.  It is safest
 to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least the
-"copyright" line and a pointer to where the full notice is found.
+“copyright” line and a pointer to where the full notice is found.
 
      ONE LINE TO GIVE THE PROGRAM'S NAME AND A BRIEF IDEA OF WHAT IT DOES.
      Copyright (C) YEAR NAME OF AUTHOR
@@ -1466,17 +2407,17 @@ mail.
 notice like this when it starts in an interactive mode:
 
      PROGRAM Copyright (C) YEAR NAME OF AUTHOR
-     This program comes with ABSOLUTELY NO WARRANTY; for details type 'show w'.
+     This program comes with ABSOLUTELY NO WARRANTY; for details type ‘show w’.
      This is free software, and you are welcome to redistribute it
-     under certain conditions; type 'show c' for details.
+     under certain conditions; type ‘show c’ for details.
 
-   The hypothetical commands 'show w' and 'show c' should show the
+   The hypothetical commands ‘show w’ and ‘show c’ should show the
 appropriate parts of the General Public License.  Of course, your
-program's commands might be different; for a GUI interface, you would
-use an "about box".
+program’s commands might be different; for a GUI interface, you would
+use an “about box”.
 
    You should also get your employer (if you work as a programmer) or
-school, if any, to sign a "copyright disclaimer" for the program, if
+school, if any, to sign a “copyright disclaimer” for the program, if
 necessary.  For more information on this, and how to apply and follow
 the GNU GPL, see <http://www.gnu.org/licenses/>.
 
@@ -1496,105 +2437,105 @@ Concept Index
  [index ]
 * Menu:
 
-* '#':                                   Single Line Comments.
+* #:                                     Single Line Comments.
                                                               (line   6)
-* '#!':                                  Executable Octave Programs.
+* #!:                                    Executable Octave Programs.
                                                               (line   6)
-* '#{':                                  Block Comments.      (line   6)
-* '%':                                   Single Line Comments.
+* #{:                                    Block Comments.      (line   6)
+* %:                                     Single Line Comments.
                                                               (line   6)
-* '%{':                                  Block Comments.      (line   6)
-* '--braindead':                         Command Line Options.
+* %{:                                    Block Comments.      (line   6)
+* --braindead:                           Command Line Options.
                                                               (line 147)
-* '--built-in-docstrings-file FILENAME': Command Line Options.
+* --built-in-docstrings-file FILENAME:   Command Line Options.
                                                               (line   9)
-* '--debug':                             Command Line Options.
+* --debug:                               Command Line Options.
                                                               (line  15)
-* '--debug-jit':                         Command Line Options.
+* --debug-jit:                           Command Line Options.
                                                               (line  21)
-* '--doc-cache-file FILENAME':           Command Line Options.
+* --doc-cache-file FILENAME:             Command Line Options.
                                                               (line  24)
-* '--echo-commands':                     Command Line Options.
+* --echo-commands:                       Command Line Options.
                                                               (line  32)
-* '--exec-path PATH':                    Command Line Options.
+* --exec-path PATH:                      Command Line Options.
                                                               (line  39)
-* '--force-gui':                         Command Line Options.
+* --force-gui:                           Command Line Options.
                                                               (line  48)
-* '--help':                              Command Line Options.
+* --help:                                Command Line Options.
                                                               (line  53)
-* '--image-path PATH':                   Command Line Options.
+* --image-path PATH:                     Command Line Options.
                                                               (line  56)
-* '--info-file FILENAME':                Command Line Options.
+* --info-file FILENAME:                  Command Line Options.
                                                               (line  64)
-* '--info-program PROGRAM':              Command Line Options.
+* --info-program PROGRAM:                Command Line Options.
                                                               (line  72)
-* '--interactive':                       Command Line Options.
+* --interactive:                         Command Line Options.
                                                               (line  81)
-* '--jit-compiler':                      Command Line Options.
+* --jit-compiler:                        Command Line Options.
                                                               (line  87)
-* '--line-editing':                      Command Line Options.
+* --line-editing:                        Command Line Options.
                                                               (line  90)
-* '--no-gui':                            Command Line Options.
+* --no-gui:                              Command Line Options.
                                                               (line  93)
-* '--no-history':                        Command Line Options.
+* --no-history:                          Command Line Options.
                                                               (line  98)
-* '--no-init-file':                      Command Line Options.
+* --no-init-file:                        Command Line Options.
                                                               (line 101)
-* '--no-init-path':                      Command Line Options.
+* --no-init-path:                        Command Line Options.
                                                               (line 104)
-* '--no-line-editing':                   Command Line Options.
+* --no-line-editing:                     Command Line Options.
                                                               (line 108)
-* '--no-site-file':                      Command Line Options.
+* --no-site-file:                        Command Line Options.
                                                               (line 111)
-* '--no-window-system':                  Command Line Options.
+* --no-window-system:                    Command Line Options.
                                                               (line 115)
-* '--norc':                              Command Line Options.
+* --norc:                                Command Line Options.
                                                               (line 120)
-* '--path PATH':                         Command Line Options.
+* --path PATH:                           Command Line Options.
                                                               (line 126)
-* '--persist':                           Command Line Options.
+* --persist:                             Command Line Options.
                                                               (line 133)
-* '--quiet':                             Command Line Options.
+* --quiet:                               Command Line Options.
                                                               (line 139)
-* '--silent':                            Command Line Options.
+* --silent:                              Command Line Options.
                                                               (line 139)
-* '--texi-macros-file FILENAME':         Command Line Options.
+* --texi-macros-file FILENAME:           Command Line Options.
                                                               (line 142)
-* '--traditional':                       Command Line Options.
+* --traditional:                         Command Line Options.
                                                               (line 147)
-* '--verbose':                           Command Line Options.
+* --verbose:                             Command Line Options.
                                                               (line 180)
-* '--version':                           Command Line Options.
+* --version:                             Command Line Options.
                                                               (line 184)
-* '-?':                                  Command Line Options.
+* -?:                                    Command Line Options.
                                                               (line  53)
-* '-d':                                  Command Line Options.
+* -d:                                    Command Line Options.
                                                               (line  15)
-* '-f':                                  Command Line Options.
+* -f:                                    Command Line Options.
                                                               (line 120)
-* '-h':                                  Command Line Options.
+* -h:                                    Command Line Options.
                                                               (line  53)
-* '-H':                                  Command Line Options.
+* -H:                                    Command Line Options.
                                                               (line  98)
-* '-i':                                  Command Line Options.
+* -i:                                    Command Line Options.
                                                               (line  81)
-* '-p PATH':                             Command Line Options.
+* -p PATH:                               Command Line Options.
                                                               (line 126)
-* '-q':                                  Command Line Options.
+* -q:                                    Command Line Options.
                                                               (line 139)
-* '-V':                                  Command Line Options.
+* -V:                                    Command Line Options.
                                                               (line 180)
-* '-v':                                  Command Line Options.
+* -v:                                    Command Line Options.
                                                               (line 184)
-* '-x':                                  Command Line Options.
+* -x:                                    Command Line Options.
                                                               (line  32)
-* '...' continuation marker:             Continuation Lines.  (line   6)
-* '.octaverc':                           Startup Files.       (line  36)
+* ... continuation marker:               Continuation Lines.  (line   6)
+* .octaverc:                             Startup Files.       (line  36)
 * :end:                                  Index Expressions.   (line  46)
-* '\' continuation marker:               Continuation Lines.  (line   6)
-* '~/.inputrc':                          Customizing readline.
+* \ continuation marker:                 Continuation Lines.  (line   6)
+* ~/.inputrc:                            Customizing readline.
                                                               (line   6)
-* '~/.octaverc':                         Startup Files.       (line  32)
+* ~/.octaverc:                           Startup Files.       (line  32)
 * acknowledgements:                      Acknowledgements.    (line   6)
 * addition:                              Arithmetic Ops.      (line   6)
 * addition <1>:                          Operator Overloading.
@@ -1604,7 +2545,7 @@ Concept Index
                                                               (line   6)
 * anonymous functions:                   Function Handles Anonymous Functions Inline Functions.
                                                               (line   6)
-* 'ans':                                 Variables.           (line  44)
+* ans:                                   Variables.           (line  44)
 * answers, incorrect:                    Bug Criteria.        (line  12)
 * answers, incorrect <1>:                Bug Reporting.       (line  70)
 * application-defined data:              Application-defined Data.
@@ -1739,7 +2680,7 @@ Concept Index
 * boolean operators:                     Boolean Expressions. (line   6)
 * boolean operators <1>:                 Operator Overloading.
                                                               (line   6)
-* 'break' statement:                     The break Statement. (line   6)
+* break statement:                       The break Statement. (line   6)
 * broadcast:                             Broadcasting.        (line   6)
 * broadcasting:                          Broadcasting.        (line   6)
 * BSX:                                   Broadcasting.        (line   6)
@@ -1756,9 +2697,9 @@ Concept Index
 * callbacks:                             Callbacks.           (line   6)
 * calling Java from Octave:              Java Interface.      (line   6)
 * calling Octave from Java:              Java Interface.      (line   6)
-* 'case' statement:                      The switch Statement.
+* case statement:                        The switch Statement.
                                                               (line   6)
-* 'catch':                               The try Statement.   (line   6)
+* catch:                                 The try Statement.   (line   6)
 * cell arrays:                           Cell Array Objects.  (line   6)
 * cell arrays <1>:                       Cell Arrays.         (line   6)
 * character strings:                     String Objects.      (line   6)
@@ -1787,7 +2728,7 @@ Concept Index
                                                               (line   6)
 * classpath, static:                     Java Interface Functions.
                                                               (line 167)
-* 'classpath.txt':                       How to make Java classes available?.
+* classpath.txt:                         How to make Java classes available?.
                                                               (line   6)
 * clearing the screen:                   Cursor Motion.       (line  56)
 * code profiling:                        Profiling.           (line   6)
@@ -1820,14 +2761,14 @@ Concept Index
                                                               (line   6)
 * containers:                            Data Containers.     (line   6)
 * continuation lines:                    Continuation Lines.  (line   6)
-* 'continue' statement:                  The continue Statement.
+* continue statement:                    The continue Statement.
                                                               (line   6)
 * contour series:                        Contour Groups.      (line   6)
 * contributing to Octave:                How You Can Contribute to Octave.
                                                               (line   6)
 * contributors:                          Preface.             (line   6)
-* conversion specifications ('printf'):  Formatted Output.    (line  79)
-* conversion specifications ('scanf'):   Formatted Input.     (line  95)
+* conversion specifications (printf):    Formatted Output.    (line  79)
+* conversion specifications (scanf):     Formatted Input.     (line  95)
 * copy-on-write:                         Miscellaneous Techniques.
                                                               (line  16)
 * copyright:                             Copying.             (line   6)
@@ -1837,7 +2778,7 @@ Concept Index
 * creating graphics objects:             Graphics Objects.    (line  40)
 * cs-lists:                              Comma Separated Lists.
                                                               (line   6)
-* customizing 'readline':                Customizing readline.
+* customizing readline:                  Customizing readline.
                                                               (line   6)
 * customizing the prompt:                Customizing the Prompt.
                                                               (line   6)
@@ -1888,7 +2829,7 @@ Concept Index
 * division:                              Arithmetic Ops.      (line   6)
 * division <1>:                          Operator Overloading.
                                                               (line   6)
-* 'do-until' statement:                  The do-until Statement.
+* do-until statement:                    The do-until Statement.
                                                               (line   6)
 * documentation fonts:                   Fonts.               (line   6)
 * documentation notation:                Evaluation Notation. (line   6)
@@ -1916,19 +2857,19 @@ Concept Index
                                                               (line   6)
 * element-by-element evaluation:         Element-by-element Boolean Operators.
                                                               (line   6)
-* 'else' statement:                      The if Statement.    (line   6)
-* 'elseif' statement:                    The if Statement.    (line   6)
+* else statement:                        The if Statement.    (line   6)
+* elseif statement:                      The if Statement.    (line   6)
 * Emacs TAGS files:                      Using Octave Mode.   (line 254)
-* 'end' statement:                       Statements.          (line  16)
-* 'end', indexing:                       Index Expressions.   (line  46)
-* 'endfor' statement:                    The for Statement.   (line   6)
-* 'endfunction' statement:               Defining Functions.  (line   6)
-* 'endif' statement:                     The if Statement.    (line   6)
-* 'endswitch' statement:                 The switch Statement.
+* end statement:                         Statements.          (line  16)
+* end, indexing:                         Index Expressions.   (line  46)
+* endfor statement:                      The for Statement.   (line   6)
+* endfunction statement:                 Defining Functions.  (line   6)
+* endif statement:                       The if Statement.    (line   6)
+* endswitch statement:                   The switch Statement.
                                                               (line   6)
-* 'endwhile' statement:                  The while Statement. (line   6)
-* 'end_try_catch':                       The try Statement.   (line   6)
-* 'end_unwind_protect':                  The unwind_protect Statement.
+* endwhile statement:                    The while Statement. (line   6)
+* end_try_catch:                         The try Statement.   (line   6)
+* end_unwind_protect:                    The unwind_protect Statement.
                                                               (line   6)
 * equality operator:                     Comparison Ops.      (line   6)
 * equality operator <1>:                 Operator Overloading.
@@ -2050,11 +2991,11 @@ Concept Index
 * figure __modified__:                   Figure Properties.   (line   8)
 * finding minimums:                      Minimizers.          (line   6)
 * finish.m:                              Quitting Octave.     (line   6)
-* flag character ('printf'):             Output Conversion Syntax.
+* flag character (printf):               Output Conversion Syntax.
                                                               (line  28)
-* flag character ('scanf'):              Input Conversion Syntax.
+* flag character (scanf):                Input Conversion Syntax.
                                                               (line  34)
-* 'for' statement:                       The for Statement.   (line   6)
+* for statement:                         The for Statement.   (line   6)
 * Frobenius norm:                        Basic Matrix Functions.
                                                               (line 316)
 * function application:                  Function Application.
@@ -2064,7 +3005,7 @@ Concept Index
 * function file:                         A Sample Function Description.
                                                               (line  55)
 * function file <1>:                     Function Files.      (line   6)
-* 'function' statement:                  Defining Functions.  (line   6)
+* function statement:                    Defining Functions.  (line   6)
 * functions, deprecated:                 Obsolete Functions.  (line   6)
 * functions, obsolete:                   Obsolete Functions.  (line   6)
 * functions, user-defined:               Functions and Scripts.
@@ -2073,7 +3014,7 @@ Concept Index
                                                               (line   6)
 * general p-norm:                        Basic Matrix Functions.
                                                               (line 319)
-* 'global' statement:                    Global Variables.    (line   6)
+* global statement:                      Global Variables.    (line   6)
 * global variables:                      Global Variables.    (line   6)
 * grammar rules:                         Grammar and Parser.  (line   6)
 * graphics:                              Plotting.            (line   6)
@@ -2120,7 +3061,7 @@ Concept Index
 * history:                               Preface.             (line   6)
 * history of commands:                   Commands For History.
                                                               (line   6)
-* 'if' statement:                        The if Statement.    (line   6)
+* if statement:                          The if Statement.    (line   6)
 * image alphadata:                       Image Properties.    (line  10)
 * image alphadatamapping:                Image Properties.    (line  14)
 * image beingdeleted:                    Image Properties.    (line  18)
@@ -2163,7 +3104,7 @@ Concept Index
 * initialization:                        Startup Files.       (line   6)
 * inline, inline functions:              Function Handles Anonymous Functions Inline Functions.
                                                               (line   6)
-* input conversions, for 'scanf':        Table of Input Conversions.
+* input conversions, for scanf:          Table of Input Conversions.
                                                               (line   6)
 * input history:                         Commands For History.
                                                               (line   6)
@@ -2177,9 +3118,9 @@ Concept Index
 * invalid input:                         Bug Criteria.        (line  23)
 * Java, calling from Octave:             Java Interface.      (line   6)
 * Java, using with Octave:               Java Interface.      (line   6)
-* 'javaclasspath.txt':                   How to make Java classes available?.
+* javaclasspath.txt:                     How to make Java classes available?.
                                                               (line   6)
-* Kendall's Tau:                         Correlation and Regression Analysis.
+* Kendall’s Tau:                         Correlation and Regression Analysis.
                                                               (line  76)
 * keywords:                              Keywords.            (line   6)
 * known causes of trouble:               Trouble.             (line   6)
@@ -2253,7 +3194,7 @@ Concept Index
 * mapping function:                      A Sample Function Description.
                                                               (line  69)
 * marker styles, graphics:               Marker Styles.       (line   6)
-* matching failure, in 'scanf':          Formatted Input.     (line 100)
+* matching failure, in scanf:            Formatted Input.     (line 100)
 * matrices:                              Matrices.            (line   6)
 * matrices, diagonal and permutation:    Diagonal and Permutation Matrices.
                                                               (line   6)
@@ -2270,7 +3211,7 @@ Concept Index
                                                               (line   6)
 * matrix, specialized solvers:           Specialized Solvers. (line   6)
 * matrix, zero elements:                 Zeros Treatment.     (line   6)
-* maximum field width ('scanf'):         Input Conversion Syntax.
+* maximum field width (scanf):           Input Conversion Syntax.
                                                               (line  42)
 * memory management:                     Miscellaneous Techniques.
                                                               (line  16)
@@ -2285,7 +3226,7 @@ Concept Index
                                                               (line 120)
 * mex:                                   Mex-Files.           (line   6)
 * mex-files:                             Mex-Files.           (line   6)
-* minimum field width ('printf'):        Output Conversion Syntax.
+* minimum field width (printf):          Output Conversion Syntax.
                                                               (line  35)
 * missing data:                          Missing Data.        (line   6)
 * mkoctfile:                             Oct-Files.           (line   6)
@@ -2323,7 +3264,7 @@ Concept Index
 * Octave development:                    Contributing Guidelines.
                                                               (line   6)
 * Octave, calling from Java:             Java Interface.      (line   6)
-* 'octave-tags':                         Using Octave Mode.   (line 254)
+* octave-tags:                           Using Octave Mode.   (line 254)
 * ODE:                                   Differential Equations.
                                                               (line  15)
 * online help:                           Getting Help.        (line   6)
@@ -2353,9 +3294,9 @@ Concept Index
                                                               (line   6)
 * oregonator:                            Ordinary Differential Equations.
                                                               (line 153)
-* 'otherwise' statement:                 The switch Statement.
+* otherwise statement:                   The switch Statement.
                                                               (line   6)
-* output conversions, for 'printf':      Table of Output Conversions.
+* output conversions, for printf:        Table of Output Conversions.
                                                               (line   6)
 * parser:                                Parser.              (line   6)
 * patch alphadatamapping:                Patch Properties.    (line  10)
@@ -2419,7 +3360,7 @@ Concept Index
                                                               (line 212)
 * permutation matrix functions:          Permutation Matrix Functions.
                                                               (line   6)
-* 'persistent' statement:                Persistent Variables.
+* persistent statement:                  Persistent Variables.
                                                               (line   6)
 * persistent variables:                  Persistent Variables.
                                                               (line   6)
@@ -2442,7 +3383,7 @@ Concept Index
                                                               (line   6)
 * plotting, window manipulation:         Manipulation of Plot Windows.
                                                               (line   6)
-* precision ('printf'):                  Output Conversion Syntax.
+* precision (printf):                    Output Conversion Syntax.
                                                               (line  47)
 * printing notation:                     Printing Notation.   (line   6)
 * printing plots:                        Printing and Saving Plots.
@@ -2469,7 +3410,7 @@ Concept Index
 * quotient <1>:                          Operator Overloading.
                                                               (line   6)
 * range expressions:                     Ranges.              (line   6)
-* 'readline' customization:              Customizing readline.
+* readline customization:                Customizing readline.
                                                               (line   6)
 * recycling:                             Broadcasting.        (line   6)
 * relational operators:                  Comparison Ops.      (line   6)
@@ -2587,7 +3528,7 @@ Concept Index
                                                               (line 615)
 * site exiting file:                     Quitting Octave.     (line   6)
 * site startup file:                     Startup Files.       (line  11)
-* Spearman's Rho:                        Correlation and Regression Analysis.
+* Spearman’s Rho:                        Correlation and Regression Analysis.
                                                               (line  61)
 * speedups:                              Miscellaneous Techniques.
                                                               (line   6)
@@ -2673,7 +3614,7 @@ Concept Index
 * surface zdata:                         Surface Properties.  (line 161)
 * surface zdatasource:                   Surface Properties.  (line 163)
 * surface __modified__:                  Surface Properties.  (line   8)
-* 'switch' statement:                    The switch Statement.
+* switch statement:                      The switch Statement.
                                                               (line   6)
 * symbols, translation table:            Which TeX symbols are implemented in dialog functions?.
                                                               (line   6)
@@ -2741,15 +3682,15 @@ Concept Index
 * transpose, complex-conjugate <1>:      Operator Overloading.
                                                               (line   6)
 * troubleshooting:                       Trouble.             (line   6)
-* 'try' statement:                       The try Statement.   (line   6)
+* try statement:                         The try Statement.   (line   6)
 * unary minus:                           Arithmetic Ops.      (line   6)
 * unary minus <1>:                       Operator Overloading.
                                                               (line   6)
 * undefined behavior:                    Bug Criteria.        (line  15)
 * undefined function value:              Bug Criteria.        (line  15)
-* 'unwind_protect' statement:            The unwind_protect Statement.
+* unwind_protect statement:              The unwind_protect Statement.
                                                               (line   6)
-* 'unwind_protect_cleanup':              The unwind_protect Statement.
+* unwind_protect_cleanup:                The unwind_protect Statement.
                                                               (line   6)
 * use of comments:                       Comments.            (line   6)
 * user-defined data types:               User-defined Data Types.
@@ -2758,9 +3699,9 @@ Concept Index
                                                               (line   6)
 * user-defined variables:                Variables.           (line   6)
 * using Octave with Java:                Java Interface.      (line   6)
-* 'varargin':                            Variable-length Argument Lists.
+* varargin:                              Variable-length Argument Lists.
                                                               (line   6)
-* 'varargout':                           Variable-length Return Lists.
+* varargout:                             Variable-length Return Lists.
                                                               (line   6)
 * variable-length argument lists:        Variable-length Argument Lists.
                                                               (line   6)
@@ -2777,7 +3718,7 @@ Concept Index
 * version startup file:                  Startup Files.       (line  21)
 * warning ids:                           Issuing Warnings.    (line 109)
 * warranty:                              Copying.             (line   6)
-* 'while' statement:                     The while Statement. (line   6)
+* while statement:                       The while Statement. (line   6)
 * wrong answers:                         Bug Criteria.        (line  12)
 * wrong answers <1>:                     Bug Reporting.       (line  70)
 
@@ -5614,8 +6555,8 @@ Function Index
                                                              (line   74)
 * kendall <1>:                           Correlation and Regression Analysis.
                                                              (line   75)
-* keyboard:                              Breakpoints.        (line  157)
-* keyboard <1>:                          Breakpoints.        (line  158)
+* keyboard:                              Breakpoints.        (line  158)
+* keyboard <1>:                          Breakpoints.        (line  159)
 * kill:                                  Controlling Subprocesses.
                                                              (line  510)
 * kolmogorov_smirnov_cdf:                Distributions.      (line  247)
