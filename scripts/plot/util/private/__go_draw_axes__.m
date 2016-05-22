@@ -146,7 +146,7 @@ function __go_draw_axes__ (h, plot_stream, enhanced, mono,
   fputs (plot_stream, "unset ytics;\n");
   fputs (plot_stream, "unset ztics;\n");
   fputs (plot_stream, "unset x2tics;\n");
-  fputs (plot_stream, "unset x2tics;\n");
+  fputs (plot_stream, "unset y2tics;\n");
 
   if (! isempty (axis_obj.title))
     t = get (axis_obj.title);
@@ -2193,8 +2193,8 @@ function do_tics_1 (ticmode, tics, mtics, labelmode, labels, color, ax,
     endif
     fprintf (plot_stream, "set %stics %s %s %s %s (", ax, tickdir,
              ticklength, axispos, mirror);
-    fprintf (plot_stream, " %.15e,", tics(1:end-1));
-    fprintf (plot_stream, " %.15e) %s;\n", tics(end), fontspec);
+    fprintf (plot_stream, " %.15g,", tics(1:end-1));
+    fprintf (plot_stream, " %.15g) %s;\n", tics(end), fontspec);
   else
     fprintf (plot_stream, "set %stics %s %s %s %s %s %s;\n", ax,
              tickdir, ticklength, axispos, mirror, colorspec, fontspec);

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Two-Dimensional Plots</title>
 
@@ -19,16 +19,16 @@
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
 blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
-div.indentedblock {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
 div.smalldisplay {margin-left: 3.2em}
 div.smallexample {margin-left: 3.2em}
-div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
 div.smalllisp {margin-left: 3.2em}
-kbd {font-style:oblique}
+kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
@@ -37,10 +37,9 @@ pre.smalldisplay {font-family: inherit; font-size: smaller}
 pre.smallexample {font-size: smaller}
 pre.smallformat {font-family: inherit; font-size: smaller}
 pre.smalllisp {font-size: smaller}
-span.nocodebreak {white-space:nowrap}
-span.nolinebreak {white-space:nowrap}
-span.roman {font-family:serif; font-weight:normal}
-span.sansserif {font-family:sans-serif; font-weight:normal}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
@@ -48,7 +47,7 @@ ul.no-bullet {list-style: none}
 
 </head>
 
-<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<body lang="en">
 <a name="Two_002dDimensional-Plots"></a>
 <div class="header">
 <p>
@@ -154,12 +153,14 @@ the arguments to make the number of rows match.
 in pairs.  These arguments are applied to the line objects drawn by
 <code>plot</code>.  Useful properties to modify are <code>&quot;linestyle&quot;</code>,
 <code>&quot;linewidth&quot;</code>, <code>&quot;color&quot;</code>, <code>&quot;marker&quot;</code>,
-<code>&quot;markersize&quot;</code>, <code>&quot;markeredgecolor&quot;</code>, <code>&quot;markerfacecolor&quot;</code>.
+<code>&quot;markersize&quot;</code>, <code>&quot;markeredgecolor&quot;</code>, <code>&quot;markerfacecolor&quot;</code>.  
+See <a href="Line-Properties.html#Line-Properties">Line Properties</a>.  
 </p>
 <p>The <var>fmt</var> format argument can also be used to control the plot style.
-The format is composed of three parts: linestyle, markerstyle, color.
-When a markerstyle is specified, but no linestyle, only the markers are
-plotted.  Similarly, if a linestyle is specified, but no markerstyle, then
+It is a string composed of four optional parts:
+&quot;&lt;linestyle&gt;&lt;marker&gt;&lt;color&gt;&lt;;displayname;&gt;&quot;.
+When a marker is specified, but no linestyle, only the markers are
+plotted.  Similarly, if a linestyle is specified, but no marker, then
 only lines are drawn.  If both are specified then lines and markers will
 be plotted.  If no <var>fmt</var> and no <var>property</var>/<var>value</var> pairs are
 given, then the default plot style is solid lines with no markers and the
@@ -178,7 +179,7 @@ color determined by the <code>&quot;colororder&quot;</code> property of the curr
 </table>
 
 </dd>
-<dt>markerstyle</dt>
+<dt>marker</dt>
 <dd>
 <table>
 <tr><td width="6%">&lsquo;<samp>+</samp>&rsquo;</td><td width="94%">crosshair</td></tr>
@@ -210,12 +211,12 @@ color determined by the <code>&quot;colororder&quot;</code> property of the curr
 </table>
 
 </dd>
-<dt><code>&quot;;key;&quot;</code></dt>
-<dd><p>Here <code>&quot;key&quot;</code> is the label to use for the plot legend.
+<dt><code>&quot;;displayname;&quot;</code></dt>
+<dd><p>Here <code>&quot;displayname&quot;</code> is the label to use for the plot legend.
 </p></dd>
 </dl>
 
-<p>The <var>fmt</var> argument may also be used to assign legend keys.
+<p>The <var>fmt</var> argument may also be used to assign legend labels.
 To do so, include the desired label between semicolons after the
 formatting sequence described above, e.g., <code>&quot;+b;Key Title;&quot;</code>.
 Note that the last semicolon is required and Octave will generate
@@ -610,6 +611,7 @@ Briefly, the entries are as shown:
 </p>
 <div class="example">
 <pre class="example">
+
         Fenced Letter Display
 #% nx|___________________     nx = numel (x)
 M% mi|       md         |     mi median index, md median
@@ -1221,9 +1223,9 @@ example,
 <div class="example">
 <pre class="example">x = 0:0.1:10;
 y = sin (x);
-yp =  0.1 .* randn (size (x));
-ym = -0.1 .* randn (size (x));
-errorbar (x, sin (x), ym, yp);
+lerr = 0.1 .* rand (size (x));
+uerr = 0.1 .* rand (size (x));
+errorbar (x, y, lerr, uerr);
 </pre></div>
 
 <p>produces the figure shown in <a href="#fig_003aerrorbar">Figure 15.3</a>.

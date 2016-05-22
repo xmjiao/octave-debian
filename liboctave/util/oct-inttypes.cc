@@ -52,6 +52,57 @@ DECLARE_OCTAVE_INT_TYPENAME (uint16_t, "uint16")
 DECLARE_OCTAVE_INT_TYPENAME (uint32_t, "uint32")
 DECLARE_OCTAVE_INT_TYPENAME (uint64_t, "uint64")
 
+template <class T>
+template <class S>
+T
+octave_int_base<T>::convert_real (const S& value)
+{
+  // Compute proper thresholds.
+  static const S thmin = compute_threshold (static_cast<S> (min_val ()),
+                                            min_val ());
+  static const S thmax = compute_threshold (static_cast<S> (max_val ()),
+                                            max_val ());
+  if (xisnan (value))
+    {
+      return static_cast<T> (0);
+    }
+  else if (value < thmin)
+    {
+      return min_val ();
+    }
+  else if (value > thmax)
+    {
+      return max_val ();
+    }
+  else
+    {
+      S rvalue = xround (value);
+      return static_cast<T> (rvalue);
+    }
+}
+
+#define INSTANTIATE_CONVERT_REAL_1(T, S) \
+  template \
+  OCTAVE_API \
+  T \
+  octave_int_base<T>::convert_real (const S&)
+
+#define INSTANTIATE_CONVERT_REAL(S) \
+  INSTANTIATE_CONVERT_REAL_1 (int8_t, S); \
+  INSTANTIATE_CONVERT_REAL_1 (uint8_t, S); \
+  INSTANTIATE_CONVERT_REAL_1 (int16_t, S); \
+  INSTANTIATE_CONVERT_REAL_1 (uint16_t, S); \
+  INSTANTIATE_CONVERT_REAL_1 (int32_t, S); \
+  INSTANTIATE_CONVERT_REAL_1 (uint32_t, S); \
+  INSTANTIATE_CONVERT_REAL_1 (int64_t, S); \
+  INSTANTIATE_CONVERT_REAL_1 (uint64_t, S)
+
+INSTANTIATE_CONVERT_REAL (double);
+INSTANTIATE_CONVERT_REAL (float);
+#if defined (OCTAVE_INT_USE_LONG_DOUBLE)
+INSTANTIATE_CONVERT_REAL (long double);
+#endif
+
 #ifdef OCTAVE_INT_USE_LONG_DOUBLE
 
 #ifdef OCTAVE_ENSURE_LONG_DOUBLE_OPERATIONS_ARE_NOT_TRUNCATED
@@ -201,7 +252,7 @@ octave_int_cmp_op::emulate_mop (uint64_t x, double y)
     return xop::op (xx, y);
   else
     {
-      // If equality occured we compare as integers.
+      // If equality occurred we compare as integers.
       if (xx == xxup)
         return xop::gtval;
       else
@@ -222,7 +273,7 @@ octave_int_cmp_op::emulate_mop (int64_t x, double y)
     return xop::op (xx, y);
   else
     {
-      // If equality occured we compare as integers.
+      // If equality occurred we compare as integers.
       if (xx == xxup)
         return xop::gtval;
       else if (xx == xxlo)

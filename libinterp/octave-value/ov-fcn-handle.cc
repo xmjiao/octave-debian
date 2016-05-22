@@ -226,6 +226,13 @@ octave_fcn_handle::do_multi_index_op (int nargout,
   return retval;
 }
 
+dim_vector
+octave_fcn_handle::dims (void) const
+{
+  static dim_vector dv (1, 1);
+  return dv;
+}
+
 bool
 octave_fcn_handle::is_equal_to (const octave_fcn_handle& h) const
 {
@@ -1854,6 +1861,10 @@ Return a function handle constructed from the string @var{fcn_name}.\n\
 \n\
 If the optional @qcode{\"global\"} argument is passed, locally visible\n\
 functions are ignored in the lookup.\n\
+\n\
+Note: @code{str2func} does not currently accept strings which define\n\
+anonymous functions (those which begin with @samp{@@}).\n\
+Use @w{@code{eval (@var{str})}} as a replacement.\n\
 @seealso{func2str, inline}\n\
 @end deftypefn")
 {

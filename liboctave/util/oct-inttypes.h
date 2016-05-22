@@ -315,34 +315,11 @@ private:
   }
 
 public:
+
   // Convert a real number (check NaN and non-int).
   template <class S>
   static T
-  convert_real (const S& value)
-  {
-    // Compute proper thresholds.
-    static const S thmin = compute_threshold (static_cast<S> (min_val ()),
-                           min_val ());
-    static const S thmax = compute_threshold (static_cast<S> (max_val ()),
-                           max_val ());
-    if (xisnan (value))
-      {
-        return static_cast<T> (0);
-      }
-    else if (value < thmin)
-      {
-        return min_val ();
-      }
-    else if (value > thmax)
-      {
-        return max_val ();
-      }
-    else
-      {
-        S rvalue = xround (value);
-        return static_cast<T> (rvalue);
-      }
-  }
+  convert_real (const S& value);
 };
 
 // Saturated (homogeneous) integer arithmetics. The signed and unsigned
@@ -837,10 +814,12 @@ public:
 
   octave_int (T i) : ival (i) { }
 
+#if defined (HAVE_OVERLOAD_CHAR_INT8_TYPES)
   // Always treat characters as unsigned.
   octave_int (char c)
     : ival (octave_int_base<T>::truncate_int (static_cast<unsigned char> (c)))
   { }
+#endif
 
   octave_int (double d) : ival (octave_int_base<T>::convert_real (d)) { }
 

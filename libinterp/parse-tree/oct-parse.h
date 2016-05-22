@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -223,7 +223,7 @@ extern int octave_debug;
 
 /* Value type.  */
 #if ! defined OCTAVE_STYPE && ! defined OCTAVE_STYPE_IS_DECLARED
-typedef union OCTAVE_STYPE OCTAVE_STYPE;
+
 union OCTAVE_STYPE
 {
 #line 150 "parse-tree/oct-parse.yy" /* yacc.c:1909  */
@@ -286,6 +286,8 @@ union OCTAVE_STYPE
 
 #line 288 "parse-tree/oct-parse.h" /* yacc.c:1909  */
 };
+
+typedef union OCTAVE_STYPE OCTAVE_STYPE;
 # define OCTAVE_STYPE_IS_TRIVIAL 1
 # define OCTAVE_STYPE_IS_DECLARED 1
 #endif

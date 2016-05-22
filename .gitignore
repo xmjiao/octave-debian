@@ -8,7 +8,7 @@
 /debian/autoreconf.after
 /debian/autoreconf.before
 /debian/liboctave-dev
-/debian/liboctave3
+/debian/liboctave3v5
 /debian/octave-common
 /debian/octave-dbg
 /debian/octave-doc
@@ -16,5 +16,5 @@
 /debian/octave-info
 /debian/octave
 /debian/tmp
-
-
+/debian/debhelper-build-stamp
+/debian/.debhelper

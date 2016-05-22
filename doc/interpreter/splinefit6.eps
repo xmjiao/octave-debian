@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: splinefit6.eps
-%%Creator: gnuplot 4.6 patchlevel 6
-%%CreationDate: Tue May 26 12:33:30 2015
+%%Creator: gnuplot 5.0 patchlevel 2
+%%CreationDate: Wed Apr 20 15:11:56 2016
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -12,12 +12,13 @@ gnudict begin
 % The following true/false flags may be edited by hand if desired.
 % The unit line width and grayscale image gamma correction may also be changed.
 %
-/Color false def
+/Color true def
 /Blacktext false def
 /Solid false def
 /Dashlength 2 def
 /Landscape false def
 /Level1 false def
+/Level3 false def
 /Rounded false def
 /ClipToBoundingBox false def
 /SuppressPDFMark false def
@@ -29,11 +30,11 @@ gnudict begin
 %
 /vshift -66 def
 /dl1 {
-  10.0 Dashlength mul mul
+  10.0 Dashlength userlinewidth gnulinewidth div mul mul mul
   Rounded { currentlinewidth 0.75 mul sub dup 0 le { pop 0.01 } if } if
 } def
 /dl2 {
-  10.0 Dashlength mul mul
+  10.0 Dashlength userlinewidth gnulinewidth div mul mul mul
   Rounded { currentlinewidth 0.75 mul add } if
 } def
 /hpt_ 31.5 def
@@ -47,7 +48,7 @@ gnudict begin
   } if
 } def
 %
-% Gnuplot Prolog Version 4.6 (September 2012)
+% Gnuplot Prolog Version 5.1 (Oct 2015)
 %
 %/SuppressPDFMark true def
 %
@@ -64,11 +65,11 @@ gnudict begin
 /vpt2 vpt 2 mul def
 /hpt2 hpt 2 mul def
 /Lshow {currentpoint stroke M 0 vshift R 
-	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
 /Rshow {currentpoint stroke M dup stringwidth pop neg vshift R
-	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
 /Cshow {currentpoint stroke M dup stringwidth pop -2 div vshift R 
-	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
 /UP {dup vpt_ mul /vpt exch def hpt_ mul /hpt exch def
   /hpt2 hpt 2 mul def /vpt2 vpt 2 mul def} def
 /DL {Color {setrgbcolor Solid {pop []} if 0 setdash}
@@ -82,7 +83,7 @@ gnudict begin
 /PL {stroke userlinewidth setlinewidth
 	Rounded {1 setlinejoin 1 setlinecap} if} def
 3.8 setmiterlimit
-% Default Line colors
+% Classic Line colors (version 5.0)
 /LCw {1 1 1} def
 /LCb {0 0 0} def
 /LCa {0 0 0} def
@@ -95,19 +96,21 @@ gnudict begin
 /LC6 {0 0 0} def
 /LC7 {1 0.3 0} def
 /LC8 {0.5 0.5 0.5} def
-% Default Line Types
+% Default dash patterns (version 5.0)
+/LTB {BL [] LCb DL} def
 /LTw {PL [] 1 setgray} def
-/LTb {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 /LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
 /LT0 {PL [] LC0 DL} def
-/LT1 {PL [4 dl1 2 dl2] LC1 DL} def
-/LT2 {PL [2 dl1 3 dl2] LC2 DL} def
-/LT3 {PL [1 dl1 1.5 dl2] LC3 DL} def
-/LT4 {PL [6 dl1 2 dl2 1 dl1 2 dl2] LC4 DL} def
-/LT5 {PL [3 dl1 3 dl2 1 dl1 3 dl2] LC5 DL} def
-/LT6 {PL [2 dl1 2 dl2 2 dl1 6 dl2] LC6 DL} def
-/LT7 {PL [1 dl1 2 dl2 6 dl1 2 dl2 1 dl1 2 dl2] LC7 DL} def
-/LT8 {PL [2 dl1 2 dl2 2 dl1 2 dl2 2 dl1 2 dl2 2 dl1 4 dl2] LC8 DL} def
+/LT1 {PL [2 dl1 3 dl2] LC1 DL} def
+/LT2 {PL [1 dl1 1.5 dl2] LC2 DL} def
+/LT3 {PL [6 dl1 2 dl2 1 dl1 2 dl2] LC3 DL} def
+/LT4 {PL [1 dl1 2 dl2 6 dl1 2 dl2 1 dl1 2 dl2] LC4 DL} def
+/LT5 {PL [4 dl1 2 dl2] LC5 DL} def
+/LT6 {PL [1.5 dl1 1.5 dl2 1.5 dl1 1.5 dl2 1.5 dl1 6 dl2] LC6 DL} def
+/LT7 {PL [3 dl1 3 dl2 1 dl1 3 dl2] LC7 DL} def
+/LT8 {PL [2 dl1 2 dl2 2 dl1 6 dl2] LC8 DL} def
+/SL {[] 0 setdash} def
 /Pnt {stroke [] 0 setdash gsave 1 setlinecap M 0 0 V stroke grestore} def
 /Dia {stroke [] 0 setdash 2 copy vpt add M
   hpt neg vpt neg V hpt vpt neg V
@@ -329,9 +332,14 @@ gnudict begin
 %
 /languagelevel where
  {pop languagelevel} {1} ifelse
- 2 lt
-	{/InterpretLevel1 true def}
-	{/InterpretLevel1 Level1 def}
+dup 2 lt
+	{/InterpretLevel1 true def
+	 /InterpretLevel3 false def}
+	{/InterpretLevel1 Level1 def
+	 2 gt
+	    {/InterpretLevel3 Level3 def}
+	    {/InterpretLevel3 false def}
+	 ifelse }
  ifelse
 %
 % PostScript level 2 pattern fill definitions
@@ -420,16 +428,17 @@ Level1 {Level1PatternFill} {Level2PatternFill} ifelse
 /Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
 dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
 currentdict end definefont pop
+%
 /MFshow {
    { dup 5 get 3 ge
      { 5 get 3 eq {gsave} {grestore} ifelse }
      {dup dup 0 get findfont exch 1 get scalefont setfont
      [ currentpoint ] exch dup 2 get 0 exch R dup 5 get 2 ne {dup dup 6
-     get exch 4 get {Gshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
+     get exch 4 get {textshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
      {dup 3 get {2 get neg 0 exch R pop} {pop aload pop M} ifelse} {dup 5
      get 1 eq {dup 2 get exch dup 3 get exch 6 get stringwidth pop -2 div
      dup 0 R} {dup 6 get stringwidth pop -2 div 0 R 6 get
-     show 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
+     textshow 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
      pop aload pop M} ifelse }ifelse }ifelse }
      ifelse }
    forall} def
@@ -457,14 +466,42 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (splinefit6.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 4.6 patchlevel 6)
+  /Creator (gnuplot 5.0 patchlevel 2)
   /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Tue May 26 12:33:30 2015)
+  /CreationDate (Wed Apr 20 15:11:56 2016)
   /DOCINFO pdfmark
 end
 } ifelse
+%
+% Support for boxed text - Ethan A Merritt May 2005
+%
+/InitTextBox { userdict /TBy2 3 -1 roll put userdict /TBx2 3 -1 roll put
+           userdict /TBy1 3 -1 roll put userdict /TBx1 3 -1 roll put
+	   /Boxing true def } def
+/ExtendTextBox { Boxing
+    { gsave dup false charpath pathbbox
+      dup TBy2 gt {userdict /TBy2 3 -1 roll put} {pop} ifelse
+      dup TBx2 gt {userdict /TBx2 3 -1 roll put} {pop} ifelse
+      dup TBy1 lt {userdict /TBy1 3 -1 roll put} {pop} ifelse
+      dup TBx1 lt {userdict /TBx1 3 -1 roll put} {pop} ifelse
+      grestore } if } def
+/PopTextBox { newpath TBx1 TBxmargin sub TBy1 TBymargin sub M
+               TBx1 TBxmargin sub TBy2 TBymargin add L
+	       TBx2 TBxmargin add TBy2 TBymargin add L
+	       TBx2 TBxmargin add TBy1 TBymargin sub L closepath } def
+/DrawTextBox { PopTextBox stroke /Boxing false def} def
+/FillTextBox { gsave PopTextBox 1 1 1 setrgbcolor fill grestore /Boxing false def} def
+0 0 0 0 InitTextBox
+/TBxmargin 20 def
+/TBymargin 20 def
+/Boxing false def
+/textshow { ExtendTextBox Gshow } def
+%
+% redundant definitions for compatibility with prologue.ps older than 5.0.2
+/LTB {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 end
 %%EndProlog
 %%Page: 1 1
@@ -556,6 +593,7 @@ LTb
 1.00 1.00 1.00 C 1.000 780 400 6058 4398 BoxColFill
 0.500 UL
 LTb
+LCb setrgbcolor
 780 400 M
 88 0 V
 5971 0 R
@@ -566,6 +604,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 780 950 M
 88 0 V
 5971 0 R
@@ -576,6 +615,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 780 1500 M
 88 0 V
 5971 0 R
@@ -586,6 +626,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 780 2050 M
 88 0 V
 5971 0 R
@@ -596,6 +637,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 780 2600 M
 88 0 V
 5971 0 R
@@ -606,6 +648,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 780 3149 M
 88 0 V
 5971 0 R
@@ -616,6 +659,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 780 3699 M
 88 0 V
 5971 0 R
@@ -626,6 +670,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 780 4249 M
 88 0 V
 5971 0 R
@@ -636,6 +681,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 780 4799 M
 88 0 V
 5971 0 R
@@ -646,6 +692,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 780 400 M
 0 88 V
 0 4311 R
@@ -656,6 +703,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 1744 400 M
 0 88 V
 0 4311 R
@@ -666,6 +714,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 2709 400 M
 0 88 V
 0 4311 R
@@ -676,6 +725,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 3673 400 M
 0 88 V
 0 4311 R
@@ -686,6 +736,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 4637 400 M
 0 88 V
 0 4311 R
@@ -696,6 +747,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 5602 400 M
 0 88 V
 0 4311 R
@@ -706,6 +758,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 6566 400 M
 0 88 V
 0 4311 R
@@ -716,8 +769,10 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
-LTb
+LTB
+LCb setrgbcolor
 780 4799 N
 780 400 L
 6059 0 V
@@ -727,8 +782,10 @@ Z stroke
 1.000 UP
 0.500 UL
 LTb
+LCb setrgbcolor
 1.000 UL
 LTb
+LCb setrgbcolor
 3656 2736 N
 0 2000 V
 3063 0 V
@@ -738,211 +795,213 @@ Z stroke
 % Begin plot #1
 0.667 UP
 0.500 UL
-LT0
+LTb
 0.00 0.00 1.00 C 0.00 0.00 0.00 C 6719 4486 M
 [ [({}) 200.0 0.0 true true 0 (data with outliers)]
 ] -66.7 MRshow
-LT0
-0.00 0.00 1.00 C 780 2638 CircleF
-810 2776 CircleF
-841 2789 CircleF
-871 2858 CircleF
-902 3087 CircleF
-932 3030 CircleF
-963 3162 CircleF
-993 3322 CircleF
-1024 3384 CircleF
-1054 3562 CircleF
-1084 3678 CircleF
-1115 3630 CircleF
-1145 3768 CircleF
-1176 3797 CircleF
-1206 3955 CircleF
-1237 4081 CircleF
-1267 4143 CircleF
-1298 4120 CircleF
-1328 4198 CircleF
-1358 4310 CircleF
-1389 4283 CircleF
-1419 4385 CircleF
-1450 4298 CircleF
-1480 4501 CircleF
-1511 4511 CircleF
-1541 4488 CircleF
-1572 4515 CircleF
-1602 4631 CircleF
-1633 4534 CircleF
-1663 4597 CircleF
-1693 4455 CircleF
-1724 4585 CircleF
-1754 4511 CircleF
-1785 4462 CircleF
-1815 4509 CircleF
-1846 4514 CircleF
-1876 4496 CircleF
-1907 4367 CircleF
-1937 4398 CircleF
-1967 4304 CircleF
-1998 4247 CircleF
-2028 4284 CircleF
-2059 4164 CircleF
-2089 4186 CircleF
-2120 4101 CircleF
-2150 4066 CircleF
-2181 3971 CircleF
-2211 3937 CircleF
-2241 3777 CircleF
-2272 3723 CircleF
-2302 3558 CircleF
-2333 3601 CircleF
-2363 3442 CircleF
-2394 3481 CircleF
-2424 3346 CircleF
-2455 3425 CircleF
-2485 3207 CircleF
-2515 3226 CircleF
-2546 3065 CircleF
-2576 2970 CircleF
-2607 3023 CircleF
-2637 2879 CircleF
-2668 2878 CircleF
-2698 2835 CircleF
-2729 2648 CircleF
-2759 2682 CircleF
-2790 2587 CircleF
-2820 2588 CircleF
-2850 2519 CircleF
-2881 2479 CircleF
-2911 2434 CircleF
-2942 2350 CircleF
-2972 2409 CircleF
-3003 2325 CircleF
-3033 2166 CircleF
-3064 2366 CircleF
-3094 2261 CircleF
-3124 2186 CircleF
-3155 2155 CircleF
-3185 2292 CircleF
-3216 2149 CircleF
-3246 2150 CircleF
-3277 2189 CircleF
-3307 2246 CircleF
-3338 2059 CircleF
-3368 2199 CircleF
-3398 2229 CircleF
-3429 2257 CircleF
-3459 2283 CircleF
-3490 2303 CircleF
-3520 2179 CircleF
-3551 2363 CircleF
-3581 2288 CircleF
-3612 2225 CircleF
-3642 2462 CircleF
-3672 2435 CircleF
-3703 2533 CircleF
-3733 2494 CircleF
-3764 2558 CircleF
-3794 2707 CircleF
-3825 2484 CircleF
-3855 2682 CircleF
-3886 2702 CircleF
-3916 2767 CircleF
-3947 2655 CircleF
-3977 2782 CircleF
-4007 2888 CircleF
-4038 2830 CircleF
-4068 2874 CircleF
-4099 2905 CircleF
-4129 2977 CircleF
-4160 2914 CircleF
-4190 2980 CircleF
-4221 2902 CircleF
-4251 3080 CircleF
-4281 3068 CircleF
-4312 3067 CircleF
-4342 2956 CircleF
-4373 3031 CircleF
-4403 2939 CircleF
-4434 2992 CircleF
-4464 2951 CircleF
-4495 2926 CircleF
-4525 2902 CircleF
-4555 2879 CircleF
-4586 2991 CircleF
-4616 2873 CircleF
-4647 2771 CircleF
-4677 2918 CircleF
-4708 2717 CircleF
-4738 2640 CircleF
-4769 2671 CircleF
-4799 2502 CircleF
-4829 2642 CircleF
-4860 2603 CircleF
-4890 2484 CircleF
-4921 2428 CircleF
-4951 2437 CircleF
-4982 2260 CircleF
-5012 2193 CircleF
-5043 2205 CircleF
-5073 2047 CircleF
-5104 2010 CircleF
-5134 1869 CircleF
-5164 1832 CircleF
-5195 1872 CircleF
-5225 1729 CircleF
-5256 1656 CircleF
-5286 1621 CircleF
-5317 1648 CircleF
-5347 1392 CircleF
-5378 1409 CircleF
-5408 1400 CircleF
-5438 1322 CircleF
-5469 1182 CircleF
-5499 1134 CircleF
-5530 1076 CircleF
-5560 1050 CircleF
+0.667 UP
+0.500 UL
+LTb
+0.00 0.00 1.00 C 780 2650 CircleF
+810 2688 CircleF
+841 2768 CircleF
+871 2791 CircleF
+902 2979 CircleF
+932 3071 CircleF
+963 3191 CircleF
+993 3282 CircleF
+1024 3422 CircleF
+1054 3432 CircleF
+1084 3673 CircleF
+1115 3669 CircleF
+1145 3832 CircleF
+1176 3819 CircleF
+1206 3951 CircleF
+1237 3996 CircleF
+1267 3963 CircleF
+1298 4100 CircleF
+1328 4181 CircleF
+1358 4239 CircleF
+1389 4268 CircleF
+1419 4268 CircleF
+1450 4395 CircleF
+1480 4439 CircleF
+1511 4456 CircleF
+1541 4458 CircleF
+1572 4393 CircleF
+1602 4494 CircleF
+1633 4623 CircleF
+1663 4572 CircleF
+1693 4507 CircleF
+1724 4669 CircleF
+1754 4476 CircleF
+1785 4445 CircleF
+1815 4488 CircleF
+1846 4498 CircleF
+1876 4487 CircleF
+1907 4423 CircleF
+1937 4453 CircleF
+1967 4172 CircleF
+1998 4303 CircleF
+2028 4230 CircleF
+2059 4146 CircleF
+2089 4125 CircleF
+2120 4074 CircleF
+2150 3958 CircleF
+2181 4001 CircleF
+2211 3860 CircleF
+2241 3828 CircleF
+2272 3803 CircleF
+2302 3691 CircleF
+2333 3575 CircleF
+2363 3561 CircleF
+2394 3412 CircleF
+2424 3526 CircleF
+2455 3342 CircleF
+2485 3204 CircleF
+2515 3175 CircleF
+2546 3105 CircleF
+2576 3082 CircleF
+2607 2910 CircleF
+2637 2844 CircleF
+2668 2804 CircleF
+2698 2791 CircleF
+2729 2753 CircleF
+2759 2670 CircleF
+2790 2616 CircleF
+2820 2578 CircleF
+2850 2573 CircleF
+2881 2498 CircleF
+2911 2403 CircleF
+2942 2400 CircleF
+2972 2305 CircleF
+3003 2373 CircleF
+3033 2369 CircleF
+3064 2291 CircleF
+3094 2227 CircleF
+3124 2260 CircleF
+3155 2195 CircleF
+3185 2268 CircleF
+3216 2158 CircleF
+3246 2151 CircleF
+3277 2192 CircleF
+3307 2152 CircleF
+3338 2182 CircleF
+3368 2341 CircleF
+3398 2230 CircleF
+3429 2177 CircleF
+3459 2331 CircleF
+3490 2234 CircleF
+3520 2336 CircleF
+3551 2324 CircleF
+3581 2365 CircleF
+3612 2368 CircleF
+3642 2342 CircleF
+3672 2549 CircleF
+3703 2430 CircleF
+3733 2546 CircleF
+3764 2594 CircleF
+3794 2564 CircleF
+3825 2519 CircleF
+3855 2677 CircleF
+3886 2677 CircleF
+3916 2697 CircleF
+3947 2683 CircleF
+3977 2895 CircleF
+4007 2860 CircleF
+4038 2828 CircleF
+4068 2948 CircleF
+4099 2967 CircleF
+4129 2801 CircleF
+4160 2942 CircleF
+4190 2850 CircleF
+4221 3003 CircleF
+4251 2932 CircleF
+4281 2918 CircleF
+4312 2978 CircleF
+4342 2993 CircleF
+4373 3003 CircleF
+4403 3070 CircleF
+4434 2952 CircleF
+4464 2997 CircleF
+4495 2973 CircleF
+4525 2911 CircleF
+4555 2924 CircleF
+4586 2931 CircleF
+4616 2855 CircleF
+4647 2820 CircleF
+4677 2771 CircleF
+4708 2845 CircleF
+4738 2800 CircleF
+4769 2587 CircleF
+4799 2669 CircleF
+4829 2553 CircleF
+4860 2535 CircleF
+4890 2458 CircleF
+4921 2370 CircleF
+4951 2365 CircleF
+4982 2173 CircleF
+5012 2190 CircleF
+5043 2210 CircleF
+5073 2186 CircleF
+5104 2139 CircleF
+5134 1894 CircleF
+5164 1868 CircleF
+5195 1766 CircleF
+5225 1657 CircleF
+5256 1692 CircleF
+5286 1654 CircleF
+5317 1409 CircleF
+5347 1580 CircleF
+5378 1400 CircleF
+5408 1319 CircleF
+5438 1215 CircleF
+5469 1238 CircleF
+5499 1092 CircleF
+5530 1002 CircleF
+5560 1040 CircleF
 5591 978 CircleF
-5621 839 CircleF
-5652 826 CircleF
-5682 838 CircleF
-5712 881 CircleF
-5743 761 CircleF
-5773 736 CircleF
-5804 776 CircleF
-5834 747 CircleF
-5865 571 CircleF
-5895 642 CircleF
-5926 746 CircleF
-5956 753 CircleF
-5986 667 CircleF
-6017 750 CircleF
-6047 667 CircleF
-6078 604 CircleF
-6108 724 CircleF
-6139 702 CircleF
-6169 794 CircleF
-6200 955 CircleF
-6230 908 CircleF
-6261 884 CircleF
-6291 929 CircleF
-6321 1095 CircleF
-6352 1192 CircleF
-6382 1261 CircleF
-6413 1251 CircleF
-6443 1489 CircleF
-6474 1511 CircleF
-6504 1527 CircleF
-6535 1566 CircleF
-6565 1747 CircleF
-6595 1856 CircleF
-6626 1862 CircleF
-6656 2096 CircleF
-6687 2053 CircleF
-6717 2087 CircleF
-6748 2241 CircleF
-6778 2331 CircleF
-6809 2453 CircleF
-6839 2551 CircleF
+5621 882 CircleF
+5652 904 CircleF
+5682 819 CircleF
+5712 759 CircleF
+5743 695 CircleF
+5773 675 CircleF
+5804 839 CircleF
+5834 711 CircleF
+5865 727 CircleF
+5895 700 CircleF
+5926 660 CircleF
+5956 614 CircleF
+5986 759 CircleF
+6017 725 CircleF
+6047 616 CircleF
+6078 724 CircleF
+6108 680 CircleF
+6139 775 CircleF
+6169 863 CircleF
+6200 862 CircleF
+6230 901 CircleF
+6261 898 CircleF
+6291 966 CircleF
+6321 1105 CircleF
+6352 1153 CircleF
+6382 1218 CircleF
+6413 1202 CircleF
+6443 1413 CircleF
+6474 1473 CircleF
+6504 1589 CircleF
+6535 1646 CircleF
+6565 1696 CircleF
+6595 1876 CircleF
+6626 1844 CircleF
+6656 1988 CircleF
+6687 2029 CircleF
+6717 2183 CircleF
+6748 2306 CircleF
+6778 2448 CircleF
+6809 2456 CircleF
+6839 2564 CircleF
 780 1500 CircleF
 883 1500 CircleF
 985 1500 CircleF
@@ -1007,239 +1066,240 @@ LT0
 % End plot #1
 % Begin plot #2
 0.500 UL
-LT0
+LTb
 0.00 0.50 0.00 C 0.00 0.00 0.00 C 6719 3986 M
 [ [({}) 200.0 0.0 true true 0 (robust, beta = 0.25)]
 ] -66.7 MRshow
-LT0
+0.500 UL
+LTb
 0.00 0.50 0.00 C 3776 3986 M
 543 0 V
 780 2599 M
-15 45 V
+15 42 V
+15 42 V
+16 43 V
+15 43 V
 15 44 V
+15 44 V
+15 45 V
+15 45 V
+16 46 V
+15 45 V
+15 46 V
+15 46 V
+15 46 V
+16 46 V
+15 47 V
+15 46 V
+15 46 V
+15 46 V
 16 45 V
 15 46 V
-15 46 V
-15 46 V
-15 47 V
-15 47 V
-16 47 V
-15 47 V
-15 47 V
-15 47 V
-15 48 V
-16 47 V
-15 47 V
-15 48 V
-15 47 V
-15 46 V
-16 47 V
-15 46 V
-15 46 V
 15 45 V
 15 45 V
+15 44 V
 15 44 V
 16 44 V
 15 43 V
-15 43 V
+15 42 V
 15 42 V
 15 41 V
 16 40 V
 15 39 V
 15 39 V
-15 37 V
-15 37 V
-15 35 V
+15 38 V
+15 36 V
+15 36 V
 16 35 V
 15 33 V
-15 32 V
+15 33 V
 15 31 V
 15 30 V
-16 28 V
+16 29 V
 15 27 V
-15 25 V
+15 26 V
 15 24 V
-15 22 V
-16 21 V
-15 20 V
-15 17 V
+15 23 V
+16 22 V
+15 19 V
+15 19 V
 15 16 V
-15 14 V
-15 12 V
+15 15 V
+15 13 V
 16 11 V
 15 9 V
+15 8 V
 15 7 V
-15 6 V
 15 4 V
-16 3 V
+16 4 V
 15 1 V
-15 0 V
+15 1 V
 15 -2 V
-15 -3 V
-15 -5 V
+15 -2 V
+15 -4 V
 16 -6 V
+15 -7 V
 15 -8 V
-15 -8 V
-15 -10 V
-15 -12 V
+15 -9 V
+15 -11 V
 16 -12 V
+15 -13 V
 15 -14 V
 15 -15 V
-15 -16 V
 15 -17 V
-16 -19 V
-15 -19 V
+16 -18 V
+15 -18 V
 15 -20 V
-15 -22 V
-15 -22 V
+15 -21 V
+15 -21 V
 15 -23 V
 16 -24 V
-15 -26 V
+15 -24 V
 15 -25 V
+15 -26 V
 15 -27 V
-15 -28 V
 16 -28 V
+15 -28 V
+15 -30 V
 15 -29 V
-15 -30 V
-15 -30 V
-15 -32 V
+15 -31 V
 16 -31 V
-15 -33 V
+15 -32 V
+15 -32 V
 15 -33 V
 15 -33 V
 15 -34 V
-15 -34 V
-16 -35 V
-15 -36 V
+16 -34 V
+15 -35 V
 15 -35 V
 15 -36 V
+15 -35 V
+16 -37 V
+15 -36 V
+15 -37 V
+stroke 2329 3563 M
+15 -37 V
+15 -37 V
 15 -37 V
 16 -37 V
-15 -37 V
-15 -37 V
-stroke 2329 3557 M
-15 -37 V
-15 -38 V
-15 -38 V
-16 -38 V
-15 -38 V
-15 -38 V
-15 -38 V
-15 -38 V
-16 -38 V
-15 -38 V
-15 -38 V
 15 -38 V
 15 -37 V
-16 -38 V
+15 -38 V
+15 -38 V
+16 -37 V
+15 -38 V
 15 -37 V
 15 -37 V
+15 -38 V
+16 -37 V
 15 -36 V
 15 -37 V
 15 -36 V
-16 -36 V
+15 -36 V
+15 -36 V
+16 -35 V
 15 -35 V
 15 -35 V
 15 -34 V
-15 -34 V
+15 -33 V
 16 -33 V
 15 -33 V
 15 -32 V
-15 -32 V
-15 -30 V
 15 -31 V
+15 -31 V
+15 -30 V
 16 -29 V
 15 -29 V
-15 -28 V
 15 -27 V
-15 -26 V
-16 -26 V
-15 -24 V
-15 -24 V
+15 -27 V
+15 -27 V
+16 -25 V
+15 -25 V
+15 -23 V
 15 -23 V
 15 -21 V
 16 -21 V
 15 -20 V
 15 -18 V
-15 -17 V
-15 -17 V
+15 -18 V
+15 -16 V
 15 -15 V
 16 -14 V
-15 -12 V
+15 -13 V
 15 -12 V
 15 -10 V
 15 -9 V
-16 -8 V
+16 -9 V
 15 -7 V
-15 -5 V
+15 -6 V
 15 -5 V
 15 -4 V
-15 -2 V
+15 -3 V
 16 -2 V
 15 -1 V
 15 0 V
-15 2 V
+15 1 V
 15 2 V
 16 2 V
+15 3 V
 15 4 V
 15 5 V
-15 5 V
 15 6 V
-16 7 V
+16 6 V
 15 7 V
+15 8 V
 15 8 V
 15 9 V
 15 9 V
-15 10 V
-16 11 V
+16 10 V
 15 11 V
 15 11 V
 15 12 V
-15 13 V
-16 13 V
+15 12 V
+16 12 V
 15 13 V
 15 14 V
+15 13 V
 15 14 V
 15 15 V
-15 14 V
-16 15 V
-15 16 V
+16 14 V
 15 15 V
-15 16 V
+15 15 V
+15 15 V
 15 16 V
 16 16 V
 15 16 V
+15 15 V
 15 16 V
 15 17 V
-15 16 V
-16 17 V
-15 16 V
-15 16 V
-15 17 V
-15 16 V
-15 16 V
 16 16 V
 15 16 V
 15 16 V
 15 16 V
-stroke 3908 2561 M
+15 16 V
+15 16 V
+16 16 V
+15 16 V
+15 15 V
+15 16 V
+stroke 3908 2559 M
 15 15 V
 16 15 V
 15 15 V
-15 15 V
 15 14 V
+15 15 V
 15 14 V
 16 14 V
 15 13 V
-15 14 V
-15 12 V
+15 13 V
 15 13 V
 15 12 V
-16 11 V
-15 11 V
+15 12 V
+16 12 V
 15 11 V
 15 10 V
-15 9 V
+15 10 V
+15 10 V
 16 9 V
 15 9 V
 15 8 V
@@ -1250,31 +1310,31 @@ stroke 3908 2561 M
 15 5 V
 15 4 V
 15 4 V
+15 3 V
+16 1 V
 15 2 V
-16 2 V
-15 1 V
-15 1 V
-15 -1 V
-15 -1 V
+15 0 V
+15 0 V
+15 -2 V
 16 -2 V
 15 -3 V
 15 -4 V
-15 -5 V
-15 -5 V
+15 -4 V
+15 -6 V
 15 -7 V
-16 -8 V
-15 -8 V
-15 -10 V
+16 -7 V
+15 -9 V
+15 -9 V
 15 -11 V
-15 -11 V
+15 -12 V
 16 -13 V
-15 -14 V
-15 -14 V
+15 -13 V
+15 -15 V
 15 -16 V
 15 -17 V
 15 -18 V
 16 -18 V
-15 -19 V
+15 -20 V
 15 -20 V
 15 -21 V
 15 -22 V
@@ -1283,53 +1343,53 @@ stroke 3908 2561 M
 15 -23 V
 15 -25 V
 15 -25 V
-16 -25 V
-15 -27 V
+16 -26 V
 15 -26 V
+15 -27 V
 15 -27 V
 15 -28 V
 15 -28 V
 16 -29 V
-15 -28 V
+15 -29 V
 15 -29 V
 15 -30 V
 15 -30 V
-16 -29 V
+16 -30 V
+15 -30 V
 15 -31 V
 15 -30 V
-15 -30 V
+15 -31 V
+15 -31 V
+16 -31 V
+15 -31 V
+15 -31 V
 15 -31 V
 15 -31 V
 16 -30 V
 15 -31 V
-15 -31 V
-15 -31 V
-15 -30 V
-16 -31 V
-15 -30 V
-15 -31 V
 15 -30 V
 15 -30 V
-16 -29 V
+15 -30 V
+16 -30 V
 15 -30 V
 15 -29 V
 15 -29 V
 15 -28 V
 15 -28 V
-16 -27 V
+16 -28 V
 15 -27 V
 15 -27 V
 15 -26 V
-15 -26 V
-16 -25 V
 15 -25 V
+16 -26 V
+15 -24 V
 15 -24 V
 15 -24 V
 15 -23 V
-15 -22 V
-stroke 5487 1219 M
+15 -23 V
+stroke 5487 1210 M
 16 -22 V
-15 -22 V
+15 -21 V
 15 -21 V
 15 -20 V
 15 -20 V
@@ -1337,52 +1397,52 @@ stroke 5487 1219 M
 15 -18 V
 15 -18 V
 15 -17 V
-15 -17 V
-16 -15 V
 15 -16 V
+16 -16 V
+15 -15 V
 15 -14 V
 15 -14 V
 15 -13 V
 15 -12 V
 16 -12 V
-15 -11 V
 15 -10 V
-15 -9 V
-15 -9 V
-16 -7 V
-15 -7 V
+15 -10 V
+15 -10 V
+15 -8 V
+16 -8 V
+15 -6 V
 15 -6 V
 15 -6 V
 15 -4 V
-16 -4 V
+16 -3 V
 15 -3 V
 15 -2 V
 15 -1 V
 15 0 V
 15 1 V
 16 2 V
-15 2 V
-15 4 V
-15 4 V
+15 3 V
+15 3 V
+15 5 V
 15 6 V
 16 6 V
 15 8 V
 15 8 V
 15 10 V
 15 10 V
-15 11 V
-16 13 V
-15 13 V
-15 15 V
-15 15 V
+15 12 V
+16 12 V
+15 14 V
+15 14 V
+15 16 V
 15 17 V
 16 17 V
 15 19 V
-15 19 V
-15 21 V
+15 20 V
+15 20 V
 15 22 V
 16 23 V
-15 23 V
+15 24 V
 15 25 V
 15 26 V
 15 27 V
@@ -1394,23 +1454,23 @@ stroke 5487 1219 M
 15 34 V
 16 34 V
 15 36 V
-15 36 V
+15 37 V
 15 38 V
 15 39 V
 15 40 V
 16 41 V
-15 43 V
-15 43 V
+15 42 V
+15 44 V
 15 44 V
 15 46 V
 16 47 V
 15 47 V
 15 49 V
-15 50 V
-15 52 V
+15 51 V
+15 51 V
 16 52 V
 15 54 V
-15 54 V
+15 55 V
 15 56 V
 15 57 V
 15 58 V
@@ -1420,160 +1480,161 @@ stroke 5487 1219 M
 % End plot #2
 % Begin plot #3
 stroke
-LT0
+LTb
 1.00 0.00 0.00 C 0.00 0.00 0.00 C 6719 3486 M
 [ [({}) 200.0 0.0 true true 0 (robust, beta = 0.75)]
 ] -66.7 MRshow
-LT0
+0.500 UL
+LTb
 1.00 0.00 0.00 C 3776 3486 M
 543 0 V
 780 2599 M
-15 52 V
-15 52 V
-16 52 V
-15 52 V
-15 51 V
-15 52 V
-15 51 V
-15 51 V
-16 50 V
-15 51 V
 15 50 V
 15 49 V
+16 50 V
+15 49 V
+15 50 V
+15 49 V
+15 50 V
 15 49 V
 16 49 V
 15 49 V
-15 47 V
 15 48 V
+15 48 V
+15 48 V
+16 48 V
+15 47 V
+15 47 V
+15 47 V
 15 46 V
-16 47 V
-15 45 V
+16 45 V
 15 45 V
 15 44 V
 15 44 V
-15 42 V
-16 42 V
-15 42 V
+15 43 V
+15 43 V
+16 41 V
+15 41 V
 15 40 V
-15 39 V
-15 39 V
+15 40 V
+15 38 V
 16 38 V
-15 36 V
-15 36 V
+15 37 V
 15 35 V
-15 33 V
+15 35 V
+15 34 V
 15 33 V
 16 31 V
-15 30 V
+15 31 V
 15 29 V
 15 28 V
 15 27 V
-16 25 V
+16 26 V
 15 24 V
+15 23 V
 15 22 V
-15 22 V
-15 19 V
+15 20 V
 16 19 V
-15 17 V
-15 15 V
+15 18 V
+15 16 V
 15 14 V
 15 13 V
-15 10 V
+15 11 V
 16 10 V
 15 8 V
+15 7 V
 15 6 V
-15 5 V
-15 3 V
+15 4 V
 16 3 V
+15 1 V
 15 0 V
-15 0 V
-15 -2 V
+15 -1 V
 15 -3 V
 15 -4 V
-16 -6 V
-15 -7 V
+16 -5 V
+15 -6 V
 15 -8 V
-15 -9 V
+15 -8 V
 15 -10 V
-16 -12 V
+16 -11 V
 15 -12 V
+15 -13 V
 15 -14 V
 15 -15 V
-15 -15 V
-16 -17 V
+16 -16 V
+15 -17 V
 15 -18 V
-15 -18 V
-15 -20 V
+15 -19 V
 15 -20 V
 15 -21 V
-16 -22 V
+16 -21 V
+15 -23 V
 15 -23 V
 15 -24 V
 15 -24 V
-15 -25 V
 16 -26 V
-15 -27 V
-15 -27 V
-15 -28 V
-15 -29 V
-16 -29 V
-15 -30 V
-15 -30 V
-15 -31 V
-15 -31 V
-15 -32 V
-16 -32 V
-15 -33 V
-15 -33 V
-15 -33 V
-15 -34 V
-16 -34 V
-15 -35 V
-15 -34 V
-stroke 2329 3623 M
-15 -35 V
-15 -35 V
-15 -36 V
-16 -35 V
-15 -36 V
-15 -36 V
-15 -35 V
-15 -36 V
-16 -36 V
-15 -36 V
-15 -35 V
-15 -36 V
-15 -35 V
-16 -36 V
-15 -35 V
-15 -35 V
-15 -34 V
-15 -35 V
-15 -34 V
-16 -34 V
-15 -33 V
-15 -33 V
-15 -33 V
-15 -32 V
-16 -32 V
-15 -31 V
-15 -30 V
-15 -30 V
-15 -30 V
-15 -28 V
-16 -29 V
-15 -27 V
-15 -27 V
-15 -25 V
 15 -26 V
+15 -26 V
+15 -28 V
+15 -28 V
+16 -28 V
+15 -29 V
+15 -30 V
+15 -30 V
+15 -31 V
+15 -31 V
+16 -32 V
+15 -32 V
+15 -32 V
+15 -33 V
+15 -34 V
+16 -33 V
+15 -34 V
+15 -34 V
+stroke 2329 3626 M
+15 -34 V
+15 -35 V
+15 -35 V
+16 -35 V
+15 -35 V
+15 -35 V
+15 -35 V
+15 -35 V
+16 -35 V
+15 -35 V
+15 -36 V
+15 -35 V
+15 -35 V
+16 -34 V
+15 -35 V
+15 -34 V
+15 -35 V
+15 -33 V
+15 -34 V
+16 -33 V
+15 -33 V
+15 -33 V
+15 -32 V
+15 -32 V
+16 -31 V
+15 -31 V
+15 -30 V
+15 -30 V
+15 -29 V
+15 -28 V
+16 -28 V
+15 -27 V
+15 -26 V
+15 -26 V
+15 -25 V
 16 -24 V
 15 -23 V
 15 -23 V
 15 -21 V
 15 -21 V
 16 -20 V
-15 -19 V
-15 -17 V
+15 -18 V
+15 -18 V
 15 -17 V
 15 -15 V
 15 -15 V
@@ -1582,92 +1643,92 @@ stroke 2329 3623 M
 15 -11 V
 15 -10 V
 15 -9 V
-16 -7 V
+16 -8 V
 15 -7 V
-15 -5 V
-15 -5 V
+15 -6 V
+15 -4 V
+15 -4 V
 15 -3 V
-15 -2 V
 16 -2 V
 15 -1 V
-15 1 V
-15 1 V
+15 0 V
+15 0 V
 15 2 V
 16 2 V
+15 3 V
 15 4 V
-15 4 V
-15 6 V
 15 5 V
-16 7 V
+15 5 V
+16 6 V
+15 7 V
 15 7 V
 15 8 V
 15 9 V
 15 9 V
-15 9 V
-16 11 V
-15 11 V
-15 11 V
+16 10 V
+15 10 V
+15 10 V
 15 12 V
-15 12 V
+15 11 V
 16 13 V
+15 12 V
 15 13 V
 15 13 V
 15 14 V
 15 14 V
+16 14 V
+15 15 V
+15 15 V
+15 15 V
 15 15 V
 16 15 V
-15 15 V
-15 15 V
-15 16 V
-15 15 V
-16 16 V
 15 16 V
 15 16 V
-15 17 V
-15 16 V
-16 17 V
 15 16 V
 15 16 V
-15 17 V
-15 16 V
-15 17 V
 16 16 V
 15 16 V
 15 16 V
 15 16 V
-stroke 3908 2703 M
+15 16 V
+15 16 V
+16 16 V
+15 16 V
+15 16 V
+15 16 V
+stroke 3908 2699 M
 15 15 V
 16 16 V
 15 15 V
 15 15 V
-15 15 V
+15 14 V
 15 15 V
 16 14 V
 15 14 V
 15 13 V
 15 13 V
 15 13 V
-15 12 V
-16 12 V
+15 13 V
+16 11 V
 15 12 V
 15 11 V
-15 10 V
+15 11 V
 15 10 V
 16 9 V
 15 9 V
-15 9 V
-15 7 V
+15 8 V
+15 8 V
 15 7 V
 15 7 V
 16 5 V
-15 5 V
-15 5 V
-15 3 V
+15 6 V
+15 4 V
+15 4 V
 15 3 V
 16 2 V
 15 1 V
-15 1 V
-15 -1 V
+15 0 V
+15 0 V
 15 -1 V
 16 -2 V
 15 -3 V
@@ -1678,51 +1739,51 @@ stroke 3908 2703 M
 16 -8 V
 15 -9 V
 15 -10 V
-15 -12 V
-15 -12 V
+15 -11 V
+15 -13 V
 16 -13 V
 15 -15 V
 15 -15 V
 15 -17 V
-15 -17 V
-15 -19 V
+15 -18 V
+15 -18 V
 16 -20 V
 15 -20 V
-15 -21 V
-15 -23 V
+15 -22 V
+15 -22 V
 15 -23 V
 16 -24 V
-15 -24 V
+15 -25 V
 15 -26 V
 15 -26 V
-15 -26 V
+15 -27 V
 16 -28 V
 15 -28 V
 15 -29 V
 15 -29 V
 15 -30 V
-15 -30 V
+15 -31 V
 16 -31 V
 15 -31 V
-15 -31 V
+15 -32 V
 15 -32 V
 15 -33 V
 16 -33 V
 15 -33 V
 15 -33 V
-15 -33 V
+15 -34 V
 15 -34 V
 15 -34 V
 16 -34 V
-15 -34 V
 15 -35 V
 15 -34 V
+15 -35 V
 15 -34 V
 16 -35 V
-15 -34 V
 15 -35 V
 15 -34 V
 15 -34 V
+15 -35 V
 16 -34 V
 15 -34 V
 15 -34 V
@@ -1732,67 +1793,67 @@ stroke 3908 2703 M
 16 -33 V
 15 -32 V
 15 -32 V
-15 -31 V
+15 -32 V
 15 -31 V
 16 -31 V
 15 -30 V
+15 -29 V
 15 -30 V
-15 -29 V
-15 -29 V
 15 -28 V
-stroke 5487 1180 M
+15 -29 V
+stroke 5487 1169 M
 16 -27 V
 15 -27 V
-15 -27 V
+15 -26 V
 15 -26 V
 15 -25 V
-16 -24 V
-15 -24 V
+16 -25 V
+15 -23 V
 15 -23 V
 15 -22 V
 15 -22 V
 16 -20 V
 15 -20 V
 15 -19 V
-15 -19 V
+15 -18 V
 15 -17 V
-15 -16 V
-16 -16 V
+15 -17 V
+16 -15 V
 15 -15 V
 15 -13 V
 15 -13 V
-15 -12 V
-16 -10 V
-15 -10 V
+15 -11 V
+16 -11 V
+15 -9 V
 15 -8 V
 15 -8 V
 15 -6 V
 16 -5 V
-15 -4 V
+15 -3 V
 15 -3 V
 15 -1 V
 15 0 V
-15 0 V
-16 3 V
-15 3 V
+15 1 V
+16 2 V
+15 4 V
 15 5 V
 15 6 V
 15 8 V
 16 9 V
-15 10 V
-15 12 V
-15 13 V
+15 11 V
+15 11 V
+15 14 V
 15 15 V
 15 16 V
-16 17 V
+16 18 V
 15 19 V
 15 20 V
-15 22 V
-15 22 V
+15 21 V
+15 23 V
 16 24 V
-15 25 V
-15 27 V
-15 27 V
+15 26 V
+15 26 V
+15 28 V
 15 29 V
 16 30 V
 15 31 V
@@ -1800,71 +1861,72 @@ stroke 5487 1180 M
 15 33 V
 15 34 V
 15 35 V
-16 36 V
+16 37 V
 15 37 V
 15 37 V
 15 39 V
 15 40 V
 16 40 V
-15 41 V
 15 42 V
-15 43 V
-15 43 V
+15 42 V
+15 42 V
+15 44 V
 15 44 V
 16 45 V
 15 45 V
 15 46 V
 15 47 V
 15 47 V
-16 47 V
+16 48 V
 15 48 V
 15 49 V
 15 49 V
+15 49 V
+16 50 V
 15 50 V
-16 49 V
 15 51 V
-15 50 V
 15 51 V
 15 51 V
 15 52 V
 16 51 V
 15 52 V
-15 53 V
+15 52 V
 % End plot #3
 % Begin plot #4
 stroke
-LT0
+LTb
 0.00 0.75 0.75 C 0.00 0.00 0.00 C 6719 2986 M
 [ [({}) 200.0 0.0 true true 0 (no robust fitting)]
 ] -66.7 MRshow
-LT0
+0.500 UL
+LTb
 0.00 0.75 0.75 C 3776 2986 M
 543 0 V
 780 2600 M
+15 14 V
 15 16 V
+16 17 V
 15 18 V
-16 18 V
-15 20 V
+15 19 V
 15 21 V
-15 22 V
+15 21 V
 15 23 V
-15 23 V
-16 25 V
+16 23 V
+15 24 V
 15 25 V
 15 26 V
+15 26 V
+16 27 V
 15 27 V
-15 27 V
-16 28 V
 15 28 V
 15 29 V
 15 29 V
+16 29 V
 15 30 V
-16 30 V
+15 29 V
 15 30 V
 15 30 V
 15 30 V
-15 30 V
-15 31 V
 16 30 V
 15 30 V
 15 30 V
@@ -1872,298 +1934,298 @@ LT0
 15 30 V
 16 29 V
 15 29 V
-15 28 V
-15 28 V
+15 29 V
 15 28 V
 15 27 V
-16 26 V
+15 27 V
+16 27 V
 15 26 V
 15 25 V
 15 24 V
 15 23 V
-16 22 V
-15 21 V
+16 23 V
+15 22 V
 15 20 V
 15 20 V
 15 18 V
 16 17 V
+15 16 V
 15 15 V
-15 15 V
-15 13 V
-15 11 V
+15 14 V
+15 12 V
 15 10 V
-16 9 V
+16 10 V
 15 8 V
 15 6 V
-15 5 V
+15 6 V
 15 4 V
 16 3 V
+15 2 V
 15 1 V
-15 0 V
 15 -1 V
 15 -2 V
-15 -3 V
+15 -2 V
 16 -4 V
 15 -5 V
 15 -6 V
-15 -8 V
-15 -8 V
+15 -7 V
+15 -7 V
 16 -9 V
 15 -10 V
 15 -11 V
+15 -11 V
 15 -12 V
-15 -13 V
+16 -13 V
+15 -14 V
+15 -15 V
+15 -16 V
+15 -16 V
+15 -17 V
+16 -17 V
+15 -19 V
+15 -19 V
+15 -19 V
+15 -20 V
+16 -21 V
+15 -21 V
+15 -22 V
+15 -22 V
+15 -23 V
+16 -23 V
+15 -23 V
+15 -24 V
+15 -24 V
+15 -25 V
+15 -25 V
+16 -25 V
+15 -26 V
+15 -26 V
+15 -25 V
+15 -27 V
+16 -26 V
+15 -26 V
+15 -27 V
+stroke 2329 3129 M
+15 -27 V
+15 -27 V
+15 -26 V
+16 -27 V
+15 -27 V
+15 -27 V
+15 -27 V
+15 -27 V
+16 -27 V
+15 -27 V
+15 -27 V
+15 -26 V
+15 -27 V
+16 -26 V
+15 -26 V
+15 -26 V
+15 -26 V
+15 -25 V
+15 -25 V
+16 -25 V
+15 -25 V
+15 -25 V
+15 -24 V
+15 -23 V
+16 -24 V
+15 -22 V
+15 -23 V
+15 -22 V
+15 -22 V
+15 -21 V
+16 -20 V
+15 -21 V
+15 -19 V
+15 -19 V
+15 -19 V
+16 -18 V
+15 -17 V
+15 -16 V
+15 -16 V
+15 -16 V
 16 -14 V
 15 -14 V
-15 -15 V
-15 -16 V
-15 -17 V
-15 -17 V
-16 -18 V
-15 -19 V
-15 -19 V
-15 -20 V
-15 -21 V
-16 -21 V
-15 -22 V
-15 -22 V
-15 -22 V
-15 -24 V
-16 -23 V
-15 -24 V
-15 -24 V
-15 -25 V
-15 -25 V
-15 -26 V
-16 -25 V
-15 -26 V
-15 -26 V
-15 -27 V
-15 -26 V
-16 -27 V
-15 -27 V
-15 -27 V
-stroke 2329 3126 M
-15 -27 V
-15 -27 V
-15 -28 V
-16 -27 V
-15 -27 V
-15 -28 V
-15 -27 V
-15 -28 V
-16 -27 V
-15 -27 V
-15 -27 V
-15 -27 V
-15 -27 V
-16 -27 V
-15 -26 V
-15 -26 V
-15 -27 V
-15 -25 V
-15 -26 V
-16 -25 V
-15 -25 V
-15 -25 V
-15 -24 V
-15 -24 V
-16 -24 V
-15 -23 V
-15 -23 V
-15 -22 V
-15 -22 V
-15 -21 V
-16 -21 V
-15 -20 V
-15 -20 V
-15 -19 V
-15 -19 V
-16 -18 V
-15 -17 V
-15 -17 V
-15 -16 V
-15 -15 V
-16 -15 V
-15 -14 V
 15 -13 V
-15 -12 V
-15 -12 V
+15 -13 V
+15 -11 V
 15 -11 V
 16 -10 V
 15 -9 V
-15 -8 V
-15 -8 V
-15 -6 V
+15 -9 V
+15 -7 V
+15 -7 V
 16 -6 V
 15 -5 V
-15 -4 V
+15 -5 V
 15 -4 V
 15 -3 V
 15 -2 V
-16 -1 V
+16 -2 V
 15 -1 V
 15 0 V
 15 0 V
-15 2 V
+15 1 V
 16 1 V
-15 3 V
+15 2 V
 15 3 V
 15 3 V
 15 4 V
-16 5 V
-15 5 V
+16 4 V
+15 4 V
+15 6 V
 15 5 V
 15 6 V
 15 7 V
-15 7 V
 16 7 V
+15 7 V
 15 8 V
 15 8 V
 15 8 V
-15 9 V
 16 9 V
+15 9 V
 15 10 V
 15 10 V
 15 10 V
 15 10 V
+16 10 V
 15 11 V
+15 11 V
+15 11 V
+15 12 V
+16 11 V
+15 12 V
+15 12 V
+15 12 V
+15 12 V
+16 12 V
+15 12 V
+15 12 V
+15 13 V
+15 12 V
+15 12 V
+16 13 V
+15 12 V
+15 12 V
+15 12 V
+stroke 3908 2421 M
+15 12 V
+16 12 V
+15 12 V
+15 12 V
+15 11 V
+15 12 V
 16 11 V
 15 11 V
 15 11 V
-15 12 V
-15 11 V
-16 12 V
-15 12 V
-15 12 V
-15 13 V
-15 12 V
-16 12 V
-15 13 V
-15 12 V
-15 13 V
-15 12 V
-15 13 V
-16 12 V
-15 13 V
-15 12 V
-15 12 V
-stroke 3908 2423 M
-15 13 V
-16 12 V
-15 12 V
-15 11 V
-15 12 V
-15 11 V
-16 12 V
-15 10 V
-15 11 V
-15 11 V
 15 10 V
 15 10 V
-16 9 V
+15 10 V
+16 10 V
 15 9 V
 15 9 V
-15 9 V
+15 8 V
 15 8 V
 16 8 V
 15 7 V
 15 7 V
 15 6 V
 15 6 V
+15 6 V
+16 4 V
 15 5 V
-16 5 V
-15 4 V
 15 4 V
 15 3 V
-15 3 V
+15 2 V
 16 2 V
-15 1 V
-15 1 V
+15 2 V
 15 0 V
-15 -1 V
-16 -1 V
-15 -3 V
+15 0 V
+15 0 V
+16 -2 V
 15 -2 V
-15 -4 V
-15 -4 V
-15 -6 V
+15 -3 V
+15 -3 V
+15 -5 V
+15 -5 V
 16 -6 V
-15 -6 V
-15 -8 V
+15 -7 V
+15 -7 V
 15 -9 V
 15 -9 V
-16 -10 V
-15 -12 V
+16 -11 V
+15 -11 V
 15 -12 V
 15 -13 V
-15 -13 V
-15 -15 V
-16 -15 V
+15 -14 V
+15 -14 V
+16 -16 V
 15 -16 V
 15 -17 V
 15 -17 V
 15 -18 V
 16 -19 V
-15 -19 V
+15 -20 V
 15 -20 V
 15 -20 V
 15 -21 V
 16 -22 V
 15 -22 V
-15 -22 V
+15 -23 V
+15 -23 V
 15 -23 V
 15 -24 V
+16 -25 V
 15 -24 V
-16 -24 V
-15 -24 V
 15 -25 V
 15 -25 V
-15 -25 V
+15 -26 V
 16 -26 V
 15 -26 V
 15 -26 V
 15 -26 V
 15 -27 V
+15 -27 V
+16 -27 V
 15 -26 V
+15 -27 V
+15 -27 V
+15 -27 V
 16 -27 V
 15 -27 V
 15 -27 V
 15 -27 V
-15 -26 V
-16 -27 V
 15 -27 V
+16 -26 V
+15 -26 V
 15 -27 V
-15 -27 V
-15 -26 V
-16 -27 V
-15 -26 V
-15 -26 V
-15 -26 V
 15 -26 V
 15 -25 V
+15 -26 V
 16 -25 V
 15 -25 V
+15 -24 V
 15 -25 V
 15 -24 V
-15 -24 V
 16 -23 V
-15 -24 V
-15 -22 V
+15 -23 V
 15 -23 V
 15 -22 V
+15 -22 V
+15 -22 V
+stroke 5487 1241 M
+16 -21 V
 15 -21 V
-stroke 5487 1249 M
-16 -22 V
 15 -20 V
-15 -21 V
 15 -19 V
 15 -20 V
 16 -18 V
 15 -18 V
 15 -18 V
 15 -17 V
-15 -17 V
+15 -16 V
 16 -16 V
 15 -15 V
 15 -15 V
@@ -2171,35 +2233,35 @@ stroke 5487 1249 M
 15 -13 V
 15 -13 V
 16 -12 V
-15 -12 V
-15 -10 V
-15 -10 V
+15 -11 V
+15 -11 V
+15 -9 V
 15 -10 V
 16 -8 V
 15 -8 V
-15 -7 V
 15 -6 V
-15 -5 V
-16 -5 V
+15 -6 V
+15 -6 V
+16 -4 V
 15 -4 V
 15 -2 V
 15 -2 V
-15 -2 V
+15 -1 V
 15 0 V
 16 1 V
-15 2 V
-15 2 V
+15 1 V
+15 3 V
 15 4 V
 15 4 V
 16 6 V
 15 6 V
 15 8 V
-15 8 V
-15 10 V
-15 10 V
+15 9 V
+15 9 V
+15 11 V
 16 12 V
-15 13 V
-15 13 V
+15 12 V
+15 14 V
 15 15 V
 15 16 V
 16 17 V
@@ -2207,8 +2269,8 @@ stroke 5487 1249 M
 15 19 V
 15 20 V
 15 21 V
-16 22 V
-15 24 V
+16 23 V
+15 23 V
 15 24 V
 15 26 V
 15 26 V
@@ -2219,34 +2281,39 @@ stroke 5487 1249 M
 15 32 V
 15 33 V
 16 34 V
-15 35 V
-15 37 V
+15 36 V
+15 36 V
 15 38 V
-15 38 V
+15 39 V
 15 40 V
 16 41 V
-15 43 V
-15 43 V
+15 42 V
+15 44 V
 15 44 V
 15 46 V
-16 47 V
+16 46 V
 15 48 V
-15 49 V
+15 50 V
 15 50 V
 15 51 V
 16 53 V
-15 53 V
+15 54 V
 15 55 V
 15 56 V
-15 58 V
-15 58 V
-16 60 V
+15 57 V
+15 59 V
+16 59 V
 15 61 V
-15 61 V
+15 63 V
 % End plot #4
-1.000 UP
 stroke
+2.000 UL
 LTb
+LCb setrgbcolor
+1.000 UP
+0.500 UL
+LTb
+LCb setrgbcolor
 grestore % colour palette end
 stroke
 grestore

@@ -60,6 +60,10 @@ along with Octave; see the file COPYING.  If not, see
 #include <ieeefp.h>
 #endif
 
+#if defined (HAVE_OMP_H)
+#include <omp.h>
+#endif
+
 #include "cmd-edit.h"
 #include "file-ops.h"
 #include "lo-mappers.h"
@@ -308,6 +312,12 @@ same_file_internal (const std::string& file1, const std::string& file2)
 void
 sysdep_init (void)
 {
+#if defined (HAVE_OPENMP)
+#if defined (HAVE_OMP_GET_NUM_THREADS)
+  omp_get_num_threads ();
+#endif
+#endif
+
 #if defined (__386BSD__) || defined (__FreeBSD__) || defined (__NetBSD__)
   BSD_init ();
 #elif defined (__MINGW32__)
@@ -513,8 +523,15 @@ octave_pclose (FILE *f)
 int
 octave_kbhit (bool wait)
 {
-#ifdef HAVE__KBHIT
-  int c = (! wait && ! _kbhit ()) ? 0 : std::cin.get ();
+#if defined (HAVE__KBHIT) && defined (HAVE__GETCH)
+  // This essentially means we are on a Windows system.
+  int c;
+
+  if (wait)
+    c = _getch ();
+  else
+    c = (! _kbhit ()) ? 0 : _getch ();
+
 #else
   raw_mode (true, wait);
 

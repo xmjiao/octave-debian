@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Special Utility Matrices</title>
 
@@ -19,16 +19,16 @@
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
 blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
-div.indentedblock {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
 div.smalldisplay {margin-left: 3.2em}
 div.smallexample {margin-left: 3.2em}
-div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
 div.smalllisp {margin-left: 3.2em}
-kbd {font-style:oblique}
+kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
@@ -37,10 +37,9 @@ pre.smalldisplay {font-family: inherit; font-size: smaller}
 pre.smallexample {font-size: smaller}
 pre.smallformat {font-family: inherit; font-size: smaller}
 pre.smalllisp {font-size: smaller}
-span.nocodebreak {white-space:nowrap}
-span.nolinebreak {white-space:nowrap}
-span.roman {font-family:serif; font-weight:normal}
-span.sansserif {font-family:sans-serif; font-weight:normal}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
@@ -48,7 +47,7 @@ ul.no-bullet {list-style: none}
 
 </head>
 
-<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<body lang="en">
 <a name="Special-Utility-Matrices"></a>
 <div class="header">
 <p>
@@ -372,7 +371,7 @@ type.  The default is <code>&quot;double&quot;</code>.
 <p>Implementation Note: <code>randi</code> relies internally on <code>rand</code> which
 uses class <code>&quot;double&quot;</code> to represent numbers.  This limits the maximum
 integer (<var>imax</var>) and range (<var>imax</var> - <var>imin</var>) to the value
-returned by the <code>bitmax</code> function.  For IEEE floating point numbers
+returned by the <code>flintmax</code> function.  For IEEE floating point numbers
 this value is <em>2^{53} - 1</em><!-- /@w -->.
 </p>
 
@@ -430,8 +429,9 @@ J. Statistical Software, vol 5, 2000,
 </p>
 <p>The arguments are handled the same as the arguments for <code>rand</code>.
 </p>
-<p>By default, <code>randn</code> uses the Marsaglia and Tsang
-&ldquo;Ziggurat technique&rdquo; to transform from a uniform to a normal distribution.
+<p>By default, <code>rande</code> uses the Marsaglia and Tsang
+&ldquo;Ziggurat technique&rdquo; to transform from a uniform to an exponential
+distribution.
 </p>
 <p>The class of the value returned can be controlled by a trailing
 <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code> argument.  These are the only valid

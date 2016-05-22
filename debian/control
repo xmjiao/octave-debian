@@ -5,7 +5,7 @@ Maintainer: Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
 Uploaders: Sébastien Villemot <sebastien@debian.org>,
   Rafael Laboissiere <rafael@laboissiere.net>
 Build-Depends: automake,
-  debhelper (>= 9),
+  debhelper (>= 9.20160114~),
   default-jdk,
   desktop-file-utils,
   dh-autoreconf,
@@ -17,7 +17,6 @@ Build-Depends: automake,
   gfortran,
   ghostscript,
   gnuplot-nox,
-  gperf,
   javahelper,
   less,
   libarpack2-dev (>= 2.1+parpack96.dfsg-2),
@@ -55,10 +54,10 @@ Build-Depends: automake,
   xauth,
   xvfb,
   zip
-Standards-Version: 3.9.6
+Standards-Version: 3.9.8
 Homepage: http://www.octave.org/
-Vcs-Git: git://anonscm.debian.org/pkg-octave/octave.git
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-octave/octave.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-octave/octave.git
+Vcs-Browser: https://anonscm.debian.org/gitweb/?p=pkg-octave/octave.git
 
 Package: octave
 Architecture: any
@@ -139,20 +138,6 @@ Description: GNU Octave language for numerical computations
  interface for solving linear and nonlinear problems numerically.
  .
  Octave can be dynamically extended with user-supplied C++ files.
-
-Package: octave-dbg
-Section: debug
-Priority: extra
-Architecture: any
-Depends: octave (=${binary:Version}), ${misc:Depends}
-Description: Debug symbols for octave
- Octave is a (mostly Matlab (R) compatible) high-level language, primarily
- intended for numerical computations. It provides a convenient command-line
- interface for solving linear and nonlinear problems numerically.
- .
- Octave can be dynamically extended with user-supplied C++ files.
- .
- This package provides the debug symbols.
 
 Package: octave-common
 Depends: ${misc:Depends}

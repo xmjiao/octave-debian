@@ -40,6 +40,10 @@ along with Octave; see the file COPYING.  If not, see
 #include "ops.h"
 #include "ov-base.h"
 
+#if defined (HAVE_HDF5)
+#define HDF5_SAVE_TYPE H5T_NATIVE_UINT16
+#endif
+
 #include "ov-base-int.h"
 #include "ov-base-int.cc"
 #include "ov-uint16.h"
@@ -51,6 +55,12 @@ along with Octave; see the file COPYING.  If not, see
 #include "ls-oct-ascii.h"
 #include "ls-utils.h"
 #include "ls-hdf5.h"
+
+// Prevent implicit instantiations on some systems (Windows, others?)
+// that can lead to duplicate definitions of static data members.
+
+extern template class OCTINTERP_API octave_base_scalar<double>;
+
 
 template class octave_base_matrix<uint16NDArray>;
 

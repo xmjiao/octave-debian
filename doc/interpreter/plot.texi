@@ -185,12 +185,14 @@ Multiple property-value pairs may be specified, but they must appear
 in pairs.  These arguments are applied to the line objects drawn by
 @code{plot}.  Useful properties to modify are @qcode{"linestyle"},
 @qcode{"linewidth"}, @qcode{"color"}, @qcode{"marker"},
-@qcode{"markersize"}, @qcode{"markeredgecolor"}, @qcode{"markerfacecolor"}.
+@qcode{"markersize"}, @qcode{"markeredgecolor"}, @qcode{"markerfacecolor"}.  
+@xref{Line Properties}.  
 
 The @var{fmt} format argument can also be used to control the plot style.
-The format is composed of three parts: linestyle, markerstyle, color.
-When a markerstyle is specified, but no linestyle, only the markers are
-plotted.  Similarly, if a linestyle is specified, but no markerstyle, then
+It is a string composed of four optional parts:
+"<linestyle><marker><color><;displayname;>".
+When a marker is specified, but no linestyle, only the markers are
+plotted.  Similarly, if a linestyle is specified, but no marker, then
 only lines are drawn.  If both are specified then lines and markers will
 be plotted.  If no @var{fmt} and no @var{property}/@var{value} pairs are
 given, then the default plot style is solid lines with no markers and the
@@ -208,7 +210,7 @@ Format arguments:
 @item @samp{-.} @tab Use dash-dotted lines.
 @end multitable
 
-@item markerstyle
+@item marker
 
 @multitable @columnfractions 0.06 0.94
 @item @samp{+} @tab crosshair
@@ -238,11 +240,11 @@ Format arguments:
 @item @samp{w} @tab White
 @end multitable
 
-@item @qcode{";key;"}
-Here @qcode{"key"} is the label to use for the plot legend.
+@item @qcode{";displayname;"}
+Here @qcode{"displayname"} is the label to use for the plot legend.
 @end table
 
-The @var{fmt} argument may also be used to assign legend keys.
+The @var{fmt} argument may also be used to assign legend labels.
 To do so, include the desired label between semicolons after the
 formatting sequence described above, e.g., @qcode{"+b;Key Title;"}.
 Note that the last semicolon is required and Octave will generate
@@ -1286,9 +1288,9 @@ example,
 @group
 x = 0:0.1:10;
 y = sin (x);
-yp =  0.1 .* randn (size (x));
-ym = -0.1 .* randn (size (x));
-errorbar (x, sin (x), ym, yp);
+lerr = 0.1 .* rand (size (x));
+uerr = 0.1 .* rand (size (x));
+errorbar (x, y, lerr, uerr);
 @end group
 @end example
 
@@ -4533,6 +4535,7 @@ coordinates.
 @item @qcode{"textarrow"}
 Construct an arrow with a text label at the opposite end from the arrowhead.
 
+Use the "string" property to change the text string.
 The line and the arrowhead can be customized as for arrow annotations, and
 the text can be customized using the same properties as @code{text} graphics
 objects.  Note, however, that some text property names are prefixed with
@@ -4545,6 +4548,7 @@ objects.  Note, however, that some text property names are prefixed with
 Construct a box with text inside.  @var{pos} specifies the
 @qcode{"position"} property of the annotation.
 
+Use the "string" property to change the text string.
 You may use @qcode{"backgroundcolor"}, @qcode{"edgecolor"},
 @qcode{"linestyle"}, and @qcode{"linewidth"} properties to customize
 the box background color and edge appearance.  A limited set of @code{text}
@@ -6379,7 +6383,7 @@ Instead of specifying polygons by matrices @var{x} and @var{y}, it is
 possible to present a unique list of vertices and then a list of polygon
 faces created from those vertices.  In this case the
 @qcode{"Vertices"} matrix will be an @nospell{Nx2} (2-D patch) or
-@nospell{Nx3} (3-D path).  The @nospell{MxN} @qcode{"Faces"} matrix
+@nospell{Nx3} (3-D patch).  The @nospell{MxN} @qcode{"Faces"} matrix
 describes M polygons having N vertices---each row describes a
 single polygon and each column entry is an index into the
 @qcode{"Vertices"} matrix to identify a vertex.  The patch object

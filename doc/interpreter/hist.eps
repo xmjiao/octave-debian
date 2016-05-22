@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: hist.eps
-%%Creator: gnuplot 4.6 patchlevel 6
-%%CreationDate: Tue May 26 12:33:28 2015
+%%Creator: gnuplot 5.0 patchlevel 2
+%%CreationDate: Wed Apr 20 15:11:49 2016
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -12,12 +12,13 @@ gnudict begin
 % The following true/false flags may be edited by hand if desired.
 % The unit line width and grayscale image gamma correction may also be changed.
 %
-/Color false def
+/Color true def
 /Blacktext false def
 /Solid false def
 /Dashlength 2 def
 /Landscape false def
 /Level1 false def
+/Level3 false def
 /Rounded false def
 /ClipToBoundingBox false def
 /SuppressPDFMark false def
@@ -29,11 +30,11 @@ gnudict begin
 %
 /vshift -66 def
 /dl1 {
-  10.0 Dashlength mul mul
+  10.0 Dashlength userlinewidth gnulinewidth div mul mul mul
   Rounded { currentlinewidth 0.75 mul sub dup 0 le { pop 0.01 } if } if
 } def
 /dl2 {
-  10.0 Dashlength mul mul
+  10.0 Dashlength userlinewidth gnulinewidth div mul mul mul
   Rounded { currentlinewidth 0.75 mul add } if
 } def
 /hpt_ 31.5 def
@@ -47,7 +48,7 @@ gnudict begin
   } if
 } def
 %
-% Gnuplot Prolog Version 4.6 (September 2012)
+% Gnuplot Prolog Version 5.1 (Oct 2015)
 %
 %/SuppressPDFMark true def
 %
@@ -64,11 +65,11 @@ gnudict begin
 /vpt2 vpt 2 mul def
 /hpt2 hpt 2 mul def
 /Lshow {currentpoint stroke M 0 vshift R 
-	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
 /Rshow {currentpoint stroke M dup stringwidth pop neg vshift R
-	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
 /Cshow {currentpoint stroke M dup stringwidth pop -2 div vshift R 
-	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
 /UP {dup vpt_ mul /vpt exch def hpt_ mul /hpt exch def
   /hpt2 hpt 2 mul def /vpt2 vpt 2 mul def} def
 /DL {Color {setrgbcolor Solid {pop []} if 0 setdash}
@@ -82,7 +83,7 @@ gnudict begin
 /PL {stroke userlinewidth setlinewidth
 	Rounded {1 setlinejoin 1 setlinecap} if} def
 3.8 setmiterlimit
-% Default Line colors
+% Classic Line colors (version 5.0)
 /LCw {1 1 1} def
 /LCb {0 0 0} def
 /LCa {0 0 0} def
@@ -95,19 +96,21 @@ gnudict begin
 /LC6 {0 0 0} def
 /LC7 {1 0.3 0} def
 /LC8 {0.5 0.5 0.5} def
-% Default Line Types
+% Default dash patterns (version 5.0)
+/LTB {BL [] LCb DL} def
 /LTw {PL [] 1 setgray} def
-/LTb {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 /LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
 /LT0 {PL [] LC0 DL} def
-/LT1 {PL [4 dl1 2 dl2] LC1 DL} def
-/LT2 {PL [2 dl1 3 dl2] LC2 DL} def
-/LT3 {PL [1 dl1 1.5 dl2] LC3 DL} def
-/LT4 {PL [6 dl1 2 dl2 1 dl1 2 dl2] LC4 DL} def
-/LT5 {PL [3 dl1 3 dl2 1 dl1 3 dl2] LC5 DL} def
-/LT6 {PL [2 dl1 2 dl2 2 dl1 6 dl2] LC6 DL} def
-/LT7 {PL [1 dl1 2 dl2 6 dl1 2 dl2 1 dl1 2 dl2] LC7 DL} def
-/LT8 {PL [2 dl1 2 dl2 2 dl1 2 dl2 2 dl1 2 dl2 2 dl1 4 dl2] LC8 DL} def
+/LT1 {PL [2 dl1 3 dl2] LC1 DL} def
+/LT2 {PL [1 dl1 1.5 dl2] LC2 DL} def
+/LT3 {PL [6 dl1 2 dl2 1 dl1 2 dl2] LC3 DL} def
+/LT4 {PL [1 dl1 2 dl2 6 dl1 2 dl2 1 dl1 2 dl2] LC4 DL} def
+/LT5 {PL [4 dl1 2 dl2] LC5 DL} def
+/LT6 {PL [1.5 dl1 1.5 dl2 1.5 dl1 1.5 dl2 1.5 dl1 6 dl2] LC6 DL} def
+/LT7 {PL [3 dl1 3 dl2 1 dl1 3 dl2] LC7 DL} def
+/LT8 {PL [2 dl1 2 dl2 2 dl1 6 dl2] LC8 DL} def
+/SL {[] 0 setdash} def
 /Pnt {stroke [] 0 setdash gsave 1 setlinecap M 0 0 V stroke grestore} def
 /Dia {stroke [] 0 setdash 2 copy vpt add M
   hpt neg vpt neg V hpt vpt neg V
@@ -329,9 +332,14 @@ gnudict begin
 %
 /languagelevel where
  {pop languagelevel} {1} ifelse
- 2 lt
-	{/InterpretLevel1 true def}
-	{/InterpretLevel1 Level1 def}
+dup 2 lt
+	{/InterpretLevel1 true def
+	 /InterpretLevel3 false def}
+	{/InterpretLevel1 Level1 def
+	 2 gt
+	    {/InterpretLevel3 Level3 def}
+	    {/InterpretLevel3 false def}
+	 ifelse }
  ifelse
 %
 % PostScript level 2 pattern fill definitions
@@ -420,16 +428,17 @@ Level1 {Level1PatternFill} {Level2PatternFill} ifelse
 /Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
 dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
 currentdict end definefont pop
+%
 /MFshow {
    { dup 5 get 3 ge
      { 5 get 3 eq {gsave} {grestore} ifelse }
      {dup dup 0 get findfont exch 1 get scalefont setfont
      [ currentpoint ] exch dup 2 get 0 exch R dup 5 get 2 ne {dup dup 6
-     get exch 4 get {Gshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
+     get exch 4 get {textshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
      {dup 3 get {2 get neg 0 exch R pop} {pop aload pop M} ifelse} {dup 5
      get 1 eq {dup 2 get exch dup 3 get exch 6 get stringwidth pop -2 div
      dup 0 R} {dup 6 get stringwidth pop -2 div 0 R 6 get
-     show 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
+     textshow 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
      pop aload pop M} ifelse }ifelse }ifelse }
      ifelse }
    forall} def
@@ -457,14 +466,42 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (hist.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 4.6 patchlevel 6)
+  /Creator (gnuplot 5.0 patchlevel 2)
   /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Tue May 26 12:33:28 2015)
+  /CreationDate (Wed Apr 20 15:11:49 2016)
   /DOCINFO pdfmark
 end
 } ifelse
+%
+% Support for boxed text - Ethan A Merritt May 2005
+%
+/InitTextBox { userdict /TBy2 3 -1 roll put userdict /TBx2 3 -1 roll put
+           userdict /TBy1 3 -1 roll put userdict /TBx1 3 -1 roll put
+	   /Boxing true def } def
+/ExtendTextBox { Boxing
+    { gsave dup false charpath pathbbox
+      dup TBy2 gt {userdict /TBy2 3 -1 roll put} {pop} ifelse
+      dup TBx2 gt {userdict /TBx2 3 -1 roll put} {pop} ifelse
+      dup TBy1 lt {userdict /TBy1 3 -1 roll put} {pop} ifelse
+      dup TBx1 lt {userdict /TBx1 3 -1 roll put} {pop} ifelse
+      grestore } if } def
+/PopTextBox { newpath TBx1 TBxmargin sub TBy1 TBymargin sub M
+               TBx1 TBxmargin sub TBy2 TBymargin add L
+	       TBx2 TBxmargin add TBy2 TBymargin add L
+	       TBx2 TBxmargin add TBy1 TBymargin sub L closepath } def
+/DrawTextBox { PopTextBox stroke /Boxing false def} def
+/FillTextBox { gsave PopTextBox 1 1 1 setrgbcolor fill grestore /Boxing false def} def
+0 0 0 0 InitTextBox
+/TBxmargin 20 def
+/TBymargin 20 def
+/Boxing false def
+/textshow { ExtendTextBox Gshow } def
+%
+% redundant definitions for compatibility with prologue.ps older than 5.0.2
+/LTB {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 end
 %%EndProlog
 %%Page: 1 1
@@ -556,6 +593,7 @@ LTb
 1.00 1.00 1.00 C 1.000 980 640 5858 3798 BoxColFill
 0.500 UL
 LTb
+LCb setrgbcolor
 980 640 M
 88 0 V
 5771 0 R
@@ -566,6 +604,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 980 1400 M
 88 0 V
 5771 0 R
@@ -576,6 +615,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 980 2160 M
 88 0 V
 5771 0 R
@@ -586,6 +626,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 980 2919 M
 88 0 V
 5771 0 R
@@ -596,6 +637,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 980 3679 M
 88 0 V
 5771 0 R
@@ -606,6 +648,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 980 4439 M
 88 0 V
 5771 0 R
@@ -616,6 +659,7 @@ stroke
 ] -66.7 MRshow
 0.500 UL
 LTb
+LCb setrgbcolor
 980 640 M
 0 88 V
 0 3711 R
@@ -626,6 +670,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 1712 640 M
 0 88 V
 0 3711 R
@@ -636,6 +681,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 2445 640 M
 0 88 V
 0 3711 R
@@ -646,6 +692,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 3177 640 M
 0 88 V
 0 3711 R
@@ -656,6 +703,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 3910 640 M
 0 88 V
 0 3711 R
@@ -666,6 +714,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 4642 640 M
 0 88 V
 0 3711 R
@@ -676,6 +725,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 5374 640 M
 0 88 V
 0 3711 R
@@ -686,6 +736,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 6107 640 M
 0 88 V
 0 3711 R
@@ -696,6 +747,7 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 6839 640 M
 0 88 V
 0 3711 R
@@ -706,14 +758,20 @@ stroke
 ] -66.7 MCshow
 0.500 UL
 LTb
+LCb setrgbcolor
 0.500 UL
-LTb
+LTB
+LCb setrgbcolor
 980 4439 N
 980 640 L
 5859 0 V
 0 3799 V
 -5859 0 V
 Z stroke
+1.000 UP
+0.500 UL
+LTb
+LCb setrgbcolor
 0.00 0.00 0.00 C 160 2539 M
 currentpoint gsave translate 90 rotate 0 0 moveto
 [ [({}) 200.0 0.0 true true 0 (Count)]
@@ -728,13 +786,10 @@ LTb
 [ [({}) 200.0 0.0 true true 0 (Histogram of 10,000 normally distributed random numbers)]
 ] -66.7 MCshow
 LTb
-1.000 UP
-0.500 UL
-LTb
 % Begin plot #1
 1.000 UL
-LT0
-0.00 0.00 0.50 C gsave 1080 640 N 0 0 V 0 11 V 178 0 V 0 -11 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 1080 640 N 0 11 V 178 0 V 0 -11 V 1 PolyFill
 1080 640 M
 0 11 V
 178 0 V
@@ -743,7 +798,7 @@ LT0
 % Begin plot #2
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 1080 640 M
 0 11 V
 178 0 V
@@ -753,8 +808,8 @@ LT0
 % Begin plot #3
 stroke
 1.000 UL
-LT2
-0.00 0.00 0.50 C gsave 1258 640 N 0 0 V 0 8 V 179 0 V 0 -8 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 1258 640 N 0 8 V 179 0 V 0 -8 V 1 PolyFill
 1258 640 M
 0 8 V
 179 0 V
@@ -763,7 +818,7 @@ LT2
 % Begin plot #4
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 1258 640 M
 0 8 V
 179 0 V
@@ -773,8 +828,8 @@ LT0
 % Begin plot #5
 stroke
 1.000 UL
-LT4
-0.00 0.00 0.50 C gsave 1437 640 N 0 0 V 0 15 V 178 0 V 0 -15 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 1437 640 N 0 15 V 178 0 V 0 -15 V 1 PolyFill
 1437 640 M
 0 15 V
 178 0 V
@@ -783,7 +838,7 @@ LT4
 % Begin plot #6
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 1437 640 M
 0 15 V
 178 0 V
@@ -793,8 +848,8 @@ LT0
 % Begin plot #7
 stroke
 1.000 UL
-LT6
-0.00 0.00 0.50 C gsave 1615 640 N 0 0 V 0 49 V 178 0 V 0 -49 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 1615 640 N 0 49 V 178 0 V 0 -49 V 1 PolyFill
 1615 640 M
 0 49 V
 178 0 V
@@ -803,7 +858,7 @@ LT6
 % Begin plot #8
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 1615 640 M
 0 49 V
 178 0 V
@@ -813,8 +868,8 @@ LT0
 % Begin plot #9
 stroke
 1.000 UL
-LT8
-0.00 0.00 0.50 C gsave 1793 640 N 0 0 V 0 84 V 178 0 V 0 -84 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 1793 640 N 0 84 V 178 0 V 0 -84 V 1 PolyFill
 1793 640 M
 0 84 V
 178 0 V
@@ -823,7 +878,7 @@ LT8
 % Begin plot #10
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 1793 640 M
 0 84 V
 178 0 V
@@ -833,8 +888,8 @@ LT0
 % Begin plot #11
 stroke
 1.000 UL
-LT1
-0.00 0.00 0.50 C gsave 1971 640 N 0 0 V 0 182 V 178 0 V 0 -182 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 1971 640 N 0 182 V 178 0 V 0 -182 V 1 PolyFill
 1971 640 M
 0 182 V
 178 0 V
@@ -843,7 +898,7 @@ LT1
 % Begin plot #12
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 1971 640 M
 0 182 V
 178 0 V
@@ -853,8 +908,8 @@ LT0
 % Begin plot #13
 stroke
 1.000 UL
-LT3
-0.00 0.00 0.50 C gsave 2149 640 N 0 0 V 0 304 V 178 0 V 0 -304 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 2149 640 N 0 304 V 178 0 V 0 -304 V 1 PolyFill
 2149 640 M
 0 304 V
 178 0 V
@@ -863,7 +918,7 @@ LT3
 % Begin plot #14
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 2149 640 M
 0 304 V
 178 0 V
@@ -873,8 +928,8 @@ LT0
 % Begin plot #15
 stroke
 1.000 UL
-LT5
-0.00 0.00 0.50 C gsave 2327 640 N 0 0 V 0 517 V 179 0 V 0 -517 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 2327 640 N 0 517 V 179 0 V 0 -517 V 1 PolyFill
 2327 640 M
 0 517 V
 179 0 V
@@ -883,7 +938,7 @@ LT5
 % Begin plot #16
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 2327 640 M
 0 517 V
 179 0 V
@@ -893,8 +948,8 @@ LT0
 % Begin plot #17
 stroke
 1.000 UL
-LT7
-0.00 0.00 0.50 C gsave 2506 640 N 0 0 V 0 813 V 178 0 V 0 -813 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 2506 640 N 0 813 V 178 0 V 0 -813 V 1 PolyFill
 2506 640 M
 0 813 V
 178 0 V
@@ -903,7 +958,7 @@ LT7
 % Begin plot #18
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 2506 640 M
 0 813 V
 178 0 V
@@ -913,8 +968,8 @@ LT0
 % Begin plot #19
 stroke
 1.000 UL
-LT0
-0.00 0.00 0.50 C gsave 2684 640 N 0 0 V 0 1087 V 178 0 V 0 -1087 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 2684 640 N 0 1087 V 178 0 V 0 -1087 V 1 PolyFill
 2684 640 M
 0 1087 V
 178 0 V
@@ -923,7 +978,7 @@ LT0
 % Begin plot #20
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 2684 640 M
 0 1087 V
 178 0 V
@@ -933,8 +988,8 @@ LT0
 % Begin plot #21
 stroke
 1.000 UL
-LT2
-0.00 0.00 0.50 C gsave 2862 640 N 0 0 V 0 1584 V 178 0 V 0 -1584 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 2862 640 N 0 1584 V 178 0 V 0 -1584 V 1 PolyFill
 2862 640 M
 0 1584 V
 178 0 V
@@ -943,7 +998,7 @@ LT2
 % Begin plot #22
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 2862 640 M
 0 1584 V
 178 0 V
@@ -953,8 +1008,8 @@ LT0
 % Begin plot #23
 stroke
 1.000 UL
-LT4
-0.00 0.00 0.50 C gsave 3040 640 N 0 0 V 0 2184 V 178 0 V 0 -2184 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 3040 640 N 0 2184 V 178 0 V 0 -2184 V 1 PolyFill
 3040 640 M
 0 2184 V
 178 0 V
@@ -963,7 +1018,7 @@ LT4
 % Begin plot #24
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 3040 640 M
 0 2184 V
 178 0 V
@@ -973,8 +1028,8 @@ LT0
 % Begin plot #25
 stroke
 1.000 UL
-LT6
-0.00 0.00 0.50 C gsave 3218 640 N 0 0 V 0 2769 V 179 0 V 0 -2769 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 3218 640 N 0 2769 V 179 0 V 0 -2769 V 1 PolyFill
 3218 640 M
 0 2769 V
 179 0 V
@@ -983,7 +1038,7 @@ LT6
 % Begin plot #26
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 3218 640 M
 0 2769 V
 179 0 V
@@ -993,8 +1048,8 @@ LT0
 % Begin plot #27
 stroke
 1.000 UL
-LT8
-0.00 0.00 0.50 C gsave 3397 640 N 0 0 V 0 2929 V 178 0 V 0 -2929 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 3397 640 N 0 2929 V 178 0 V 0 -2929 V 1 PolyFill
 3397 640 M
 0 2929 V
 178 0 V
@@ -1003,7 +1058,7 @@ LT8
 % Begin plot #28
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 3397 640 M
 0 2929 V
 178 0 V
@@ -1013,8 +1068,8 @@ LT0
 % Begin plot #29
 stroke
 1.000 UL
-LT1
-0.00 0.00 0.50 C gsave 3575 640 N 0 0 V 0 3343 V 178 0 V 0 -3343 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 3575 640 N 0 3343 V 178 0 V 0 -3343 V 1 PolyFill
 3575 640 M
 0 3343 V
 178 0 V
@@ -1023,7 +1078,7 @@ LT1
 % Begin plot #30
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 3575 640 M
 0 3343 V
 178 0 V
@@ -1033,8 +1088,8 @@ LT0
 % Begin plot #31
 stroke
 1.000 UL
-LT3
-0.00 0.00 0.50 C gsave 3753 640 N 0 0 V 0 3681 V 178 0 V 0 -3681 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 3753 640 N 0 3681 V 178 0 V 0 -3681 V 1 PolyFill
 3753 640 M
 0 3681 V
 178 0 V
@@ -1043,7 +1098,7 @@ LT3
 % Begin plot #32
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 3753 640 M
 0 3681 V
 178 0 V
@@ -1053,8 +1108,8 @@ LT0
 % Begin plot #33
 stroke
 1.000 UL
-LT5
-0.00 0.00 0.50 C gsave 3931 640 N 0 0 V 0 3723 V 178 0 V 0 -3723 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 3931 640 N 0 3723 V 178 0 V 0 -3723 V 1 PolyFill
 3931 640 M
 0 3723 V
 178 0 V
@@ -1063,7 +1118,7 @@ LT5
 % Begin plot #34
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 3931 640 M
 0 3723 V
 178 0 V
@@ -1073,8 +1128,8 @@ LT0
 % Begin plot #35
 stroke
 1.000 UL
-LT7
-0.00 0.00 0.50 C gsave 4109 640 N 0 0 V 0 3487 V 178 0 V 0 -3487 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 4109 640 N 0 3487 V 178 0 V 0 -3487 V 1 PolyFill
 4109 640 M
 0 3487 V
 178 0 V
@@ -1083,7 +1138,7 @@ LT7
 % Begin plot #36
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 4109 640 M
 0 3487 V
 178 0 V
@@ -1093,8 +1148,8 @@ LT0
 % Begin plot #37
 stroke
 1.000 UL
-LT0
-0.00 0.00 0.50 C gsave 4287 640 N 0 0 V 0 3013 V 179 0 V 0 -3013 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 4287 640 N 0 3013 V 179 0 V 0 -3013 V 1 PolyFill
 4287 640 M
 0 3013 V
 179 0 V
@@ -1103,7 +1158,7 @@ LT0
 % Begin plot #38
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 4287 640 M
 0 3013 V
 179 0 V
@@ -1113,8 +1168,8 @@ LT0
 % Begin plot #39
 stroke
 1.000 UL
-LT2
-0.00 0.00 0.50 C gsave 4466 640 N 0 0 V 0 2287 V 178 0 V 0 -2287 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 4466 640 N 0 2287 V 178 0 V 0 -2287 V 1 PolyFill
 4466 640 M
 0 2287 V
 178 0 V
@@ -1123,7 +1178,7 @@ LT2
 % Begin plot #40
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 4466 640 M
 0 2287 V
 178 0 V
@@ -1133,8 +1188,8 @@ LT0
 % Begin plot #41
 stroke
 1.000 UL
-LT4
-0.00 0.00 0.50 C gsave 4644 640 N 0 0 V 0 2002 V 178 0 V 0 -2002 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 4644 640 N 0 2002 V 178 0 V 0 -2002 V 1 PolyFill
 4644 640 M
 0 2002 V
 178 0 V
@@ -1143,7 +1198,7 @@ LT4
 % Begin plot #42
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 4644 640 M
 0 2002 V
 178 0 V
@@ -1153,8 +1208,8 @@ LT0
 % Begin plot #43
 stroke
 1.000 UL
-LT6
-0.00 0.00 0.50 C gsave 4822 640 N 0 0 V 0 1375 V 178 0 V 0 -1375 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 4822 640 N 0 1375 V 178 0 V 0 -1375 V 1 PolyFill
 4822 640 M
 0 1375 V
 178 0 V
@@ -1163,7 +1218,7 @@ LT6
 % Begin plot #44
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 4822 640 M
 0 1375 V
 178 0 V
@@ -1173,8 +1228,8 @@ LT0
 % Begin plot #45
 stroke
 1.000 UL
-LT8
-0.00 0.00 0.50 C gsave 5000 640 N 0 0 V 0 984 V 178 0 V 0 -984 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 5000 640 N 0 984 V 178 0 V 0 -984 V 1 PolyFill
 5000 640 M
 0 984 V
 178 0 V
@@ -1183,7 +1238,7 @@ LT8
 % Begin plot #46
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 5000 640 M
 0 984 V
 178 0 V
@@ -1193,8 +1248,8 @@ LT0
 % Begin plot #47
 stroke
 1.000 UL
-LT1
-0.00 0.00 0.50 C gsave 5178 640 N 0 0 V 0 634 V 179 0 V 0 -634 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 5178 640 N 0 634 V 179 0 V 0 -634 V 1 PolyFill
 5178 640 M
 0 634 V
 179 0 V
@@ -1203,7 +1258,7 @@ LT1
 % Begin plot #48
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 5178 640 M
 0 634 V
 179 0 V
@@ -1213,8 +1268,8 @@ LT0
 % Begin plot #49
 stroke
 1.000 UL
-LT3
-0.00 0.00 0.50 C gsave 5357 640 N 0 0 V 0 365 V 178 0 V 0 -365 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 5357 640 N 0 365 V 178 0 V 0 -365 V 1 PolyFill
 5357 640 M
 0 365 V
 178 0 V
@@ -1223,7 +1278,7 @@ LT3
 % Begin plot #50
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 5357 640 M
 0 365 V
 178 0 V
@@ -1233,8 +1288,8 @@ LT0
 % Begin plot #51
 stroke
 1.000 UL
-LT5
-0.00 0.00 0.50 C gsave 5535 640 N 0 0 V 0 213 V 178 0 V 0 -213 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 5535 640 N 0 213 V 178 0 V 0 -213 V 1 PolyFill
 5535 640 M
 0 213 V
 178 0 V
@@ -1243,7 +1298,7 @@ LT5
 % Begin plot #52
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 5535 640 M
 0 213 V
 178 0 V
@@ -1253,8 +1308,8 @@ LT0
 % Begin plot #53
 stroke
 1.000 UL
-LT7
-0.00 0.00 0.50 C gsave 5713 640 N 0 0 V 0 213 V 178 0 V 0 -213 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 5713 640 N 0 213 V 178 0 V 0 -213 V 1 PolyFill
 5713 640 M
 0 213 V
 178 0 V
@@ -1263,7 +1318,7 @@ LT7
 % Begin plot #54
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 5713 640 M
 0 213 V
 178 0 V
@@ -1273,8 +1328,8 @@ LT0
 % Begin plot #55
 stroke
 1.000 UL
-LT0
-0.00 0.00 0.50 C gsave 5891 640 N 0 0 V 0 65 V 178 0 V 0 -65 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 5891 640 N 0 65 V 178 0 V 0 -65 V 1 PolyFill
 5891 640 M
 0 65 V
 178 0 V
@@ -1283,7 +1338,7 @@ LT0
 % Begin plot #56
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 5891 640 M
 0 65 V
 178 0 V
@@ -1293,8 +1348,8 @@ LT0
 % Begin plot #57
 stroke
 1.000 UL
-LT2
-0.00 0.00 0.50 C gsave 6069 640 N 0 0 V 0 46 V 178 0 V 0 -46 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 6069 640 N 0 46 V 178 0 V 0 -46 V 1 PolyFill
 6069 640 M
 0 46 V
 178 0 V
@@ -1303,7 +1358,7 @@ LT2
 % Begin plot #58
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 6069 640 M
 0 46 V
 178 0 V
@@ -1313,8 +1368,8 @@ LT0
 % Begin plot #59
 stroke
 1.000 UL
-LT4
-0.00 0.00 0.50 C gsave 6247 640 N 0 0 V 0 23 V 179 0 V 0 -23 V 1 PolyFill
+LTb
+0.00 0.00 0.50 C gsave 6247 640 N 0 23 V 179 0 V 0 -23 V 1 PolyFill
 6247 640 M
 0 23 V
 179 0 V
@@ -1323,7 +1378,7 @@ LT4
 % Begin plot #60
 stroke
 0.500 UL
-LT0
+LTb
 0.00 0.00 0.00 C 6247 640 M
 0 23 V
 179 0 V
@@ -1332,13 +1387,18 @@ LT0
 % End plot #60
 % Begin plot #61
 stroke
-LT0
+LTb
 0.00 0.00 0.00 C 980 640 M
 5859 0 V
 % End plot #61
-1.000 UP
 stroke
+2.000 UL
 LTb
+LCb setrgbcolor
+1.000 UP
+0.500 UL
+LTb
+LCb setrgbcolor
 grestore % colour palette end
 stroke
 grestore

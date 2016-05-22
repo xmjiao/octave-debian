@@ -3,7 +3,7 @@ Forwarded: not yet
 Author: Thomas Weber <tweber@debian.org>
 --- a/doc/interpreter/octave.texi
 +++ b/doc/interpreter/octave.texi
-@@ -23,6 +23,7 @@
+@@ -25,6 +25,7 @@
  @include macros.texi
  
  @ifinfo

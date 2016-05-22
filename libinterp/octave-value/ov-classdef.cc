@@ -43,8 +43,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "symtab.h"
 #include "toplev.h"
 
-#include "Array.cc"
-
 // Define to 1 to enable debugging statements.
 #define DEBUG_TRACE 0
 
@@ -1935,6 +1933,12 @@ cdef_object_scalar::is_partially_constructed_for (const cdef_class& cls) const
       return false;
 
   return true;
+}
+
+void
+cdef_object_scalar::mark_as_constructed (const cdef_class& cls)
+{
+  ctor_list.erase (cls);
 }
 
 handle_cdef_object::~handle_cdef_object (void)

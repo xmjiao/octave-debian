@@ -2254,7 +2254,10 @@ printf_value_cache::get_next_value (char type)
             {
               if (curr_val.is_string ())
                 {
-                  std::string sval = curr_val.string_value ();
+                  dim_vector dv (1, curr_val.numel ());
+                  octave_value tmp = curr_val.reshape (dv);
+
+                  std::string sval = tmp.string_value ();
 
                   retval = sval.substr (elt_idx);
 
@@ -2435,7 +2438,7 @@ ok_for_signed_int_conv (const octave_value& val)
   uint64_t limit = std::numeric_limits<int64_t>::max ();
 
   if (val.is_string ())
-    return false;
+    return true;
   else if (val.is_integer_type ())
     {
       if (val.is_uint64_type ())
@@ -2463,7 +2466,7 @@ static bool
 ok_for_unsigned_int_conv (const octave_value& val)
 {
   if (val.is_string ())
-    return false;
+    return true;
   else if (val.is_integer_type ())
     {
       // Easier than dispatching here...
@@ -3884,7 +3887,9 @@ INSTANTIATE_WRITE (uint32_t);
 INSTANTIATE_WRITE (int64_t);
 INSTANTIATE_WRITE (uint64_t);
 INSTANTIATE_WRITE (bool);
+#if defined (HAVE_OVERLOAD_CHAR_INT8_TYPES)
 INSTANTIATE_WRITE (char);
+#endif
 INSTANTIATE_WRITE (float);
 INSTANTIATE_WRITE (double);
 

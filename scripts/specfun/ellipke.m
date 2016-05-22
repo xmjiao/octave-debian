@@ -40,7 +40,7 @@
 ##
 ## @tex
 ## $$
-## {\rm K} (m) = \int_0^1 {dt \over \sqrt{(1 - t^2) (1 - m^2 t^2)}}
+## {\rm K} (m) = \int_0^1 {dt \over \sqrt{(1 - t^2) (1 - m t^2)}}
 ## $$
 ## @end tex
 ## @ifnottex
@@ -50,7 +50,7 @@
 ##          1
 ##         /               dt
 ## K (m) = | ------------------------------
-##         / sqrt ((1 - t^2)*(1 - m^2*t^2))
+##         / sqrt ((1 - t^2)*(1 - m*t^2))
 ##        0
 ## @end group
 ## @end example
@@ -61,7 +61,7 @@
 ##
 ## @tex
 ## $$
-## {\rm E} (m) = \int_0^1 {\sqrt{1 - m^2 t^2} \over \sqrt{1 - t^2}} dt
+## {\rm E} (m) = \int_0^1 {\sqrt{1 - m t^2} \over \sqrt{1 - t^2}} dt
 ## $$
 ## @end tex
 ## @ifnottex
@@ -69,7 +69,7 @@
 ## @example
 ## @group
 ##          1
-##         /  sqrt (1 - m^2*t^2)
+##         /  sqrt (1 - m*t^2)
 ## E (m) = |  ------------------ dt
 ##         /  sqrt (1 - t^2)
 ##        0
@@ -94,7 +94,6 @@ function [k, e] = ellipke (m, tol = [])
   endif
 
   sz = size (m);
-  m = m(:);
   if (! isreal (m))
     error ("ellipke: M must be real");
   elseif (any (m > 1))
@@ -127,8 +126,8 @@ function [k, e] = ellipke (m, tol = [])
     mult_k = 1./sqrt (1 - m(idx_neg));
     mult_e = sqrt (1 - m(idx_neg));
     m(idx_neg) = -m(idx_neg) ./ (1 - m(idx_neg));
-    a = ones (sum (idx), 1);
     b = sqrt (1 - m(idx));
+    a = ones (size (b));
     c = sqrt (m(idx));
     f = 0.5;
     sum = f*c.^2;

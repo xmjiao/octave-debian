@@ -166,6 +166,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module openat-h:
   # Code from module opendir:
   # Code from module pathmax:
+  # Code from module pipe-posix:
   # Code from module progname:
   # Code from module putenv:
   # Code from module raise:
@@ -705,6 +706,11 @@ AC_SUBST([LTALLOCA])
   fi
   gl_DIRENT_MODULE_INDICATOR([opendir])
   gl_PATHMAX
+  gl_FUNC_PIPE
+  if test $HAVE_PIPE = 0; then
+    AC_LIBOBJ([pipe])
+  fi
+  gl_UNISTD_MODULE_INDICATOR([pipe])
   AC_CHECK_DECLS([program_invocation_name], [], [], [#include <errno.h>])
   AC_CHECK_DECLS([program_invocation_short_name], [], [], [#include <errno.h>])
   gl_FUNC_PUTENV
@@ -1248,6 +1254,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/opendir.c
   lib/pathmax.h
   lib/pipe-safer.c
+  lib/pipe.c
   lib/printf-args.c
   lib/printf-args.h
   lib/printf-parse.c
@@ -1475,6 +1482,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/openat.m4
   m4/opendir.m4
   m4/pathmax.m4
+  m4/pipe.m4
   m4/printf.m4
   m4/putenv.m4
   m4/raise.m4

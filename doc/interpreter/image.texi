@@ -1061,33 +1061,6 @@ then the size of the current colormap is used.
 @end deftypefn
 
 
-An additional colormap is @code{gmap40}.  This code map contains only
-colors with integer values of the red, green and blue components.  This
-is a workaround for a limitation of gnuplot 4.0, that does not allow the color
-of line or patch objects to be set.  @code{gmap40} is chiefly useful to gnuplot
-4.0 users, and particularly in conjunction with the @var{bar}, @var{surf},
-and @var{contour} functions.
-
-@c gmap40 scripts/deprecated/gmap40.m
-@anchor{XREFgmap40}
-@deftypefn  {Function File} {@var{map} =} gmap40 ()
-@deftypefnx {Function File} {@var{map} =} gmap40 (@var{n})
-
-@code{gmap40} is deprecated and will be removed in Octave version 4.4.
-
-Create color colormap.  The colormap consists of red, green, blue, yellow,
-magenta and cyan.
-
-This colormap is specifically designed for users of gnuplot 4.0 where these
-6 colors are the allowable ones for patch objects.
-
-The argument @var{n} must be a scalar.
-If unspecified, a length of 6 is assumed.  Larger values of @var{n} result
-in a repetition of the above colors.
-@seealso{@ref{XREFcolormap,,colormap}}
-@end deftypefn
-
-
 The following three functions modify the existing colormap rather than
 replace it.
 

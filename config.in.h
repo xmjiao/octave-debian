@@ -380,6 +380,9 @@
 /* Define to 1 when the gnulib module opendir should be tested. */
 #undef GNULIB_TEST_OPENDIR
 
+/* Define to 1 when the gnulib module pipe should be tested. */
+#undef GNULIB_TEST_PIPE
+
 /* Define to 1 when the gnulib module putenv should be tested. */
 #undef GNULIB_TEST_PUTENV
 
@@ -1334,6 +1337,12 @@
 /* Define to 1 if you have the <netdb.h> header file. */
 #undef HAVE_NETDB_H
 
+/* Define to 1 if you have the `omp_get_num_threads' function. */
+#undef HAVE_OMP_GET_NUM_THREADS
+
+/* Define to 1 if you have the <omp.h> header file. */
+#undef HAVE_OMP_H
+
 /* Define to 1 if you have the `openat' function. */
 #undef HAVE_OPENAT
 
@@ -1366,6 +1375,9 @@
 
 /* Define to 1 if you have the <osmesa.h> header file. */
 #undef HAVE_OSMESA_H
+
+/* Define to 1 if C++ allows overload of char, int8_t, and uint8_t types. */
+#undef HAVE_OVERLOAD_CHAR_INT8_TYPES
 
 /* Define to 1 if getcwd works, except it sometimes fails when it shouldn't,
    setting errno to ERANGE, ENAMETOOLONG, or ENOENT. */
@@ -2631,6 +2643,9 @@
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H
 
+/* Define to 1 if you have the <sys/stropts.h> header file. */
+#undef HAVE_SYS_STROPTS_H
+
 /* Define to 1 if you have the <sys/sysctl.h> header file. */
 #undef HAVE_SYS_SYSCTL_H
 
@@ -2843,6 +2858,9 @@
 
 /* Define to 1 if you have the `_ftime' function. */
 #undef HAVE__FTIME
+
+/* Define to 1 if you have the `_getch' function. */
+#undef HAVE__GETCH
 
 /* Define to 1 if you have the `_hypotf' function. */
 #undef HAVE__HYPOTF

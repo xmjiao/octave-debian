@@ -48,9 +48,11 @@ endif
 clean:
 	dh clean --with autoreconf
 
-# override normal dh_auto_configure call to pass OpenMP flag to it (#631831)
 override_dh_auto_configure:
+	# override normal dh_auto_configure call to pass OpenMP flag to it (#631831)
 	dh_auto_configure -- --enable-openmp $(WITH_JAVA_FLAGS) $(JIT_FLAG) $(HDF5_FLAGS)
+	# Avoid triggering the build of oct-gperf.h
+	touch libinterp/parse-tree/oct-gperf.h
 
 # dh_auto_test tries to run "make test", so override it
 override_dh_auto_test:
@@ -80,9 +82,9 @@ override_dh_installinfo-indep:
 		sed -i "s/src=\"$$f\"/src=\"octave-$$f\"/g" debian/octave-info/usr/share/info/octave.info*; \
 	done
 
-# save debug information into the debug package
+# Handle migration to automatic debug packages
 override_dh_strip:
-	dh_strip -a --dbg-package=octave-dbg
+	dh_strip -a --dbgsym-migration='octave-dbg (<< 4.0.1~rc2-1~)'
 
 # Strip the executable bit from the .oct files
 # Cannot be done in dh_fixperms, as then dh_strip and dh_shlibdeps don't take the
@@ -90,6 +92,12 @@ override_dh_strip:
 override_dh_shlibdeps:
 	dh_shlibdeps -O--parallel
 	find debian/octave -name '*.oct' -print0 2>/dev/null | xargs -0r chmod 644
+
+# Avoid useless call of ldconfig in the triggers script of the octave
+# package
+override_dh_makeshlibs:
+	dh_makeshlibs --package=octave --noscripts
+	dh_makeshlibs --no-package=octave
 
 get-orig-source:
 	uscan --force-download --rename --destdir .

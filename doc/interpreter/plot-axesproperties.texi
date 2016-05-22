@@ -472,7 +472,7 @@ Control whether minor x grid lines are displayed.
 
 @anchor{XREFaxesxtick}
 @cindex axes xtick
-@item @code{xtick}: vector, def. 1-by-6 double
+@item @code{xtick}: vector
 Position of x tick marks.  Setting @code{xtick} also forces the @code{xtickmode} property to be set to @qcode{"manual"}.
 
 
@@ -556,7 +556,7 @@ Control whether minor y grid lines are displayed.
 
 @anchor{XREFaxesytick}
 @cindex axes ytick
-@item @code{ytick}: vector, def. 1-by-6 double
+@item @code{ytick}: vector
 Position of y tick marks.  Setting @code{ytick} also forces the @code{ytickmode} property to be set to @qcode{"manual"}.
 
 
@@ -634,7 +634,7 @@ Control whether minor z grid lines are displayed.
 
 @anchor{XREFaxesztick}
 @cindex axes ztick
-@item @code{ztick}: vector, def. 1-by-6 double
+@item @code{ztick}: vector
 Position of z tick marks.  Setting @code{ztick} also forces the @code{ztickmode} property to be set to @qcode{"manual"}.
 
 
