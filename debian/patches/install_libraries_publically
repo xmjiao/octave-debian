@@ -5,8 +5,8 @@ Description: Install the Octave libraries publically in /usr/lib/
  in the future.
 Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
-Reviewed-by: Rafael Laboissiere <rafael@laboissiere.net>
-Last-Update: 2015-04-18
+Reviewed-by: Rafael Laboissiere <rafael@debian.org>
+Last-Update: 2016-07-03
 --- a/liboctave/Makefile.am
 +++ b/liboctave/Makefile.am
 @@ -34,7 +34,8 @@
@@ -21,7 +21,7 @@ Last-Update: 2015-04-18
  
 --- a/libinterp/Makefile.am
 +++ b/libinterp/Makefile.am
-@@ -39,7 +39,8 @@
+@@ -40,7 +40,8 @@
  
  AM_CXXFLAGS += $(WARN_CXXFLAGS)
  
