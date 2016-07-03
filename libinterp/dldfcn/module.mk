@@ -13,7 +13,6 @@ DLDFCN_SRC = \
   dldfcn/__glpk__.cc \
   dldfcn/__init_fltk__.cc \
   dldfcn/__init_gnuplot__.cc \
-  dldfcn/__magick_read__.cc \
   dldfcn/__osmesa_print__.cc \
   dldfcn/__voronoi__.cc \
   dldfcn/amd.cc \
@@ -82,12 +81,6 @@ dldfcn/__init_gnuplot__.df: CPPFLAGS += $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
 dldfcn___init_gnuplot___la_CPPFLAGS = $(AM_CPPFLAGS) $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
 dldfcn___init_gnuplot___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
 dldfcn___init_gnuplot___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la  $(OCT_LINK_DEPS)
-
-dldfcn___magick_read___la_SOURCES = dldfcn/__magick_read__.cc
-dldfcn/__magick_read__.df: CPPFLAGS += $(MAGICK_CPPFLAGS)
-dldfcn___magick_read___la_CPPFLAGS = $(AM_CPPFLAGS) $(MAGICK_CPPFLAGS)
-dldfcn___magick_read___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(MAGICK_LDFLAGS) $(OCT_LINK_OPTS)
-dldfcn___magick_read___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(MAGICK_LIBS) $(OCT_LINK_DEPS)
 
 dldfcn___osmesa_print___la_SOURCES = dldfcn/__osmesa_print__.cc
 dldfcn/__osmesa_print__.df: CPPFLAGS += $(OSMESA_CPPFLAGS) $(FT2_CPPFLAGS)

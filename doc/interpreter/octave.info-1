@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 4.0.2.
+corresponds to GNU Octave version 4.0.3.
 
 * Menu:
 
@@ -1156,7 +1156,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 4.0.2.
+   This document corresponds to Octave version 4.0.3.
 
 * Menu:
 
@@ -7871,10 +7871,10 @@ below.
      See also: *note orderfields: XREForderfields, *note fieldnames:
      XREFfieldnames, *note isfield: XREFisfield.
 
- -- Function File: SOUT] = orderfields (S1)
- -- Function File: SOUT] = orderfields (S1, S2)
- -- Function File: SOUT] = orderfields (S1, {CELLSTR})
- -- Function File: SOUT] = orderfields (S1, P)
+ -- Function File: SOUT = orderfields (S1)
+ -- Function File: SOUT = orderfields (S1, S2)
+ -- Function File: SOUT = orderfields (S1, {CELLSTR})
+ -- Function File: SOUT = orderfields (S1, P)
  -- Function File: [SOUT, P] = orderfields (...)
      Return a _copy_ of S1 with fields arranged alphabetically, or as
      specified by the second input.

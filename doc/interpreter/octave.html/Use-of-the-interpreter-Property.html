@@ -69,14 +69,14 @@ to <code>&quot;none&quot;</code>.
 </p>
 <p>The <code>&quot;tex&quot;</code> option implements a subset of TeX functionality when
 rendering text.  This allows the insertion of special glyphs such as Greek
-characters or mathematical symbols.  The special characters are inserted with a
-code following a backslash (\) character, as shown in <a href="#tab_003aextended">Table 15.1</a>.
+characters or mathematical symbols.  Special characters are inserted by using
+a backslash (\) character followed by a code, as shown in <a href="#tab_003aextended">Table 15.1</a>.
 </p>
 <p>Note that for on-screen display the interpreter property is honored by all
 graphics toolkits.  However for printing, <strong>only</strong> the <code>&quot;gnuplot&quot;</code>
 toolkit renders TeX instructions.
 </p>
-<p>Besides special glyphs, the formatting of text can be changed within the
+<p>Besides special glyphs, the formatting of the text can be changed within the
 string by using the codes
 </p>
 <table>
@@ -87,15 +87,15 @@ string by using the codes
 </table>
 
 <p>These codes may be used in conjunction with the { and } characters to limit
-the change to just a part of the string.  For example,
+the change to a part of the string.  For example,
 </p>
 <div class="example">
 <pre class="example">xlabel ('{\bf H} = a {\bf V}')
 </pre></div>
 
-<p>where the character <code>'a'</code> will not appear in a bold font.  Note that to
-avoid having Octave interpret the backslash characters in the strings,
-the strings should be in single quotes.
+<p>where the character <code>'a'</code> will not appear in bold font.  Note that to
+avoid having Octave interpret the backslash character in the strings,
+the strings themselves should be in single quotes.
 </p>
 <p>It is also possible to change the fontname and size within the text
 </p>
@@ -105,11 +105,21 @@ the strings should be in single quotes.
 use</td><td width="10%"></td></tr>
 </table>
 
+<p>The color of the text may also be changed inline using either a string (e.g.,
+&quot;red&quot;) or numerically with a Red-Green-Blue (RGB) specification (.e.g.,
+[1 0 0], also red).
+</p>
+<table>
+<tr><td width="10%"></td><td width="40%">\color{<var>color</var>}</td><td width="60%">Specify the color as a string</td><td width="10%"></td></tr>
+<tr><td width="10%"></td><td width="40%">\color[rgb]{<var>R</var> <var>G</var> <var>B</var>}</td><td width="60%">Specify the color
+numerically</td><td width="10%"></td></tr>
+</table>
+
 <p>Finally, superscripting and subscripting can be controlled with the <code>'^'</code>
 and <code>'_'</code> characters.  If the <code>'^'</code> or <code>'_'</code> is followed by a
-{ character, then all of the block surrounded by the { } pair is super- or
-sub-scripted.  Without the { } pair, only the character immediately following
-the <code>'^'</code> or <code>'_'</code> is super- or sub-scripted.
+{ character, then all of the block surrounded by the { } pair is
+superscripted or subscripted.  Without the { } pair, only the character
+immediately following the <code>'^'</code> or <code>'_'</code> is changed.
 </p>
 <div class="float"><a name="tab_003aextended"></a>
 <table>
