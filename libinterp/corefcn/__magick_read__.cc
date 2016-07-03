@@ -31,7 +31,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-env.h"
 #include "oct-time.h"
 
-#include "defun-dld.h"
+#include "defun.h"
 #include "error.h"
 #include "ov-struct.h"
 
@@ -719,8 +719,8 @@ maybe_initialize_magick (void)
 }
 #endif
 
-DEFUN_DLD (__magick_read__, args, nargout,
-           "-*- texinfo -*-\n\
+DEFUN (__magick_read__, args, nargout,
+       "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {[@var{img}, @var{map}, @var{alpha}] =} __magick_read__ (@var{fname}, @var{options})\n\
 Read image with GraphicsMagick or ImageMagick.\n\
 \n\
@@ -1109,7 +1109,7 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
               {
                 for (octave_idx_type row = 0; row < nRows; row++)
                   {
-                    const double grey = double (*img_fvec) / divisor;
+                    const double grey = xround (double (*img_fvec) / divisor);
                     Magick::Color c (grey, grey, grey);
                     pix[GM_idx] = c;
                     img_fvec++;
@@ -1139,9 +1139,9 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
               {
                 for (octave_idx_type row = 0; row < nRows; row++)
                   {
-                    double grey = double (*img_fvec) / divisor;
+                    double grey = xround (double (*img_fvec) / divisor);
                     Magick::Color c (grey, grey, grey,
-                                     MaxRGB - (double (*a_fvec) / divisor));
+                                     MaxRGB - xround (double (*a_fvec) / divisor));
                     pix[GM_idx] = c;
                     img_fvec++;
                     a_fvec++;
@@ -1174,9 +1174,9 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
               {
                 for (octave_idx_type row = 0; row < nRows; row++)
                   {
-                    Magick::Color c (double (*img_fvec)          / divisor,
-                                     double (img_fvec[G_offset]) / divisor,
-                                     double (img_fvec[B_offset]) / divisor);
+                    Magick::Color c (xround (double (*img_fvec)          / divisor),
+                                     xround (double (img_fvec[G_offset]) / divisor),
+                                     xround (double (img_fvec[B_offset]) / divisor));
                     pix[GM_idx] = c;
                     img_fvec++;
                     GM_idx += nCols;
@@ -1209,10 +1209,10 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
               {
                 for (octave_idx_type row = 0; row < nRows; row++)
                   {
-                    Magick::Color c (double (*img_fvec)          / divisor,
-                                     double (img_fvec[G_offset]) / divisor,
-                                     double (img_fvec[B_offset]) / divisor,
-                                     MaxRGB - (double (*a_fvec) / divisor));
+                    Magick::Color c (xround (double (*img_fvec)          / divisor),
+                                     xround (double (img_fvec[G_offset]) / divisor),
+                                     xround (double (img_fvec[B_offset]) / divisor),
+                                     MaxRGB - xround (double (*a_fvec) / divisor));
                     pix[GM_idx] = c;
                     img_fvec++;
                     a_fvec++;
@@ -1247,10 +1247,10 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
               {
                 for (octave_idx_type row = 0; row < nRows; row++)
                   {
-                    Magick::Color c (double (*img_fvec)          / divisor,
-                                     double (img_fvec[M_offset]) / divisor,
-                                     double (img_fvec[Y_offset]) / divisor,
-                                     double (img_fvec[K_offset]) / divisor);
+                    Magick::Color c (xround (double (*img_fvec)          / divisor),
+                                     xround (double (img_fvec[M_offset]) / divisor),
+                                     xround (double (img_fvec[Y_offset]) / divisor),
+                                     xround (double (img_fvec[K_offset]) / divisor));
                     pix[GM_idx] = c;
                     img_fvec++;
                     GM_idx += nCols;
@@ -1285,12 +1285,12 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
               {
                 for (octave_idx_type row = 0; row < nRows; row++)
                   {
-                    Magick::Color c (double (*img_fvec)          / divisor,
-                                     double (img_fvec[M_offset]) / divisor,
-                                     double (img_fvec[Y_offset]) / divisor,
-                                     double (img_fvec[K_offset]) / divisor);
+                    Magick::Color c (xround (double (*img_fvec)          / divisor),
+                                     xround (double (img_fvec[M_offset]) / divisor),
+                                     xround (double (img_fvec[Y_offset]) / divisor),
+                                     xround (double (img_fvec[K_offset]) / divisor));
                     pix[GM_idx] = c;
-                    ind[GM_idx] = MaxRGB - (double (*a_fvec) / divisor);
+                    ind[GM_idx] = MaxRGB - xround (double (*a_fvec) / divisor);
                     img_fvec++;
                     a_fvec++;
                     GM_idx += nCols;
@@ -1383,8 +1383,8 @@ write_file (const std::string& filename,
 
 #endif
 
-DEFUN_DLD (__magick_write__, args, ,
-           "-*- texinfo -*-\n\
+DEFUN (__magick_write__, args, ,
+       "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {} __magick_write__ (@var{fname}, @var{fmt}, @var{img}, @var{map}, @var{options})\n\
 Write image with GraphicsMagick or ImageMagick.\n\
 \n\
@@ -1563,8 +1563,8 @@ Use @code{imwrite} instead.\n\
 // faster than using imfinfo, which slows down a lot since. Note than without
 // this, we need to read the image once for imfinfo to set defaults (which is
 // done in Octave language), and then again for the actual reading.
-DEFUN_DLD (__magick_ping__, args, ,
-           "-*- texinfo -*-\n\
+DEFUN (__magick_ping__, args, ,
+       "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {} __magick_ping__ (@var{fname}, @var{idx})\n\
 Ping image information with GraphicsMagick or ImageMagick.\n\
 \n\
@@ -1784,8 +1784,8 @@ fill_exif_floats (octave_scalar_map& map, Magick::Image& img,
 
 #endif
 
-DEFUN_DLD (__magick_finfo__, args, ,
-           "-*- texinfo -*-\n\
+DEFUN (__magick_finfo__, args, ,
+       "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {} __magick_finfo__ (@var{fname})\n\
 Read image information with GraphicsMagick or ImageMagick.\n\
 \n\
@@ -2240,8 +2240,8 @@ Use @code{imfinfo} instead.\n\
 %!assert (1)
 */
 
-DEFUN_DLD (__magick_formats__, args, ,
-           "-*- texinfo -*-\n\
+DEFUN (__magick_formats__, args, ,
+       "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {} __magick_imformats__ (@var{formats})\n\
 Fill formats info with GraphicsMagick CoderInfo.\n\
 \n\

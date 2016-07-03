@@ -2665,9 +2665,22 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      Sort the rows of the matrix A according to the order of the columns
      specified in C.
 
-     If C is omitted, a lexicographical sort is used.  By default
-     ascending order is used however if elements of C are negative then
-     the corresponding column is sorted in descending order.
+     By default (C omitted, or a particular column unspecified in C) an
+     ascending sort order is used.  However, if elements of C are
+     negative then the corresponding column is sorted in descending
+     order.  If the elements of A are strings then a lexicographical
+     sort is used.
+
+     Example: sort by column 2 in descending order, then 3 in ascending
+     order
+
+          x = [ 7, 1, 4;
+                8, 3, 5;
+                9, 3, 6 ];
+          sortrows (x, [-2, 3])
+             ⇒ 8  3  5
+                9  3  6
+                7  1  4
 
      See also: *note sort: XREFsort.
 
@@ -4220,7 +4233,11 @@ apparently do not distinguish -0.
  -- Mapping Function: atan2 (Y, X)
      Compute atan (Y / X) for corresponding elements of Y and X.
 
-     Y and X must match in size and orientation.
+     Y and X must match in size and orientation.  The signs of elements
+     of Y and X are used to determine the quadrats of each resulting
+     value.
+
+     This function is equivalent to ‘arg (complex (X, Y))’.
 
      See also: *note tan: XREFtan, *note tand: XREFtand, *note tanh:
      XREFtanh, *note atanh: XREFatanh.

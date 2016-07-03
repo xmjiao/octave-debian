@@ -710,7 +710,7 @@ how they can be used, look at the definition of the function ‘popen2’.
      current Octave process and replace it with the program named by
      FILE.  For example,
 
-          exec ("ls" "-l")
+          exec ("ls", "-l")
 
      will run ‘ls’ and return you to your shell prompt.
 

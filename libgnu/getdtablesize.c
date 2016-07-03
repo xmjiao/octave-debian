@@ -1,5 +1,5 @@
 /* getdtablesize() function for platforms that don't have it.
-   Copyright (C) 2008-2015 Free Software Foundation, Inc.
+   Copyright (C) 2008-2016 Free Software Foundation, Inc.
    Written by Bruno Haible <bruno@clisp.org>, 2008.
 
    This program is free software: you can redistribute it and/or modify
@@ -88,6 +88,13 @@ getdtablesize (void)
 
 # include <limits.h>
 # include <sys/resource.h>
+
+# ifndef RLIM_SAVED_CUR
+#  define RLIM_SAVED_CUR RLIM_INFINITY
+# endif
+# ifndef RLIM_SAVED_MAX
+#  define RLIM_SAVED_MAX RLIM_INFINITY
+# endif
 
 # ifdef __CYGWIN__
   /* Cygwin 1.7.25 auto-increases the RLIMIT_NOFILE soft limit until it

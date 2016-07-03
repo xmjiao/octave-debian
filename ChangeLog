@@ -1,3 +1,203 @@
+2016-07-01  John W. Eaton  <jwe@octave.org>
+
+	Added tag release-4-0-3 for changeset 00f7b278defd
+
+	Files: .hgtags
+
+	Version 4.0.3 released.
+
+	* configure.ac: Bump version to 4.0.3.
+	(OCTAVE_PATCH_VERSION): Bump to 3.
+	(OCTAVE_RELEASE_DATE): Update.
+
+	Files: configure.ac
+
+2016-06-17  Mike Miller  <mtmiller@octave.org>
+
+	doc: clarify differences between atan and atan2 (bug #48178)
+
+	* data.cc (Fatan2): Expand docstring with wording similar to the C++
+	standard description of atan2, compare to the arg function.
+
+	Files: libinterp/corefcn/data.cc
+
+2016-06-16  Mike Miller  <mtmiller@octave.org>
+
+	doc: delete mention of unsupported syntax for looping over structs (bug #48064)
+
+	* stmt.txi (Looping Over Structure Elements): Delete mention of unsupported
+	syntax for looping over structure elements.
+
+	Files: doc/interpreter/stmt.txi
+
+2016-06-15  Garrett Euler  <ggeuler@lanl.gov>
+
+	ver.m: return empty struct for unknown package (bug #48235).
+
+	* ver.m: Initialize return value to be an empty struct array.
+	Add BIST test.
+
+	Files: scripts/miscellaneous/ver.m
+
+2016-06-07  Mike Miller  <mtmiller@octave.org>
+
+	Update gnulib subrepo for texinfo formatting fixes (bug #48001)
+
+	* .hgsubstate: Update gnulib subrepo for latest texinfo.tex macros.
+	* load-save.cc (write_header): Adapt to gnulib change to nstrftime arguments.
+
+	Files: .hgsubstate libinterp/corefcn/load-save.cc
+
+2016-06-03  Mike Miller  <mtmiller@octave.org>
+
+	Fix typos in Java conversion of 32 and 64 bit integers (bug #48107)
+
+	* ov-java.cc (unbox): Invoke correct class name java.lang.Integer for 32 bit
+	integers.  Use correct type signature "J" for 64 bit long integer values.
+	Add BIST tests.
+
+	Files: libinterp/octave-value/ov-java.cc
+
+2016-06-02  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Create valid gnuplot commands even for single-entry colormaps (bug #48083).
+
+	* __go_draw_axes__.m: If the colourmap is a singleton,
+	  then replace it by one with two identical colours.
+
+	Files: scripts/plot/util/private/__go_draw_axes__.m
+
+2016-06-02  Rik  <rik@octave.org>
+
+	__line__.m: Stop intermittent errors when plotting multiple lines (bug #46466).
+
+	* __line__.m: Avoid calling cellfun at line 117 if it is known that no
+	assignment can take place because the LHS index expression is empty.
+
+	Files: scripts/plot/draw/private/__line__.m
+
+2016-05-31  Rik  <rik@octave.org>
+
+	orderfields.m: Remove trailing bracket in docstring (bug #48063).
+
+	* orderfields.m: Remove trailing bracket in docstring.
+
+	Files: scripts/miscellaneous/orderfields.m
+
+2015-11-26  Rik  <rik@octave.org>
+
+	Don't overly restrict options passed to Java jvm (bug #39063).
+
+	* ov-java.cc (read_java_opts): Check only that possible option string begins
+	with '-', not that it belongs to either the '-X' or '-D' series of options.
+
+	Files: libinterp/octave-value/ov-java.cc
+
+2016-05-25  Mike Miller  <mtmiller@octave.org>
+
+	Write integers with correct byte order on big-endian systems (bug #47434)
+
+	* oct-stream.cc (convert_data, octave_stream::write): Fix logic error in
+	determination of whether to swap bytes on big-endian systems.
+
+	Files: libinterp/corefcn/oct-stream.cc
+
+2016-05-24  Rik  <rik@octave.org>
+
+	doc: Document syntax for specifying color when using Tex interpreter (bug #47907).
+
+	* plot.txi: Document syntax for specifying color when using Tex interpreter.
+
+	Files: doc/interpreter/plot.txi
+
+2016-05-23  Mike Miller  <mtmiller@octave.org>
+
+	Round quantized pixel values before writing uintN images (bug #47746)
+
+	* __magick_read__.cc (encode_uint_image): Round quantized pixel values to
+	prevent round-off error when GraphicsMagick quantum depth is greater than 8.
+
+	Files: libinterp/corefcn/__magick_read__.cc
+
+2016-05-20  Mike Miller  <mtmiller@octave.org>
+
+	Fix popen2 error on Windows when child writes to stderr (bug #43036)
+
+	* lo-sysdep.cc (octave::sys::popen2): Ensure child inherits handle to the
+	current stderr stream.
+
+	Files: liboctave/system/lo-sysdep.cc
+
+2016-05-14  Rik  <rik@octave.org>
+
+	it_IT.ts: Correct Italian translation of "col:" (bug #47857).
+
+	* it_IT.ts: Change translation from "riga:" to "col:".
+
+	Files: libgui/languages/it_IT.ts
+
+2016-05-13  John W. Eaton  <jwe@octave.org>
+
+	avoid crash in audiowrite argument processing (bug #47875)
+
+	* audioread.cc (Faudiowrite): Avoid out of bounds array access.
+
+	Files: libinterp/dldfcn/audioread.cc
+
+2016-05-06  John W. Eaton  <jwe@octave.org>
+
+	make __magick_read__ a built-in function (bug #41699)
+
+	* libinterp/Makefile.am (AM_CPPFLAGS):
+	Add $(MAGICK_CPPFLAGS) to the list.
+	* corefcn/__magick_read__.cc: Rename from dldfcn/__magick_read__.cc.
+	Change DEFUN_DLD to DEFUN.
+	* libinterp/dldfcn/module-files: Delete entry for __magick_read__.cc.
+	* libinterp/corefcn/module.mk: Update.
+	* libinterp/link-deps.mk (LIBOCTINTERP_LINK_DEPS):
+	Add $MAGICK_LIBS to the list.
+	(LIBOCTINTERP_LINK_OPTS): Add $MAGICK_LDFLAGS to the list.
+
+	Files: libinterp/Makefile.am libinterp/corefcn/__magick_read__.cc
+	libinterp/corefcn/module.mk libinterp/dldfcn/__magick_read__.cc
+	libinterp/dldfcn/module-files libinterp/link-deps.mk
+
+2016-05-04  Rik  <rik@octave.org>
+
+	sortrows.m: Improve docstring (bug #47844).
+
+	* sortrows.m: Clarify that lexicographical sort is only applied to string
+	elements.  Add an example of how to use function.
+
+	Files: scripts/general/sortrows.m
+
+2016-05-03  Rik  <rik@octave.org>
+
+	doc: Fix typo in exec docstring.
+
+	* syscalls.cc (Fexec): Add missing comma in example usage.
+
+	Files: libinterp/corefcn/syscalls.cc
+
+	Use correct URL for Online Documentation (bug #47835).
+
+	* main-window.cc (open_online_documentation_page): Append index.html to URL.
+
+	Files: libgui/src/main-window.cc
+
+2016-04-25  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	Fix autoscale affecting legend axes objects (bug #47765).
+
+	* Canvas.cc (canvasMousePressEvent): Only set currentaxes object to a true axes
+	object (not legend or colorbar).
+
+	* __init_fltk__.cc (set_on_ax_obj): Only accept true axes objects.
+	* __init_fltk__.cc (set_axes_currentpoint): Only set currentaxes object to a
+	 true axes.
+
+	Files: libgui/graphics/Canvas.cc libinterp/dldfcn/__init_fltk__.cc
+
 2016-04-20  John W. Eaton  <jwe@octave.org>
 
 	Added tag release-4-0-2 for changeset acaf1e137c5e

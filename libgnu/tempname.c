@@ -1,6 +1,6 @@
 /* tempname.c - generate the name of a temporary file.
 
-   Copyright (C) 1991-2003, 2005-2007, 2009-2015 Free Software Foundation, Inc.
+   Copyright (C) 1991-2003, 2005-2007, 2009-2016 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -269,13 +269,13 @@ try_file (char *tmpl, void *flags)
 }
 
 static int
-try_dir (char *tmpl, void *flags)
+try_dir (char *tmpl, void *flags _GL_UNUSED)
 {
   return __mkdir (tmpl, S_IRUSR | S_IWUSR | S_IXUSR);
 }
 
 static int
-try_nocreate (char *tmpl, void *flags)
+try_nocreate (char *tmpl, void *flags _GL_UNUSED)
 {
   struct_stat64 st;
 

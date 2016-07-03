@@ -539,10 +539,24 @@ ordered lists.
 <dd><p>Sort the rows of the matrix <var>A</var> according to the order of the columns
 specified in <var>c</var>.
 </p>
-<p>If <var>c</var> is omitted, a lexicographical sort is used.  By default ascending
-order is used however if elements of <var>c</var> are negative then the
-corresponding column is sorted in descending order.
+<p>By default (<var>c</var> omitted, or a particular column unspecified in <var>c</var>)
+an ascending sort order is used.  However, if elements of <var>c</var> are
+negative then the corresponding column is sorted in descending order.  If
+the elements of <var>A</var> are strings then a lexicographical sort is used.
 </p>
+<p>Example: sort by column 2 in descending order, then 3 in ascending order
+</p>
+<div class="example">
+<pre class="example">x = [ 7, 1, 4;
+      8, 3, 5;
+      9, 3, 6 ];
+sortrows (x, [-2, 3])
+   &rArr; 8  3  5
+      9  3  6
+      7  1  4
+</pre></div>
+
+
 <p><strong>See also:</strong> <a href="#XREFsort">sort</a>.
 </p></dd></dl>
 
