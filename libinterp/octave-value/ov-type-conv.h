@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_type_conv_h)
+#if ! defined (octave_ov_type_conv_h)
 #define octave_ov_type_conv_h 1
+
+#include "octave-config.h"
 
 static
 octave_value
@@ -73,35 +75,30 @@ octave_type_conv_body (const octave_value &arg, const std::string& name,
   return retval;
 }
 
-
 #define OCTAVE_TYPE_CONV_BODY3(NAME, MATRIX_RESULT_T, SCALAR_RESULT_T) \
+ \
+  if (args.length () != 1) \
+    print_usage (); \
  \
   octave_value retval; \
  \
-  int nargin = args.length (); \
+  const octave_value arg = args(0); \
  \
-  if (nargin == 1) \
+  int t_result = MATRIX_RESULT_T::static_type_id (); \
+ \
+  retval = octave_type_conv_body (arg, #NAME, t_result); \
+  if (retval.is_undefined ()) \
     { \
-      const octave_value arg = args(0); \
+      std::string arg_tname = arg.type_name (); \
  \
-      int t_result = MATRIX_RESULT_T::static_type_id (); \
+      std::string result_tname = arg.numel () == 1 \
+        ? SCALAR_RESULT_T::static_type_name () \
+        : MATRIX_RESULT_T::static_type_name (); \
  \
-      retval = octave_type_conv_body (arg, #NAME, t_result); \
-      if (retval.is_undefined ()) \
-        { \
-          std::string arg_tname = arg.type_name (); \
- \
-          std::string result_tname = arg.numel () == 1 \
-            ? SCALAR_RESULT_T::static_type_name () \
-            : MATRIX_RESULT_T::static_type_name (); \
- \
-          gripe_invalid_conversion (arg_tname, result_tname); \
-        } \
+      err_invalid_conversion (arg_tname, result_tname); \
     } \
-  else \
-    print_usage (); \
  \
-  return retval
+  return retval;
 
 #define OCTAVE_TYPE_CONV_BODY(NAME) \
   OCTAVE_TYPE_CONV_BODY3 (NAME, octave_ ## NAME ## _matrix, \

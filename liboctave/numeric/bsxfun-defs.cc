@@ -21,8 +21,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_bsxfun_defs_h)
+#if ! defined (octave_bsxfun_defs_h)
 #define octave_bsxfun_defs_h 1
+
+// This file should not include config.h.  It is only included in other
+// C++ source files that should have included config.h before including
+// this file.
 
 #include <algorithm>
 #include <iostream>
@@ -33,7 +37,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "mx-inlines.cc"
 
-template <class R, class X, class Y>
+template <typename R, typename X, typename Y>
 Array<R>
 do_bsxfun_op (const Array<X>& x, const Array<Y>& y,
               void (*op_vv) (size_t, R *, const X *, const Y *),
@@ -56,12 +60,9 @@ do_bsxfun_op (const Array<X>& x, const Array<Y>& y,
       else if (yk == 1 || xk == yk)
         dvr(i) = xk;
       else
-        {
-          (*current_liboctave_error_handler)
-            ("bsxfun: nonconformant dimensions: %s and %s",
-             x.dims ().str ().c_str (), y.dims ().str ().c_str ());
-          break;
-        }
+        (*current_liboctave_error_handler)
+          ("bsxfun: nonconformant dimensions: %s and %s",
+           x.dims ().str ().c_str (), y.dims ().str ().c_str ());
     }
 
   Array<R> retval (dvr);
@@ -137,7 +138,7 @@ do_bsxfun_op (const Array<X>& x, const Array<Y>& y,
   return retval;
 }
 
-template <class R, class X>
+template <typename R, typename X>
 void
 do_inplace_bsxfun_op (Array<R>& r, const Array<X>& x,
                       void (*op_vv) (size_t, R *, const X *),

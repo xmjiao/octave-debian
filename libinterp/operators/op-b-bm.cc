@@ -20,12 +20,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-bool.h"
 #include "ov-bool-mat.h"
@@ -56,7 +56,7 @@ DEFNDCATOP_FN (f_bm, float_scalar, bool_matrix, float_array, float_array,
 
 DEFCONV (bool_matrix_conv, bool, bool_matrix)
 {
-  CAST_CONV_ARG (const octave_bool&);
+  const octave_bool& v = dynamic_cast<const octave_bool&> (a);
 
   return new octave_bool_matrix (v.bool_matrix_value ());
 }

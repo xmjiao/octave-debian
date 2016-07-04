@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -63,8 +64,8 @@ and <code>convhulln</code> to calculate the convex hull of 2-dimensional and
 N-dimensional sets of points.
 </p>
 <a name="XREFconvhull"></a><dl>
-<dt><a name="index-convhull"></a>Function File: <em><var>H</var> =</em> <strong>convhull</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
-<dt><a name="index-convhull-1"></a>Function File: <em><var>H</var> =</em> <strong>convhull</strong> <em>(<var>x</var>, <var>y</var>, <var>options</var>)</em></dt>
+<dt><a name="index-convhull"></a>: <em><var>H</var> =</em> <strong>convhull</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-convhull-1"></a>: <em><var>H</var> =</em> <strong>convhull</strong> <em>(<var>x</var>, <var>y</var>, <var>options</var>)</em></dt>
 <dd><p>Compute the convex hull of the set of points defined by the
 arrays <var>x</var> and <var>y</var>.  The hull <var>H</var> is an index vector into
 the set of points and specifies which points form the enclosing hull.
@@ -86,9 +87,9 @@ default arguments in <var>options</var>.  Use a null string to pass no arguments
 
 
 <a name="XREFconvhulln"></a><dl>
-<dt><a name="index-convhulln"></a>Loadable Function: <em><var>h</var> =</em> <strong>convhulln</strong> <em>(<var>pts</var>)</em></dt>
-<dt><a name="index-convhulln-1"></a>Loadable Function: <em><var>h</var> =</em> <strong>convhulln</strong> <em>(<var>pts</var>, <var>options</var>)</em></dt>
-<dt><a name="index-convhulln-2"></a>Loadable Function: <em>[<var>h</var>, <var>v</var>] =</em> <strong>convhulln</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-convhulln"></a>: <em><var>h</var> =</em> <strong>convhulln</strong> <em>(<var>pts</var>)</em></dt>
+<dt><a name="index-convhulln-1"></a>: <em><var>h</var> =</em> <strong>convhulln</strong> <em>(<var>pts</var>, <var>options</var>)</em></dt>
+<dt><a name="index-convhulln-2"></a>: <em>[<var>h</var>, <var>v</var>] =</em> <strong>convhulln</strong> <em>(&hellip;)</em></dt>
 <dd><p>Compute the convex hull of the set of points <var>pts</var>.
 </p>
 <p><var>pts</var> is a matrix of size [n, dim] containing n points in a space of
@@ -97,9 +98,9 @@ dimension dim.
 <p>The hull <var>h</var> is an index vector into the set of points and specifies
 which points form the enclosing hull.
 </p>
-<p>An optional second argument, which must be a string or cell array of strings,
-contains options passed to the underlying qhull command.
-See the documentation for the Qhull library for details
+<p>An optional second argument, which must be a string or cell array of
+strings, contains options passed to the underlying qhull command.  See the
+documentation for the Qhull library for details
 <a href="http://www.qhull.org/html/qh-quick.htm#options">http://www.qhull.org/html/qh-quick.htm#options</a>.
 The default options depend on the dimension of the input:
 </p>
@@ -117,7 +118,6 @@ default arguments in <var>options</var>.  Use a null string to pass no arguments
 <p>If the second output <var>v</var> is requested the volume of the enclosing
 convex hull is calculated.
 </p>
-
 <p><strong>See also:</strong> <a href="#XREFconvhull">convhull</a>, <a href="Delaunay-Triangulation.html#XREFdelaunayn">delaunayn</a>, <a href="Voronoi-Diagrams.html#XREFvoronoin">voronoin</a>.
 </p></dd></dl>
 

@@ -21,16 +21,16 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "idx-vector.h"
 
 #include "Cell.h"
 #include "error.h"
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 
 Cell::Cell (const octave_value_list& ovl)
   : Array<octave_value> (ovl.cell_value ())
@@ -40,7 +40,7 @@ Cell::Cell (const octave_value_list& ovl)
 Cell::Cell (const string_vector& sv, bool trim)
   : Array<octave_value> ()
 {
-  octave_idx_type n = sv.length ();
+  octave_idx_type n = sv.numel ();
 
   if (n > 0)
     {
@@ -73,11 +73,8 @@ Cell::Cell (const std::list<std::string>& lst)
 
       octave_idx_type i = 0;
 
-      for (std::list<std::string>::const_iterator it = lst.begin ();
-           it != lst.end (); it++)
-        {
-          elem(i++,0) = *it;
-        }
+      for (const auto& str : lst)
+        elem(i++,0) = str;
     }
 }
 
@@ -99,7 +96,7 @@ Cell::Cell (const Array<std::string>& sa)
 Cell::Cell (const dim_vector& dv, const string_vector& sv, bool trim)
   : Array<octave_value> (dv, Matrix ())
 {
-  octave_idx_type n = sv.length ();
+  octave_idx_type n = sv.numel ();
 
   if (n > 0)
     {
@@ -162,51 +159,56 @@ Cell::index (const octave_value_list& idx_arg, bool resize_ok) const
 
   octave_idx_type n = idx_arg.length ();
 
-  switch (n)
+  // If we catch an indexing error in index_vector, we flag an error
+  // in index k.  Ensure it is the right value befor each idx_vector
+  // call.  Same variable as used in for loop in default case.
+
+  octave_idx_type k = 0;
+
+  try
     {
-    case 0:
-      retval = *this;
-      break;
+      switch (n)
+        {
+        case 0:
+          retval = *this;
+          break;
 
-    case 1:
-      {
-        idx_vector i = idx_arg(0).index_vector ();
-
-        if (! error_state)
-          retval = Array<octave_value>::index (i, resize_ok, Matrix ());
-      }
-      break;
-
-    case 2:
-      {
-        idx_vector i = idx_arg(0).index_vector ();
-
-        if (! error_state)
+        case 1:
           {
+            idx_vector i = idx_arg(0).index_vector ();
+
+            retval = Array<octave_value>::index (i, resize_ok, Matrix ());
+          }
+          break;
+
+        case 2:
+          {
+            idx_vector i = idx_arg(0).index_vector ();
+
+            k = 1;
             idx_vector j = idx_arg(1).index_vector ();
 
-            if (! error_state)
-              retval = Array<octave_value>::index (i, j, resize_ok, Matrix ());
+            retval = Array<octave_value>::index (i, j, resize_ok, Matrix ());
           }
-      }
-      break;
+          break;
 
-    default:
-      {
-        Array<idx_vector> iv (dim_vector (n, 1));
-
-        for (octave_idx_type i = 0; i < n; i++)
+        default:
           {
-            iv(i) = idx_arg(i).index_vector ();
+            Array<idx_vector> iv (dim_vector (n, 1));
 
-            if (error_state)
-              break;
+            for (k = 0; k < n; k++)
+              iv(k) = idx_arg(k).index_vector ();
+
+            retval = Array<octave_value>::index (iv, resize_ok, Matrix ());
           }
-
-        if (!error_state)
-          retval = Array<octave_value>::index (iv, resize_ok, Matrix ());
-      }
-      break;
+          break;
+        }
+    }
+  catch (index_exception& e)
+    {
+      // Rethrow to allow more info to be reported later.
+      e.set_pos_if_unset (n, k+1);
+      throw;
     }
 
   return retval;
@@ -215,7 +217,7 @@ Cell::index (const octave_value_list& idx_arg, bool resize_ok) const
 /*
 %!test
 %! a = {"foo", "bar"};
-%! assert (a(), a)
+%! assert (a(), a);
 */
 
 void
@@ -228,7 +230,18 @@ Cell::assign (const octave_value_list& idx_arg, const Cell& rhs,
   Array<idx_vector> ra_idx (dim_vector (len, 1));
 
   for (octave_idx_type i = 0; i < len; i++)
-    ra_idx(i) = idx_arg(i).index_vector ();
+    {
+      try
+        {
+          ra_idx(i) = idx_arg(i).index_vector ();
+        }
+      catch (index_exception& e)
+        {
+          // Rethrow to allow more info to be reported later.
+          e.set_pos (len, i+1);
+          throw;
+        }
+    }
 
   Array<octave_value>::assign (ra_idx, rhs, fill_val);
 }
@@ -242,7 +255,16 @@ Cell::delete_elements (const octave_value_list& idx_arg)
   Array<idx_vector> ra_idx (dim_vector (len, 1));
 
   for (octave_idx_type i = 0; i < len; i++)
-    ra_idx.xelem (i) = idx_arg(i).index_vector ();
+    try
+      {
+        ra_idx.xelem (i) = idx_arg(i).index_vector ();
+      }
+    catch (index_exception& e)
+        {
+          // Rethrow to allow more info to be reported later.
+          e.set_pos (len, i+1);
+          throw;
+        }
 
   Array<octave_value>::delete_elements (ra_idx);
 }
@@ -250,8 +272,7 @@ Cell::delete_elements (const octave_value_list& idx_arg)
 octave_idx_type
 Cell::nnz (void) const
 {
-  gripe_wrong_type_arg ("nnz", "cell array");
-  return -1;
+  err_wrong_type_arg ("nnz", "cell array");
 }
 
 /*
@@ -265,22 +286,18 @@ Cell::column (octave_idx_type i) const
 {
   Cell retval;
 
-  if (ndims () < 3)
-    {
-      if (i < 0 || i >= cols ())
-        error ("invalid column selection");
-      else
-        {
-          octave_idx_type nr = rows ();
+  if (ndims () > 2)
+    error ("Cell::column: requires 2-D cell array");
 
-          retval.resize (dim_vector (nr, 1));
+  if (i < 0 || i >= cols ())
+    error ("invalid column selection");
 
-          for (octave_idx_type j = 0; j < nr; j++)
-            retval.xelem (j) = elem (j, i);
-        }
-    }
-  else
-    error ("Cell::column: requires 2-d cell array");
+  octave_idx_type nr = rows ();
+
+  retval.resize (dim_vector (nr, 1));
+
+  for (octave_idx_type j = 0; j < nr; j++)
+    retval.xelem (j) = elem (j, i);
 
   return retval;
 }

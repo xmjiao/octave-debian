@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_cx_diag_h)
+#if ! defined (octave_ov_cx_diag_h)
 #define octave_ov_cx_diag_h 1
+
+#include "octave-config.h"
 
 #include "ov-base.h"
 #include "ov-base-diag.h"
@@ -80,7 +82,7 @@ public:
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
   bool load_binary (std::istream& is, bool swap,
-                    oct_mach_info::float_format fmt);
+                    octave::mach_info::float_format fmt);
 
   octave_value map (unary_mapper_t umap) const;
 
@@ -88,7 +90,6 @@ private:
 
   bool chk_valid_scalar (const octave_value&,
                          Complex&) const;
-
 
   DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA
 };

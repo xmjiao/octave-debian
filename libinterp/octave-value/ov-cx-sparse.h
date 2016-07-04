@@ -21,8 +21,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_cx_sparse_h)
+#if ! defined (octave_ov_cx_sparse_h)
 #define octave_ov_cx_sparse_h 1
+
+#include "octave-config.h"
 
 #include <cstdlib>
 
@@ -128,7 +130,7 @@ public:
 #if 0
   int write (octave_stream& os, int block_size,
              oct_data_conv::data_type output_type, int skip,
-             oct_mach_info::float_format flt_fmt) const
+             octave::mach_info::float_format flt_fmt) const
   {
     // Yes, for compatibility, we drop the imaginary part here.
     return os.write (matrix_value (true), block_size, output_type,
@@ -139,7 +141,7 @@ public:
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
   bool load_binary (std::istream& is, bool swap,
-                    oct_mach_info::float_format fmt);
+                    octave::mach_info::float_format fmt);
 
   bool save_hdf5 (octave_hdf5_id loc_id, const char *name, bool save_as_floats);
 
@@ -150,7 +152,6 @@ public:
   octave_value map (unary_mapper_t umap) const;
 
 private:
-
 
   DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA
 };

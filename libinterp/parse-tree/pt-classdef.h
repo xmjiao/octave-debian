@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_tree_classdef_h)
+#if ! defined (octave_tree_classdef_h)
 #define octave_tree_classdef_h 1
+
+#include "octave-config.h"
 
 class octave_value;
 
@@ -592,7 +594,7 @@ public:
                  tree_classdef_superclass_list *sc,
                  tree_classdef_body *b, octave_comment_list *lc,
                  octave_comment_list *tc,
-                 const std::string& pn = std::string (), int l = -1,
+                 const std::string& pn = "", int l = -1,
                  int c = -1)
     : tree_command (l, c), attr_list (a), id (i),
       supclass_list (sc), element_list (b), lead_comm (lc), trail_comm (tc),

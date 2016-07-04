@@ -17,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {[@var{a}, @dots{}] =} textread (@var{filename})
-## @deftypefnx {Function File} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format})
-## @deftypefnx {Function File} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format}, @var{n})
-## @deftypefnx {Function File} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format}, @var{prop1}, @var{value1}, @dots{})
-## @deftypefnx {Function File} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format}, @var{n}, @var{prop1}, @var{value1}, @dots{})
+## @deftypefn  {} {[@var{a}, @dots{}] =} textread (@var{filename})
+## @deftypefnx {} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format})
+## @deftypefnx {} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format}, @var{n})
+## @deftypefnx {} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format}, @var{prop1}, @var{value1}, @dots{})
+## @deftypefnx {} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format}, @var{n}, @var{prop1}, @var{value1}, @dots{})
 ## Read data from a text file.
 ##
 ## The file @var{filename} is read and parsed according to @var{format}.  The
@@ -58,21 +58,26 @@
 ## Examples:
 ##
 ## @example
+## @group
 ##   Assume a data file like:
 ##   1 a 2 b
 ##   3 c 4 d
 ##   5 e
+## @end group
 ## @end example
 ##
 ## @example
+## @group
 ##   [a, b] = textread (f, "%f %s")
 ##   returns two columns of data, one with doubles, the other a
 ##   cellstr array:
 ##   a = [1; 2; 3; 4; 5]
 ##   b = @{"a"; "b"; "c"; "d"; "e"@}
+## @end group
 ## @end example
 ##
 ## @example
+## @group
 ##   [a, b] = textread (f, "%f %s", 3)
 ##   (read data into two culumns, try to use the format string
 ##   three times)
@@ -80,9 +85,11 @@
 ##   a = [1; 2; 3]
 ##   b = @{"a"; "b"; "c"@}
 ##
+## @end group
 ## @end example
 ##
 ## @example
+## @group
 ##   With a data file like:
 ##   1
 ##   a
@@ -92,9 +99,10 @@
 ##   [a, b] = textread (f, "%f %s", 2)
 ##   returns a = 1 and b = @{"a"@}; i.e., the format string is used
 ##   only once because the format string refers to 2 lines of the
-##   data file. To obtain 2x1 data output columns, specify N = 4
+##   data file.  To obtain 2x1 data output columns, specify N = 4
 ##   (number of data lines containing all requested data) rather
 ##   than 2.
+## @end group
 ## @end example
 ##
 ## @seealso{strread, load, dlmread, fscanf, textscan}
@@ -134,9 +142,9 @@ function varargout = textread (filename, format = "%f", varargin)
   headerlines = find (strcmpi (varargin, "headerlines"), 1);
   if (! isempty (headerlines))
     ## Beware of missing or wrong headerline value
-    if (headerlines  == numel (varargin)
+    if (headerlines == numel (varargin)
        || ! isnumeric (varargin{headerlines + 1}))
-      error ("missing or illegal value for 'headerlines'" );
+      error ("textread: missing or invalid value for 'headerlines'" );
     endif
     ## Avoid conveying floats to fskipl
     varargin{headerlines + 1} = round (varargin{headerlines + 1});
@@ -150,7 +158,7 @@ function varargout = textread (filename, format = "%f", varargin)
   endif
   st_pos = ftell (fid);
 
-  ## Read a first file chunk. Rest follows after endofline processing
+  ## Read a first file chunk.  Rest follows after endofline processing
   [str, count] = fscanf (fid, "%c", BUFLENGTH);
   if (isempty (str) || count < 1)
     warning ("textread: empty file");
@@ -167,15 +175,15 @@ function varargout = textread (filename, format = "%f", varargin)
         eol_char = do_string_escapes (eol_char);
       endif
       if (! any (strcmp (eol_char, {"", "\n", "\r", "\r\n"})))
-        error ("textscan: illegal EndOfLine character value specified");
+        error ("textread: invalid EndOfLine character value specified");
       endif
     else
-      error ("character value required for EndOfLine");
+      error ("textread: character value required for EndOfLine");
     endif
   else
     ## Determine EOL from file.
     ## Search for EOL candidates in the first BUFLENGTH chars
-    ## FIXME Ignore risk of 2-byte EOL (\r\n) being split at exactly BUFLENGTH
+    ## FIXME: Ignore risk of 2-byte EOL (\r\n) being split at exactly BUFLENGTH
     eol_srch_len = min (length (str), BUFLENGTH);
     ## First try DOS (CRLF)
     if (! isempty (strfind (str(1 : eol_srch_len), "\r\n")))
@@ -218,7 +226,7 @@ function varargout = textread (filename, format = "%f", varargin)
       eoi = [ eoi (length (str)) ];
       ++n_eoi;
     endif
-    ## Found EOL delimiting last requested line. Compute ptr (incl. EOL)
+    ## Found EOL delimiting last requested line.  Compute ptr (incl. EOL)
     if (isempty (eoi))
       eoi_pos = nblks * BUFLENGTH + count;
     else
@@ -496,7 +504,7 @@ endfunction
 %!error textread (1)
 %!error <arguments must be strings> textread (1, "%f")
 %!error <arguments must be strings> textread ("fname", 1)
-%!error <missing or illegal value for> textread (file_in_loadpath ("textread.m"), "", "headerlines")
-%!error <missing or illegal value for> textread (file_in_loadpath ("textread.m"), "", "headerlines", 'hh')
+%!error <missing or invalid value for> textread (file_in_loadpath ("textread.m"), "", "headerlines")
+%!error <missing or invalid value for> textread (file_in_loadpath ("textread.m"), "", "headerlines", 'hh')
 %!error <character value required for> textread (file_in_loadpath ("textread.m"), "%s", "endofline", true)
 

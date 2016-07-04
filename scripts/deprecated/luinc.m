@@ -16,9 +16,10 @@
 ## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
 
-## @deftypefn  {Built-in Function} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, '0')
-## @deftypefnx {Built-in Function} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, @var{droptol})
-## @deftypefnx {Built-in Function} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, @var{opts})
+## -*- texinfo -*-
+## @deftypefn  {} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, '0')
+## @deftypefnx {} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, @var{droptol})
+## @deftypefnx {} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, @var{opts})
 ##
 ## @code{luinc} is deprecated and will be removed in Octave version 4.4.
 ## Please use @code{ilu} or @code{ichol} in all new code.
@@ -90,4 +91,21 @@ function [L, U, P, Q] = luinc (varargin)
   [L, U, P, Q] = __luinc__ (varargin{:});
 
 endfunction
+
+
+%!testif HAVE_UMFPACK
+%! a = sparse ([1,2,0,0;0,1,2,0;1e-14,0,3,0;0,0,0,1]);
+%! [l,u] = luinc (a, 1e-10);
+%! assert (l*u, sparse ([1,2,0,0;0,1,2,0;0,0,3,0;0,0,0,1]), 1e-10);
+%! opts.droptol = 1e-10;
+%! [l,u] = luinc (a, opts);
+%! assert (l*u, sparse ([1,2,0,0;0,1,2,0;0,0,3,0;0,0,0,1]), 1e-10);
+
+%!testif HAVE_UMFPACK
+%! a = sparse ([1i,2,0,0;0,1,2,0;1e-14,0,3,0;0,0,0,1]);
+%! [l,u] = luinc (a, 1e-10);
+%! assert (l*u, sparse ([1i,2,0,0;0,1,2,0;0,0,3,0;0,0,0,1]), 1e-10);
+%! opts.droptol = 1e-10;
+%! [l,u] = luinc (a, opts);
+%! assert (l*u, sparse ([1i,2,0,0;0,1,2,0;0,0,3,0;0,0,0,1]), 1e-10);
 

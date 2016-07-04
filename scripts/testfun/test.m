@@ -17,15 +17,15 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Command} {} test @var{name}
-## @deftypefnx {Command} {} test @var{name} quiet|normal|verbose
-## @deftypefnx {Function File} {} test ("@var{name}", "quiet|normal|verbose", @var{fid})
-## @deftypefnx {Function File} {} test ("@var{name}", "quiet|normal|verbose", @var{fname})
-## @deftypefnx {Function File} {@var{success} =} test (@dots{})
-## @deftypefnx {Function File} {[@var{n}, @var{nmax}, @var{nxfail}, @var{nskip}] =} test (@dots{})
-## @deftypefnx {Function File} {[@var{code}, @var{idx}] =} test ("@var{name}", "grabdemo")
-## @deftypefnx {Function File} {} test ([], "explain", @var{fid})
-## @deftypefnx {Function File} {} test ([], "explain", @var{fname})
+## @deftypefn  {} {} test @var{name}
+## @deftypefnx {} {} test @var{name} quiet|normal|verbose
+## @deftypefnx {} {} test ("@var{name}", "quiet|normal|verbose", @var{fid})
+## @deftypefnx {} {} test ("@var{name}", "quiet|normal|verbose", @var{fname})
+## @deftypefnx {} {@var{success} =} test (@dots{})
+## @deftypefnx {} {[@var{n}, @var{nmax}, @var{nxfail}, @var{nskip}] =} test (@dots{})
+## @deftypefnx {} {[@var{code}, @var{idx}] =} test ("@var{name}", "grabdemo")
+## @deftypefnx {} {} test ([], "explain", @var{fid})
+## @deftypefnx {} {} test ([], "explain", @var{fname})
 ##
 ## Perform built-in self-tests from the first file in the loadpath matching
 ## @var{name}.
@@ -81,7 +81,7 @@
 ## returns true if all of the tests were successful.  If called with more
 ## than one output argument then the number of successful tests (@var{n}),
 ## the total number of tests in the file (@var{nmax}), the number of xtest
-## failures (@var{nxfail}), and the number of skipped tests (@var{nskip} are
+## failures (@var{nxfail}), and the number of skipped tests (@var{nskip}) are
 ## returned.
 ##
 ## Example
@@ -189,7 +189,7 @@ function [__n, __nmax, __nxfail, __nskip] = test (__name, __flag = "normal", __f
     fprintf (__fid, "# %s test was skipped\n", __signal_skip);
     fprintf (__fid, "# %s code for the test\n\n", __signal_block);
     fprintf (__fid, "# Search for the unexpected results in the file\n");
-    fprintf (__fid, "# then page back to find the file name which caused it.\n");
+    fprintf (__fid, "# then page back to find the filename which caused it.\n");
     fprintf (__fid, "# The result may be an unexpected failure (in which\n");
     fprintf (__fid, "# case an error will be reported) or an unexpected\n");
     fprintf (__fid, "# success (in which case no error will be reported).\n");
@@ -537,7 +537,7 @@ function [__n, __nmax, __nxfail, __nskip] = test (__name, __flag = "normal", __f
           __istest = true;
           __code = __code(__e + 1 : end);
         else
-          __xskip++;
+          __xskip += 1;
           __istest = false;
           __code = ""; # Skip the code.
           __msg = [__signal_skip "skipped test\n"];
@@ -587,15 +587,15 @@ function [__n, __nmax, __nxfail, __nskip] = test (__name, __flag = "normal", __f
           endif
         catch
           if (strcmp (__type, "xtest"))
-            __msg = [__signal_fail "known failure\n" lasterr()];
-            __xfail++;
+            __msg = [__signal_fail "known failure\n"];
+            __xfail += 1;
             __success = false;
           else
             __msg = [__signal_fail "test failed\n" lasterr()];
             __success = false;
           endif
           if (isempty (lasterr ()))
-            error ("empty error text, probably Ctrl-C --- aborting");
+            error ("test: empty error text, probably Ctrl-C --- aborting");
           endif
         end_try_catch
         clear __test__;
@@ -609,14 +609,15 @@ function [__n, __nmax, __nxfail, __nskip] = test (__name, __flag = "normal", __f
           fflush (__fid);
         endif
         fprintf (__fid, "%s\n", __msg);
-        fflush (__fid);
         ## Show the variable context.
-        if (! strcmp (__type, "error") && ! strcmp (__type, "testif")
+        if (! strcmp (__type, "error")
+            && ! strcmp (__type, "testif")
+            && ! strcmp (__type, "xtest")
             && ! all (__shared == " "))
           fputs (__fid, "shared variables ");
           eval (sprintf ("fdisp(__fid,var2struct(%s));", __shared));
-          fflush (__fid);
         endif
+        fflush (__fid);
       endif
       if (! __success && ! __isxtest)
         __all_success = false;
@@ -688,6 +689,7 @@ endfunction
 
 ## Find [start,end] of fn in 'function [a,b] = fn'.
 function pos = function_name (def)
+
   pos = [];
 
   ## Find the end of the name.
@@ -703,15 +705,17 @@ function pos = function_name (def)
   if (isempty (left))
     return;
   endif
-  left++;
+  left += 1;
 
   ## Return the end points of the name.
   pos = [left, right];
+
 endfunction
 
 ## Strip <pattern> from '<pattern> code'.
 ## Also handles 'id=ID code'
 function [pattern, id, rest] = getpattern (str)
+
   pattern = ".";
   id = [];
   rest = str;
@@ -725,6 +729,7 @@ function [pattern, id, rest] = getpattern (str)
   elseif (strncmp (str, "id=", 3))
     [id, rest] = strtok (str(4:end));
   endif
+
 endfunction
 
 ## Strip '.*prefix:' from '.*prefix: msg\n' and strip trailing blanks.
@@ -801,14 +806,14 @@ endfunction
 ## Test 'fail' keyword
 %!fail ("test", "Invalid call to test")  # no args, generates usage()
 %!fail ("test (1,2,3,4)", "usage.*test") # too many args, generates usage()
-%!fail ('test ("test", "bogus")', "unknown flag")  # incorrect args
+%!fail ('test ("test", "invalid")', "unknown flag")  # incorrect args
 %!fail ('garbage','garbage.*undefined')  # usage on nonexistent function should be
 
 ## Test 'error' keyword
 %!error test              # no args, generates usage()
 %!error test (1,2,3,4)    # too many args, generates usage()
-%!error <unknown flag> test ("test", "bogus"); # incorrect args
-%!error test ("test", "bogus");  # test without pattern
+%!error <unknown flag> test ("test", "invalid"); # incorrect args
+%!error test ("test", "invalid");  # test without pattern
 %!error <'garbage' undefined> garbage; # usage on nonexistent function is error
 
 ## Test 'warning' keyword
@@ -874,7 +879,7 @@ endfunction
 %!         " a=3                  # single line demo blocks work too");
 
 ## Test 'testif' keyword
-%!testif HAVE_BOGUS_FEATURE
+%!testif HAVE_INVALID_FEATURE
 %! error ("testif executed code despite not having feature");
 
 ## Test 'xtest' keyword
@@ -883,7 +888,7 @@ endfunction
 %!xtest
 %! assert (0, 1);      # Test fails
 
-## Test comment block. it can contain anything.
+## Test comment block.  It can contain anything.
 %!##
 %! it is the "#" as the block type that makes it a comment
 %! and it stays as a comment even through continuation lines
@@ -896,24 +901,23 @@ endfunction
 
 ## All of the following tests should fail.  These tests should
 ## be disabled unless you are developing test() since users don't
-## like to be presented with expected failures.  I use '% !' to disable.
-% !test   error("---------Failure tests.  Use test('test','verbose',1)");
-% !test   assert([a,b,c],[1,3,6]);   # variables have wrong values
-% !bogus                     # unknown block type
-% !error  toeplitz([1,2,3]); # correct usage
-% !test   syntax errors)     # syntax errors fail properly
-% !shared garbage in         # variables must be comma separated
-% !error  syntax++error      # error test fails on syntax errors
-% !error  "succeeds.";       # error test fails if code succeeds
-% !error <wrong pattern> error("message")  # error pattern must match
-% !demo   with syntax error  # syntax errors in demo fail properly
-% !shared a,b,c
-% !demo                      # shared variables not available in demo
-% ! assert (exist ("a", "var"))
-% !error
-% ! test ('/etc/passwd');
-% ! test ("nonexistent file");
-% ! ## These don't signal an error, so the test for an error fails. Note
-% ! ## that the call doesn't reference the current fid (it is unavailable),
-% ! ## so of course the informational message is not printed in the log.
-
+## like to be presented with expected failures.
+## %!test   error("---------Failure tests.  Use test('test','verbose',1)");
+## %!test   assert([a,b,c],[1,3,6]);   # variables have wrong values
+## %!invalid                   # unknown block type
+## %!error  toeplitz([1,2,3]); # correct usage
+## %!test   syntax errors)     # syntax errors fail properly
+## %!shared garbage in         # variables must be comma separated
+## %!error  syntax++error      # error test fails on syntax errors
+## %!error  "succeeds.";       # error test fails if code succeeds
+## %!error <wrong pattern> error("message")  # error pattern must match
+## %!demo   with syntax error  # syntax errors in demo fail properly
+## %!shared a,b,c
+## %!demo                      # shared variables not available in demo
+## %! assert (exist ("a", "var"))
+## %!error
+## %! test ('/etc/passwd');
+## %! test ("nonexistent file");
+## %! ## These don't signal an error, so the test for an error fails.  Note
+## %! ## that the call doesn't reference the current fid (it is unavailable),
+## %! ## so of course the informational message is not printed in the log.

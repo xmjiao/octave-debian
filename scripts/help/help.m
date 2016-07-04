@@ -17,10 +17,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Command} {} help @var{name}
-## @deftypefnx {Command} {} help @code{--list}
-## @deftypefnx {Command} {} help @code{.}
-## @deftypefnx {Command} {} help
+## @deftypefn  {} {} help @var{name}
+## @deftypefnx {} {} help @code{--list}
+## @deftypefnx {} {} help @code{.}
+## @deftypefnx {} {} help
 ## Display the help text for @var{name}.
 ##
 ## For example, the command @kbd{help help} prints a short message describing
@@ -117,7 +117,7 @@ function retval = help (name)
     endif
 
     if (nargout == 0)
-      which (name);
+      evalin ("caller", ["which (\"" name "\")"]);
       printf ("\n%s\n%s", text, __additional_help_message__ ());
     else
       retval = text;
@@ -130,7 +130,6 @@ function retval = help (name)
 endfunction
 
 function retval = do_list_operators ()
-
   retval = sprintf ("*** operators:\n\n%s\n\n",
                     list_in_columns (__operators__ ()));
 endfunction
@@ -215,5 +214,5 @@ endfunction
 ## Test input validation
 %!error <invalid input> help (42)
 %!error <invalid input> help ("abc", "def")
-%!error <'_!UNLIKELY_FCN!_' not found> help ("_!UNLIKELY_FCN!_")
+%!error <'_! UNLIKELY_FCN! _' not found> help ("_! UNLIKELY_FCN! _")
 

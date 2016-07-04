@@ -1,3 +1,30 @@
+s =
+
+  scalar structure containing the fields:
+
+    valid = 
+    default = 
+    doc = The value for the @code{papersize}, and @code{paperposition} properties depends upon __prop__.  The horizontal and vertical values for @code{papersize} and @code{paperposition} reverse order when __prop__ is switched between @code{"portrait"} and @code{"landscape"}.
+    printdefault = 1
+
+s =
+
+  scalar structure containing the fields:
+
+    valid = 
+    default = 
+    doc = __prop__ is deprecated.  Use @code{sizechangedfcn} instead.
+    printdefault = 1
+
+s =
+
+  scalar structure containing the fields:
+
+    valid = 
+    default = 
+    doc = Callback triggered when the figure window size is changed.
+    printdefault = 1
+
 @c DO NOT EDIT!  Generated automatically by genpropdoc.m.
 
 @c Copyright (C) 2014-2015 Pantxo Diribarne
@@ -132,16 +159,16 @@ Callback function executed immediately before figure is deleted.
 @code{dockcontrols} is unused.
 
 
-@anchor{XREFfiguredoublebuffer}
-@cindex figure doublebuffer
-@item @code{doublebuffer}: @qcode{"off"} | @{@qcode{"on"}@}
-
-
-
 @anchor{XREFfigurefilename}
 @cindex figure filename
 @item @code{filename}: string, def. @qcode{""}
-The filename used when saving the plot figure
+The filename used when saving the plot figure.
+
+
+@anchor{XREFfiguregraphicssmoothing}
+@cindex figure graphicssmoothing
+@item @code{graphicssmoothing}: @qcode{"off"} | @{@qcode{"on"}@}
+Use smoothing techniques to reduce the appearance of jagged lines.
 
 
 @anchor{XREFfigurehandlevisibility}
@@ -170,8 +197,8 @@ Assign the next lowest unused integer as the Figure number.
 
 @anchor{XREFfigureinverthardcopy}
 @cindex figure inverthardcopy
-@item @code{inverthardcopy}: @{@qcode{"off"}@} | @qcode{"on"}
-
+@item @code{inverthardcopy}: @qcode{"off"} | @{@qcode{"on"}@}
+Replace the figure and axes background color with white when printing.
 
 
 @anchor{XREFfigurekeypressfcn}
@@ -200,12 +227,6 @@ A cell array containing strings representing the modifiers pressed with the key.
 Control the display of the figure menu bar in the upper left of the figure.
 
 
-@anchor{XREFfiguremincolormap}
-@cindex figure mincolormap
-@item @code{mincolormap}: def. @code{64}
-
-
-
 @anchor{XREFfigurename}
 @cindex figure name
 @item @code{name}: string, def. @qcode{""}
@@ -232,38 +253,38 @@ Display "Figure" followed by the numerical figure handle value in the figure tit
 
 @anchor{XREFfigurepaperorientation}
 @cindex figure paperorientation
-@item @code{paperorientation}: @qcode{"landscape"} | @{@qcode{"portrait"}@} | @qcode{"rotated"}
-
+@item @code{paperorientation}: @qcode{"landscape"} | @{@qcode{"portrait"}@}
+The value for the @code{papersize}, and @code{paperposition} properties depends upon @code{paperorientation}.  The horizontal and vertical values for @code{papersize} and @code{paperposition} reverse order when @code{paperorientation} is switched between @code{"portrait"} and @code{"landscape"}.
 
 
 @anchor{XREFfigurepaperposition}
 @cindex figure paperposition
 @item @code{paperposition}: four-element vector, def. @code{[0.25000   2.50000   8.00000   6.00000]}
-Vector @code{[x0 y0 width height]} defining the position of the figure (in @code{paperunits} units) on the printed page.  Setting @code{paperposition} also forces the @code{paperpositionmode} property to be set to @qcode{"manual"}.
+Vector @code{[left bottom width height]} defining the position and size of the figure (in @code{paperunits} units) on the printed page.  The position @code{[left bottom]} defines the lower left corner of the figure on the page, and the size is defined by @code{[width height]}.  For output formats not implicitly rendered on paper, @code{width} and @code{height} define the size of the image and the position information is ignored.  Setting @code{paperposition} also forces the @code{paperpositionmode} property to be set to @qcode{"manual"}.
 
 
 @anchor{XREFfigurepaperpositionmode}
 @cindex figure paperpositionmode
 @item @code{paperpositionmode}: @qcode{"auto"} | @{@qcode{"manual"}@}
-If @code{paperpositionmode} is set to @qcode{"auto"}, the @code{paperposition} property is automatically computed: the printed figure will have the same size as the on-screen figure and will be centered on the output page.
+If @code{paperpositionmode} is set to @qcode{"auto"}, the @code{paperposition} property is automatically computed: the printed figure will have the same size as the on-screen figure and will be centered on the output page.  Setting the @code{paperpositionmode} to @code{"auto"} does not modify the value of the @code{paperposition} property.
 
 
 @anchor{XREFfigurepapersize}
 @cindex figure papersize
 @item @code{papersize}: two-element vector, def. @code{[8.5000   11.0000]}
-Vector @code{[width height]} defining the size of the paper for printing.  Setting this property forces the @code{papertype} property to be set to @qcode{"<custom>"}.
+Vector @code{[width height]} defining the size of the paper for printing.  Setting the @code{papersize} property to a value, not associated with one of the defined @code{papertypes} and consistent with the setting for @code{paperorientation}, forces the @code{papertype} property to the value @qcode{"<custom>"}.  If @code{papersize} is set to a value associated with a supported @code{papertype} and consistent with the @code{paperorientation}, the @code{papertype} value is modified to the associated value.
 
 
 @anchor{XREFfigurepapertype}
 @cindex figure papertype
 @item @code{papertype}: @qcode{"<custom>"} | @qcode{"a"} | @qcode{"a0"} | @qcode{"a1"} | @qcode{"a2"} | @qcode{"a3"} | @qcode{"a4"} | @qcode{"a5"} | @qcode{"arch-a"} | @qcode{"arch-b"} | @qcode{"arch-c"} | @qcode{"arch-d"} | @qcode{"arch-e"} | @qcode{"b"} | @qcode{"b0"} | @qcode{"b1"} | @qcode{"b2"} | @qcode{"b3"} | @qcode{"b4"} | @qcode{"b5"} | @qcode{"c"} | @qcode{"d"} | @qcode{"e"} | @qcode{"tabloid"} | @qcode{"uslegal"} | @{@qcode{"usletter"}@}
-Name of the paper used for printed output.  Setting @code{papertype} also changes @code{papersize} accordingly.
+Name of the paper used for printed output.  Setting @code{papertype} also changes @code{papersize}, while maintaining consistency with the @code{paperorientation} property.
 
 
 @anchor{XREFfigurepaperunits}
 @cindex figure paperunits
 @item @code{paperunits}: @qcode{"centimeters"} | @{@qcode{"inches"}@} | @qcode{"normalized"} | @qcode{"points"}
-The unit used to compute the @code{paperposition} property.
+The unit used to compute the @code{paperposition} property.  For @code{paperunits} set to @code{"pixels"}, the conversion between physical units (ex: @code{"inches"}) and @code{"pixels"} is dependent on the @code{screenpixelsperinch} property of the root object.
 
 
 @anchor{XREFfigureparent}
@@ -298,7 +319,7 @@ Handle of the parent graphics object.
 
 @anchor{XREFfigurerenderer}
 @cindex figure renderer
-@item @code{renderer}: @qcode{"none"} | @qcode{"opengl"} | @{@qcode{"painters"}@} | @qcode{"zbuffer"}
+@item @code{renderer}: @{@qcode{"opengl"}@} | @qcode{"painters"}
 
 
 
@@ -311,13 +332,13 @@ Handle of the parent graphics object.
 @anchor{XREFfigureresize}
 @cindex figure resize
 @item @code{resize}: @qcode{"off"} | @{@qcode{"on"}@}
-
+@code{resize} is unused.
 
 
 @anchor{XREFfigureresizefcn}
 @cindex figure resizefcn
 @item @code{resizefcn}: string | function handle, def. @code{[](0x0)}
-
+@code{resizefcn} is deprecated.  Use @code{sizechangedfcn} instead.
 
 
 @anchor{XREFfigureselected}
@@ -335,7 +356,13 @@ Handle of the parent graphics object.
 @anchor{XREFfigureselectiontype}
 @cindex figure selectiontype
 @item @code{selectiontype}: @qcode{"alt"} | @qcode{"extend"} | @{@qcode{"normal"}@} | @qcode{"open"}
-@code{selectiontype} is unused.
+
+
+
+@anchor{XREFfiguresizechangedfcn}
+@cindex figure sizechangedfcn
+@item @code{sizechangedfcn}: string | function handle, def. @code{[](0x0)}
+Callback triggered when the figure window size is changed.
 
 
 @anchor{XREFfiguretag}
@@ -347,7 +374,7 @@ A user-defined string to label the graphics object.
 @anchor{XREFfiguretoolbar}
 @cindex figure toolbar
 @item @code{toolbar}: @{@qcode{"auto"}@} | @qcode{"figure"} | @qcode{"none"}
-@code{toolbar} is unused.
+Control the display of the toolbar along the bottom of the figure window.  When set to @qcode{"auto"}, the display is based on the value of the @code{menubar} property.
 
 
 @anchor{XREFfiguretype}
@@ -419,36 +446,16 @@ With @code{windowbuttondownfcn} and @code{windowbuttonmotionfcn}, the mouse call
 @anchor{XREFfigurewindowstyle}
 @cindex figure windowstyle
 @item @code{windowstyle}: @qcode{"docked"} | @qcode{"modal"} | @{@qcode{"normal"}@}
+The window style of a figure.  One of the following values:
+@table @code
+@item normal
+Set the window style as non modal.
+@item modal
+Set the window as modal so that it will stay on top of all normal figures.
+@item docked
+Setting the window style as docked currently does not dock the window.
+@end table
 
-
-
-@anchor{XREFfigurewvisual}
-@cindex figure wvisual
-@item @code{wvisual}: def. @qcode{""}
-
-
-
-@anchor{XREFfigurewvisualmode}
-@cindex figure wvisualmode
-@item @code{wvisualmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
-
-
-
-@anchor{XREFfigurexdisplay}
-@cindex figure xdisplay
-@item @code{xdisplay}: def. @qcode{""}
-
-
-
-@anchor{XREFfigurexvisual}
-@cindex figure xvisual
-@item @code{xvisual}: def. @qcode{""}
-
-
-
-@anchor{XREFfigurexvisualmode}
-@cindex figure xvisualmode
-@item @code{xvisualmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
-
+Changing modes of a visible figure may cause the figure to close and reopen.
 
 @end table

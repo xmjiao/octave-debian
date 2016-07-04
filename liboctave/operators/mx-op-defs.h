@@ -22,20 +22,22 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_mx_op_defs_h)
+#if ! defined (octave_mx_op_defs_h)
 #define octave_mx_op_defs_h 1
 
-#include "lo-array-gripes.h"
+#include "octave-config.h"
+
+#include "lo-array-errwarn.h"
 #include "mx-op-decl.h"
 #include "mx-inlines.cc"
 
 #define SNANCHK(s) \
-  if (xisnan (s)) \
-    gripe_nan_to_logical_conversion ()
+  if (octave::math::isnan (s)) \
+    err_nan_to_logical_conversion ()
 
 #define MNANCHK(m, MT) \
   if (do_mx_check (m, mx_inline_any_nan<MT>)) \
-    gripe_nan_to_logical_conversion ()
+    err_nan_to_logical_conversion ()
 
 // vector by scalar operations.
 
@@ -211,7 +213,7 @@ along with Octave; see the file COPYING.  If not, see
   MM_BOOL_OP (mx_el_and, mx_inline_and, M1, M2) \
   MM_BOOL_OP (mx_el_or,  mx_inline_or,  M1, M2)
 
-// N-d matrix by scalar operations.
+// N-D matrix by scalar operations.
 
 #define NDS_BIN_OP(R, OP, ND, S, F) \
   R \
@@ -258,7 +260,7 @@ along with Octave; see the file COPYING.  If not, see
   NDS_BOOL_OP (mx_el_and_not, mx_inline_and_not, ND, S) \
   NDS_BOOL_OP (mx_el_or_not,  mx_inline_or_not,  ND, S)
 
-// scalar by N-d matrix operations.
+// scalar by N-D matrix operations.
 
 #define SND_BIN_OP(R, OP, S, ND, F) \
   R \
@@ -305,7 +307,7 @@ along with Octave; see the file COPYING.  If not, see
   SND_BOOL_OP (mx_el_and_not, mx_inline_and_not, S, ND) \
   SND_BOOL_OP (mx_el_or_not,  mx_inline_or_not,  S, ND)
 
-// N-d matrix by N-d matrix operations.
+// N-D matrix by N-D matrix operations.
 
 #define NDND_BIN_OP(R, OP, ND1, ND2, F) \
   R \
@@ -402,20 +404,18 @@ OP (const M& m, const DM& dm) \
   octave_idx_type dm_nc = dm.cols (); \
  \
   if (m_nr != dm_nr || m_nc != dm_nc) \
-    gripe_nonconformant (#OP, m_nr, m_nc, dm_nr, dm_nc); \
-  else \
+    err_nonconformant (#OP, m_nr, m_nc, dm_nr, dm_nc); \
+ \
+  r.resize (m_nr, m_nc); \
+ \
+  if (m_nr > 0 && m_nc > 0) \
     { \
-      r.resize (m_nr, m_nc); \
+      r = R (m); \
  \
-      if (m_nr > 0 && m_nc > 0) \
-        { \
-          r = R (m); \
+      octave_idx_type len = dm.length (); \
  \
-          octave_idx_type len = dm.length (); \
- \
-          for (octave_idx_type i = 0; i < len; i++) \
-            r.elem (i, i) OPEQ dm.elem (i, i); \
-        } \
+      for (octave_idx_type i = 0; i < len; i++) \
+        r.elem (i, i) OPEQ dm.elem (i, i); \
     } \
  \
   return r; \
@@ -434,22 +434,20 @@ operator * (const M& m, const DM& dm) \
   octave_idx_type dm_nc = dm.cols (); \
  \
   if (m_nc != dm_nr) \
-    gripe_nonconformant ("operator *", m_nr, m_nc, dm_nr, dm_nc); \
-  else \
-    { \
-      r = R (m_nr, dm_nc); \
-      R::element_type *rd = r.fortran_vec (); \
-      const M::element_type *md = m.data (); \
-      const DM::element_type *dd = dm.data (); \
+    err_nonconformant ("operator *", m_nr, m_nc, dm_nr, dm_nc); \
  \
-      octave_idx_type len = dm.length (); \
-      for (octave_idx_type i = 0; i < len; i++) \
-        { \
-          mx_inline_mul (m_nr, rd, md, dd[i]); \
-          rd += m_nr; md += m_nr; \
-        } \
-      mx_inline_fill (m_nr * (dm_nc - len), rd, R_ZERO); \
+  r = R (m_nr, dm_nc); \
+  R::element_type *rd = r.fortran_vec (); \
+  const M::element_type *md = m.data (); \
+  const DM::element_type *dd = dm.data (); \
+ \
+  octave_idx_type len = dm.length (); \
+  for (octave_idx_type i = 0; i < len; i++) \
+    { \
+      mx_inline_mul (m_nr, rd, md, dd[i]); \
+      rd += m_nr; md += m_nr; \
     } \
+  mx_inline_fill (m_nr * (dm_nc - len), rd, R_ZERO); \
  \
   return r; \
 }
@@ -474,7 +472,7 @@ OP (const DM& dm, const M& m) \
   octave_idx_type m_nc = m.cols (); \
  \
   if (dm_nr != m_nr || dm_nc != m_nc) \
-    gripe_nonconformant (#OP, dm_nr, dm_nc, m_nr, m_nc); \
+    err_nonconformant (#OP, dm_nr, dm_nc, m_nr, m_nc); \
   else \
     { \
       if (m_nr > 0 && m_nc > 0) \
@@ -506,22 +504,20 @@ operator * (const DM& dm, const M& m) \
   octave_idx_type m_nc = m.cols (); \
  \
   if (dm_nc != m_nr) \
-    gripe_nonconformant ("operator *", dm_nr, dm_nc, m_nr, m_nc); \
-  else \
-    { \
-      r = R (dm_nr, m_nc); \
-      R::element_type *rd = r.fortran_vec (); \
-      const M::element_type *md = m.data (); \
-      const DM::element_type *dd = dm.data (); \
+    err_nonconformant ("operator *", dm_nr, dm_nc, m_nr, m_nc); \
  \
-      octave_idx_type len = dm.length (); \
-      for (octave_idx_type i = 0; i < m_nc; i++) \
-        { \
-          mx_inline_mul (len, rd, md, dd); \
-          rd += len; md += m_nr; \
-          mx_inline_fill (dm_nr - len, rd, R_ZERO); \
-          rd += dm_nr - len; \
-        } \
+  r = R (dm_nr, m_nc); \
+  R::element_type *rd = r.fortran_vec (); \
+  const M::element_type *md = m.data (); \
+  const DM::element_type *dd = dm.data (); \
+ \
+  octave_idx_type len = dm.length (); \
+  for (octave_idx_type i = 0; i < m_nc; i++) \
+    { \
+      mx_inline_mul (len, rd, md, dd); \
+      rd += len; md += m_nr; \
+      mx_inline_fill (dm_nr - len, rd, R_ZERO); \
+      rd += dm_nr - len; \
     } \
  \
   return r; \
@@ -547,14 +543,12 @@ operator * (const DM& dm, const M& m) \
     octave_idx_type dm2_nc = dm2.cols (); \
  \
     if (dm1_nr != dm2_nr || dm1_nc != dm2_nc) \
-      gripe_nonconformant (#OP, dm1_nr, dm1_nc, dm2_nr, dm2_nc); \
-    else \
-      { \
-        r.resize (dm1_nr, dm1_nc); \
+      err_nonconformant (#OP, dm1_nr, dm1_nc, dm2_nr, dm2_nc); \
  \
-        if (dm1_nr > 0 && dm1_nc > 0) \
-          F (dm1.length (), r.fortran_vec (), dm1.data (), dm2.data ()); \
-      } \
+    r.resize (dm1_nr, dm1_nc); \
+ \
+    if (dm1_nr > 0 && dm1_nc > 0) \
+      F (dm1.length (), r.fortran_vec (), dm1.data (), dm2.data ()); \
  \
     return r; \
   }
@@ -564,7 +558,7 @@ operator * (const DM& dm, const M& m) \
   DMDM_BIN_OP (R, operator -, DM1, DM2, mx_inline_sub) \
   DMDM_BIN_OP (R, product,    DM1, DM2, mx_inline_mul)
 
-// scalar by N-d array min/max ops
+// scalar by N-D array min/max ops
 
 #define SND_MINMAX_FCN(FCN, OP, T, S) \
 T \
@@ -604,7 +598,7 @@ M operator * (const PM& p, const M& x) \
   octave_idx_type nc = x.columns (); \
   M result; \
   if (p.columns () != nr) \
-    gripe_nonconformant ("operator *", p.rows (), p.columns (), nr, nc); \
+    err_nonconformant ("operator *", p.rows (), p.columns (), nr, nc); \
   else \
     { \
       result = M (nr, nc); \
@@ -621,9 +615,9 @@ M operator * (const M& x, const PM& p) \
   octave_idx_type nc = x.columns (); \
   M result; \
   if (p.rows () != nc) \
-    gripe_nonconformant ("operator *", nr, nc, p.rows (), p.columns ()); \
-  else \
-    result = x.index (idx_vector::colon, p.col_perm_vec ()); \
+    err_nonconformant ("operator *", nr, nc, p.rows (), p.columns ()); \
+  \
+  result = x.index (idx_vector::colon, p.col_perm_vec ()); \
   \
   return result; \
 }

@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <iostream>
@@ -33,15 +33,15 @@ along with Octave; see the file COPYING.  If not, see
 #include "quit.h"
 
 #include "defun.h"
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "oct-lvalue.h"
 #include "oct-hdf5.h"
 #include "ops.h"
 #include "ov-base.h"
 
 #if defined (HAVE_HDF5)
-#define HDF5_SAVE_TYPE H5T_NATIVE_INT16
+#  define HDF5_SAVE_TYPE H5T_NATIVE_INT16
 #endif
 
 #include "ov-base-int.h"
@@ -52,7 +52,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "variables.h"
 
 #include "byte-swap.h"
-#include "ls-oct-ascii.h"
+#include "ls-oct-text.h"
 #include "ls-utils.h"
 #include "ls-hdf5.h"
 
@@ -61,11 +61,9 @@ along with Octave; see the file COPYING.  If not, see
 
 extern template class OCTINTERP_API octave_base_scalar<double>;
 
-
 template class octave_base_matrix<int16NDArray>;
 
 template class octave_base_int_matrix<int16NDArray>;
-
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_int16_matrix,
                                      "int16 matrix", "int16");
@@ -74,16 +72,15 @@ template class octave_base_scalar<octave_int16>;
 
 template class octave_base_int_scalar<octave_int16>;
 
-
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_int16_scalar,
                                      "int16 scalar", "int16");
 
 DEFUN (int16, args, ,
-       "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} int16 (@var{x})\n\
-Convert @var{x} to 16-bit integer type.\n\
-@seealso{int8, uint8, uint16, int32, uint32, int64, uint64}\n\
-@end deftypefn")
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} int16 (@var{x})
+Convert @var{x} to 16-bit integer type.
+@seealso{int8, uint8, uint16, int32, uint32, int64, uint64}
+@end deftypefn */)
 {
   OCTAVE_TYPE_CONV_BODY (int16);
 }

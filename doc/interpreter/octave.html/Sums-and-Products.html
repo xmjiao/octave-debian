@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -58,11 +59,11 @@ Next: <a href="Utility-Functions.html#Utility-Functions" accesskey="n" rel="next
 <h3 class="section">17.4 Sums and Products</h3>
 
 <a name="XREFsum"></a><dl>
-<dt><a name="index-sum"></a>Built-in Function: <em></em> <strong>sum</strong> <em>(<var>x</var>)</em></dt>
-<dt><a name="index-sum-1"></a>Built-in Function: <em></em> <strong>sum</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
-<dt><a name="index-sum-2"></a>Built-in Function: <em></em> <strong>sum</strong> <em>(&hellip;, &quot;native&quot;)</em></dt>
-<dt><a name="index-sum-3"></a>Built-in Function: <em></em> <strong>sum</strong> <em>(&hellip;, &quot;double&quot;)</em></dt>
-<dt><a name="index-sum-4"></a>Built-in Function: <em></em> <strong>sum</strong> <em>(&hellip;, &quot;extra&quot;)</em></dt>
+<dt><a name="index-sum"></a>: <em></em> <strong>sum</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-sum-1"></a>: <em></em> <strong>sum</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-sum-2"></a>: <em></em> <strong>sum</strong> <em>(&hellip;, &quot;native&quot;)</em></dt>
+<dt><a name="index-sum-3"></a>: <em></em> <strong>sum</strong> <em>(&hellip;, &quot;double&quot;)</em></dt>
+<dt><a name="index-sum-4"></a>: <em></em> <strong>sum</strong> <em>(&hellip;, &quot;extra&quot;)</em></dt>
 <dd><p>Sum of elements along dimension <var>dim</var>.
 </p>
 <p>If <var>dim</var> is omitted, it defaults to the first non-singleton dimension.
@@ -94,10 +95,10 @@ inputs, <code>&quot;extra&quot;</code> is the same as <code>&quot;double&quot;</
 
 
 <a name="XREFprod"></a><dl>
-<dt><a name="index-prod"></a>Built-in Function: <em></em> <strong>prod</strong> <em>(<var>x</var>)</em></dt>
-<dt><a name="index-prod-1"></a>Built-in Function: <em></em> <strong>prod</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
-<dt><a name="index-prod-2"></a>Built-in Function: <em></em> <strong>prod</strong> <em>(&hellip;, &quot;native&quot;)</em></dt>
-<dt><a name="index-prod-3"></a>Built-in Function: <em></em> <strong>prod</strong> <em>(&hellip;, &quot;double&quot;)</em></dt>
+<dt><a name="index-prod"></a>: <em></em> <strong>prod</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-prod-1"></a>: <em></em> <strong>prod</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-prod-2"></a>: <em></em> <strong>prod</strong> <em>(&hellip;, &quot;native&quot;)</em></dt>
+<dt><a name="index-prod-3"></a>: <em></em> <strong>prod</strong> <em>(&hellip;, &quot;double&quot;)</em></dt>
 <dd><p>Product of elements along dimension <var>dim</var>.
 </p>
 <p>If <var>dim</var> is omitted, it defaults to the first non-singleton dimension.
@@ -124,15 +125,23 @@ in double precision even for single precision inputs.
 
 
 <a name="XREFcumsum"></a><dl>
-<dt><a name="index-cumsum"></a>Built-in Function: <em></em> <strong>cumsum</strong> <em>(<var>x</var>)</em></dt>
-<dt><a name="index-cumsum-1"></a>Built-in Function: <em></em> <strong>cumsum</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
-<dt><a name="index-cumsum-2"></a>Built-in Function: <em></em> <strong>cumsum</strong> <em>(&hellip;, &quot;native&quot;)</em></dt>
-<dt><a name="index-cumsum-3"></a>Built-in Function: <em></em> <strong>cumsum</strong> <em>(&hellip;, &quot;double&quot;)</em></dt>
-<dt><a name="index-cumsum-4"></a>Built-in Function: <em></em> <strong>cumsum</strong> <em>(&hellip;, &quot;extra&quot;)</em></dt>
+<dt><a name="index-cumsum"></a>: <em></em> <strong>cumsum</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-cumsum-1"></a>: <em></em> <strong>cumsum</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-cumsum-2"></a>: <em></em> <strong>cumsum</strong> <em>(&hellip;, &quot;native&quot;)</em></dt>
+<dt><a name="index-cumsum-3"></a>: <em></em> <strong>cumsum</strong> <em>(&hellip;, &quot;double&quot;)</em></dt>
+<dt><a name="index-cumsum-4"></a>: <em></em> <strong>cumsum</strong> <em>(&hellip;, &quot;extra&quot;)</em></dt>
 <dd><p>Cumulative sum of elements along dimension <var>dim</var>.
 </p>
 <p>If <var>dim</var> is omitted, it defaults to the first non-singleton dimension.
+For example:
 </p>
+<div class="example">
+<pre class="example">cumsum ([1, 2; 3, 4; 5, 6])
+   &rArr;  1   2
+       4   6
+       9  12
+</pre></div>
+
 <p>See <code>sum</code> for an explanation of the optional parameters
 <code>&quot;native&quot;</code>, <code>&quot;double&quot;</code>, and <code>&quot;extra&quot;</code>.
 </p>
@@ -141,19 +150,27 @@ in double precision even for single precision inputs.
 
 
 <a name="XREFcumprod"></a><dl>
-<dt><a name="index-cumprod"></a>Built-in Function: <em></em> <strong>cumprod</strong> <em>(<var>x</var>)</em></dt>
-<dt><a name="index-cumprod-1"></a>Built-in Function: <em></em> <strong>cumprod</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-cumprod"></a>: <em></em> <strong>cumprod</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-cumprod-1"></a>: <em></em> <strong>cumprod</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
 <dd><p>Cumulative product of elements along dimension <var>dim</var>.
 </p>
 <p>If <var>dim</var> is omitted, it defaults to the first non-singleton dimension.
+For example:
 </p>
+<div class="example">
+<pre class="example">cumprod ([1, 2; 3, 4; 5, 6])
+   &rArr;  1   2
+       3   8
+      15  48
+</pre></div>
+
 <p><strong>See also:</strong> <a href="#XREFprod">prod</a>, <a href="#XREFcumsum">cumsum</a>.
 </p></dd></dl>
 
 
 <a name="XREFsumsq"></a><dl>
-<dt><a name="index-sumsq"></a>Built-in Function: <em></em> <strong>sumsq</strong> <em>(<var>x</var>)</em></dt>
-<dt><a name="index-sumsq-1"></a>Built-in Function: <em></em> <strong>sumsq</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-sumsq"></a>: <em></em> <strong>sumsq</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-sumsq-1"></a>: <em></em> <strong>sumsq</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
 <dd><p>Sum of squares of elements along dimension <var>dim</var>.
 </p>
 <p>If <var>dim</var> is omitted, it defaults to the first non-singleton dimension.

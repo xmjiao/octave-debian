@@ -20,9 +20,9 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+// This file should not include config.h.  It is only included in other
+// C++ source files that should have included config.h before including
+// this file.
 
 #include <QAction>
 #include <QWidget>
@@ -33,7 +33,7 @@ along with Octave; see the file COPYING.  If not, see
 namespace QtHandles
 {
 
-template <class T>
+template <typename T>
 ToolBarButton<T>::ToolBarButton (const graphics_object& go, QAction* action)
   : Object (go, action), m_separator (0)
 {
@@ -58,12 +58,12 @@ ToolBarButton<T>::ToolBarButton (const graphics_object& go, QAction* action)
     w->insertAction (action, m_separator);
 }
 
-template <class T>
+template <typename T>
 ToolBarButton<T>::~ToolBarButton (void)
 {
 }
 
-template <class T>
+template <typename T>
 void
 ToolBarButton<T>::update (int pId)
 {

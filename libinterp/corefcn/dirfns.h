@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_dirfns_h)
+#if ! defined (octave_dirfns_h)
 #define octave_dirfns_h 1
+
+#include "octave-config.h"
 
 #include <ctime>
 
@@ -30,6 +32,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-time.h"
 
 // The time we last time we changed directories.
-extern octave_time Vlast_chdir_time;
+extern octave::sys::time Vlast_chdir_time;
 
 #endif

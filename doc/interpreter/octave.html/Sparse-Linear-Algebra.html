@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -146,9 +147,9 @@ will lead to unpredictable results, and so <code>matrix_type</code> should be
 used with care.
 </p>
 <a name="XREFnormest"></a><dl>
-<dt><a name="index-normest"></a>Function File: <em><var>n</var> =</em> <strong>normest</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-normest-1"></a>Function File: <em><var>n</var> =</em> <strong>normest</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
-<dt><a name="index-normest-2"></a>Function File: <em>[<var>n</var>, <var>c</var>] =</em> <strong>normest</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-normest"></a>: <em><var>n</var> =</em> <strong>normest</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-normest-1"></a>: <em><var>n</var> =</em> <strong>normest</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-normest-2"></a>: <em>[<var>n</var>, <var>c</var>] =</em> <strong>normest</strong> <em>(&hellip;)</em></dt>
 <dd><p>Estimate the 2-norm of the matrix <var>A</var> using a power series analysis.
 </p>
 <p>This is typically used for large matrices, where the cost of calculating
@@ -164,8 +165,8 @@ acceptable.
 
 
 <a name="XREFonenormest"></a><dl>
-<dt><a name="index-onenormest"></a>Function File: <em>[<var>est</var>, <var>v</var>, <var>w</var>, <var>iter</var>] =</em> <strong>onenormest</strong> <em>(<var>A</var>, <var>t</var>)</em></dt>
-<dt><a name="index-onenormest-1"></a>Function File: <em>[<var>est</var>, <var>v</var>, <var>w</var>, <var>iter</var>] =</em> <strong>onenormest</strong> <em>(<var>apply</var>, <var>apply_t</var>, <var>n</var>, <var>t</var>)</em></dt>
+<dt><a name="index-onenormest"></a>: <em>[<var>est</var>, <var>v</var>, <var>w</var>, <var>iter</var>] =</em> <strong>onenormest</strong> <em>(<var>A</var>, <var>t</var>)</em></dt>
+<dt><a name="index-onenormest-1"></a>: <em>[<var>est</var>, <var>v</var>, <var>w</var>, <var>iter</var>] =</em> <strong>onenormest</strong> <em>(<var>apply</var>, <var>apply_t</var>, <var>n</var>, <var>t</var>)</em></dt>
 <dd>
 <p>Apply Higham and Tisseur&rsquo;s randomized block 1-norm estimator to
 matrix <var>A</var> using <var>t</var> test vectors.
@@ -203,11 +204,11 @@ Pseudospectra</cite>. <a href="http://citeseer.ist.psu.edu/223007.html">http://c
 
 
 <a name="XREFcondest"></a><dl>
-<dt><a name="index-condest"></a>Function File: <em></em> <strong>condest</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-condest-1"></a>Function File: <em></em> <strong>condest</strong> <em>(<var>A</var>, <var>t</var>)</em></dt>
-<dt><a name="index-condest-2"></a>Function File: <em>[<var>est</var>, <var>v</var>] =</em> <strong>condest</strong> <em>(&hellip;)</em></dt>
-<dt><a name="index-condest-3"></a>Function File: <em>[<var>est</var>, <var>v</var>] =</em> <strong>condest</strong> <em>(<var>A</var>, <var>solve</var>, <var>solve_t</var>, <var>t</var>)</em></dt>
-<dt><a name="index-condest-4"></a>Function File: <em>[<var>est</var>, <var>v</var>] =</em> <strong>condest</strong> <em>(<var>apply</var>, <var>apply_t</var>, <var>solve</var>, <var>solve_t</var>, <var>n</var>, <var>t</var>)</em></dt>
+<dt><a name="index-condest"></a>: <em></em> <strong>condest</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-condest-1"></a>: <em></em> <strong>condest</strong> <em>(<var>A</var>, <var>t</var>)</em></dt>
+<dt><a name="index-condest-2"></a>: <em>[<var>est</var>, <var>v</var>] =</em> <strong>condest</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-condest-3"></a>: <em>[<var>est</var>, <var>v</var>] =</em> <strong>condest</strong> <em>(<var>A</var>, <var>solve</var>, <var>solve_t</var>, <var>t</var>)</em></dt>
+<dt><a name="index-condest-4"></a>: <em>[<var>est</var>, <var>v</var>] =</em> <strong>condest</strong> <em>(<var>apply</var>, <var>apply_t</var>, <var>solve</var>, <var>solve_t</var>, <var>n</var>, <var>t</var>)</em></dt>
 <dd>
 <p>Estimate the 1-norm condition number of a matrix <var>A</var> using <var>t</var> test
 vectors using a randomized 1-norm estimator.
@@ -264,14 +265,14 @@ Pseudospectra</cite>. <a href="http://citeseer.ist.psu.edu/223007.html">http://c
 
 
 <a name="XREFspparms"></a><dl>
-<dt><a name="index-spparms"></a>Built-in Function: <em></em> <strong>spparms</strong> <em>()</em></dt>
-<dt><a name="index-spparms-1"></a>Built-in Function: <em><var>vals</var> =</em> <strong>spparms</strong> <em>()</em></dt>
-<dt><a name="index-spparms-2"></a>Built-in Function: <em>[<var>keys</var>, <var>vals</var>] =</em> <strong>spparms</strong> <em>()</em></dt>
-<dt><a name="index-spparms-3"></a>Built-in Function: <em><var>val</var> =</em> <strong>spparms</strong> <em>(<var>key</var>)</em></dt>
-<dt><a name="index-spparms-4"></a>Built-in Function: <em></em> <strong>spparms</strong> <em>(<var>vals</var>)</em></dt>
-<dt><a name="index-spparms-5"></a>Built-in Function: <em></em> <strong>spparms</strong> <em>(&quot;default&quot;)</em></dt>
-<dt><a name="index-spparms-6"></a>Built-in Function: <em></em> <strong>spparms</strong> <em>(&quot;tight&quot;)</em></dt>
-<dt><a name="index-spparms-7"></a>Built-in Function: <em></em> <strong>spparms</strong> <em>(<var>key</var>, <var>val</var>)</em></dt>
+<dt><a name="index-spparms"></a>: <em></em> <strong>spparms</strong> <em>()</em></dt>
+<dt><a name="index-spparms-1"></a>: <em><var>vals</var> =</em> <strong>spparms</strong> <em>()</em></dt>
+<dt><a name="index-spparms-2"></a>: <em>[<var>keys</var>, <var>vals</var>] =</em> <strong>spparms</strong> <em>()</em></dt>
+<dt><a name="index-spparms-3"></a>: <em><var>val</var> =</em> <strong>spparms</strong> <em>(<var>key</var>)</em></dt>
+<dt><a name="index-spparms-4"></a>: <em></em> <strong>spparms</strong> <em>(<var>vals</var>)</em></dt>
+<dt><a name="index-spparms-5"></a>: <em></em> <strong>spparms</strong> <em>(&quot;default&quot;)</em></dt>
+<dt><a name="index-spparms-6"></a>: <em></em> <strong>spparms</strong> <em>(&quot;tight&quot;)</em></dt>
+<dt><a name="index-spparms-7"></a>: <em></em> <strong>spparms</strong> <em>(<var>key</var>, <var>val</var>)</em></dt>
 <dd><p>Query or set the parameters used by the sparse solvers and factorization
 functions.
 </p>
@@ -350,7 +351,7 @@ longer running time.
 
 
 <a name="XREFsprank"></a><dl>
-<dt><a name="index-sprank"></a>Loadable Function: <em><var>p</var> =</em> <strong>sprank</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-sprank"></a>: <em><var>p</var> =</em> <strong>sprank</strong> <em>(<var>S</var>)</em></dt>
 <dd><a name="index-structural-rank"></a>
 
 <p>Calculate the structural rank of the sparse matrix <var>S</var>.
@@ -366,55 +367,60 @@ such the numerical rank of the matrix <var>S</var> is bounded by
 
 
 <a name="XREFsymbfact"></a><dl>
-<dt><a name="index-symbfact"></a>Loadable Function: <em>[<var>count</var>, <var>h</var>, <var>parent</var>, <var>post</var>, <var>r</var>] =</em> <strong>symbfact</strong> <em>(<var>S</var>)</em></dt>
-<dt><a name="index-symbfact-1"></a>Loadable Function: <em>[&hellip;] =</em> <strong>symbfact</strong> <em>(<var>S</var>, <var>typ</var>)</em></dt>
-<dt><a name="index-symbfact-2"></a>Loadable Function: <em>[&hellip;] =</em> <strong>symbfact</strong> <em>(<var>S</var>, <var>typ</var>, <var>mode</var>)</em></dt>
+<dt><a name="index-symbfact"></a>: <em>[<var>count</var>, <var>h</var>, <var>parent</var>, <var>post</var>, <var>R</var>] =</em> <strong>symbfact</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-symbfact-1"></a>: <em>[&hellip;] =</em> <strong>symbfact</strong> <em>(<var>S</var>, <var>typ</var>)</em></dt>
+<dt><a name="index-symbfact-2"></a>: <em>[&hellip;] =</em> <strong>symbfact</strong> <em>(<var>S</var>, <var>typ</var>, <var>mode</var>)</em></dt>
 <dd>
-<p>Perform a symbolic factorization analysis on the sparse matrix <var>S</var>.
+<p>Perform a symbolic factorization analysis of the sparse matrix <var>S</var>.
 </p>
 <p>The input variables are
 </p>
 <dl compact="compact">
 <dt><var>S</var></dt>
-<dd><p><var>S</var> is a complex or real sparse matrix.
+<dd><p><var>S</var> is a real or complex sparse matrix.
 </p>
 </dd>
 <dt><var>typ</var></dt>
 <dd><p>Is the type of the factorization and can be one of
 </p>
 <dl compact="compact">
-<dt>&lsquo;<samp>sym</samp>&rsquo;</dt>
-<dd><p>Factorize <var>S</var>.  This is the default.
+<dt><code>&quot;sym&quot;</code> (default)</dt>
+<dd><p>Factorize <var>S</var>.  Assumes <var>S</var> is symmetric and uses the upper
+triangular portion of the matrix.
 </p>
 </dd>
-<dt>&lsquo;<samp>col</samp>&rsquo;</dt>
+<dt><code>&quot;col&quot;</code></dt>
 <dd><p>Factorize <code><var>S</var>' * <var>S</var></code>.
 </p>
 </dd>
-<dt>&lsquo;<samp>row</samp>&rsquo;</dt>
+<dt><code>&quot;row&quot;</code></dt>
 <dd><p>Factorize <code><var>S</var> * <var>S</var>'</code>.
 </p>
 </dd>
-<dt>&lsquo;<samp>lo</samp>&rsquo;</dt>
-<dd><p>Factorize <code><var>S</var>'</code>
+<dt><code>&quot;lo&quot;</code></dt>
+<dd><p>Factorize <code><var>S</var>'</code>.  Assumes <var>S</var> is symmetric and uses the lower
+triangular portion of the matrix.
 </p></dd>
 </dl>
 
 </dd>
 <dt><var>mode</var></dt>
-<dd><p>The default is to return the Cholesky&nbsp;factorization for <var>r</var>, and if
-<var>mode</var> is <code>'L'</code>, the conjugate transpose of the
-Cholesky&nbsp;factorization is returned.  The conjugate transpose version is
-faster and uses less memory, but returns the same values for <var>count</var>,
-<var>h</var>, <var>parent</var> and <var>post</var> outputs.
+<dd><p>When <var>mode</var> is unspecified return the Cholesky&nbsp;factorization for
+<var>R</var>.  If <var>mode</var> is <code>&quot;lower&quot;</code> or <code>&quot;L&quot;</code> then return
+the conjugate transpose <code><var>R</var>'</code> which is a lower triangular factor.
+The conjugate transpose version is faster and uses less memory, but still
+returns the same values for all other outputs: <var>count</var>, <var>h</var>,
+<var>parent</var>, and <var>post</var>.
 </p></dd>
 </dl>
 
-<p>The output variables are
+<p>The output variables are:
 </p>
 <dl compact="compact">
 <dt><var>count</var></dt>
-<dd><p>The row counts of the Cholesky&nbsp;factorization as determined by <var>typ</var>.
+<dd><p>The row counts of the Cholesky&nbsp;factorization as determined by
+<var>typ</var>.  The computational difficulty of performing the true
+factorization using <code>chol</code> is <code>sum (<var>count</var> .^ 2)</code>.
 </p>
 </dd>
 <dt><var>h</var></dt>
@@ -426,18 +432,20 @@ faster and uses less memory, but returns the same values for <var>count</var>,
 </p>
 </dd>
 <dt><var>post</var></dt>
-<dd><p>A sparse boolean matrix whose structure is that of the Cholesky
-factorization as determined by <var>typ</var>.
+<dd><p>A sparse boolean matrix whose structure is that of the
+Cholesky&nbsp;factorization as determined by <var>typ</var>.
 </p></dd>
 </dl>
-</dd></dl>
+
+<p><strong>See also:</strong> <a href="Matrix-Factorizations.html#XREFchol">chol</a>, <a href="Information.html#XREFetree">etree</a>, <a href="Information.html#XREFtreelayout">treelayout</a>.
+</p></dd></dl>
 
 
 <p>For non square matrices, the user can also utilize the <code>spaugment</code>
 function to find a least squares solution to a linear equation.
 </p>
 <a name="XREFspaugment"></a><dl>
-<dt><a name="index-spaugment"></a>Function File: <em><var>s</var> =</em> <strong>spaugment</strong> <em>(<var>A</var>, <var>c</var>)</em></dt>
+<dt><a name="index-spaugment"></a>: <em><var>s</var> =</em> <strong>spaugment</strong> <em>(<var>A</var>, <var>c</var>)</em></dt>
 <dd><p>Create the augmented matrix of <var>A</var>.
 </p>
 <p>This is given by
@@ -494,26 +502,26 @@ and likewise for <code>svds</code> which calculates a limited number of
 singular values and vectors.
 </p>
 <a name="XREFeigs"></a><dl>
-<dt><a name="index-eigs"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-eigs-1"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>k</var>)</em></dt>
-<dt><a name="index-eigs-2"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>k</var>, <var>sigma</var>)</em></dt>
-<dt><a name="index-eigs-3"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>k</var>, <var>sigma</var>, <var>opts</var>)</em></dt>
-<dt><a name="index-eigs-4"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
-<dt><a name="index-eigs-5"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>B</var>, <var>k</var>)</em></dt>
-<dt><a name="index-eigs-6"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>B</var>, <var>k</var>, <var>sigma</var>)</em></dt>
-<dt><a name="index-eigs-7"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>B</var>, <var>k</var>, <var>sigma</var>, <var>opts</var>)</em></dt>
-<dt><a name="index-eigs-8"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>)</em></dt>
-<dt><a name="index-eigs-9"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>B</var>)</em></dt>
-<dt><a name="index-eigs-10"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>k</var>)</em></dt>
-<dt><a name="index-eigs-11"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>B</var>, <var>k</var>)</em></dt>
-<dt><a name="index-eigs-12"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>k</var>, <var>sigma</var>)</em></dt>
-<dt><a name="index-eigs-13"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>B</var>, <var>k</var>, <var>sigma</var>)</em></dt>
-<dt><a name="index-eigs-14"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>k</var>, <var>sigma</var>, <var>opts</var>)</em></dt>
-<dt><a name="index-eigs-15"></a>Function File: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>B</var>, <var>k</var>, <var>sigma</var>, <var>opts</var>)</em></dt>
-<dt><a name="index-eigs-16"></a>Function File: <em>[<var>V</var>, <var>d</var>] =</em> <strong>eigs</strong> <em>(<var>A</var>, &hellip;)</em></dt>
-<dt><a name="index-eigs-17"></a>Function File: <em>[<var>V</var>, <var>d</var>] =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, &hellip;)</em></dt>
-<dt><a name="index-eigs-18"></a>Function File: <em>[<var>V</var>, <var>d</var>, <var>flag</var>] =</em> <strong>eigs</strong> <em>(<var>A</var>, &hellip;)</em></dt>
-<dt><a name="index-eigs-19"></a>Function File: <em>[<var>V</var>, <var>d</var>, <var>flag</var>] =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, &hellip;)</em></dt>
+<dt><a name="index-eigs"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-eigs-1"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>k</var>)</em></dt>
+<dt><a name="index-eigs-2"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>k</var>, <var>sigma</var>)</em></dt>
+<dt><a name="index-eigs-3"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>k</var>, <var>sigma</var>, <var>opts</var>)</em></dt>
+<dt><a name="index-eigs-4"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dt><a name="index-eigs-5"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>B</var>, <var>k</var>)</em></dt>
+<dt><a name="index-eigs-6"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>B</var>, <var>k</var>, <var>sigma</var>)</em></dt>
+<dt><a name="index-eigs-7"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>A</var>, <var>B</var>, <var>k</var>, <var>sigma</var>, <var>opts</var>)</em></dt>
+<dt><a name="index-eigs-8"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>)</em></dt>
+<dt><a name="index-eigs-9"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>B</var>)</em></dt>
+<dt><a name="index-eigs-10"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>k</var>)</em></dt>
+<dt><a name="index-eigs-11"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>B</var>, <var>k</var>)</em></dt>
+<dt><a name="index-eigs-12"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>k</var>, <var>sigma</var>)</em></dt>
+<dt><a name="index-eigs-13"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>B</var>, <var>k</var>, <var>sigma</var>)</em></dt>
+<dt><a name="index-eigs-14"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>k</var>, <var>sigma</var>, <var>opts</var>)</em></dt>
+<dt><a name="index-eigs-15"></a>: <em><var>d</var> =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, <var>B</var>, <var>k</var>, <var>sigma</var>, <var>opts</var>)</em></dt>
+<dt><a name="index-eigs-16"></a>: <em>[<var>V</var>, <var>d</var>] =</em> <strong>eigs</strong> <em>(<var>A</var>, &hellip;)</em></dt>
+<dt><a name="index-eigs-17"></a>: <em>[<var>V</var>, <var>d</var>] =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, &hellip;)</em></dt>
+<dt><a name="index-eigs-18"></a>: <em>[<var>V</var>, <var>d</var>, <var>flag</var>] =</em> <strong>eigs</strong> <em>(<var>A</var>, &hellip;)</em></dt>
+<dt><a name="index-eigs-19"></a>: <em>[<var>V</var>, <var>d</var>, <var>flag</var>] =</em> <strong>eigs</strong> <em>(<var>af</var>, <var>n</var>, &hellip;)</em></dt>
 <dd><p>Calculate a limited number of eigenvalues and eigenvectors of <var>A</var>,
 based on a selection criteria.
 </p>
@@ -575,7 +583,8 @@ real symmetric problems).
 <dl compact="compact">
 <dt><code>issym</code></dt>
 <dd><p>If <var>af</var> is given, then flags whether the function <var>af</var> defines a
-symmetric problem.  It is ignored if <var>A</var> is given.  The default is false.
+symmetric problem.  It is ignored if <var>A</var> is given.  The default is
+false.
 </p>
 </dd>
 <dt><code>isreal</code></dt>
@@ -654,13 +663,13 @@ of the same size as <var>A</var>.
 </dl>
 
 <p>The return arguments of <code>eigs</code> depend on the number of return arguments
-requested.  With a single return argument, a vector <var>d</var> of length <var>k</var>
-is returned containing the <var>k</var> eigenvalues that have been found.  With
-two return arguments, <var>V</var> is a <var>n</var>-by-<var>k</var> matrix whose columns
-are the <var>k</var> eigenvectors corresponding to the returned eigenvalues.  The
-eigenvalues themselves are returned in <var>d</var> in the form of a
-<var>n</var>-by-<var>k</var> matrix, where the elements on the diagonal are the
-eigenvalues.
+requested.  With a single return argument, a vector <var>d</var> of length
+<var>k</var> is returned containing the <var>k</var> eigenvalues that have been
+found.  With two return arguments, <var>V</var> is a <var>n</var>-by-<var>k</var> matrix
+whose columns are the <var>k</var> eigenvectors corresponding to the returned
+eigenvalues.  The eigenvalues themselves are returned in <var>d</var> in the
+form of a <var>n</var>-by-<var>k</var> matrix, where the elements on the diagonal
+are the eigenvalues.
 </p>
 <p>Given a third return argument <var>flag</var>, <code>eigs</code> returns the status
 of the convergence.  If <var>flag</var> is 0 then all eigenvalues have converged.
@@ -676,12 +685,12 @@ information see <a href="http://www.caam.rice.edu/software/ARPACK/">http://www.c
 
 
 <a name="XREFsvds"></a><dl>
-<dt><a name="index-svds"></a>Function File: <em><var>s</var> =</em> <strong>svds</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-svds-1"></a>Function File: <em><var>s</var> =</em> <strong>svds</strong> <em>(<var>A</var>, <var>k</var>)</em></dt>
-<dt><a name="index-svds-2"></a>Function File: <em><var>s</var> =</em> <strong>svds</strong> <em>(<var>A</var>, <var>k</var>, <var>sigma</var>)</em></dt>
-<dt><a name="index-svds-3"></a>Function File: <em><var>s</var> =</em> <strong>svds</strong> <em>(<var>A</var>, <var>k</var>, <var>sigma</var>, <var>opts</var>)</em></dt>
-<dt><a name="index-svds-4"></a>Function File: <em>[<var>u</var>, <var>s</var>, <var>v</var>] =</em> <strong>svds</strong> <em>(&hellip;)</em></dt>
-<dt><a name="index-svds-5"></a>Function File: <em>[<var>u</var>, <var>s</var>, <var>v</var>, <var>flag</var>] =</em> <strong>svds</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-svds"></a>: <em><var>s</var> =</em> <strong>svds</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-svds-1"></a>: <em><var>s</var> =</em> <strong>svds</strong> <em>(<var>A</var>, <var>k</var>)</em></dt>
+<dt><a name="index-svds-2"></a>: <em><var>s</var> =</em> <strong>svds</strong> <em>(<var>A</var>, <var>k</var>, <var>sigma</var>)</em></dt>
+<dt><a name="index-svds-3"></a>: <em><var>s</var> =</em> <strong>svds</strong> <em>(<var>A</var>, <var>k</var>, <var>sigma</var>, <var>opts</var>)</em></dt>
+<dt><a name="index-svds-4"></a>: <em>[<var>u</var>, <var>s</var>, <var>v</var>] =</em> <strong>svds</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-svds-5"></a>: <em>[<var>u</var>, <var>s</var>, <var>v</var>, <var>flag</var>] =</em> <strong>svds</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Find a few singular values of the matrix <var>A</var>.
 </p>

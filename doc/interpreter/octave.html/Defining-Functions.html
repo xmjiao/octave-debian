@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -222,16 +223,17 @@ To avoid such problems and to provide useful messages, we check for both
 possibilities and issue our own error message.
 </p>
 <a name="XREFnargin"></a><dl>
-<dt><a name="index-nargin"></a>Built-in Function: <em></em> <strong>nargin</strong> <em>()</em></dt>
-<dt><a name="index-nargin-1"></a>Built-in Function: <em></em> <strong>nargin</strong> <em>(<var>fcn</var>)</em></dt>
+<dt><a name="index-nargin"></a>: <em></em> <strong>nargin</strong> <em>()</em></dt>
+<dt><a name="index-nargin-1"></a>: <em></em> <strong>nargin</strong> <em>(<var>fcn</var>)</em></dt>
 <dd><p>Report the number of input arguments to a function.
 </p>
 <p>Called from within a function, return the number of arguments passed to the
 function.  At the top level, return the number of command line arguments
 passed to Octave.
 </p>
-<p>If called with the optional argument <var>fcn</var>&mdash;a function name or handle&mdash;
-return the declared number of arguments that the function can accept.
+<p>If called with the optional argument <var>fcn</var>&mdash;a function name or
+handle&mdash;return the declared number of arguments that the function can
+accept.
 </p>
 <p>If the last argument to <var>fcn</var> is <var>varargin</var> the returned value is
 negative.  For example, the function <code>union</code> for sets is declared as
@@ -245,28 +247,32 @@ nargin (&quot;union&quot;)
 &rArr; -3
 </pre></div>
 
-<p>Programming Note: <code>nargin</code> does not work on built-in functions.
+<p>Programming Note: <code>nargin</code> does not work on compiled functions
+(<samp>.oct</samp> files) such as built-in or dynamically loaded functions.
 </p>
 <p><strong>See also:</strong> <a href="Multiple-Return-Values.html#XREFnargout">nargout</a>, <a href="Multiple-Return-Values.html#XREFnarginchk">narginchk</a>, <a href="Multiple-Return-Values.html#XREFvarargin">varargin</a>, <a href="#XREFinputname">inputname</a>.
 </p></dd></dl>
 
 
 <a name="XREFinputname"></a><dl>
-<dt><a name="index-inputname"></a>Function File: <em></em> <strong>inputname</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-inputname"></a>: <em></em> <strong>inputname</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Return the name of the <var>n</var>-th argument to the calling function.
 </p>
-<p>If the argument is not a simple variable name, return an empty string.
-<code>inputname</code> may only be used within a function body, not at the
-command line.
+<p>If the argument is not a simple variable name, return an empty string.  As
+an example, a reference to a field in a structure such as <code>s.field</code> is
+not a simple name and will return <code>&quot;&quot;</code>.
+</p>
+<p><code>inputname</code> is only useful within a function.  When used at the command
+line it always returns an empty string.
 </p>
 <p><strong>See also:</strong> <a href="#XREFnargin">nargin</a>, <a href="Multiple-Return-Values.html#XREFnthargout">nthargout</a>.
 </p></dd></dl>
 
 
 <a name="XREFsilent_005ffunctions"></a><dl>
-<dt><a name="index-silent_005ffunctions"></a>Built-in Function: <em><var>val</var> =</em> <strong>silent_functions</strong> <em>()</em></dt>
-<dt><a name="index-silent_005ffunctions-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>silent_functions</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-silent_005ffunctions-2"></a>Built-in Function: <em></em> <strong>silent_functions</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-silent_005ffunctions"></a>: <em><var>val</var> =</em> <strong>silent_functions</strong> <em>()</em></dt>
+<dt><a name="index-silent_005ffunctions-1"></a>: <em><var>old_val</var> =</em> <strong>silent_functions</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-silent_005ffunctions-2"></a>: <em></em> <strong>silent_functions</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that controls whether internal
 output from a function is suppressed.
 </p>

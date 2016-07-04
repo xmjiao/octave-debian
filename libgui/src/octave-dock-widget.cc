@@ -21,8 +21,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QApplication>
@@ -40,7 +40,6 @@ along with Octave; see the file COPYING.  If not, see
 octave_dock_widget::octave_dock_widget (QWidget *p)
   : QDockWidget (p)
 {
-
   _parent = static_cast<QMainWindow *> (p);     // store main window
   _floating = false;
   _predecessor_widget = 0;
@@ -109,9 +108,6 @@ octave_dock_widget::octave_dock_widget (QWidget *p)
 
 #endif
 
-  // adding actions of the main window
-  connect (p, SIGNAL (add_actions_signal (QList<QAction *>)),
-           this, SLOT (add_actions (QList<QAction *>)));
   // copy & paste handling
   connect (p, SIGNAL (copyClipboard_signal ()),
            this, SLOT (copyClipboard ()));
@@ -158,7 +154,6 @@ octave_dock_widget::connect_visibility_changed (void)
            this, SLOT (handle_visibility (bool)));
   emit active_changed (isVisible ());  // emit once for init of window menu
 }
-
 
 // set the widget which previously had focus when tabified
 void
@@ -232,7 +227,6 @@ octave_dock_widget::make_window ()
 
   set_focus_predecessor ();  // set focus previously active widget if tabbed
 }
-
 
 // dock the widget
 void
@@ -330,6 +324,11 @@ octave_dock_widget::set_style (bool active)
   else
     dock_icon = "widget-undock";
 
+#if defined (Q_OS_MAC)
+  QString alignment = "center";
+#else
+  QString alignment = "center left";
+#endif
   if (_custom_style)
     {
 
@@ -371,7 +370,7 @@ octave_dock_widget::set_style (bool active)
       css = background + QString (" color: %1 ;").arg (fg_col.name ());
 #else
       css = QString ("QDockWidget::title { " + background +
-                     "                     text-align: center left;"
+                     "                     text-align: " + alignment + ";"
                      "                     padding: 0px 0px 0px 4px;}\n"
                      "QDockWidget { color: %1 ; "
                      "  titlebar-close-icon: url(:/actions/icons/widget-close%2.png);"
@@ -387,7 +386,7 @@ octave_dock_widget::set_style (bool active)
 #if defined (Q_OS_WIN32)
       css = QString ("");
 #else
-      css = QString ("QDockWidget::title { text-align: center left;"
+      css = QString ("QDockWidget::title { text-align: " + alignment + ";"
                      "                     padding: 0px 0px 0px 4px;}"
                      "QDockWidget {"
                      "  titlebar-close-icon: url(:/actions/icons/widget-close.png);"
@@ -479,14 +478,6 @@ octave_dock_widget::handle_active_dock_changed (octave_dock_widget *w_old,
       set_style (true);
       update ();
     }
-}
-
-// slot for adding actions from the main window
-void
-octave_dock_widget::add_actions (QList<QAction *> action_list)
-{
-  if (objectName () != "FileEditor")
-    addActions (action_list);
 }
 
 // close event

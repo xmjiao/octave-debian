@@ -18,8 +18,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Command} {} fact
-## @deftypefnx {Function File} {@var{truth} =} fact ()
+## @deftypefn  {} {} fact
+## @deftypefnx {} {@var{truth} =} fact ()
 ## Display an amazing and random fact about the world's greatest hacker.
 ## @end deftypefn
 
@@ -268,6 +268,7 @@ function truth = fact ()
 endfunction
 
 function out = wordwrap (w)
+
   ncol = terminal_size ()(2);
   wc = ostrsplit (w, " ");
   out = "\n";
@@ -278,12 +279,13 @@ function out = wordwrap (w)
     while (i < numwords
            && length (newline = [line " " wc{i+1}]) < ncol)
       line = newline;
-      i++;
+      i += 1;
     endwhile
     out = [out, line, "\n"];
-    i++;
+    i += 1;
   endwhile
   out = [out, "\n"];
+
 endfunction
 
 

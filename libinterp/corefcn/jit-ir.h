@@ -22,10 +22,12 @@ along with Octave; see the file COPYING.  If not, see
 
 // Author: Max Brister <max@2bass.com>
 
-#if !defined (octave_jit_ir_h)
+#if ! defined (octave_jit_ir_h)
 #define octave_jit_ir_h 1
 
-#ifdef HAVE_LLVM
+#include "octave-config.h"
+
+#if defined (HAVE_LLVM)
 
 #include <list>
 #include <stack>
@@ -72,7 +74,7 @@ JIT_VISIT_IR_NOTEMPLATE
 
 #undef JIT_METH
 
-// ABCs which aren't included in  JIT_VISIT_IR_ALL
+// ABCs which aren't included in JIT_VISIT_IR_ALL
 class jit_instruction;
 class jit_terminator;
 
@@ -730,8 +732,8 @@ public:
   // used to prevent visiting the same node twice in the graph
   size_t visit_count (void) const { return mvisit_count; }
 
-  // check if this node has been visited yet at the given visit count. If we
-  // have not been visited yet, mark us as visited.
+  // check if this node has been visited yet at the given visit count.
+  // If we have not been visited yet, mark us as visited.
   bool visited (size_t avisit_count)
   {
     if (mvisit_count <= avisit_count)
@@ -807,8 +809,8 @@ public:
 
   const std::string &name (void) const { return mname; }
 
-  // manipulate the value_stack, for use during SSA construction. The top of
-  // the  value stack represents the current value for this variable
+  // manipulate the value_stack, for use during SSA construction.  The top of
+  // the value stack represents the current value for this variable
   bool has_top (void) const
   {
     return ! value_stack.empty ();
@@ -917,7 +919,7 @@ public:
   }
 
   // variables don't get modified in an SSA, but COW requires we modify
-  // variables. An artificial assign is for when a variable gets modified. We
+  // variables.  An artificial assign is for when a variable gets modified.  We
   // need an assign in the SSA, but the reference counts shouldn't be updated.
   bool artificial (void) const { return martificial; }
 

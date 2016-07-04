@@ -18,8 +18,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{C} =} bitset (@var{A}, @var{n})
-## @deftypefnx {Function File} {@var{C} =} bitset (@var{A}, @var{n}, @var{val})
+## @deftypefn  {} {@var{C} =} bitset (@var{A}, @var{n})
+## @deftypefnx {} {@var{C} =} bitset (@var{A}, @var{n}, @var{val})
 ## Set or reset bit(s) @var{n} of the unsigned integers in @var{A}.
 ##
 ## @var{val} = 0 resets and @var{val} = 1 sets the bits.
@@ -32,7 +32,7 @@
 ##   @result{} 1011
 ## @end group
 ## @end example
-## @seealso{bitand, bitor, bitxor, bitget, bitcmp, bitshift, bitmax}
+## @seealso{bitand, bitor, bitxor, bitget, bitcmp, bitshift, intmax, flintmax}
 ## @end deftypefn
 
 function C = bitset (A, n, val)
@@ -54,7 +54,7 @@ function C = bitset (A, n, val)
   cl = class (A);
 
   if (isfloat (A) && isreal (A))
-    Bmax = bitmax (cl);
+    Bmax = flintmax (cl);
     Amax = ceil (log2 (Bmax));
   elseif (isinteger (A))
     Bmax = intmax (cl);
@@ -70,7 +70,7 @@ function C = bitset (A, n, val)
   mask = bitshift (cast (1, cl), uint8 (n) - uint8 (1));
 
   on = logical (val);
-  off = !on;
+  off = ! on;
 
   if (isscalar (mask))
     onmask = mask;

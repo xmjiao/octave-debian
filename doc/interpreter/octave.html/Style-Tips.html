@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -82,9 +83,13 @@ alternative common prefixes, so long as they make sense.
 Octave programs.
 </p>
 </li><li> When you encounter an error condition, call the function <code>error</code>
-(or <code>usage</code>).  The <code>error</code> and <code>usage</code> functions do not
-return.
-See <a href="Errors.html#Errors">Errors</a>.
+(or <code>print_usage</code>).  The <code>error</code> and <code>print_usage</code> functions
+do not return.  See <a href="Errors.html#Errors">Errors</a>.  It is customary to prefix the error message
+with the name of the function that generated it.  For example,
+
+<div class="example">
+<pre class="example">error (&quot;my_cool_function: input A must be a matrix&quot;);
+</pre></div>
 
 </li><li> Please put a copyright notice on the file if you give copies to anyone.
 Use the same lines that appear at the top of the function files
@@ -93,6 +98,11 @@ copyright to anyone else, then place your name in the copyright notice.
 </li></ul>
 
 
+<hr>
+<div class="header">
+<p>
+Next: <a href="Comment-Tips.html#Comment-Tips" accesskey="n" rel="next">Comment Tips</a>, Up: <a href="Tips-and-Standards.html#Tips-and-Standards" accesskey="u" rel="up">Tips and Standards</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

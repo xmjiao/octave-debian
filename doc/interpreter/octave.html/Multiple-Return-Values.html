@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -101,8 +102,8 @@ of the return values or several at once in a cell array.
 See <a href="Cell-Array-Objects.html#Cell-Array-Objects">Cell Array Objects</a>.
 </p>
 <a name="XREFnthargout"></a><dl>
-<dt><a name="index-nthargout"></a>Function File: <em></em> <strong>nthargout</strong> <em>(<var>n</var>, <var>func</var>, &hellip;)</em></dt>
-<dt><a name="index-nthargout-1"></a>Function File: <em></em> <strong>nthargout</strong> <em>(<var>n</var>, <var>ntot</var>, <var>func</var>, &hellip;)</em></dt>
+<dt><a name="index-nthargout"></a>: <em></em> <strong>nthargout</strong> <em>(<var>n</var>, <var>func</var>, &hellip;)</em></dt>
+<dt><a name="index-nthargout-1"></a>: <em></em> <strong>nthargout</strong> <em>(<var>n</var>, <var>ntot</var>, <var>func</var>, &hellip;)</em></dt>
 <dd><p>Return the <var>n</var>th output argument of the function specified by the
 function handle or string <var>func</var>.
 </p>
@@ -186,13 +187,13 @@ c = 2
 <p>along with a warning.
 </p>
 <a name="XREFnargout"></a><dl>
-<dt><a name="index-nargout"></a>Built-in Function: <em></em> <strong>nargout</strong> <em>()</em></dt>
-<dt><a name="index-nargout-1"></a>Built-in Function: <em></em> <strong>nargout</strong> <em>(<var>fcn</var>)</em></dt>
+<dt><a name="index-nargout"></a>: <em></em> <strong>nargout</strong> <em>()</em></dt>
+<dt><a name="index-nargout-1"></a>: <em></em> <strong>nargout</strong> <em>(<var>fcn</var>)</em></dt>
 <dd><p>Report the number of output arguments from a function.
 </p>
-<p>Called from within a function, return the number of values the caller expects
-to receive.  At the top level, <code>nargout</code> with no argument is undefined
-and will produce an error.
+<p>Called from within a function, return the number of values the caller
+expects to receive.  At the top level, <code>nargout</code> with no argument is
+undefined and will produce an error.
 </p>
 <p>If called with the optional argument <var>fcn</var>&mdash;a function name or
 handle&mdash;return the number of declared output values that the function can
@@ -218,7 +219,7 @@ negative.
 <p>In the second usage,
 </p>
 <div class="example">
-<pre class="example">nargout (@histc) % or nargout (&quot;histc&quot;)
+<pre class="example">nargout (@histc) \% or nargout (&quot;histc&quot;)
 </pre></div>
 
 <p>will return 2, because <code>histc</code> has two outputs, whereas
@@ -253,15 +254,16 @@ way to call the function whenever the number of inputs is wrong.
 available which provide similar error checking.
 </p>
 <a name="XREFnarginchk"></a><dl>
-<dt><a name="index-narginchk"></a>Function File: <em></em> <strong>narginchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>)</em></dt>
+<dt><a name="index-narginchk"></a>: <em></em> <strong>narginchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>)</em></dt>
 <dd><p>Check for correct number of input arguments.
 </p>
 <p>Generate an error message if the number of arguments in the calling function
-is outside the range <var>minargs</var> and <var>maxargs</var>.  Otherwise, do nothing.
+is outside the range <var>minargs</var> and <var>maxargs</var>.  Otherwise, do
+nothing.
 </p>
 <p>Both <var>minargs</var> and <var>maxargs</var> must be scalar numeric values.  Zero,
-Inf, and negative values are all allowed, and <var>minargs</var> and <var>maxargs</var>
-may be equal.
+Inf, and negative values are all allowed, and <var>minargs</var> and
+<var>maxargs</var> may be equal.
 </p>
 <p>Note that this function evaluates <code>nargin</code> on the caller.
 </p>
@@ -271,10 +273,10 @@ may be equal.
 
 
 <a name="XREFnargoutchk"></a><dl>
-<dt><a name="index-nargoutchk"></a>Function File: <em></em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>)</em></dt>
-<dt><a name="index-nargoutchk-1"></a>Function File: <em><var>msgstr</var> =</em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>, <var>nargs</var>)</em></dt>
-<dt><a name="index-nargoutchk-2"></a>Function File: <em><var>msgstr</var> =</em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>, <var>nargs</var>, &quot;string&quot;)</em></dt>
-<dt><a name="index-nargoutchk-3"></a>Function File: <em><var>msgstruct</var> =</em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>, <var>nargs</var>, &quot;struct&quot;)</em></dt>
+<dt><a name="index-nargoutchk"></a>: <em></em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>)</em></dt>
+<dt><a name="index-nargoutchk-1"></a>: <em><var>msgstr</var> =</em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>, <var>nargs</var>)</em></dt>
+<dt><a name="index-nargoutchk-2"></a>: <em><var>msgstr</var> =</em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>, <var>nargs</var>, &quot;string&quot;)</em></dt>
+<dt><a name="index-nargoutchk-3"></a>: <em><var>msgstruct</var> =</em> <strong>nargoutchk</strong> <em>(<var>minargs</var>, <var>maxargs</var>, <var>nargs</var>, &quot;struct&quot;)</em></dt>
 <dd><p>Check for correct number of output arguments.
 </p>
 <p>In the first form, return an error if the number of arguments is not between
@@ -301,10 +303,10 @@ to a function is within an acceptable range.
 <code>validateattributes</code> for numeric arguments.
 </p>
 <a name="XREFvalidatestring"></a><dl>
-<dt><a name="index-validatestring"></a>Function File: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(<var>str</var>, <var>strarray</var>)</em></dt>
-<dt><a name="index-validatestring-1"></a>Function File: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(<var>str</var>, <var>strarray</var>, <var>funcname</var>)</em></dt>
-<dt><a name="index-validatestring-2"></a>Function File: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(<var>str</var>, <var>strarray</var>, <var>funcname</var>, <var>varname</var>)</em></dt>
-<dt><a name="index-validatestring-3"></a>Function File: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(&hellip;, <var>position</var>)</em></dt>
+<dt><a name="index-validatestring"></a>: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(<var>str</var>, <var>strarray</var>)</em></dt>
+<dt><a name="index-validatestring-1"></a>: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(<var>str</var>, <var>strarray</var>, <var>funcname</var>)</em></dt>
+<dt><a name="index-validatestring-2"></a>: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(<var>str</var>, <var>strarray</var>, <var>funcname</var>, <var>varname</var>)</em></dt>
+<dt><a name="index-validatestring-3"></a>: <em><var>validstr</var> =</em> <strong>validatestring</strong> <em>(&hellip;, <var>position</var>)</em></dt>
 <dd><p>Verify that <var>str</var> is an element, or substring of an element, in
 <var>strarray</var>.
 </p>
@@ -340,11 +342,11 @@ validatestring (&quot;b&quot;, {&quot;red&quot;, &quot;green&quot;, &quot;blue&q
 
 
 <a name="XREFvalidateattributes"></a><dl>
-<dt><a name="index-validateattributes"></a>Function File: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>)</em></dt>
-<dt><a name="index-validateattributes-1"></a>Function File: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>arg_idx</var>)</em></dt>
-<dt><a name="index-validateattributes-2"></a>Function File: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>func_name</var>)</em></dt>
-<dt><a name="index-validateattributes-3"></a>Function File: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>func_name</var>, <var>arg_name</var>)</em></dt>
-<dt><a name="index-validateattributes-4"></a>Function File: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>func_name</var>, <var>arg_name</var>, <var>arg_idx</var>)</em></dt>
+<dt><a name="index-validateattributes"></a>: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>)</em></dt>
+<dt><a name="index-validateattributes-1"></a>: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>arg_idx</var>)</em></dt>
+<dt><a name="index-validateattributes-2"></a>: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>func_name</var>)</em></dt>
+<dt><a name="index-validateattributes-3"></a>: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>func_name</var>, <var>arg_name</var>)</em></dt>
+<dt><a name="index-validateattributes-4"></a>: <em></em> <strong>validateattributes</strong> <em>(<var>A</var>, <var>classes</var>, <var>attributes</var>, <var>func_name</var>, <var>arg_name</var>, <var>arg_idx</var>)</em></dt>
 <dd><p>Check validity of input argument.
 </p>
 <p>Confirms that the argument <var>A</var> is valid by belonging to one of
@@ -381,7 +383,8 @@ name (see details for each below).
 </p>
 <dl compact="compact">
 <dt><code>&quot;&lt;=&quot;</code></dt>
-<dd><p>All values are less than or equal to the following value in <var>attributes</var>.
+<dd><p>All values are less than or equal to the following value in
+<var>attributes</var>.
 </p>
 </dd>
 <dt><code>&quot;&lt;&quot;</code></dt>
@@ -417,6 +420,10 @@ whose 3rd dimension is of length 1.
 </dd>
 <dt><code>&quot;decreasing&quot;</code></dt>
 <dd><p>No value is <var>NaN</var>, and each is less than the preceding one.
+</p>
+</dd>
+<dt><code>&quot;diag&quot;</code></dt>
+<dd><p>Value is a diagonal matrix.
 </p>
 </dd>
 <dt><code>&quot;even&quot;</code></dt>
@@ -529,7 +536,7 @@ used.
 functions.
 </p>
 <a name="XREFinputParser"></a><dl>
-<dt><a name="index-inputParser"></a>Function File: <em><var>p</var> =</em> <strong>inputParser</strong> <em>()</em></dt>
+<dt><a name="index-inputParser"></a>: <em><var>p</var> =</em> <strong>inputParser</strong> <em>()</em></dt>
 <dd><p>Create object <var>p</var> of the inputParser class.
 </p>
 <p>This class is designed to allow easy parsing of function arguments.  The
@@ -540,7 +547,7 @@ class supports four types of arguments:
 
 </li><li> optional (see <code>addOptional</code>);
 
-</li><li> named (see <code>addParamValue</code>);
+</li><li> named (see <code>addParameter</code>);
 
 </li><li> switch (see <code>addSwitch</code>).
 </li></ol>
@@ -551,52 +558,52 @@ accessed with the <code>Results</code> accessor.
 </p>
 </dd></dl>
 <dl>
-<dt><a name="index-inputParser_002eParameters"></a>Accessor method: <em></em> <strong>inputParser.Parameters</strong></dt>
+<dt><a name="index-inputParser_002eParameters"></a>: <em></em> <strong>inputParser.Parameters</strong></dt>
 <dd><p>Return list of parameter names already defined.
 </p>
 </dd></dl>
 <dl>
-<dt><a name="index-inputParser_002eResults"></a>Accessor method: <em></em> <strong>inputParser.Results</strong></dt>
+<dt><a name="index-inputParser_002eResults"></a>: <em></em> <strong>inputParser.Results</strong></dt>
 <dd><p>Return structure with argument names as fieldnames and corresponding values.
 </p>
 </dd></dl>
 <dl>
-<dt><a name="index-inputParser_002eUnmatched"></a>Accessor method: <em></em> <strong>inputParser.Unmatched</strong></dt>
+<dt><a name="index-inputParser_002eUnmatched"></a>: <em></em> <strong>inputParser.Unmatched</strong></dt>
 <dd><p>Return structure similar to <code>Results</code>, but for unmatched parameters.
 See the <code>KeepUnmatched</code> property.
 </p>
 </dd></dl>
 <dl>
-<dt><a name="index-inputParser_002eUsingDefaults"></a>Accessor method: <em></em> <strong>inputParser.UsingDefaults</strong></dt>
+<dt><a name="index-inputParser_002eUsingDefaults"></a>: <em></em> <strong>inputParser.UsingDefaults</strong></dt>
 <dd><p>Return cell array with the names of arguments that are using default values.
 </p>
 </dd></dl>
 <dl>
-<dt><a name="index-inputParser_002eCaseSensitive"></a>Class property: <em></em> <strong>inputParser.CaseSensitive</strong> <em>= <var>boolean</var></em></dt>
+<dt><a name="index-inputParser_002eCaseSensitive"></a>: <em></em> <strong>inputParser.CaseSensitive</strong> <em>= <var>boolean</var></em></dt>
 <dd><p>Set whether matching of argument names should be case sensitive.  Defaults
 to false.
 </p>
 </dd></dl>
 <dl>
-<dt><a name="index-inputParser_002eFunctionName"></a>Class property: <em></em> <strong>inputParser.FunctionName</strong> <em>= <var>name</var></em></dt>
+<dt><a name="index-inputParser_002eFunctionName"></a>: <em></em> <strong>inputParser.FunctionName</strong> <em>= <var>name</var></em></dt>
 <dd><p>Set function name to be used in error messages; Defaults to empty string.
 </p>
 </dd></dl>
 <dl>
-<dt><a name="index-inputParser_002eKeepUnmatched"></a>Class property: <em></em> <strong>inputParser.KeepUnmatched</strong> <em>= <var>boolean</var></em></dt>
+<dt><a name="index-inputParser_002eKeepUnmatched"></a>: <em></em> <strong>inputParser.KeepUnmatched</strong> <em>= <var>boolean</var></em></dt>
 <dd><p>Set whether an error should be given for non-defined arguments.  Defaults to
 false.  If set to true, the extra arguments can be accessed through
 <code>Unmatched</code> after the <code>parse</code> method.  Note that since
-<code>Switch</code> and <code>ParamValue</code> arguments can be mixed, it is
+<code>Switch</code> and <code>Parameter</code> arguments can be mixed, it is
 not possible to know the unmatched type.  If argument is found unmatched
-it is assumed to be of the <code>ParamValue</code> type and it is expected to
+it is assumed to be of the <code>Parameter</code> type and it is expected to
 be followed by a value.
 </p>
 </dd></dl>
 <dl>
-<dt><a name="index-inputParser_002eStructExpand"></a>Class property: <em></em> <strong>inputParser.StructExpand</strong> <em>= <var>boolean</var></em></dt>
+<dt><a name="index-inputParser_002eStructExpand"></a>: <em></em> <strong>inputParser.StructExpand</strong> <em>= <var>boolean</var></em></dt>
 <dd><p>Set whether a structure can be passed to the function instead of
-parameter/value pairs.  Defaults to true.  Not implemented yet.
+parameter/value pairs.  Defaults to true.
 </p>
 <p>The following example shows how to use this class:
 </p>
@@ -611,11 +618,11 @@ parameter/value pairs.  Defaults to true.  Not implemented yet.
   val_mat = @(x) isvector (x) &amp;&amp; all (x &lt;= 1) &amp;&amp; all (x &gt;= 0);
   p.addOptional (&quot;mat&quot;, [0 0], val_mat);
 
-  ## create two arguments of type &quot;ParamValue&quot;
+  ## create two arguments of type &quot;Parameter&quot;
   val_type = @(x) any (strcmp (x, {&quot;linear&quot;, &quot;quadratic&quot;}));
-  p.addParamValue (&quot;type&quot;, &quot;linear&quot;, val_type);
+  p.addParameter (&quot;type&quot;, &quot;linear&quot;, val_type);
   val_verb = @(x) any (strcmp (x, {&quot;low&quot;, &quot;medium&quot;, &quot;high&quot;}));
-  p.addParamValue (&quot;tolerance&quot;, &quot;low&quot;, val_verb);
+  p.addParameter (&quot;tolerance&quot;, &quot;low&quot;, val_verb);
 
   ## create a switch type of argument
   p.addSwitch (&quot;verbose&quot;);
@@ -625,9 +632,10 @@ parameter/value pairs.  Defaults to true.  Not implemented yet.
   ## the rest of the function can access inputs by using p.Results.
   ## for example, get the tolerance input with p.Results.tolerance
 endfunction
-</pre><pre class="example">
+</pre></div>
 
-check (&quot;mech&quot;);           # valid, use defaults for other arguments
+<div class="example">
+<pre class="example">check (&quot;mech&quot;);           # valid, use defaults for other arguments
 check ();                 # error, one argument is mandatory
 check (1);                # error, since ! ischar
 check (&quot;mech&quot;, &quot;~/dev&quot;);  # valid, use defaults for other arguments
@@ -635,7 +643,7 @@ check (&quot;mech&quot;, &quot;~/dev&quot;);  # valid, use defaults for other ar
 check (&quot;mech&quot;, &quot;~/dev&quot;, [0 1 0 0], &quot;type&quot;, &quot;linear&quot;);  # valid
 
 ## following is also valid.  Note how the Switch argument type can
-## be mixed into or before the ParamValue argument type (but it
+## be mixed into or before the Parameter argument type (but it
 ## must still appear after any Optional argument).
 check (&quot;mech&quot;, &quot;~/dev&quot;, [0 1 0 0], &quot;verbose&quot;, &quot;tolerance&quot;, &quot;high&quot;);
 
@@ -647,14 +655,14 @@ check (&quot;mech&quot;, &quot;~/dev&quot;, &quot;type&quot;, &quot;linear&quot;
 <p><em>Note 1</em>: A function can have any mixture of the four API types but
 they must appear in a specific order.  <code>Required</code> arguments must be
 first and can be followed by any <code>Optional</code> arguments.  Only
-the <code>ParamValue</code> and <code>Switch</code> arguments may be mixed
+the <code>Parameter</code> and <code>Switch</code> arguments may be mixed
 together and they must appear at the end.
 </p>
-<p><em>Note 2</em>: If both <code>Optional</code> and <code>ParamValue</code> arguments
+<p><em>Note 2</em>: If both <code>Optional</code> and <code>Parameter</code> arguments
 are mixed in a function API then once a string Optional argument fails to
 validate it will be considered the end of the <code>Optional</code>
 arguments.  The remaining arguments will be compared against any
-<code>ParamValue</code> or <code>Switch</code> arguments.
+<code>Parameter</code> or <code>Switch</code> arguments.
 </p>
 
 <p><strong>See also:</strong> <a href="Defining-Functions.html#XREFnargin">nargin</a>, <a href="#XREFvalidateattributes">validateattributes</a>, <a href="#XREFvalidatestring">validatestring</a>, <a href="#XREFvarargin">varargin</a>.

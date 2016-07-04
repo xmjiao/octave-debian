@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_utils_h)
+#if ! defined (octave_utils_h)
 #define octave_utils_h 1
+
+#include "octave-config.h"
 
 #include <cstdarg>
 
@@ -31,8 +33,6 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "dMatrix.h"
 #include "lo-utils.h"
-
-#include "cutils.h"
 
 class octave_value;
 class octave_value_list;
@@ -74,7 +74,11 @@ find_data_file_in_load_path  (const std::string& fcn,
 extern OCTINTERP_API std::string contents_file_in_path (const std::string&);
 
 extern OCTINTERP_API std::string fcn_file_in_path (const std::string&);
+
+OCTAVE_DEPRECATED ("use 'load_path::find_oct_file' instead")
 extern OCTINTERP_API std::string oct_file_in_path (const std::string&);
+
+OCTAVE_DEPRECATED ("use 'load_path::find_mex_file' instead")
 extern OCTINTERP_API std::string mex_file_in_path (const std::string&);
 
 extern OCTINTERP_API std::string do_string_escapes (const std::string& s);
@@ -131,26 +135,5 @@ extern OCTINTERP_API
 octave_value
 do_simple_cellfun (octave_value_list (*fun) (const octave_value_list&, int),
                    const char *fun_name, const octave_value_list& args);
-
-class
-octave_preserve_stream_state
-{
-public:
-
-  octave_preserve_stream_state (std::ios& s)
-    : stream (s), oflags (s.flags ()), oprecision (s.precision ()),
-      owidth (s.width ()), ofill (s.fill ())
-  { }
-
-  ~octave_preserve_stream_state (void);
-
-private:
-
-  std::ios& stream;
-  std::ios::fmtflags oflags;
-  std::streamsize oprecision;
-  int owidth;
-  char ofill;
-};
 
 #endif

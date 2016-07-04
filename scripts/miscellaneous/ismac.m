@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} ismac ()
+## @deftypefn {} {} ismac ()
 ## Return true if Octave is running on a Mac OS X system and false otherwise.
 ## @seealso{isunix, ispc}
 ## @end deftypefn
@@ -25,7 +25,7 @@
 function retval = ismac ()
 
   if (nargin == 0)
-    retval = octave_config_info ("mac");
+    retval = __octave_config_info__ ("mac");
   else
     print_usage ();
   endif

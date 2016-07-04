@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_pt_check_h)
+#if ! defined (octave_pt_check_h)
 #define octave_pt_check_h 1
+
+#include "octave-config.h"
 
 #include "pt-walk.h"
 
@@ -131,7 +133,7 @@ private:
 
   void do_decl_command (tree_decl_command&);
 
-  void gripe (const std::string& msg, int line);
+  OCTAVE_NORETURN void errmsg (const std::string& msg, int line);
 
   // No copying!
 

@@ -58,10 +58,10 @@ or function names:
 The function @code{iskeyword} can be used to quickly check whether an
 identifier is reserved by Octave.
 
-@c iskeyword libinterp/parse-tree/lex.cc
+@c iskeyword libinterp/parse-tree/lex.ll
 @anchor{XREFiskeyword}
-@deftypefn  {Built-in Function} {} iskeyword ()
-@deftypefnx {Built-in Function} {} iskeyword (@var{name})
+@deftypefn  {} {} iskeyword ()
+@deftypefnx {} {} iskeyword (@var{name})
 Return true if @var{name} is an Octave keyword.
 
 If @var{name} is omitted, return a list of keywords.
@@ -85,8 +85,8 @@ from being evaluated periodically.
 
 @c add_input_event_hook libinterp/corefcn/input.cc
 @anchor{XREFadd_input_event_hook}
-@deftypefn  {Built-in Function} {@var{id} =} add_input_event_hook (@var{fcn})
-@deftypefnx {Built-in Function} {@var{id} =} add_input_event_hook (@var{fcn}, @var{data})
+@deftypefn  {} {@var{id} =} add_input_event_hook (@var{fcn})
+@deftypefnx {} {@var{id} =} add_input_event_hook (@var{fcn}, @var{data})
 Add the named function or function handle @var{fcn} to the list of functions
 to call periodically when Octave is waiting for input.
 
@@ -106,8 +106,8 @@ list of input hook functions.
 
 @c remove_input_event_hook libinterp/corefcn/input.cc
 @anchor{XREFremove_input_event_hook}
-@deftypefn  {Built-in Function} {} remove_input_event_hook (@var{name})
-@deftypefnx {Built-in Function} {} remove_input_event_hook (@var{fcn_id})
+@deftypefn  {} {} remove_input_event_hook (@var{name})
+@deftypefnx {} {} remove_input_event_hook (@var{fcn_id})
 Remove the named function or function handle with the given identifier
 from the list of functions to call periodically when Octave is waiting
 for input.
@@ -122,9 +122,9 @@ substitutes for @sc{matlab} functions.
 
 @c missing_function_hook libinterp/corefcn/variables.cc
 @anchor{XREFmissing_function_hook}
-@deftypefn  {Built-in Function} {@var{val} =} missing_function_hook ()
-@deftypefnx {Built-in Function} {@var{old_val} =} missing_function_hook (@var{new_val})
-@deftypefnx {Built-in Function} {} missing_function_hook (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} missing_function_hook ()
+@deftypefnx {} {@var{old_val} =} missing_function_hook (@var{new_val})
+@deftypefnx {} {} missing_function_hook (@var{new_val}, "local")
 Query or set the internal variable that specifies the function to call when
 an unknown identifier is requested.
 

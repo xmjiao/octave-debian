@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "Array.h"
@@ -51,11 +51,7 @@ octave_value_typeinfo::instance_ok (void)
     }
 
   if (! instance)
-    {
-      ::error ("unable to create value type info object!");
-
-      retval = false;
-    }
+    error ("unable to create value type info object!");
 
   return retval;
 }
@@ -193,13 +189,13 @@ octave_value_typeinfo::do_register_type (const std::string& t_name,
     if (t_name == types (i))
       return i;
 
-  int len = types.length ();
+  int len = types.numel ();
 
   if (i == len)
     {
       len *= 2;
 
-      types.resize (dim_vector (len, 1), std::string ());
+      types.resize (dim_vector (len, 1), "");
 
       vals.resize (dim_vector (len, 1), octave_value ());
 
@@ -610,29 +606,26 @@ octave_value_typeinfo::do_installed_type_names (void)
 }
 
 DEFUN (typeinfo, args, ,
-       "-*- texinfo -*-\n\
-@deftypefn  {Built-in Function} {} typeinfo ()\n\
-@deftypefnx {Built-in Function} {} typeinfo (@var{expr})\n\
-\n\
-Return the type of the expression @var{expr}, as a string.\n\
-\n\
-If @var{expr} is omitted, return a cell array of strings containing all the\n\
-currently installed data types.\n\
-@seealso{class, isa}\n\
-@end deftypefn")
-{
-  octave_value retval;
+       doc: /* -*- texinfo -*-
+@deftypefn  {} {} typeinfo ()
+@deftypefnx {} {} typeinfo (@var{expr})
 
+Return the type of the expression @var{expr}, as a string.
+
+If @var{expr} is omitted, return a cell array of strings containing all the
+currently installed data types.
+@seealso{class, isa}
+@end deftypefn */)
+{
   int nargin = args.length ();
 
-  if (nargin == 0)
-    retval = Cell (octave_value_typeinfo::installed_type_names ());
-  else if (nargin == 1)
-    retval = args(0).type_name ();
-  else
+  if (nargin > 1)
     print_usage ();
 
-  return retval;
+  if (nargin == 0)
+    return ovl (Cell (octave_value_typeinfo::installed_type_names ()));
+  else
+    return ovl (args(0).type_name ());
 }
 
 /*

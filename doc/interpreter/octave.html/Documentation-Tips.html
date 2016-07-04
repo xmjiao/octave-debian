@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -164,16 +165,14 @@ Octave&rsquo;s own functions.  However, the effect on the appearance of printed
 or online documentation will be greatly improved.
 </p>
 <p>The fundamental building block of Texinfo documentation strings is the
-Texinfo-macro <code>@deftypefn</code>, which takes three arguments: The class
-the function is in, its output arguments, and the function&rsquo;s
-signature.  Typical classes for functions include <code>Function File</code>
-for standard Octave functions, and <code>Loadable Function</code> for
-dynamically linked functions.  A skeletal Texinfo documentation string
-therefore looks like this
+Texinfo macro <code>@deftypefn</code>.  The first argument to the macro is
+always blank.  The second and third arguments are the function&rsquo;s output
+arguments and the function signature.  A skeletal Texinfo documentation
+string looks like this
 </p>
 <div class="example">
 <pre class="example">-*- texinfo -*-
-@deftypefn {Function File} {@var{ret} =} fn (&hellip;)
+@deftypefn {} {@var{ret} =} fn (&hellip;)
 @cindex index term
 Help text in Texinfo format.  Code samples should be marked
 like @code{sample of code} and variables should be marked
@@ -192,7 +191,7 @@ functions.  The important aspects of the documentation string are
 and should be the first part of any help string in Texinfo format.
 </p>
 </dd>
-<dt>@deftypefn {class} &hellip; @end deftypefn</dt>
+<dt>@deftypefn {} &hellip; @end deftypefn</dt>
 <dd><p>The entire help string should be enclosed within the block defined by
 deftypefn.
 </p>
@@ -301,8 +300,8 @@ example
 </p>
 <div class="example">
 <pre class="example">-*- texinfo -*-
-@deftypefn  {Function File} {@var{a} =} fn (@var{x}, &hellip;)
-@deftypefnx {Function File} {@var{a} =} fn (@var{y}, &hellip;)
+@deftypefn  {} {@var{a} =} fn (@var{x}, &hellip;)
+@deftypefnx {} {@var{a} =} fn (@var{y}, &hellip;)
 Help text in Texinfo format.
 @end deftypefn
 </pre></div>
@@ -314,8 +313,8 @@ documentation string for <code>nchoosek</code> is
 </p>
 <div class="example">
 <pre class="example">-*- texinfo -*-
-@deftypefn  {Function File} {@var{c} =} nchoosek (@var{n}, @var{k})
-@deftypefnx {Function File} {@var{c} =} nchoosek (@var{set}, @var{k})
+@deftypefn  {} {@var{c} =} nchoosek (@var{n}, @var{k})
+@deftypefnx {} {@var{c} =} nchoosek (@var{set}, @var{k})
 
 Compute the binomial coefficient of @var{n} or list all possible
 combinations of a @var{set} of items.

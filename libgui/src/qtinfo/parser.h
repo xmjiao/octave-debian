@@ -24,6 +24,9 @@ along with Octave; see the file COPYING.  If not, see
 // Author: P. L. Lucas
 // Author: Jacob Dawid <jacob.dawid@cybercatalyst.com>
 
+#if ! defined (octave_parser_h)
+#define octave_parser_h 1
+
 #include <QStringList>
 #include <QIODevice>
 #include <QFileInfoList>
@@ -112,7 +115,6 @@ private:
   /** Seeks to position pos. */
   void seek (QIODevice *io, int pos);
 
-
   QString                       _info_path;
   QFileInfoList                 _info_files;
   QHash<QString, node_map_item> _node_map;
@@ -120,3 +122,5 @@ private:
   QList<info_file_item>         _info_file_real_size_list;
   QHash<QString, QString>       _compressors_map;
 };
+
+#endif

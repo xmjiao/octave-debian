@@ -20,10 +20,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_octave_h)
+#if ! defined (octave_octave_h)
 #define octave_octave_h 1
 
-#ifdef  __cplusplus
+#include "octave-config.h"
+
+#if defined  (__cplusplus)
 extern "C" {
 #endif
 
@@ -43,7 +45,7 @@ extern OCTINTERP_API int octave_embedded;
 extern OCTINTERP_API int octave_starting_gui (void);
 extern OCTINTERP_API int octave_fork_gui (void);
 
-#ifdef  __cplusplus
+#if defined  (__cplusplus)
 }
 #endif
 

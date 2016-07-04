@@ -19,13 +19,14 @@
 ## Undocumented internal function.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{yi} =} __splinen__ (@var{x}, @var{y}, @var{xi})
+## @deftypefn {} {@var{yi} =} __splinen__ (@var{x}, @var{y}, @var{xi})
 ## Undocumented internal function.
 ## @end deftypefn
 
 ## FIXME: Allow arbitrary grids..
 
 function yi = __splinen__ (x, y, xi, extrapval, f)
+
   ## ND isvector function.
   isvec = @(x) numel (x) == length (x);
   if (! iscell (x) || length (x) < ndims (y) || any (! cellfun (isvec, x))
@@ -46,5 +47,6 @@ function yi = __splinen__ (x, y, xi, extrapval, f)
     endfor
     yi(idx) = extrapval;
   endif
+
 endfunction
 

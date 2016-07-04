@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QMenu>
@@ -76,8 +76,8 @@ ContextMenu::update (int pId)
           QWidget* parentW = xmenu->parentWidget ();
           QPoint pt;
 
-          pt.rx () = xround (pos(0));
-          pt.ry () = parentW->height () - xround (pos(1));
+          pt.rx () = octave::math::round (pos(0));
+          pt.ry () = parentW->height () - octave::math::round (pos(1));
           pt = parentW->mapToGlobal (pt);
 
           xmenu->popup (pt);

@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_str_vec_h)
+#if ! defined (octave_str_vec_h)
 #define octave_str_vec_h 1
+
+#include "octave-config.h"
 
 #include <iosfwd>
 #include <list>
@@ -70,11 +72,11 @@ public:
 
   ~string_vector (void) { }
 
-  bool empty (void) const { return length () == 0; }
+  bool empty (void) const { return numel () == 0; }
 
   octave_idx_type max_length (void) const
   {
-    octave_idx_type n = length ();
+    octave_idx_type n = numel ();
     octave_idx_type longest = 0;
 
     for (octave_idx_type i = 0; i < n; i++)
@@ -88,7 +90,7 @@ public:
     return longest;
   }
 
-  void resize (octave_idx_type n, const std::string& rfv = std::string ())
+  void resize (octave_idx_type n, const std::string& rfv = "")
   {
     Array<std::string>::resize (dim_vector (n, 1), rfv);
   }
@@ -107,15 +109,17 @@ public:
 
   string_vector& append (const string_vector& sv);
 
-  std::string join (const std::string& sep = std::string ()) const;
+  std::string join (const std::string& sep = "") const;
 
   char **c_str_vec (void) const;
+
+  std::list<std::string> std_list (void) const;
 
   static void delete_c_str_vec (const char * const*);
 
   std::ostream&
   list_in_columns (std::ostream&, int width = 0,
-                   const std::string& prefix = std::string ()) const;
+                   const std::string& prefix = "") const;
 };
 
 #endif

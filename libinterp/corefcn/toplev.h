@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_toplev_h)
+#if ! defined (octave_toplev_h)
 #define octave_toplev_h 1
+
+#include "octave-config.h"
 
 #include <cstdio>
 
@@ -41,7 +43,6 @@ class charMatrix;
 #include "input.h"
 #include "oct-map.h"
 #include "symtab.h"
-
 
 typedef void (*octave_exit_func) (int);
 extern OCTINTERP_API octave_exit_func octave_exit;
@@ -107,6 +108,8 @@ public:
 
     std::string fcn_name (bool print_subfn = true) const;
 
+    bool operator== (const stack_frame &rhs) const;
+
   private:
 
     octave_function *m_fcn;
@@ -133,11 +136,7 @@ public:
       create_instance ();
 
     if (! instance)
-      {
-        ::error ("unable to create call stack object!");
-
-        retval = false;
-      }
+      error ("unable to create call stack object!");
 
     return retval;
   }
@@ -158,18 +157,6 @@ public:
   static int current_column (void)
   {
     return instance_ok () ? instance->do_current_column () : -1;
-  }
-
-  // Line in user code caller.
-  static int caller_user_code_line (void)
-  {
-    return instance_ok () ? instance->do_caller_user_code_line () : -1;
-  }
-
-  // Column in user code caller.
-  static int caller_user_code_column (void)
-  {
-    return instance_ok () ? instance->do_caller_user_code_column () : -1;
   }
 
   // Caller function, may be built-in.
@@ -204,12 +191,13 @@ public:
     return instance_ok () ? instance->do_current_context () : 0;
   }
 
-  /*
+#if 0
   static stack_frame frame (size_t idx)
   {
     return instance_ok () ? instance->do_frame (idx) : stack_frame ();
   }
-  */
+#endif
+
   // Function at location N on the call stack (N == 0 is current), may
   // be built-in.
   static octave_function *element (size_t n)
@@ -217,10 +205,40 @@ public:
     return instance_ok () ? instance->do_element (n) : 0;
   }
 
-  // First user-defined function on the stack.
+  // User code caller.
   static octave_user_code *caller_user_code (size_t nskip = 0)
   {
     return instance_ok () ? instance->do_caller_user_code (nskip) : 0;
+  }
+
+  // Line in user code caller.
+  static int caller_user_code_line (void)
+  {
+    return instance_ok () ? instance->do_caller_user_code_line () : -1;
+  }
+
+  // Column in user code caller.
+  static int caller_user_code_column (void)
+  {
+    return instance_ok () ? instance->do_caller_user_code_column () : -1;
+  }
+
+  // Current function that we are debugging.
+  static octave_user_code *debug_user_code (void)
+  {
+    return instance_ok () ? instance->do_debug_user_code () : 0;
+  }
+
+  // Line number in current function that we are debugging.
+  static int debug_user_code_line (void)
+  {
+    return instance_ok () ? instance->do_debug_user_code_line () : 0;
+  }
+
+  // Column number in current function that we are debugging.
+  static int debug_user_code_column (void)
+  {
+    return instance_ok () ? instance->do_debug_user_code_column () : 0;
   }
 
   // Return TRUE if all elements on the call stack are scripts.
@@ -356,10 +374,6 @@ private:
 
   int do_current_column (void) const;
 
-  int do_caller_user_code_line (void) const;
-
-  int do_caller_user_code_column (void) const;
-
   octave_function *do_caller (void) const
   {
     return curr_frame > 1 ? cs[curr_frame-1].m_fcn : cs[0].m_fcn;
@@ -383,13 +397,15 @@ private:
            ? cs[curr_frame].m_context : 0;
   }
 
-  /*  const stack_frame& do_frame (size_t idx)
+#if 0
+  const stack_frame& do_frame (size_t idx)
   {
     static stack_frame foobar;
 
     return idx < cs.size () ? cs[idx] : foobar;
   }
-  */
+#endif
+
   octave_function *do_element (size_t n)
   {
     octave_function *retval = 0;
@@ -404,6 +420,12 @@ private:
   }
 
   octave_user_code *do_caller_user_code (size_t nskip) const;
+  int do_caller_user_code_line (void) const;
+  int do_caller_user_code_column (void) const;
+
+  octave_user_code *do_debug_user_code (void) const;
+  int do_debug_user_code_line (void) const;
+  int do_debug_user_code_column (void) const;
 
   bool do_all_scripts (void) const;
 
@@ -505,7 +527,7 @@ private:
     { \
       try \
         { \
-          unwind_protect frame; \
+          octave::unwind_protect frame; \
  \
           frame.protect_var (Vdebug_on_error); \
           frame.protect_var (Vdebug_on_warning); \
@@ -515,12 +537,9 @@ private:
  \
           F ARGS; \
         } \
-      OCTAVE_IGNORE_EXCEPTION (octave_interrupt_exception) \
-      OCTAVE_IGNORE_EXCEPTION (octave_execution_exception) \
-      OCTAVE_IGNORE_EXCEPTION (std::bad_alloc) \
- \
-      if (error_state) \
-        error_state = 0; \
+      OCTAVE_IGNORE_EXCEPTION (const octave_interrupt_exception&) \
+      OCTAVE_IGNORE_EXCEPTION (const octave_execution_exception&) \
+      OCTAVE_IGNORE_EXCEPTION (const std::bad_alloc&) \
     } \
   while (0)
 

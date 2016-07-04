@@ -1,4 +1,4 @@
-/****************************************************************************
+/*
 
 Find dialog derived from an example from Qt Toolkit (license below (**))
 
@@ -56,13 +56,14 @@ along with Octave; see the file COPYING.  If not, see
 ** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
-****************************************************************************/
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+*/
+
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#ifdef HAVE_QSCINTILLA
+#if defined (HAVE_QSCINTILLA)
 
 #include <QtGui>
 #include <QIcon>
@@ -107,7 +108,7 @@ find_dialog::find_dialog (QsciScintilla* edit_area, QWidget *p)
   _regex_check_box = new QCheckBox (tr ("Regular E&xpressions"));
   _backward_check_box = new QCheckBox (tr ("Search &backward"));
   _search_selection_check_box = new QCheckBox (tr ("Search se&lection"));
-#ifdef HAVE_QSCI_FINDSELECTION
+#if defined (HAVE_QSCI_FINDSELECTION)
   _search_selection_check_box->setCheckable (true);
   _search_selection_check_box->setEnabled (edit_area->hasSelectedText ());
 #else
@@ -133,7 +134,7 @@ find_dialog::find_dialog (QsciScintilla* edit_area, QWidget *p)
   connect (_search_line_edit,   SIGNAL (textChanged (QString)),
            this,                SLOT (handle_search_text_changed (QString)));
 
-#ifdef HAVE_QSCI_FINDSELECTION
+#if defined (HAVE_QSCI_FINDSELECTION)
   connect (_edit_area, SIGNAL (copyAvailable (bool)),
            this,       SLOT (handle_selection_changed (bool)));
   connect (_search_selection_check_box, SIGNAL (stateChanged (int)),
@@ -203,14 +204,19 @@ find_dialog::handle_search_text_changed (QString)
     _find_result_available = false;
 }
 
-#ifdef HAVE_QSCI_FINDSELECTION
+#if defined (HAVE_QSCI_FINDSELECTION)
 void
 find_dialog::handle_sel_search_changed (int selected)
 {
   _from_start_check_box->setEnabled (! selected);
   _find_result_available = false;
 }
+#else
+void
+find_dialog::handle_sel_search_changed (int /* selected */) { }
+#endif
 
+#if defined (HAVE_QSCI_FINDSELECTION)
 void
 find_dialog::handle_selection_changed (bool has_selected)
 {
@@ -222,6 +228,9 @@ find_dialog::handle_selection_changed (bool has_selected)
   if (! has_selected)
     _search_selection_check_box->setChecked (false);
 }
+#else
+void
+find_dialog::handle_selection_changed (bool /* has_selected */) { }
 #endif
 
 // initialize search text with selected text if this is in one single line
@@ -239,12 +248,16 @@ find_dialog::init_search_text ()
   // set focus to "Find what" and select all text
   _search_line_edit->setFocus();
   _search_line_edit->selectAll();
+
+  // Default to "find" next time.
+  // Otherwise, it defaults to the last action, which may be "replace all".
+  _find_next_button->setDefault (true);
 }
 
 void
 find_dialog::find_next ()
 {
-  find (!_backward_check_box->isChecked ());
+  find (! _backward_check_box->isChecked ());
 }
 
 void
@@ -313,7 +326,7 @@ find_dialog::find (bool forward)
       if (_edit_area->hasSelectedText ()
           && _search_selection_check_box->isChecked ())
         {
-#ifdef HAVE_QSCI_FINDSELECTION
+#if defined (HAVE_QSCI_FINDSELECTION)
            if (_find_result_available)
              _find_result_available = _edit_area->findNext ();
            else
@@ -325,7 +338,7 @@ find_dialog::find (bool forward)
                                       _whole_words_check_box->isChecked (),
                                       do_forward,
                                       true
-#ifdef HAVE_QSCI_VERSION_2_6_0
+#if defined (HAVE_QSCI_VERSION_2_6_0)
                                       , true
 #endif
                                       );
@@ -342,7 +355,7 @@ find_dialog::find (bool forward)
                                     do_forward,
                                     line,col,
                                     true
-#ifdef HAVE_QSCI_VERSION_2_6_0
+#if defined (HAVE_QSCI_VERSION_2_6_0)
                                     , true
 #endif
                                     );
@@ -421,6 +434,5 @@ find_dialog::no_matches_message ()
                        tr ("No more matches found"), QMessageBox::Ok, this);
   msg_box.exec ();
 }
-
 
 #endif

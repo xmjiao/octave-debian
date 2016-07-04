@@ -751,7 +751,7 @@ running Octave, you can improve performance by calling
 ignore the time stamps for all function files.  Passing
 @qcode{"system"} to this function resets the default behavior.
 
-@c FIXME -- note about time stamps on files in NFS environments?
+@c FIXME: note about time stamps on files in NFS environments?
 
 @DOCSTRING(edit)
 
@@ -843,6 +843,8 @@ defines a main function @code{f} and two subfunctions.  The
 subfunctions @code{g} and @code{h} may only be called from the main
 function @code{f} or from the other subfunctions, but not from outside
 the file @file{f.m}.
+
+@DOCSTRING(localfunctions)
 
 @node Private Functions
 @subsection Private Functions

@@ -20,12 +20,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-int8.h"
 #include "ov-int16.h"
@@ -49,7 +49,7 @@ along with Octave; see the file COPYING.  If not, see
 #define DEFINTCONVFN(name, tfrom, tto) \
   CONVDECL (name) \
   { \
-    CAST_CONV_ARG (const octave_ ## tfrom&); \
+    const octave_ ## tfrom& v = dynamic_cast<const octave_ ## tfrom&> (a); \
  \
     octave_ ## tto ## _matrix v2 = v.tto ## _array_value (); \
     return new octave_ ## tto ## _matrix (v2); \

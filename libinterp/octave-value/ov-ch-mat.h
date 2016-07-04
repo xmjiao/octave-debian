@@ -21,8 +21,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_ch_mat_h)
+#if ! defined (octave_ov_ch_mat_h)
 #define octave_ov_ch_mat_h 1
+
+#include "octave-config.h"
 
 #include <cstdlib>
 

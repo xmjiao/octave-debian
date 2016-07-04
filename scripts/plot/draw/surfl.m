@@ -17,14 +17,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} surfl (@var{z})
-## @deftypefnx {Function File} {} surfl (@var{x}, @var{y}, @var{z})
-## @deftypefnx {Function File} {} surfl (@dots{}, @var{lsrc})
-## @deftypefnx {Function File} {} surfl (@var{x}, @var{y}, @var{z}, @var{lsrc}, @var{P})
-## @deftypefnx {Function File} {} surfl (@dots{}, "cdata")
-## @deftypefnx {Function File} {} surfl (@dots{}, "light")
-## @deftypefnx {Function File} {} surfl (@var{hax}, @dots{})
-## @deftypefnx {Function File} {@var{h} =} surfl (@dots{})
+## @deftypefn  {} {} surfl (@var{z})
+## @deftypefnx {} {} surfl (@var{x}, @var{y}, @var{z})
+## @deftypefnx {} {} surfl (@dots{}, @var{lsrc})
+## @deftypefnx {} {} surfl (@var{x}, @var{y}, @var{z}, @var{lsrc}, @var{P})
+## @deftypefnx {} {} surfl (@dots{}, "cdata")
+## @deftypefnx {} {} surfl (@dots{}, "light")
+## @deftypefnx {} {} surfl (@var{hax}, @dots{})
+## @deftypefnx {} {@var{h} =} surfl (@dots{})
 ## Plot a 3-D surface using shading based on various lighting models.
 ##
 ## The surface mesh is plotted using shaded rectangles.  The vertices of the
@@ -41,9 +41,9 @@
 ## @strong{Warning:} The alternative mode @qcode{"light"} mode which creates a
 ## light object to illuminate the surface is not implemented (yet).
 ##
-## The light source location can be specified using @var{lsrc}.  It can be given
-## as a 2-element vector [azimuth, elevation] in degrees, or as a 3-element
-## vector [lx, ly, lz].  The default value is rotated 45 degrees
+## The light source location can be specified using @var{lsrc}.  It can be
+## given as a 2-element vector [azimuth, elevation] in degrees, or as a
+## 3-element vector [lx, ly, lz].  The default value is rotated 45 degrees
 ## counterclockwise to the current view.
 ##
 ## The material properties of the surface can specified using a 4-element

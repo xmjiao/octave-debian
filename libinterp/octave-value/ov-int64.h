@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_int64_h)
+#if ! defined (octave_ov_int64_h)
 #define octave_ov_int64_h 1
+
+#include "octave-config.h"
 
 #define OCTAVE_INT_T octave_int64
 

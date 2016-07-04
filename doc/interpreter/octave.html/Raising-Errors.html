@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -73,9 +74,18 @@ endfunction
 and returns to the Octave prompt.  This means that no code following
 a call to <code>error</code> will be executed.
 </p>
+<p>It is also possible to assign an identification string to an error.
+If an error has such an ID the user can catch this error
+as will be described in the next section.  To assign an ID to an error,
+simply call <code>error</code> with two string arguments, where the first
+is the identification string, and the second is the actual error.  Note
+that error IDs are in the format <code>&quot;NAMESPACE:ERROR-NAME&quot;</code>.  The namespace
+<code>&quot;Octave&quot;</code> is used for Octave&rsquo;s own errors.  Any other string is available
+as a namespace for user&rsquo;s own errors.
+</p>
 <a name="XREFerror"></a><dl>
-<dt><a name="index-error"></a>Built-in Function: <em></em> <strong>error</strong> <em>(<var>template</var>, &hellip;)</em></dt>
-<dt><a name="index-error-1"></a>Built-in Function: <em></em> <strong>error</strong> <em>(<var>id</var>, <var>template</var>, &hellip;)</em></dt>
+<dt><a name="index-error"></a>: <em></em> <strong>error</strong> <em>(<var>template</var>, &hellip;)</em></dt>
+<dt><a name="index-error-1"></a>: <em></em> <strong>error</strong> <em>(<var>id</var>, <var>template</var>, &hellip;)</em></dt>
 <dd><p>Display an error message and stop m-file execution.
 </p>
 <p>Format the optional arguments under the control of the template string
@@ -125,8 +135,8 @@ error: nargin != 1
 
 <p>A null string (&quot;&quot;) input to <code>error</code> will be ignored and the code
 will continue running as if the statement were a NOP.  This is for
-compatibility with <small>MATLAB</small>.  It also makes it possible to write code such
-as
+compatibility with <small>MATLAB</small>.  It also makes it possible to write code
+such as
 </p>
 <div class="example">
 <pre class="example">err_msg = &quot;&quot;;
@@ -167,7 +177,7 @@ message.
 </p>
 <div class="example">
 <pre class="example">## -*- texinfo -*-
-## @deftypefn {Function File} f (@var{arg1})
+## @deftypefn {} f (@var{arg1})
 ## Function help text goes here&hellip;
 ## @end deftypefn
 function f (arg1)
@@ -185,12 +195,12 @@ error.
 
 -|  error: Invalid call to f.  Correct usage is:
 -|
--|   -- Function File: f (ARG1)
+-|   -- f (ARG1)
 -|
 -|
 -|  Additional help for built-in functions and operators is
 -|  available in the online version of the manual.  Use the command
--|  `doc &lt;topic&gt;' to search the manual index.
+-|  'doc &lt;topic&gt;' to search the manual index.
 -|
 -|  Help and information about Octave is also available on the WWW
 -|  at http://www.octave.org and via the help@octave.org
@@ -198,8 +208,8 @@ error.
 </pre></div>
 
 <a name="XREFprint_005fusage"></a><dl>
-<dt><a name="index-print_005fusage"></a>Function File: <em></em> <strong>print_usage</strong> <em>()</em></dt>
-<dt><a name="index-print_005fusage-1"></a>Function File: <em></em> <strong>print_usage</strong> <em>(<var>name</var>)</em></dt>
+<dt><a name="index-print_005fusage"></a>: <em></em> <strong>print_usage</strong> <em>()</em></dt>
+<dt><a name="index-print_005fusage-1"></a>: <em></em> <strong>print_usage</strong> <em>(<var>name</var>)</em></dt>
 <dd><p>Print the usage message for the function <var>name</var>.
 </p>
 <p>When called with no input arguments the <code>print_usage</code> function displays
@@ -210,11 +220,11 @@ the usage message of the currently executing function.
 
 
 <a name="XREFbeep"></a><dl>
-<dt><a name="index-beep"></a>Function File: <em></em> <strong>beep</strong> <em>()</em></dt>
+<dt><a name="index-beep"></a>: <em></em> <strong>beep</strong> <em>()</em></dt>
 <dd><p>Produce a beep from the speaker (or visual bell).
 </p>
 <p>This function sends the alarm character <code>&quot;\a&quot;</code> to
-the terminal. Depending on the user&rsquo;s configuration this may produce an
+the terminal.  Depending on the user&rsquo;s configuration this may produce an
 audible beep, a visual bell, or nothing at all.
 </p>
 <p><strong>See also:</strong> <a href="Simple-Output.html#XREFputs">puts</a>, <a href="Simple-Output.html#XREFfputs">fputs</a>, <a href="Formatted-Output.html#XREFprintf">printf</a>, <a href="Formatted-Output.html#XREFfprintf">fprintf</a>.
@@ -222,9 +232,9 @@ audible beep, a visual bell, or nothing at all.
 
 
 <a name="XREFbeep_005fon_005ferror"></a><dl>
-<dt><a name="index-beep_005fon_005ferror"></a>Built-in Function: <em><var>val</var> =</em> <strong>beep_on_error</strong> <em>()</em></dt>
-<dt><a name="index-beep_005fon_005ferror-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>beep_on_error</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-beep_005fon_005ferror-2"></a>Built-in Function: <em></em> <strong>beep_on_error</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-beep_005fon_005ferror"></a>: <em><var>val</var> =</em> <strong>beep_on_error</strong> <em>()</em></dt>
+<dt><a name="index-beep_005fon_005ferror-1"></a>: <em><var>old_val</var> =</em> <strong>beep_on_error</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-beep_005fon_005ferror-2"></a>: <em></em> <strong>beep_on_error</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that controls whether Octave will try
 to ring the terminal bell before printing an error message.
 </p>

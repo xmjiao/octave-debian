@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_pt_pr_code_h)
+#if ! defined (octave_pt_pr_code_h)
 #define octave_pt_pr_code_h 1
+
+#include "octave-config.h"
 
 #include <stack>
 #include <string>
@@ -40,7 +42,7 @@ tree_print_code : public tree_walker
 public:
 
   tree_print_code (std::ostream& os_arg,
-                   const std::string& pfx = std::string (),
+                   const std::string& pfx = "",
                    bool pr_orig_txt = true)
     : os (os_arg), prefix (pfx), nesting (),
       print_original_text (pr_orig_txt),

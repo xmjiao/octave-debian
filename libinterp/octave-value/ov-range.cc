@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <iostream>
@@ -31,10 +31,10 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "defun.h"
 #include "variables.h"
-#include "gripes.h"
+#include "errwarn.h"
 #include "mxarray.h"
 #include "ops.h"
-#include "oct-obj.h"
+#include "ovl.h"
 #include "oct-hdf5.h"
 #include "ov-range.h"
 #include "ov-re-mat.h"
@@ -49,13 +49,12 @@ along with Octave; see the file COPYING.  If not, see
 // If TRUE, allow ranges with non-integer elements as array indices.
 static bool Vallow_noninteger_range_as_index = true;
 
-
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_range, "range", "double");
 
 static octave_base_value *
 default_numeric_conversion_function (const octave_base_value& a)
 {
-  CAST_CONV_ARG (const octave_range&);
+  const octave_range& v = dynamic_cast<const octave_range&> (a);
 
   return new octave_matrix (v.matrix_value ());
 }
@@ -72,7 +71,7 @@ octave_range::try_narrowing_conversion (void)
 {
   octave_base_value *retval = 0;
 
-  switch (range.nelem ())
+  switch (range.numel ())
     {
     case 1:
       retval = new octave_scalar (range.base ());
@@ -128,13 +127,22 @@ octave_range::do_index_op (const octave_value_list& idx, bool resize_ok)
       octave_value retval;
 
       // The range can handle a single subscript.
-      idx_vector i = idx(0).index_vector ();
-      if (! error_state)
+
+      try
         {
-          if (i.is_scalar () && i(0) < range.nelem ())
+          idx_vector i = idx(0).index_vector ();
+
+          if (i.is_scalar () && i(0) < range.numel ())
             retval = range.elem (i(0));
           else
             retval = range.index (i);
+        }
+      catch (index_exception& e)
+        {
+          // More info may be added later before displaying error.
+
+          e.set_pos_if_unset (1, 1);
+          throw;
         }
 
       return retval;
@@ -173,17 +181,15 @@ octave_range::double_value (bool) const
 {
   double retval = lo_ieee_nan_value ();
 
-  octave_idx_type nel = range.nelem ();
+  octave_idx_type nel = range.numel ();
 
-  if (nel > 0)
-    {
-      gripe_implicit_conversion ("Octave:array-to-scalar",
-                                 "range", "real scalar");
+  if (nel == 0)
+    err_invalid_conversion ("range", "real scalar");
 
-      retval = range.base ();
-    }
-  else
-    gripe_invalid_conversion ("range", "real scalar");
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            "range", "real scalar");
+
+  retval = range.base ();
 
   return retval;
 }
@@ -193,17 +199,15 @@ octave_range::float_value (bool) const
 {
   float retval = lo_ieee_float_nan_value ();
 
-  octave_idx_type nel = range.nelem ();
+  octave_idx_type nel = range.numel ();
 
-  if (nel > 0)
-    {
-      gripe_implicit_conversion ("Octave:array-to-scalar",
-                                 "range", "real scalar");
+  if (nel == 0)
+    err_invalid_conversion ("range", "real scalar");
 
-      retval = range.base ();
-    }
-  else
-    gripe_invalid_conversion ("range", "real scalar");
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            "range", "real scalar");
+
+  retval = range.base ();
 
   return retval;
 }
@@ -259,18 +263,39 @@ octave_range::diag (octave_idx_type m, octave_idx_type n) const
   return mat.diag (m, n);
 }
 
+// Return true if this range has all true elements (non-zero, not NaN/NA).
+// A range cannot have NaN/NA.
 bool
 octave_range::is_true (void) const
 {
   bool retval = false;
 
-  if (range.nelem () != 0)
+  if (! range.is_empty ())
     {
-      // FIXME: this is a potential waste of memory.
+      if (dims ().numel () > 1)
+        warn_array_as_logical (dims ());
 
-      Matrix m ((range.matrix_value () . all ()) . all ());
+      Range r = range_value ();
+      double base = r.base ();
+      double limit = r.limit ();
 
-      retval = (m.rows () == 1 && m.columns () == 1 && m (0, 0) != 0.0);
+      // Can't be zero if we start and finish on the same size of 0
+      if (((base > 0 && limit > 0) || (base < 0 && limit < 0)) && numel () > 0)
+        retval = true;
+      else
+        {
+          /*
+          // This tells us whether one element is 0, if arithmetic is exact.
+          double steps_to_zero = base / r.inc ();
+
+          retval = (steps_to_zero != floor (steps_to_zero));
+          */
+
+          // FIXME: this is a waste of memory.
+          Matrix m ((range.matrix_value ().all ()).all ());
+
+          retval = ! m.is_empty () && m(0, 0) != 0.0;
+        }
     }
 
   return retval;
@@ -283,17 +308,15 @@ octave_range::complex_value (bool) const
 
   Complex retval (tmp, tmp);
 
-  octave_idx_type nel = range.nelem ();
+  octave_idx_type nel = range.numel ();
 
-  if (nel > 0)
-    {
-      gripe_implicit_conversion ("Octave:array-to-scalar",
-                                 "range", "complex scalar");
+  if (nel == 0)
+    err_invalid_conversion ("range", "complex scalar");
 
-      retval = range.base ();
-    }
-  else
-    gripe_invalid_conversion ("range", "complex scalar");
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            "range", "complex scalar");
+
+  retval = range.base ();
 
   return retval;
 }
@@ -305,17 +328,15 @@ octave_range::float_complex_value (bool) const
 
   FloatComplex retval (tmp, tmp);
 
-  octave_idx_type nel = range.nelem ();
+  octave_idx_type nel = range.numel ();
 
-  if (nel > 0)
-    {
-      gripe_implicit_conversion ("Octave:array-to-scalar",
-                                 "range", "complex scalar");
+  if (nel == 0)
+    err_invalid_conversion ("range", "complex scalar");
 
-      retval = range.base ();
-    }
-  else
-    gripe_invalid_conversion ("range", "complex scalar");
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            "range", "complex scalar");
+
+  retval = range.base ();
 
   return retval;
 }
@@ -326,9 +347,9 @@ octave_range::bool_array_value (bool warn) const
   Matrix m = range.matrix_value ();
 
   if (m.any_element_is_nan ())
-    gripe_nan_to_logical_conversion ();
-  else if (warn && m.any_element_not_one_or_zero ())
-    gripe_logical_conversion ();
+    err_nan_to_logical_conversion ();
+  if (warn && m.any_element_not_one_or_zero ())
+    warn_logical_conversion ();
 
   return boolNDArray (m);
 }
@@ -370,7 +391,7 @@ octave_range::print_name_tag (std::ostream& os, const std::string& name) const
 {
   bool retval = false;
 
-  octave_idx_type n = range.nelem ();
+  octave_idx_type n = range.numel ();
 
   indent (os);
 
@@ -392,7 +413,7 @@ octave_range::print_name_tag (std::ostream& os, const std::string& name) const
 void
 octave_range::short_disp (std::ostream& os) const
 {
-  octave_idx_type len = range.nelem ();
+  octave_idx_type len = range.numel ();
 
   if (len == 0)
     os << "[]";
@@ -434,7 +455,7 @@ octave_range::save_ascii (std::ostream& os)
   double base = r.base ();
   double limit = r.limit ();
   double inc = r.inc ();
-  octave_idx_type len = r.nelem ();
+  octave_idx_type len = r.numel ();
 
   if (inc != 0)
     os << "# base, limit, increment\n";
@@ -463,11 +484,8 @@ octave_range::load_ascii (std::istream& is)
   double base, limit, inc;
   is >> base >> limit >> inc;
 
-  if (!is)
-    {
-      error ("load: failed to load range constant");
-      return false;
-    }
+  if (! is)
+    error ("load: failed to load range constant");
 
   if (inc != 0)
     range = Range (base, limit, inc);
@@ -487,7 +505,7 @@ octave_range::save_binary (std::ostream& os, bool& /* save_as_floats */)
   double lim = r.limit ();
   double inc = r.inc ();
   if (inc == 0)
-    lim = r.nelem ();
+    lim = r.numel ();
 
   os.write (reinterpret_cast<char *> (&bas), 8);
   os.write (reinterpret_cast<char *> (&lim), 8);
@@ -498,7 +516,7 @@ octave_range::save_binary (std::ostream& os, bool& /* save_as_floats */)
 
 bool
 octave_range::load_binary (std::istream& is, bool swap,
-                           oct_mach_info::float_format /* fmt */)
+                           octave::mach_info::float_format /* fmt */)
 {
   char tmp;
   if (! is.read (reinterpret_cast<char *> (&tmp), 1))
@@ -529,7 +547,7 @@ octave_range::load_binary (std::istream& is, bool swap,
 // The following subroutines creates an HDF5 representation of the way
 // we will store Octave range types (triplets of floating-point numbers).
 // NUM_TYPE is the HDF5 numeric type to use for storage (e.g.
-// H5T_NATIVE_DOUBLE to save as 'double'). Note that any necessary
+// H5T_NATIVE_DOUBLE to save as 'double').  Note that any necessary
 // conversions are handled automatically by HDF5.
 
 static hid_t
@@ -567,11 +585,11 @@ octave_range::save_hdf5 (octave_hdf5_id loc_id, const char *name,
       H5Sclose (space_hid);
       return false;
     }
-#if HAVE_HDF5_18
+#if defined (HAVE_HDF5_18)
   data_hid = H5Dcreate (loc_id, name, type_hid, space_hid,
-                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+                        octave_H5P_DEFAULT, octave_H5P_DEFAULT, octave_H5P_DEFAULT);
 #else
-  data_hid = H5Dcreate (loc_id, name, type_hid, space_hid, H5P_DEFAULT);
+  data_hid = H5Dcreate (loc_id, name, type_hid, space_hid, octave_H5P_DEFAULT);
 #endif
   if (data_hid < 0)
     {
@@ -583,13 +601,13 @@ octave_range::save_hdf5 (octave_hdf5_id loc_id, const char *name,
   Range r = range_value ();
   double range_vals[3];
   range_vals[0] = r.base ();
-  range_vals[1] = r.inc () != 0 ? r.limit () : r.nelem ();
+  range_vals[1] = r.inc () != 0 ? r.limit () : r.numel ();
   range_vals[2] = r.inc ();
 
-  if (H5Dwrite (data_hid, type_hid, H5S_ALL, H5S_ALL, H5P_DEFAULT,
+  if (H5Dwrite (data_hid, type_hid, octave_H5S_ALL, octave_H5S_ALL, octave_H5P_DEFAULT,
                 range_vals) >= 0)
     {
-      octave_idx_type nel = r.nelem ();
+      octave_idx_type nel = r.numel ();
       retval = hdf5_add_scalar_attr (data_hid, H5T_NATIVE_IDX,
                                      "OCTAVE_RANGE_NELEM", &nel) >= 0;
     }
@@ -601,7 +619,10 @@ octave_range::save_hdf5 (octave_hdf5_id loc_id, const char *name,
   H5Sclose (space_hid);
 
 #else
-  gripe_save ("hdf5");
+  octave_unused_parameter (loc_id);
+  octave_unused_parameter (name);
+
+  warn_save ("hdf5");
 #endif
 
   return retval;
@@ -614,8 +635,8 @@ octave_range::load_hdf5 (octave_hdf5_id loc_id, const char *name)
 
 #if defined (HAVE_HDF5)
 
-#if HAVE_HDF5_18
-  hid_t data_hid = H5Dopen (loc_id, name, H5P_DEFAULT);
+#if defined (HAVE_HDF5_18)
+  hid_t data_hid = H5Dopen (loc_id, name, octave_H5P_DEFAULT);
 #else
   hid_t data_hid = H5Dopen (loc_id, name);
 #endif
@@ -642,7 +663,7 @@ octave_range::load_hdf5 (octave_hdf5_id loc_id, const char *name)
     }
 
   double rangevals[3];
-  if (H5Dread (data_hid, range_type, H5S_ALL, H5S_ALL, H5P_DEFAULT,
+  if (H5Dread (data_hid, range_type, octave_H5S_ALL, octave_H5S_ALL, octave_H5P_DEFAULT,
                rangevals) >= 0)
     {
       retval = true;
@@ -665,7 +686,10 @@ octave_range::load_hdf5 (octave_hdf5_id loc_id, const char *name)
   H5Dclose (data_hid);
 
 #else
-  gripe_load ("hdf5");
+  octave_unused_parameter (loc_id);
+  octave_unused_parameter (name);
+
+  warn_load ("hdf5");
 #endif
 
   return retval;
@@ -693,26 +717,26 @@ octave_range::as_mxArray (void) const
 octave_value
 octave_range::fast_elem_extract (octave_idx_type n) const
 {
-  return (n < range.nelem ()) ? octave_value (range.elem (n))
+  return (n < range.numel ()) ? octave_value (range.elem (n))
                               : octave_value ();
 }
 
 DEFUN (allow_noninteger_range_as_index, args, nargout,
-       "-*- texinfo -*-\n\
-@deftypefn  {Built-in Function} {@var{val} =} allow_noninteger_range_as_index ()\n\
-@deftypefnx {Built-in Function} {@var{old_val} =} allow_noninteger_range_as_index (@var{new_val})\n\
-@deftypefnx {Built-in Function} {} allow_noninteger_range_as_index (@var{new_val}, \"local\")\n\
-Query or set the internal variable that controls whether non-integer\n\
-ranges are allowed as indices.\n\
-\n\
-This might be useful for @sc{matlab} compatibility; however, it is still not\n\
-entirely compatible because @sc{matlab} treats the range expression\n\
-differently in different contexts.\n\
-\n\
-When called from inside a function with the @qcode{\"local\"} option, the\n\
-variable is changed locally for the function and any subroutines it calls.\n\
-The original variable value is restored when exiting the function.\n\
-@end deftypefn")
+       doc: /* -*- texinfo -*-
+@deftypefn  {} {@var{val} =} allow_noninteger_range_as_index ()
+@deftypefnx {} {@var{old_val} =} allow_noninteger_range_as_index (@var{new_val})
+@deftypefnx {} {} allow_noninteger_range_as_index (@var{new_val}, "local")
+Query or set the internal variable that controls whether non-integer
+ranges are allowed as indices.
+
+This might be useful for @sc{matlab} compatibility; however, it is still not
+entirely compatible because @sc{matlab} treats the range expression
+differently in different contexts.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@end deftypefn */)
 {
   static bool warned = false;
   if (! warned)
@@ -728,6 +752,7 @@ The original variable value is restored when exiting the function.\n\
 /*
 %!test
 %! x = 0:10;
+%! warning ("off", "Octave:deprecated-function", "local");
 %! save = allow_noninteger_range_as_index ();
 %! warn_state = warning ("query", "Octave:noninteger-range-as-index");
 %! unwind_protect

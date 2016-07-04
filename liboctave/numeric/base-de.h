@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_base_de_h)
+#if ! defined (octave_base_de_h)
 #define octave_base_de_h 1
+
+#include "octave-config.h"
 
 #include <string>
 
@@ -72,7 +74,7 @@ public:
     force_restart ();
   }
 
-  octave_idx_type size (void) const { return x.capacity (); }
+  octave_idx_type size (void) const { return x.numel (); }
 
   ColumnVector state (void) const { return x; }
 

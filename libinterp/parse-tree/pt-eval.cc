@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <cctype>
@@ -34,7 +34,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "debug.h"
 #include "defun.h"
 #include "error.h"
-#include "gripes.h"
+#include "errwarn.h"
 #include "input.h"
 #include "ov-fcn-handle.h"
 #include "ov-usr-fcn.h"
@@ -42,6 +42,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "pt-all.h"
 #include "pt-eval.h"
 #include "symtab.h"
+#include "toplev.h"
 #include "unwind-prot.h"
 
 //FIXME: This should be part of tree_evaluator
@@ -95,15 +96,12 @@ tree_evaluator::visit_binary_expression (tree_binary_expression&)
 void
 tree_evaluator::visit_break_command (tree_break_command& cmd)
 {
-  if (! error_state)
-    {
-      if (debug_mode)
-        do_breakpoint (cmd.is_breakpoint ());
+  if (debug_mode)
+    do_breakpoint (cmd.is_breakpoint (true));
 
-      if (statement_context == function || statement_context == script
-          || in_loop_command)
-        tree_break_command::breaking = 1;
-    }
+  if (statement_context == function || statement_context == script
+      || in_loop_command)
+    tree_break_command::breaking = 1;
 }
 
 void
@@ -115,15 +113,12 @@ tree_evaluator::visit_colon_expression (tree_colon_expression&)
 void
 tree_evaluator::visit_continue_command (tree_continue_command& cmd)
 {
-  if (! error_state)
-    {
-      if (debug_mode)
-        do_breakpoint (cmd.is_breakpoint ());
+  if (debug_mode)
+    do_breakpoint (cmd.is_breakpoint (true));
 
-      if (statement_context == function || statement_context == script
-          || in_loop_command)
-        tree_continue_command::continuing = 1;
-    }
+  if (statement_context == function || statement_context == script
+      || in_loop_command)
+    tree_continue_command::continuing = 1;
 }
 
 void
@@ -150,23 +145,20 @@ do_global_init (tree_decl_elt& elt)
     {
       id->mark_global ();
 
-      if (! error_state)
+      octave_lvalue ult = id->lvalue ();
+
+      if (ult.is_undefined ())
         {
-          octave_lvalue ult = id->lvalue ();
+          tree_expression *expr = elt.expression ();
 
-          if (ult.is_undefined ())
-            {
-              tree_expression *expr = elt.expression ();
+          octave_value init_val;
 
-              octave_value init_val;
+          if (expr)
+            init_val = expr->rvalue1 ();
+          else
+            init_val = Matrix ();
 
-              if (expr)
-                init_val = expr->rvalue1 ();
-              else
-                init_val = Matrix ();
-
-              ult.assign (octave_value::op_asn_eq, init_val);
-            }
+          ult.assign (octave_value::op_asn_eq, init_val);
         }
     }
 }
@@ -210,9 +202,6 @@ tree_evaluator::do_decl_init_list (decl_elt_init_fcn fcn,
           tree_decl_elt *elt = *p;
 
           fcn (*elt);
-
-          if (error_state)
-            break;
         }
     }
 }
@@ -221,7 +210,7 @@ void
 tree_evaluator::visit_global_command (tree_global_command& cmd)
 {
   if (debug_mode)
-    do_breakpoint (cmd.is_breakpoint ());
+    do_breakpoint (cmd.is_breakpoint (true));
 
   do_decl_init_list (do_global_init, cmd.initializer_list ());
 }
@@ -230,7 +219,7 @@ void
 tree_evaluator::visit_persistent_command (tree_persistent_command& cmd)
 {
   if (debug_mode)
-    do_breakpoint (cmd.is_breakpoint ());
+    do_breakpoint (cmd.is_breakpoint (true));
 
   do_decl_init_list (do_static_init, cmd.initializer_list ());
 }
@@ -253,12 +242,9 @@ tree_decl_elt::eval (void)
 
       octave_value init_val = expr->rvalue1 ();
 
-      if (! error_state)
-        {
-          ult.assign (octave_value::op_asn_eq, init_val);
+      ult.assign (octave_value::op_asn_eq, init_val);
 
-          retval = true;
-        }
+      retval = true;
     }
 
   return retval;
@@ -282,8 +268,7 @@ quit_loop_now (void)
   if (tree_continue_command::continuing)
     tree_continue_command::continuing--;
 
-  bool quit = (error_state
-               || tree_return_command::returning
+  bool quit = (tree_return_command::returning
                || tree_break_command::breaking
                || tree_continue_command::continuing);
 
@@ -296,16 +281,13 @@ quit_loop_now (void)
 void
 tree_evaluator::visit_simple_for_command (tree_simple_for_command& cmd)
 {
-  if (error_state)
-    return;
-
   if (debug_mode)
-    do_breakpoint (cmd.is_breakpoint ());
+    do_breakpoint (cmd.is_breakpoint (true));
 
   // FIXME: need to handle PARFOR loops here using cmd.in_parallel ()
   // and cmd.maxproc_expr ();
 
-  unwind_protect frame;
+  octave::unwind_protect frame;
 
   frame.protect_var (in_loop_command);
 
@@ -315,179 +297,167 @@ tree_evaluator::visit_simple_for_command (tree_simple_for_command& cmd)
 
   octave_value rhs = expr->rvalue1 ();
 
-#if HAVE_LLVM
+#if defined (HAVE_LLVM)
   if (tree_jit::execute (cmd, rhs))
     return;
 #endif
 
-  if (error_state || rhs.is_undefined ())
+  if (rhs.is_undefined ())
     return;
 
-  {
-    tree_expression *lhs = cmd.left_hand_side ();
+  tree_expression *lhs = cmd.left_hand_side ();
 
-    octave_lvalue ult = lhs->lvalue ();
+  octave_lvalue ult = lhs->lvalue ();
 
-    if (error_state)
-      return;
+  tree_statement_list *loop_body = cmd.body ();
 
-    tree_statement_list *loop_body = cmd.body ();
-
-    if (rhs.is_range ())
-      {
-        Range rng = rhs.range_value ();
-
-        octave_idx_type steps = rng.nelem ();
-
-        for (octave_idx_type i = 0; i < steps; i++)
-          {
-            octave_value val (rng.elem (i));
-
-            ult.assign (octave_value::op_asn_eq, val);
-
-            if (! error_state && loop_body)
-              loop_body->accept (*this);
-
-            if (quit_loop_now ())
-              break;
-          }
-      }
-    else if (rhs.is_scalar_type ())
-      {
-        ult.assign (octave_value::op_asn_eq, rhs);
-
-        if (! error_state && loop_body)
-          loop_body->accept (*this);
-
-        // Maybe decrement break and continue states.
-        quit_loop_now ();
-      }
-    else if (rhs.is_matrix_type () || rhs.is_cell () || rhs.is_string ()
-             || rhs.is_map ())
-      {
-        // A matrix or cell is reshaped to 2 dimensions and iterated by
-        // columns.
-
-        dim_vector dv = rhs.dims ().redim (2);
-
-        octave_idx_type nrows = dv(0);
-        octave_idx_type steps = dv(1);
-
-        if (steps > 0)
-          {
-            octave_value arg = rhs;
-            if (rhs.ndims () > 2)
-              arg = arg.reshape (dv);
-
-            // for row vectors, use single index to speed things up.
-            octave_value_list idx;
-            octave_idx_type iidx;
-            if (nrows == 1)
-              {
-                idx.resize (1);
-                iidx = 0;
-              }
-            else
-              {
-                idx.resize (2);
-                idx(0) = octave_value::magic_colon_t;
-                iidx = 1;
-              }
-
-            for (octave_idx_type i = 1; i <= steps; i++)
-              {
-                // do_index_op expects one-based indices.
-                idx(iidx) = i;
-                octave_value val = arg.do_index_op (idx);
-
-                ult.assign (octave_value::op_asn_eq, val);
-
-                if (! error_state && loop_body)
-                  loop_body->accept (*this);
-
-                if (quit_loop_now ())
-                  break;
-              }
-          }
-      }
-    else
-      {
-        ::error ("invalid type in for loop expression near line %d, column %d",
-                 cmd.line (), cmd.column ());
-      }
-  }
-}
-
-void
-tree_evaluator::visit_complex_for_command (tree_complex_for_command& cmd)
-{
-  if (error_state)
-    return;
-
-  if (debug_mode)
-    do_breakpoint (cmd.is_breakpoint ());
-
-  unwind_protect frame;
-
-  frame.protect_var (in_loop_command);
-
-  in_loop_command = true;
-
-  tree_expression *expr = cmd.control_expr ();
-
-  octave_value rhs = expr->rvalue1 ();
-
-  if (error_state || rhs.is_undefined ())
-    return;
-
-  if (rhs.is_map ())
+  if (rhs.is_range ())
     {
-      // Cycle through structure elements.  First element of id_list
-      // is set to value and the second is set to the name of the
-      // structure element.
+      Range rng = rhs.range_value ();
 
-      tree_argument_list *lhs = cmd.left_hand_side ();
+      octave_idx_type steps = rng.numel ();
 
-      tree_argument_list::iterator p = lhs->begin ();
-
-      tree_expression *elt = *p++;
-
-      octave_lvalue val_ref = elt->lvalue ();
-
-      elt = *p;
-
-      octave_lvalue key_ref = elt->lvalue ();
-
-      const octave_map tmp_val = rhs.map_value ();
-
-      tree_statement_list *loop_body = cmd.body ();
-
-      string_vector keys = tmp_val.keys ();
-
-      octave_idx_type nel = keys.numel ();
-
-      for (octave_idx_type i = 0; i < nel; i++)
+      for (octave_idx_type i = 0; i < steps; i++)
         {
-          std::string key = keys[i];
+          octave_value val (rng.elem (i));
 
-          const Cell val_lst = tmp_val.contents (key);
+          ult.assign (octave_value::op_asn_eq, val);
 
-          octave_idx_type n = val_lst.numel ();
-
-          octave_value val = (n == 1) ? val_lst(0) : octave_value (val_lst);
-
-          val_ref.assign (octave_value::op_asn_eq, val);
-          key_ref.assign (octave_value::op_asn_eq, key);
-
-          if (! error_state && loop_body)
+          if (loop_body)
             loop_body->accept (*this);
 
           if (quit_loop_now ())
             break;
         }
     }
+  else if (rhs.is_scalar_type ())
+    {
+      ult.assign (octave_value::op_asn_eq, rhs);
+
+      if (loop_body)
+        loop_body->accept (*this);
+
+      // Maybe decrement break and continue states.
+      quit_loop_now ();
+    }
+  else if (rhs.is_matrix_type () || rhs.is_cell () || rhs.is_string ()
+           || rhs.is_map ())
+    {
+      // A matrix or cell is reshaped to 2 dimensions and iterated by
+      // columns.
+
+      dim_vector dv = rhs.dims ().redim (2);
+
+      octave_idx_type nrows = dv(0);
+      octave_idx_type steps = dv(1);
+
+      if (steps > 0)
+        {
+          octave_value arg = rhs;
+          if (rhs.ndims () > 2)
+            arg = arg.reshape (dv);
+
+          // for row vectors, use single index to speed things up.
+          octave_value_list idx;
+          octave_idx_type iidx;
+          if (nrows == 1)
+            {
+              idx.resize (1);
+              iidx = 0;
+            }
+          else
+            {
+              idx.resize (2);
+              idx(0) = octave_value::magic_colon_t;
+              iidx = 1;
+            }
+
+          for (octave_idx_type i = 1; i <= steps; i++)
+            {
+              // do_index_op expects one-based indices.
+              idx(iidx) = i;
+              octave_value val = arg.do_index_op (idx);
+
+              ult.assign (octave_value::op_asn_eq, val);
+
+              if (loop_body)
+                loop_body->accept (*this);
+
+              if (quit_loop_now ())
+                break;
+            }
+        }
+    }
   else
+    error ("invalid type in for loop expression near line %d, column %d",
+           cmd.line (), cmd.column ());
+}
+
+void
+tree_evaluator::visit_complex_for_command (tree_complex_for_command& cmd)
+{
+  if (debug_mode)
+    do_breakpoint (cmd.is_breakpoint (true));
+
+  octave::unwind_protect frame;
+
+  frame.protect_var (in_loop_command);
+
+  in_loop_command = true;
+
+  tree_expression *expr = cmd.control_expr ();
+
+  octave_value rhs = expr->rvalue1 ();
+
+  if (rhs.is_undefined ())
+    return;
+
+  if (! rhs.is_map ())
     error ("in statement 'for [X, Y] = VAL', VAL must be a structure");
+
+  // Cycle through structure elements.  First element of id_list
+  // is set to value and the second is set to the name of the
+  // structure element.
+
+  tree_argument_list *lhs = cmd.left_hand_side ();
+
+  tree_argument_list::iterator p = lhs->begin ();
+
+  tree_expression *elt = *p++;
+
+  octave_lvalue val_ref = elt->lvalue ();
+
+  elt = *p;
+
+  octave_lvalue key_ref = elt->lvalue ();
+
+  const octave_map tmp_val = rhs.map_value ();
+
+  tree_statement_list *loop_body = cmd.body ();
+
+  string_vector keys = tmp_val.keys ();
+
+  octave_idx_type nel = keys.numel ();
+
+  for (octave_idx_type i = 0; i < nel; i++)
+    {
+      std::string key = keys[i];
+
+      const Cell val_lst = tmp_val.contents (key);
+
+      octave_idx_type n = val_lst.numel ();
+
+      octave_value val = (n == 1) ? val_lst(0) : octave_value (val_lst);
+
+      val_ref.assign (octave_value::op_asn_eq, val);
+      key_ref.assign (octave_value::op_asn_eq, key);
+
+      if (loop_body)
+        loop_body->accept (*this);
+
+      if (quit_loop_now ())
+        break;
+    }
 }
 
 void
@@ -568,17 +538,14 @@ tree_evaluator::visit_if_command_list (tree_if_command_list& lst)
         octave_call_stack::set_location (tic->line (), tic->column ());
 
       if (debug_mode && ! tic->is_else_clause ())
-        do_breakpoint (tic->is_breakpoint ());
+        do_breakpoint (tic->is_breakpoint (true));
 
       if (tic->is_else_clause () || expr->is_logically_true ("if"))
         {
-          if (! error_state)
-            {
-              tree_statement_list *stmt_lst = tic->commands ();
+          tree_statement_list *stmt_lst = tic->commands ();
 
-              if (stmt_lst)
-                stmt_lst->accept (*this);
-            }
+          if (stmt_lst)
+            stmt_lst->accept (*this);
 
           break;
         }
@@ -613,7 +580,7 @@ void
 tree_evaluator::visit_no_op_command (tree_no_op_command& cmd)
 {
   if (debug_mode && cmd.is_end_of_fcn_or_script ())
-    do_breakpoint (cmd.is_breakpoint (), true);
+    do_breakpoint (cmd.is_breakpoint (true), true);
 }
 
 void
@@ -655,24 +622,21 @@ tree_evaluator::visit_prefix_expression (tree_prefix_expression&)
 void
 tree_evaluator::visit_return_command (tree_return_command& cmd)
 {
-  if (! error_state)
+  if (debug_mode)
+    do_breakpoint (cmd.is_breakpoint (true));
+
+  // Act like dbcont.
+
+  if (Vdebugging
+      && octave_call_stack::current_frame () == current_frame)
     {
-      if (debug_mode)
-        do_breakpoint (cmd.is_breakpoint ());
+      Vdebugging = false;
 
-      // Act like dbcont.
-
-      if (Vdebugging
-          && octave_call_stack::current_frame () == current_frame)
-        {
-          Vdebugging = false;
-
-          reset_debug_state ();
-        }
-      else if (statement_context == function || statement_context == script
-               || in_loop_command)
-        tree_return_command::returning = 1;
+      reset_debug_state ();
     }
+  else if (statement_context == function || statement_context == script
+           || in_loop_command)
+    tree_return_command::returning = 1;
 }
 
 void
@@ -719,7 +683,7 @@ tree_evaluator::visit_statement (tree_statement& stmt)
           else
             {
               if (debug_mode)
-                do_breakpoint (expr->is_breakpoint ());
+                do_breakpoint (expr->is_breakpoint (true));
 
               // FIXME: maybe all of this should be packaged in
               // one virtual function that returns a flag saying whether
@@ -743,7 +707,7 @@ tree_evaluator::visit_statement (tree_statement& stmt)
 
               octave_value tmp_result = expr->rvalue1 (0);
 
-              if (do_bind_ans && ! (error_state || tmp_result.is_undefined ()))
+              if (do_bind_ans && tmp_result.is_defined ())
                 bind_ans (tmp_result, expr->print_result ()
                           && statement_printing_enabled ());
 
@@ -751,19 +715,12 @@ tree_evaluator::visit_statement (tree_statement& stmt)
               //                result_values(0) = tmp_result;
             }
         }
-      catch (octave_execution_exception)
+      catch (const std::bad_alloc&)
         {
-          gripe_library_execution_error ();
-        }
-      catch (std::bad_alloc)
-        {
-          // FIXME: We want to use error_with_id here so that we set
-          // the error state, give users control over this error
-          // message, and so that we set the error_state appropriately
-          // so we'll get stack trace info when appropriate.  But
-          // error_with_id will require some memory allocations.  Is
-          // there anything we can do to make those more likely to
-          // succeed?
+          // FIXME: We want to use error_with_id here so that give users
+          // control over this error message but error_with_id will
+          // require some memory allocations.  Is there anything we can
+          // do to make those more likely to succeed?
 
           error_with_id ("Octave:bad-alloc",
                          "out of memory or dimension too large for Octave's index type");
@@ -774,10 +731,8 @@ tree_evaluator::visit_statement (tree_statement& stmt)
 void
 tree_evaluator::visit_statement_list (tree_statement_list& lst)
 {
-  static octave_value_list empty_list;
-
-  if (error_state)
-    return;
+  // FIXME: commented out along with else clause below.
+  // static octave_value_list empty_list;
 
   tree_statement_list::iterator p = lst.begin ();
 
@@ -787,44 +742,39 @@ tree_evaluator::visit_statement_list (tree_statement_list& lst)
         {
           tree_statement *elt = *p++;
 
-          if (elt)
-            {
-              octave_quit ();
-
-              elt->accept (*this);
-
-              if (error_state)
-                break;
-
-              if (tree_break_command::breaking
-                  || tree_continue_command::continuing)
-                break;
-
-              if (tree_return_command::returning)
-                break;
-
-              if (p == lst.end ())
-                break;
-              else
-                {
-                  // Clear previous values before next statement is
-                  // evaluated so that we aren't holding an extra
-                  // reference to a value that may be used next.  For
-                  // example, in code like this:
-                  //
-                  //   X = rand (N);  # refcount for X should be 1
-                  //                  # after this statement
-                  //
-                  //   X(idx) = val;  # no extra copy of X should be
-                  //                  # needed, but we will be faked
-                  //                  # out if retval is not cleared
-                  //                  # between statements here
-
-                  //              result_values = empty_list;
-                }
-            }
-          else
+          if (! elt)
             error ("invalid statement found in statement list!");
+
+          octave_quit ();
+
+          elt->accept (*this);
+
+          if (tree_break_command::breaking
+              || tree_continue_command::continuing)
+            break;
+
+          if (tree_return_command::returning)
+            break;
+
+          if (p == lst.end ())
+            break;
+          else
+            {
+              // Clear previous values before next statement is
+              // evaluated so that we aren't holding an extra
+              // reference to a value that may be used next.  For
+              // example, in code like this:
+              //
+              //   X = rand (N);  # refcount for X should be 1
+              //                  # after this statement
+              //
+              //   X(idx) = val;  # no extra copy of X should be
+              //                  # needed, but we will be faked
+              //                  # out if retval is not cleared
+              //                  # between statements here
+
+              //              result_values = empty_list;
+            }
         }
     }
 }
@@ -845,101 +795,102 @@ void
 tree_evaluator::visit_switch_command (tree_switch_command& cmd)
 {
   if (debug_mode)
-    do_breakpoint (cmd.is_breakpoint ());
+    do_breakpoint (cmd.is_breakpoint (true));
 
   tree_expression *expr = cmd.switch_value ();
 
-  if (expr)
+  if (! expr)
+    error ("missing value in switch command near line %d, column %d",
+           cmd.line (), cmd.column ());
+
+  octave_value val = expr->rvalue1 ();
+
+  tree_switch_case_list *lst = cmd.case_list ();
+
+  if (lst)
     {
-      octave_value val = expr->rvalue1 ();
-
-      tree_switch_case_list *lst = cmd.case_list ();
-
-      if (! error_state && lst)
+      for (tree_switch_case_list::iterator p = lst->begin ();
+           p != lst->end (); p++)
         {
-          for (tree_switch_case_list::iterator p = lst->begin ();
-               p != lst->end (); p++)
+          tree_switch_case *t = *p;
+
+          if (t->is_default_case () || t->label_matches (val))
             {
-              tree_switch_case *t = *p;
+              tree_statement_list *stmt_lst = t->commands ();
 
-              if (t->is_default_case () || t->label_matches (val))
-                {
-                  if (error_state)
-                    break;
+              if (stmt_lst)
+                stmt_lst->accept (*this);
 
-                  tree_statement_list *stmt_lst = t->commands ();
-
-                  if (stmt_lst)
-                    stmt_lst->accept (*this);
-
-                  break;
-                }
+              break;
             }
         }
     }
-  else
-    ::error ("missing value in switch command near line %d, column %d",
-             cmd.line (), cmd.column ());
 }
 
 void
 tree_evaluator::visit_try_catch_command (tree_try_catch_command& cmd)
 {
-  unwind_protect frame;
+  bool execution_error = false;
 
-  frame.protect_var (buffer_error_messages);
-  frame.protect_var (Vdebug_on_error);
-  frame.protect_var (Vdebug_on_warning);
+  { // unwind frame before catch block
+    octave::unwind_protect frame;
 
-  buffer_error_messages++;
-  Vdebug_on_error = false;
-  Vdebug_on_warning = false;
+    frame.protect_var (buffer_error_messages);
+    frame.protect_var (Vdebug_on_error);
+    frame.protect_var (Vdebug_on_warning);
 
-  tree_statement_list *catch_code = cmd.cleanup ();
+    buffer_error_messages++;
+    Vdebug_on_error = false;
+    Vdebug_on_warning = false;
 
-  // The catch code is *not* added to unwind_protect stack; it doesn't need
-  // to be run on interrupts.
+    // The catch code is *not* added to unwind_protect stack;
+    // it doesn't need to be run on interrupts.
 
-  tree_statement_list *try_code = cmd.body ();
+    tree_statement_list *try_code = cmd.body ();
 
-  if (try_code)
+    if (try_code)
+      {
+        try
+          {
+            in_try_catch++;
+            try_code->accept (*this);
+            in_try_catch--;
+          }
+        catch (const octave_execution_exception&)
+          {
+            recover_from_exception ();
+
+            in_try_catch--;          // must be restored before "catch" block
+            execution_error = true;
+          }
+      }
+  // Unwind to let the user print any messages from
+  // errors that occurred in the body of the try_catch statement,
+  // or throw further errors.
+  }
+
+  if (execution_error)
     {
-      try_code->accept (*this);
-    }
-
-  if (error_state)
-    {
-      error_state = 0;
-
+      tree_statement_list *catch_code = cmd.cleanup ();
       if (catch_code)
         {
-          // Set up for letting the user print any messages from errors that
-          // occurred in the body of the try_catch statement.
-
-          buffer_error_messages--;
-
           tree_identifier *expr_id = cmd.identifier ();
           octave_lvalue ult;
 
           if (expr_id)
             {
-
-              octave_scalar_map err;
-
               ult = expr_id->lvalue ();
 
-              if (error_state)
-                return;
+              octave_scalar_map err;
 
               err.assign ("message", last_error_message ());
               err.assign ("identifier", last_error_id ());
               err.assign ("stack", last_error_stack ());
 
-              if (! error_state)
-                ult.assign (octave_value::op_asn_eq, err);
-
+              ult.assign (octave_value::op_asn_eq, err);
             }
 
+          // perform actual "catch" block
           if (catch_code)
             catch_code->accept (*this);
         }
@@ -949,18 +900,10 @@ tree_evaluator::visit_try_catch_command (tree_try_catch_command& cmd)
 void
 tree_evaluator::do_unwind_protect_cleanup_code (tree_statement_list *list)
 {
-  unwind_protect frame;
+  octave::unwind_protect frame;
 
   frame.protect_var (octave_interrupt_state);
   octave_interrupt_state = 0;
-
-  // We want to run the cleanup code without error_state being set,
-  // but we need to restore its value, so that any errors encountered
-  // in the first part of the unwind_protect are not completely
-  // ignored.
-
-  frame.protect_var (error_state);
-  error_state = 0;
 
   // We want to preserve the last location info for possible
   // backtracking.
@@ -980,8 +923,24 @@ tree_evaluator::do_unwind_protect_cleanup_code (tree_statement_list *list)
   frame.protect_var (tree_break_command::breaking);
   tree_break_command::breaking = 0;
 
-  if (list)
-    list->accept (*this);
+  try
+    {
+      if (list)
+        list->accept (*this);
+    }
+  catch (const octave_execution_exception&)
+    {
+      recover_from_exception ();
+
+      if (tree_break_command::breaking || tree_return_command::returning)
+        frame.discard (2);
+      else
+        frame.run (2);
+
+      frame.discard (2);
+
+      throw;
+    }
 
   // The unwind_protects are popped off the stack in the reverse of
   // the order they are pushed on.
@@ -994,13 +953,13 @@ tree_evaluator::do_unwind_protect_cleanup_code (tree_statement_list *list)
   //
   //   function foo ()
   //     unwind_protect
-  //       stderr << "1: this should always be executed\n";
+  //       fprintf (stderr, "1: this should always be executed\n");
   //       break;
-  //       stderr << "1: this should never be executed\n";
+  //       fprintf (stderr, "1: this should never be executed\n");
   //     unwind_protect_cleanup
-  //       stderr << "2: this should always be executed\n";
+  //       fprintf (stderr, "2: this should always be executed\n");
   //       return;
-  //       stderr << "2: this should never be executed\n";
+  //       fprintf (stderr, "2: this should never be executed\n");
   //     end_unwind_protect
   //   endfunction
   //
@@ -1011,24 +970,9 @@ tree_evaluator::do_unwind_protect_cleanup_code (tree_statement_list *list)
   // whatever they were when the cleanup block was entered.
 
   if (tree_break_command::breaking || tree_return_command::returning)
-    {
-      frame.discard (2);
-    }
-  else
-    {
-      frame.run (2);
-    }
-
-  // We don't want to ignore errors that occur in the cleanup code, so
-  // if an error is encountered there, leave error_state alone.
-  // Otherwise, set it back to what it was before.
-
-  if (error_state)
     frame.discard (2);
   else
     frame.run (2);
-
-  frame.run ();
 }
 
 void
@@ -1044,17 +988,25 @@ tree_evaluator::visit_unwind_protect_command (tree_unwind_protect_command& cmd)
         {
           unwind_protect_code->accept (*this);
         }
-      catch (...)
+      catch (const octave_execution_exception&)
         {
-          // Run the cleanup code on exceptions, so that it is run even in case
-          // of interrupt or out-of-memory.
+          // FIXME: Maybe we should be able to temporarily set the
+          // interpreter's exception handling state to something "safe"
+          // while the cleanup block runs instead of just resetting it
+          // here?
+          recover_from_exception ();
+
+          // Run the cleanup code on exceptions, so that it is run even
+          // in case of interrupt or out-of-memory.
           do_unwind_protect_cleanup_code (cleanup_code);
-          // FIXME: should error_state be checked here?
-          // We want to rethrow the exception, even if error_state is set, so
-          // that interrupts continue.
+
+          // If an error occurs inside the cleanup code, a new
+          // exception will be thrown instead of the original.
           throw;
         }
 
+      // Also execute the unwind_protect_cleanump code if the
+      // unwind_protect block runs without error.
       do_unwind_protect_cleanup_code (cleanup_code);
     }
 }
@@ -1062,15 +1014,12 @@ tree_evaluator::visit_unwind_protect_command (tree_unwind_protect_command& cmd)
 void
 tree_evaluator::visit_while_command (tree_while_command& cmd)
 {
-  if (error_state)
-    return;
-
-#if HAVE_LLVM
+#if defined (HAVE_LLVM)
   if (tree_jit::execute (cmd))
     return;
 #endif
 
-  unwind_protect frame;
+  octave::unwind_protect frame;
 
   frame.protect_var (in_loop_command);
 
@@ -1084,19 +1033,14 @@ tree_evaluator::visit_while_command (tree_while_command& cmd)
   for (;;)
     {
       if (debug_mode)
-        do_breakpoint (cmd.is_breakpoint ());
+        do_breakpoint (cmd.is_breakpoint (true));
 
       if (expr->is_logically_true ("while"))
         {
           tree_statement_list *loop_body = cmd.body ();
 
           if (loop_body)
-            {
-              loop_body->accept (*this);
-
-              if (error_state)
-                return;
-            }
+            loop_body->accept (*this);
 
           if (quit_loop_now ())
             break;
@@ -1109,21 +1053,20 @@ tree_evaluator::visit_while_command (tree_while_command& cmd)
 void
 tree_evaluator::visit_do_until_command (tree_do_until_command& cmd)
 {
-  if (error_state)
-    return;
-
-#if HAVE_LLVM
+#if defined (HAVE_LLVM)
   if (tree_jit::execute (cmd))
     return;
 #endif
 
-  unwind_protect frame;
+  octave::unwind_protect frame;
 
   frame.protect_var (in_loop_command);
 
   in_loop_command = true;
 
   tree_expression *expr = cmd.condition ();
+  int until_line = cmd.line ();
+  int until_column = cmd.column ();
 
   if (! expr)
     panic_impossible ();
@@ -1133,18 +1076,15 @@ tree_evaluator::visit_do_until_command (tree_do_until_command& cmd)
       tree_statement_list *loop_body = cmd.body ();
 
       if (loop_body)
-        {
-          loop_body->accept (*this);
-
-          if (error_state)
-            return;
-        }
+        loop_body->accept (*this);
 
       if (quit_loop_now ())
         break;
 
       if (debug_mode)
-        do_breakpoint (cmd.is_breakpoint ());
+        do_breakpoint (cmd.is_breakpoint (true));
+
+      octave_call_stack::set_location (until_line, until_column);
 
       if (expr->is_logically_true ("do-until"))
         break;
@@ -1154,7 +1094,7 @@ tree_evaluator::visit_do_until_command (tree_do_until_command& cmd)
 void
 tree_evaluator::do_breakpoint (tree_statement& stmt) const
 {
-  do_breakpoint (stmt.is_breakpoint (), stmt.is_end_of_fcn_or_script ());
+  do_breakpoint (stmt.is_breakpoint (true), stmt.is_end_of_fcn_or_script ());
 }
 
 void
@@ -1254,20 +1194,20 @@ tree_evaluator::do_keyboard (const octave_value_list& args) const
 }
 
 DEFUN (max_recursion_depth, args, nargout,
-       "-*- texinfo -*-\n\
-@deftypefn  {Built-in Function} {@var{val} =} max_recursion_depth ()\n\
-@deftypefnx {Built-in Function} {@var{old_val} =} max_recursion_depth (@var{new_val})\n\
-@deftypefnx {Built-in Function} {} max_recursion_depth (@var{new_val}, \"local\")\n\
-Query or set the internal limit on the number of times a function may\n\
-be called recursively.\n\
-\n\
-If the limit is exceeded, an error message is printed and control returns to\n\
-the top level.\n\
-\n\
-When called from inside a function with the @qcode{\"local\"} option, the\n\
-variable is changed locally for the function and any subroutines it calls.\n\
-The original variable value is restored when exiting the function.\n\
-@end deftypefn")
+       doc: /* -*- texinfo -*-
+@deftypefn  {} {@var{val} =} max_recursion_depth ()
+@deftypefnx {} {@var{old_val} =} max_recursion_depth (@var{new_val})
+@deftypefnx {} {} max_recursion_depth (@var{new_val}, "local")
+Query or set the internal limit on the number of times a function may
+be called recursively.
+
+If the limit is exceeded, an error message is printed and control returns to
+the top level.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@end deftypefn */)
 {
   return SET_INTERNAL_VARIABLE (max_recursion_depth);
 }
@@ -1285,21 +1225,21 @@ The original variable value is restored when exiting the function.\n\
 */
 
 DEFUN (silent_functions, args, nargout,
-       "-*- texinfo -*-\n\
-@deftypefn  {Built-in Function} {@var{val} =} silent_functions ()\n\
-@deftypefnx {Built-in Function} {@var{old_val} =} silent_functions (@var{new_val})\n\
-@deftypefnx {Built-in Function} {} silent_functions (@var{new_val}, \"local\")\n\
-Query or set the internal variable that controls whether internal\n\
-output from a function is suppressed.\n\
-\n\
-If this option is disabled, Octave will display the results produced by\n\
-evaluating expressions within a function body that are not terminated with\n\
-a semicolon.\n\
-\n\
-When called from inside a function with the @qcode{\"local\"} option, the\n\
-variable is changed locally for the function and any subroutines it calls.\n\
-The original variable value is restored when exiting the function.\n\
-@end deftypefn")
+       doc: /* -*- texinfo -*-
+@deftypefn  {} {@var{val} =} silent_functions ()
+@deftypefnx {} {@var{old_val} =} silent_functions (@var{new_val})
+@deftypefnx {} {} silent_functions (@var{new_val}, "local")
+Query or set the internal variable that controls whether internal
+output from a function is suppressed.
+
+If this option is disabled, Octave will display the results produced by
+evaluating expressions within a function body that are not terminated with
+a semicolon.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@end deftypefn */)
 {
   return SET_INTERNAL_VARIABLE (silent_functions);
 }

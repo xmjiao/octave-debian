@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -125,9 +126,9 @@ number of commands in the history list when Octave starts.
 </dl>
 
 <a name="XREFPS1"></a><dl>
-<dt><a name="index-PS1"></a>Built-in Function: <em><var>val</var> =</em> <strong>PS1</strong> <em>()</em></dt>
-<dt><a name="index-PS1-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>PS1</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-PS1-2"></a>Built-in Function: <em></em> <strong>PS1</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-PS1"></a>: <em><var>val</var> =</em> <strong>PS1</strong> <em>()</em></dt>
+<dt><a name="index-PS1-1"></a>: <em><var>old_val</var> =</em> <strong>PS1</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-PS1-2"></a>: <em></em> <strong>PS1</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the primary prompt string.
 </p>
 <p>When executing interactively, Octave displays the primary prompt when it is
@@ -149,7 +150,7 @@ character string.  See <a href="Strings.html#Strings">Strings</a>.
 This can be useful for coloring the prompt.  For example,
 </p>
 <div class="example">
-<pre class="example">PS1 (&quot;\\[\\033[01;31m\\]\\s:\\#&gt; \\[\\033[0m\\]&quot;)
+<pre class="example">PS1 ('\[\033[01;31m\]\s:\#&gt; \[\033[0m\]')
 </pre></div>
 
 <p>will give the default Octave prompt a red coloring.
@@ -163,9 +164,9 @@ The original variable value is restored when exiting the function.
 
 
 <a name="XREFPS2"></a><dl>
-<dt><a name="index-PS2"></a>Built-in Function: <em><var>val</var> =</em> <strong>PS2</strong> <em>()</em></dt>
-<dt><a name="index-PS2-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>PS2</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-PS2-2"></a>Built-in Function: <em></em> <strong>PS2</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-PS2"></a>: <em><var>val</var> =</em> <strong>PS2</strong> <em>()</em></dt>
+<dt><a name="index-PS2-1"></a>: <em><var>old_val</var> =</em> <strong>PS2</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-PS2-2"></a>: <em></em> <strong>PS2</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the secondary prompt string.
 </p>
 <p>The secondary prompt is printed when Octave is expecting additional input to
@@ -183,9 +184,9 @@ The original variable value is restored when exiting the function.
 
 
 <a name="XREFPS4"></a><dl>
-<dt><a name="index-PS4"></a>Built-in Function: <em><var>val</var> =</em> <strong>PS4</strong> <em>()</em></dt>
-<dt><a name="index-PS4-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>PS4</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-PS4-2"></a>Built-in Function: <em></em> <strong>PS4</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-PS4"></a>: <em><var>val</var> =</em> <strong>PS4</strong> <em>()</em></dt>
+<dt><a name="index-PS4-1"></a>: <em><var>old_val</var> =</em> <strong>PS4</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-PS4-2"></a>: <em></em> <strong>PS4</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the character string used to prefix output produced
 when echoing commands is enabled.
 </p>

@@ -20,17 +20,18 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifndef __QtHandles_gl_selector__
-#define __QtHandles_gl_selector__ 1
-
-#include "gl-render.h"
+#if ! defined (octave_gl_select_h)
+#define octave_gl_select_h 1
 
 #include <map>
 
+#include "gl-render.h"
+#include "oct-opengl.h"
+
 enum select_flags
 {
-  select_ignore_hittest  = 0x01,
-  select_last            = 0x02
+  select_ignore_hittest = 0x01,
+  select_last           = 0x02
 };
 
 class opengl_selector : public opengl_renderer
@@ -75,4 +76,4 @@ private:
   std::map<GLuint, graphics_object> object_map;
 };
 
-#endif // __QtHandles_gl_selector__
+#endif

@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -158,14 +159,12 @@ user class.
 </table>
 
 <div class="float-caption"><p><strong>Table 34.1: </strong>Available overloaded operators and their corresponding class method</p></div></div>
-<p>An example <code>mtimes</code> method for our polynomial class might look like
+<p>An example <code>mtimes</code> method for the polynomial class might look like
 </p>
 <div class="example">
-<pre class="verbatim">function y = mtimes (a, b)
-  y = polynomial (conv (double (a), double (b)));
+<pre class="verbatim">function p = mtimes (a, b)
+  p = polynomial (conv (double (a), double (b)));
 endfunction
-</pre><pre class="example">
-
 </pre></div>
 
 <hr>

@@ -31,7 +31,7 @@ foreach $DOCSTRING_file (@ARGV)
     $docstring = extract_docstring ();
     if ($help_text{$symbol})
     {
-      warn "ignoring duplicate entry for $symbol\n";
+      warn "$DOCSTRING_file:$.:warning: ignoring duplicate entry for $symbol\n";
     }
     else
     {
@@ -56,7 +56,7 @@ TXI_LINE: while (<STDIN>)
     $docstring = $help_text{$func};
     if (! $docstring)
     {
-      warn "no docstring entry for $func\n";
+      warn "warning: no DOCSTRING entry for $func\n";
       next TXI_LINE;
     }
 
@@ -77,7 +77,7 @@ TXI_LINE: while (<STDIN>)
       print "\n" if (eof and substr ($_, -1) ne "\n");
     }
     close (EXAMPFH);
-    print '@end verbatim',"\n\n";
+    print '@end verbatim',"\n";
 
     next TXI_LINE;
   }
@@ -97,12 +97,12 @@ sub extract_docstring
   while (defined ($_ = <DOCFH>) and ! /$doc_delim/o)
   {
     # expand any @seealso references
-    if (m'^@seealso{')
+    if (m'^@seealso\{')
     {
       # Join multiple lines until full macro body found
       while (! /}/m) { $_ .= <DOCFH>; }
 
-      ($arg_list, $rest_of_line) = m'^@seealso{(.*)}(.*)?'s;
+      ($arg_list, $rest_of_line) = m'^@seealso\{(.*)\}(.*)?'s;
 
       $func_list = $arg_list;
       $func_list =~ s/\s+//gs;

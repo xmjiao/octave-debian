@@ -17,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {[@var{cd}] =} isocolors (@var{c}, @var{v})
-## @deftypefnx {Function File} {[@var{cd}] =} isocolors (@var{x}, @var{y}, @var{z}, @var{c}, @var{v})
-## @deftypefnx {Function File} {[@var{cd}] =} isocolors (@var{x}, @var{y}, @var{z}, @var{r}, @var{g}, @var{b}, @var{v})
-## @deftypefnx {Function File} {[@var{cd}] =} isocolors (@var{r}, @var{g}, @var{b}, @var{v})
-## @deftypefnx {Function File} {[@var{cd}] =} isocolors (@dots{}, @var{p})
-## @deftypefnx {Function File} {} isocolors (@dots{})
+## @deftypefn  {} {[@var{cd}] =} isocolors (@var{c}, @var{v})
+## @deftypefnx {} {[@var{cd}] =} isocolors (@var{x}, @var{y}, @var{z}, @var{c}, @var{v})
+## @deftypefnx {} {[@var{cd}] =} isocolors (@var{x}, @var{y}, @var{z}, @var{r}, @var{g}, @var{b}, @var{v})
+## @deftypefnx {} {[@var{cd}] =} isocolors (@var{r}, @var{g}, @var{b}, @var{v})
+## @deftypefnx {} {[@var{cd}] =} isocolors (@dots{}, @var{p})
+## @deftypefnx {} {} isocolors (@dots{})
 ##
 ## Compute isosurface colors.
 ##
@@ -51,7 +51,7 @@
 ## For example:
 ##
 ## @example
-## function [] = isofinish (p)
+## function isofinish (p)
 ##   set (gca, "PlotBoxAspectRatioMode", "manual", ...
 ##             "PlotBoxAspectRatio", [1 1 1]);
 ##   set (p, "FaceColor", "interp");
@@ -100,6 +100,7 @@
 ## Author: Martin Helm <martin@mhelm.de>
 
 function varargout = isocolors (varargin)
+
   calc_rgb = false;
   switch (nargin)
     case 2
@@ -135,6 +136,7 @@ function varargout = isocolors (varargin)
     otherwise
       print_usage ();
   endswitch
+
   if (isnumeric (vp) && columns (vp) == 3)
     pa = [];
     v = vp;
@@ -144,6 +146,7 @@ function varargout = isocolors (varargin)
   else
     error ("isocolors: last argument is not a vertex list or patch handle");
   endif
+
   if (calc_rgb)
     new_col = zeros (rows (v), 3);
     new_col(:,1) = __interp_cube__ (x, y, z, R, v, "values" );
@@ -152,6 +155,8 @@ function varargout = isocolors (varargin)
   else
     new_col = __interp_cube__ (x, y, z, c, v, "values" );
   endif
+
+  ## FIXME: No reason to actually error out if an extra argout is used.
   switch (nargout)
     case 0
       if (! isempty (pa))
@@ -162,6 +167,7 @@ function varargout = isocolors (varargin)
     otherwise
       print_usage ();
   endswitch
+
 endfunction
 
 

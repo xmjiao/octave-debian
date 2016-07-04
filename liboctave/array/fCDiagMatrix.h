@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_fCDiagMatrix_h)
+#if ! defined (octave_fCDiagMatrix_h)
 #define octave_fCDiagMatrix_h 1
+
+#include "octave-config.h"
 
 #include "MDiagArray2.h"
 
@@ -67,7 +69,7 @@ public:
   FloatComplexDiagMatrix (const FloatComplexDiagMatrix& a)
     : MDiagArray2<FloatComplex> (a) { }
 
-  template <class U>
+  template <typename U>
   FloatComplexDiagMatrix (const DiagArray2<U>& a)
     : MDiagArray2<FloatComplex> (a) { }
 

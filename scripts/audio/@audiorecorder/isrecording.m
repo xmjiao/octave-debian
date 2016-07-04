@@ -17,9 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} isrecording (@var{recorder})
-## Return true if the audiorecorder object @var{recorder} is currently recording
-## audio and false otherwise.
+## @deftypefn {} {} isrecording (@var{recorder})
+## Return true if the audiorecorder object @var{recorder} is currently
+## recording audio and false otherwise.
 ## @end deftypefn
 
 function result = isrecording (recorder)

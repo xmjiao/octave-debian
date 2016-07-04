@@ -18,17 +18,17 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{filelist} =} __xzip__ (@var{commandname}, @var{extension}, @var{commandtemplate}, @var{files}, @var{outdir})
+## @deftypefn {} {@var{filelist} =} __xzip__ (@var{commandname}, @var{extension}, @var{commandtemplate}, @var{files}, @var{outdir})
 ## Undocumented internal function.
 ## @end deftypefn
 
 ## Compress the list of files and/or directories specified in @var{files}
-## with the external compression command @var{commandname}. The template
-## @var{commandtemplate} is used to actually start the command. Each file
+## with the external compression command @var{commandname}.  The template
+## @var{commandtemplate} is used to actually start the command.  Each file
 ## is compressed separately and a new file with the extension @var{extension}
-## is created and placed into the directory @var{outdir}. The original files
-## are not touched. Existing compressed files are silently overwritten.
-## This is an internal function. Do not use directly.
+## is created and placed into the directory @var{outdir}.  The original files
+## are not touched.  Existing compressed files are silently overwritten.
+## This is an internal function.  Do not use directly.
 
 function filelist = __xzip__ (commandname, extension, commandtemplate,
                               files, outdir)
@@ -70,7 +70,7 @@ function filelist = __xzip__ (commandname, extension, commandtemplate,
 
     cd (outdir);
 
-    cmd = sprintf (commandtemplate, sprintf (" %s", fnames{:}));
+    cmd = sprintf (commandtemplate, sprintf (' "%s"', fnames{:}));
 
     [status, output] = system (cmd);
     if (status)
@@ -93,8 +93,8 @@ function filelist = __xzip__ (commandname, extension, commandtemplate,
       movefile (cellfun (@(x) sprintf ("%s.%s", x, extension),
                          fnames, "uniformoutput", false), cwd);
       if (nargout > 0)
-        filelist  = cellfun (@(x) sprintf ("%s.%s", x, extension),
-                             files, "uniformoutput", false);
+        filelist = cellfun (@(x) sprintf ("%s.%s", x, extension),
+                            files, "uniformoutput", false);
       endif
     endif
 

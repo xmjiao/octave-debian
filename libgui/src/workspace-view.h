@@ -21,7 +21,7 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_workspace_view_h)
+#if ! defined (octave_workspace_view_h)
 #define octave_workspace_view_h 1
 
 #include <QItemDelegate>
@@ -30,6 +30,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <QComboBox>
 #include <QSortFilterProxyModel>
 #include <QCheckBox>
+#include <QSignalMapper>
 
 #include "octave-dock-widget.h"
 #include "workspace-model.h"
@@ -70,6 +71,10 @@ protected slots:
   void handle_contextmenu_disp (void);
   void handle_contextmenu_plot (void);
   void handle_contextmenu_stem (void);
+  void handle_contextmenu_filter (void);
+
+  void header_contextmenu_requested (const QPoint& mpos);
+  void toggle_header (int column);
 
   void handle_model_changed (void);
 
@@ -92,7 +97,14 @@ private:
   QSortFilterProxyModel _filter_model;
   QCheckBox *_filter_checkbox;
   QComboBox *_filter;
+  QWidget *_filter_widget;
+  bool _filter_shown;
+
   enum { MaxFilterHistory = 10 };
+
+  QStringList _columns_shown;
+  QStringList _columns_shown_keys;
+  QSignalMapper *_sig_mapper;
 };
 
 #endif

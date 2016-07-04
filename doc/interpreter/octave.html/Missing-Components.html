@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -55,7 +56,7 @@ Previous: <a href="PKG_005fADD-and-PKG_005fDEL-Directives.html#PKG_005fADD-and-P
 </div>
 <hr>
 <a name="Missing-Components-1"></a>
-<h4 class="subsection">38.4.4 Missing Components</h4>
+<h4 class="subsection">37.4.4 Missing Components</h4>
 
 <p>If a package relies on a component, such as another Octave package, that may
 not be present it may be useful to install a function which informs users what
@@ -64,9 +65,9 @@ the package maintainer and registered with Octave using
 <code>missing_component_hook</code>.
 </p>
 <a name="XREFmissing_005fcomponent_005fhook"></a><dl>
-<dt><a name="index-missing_005fcomponent_005fhook"></a>Built-in Function: <em><var>val</var> =</em> <strong>missing_component_hook</strong> <em>()</em></dt>
-<dt><a name="index-missing_005fcomponent_005fhook-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>missing_component_hook</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-missing_005fcomponent_005fhook-2"></a>Built-in Function: <em></em> <strong>missing_component_hook</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-missing_005fcomponent_005fhook"></a>: <em><var>val</var> =</em> <strong>missing_component_hook</strong> <em>()</em></dt>
+<dt><a name="index-missing_005fcomponent_005fhook-1"></a>: <em><var>old_val</var> =</em> <strong>missing_component_hook</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-missing_005fcomponent_005fhook-2"></a>: <em></em> <strong>missing_component_hook</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that specifies the function to call when
 a component of Octave is missing.
 </p>
@@ -90,7 +91,6 @@ should return an error message to be displayed.
 </p>
 <p><strong>See also:</strong> <a href="Parser.html#XREFmissing_005ffunction_005fhook">missing_function_hook</a>.
 </p></dd></dl>
-
 
 
 

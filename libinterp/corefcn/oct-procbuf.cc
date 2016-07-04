@@ -20,30 +20,28 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <cerrno>
 
 #include <iostream>
 
-#include <sys/types.h>
-#include <unistd.h>
-
 #include "lo-mappers.h"
 #include "lo-utils.h"
 #include "oct-procbuf.h"
 #include "oct-syscalls.h"
 #include "sysdep.h"
+#include "unistd-wrappers.h"
 #include "variables.h"
 
 #include "defun.h"
-#include "gripes.h"
+#include "errwarn.h"
 #include "utils.h"
 
-#ifndef SHELL_PATH
-#define SHELL_PATH "/bin/sh"
+#if ! defined (SHELL_PATH)
+#  define SHELL_PATH "/bin/sh"
 #endif
 
 // This class is based on the procbuf class from libg++, written by
@@ -51,8 +49,8 @@ along with Octave; see the file COPYING.  If not, see
 
 static octave_procbuf *octave_procbuf_list = 0;
 
-#ifndef BUFSIZ
-#define BUFSIZ 1024
+#if ! defined (BUFSIZ)
+#  define BUFSIZ 1024
 #endif
 
 octave_procbuf *
@@ -90,7 +88,7 @@ octave_procbuf::open (const char *command, int mode)
   if (is_open ())
     return 0;
 
-  if (pipe (pipe_fds) < 0)
+  if (octave::sys::pipe (pipe_fds) < 0)
     return 0;
 
   if (mode & std::ios::in)
@@ -108,12 +106,12 @@ octave_procbuf::open (const char *command, int mode)
 
   if (proc_pid == 0)
     {
-      gnulib::close (parent_end);
+      octave_close_wrapper (parent_end);
 
       if (child_end != child_std_end)
         {
-          gnulib::dup2 (child_end, child_std_end);
-          gnulib::close (child_end);
+          octave_dup2_wrapper (child_end, child_std_end);
+          octave_close_wrapper (child_end);
         }
 
       while (octave_procbuf_list)
@@ -122,7 +120,7 @@ octave_procbuf::open (const char *command, int mode)
 
           if (fp)
             {
-              gnulib::fclose (fp);
+              std::fclose (fp);
               fp = 0;
             }
 
@@ -134,11 +132,11 @@ octave_procbuf::open (const char *command, int mode)
       exit (127);
     }
 
-  gnulib::close (child_end);
+  octave_close_wrapper (child_end);
 
   if (proc_pid < 0)
     {
-      gnulib::close (parent_end);
+      octave_close_wrapper (parent_end);
       return 0;
     }
 
@@ -196,13 +194,13 @@ octave_procbuf::close (void)
             }
         }
 
-      if (status == 0 && gnulib::fclose (f) == 0)
+      if (status == 0 && std::fclose (f) == 0)
         {
           using namespace std;
 
           do
             {
-              wait_pid = octave_syscalls::waitpid (proc_pid, &wstatus, 0);
+              wait_pid = octave::sys::waitpid (proc_pid, &wstatus, 0);
             }
           while (wait_pid == -1 && errno == EINTR);
         }

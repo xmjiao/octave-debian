@@ -17,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} datetick ()
-## @deftypefnx {Function File} {} datetick (@var{form})
-## @deftypefnx {Function File} {} datetick (@var{axis}, @var{form})
-## @deftypefnx {Function File} {} datetick (@dots{}, "keeplimits")
-## @deftypefnx {Function File} {} datetick (@dots{}, "keepticks")
-## @deftypefnx {Function File} {} datetick (@var{hax}, @dots{})
+## @deftypefn  {} {} datetick ()
+## @deftypefnx {} {} datetick (@var{form})
+## @deftypefnx {} {} datetick (@var{axis}, @var{form})
+## @deftypefnx {} {} datetick (@dots{}, "keeplimits")
+## @deftypefnx {} {} datetick (@dots{}, "keepticks")
+## @deftypefnx {} {} datetick (@var{hax}, @dots{})
 ## Add date formatted tick labels to an axis.
 ##
 ## The axis to apply the ticks to is determined by @var{axis} which can take
@@ -132,10 +132,10 @@ function __datetick__ (varargin)
   if (! isempty (form))
     if (isnumeric (form))
       if (! isscalar (form) || form < 0 || form != fix (form))
-        error ("datetick: expecting FORM argument to be a positive integer");
+        error ("datetick: FORM argument must be a positive integer");
       endif
     elseif (! ischar (form))
-      error ("datetick: expecting valid date format string");
+      error ("datetick: FORM argument must be a valid date format string");
     endif
   endif
 
@@ -143,18 +143,23 @@ function __datetick__ (varargin)
     ticks = get (gca (), [ax "tick"]);
   else
     ## Need to do our own axis tick position calculation as
-    ## year, etc, don't fallback on nice datenum values.
-    objs = findall (gca ());
-    xmax = NaN;
-    xmin = NaN;
-    for i = 1 : length (objs)
-      fld = get (objs (i));
-      if (isfield (fld, [ax "data"]))
-        xdata = getfield (fld, [ax "data"])(:);
-        xmin = min (xmin, min (xdata));
-        xmax = max (xmax, max (xdata));
-      endif
-    endfor
+    ## year, etc., don't fall back to nice datenum values.
+    if (keeplimits)
+      limits = get (gca (), [ax "lim"]);
+      xmin = limits(1);
+      xmax = limits(2);
+    else
+      objs = findall (gca ());
+      xmin = xmax = NaN;
+      for i = 1 : numel (objs)
+        fld = get (objs(i));
+        if (isfield (fld, [ax "data"]))
+          xdata = getfield (fld, [ax "data"])(:);
+          xmin = min (xmin, min (xdata));
+          xmax = max (xmax, max (xdata));
+        endif
+      endfor
+    endif
 
     if (isnan (xmin) || isnan (xmax))
       xmin = 0;
@@ -266,12 +271,13 @@ function __datetick__ (varargin)
                    [ax "lim"], [min(ticks), max(ticks)]);
     endif
   endif
+
 endfunction
 
 function [a, b] = __magform__ (x)
+
   if (x == 0)
-    a = 0;
-    b = 0;
+    a = b = 0;
   else
     l = log10 (abs (x));
     r = rem (l, 1);
@@ -285,6 +291,7 @@ function [a, b] = __magform__ (x)
       a = -a;
     endif
   endif
+
 endfunction
 
 ## A translation from Tom Holoryd's python code at
@@ -312,6 +319,8 @@ function sep = __calc_tick_sep__ (lo, hi)
   else
     x = 10;
   endif
+
   sep = x * 10 .^ b;
+
 endfunction
 

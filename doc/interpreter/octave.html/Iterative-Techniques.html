@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -64,8 +65,8 @@ linear equation of the form <code><var>x</var> = <var>A</var> \ <var>b</var></co
 functions to solve sparse linear equations using iterative techniques.
 </p>
 <a name="XREFpcg"></a><dl>
-<dt><a name="index-pcg"></a>Function File: <em><var>x</var> =</em> <strong>pcg</strong> <em>(<var>A</var>, <var>b</var>, <var>tol</var>, <var>maxit</var>, <var>m1</var>, <var>m2</var>, <var>x0</var>, &hellip;)</em></dt>
-<dt><a name="index-pcg-1"></a>Function File: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>, <var>eigest</var>] =</em> <strong>pcg</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-pcg"></a>: <em><var>x</var> =</em> <strong>pcg</strong> <em>(<var>A</var>, <var>b</var>, <var>tol</var>, <var>maxit</var>, <var>m1</var>, <var>m2</var>, <var>x0</var>, &hellip;)</em></dt>
+<dt><a name="index-pcg-1"></a>: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>, <var>eigest</var>] =</em> <strong>pcg</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Solve the linear system of equations <code><var>A</var>&nbsp;*&nbsp;<var>x</var>&nbsp;=&nbsp;<var>b</var></code><!-- /@w -->
 by means of the Preconditioned Conjugate Gradient iterative method.
@@ -239,8 +240,8 @@ Revised version of this book is available online at
 
 
 <a name="XREFpcr"></a><dl>
-<dt><a name="index-pcr"></a>Function File: <em><var>x</var> =</em> <strong>pcr</strong> <em>(<var>A</var>, <var>b</var>, <var>tol</var>, <var>maxit</var>, <var>m</var>, <var>x0</var>, &hellip;)</em></dt>
-<dt><a name="index-pcr-1"></a>Function File: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>] =</em> <strong>pcr</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-pcr"></a>: <em><var>x</var> =</em> <strong>pcr</strong> <em>(<var>A</var>, <var>b</var>, <var>tol</var>, <var>maxit</var>, <var>m</var>, <var>x0</var>, &hellip;)</em></dt>
+<dt><a name="index-pcr-1"></a>: <em>[<var>x</var>, <var>flag</var>, <var>relres</var>, <var>iter</var>, <var>resvec</var>] =</em> <strong>pcr</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Solve the linear system of equations <code><var>A</var> * <var>x</var> = <var>b</var></code> by
 means of the Preconditioned Conjugate Residuals iterative method.
@@ -382,8 +383,8 @@ case the linear equation <code><var>M</var>^-1 * <var>x</var> = <var>M</var>^-1 
 are partial factorizations of the original matrix.
 </p>
 <a name="XREFichol"></a><dl>
-<dt><a name="index-ichol"></a>Function File: <em><var>L</var> =</em> <strong>ichol</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-ichol-1"></a>Function File: <em><var>L</var> =</em> <strong>ichol</strong> <em>(<var>A</var>, <var>opts</var>)</em></dt>
+<dt><a name="index-ichol"></a>: <em><var>L</var> =</em> <strong>ichol</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-ichol-1"></a>: <em><var>L</var> =</em> <strong>ichol</strong> <em>(<var>A</var>, <var>opts</var>)</em></dt>
 <dd>
 <p>Compute the incomplete Cholesky factorization of the sparse square matrix
 <var>A</var>.
@@ -526,10 +527,10 @@ Cholesky Factorization</cite>, 1992.
 
 
 <a name="XREFilu"></a><dl>
-<dt><a name="index-ilu"></a>Function File: <em></em> <strong>ilu</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-ilu-1"></a>Function File: <em></em> <strong>ilu</strong> <em>(<var>A</var>, <var>opts</var>)</em></dt>
-<dt><a name="index-ilu-2"></a>Function File: <em>[<var>L</var>, <var>U</var>] =</em> <strong>ilu</strong> <em>(&hellip;)</em></dt>
-<dt><a name="index-ilu-3"></a>Function File: <em>[<var>L</var>, <var>U</var>, <var>P</var>] =</em> <strong>ilu</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-ilu"></a>: <em></em> <strong>ilu</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-ilu-1"></a>: <em></em> <strong>ilu</strong> <em>(<var>A</var>, <var>opts</var>)</em></dt>
+<dt><a name="index-ilu-2"></a>: <em>[<var>L</var>, <var>U</var>] =</em> <strong>ilu</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-ilu-3"></a>: <em>[<var>L</var>, <var>U</var>, <var>P</var>] =</em> <strong>ilu</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Compute the incomplete LU factorization of the sparse square matrix <var>A</var>.
 </p>
@@ -669,7 +670,8 @@ norm (A * x - b, inf)
 </pre></div>
 
 <p>This example uses ILU as preconditioner for a random FEM-Matrix, which has a
-large condition number.  Without <var>L</var> and <var>U</var> BICG would not converge.
+large condition number.  Without <var>L</var> and <var>U</var> BICG would not
+converge.
 </p>
 
 <p><strong>See also:</strong> <a href="Matrix-Factorizations.html#XREFlu">lu</a>, <a href="#XREFichol">ichol</a>, <a href="Specialized-Solvers.html#XREFbicg">bicg</a>, <a href="Specialized-Solvers.html#XREFgmres">gmres</a>.

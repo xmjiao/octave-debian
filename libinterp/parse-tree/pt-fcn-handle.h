@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_pt_fcn_handle_h)
-#define octave_fcn_handle_h 1
+#if ! defined (octave_pt_fcn_handle_h)
+#define octave_pt_fcn_handle_h 1
+
+#include "octave-config.h"
 
 #include <iosfwd>
 #include <string>

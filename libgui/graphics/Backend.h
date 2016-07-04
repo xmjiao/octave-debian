@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifndef __QtHandles_Backend__
-#define __QtHandles_Backend__ 1
+#if ! defined (octave_Backend_h)
+#define octave_Backend_h 1
 
 #include <QObject>
 
@@ -56,7 +56,7 @@ public:
 
   void print_figure (const graphics_object& go,
                      const std::string& term,
-                     const std::string& file_cmd, bool /*mono*/,
+                     const std::string& file_cmd,
                      const std::string& /*debug_file*/) const;
 
   static Object* toolkitObject (const graphics_object& go);

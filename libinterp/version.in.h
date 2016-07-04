@@ -21,8 +21,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_version_h)
+#if ! defined (octave_version_h)
 #define octave_version_h 1
+
+#include "octave-config.h"
 
 #define OCTAVE_VERSION %OCTAVE_VERSION%
 
@@ -58,11 +60,11 @@ extern OCTINTERP_API std::string octave_name_version_and_copyright (void);
 
 extern OCTINTERP_API std::string
 octave_name_version_copyright_copying_and_warranty
-  (bool html = false, const std::string& extra_info = std::string ());
+  (bool html = false, const std::string& extra_info = "");
 
 extern OCTINTERP_API std::string
 octave_name_version_copyright_copying_warranty_and_bugs
-  (bool html = false, const std::string& extra_info = std::string ());
+  (bool html = false, const std::string& extra_info = "");
 
 extern OCTINTERP_API std::string octave_startup_message (bool html = false);
 

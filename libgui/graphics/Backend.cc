@@ -20,14 +20,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
+
+#include <cstdint>
 
 #include <QApplication>
 #include <QThread>
-
-#include <stdint.h>
 
 #include "Backend.h"
 #include "Logger.h"
@@ -55,6 +55,7 @@ toolkitObjectProperty (const graphics_object& go)
     return std::string ("__plot_stream__");
   else if (go.isa ("uicontrol")
            || go.isa ("uipanel")
+           || go.isa ("uibuttongroup")
            || go.isa ("uimenu")
            || go.isa ("uicontextmenu")
            || go.isa ("uitoolbar")
@@ -65,7 +66,7 @@ toolkitObjectProperty (const graphics_object& go)
     qCritical ("QtHandles::Backend: no __object__ property known for object "
                "of type %s", go.type ().c_str ());
 
-  return std::string ();
+  return "";
 }
 
 Backend::Backend (void)
@@ -87,6 +88,7 @@ Backend::initialize (const graphics_object& go)
   if (go.isa ("figure")
       || go.isa ("uicontrol")
       || go.isa ("uipanel")
+      || go.isa ("uibuttongroup")
       || go.isa ("uimenu")
       || go.isa ("uicontextmenu")
       || go.isa ("uitoolbar")
@@ -99,7 +101,7 @@ Backend::initialize (const graphics_object& go)
       ObjectProxy* proxy = new ObjectProxy ();
       graphics_object gObj (go);
 
-      OCTAVE_PTR_TYPE tmp (reinterpret_cast <OCTAVE_INTPTR_TYPE> (proxy));
+      OCTAVE_PTR_TYPE tmp (reinterpret_cast<OCTAVE_INTPTR_TYPE> (proxy));
       gObj.get_properties ().set(toolkitObjectProperty (go), tmp);
 
       emit createObject (go.get_handle ().value ());
@@ -117,6 +119,7 @@ Backend::update (const graphics_object& go, int pId)
   if (pId == figure::properties::ID___PLOT_STREAM__
       || pId == uicontrol::properties::ID___OBJECT__
       || pId == uipanel::properties::ID___OBJECT__
+      || pId == uibuttongroup::properties::ID___OBJECT__
       || pId == uimenu::properties::ID___OBJECT__
       || pId == uicontextmenu::properties::ID___OBJECT__
       || pId == uitoolbar::properties::ID___OBJECT__
@@ -180,7 +183,7 @@ Backend::redraw_figure (const graphics_object& go) const
 void
 Backend::print_figure (const graphics_object& go,
                             const std::string& term,
-                            const std::string& file_cmd, bool /*mono*/,
+                            const std::string& file_cmd,
                             const std::string& /*debug_file*/) const
 {
   if (go.get_properties ().is_visible ())
@@ -215,8 +218,7 @@ Backend::toolkitObjectProxy (const graphics_object& go)
         {
           OCTAVE_INTPTR_TYPE ptr = ov.OCTAVE_PTR_SCALAR ().value ();
 
-          if (! error_state)
-            return reinterpret_cast<ObjectProxy*> (ptr);
+          return reinterpret_cast<ObjectProxy*> (ptr);
         }
     }
 

@@ -18,12 +18,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {[@var{x}, @var{obj}, @var{info}, @var{iter}, @var{nf}, @var{lambda}] =} sqp (@var{x0}, @var{phi})
-## @deftypefnx {Function File} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g})
-## @deftypefnx {Function File} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h})
-## @deftypefnx {Function File} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub})
-## @deftypefnx {Function File} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub}, @var{maxiter})
-## @deftypefnx {Function File} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub}, @var{maxiter}, @var{tol})
+## @deftypefn  {} {[@var{x}, @var{obj}, @var{info}, @var{iter}, @var{nf}, @var{lambda}] =} sqp (@var{x0}, @var{phi})
+## @deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g})
+## @deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h})
+## @deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub})
+## @deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub}, @var{maxiter})
+## @deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub}, @var{maxiter}, @var{tol})
 ## Minimize an objective function using sequential quadratic programming (SQP).
 ##
 ## Solve the nonlinear program
@@ -540,7 +540,7 @@ function [merit, obj, globals] = phi_L1 (obj, obj_fun, ce_fun, ci_fun, ...
 
   if (isempty (obj))
     obj = feval (obj_fun, x);
-    globals.nfun++;
+    globals.nfun += 1;
   endif
 
   merit = obj;
@@ -554,8 +554,7 @@ endfunction
 
 
 function [x_new, alpha, obj, globals] = ...
-      linesearch_L1 (x, p, obj_fun, obj_grd, ce_fun, ci_fun, lambda, ...
-                     obj, globals)
+   linesearch_L1 (x, p, obj_fun, obj_grd, ce_fun, ci_fun, lambda, obj, globals)
 
   ## Choose parameters
   ##

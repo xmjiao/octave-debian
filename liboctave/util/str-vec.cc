@@ -28,8 +28,8 @@ function distributed in the GNU file utilities, copyright (C) 85, 88,
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <iostream>
@@ -108,7 +108,7 @@ string_vector::sort (bool make_uniq)
 {
   // Don't use Array<std::string>::sort () to allow sorting in place.
   octave_sort<std::string> lsort;
-  lsort.sort (Array<std::string>::fortran_vec (), length ());
+  lsort.sort (Array<std::string>::fortran_vec (), numel ());
 
   if (make_uniq)
     uniq ();
@@ -118,7 +118,7 @@ string_vector::sort (bool make_uniq)
 string_vector&
 string_vector::uniq (void)
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
 
   if (len > 0)
     {
@@ -139,7 +139,7 @@ string_vector::uniq (void)
 string_vector&
 string_vector::append (const std::string& s)
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
 
   resize (len + 1);
 
@@ -151,8 +151,8 @@ string_vector::append (const std::string& s)
 string_vector&
 string_vector::append (const string_vector& sv)
 {
-  octave_idx_type len = length ();
-  octave_idx_type sv_len = sv.length ();
+  octave_idx_type len = numel ();
+  octave_idx_type sv_len = sv.numel ();
   octave_idx_type new_len = len + sv_len;
 
   resize (new_len);
@@ -168,7 +168,7 @@ string_vector::join (const std::string& sep) const
 {
   std::string retval;
 
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
 
   if (len > 0)
     {
@@ -186,7 +186,7 @@ string_vector::join (const std::string& sep) const
 char **
 string_vector::c_str_vec (void) const
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
 
   char **retval = new char * [len + 1];
 
@@ -194,6 +194,19 @@ string_vector::c_str_vec (void) const
 
   for (octave_idx_type i = 0; i < len; i++)
     retval[i] = strsave (elem (i).c_str ());
+
+  return retval;
+}
+
+std::list<std::string>
+string_vector::std_list (void) const
+{
+  octave_idx_type len = numel ();
+
+  std::list<std::string> retval;
+
+  for (octave_idx_type i = 0; i < len; i++)
+    retval.push_back (elem (i));
 
   return retval;
 }
@@ -218,7 +231,7 @@ string_vector::list_in_columns (std::ostream& os, int width,
   // Compute the maximum name length.
 
   octave_idx_type max_name_length = 0;
-  octave_idx_type total_names = length ();
+  octave_idx_type total_names = numel ();
 
   if (total_names == 0)
     {
@@ -242,7 +255,7 @@ string_vector::list_in_columns (std::ostream& os, int width,
   // Calculate the maximum number of columns that will fit.
 
   octave_idx_type line_length
-    = ((width <= 0 ? command_editor::terminal_cols () : width)
+    = ((width <= 0 ? octave::command_editor::terminal_cols () : width)
        - prefix.length ());
 
   octave_idx_type nc = line_length / max_name_length;

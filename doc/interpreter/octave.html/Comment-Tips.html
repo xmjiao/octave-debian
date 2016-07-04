@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -61,20 +62,32 @@ Next: <a href="Function-Headers.html#Function-Headers" accesskey="n" rel="next">
 </p>
 <dl compact="compact">
 <dt>&lsquo;<samp>#</samp>&rsquo;</dt>
-<dd><p>Comments that start with a single sharp-sign, &lsquo;<samp>#</samp>&rsquo;, should all be
-aligned to the same column on the right of the source code.  Such
-comments usually explain how the code on the same line does its job.  In
+<dd><p>Comments that start with a single sharp-sign, &lsquo;<samp>#</samp>&rsquo;, are used to explain
+the code on the same line as the comment itself.  These comments should
+all be aligned to the same column to the right of the source code.  In
 the Emacs mode for Octave, the <kbd>M-;</kbd> (<code>indent-for-comment</code>)
 command automatically inserts such a &lsquo;<samp>#</samp>&rsquo; in the right place, or
-aligns such a comment if it is already present.
+aligns such a comment if it is already present.  Example:
 </p>
+<div class="example">
+<pre class="example"><var>C</var> = 2 * pi * r;    # formula for circumference of a circle
+</pre></div>
+
 </dd>
 <dt>&lsquo;<samp>##</samp>&rsquo;</dt>
-<dd><p>Comments that start with a double sharp-sign, &lsquo;<samp>##</samp>&rsquo;, should be aligned to
+<dd><p>Comments that start with a double sharp-sign, &lsquo;<samp>##</samp>&rsquo;, are stand-alone
+comments that occupy an entire line.  These comments should be aligned to
 the same level of indentation as the code.  Such comments usually
 describe the purpose of the following lines or the state of the program
-at that point.
-</p></dd>
+at that point.  Example:
+</p>
+<div class="example">
+<pre class="example">## Calculate area and volume of a sphere
+<var>A</var> = 4 * pi * r^2;
+<var>V</var> = 4/3 * pi * r^3;
+</pre></div>
+
+</dd>
 </dl>
 
 <p>The indentation commands of the Octave mode in Emacs, such as <kbd>M-;</kbd>

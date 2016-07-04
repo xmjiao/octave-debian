@@ -20,12 +20,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-cx-mat.h"
 #include "ov-flt-cx-mat.h"
@@ -43,12 +43,13 @@ DEFNDBINOP_OP (mul, complex_matrix, complex, complex_array, complex, *)
 
 DEFBINOP (div, complex_matrix, complex)
 {
-  CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_complex&);
+  const octave_complex_matrix& v1 = dynamic_cast<const octave_complex_matrix&> (a1);
+  const octave_complex& v2 = dynamic_cast<const octave_complex&> (a2);
 
   Complex d = v2.complex_value ();
 
   if (d == 0.0)
-    gripe_divide_by_zero ();
+    warn_divide_by_zero ();
 
   return octave_value (v1.complex_array_value () / d);
 }
@@ -57,7 +58,8 @@ DEFBINOP_FN (pow, complex_matrix, complex, xpow)
 
 DEFBINOP (ldiv, complex_matrix, complex)
 {
-  CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_complex&);
+  const octave_complex_matrix& v1 = dynamic_cast<const octave_complex_matrix&> (a1);
+  const octave_complex& v2 = dynamic_cast<const octave_complex&> (a2);
 
   ComplexMatrix m1 = v1.complex_matrix_value ();
   ComplexMatrix m2 = v2.complex_matrix_value ();
@@ -85,12 +87,13 @@ DEFNDBINOP_OP (el_mul, complex_matrix, complex, complex_array, complex, *)
 
 DEFBINOP (el_div, complex_matrix, complex)
 {
-  CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_complex&);
+  const octave_complex_matrix& v1 = dynamic_cast<const octave_complex_matrix&> (a1);
+  const octave_complex& v2 = dynamic_cast<const octave_complex&> (a2);
 
   Complex d = v2.complex_value ();
 
   if (d == 0.0)
-    gripe_divide_by_zero ();
+    warn_divide_by_zero ();
 
   return octave_value (v1.complex_array_value () / d);
 }
@@ -100,7 +103,8 @@ DEFNDBINOP_FN (el_pow, complex_matrix, complex, complex_array, complex,
 
 DEFBINOP (el_ldiv, complex_matrix, complex)
 {
-  CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_complex&);
+  const octave_complex_matrix& v1 = dynamic_cast<const octave_complex_matrix&> (a1);
+  const octave_complex& v2 = dynamic_cast<const octave_complex&> (a2);
 
   return x_el_div (v2.complex_value (), v1.complex_array_value ());
 }

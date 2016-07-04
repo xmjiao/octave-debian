@@ -17,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{zlimits} =} zlim ()
-## @deftypefnx {Function File} {@var{xmode} =} zlim ("mode")
-## @deftypefnx {Function File} {} zlim ([@var{z_lo} @var{z_hi}])
-## @deftypefnx {Function File} {} zlim ("auto")
-## @deftypefnx {Function File} {} zlim ("manual")
-## @deftypefnx {Function File} {} zlim (@var{hax}, @dots{})
+## @deftypefn  {} {@var{zlimits} =} zlim ()
+## @deftypefnx {} {@var{xmode} =} zlim ("mode")
+## @deftypefnx {} {} zlim ([@var{z_lo} @var{z_hi}])
+## @deftypefnx {} {} zlim ("auto")
+## @deftypefnx {} {} zlim ("manual")
+## @deftypefnx {} {} zlim (@var{hax}, @dots{})
 ## Query or set the limits of the z-axis for the current plot.
 ##
 ## Called without arguments @code{zlim} returns the z-axis limits of the
@@ -43,11 +43,13 @@
 ## @end deftypefn
 
 function retval = zlim (varargin)
+
   ret = __axis_limits__ ("zlim", varargin{:});
 
   if (! isempty (ret))
     retval = ret;
   endif
+
 endfunction
 
 

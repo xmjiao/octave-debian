@@ -9,7 +9,7 @@
 ##
 ## Octave is distributed in the hope that it will be useful, but
 ## WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ## General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
@@ -17,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} validateattributes (@var{A}, @var{classes}, @var{attributes})
-## @deftypefnx {Function File} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{arg_idx})
-## @deftypefnx {Function File} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{func_name})
-## @deftypefnx {Function File} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{func_name}, @var{arg_name})
-## @deftypefnx {Function File} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{func_name}, @var{arg_name}, @var{arg_idx})
+## @deftypefn  {} {} validateattributes (@var{A}, @var{classes}, @var{attributes})
+## @deftypefnx {} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{arg_idx})
+## @deftypefnx {} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{func_name})
+## @deftypefnx {} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{func_name}, @var{arg_name})
+## @deftypefnx {} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{func_name}, @var{arg_name}, @var{arg_idx})
 ## Check validity of input argument.
 ##
 ## Confirms that the argument @var{A} is valid by belonging to one of
@@ -55,7 +55,8 @@
 ##
 ## @table @asis
 ## @item @qcode{"<="}
-## All values are less than or equal to the following value in @var{attributes}.
+## All values are less than or equal to the following value in
+## @var{attributes}.
 ##
 ## @item @qcode{"<"}
 ## All values are less than the following value in @var{attributes}.
@@ -83,6 +84,9 @@
 ##
 ## @item @qcode{"decreasing"}
 ## No value is @var{NaN}, and each is less than the preceding one.
+##
+## @item @qcode{"diag"}
+## Value is a diagonal matrix.
 ##
 ## @item @qcode{"even"}
 ## All values are even numbers.
@@ -117,7 +121,7 @@
 ## @item @qcode{"nonnan"}
 ## No value is a @code{NaN}.
 ##
-## @item @qcode{"nonnegative"}
+## @item @nospell{@qcode{"nonnegative"}}
 ## All values are non negative.
 ##
 ## @item @qcode{"nonsparse"}
@@ -165,6 +169,7 @@
 ## @end deftypefn
 
 function validateattributes (A, cls, attr, varargin)
+
   if (nargin < 3 || nargin > 6)
     print_usage ();
   elseif (! iscellstr (cls))
@@ -224,21 +229,21 @@ function validateattributes (A, cls, attr, varargin)
   endif
 
   ## We use a while loop because some attributes require the following value
-  ## in the cell array. Also, we can't just get the boolean value for the
+  ## in the cell array.  Also, we can't just get the boolean value for the
   ## test and check at the end the error message since some of the tests
   ## require some more complex error message.
 
   ## It may look like that we don't perform enough input check in this
   ## function (e.g., we don't check if there's a value after the size
-  ## attribute). The reasoning is that this will be a function mostly used
+  ## attribute).  The reasoning is that this will be a function mostly used
   ## by developers with fairly static input so any problem would be caught
-  ## immediately during that functino development, it's no dependent on the
-  ## final user input. In addition, it can be called so many times at the
+  ## immediately during that function development, it's no dependent on the
+  ## final user input.  In addition, it can be called so many times at the
   ## start of every function, we want it to run specially fast.
   idx = 1;
   problem = false; # becomes true when one of the tests fails
   while (idx <= numel (attr))
-    ## TODO: once we use this in Octave core, it might be worthy to find
+    ## FIXME: once we use this in Octave core, it might be worthy to find
     ## which attributes are checked more often, and place them in that
     ## order inside the switch block.
     switch (tolower (attr{idx++}))
@@ -249,6 +254,7 @@ function validateattributes (A, cls, attr, varargin)
       case "scalar",        problem = ! isscalar (A);
       case "vector",        problem = ! isvector (A);
       case "square",        problem = ! issquare (A);
+      case "diag",          problem = ! isdiag (A);
       case "nonempty",      problem = isempty (A);
       case "nonsparse",     problem = issparse (A);
       case "binary",        problem = ! islogical (A) && ...
@@ -297,7 +303,7 @@ function validateattributes (A, cls, attr, varargin)
         endif
       case "ndims",
         ## Note that a [4 5 1] matrix is not considered to have ndims == 3
-        ## but is ok for "3d". This is not a bug.
+        ## but is ok for "3d".  This is not a bug.
         if (ndims (A) != attr{idx++})
           error ("%s must have %d dimensions", err_ini, attr{idx-1});
         endif
@@ -324,6 +330,7 @@ function validateattributes (A, cls, attr, varargin)
       error ("%s must be %s", err_ini, attr{idx-1});
     endif
   endwhile
+
 endfunction
 
 function retval = valid_arg_idx (arg)
@@ -384,50 +391,55 @@ endfunction
 %!error <greater than> validateattributes ([6 7 8 5], {}, {">=", 6})
 %!error <less than> validateattributes ([6 7 8 5], {}, {"<", 8})
 %!error <less than> validateattributes ([6 7 8 5], {}, {"<=", 7})
+%!error <diag> validateattributes ([0 0 0; 0 0 0; 1 0 0], {}, {"diag"})
+%!error <diag> validateattributes (repmat (eye (3), [1 1 3]), {}, {"diag"})
 
 %!test
-%! validateattributes (rand (5), {"numeric"}, {})
-%! validateattributes (rand (5), {"float"}, {})
-%! validateattributes (rand (5), {"double"}, {})
-%! validateattributes ("text", {"char"}, {})
-%! validateattributes (rand (5), {}, {"2d"})
-%! validateattributes (rand (5), {}, {"3d"})
-%! validateattributes (rand (5, 5, 5), {}, {"3d"})
-%! validateattributes (rand (5, 1), {}, {"column"})
-%! validateattributes (rand (1, 5), {}, {"row"})
-%! validateattributes ("a", {}, {"scalar"})
-%! validateattributes (5, {}, {"scalar"})
-%! validateattributes (rand (1, 5), {}, {"vector"})
-%! validateattributes (rand (5, 1), {}, {"vector"})
-%! validateattributes (rand (5), {}, {"square"})
-%! validateattributes (rand (5), {}, {"nonempty"})
-%! validateattributes (rand (5), {}, {"nonsparse"})
-%! validateattributes ([0 1 0 1 0], {}, {"binary"})
-%! validateattributes (rand (5) > 0.5, {}, {"binary"})
-%! validateattributes ([8 4 0 6], {}, {"even"})
-%! validateattributes ([-1 3 5], {}, {"odd"})
-%! validateattributes ([8 4 0 6], {}, {"real"})
-%! validateattributes ([8 4i 0 6], {}, {"finite"})
-%! validateattributes (uint8 ([8 4]), {}, {"finite"})
-%! validateattributes ([8 Inf], {}, {"nonnan"})
-%! validateattributes ([0 7 4], {}, {"nonnegative"})
-%! validateattributes ([-8 7 4], {}, {"nonzero"})
-%! validateattributes ([8 7 4], {}, {"positive"})
-%! validateattributes ([8 7 4 -5], {}, {"decreasing"})
-%! validateattributes ([-8 -7 4 5], {}, {"increasing"})
-%! validateattributes ([8 4 4 -5], {}, {"nonincreasing"})
-%! validateattributes ([-8 -8 4 5], {}, {"nondecreasing"})
-%! validateattributes (rand (4, 6, 7, 2), {}, {"size", [4 6 7 2]})
-%! validateattributes (rand (4, 6, 7, 2), {}, {"size", [4 NaN 7 2]})
-%! validateattributes (rand (4, 6, 7, 2), {}, {"size", [4 6 NaN 2 NaN]})
-%! validateattributes (rand (6, 2), {}, {"numel", 12})
-%! validateattributes (rand (6, 2), {}, {"ncols", 2})
-%! validateattributes (rand (6, 2), {}, {"nrows", 6})
-%! validateattributes (rand (6, 2, 4, 5), {}, {"ndims", 4})
-%! validateattributes ([4 5 6 7], {}, {">", 3})
-%! validateattributes ([4 5 6 7], {}, {">=", 4})
-%! validateattributes ([4 5 6 7], {}, {"<", 8})
-%! validateattributes ([4 5 6 7], {}, {"<=", 7})
+%! validateattributes (rand (5), {"numeric"}, {});
+%! validateattributes (rand (5), {"float"}, {});
+%! validateattributes (rand (5), {"double"}, {});
+%! validateattributes ("text", {"char"}, {});
+%! validateattributes (rand (5), {}, {"2d"});
+%! validateattributes (rand (5), {}, {"3d"});
+%! validateattributes (rand (5, 5, 5), {}, {"3d"});
+%! validateattributes (rand (5, 1), {}, {"column"});
+%! validateattributes (rand (1, 5), {}, {"row"});
+%! validateattributes ("a", {}, {"scalar"});
+%! validateattributes (5, {}, {"scalar"});
+%! validateattributes (rand (1, 5), {}, {"vector"});
+%! validateattributes (rand (5, 1), {}, {"vector"});
+%! validateattributes (rand (5), {}, {"square"});
+%! validateattributes (rand (5), {}, {"nonempty"});
+%! validateattributes (rand (5), {}, {"nonsparse"});
+%! validateattributes ([0 1 0 1 0], {}, {"binary"});
+%! validateattributes (rand (5) > 0.5, {}, {"binary"});
+%! validateattributes ([8 4 0 6], {}, {"even"});
+%! validateattributes ([-1 3 5], {}, {"odd"});
+%! validateattributes ([8 4 0 6], {}, {"real"});
+%! validateattributes ([8 4i 0 6], {}, {"finite"});
+%! validateattributes (uint8 ([8 4]), {}, {"finite"});
+%! validateattributes ([8 Inf], {}, {"nonnan"});
+%! validateattributes ([0 7 4], {}, {"nonnegative"});
+%! validateattributes ([-8 7 4], {}, {"nonzero"});
+%! validateattributes ([8 7 4], {}, {"positive"});
+%! validateattributes ([8 7 4 -5], {}, {"decreasing"});
+%! validateattributes ([-8 -7 4 5], {}, {"increasing"});
+%! validateattributes ([8 4 4 -5], {}, {"nonincreasing"});
+%! validateattributes ([-8 -8 4 5], {}, {"nondecreasing"});
+%! validateattributes (rand (4, 6, 7, 2), {}, {"size", [4 6 7 2]});
+%! validateattributes (rand (4, 6, 7, 2), {}, {"size", [4 NaN 7 2]});
+%! validateattributes (rand (4, 6, 7, 2), {}, {"size", [4 6 NaN 2 NaN]});
+%! validateattributes (rand (6, 2), {}, {"numel", 12});
+%! validateattributes (rand (6, 2), {}, {"ncols", 2});
+%! validateattributes (rand (6, 2), {}, {"nrows", 6});
+%! validateattributes (rand (6, 2, 4, 5), {}, {"ndims", 4});
+%! validateattributes ([4 5 6 7], {}, {">", 3});
+%! validateattributes ([4 5 6 7], {}, {">=", 4});
+%! validateattributes ([4 5 6 7], {}, {"<", 8});
+%! validateattributes ([4 5 6 7], {}, {"<=", 7});
+%! validateattributes (eye (3), {}, {"diag"});
+%! validateattributes ([1 0 0; 0 1 0; 0 0 1], {}, {"diag"});
+%! validateattributes (zeros (3), {}, {"diag"});
 
 %!test
-%! validateattributes ([0 1 0 1], {"double", "uint8"}, {"binary", "size", [NaN 4], "nonnan"})
+%! validateattributes ([0 1 0 1], {"double", "uint8"}, {"binary", "size", [NaN 4], "nonnan"});

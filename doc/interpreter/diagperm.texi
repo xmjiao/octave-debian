@@ -67,9 +67,9 @@ and @dfn{disable_permutation_matrix}.
 
 @c disable_diagonal_matrix libinterp/octave-value/ov.cc
 @anchor{XREFdisable_diagonal_matrix}
-@deftypefn  {Built-in Function} {@var{val} =} disable_diagonal_matrix ()
-@deftypefnx {Built-in Function} {@var{old_val} =} disable_diagonal_matrix (@var{new_val})
-@deftypefnx {Built-in Function} {} disable_diagonal_matrix (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} disable_diagonal_matrix ()
+@deftypefnx {} {@var{old_val} =} disable_diagonal_matrix (@var{new_val})
+@deftypefnx {} {} disable_diagonal_matrix (@var{new_val}, "local")
 Query or set the internal variable that controls whether diagonal
 matrices are stored in a special space-efficient format.
 
@@ -85,9 +85,9 @@ The original variable value is restored when exiting the function.
 
 @c disable_permutation_matrix libinterp/octave-value/ov.cc
 @anchor{XREFdisable_permutation_matrix}
-@deftypefn  {Built-in Function} {@var{val} =} disable_permutation_matrix ()
-@deftypefnx {Built-in Function} {@var{old_val} =} disable_permutation_matrix (@var{new_val})
-@deftypefnx {Built-in Function} {} disable_permutation_matrix (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} disable_permutation_matrix ()
+@deftypefnx {} {@var{old_val} =} disable_permutation_matrix (@var{new_val})
+@deftypefnx {} {} disable_permutation_matrix (@var{new_val}, "local")
 Query or set the internal variable that controls whether permutation
 matrices are stored in a special space-efficient format.
 

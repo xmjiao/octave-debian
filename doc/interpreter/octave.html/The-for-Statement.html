@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -131,7 +132,7 @@ endfor
 
 <p>In the above case, the multi-dimensional matrix <var>c</var> is reshaped to a
 two-dimensional matrix as <code>reshape (c, rows (c), prod (size (c)(2:end)))</code>
-and then the same behavior as a loop over a two dimensional matrix is produced.
+and then the same behavior as a loop over a two-dimensional matrix is produced.
 </p>
 <p>Although it is possible to rewrite all <code>for</code> loops as <code>while</code>
 loops, the Octave language has both statements because often a

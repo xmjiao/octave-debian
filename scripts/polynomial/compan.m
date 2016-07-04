@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} compan (@var{c})
+## @deftypefn {} {} compan (@var{c})
 ## Compute the companion matrix corresponding to polynomial coefficient vector
 ## @var{c}.
 ##
@@ -65,7 +65,7 @@ function A = compan (c)
   endif
 
   if (! isvector (c))
-    error ("compan: expecting a vector argument");
+    error ("compan: C must be a vector");
   endif
 
   n = length (c);

@@ -22,11 +22,11 @@ along with Octave; see the file COPYING.  If not, see
 
 // Author: Torsten <ttl@justmail.de>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#ifdef HAVE_QSCINTILLA
+#if defined (HAVE_QSCINTILLA)
 
 #include <Qsci/qscilexer.h>
 
@@ -41,19 +41,16 @@ octave_txt_lexer::description (int style) const
     return QString ();
 };
 
-
 const char*
 octave_txt_lexer::language () const
 {
   return "Text";
 }
 
-
 const char*
 octave_txt_lexer::lexer () const
 {
   return "text";
 }
-
 
 #endif

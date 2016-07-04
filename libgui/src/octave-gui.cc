@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QApplication>
@@ -31,20 +31,15 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iostream>
 
-#include <unistd.h>
-#include <fcntl.h>
-
 #if defined (HAVE_SYS_IOCTL_H)
-#include <sys/ioctl.h>
+#  include <sys/ioctl.h>
 #endif
 
 #include "lo-utils.h"
 #include "oct-env.h"
 #include "oct-syscalls.h"
-#include "syswait.h"
 
 #include "octave.h"
-#include "sighandlers.h"
 
 #include "welcome-wizard.h"
 #include "resource-manager.h"
@@ -54,7 +49,10 @@ along with Octave; see the file COPYING.  If not, see
 #include "thread-manager.h"
 
 #include "builtin-defun-decls.h"
-#include "__init_qt__.h"
+
+#if defined (HAVE_QT_GRAPHICS)
+#  include "__init_qt__.h"
+#endif
 
 // Allow the Octave interpreter to start as in CLI mode with a
 // QApplication context so that it can use Qt for things like plotting
@@ -104,15 +102,17 @@ octave_start_gui (int argc, char *argv[], bool start_gui)
 {
   octave_thread_manager::block_interrupt_signal ();
 
-  std::string show_gui_msgs = octave_env::getenv ("OCTAVE_SHOW_GUI_MESSAGES");
+  std::string show_gui_msgs = octave::sys::env::getenv ("OCTAVE_SHOW_GUI_MESSAGES");
 
   // Installing our handler suppresses the messages.
   if (show_gui_msgs.empty ())
     qInstallMsgHandler (message_handler);
 
+#if defined (HAVE_QT_GRAPHICS)
   install___init_qt___functions ();
 
   Fregister_graphics_toolkit (ovl ("qt"));
+#endif
 
   QApplication application (argc, argv);
   QTranslator gui_tr, qt_tr, qsci_tr;
@@ -155,20 +155,12 @@ octave_start_gui (int argc, char *argv[], bool start_gui)
       // update network-settings
       resource_manager::update_network_settings ();
 
-#if ! defined (__WIN32__) || defined (__CYGWIN__)
-      // If we were started from a launcher, TERM might not be
-      // defined, but we provide a terminal with xterm
-      // capabilities.
-
-      std::string term = octave_env::getenv ("TERM");
-
-      if (term.empty ())
-        octave_env::putenv ("TERM", "xterm");
+      // We provide specific terminal capabilities, so ensure that TERM is
+      // always set appropriately
+#if defined (OCTAVE_USE_WINDOWS_API)
+      octave::sys::env::putenv ("TERM", "cygwin");
 #else
-      std::string term = octave_env::getenv ("TERM");
-
-      if (term.empty ())
-        octave_env::putenv ("TERM", "cygwin");
+      octave::sys::env::putenv ("TERM", "xterm");
 #endif
 
       // shortcut manager

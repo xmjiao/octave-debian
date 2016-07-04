@@ -21,520 +21,6 @@ manual into another language, under the above conditions for modified
 versions.
 
 
-File: octave.info,  Node: Persistent Variables,  Next: Status of Variables,  Prev: Global Variables,  Up: Variables
-
-7.2 Persistent Variables
-========================
-
-A variable that has been declared “persistent” within a function will
-retain its contents in memory between subsequent calls to the same
-function.  The difference between persistent variables and global
-variables is that persistent variables are local in scope to a
-particular function and are not visible elsewhere.
-
-   The following example uses a persistent variable to create a function
-that prints the number of times it has been called.
-
-     function count_calls ()
-       persistent calls = 0;
-       printf ("'count_calls' has been called %d times\n",
-               ++calls);
-     endfunction
-
-     for i = 1:3
-       count_calls ();
-     endfor
-
-     ⊣ 'count_calls' has been called 1 times
-     ⊣ 'count_calls' has been called 2 times
-     ⊣ 'count_calls' has been called 3 times
-
-   As the example shows, a variable may be declared persistent using a
-‘persistent’ declaration statement.  The following statements are all
-persistent declarations.
-
-     persistent a
-     persistent a b
-     persistent c = 2
-     persistent d = 3 e f = 5
-
-   The behavior of persistent variables is equivalent to the behavior of
-static variables in C.
-
-   Like global variables, a persistent variable may only be initialized
-once.  For example, after executing the following code
-
-     persistent pvar = 1
-     persistent pvar = 2
-
-the value of the persistent variable ‘pvar’ is 1, not 2.
-
-   If a persistent variable is declared but not initialized to a
-specific value, it will contain an empty matrix.  So, it is also
-possible to initialize a persistent variable by checking whether it is
-empty, as the following example illustrates.
-
-     function count_calls ()
-       persistent calls;
-       if (isempty (calls))
-         calls = 0;
-       endif
-       printf ("'count_calls' has been called %d times\n",
-               ++calls);
-     endfunction
-
-This implementation behaves in exactly the same way as the previous
-implementation of ‘count_calls’.
-
-   The value of a persistent variable is kept in memory until it is
-explicitly cleared.  Assuming that the implementation of ‘count_calls’
-is saved on disk, we get the following behavior.
-
-     for i = 1:2
-       count_calls ();
-     endfor
-     ⊣ 'count_calls' has been called 1 times
-     ⊣ 'count_calls' has been called 2 times
-
-     clear
-     for i = 1:2
-       count_calls ();
-     endfor
-     ⊣ 'count_calls' has been called 3 times
-     ⊣ 'count_calls' has been called 4 times
-
-     clear all
-     for i = 1:2
-       count_calls ();
-     endfor
-     ⊣ 'count_calls' has been called 1 times
-     ⊣ 'count_calls' has been called 2 times
-
-     clear count_calls
-     for i = 1:2
-       count_calls ();
-     endfor
-     ⊣ 'count_calls' has been called 1 times
-     ⊣ 'count_calls' has been called 2 times
-
-That is, the persistent variable is only removed from memory when the
-function containing the variable is removed.  Note that if the function
-definition is typed directly into the Octave prompt, the persistent
-variable will be cleared by a simple ‘clear’ command as the entire
-function definition will be removed from memory.  If you do not want a
-persistent variable to be removed from memory even if the function is
-cleared, you should use the ‘mlock’ function (*note Function Locking::).
-
-
-File: octave.info,  Node: Status of Variables,  Prev: Persistent Variables,  Up: Variables
-
-7.3 Status of Variables
-=======================
-
-When creating simple one-shot programs it can be very convenient to see
-which variables are available at the prompt.  The function ‘who’ and its
-siblings ‘whos’ and ‘whos_line_format’ will show different information
-about what is in memory, as the following shows.
-
-     str = "A random string";
-     who -variables
-          ⊣ *** local user variables:
-          ⊣
-          ⊣ __nargin__  str
-
- -- Command: who
- -- Command: who pattern ...
- -- Command: who option pattern ...
- -- Command: C = who ("pattern", ...)
-     List currently defined variables matching the given patterns.
-
-     Valid pattern syntax is the same as described for the ‘clear’
-     command.  If no patterns are supplied, all variables are listed.
-
-     By default, only variables visible in the local scope are
-     displayed.
-
-     The following are valid options, but may not be combined.
-
-     ‘global’
-          List variables in the global scope rather than the current
-          scope.
-
-     ‘-regexp’
-          The patterns are considered to be regular expressions when
-          matching the variables to display.  The same pattern syntax
-          accepted by the ‘regexp’ function is used.
-
-     ‘-file’
-          The next argument is treated as a filename.  All variables
-          found within the specified file are listed.  No patterns are
-          accepted when reading variables from a file.
-
-     If called as a function, return a cell array of defined variable
-     names matching the given patterns.
-
-     See also: *note whos: XREFwhos, *note isglobal: XREFisglobal, *note
-     isvarname: XREFisvarname, *note exist: XREFexist, *note regexp:
-     XREFregexp.
-
- -- Command: whos
- -- Command: whos pattern ...
- -- Command: whos option pattern ...
- -- Built-in Function: S = whos ("pattern", ...)
-     Provide detailed information on currently defined variables
-     matching the given patterns.
-
-     Options and pattern syntax are the same as for the ‘who’ command.
-
-     Extended information about each variable is summarized in a table
-     with the following default entries.
-
-     Attr
-          Attributes of the listed variable.  Possible attributes are:
-
-          blank
-               Variable in local scope
-
-          ‘a’
-               Automatic variable.  An automatic variable is one created
-               by the interpreter, for example ‘argn’.
-
-          ‘c’
-               Variable of complex type.
-
-          ‘f’
-               Formal parameter (function argument).
-
-          ‘g’
-               Variable with global scope.
-
-          ‘p’
-               Persistent variable.
-
-     Name
-          The name of the variable.
-
-     Size
-          The logical size of the variable.  A scalar is 1x1, a vector
-          is 1xN or Nx1, a 2-D matrix is MxN.
-
-     Bytes
-          The amount of memory currently used to store the variable.
-
-     Class
-          The class of the variable.  Examples include double, single,
-          char, uint16, cell, and struct.
-
-     The table can be customized to display more or less information
-     through the function ‘whos_line_format’.
-
-     If ‘whos’ is called as a function, return a struct array of defined
-     variable names matching the given patterns.  Fields in the
-     structure describing each variable are: name, size, bytes, class,
-     global, sparse, complex, nesting, persistent.
-
-     See also: *note who: XREFwho, *note whos_line_format:
-     XREFwhos_line_format.
-
- -- Built-in Function: VAL = whos_line_format ()
- -- Built-in Function: OLD_VAL = whos_line_format (NEW_VAL)
- -- Built-in Function: whos_line_format (NEW_VAL, "local")
-     Query or set the format string used by the command ‘whos’.
-
-     A full format string is:
-
-          %[modifier]<command>[:width[:left-min[:balance]]];
-
-     The following command sequences are available:
-
-     ‘%a’
-          Prints attributes of variables (g=global, p=persistent,
-          f=formal parameter, a=automatic variable).
-
-     ‘%b’
-          Prints number of bytes occupied by variables.
-
-     ‘%c’
-          Prints class names of variables.
-
-     ‘%e’
-          Prints elements held by variables.
-
-     ‘%n’
-          Prints variable names.
-
-     ‘%s’
-          Prints dimensions of variables.
-
-     ‘%t’
-          Prints type names of variables.
-
-     Every command may also have an alignment modifier:
-
-     ‘l’
-          Left alignment.
-
-     ‘r’
-          Right alignment (default).
-
-     ‘c’
-          Column-aligned (only applicable to command %s).
-
-     The ‘width’ parameter is a positive integer specifying the minimum
-     number of columns used for printing.  No maximum is needed as the
-     field will auto-expand as required.
-
-     The parameters ‘left-min’ and ‘balance’ are only available when the
-     column-aligned modifier is used with the command ‘%s’.  ‘balance’
-     specifies the column number within the field width which will be
-     aligned between entries.  Numbering starts from 0 which indicates
-     the leftmost column.  ‘left-min’ specifies the minimum field width
-     to the left of the specified balance column.
-
-     The default format is:
-
-     " %a:4; %ln:6; %cs:16:6:1; %rb:12; %lc:-1;\n"
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note whos: XREFwhos.
-
-   Instead of displaying which variables are in memory, it is possible
-to determine if a given variable is available.  That way it is possible
-to alter the behavior of a program depending on the existence of a
-variable.  The following example illustrates this.
-
-     if (! exist ("meaning", "var"))
-       disp ("The program has no 'meaning'");
-     endif
-
- -- Built-in Function: C = exist (NAME)
- -- Built-in Function: C = exist (NAME, TYPE)
-     Check for the existence of NAME as a variable, function, file,
-     directory, or class.
-
-     The return code C is one of
-
-     1
-          NAME is a variable.
-
-     2
-          NAME is an absolute file name, an ordinary file in Octave’s
-          ‘path’, or (after appending ‘.m’) a function file in Octave’s
-          ‘path’.
-
-     3
-          NAME is a ‘.oct’ or ‘.mex’ file in Octave’s ‘path’.
-
-     5
-          NAME is a built-in function.
-
-     7
-          NAME is a directory.
-
-     103
-          NAME is a function not associated with a file (entered on the
-          command line).
-
-     0
-          NAME does not exist.
-
-     If the optional argument TYPE is supplied, check only for symbols
-     of the specified type.  Valid types are
-
-     "var"
-          Check only for variables.
-
-     "builtin"
-          Check only for built-in functions.
-
-     "dir"
-          Check only for directories.
-
-     "file"
-          Check only for files and directories.
-
-     "class"
-          Check only for classes.  (Note: This option is accepted, but
-          not currently implemented)
-
-     If no type is given, and there are multiple possible matches for
-     name, ‘exist’ will return a code according to the following
-     priority list: variable, built-in function, oct-file, directory,
-     file, class.
-
-     ‘exist’ returns 2 if a regular file called NAME is present in
-     Octave’s search path.  If you want information about other types of
-     files not on the search path you should use some combination of the
-     functions ‘file_in_path’ and ‘stat’ instead.
-
-     See also: *note file_in_loadpath: XREFfile_in_loadpath, *note
-     file_in_path: XREFfile_in_path, *note dir_in_loadpath:
-     XREFdir_in_loadpath, *note stat: XREFstat.
-
-   Usually Octave will manage the memory, but sometimes it can be
-practical to remove variables from memory manually.  This is usually
-needed when working with large variables that fill a substantial part of
-the memory.  On a computer that uses the IEEE floating point format, the
-following program allocates a matrix that requires around 128 MB memory.
-
-     large_matrix = zeros (4000, 4000);
-
-Since having this variable in memory might slow down other computations,
-it can be necessary to remove it manually from memory.  The ‘clear’
-function allows this.
-
- -- Command: clear [options] pattern ...
-     Delete the names matching the given patterns from the symbol table.
-
-     The pattern may contain the following special characters:
-
-     ‘?’
-          Match any single character.
-
-     ‘*’
-          Match zero or more characters.
-
-     ‘[ LIST ]’
-          Match the list of characters specified by LIST.  If the first
-          character is ‘!’ or ‘^’, match all characters except those
-          specified by LIST.  For example, the pattern ‘[a-zA-Z]’ will
-          match all lowercase and uppercase alphabetic characters.
-
-     For example, the command
-
-          clear foo b*r
-
-     clears the name ‘foo’ and all names that begin with the letter ‘b’
-     and end with the letter ‘r’.
-
-     If ‘clear’ is called without any arguments, all user-defined
-     variables (local and global) are cleared from the symbol table.
-
-     If ‘clear’ is called with at least one argument, only the visible
-     names matching the arguments are cleared.  For example, suppose you
-     have defined a function ‘foo’, and then hidden it by performing the
-     assignment ‘foo = 2’.  Executing the command ‘clear foo’ once will
-     clear the variable definition and restore the definition of ‘foo’
-     as a function.  Executing ‘clear foo’ a second time will clear the
-     function definition.
-
-     The following options are available in both long and short form
-
-     ‘-all, -a’
-          Clear all local and global user-defined variables and all
-          functions from the symbol table.
-
-     ‘-exclusive, -x’
-          Clear the variables that don’t match the following pattern.
-
-     ‘-functions, -f’
-          Clear the function names and the built-in symbols names.
-
-     ‘-global, -g’
-          Clear global symbol names.
-
-     ‘-variables, -v’
-          Clear local variable names.
-
-     ‘-classes, -c’
-          Clears the class structure table and clears all objects.
-
-     ‘-regexp, -r’
-          The arguments are treated as regular expressions as any
-          variables that match will be cleared.
-
-     With the exception of ‘exclusive’, all long options can be used
-     without the dash as well.
-
-     See also: *note who: XREFwho, *note whos: XREFwhos, *note exist:
-     XREFexist.
-
- -- Function File: pack ()
-     Consolidate workspace memory in MATLAB.
-
-     This function is provided for compatibility, but does nothing in
-     Octave.
-
-     See also: *note clear: XREFclear.
-
-   Information about a function or variable such as its location in the
-file system can also be acquired from within Octave.  This is usually
-only useful during development of programs, and not within a program.
-
- -- Command: type NAME ...
- -- Command: type -q NAME ...
- -- Function File: text = type ("NAME", ...)
-     Display the contents of NAME which may be a file, function
-     (m-file), variable, operator, or keyword.
-
-     ‘type’ normally prepends a header line describing the category of
-     NAME such as function or variable; The ‘-q’ option suppresses this
-     behavior.
-
-     If no output variable is used the contents are displayed on screen.
-     Otherwise, a cell array of strings is returned, where each element
-     corresponds to the contents of each requested function.
-
- -- Command: which name ...
-     Display the type of each NAME.
-
-     If NAME is defined from a function file, the full name of the file
-     is also displayed.
-
-     See also: *note help: XREFhelp, *note lookfor: XREFlookfor.
-
- -- Command: what
- -- Command: what DIR
- -- Function File: w = what (DIR)
-     List the Octave specific files in directory DIR.
-
-     If DIR is not specified then the current directory is used.
-
-     If a return argument is requested, the files found are returned in
-     the structure W.  The structure contains the following fields:
-
-     path
-          Full path to directory DIR
-
-     m
-          Cell array of m-files
-
-     mat
-          Cell array of mat files
-
-     mex
-          Cell array of mex files
-
-     oct
-          Cell array of oct files
-
-     mdl
-          Cell array of mdl files
-
-     slx
-          Cell array of slx files
-
-     p
-          Cell array of p-files
-
-     classes
-          Cell array of class directories (‘@CLASSNAME/’)
-
-     packages
-          Cell array of package directories (‘+PKGNAME/’)
-
-     Compatibility Note: Octave does not support mdl, slx, and p files;
-     nor does it support package directories.  ‘what’ will always return
-     an empty list for these categories.
-
-     See also: *note which: XREFwhich, *note ls: XREFls, *note exist:
-     XREFexist.
-
-
 File: octave.info,  Node: Expressions,  Next: Evaluation,  Prev: Variables,  Up: Top
 
 8 Expressions
@@ -757,8 +243,8 @@ is considerably faster than
 because Octave does not have to repeatedly resize the intermediate
 result.
 
- -- Function File: IND = sub2ind (DIMS, I, J)
- -- Function File: IND = sub2ind (DIMS, S1, S2, ..., SN)
+ -- : IND = sub2ind (DIMS, I, J)
+ -- : IND = sub2ind (DIMS, S1, S2, ..., SN)
      Convert subscripts to a linear index.
 
      The following example shows how to convert the two-dimensional
@@ -771,7 +257,7 @@ result.
 
      See also: *note ind2sub: XREFind2sub.
 
- -- Function File: [S1, S2, ..., SN] = ind2sub (DIMS, IND)
+ -- : [S1, S2, ..., SN] = ind2sub (DIMS, IND)
      Convert a linear index to subscripts.
 
      The following example shows how to convert the linear index ‘8’ in
@@ -784,8 +270,8 @@ result.
 
      See also: *note sub2ind: XREFsub2ind.
 
- -- Built-in Function: isindex (IND)
- -- Built-in Function: isindex (IND, N)
+ -- : isindex (IND)
+ -- : isindex (IND, N)
      Return true if IND is a valid index.
 
      Valid indices are either positive integers (although possibly of
@@ -799,11 +285,9 @@ result.
      before the checks for valid indices are made.  Unless a string
      contains the NULL character "\0", it will always be a valid index.
 
- -- Built-in Function: VAL = allow_noninteger_range_as_index ()
- -- Built-in Function: OLD_VAL = allow_noninteger_range_as_index
-          (NEW_VAL)
- -- Built-in Function: allow_noninteger_range_as_index (NEW_VAL,
-          "local")
+ -- : VAL = allow_noninteger_range_as_index ()
+ -- : OLD_VAL = allow_noninteger_range_as_index (NEW_VAL)
+ -- : allow_noninteger_range_as_index (NEW_VAL, "local")
      Query or set the internal variable that controls whether
      non-integer ranges are allowed as indices.
 
@@ -956,9 +440,9 @@ the recursion ends.
    The built-in variable ‘max_recursion_depth’ specifies a limit to the
 recursion depth and prevents Octave from recursing infinitely.
 
- -- Built-in Function: VAL = max_recursion_depth ()
- -- Built-in Function: OLD_VAL = max_recursion_depth (NEW_VAL)
- -- Built-in Function: max_recursion_depth (NEW_VAL, "local")
+ -- : VAL = max_recursion_depth ()
+ -- : OLD_VAL = max_recursion_depth (NEW_VAL)
+ -- : max_recursion_depth (NEW_VAL, "local")
      Query or set the internal limit on the number of times a function
      may be called recursively.
 
@@ -1105,14 +589,14 @@ lexer, which usually prefers to break the input into tokens by
 preferring the longest possible match at any given point, it is more
 useful in this case.
 
- -- Built-in Function: ctranspose (X)
+ -- : ctranspose (X)
      Return the complex conjugate transpose of X.
 
      This function and x’ are equivalent.
 
      See also: *note transpose: XREFtranspose.
 
- -- Built-in Function: ldivide (X, Y)
+ -- : ldivide (X, Y)
      Return the element-by-element left division of X and Y.
 
      This function and x .\ y are equivalent.
@@ -1120,12 +604,12 @@ useful in this case.
      See also: *note rdivide: XREFrdivide, *note mldivide: XREFmldivide,
      *note times: XREFtimes, *note plus: XREFplus.
 
- -- Built-in Function: minus (X, Y)
+ -- : minus (X, Y)
      This function and x - y are equivalent.
 
      See also: *note plus: XREFplus, *note uminus: XREFuminus.
 
- -- Built-in Function: mldivide (X, Y)
+ -- : mldivide (X, Y)
      Return the matrix left division of X and Y.
 
      This function and x \ y are equivalent.
@@ -1133,7 +617,7 @@ useful in this case.
      See also: *note mrdivide: XREFmrdivide, *note ldivide: XREFldivide,
      *note rdivide: XREFrdivide.
 
- -- Built-in Function: mpower (X, Y)
+ -- : mpower (X, Y)
      Return the matrix power operation of X raised to the Y power.
 
      This function and x ^ y are equivalent.
@@ -1141,7 +625,7 @@ useful in this case.
      See also: *note power: XREFpower, *note mtimes: XREFmtimes, *note
      plus: XREFplus, *note minus: XREFminus.
 
- -- Built-in Function: mrdivide (X, Y)
+ -- : mrdivide (X, Y)
      Return the matrix right division of X and Y.
 
      This function and x / y are equivalent.
@@ -1149,8 +633,8 @@ useful in this case.
      See also: *note mldivide: XREFmldivide, *note rdivide: XREFrdivide,
      *note plus: XREFplus, *note minus: XREFminus.
 
- -- Built-in Function: mtimes (X, Y)
- -- Built-in Function: mtimes (X1, X2, ...)
+ -- : mtimes (X, Y)
+ -- : mtimes (X1, X2, ...)
      Return the matrix multiplication product of inputs.
 
      This function and x * y are equivalent.  If more arguments are
@@ -1166,8 +650,8 @@ useful in this case.
      XREFmrdivide, *note mldivide: XREFmldivide, *note mpower:
      XREFmpower.
 
- -- Built-in Function: plus (X, Y)
- -- Built-in Function: plus (X1, X2, ...)
+ -- : plus (X, Y)
+ -- : plus (X1, X2, ...)
      This function and x + y are equivalent.
 
      If more arguments are given, the summation is applied cumulatively
@@ -1179,7 +663,7 @@ useful in this case.
 
      See also: *note minus: XREFminus, *note uplus: XREFuplus.
 
- -- Built-in Function: power (X, Y)
+ -- : power (X, Y)
      Return the element-by-element operation of X raised to the Y power.
 
      This function and x .^ y are equivalent.
@@ -1192,7 +676,7 @@ useful in this case.
      *note realsqrt: XREFrealsqrt, *note cbrt: XREFcbrt, *note nthroot:
      XREFnthroot.
 
- -- Built-in Function: rdivide (X, Y)
+ -- : rdivide (X, Y)
      Return the element-by-element right division of X and Y.
 
      This function and x ./ y are equivalent.
@@ -1200,8 +684,8 @@ useful in this case.
      See also: *note ldivide: XREFldivide, *note mrdivide: XREFmrdivide,
      *note times: XREFtimes, *note plus: XREFplus.
 
- -- Built-in Function: times (X, Y)
- -- Built-in Function: times (X1, X2, ...)
+ -- : times (X, Y)
+ -- : times (X1, X2, ...)
      Return the element-by-element multiplication product of inputs.
 
      This function and x .* y are equivalent.  If more arguments are
@@ -1214,19 +698,19 @@ useful in this case.
 
      See also: *note mtimes: XREFmtimes, *note rdivide: XREFrdivide.
 
- -- Built-in Function: transpose (X)
+ -- : transpose (X)
      Return the transpose of X.
 
      This function and x.’ are equivalent.
 
      See also: *note ctranspose: XREFctranspose.
 
- -- Built-in Function: uminus (X)
+ -- : uminus (X)
      This function and - x are equivalent.
 
      See also: *note uplus: XREFuplus, *note minus: XREFminus.
 
- -- Built-in Function: uplus (X)
+ -- : uplus (X)
      This function and + x are equivalent.
 
      See also: *note uminus: XREFuminus, *note plus: XREFplus, *note
@@ -1285,7 +769,7 @@ but is not consistent with MATLAB, which only compares the real parts.
    String comparisons may also be performed with the ‘strcmp’ function,
 not with the comparison operators listed above.  *Note Strings::.
 
- -- Built-in Function: eq (X, Y)
+ -- : eq (X, Y)
      Return true if the two inputs are equal.
 
      This function is equivalent to ‘x == y’.
@@ -1294,43 +778,43 @@ not with the comparison operators listed above.  *Note Strings::.
      XREFle, *note ge: XREFge, *note gt: XREFgt, *note ne: XREFne, *note
      lt: XREFlt.
 
- -- Built-in Function: ge (X, Y)
+ -- : ge (X, Y)
      This function is equivalent to ‘x >= y’.
 
      See also: *note le: XREFle, *note eq: XREFeq, *note gt: XREFgt,
      *note ne: XREFne, *note lt: XREFlt.
 
- -- Built-in Function: gt (X, Y)
+ -- : gt (X, Y)
      This function is equivalent to ‘x > y’.
 
      See also: *note le: XREFle, *note eq: XREFeq, *note ge: XREFge,
      *note ne: XREFne, *note lt: XREFlt.
 
- -- Function File: isequal (X1, X2, ...)
+ -- : isequal (X1, X2, ...)
      Return true if all of X1, X2, ... are equal.
 
      See also: *note isequaln: XREFisequaln.
 
- -- Function File: isequaln (X1, X2, ...)
+ -- : isequaln (X1, X2, ...)
      Return true if all of X1, X2, ... are equal under the additional
      assumption that NaN == NaN (no comparison of NaN placeholders in
      dataset).
 
      See also: *note isequal: XREFisequal.
 
- -- Built-in Function: le (X, Y)
+ -- : le (X, Y)
      This function is equivalent to ‘x <= y’.
 
      See also: *note eq: XREFeq, *note ge: XREFge, *note gt: XREFgt,
      *note ne: XREFne, *note lt: XREFlt.
 
- -- Built-in Function: lt (X, Y)
+ -- : lt (X, Y)
      This function is equivalent to ‘x < y’.
 
      See also: *note le: XREFle, *note eq: XREFeq, *note ge: XREFge,
      *note gt: XREFgt, *note ne: XREFne.
 
- -- Built-in Function: ne (X, Y)
+ -- : ne (X, Y)
      Return true if the two inputs are not equal.
 
      This function is equivalent to ‘x != y’.
@@ -1414,8 +898,8 @@ zero.
    This behavior is necessary for the boolean operators to work as
 described for matrix-valued operands.
 
- -- Built-in Function: Z = and (X, Y)
- -- Built-in Function: Z = and (X1, X2, ...)
+ -- : Z = and (X, Y)
+ -- : Z = and (X1, X2, ...)
      Return the logical AND of X and Y.
 
      This function is equivalent to the operator syntax ‘x & y’.  If
@@ -1428,15 +912,15 @@ described for matrix-valued operands.
 
      See also: *note or: XREFor, *note not: XREFnot, *note xor: XREFxor.
 
- -- Built-in Function: Z = not (X)
+ -- : Z = not (X)
      Return the logical NOT of X.
 
      This function is equivalent to the operator syntax ‘! x’.
 
      See also: *note and: XREFand, *note or: XREFor, *note xor: XREFxor.
 
- -- Built-in Function: Z = or (X, Y)
- -- Built-in Function: Z = or (X1, X2, ...)
+ -- : Z = or (X, Y)
+ -- : Z = or (X1, X2, ...)
      Return the logical OR of X and Y.
 
      This function is equivalent to the operator syntax ‘x | y’.  If
@@ -1531,12 +1015,31 @@ of the ‘&’ and ‘|’ operators in this way is strongly discouraged.
 Instead, you should use the ‘&&’ and ‘||’ operators that always have
 short-circuit behavior.
 
+ -- : VAL = do_braindead_shortcircuit_evaluation ()
+ -- : OLD_VAL = do_braindead_shortcircuit_evaluation (NEW_VAL)
+ -- : do_braindead_shortcircuit_evaluation (NEW_VAL, "local")
+     Query or set the internal variable that controls whether Octave
+     will do short-circuit evaluation of ‘|’ and ‘&’ operators inside
+     the conditions of if or while statements.
+
+     This feature is only provided for compatibility with MATLAB and
+     should not be used unless you are porting old code that relies on
+     this feature.
+
+     To obtain short-circuit behavior for logical expressions in new
+     programs, you should always use the ‘&&’ and ‘||’ operators.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
    Finally, the ternary operator (?:) is not supported in Octave.  If
 short-circuiting is not important, it can be replaced by the ‘ifelse’
 function.
 
- -- Built-in Function: merge (MASK, TVAL, FVAL)
- -- Built-in Function: ifelse (MASK, TVAL, FVAL)
+ -- : merge (MASK, TVAL, FVAL)
+ -- : ifelse (MASK, TVAL, FVAL)
      Merge elements of TRUE_VAL and FALSE_VAL, depending on the value of
      MASK.
 
@@ -1861,8 +1364,8 @@ a file.
 has been computed and stored in a string, which is exactly what the
 ‘eval’ function lets you do.
 
- -- Built-in Function: eval (TRY)
- -- Built-in Function: eval (TRY, CATCH)
+ -- : eval (TRY)
+ -- : eval (TRY, CATCH)
      Parse the string TRY and evaluate it as if it were an Octave
      program.
 
@@ -1891,7 +1394,34 @@ has been computed and stored in a string, which is exactly what the
      techniques have higher performance and don’t introduce the security
      considerations that the evaluation of arbitrary code does.
 
-     See also: *note evalin: XREFevalin.
+     See also: *note evalin: XREFevalin, *note evalc: XREFevalc, *note
+     assignin: XREFassignin, *note feval: XREFfeval.
+
+   The ‘evalc’ function additionally captures any console output
+produced by the evaluated expression.
+
+ -- : S = evalc (TRY)
+ -- : S = evalc (TRY, CATCH)
+     Parse and evaluate the string TRY as if it were an Octave program,
+     while capturing the output into the return variable S.
+
+     If execution fails, evaluate the optional string CATCH.
+
+     This function behaves like ‘eval’, but any output or warning
+     messages which would normally be written to the console are
+     captured and returned in the string S.
+
+     The ‘diary’ is disabled during the execution of this function.
+     When ‘system’ is used, any output produced by external programs is
+     _not_ captured, unless their output is captured by the ‘system’
+     function itself.
+
+          s = evalc ("t = 42"), t
+            ⇒ s = t =  42
+
+            ⇒ t =  42
+
+     See also: *note eval: XREFeval, *note diary: XREFdiary.
 
 * Menu:
 
@@ -1948,7 +1478,7 @@ function really was a function, etc.  *Note Predicates for Numeric
 Objects::, for a list of predicates for numeric objects, and *note
 Status of Variables::, for a description of the ‘exist’ function.
 
- -- Built-in Function: feval (NAME, ...)
+ -- : feval (NAME, ...)
      Evaluate the function named NAME.
 
      Any arguments after the first are passed as inputs to the named
@@ -1979,8 +1509,8 @@ Status of Variables::, for a description of the ‘exist’ function.
    A similar function ‘run’ exists for calling user script files, that
 are not necessarily on the user path
 
- -- Command: run SCRIPT
- -- Function File: run ("SCRIPT")
+ -- : run SCRIPT
+ -- : run ("SCRIPT")
      Run SCRIPT in the current workspace.
 
      Scripts which reside in directories specified in Octave’s load
@@ -1988,7 +1518,7 @@ are not necessarily on the user path
      typing their name.  For scripts not located on the load path, use
      ‘run’.
 
-     The file name SCRIPT can be a bare, fully qualified, or relative
+     The filename SCRIPT can be a bare, fully qualified, or relative
      filename and with or without a file extension.  If no extension is
      specified, Octave will first search for a script with the ‘".m"’
      extension before falling back to the script name without an
@@ -2071,14 +1601,14 @@ the given pattern.  Other examples such as ‘save’ and ‘load’ are written
 in C++ where all Octave variables are in the ‘caller’ context and
 ‘evalin’ is not needed.
 
- -- Built-in Function: evalin (CONTEXT, TRY)
- -- Built-in Function: evalin (CONTEXT, TRY, CATCH)
+ -- : evalin (CONTEXT, TRY)
+ -- : evalin (CONTEXT, TRY, CATCH)
      Like ‘eval’, except that the expressions are evaluated in the
      context CONTEXT, which may be either "caller" or "base".
 
      See also: *note eval: XREFeval, *note assignin: XREFassignin.
 
- -- Built-in Function: assignin (CONTEXT, VARNAME, VALUE)
+ -- : assignin (CONTEXT, VARNAME, VALUE)
      Assign VALUE to VARNAME in context CONTEXT, which may be either
      "base" or "caller".
 
@@ -2532,8 +2062,8 @@ multi-dimensional arrays.  For example:
 
 In the above case, the multi-dimensional matrix C is reshaped to a
 two-dimensional matrix as ‘reshape (c, rows (c), prod (size
-(c)(2:end)))’ and then the same behavior as a loop over a two
-dimensional matrix is produced.
+(c)(2:end)))’ and then the same behavior as a loop over a
+two-dimensional matrix is produced.
 
    Although it is possible to rewrite all ‘for’ loops as ‘while’ loops,
 the Octave language has both statements because often a ‘for’ loop is
@@ -3000,17 +2530,17 @@ use a variable that has not been given a value will result in an error.
 To avoid such problems and to provide useful messages, we check for both
 possibilities and issue our own error message.
 
- -- Built-in Function: nargin ()
- -- Built-in Function: nargin (FCN)
+ -- : nargin ()
+ -- : nargin (FCN)
      Report the number of input arguments to a function.
 
      Called from within a function, return the number of arguments
      passed to the function.  At the top level, return the number of
      command line arguments passed to Octave.
 
-     If called with the optional argument FCN—a function name or handle—
-     return the declared number of arguments that the function can
-     accept.
+     If called with the optional argument FCN—a function name or
+     handle—return the declared number of arguments that the function
+     can accept.
 
      If the last argument to FCN is VARARGIN the returned value is
      negative.  For example, the function ‘union’ for sets is declared
@@ -3023,24 +2553,28 @@ possibilities and issue our own error message.
           nargin ("union")
           ⇒ -3
 
-     Programming Note: ‘nargin’ does not work on built-in functions.
+     Programming Note: ‘nargin’ does not work on compiled functions
+     (‘.oct’ files) such as built-in or dynamically loaded functions.
 
      See also: *note nargout: XREFnargout, *note narginchk:
      XREFnarginchk, *note varargin: XREFvarargin, *note inputname:
      XREFinputname.
 
- -- Function File: inputname (N)
+ -- : inputname (N)
      Return the name of the N-th argument to the calling function.
 
      If the argument is not a simple variable name, return an empty
-     string.  ‘inputname’ may only be used within a function body, not
-     at the command line.
+     string.  As an example, a reference to a field in a structure such
+     as ‘s.field’ is not a simple name and will return "".
+
+     ‘inputname’ is only useful within a function.  When used at the
+     command line it always returns an empty string.
 
      See also: *note nargin: XREFnargin, *note nthargout: XREFnthargout.
 
- -- Built-in Function: VAL = silent_functions ()
- -- Built-in Function: OLD_VAL = silent_functions (NEW_VAL)
- -- Built-in Function: silent_functions (NEW_VAL, "local")
+ -- : VAL = silent_functions ()
+ -- : OLD_VAL = silent_functions (NEW_VAL)
+ -- : silent_functions (NEW_VAL, "local")
      Query or set the internal variable that controls whether internal
      output from a function is suppressed.
 
@@ -3098,8 +2632,8 @@ values distinct names.
 the return values or several at once in a cell array.  *Note Cell Array
 Objects::.
 
- -- Function File: nthargout (N, FUNC, ...)
- -- Function File: nthargout (N, NTOT, FUNC, ...)
+ -- : nthargout (N, FUNC, ...)
+ -- : nthargout (N, NTOT, FUNC, ...)
      Return the Nth output argument of the function specified by the
      function handle or string FUNC.
 
@@ -3168,8 +2702,8 @@ produces:
 
 along with a warning.
 
- -- Built-in Function: nargout ()
- -- Built-in Function: nargout (FCN)
+ -- : nargout ()
+ -- : nargout (FCN)
      Report the number of output arguments from a function.
 
      Called from within a function, return the number of values the
@@ -3195,7 +2729,7 @@ along with a warning.
 
      In the second usage,
 
-          nargout (@histc) % or nargout ("histc")
+          nargout (@histc) \% or nargout ("histc")
 
      will return 2, because ‘histc’ has two outputs, whereas
 
@@ -3223,7 +2757,7 @@ correct way to call the function whenever the number of inputs is wrong.
    For compatibility with MATLAB, ‘narginchk’ and ‘nargoutchk’ are
 available which provide similar error checking.
 
- -- Function File: narginchk (MINARGS, MAXARGS)
+ -- : narginchk (MINARGS, MAXARGS)
      Check for correct number of input arguments.
 
      Generate an error message if the number of arguments in the calling
@@ -3239,12 +2773,10 @@ available which provide similar error checking.
      See also: *note nargoutchk: XREFnargoutchk, *note error: XREFerror,
      *note nargout: XREFnargout, *note nargin: XREFnargin.
 
- -- Function File: nargoutchk (MINARGS, MAXARGS)
- -- Function File: MSGSTR = nargoutchk (MINARGS, MAXARGS, NARGS)
- -- Function File: MSGSTR = nargoutchk (MINARGS, MAXARGS, NARGS,
-          "string")
- -- Function File: MSGSTRUCT = nargoutchk (MINARGS, MAXARGS, NARGS,
-          "struct")
+ -- : nargoutchk (MINARGS, MAXARGS)
+ -- : MSGSTR = nargoutchk (MINARGS, MAXARGS, NARGS)
+ -- : MSGSTR = nargoutchk (MINARGS, MAXARGS, NARGS, "string")
+ -- : MSGSTRUCT = nargoutchk (MINARGS, MAXARGS, NARGS, "struct")
      Check for correct number of output arguments.
 
      In the first form, return an error if the number of arguments is
@@ -3269,11 +2801,10 @@ available which provide similar error checking.
 properties.  ‘validatestring’ is used for string arguments and
 ‘validateattributes’ for numeric arguments.
 
- -- Function File: VALIDSTR = validatestring (STR, STRARRAY)
- -- Function File: VALIDSTR = validatestring (STR, STRARRAY, FUNCNAME)
- -- Function File: VALIDSTR = validatestring (STR, STRARRAY, FUNCNAME,
-          VARNAME)
- -- Function File: VALIDSTR = validatestring (..., POSITION)
+ -- : VALIDSTR = validatestring (STR, STRARRAY)
+ -- : VALIDSTR = validatestring (STR, STRARRAY, FUNCNAME)
+ -- : VALIDSTR = validatestring (STR, STRARRAY, FUNCNAME, VARNAME)
+ -- : VALIDSTR = validatestring (..., POSITION)
      Verify that STR is an element, or substring of an element, in
      STRARRAY.
 
@@ -3304,14 +2835,12 @@ properties.  ‘validatestring’ is used for string arguments and
      *note validateattributes: XREFvalidateattributes, *note
      inputParser: XREFinputParser.
 
- -- Function File: validateattributes (A, CLASSES, ATTRIBUTES)
- -- Function File: validateattributes (A, CLASSES, ATTRIBUTES, ARG_IDX)
- -- Function File: validateattributes (A, CLASSES, ATTRIBUTES,
-          FUNC_NAME)
- -- Function File: validateattributes (A, CLASSES, ATTRIBUTES,
-          FUNC_NAME, ARG_NAME)
- -- Function File: validateattributes (A, CLASSES, ATTRIBUTES,
-          FUNC_NAME, ARG_NAME, ARG_IDX)
+ -- : validateattributes (A, CLASSES, ATTRIBUTES)
+ -- : validateattributes (A, CLASSES, ATTRIBUTES, ARG_IDX)
+ -- : validateattributes (A, CLASSES, ATTRIBUTES, FUNC_NAME)
+ -- : validateattributes (A, CLASSES, ATTRIBUTES, FUNC_NAME, ARG_NAME)
+ -- : validateattributes (A, CLASSES, ATTRIBUTES, FUNC_NAME, ARG_NAME,
+          ARG_IDX)
      Check validity of input argument.
 
      Confirms that the argument A is valid by belonging to one of
@@ -3371,6 +2900,9 @@ properties.  ‘validatestring’ is used for string arguments and
 
      "decreasing"
           No value is NAN, and each is less than the preceding one.
+
+     "diag"
+          Value is a diagonal matrix.
 
      "even"
           All values are even numbers.
@@ -3457,7 +2989,7 @@ properties.  ‘validatestring’ is used for string arguments and
 class ‘inputParser’ which can perform extremely complex input checking
 for functions.
 
- -- Function File: P = inputParser ()
+ -- : P = inputParser ()
      Create object P of the inputParser class.
 
      This class is designed to allow easy parsing of function arguments.
@@ -3467,7 +2999,7 @@ for functions.
 
        2. optional (see ‘addOptional’);
 
-       3. named (see ‘addParamValue’);
+       3. named (see ‘addParameter’);
 
        4. switch (see ‘addSwitch’).
 
@@ -3475,41 +3007,41 @@ for functions.
      arguments can be parsed with the ‘parse’ method and the parsing
      results accessed with the ‘Results’ accessor.
 
- -- Accessor method: inputParser.Parameters
+ -- : inputParser.Parameters
      Return list of parameter names already defined.
 
- -- Accessor method: inputParser.Results
+ -- : inputParser.Results
      Return structure with argument names as fieldnames and
      corresponding values.
 
- -- Accessor method: inputParser.Unmatched
+ -- : inputParser.Unmatched
      Return structure similar to ‘Results’, but for unmatched
      parameters.  See the ‘KeepUnmatched’ property.
 
- -- Accessor method: inputParser.UsingDefaults
+ -- : inputParser.UsingDefaults
      Return cell array with the names of arguments that are using
      default values.
 
- -- Class property: inputParser.CaseSensitive = BOOLEAN
+ -- : inputParser.CaseSensitive = BOOLEAN
      Set whether matching of argument names should be case sensitive.
      Defaults to false.
 
- -- Class property: inputParser.FunctionName = NAME
+ -- : inputParser.FunctionName = NAME
      Set function name to be used in error messages; Defaults to empty
      string.
 
- -- Class property: inputParser.KeepUnmatched = BOOLEAN
+ -- : inputParser.KeepUnmatched = BOOLEAN
      Set whether an error should be given for non-defined arguments.
      Defaults to false.  If set to true, the extra arguments can be
      accessed through ‘Unmatched’ after the ‘parse’ method.  Note that
-     since ‘Switch’ and ‘ParamValue’ arguments can be mixed, it is not
+     since ‘Switch’ and ‘Parameter’ arguments can be mixed, it is not
      possible to know the unmatched type.  If argument is found
-     unmatched it is assumed to be of the ‘ParamValue’ type and it is
+     unmatched it is assumed to be of the ‘Parameter’ type and it is
      expected to be followed by a value.
 
- -- Class property: inputParser.StructExpand = BOOLEAN
+ -- : inputParser.StructExpand = BOOLEAN
      Set whether a structure can be passed to the function instead of
-     parameter/value pairs.  Defaults to true.  Not implemented yet.
+     parameter/value pairs.  Defaults to true.
 
      The following example shows how to use this class:
 
@@ -3523,11 +3055,11 @@ for functions.
             val_mat = @(x) isvector (x) && all (x <= 1) && all (x >= 0);
             p.addOptional ("mat", [0 0], val_mat);
 
-            ## create two arguments of type "ParamValue"
+            ## create two arguments of type "Parameter"
             val_type = @(x) any (strcmp (x, {"linear", "quadratic"}));
-            p.addParamValue ("type", "linear", val_type);
+            p.addParameter ("type", "linear", val_type);
             val_verb = @(x) any (strcmp (x, {"low", "medium", "high"}));
-            p.addParamValue ("tolerance", "low", val_verb);
+            p.addParameter ("tolerance", "low", val_verb);
 
             ## create a switch type of argument
             p.addSwitch ("verbose");
@@ -3546,7 +3078,7 @@ for functions.
           check ("mech", "~/dev", [0 1 0 0], "type", "linear");  # valid
 
           ## following is also valid.  Note how the Switch argument type can
-          ## be mixed into or before the ParamValue argument type (but it
+          ## be mixed into or before the Parameter argument type (but it
           ## must still appear after any Optional argument).
           check ("mech", "~/dev", [0 1 0 0], "verbose", "tolerance", "high");
 
@@ -3557,14 +3089,14 @@ for functions.
      _Note 1_: A function can have any mixture of the four API types but
      they must appear in a specific order.  ‘Required’ arguments must be
      first and can be followed by any ‘Optional’ arguments.  Only the
-     ‘ParamValue’ and ‘Switch’ arguments may be mixed together and they
+     ‘Parameter’ and ‘Switch’ arguments may be mixed together and they
      must appear at the end.
 
-     _Note 2_: If both ‘Optional’ and ‘ParamValue’ arguments are mixed
-     in a function API then once a string Optional argument fails to
+     _Note 2_: If both ‘Optional’ and ‘Parameter’ arguments are mixed in
+     a function API then once a string Optional argument fails to
      validate it will be considered the end of the ‘Optional’ arguments.
-     The remaining arguments will be compared against any ‘ParamValue’
-     or ‘Switch’ arguments.
+     The remaining arguments will be compared against any ‘Parameter’ or
+     ‘Switch’ arguments.
 
      See also: *note nargin: XREFnargin, *note validateattributes:
      XREFvalidateattributes, *note validatestring: XREFvalidatestring,
@@ -3633,9 +3165,8 @@ This function produces output like this
           ⊣ Input argument 2: two
           ⊣ Input argument 3:  3
 
- -- Function File: [REG, PROP] = parseparams (PARAMS)
- -- Function File: [REG, VAR1, ...] = parseparams (PARAMS, NAME1,
-          DEFAULT1, ...)
+ -- : [REG, PROP] = parseparams (PARAMS)
+ -- : [REG, VAR1, ...] = parseparams (PARAMS, NAME1, DEFAULT1, ...)
      Return in REG the cell elements of PARAM up to the first string
      element and in PROP all remaining elements beginning with the first
      string element.
@@ -3701,7 +3232,7 @@ whether the output argument is wanted.  For example:
        ...
      endfunction
 
- -- Built-in Function: isargout (K)
+ -- : isargout (K)
      Within a function, return a logical value indicating whether the
      argument K will be assigned to a variable on output.
 
@@ -3751,8 +3282,8 @@ When called this function returns values like this
 the input (output) parameter list, then it is not special, and is
 handled the same as any other parameter name.
 
- -- Function File: [R1, R2, ..., RN] = deal (A)
- -- Function File: [R1, R2, ..., RN] = deal (A1, A2, ..., AN)
+ -- : [R1, R2, ..., RN] = deal (A)
+ -- : [R1, R2, ..., RN] = deal (A1, A2, ..., AN)
 
      Copy the input parameters into the corresponding output parameters.
 
@@ -3931,9 +3462,10 @@ are running Octave, you can improve performance by calling
 time stamps for all function files.  Passing "system" to this function
 resets the default behavior.
 
- -- Command: edit NAME
- -- Command: edit FIELD VALUE
- -- Command: VALUE = edit get FIELD
+ -- : edit NAME
+ -- : edit FIELD VALUE
+ -- : VALUE = edit ("get", FIELD)
+ -- : VALUE = edit ("get", "all")
      Edit the named function, or change editor settings.
 
      If ‘edit’ is called with the name of a file or function as its
@@ -3969,12 +3501,13 @@ resets the default behavior.
           will be available.
 
      If ‘edit’ is called with FIELD and VALUE variables, the value of
-     the control field FIELD will be set to VALUE.  If an output
-     argument is requested and the first input argument is ‘get’ then
-     ‘edit’ will return the value of the control field FIELD.  If the
-     control field does not exist, edit will return a structure
-     containing all fields and values.  Thus, ‘edit get all’ returns a
-     complete control structure.
+     the control field FIELD will be set to VALUE.
+
+     If an output argument is requested and the first input argument is
+     ‘get’ then ‘edit’ will return the value of the control field FIELD.
+     If the control field does not exist, edit will return a structure
+     containing all fields and values.  Thus, ‘edit ("get", "all")’
+     returns a complete control structure.
 
      The following control fields are used:
 
@@ -4009,7 +3542,7 @@ resets the default behavior.
                Your own default copyright and license.
 
           Unless you specify ‘pd’, edit will prepend the copyright
-          statement with "Copyright (C) yyyy Function Author".
+          statement with "Copyright (C) YYYY Author".
 
      ‘mode’
           This value determines whether the editor should be started in
@@ -4023,21 +3556,21 @@ resets the default behavior.
           regard to whether they are modifiable or not.  The default is
           ‘false’.
 
- -- Built-in Function: mfilename ()
- -- Built-in Function: mfilename ("fullpath")
- -- Built-in Function: mfilename ("fullpathext")
+ -- : mfilename ()
+ -- : mfilename ("fullpath")
+ -- : mfilename ("fullpathext")
      Return the name of the currently executing file.
 
      When called from outside an m-file return the empty string.
 
      Given the argument "fullpath", include the directory part of the
-     file name, but not the extension.
+     filename, but not the extension.
 
      Given the argument "fullpathext", include the directory part of the
-     file name and the extension.
+     filename and the extension.
 
- -- Built-in Function: VAL = ignore_function_time_stamp ()
- -- Built-in Function: OLD_VAL = ignore_function_time_stamp (NEW_VAL)
+ -- : VAL = ignore_function_time_stamp ()
+ -- : OLD_VAL = ignore_function_time_stamp (NEW_VAL)
      Query or set the internal variable that controls whether Octave
      checks the time stamp on files each time it looks up functions
      defined in function files.
@@ -4090,8 +3623,8 @@ using ‘addpath’ and ‘rmpath’.  As an example, the following code adds
 
 After this the directory ‘~/Octave’ will be searched for functions.
 
- -- Built-in Function: addpath (DIR1, ...)
- -- Built-in Function: addpath (DIR1, ..., OPTION)
+ -- : addpath (DIR1, ...)
+ -- : addpath (DIR1, ..., OPTION)
      Add named directories to the function search path.
 
      If OPTION is "-begin" or 0 (the default), prepend the directory
@@ -4109,14 +3642,14 @@ After this the directory ‘~/Octave’ will be searched for functions.
      genpath: XREFgenpath, *note pathdef: XREFpathdef, *note savepath:
      XREFsavepath, *note pathsep: XREFpathsep.
 
- -- Built-in Function: genpath (DIR)
- -- Built-in Function: genpath (DIR, SKIP, ...)
+ -- : genpath (DIR)
+ -- : genpath (DIR, SKIP, ...)
      Return a path constructed from DIR and all its subdirectories.
 
      If additional string parameters are given, the resulting path will
      exclude directories with those names.
 
- -- Built-in Function: rmpath (DIR1, ...)
+ -- : rmpath (DIR1, ...)
      Remove DIR1, ... from the current function search path.
 
      In addition to accepting individual directory arguments, lists of
@@ -4129,9 +3662,9 @@ After this the directory ‘~/Octave’ will be searched for functions.
      genpath: XREFgenpath, *note pathdef: XREFpathdef, *note savepath:
      XREFsavepath, *note pathsep: XREFpathsep.
 
- -- Function File: savepath ()
- -- Function File: savepath (FILE)
- -- Function File: STATUS = savepath (...)
+ -- : savepath ()
+ -- : savepath (FILE)
+ -- : STATUS = savepath (...)
      Save the unique portion of the current function search path that is
      not set during Octave’s initialization process to FILE.
 
@@ -4154,7 +3687,9 @@ After this the directory ‘~/Octave’ will be searched for functions.
      rmpath: XREFrmpath, *note genpath: XREFgenpath, *note pathdef:
      XREFpathdef.
 
- -- Built-in Function: path (...)
+ -- : path ()
+ -- : STR = path ()
+ -- : STR = path (PATH1, ...)
      Modify or display Octave’s load path.
 
      If NARGIN and NARGOUT are zero, display the elements of Octave’s
@@ -4173,7 +3708,7 @@ After this the directory ‘~/Octave’ will be searched for functions.
      *note genpath: XREFgenpath, *note pathdef: XREFpathdef, *note
      savepath: XREFsavepath, *note pathsep: XREFpathsep.
 
- -- Function File: VAL = pathdef ()
+ -- : VAL = pathdef ()
      Return the default path for Octave.
 
      The path information is extracted from one of four sources.  The
@@ -4191,17 +3726,17 @@ After this the directory ‘~/Octave’ will be searched for functions.
      rmpath: XREFrmpath, *note genpath: XREFgenpath, *note savepath:
      XREFsavepath.
 
- -- Built-in Function: VAL = pathsep ()
- -- Built-in Function: OLD_VAL = pathsep (NEW_VAL)
+ -- : VAL = pathsep ()
+ -- : OLD_VAL = pathsep (NEW_VAL)
      Query or set the character used to separate directories in a path.
 
      See also: *note filesep: XREFfilesep.
 
- -- Built-in Function: rehash ()
+ -- : rehash ()
      Reinitialize Octave’s load path directory cache.
 
- -- Built-in Function: file_in_loadpath (FILE)
- -- Built-in Function: file_in_loadpath (FILE, "all")
+ -- : file_in_loadpath (FILE)
+ -- : file_in_loadpath (FILE, "all")
 
      Return the absolute name of FILE if it can be found in the list of
      directories specified by ‘path’.
@@ -4219,7 +3754,7 @@ After this the directory ‘~/Octave’ will be searched for functions.
      See also: *note file_in_path: XREFfile_in_path, *note
      dir_in_loadpath: XREFdir_in_loadpath, *note path: XREFpath.
 
- -- Built-in Function: restoredefaultpath (...)
+ -- : restoredefaultpath (...)
      Restore Octave’s path to its initial state at startup.
 
      See also: *note path: XREFpath, *note addpath: XREFaddpath, *note
@@ -4227,7 +3762,7 @@ After this the directory ‘~/Octave’ will be searched for functions.
      XREFpathdef, *note savepath: XREFsavepath, *note pathsep:
      XREFpathsep.
 
- -- Built-in Function: command_line_path (...)
+ -- : command_line_path (...)
      Return the command line path variable.
 
      See also: *note path: XREFpath, *note addpath: XREFaddpath, *note
@@ -4235,8 +3770,8 @@ After this the directory ‘~/Octave’ will be searched for functions.
      XREFpathdef, *note savepath: XREFsavepath, *note pathsep:
      XREFpathsep.
 
- -- Built-in Function: dir_in_loadpath (DIR)
- -- Built-in Function: dir_in_loadpath (DIR, "all")
+ -- : dir_in_loadpath (DIR)
+ -- : dir_in_loadpath (DIR, "all")
      Return the full name of the path element matching DIR.
 
      The match is performed at the end of each path element.  For
@@ -4275,6 +3810,21 @@ same function file.  For example, a file ‘f.m’ containing
 defines a main function ‘f’ and two subfunctions.  The subfunctions ‘g’
 and ‘h’ may only be called from the main function ‘f’ or from the other
 subfunctions, but not from outside the file ‘f.m’.
+
+ -- : localfunctions ()
+     Return a list of all local functions, i.e., subfunctions, within
+     the current file.
+
+     The return value is a column cell array of function handles to all
+     local functions accessible from the function from which
+     ‘localfunctions’ is called.  Nested functions are _not_ included in
+     the list.
+
+     If the call is from the command line, an anonymous function, or a
+     script, the return value is an empty cell array.
+
+     Compatibility Note: Subfunctions which contain nested functions are
+     not included in the list.  This is a known issue.
 
 
 File: octave.info,  Node: Private Functions,  Next: Nested Functions,  Prev: Subfunctions,  Up: Function Files
@@ -4445,7 +3995,7 @@ programming (*note Function Overloading::).  Occasionally, however, one
 needs to undo user overloading and call the default function associated
 with a specific type.  The ‘builtin’ function exists for this purpose.
 
- -- Built-in Function: [...] = builtin (F, ...)
+ -- : [...] = builtin (F, ...)
      Call the base function F even if F is overloaded to another
      function for the given type signature.
 
@@ -4478,15 +4028,15 @@ space used by Octave.  Instead Octave supplies the ‘autoload’ function,
 that permits the user to define in which file a certain function will be
 found.
 
- -- Built-in Function: AUTOLOAD_MAP = autoload ()
- -- Built-in Function: autoload (FUNCTION, FILE)
- -- Built-in Function: autoload (..., "remove")
+ -- : AUTOLOAD_MAP = autoload ()
+ -- : autoload (FUNCTION, FILE)
+ -- : autoload (..., "remove")
      Define FUNCTION to autoload from FILE.
 
-     The second argument, FILE, should be an absolute file name or a
-     file name in the same directory as the function or script from
-     which the autoload command was run.  FILE _should not_ depend on
-     the Octave load path.
+     The second argument, FILE, should be an absolute filename or a file
+     name in the same directory as the function or script from which the
+     autoload command was run.  FILE _should not_ depend on the Octave
+     load path.
 
      Normally, calls to ‘autoload’ appear in PKG_ADD script files that
      are evaluated when a directory is added to Octave’s load path.  To
@@ -4561,14 +4111,14 @@ removed from memory, as the following example shows:
 having effect in Octave, though a similar effect can be had with the
 ‘ignore_function_time_stamp’ function.
 
- -- Built-in Function: mlock ()
+ -- : mlock ()
      Lock the current function into memory so that it can’t be cleared.
 
      See also: *note munlock: XREFmunlock, *note mislocked:
      XREFmislocked, *note persistent: XREFpersistent.
 
- -- Built-in Function: munlock ()
- -- Built-in Function: munlock (FCN)
+ -- : munlock ()
+ -- : munlock (FCN)
      Unlock the named function FCN.
 
      If no function is named then unlock the current function.
@@ -4576,8 +4126,8 @@ having effect in Octave, though a similar effect can be had with the
      See also: *note mlock: XREFmlock, *note mislocked: XREFmislocked,
      *note persistent: XREFpersistent.
 
- -- Built-in Function: mislocked ()
- -- Built-in Function: mislocked (FCN)
+ -- : mislocked ()
+ -- : mislocked (FCN)
      Return true if the named function FCN is locked.
 
      If no function is named then return true if the current function is
@@ -4713,11 +4263,17 @@ function is evaluated).
 have the name ‘FILE.m’, you can use the function ‘source’ to execute
 commands from any file.
 
- -- Built-in Function: source (FILE)
+ -- : source (FILE)
+ -- : source (FILE, CONTEXT)
      Parse and execute the contents of FILE.
 
-     This is equivalent to executing commands from a script file, but
-     without requiring the file to be named ‘FILE.m’.
+     Without specifying CONTEXT, this is equivalent to executing
+     commands from a script file, but without requiring the file to be
+     named ‘FILE.m’ or to be on the execution path.
+
+     Instead of the current context, the script may be executed in
+     either the context of the function that called the present function
+     ("caller"), or the top-level context ("base").
 
      See also: *note run: XREFrun.
 
@@ -4774,13 +4330,13 @@ list.  If there are no arguments, you must use an empty argument list
      f (pi/4)
          ⇒ 0.70711
 
- -- Built-in Function: is_function_handle (X)
+ -- : is_function_handle (X)
      Return true if X is a function handle.
 
      See also: *note isa: XREFisa, *note typeinfo: XREFtypeinfo, *note
      class: XREFclass, *note functions: XREFfunctions.
 
- -- Built-in Function: S = functions (FCN_HANDLE)
+ -- : S = functions (FCN_HANDLE)
      Return a structure containing information about the function handle
      FCN_HANDLE.
 
@@ -4819,23 +4375,19 @@ list.  If there are no arguments, you must use an empty argument list
      It’s behavior may change in the future and programs should not
      depend on a particular output.
 
- -- Built-in Function: func2str (FCN_HANDLE)
+ -- : func2str (FCN_HANDLE)
      Return a string containing the name of the function referenced by
      the function handle FCN_HANDLE.
 
      See also: *note str2func: XREFstr2func, *note functions:
      XREFfunctions.
 
- -- Built-in Function: str2func (FCN_NAME)
- -- Built-in Function: str2func (FCN_NAME, "global")
+ -- : str2func (FCN_NAME)
+ -- : str2func (FCN_NAME, "global")
      Return a function handle constructed from the string FCN_NAME.
 
      If the optional "global" argument is passed, locally visible
      functions are ignored in the lookup.
-
-     Note: ‘str2func’ does not currently accept strings which define
-     anonymous functions (those which begin with ‘@’).  Use ‘eval (STR)’
-     as a replacement.
 
      See also: *note func2str: XREFfunc2str, *note inline: XREFinline.
 
@@ -4914,9 +4466,9 @@ functions.  At some point in the future support will be dropped and
 eventually Octave will follow MATLAB and also remove inline functions.
 Use anonymous functions in all new code.
 
- -- Built-in Function: inline (STR)
- -- Built-in Function: inline (STR, ARG1, ...)
- -- Built-in Function: inline (STR, N)
+ -- : inline (STR)
+ -- : inline (STR, ARG1, ...)
+ -- : inline (STR, N)
      Create an inline function from the character string STR.
 
      If called with a single argument, the arguments of the generated
@@ -4942,14 +4494,14 @@ Use anonymous functions in all new code.
      See also: *note argnames: XREFargnames, *note formula: XREFformula,
      *note vectorize: XREFvectorize, *note str2func: XREFstr2func.
 
- -- Built-in Function: argnames (FUN)
+ -- : argnames (FUN)
      Return a cell array of character strings containing the names of
      the arguments of the inline function FUN.
 
      See also: *note inline: XREFinline, *note formula: XREFformula,
      *note vectorize: XREFvectorize.
 
- -- Built-in Function: formula (FUN)
+ -- : formula (FUN)
      Return a character string representing the inline function FUN.
 
      Note that ‘char (FUN)’ is equivalent to ‘formula (FUN)’.
@@ -4957,7 +4509,7 @@ Use anonymous functions in all new code.
      See also: *note char: XREFchar, *note argnames: XREFargnames, *note
      inline: XREFinline, *note vectorize: XREFvectorize.
 
- -- Function File: VARS = symvar (STR)
+ -- : VARS = symvar (STR)
      Identify the symbolic variable names in the string STR.
 
      Common constant names such as ‘i’, ‘j’, ‘pi’, ‘Inf’ and Octave
@@ -5179,8 +4731,17 @@ function ‘f’ is called without any input arguments.
 returns to the Octave prompt.  This means that no code following a call
 to ‘error’ will be executed.
 
- -- Built-in Function: error (TEMPLATE, ...)
- -- Built-in Function: error (ID, TEMPLATE, ...)
+   It is also possible to assign an identification string to an error.
+If an error has such an ID the user can catch this error as will be
+described in the next section.  To assign an ID to an error, simply call
+‘error’ with two string arguments, where the first is the identification
+string, and the second is the actual error.  Note that error IDs are in
+the format "NAMESPACE:ERROR-NAME". The namespace "Octave" is used for
+Octave’s own errors.  Any other string is available as a namespace for
+user’s own errors.
+
+ -- : error (TEMPLATE, ...)
+ -- : error (ID, TEMPLATE, ...)
      Display an error message and stop m-file execution.
 
      Format the optional arguments under the control of the template
@@ -5260,7 +4821,7 @@ in Texinfo, the error message contains the entire help message.
    Consider the following function.
 
      ## -*- texinfo -*-
-     ## @deftypefn {Function File} f (@var{arg1})
+     ## @deftypefn {} f (@var{arg1})
      ## Function help text goes here...
      ## @end deftypefn
      function f (arg1)
@@ -5276,19 +4837,19 @@ error.
 
      ⊣  error: Invalid call to f.  Correct usage is:
      ⊣
-     ⊣   -- Function File: f (ARG1)
+     ⊣   -- f (ARG1)
      ⊣
      ⊣
      ⊣  Additional help for built-in functions and operators is
      ⊣  available in the online version of the manual.  Use the command
-     ⊣  `doc <topic>' to search the manual index.
+     ⊣  'doc <topic>' to search the manual index.
      ⊣
      ⊣  Help and information about Octave is also available on the WWW
      ⊣  at http://www.octave.org and via the help@octave.org
      ⊣  mailing list.
 
- -- Function File: print_usage ()
- -- Function File: print_usage (NAME)
+ -- : print_usage ()
+ -- : print_usage (NAME)
      Print the usage message for the function NAME.
 
      When called with no input arguments the ‘print_usage’ function
@@ -5296,7 +4857,7 @@ error.
 
      See also: *note help: XREFhelp.
 
- -- Function File: beep ()
+ -- : beep ()
      Produce a beep from the speaker (or visual bell).
 
      This function sends the alarm character "\a" to the terminal.
@@ -5306,9 +4867,9 @@ error.
      See also: *note puts: XREFputs, *note fputs: XREFfputs, *note
      printf: XREFprintf, *note fprintf: XREFfprintf.
 
- -- Built-in Function: VAL = beep_on_error ()
- -- Built-in Function: OLD_VAL = beep_on_error (NEW_VAL)
- -- Built-in Function: beep_on_error (NEW_VAL, "local")
+ -- : VAL = beep_on_error ()
+ -- : OLD_VAL = beep_on_error (NEW_VAL)
+ -- : beep_on_error (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will try to ring the terminal bell before printing an error
      message.
@@ -5368,9 +4929,9 @@ example below showing how to redirect an error as a warning:
        ...
      end_try_catch
 
- -- Built-in Function: LASTERR = lasterror ()
- -- Built-in Function: lasterror (ERR)
- -- Built-in Function: lasterror ("reset")
+ -- : LASTERR = lasterror ()
+ -- : lasterror (ERR)
+ -- : lasterror ("reset")
      Query or set the last error message structure.
 
      When called without arguments, return a structure containing the
@@ -5411,9 +4972,9 @@ example below showing how to redirect an error as a warning:
      See also: *note lasterr: XREFlasterr, *note error: XREFerror, *note
      lastwarn: XREFlastwarn.
 
- -- Built-in Function: [MSG, MSGID] = lasterr ()
- -- Built-in Function: lasterr (MSG)
- -- Built-in Function: lasterr (MSG, MSGID)
+ -- : [MSG, MSGID] = lasterr ()
+ -- : lasterr (MSG)
+ -- : lasterr (MSG, MSGID)
      Query or set the last error message.
 
      When called without input arguments, return the last error message
@@ -5425,15 +4986,6 @@ example below showing how to redirect an error as a warning:
 
      See also: *note lasterror: XREFlasterror, *note error: XREFerror,
      *note lastwarn: XREFlastwarn.
-
-   It is also possible to assign an identification string to an error.
-If an error has such an ID the user can catch this error as will be
-shown in the next example.  To assign an ID to an error, simply call
-‘error’ with two string arguments, where the first is the identification
-string, and the second is the actual error.  Note that error IDs are in
-the format "NAMESPACE:ERROR-NAME". The namespace "Octave" is used for
-Octave’s own errors.  Any other string is available as a namespace for
-user’s own errors.
 
    The next example counts indexing errors.  The errors are caught using
 the field identifier of the structure returned by the function
@@ -5499,7 +5051,7 @@ occurs.
        end_try_catch
      endfor
 
- -- Built-in Function: rethrow (ERR)
+ -- : rethrow (ERR)
      Reissue a previous error as defined by ERR.
 
      ERR is a structure that must contain at least the "message" and
@@ -5510,9 +5062,9 @@ occurs.
      See also: *note lasterror: XREFlasterror, *note lasterr:
      XREFlasterr, *note error: XREFerror.
 
- -- Built-in Function: ERR = errno ()
- -- Built-in Function: ERR = errno (VAL)
- -- Built-in Function: ERR = errno (NAME)
+ -- : ERR = errno ()
+ -- : ERR = errno (VAL)
+ -- : ERR = errno (NAME)
      Return the current value of the system-dependent variable errno,
      set its value to VAL and return the previous value, or return the
      named error code given NAME as a character string, or -1 if NAME is
@@ -5520,7 +5072,7 @@ occurs.
 
      See also: *note errno_list: XREFerrno_list.
 
- -- Built-in Function: errno_list ()
+ -- : errno_list ()
      Return a structure containing the system-dependent errno values.
 
      See also: *note errno: XREFerrno.
@@ -5553,7 +5105,7 @@ convenient idiom for Octave code.  For example:
        ...
      endfunction  # rand generator state restored by onCleanup
 
- -- Built-in Function: OBJ = onCleanup (FUNCTION)
+ -- : OBJ = onCleanup (FUNCTION)
      Create a special object that executes a given function upon
      destruction.
 
@@ -5618,14 +5170,14 @@ warning IDs are in the format "NAMESPACE:WARNING-NAME". The namespace
 "Octave" is used for Octave’s own warnings.  Any other string is
 available as a namespace for user’s own warnings.
 
- -- Built-in Function: warning (TEMPLATE, ...)
- -- Built-in Function: warning (ID, TEMPLATE, ...)
- -- Built-in Function: warning ("on", ID)
- -- Built-in Function: warning ("off", ID)
- -- Built-in Function: warning ("query", ID)
- -- Built-in Function: warning ("error", ID)
- -- Built-in Function: warning (STATE, "backtrace")
- -- Built-in Function: warning (STATE, ID, "local")
+ -- : warning (TEMPLATE, ...)
+ -- : warning (ID, TEMPLATE, ...)
+ -- : warning ("on", ID)
+ -- : warning ("off", ID)
+ -- : warning ("query", ID)
+ -- : warning ("error", ID)
+ -- : warning (STATE, "backtrace")
+ -- : warning (STATE, ID, "local")
      Display a warning message or control the behavior of Octave’s
      warning system.
 
@@ -5676,9 +5228,9 @@ available as a namespace for user’s own warnings.
      See also: *note warning_ids: XREFwarning_ids, *note lastwarn:
      XREFlastwarn, *note error: XREFerror.
 
- -- Built-in Function: [MSG, MSGID] = lastwarn ()
- -- Built-in Function: lastwarn (MSG)
- -- Built-in Function: lastwarn (MSG, MSGID)
+ -- : [MSG, MSGID] = lastwarn ()
+ -- : lastwarn (MSG)
+ -- : lastwarn (MSG, MSGID)
      Query or set the last warning message.
 
      When called without input arguments, return the last warning
@@ -5697,6 +5249,12 @@ warnings.
 ‘Octave:abbreviated-property-match’
      By default, the ‘Octave:abbreviated-property-match’ warning is
      enabled.
+
+‘Octave:array-as-logical’
+     If the ‘Octave:array-as-logical’ warning is enabled, Octave will
+     warn when an array of size greater than 1x1 is used as a truth
+     value in an if, while or until statement.  By default, the
+     ‘Octave:array-as-logical’ warning is disabled.
 
 ‘Octave:array-to-scalar’
      If the ‘Octave:array-to-scalar’ warning is enabled, Octave will
@@ -5776,11 +5334,23 @@ warnings.
      By default, the ‘Octave:built-in-variable-assignment’ warning is
      enabled.
 
+‘Octave:deprecated-function’
+     If the ‘Octave:deprecated-function’ warning is enabled, a warning
+     is issued when Octave encounters a function that is obsolete and
+     scheduled for removal from Octave.  By default, the
+     ‘Octave:deprecated-function’ warning is enabled.
+
 ‘Octave:deprecated-keyword’
      If the ‘Octave:deprecated-keyword’ warning is enabled, a warning is
      issued when Octave encounters a keyword that is obsolete and
      scheduled for removal from Octave.  By default, the
      ‘Octave:deprecated-keyword’ warning is enabled.
+
+‘Octave:deprecated-property’
+     If the ‘Octave:deprecated-property’ warning is enabled, a warning
+     is issued when Octave encounters a graphics property that is
+     obsolete and scheduled for removal from Octave.  By default, the
+     ‘Octave:deprecated-property’ warning is enabled.
 
 ‘Octave:divide-by-zero’
      If the ‘Octave:divide-by-zero’ warning is enabled, a warning is
@@ -5824,9 +5394,6 @@ warnings.
 
 ‘Octave:logical-conversion’
      By default, the ‘Octave:logical-conversion’ warning is enabled.
-
-‘Octave:md5sum-file-in-path’
-     By default, the ‘Octave:md5sum-file-in-path’ warning is enabled.
 
 ‘Octave:missing-glyph’
      By default, the ‘Octave:missing-glyph’ warning is enabled.
@@ -6028,9 +5595,9 @@ next section, and interruption based on some condition.
 in the functions ‘debug_on_interrupt’, ‘debug_on_warning’, and
 ‘debug_on_error’.
 
- -- Built-in Function: VAL = debug_on_interrupt ()
- -- Built-in Function: OLD_VAL = debug_on_interrupt (NEW_VAL)
- -- Built-in Function: debug_on_interrupt (NEW_VAL, "local")
+ -- : VAL = debug_on_interrupt ()
+ -- : OLD_VAL = debug_on_interrupt (NEW_VAL)
+ -- : debug_on_interrupt (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will try to enter debugging mode when it receives an interrupt
      signal (typically generated with ‘C-c’).
@@ -6046,9 +5613,9 @@ in the functions ‘debug_on_interrupt’, ‘debug_on_warning’, and
      See also: *note debug_on_error: XREFdebug_on_error, *note
      debug_on_warning: XREFdebug_on_warning.
 
- -- Built-in Function: VAL = debug_on_warning ()
- -- Built-in Function: OLD_VAL = debug_on_warning (NEW_VAL)
- -- Built-in Function: debug_on_warning (NEW_VAL, "local")
+ -- : VAL = debug_on_warning ()
+ -- : OLD_VAL = debug_on_warning (NEW_VAL)
+ -- : debug_on_warning (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will try to enter the debugger when a warning is encountered.
 
@@ -6060,9 +5627,9 @@ in the functions ‘debug_on_interrupt’, ‘debug_on_warning’, and
      See also: *note debug_on_error: XREFdebug_on_error, *note
      debug_on_interrupt: XREFdebug_on_interrupt.
 
- -- Built-in Function: VAL = debug_on_error ()
- -- Built-in Function: OLD_VAL = debug_on_error (NEW_VAL)
- -- Built-in Function: debug_on_error (NEW_VAL, "local")
+ -- : VAL = debug_on_error ()
+ -- : OLD_VAL = debug_on_error (NEW_VAL)
+ -- : debug_on_error (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will try to enter the debugger when an error is encountered.
 
@@ -6086,7 +5653,7 @@ File: octave.info,  Node: Leaving Debug Mode,  Next: Breakpoints,  Prev: Enterin
 Use either ‘dbcont’ or ‘return’ to leave the debug mode and continue the
 normal execution of the script.
 
- -- Command: dbcont
+ -- : dbcont
      Leave command-line debugging mode and continue code execution
      normally.
 
@@ -6095,7 +5662,7 @@ normal execution of the script.
    To quit debug mode and return directly to the prompt without
 executing any additional code use ‘dbquit’.
 
- -- Command: dbquit
+ -- : dbquit
      Quit debugging mode immediately without further code execution and
      return to the Octave prompt.
 
@@ -6113,36 +5680,91 @@ File: octave.info,  Node: Breakpoints,  Next: Debug Mode,  Prev: Leaving Debug M
 Breakpoints can be set in any m-file function by using the ‘dbstop’
 function.
 
- -- Command: dbstop FUNC
- -- Command: dbstop FUNC LINE
- -- Command: dbstop FUNC LINE1 LINE2 ...
- -- Command: dbstop LINE ...
- -- Built-in Function: RLINE = dbstop ("FUNC")
- -- Built-in Function: RLINE = dbstop ("FUNC", LINE)
- -- Built-in Function: RLINE = dbstop ("FUNC", LINE1, LINE2, ...)
- -- Built-in Function: dbstop ("FUNC", [LINE1, ...])
- -- Built-in Function: dbstop (LINE, ...)
-     Set a breakpoint at line number LINE in function FUNC.
+ -- : dbstop FUNC
+ -- : dbstop FUNC LINE
+ -- : dbstop FUNC LINE1 LINE2 ...
+ -- : dbstop LINE1 ...
+ -- : dbstop in FUNC
+ -- : dbstop in FUNC at LINE
+ -- : dbstop in FUNC at LINE if "CONDITION"
+ -- : dbstop if EVENT
+ -- : dbstop if EVENT ID
+ -- : dbstop (BP_STRUCT)
+ -- : RLINE = dbstop ...
 
-     Arguments are
+     Set breakpoints for the built-in debugger.
 
-     FUNC
-          Function name as a string variable.  When already in debug
-          mode this argument can be omitted and the current function
-          will be used.
+     FUNC is the name of a function on the current ‘path’.  When already
+     in debug mode the FUNC argument can be omitted and the current
+     function will be used.  Breakpoints at subfunctions are set with
+     the scope operator ‘>’.  For example, If ‘file.m’ has a subfunction
+     ‘func2’, then a breakpoint in ‘func2’ can be specified by
+     ‘file>func2’.
 
-     LINE
-          Line number where the breakpoint should be set.  Multiple
-          lines may be given as separate arguments or as a vector.
+     LINE is the line number at which to break.  If LINE is not
+     specified, it defaults to the first executable line in the file
+     ‘func.m’.  Multiple lines can be specified in a single command;
+     when function syntax is used, the lines may also be passed as a
+     single vector argument (‘[LINE1, LINE2, ...]’).
 
-     When called with a single argument FUNC, the breakpoint is set at
-     the first executable line in the named function.
+     CONDITION is any Octave expression that can be evaluated in the
+     code context that exists at the breakpoint.  When the breakpoint is
+     encountered, CONDITION will be evaluated, and execution will stop
+     if CONDITION is true.  If CONDITION cannot be evaluated, for
+     example because it refers to an undefined variable, an error will
+     be thrown.  Expressions with side effects (such as ‘y++ > 1’) will
+     alter variables, and should generally be avoided.  Conditions
+     containing quotes (‘"’, ‘'’) or comment characters (‘#’, ‘%’) must
+     be enclosed in quotes.  (This does not apply to conditions entered
+     from the editor’s context menu.)  For example:
+
+          dbstop in strread at 209 if 'any (format == "%f")'
+
+     The form specifying EVENT does not cause a specific breakpoint at a
+     given function and line number.  Instead it causes debug mode to be
+     entered when certain unexpected events are encountered.  Possible
+     values are
+
+     ‘error’
+          Stop when an error is reported.  This is equivalent to
+          specifying both ‘debug_on_error (true)’ and
+          ‘debug_on_interrupt (true)’.
+
+     ‘caught error’
+          Stop when an error is caught by a try-catch block (not yet
+          implemented).
+
+     ‘interrupt’
+          Stop when an interrupt (‘Ctrl-C’) occurs.
+
+     ‘naninf’
+          Stop when code returns a non-finite value (not yet
+          implemented).
+
+     ‘warning’
+          Stop when a warning is reported.  This is equivalent to
+          specifying ‘debug_on_warning (true)’.
+
+     The events ‘error’, ‘caught error’, and ‘warning’ can all be
+     followed by a string specifying an error ID or warning ID.  If that
+     is done, only errors with the specified ID will cause execution to
+     stop.  To stop on one of a set of IDs, multiple ‘dbstop’ commands
+     must be issued.
+
+     Breakpoints and events can be removed using the ‘dbclear’ command
+     with the same syntax.
+
+     It is possible to save all breakpoints and restore them at once by
+     issuing the commands ‘bp_state = dbstatus; ...; dbstop (bp_state)’.
 
      The optional output RLINE is the real line number where the
      breakpoint was set.  This can differ from the specified line if the
      line is not executable.  For example, if a breakpoint attempted on
      a blank line then Octave will set the real breakpoint at the next
      executable line.
+
+     When a file is re-parsed, such as when it is modified outside the
+     GUI, all breakpoints within the file are cleared.
 
      See also: *note dbclear: XREFdbclear, *note dbstatus: XREFdbstatus,
      *note dbstep: XREFdbstep, *note debug_on_error: XREFdebug_on_error,
@@ -6167,9 +5789,9 @@ Note that the return value of ‘29’ means that the breakpoint was
 effectively set to line 29.  The status of breakpoints in a function can
 be queried with ‘dbstatus’.
 
- -- Built-in Function: dbstatus ()
- -- Built-in Function: BRK_LIST = dbstatus ()
- -- Built-in Function: BRK_LIST = dbstatus ("FUNC")
+ -- : dbstatus
+ -- : dbstatus FUNC
+ -- : BP_LIST = dbstatus ...
      Report the location of active breakpoints.
 
      When called with no input or output arguments, print the list of
@@ -6177,40 +5799,53 @@ be queried with ‘dbstatus’.
      breakpoints are set.
 
      If a function name FUNC is specified then only report breakpoints
-     for the named function.
+     for the named function and its subfunctions.
 
-     The optional return argument BRK_LIST is a struct array with the
+     The optional return argument BP_LIST is a struct array with the
      following fields.
 
      name
-          The name of the function with a breakpoint.
+          The name of the function with a breakpoint.  A subfunction,
+          say ‘func2’ within an m-file, say ‘file.m’, is specified as
+          ‘file>func2’.
 
      file
           The name of the m-file where the function code is located.
 
      line
-          A line number, or vector of line numbers, with a breakpoint.
+          The line number with the breakpoint.
 
-     Note: When ‘dbstatus’ is called from the debug prompt within a
-     function, the list of breakpoints is automatically trimmed to the
-     breakpoints in the current function.
+     cond
+          The condition that must be satisfied for the breakpoint to be
+          active, or the empty string for unconditional breakpoints.
 
-     See also: *note dbclear: XREFdbclear, *note dbwhere: XREFdbwhere.
+     If ‘dbstop if error’ is true but no explicit IDs are specified, the
+     return value will have an empty field called "errs".  If IDs are
+     specified, the ‘errs’ field will have one row per ID.  If ‘dbstop
+     if error’ is false, there is no "errs" field.  The "warn" field is
+     set similarly by ‘dbstop if warning’.
+
+     See also: *note dbstop: XREFdbstop, *note dbclear: XREFdbclear,
+     *note dbwhere: XREFdbwhere, *note dblist: XREFdblist, *note
+     dbstack: XREFdbstack.
 
 Reusing the previous example, ‘dbstatus ("asind")’ will return 29.  The
 breakpoints listed can then be cleared with the ‘dbclear’ function.
 
- -- Command: dbclear FUNC
- -- Command: dbclear FUNC LINE
- -- Command: dbclear FUNC LINE1 LINE2 ...
- -- Command: dbclear LINE ...
- -- Command: dbclear all
- -- Built-in Function: dbclear ("FUNC")
- -- Built-in Function: dbclear ("FUNC", LINE)
- -- Built-in Function: dbclear ("FUNC", LINE1, LINE2, ...)
- -- Built-in Function: dbclear ("FUNC", [LINE1, ...])
- -- Built-in Function: dbclear (LINE, ...)
- -- Built-in Function: dbclear ("all")
+ -- : dbclear FUNC
+ -- : dbclear FUNC LINE
+ -- : dbclear FUNC LINE1 LINE2 ...
+ -- : dbclear LINE ...
+ -- : dbclear all
+ -- : dbclear in FUNC
+ -- : dbclear in FUNC at LINE
+ -- : dbclear if EVENT
+ -- : dbclear ("FUNC")
+ -- : dbclear ("FUNC", LINE)
+ -- : dbclear ("FUNC", LINE1, LINE2, ...)
+ -- : dbclear ("FUNC", LINE1, ...)
+ -- : dbclear (LINE, ...)
+ -- : dbclear ("all")
      Delete a breakpoint at line number LINE in the function FUNC.
 
      Arguments are
@@ -6223,6 +5858,10 @@ breakpoints listed can then be cleared with the ‘dbclear’ function.
      LINE
           Line number from which to remove a breakpoint.  Multiple lines
           may be given as separate arguments or as a vector.
+
+     EVENT
+          An event such as ‘error’, ‘interrupt’, or ‘warning’ (*note
+          dbstop: XREFdbstop. for details).
 
      When called without a line number specification all breakpoints in
      the named function are cleared.
@@ -6262,8 +5901,8 @@ breakpoint would be
    Another simple way of setting a breakpoint in an Octave script is the
 use of the ‘keyboard’ function.
 
- -- Built-in Function: keyboard ()
- -- Built-in Function: keyboard ("PROMPT")
+ -- : keyboard ()
+ -- : keyboard ("PROMPT")
      Stop m-file execution and enter debug mode.
 
      When the ‘keyboard’ function is executed, Octave prints a prompt
@@ -6295,21 +5934,22 @@ out where in the execution of a script Octave entered the debug mode,
 and to print the code in the script surrounding the point where Octave
 entered debug mode.
 
- -- Command: dbwhere
+ -- : dbwhere
      In debugging mode, report the current file and line number where
      execution is stopped.
 
-     See also: *note dbstatus: XREFdbstatus, *note dbcont: XREFdbcont,
-     *note dbstep: XREFdbstep, *note dbup: XREFdbup.
+     See also: *note dbstack: XREFdbstack, *note dblist: XREFdblist,
+     *note dbstatus: XREFdbstatus, *note dbcont: XREFdbcont, *note
+     dbstep: XREFdbstep, *note dbup: XREFdbup, *note dbdown: XREFdbdown.
 
- -- Command: dbtype
- -- Command: dbtype LINENO
- -- Command: dbtype STARTL:ENDL
- -- Command: dbtype STARTL:END
- -- Command: dbtype FUNC
- -- Command: dbtype FUNC LINENO
- -- Command: dbtype FUNC STARTL:ENDL
- -- Command: dbtype FUNC STARTL:END
+ -- : dbtype
+ -- : dbtype LINENO
+ -- : dbtype STARTL:ENDL
+ -- : dbtype STARTL:END
+ -- : dbtype FUNC
+ -- : dbtype FUNC LINENO
+ -- : dbtype FUNC STARTL:ENDL
+ -- : dbtype FUNC STARTL:END
      Display a script file with line numbers.
 
      When called with no arguments in debugging mode, display the script
@@ -6322,22 +5962,23 @@ entered debug mode.
      When called with the name of a function, list that script file with
      line numbers.
 
-     See also: *note dbwhere: XREFdbwhere, *note dbstatus: XREFdbstatus,
-     *note dbstop: XREFdbstop.
+     See also: *note dblist: XREFdblist, *note dbwhere: XREFdbwhere,
+     *note dbstatus: XREFdbstatus, *note dbstop: XREFdbstop.
 
- -- Command: dblist
- -- Command: dblist N
+ -- : dblist
+ -- : dblist N
      In debugging mode, list N lines of the function being debugged
      centered around the current line to be executed.
 
      If unspecified N defaults to 10 (+/- 5 lines)
 
-     See also: *note dbwhere: XREFdbwhere, *note dbtype: XREFdbtype.
+     See also: *note dbwhere: XREFdbwhere, *note dbtype: XREFdbtype,
+     *note dbstack: XREFdbstack.
 
    You may also use ‘isdebugmode’ to determine whether the debugger is
 currently active.
 
- -- Built-in Function: isdebugmode ()
+ -- : isdebugmode ()
      Return true if in debugging mode, otherwise false.
 
      See also: *note dbwhere: XREFdbwhere, *note dbstack: XREFdbstack,
@@ -6346,11 +5987,11 @@ currently active.
    Debug mode also allows single line stepping through a function using
 the command ‘dbstep’.
 
- -- Command: dbstep
- -- Command: dbstep N
- -- Command: dbstep in
- -- Command: dbstep out
- -- Command: dbnext ...
+ -- : dbstep
+ -- : dbstep N
+ -- : dbstep in
+ -- : dbstep out
+ -- : dbnext ...
      In debugging mode, execute the next N lines of code.
 
      If N is omitted, execute the next single line of code.  If the next
@@ -6386,16 +6027,16 @@ locate where variables first took on the wrong values.  ‘dbstack’ shows
 the entire series of function calls and at what level debugging is
 currently taking place.
 
- -- Command: dbstack
- -- Command: dbstack N
- -- Command: dbstack -COMPLETENAMES
- -- Built-in Function: [STACK, IDX] = dbstack (...)
+ -- : dbstack
+ -- : dbstack N
+ -- : dbstack -COMPLETENAMES
+ -- : [STACK, IDX] = dbstack (...)
      Display or return current debugging function stack information.
 
      With optional argument N, omit the N innermost stack frames.
 
      Although accepted, the argument -COMPLETENAMES is silently ignored.
-     Octave always returns absolute file names.
+     Octave always returns absolute filenames.
 
      The arguments N and -COMPLETENAMES can be both specified in any
      order.
@@ -6425,18 +6066,19 @@ currently taking place.
      array is currently active.
 
      See also: *note dbup: XREFdbup, *note dbdown: XREFdbdown, *note
-     dbwhere: XREFdbwhere, *note dbstatus: XREFdbstatus.
+     dbwhere: XREFdbwhere, *note dblist: XREFdblist, *note dbstatus:
+     XREFdbstatus.
 
- -- Command: dbup
- -- Command: dbup N
+ -- : dbup
+ -- : dbup N
      In debugging mode, move up the execution stack N frames.
 
      If N is omitted, move up one frame.
 
      See also: *note dbstack: XREFdbstack, *note dbdown: XREFdbdown.
 
- -- Command: dbdown
- -- Command: dbdown N
+ -- : dbdown
+ -- : dbdown N
      In debugging mode, move down the execution stack N frames.
 
      If N is omitted, move down one frame.
@@ -6463,12 +6105,12 @@ start or stop the profiler and also to query collected data afterwards.
 The data is returned in an Octave data structure which can then be
 examined or further processed by other routines or tools.
 
- -- Command: profile on
- -- Command: profile off
- -- Command: profile resume
- -- Command: profile clear
- -- Function File: S = profile ("status")
- -- Function File: T = profile ("info")
+ -- : profile on
+ -- : profile off
+ -- : profile resume
+ -- : profile clear
+ -- : S = profile ("status")
+ -- : T = profile ("info")
      Control the built-in profiler.
 
      ‘profile on’
@@ -6521,10 +6163,10 @@ prints a flat profile, for instance:
 operators.  Furthermore, it is shown how often the function was called
 and the profiler also records that it is recursive.
 
- -- Function File: profshow (DATA)
- -- Function File: profshow (DATA, N)
- -- Function File: profshow ()
- -- Function File: profshow (N)
+ -- : profshow (DATA)
+ -- : profshow (DATA, N)
+ -- : profshow ()
+ -- : profshow (N)
      Display flat per-function profiler results.
 
      Print out profiler data (execution time, number of calls) for the
@@ -6541,8 +6183,8 @@ and the profiler also records that it is recursive.
      See also: *note profexplore: XREFprofexplore, *note profile:
      XREFprofile.
 
- -- Function File: profexplore ()
- -- Function File: profexplore (DATA)
+ -- : profexplore ()
+ -- : profexplore (DATA)
      Interactively explore hierarchical profiler output.
 
      Assuming DATA is the structure with profile data returned by
@@ -6785,7 +6427,7 @@ a variable without printing its name, use the function ‘disp’.
    The ‘format’ command offers some control over the way Octave prints
 values with ‘disp’ and through the normal echoing mechanism.
 
- -- Built-in Function: disp (X)
+ -- : disp (X)
      Display the value of X.
 
      For example:
@@ -6802,7 +6444,7 @@ values with ‘disp’ and through the normal echoing mechanism.
 
      See also: *note fdisp: XREFfdisp.
 
- -- Built-in Function: list_in_columns (ARG, WIDTH, PREFIX)
+ -- : list_in_columns (ARG, WIDTH, PREFIX)
      Return a string containing the elements of ARG listed in columns
      with an overall maximum width of WIDTH and optional prefix PREFIX.
 
@@ -6831,14 +6473,14 @@ values with ‘disp’ and through the normal echoing mechanism.
 
      See also: *note terminal_size: XREFterminal_size.
 
- -- Built-in Function: terminal_size ()
+ -- : terminal_size ()
      Return a two-element row vector containing the current size of the
      terminal window in characters (rows and columns).
 
      See also: *note list_in_columns: XREFlist_in_columns.
 
- -- Command: format
- -- Command: format options
+ -- : format
+ -- : format options
      Reset or specify the format of the output produced by ‘disp’ and
      Octave’s normal echoing mechanism.
 
@@ -7022,9 +6664,9 @@ force output to be sent to the pager (or any other stream) immediately.
    You can select the program to run as the pager using the ‘PAGER’
 function, and you can turn paging off by using the function ‘more’.
 
- -- Command: more
- -- Command: more on
- -- Command: more off
+ -- : more
+ -- : more on
+ -- : more off
      Turn output pagination on or off.
 
      Without an argument, ‘more’ toggles the current state.
@@ -7035,9 +6677,9 @@ function, and you can turn paging off by using the function ‘more’.
      page_output_immediately: XREFpage_output_immediately, *note PAGER:
      XREFPAGER, *note PAGER_FLAGS: XREFPAGER_FLAGS.
 
- -- Built-in Function: VAL = PAGER ()
- -- Built-in Function: OLD_VAL = PAGER (NEW_VAL)
- -- Built-in Function: PAGER (NEW_VAL, "local")
+ -- : VAL = PAGER ()
+ -- : OLD_VAL = PAGER (NEW_VAL)
+ -- : PAGER (NEW_VAL, "local")
      Query or set the internal variable that specifies the program to
      use to display terminal output on your system.
 
@@ -7053,9 +6695,9 @@ function, and you can turn paging off by using the function ‘more’.
      page_output_immediately: XREFpage_output_immediately, *note more:
      XREFmore, *note page_screen_output: XREFpage_screen_output.
 
- -- Built-in Function: VAL = PAGER_FLAGS ()
- -- Built-in Function: OLD_VAL = PAGER_FLAGS (NEW_VAL)
- -- Built-in Function: PAGER_FLAGS (NEW_VAL, "local")
+ -- : VAL = PAGER_FLAGS ()
+ -- : OLD_VAL = PAGER_FLAGS (NEW_VAL)
+ -- : PAGER_FLAGS (NEW_VAL, "local")
      Query or set the internal variable that specifies the options to
      pass to the pager.
 
@@ -7068,9 +6710,9 @@ function, and you can turn paging off by using the function ‘more’.
      page_screen_output: XREFpage_screen_output, *note
      page_output_immediately: XREFpage_output_immediately.
 
- -- Built-in Function: VAL = page_screen_output ()
- -- Built-in Function: OLD_VAL = page_screen_output (NEW_VAL)
- -- Built-in Function: page_screen_output (NEW_VAL, "local")
+ -- : VAL = page_screen_output ()
+ -- : OLD_VAL = page_screen_output (NEW_VAL)
+ -- : page_screen_output (NEW_VAL, "local")
      Query or set the internal variable that controls whether output
      intended for the terminal window that is longer than one page is
      sent through a pager.
@@ -7088,9 +6730,9 @@ function, and you can turn paging off by using the function ‘more’.
      XREFpage_output_immediately, *note PAGER: XREFPAGER, *note
      PAGER_FLAGS: XREFPAGER_FLAGS.
 
- -- Built-in Function: VAL = page_output_immediately ()
- -- Built-in Function: OLD_VAL = page_output_immediately (NEW_VAL)
- -- Built-in Function: page_output_immediately (NEW_VAL, "local")
+ -- : VAL = page_output_immediately ()
+ -- : OLD_VAL = page_output_immediately (NEW_VAL)
+ -- : page_output_immediately (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      sends output to the pager as soon as it is available.
 
@@ -7106,7 +6748,7 @@ function, and you can turn paging off by using the function ‘more’.
      more: XREFmore, *note PAGER: XREFPAGER, *note PAGER_FLAGS:
      XREFPAGER_FLAGS.
 
- -- Built-in Function: fflush (FID)
+ -- : fflush (FID)
      Flush output to file descriptor FID.
 
      ‘fflush’ returns 0 on success and an OS dependent error value (−1
@@ -7130,8 +6772,8 @@ The ‘input’ and ‘menu’ functions are normally used for managing an
 interactive dialog with a user, and the ‘keyboard’ function is normally
 used for doing simple debugging.
 
- -- Built-in Function: ANS = input (PROMPT)
- -- Built-in Function: ANS = input (PROMPT, "s")
+ -- : ANS = input (PROMPT)
+ -- : ANS = input (PROMPT, "s")
      Print PROMPT and wait for user input.
 
      For example,
@@ -7163,20 +6805,21 @@ used for doing simple debugging.
      *note pause: XREFpause, *note menu: XREFmenu, *note listdlg:
      XREFlistdlg.
 
- -- Function File: CHOICE = menu (TITLE, OPT1, ...)
- -- Function File: CHOICE = menu (TITLE, {OPT1, ...})
+ -- : CHOICE = menu (TITLE, OPT1, ...)
+ -- : CHOICE = menu (TITLE, {OPT1, ...})
      Display a menu with heading TITLE and options OPT1, ..., and wait
      for user input.
 
-     If the GUI is running, or Java is available, the menu is displayed
-     graphically using ‘listdlg’.  Otherwise, the title and menu options
-     are printed on the console.
+     If the GUI is running, the menu is displayed graphically using
+     ‘listdlg’.  Otherwise, the title and menu options are printed on
+     the console.
 
      TITLE is a string and the options may be input as individual
      strings or as a cell array of strings.
 
      The return value CHOICE is the number of the option selected by the
-     user counting from 1.
+     user counting from 1.  If the user aborts the dialog or makes an
+     invalid selection then 0 is returned.
 
      This function is useful for interactive programs.  There is no
      limit to the number of options that may be passed in, but it may be
@@ -7184,7 +6827,7 @@ used for doing simple debugging.
 
      See also: *note input: XREFinput, *note listdlg: XREFlistdlg.
 
- -- Built-in Function: ANS = yes_or_no ("PROMPT")
+ -- : ANS = yes_or_no ("PROMPT")
      Ask the user a yes-or-no question.
 
      Return logical true if the answer is yes or false if the answer is
@@ -7204,8 +6847,8 @@ are available at the prompt.
 character from the keyboard without requiring the user to type a
 carriage return.
 
- -- Built-in Function: kbhit ()
- -- Built-in Function: kbhit (1)
+ -- : kbhit ()
+ -- : kbhit (1)
      Read a single keystroke from the keyboard.
 
      If called with an argument, don’t wait for a keypress.
@@ -7252,12 +6895,12 @@ read into memory using the ‘load’ command.
           ⊣    4   5   6
           ⊣    7   8   9
 
- -- Command: save file
- -- Command: save options file
- -- Command: save options file V1 V2 ...
- -- Command: save options file -struct STRUCT F1 F2 ...
- -- Command: save ‘"-"’ V1 V2 ...
- -- Built-in Function: S = save (‘"-"’ V1 V2 ...)
+ -- : save file
+ -- : save options file
+ -- : save options file V1 V2 ...
+ -- : save options file -struct STRUCT F1 F2 ...
+ -- : save ‘"-"’ V1 V2 ...
+ -- : S = save (‘"-"’ V1 V2 ...)
      Save the named variables V1, V2, ..., in the file FILE.
 
      The special filename ‘-’ may be used to return the content of the
@@ -7377,9 +7020,9 @@ read into memory using the ‘load’ command.
 
    There are three functions that modify the behavior of ‘save’.
 
- -- Built-in Function: VAL = save_default_options ()
- -- Built-in Function: OLD_VAL = save_default_options (NEW_VAL)
- -- Built-in Function: save_default_options (NEW_VAL, "local")
+ -- : VAL = save_default_options ()
+ -- : OLD_VAL = save_default_options (NEW_VAL)
+ -- : save_default_options (NEW_VAL, "local")
      Query or set the internal variable that specifies the default
      options for the ‘save’ command, and defines the default format.
 
@@ -7393,9 +7036,9 @@ read into memory using the ‘load’ command.
 
      See also: *note save: XREFsave.
 
- -- Built-in Function: VAL = save_precision ()
- -- Built-in Function: OLD_VAL = save_precision (NEW_VAL)
- -- Built-in Function: save_precision (NEW_VAL, "local")
+ -- : VAL = save_precision ()
+ -- : OLD_VAL = save_precision (NEW_VAL)
+ -- : save_precision (NEW_VAL, "local")
      Query or set the internal variable that specifies the number of
      digits to keep when saving data in text format.
 
@@ -7404,9 +7047,9 @@ read into memory using the ‘load’ command.
      calls.  The original variable value is restored when exiting the
      function.
 
- -- Built-in Function: VAL = save_header_format_string ()
- -- Built-in Function: OLD_VAL = save_header_format_string (NEW_VAL)
- -- Built-in Function: save_header_format_string (NEW_VAL, "local")
+ -- : VAL = save_header_format_string ()
+ -- : OLD_VAL = save_header_format_string (NEW_VAL)
+ -- : save_header_format_string (NEW_VAL, "local")
      Query or set the internal variable that specifies the format string
      used for the comment line written at the beginning of text-format
      data files saved by Octave.
@@ -7425,13 +7068,13 @@ read into memory using the ‘load’ command.
 
      See also: *note strftime: XREFstrftime, *note save: XREFsave.
 
- -- Command: load file
- -- Command: load options file
- -- Command: load options file v1 v2 ...
- -- Command: S = load ("options", "file", "v1", "v2", ...)
- -- Command: load file options
- -- Command: load file options v1 v2 ...
- -- Command: S = load ("file", "options", "v1", "v2", ...)
+ -- : load file
+ -- : load options file
+ -- : load options file v1 v2 ...
+ -- : S = load ("options", "file", "v1", "v2", ...)
+ -- : load file options
+ -- : load file options v1 v2 ...
+ -- : S = load ("file", "options", "v1", "v2", ...)
      Load the named variables V1, V2, ..., from the file FILE.
 
      If no variables are specified then all variables found in the file
@@ -7520,13 +7163,13 @@ read into memory using the ‘load’ command.
      See also: *note save: XREFsave, *note dlmwrite: XREFdlmwrite, *note
      csvwrite: XREFcsvwrite, *note fwrite: XREFfwrite.
 
- -- Function File: STR = fileread (FILENAME)
+ -- : STR = fileread (FILENAME)
      Read the contents of FILENAME and return it as a string.
 
      See also: *note fread: XREFfread, *note textread: XREFtextread,
      *note sscanf: XREFsscanf.
 
- -- Built-in Function: native_float_format ()
+ -- : native_float_format ()
      Return the native floating point format as a string.
 
    It is possible to write data to a file in a similar way to the ‘disp’
@@ -7542,7 +7185,7 @@ function for writing data to the screen.  The ‘fdisp’ works just like
 *Note Opening and Closing Files::, for details on how to use ‘fopen’ and
 ‘fclose’.
 
- -- Built-in Function: fdisp (FID, X)
+ -- : fdisp (FID, X)
      Display the value of X on the stream FID.
 
      For example:
@@ -7559,17 +7202,18 @@ function for writing data to the screen.  The ‘fdisp’ works just like
    Octave can also read and write matrices text files such as comma
 separated lists.
 
- -- Function File: dlmwrite (FILE, M)
- -- Function File: dlmwrite (FILE, M, DELIM, R, C)
- -- Function File: dlmwrite (FILE, M, KEY, VAL ...)
- -- Function File: dlmwrite (FILE, M, "-append", ...)
- -- Function File: dlmwrite (FID, ...)
-     Write the matrix M to the named file using delimiters.
+ -- : dlmwrite (FILE, M)
+ -- : dlmwrite (FILE, M, DELIM, R, C)
+ -- : dlmwrite (FILE, M, KEY, VAL ...)
+ -- : dlmwrite (FILE, M, "-append", ...)
+ -- : dlmwrite (FID, ...)
+     Write the numeric matrix M to the text file FILE using a delimiter.
 
-     FILE should be a file name or writable file ID given by ‘fopen’.
+     FILE should be a filename or a writable file ID given by ‘fopen’.
 
      The parameter DELIM specifies the delimiter to use to separate
-     values on a row.
+     values on a row.  If no delimiter is specified the comma character
+     ‘,’ is used.
 
      The value of R specifies the number of delimiter-only lines to add
      to the start of the file.
@@ -7589,10 +7233,10 @@ separated lists.
           See DELIM above.
 
      "newline"
-          The character(s) to use to separate each row.  Three special
-          cases exist for this option.  "unix" is changed into "\n",
-          "pc" is changed into "\r\n", and "mac" is changed into "\r".
-          Any other value is used directly as the newline separator.
+          The character(s) to separate each row.  Three special cases
+          exist for this option.  "unix" is changed into "\n", "pc" is
+          changed into "\r\n", and "mac" is changed into "\r".  Any
+          other value is used directly as the newline separator.
 
      "roffset"
           See R above.
@@ -7612,69 +7256,79 @@ separated lists.
      See also: *note dlmread: XREFdlmread, *note csvread: XREFcsvread,
      *note csvwrite: XREFcsvwrite.
 
- -- Built-in Function: DATA = dlmread (FILE)
- -- Built-in Function: DATA = dlmread (FILE, SEP)
- -- Built-in Function: DATA = dlmread (FILE, SEP, R0, C0)
- -- Built-in Function: DATA = dlmread (FILE, SEP, RANGE)
- -- Built-in Function: DATA = dlmread (..., "emptyvalue", EMPTYVAL)
-     Read the matrix DATA from a text file which uses the delimiter SEP
-     between data values.
+ -- : DATA = dlmread (FILE)
+ -- : DATA = dlmread (FILE, SEP)
+ -- : DATA = dlmread (FILE, SEP, R0, C0)
+ -- : DATA = dlmread (FILE, SEP, RANGE)
+ -- : DATA = dlmread (..., "emptyvalue", EMPTYVAL)
+     Read numeric data from the text file FILE which uses the delimiter
+     SEP between data values.
 
      If SEP is not defined the separator between fields is determined
      from the file itself.
 
-     Given two scalar arguments R0 and C0, these define the starting row
-     and column of the data to be read.  These values are indexed from
-     zero, such that the first row corresponds to an index of zero.
+     The optional scalar arguments R0 and C0 define the starting row and
+     column of the data to be read.  These values are indexed from zero,
+     i.e., the first data row corresponds to an index of zero.
 
-     The RANGE parameter may be a 4-element vector containing the upper
-     left and lower right corner ‘[R0,C0,R1,C1]’ where the lowest index
-     value is zero.  Alternatively, a spreadsheet style range such as
-     "A2..Q15" or "T1:AA5" can be used.  The lowest alphabetical index
-     ’A’ refers to the first column.  The lowest row index is 1.
+     The RANGE parameter specifies exactly which data elements are read.
+     The first form of the parameter is a 4-element vector containing
+     the upper left and lower right corners ‘[R0,C0,R1,C1]’ where the
+     indices are zero-based.  Alternatively, a spreadsheet style form
+     such as "A2..Q15" or "T1:AA5" can be used.  The lowest alphabetical
+     index ’A’ refers to the first column.  The lowest row index is 1.
 
-     FILE should be a file name or file id given by ‘fopen’.  In the
+     FILE should be a filename or a file id given by ‘fopen’.  In the
      latter case, the file is read until end of file is reached.
 
      The "emptyvalue" option may be used to specify the value used to
-     fill empty fields.  The default is zero.
+     fill empty fields.  The default is zero.  Note that any non-numeric
+     values, such as text, are also replaced by the "emptyvalue".
 
      See also: *note csvread: XREFcsvread, *note textscan: XREFtextscan,
      *note textread: XREFtextread, *note dlmwrite: XREFdlmwrite.
 
- -- Function File: csvwrite (FILENAME, X)
- -- Function File: csvwrite (FILENAME, X, DLM_OPTS)
-     Write the matrix X to the file FILENAME in comma-separated-value
-     format.
+ -- : csvwrite (FILENAME, X)
+ -- : csvwrite (FILENAME, X, DLM_OPT1, ...)
+     Write the numeric matrix X to the file FILENAME in
+     comma-separated-value (CSV) format.
 
      This function is equivalent to
 
-          dlmwrite (FILENAME, X, ",", ...)
+          dlmwrite (FILENAME, X, ",", DLM_OPT1, ...)
+
+     Any optional arguments are passed directly to ‘dlmwrite’ (*note
+     dlmwrite: XREFdlmwrite.).
 
      See also: *note csvread: XREFcsvread, *note dlmwrite: XREFdlmwrite,
      *note dlmread: XREFdlmread.
 
- -- Function File: X = csvread (FILENAME)
- -- Function File: X = csvread (FILENAME, DLM_OPTS)
-     Read the comma-separated-value file FILENAME into the matrix X.
+ -- : X = csvread (FILENAME)
+ -- : X = csvread (FILENAME, DLM_OPT1, ...)
+     Read the comma-separated-value (CSV) file FILENAME into the matrix
+     X.
+
+     Note: only CSV files containing numeric data can be read.
 
      This function is equivalent to
 
-          X = dlmread (FILENAME, "," , ...)
+          X = dlmread (FILENAME, "," , DLM_OPT1, ...)
 
-     See also: *note csvwrite: XREFcsvwrite, *note dlmread: XREFdlmread,
-     *note dlmwrite: XREFdlmwrite.
+     Any optional arguments are passed directly to ‘dlmread’ (*note
+     dlmread: XREFdlmread.).
+
+     See also: *note dlmread: XREFdlmread, *note textread: XREFtextread,
+     *note textscan: XREFtextscan, *note csvwrite: XREFcsvwrite, *note
+     dlmwrite: XREFdlmwrite.
 
    Formatted data from can be read from, or written to, text files as
 well.
 
- -- Function File: [A, ...] = textread (FILENAME)
- -- Function File: [A, ...] = textread (FILENAME, FORMAT)
- -- Function File: [A, ...] = textread (FILENAME, FORMAT, N)
- -- Function File: [A, ...] = textread (FILENAME, FORMAT, PROP1, VALUE1,
-          ...)
- -- Function File: [A, ...] = textread (FILENAME, FORMAT, N, PROP1,
-          VALUE1, ...)
+ -- : [A, ...] = textread (FILENAME)
+ -- : [A, ...] = textread (FILENAME, FORMAT)
+ -- : [A, ...] = textread (FILENAME, FORMAT, N)
+ -- : [A, ...] = textread (FILENAME, FORMAT, PROP1, VALUE1, ...)
+ -- : [A, ...] = textread (FILENAME, FORMAT, N, PROP1, VALUE1, ...)
      Read data from a text file.
 
      The file FILENAME is read and parsed according to FORMAT.  The
@@ -7736,7 +7390,7 @@ well.
             [a, b] = textread (f, "%f %s", 2)
             returns a = 1 and b = {"a"}; i.e., the format string is used
             only once because the format string refers to 2 lines of the
-            data file. To obtain 2x1 data output columns, specify N = 4
+            data file.  To obtain 2x1 data output columns, specify N = 4
             (number of data lines containing all requested data) rather
             than 2.
 
@@ -7744,58 +7398,249 @@ well.
      dlmread: XREFdlmread, *note fscanf: XREFfscanf, *note textscan:
      XREFtextscan.
 
- -- Function File: C = textscan (FID, FORMAT)
- -- Function File: C = textscan (FID, FORMAT, N)
- -- Function File: C = textscan (FID, FORMAT, PARAM, VALUE, ...)
- -- Function File: C = textscan (FID, FORMAT, N, PARAM, VALUE, ...)
- -- Function File: C = textscan (STR, ...)
- -- Function File: [C, POSITION] = textscan (FID, ...)
+ -- : C = textscan (FID, FORMAT)
+ -- : C = textscan (FID, FORMAT, REPEAT)
+ -- : C = textscan (FID, FORMAT, PARAM, VALUE, ...)
+ -- : C = textscan (FID, FORMAT, REPEAT, PARAM, VALUE, ...)
+ -- : C = textscan (STR, ...)
+ -- : [C, POSITION, ERRMSG] = textscan (...)
      Read data from a text file or string.
 
      The string STR or file associated with FID is read from and parsed
-     according to FORMAT.  The function behaves like ‘strread’ except it
-     can also read from file instead of a string.  See the documentation
-     of ‘strread’ for details.
+     according to FORMAT.  The function is an extension of ‘strread’ and
+     ‘textread’.  Differences include: the ability to read from either a
+     file or a string, additional options, and additional format
+     specifiers.
 
-     In addition to the options supported by ‘strread’, this function
-     supports a few more:
+     The input is interpreted as a sequence of words, delimiters (such
+     as whitespace), and literals.  The characters that form delimiters
+     and whitespace are determined by the options.  The format consists
+     of format specifiers interspersed between literals.  In the format,
+     whitespace forms a delimiter between consecutive literals, but is
+     otherwise ignored.
 
-        • "collectoutput": A value of 1 or true instructs textscan to
-          concatenate consecutive columns of the same class in the
-          output cell array.  A value of 0 or false (default) leaves
-          output in distinct columns.
+     The output C is a cell array where the number of columns is
+     determined by the number of format specifiers.
 
-        • "endofline": Specify "\r", "\n" or "\r\n" (for CR, LF, or
-          CRLF). If no value is given, it will be inferred from the
-          file.  If set to "" (empty string) EOLs are ignored as
-          delimiters and added to whitespace.
+     The first word of the input is matched to the first specifier of
+     the format and placed in the first column of the output; the second
+     is matched to the second specifier and placed in the second column
+     and so forth.  If there are more words than specifiers then the
+     process is repeated until all words have been processed or the
+     limit imposed by REPEAT has been met (see below).
 
-        • "headerlines": The first VALUE number of lines of FID are
-          skipped.
+     The string FORMAT describes how the words in STR should be parsed.
+     As in FSCANF, any (non-whitespace) text in the format that is not
+     one of these specifiers is considered a literal.  If there is a
+     literal between two format specifiers then that same literal must
+     appear in the input stream between the matching words.
 
-        • "returnonerror": If set to numerical 1 or true (default),
-          return normally when read errors have been encountered.  If
-          set to 0 or false, return an error and no data.  As the string
-          or file is read by columns rather than by rows, and because
-          textscan is fairly forgiving as regards read errors, setting
-          this option may have little or no actual effect.
+     The following specifiers are valid:
 
-     When reading from a character string, optional input argument N
-     specifies the number of times FORMAT should be used (i.e., to limit
-     the amount of data read).  When reading from file, N specifies the
-     number of data lines to read; in this sense it differs slightly
-     from the format repeat count in strread.
+     ‘%f’
+     ‘%f64’
+     ‘%n’
+          The word is parsed as a number and converted to double.
 
-     The output C is a cell array whose second dimension is determined
-     by the number of format specifiers.
+     ‘%f32’
+          The word is parsed as a number and converted to single
+          (float).
 
-     The second output, POSITION, provides the position, in characters,
-     from the beginning of the file.
+     ‘%d’
+     ‘%d8’
+     ‘%d16’
+     ‘%d32’
+     ‘%d64’
+          The word is parsed as a number and converted to int8, int16,
+          int32, or int64.  If no size is specified then int32 is used.
 
-     If the format string is empty (not: omitted) and the file contains
-     only numeric data (excluding headerlines), textscan will return
-     data in a number of columns matching the number of numeric fields
-     on the first data line of the file.
+     ‘%u’
+     ‘%u8’
+     ‘%u16’
+     ‘%u32’
+     ‘%u64’
+          The word is parsed as a number and converted to uint8, uint16,
+          uint32, or uint64.  If no size is specified then uint32 is
+          used.
+
+     ‘%s’
+          The word is parsed as a string ending at the last character
+          before whitespace, an end-of-line, or a delimiter specified in
+          the options.
+
+     ‘%q’
+          The word is parsed as a "quoted string".  If the first
+          character of the string is a double quote (") then the string
+          includes everything until a matching double quote—including
+          whitespace, delimiters, and end-of-line characters.  If a pair
+          of consecutive double quotes appears in the input, it is
+          replaced in the output by a single double quote.  For
+          examples, the input "He said ""Hello""" would return the value
+          ’He said "Hello"’.
+
+     ‘%c’
+          The next character of the input is read.  This includes
+          delimiters, whitespace, and end-of-line characters.
+
+     ‘%[...]’
+     ‘%[^...]’
+          In the first form, the word consists of the longest run
+          consisting of only characters between the brackets.  Ranges of
+          characters can be specified by a hyphen; for example,
+          %[0-9a-zA-Z] matches all alphanumeric characters (if the
+          underlying character set is ASCII). Since MATLAB treats
+          hyphens literally, this expansion only applies to alphanumeric
+          characters.  To include ’-’ in the set, it should appear first
+          or last in the brackets; to include ’]’, it should be the
+          first character.  If the first character is ’^’ then the word
+          consists of characters *not* listed.
+
+     ‘%N...’
+          For %s, %c %d, %f, %n, %u, an optional width can be specified
+          as %Ns, etc.  where N is an integer > 1.  For %c, this causes
+          exactly N characters to be read instead of a single character.
+          For the other specifiers, it is an upper bound on the number
+          of characters read; normal delimiters can cause fewer
+          characters to be read.  For complex numbers, this limit
+          applies to the real and imaginary components individually.
+          For %f and %n, format specifiers like %N.Mf are allowed, where
+          M is an upper bound on number of characters after the decimal
+          point to be considered; subsequent digits are skipped.  For
+          example, the specifier %8.2f would read 12.345e6 as 1.234e7.
+
+     ‘%*...’
+          The word specified by the remainder of the conversion
+          specifier is skipped.
+
+     ‘literals’
+          In addition the format may contain literal character strings;
+          these will be skipped during reading.  If the input string
+          does not match this literal, the processing terminates.
+
+     Parsed words corresponding to the first specifier are returned in
+     the first output argument and likewise for the rest of the
+     specifiers.
+
+     By default, if there is only one input argument, FORMAT is "%f".
+     This means that numbers are read from the input into a single
+     column vector.  If FORMAT is explicitly empty ("") then textscan
+     will return data in a number of columns matching the number of
+     fields on the first data line of the input.  Either of these is
+     suitable only when the input is exclusively numeric.
+
+     For example, the string
+
+          STR = "\
+          Bunny Bugs   5.5\n\
+          Duck Daffy  -7.5e-5\n\
+          Penguin Tux   6"
+
+     can be read using
+
+          A = textscan (STR, "%s %s %f");
+
+     The optional numeric argument REPEAT can be used for limiting the
+     number of items read:
+
+     -1
+          Read all of the string or file until the end (default).
+
+     N
+          Read until the first of two conditions occurs: 1) the format
+          has been processed N times, or 2) N lines of the input have
+          been processed.  Zero (0) is an acceptable value for REPEAT.
+          Currently, end-of-line characters inside %q, %c, and %[...]$
+          conversions do not contribute to the line count.  This is
+          incompatible with MATLAB and may change in future.
+
+     The behavior of ‘textscan’ can be changed via property/value pairs.
+     The following properties are recognized:
+
+     "BufSize"
+          This specifies the number of bytes to use for the internal
+          buffer.  A modest speed improvement may be obtained by setting
+          this to a large value when reading a large file, especially if
+          the input contains long strings.  The default is 4096, or a
+          value dependent on N if that is specified.
+
+     "CollectOutput"
+          A value of 1 or true instructs ‘textscan’ to concatenate
+          consecutive columns of the same class in the output cell
+          array.  A value of 0 or false (default) leaves output in
+          distinct columns.
+
+     "CommentStyle"
+          Specify parts of the input which are considered comments and
+          will be skipped.  VALUE is the comment style and can be either
+          (1) A string or 1x1 cell string, to skip everything to the
+          right of it; (2) A cell array of two strings, to skip
+          everything between the first and second strings.  Comments are
+          only parsed where whitespace is accepted and do not act as
+          delimiters.
+
+     "Delimiter"
+          If VALUE is a string, any character in VALUE will be used to
+          split the input into words.  If VALUE is a cell array of
+          strings, any string in the array will be used to split the
+          input into words.  (default value = any whitespace.)
+
+     "EmptyValue"
+          Value to return for empty numeric values in non-whitespace
+          delimited data.  The default is NaN.  When the data type does
+          not support NaN (int32 for example), then the default is zero.
+
+     "EndOfLine"
+          VALUE can be either an emtpy or one character specifying the
+          end-of-line character, or the pair "\r\n" (CRLF). In the
+          latter case, any of "\r", "\n" or "\r\n" is counted as a
+          (single) newline.  If no value is given, "\r\n" is used.
+
+     "HeaderLines"
+          The first VALUE number of lines of FID are skipped.  Note that
+          this does not refer to the first non-comment lines, but the
+          first lines of any type.
+
+     "MultipleDelimsAsOne"
+          If VALUE is nonzero, treat a series of consecutive delimiters,
+          without whitespace in between, as a single delimiter.
+          Consecutive delimiter series need not be vertically aligned.
+          Without this option, a single delimiter before the end of the
+          line does not cause the line to be considered to end with an
+          empty value, but a single delimiter at the start of a line
+          causes the line to be considered to start with an empty value.
+
+     "TreatAsEmpty"
+          Treat single occurrences (surrounded by delimiters or
+          whitespace) of the string(s) in VALUE as missing values.
+
+     "ReturnOnError"
+          If set to numerical 1 or true, return normally as soon as an
+          error is encountered, such as trying to read a string using
+          %f.  If set to 0 or false, return an error and no data.
+
+     "Whitespace"
+          Any character in VALUE will be interpreted as whitespace and
+          trimmed; The default value for whitespace is " \b\r\n\t" (note
+          the space).  Unless whitespace is set to "" (empty) AND at
+          least one "%s" format conversion specifier is supplied, a
+          space is always part of whitespace.
+
+     When the number of words in STR or FID doesn’t match an exact
+     multiple of the number of format conversion specifiers,
+     ‘textscan’’s behavior depends on whether the last character of the
+     string or file is an end-of-line as specified by the ‘EndOfLine’
+     option:
+
+     last character = end-of-line
+          Data columns are padded with empty fields, NaN or 0 (for
+          integer fields) so that all columns have equal length
+
+     last character is not end-of-line
+          Data columns are not padded; ‘textscan’ returns columns of
+          unequal length
+
+     The second output POSITION provides the location, in characters
+     from the beginning of the file or string, where processing stopped.
 
      See also: *note dlmread: XREFdlmread, *note fscanf: XREFfscanf,
      *note load: XREFload, *note strread: XREFstrread, *note textread:
@@ -7804,11 +7649,11 @@ well.
    The ‘importdata’ function has the ability to work with a wide variety
 of data.
 
- -- Function File: A = importdata (FNAME)
- -- Function File: A = importdata (FNAME, DELIMITER)
- -- Function File: A = importdata (FNAME, DELIMITER, HEADER_ROWS)
- -- Function File: [A, DELIMITER] = importdata (...)
- -- Function File: [A, DELIMITER, HEADER_ROWS] = importdata (...)
+ -- : A = importdata (FNAME)
+ -- : A = importdata (FNAME, DELIMITER)
+ -- : A = importdata (FNAME, DELIMITER, HEADER_ROWS)
+ -- : [A, DELIMITER] = importdata (...)
+ -- : [A, DELIMITER, HEADER_ROWS] = importdata (...)
      Import data from the file FNAME.
 
      Input parameters:
@@ -7855,9 +7700,9 @@ By default this file is named ‘octave-workspace’ and can be loaded into
 memory with the ‘load’ command.  While the default behavior most often
 is reasonable it can be changed through the following functions.
 
- -- Built-in Function: VAL = crash_dumps_octave_core ()
- -- Built-in Function: OLD_VAL = crash_dumps_octave_core (NEW_VAL)
- -- Built-in Function: crash_dumps_octave_core (NEW_VAL, "local")
+ -- : VAL = crash_dumps_octave_core ()
+ -- : OLD_VAL = crash_dumps_octave_core (NEW_VAL)
+ -- : crash_dumps_octave_core (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      tries to save all current variables to the file ‘octave-workspace’
      if it crashes or receives a hangup, terminate or similar signal.
@@ -7871,9 +7716,9 @@ is reasonable it can be changed through the following functions.
      *note octave_core_file_name: XREFoctave_core_file_name, *note
      octave_core_file_options: XREFoctave_core_file_options.
 
- -- Built-in Function: VAL = sighup_dumps_octave_core ()
- -- Built-in Function: OLD_VAL = sighup_dumps_octave_core (NEW_VAL)
- -- Built-in Function: sighup_dumps_octave_core (NEW_VAL, "local")
+ -- : VAL = sighup_dumps_octave_core ()
+ -- : OLD_VAL = sighup_dumps_octave_core (NEW_VAL)
+ -- : sighup_dumps_octave_core (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      tries to save all current variables to the file ‘octave-workspace’
      if it receives a hangup signal.
@@ -7883,9 +7728,9 @@ is reasonable it can be changed through the following functions.
      calls.  The original variable value is restored when exiting the
      function.
 
- -- Built-in Function: VAL = sigterm_dumps_octave_core ()
- -- Built-in Function: OLD_VAL = sigterm_dumps_octave_core (NEW_VAL)
- -- Built-in Function: sigterm_dumps_octave_core (NEW_VAL, "local")
+ -- : VAL = sigterm_dumps_octave_core ()
+ -- : OLD_VAL = sigterm_dumps_octave_core (NEW_VAL)
+ -- : sigterm_dumps_octave_core (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      tries to save all current variables to the file ‘octave-workspace’
      if it receives a terminate signal.
@@ -7895,9 +7740,9 @@ is reasonable it can be changed through the following functions.
      calls.  The original variable value is restored when exiting the
      function.
 
- -- Built-in Function: VAL = octave_core_file_options ()
- -- Built-in Function: OLD_VAL = octave_core_file_options (NEW_VAL)
- -- Built-in Function: octave_core_file_options (NEW_VAL, "local")
+ -- : VAL = octave_core_file_options ()
+ -- : OLD_VAL = octave_core_file_options (NEW_VAL)
+ -- : octave_core_file_options (NEW_VAL, "local")
      Query or set the internal variable that specifies the options used
      for saving the workspace data if Octave aborts.
 
@@ -7915,9 +7760,9 @@ is reasonable it can be changed through the following functions.
      XREFoctave_core_file_name, *note octave_core_file_limit:
      XREFoctave_core_file_limit.
 
- -- Built-in Function: VAL = octave_core_file_limit ()
- -- Built-in Function: OLD_VAL = octave_core_file_limit (NEW_VAL)
- -- Built-in Function: octave_core_file_limit (NEW_VAL, "local")
+ -- : VAL = octave_core_file_limit ()
+ -- : OLD_VAL = octave_core_file_limit (NEW_VAL)
+ -- : octave_core_file_limit (NEW_VAL, "local")
      Query or set the internal variable that specifies the maximum
      amount of memory (in kilobytes) of the top-level workspace that
      Octave will attempt to save when writing data to the crash dump
@@ -7938,9 +7783,9 @@ is reasonable it can be changed through the following functions.
      XREFoctave_core_file_name, *note octave_core_file_options:
      XREFoctave_core_file_options.
 
- -- Built-in Function: VAL = octave_core_file_name ()
- -- Built-in Function: OLD_VAL = octave_core_file_name (NEW_VAL)
- -- Built-in Function: octave_core_file_name (NEW_VAL, "local")
+ -- : VAL = octave_core_file_name ()
+ -- : OLD_VAL = octave_core_file_name (NEW_VAL)
+ -- : octave_core_file_name (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      file used for saving data from the top-level workspace if Octave
      aborts.
@@ -7968,7 +7813,7 @@ functionality of the C programming language’s standard I/O library.  The
 argument lists for some of the input functions are slightly different,
 however, because Octave has no way of passing arguments by reference.
 
-   In the following, FILE refers to a file name and ‘fid’ refers to an
+   In the following, FILE refers to a filename and ‘fid’ refers to an
 integer file number, as returned by ‘fopen’.
 
    There are three files that are always available.  Although these
@@ -7976,7 +7821,7 @@ files can be accessed using their corresponding numeric file ids, you
 should always use the symbolic names given in the table below, since it
 will make your programs easier to understand.
 
- -- Built-in Function: stdin ()
+ -- : stdin ()
      Return the numeric value corresponding to the standard input
      stream.
 
@@ -7985,7 +7830,7 @@ will make your programs easier to understand.
 
      See also: *note stdout: XREFstdout, *note stderr: XREFstderr.
 
- -- Built-in Function: stdout ()
+ -- : stdout ()
      Return the numeric value corresponding to the standard output
      stream.
 
@@ -7994,7 +7839,7 @@ will make your programs easier to understand.
 
      See also: *note stdin: XREFstdin, *note stderr: XREFstderr.
 
- -- Built-in Function: stderr ()
+ -- : stderr ()
      Return the numeric value corresponding to the standard error
      stream.
 
@@ -8044,12 +7889,12 @@ reading a file.
      # Do the actual I/O here...
      fclose (fid);
 
- -- Built-in Function: FID = fopen (NAME)
- -- Built-in Function: FID = fopen (NAME, MODE)
- -- Built-in Function: FID = fopen (NAME, MODE, ARCH)
- -- Built-in Function: [FID, MSG] = fopen (...)
- -- Built-in Function: FID_LIST = fopen ("all")
- -- Built-in Function: [FILE, MODE, ARCH] = fopen (FID)
+ -- : FID = fopen (NAME)
+ -- : FID = fopen (NAME, MODE)
+ -- : FID = fopen (NAME, MODE, ARCH)
+ -- : [FID, MSG] = fopen (...)
+ -- : FID_LIST = fopen ("all")
+ -- : [FILE, MODE, ARCH] = fopen (FID)
      Open a file for low-level I/O or query open files and file
      descriptors.
 
@@ -8143,69 +7988,20 @@ reading a file.
      fclear: XREFfclear, *note fflush: XREFfflush, *note freport:
      XREFfreport, *note umask: XREFumask.
 
- -- Built-in Function: fclose (FID)
- -- Built-in Function: fclose ("all")
- -- Built-in Function: STATUS = fclose ("all")
+ -- : fclose (FID)
+ -- : fclose ("all")
+ -- : STATUS = fclose ("all")
      Close the file specified by the file descriptor FID.
 
      If successful, ‘fclose’ returns 0, otherwise, it returns -1.  The
      second form of the ‘fclose’ call closes all open files except
-     ‘stdout’, ‘stderr’, and ‘stdin’.
-
-     Programming Note: When using "all" the file descriptors associated
-     with gnuplot will also be closed.  This will prevent further
-     plotting with gnuplot until Octave is closed and restarted.
+     ‘stdin’, ‘stdout’, ‘stderr’, and any FIDs associated with gnuplot.
 
      See also: *note fopen: XREFfopen, *note fflush: XREFfflush, *note
      freport: XREFfreport.
 
- -- Function File: is_valid_file_id (FID)
+ -- : is_valid_file_id (FID)
      Return true if FID refers to an open file.
 
      See also: *note freport: XREFfreport, *note fopen: XREFfopen.
-
-
-File: octave.info,  Node: Simple Output,  Next: Line-Oriented Input,  Prev: Opening and Closing Files,  Up: C-Style I/O Functions
-
-14.2.2 Simple Output
---------------------
-
-Once a file has been opened for writing a string can be written to the
-file using the ‘fputs’ function.  The following example shows how to
-write the string ‘Free Software is needed for Free Science’ to the file
-‘free.txt’.
-
-     filename = "free.txt";
-     fid = fopen (filename, "w");
-     fputs (fid, "Free Software is needed for Free Science");
-     fclose (fid);
-
- -- Built-in Function: fputs (FID, STRING)
- -- Built-in Function: STATUS = fputs (FID, STRING)
-     Write the string STRING to the file with file descriptor FID.
-
-     The string is written to the file with no additional formatting.
-     Use ‘fdisp’ instead to automatically append a newline character
-     appropriate for the local machine.
-
-     Return a non-negative number on success or EOF on error.
-
-     See also: *note fdisp: XREFfdisp, *note fprintf: XREFfprintf, *note
-     fwrite: XREFfwrite, *note fopen: XREFfopen.
-
-   A function much similar to ‘fputs’ is available for writing data to
-the screen.  The ‘puts’ function works just like ‘fputs’ except it
-doesn’t take a file pointer as its input.
-
- -- Built-in Function: puts (STRING)
- -- Built-in Function: STATUS = puts (STRING)
-     Write a string to the standard output with no formatting.
-
-     The string is written verbatim to the standard output.  Use ‘disp’
-     to automatically append a newline character appropriate for the
-     local machine.
-
-     Return a non-negative number on success and EOF on error.
-
-     See also: *note fputs: XREFfputs, *note disp: XREFdisp.
 

@@ -20,12 +20,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-complex.h"
 #include "ov-flt-complex.h"
@@ -47,8 +47,8 @@ DEFNDBINOP_OP (mul, float_complex, float_complex_matrix, float_complex,
 
 DEFBINOP (div, float_complex, float_complex_matrix)
 {
-  CAST_BINOP_ARGS (const octave_float_complex&,
-                   const octave_float_complex_matrix&);
+  const octave_float_complex& v1 = dynamic_cast<const octave_float_complex&> (a1);
+  const octave_float_complex_matrix& v2 = dynamic_cast<const octave_float_complex_matrix&> (a2);
 
   FloatComplexMatrix m1 = v1.float_complex_matrix_value ();
   FloatComplexMatrix m2 = v2.float_complex_matrix_value ();
@@ -64,13 +64,13 @@ DEFBINOP_FN (pow, float_complex, float_complex_matrix, xpow)
 
 DEFBINOP (ldiv, float_complex, float_complex_matrix)
 {
-  CAST_BINOP_ARGS (const octave_float_complex&,
-                   const octave_float_complex_matrix&);
+  const octave_float_complex& v1 = dynamic_cast<const octave_float_complex&> (a1);
+  const octave_float_complex_matrix& v2 = dynamic_cast<const octave_float_complex_matrix&> (a2);
 
   FloatComplex d = v1.float_complex_value ();
 
   if (d == 0.0f)
-    gripe_divide_by_zero ();
+    warn_divide_by_zero ();
 
   return octave_value (v2.float_complex_array_value () / d);
 }
@@ -97,13 +97,13 @@ DEFNDBINOP_FN (el_pow, float_complex, float_complex_matrix, float_complex,
 
 DEFBINOP (el_ldiv, float_complex, float_complex_matrix)
 {
-  CAST_BINOP_ARGS (const octave_float_complex&,
-                   const octave_float_complex_matrix&);
+  const octave_float_complex& v1 = dynamic_cast<const octave_float_complex&> (a1);
+  const octave_float_complex_matrix& v2 = dynamic_cast<const octave_float_complex_matrix&> (a2);
 
   FloatComplex d = v1.float_complex_value ();
 
   if (d == 0.0f)
-    gripe_divide_by_zero ();
+    warn_divide_by_zero ();
 
   return octave_value (v2.float_complex_array_value () / d);
 }
@@ -124,7 +124,7 @@ DEFNDCATOP_FN (fcs_cm, float_complex, complex_matrix, float_complex_array,
 
 DEFCONV (float_complex_matrix_conv, float_complex, float_complex_matrix)
 {
-  CAST_CONV_ARG (const octave_float_complex&);
+  const octave_float_complex& v = dynamic_cast<const octave_float_complex&> (a);
 
   return new octave_float_complex_matrix (v.float_complex_matrix_value ());
 }

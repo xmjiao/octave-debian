@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -63,7 +64,8 @@ order to address the data structures which control visual display.  A
 graphics handle may point to any one of a number of different base object
 types and these objects are the graphics data structures themselves.  The
 primitive graphic object types are: <code>figure</code>, <code>axes</code>, <code>line</code>,
-<code>text</code>, <code>patch</code>, <code>surface</code>, <code>text</code>, and <code>image</code>.
+<code>text</code>, <code>patch</code>, <code>surface</code>, <code>text</code>, <code>image</code>, and
+<code>light</code>.
 </p>
 <p>Each of these objects has a function by the same name, and, each of these
 functions returns a graphics handle pointing to an object of the corresponding
@@ -89,7 +91,7 @@ the root object.
 <p>3. Below the <code>figure</code> objects are <code>axes</code> objects.
 </p>
 <p>4. Below the <code>axes</code> objects are <code>line</code>, <code>text</code>, <code>patch</code>,
-<code>surface</code>, and <code>image</code> objects.
+<code>surface</code>, <code>image</code>, and <code>light</code> objects.
 </p>
 <p>Graphics handles may be distinguished from function handles
 (see <a href="Function-Handles.html#Function-Handles">Function Handles</a>) by means of the function <code>ishandle</code>.
@@ -164,7 +166,7 @@ handlevisibility       renderermode
 <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>.
 </p>
 <a name="XREFisprop"></a><dl>
-<dt><a name="index-isprop"></a>Function File: <em><var>res</var> =</em> <strong>isprop</strong> <em>(<var>obj</var>, &quot;<var>prop</var>&quot;)</em></dt>
+<dt><a name="index-isprop"></a>: <em><var>res</var> =</em> <strong>isprop</strong> <em>(<var>obj</var>, &quot;<var>prop</var>&quot;)</em></dt>
 <dd><p>Return true if <var>prop</var> is a property of the object <var>obj</var>.
 </p>
 <p><var>obj</var> may also be an array of objects in which case <var>res</var> will be a

@@ -17,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{A} =} importdata (@var{fname})
-## @deftypefnx {Function File} {@var{A} =} importdata (@var{fname}, @var{delimiter})
-## @deftypefnx {Function File} {@var{A} =} importdata (@var{fname}, @var{delimiter}, @var{header_rows})
-## @deftypefnx {Function File} {[@var{A}, @var{delimiter}] =} importdata (@dots{})
-## @deftypefnx {Function File} {[@var{A}, @var{delimiter}, @var{header_rows}] =} importdata (@dots{})
+## @deftypefn  {} {@var{A} =} importdata (@var{fname})
+## @deftypefnx {} {@var{A} =} importdata (@var{fname}, @var{delimiter})
+## @deftypefnx {} {@var{A} =} importdata (@var{fname}, @var{delimiter}, @var{header_rows})
+## @deftypefnx {} {[@var{A}, @var{delimiter}] =} importdata (@dots{})
+## @deftypefnx {} {[@var{A}, @var{delimiter}, @var{header_rows}] =} importdata (@dots{})
 ## Import data from the file @var{fname}.
 ##
 ## Input parameters:
@@ -92,7 +92,7 @@ function [output, delimiter, header_rows] = importdata (fname, delimiter = "", h
   endif
 
   ## Check file format
-  ## Get the extension from the file name.
+  ## Get the extension from the filename.
   [~, ~, ext, ~] = fileparts (fname);
   ext = lower (ext);
 
@@ -191,7 +191,7 @@ function [output, delimiter, header_rows] = importdata_ascii (fname, delimiter, 
     endif
     row_data = str2double (row_entries);
     if (all (isnan (row_data)) || header_rows < num_header_rows)
-      header_rows++;
+      header_rows += 1;
       output.textdata{end+1, 1} = row;
     else
       if (! isempty (output.textdata))

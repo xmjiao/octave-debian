@@ -42,6 +42,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -74,6 +75,7 @@ ul.no-bullet {list-style: none}
 this manual provided the copyright notice and this permission notice
 are preserved on all copies.
 </p>
+
 <p>Permission is granted to copy and distribute modified versions of
 this manual under the conditions for verbatim copying, provided that
 the entire resulting derived work is distributed under the terms of
@@ -409,6 +411,15 @@ modified versions.
         <li><a name="toc-Image-Properties-1" href="Image-Properties.html#Image-Properties">15.3.3.6 Image Properties</a></li>
         <li><a name="toc-Patch-Properties-1" href="Patch-Properties.html#Patch-Properties">15.3.3.7 Patch Properties</a></li>
         <li><a name="toc-Surface-Properties-1" href="Surface-Properties.html#Surface-Properties">15.3.3.8 Surface Properties</a></li>
+        <li><a name="toc-Light-Properties-1" href="Light-Properties.html#Light-Properties">15.3.3.9 Light Properties</a></li>
+        <li><a name="toc-Uimenu-Properties-1" href="Uimenu-Properties.html#Uimenu-Properties">15.3.3.10 Uimenu Properties</a></li>
+        <li><a name="toc-Uibuttongroup-Properties-1" href="Uibuttongroup-Properties.html#Uibuttongroup-Properties">15.3.3.11 Uibuttongroup Properties</a></li>
+        <li><a name="toc-Uicontextmenu-Properties-1" href="Uicontextmenu-Properties.html#Uicontextmenu-Properties">15.3.3.12 Uicontextmenu Properties</a></li>
+        <li><a name="toc-Uipanel-Properties-1" href="Uipanel-Properties.html#Uipanel-Properties">15.3.3.13 Uipanel Properties</a></li>
+        <li><a name="toc-Uicontrol-Properties-1" href="Uicontrol-Properties.html#Uicontrol-Properties">15.3.3.14 Uicontrol Properties</a></li>
+        <li><a name="toc-Uitoolbar-Properties-1" href="Uitoolbar-Properties.html#Uitoolbar-Properties">15.3.3.15 Uitoolbar Properties</a></li>
+        <li><a name="toc-Uipushtool-Properties-1" href="Uipushtool-Properties.html#Uipushtool-Properties">15.3.3.16 Uipushtool Properties</a></li>
+        <li><a name="toc-Uitoggletool-Properties-1" href="Uitoggletool-Properties.html#Uitoggletool-Properties">15.3.3.17 Uitoggletool Properties</a></li>
       </ul></li>
       <li><a name="toc-Searching-Properties-1" href="Searching-Properties.html#Searching-Properties">15.3.4 Searching Properties</a></li>
       <li><a name="toc-Managing-Default-Properties-1" href="Managing-Default-Properties.html#Managing-Default-Properties">15.3.5 Managing Default Properties</a></li>
@@ -532,7 +543,10 @@ modified versions.
   </ul></li>
   <li><a name="toc-Differential-Equations-1" href="Differential-Equations.html#Differential-Equations">24 Differential Equations</a>
   <ul class="no-bullet">
-    <li><a name="toc-Ordinary-Differential-Equations-1" href="Ordinary-Differential-Equations.html#Ordinary-Differential-Equations">24.1 Ordinary Differential Equations</a></li>
+    <li><a name="toc-Ordinary-Differential-Equations-1" href="Ordinary-Differential-Equations.html#Ordinary-Differential-Equations">24.1 Ordinary Differential Equations</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Matlab_002dcompatible-solvers-1" href="Matlab_002dcompatible-solvers.html#Matlab_002dcompatible-solvers">24.1.1 Matlab-compatible solvers</a></li>
+    </ul></li>
     <li><a name="toc-Differential_002dAlgebraic-Equations-1" href="Differential_002dAlgebraic-Equations.html#Differential_002dAlgebraic-Equations">24.2 Differential-Algebraic Equations</a></li>
   </ul></li>
   <li><a name="toc-Optimization-1" href="Optimization.html#Optimization">25 Optimization</a>
@@ -610,7 +624,7 @@ modified versions.
   <li><a name="toc-Object-Oriented-Programming-1" href="Object-Oriented-Programming.html#Object-Oriented-Programming">34 Object Oriented Programming</a>
   <ul class="no-bullet">
     <li><a name="toc-Creating-a-Class-1" href="Creating-a-Class.html#Creating-a-Class">34.1 Creating a Class</a></li>
-    <li><a name="toc-Manipulating-Classes-1" href="Manipulating-Classes.html#Manipulating-Classes">34.2 Manipulating Classes</a></li>
+    <li><a name="toc-Class-Methods-1" href="Class-Methods.html#Class-Methods">34.2 Class Methods</a></li>
     <li><a name="toc-Indexing-Objects-1" href="Indexing-Objects.html#Indexing-Objects">34.3 Indexing Objects</a>
     <ul class="no-bullet">
       <li><a name="toc-Defining-Indexing-And-Indexed-Assignment-1" href="Defining-Indexing-And-Indexed-Assignment.html#Defining-Indexing-And-Indexed-Assignment">34.3.1 Defining Indexing And Indexed Assignment</a></li>
@@ -652,30 +666,17 @@ modified versions.
     <li><a name="toc-System-Information-1" href="System-Information.html#System-Information">36.11 System Information</a></li>
     <li><a name="toc-Hashing-Functions-1" href="Hashing-Functions.html#Hashing-Functions">36.12 Hashing Functions</a></li>
   </ul></li>
-  <li><a name="toc-Java-Interface-1" href="Java-Interface.html#Java-Interface">37 Java Interface</a>
+  <li><a name="toc-Packages-1" href="Packages.html#Packages">37 Packages</a>
   <ul class="no-bullet">
-    <li><a name="toc-Java-Interface-Functions-1" href="Java-Interface-Functions.html#Java-Interface-Functions">37.1 Java Interface Functions</a></li>
-    <li><a name="toc-Dialog-Box-Functions-1" href="Dialog-Box-Functions.html#Dialog-Box-Functions">37.2 Dialog Box Functions</a></li>
-    <li><a name="toc-FAQ-_002d-Frequently-asked-Questions-1" href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions">37.3 FAQ - Frequently asked Questions</a>
+    <li><a name="toc-Installing-and-Removing-Packages-1" href="Installing-and-Removing-Packages.html#Installing-and-Removing-Packages">37.1 Installing and Removing Packages</a></li>
+    <li><a name="toc-Using-Packages-1" href="Using-Packages.html#Using-Packages">37.2 Using Packages</a></li>
+    <li><a name="toc-Administrating-Packages-1" href="Administrating-Packages.html#Administrating-Packages">37.3 Administrating Packages</a></li>
+    <li><a name="toc-Creating-Packages-1" href="Creating-Packages.html#Creating-Packages">37.4 Creating Packages</a>
     <ul class="no-bullet">
-      <li><a name="toc-How-to-distinguish-between-Octave-and-Matlab_003f-1" href="How-to-distinguish-between-Octave-and-Matlab_003f.html#How-to-distinguish-between-Octave-and-Matlab_003f">37.3.1 How to distinguish between Octave and Matlab?</a></li>
-      <li><a name="toc-How-to-make-Java-classes-available-to-Octave_003f" href="How-to-make-Java-classes-available_003f.html#How-to-make-Java-classes-available_003f">37.3.2 How to make Java classes available to Octave?</a></li>
-      <li><a name="toc-How-to-create-an-instance-of-a-Java-class_003f-1" href="How-to-create-an-instance-of-a-Java-class_003f.html#How-to-create-an-instance-of-a-Java-class_003f">37.3.3 How to create an instance of a Java class?</a></li>
-      <li><a name="toc-How-can-I-handle-memory-limitations_003f-1" href="How-can-I-handle-memory-limitations_003f.html#How-can-I-handle-memory-limitations_003f">37.3.4 How can I handle memory limitations?</a></li>
-      <li><a name="toc-Which-TeX-symbols-are-implemented-in-dialog-functions_003f-1" href="Which-TeX-symbols-are-implemented-in-dialog-functions_003f.html#Which-TeX-symbols-are-implemented-in-dialog-functions_003f">37.3.5 Which TeX symbols are implemented in dialog functions?</a></li>
-    </ul></li>
-  </ul></li>
-  <li><a name="toc-Packages-1" href="Packages.html#Packages">38 Packages</a>
-  <ul class="no-bullet">
-    <li><a name="toc-Installing-and-Removing-Packages-1" href="Installing-and-Removing-Packages.html#Installing-and-Removing-Packages">38.1 Installing and Removing Packages</a></li>
-    <li><a name="toc-Using-Packages-1" href="Using-Packages.html#Using-Packages">38.2 Using Packages</a></li>
-    <li><a name="toc-Administrating-Packages-1" href="Administrating-Packages.html#Administrating-Packages">38.3 Administrating Packages</a></li>
-    <li><a name="toc-Creating-Packages-1" href="Creating-Packages.html#Creating-Packages">38.4 Creating Packages</a>
-    <ul class="no-bullet">
-      <li><a name="toc-The-DESCRIPTION-File-1" href="The-DESCRIPTION-File.html#The-DESCRIPTION-File">38.4.1 The DESCRIPTION File</a></li>
-      <li><a name="toc-The-INDEX-File-1" href="The-INDEX-File.html#The-INDEX-File">38.4.2 The INDEX File</a></li>
-      <li><a name="toc-PKG_005fADD-and-PKG_005fDEL-Directives-1" href="PKG_005fADD-and-PKG_005fDEL-Directives.html#PKG_005fADD-and-PKG_005fDEL-Directives">38.4.3 PKG_ADD and PKG_DEL Directives</a></li>
-      <li><a name="toc-Missing-Components-1" href="Missing-Components.html#Missing-Components">38.4.4 Missing Components</a></li>
+      <li><a name="toc-The-DESCRIPTION-File-1" href="The-DESCRIPTION-File.html#The-DESCRIPTION-File">37.4.1 The DESCRIPTION File</a></li>
+      <li><a name="toc-The-INDEX-File-1" href="The-INDEX-File.html#The-INDEX-File">37.4.2 The INDEX File</a></li>
+      <li><a name="toc-PKG_005fADD-and-PKG_005fDEL-Directives-1" href="PKG_005fADD-and-PKG_005fDEL-Directives.html#PKG_005fADD-and-PKG_005fDEL-Directives">37.4.3 PKG_ADD and PKG_DEL Directives</a></li>
+      <li><a name="toc-Missing-Components-1" href="Missing-Components.html#Missing-Components">37.4.4 Missing Components</a></li>
     </ul></li>
   </ul></li>
   <li><a name="toc-External-Code-Interface-1" href="External-Code-Interface.html#External-Code-Interface">Appendix A External Code Interface</a>
@@ -712,6 +713,13 @@ modified versions.
       <li><a name="toc-Calling-Other-Functions-in-Mex_002dFiles-1" href="Calling-Other-Functions-in-Mex_002dFiles.html#Calling-Other-Functions-in-Mex_002dFiles">A.2.7 Calling Other Functions in Mex-Files</a></li>
     </ul></li>
     <li><a name="toc-Standalone-Programs-1" href="Standalone-Programs.html#Standalone-Programs">A.3 Standalone Programs</a></li>
+    <li><a name="toc-Java-Interface-1" href="Java-Interface.html#Java-Interface">A.4 Java Interface</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Java-Interface-Functions-1" href="Java-Interface-Functions.html#Java-Interface-Functions">A.4.1 Java Interface Functions</a></li>
+      <li><a name="toc-Making-Java-classes-available-1" href="Making-Java-classes-available.html#Making-Java-classes-available">A.4.2 Making Java classes available</a></li>
+      <li><a name="toc-Creating-an-instance-of-a-Java-class-1" href="Creating-an-instance-of-a-Java-class.html#Creating-an-instance-of-a-Java-class">A.4.3 Creating an instance of a Java class</a></li>
+      <li><a name="toc-Handling-Java-memory-limitations-1" href="Handling-Java-memory-limitations.html#Handling-Java-memory-limitations">A.4.4 Handling Java memory limitations</a></li>
+    </ul></li>
   </ul></li>
   <li><a name="toc-Test-and-Demo-Functions-1" href="Test-and-Demo-Functions.html#Test-and-Demo-Functions">Appendix B Test and Demo Functions</a>
   <ul class="no-bullet">
@@ -746,7 +754,8 @@ modified versions.
       <li><a name="toc-How-to-Report-Bugs" href="Bug-Reporting.html#Bug-Reporting">F.2.3 How to Report Bugs</a></li>
       <li><a name="toc-Sending-Patches-for-Octave" href="Sending-Patches.html#Sending-Patches">F.2.4 Sending Patches for Octave</a></li>
     </ul></li>
-    <li><a name="toc-How-To-Get-Help-with-Octave" href="Service.html#Service">F.3 How To Get Help with Octave</a></li>
+    <li><a name="toc-How-To-Get-Help-with-Octave-1" href="How-To-Get-Help-with-Octave.html#How-To-Get-Help-with-Octave">F.3 How To Get Help with Octave</a></li>
+    <li><a name="toc-How-to-distinguish-between-Octave-and-Matlab-1" href="How-to-distinguish-between-Octave-and-Matlab.html#How-to-distinguish-between-Octave-and-Matlab">F.4 How to distinguish between Octave and Matlab</a></li>
   </ul></li>
   <li><a name="toc-Installing-Octave" href="Installation.html#Installation">Appendix G Installing Octave</a>
   <ul class="no-bullet">
@@ -790,7 +799,7 @@ Next: <a href="Preface.html#Preface" accesskey="n" rel="next">Preface</a>, Up: <
 
 <p>This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.
-It corresponds to GNU Octave version 4.0.3.
+It corresponds to GNU Octave version 4.1.0+.
 </p>
 
 <table class="menu" border="0" cellspacing="0">
@@ -867,8 +876,6 @@ It corresponds to GNU Octave version 4.0.3.
 <tr><td align="left" valign="top">&bull; <a href="GUI-Development.html#GUI-Development">GUI Development</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="System-Utilities.html#System-Utilities">System Utilities</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Java-Interface.html#Java-Interface">Java Interface</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="Packages.html#Packages">Packages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
@@ -1490,6 +1497,20 @@ Graphics Object Properties
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="Surface-Properties.html#Surface-Properties">Surface Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Uimenu-Properties.html#Uimenu-Properties">Uimenu Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Uicontextmenu-Properties.html#Uicontextmenu-Properties">Uicontextmenu Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Uipanel-Properties.html#Uipanel-Properties">Uipanel Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Uicontrol-Properties.html#Uicontrol-Properties">Uicontrol Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Uitoolbar-Properties.html#Uitoolbar-Properties">Uitoolbar Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Uipushtool-Properties.html#Uipushtool-Properties">Uipushtool Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Uitoggletool-Properties.html#Uitoggletool-Properties">Uitoggletool Properties</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
 Advanced Plotting
@@ -1708,6 +1729,12 @@ Differential Equations
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
+Ordinary Differential Equations
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Matlab_002dcompatible-solvers.html#Matlab_002dcompatible-solvers">Matlab-compatible solvers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
 Optimization
 
 </pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Linear-Programming.html#Linear-Programming">Linear Programming</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
@@ -1838,7 +1865,7 @@ Object Oriented Programming
 
 </pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Creating-a-Class.html#Creating-a-Class">Creating a Class</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Manipulating-Classes.html#Manipulating-Classes">Manipulating Classes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Class-Methods.html#Class-Methods">Class Methods</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="Indexing-Objects.html#Indexing-Objects">Indexing Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
@@ -1918,30 +1945,6 @@ Networking Utilities
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
-Java Interface
-
-</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Java-Interface-Functions.html#Java-Interface-Functions">Java Interface Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Dialog-Box-Functions.html#Dialog-Box-Functions">Dialog Box Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="FAQ-_002d-Frequently-asked-Questions.html#FAQ-_002d-Frequently-asked-Questions">FAQ - Frequently asked Questions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
-</td></tr>
-<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
-
-FAQ - Frequently asked Questions
-
-</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="How-to-distinguish-between-Octave-and-Matlab_003f.html#How-to-distinguish-between-Octave-and-Matlab_003f">How to distinguish between Octave and Matlab?</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="How-to-make-Java-classes-available_003f.html#How-to-make-Java-classes-available_003f">How to make Java classes available?</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="How-to-create-an-instance-of-a-Java-class_003f.html#How-to-create-an-instance-of-a-Java-class_003f">How to create an instance of a Java class?</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="How-can-I-handle-memory-limitations_003f.html#How-can-I-handle-memory-limitations_003f">How can I handle memory limitations?</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Which-TeX-symbols-are-implemented-in-dialog-functions_003f.html#Which-TeX-symbols-are-implemented-in-dialog-functions_003f">Which TeX symbols are implemented in dialog functions?</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
-</td></tr>
-<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
-
 Packages
 
 </pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Installing-and-Removing-Packages.html#Installing-and-Removing-Packages">Installing and Removing Packages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
@@ -1973,6 +1976,8 @@ External Code Interface
 <tr><td align="left" valign="top">&bull; <a href="Mex_002dFiles.html#Mex_002dFiles">Mex-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="Standalone-Programs.html#Standalone-Programs">Standalone Programs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Java-Interface.html#Java-Interface">Java Interface</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
@@ -2034,6 +2039,18 @@ Mex-Files
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
+Java Interface
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Java-Interface-Functions.html#Java-Interface-Functions">Java Interface Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Making-Java-classes-available.html#Making-Java-classes-available">Making Java classes available</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Creating-an-instance-of-a-Java-class.html#Creating-an-instance-of-a-Java-class">Creating an instance of a Java class</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Handling-Java-memory-limitations.html#Handling-Java-memory-limitations">Handling Java memory limitations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+
 Test and Demo Functions
 
 </pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Test-Functions.html#Test-Functions">Test Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
@@ -2078,7 +2095,9 @@ Trouble
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="Reporting-Bugs.html#Reporting-Bugs">Reporting Bugs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Service.html#Service">Service</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="How-To-Get-Help-with-Octave.html#How-To-Get-Help-with-Octave">How To Get Help with Octave</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="How-to-distinguish-between-Octave-and-Matlab.html#How-to-distinguish-between-Octave-and-Matlab">How to distinguish between Octave and Matlab</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 

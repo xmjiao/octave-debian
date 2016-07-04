@@ -21,8 +21,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_oct_convn_h)
+#if ! defined (octave_oct_convn_h)
 #define octave_oct_convn_h 1
+
+#include "octave-config.h"
 
 #include "dMatrix.h"
 #include "fMatrix.h"

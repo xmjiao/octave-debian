@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -64,12 +65,12 @@ of integer data and convert among the supported floating point formats
 as the data are read.
 </p>
 <a name="XREFfread"></a><dl>
-<dt><a name="index-fread"></a>Built-in Function: <em><var>val</var> =</em> <strong>fread</strong> <em>(<var>fid</var>)</em></dt>
-<dt><a name="index-fread-1"></a>Built-in Function: <em><var>val</var> =</em> <strong>fread</strong> <em>(<var>fid</var>, <var>size</var>)</em></dt>
-<dt><a name="index-fread-2"></a>Built-in Function: <em><var>val</var> =</em> <strong>fread</strong> <em>(<var>fid</var>, <var>size</var>, <var>precision</var>)</em></dt>
-<dt><a name="index-fread-3"></a>Built-in Function: <em><var>val</var> =</em> <strong>fread</strong> <em>(<var>fid</var>, <var>size</var>, <var>precision</var>, <var>skip</var>)</em></dt>
-<dt><a name="index-fread-4"></a>Built-in Function: <em><var>val</var> =</em> <strong>fread</strong> <em>(<var>fid</var>, <var>size</var>, <var>precision</var>, <var>skip</var>, <var>arch</var>)</em></dt>
-<dt><a name="index-fread-5"></a>Built-in Function: <em>[<var>val</var>, <var>count</var>] =</em> <strong>fread</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-fread"></a>: <em><var>val</var> =</em> <strong>fread</strong> <em>(<var>fid</var>)</em></dt>
+<dt><a name="index-fread-1"></a>: <em><var>val</var> =</em> <strong>fread</strong> <em>(<var>fid</var>, <var>size</var>)</em></dt>
+<dt><a name="index-fread-2"></a>: <em><var>val</var> =</em> <strong>fread</strong> <em>(<var>fid</var>, <var>size</var>, <var>precision</var>)</em></dt>
+<dt><a name="index-fread-3"></a>: <em><var>val</var> =</em> <strong>fread</strong> <em>(<var>fid</var>, <var>size</var>, <var>precision</var>, <var>skip</var>)</em></dt>
+<dt><a name="index-fread-4"></a>: <em><var>val</var> =</em> <strong>fread</strong> <em>(<var>fid</var>, <var>size</var>, <var>precision</var>, <var>skip</var>, <var>arch</var>)</em></dt>
+<dt><a name="index-fread-5"></a>: <em>[<var>val</var>, <var>count</var>] =</em> <strong>fread</strong> <em>(&hellip;)</em></dt>
 <dd><p>Read binary data from the file specified by the file descriptor <var>fid</var>.
 </p>
 <p>The optional argument <var>size</var> specifies the amount of data to read
@@ -260,11 +261,11 @@ created the file descriptor is used.  Otherwise, the value specified with
 
 
 <a name="XREFfwrite"></a><dl>
-<dt><a name="index-fwrite"></a>Built-in Function: <em></em> <strong>fwrite</strong> <em>(<var>fid</var>, <var>data</var>)</em></dt>
-<dt><a name="index-fwrite-1"></a>Built-in Function: <em></em> <strong>fwrite</strong> <em>(<var>fid</var>, <var>data</var>, <var>precision</var>)</em></dt>
-<dt><a name="index-fwrite-2"></a>Built-in Function: <em></em> <strong>fwrite</strong> <em>(<var>fid</var>, <var>data</var>, <var>precision</var>, <var>skip</var>)</em></dt>
-<dt><a name="index-fwrite-3"></a>Built-in Function: <em></em> <strong>fwrite</strong> <em>(<var>fid</var>, <var>data</var>, <var>precision</var>, <var>skip</var>, <var>arch</var>)</em></dt>
-<dt><a name="index-fwrite-4"></a>Built-in Function: <em><var>count</var> =</em> <strong>fwrite</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-fwrite"></a>: <em></em> <strong>fwrite</strong> <em>(<var>fid</var>, <var>data</var>)</em></dt>
+<dt><a name="index-fwrite-1"></a>: <em></em> <strong>fwrite</strong> <em>(<var>fid</var>, <var>data</var>, <var>precision</var>)</em></dt>
+<dt><a name="index-fwrite-2"></a>: <em></em> <strong>fwrite</strong> <em>(<var>fid</var>, <var>data</var>, <var>precision</var>, <var>skip</var>)</em></dt>
+<dt><a name="index-fwrite-3"></a>: <em></em> <strong>fwrite</strong> <em>(<var>fid</var>, <var>data</var>, <var>precision</var>, <var>skip</var>, <var>arch</var>)</em></dt>
+<dt><a name="index-fwrite-4"></a>: <em><var>count</var> =</em> <strong>fwrite</strong> <em>(&hellip;)</em></dt>
 <dd><p>Write data in binary form to the file specified by the file descriptor
 <var>fid</var>, returning the number of values <var>count</var> successfully written
 to the file.

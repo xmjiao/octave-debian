@@ -20,13 +20,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QPushButton>
 
 #include "ToggleButtonControl.h"
+#include "ButtonGroup.h"
 #include "Container.h"
 #include "QtHandlesUtils.h"
 
@@ -53,6 +54,11 @@ ToggleButtonControl::ToggleButtonControl (const graphics_object& go,
                                           QPushButton* btn)
     : ButtonControl (go, btn)
 {
+  Object* parent = Object::parentObject (go);
+  ButtonGroup* btnGroup = dynamic_cast<ButtonGroup*>(parent);
+  if (btnGroup)
+    btnGroup->addButton (btn);
+
   btn->setCheckable (true);
   btn->setAutoFillBackground (true);
 }

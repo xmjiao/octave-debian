@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -74,7 +75,7 @@ quote( quote == &quot; &quot; ) = &quot;_&quot;
 general regular expressions, the following functions come with Octave.
 </p>
 <a name="XREFdeblank"></a><dl>
-<dt><a name="index-deblank"></a>Function File: <em></em> <strong>deblank</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-deblank"></a>: <em></em> <strong>deblank</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Remove trailing whitespace and nulls from <var>s</var>.
 </p>
 <p>If <var>s</var> is a matrix, <var>deblank</var> trims each row to the length of
@@ -96,7 +97,7 @@ deblank ([&quot; abc   &quot;; &quot;   def   &quot;])
 
 
 <a name="XREFstrtrim"></a><dl>
-<dt><a name="index-strtrim"></a>Function File: <em></em> <strong>strtrim</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-strtrim"></a>: <em></em> <strong>strtrim</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Remove leading and trailing whitespace from <var>s</var>.
 </p>
 <p>If <var>s</var> is a matrix, <var>strtrim</var> trims each row to the length of
@@ -118,7 +119,7 @@ strtrim ([&quot; abc   &quot;; &quot;   def   &quot;])
 
 
 <a name="XREFstrtrunc"></a><dl>
-<dt><a name="index-strtrunc"></a>Function File: <em></em> <strong>strtrunc</strong> <em>(<var>s</var>, <var>n</var>)</em></dt>
+<dt><a name="index-strtrunc"></a>: <em></em> <strong>strtrunc</strong> <em>(<var>s</var>, <var>n</var>)</em></dt>
 <dd><p>Truncate the character string <var>s</var> to length <var>n</var>.
 </p>
 <p>If <var>s</var> is a character matrix, then the number of columns is adjusted.
@@ -129,8 +130,8 @@ on each cell element and the new cell array is returned.
 
 
 <a name="XREFfindstr"></a><dl>
-<dt><a name="index-findstr"></a>Function File: <em></em> <strong>findstr</strong> <em>(<var>s</var>, <var>t</var>)</em></dt>
-<dt><a name="index-findstr-1"></a>Function File: <em></em> <strong>findstr</strong> <em>(<var>s</var>, <var>t</var>, <var>overlap</var>)</em></dt>
+<dt><a name="index-findstr"></a>: <em></em> <strong>findstr</strong> <em>(<var>s</var>, <var>t</var>)</em></dt>
+<dt><a name="index-findstr-1"></a>: <em></em> <strong>findstr</strong> <em>(<var>s</var>, <var>t</var>, <var>overlap</var>)</em></dt>
 <dd><p>Return the vector of all positions in the longer of the two strings <var>s</var>
 and <var>t</var> where an occurrence of the shorter of the two starts.
 </p>
@@ -152,10 +153,10 @@ findstr (&quot;abababa&quot;, &quot;aba&quot;, 0)
 
 
 <a name="XREFstrchr"></a><dl>
-<dt><a name="index-strchr"></a>Function File: <em><var>idx</var> =</em> <strong>strchr</strong> <em>(<var>str</var>, <var>chars</var>)</em></dt>
-<dt><a name="index-strchr-1"></a>Function File: <em><var>idx</var> =</em> <strong>strchr</strong> <em>(<var>str</var>, <var>chars</var>, <var>n</var>)</em></dt>
-<dt><a name="index-strchr-2"></a>Function File: <em><var>idx</var> =</em> <strong>strchr</strong> <em>(<var>str</var>, <var>chars</var>, <var>n</var>, <var>direction</var>)</em></dt>
-<dt><a name="index-strchr-3"></a>Function File: <em>[<var>i</var>, <var>j</var>] =</em> <strong>strchr</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-strchr"></a>: <em><var>idx</var> =</em> <strong>strchr</strong> <em>(<var>str</var>, <var>chars</var>)</em></dt>
+<dt><a name="index-strchr-1"></a>: <em><var>idx</var> =</em> <strong>strchr</strong> <em>(<var>str</var>, <var>chars</var>, <var>n</var>)</em></dt>
+<dt><a name="index-strchr-2"></a>: <em><var>idx</var> =</em> <strong>strchr</strong> <em>(<var>str</var>, <var>chars</var>, <var>n</var>, <var>direction</var>)</em></dt>
+<dt><a name="index-strchr-3"></a>: <em>[<var>i</var>, <var>j</var>] =</em> <strong>strchr</strong> <em>(&hellip;)</em></dt>
 <dd><p>Search for the string <var>str</var> for occurrences of characters from
 the set <var>chars</var>.
 </p>
@@ -170,8 +171,8 @@ behave identically as in <code>find</code>.
 
 
 <a name="XREFindex"></a><dl>
-<dt><a name="index-index"></a>Function File: <em></em> <strong>index</strong> <em>(<var>s</var>, <var>t</var>)</em></dt>
-<dt><a name="index-index-1"></a>Function File: <em></em> <strong>index</strong> <em>(<var>s</var>, <var>t</var>, <var>direction</var>)</em></dt>
+<dt><a name="index-index"></a>: <em></em> <strong>index</strong> <em>(<var>s</var>, <var>t</var>)</em></dt>
+<dt><a name="index-index-1"></a>: <em></em> <strong>index</strong> <em>(<var>s</var>, <var>t</var>, <var>direction</var>)</em></dt>
 <dd><p>Return the position of the first occurrence of the string <var>t</var> in the
 string <var>s</var>, or 0 if no occurrence is found.
 </p>
@@ -193,7 +194,7 @@ If <var>direction</var> is <code>&quot;last&quot;</code>, return the last elemen
 
 
 <a name="XREFrindex"></a><dl>
-<dt><a name="index-rindex"></a>Function File: <em></em> <strong>rindex</strong> <em>(<var>s</var>, <var>t</var>)</em></dt>
+<dt><a name="index-rindex"></a>: <em></em> <strong>rindex</strong> <em>(<var>s</var>, <var>t</var>)</em></dt>
 <dd><p>Return the position of the last occurrence of the character string
 <var>t</var> in the character string <var>s</var>, or 0 if no occurrence is
 found.
@@ -216,9 +217,9 @@ found.
 
 
 <a name="XREFstrfind"></a><dl>
-<dt><a name="index-strfind"></a>Built-in Function: <em><var>idx</var> =</em> <strong>strfind</strong> <em>(<var>str</var>, <var>pattern</var>)</em></dt>
-<dt><a name="index-strfind-1"></a>Built-in Function: <em><var>idx</var> =</em> <strong>strfind</strong> <em>(<var>cellstr</var>, <var>pattern</var>)</em></dt>
-<dt><a name="index-strfind-2"></a>Built-in Function: <em><var>idx</var> =</em> <strong>strfind</strong> <em>(&hellip;, &quot;overlaps&quot;, <var>val</var>)</em></dt>
+<dt><a name="index-strfind"></a>: <em><var>idx</var> =</em> <strong>strfind</strong> <em>(<var>str</var>, <var>pattern</var>)</em></dt>
+<dt><a name="index-strfind-1"></a>: <em><var>idx</var> =</em> <strong>strfind</strong> <em>(<var>cellstr</var>, <var>pattern</var>)</em></dt>
+<dt><a name="index-strfind-2"></a>: <em><var>idx</var> =</em> <strong>strfind</strong> <em>(&hellip;, &quot;overlaps&quot;, <var>val</var>)</em></dt>
 <dd><p>Search for <var>pattern</var> in the string <var>str</var> and return the starting
 index of every such occurrence in the vector <var>idx</var>.
 </p>
@@ -259,8 +260,8 @@ strfind ({&quot;abababa&quot;, &quot;bebebe&quot;, &quot;ab&quot;}, &quot;aba&qu
 
 
 <a name="XREFstrjoin"></a><dl>
-<dt><a name="index-strjoin"></a>Function File: <em><var>str</var> =</em> <strong>strjoin</strong> <em>(<var>cstr</var>)</em></dt>
-<dt><a name="index-strjoin-1"></a>Function File: <em><var>str</var> =</em> <strong>strjoin</strong> <em>(<var>cstr</var>, <var>delimiter</var>)</em></dt>
+<dt><a name="index-strjoin"></a>: <em><var>str</var> =</em> <strong>strjoin</strong> <em>(<var>cstr</var>)</em></dt>
+<dt><a name="index-strjoin-1"></a>: <em><var>str</var> =</em> <strong>strjoin</strong> <em>(<var>cstr</var>, <var>delimiter</var>)</em></dt>
 <dd><p>Join the elements of the cell string array, <var>cstr</var>, into a single
 string.
 </p>
@@ -285,8 +286,8 @@ supported.
 
 
 <a name="XREFstrmatch"></a><dl>
-<dt><a name="index-strmatch"></a>Function File: <em></em> <strong>strmatch</strong> <em>(<var>s</var>, <var>A</var>)</em></dt>
-<dt><a name="index-strmatch-1"></a>Function File: <em></em> <strong>strmatch</strong> <em>(<var>s</var>, <var>A</var>, &quot;exact&quot;)</em></dt>
+<dt><a name="index-strmatch"></a>: <em></em> <strong>strmatch</strong> <em>(<var>s</var>, <var>A</var>)</em></dt>
+<dt><a name="index-strmatch-1"></a>: <em></em> <strong>strmatch</strong> <em>(<var>s</var>, <var>A</var>, &quot;exact&quot;)</em></dt>
 <dd><p>Return indices of entries of <var>A</var> which begin with the string <var>s</var>.
 </p>
 <p>The second argument <var>A</var> must be a string, character matrix, or a cell
@@ -318,8 +319,8 @@ strmatch (&quot;apple&quot;, [&quot;apple  &quot;; &quot;apple juice&quot;; &quo
 
 
 <a name="XREFstrtok"></a><dl>
-<dt><a name="index-strtok"></a>Function File: <em>[<var>tok</var>, <var>rem</var>] =</em> <strong>strtok</strong> <em>(<var>str</var>)</em></dt>
-<dt><a name="index-strtok-1"></a>Function File: <em>[<var>tok</var>, <var>rem</var>] =</em> <strong>strtok</strong> <em>(<var>str</var>, <var>delim</var>)</em></dt>
+<dt><a name="index-strtok"></a>: <em>[<var>tok</var>, <var>rem</var>] =</em> <strong>strtok</strong> <em>(<var>str</var>)</em></dt>
+<dt><a name="index-strtok-1"></a>: <em>[<var>tok</var>, <var>rem</var>] =</em> <strong>strtok</strong> <em>(<var>str</var>, <var>delim</var>)</em></dt>
 <dd>
 <p>Find all characters in the string <var>str</var> up to, but not including, the
 first character which is in the string <var>delim</var>.
@@ -351,10 +352,10 @@ at the first delimiter.
 
 
 <a name="XREFstrsplit"></a><dl>
-<dt><a name="index-strsplit"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(<var>str</var>)</em></dt>
-<dt><a name="index-strsplit-1"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(<var>str</var>, <var>del</var>)</em></dt>
-<dt><a name="index-strsplit-2"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(&hellip;, <var>name</var>, <var>value</var>)</em></dt>
-<dt><a name="index-strsplit-3"></a>Function File: <em>[<var>cstr</var>, <var>matches</var>] =</em> <strong>strsplit</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-strsplit"></a>: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(<var>str</var>)</em></dt>
+<dt><a name="index-strsplit-1"></a>: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(<var>str</var>, <var>del</var>)</em></dt>
+<dt><a name="index-strsplit-2"></a>: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(&hellip;, <var>name</var>, <var>value</var>)</em></dt>
+<dt><a name="index-strsplit-3"></a>: <em>[<var>cstr</var>, <var>matches</var>] =</em> <strong>strsplit</strong> <em>(&hellip;)</em></dt>
 <dd><p>Split the string <var>str</var> using the delimiters specified by <var>del</var> and
 return a cell string array of substrings.
 </p>
@@ -465,8 +466,8 @@ strsplit (&quot;a,\t,b, c&quot;, {',', ' ', '\t'}, &quot;collapsedelimiters&quot
 
 
 <a name="XREFostrsplit"></a><dl>
-<dt><a name="index-ostrsplit"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>ostrsplit</strong> <em>(<var>s</var>, <var>sep</var>)</em></dt>
-<dt><a name="index-ostrsplit-1"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>ostrsplit</strong> <em>(<var>s</var>, <var>sep</var>, <var>strip_empty</var>)</em></dt>
+<dt><a name="index-ostrsplit"></a>: <em>[<var>cstr</var>] =</em> <strong>ostrsplit</strong> <em>(<var>s</var>, <var>sep</var>)</em></dt>
+<dt><a name="index-ostrsplit-1"></a>: <em>[<var>cstr</var>] =</em> <strong>ostrsplit</strong> <em>(<var>s</var>, <var>sep</var>, <var>strip_empty</var>)</em></dt>
 <dd><p>Split the string <var>s</var> using one or more separators <var>sep</var> and return
 a cell array of strings.
 </p>
@@ -502,11 +503,11 @@ ostrsplit ([&quot;a,b&quot; ; &quot;cde&quot;], &quot;,&quot;)
 
 
 <a name="XREFstrread"></a><dl>
-<dt><a name="index-strread"></a>Function File: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>)</em></dt>
-<dt><a name="index-strread-1"></a>Function File: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>)</em></dt>
-<dt><a name="index-strread-2"></a>Function File: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>, <var>format_repeat</var>)</em></dt>
-<dt><a name="index-strread-3"></a>Function File: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>, <var>prop1</var>, <var>value1</var>, &hellip;)</em></dt>
-<dt><a name="index-strread-4"></a>Function File: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>, <var>format_repeat</var>, <var>prop1</var>, <var>value1</var>, &hellip;)</em></dt>
+<dt><a name="index-strread"></a>: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>)</em></dt>
+<dt><a name="index-strread-1"></a>: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>)</em></dt>
+<dt><a name="index-strread-2"></a>: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>, <var>format_repeat</var>)</em></dt>
+<dt><a name="index-strread-3"></a>: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>, <var>prop1</var>, <var>value1</var>, &hellip;)</em></dt>
+<dt><a name="index-strread-4"></a>: <em>[<var>a</var>, &hellip;] =</em> <strong>strread</strong> <em>(<var>str</var>, <var>format</var>, <var>format_repeat</var>, <var>prop1</var>, <var>value1</var>, &hellip;)</em></dt>
 <dd><p>Read data from a string.
 </p>
 <p>The string <var>str</var> is split into words that are repeatedly matched to the
@@ -683,9 +684,9 @@ equal length
 
 
 <a name="XREFstrrep"></a><dl>
-<dt><a name="index-strrep"></a>Built-in Function: <em><var>newstr</var> =</em> <strong>strrep</strong> <em>(<var>str</var>, <var>ptn</var>, <var>rep</var>)</em></dt>
-<dt><a name="index-strrep-1"></a>Built-in Function: <em><var>newstr</var> =</em> <strong>strrep</strong> <em>(<var>cellstr</var>, <var>ptn</var>, <var>rep</var>)</em></dt>
-<dt><a name="index-strrep-2"></a>Built-in Function: <em><var>newstr</var> =</em> <strong>strrep</strong> <em>(&hellip;, &quot;overlaps&quot;, <var>val</var>)</em></dt>
+<dt><a name="index-strrep"></a>: <em><var>newstr</var> =</em> <strong>strrep</strong> <em>(<var>str</var>, <var>ptn</var>, <var>rep</var>)</em></dt>
+<dt><a name="index-strrep-1"></a>: <em><var>newstr</var> =</em> <strong>strrep</strong> <em>(<var>cellstr</var>, <var>ptn</var>, <var>rep</var>)</em></dt>
+<dt><a name="index-strrep-2"></a>: <em><var>newstr</var> =</em> <strong>strrep</strong> <em>(&hellip;, &quot;overlaps&quot;, <var>val</var>)</em></dt>
 <dd><p>Replace all occurrences of the pattern <var>ptn</var> in the string <var>str</var>
 with the string <var>rep</var> and return the result.
 </p>
@@ -693,8 +694,8 @@ with the string <var>rep</var> and return the result.
 can match at every position in <var>str</var> (true), or only for unique
 occurrences of the complete pattern (false).  The default is true.
 </p>
-<p><var>s</var> may also be a cell array of strings, in which case the replacement is
-done for each element and a cell array is returned.
+<p><var>s</var> may also be a cell array of strings, in which case the replacement
+is done for each element and a cell array is returned.
 </p>
 <p>Example:
 </p>
@@ -709,8 +710,8 @@ done for each element and a cell array is returned.
 
 
 <a name="XREFsubstr"></a><dl>
-<dt><a name="index-substr"></a>Function File: <em></em> <strong>substr</strong> <em>(<var>s</var>, <var>offset</var>)</em></dt>
-<dt><a name="index-substr-1"></a>Function File: <em></em> <strong>substr</strong> <em>(<var>s</var>, <var>offset</var>, <var>len</var>)</em></dt>
+<dt><a name="index-substr"></a>: <em></em> <strong>substr</strong> <em>(<var>s</var>, <var>offset</var>)</em></dt>
+<dt><a name="index-substr-1"></a>: <em></em> <strong>substr</strong> <em>(<var>s</var>, <var>offset</var>, <var>len</var>)</em></dt>
 <dd><p>Return the substring of <var>s</var> which starts at character number
 <var>offset</var> and is <var>len</var> characters long.
 </p>
@@ -737,8 +738,8 @@ substr (&quot;This is a test string&quot;, -11, -7)
 
 
 <a name="XREFregexp"></a><dl>
-<dt><a name="index-regexp"></a>Built-in Function: <em>[<var>s</var>, <var>e</var>, <var>te</var>, <var>m</var>, <var>t</var>, <var>nm</var>, <var>sp</var>] =</em> <strong>regexp</strong> <em>(<var>str</var>, <var>pat</var>)</em></dt>
-<dt><a name="index-regexp-1"></a>Built-in Function: <em>[&hellip;] =</em> <strong>regexp</strong> <em>(<var>str</var>, <var>pat</var>, &quot;<var>opt1</var>&quot;, &hellip;)</em></dt>
+<dt><a name="index-regexp"></a>: <em>[<var>s</var>, <var>e</var>, <var>te</var>, <var>m</var>, <var>t</var>, <var>nm</var>, <var>sp</var>] =</em> <strong>regexp</strong> <em>(<var>str</var>, <var>pat</var>)</em></dt>
+<dt><a name="index-regexp-1"></a>: <em>[&hellip;] =</em> <strong>regexp</strong> <em>(<var>str</var>, <var>pat</var>, &quot;<var>opt1</var>&quot;, &hellip;)</em></dt>
 <dd><p>Regular expression string matching.
 </p>
 <p>Search for <var>pat</var> in <var>str</var> and return the positions and substrings of
@@ -958,8 +959,8 @@ used in pattern matching.  (default)
 </p>
 </dd>
 <dt>&lsquo;<samp>freespacing</samp>&rsquo;</dt>
-<dd><p>The pattern may include arbitrary whitespace and also comments beginning with
-the character &lsquo;<samp>#</samp>&rsquo;.
+<dd><p>The pattern may include arbitrary whitespace and also comments beginning
+with the character &lsquo;<samp>#</samp>&rsquo;.
 </p>
 <p>Alternatively, use (?x) in the pattern.
 </p>
@@ -982,8 +983,8 @@ are zero or more <code>'b'</code> characters at positions 1 and end-of-string.
 
 
 <a name="XREFregexpi"></a><dl>
-<dt><a name="index-regexpi"></a>Built-in Function: <em>[<var>s</var>, <var>e</var>, <var>te</var>, <var>m</var>, <var>t</var>, <var>nm</var>, <var>sp</var>] =</em> <strong>regexpi</strong> <em>(<var>str</var>, <var>pat</var>)</em></dt>
-<dt><a name="index-regexpi-1"></a>Built-in Function: <em>[&hellip;] =</em> <strong>regexpi</strong> <em>(<var>str</var>, <var>pat</var>, &quot;<var>opt1</var>&quot;, &hellip;)</em></dt>
+<dt><a name="index-regexpi"></a>: <em>[<var>s</var>, <var>e</var>, <var>te</var>, <var>m</var>, <var>t</var>, <var>nm</var>, <var>sp</var>] =</em> <strong>regexpi</strong> <em>(<var>str</var>, <var>pat</var>)</em></dt>
+<dt><a name="index-regexpi-1"></a>: <em>[&hellip;] =</em> <strong>regexpi</strong> <em>(<var>str</var>, <var>pat</var>, &quot;<var>opt1</var>&quot;, &hellip;)</em></dt>
 <dd>
 <p>Case insensitive regular expression string matching.
 </p>
@@ -996,8 +997,8 @@ for details on the syntax of the search pattern.
 
 
 <a name="XREFregexprep"></a><dl>
-<dt><a name="index-regexprep"></a>Built-in Function: <em><var>outstr</var> =</em> <strong>regexprep</strong> <em>(<var>string</var>, <var>pat</var>, <var>repstr</var>)</em></dt>
-<dt><a name="index-regexprep-1"></a>Built-in Function: <em><var>outstr</var> =</em> <strong>regexprep</strong> <em>(<var>string</var>, <var>pat</var>, <var>repstr</var>, &quot;<var>opt1</var>&quot;, &hellip;)</em></dt>
+<dt><a name="index-regexprep"></a>: <em><var>outstr</var> =</em> <strong>regexprep</strong> <em>(<var>string</var>, <var>pat</var>, <var>repstr</var>)</em></dt>
+<dt><a name="index-regexprep-1"></a>: <em><var>outstr</var> =</em> <strong>regexprep</strong> <em>(<var>string</var>, <var>pat</var>, <var>repstr</var>, &quot;<var>opt1</var>&quot;, &hellip;)</em></dt>
 <dd><p>Replace occurrences of pattern <var>pat</var> in <var>string</var> with <var>repstr</var>.
 </p>
 <p>The pattern is a regular expression as documented for <code>regexp</code>.
@@ -1037,7 +1038,7 @@ function.
 
 
 <a name="XREFregexptranslate"></a><dl>
-<dt><a name="index-regexptranslate"></a>Function File: <em></em> <strong>regexptranslate</strong> <em>(<var>op</var>, <var>s</var>)</em></dt>
+<dt><a name="index-regexptranslate"></a>: <em></em> <strong>regexptranslate</strong> <em>(<var>op</var>, <var>s</var>)</em></dt>
 <dd><p>Translate a string for use in a regular expression.
 </p>
 <p>This may include either wildcard replacement or special character escaping.
@@ -1073,9 +1074,9 @@ expressions are escaped so that they are treated literally.  For example:
 
 
 <a name="XREFuntabify"></a><dl>
-<dt><a name="index-untabify"></a>Function File: <em></em> <strong>untabify</strong> <em>(<var>t</var>)</em></dt>
-<dt><a name="index-untabify-1"></a>Function File: <em></em> <strong>untabify</strong> <em>(<var>t</var>, <var>tw</var>)</em></dt>
-<dt><a name="index-untabify-2"></a>Function File: <em></em> <strong>untabify</strong> <em>(<var>t</var>, <var>tw</var>, <var>deblank</var>)</em></dt>
+<dt><a name="index-untabify"></a>: <em></em> <strong>untabify</strong> <em>(<var>t</var>)</em></dt>
+<dt><a name="index-untabify-1"></a>: <em></em> <strong>untabify</strong> <em>(<var>t</var>, <var>tw</var>)</em></dt>
+<dt><a name="index-untabify-2"></a>: <em></em> <strong>untabify</strong> <em>(<var>t</var>, <var>tw</var>, <var>deblank</var>)</em></dt>
 <dd><p>Replace TAB characters in <var>t</var> with spaces.
 </p>
 <p>The input, <var>t</var>, may be either a 2-D character array, or a cell array of

@@ -20,13 +20,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QAbstractButton>
 
 #include "ButtonControl.h"
+#include "ButtonGroup.h"
 #include "Container.h"
 #include "QtHandlesUtils.h"
 
@@ -38,7 +39,9 @@ ButtonControl::ButtonControl (const graphics_object& go, QAbstractButton* btn)
 {
   uicontrol::properties& up = properties<uicontrol> ();
 
-  btn->setText (Utils::fromStdString (up.get_string_string ()));
+  QString str = Utils::fromStdString (up.get_string_string ());
+  str.replace ("&", "&&");
+  btn->setText (str);
   if (btn->isCheckable () || up.style_is ("togglebutton"))
     {
       btn->setCheckable (true);
@@ -66,8 +69,12 @@ ButtonControl::update (int pId)
   switch (pId)
     {
     case uicontrol::properties::ID_STRING:
-      btn->setText (Utils::fromStdString (up.get_string_string ()));
-      break;
+      {
+        QString str = Utils::fromStdString (up.get_string_string ());
+        str.replace ("&", "&&");
+        btn->setText (str);
+        break;
+      }
 
     case uicontrol::properties::ID_VALUE:
       m_blockCallback = true;
@@ -82,7 +89,16 @@ ButtonControl::update (int pId)
               if (dValue != 0.0 && dValue != 1.0)
                 warning ("button value not within valid display range");
               else if (dValue == up.get_min () && btn->isChecked ())
-                btn->setChecked (false);
+                {
+                  btn->setChecked (false);
+                  if (up.style_is ("radiobutton") || up.style_is ("togglebutton"))
+                    {
+                      Object* parent = Object::parentObject (gh_manager::get_object (up.get___myhandle__ ()));
+                      ButtonGroup* btnGroup = dynamic_cast<ButtonGroup*>(parent);
+                      if (btnGroup)
+                        btnGroup->selectNothing ();
+                    }
+                }
               else if (dValue == up.get_max () && ! btn->isChecked ())
                 btn->setChecked (true);
             }

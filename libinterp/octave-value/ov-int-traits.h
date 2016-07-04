@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_int_traits_h)
+#if ! defined (octave_ov_int_traits_h)
 #define octave_ov_int_traits_h 1
+
+#include "octave-config.h"
 
 #include "ov-int8.h"
 #include "ov-int16.h"
@@ -33,7 +35,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-uint32.h"
 #include "ov-uint64.h"
 
-template <class T>
+template <typename T>
 class
 octave_value_int_traits
 {
@@ -42,7 +44,7 @@ public:
 };
 
 #define OCTAVE_VALUE_INT_TRAITS(MT, ST) \
-  template<> \
+  template <> \
   class \
   octave_value_int_traits<MT> \
   { \

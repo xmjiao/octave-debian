@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -259,15 +260,10 @@ features not generally available in all versions of make.  Modifying
 Octave&rsquo;s makefiles to work with other make programs is probably not
 worth your time; instead, we simply recommend installing GNU Make.
 </p>
-<p>There are currently two options for plotting in Octave: (1) the external
-program gnuplot, or (2) the internal graphics engine using OpenGL and
-FLTK.  Gnuplot is a command-driven interactive function plotting
-program.  Gnuplot is copyrighted, but freely distributable.  As of
-Octave release 3.4, gnuplot is the default option for plotting.  But,
-the internal graphics engine is nearly 100% compatible, certainly for
-most ordinary plots, and users are encouraged to test it.  It is
-anticipated that the internal engine will become the default option at
-the next major release of Octave.
+<p>There are currently three options for plotting in Octave: the external
+program gnuplot, the internal graphics engine using OpenGL coupled with
+either FLTK or Qt widgets.  Gnuplot is a command-driven interactive
+function plotting program.
 </p>
 <p>To compile Octave, you will need a recent version of <code>g++</code> or other
 ANSI C++ compiler.  In addition, you will need a Fortran 77 compiler or

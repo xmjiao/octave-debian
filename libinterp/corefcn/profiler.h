@@ -21,8 +21,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_profiler_h)
+#if ! defined (octave_profiler_h)
 #define octave_profiler_h 1
+
+#include "octave-config.h"
 
 #include <cstddef>
 #include <map>
@@ -40,7 +42,7 @@ public:
 
   // This is a utility class that can be used to call the enter/exit
   // functions in a manner protected from stack unwinding.
-  template<class T> class enter
+  template <typename T> class enter
   {
   private:
 

@@ -1,4 +1,4 @@
-// N-D Array  manipulations.
+// N-D Array manipulations.
 /*
 
 Copyright (C) 2004-2015 John W. Eaton
@@ -21,8 +21,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "uint8NDArray.h"

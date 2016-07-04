@@ -22,13 +22,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QStringList>
 #include <QDialog>
 #include <QDir>
+#include <QPushButton>
 
 #include "str-vec.h"
 #include "dialog.h"
@@ -61,7 +62,11 @@ octave_qt_link::octave_qt_link (QWidget *p)
   main_thread->start ();
 }
 
-octave_qt_link::~octave_qt_link (void) { }
+octave_qt_link::~octave_qt_link (void)
+{
+  delete command_interpreter;
+  delete main_thread;
+}
 
 void
 octave_qt_link::execute_interpreter (void)
@@ -250,7 +255,7 @@ make_filter_list (const octave_link::filter_list& lst)
       name.replace (QRegExp ("\\(.*\\)"), "");
       ext.replace (";", " ");
 
-      if (name.length () == 0)
+      if (name.isEmpty ())
         {
           // No name field.  Build one from the extensions.
           name = ext.toUpper () + " Files";
@@ -372,6 +377,11 @@ octave_qt_link::do_file_dialog (const filter_list& filter,
   return retval;
 }
 
+// Prompt to allow file to be run by setting cwd (or if addpath_option==true,
+// alternatively setting the path).
+// This uses a QMessageBox unlike other functions in this file,
+// because uiwidget_creator.waitcondition.wait hangs when called from
+// file_editor_tab::handle_context_menu_break_condition().  (FIXME: why hang?)
 int
 octave_qt_link::do_debug_cd_or_addpath_error (const std::string& file,
                                               const std::string& dir,
@@ -381,7 +391,6 @@ octave_qt_link::do_debug_cd_or_addpath_error (const std::string& file,
 
   QString qdir = QString::fromStdString (dir);
   QString qfile = QString::fromStdString (file);
-
   QString msg
     = (addpath_option
        ? tr ("The file %1 does not exist in the load path.  To run or debug the function you are editing, you must either change to the directory %2 or add that directory to the load path.").arg (qfile).arg (qdir)
@@ -396,14 +405,14 @@ octave_qt_link::do_debug_cd_or_addpath_error (const std::string& file,
   QStringList btn;
   QStringList role;
   btn << cd_txt;
-  role << "AcceptRole";
+  role << "YesRole";
   if (addpath_option)
     {
       btn << addpath_txt;
       role << "AcceptRole";
-    }
+     }
   btn << cancel_txt;
-  role << "AcceptRole";
+  role << "RejectRole";
 
   // Lock mutex before signaling.
   uiwidget_creator.mutex.lock ();
@@ -420,7 +429,7 @@ octave_qt_link::do_debug_cd_or_addpath_error (const std::string& file,
   uiwidget_creator.mutex.unlock ();
 
   if (result == cd_txt)
-    retval = 1;
+     retval = 1;
   else if (result == addpath_txt)
     retval = 2;
 
@@ -490,7 +499,7 @@ octave_qt_link::do_set_history (const string_vector& hist)
 {
   QStringList qt_hist;
 
-  for (octave_idx_type i = 0; i < hist.length (); i++)
+  for (octave_idx_type i = 0; i < hist.numel (); i++)
     qt_hist.append (QString::fromStdString (hist[i]));
 
   emit set_history_signal (qt_hist);
@@ -538,12 +547,15 @@ octave_qt_link::do_exit_debugger_event (void)
   emit exit_debugger_signal ();
 }
 
+// Display (if @insert true) or remove the appropriate symbol for a breakpoint
+// in @file at @line with condition @cond.
 void
 octave_qt_link::do_update_breakpoint (bool insert,
-                                      const std::string& file, int line)
+                                      const std::string& file, int line,
+                                      const std::string& cond)
 {
   emit update_breakpoint_marker_signal (insert, QString::fromStdString (file),
-                                        line);
+                                        line, QString::fromStdString (cond));
 }
 
 void
@@ -554,7 +566,6 @@ octave_qt_link::do_set_default_prompts (std::string& ps1, std::string& ps2,
   ps2 = "";
   ps4 = "";
 }
-
 
 void
 octave_qt_link::do_insert_debugger_pointer (const std::string& file, int line)
@@ -568,7 +579,6 @@ octave_qt_link::do_delete_debugger_pointer (const std::string& file, int line)
   emit delete_debugger_pointer_signal (QString::fromStdString (file), line);
 }
 
-
 bool
 octave_qt_link::file_in_path (const std::string& file, const std::string& dir)
 {
@@ -576,7 +586,7 @@ octave_qt_link::file_in_path (const std::string& file, const std::string& dir)
   bool ok = false;
   bool addpath_option = true;
 
-  std::string curr_dir = octave_env::get_current_directory ();
+  std::string curr_dir = octave::sys::env::get_current_directory ();
 
   if (same_file (curr_dir, dir))
     ok = true;
@@ -584,7 +594,11 @@ octave_qt_link::file_in_path (const std::string& file, const std::string& dir)
     {
       bool dir_in_load_path = load_path::contains_canonical (dir);
 
-      std::string base_file = octave_env::base_pathname (file);
+      // get base name, allowing "@class/method.m" (bug #41514)
+      std::string base_file = (file.length () > dir.length ())
+                              ? file.substr (dir.length () + 1)
+                              : octave::sys::env::base_pathname (file);
+
       std::string lp_file = load_path::find_file (base_file);
 
       if (dir_in_load_path)

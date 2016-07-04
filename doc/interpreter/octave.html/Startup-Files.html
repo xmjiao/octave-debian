@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -107,6 +108,12 @@ Octave searches for <samp>.octaverc</samp>.
 </p>
 <p>If you start Octave in your home directory, commands from the file
 <samp>~/.octaverc</samp> will only be executed once.
+</p>
+</dd>
+<dt><code>startup.m</code></dt>
+<dd><p>This file is used to make personal changes to the default
+Octave environment.  It is executed for <small>MATLAB</small> compatibility, but
+<samp>~/.octaverc</samp> is the preferred location for configuration changes.
 </p></dd>
 </dl>
 

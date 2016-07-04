@@ -17,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} fftshift (@var{x})
-## @deftypefnx {Function File} {} fftshift (@var{x}, @var{dim})
+## @deftypefn  {} {} fftshift (@var{x})
+## @deftypefnx {} {} fftshift (@var{x}, @var{dim})
 ## Perform a shift of the vector @var{x}, for use with the @code{fft} and
 ## @code{ifft} functions, in order the move the frequency 0 to the center of
 ## the vector or matrix.
@@ -147,7 +147,7 @@ endfunction
 %! assert (y, reshape ([y1 + 2, y1 + 3, y1, y1 + 1], [4 4 4]));
 %! assert (fftshift (y), x);
 
-%% Test input validation
+## Test input validation
 %!error fftshift ()
 %!error fftshift (1, 2, 3)
 %!error fftshift (0:3, -1)

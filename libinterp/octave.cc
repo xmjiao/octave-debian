@@ -22,8 +22,8 @@ along with Octave; see the file COPYING.  If not, see
 
 // Born February 20, 1992.
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <cassert>
@@ -34,10 +34,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iostream>
 
-#include <fcntl.h>
 #include <getopt.h>
-#include <sys/types.h>
-#include <unistd.h>
 
 #include "cmd-edit.h"
 #include "f77-fcn.h"
@@ -46,7 +43,9 @@ along with Octave; see the file COPYING.  If not, see
 #include "lo-error.h"
 #include "oct-env.h"
 #include "str-vec.h"
+#include "unistd-wrappers.h"
 
+#include "build-env.h"
 #include "builtins.h"
 #include "defaults.h"
 #include "Cell.h"
@@ -60,11 +59,10 @@ along with Octave; see the file COPYING.  If not, see
 #include "load-path.h"
 #include "load-save.h"
 #include "octave.h"
-#include "oct-conf.h"
 #include "oct-hist.h"
 #include "oct-map.h"
 #include "oct-mutex.h"
-#include "oct-obj.h"
+#include "ovl.h"
 #include "ops.h"
 #include "options-usage.h"
 #include "ov.h"
@@ -199,26 +197,82 @@ intern_argv (int argc, char **argv)
     }
 }
 
-DEFUN (__version_info__, args, ,
-       "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {retval =} __version_info__ (@var{name}, @var{version}, @var{release}, @var{date})\n\
-Undocumented internal function.\n\
-@end deftypefn")
+static void
+execute_pkg_add (const std::string& dir)
 {
-  octave_value retval;
+  std::string file_name = octave::sys::file_ops::concat (dir, "PKG_ADD");
 
+  try
+    {
+      load_path::execute_pkg_add (dir);
+    }
+  catch (const index_exception& e)
+    {
+      recover_from_exception ();
+
+      std::cerr << "error: index exception in " << file_name << ": "
+                << e.message () << std::endl;
+    }
+  catch (const octave_interrupt_exception&)
+    {
+      recover_from_exception ();
+
+      if (quitting_gracefully)
+        clean_up_and_exit (exit_status);
+    }
+  catch (const octave_execution_exception&)
+    {
+      recover_from_exception ();
+
+      std::cerr << "error: execution exception in " << file_name << std::endl;
+    }
+}
+
+static void
+initialize_load_path (void)
+{
+  // Temporarily set the execute_pkg_add function to one that catches
+  // exceptions.  This is better than wrapping load_path::initialize in
+  // a try-catch block because it will not stop executing PKG_ADD files
+  // at the first exception.  It's also better than changing the default
+  // execute_pkg_add function to use safe_source file because that will
+  // normally be evaluated from the normal intepreter loop where
+  // exceptions are already handled.
+
+  octave::unwind_protect frame;
+
+  frame.add_fcn (load_path::set_add_hook, load_path::get_add_hook ());
+
+  load_path::set_add_hook (execute_pkg_add);
+
+  load_path::initialize (set_initial_path);
+}
+
+DEFUN (__version_info__, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {retval =} __version_info__ (@var{name}, @var{version}, @var{release}, @var{date})
+Undocumented internal function.
+@end deftypefn */)
+{
   static octave_map vinfo;
 
   int nargin = args.length ();
 
-  if (nargin == 4)
+  if (nargin != 0 && nargin != 4)
+    print_usage ();
+
+  octave_value retval;
+
+  if (nargin == 0)
+    retval = vinfo;
+  else if (nargin == 4)
     {
       if (vinfo.nfields () == 0)
         {
-          vinfo.assign ("Name", args (0));
-          vinfo.assign ("Version", args (1));
-          vinfo.assign ("Release", args (2));
-          vinfo.assign ("Date", args (3));
+          vinfo.assign ("Name", args(0));
+          vinfo.assign ("Version", args(1));
+          vinfo.assign ("Release", args(2));
+          vinfo.assign ("Date", args(3));
         }
       else
         {
@@ -228,16 +282,12 @@ Undocumented internal function.\n\
 
           octave_value idx (n);
 
-          vinfo.assign (idx, "Name", Cell (octave_value (args (0))));
-          vinfo.assign (idx, "Version", Cell (octave_value (args (1))));
-          vinfo.assign (idx, "Release", Cell (octave_value (args (2))));
-          vinfo.assign (idx, "Date", Cell (octave_value (args (3))));
+          vinfo.assign (idx, "Name", Cell (octave_value (args(0))));
+          vinfo.assign (idx, "Version", Cell (octave_value (args(1))));
+          vinfo.assign (idx, "Release", Cell (octave_value (args(2))));
+          vinfo.assign (idx, "Date", Cell (octave_value (args(3))));
         }
     }
-  else if (nargin == 0)
-    retval = vinfo;
-  else
-    print_usage ();
 
   return retval;
 }
@@ -255,15 +305,6 @@ initialize_version_info (void)
   F__version_info__ (args, 0);
 }
 
-static void
-gripe_safe_source_exception (const std::string& file, const std::string& msg)
-{
-  std::cerr << "error: " << msg << "\n"
-            << "error: execution of " << file << " failed\n"
-            << "error: trying to make my way to a command prompt"
-            << std::endl;
-}
-
 // Execute commands from a file and catch potential exceptions in a consistent
 // way.  This function should be called anywhere we might parse and execute
 // commands from a file before before we have entered the main loop in
@@ -271,25 +312,33 @@ gripe_safe_source_exception (const std::string& file, const std::string& msg)
 
 static void
 safe_source_file (const std::string& file_name,
-                  const std::string& context = std::string (),
+                  const std::string& context = "",
                   bool verbose = false, bool require_file = true,
-                  const std::string& warn_for = std::string ())
+                  const std::string& warn_for = "")
 {
   try
     {
       source_file (file_name, context, verbose, require_file, warn_for);
     }
-  catch (octave_interrupt_exception)
+  catch (const index_exception& e)
     {
       recover_from_exception ();
-      octave_stdout << "\n";
+
+      std::cerr << "error: index exception in " << file_name << ": "
+                << e.message () << std::endl;
+    }
+  catch (const octave_interrupt_exception&)
+    {
+      recover_from_exception ();
+
       if (quitting_gracefully)
         clean_up_and_exit (exit_status);
     }
-  catch (octave_execution_exception)
+  catch (const octave_execution_exception&)
     {
       recover_from_exception ();
-      gripe_safe_source_exception (file_name, "unhandled execution exception");
+
+      std::cerr << "error: execution exception in " << file_name << std::endl;
     }
 }
 
@@ -298,7 +347,7 @@ safe_source_file (const std::string& file_name,
 static void
 execute_startup_files (void)
 {
-  unwind_protect frame;
+  octave::unwind_protect frame;
 
   std::string context;
 
@@ -327,14 +376,14 @@ execute_startup_files (void)
 
       bool home_rc_already_executed = false;
 
-      std::string initfile = octave_env::getenv ("OCTAVE_INITFILE");
+      std::string initfile = octave::sys::env::getenv ("OCTAVE_INITFILE");
 
       if (initfile.empty ())
         initfile = ".octaverc";
 
-      std::string home_dir = octave_env::get_home_directory ();
+      std::string home_dir = octave::sys::env::get_home_directory ();
 
-      std::string home_rc = octave_env::make_absolute (initfile, home_dir);
+      std::string home_rc = octave::sys::env::make_absolute (initfile, home_dir);
 
       std::string local_rc;
 
@@ -344,14 +393,14 @@ execute_startup_files (void)
 
           // Names alone are not enough.
 
-          file_stat fs_home_rc (home_rc);
+          octave::sys::file_stat fs_home_rc (home_rc);
 
           if (fs_home_rc)
             {
               // We want to check for curr_dir after executing home_rc
               // because doing that may change the working directory.
 
-              local_rc = octave_env::make_absolute (initfile);
+              local_rc = octave::sys::env::make_absolute (initfile);
 
               home_rc_already_executed = same_file (home_rc, local_rc);
             }
@@ -360,7 +409,7 @@ execute_startup_files (void)
       if (! home_rc_already_executed)
         {
           if (local_rc.empty ())
-            local_rc = octave_env::make_absolute (initfile);
+            local_rc = octave::sys::env::make_absolute (initfile);
 
           safe_source_file (local_rc, context, verbose, require_file);
         }
@@ -370,7 +419,7 @@ execute_startup_files (void)
 static int
 execute_eval_option_code (const std::string& code)
 {
-  unwind_protect frame;
+  octave::unwind_protect frame;
 
   octave_save_signal_mask ();
 
@@ -394,16 +443,17 @@ execute_eval_option_code (const std::string& code)
     {
       eval_string (code, false, parse_status, 0);
     }
-  catch (octave_interrupt_exception)
+  catch (const octave_interrupt_exception&)
     {
       recover_from_exception ();
-      octave_stdout << "\n";
+
       if (quitting_gracefully)
         clean_up_and_exit (exit_status);
     }
-  catch (octave_execution_exception)
+  catch (const octave_execution_exception&)
     {
       recover_from_exception ();
+
       std::cerr << "error: unhandled execution exception -- eval failed"
                 << std::endl;
     }
@@ -414,7 +464,7 @@ execute_eval_option_code (const std::string& code)
 static void
 execute_command_line_file (const std::string& fname)
 {
-  unwind_protect frame;
+  octave::unwind_protect frame;
 
   octave_save_signal_mask ();
 
@@ -437,7 +487,7 @@ execute_command_line_file (const std::string& fname)
 
   octave_program_invocation_name = fname;
 
-  size_t pos = fname.find_last_of (file_ops::dir_sep_chars ());
+  size_t pos = fname.find_last_of (octave::sys::file_ops::dir_sep_chars ());
 
   octave_program_name
     = (pos != std::string::npos) ? fname.substr (pos+1) : fname;
@@ -449,7 +499,7 @@ execute_command_line_file (const std::string& fname)
   safe_source_file (fname, context, verbose, require_file, "octave");
 }
 
-static void
+OCTAVE_NORETURN static void
 lo_error_handler (const char *fmt, ...)
 {
   va_list args;
@@ -460,7 +510,7 @@ lo_error_handler (const char *fmt, ...)
   octave_throw_execution_exception ();
 }
 
-static void
+OCTAVE_NORETURN static void
 lo_error_with_id_handler (const char *id, const char *fmt, ...)
 {
   va_list args;
@@ -653,7 +703,7 @@ octave_process_command_line (int argc, char **argv)
           break;
 
         case LINE_EDITING_OPTION:
-          forced_line_editing = true;
+          forced_line_editing = line_editing = true;
           break;
 
         case NO_GUI_OPTION:
@@ -702,7 +752,7 @@ octave_process_command_line (int argc, char **argv)
   // Check for various incompatible argument pairs
   if (force_gui_option && no_gui_option)
     {
-      error ("only one of --force-gui and --no-gui may be used");
+      warning ("only one of --force-gui and --no-gui may be used");
 
       octave_print_terse_usage_and_exit ();
     }
@@ -710,7 +760,7 @@ octave_process_command_line (int argc, char **argv)
   bool script_file = (argc - optind) > 0;
   if (! code_to_eval.empty () && script_file)
     {
-      error ("--eval \"CODE\" and script file are mutually exclusive options");
+      warning ("--eval \"CODE\" and script file are mutually exclusive options");
 
       octave_print_terse_usage_and_exit ();
     }
@@ -728,15 +778,15 @@ octave_initialize_interpreter (int argc, char **argv, int embedded)
   // Matlab uses "C" locale for LC_NUMERIC class regardless of local setting
   setlocale (LC_NUMERIC, "C");
   setlocale (LC_TIME, "C");
-  octave_env::putenv ("LC_NUMERIC", "C");
-  octave_env::putenv ("LC_TIME", "C");
+  octave::sys::env::putenv ("LC_NUMERIC", "C");
+  octave::sys::env::putenv ("LC_TIME", "C");
 
   octave_embedded = embedded;
 
-  octave_env::set_program_name (argv[0]);
+  octave::sys::env::set_program_name (argv[0]);
 
-  octave_program_invocation_name = octave_env::get_program_invocation_name ();
-  octave_program_name = octave_env::get_program_name ();
+  octave_program_invocation_name = octave::sys::env::get_program_invocation_name ();
+  octave_program_name = octave::sys::env::get_program_name ();
 
   octave_thread::init ();
 
@@ -750,15 +800,16 @@ octave_initialize_interpreter (int argc, char **argv, int embedded)
   if (traditional)
     maximum_braindamage ();
 
-  init_signals ();
-
   octave_ieee_init ();
 
   // The idea here is to force xerbla to be referenced so that we will link to
   // our own version instead of the one provided by the BLAS library.  But
-  // octave_NaN should never be -1, so we should never actually call xerbla.
+  // octave::numeric_limits<double>::NaN () should never be -1, so we
+  // should never actually call xerbla.  FIXME (again!):  If this
+  // becomes a constant expression the test might be optimized away and
+  // then the reference to the function might also disappear.
 
-  if (octave_NaN == -1)
+  if (octave::numeric_limits<double>::NaN () == -1)
     F77_FUNC (xerbla, XERBLA) ("octave", 13 F77_CHAR_ARG_LEN (6));
 
   initialize_error_handlers ();
@@ -795,10 +846,10 @@ octave_initialize_interpreter (int argc, char **argv, int embedded)
 
   // If stdin is not a tty, then we are reading commands from a pipe or
   // a redirected file.
-  bool stdin_is_tty = gnulib::isatty (fileno (stdin));
+  bool stdin_is_tty = octave_isatty_wrapper (fileno (stdin));
 
   interactive = (! embedded && ! an_octave_program && stdin_is_tty
-                 && gnulib::isatty (fileno (stdout)));
+                 && octave_isatty_wrapper (fileno (stdout)));
 
   // Check if the user forced an interactive session.  If he
   // unnecessarily did so, reset forced_interactive to false.
@@ -819,7 +870,7 @@ octave_initialize_interpreter (int argc, char **argv, int embedded)
 
   // Force default line editor if we don't want readline editing.
   if (! line_editing)
-    command_editor::force_default_editor ();
+    octave::command_editor::force_default_editor ();
 
   // These can come after command line args since none of them set any
   // defaults that might be changed by command line options.
@@ -836,7 +887,7 @@ octave_initialize_interpreter (int argc, char **argv, int embedded)
 
   intern_argv (argc, argv);
 
-  load_path::initialize (set_initial_path);
+  initialize_load_path ();
 
   initialize_history (read_history_file);
 }
@@ -857,13 +908,24 @@ octave_execute_interpreter (void)
   // Execute any code specified with --eval 'CODE'
   if (! code_to_eval.empty ())
     {
-      int parse_status = execute_eval_option_code (code_to_eval);
+      int parse_status = 0;
+
+      try
+        {
+          parse_status = execute_eval_option_code (code_to_eval);
+        }
+      catch (const octave_execution_exception&)
+        {
+          recover_from_exception ();
+
+          parse_status = 1;
+        }
 
       if (! persist)
         {
           quitting_gracefully = true;
 
-          clean_up_and_exit (parse_status || error_state ? 1 : 0);
+          clean_up_and_exit (parse_status);
         }
     }
 
@@ -878,21 +940,32 @@ octave_execute_interpreter (void)
       // If we are running an executable script (#! /bin/octave) then
       // we should only see the args passed to the script.
 
-      intern_argv (remaining_args, octave_cmdline_argv+last_arg_idx);
+      exit_status = 0;
 
-      execute_command_line_file (octave_cmdline_argv[last_arg_idx]);
+      try
+        {
+          intern_argv (remaining_args, octave_cmdline_argv+last_arg_idx);
+
+          execute_command_line_file (octave_cmdline_argv[last_arg_idx]);
+        }
+      catch (const octave_execution_exception&)
+        {
+          recover_from_exception ();
+
+          exit_status = 1;
+        }
 
       if (! persist)
         {
           quitting_gracefully = true;
 
-          clean_up_and_exit (error_state ? 1 : 0);
+          clean_up_and_exit (exit_status);
         }
     }
 
   // Avoid counting commands executed from startup files.
 
-  command_editor::reset_current_command_number (1);
+  octave::command_editor::reset_current_command_number (1);
 
   // Now argv should have the full set of args.
   intern_argv (octave_cmdline_argc, octave_cmdline_argv);
@@ -902,7 +975,7 @@ octave_execute_interpreter (void)
 
   if (forced_interactive)
     {
-      command_editor::blink_matching_paren (false);
+      octave::command_editor::blink_matching_paren (false);
 
       // FIXME: is this the right thing to do?
       Fecho_executing_commands (octave_value (ECHO_CMD_LINE));
@@ -941,6 +1014,14 @@ check_starting_gui (void)
       return false;
     }
 
+  if (! line_editing)
+    {
+      if (! (inhibit_startup_message || no_gui_option))
+        warning ("--no-line-editing option given, disabling GUI");
+
+      return false;
+    }
+
   if (force_gui_option)
     return true;
 
@@ -955,7 +1036,7 @@ check_starting_gui (void)
   // (for example, starting from a desktop "launcher" with no terminal) and you
   // want to start the GUI, you may use the --force-gui option to start the GUI.
 
-  if (! gnulib::isatty (fileno (stdin)))
+  if (! octave_isatty_wrapper (fileno (stdin)))
     return false;
 
   // If we have code to eval or execute from a file, and we are going to exit
@@ -980,20 +1061,16 @@ octave_starting_gui (void)
 }
 
 DEFUN (isguirunning, args, ,
-       "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} isguirunning ()\n\
-Return true if Octave is running in GUI mode and false otherwise.\n\
-@seealso{have_window_system}\n\
-@end deftypefn")
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} isguirunning ()
+Return true if Octave is running in GUI mode and false otherwise.
+@seealso{have_window_system}
+@end deftypefn */)
 {
-  octave_value retval;
-
-  if (args.length () == 0)
-    retval = start_gui;
-  else
+  if (args.length () != 0)
     print_usage ();
 
-  return retval;
+  return ovl (start_gui);
 }
 
 /*
@@ -1002,33 +1079,29 @@ Return true if Octave is running in GUI mode and false otherwise.\n\
 */
 
 DEFUN (argv, args, ,
-       "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} argv ()\n\
-Return the command line arguments passed to Octave.\n\
-\n\
-For example, if you invoked Octave using the command\n\
-\n\
-@example\n\
-octave --no-line-editing --silent\n\
-@end example\n\
-\n\
-@noindent\n\
-@code{argv} would return a cell array of strings with the elements\n\
-@option{--no-line-editing} and @option{--silent}.\n\
-\n\
-If you write an executable Octave script, @code{argv} will return the list\n\
-of arguments passed to the script.  @xref{Executable Octave Programs}, for\n\
-an example of how to create an executable Octave script.\n\
-@end deftypefn")
-{
-  octave_value retval;
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} argv ()
+Return the command line arguments passed to Octave.
 
-  if (args.length () == 0)
-    retval = Cell (octave_argv);
-  else
+For example, if you invoked Octave using the command
+
+@example
+octave --no-line-editing --silent
+@end example
+
+@noindent
+@code{argv} would return a cell array of strings with the elements
+@option{--no-line-editing} and @option{--silent}.
+
+If you write an executable Octave script, @code{argv} will return the list
+of arguments passed to the script.  @xref{Executable Octave Programs}, for
+an example of how to create an executable Octave script.
+@end deftypefn */)
+{
+  if (args.length () != 0)
     print_usage ();
 
-  return retval;
+  return ovl (Cell (octave_argv));
 }
 
 /*
@@ -1037,25 +1110,21 @@ an example of how to create an executable Octave script.\n\
 */
 
 DEFUN (program_invocation_name, args, ,
-       "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} program_invocation_name ()\n\
-Return the name that was typed at the shell prompt to run Octave.\n\
-\n\
-If executing a script from the command line (e.g., @code{octave foo.m})\n\
-or using an executable Octave script, the program name is set to the\n\
-name of the script.  @xref{Executable Octave Programs}, for an example of\n\
-how to create an executable Octave script.\n\
-@seealso{program_name}\n\
-@end deftypefn")
-{
-  octave_value retval;
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} program_invocation_name ()
+Return the name that was typed at the shell prompt to run Octave.
 
-  if (args.length () == 0)
-    retval = octave_program_invocation_name;
-  else
+If executing a script from the command line (e.g., @code{octave foo.m})
+or using an executable Octave script, the program name is set to the
+name of the script.  @xref{Executable Octave Programs}, for an example of
+how to create an executable Octave script.
+@seealso{program_name}
+@end deftypefn */)
+{
+  if (args.length () != 0)
     print_usage ();
 
-  return retval;
+  return ovl (octave_program_invocation_name);
 }
 
 /*
@@ -1064,21 +1133,17 @@ how to create an executable Octave script.\n\
 */
 
 DEFUN (program_name, args, ,
-       "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} program_name ()\n\
-Return the last component of the value returned by\n\
-@code{program_invocation_name}.\n\
-@seealso{program_invocation_name}\n\
-@end deftypefn")
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} program_name ()
+Return the last component of the value returned by
+@code{program_invocation_name}.
+@seealso{program_invocation_name}
+@end deftypefn */)
 {
-  octave_value retval;
-
-  if (args.length () == 0)
-    retval = octave_program_name;
-  else
+  if (args.length () != 0)
     print_usage ();
 
-  return retval;
+  return ovl (octave_program_name);
 }
 
 /*

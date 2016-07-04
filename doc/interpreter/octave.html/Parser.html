@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -69,8 +70,8 @@ periodic evaluation.  <code>remove_input_event_hook</code> will stop a user func
 from being evaluated periodically.
 </p>
 <a name="XREFadd_005finput_005fevent_005fhook"></a><dl>
-<dt><a name="index-add_005finput_005fevent_005fhook"></a>Built-in Function: <em><var>id</var> =</em> <strong>add_input_event_hook</strong> <em>(<var>fcn</var>)</em></dt>
-<dt><a name="index-add_005finput_005fevent_005fhook-1"></a>Built-in Function: <em><var>id</var> =</em> <strong>add_input_event_hook</strong> <em>(<var>fcn</var>, <var>data</var>)</em></dt>
+<dt><a name="index-add_005finput_005fevent_005fhook"></a>: <em><var>id</var> =</em> <strong>add_input_event_hook</strong> <em>(<var>fcn</var>)</em></dt>
+<dt><a name="index-add_005finput_005fevent_005fhook-1"></a>: <em><var>id</var> =</em> <strong>add_input_event_hook</strong> <em>(<var>fcn</var>, <var>data</var>)</em></dt>
 <dd><p>Add the named function or function handle <var>fcn</var> to the list of functions
 to call periodically when Octave is waiting for input.
 </p>
@@ -90,8 +91,8 @@ list of input hook functions.
 
 
 <a name="XREFremove_005finput_005fevent_005fhook"></a><dl>
-<dt><a name="index-remove_005finput_005fevent_005fhook"></a>Built-in Function: <em></em> <strong>remove_input_event_hook</strong> <em>(<var>name</var>)</em></dt>
-<dt><a name="index-remove_005finput_005fevent_005fhook-1"></a>Built-in Function: <em></em> <strong>remove_input_event_hook</strong> <em>(<var>fcn_id</var>)</em></dt>
+<dt><a name="index-remove_005finput_005fevent_005fhook"></a>: <em></em> <strong>remove_input_event_hook</strong> <em>(<var>name</var>)</em></dt>
+<dt><a name="index-remove_005finput_005fevent_005fhook-1"></a>: <em></em> <strong>remove_input_event_hook</strong> <em>(<var>fcn_id</var>)</em></dt>
 <dd><p>Remove the named function or function handle with the given identifier
 from the list of functions to call periodically when Octave is waiting
 for input.
@@ -106,9 +107,9 @@ function to handle this.  By default, this is the internal function
 substitutes for <small>MATLAB</small> functions.
 </p>
 <a name="XREFmissing_005ffunction_005fhook"></a><dl>
-<dt><a name="index-missing_005ffunction_005fhook"></a>Built-in Function: <em><var>val</var> =</em> <strong>missing_function_hook</strong> <em>()</em></dt>
-<dt><a name="index-missing_005ffunction_005fhook-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>missing_function_hook</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-missing_005ffunction_005fhook-2"></a>Built-in Function: <em></em> <strong>missing_function_hook</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-missing_005ffunction_005fhook"></a>: <em><var>val</var> =</em> <strong>missing_function_hook</strong> <em>()</em></dt>
+<dt><a name="index-missing_005ffunction_005fhook-1"></a>: <em><var>old_val</var> =</em> <strong>missing_function_hook</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-missing_005ffunction_005fhook-2"></a>: <em></em> <strong>missing_function_hook</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that specifies the function to call when
 an unknown identifier is requested.
 </p>

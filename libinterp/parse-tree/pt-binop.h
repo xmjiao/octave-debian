@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_pt_binop_h)
+#if ! defined (octave_pt_binop_h)
 #define octave_pt_binop_h 1
+
+#include "octave-config.h"
 
 #include <string>
 
@@ -101,7 +103,6 @@ public:
   void accept (tree_walker& tw);
 
   std::string profiler_name (void) const { return "binary " + oper (); }
-
 
 protected:
 

@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "oct-inttypes.h"
@@ -32,19 +32,19 @@ along with Octave; see the file COPYING.  If not, see
 #include "MArray.cc"
 
 template class OCTAVE_API MArray<int>;
-#ifdef USE_64_BIT_IDX_T
+#if defined (OCTAVE_ENABLE_64)
 template class OCTAVE_API MArray<int64_t>;
 #endif
 
 // Explicit instantiation, as this seems to be required by weird compilers
-// like MSVC. This should be harmless on other compilers.
+// like MSVC.  This should be harmless on other compilers.
 template int xmin<int> (int, int);
 template int xmax<int> (int, int);
 template long xmin<long> (long, long);
 template long xmax<long> (long, long);
 
 INSTANTIATE_MARRAY_FRIENDS (int, OCTAVE_API)
-#ifdef USE_64_BIT_IDX_T
+#if defined (OCTAVE_ENABLE_64)
 INSTANTIATE_MARRAY_FRIENDS (int64_t, OCTAVE_API)
 #endif
 

@@ -157,10 +157,10 @@ quadcc (f, 0, Inf)
 
 @c quad libinterp/corefcn/quad.cc
 @anchor{XREFquad}
-@deftypefn  {Built-in Function} {@var{q} =} quad (@var{f}, @var{a}, @var{b})
-@deftypefnx {Built-in Function} {@var{q} =} quad (@var{f}, @var{a}, @var{b}, @var{tol})
-@deftypefnx {Built-in Function} {@var{q} =} quad (@var{f}, @var{a}, @var{b}, @var{tol}, @var{sing})
-@deftypefnx {Built-in Function} {[@var{q}, @var{ier}, @var{nfun}, @var{err}] =} quad (@dots{})
+@deftypefn  {} {@var{q} =} quad (@var{f}, @var{a}, @var{b})
+@deftypefnx {} {@var{q} =} quad (@var{f}, @var{a}, @var{b}, @var{tol})
+@deftypefnx {} {@var{q} =} quad (@var{f}, @var{a}, @var{b}, @var{tol}, @var{sing})
+@deftypefnx {} {[@var{q}, @var{ier}, @var{nfun}, @var{err}] =} quad (@dots{})
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b} using
 Fortran routines from @w{@sc{quadpack}}.
 
@@ -202,11 +202,11 @@ variable by routines @code{dblquad} and @code{triplequad}.
 @end deftypefn
 
 
-@c quad_options libinterp/corefcn/quad.cc
+@c quad_options libinterp/corefcn/Quad-opts.cc
 @anchor{XREFquad_options}
-@deftypefn  {Built-in Function} {} quad_options ()
-@deftypefnx {Built-in Function} {val =} quad_options (@var{opt})
-@deftypefnx {Built-in Function} {} quad_options (@var{opt}, @var{val})
+@deftypefn  {} {} quad_options ()
+@deftypefnx {} {val =} quad_options (@var{opt})
+@deftypefnx {} {} quad_options (@var{opt}, @var{val})
 Query or set options for the function @code{quad}.
 
 When called with no arguments, the names of all available options and
@@ -240,13 +240,13 @@ tolerance is zero, the relative tolerance must be greater than or equal to
 @end deftypefn
 
 
-@c quadv scripts/general/quadv.m
+@c quadv scripts/scripts/general/quadv.m
 @anchor{XREFquadv}
-@deftypefn  {Function File} {@var{q} =} quadv (@var{f}, @var{a}, @var{b})
-@deftypefnx {Function File} {@var{q} =} quadv (@var{f}, @var{a}, @var{b}, @var{tol})
-@deftypefnx {Function File} {@var{q} =} quadv (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace})
-@deftypefnx {Function File} {@var{q} =} quadv (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace}, @var{p1}, @var{p2}, @dots{})
-@deftypefnx {Function File} {[@var{q}, @var{nfun}] =} quadv (@dots{})
+@deftypefn  {} {@var{q} =} quadv (@var{f}, @var{a}, @var{b})
+@deftypefnx {} {@var{q} =} quadv (@var{f}, @var{a}, @var{b}, @var{tol})
+@deftypefnx {} {@var{q} =} quadv (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace})
+@deftypefnx {} {@var{q} =} quadv (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace}, @var{p1}, @var{p2}, @dots{})
+@deftypefnx {} {[@var{q}, @var{nfun}] =} quadv (@dots{})
 
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
 using an adaptive Simpson's rule.
@@ -273,9 +273,10 @@ Additional arguments @var{p1}, etc., are passed directly to the function
 @var{f}.  To use default values for @var{tol} and @var{trace}, one may pass
 empty matrices ([]).
 
-The result of the integration is returned in @var{q}
+The result of the integration is returned in @var{q}.
 
-@var{nfun} indicates the number of function evaluations that were made.
+The optional output @var{nfun} indicates the total number of function
+evaluations performed.
 
 Note: @code{quadv} is written in Octave's scripting language and can be
 used recursively in @code{dblquad} and @code{triplequad}, unlike the
@@ -284,12 +285,13 @@ used recursively in @code{dblquad} and @code{triplequad}, unlike the
 @end deftypefn
 
 
-@c quadl scripts/general/quadl.m
+@c quadl scripts/scripts/general/quadl.m
 @anchor{XREFquadl}
-@deftypefn  {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b})
-@deftypefnx {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol})
-@deftypefnx {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace})
-@deftypefnx {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace}, @var{p1}, @var{p2}, @dots{})
+@deftypefn  {} {@var{q} =} quadl (@var{f}, @var{a}, @var{b})
+@deftypefnx {} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol})
+@deftypefnx {} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace})
+@deftypefnx {} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace}, @var{p1}, @var{p2}, @dots{})
+@deftypefnx {} {[@var{q}, @var{nfun}] =} quadl (@dots{})
 
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b} using
 an adaptive Lobatto rule.
@@ -301,17 +303,23 @@ return a vector of output values when given a vector of input values.
 @var{a} and @var{b} are the lower and upper limits of integration.  Both
 limits must be finite.
 
-The optional argument @var{tol} defines the relative tolerance with which
-to perform the integration.  The default value is @code{eps}.
+The optional argument @var{tol} defines the absolute tolerance with which
+to perform the integration.  The default value is @math{1e-6}.
 
 The algorithm used by @code{quadl} involves recursively subdividing the
 integration interval.  If @var{trace} is defined then for each subinterval
-display: (1) the left end of the subinterval, (2) the length of the
-subinterval, (3) the approximation of the integral over the subinterval.
+display: (1) the total number of function evaluations, (2) the left end of
+the subinterval, (3) the length of the subinterval, (4) the approximation of
+the integral over the subinterval.
 
 Additional arguments @var{p1}, etc., are passed directly to the function
 @var{f}.  To use default values for @var{tol} and @var{trace}, one may pass
 empty matrices ([]).
+
+The result of the integration is returned in @var{q}.
+
+The optional output @var{nfun} indicates the total number of function
+evaluations performed.
 
 Reference: @nospell{W. Gander and W. Gautschi}, @cite{Adaptive Quadrature -
 Revisited}, BIT Vol. 40, No. 1, March 2000, pp. 84--101.
@@ -320,13 +328,13 @@ Revisited}, BIT Vol. 40, No. 1, March 2000, pp. 84--101.
 @end deftypefn
 
 
-@c quadgk scripts/general/quadgk.m
+@c quadgk scripts/scripts/general/quadgk.m
 @anchor{XREFquadgk}
-@deftypefn  {Function File} {@var{q} =} quadgk (@var{f}, @var{a}, @var{b})
-@deftypefnx {Function File} {@var{q} =} quadgk (@var{f}, @var{a}, @var{b}, @var{abstol})
-@deftypefnx {Function File} {@var{q} =} quadgk (@var{f}, @var{a}, @var{b}, @var{abstol}, @var{trace})
-@deftypefnx {Function File} {@var{q} =} quadgk (@var{f}, @var{a}, @var{b}, @var{prop}, @var{val}, @dots{})
-@deftypefnx {Function File} {[@var{q}, @var{err}] =} quadgk (@dots{})
+@deftypefn  {} {@var{q} =} quadgk (@var{f}, @var{a}, @var{b})
+@deftypefnx {} {@var{q} =} quadgk (@var{f}, @var{a}, @var{b}, @var{abstol})
+@deftypefnx {} {@var{q} =} quadgk (@var{f}, @var{a}, @var{b}, @var{abstol}, @var{trace})
+@deftypefnx {} {@var{q} =} quadgk (@var{f}, @var{a}, @var{b}, @var{prop}, @var{val}, @dots{})
+@deftypefnx {} {[@var{q}, @var{err}] =} quadgk (@dots{})
 
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
 using adaptive Gauss-Konrod quadrature.
@@ -364,11 +372,11 @@ pairs @qcode{"@var{prop}", @var{val}}.  Valid properties are
 @table @code
 @item AbsTol
 Define the absolute error tolerance for the quadrature.  The default
-absolute tolerance is 1e-10.
+absolute tolerance is 1e-10 (1e-5 for single).
 
 @item RelTol
 Define the relative error tolerance for the quadrature.  The default
-relative tolerance is 1e-5.
+relative tolerance is 1e-6 (1e-4 for single).
 
 @item MaxIntervalCount
 @code{quadgk} initially subdivides the interval on which to perform the
@@ -431,10 +439,10 @@ Feb 2008.
 
 @c quadcc libinterp/corefcn/quadcc.cc
 @anchor{XREFquadcc}
-@deftypefn  {Function File} {@var{q} =} quadcc (@var{f}, @var{a}, @var{b})
-@deftypefnx {Function File} {@var{q} =} quadcc (@var{f}, @var{a}, @var{b}, @var{tol})
-@deftypefnx {Function File} {@var{q} =} quadcc (@var{f}, @var{a}, @var{b}, @var{tol}, @var{sing})
-@deftypefnx {Function File} {[@var{q}, @var{err}, @var{nr_points}] =} quadcc (@dots{})
+@deftypefn  {} {@var{q} =} quadcc (@var{f}, @var{a}, @var{b})
+@deftypefnx {} {@var{q} =} quadcc (@var{f}, @var{a}, @var{b}, @var{tol})
+@deftypefnx {} {@var{q} =} quadcc (@var{f}, @var{a}, @var{b}, @var{tol}, @var{sing})
+@deftypefnx {} {[@var{q}, @var{err}, @var{nr_points}] =} quadcc (@dots{})
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
 using doubly-adaptive @nospell{Clenshaw-Curtis} quadrature.
 
@@ -471,7 +479,8 @@ The result of the integration is returned in @var{q}.
 
 @var{err} is an estimate of the absolute integration error.
 
-@var{nr_points} is the number of points at which the integrand was evaluated.
+@var{nr_points} is the number of points at which the integrand was
+evaluated.
 
 If the adaptive integration did not converge, the value of @var{err} will be
 larger than the requested tolerance.  Therefore, it is recommended to verify
@@ -548,11 +557,11 @@ of time.  Or the points may come from an experiment where there is no freedom to
 select the best distribution.  In any case, one must remain aware of this
 issue when using @code{trapz}.
 
-@c trapz scripts/general/trapz.m
+@c trapz scripts/scripts/general/trapz.m
 @anchor{XREFtrapz}
-@deftypefn  {Function File} {@var{q} =} trapz (@var{y})
-@deftypefnx {Function File} {@var{q} =} trapz (@var{x}, @var{y})
-@deftypefnx {Function File} {@var{q} =} trapz (@dots{}, @var{dim})
+@deftypefn  {} {@var{q} =} trapz (@var{y})
+@deftypefnx {} {@var{q} =} trapz (@var{x}, @var{y})
+@deftypefnx {} {@var{q} =} trapz (@dots{}, @var{dim})
 
 Numerically evaluate the integral of points @var{y} using the trapezoidal
 method.
@@ -589,11 +598,11 @@ trapz (x, y)
 @end deftypefn
 
 
-@c cumtrapz scripts/general/cumtrapz.m
+@c cumtrapz scripts/scripts/general/cumtrapz.m
 @anchor{XREFcumtrapz}
-@deftypefn  {Function File} {@var{q} =} cumtrapz (@var{y})
-@deftypefnx {Function File} {@var{q} =} cumtrapz (@var{x}, @var{y})
-@deftypefnx {Function File} {@var{q} =} cumtrapz (@dots{}, @var{dim})
+@deftypefn  {} {@var{q} =} cumtrapz (@var{y})
+@deftypefnx {} {@var{q} =} cumtrapz (@var{x}, @var{y})
+@deftypefnx {} {@var{q} =} cumtrapz (@dots{}, @var{dim})
 Cumulative numerical integration of points @var{y} using the trapezoidal
 method.
 
@@ -605,7 +614,8 @@ value at each point of @var{y}.
 When the argument @var{x} is omitted an equally spaced @var{x} vector with
 unit spacing (1) is assumed.  @code{cumtrapz (@var{x}, @var{y})} evaluates
 the integral with respect to the spacing in @var{x} and the values in
-@var{y}.  This is useful if the points in @var{y} have been sampled unevenly.
+@var{y}.  This is useful if the points in @var{y} have been sampled
+unevenly.
 
 If the optional @var{dim} argument is given, operate along this dimension.
 
@@ -621,7 +631,7 @@ actual spacing value (deltaX).
 
 @c colloc libinterp/corefcn/colloc.cc
 @anchor{XREFcolloc}
-@deftypefn {Built-in Function} {[@var{r}, @var{amat}, @var{bmat}, @var{q}] =} colloc (@var{n}, "left", "right")
+@deftypefn {} {[@var{r}, @var{amat}, @var{bmat}, @var{q}] =} colloc (@var{n}, "left", "right")
 Compute derivative and integral weight matrices for orthogonal collocation.
 
 Reference: @nospell{J. Villadsen}, @nospell{M. L. Michelsen},
@@ -728,12 +738,12 @@ I = dblquad (@@(x, y) sin (pi*x.*y) .* sqrt (x.*y), 0, 1, 0, 1)
 @end group
 @end example
 
-@c dblquad scripts/general/dblquad.m
+@c dblquad scripts/scripts/general/dblquad.m
 @anchor{XREFdblquad}
-@deftypefn  {Function File} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb})
-@deftypefnx {Function File} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{tol})
-@deftypefnx {Function File} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{tol}, @var{quadf})
-@deftypefnx {Function File} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{tol}, @var{quadf}, @dots{})
+@deftypefn  {} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb})
+@deftypefnx {} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{tol})
+@deftypefnx {} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{tol}, @var{quadf})
+@deftypefnx {} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{tol}, @var{quadf}, @dots{})
 Numerically evaluate the double integral of @var{f}.
 
 @var{f} is a function handle, inline function, or string containing the name
@@ -759,12 +769,12 @@ matrix ([]).
 @end deftypefn
 
 
-@c triplequad scripts/general/triplequad.m
+@c triplequad scripts/scripts/general/triplequad.m
 @anchor{XREFtriplequad}
-@deftypefn  {Function File} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb})
-@deftypefnx {Function File} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb}, @var{tol})
-@deftypefnx {Function File} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb}, @var{tol}, @var{quadf})
-@deftypefnx {Function File} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb}, @var{tol}, @var{quadf}, @dots{})
+@deftypefn  {} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb})
+@deftypefnx {} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb}, @var{tol})
+@deftypefnx {} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb}, @var{tol}, @var{quadf})
+@deftypefnx {} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb}, @var{tol}, @var{quadf}, @dots{})
 Numerically evaluate the triple integral of @var{f}.
 
 @var{f} is a function handle, inline function, or string containing the name

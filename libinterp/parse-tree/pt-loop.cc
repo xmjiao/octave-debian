@@ -20,14 +20,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "quit.h"
 
 #include "error.h"
-#include "gripes.h"
+#include "errwarn.h"
 #include "oct-map.h"
 #include "oct-lvalue.h"
 #include "ov.h"
@@ -50,7 +50,7 @@ tree_while_command::~tree_while_command (void)
   delete list;
   delete lead_comm;
   delete trail_comm;
-#ifdef HAVE_LLVM
+#if defined (HAVE_LLVM)
   delete compiled;
 #endif
 }
@@ -101,7 +101,7 @@ tree_simple_for_command::~tree_simple_for_command (void)
   delete list;
   delete lead_comm;
   delete trail_comm;
-#ifdef HAVE_LLVM
+#if defined (HAVE_LLVM)
   delete compiled;
 #endif
 }

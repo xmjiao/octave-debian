@@ -17,10 +17,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} text (@var{x}, @var{y}, @var{string})
-## @deftypefnx {Function File} {} text (@var{x}, @var{y}, @var{z}, @var{string})
-## @deftypefnx {Function File} {} text (@dots{}, @var{prop}, @var{val}, @dots{})
-## @deftypefnx {Function File} {@var{h} =} text (@dots{})
+## @deftypefn  {} {} text (@var{x}, @var{y}, @var{string})
+## @deftypefnx {} {} text (@var{x}, @var{y}, @var{z}, @var{string})
+## @deftypefnx {} {} text (@dots{}, @var{prop}, @var{val}, @dots{})
+## @deftypefnx {} {@var{h} =} text (@dots{})
 ## Create a text object with text @var{string} at position @var{x}, @var{y},
 ## (@var{z}) on the current axes.
 ##
@@ -64,13 +64,18 @@ function h = text (varargin)
     nx = numel (x);
     ny = numel (y);
     nz = numel (z);
+    if (nx != ny || nx != nz)
+      error ("text: number of X, Y, and Z coordinates must match");
+    endif
+
     if (ischar (string))
 
       do_keyword_repl = true;
       nt = rows (string);
-      if (nx == 1 && nt == 1)
-        ## Single text object with one line
+      if (nx == 1 && (nt == 1 || nt == 0))
+        ## Single text object with one line or empty line
         string = {string};
+        nt = 1;
       elseif (nx == 1 && nt > 1)
         ## Single text object with multiple lines
         ## FIXME: "default" or "factory" as first row
@@ -79,12 +84,14 @@ function h = text (varargin)
         do_keyword_repl = false;
         string = {string};
       elseif (nx > 1 && nt == nx)
-        ## Mutiple text objects with different strings
+        ## Multiple text objects with different strings
         string = cellstr (string);
-      else
-        ## Mutiple text objects with same string
+      elseif (nx > 1 && nt == 1)
+        ## Multiple text objects with same string
         string = repmat ({string}, [nx, 1]);
         nt = nx;
+      else
+        error ("text: Invalid combination of points and text strings");
       endif
 
       ## Escape special keywords
@@ -97,14 +104,16 @@ function h = text (varargin)
       nt = numel (string);
       if (nx == 1)
         ## Single text object with one or more lines
-        string = {string};
+        string = {cellstr(string)};
         nt = 1;
       elseif (nx > 1 && nt == nx)
-        ## Mutiple text objects with different strings
-      else
-        ## Mutiple text objects with same string
-        string = repmat ({string}, [nx, 1]);
+        ## Multiple text objects with different strings
+      elseif (nx > 1 && nt == 1)
+        ## Multiple text objects with same string
+        string = repmat ({cellstr(string)}, [nx, 1]);
         nt = nx;
+      else
+        error ("text: Invalid combination of points and text strings");
       endif
 
     else
@@ -126,7 +135,6 @@ function h = text (varargin)
 
   ## Get axis argument which may be in a 'parent' PROP/VAL pair
   [hax, varargin] = __plt_get_axis_arg__ ("text", varargin{:});
-
   if (isempty (hax))
     hax = gca ();
   else
@@ -142,27 +150,20 @@ function h = text (varargin)
     pos = [x(:), y(:), z(:)];
   endif
 
-  if (nx == ny && nx == nz && (nt == nx || nt == 1 || nx == 1))
-    htmp = zeros (nt, 1);
-    if (nx == 1)
-      htmp = __go_text__ (hax, "string", string{1},
-                               ## varargin first, in case "Units" set for pos.
-                               varargin{:},
-                               "position", pos);
-    elseif (nx == nt)
-      for n = 1:nt
-        htmp(n) = __go_text__ (hax, "string", string{n},
-                                    varargin{:},
-                                    "position", pos(n,:));
-      endfor
-      __request_drawnow__ ();
-    else
-      error ("text: dimension mismatch for coordinates and STRING");
-    endif
-  elseif (nt == nx || nt == 1 || nx == 1)
-    error ("text: dimension mismatch for coordinates");
+  ## Call __go_text__ to do the work
+  htmp = zeros (nt, 1);
+  if (nx == 1)
+    htmp = __go_text__ (hax, "string", string{1},
+                             ## varargin first, in case "Units" set for pos.
+                             varargin{:},
+                             "position", pos);
   else
-    error ("text: dimension mismatch between coordinates and strings");
+    for n = 1:nt
+      htmp(n) = __go_text__ (hax, "string", string{n},
+                                  varargin{:},
+                                  "position", pos(n,:));
+    endfor
+    __request_drawnow__ ();
   endif
 
   if (nargout > 0)
@@ -271,13 +272,13 @@ endfunction
 %! hf = figure ("visible", "off");
 %! unwind_protect
 %!   ## Single object with one line
-%!   h = text (0.5, 0.3, "single object with one line");
+%!   h = text (0.5, 0.5, "single object with one line");
 %!   obs = get (h, "string");
 %!   assert (class (obs), "char");
 %!   assert (obs, "single object with one line");
 %!
 %!   ## Single object with multiple lines
-%!   h = text (0.5, 0.4, ["char row 1"; "char row 2"]);
+%!   h = text (0.5, 0.3, ["char row 1"; "char row 2"]);
 %!   obs = get (h, "string");
 %!   assert (class (obs), "char");
 %!   assert (obs, ["char row 1"; "char row 2"]);
@@ -290,51 +291,73 @@ endfunction
 %!   assert (get (h(2), "string"), "two objects with same string");
 %!
 %!   ## Multiple objects with multiple lines
-%!   h = text ([0.1, 0.1], [0.3, 0.4], ["string1"; "string2"]);
+%!   h = text ([0.7, 0.7], [0.3, 0.4], ["string1"; "string2"]);
 %!   assert (class (get (h(1), "string")), "char");
 %!   assert (class (get (h(2), "string")), "char");
 %!   assert (get (h(1), "string"), "string1");
 %!   assert (get (h(2), "string"), "string2");
 %!
-%!   ### Tests repeated with cell input ###
+%!   ## Test special keyword processing
+%!   h = text (0.5, 0.5, "default");
+%!   assert (get (h, "string"), "default");
+%!   h = text (0.5, 0.5, "factory");
+%!   assert (get (h, "string"), "factory");
 %!
+%!   ## Test special null ("") string
+%!   h = text (0.5, 0.5, "");
+%!   assert (get (h, "string"), "");
+%!
+%! unwind_protect_cleanup
+%!   close (hf);
+%! end_unwind_protect
+
+## Tests repeated with cell input ##
+%!test
+%! hf = figure ("visible", "off");
+%! unwind_protect
 %!   ## Single object with one line
-%!   h = text (0.5, 0.3, {"single object with one line"});
+%!   h = text (0.5, 0.5, {"single object with one line"});
 %!   obs = get (h, "string");
 %!   assert (class (obs), "cell");
 %!   assert (obs, {"single object with one line"});
 %!
-%!   ## Single object with multiple lines
-%!   h = text (0.5, 0.6, {"cell2str (1,1)", "cell2str (1,2)";
+%!   # Single object with multiple lines
+%!   h = text (0.5, 0.3, {"cell2str (1,1)", "cell2str (1,2)";
 %!                        "cell2str (2,1)", "cell2str (2,2)"});
 %!   obs = get (h, "string");
 %!   assert (class (obs), "cell");
 %!   assert (obs, {"cell2str (1,1)"; "cell2str (2,1)";
 %!                 "cell2str (1,2)"; "cell2str (2,2)"});
 %!
+%!   ## Single object with multiple lines including empty cell
+%!   h = text (0.5, 0.9, {"Line1"; []; "Line3"});
+%!   obs = get (h, "string");
+%!   assert (class (obs), "cell");
+%!   assert (obs, {"Line1"; ""; "Line3"});
+%!
 %!   ## Multiple objects with single line
 %!   h = text ([0.1, 0.1], [0.5, 0.6], {"two objects with same cellstr"});
 %!   assert (class (get (h(1), "string")), "cell");
 %!   assert (class (get (h(2), "string")), "cell");
-%!   ## FIXME: is return value of cellstr, rather than string, Matlab-verified?
 %!   assert (get (h(1), "string"), {"two objects with same cellstr"});
 %!   assert (get (h(2), "string"), {"two objects with same cellstr"});
 %!
 %!   ## Multiple objects with multiple lines
 %!   h = text ([0.1, 0.1], [0.7, 0.8], {"cellstr1", "cellstr2"});
-%!   ## FIXME: is return value really char in Matlab?
 %!   assert (class (get (h(1), "string")), "char");
 %!   assert (class (get (h(2), "string")), "char");
 %!   assert (get (h(1), "string"), "cellstr1");
 %!   assert (get (h(2), "string"), "cellstr2");
 %!
-%!   ## Test special keyword processing
-%!   h = text (0.5, 0.5, "default");
-%!   assert (get (h, "string"), "default")
-%!   h = text (0.5, 0.5, "factory");
-%!   assert (get (h, "string"), "factory")
-%!
 %! unwind_protect_cleanup
 %!   close (hf);
 %! end_unwind_protect
+
+## Test input validation
+%!error <X, Y, and Z coordinates must match> text (1, [2 3], "foobar")
+%!error <X, Y, and Z coordinates must match> text (1, 2, [3 4], "foobar")
+%!error <Invalid combination> text ([1 2], [3, 4], ['a'; 'b'; 'c'])
+%!error <Invalid combination> text ([1 2], [3, 4], {'a', 'b', 'c'})
+%!error <STRING must be a character string> text (1, 2, 3)
+%!error text ("abc")
 

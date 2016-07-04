@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -87,15 +88,16 @@ namespace <code>&quot;Octave&quot;</code> is used for Octave&rsquo;s own warning
 is available as a namespace for user&rsquo;s own warnings.
 </p>
 <a name="XREFwarning"></a><dl>
-<dt><a name="index-warning"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(<var>template</var>, &hellip;)</em></dt>
-<dt><a name="index-warning-1"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(<var>id</var>, <var>template</var>, &hellip;)</em></dt>
-<dt><a name="index-warning-2"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(&quot;on&quot;, <var>id</var>)</em></dt>
-<dt><a name="index-warning-3"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(&quot;off&quot;, <var>id</var>)</em></dt>
-<dt><a name="index-warning-4"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(&quot;query&quot;, <var>id</var>)</em></dt>
-<dt><a name="index-warning-5"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(&quot;error&quot;, <var>id</var>)</em></dt>
-<dt><a name="index-warning-6"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(<var>state</var>, &quot;backtrace&quot;)</em></dt>
-<dt><a name="index-warning-7"></a>Built-in Function: <em></em> <strong>warning</strong> <em>(<var>state</var>, <var>id</var>, &quot;local&quot;)</em></dt>
-<dd><p>Display a warning message or control the behavior of Octave&rsquo;s warning system.
+<dt><a name="index-warning"></a>: <em></em> <strong>warning</strong> <em>(<var>template</var>, &hellip;)</em></dt>
+<dt><a name="index-warning-1"></a>: <em></em> <strong>warning</strong> <em>(<var>id</var>, <var>template</var>, &hellip;)</em></dt>
+<dt><a name="index-warning-2"></a>: <em></em> <strong>warning</strong> <em>(&quot;on&quot;, <var>id</var>)</em></dt>
+<dt><a name="index-warning-3"></a>: <em></em> <strong>warning</strong> <em>(&quot;off&quot;, <var>id</var>)</em></dt>
+<dt><a name="index-warning-4"></a>: <em></em> <strong>warning</strong> <em>(&quot;query&quot;, <var>id</var>)</em></dt>
+<dt><a name="index-warning-5"></a>: <em></em> <strong>warning</strong> <em>(&quot;error&quot;, <var>id</var>)</em></dt>
+<dt><a name="index-warning-6"></a>: <em></em> <strong>warning</strong> <em>(<var>state</var>, &quot;backtrace&quot;)</em></dt>
+<dt><a name="index-warning-7"></a>: <em></em> <strong>warning</strong> <em>(<var>state</var>, <var>id</var>, &quot;local&quot;)</em></dt>
+<dd><p>Display a warning message or control the behavior of Octave&rsquo;s warning
+system.
 </p>
 <p>Format the optional arguments under the control of the template string
 <var>template</var> using the same rules as the <code>printf</code> family of
@@ -108,9 +110,9 @@ to go on.
 </p>
 <p>The optional message identifier allows users to enable or disable
 warnings tagged by <var>id</var>.  A message identifier is of the form
-&quot;NAMESPACE:WARNING-NAME&quot;.  Octave&rsquo;s own warnings use the <code>&quot;Octave&quot;</code>
-namespace (see <a href="#XREFwarning_005fids">XREFwarning_ids</a>).  The special identifier <code>&quot;all&quot;</code>
-may be used to set the state of all warnings.
+&quot;NAMESPACE:WARNING-NAME&quot;.  Octave&rsquo;s own warnings use the
+<code>&quot;Octave&quot;</code> namespace (see <a href="#XREFwarning_005fids">XREFwarning_ids</a>).  The special
+identifier <code>&quot;all&quot;</code> may be used to set the state of all warnings.
 </p>
 <p>If the first argument is <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>,
 set the state of a particular warning using the identifier <var>id</var>.  If the
@@ -151,9 +153,9 @@ disable escape sequence expansion use a second backslash before the sequence
 
 
 <a name="XREFlastwarn"></a><dl>
-<dt><a name="index-lastwarn"></a>Built-in Function: <em>[<var>msg</var>, <var>msgid</var>] =</em> <strong>lastwarn</strong> <em>()</em></dt>
-<dt><a name="index-lastwarn-1"></a>Built-in Function: <em></em> <strong>lastwarn</strong> <em>(<var>msg</var>)</em></dt>
-<dt><a name="index-lastwarn-2"></a>Built-in Function: <em></em> <strong>lastwarn</strong> <em>(<var>msg</var>, <var>msgid</var>)</em></dt>
+<dt><a name="index-lastwarn"></a>: <em>[<var>msg</var>, <var>msgid</var>] =</em> <strong>lastwarn</strong> <em>()</em></dt>
+<dt><a name="index-lastwarn-1"></a>: <em></em> <strong>lastwarn</strong> <em>(<var>msg</var>)</em></dt>
+<dt><a name="index-lastwarn-2"></a>: <em></em> <strong>lastwarn</strong> <em>(<var>msg</var>, <var>msgid</var>)</em></dt>
 <dd><p>Query or set the last warning message.
 </p>
 <p>When called without input arguments, return the last warning message and
@@ -175,6 +177,13 @@ warnings.
 <dl compact="compact">
 <dt><code>Octave:abbreviated-property-match</code></dt>
 <dd><p>By default, the <code>Octave:abbreviated-property-match</code> warning is enabled.
+</p>
+</dd>
+<dt><code>Octave:array-as-logical</code></dt>
+<dd><p>If the <code>Octave:array-as-logical</code> warning is enabled,
+Octave will warn when an array of size greater than 1x1 is used
+as a truth value in an if, while or until statement.
+By default, the <code>Octave:array-as-logical</code> warning is disabled.
 </p>
 </dd>
 <dt><code>Octave:array-to-scalar</code></dt>
@@ -263,7 +272,8 @@ Octave will warn when parsing autoload() function calls with relative
 paths to function files.  This usually happens when using autoload()
 calls in PKG_ADD files, when the PKG_ADD file is not in the same
 directory as the .oct file referred to by the autoload() command.
-By default, the <code>Octave:autoload-relative-file-name</code> warning is enabled.
+By default, the <code>Octave:autoload-relative-file-name</code> warning is
+enabled.
 </p>
 </dd>
 <dt><code>Octave:built-in-variable-assignment</code></dt>
@@ -271,11 +281,25 @@ By default, the <code>Octave:autoload-relative-file-name</code> warning is enabl
 enabled.
 </p>
 </dd>
+<dt><code>Octave:deprecated-function</code></dt>
+<dd><p>If the <code>Octave:deprecated-function</code> warning is enabled, a
+warning is issued when Octave encounters a function that is obsolete and
+scheduled for removal from Octave.
+By default, the <code>Octave:deprecated-function</code> warning is enabled.
+</p>
+</dd>
 <dt><code>Octave:deprecated-keyword</code></dt>
 <dd><p>If the <code>Octave:deprecated-keyword</code> warning is enabled, a
 warning is issued when Octave encounters a keyword that is obsolete and
 scheduled for removal from Octave.
 By default, the <code>Octave:deprecated-keyword</code> warning is enabled.
+</p>
+</dd>
+<dt><code>Octave:deprecated-property</code></dt>
+<dd><p>If the <code>Octave:deprecated-property</code> warning is enabled, a
+warning is issued when Octave encounters a graphics property that
+is obsolete and scheduled for removal from Octave.
+By default, the <code>Octave:deprecated-property</code> warning is enabled.
 </p>
 </dd>
 <dt><code>Octave:divide-by-zero</code></dt>
@@ -327,10 +351,6 @@ Octave may also be of use, see <a href="Command-Line-Options.html#Command-Line-O
 </dd>
 <dt><code>Octave:logical-conversion</code></dt>
 <dd><p>By default, the <code>Octave:logical-conversion</code> warning is enabled.
-</p>
-</dd>
-<dt><code>Octave:md5sum-file-in-path</code></dt>
-<dd><p>By default, the <code>Octave:md5sum-file-in-path</code> warning is enabled.
 </p>
 </dd>
 <dt><code>Octave:missing-glyph</code></dt>

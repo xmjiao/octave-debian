@@ -1,4 +1,4 @@
-// N-D Array  manipulations.
+// N-D Array manipulations.
 /*
 
 Copyright (C) 1996-2015 John W. Eaton
@@ -22,8 +22,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <cfloat>
@@ -59,7 +59,7 @@ FloatNDArray::fourier (int dim) const
 {
   dim_vector dv = dims ();
 
-  if (dim > dv.length () || dim < 0)
+  if (dim > dv.ndims () || dim < 0)
     return FloatComplexNDArray ();
 
   octave_idx_type stride = 1;
@@ -68,9 +68,9 @@ FloatNDArray::fourier (int dim) const
   for (int i = 0; i < dim; i++)
     stride *= dv(i);
 
-  octave_idx_type howmany = numel () / dv (dim);
+  octave_idx_type howmany = numel () / dv(dim);
   howmany = (stride == 1 ? howmany : (howmany > stride ? stride : howmany));
-  octave_idx_type nloop = (stride == 1 ? 1 : numel () / dv (dim) / stride);
+  octave_idx_type nloop = (stride == 1 ? 1 : numel () / dv(dim) / stride);
   octave_idx_type dist = (stride == 1 ? n : 1);
 
   const float *in (fortran_vec ());
@@ -90,7 +90,7 @@ FloatNDArray::ifourier (int dim) const
 {
   dim_vector dv = dims ();
 
-  if (dim > dv.length () || dim < 0)
+  if (dim > dv.ndims () || dim < 0)
     return FloatComplexNDArray ();
 
   octave_idx_type stride = 1;
@@ -99,9 +99,9 @@ FloatNDArray::ifourier (int dim) const
   for (int i = 0; i < dim; i++)
     stride *= dv(i);
 
-  octave_idx_type howmany = numel () / dv (dim);
+  octave_idx_type howmany = numel () / dv(dim);
   howmany = (stride == 1 ? howmany : (howmany > stride ? stride : howmany));
-  octave_idx_type nloop = (stride == 1 ? 1 : numel () / dv (dim) / stride);
+  octave_idx_type nloop = (stride == 1 ? 1 : numel () / dv(dim) / stride);
   octave_idx_type dist = (stride == 1 ? n : 1);
 
   FloatComplexNDArray retval (*this);
@@ -119,10 +119,10 @@ FloatComplexNDArray
 FloatNDArray::fourier2d (void) const
 {
   dim_vector dv = dims ();
-  if (dv.length () < 2)
+  if (dv.ndims () < 2)
     return FloatComplexNDArray ();
 
-  dim_vector dv2(dv(0), dv(1));
+  dim_vector dv2 (dv(0), dv(1));
   const float *in = fortran_vec ();
   FloatComplexNDArray retval (dv);
   FloatComplex *out = retval.fortran_vec ();
@@ -139,10 +139,10 @@ FloatComplexNDArray
 FloatNDArray::ifourier2d (void) const
 {
   dim_vector dv = dims ();
-  if (dv.length () < 2)
+  if (dv.ndims () < 2)
     return FloatComplexNDArray ();
 
-  dim_vector dv2(dv(0), dv(1));
+  dim_vector dv2 (dv(0), dv(1));
   FloatComplexNDArray retval (*this);
   FloatComplex *out = retval.fortran_vec ();
   octave_idx_type howmany = numel () / dv(0) / dv(1);
@@ -158,7 +158,7 @@ FloatComplexNDArray
 FloatNDArray::fourierNd (void) const
 {
   dim_vector dv = dims ();
-  int rank = dv.length ();
+  int rank = dv.ndims ();
 
   const float *in (fortran_vec ());
   FloatComplexNDArray retval (dv);
@@ -173,7 +173,7 @@ FloatComplexNDArray
 FloatNDArray::ifourierNd (void) const
 {
   dim_vector dv = dims ();
-  int rank = dv.length ();
+  int rank = dv.ndims ();
 
   FloatComplexNDArray tmp (*this);
   FloatComplex *in (tmp.fortran_vec ());
@@ -211,7 +211,7 @@ FloatNDArray::fourier (int dim) const
 {
   dim_vector dv = dims ();
 
-  if (dim > dv.length () || dim < 0)
+  if (dim > dv.ndims () || dim < 0)
     return FloatComplexNDArray ();
 
   FloatComplexNDArray retval (dv);
@@ -258,7 +258,7 @@ FloatNDArray::ifourier (int dim) const
 {
   dim_vector dv = dims ();
 
-  if (dim > dv.length () || dim < 0)
+  if (dim > dv.ndims () || dim < 0)
     return FloatComplexNDArray ();
 
   FloatComplexNDArray retval (dv);
@@ -402,7 +402,7 @@ FloatComplexNDArray
 FloatNDArray::fourierNd (void) const
 {
   dim_vector dv = dims ();
-  int rank = dv.length ();
+  int rank = dv.ndims ();
   FloatComplexNDArray retval (*this);
   octave_idx_type stride = 1;
 
@@ -449,7 +449,7 @@ FloatComplexNDArray
 FloatNDArray::ifourierNd (void) const
 {
   dim_vector dv = dims ();
-  int rank = dv.length ();
+  int rank = dv.ndims ();
   FloatComplexNDArray retval (*this);
   octave_idx_type stride = 1;
 
@@ -501,7 +501,7 @@ boolNDArray
 FloatNDArray::operator ! (void) const
 {
   if (any_element_is_nan ())
-    gripe_nan_to_logical_conversion ();
+    err_nan_to_logical_conversion ();
 
   return do_mx_unary_op<bool, float> (*this, mx_inline_not);
 }
@@ -509,14 +509,14 @@ FloatNDArray::operator ! (void) const
 bool
 FloatNDArray::any_element_is_negative (bool neg_zero) const
 {
-  return (neg_zero ? test_all (xnegative_sign)
+  return (neg_zero ? test_all (octave::math::negative_sign)
           : do_mx_check<float> (*this, mx_inline_any_negative));
 }
 
 bool
 FloatNDArray::any_element_is_positive (bool neg_zero) const
 {
-  return (neg_zero ? test_all (xpositive_sign)
+  return (neg_zero ? test_all (octave::math::positive_sign)
           : do_mx_check<float> (*this, mx_inline_any_positive));
 }
 
@@ -556,7 +556,7 @@ FloatNDArray::all_elements_are_int_or_inf_or_nan (void) const
 bool
 FloatNDArray::all_integers (float& max_val, float& min_val) const
 {
-  octave_idx_type nel = nelem ();
+  octave_idx_type nel = numel ();
 
   if (nel > 0)
     {
@@ -576,7 +576,7 @@ FloatNDArray::all_integers (float& max_val, float& min_val) const
       if (val < min_val)
         min_val = val;
 
-      if (! xisinteger (val))
+      if (! octave::math::isinteger (val))
         return false;
     }
 
@@ -586,7 +586,7 @@ FloatNDArray::all_integers (float& max_val, float& min_val) const
 bool
 FloatNDArray::all_integers (void) const
 {
-  return test_all (xisinteger);
+  return test_all (octave::math::isinteger);
 }
 
 bool
@@ -735,25 +735,20 @@ FloatNDArray::concat (const charNDArray& rb,
     {
       float d = elem (i);
 
-      if (xisnan (d))
-        {
-          (*current_liboctave_error_handler)
-            ("invalid conversion from NaN to character");
-          return retval;
-        }
-      else
-        {
-          octave_idx_type ival = NINTbig (d);
+      if (octave::math::isnan (d))
+        (*current_liboctave_error_handler)
+          ("invalid conversion from NaN to character");
 
-          if (ival < 0 || ival > std::numeric_limits<unsigned char>::max ())
-            // FIXME: is there something better to do?  Should we warn the user?
-            ival = 0;
+      octave_idx_type ival = octave::math::nint_big (d);
 
-          retval.elem (i) = static_cast<char>(ival);
-        }
+      if (ival < 0 || ival > std::numeric_limits<unsigned char>::max ())
+        // FIXME: is there something better to do?  Should we warn the user?
+        ival = 0;
+
+      retval.elem (i) = static_cast<char>(ival);
     }
 
-  if (rb.numel () == 0)
+  if (rb.is_empty ())
     return retval;
 
   retval.insert (rb, ra_idx);
@@ -797,19 +792,19 @@ FloatNDArray::abs (void) const
 boolNDArray
 FloatNDArray::isnan (void) const
 {
-  return do_mx_unary_map<bool, float, xisnan> (*this);
+  return do_mx_unary_map<bool, float, octave::math::isnan> (*this);
 }
 
 boolNDArray
 FloatNDArray::isinf (void) const
 {
-  return do_mx_unary_map<bool, float, xisinf> (*this);
+  return do_mx_unary_map<bool, float, octave::math::isinf> (*this);
 }
 
 boolNDArray
 FloatNDArray::isfinite (void) const
 {
-  return do_mx_unary_map<bool, float, xfinite> (*this);
+  return do_mx_unary_map<bool, float, octave::math::finite> (*this);
 }
 
 void
@@ -843,7 +838,7 @@ FloatNDArray::diag (octave_idx_type m, octave_idx_type n) const
 std::ostream&
 operator << (std::ostream& os, const FloatNDArray& a)
 {
-  octave_idx_type nel = a.nelem ();
+  octave_idx_type nel = a.numel ();
 
   for (octave_idx_type i = 0; i < nel; i++)
     {
@@ -857,7 +852,7 @@ operator << (std::ostream& os, const FloatNDArray& a)
 std::istream&
 operator >> (std::istream& is, FloatNDArray& a)
 {
-  octave_idx_type nel = a.nelem ();
+  octave_idx_type nel = a.numel ();
 
   if (nel > 0)
     {
@@ -868,11 +863,9 @@ operator >> (std::istream& is, FloatNDArray& a)
           if (is)
             a.elem (i) = tmp;
           else
-            goto done;
+            return is;
         }
     }
-
-done:
 
   return is;
 }

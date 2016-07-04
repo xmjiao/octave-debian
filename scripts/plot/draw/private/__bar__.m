@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} __bar__ (@var{vertical}, @var{func}, @dots{})
+## @deftypefn {} {} __bar__ (@var{vertical}, @var{func}, @dots{})
 ## Undocumented internal function.
 ## @end deftypefn
 
@@ -69,18 +69,18 @@ function varargout = __bar__ (vertical, func, varargin)
   while (idx <= nargin)
     if (ischar (varargin{idx}) && strcmpi (varargin{idx}, "grouped"))
       group = true;
-      idx++;
+      idx += 1;
     elseif (ischar (varargin{idx}) && strcmpi (varargin{idx}, "stacked"))
       group = false;
-      idx++;
+      idx += 1;
     elseif (ischar (varargin{idx}) && strcmpi (varargin{idx}, "histc"))
       group = true;
       histc = true;
-      idx++;
+      idx += 1;
     elseif (ischar (varargin{idx}) && strcmpi (varargin{idx}, "hist"))
       group = true;
       histc = false;
-      idx++;
+      idx += 1;
     else
       if ((ischar (varargin{idx}) || iscellstr (varargin{idx}))
           && ! have_line_spec)
@@ -90,7 +90,7 @@ function varargout = __bar__ (vertical, func, varargin)
           ## FIXME: strange parse error requires semicolon to be spaced
           ##        away from closing ']' on next line.
           newargs = [{"facecolor", linespec.color}, newargs] ;
-          idx++;
+          idx += 1;
           continue;
         endif
       endif
@@ -342,6 +342,7 @@ function hglist = bars (hax, vertical, x, y, xb, yb, width, group, have_color_sp
 endfunction
 
 function update_xlim (h, ~)
+
   kids = get (h, "children");
   xlim = get (h, "xlim");
 
@@ -353,9 +354,11 @@ function update_xlim (h, ~)
       endif
     endif
   endfor
+
 endfunction
 
 function update_baseline (h, ~)
+
   visible = get (h, "visible");
   ydata = get (h, "ydata")(1);
 
@@ -369,6 +372,7 @@ function update_baseline (h, ~)
       break;
     endif
   endfor
+
 endfunction
 
 function show_baseline (h, ~, prop = "")
@@ -394,6 +398,7 @@ function show_baseline (h, ~, prop = "")
       recursion = false;
     end_unwind_protect
   endif
+
 endfunction
 
 function move_baseline (h, ~)
@@ -414,6 +419,7 @@ function move_baseline (h, ~)
       recursion = false;
     end_unwind_protect
   endif
+
 endfunction
 
 function update_props (h, ~)
@@ -459,6 +465,7 @@ function update_data (h, ~)
       recursion = false;
     end_unwind_protect
   endif
+
 endfunction
 
 function update_group (h, ~)
@@ -481,5 +488,6 @@ function update_group (h, ~)
       recursion = false;
     end_unwind_protect
   endif
+
 endfunction
 

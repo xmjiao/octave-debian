@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QApplication>
@@ -94,21 +94,27 @@ history_dock_widget::construct ()
   set_title (tr ("Command History"));
   setWidget (new QWidget ());
 
-  QVBoxLayout *vbox_layout = new QVBoxLayout ();
-  QHBoxLayout *hbox_layout = new QHBoxLayout ();
-  hbox_layout->addWidget (filter_label);
-  hbox_layout->addWidget (_filter_checkbox);
-  hbox_layout->addWidget (_filter);
-  vbox_layout->addLayout (hbox_layout);
-  vbox_layout->addWidget (_history_list_view);
-  vbox_layout->setMargin (2);
+  _filter_widget = new QWidget (this);
+  QHBoxLayout *filter_layout = new QHBoxLayout ();
+  filter_layout->addWidget (filter_label);
+  filter_layout->addWidget (_filter_checkbox);
+  filter_layout->addWidget (_filter);
+  filter_layout->setMargin(0);
+  _filter_widget->setLayout (filter_layout);
 
-  widget ()->setLayout (vbox_layout);
+  QVBoxLayout *hist_layout = new QVBoxLayout ();
+  hist_layout->addWidget (_filter_widget);
+  hist_layout->addWidget (_history_list_view);
 
-  setFocusProxy (_filter->lineEdit ());
+  hist_layout->setMargin (2);
+  widget ()->setLayout (hist_layout);
 
   // Init state of the filter
   QSettings *settings = resource_manager::get_settings ();
+
+  _filter_shown = settings->value ("history_dock_widget/filter_shown",true).toBool();
+  _filter_widget->setVisible (_filter_shown);
+
   _filter->addItems (settings->value ("history_dock_widget/mru_list").toStringList ());
 
   bool filter_state =
@@ -142,6 +148,7 @@ history_dock_widget::~history_dock_widget ()
 
   settings->setValue ("history_dock_widget/filter_active",
                       _filter_checkbox->isChecked ());
+  settings->setValue ("history_dock_widget/filter_shown", _filter_shown);
 
   QStringList mru;
   for (int i = 0; i < _filter->count (); i++)
@@ -191,8 +198,15 @@ void history_dock_widget::ctxMenu (const QPoint &xpos)
       menu.addAction (resource_manager::icon ("document-new"),
                   tr ("Create script"), this,
                   SLOT (handle_contextmenu_create_script (bool)));
-      menu.exec (_history_list_view->mapToGlobal (xpos));
     }
+  if (_filter_shown)
+    menu.addAction (tr ("Hide filter"), this,
+                    SLOT (handle_contextmenu_filter ()));
+  else
+    menu.addAction (tr ("Show filter"), this,
+                    SLOT (handle_contextmenu_filter ()));
+
+  menu.exec (_history_list_view->mapToGlobal (xpos));
 }
 
 void history_dock_widget::handle_contextmenu_copy (bool)
@@ -250,6 +264,12 @@ history_dock_widget::handle_contextmenu_create_script (bool)
     emit command_create_script (text);
 }
 
+void
+history_dock_widget::handle_contextmenu_filter (void)
+{
+  _filter_shown = not _filter_shown;
+  _filter_widget->setVisible (_filter_shown);
+}
 
 void
 history_dock_widget::handle_double_click (QModelIndex modelIndex)
@@ -306,7 +326,7 @@ history_dock_widget::pasteClipboard ()
   if (_filter->lineEdit ()->hasFocus ())
     {
       QClipboard *clipboard = QApplication::clipboard ();
-      QString str =  clipboard->text ();
+      QString str = clipboard->text ();
       if (str.length () > 0)
         _filter->lineEdit ()->insert (str);
     }

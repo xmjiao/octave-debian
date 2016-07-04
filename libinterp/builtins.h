@@ -20,12 +20,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_builtins_h)
+#if ! defined (octave_builtins_h)
 #define octave_builtins_h 1
 
-#if !defined (MAKE_BUILTINS)
+#include "octave-config.h"
+
 #include "builtin-defun-decls.h"
-#endif
 
 extern OCTINTERP_API void install_builtins (void);
 

@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "error.h"
@@ -57,6 +57,7 @@ octave_base_iostream::eof (void) const
 void
 octave_base_iostream::invalid_operation (void) const
 {
+  // Note: use ::error to get error from error.h which halts operation.
   ::error ("%s: invalid operation", stream_type ());
 }
 

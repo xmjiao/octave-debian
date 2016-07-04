@@ -17,13 +17,13 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} plot (@var{y})
-## @deftypefnx {Function File} {} plot (@var{x}, @var{y})
-## @deftypefnx {Function File} {} plot (@var{x}, @var{y}, @var{fmt})
-## @deftypefnx {Function File} {} plot (@dots{}, @var{property}, @var{value}, @dots{})
-## @deftypefnx {Function File} {} plot (@var{x1}, @var{y1}, @dots{}, @var{xn}, @var{yn})
-## @deftypefnx {Function File} {} plot (@var{hax}, @dots{})
-## @deftypefnx {Function File} {@var{h} =} plot (@dots{})
+## @deftypefn  {} {} plot (@var{y})
+## @deftypefnx {} {} plot (@var{x}, @var{y})
+## @deftypefnx {} {} plot (@var{x}, @var{y}, @var{fmt})
+## @deftypefnx {} {} plot (@dots{}, @var{property}, @var{value}, @dots{})
+## @deftypefnx {} {} plot (@var{x1}, @var{y1}, @dots{}, @var{xn}, @var{yn})
+## @deftypefnx {} {} plot (@var{hax}, @dots{})
+## @deftypefnx {} {@var{h} =} plot (@dots{})
 ## Produce 2-D plots.
 ##
 ## Many different combinations of arguments are possible.  The simplest
@@ -99,8 +99,8 @@
 ## in pairs.  These arguments are applied to the line objects drawn by
 ## @code{plot}.  Useful properties to modify are @qcode{"linestyle"},
 ## @qcode{"linewidth"}, @qcode{"color"}, @qcode{"marker"},
-## @qcode{"markersize"}, @qcode{"markeredgecolor"}, @qcode{"markerfacecolor"}.  
-## @xref{Line Properties}.  
+## @qcode{"markersize"}, @qcode{"markeredgecolor"}, @qcode{"markerfacecolor"}.
+## @xref{Line Properties}.
 ##
 ## The @var{fmt} format argument can also be used to control the plot style.
 ## It is a string composed of four optional parts:
@@ -253,35 +253,35 @@ endfunction
 
 %!demo
 %! x = 0:10;
-%! plot (x, rand (numel (x), 3))
-%! axis ([0 10 0 1])
-%! title ({'Three random variables', 'x[1x11], y[11x3]'})
+%! plot (x, rand (numel (x), 3));
+%! axis ([0 10 0 1]);
+%! title ({'Three random variables', 'x[1x11], y[11x3]'});
 
 %!demo
 %! x = 0:10;
-%! plot (x, rand (3, numel (x)))
-%! axis ([0 10 0 1])
-%! title ({'Three random variables', 'x[1x11], y[3x11]'})
+%! plot (x, rand (3, numel (x)));
+%! axis ([0 10 0 1]);
+%! title ({'Three random variables', 'x[1x11], y[3x11]'});
 
 %!demo
 %! x = 0:10;
-%! plot (repmat (x, 2, 1), rand (2, numel (x)), '-s')
-%! axis ([0 10 0 1])
+%! plot (repmat (x, 2, 1), rand (2, numel (x)), '-s');
+%! axis ([0 10 0 1]);
 %! title ({'Vertical lines with random height and lengths', ...
 %!         'x[2x11], y[2,11]'})
 
 %!demo
 %! x = 0:10;
-%! plot (repmat (x(:), 1, 2), rand (numel (x), 2))
-%! axis ([0 10 0 1])
-%! title ({'Two random variables', 'x[11x2], y[11x2]'})
+%! plot (repmat (x(:), 1, 2), rand (numel (x), 2));
+%! axis ([0 10 0 1]);
+%! title ({'Two random variables', 'x[11x2], y[11x2]'});
 
 %!demo
 %! x = 0:10;
 %! shape = [1, 1, numel(x), 2];
 %! x = reshape (repmat (x(:), 1, 2), shape);
 %! y = rand (shape);
-%! plot (x, y)
-%! axis ([0 10 0 1])
-%! title ({'Two random variables', 'squeezed from 4-d arrays'})
+%! plot (x, y);
+%! axis ([0 10 0 1]);
+%! title ({'Two random variables', 'squeezed from 4-d arrays'});
 

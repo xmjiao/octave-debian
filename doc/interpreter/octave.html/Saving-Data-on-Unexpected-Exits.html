@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -65,9 +66,9 @@ most often is reasonable it can be changed through the following
 functions.
 </p>
 <a name="XREFcrash_005fdumps_005foctave_005fcore"></a><dl>
-<dt><a name="index-crash_005fdumps_005foctave_005fcore"></a>Built-in Function: <em><var>val</var> =</em> <strong>crash_dumps_octave_core</strong> <em>()</em></dt>
-<dt><a name="index-crash_005fdumps_005foctave_005fcore-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>crash_dumps_octave_core</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-crash_005fdumps_005foctave_005fcore-2"></a>Built-in Function: <em></em> <strong>crash_dumps_octave_core</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-crash_005fdumps_005foctave_005fcore"></a>: <em><var>val</var> =</em> <strong>crash_dumps_octave_core</strong> <em>()</em></dt>
+<dt><a name="index-crash_005fdumps_005foctave_005fcore-1"></a>: <em><var>old_val</var> =</em> <strong>crash_dumps_octave_core</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-crash_005fdumps_005foctave_005fcore-2"></a>: <em></em> <strong>crash_dumps_octave_core</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file <samp>octave-workspace</samp> if it
 crashes or receives a hangup, terminate or similar signal.
@@ -81,9 +82,9 @@ The original variable value is restored when exiting the function.
 
 
 <a name="XREFsighup_005fdumps_005foctave_005fcore"></a><dl>
-<dt><a name="index-sighup_005fdumps_005foctave_005fcore"></a>Built-in Function: <em><var>val</var> =</em> <strong>sighup_dumps_octave_core</strong> <em>()</em></dt>
-<dt><a name="index-sighup_005fdumps_005foctave_005fcore-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>sighup_dumps_octave_core</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-sighup_005fdumps_005foctave_005fcore-2"></a>Built-in Function: <em></em> <strong>sighup_dumps_octave_core</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-sighup_005fdumps_005foctave_005fcore"></a>: <em><var>val</var> =</em> <strong>sighup_dumps_octave_core</strong> <em>()</em></dt>
+<dt><a name="index-sighup_005fdumps_005foctave_005fcore-1"></a>: <em><var>old_val</var> =</em> <strong>sighup_dumps_octave_core</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-sighup_005fdumps_005foctave_005fcore-2"></a>: <em></em> <strong>sighup_dumps_octave_core</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file <samp>octave-workspace</samp> if it
 receives a hangup signal.
@@ -95,9 +96,9 @@ The original variable value is restored when exiting the function.
 
 
 <a name="XREFsigterm_005fdumps_005foctave_005fcore"></a><dl>
-<dt><a name="index-sigterm_005fdumps_005foctave_005fcore"></a>Built-in Function: <em><var>val</var> =</em> <strong>sigterm_dumps_octave_core</strong> <em>()</em></dt>
-<dt><a name="index-sigterm_005fdumps_005foctave_005fcore-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>sigterm_dumps_octave_core</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-sigterm_005fdumps_005foctave_005fcore-2"></a>Built-in Function: <em></em> <strong>sigterm_dumps_octave_core</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-sigterm_005fdumps_005foctave_005fcore"></a>: <em><var>val</var> =</em> <strong>sigterm_dumps_octave_core</strong> <em>()</em></dt>
+<dt><a name="index-sigterm_005fdumps_005foctave_005fcore-1"></a>: <em><var>old_val</var> =</em> <strong>sigterm_dumps_octave_core</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-sigterm_005fdumps_005foctave_005fcore-2"></a>: <em></em> <strong>sigterm_dumps_octave_core</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file <samp>octave-workspace</samp> if it
 receives a terminate signal.
@@ -109,9 +110,9 @@ The original variable value is restored when exiting the function.
 
 
 <a name="XREFoctave_005fcore_005ffile_005foptions"></a><dl>
-<dt><a name="index-octave_005fcore_005ffile_005foptions"></a>Built-in Function: <em><var>val</var> =</em> <strong>octave_core_file_options</strong> <em>()</em></dt>
-<dt><a name="index-octave_005fcore_005ffile_005foptions-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>octave_core_file_options</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-octave_005fcore_005ffile_005foptions-2"></a>Built-in Function: <em></em> <strong>octave_core_file_options</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-octave_005fcore_005ffile_005foptions"></a>: <em><var>val</var> =</em> <strong>octave_core_file_options</strong> <em>()</em></dt>
+<dt><a name="index-octave_005fcore_005ffile_005foptions-1"></a>: <em><var>old_val</var> =</em> <strong>octave_core_file_options</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-octave_005fcore_005ffile_005foptions-2"></a>: <em></em> <strong>octave_core_file_options</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that specifies the options used for
 saving the workspace data if Octave aborts.
 </p>
@@ -128,9 +129,9 @@ The original variable value is restored when exiting the function.
 
 
 <a name="XREFoctave_005fcore_005ffile_005flimit"></a><dl>
-<dt><a name="index-octave_005fcore_005ffile_005flimit"></a>Built-in Function: <em><var>val</var> =</em> <strong>octave_core_file_limit</strong> <em>()</em></dt>
-<dt><a name="index-octave_005fcore_005ffile_005flimit-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>octave_core_file_limit</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-octave_005fcore_005ffile_005flimit-2"></a>Built-in Function: <em></em> <strong>octave_core_file_limit</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-octave_005fcore_005ffile_005flimit"></a>: <em><var>val</var> =</em> <strong>octave_core_file_limit</strong> <em>()</em></dt>
+<dt><a name="index-octave_005fcore_005ffile_005flimit-1"></a>: <em><var>old_val</var> =</em> <strong>octave_core_file_limit</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-octave_005fcore_005ffile_005flimit-2"></a>: <em></em> <strong>octave_core_file_limit</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that specifies the maximum amount
 of memory (in kilobytes) of the top-level workspace that Octave will
 attempt to save when writing data to the crash dump file (the name of
@@ -150,9 +151,9 @@ The original variable value is restored when exiting the function.
 
 
 <a name="XREFoctave_005fcore_005ffile_005fname"></a><dl>
-<dt><a name="index-octave_005fcore_005ffile_005fname"></a>Built-in Function: <em><var>val</var> =</em> <strong>octave_core_file_name</strong> <em>()</em></dt>
-<dt><a name="index-octave_005fcore_005ffile_005fname-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>octave_core_file_name</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-octave_005fcore_005ffile_005fname-2"></a>Built-in Function: <em></em> <strong>octave_core_file_name</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-octave_005fcore_005ffile_005fname"></a>: <em><var>val</var> =</em> <strong>octave_core_file_name</strong> <em>()</em></dt>
+<dt><a name="index-octave_005fcore_005ffile_005fname-1"></a>: <em><var>old_val</var> =</em> <strong>octave_core_file_name</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-octave_005fcore_005ffile_005fname-2"></a>: <em></em> <strong>octave_core_file_name</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that specifies the name of the file
 used for saving data from the top-level workspace if Octave aborts.
 </p>

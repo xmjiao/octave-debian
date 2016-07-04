@@ -17,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{args} =} __print_parse_opts__ (@var{propname}, @var{propvalue})
-## @deftypefnx {Function File} {@var{args} =} __print_parse_opts__ (@var{struct})
+## @deftypefn  {} {@var{args} =} __print_parse_opts__ (@var{propname}, @var{propvalue})
+## @deftypefnx {} {@var{args} =} __print_parse_opts__ (@var{struct})
 ## Undocumented internal function.
 ## @end deftypefn
 
@@ -115,11 +115,11 @@ function arg_st = __print_parse_opts__ (varargin)
       elseif (length (arg) > 2 && arg(1:2) == "-P")
         arg_st.printer = arg;
       elseif (strncmp (arg, "-EPSTOOL:", 9))
-        arg_st.epstool_binary = arg{10:end};
+        arg_st.epstool_binary = arg(10:end);
       elseif (strncmp (arg, "-FIG2DEV:", 9))
-        arg_st.fig2dev_binary = arg{10:end};
+        arg_st.fig2dev_binary = arg(10:end);
       elseif (strncmp (arg, "-PSTOEDIT:", 9))
-        arg_st.pstoedit_binary = arg{10:end};
+        arg_st.pstoedit_binary = arg(10:end);
       elseif (strncmpi (arg, "-textalphabits=", 15))
         n = find (arg == "=");
         if (! isempty (n) && n == numel (arg) - 1 && any (arg(end) == "124"))
@@ -168,7 +168,7 @@ function arg_st = __print_parse_opts__ (varargin)
     elseif (isfigure (arg))
       arg_st.figure = arg;
     else
-      error ("print: expecting inputs to be character string options or a figure handle");
+      error ("print: first argument must be string or figure handle");
     endif
   endfor
 
@@ -263,7 +263,7 @@ function arg_st = __print_parse_opts__ (varargin)
   endif
 
   if (dot == 0 && ! isempty (arg_st.name))
-    arg_st.name = strcat (arg_st.name, ".", default_suffix);
+    arg_st.name = [arg_st.name "." default_suffix];
   endif
 
   if (arg_st.append_to_file)
@@ -329,14 +329,14 @@ function arg_st = __print_parse_opts__ (varargin)
       ## Pipe the ghostscript output
       arg_st.name = "-";
     else
-      error ("print: a file name may not specified when spooling to a printer")
+      error ("print: a filename may not specified when spooling to a printer");
     endif
     if (! any (strcmp (arg_st.devopt, gs_device_list)))
       ## Only supported ghostscript devices
-      error ("print: format must be a valid Ghostscript format for spooling to a printer")
+      error ("print: format must be a valid Ghostscript format for spooling to a printer");
     endif
   elseif (isempty (arg_st.name))
-    error ("print: an output file name must be specified")
+    error ("print: an output filename must be specified");
   endif
 
   if (isempty (arg_st.canvas_size))
@@ -392,6 +392,7 @@ function arg_st = __print_parse_opts__ (varargin)
   endif
 
 endfunction
+
 
 ## Test blocks are not allowed (and not needed) for private functions
 #%!test
@@ -452,6 +453,7 @@ endfunction
 %! assert (opts.figure, 5);
 
 function cmd = __quote_path__ (cmd)
+
   if (! isempty (cmd))
     is_quoted = all (cmd([1, end]) == "'");
     if (! is_quoted)
@@ -460,11 +462,13 @@ function cmd = __quote_path__ (cmd)
         cmd = strrep (cmd, "/", "\\");
       endif
       if (any (cmd == " "))
-        cmd = strcat ('"', strrep (cmd, '"', '""') ,'"');
+        cmd = ['"' strrep(cmd, '"', '""') '"'];
       endif
     endif
   endif
+
 endfunction
+
 
 function gs = __ghostscript_binary__ ()
 
@@ -495,7 +499,7 @@ function gs = __ghostscript_binary__ ()
     endif
     n = 0;
     while (n < numel (gs_binaries) && isempty (ghostscript_binary))
-      n = n + 1;
+      n += 1;
       ghostscript_binary = file_in_path (getenv ("PATH"), gs_binaries{n});
     endwhile
     if (warn_on_no_ghostscript && isempty (ghostscript_binary))
@@ -529,7 +533,7 @@ function bin = __find_binary__ (binary)
     endif
     n = 0;
     while (n < numel (binaries) && isempty (data.(binary).bin))
-      n = n + 1;
+      n += 1;
       data.(binary).bin = file_in_path (getenv ("PATH"), binaries{n});
     endwhile
     if (isempty (data.(binary).bin) && data.(binary).warn_on_absence)
@@ -574,7 +578,7 @@ function [papersize, paperposition] = gs_papersize (hfig, paperorientation)
   endif
 
   if (strcmp (paperunits, "normalized"))
-    paperposition = paperposition .* papersize([1,2,1,2]);
+    paperposition .*= papersize([1,2,1,2]);
   else
     paperposition = convert2points (paperposition, paperunits);
   endif
@@ -599,7 +603,7 @@ function [papersize, paperposition] = gs_papersize (hfig, paperorientation)
       case {"b", "tabloid"}
         papersize = "11x17";
       case {"c", "d", "e"}
-        papersize = strcat ("arch", papersize);
+        papersize = ["arch" papersize];
     endswitch
     if (strncmp (papersize, "arch", 4))
       papersize(end) = upper (papersize(end));
@@ -609,15 +613,17 @@ function [papersize, paperposition] = gs_papersize (hfig, paperorientation)
 endfunction
 
 function value = convert2points (value, units)
+
   switch (units)
     case "inches"
-      value = value * 72;
+      value *= 72;
     case "centimeters"
-      value = value * 72 / 2.54;
+      value *= 72 / 2.54;
     case "normalized"
       error ("print:customnormalized",
              "print.m: papersize=='<custom>' and paperunits='normalized' may not be combined");
   endswitch
+
 endfunction
 
 function device_list = gs_device_list ();

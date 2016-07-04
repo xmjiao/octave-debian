@@ -15,7 +15,7 @@
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Graphics-Data-Structures.html#Graphics-Data-Structures" rel="up" title="Graphics Data Structures">
 <link href="Managing-Default-Properties.html#Managing-Default-Properties" rel="next" title="Managing Default Properties">
-<link href="Surface-Properties.html#Surface-Properties" rel="prev" title="Surface Properties">
+<link href="Uitoggletool-Properties.html#Uitoggletool-Properties" rel="prev" title="Uitoggletool Properties">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -58,14 +59,14 @@ Next: <a href="Managing-Default-Properties.html#Managing-Default-Properties" acc
 <h4 class="subsection">15.3.4 Searching Properties</h4>
 
 <a name="XREFfindobj"></a><dl>
-<dt><a name="index-findobj"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>()</em></dt>
-<dt><a name="index-findobj-1"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &hellip;)</em></dt>
-<dt><a name="index-findobj-2"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &quot;-<var>logical_op</var>&quot;, <var>prop_name</var>, <var>prop_value</var>)</em></dt>
-<dt><a name="index-findobj-3"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(&quot;-property&quot;, <var>prop_name</var>)</em></dt>
-<dt><a name="index-findobj-4"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(&quot;-regexp&quot;, <var>prop_name</var>, <var>pattern</var>)</em></dt>
-<dt><a name="index-findobj-5"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>hlist</var>, &hellip;)</em></dt>
-<dt><a name="index-findobj-6"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>hlist</var>, &quot;flat&quot;, &hellip;)</em></dt>
-<dt><a name="index-findobj-7"></a>Function File: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>hlist</var>, &quot;-depth&quot;, <var>d</var>, &hellip;)</em></dt>
+<dt><a name="index-findobj"></a>: <em><var>h</var> =</em> <strong>findobj</strong> <em>()</em></dt>
+<dt><a name="index-findobj-1"></a>: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &hellip;)</em></dt>
+<dt><a name="index-findobj-2"></a>: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &quot;-<var>logical_op</var>&quot;, <var>prop_name</var>, <var>prop_value</var>)</em></dt>
+<dt><a name="index-findobj-3"></a>: <em><var>h</var> =</em> <strong>findobj</strong> <em>(&quot;-property&quot;, <var>prop_name</var>)</em></dt>
+<dt><a name="index-findobj-4"></a>: <em><var>h</var> =</em> <strong>findobj</strong> <em>(&quot;-regexp&quot;, <var>prop_name</var>, <var>pattern</var>)</em></dt>
+<dt><a name="index-findobj-5"></a>: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>hlist</var>, &hellip;)</em></dt>
+<dt><a name="index-findobj-6"></a>: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>hlist</var>, &quot;flat&quot;, &hellip;)</em></dt>
+<dt><a name="index-findobj-7"></a>: <em><var>h</var> =</em> <strong>findobj</strong> <em>(<var>hlist</var>, &quot;-depth&quot;, <var>d</var>, &hellip;)</em></dt>
 <dd><p>Find graphics object with specified property values.
 </p>
 <p>The simplest form is
@@ -116,14 +117,14 @@ search for all objects including hidden ones.
 
 
 <a name="XREFfindall"></a><dl>
-<dt><a name="index-findall"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>()</em></dt>
-<dt><a name="index-findall-1"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &hellip;)</em></dt>
-<dt><a name="index-findall-2"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &quot;-<var>logical_op</var>&quot;, <var>prop_name</var>, <var>prop_value</var>)</em></dt>
-<dt><a name="index-findall-3"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(&quot;-property&quot;, <var>prop_name</var>)</em></dt>
-<dt><a name="index-findall-4"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(&quot;-regexp&quot;, <var>prop_name</var>, <var>pattern</var>)</em></dt>
-<dt><a name="index-findall-5"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>hlist</var>, &hellip;)</em></dt>
-<dt><a name="index-findall-6"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>hlist</var>, &quot;flat&quot;, &hellip;)</em></dt>
-<dt><a name="index-findall-7"></a>Function File: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>hlist</var>, &quot;-depth&quot;, <var>d</var>, &hellip;)</em></dt>
+<dt><a name="index-findall"></a>: <em><var>h</var> =</em> <strong>findall</strong> <em>()</em></dt>
+<dt><a name="index-findall-1"></a>: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &hellip;)</em></dt>
+<dt><a name="index-findall-2"></a>: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>prop_name</var>, <var>prop_value</var>, &quot;-<var>logical_op</var>&quot;, <var>prop_name</var>, <var>prop_value</var>)</em></dt>
+<dt><a name="index-findall-3"></a>: <em><var>h</var> =</em> <strong>findall</strong> <em>(&quot;-property&quot;, <var>prop_name</var>)</em></dt>
+<dt><a name="index-findall-4"></a>: <em><var>h</var> =</em> <strong>findall</strong> <em>(&quot;-regexp&quot;, <var>prop_name</var>, <var>pattern</var>)</em></dt>
+<dt><a name="index-findall-5"></a>: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>hlist</var>, &hellip;)</em></dt>
+<dt><a name="index-findall-6"></a>: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>hlist</var>, &quot;flat&quot;, &hellip;)</em></dt>
+<dt><a name="index-findall-7"></a>: <em><var>h</var> =</em> <strong>findall</strong> <em>(<var>hlist</var>, &quot;-depth&quot;, <var>d</var>, &hellip;)</em></dt>
 <dd><p>Find graphics object, including hidden ones, with specified property values.
 </p>
 <p>The return value <var>h</var> is a list of handles to the found graphic objects.

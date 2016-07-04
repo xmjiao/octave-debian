@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -59,9 +60,10 @@ Next: <a href="C_002b_002b-Sources.html#C_002b_002b-Sources" accesskey="n" rel="
 
 <p>Don&rsquo;t use tabs.  Tabs cause trouble.  If you are used to them, set up
 your editor so that it converts tabs to spaces.  Indent the bodies of
-statement blocks.  The recommended indent is 2 spaces.  When calling
-functions, put spaces after commas and before the calling parentheses,
-like this:
+statement blocks.  The recommended indent is 2 spaces.
+</p>
+<p>When calling functions, put spaces after commas and before the calling
+parentheses, like this:
 </p>
 <div class="example">
 <pre class="example">  x = max (sin (y+3), 2);
@@ -75,7 +77,9 @@ like this:
 </pre></div>
 
 <p>Here, putting spaces after <code>sin</code>, <code>cos</code> would result in a
-parse error.  For an indexing expression, do not put a space after the
+parse error.
+</p>
+<p>For indexing expressions, do <strong>not</strong> put a space after the
 identifier (this differentiates indexing and function calls nicely).
 The space after a comma is not necessary if index expressions are simple,
 i.e., you may write
@@ -90,6 +94,22 @@ i.e., you may write
 <pre class="example">  A([1:i-1;i+1:n], XI(:,2:n-1))
 </pre></div>
 
+<p>When constructing matrices, prefer using the comma rather than the space to
+distinguish between columns.
+</p>
+<div class="example">
+<pre class="example">  M = [1, 2, 3
+       4, 5, 6];
+</pre></div>
+
+<p>However, if the matrix is large or the indentation makes it clear the comma
+may be dropped.
+</p>
+<div class="example">
+<pre class="example">  prices = [ 1.01  2.02  3.03
+            44.04 55.05  6.06];
+</pre></div>
+
 <p>Use lowercase names if possible.  Uppercase is acceptable for variable
 names consisting of 1-2 letters.  Do not use mixed case names.  Function
 names must be lowercase.  Function names are global, so choose them
@@ -98,8 +118,8 @@ wisely.
 <p>Always use a specific end-of-block statement (like <code>endif</code>,
 <code>endswitch</code>) rather than the generic <code>end</code>.
 </p>
-<p>Enclose the <code>if</code>, <code>while</code>, <code>until</code>, and <code>switch</code>
-conditions in parentheses, as in C:
+<p>Enclose the condition of an <code>if</code>, <code>while</code>, <code>until</code>, or
+<code>switch</code> statement in parentheses, as in C:
 </p>
 <div class="example">
 <pre class="example">if (isvector (a))
@@ -107,8 +127,8 @@ conditions in parentheses, as in C:
 endif
 </pre></div>
 
-<p>Do not do this, however, with the iteration counter portion of a
-<code>for</code> statement.  Write:
+<p>Do not do this, however, with the iteration counter portion of a <code>for</code>
+statement.  Write:
 </p>
 <div class="example">
 <pre class="example">for i = 1:n
@@ -116,6 +136,22 @@ endif
 endfor
 </pre></div>
 
+<p>The Octave operator &lsquo;<samp>!</samp>&rsquo; should be used for logical negation, rather than
+&lsquo;<samp>~</samp>&rsquo;.  The negation operator is written with a space between the operator
+and its target, e.g., <code>! A</code>.
+</p>
+<p>Comments should begin with the &lsquo;<samp>#</samp>&rsquo; character, rather than &lsquo;<samp>%</samp>&rsquo;.
+See <a href="Comment-Tips.html#Comment-Tips">Comment Tips</a>.
+</p>
+<p>Any demos or Built-In Self Tests (BIST) using the <code>%!demo</code> or
+<code>%!test</code> syntax should begin two lines after the <code>endfunction</code>
+keyword.  Demo blocks should be listed before test blocks.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="C_002b_002b-Sources.html#C_002b_002b-Sources" accesskey="n" rel="next">C++ Sources</a>, Previous: <a href="General-Guidelines.html#General-Guidelines" accesskey="p" rel="prev">General Guidelines</a>, Up: <a href="Contributing-Guidelines.html#Contributing-Guidelines" accesskey="u" rel="up">Contributing Guidelines</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

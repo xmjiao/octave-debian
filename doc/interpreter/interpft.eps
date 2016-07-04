@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
-%%Title: interpft.eps
-%%Creator: gnuplot 5.0 patchlevel 2
-%%CreationDate: Fri Jul  1 14:57:35 2016
+%%Title: doc/interpreter/interpft.eps
+%%Creator: gnuplot 5.0 patchlevel 3
+%%CreationDate: Thu Jun 30 09:20:47 2016
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -464,13 +464,12 @@ systemdict /pdfmark known not {
   userdict /pdfmark systemdict /cleartomark get put
 } if
 SDict begin [
-  /Title (interpft.eps)
+  /Title (doc/interpreter/interpft.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 5.0 patchlevel 2)
-  /Author (jwe)
+  /Creator (gnuplot 5.0 patchlevel 3)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Fri Jul  1 14:57:35 2016)
+  /CreationDate (Thu Jun 30 09:20:47 2016)
   /DOCINFO pdfmark
 end
 } ifelse
@@ -561,18 +560,24 @@ gsave % colour palette begin
   .5714 .5873 .6032 .619 .6349 .6508 .6667 .6825 .6984 .7143 .7302 .746 
   .7619 .7778 .7937 .8095 .8254 .8413 .8571 .873 .8889 .9048 .9206 .9365 
   .9524 .9683 .9841 1 ] def
-/RedA [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .0238 .0873 .1508 
-  .2143 .2778 .3413 .4048 .4683 .5317 .5952 .6587 .7222 .7857 .8492 .9127 
-  .9762 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 .9444 .881 .8175 .754 .6905 .627 
-  .5635 .5 ] def
-/GreenA [0 0 0 0 0 0 0 0 .0079 .0714 .1349 .1984 .2619 .3254 .3889 .4524 
-  .5159 .5794 .6429 .7063 .7698 .8333 .8968 .9603 1 1 1 1 1 1 1 1 1 1 1 1 1 
-  1 1 1 .9603 .8968 .8333 .7698 .7063 .6429 .5794 .5159 .4524 .3889 .3254 
-  .2619 .1984 .1349 .0714 .0079 0 0 0 0 0 0 0 0 ] def
-/BlueA [.5 .5635 .627 .6905 .754 .8175 .881 .9444 1 1 1 1 1 1 1 1 1 1 1 1 1 
-  1 1 1 .9762 .9127 .8492 .7857 .7222 .6587 .5952 .5317 .4683 .4048 .3413 
-  .2778 .2143 .1508 .0873 .0238 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-  0 0 ] def
+/RedA [.267 .2727 .2771 .2804 .2824 .2832 .2828 .2812 .2785 .2747 .27 .2644 
+  .258 .2511 .2437 .2361 .2283 .2204 .2127 .2051 .1977 .1906 .1838 .1773 
+  .171 .1648 .1588 .153 .1471 .1414 .1358 .1306 .1259 .1222 .1199 .1196 .122 
+  .1277 .1368 .1496 .166 .1855 .208 .2331 .2605 .29 .3213 .3544 .3889 .4249 
+  .4622 .5008 .5403 .5809 .6222 .6641 .7064 .7489 .7913 .8333 .8747 .9153 
+  .9548 .9932 ] def
+/GreenA [.0049 .0258 .0509 .0742 .096 .1169 .1374 .1575 .1773 .197 .2163 
+  .2354 .2542 .2726 .2906 .3083 .3256 .3425 .3591 .3754 .3913 .4071 .4226 
+  .4379 .4531 .4681 .4831 .4981 .513 .5279 .5428 .5577 .5726 .5875 .6024 
+  .6173 .6321 .6469 .6616 .6761 .6905 .7047 .7187 .7324 .7458 .7588 .7715 
+  .7837 .7955 .8067 .8173 .8274 .8369 .8457 .8538 .8613 .8682 .8745 .8803 
+  .8858 .8909 .896 .901 .9062 ] def
+/BlueA [.3294 .3534 .3762 .3979 .4183 .4372 .4546 .4704 .4847 .4973 .5083 
+  .5177 .5258 .5325 .5381 .5427 .5463 .5493 .5516 .5535 .555 .5561 .557 
+  .5576 .558 .5581 .5581 .5577 .557 .5559 .5543 .5522 .5494 .546 .5418 .5368 
+  .5308 .5239 .516 .5069 .4968 .4854 .4729 .4591 .4441 .4278 .4103 .3915 
+  .3714 .3501 .3275 .3038 .2789 .253 .2262 .1989 .1715 .145 .1213 .1033 
+  .0954 .1005 .1179 .1439 ] def
 /pm3dround {maxcolors 0 gt {dup 1 ge
 	{pop 1} {maxcolors mul floor maxcolors 1 sub div} ifelse} if} def
 /pm3dGamma 1.0 1.5 Gamma mul div def
@@ -590,178 +595,156 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 } ifelse
 1.000 UL
 LTb
-1.00 1.00 1.00 C 1.000 780 400 6058 4398 BoxColFill
-0.500 UL
+1.00 1.00 1.00 C 1.000 0 0 7199 5039 BoxColFill
+1.000 UL
 LTb
-LCb setrgbcolor
-780 400 M
+1.00 1.00 1.00 C 1.000 780 400 6058 4398 BoxColFill
+1.000 UL
+LTb
+0.00 0.00 0.00 C 780 400 M
 88 0 V
 5971 0 R
 -88 0 V
 stroke
 0.00 0.00 0.00 C 660 400 M
-[ [({}) 200.0 0.0 true true 0 (-1)]
+[ [(Helvetica) 200.0 0.0 true true 0 (-1)]
 ] -66.7 MRshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-780 1280 M
+0.00 0.00 0.00 C 780 1280 M
 88 0 V
 5971 0 R
 -88 0 V
 stroke
 0.00 0.00 0.00 C 660 1280 M
-[ [({}) 200.0 0.0 true true 0 (-0.5)]
+[ [(Helvetica) 200.0 0.0 true true 0 (-0.5)]
 ] -66.7 MRshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-780 2160 M
+0.00 0.00 0.00 C 780 2160 M
 88 0 V
 5971 0 R
 -88 0 V
 stroke
 0.00 0.00 0.00 C 660 2160 M
-[ [({}) 200.0 0.0 true true 0 (0)]
+[ [(Helvetica) 200.0 0.0 true true 0 (0)]
 ] -66.7 MRshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-780 3039 M
+0.00 0.00 0.00 C 780 3039 M
 88 0 V
 5971 0 R
 -88 0 V
 stroke
 0.00 0.00 0.00 C 660 3039 M
-[ [({}) 200.0 0.0 true true 0 (0.5)]
+[ [(Helvetica) 200.0 0.0 true true 0 (0.5)]
 ] -66.7 MRshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-780 3919 M
+0.00 0.00 0.00 C 780 3919 M
 88 0 V
 5971 0 R
 -88 0 V
 stroke
 0.00 0.00 0.00 C 660 3919 M
-[ [({}) 200.0 0.0 true true 0 (1)]
+[ [(Helvetica) 200.0 0.0 true true 0 (1)]
 ] -66.7 MRshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-780 4799 M
+0.00 0.00 0.00 C 780 4799 M
 88 0 V
 5971 0 R
 -88 0 V
 stroke
 0.00 0.00 0.00 C 660 4799 M
-[ [({}) 200.0 0.0 true true 0 (1.5)]
+[ [(Helvetica) 200.0 0.0 true true 0 (1.5)]
 ] -66.7 MRshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-780 400 M
+0.00 0.00 0.00 C 780 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
 0.00 0.00 0.00 C 780 200 M
-[ [({}) 200.0 0.0 true true 0 (0)]
+[ [(Helvetica) 200.0 0.0 true true 0 (0)]
 ] -66.7 MCshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-1646 400 M
+0.00 0.00 0.00 C 1646 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
 0.00 0.00 0.00 C 1646 200 M
-[ [({}) 200.0 0.0 true true 0 (0.5)]
+[ [(Helvetica) 200.0 0.0 true true 0 (0.5)]
 ] -66.7 MCshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-2511 400 M
+0.00 0.00 0.00 C 2511 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
 0.00 0.00 0.00 C 2511 200 M
-[ [({}) 200.0 0.0 true true 0 (1)]
+[ [(Helvetica) 200.0 0.0 true true 0 (1)]
 ] -66.7 MCshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-3377 400 M
+0.00 0.00 0.00 C 3377 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
 0.00 0.00 0.00 C 3377 200 M
-[ [({}) 200.0 0.0 true true 0 (1.5)]
+[ [(Helvetica) 200.0 0.0 true true 0 (1.5)]
 ] -66.7 MCshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-4242 400 M
+0.00 0.00 0.00 C 4242 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
 0.00 0.00 0.00 C 4242 200 M
-[ [({}) 200.0 0.0 true true 0 (2)]
+[ [(Helvetica) 200.0 0.0 true true 0 (2)]
 ] -66.7 MCshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-5108 400 M
+0.00 0.00 0.00 C 5108 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
 0.00 0.00 0.00 C 5108 200 M
-[ [({}) 200.0 0.0 true true 0 (2.5)]
+[ [(Helvetica) 200.0 0.0 true true 0 (2.5)]
 ] -66.7 MCshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-5973 400 M
+0.00 0.00 0.00 C 5973 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
 0.00 0.00 0.00 C 5973 200 M
-[ [({}) 200.0 0.0 true true 0 (3)]
+[ [(Helvetica) 200.0 0.0 true true 0 (3)]
 ] -66.7 MCshow
-0.500 UL
+1.000 UL
 LTb
-LCb setrgbcolor
-6839 400 M
+0.00 0.00 0.00 C 6839 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
 0.00 0.00 0.00 C 6839 200 M
-[ [({}) 200.0 0.0 true true 0 (3.5)]
+[ [(Helvetica) 200.0 0.0 true true 0 (3.5)]
 ] -66.7 MCshow
-0.500 UL
-LTb
-LCb setrgbcolor
-0.500 UL
-LTB
-LCb setrgbcolor
-780 4799 N
-780 400 L
-6059 0 V
-0 4399 V
--6059 0 V
-Z stroke
-1.000 UP
-0.500 UL
-LTb
-LCb setrgbcolor
 1.000 UL
+LTb
+0.00 0.00 0.00 C 1.000 UP
+1.000 UL
+LTb
+0.00 0.00 0.00 C 1.000 UL
 LTb
 LCb setrgbcolor
 3296 2736 N
@@ -773,9 +756,9 @@ Z stroke
 % Begin plot #1
 0.500 UL
 LTb
-0.00 1.00 0.00 C 0.00 0.00 0.00 C 6719 4486 M
-[ [({}) 200.0 0.0 true true 0 (sin\(4t+0.3\)cos\(3t-0.1\))]
-] -66.7 MRshow
+0.00 1.00 0.00 C 0.00 0.00 0.00 C 4079 4486 M
+[ [(Helvetica) 200.0 0.0 true true 0 (sin\(4t+0.3\)cos\(3t-0.1\))]
+] -66.7 MLshow
 0.500 UL
 LTb
 0.00 1.00 0.00 C 3416 4486 M
@@ -884,9 +867,9 @@ LTb
 % Begin plot #2
 stroke
 LTb
-0.00 0.00 1.00 C 0.00 0.00 0.00 C 6719 3986 M
-[ [({}) 200.0 0.0 true true 0 (spline)]
-] -66.7 MRshow
+0.00 0.00 1.00 C 0.00 0.00 0.00 C 4079 3986 M
+[ [(Helvetica) 200.0 0.0 true true 0 (spline)]
+] -66.7 MLshow
 0.500 UL
 LTb
 0.00 0.00 1.00 C 3416 3986 M
@@ -986,9 +969,9 @@ LTb
 % Begin plot #3
 stroke
 LTb
-0.00 1.00 1.00 C 0.00 0.00 0.00 C 6719 3486 M
-[ [({}) 200.0 0.0 true true 0 (interpft)]
-] -66.7 MRshow
+0.00 1.00 1.00 C 0.00 0.00 0.00 C 4079 3486 M
+[ [(Helvetica) 200.0 0.0 true true 0 (interpft)]
+] -66.7 MLshow
 0.500 UL
 LTb
 0.00 1.00 1.00 C 3416 3486 M
@@ -1098,9 +1081,9 @@ LTb
 2.000 UP
 stroke
 LTb
-1.00 0.00 0.00 C 0.00 0.00 0.00 C 6719 2986 M
-[ [({}) 200.0 0.0 true true 0 (data)]
-] -66.7 MRshow
+1.00 0.00 0.00 C 0.00 0.00 0.00 C 4079 2986 M
+[ [(Helvetica) 200.0 0.0 true true 0 (data)]
+] -66.7 MLshow
 2.000 UP
 0.500 UL
 LTb
@@ -1123,8 +1106,24 @@ LCb setrgbcolor
 1.000 UP
 0.500 UL
 LTb
-LCb setrgbcolor
-grestore % colour palette end
+0.00 0.00 0.00 C 780 400 M
+6059 0 V
+stroke
+LTb
+0.00 0.00 0.00 C 780 4799 M
+6059 0 V
+stroke
+LTb
+0.00 0.00 0.00 C 780 400 M
+0 4399 V
+stroke
+LTb
+0.00 0.00 0.00 C 6839 400 M
+0 4399 V
+stroke
+1.000 UL
+LTb
+0.00 0.00 0.00 C grestore % colour palette end
 stroke
 grestore
 end

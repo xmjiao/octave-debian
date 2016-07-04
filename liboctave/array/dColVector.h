@@ -21,8 +21,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_dColVector_h)
+#if ! defined (octave_dColVector_h)
 #define octave_dColVector_h 1
+
+#include "octave-config.h"
 
 #include "MArray.h"
 

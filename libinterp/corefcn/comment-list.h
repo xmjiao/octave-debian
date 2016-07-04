@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_comment_list_h)
+#if ! defined (octave_comment_list_h)
 #define octave_comment_list_h 1
+
+#include "octave-config.h"
 
 #include <string>
 
@@ -48,7 +50,7 @@ public:
     copyright
   };
 
-  octave_comment_elt (const std::string& s = std::string (),
+  octave_comment_elt (const std::string& s = "",
                       comment_type t = unknown)
     : txt (s), typ (t) { }
 

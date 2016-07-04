@@ -1,0 +1,250 @@
+@c DO NOT EDIT!  Generated automatically by genpropdoc.m.
+
+@c Copyright (C) 2014-2015 Pantxo Diribarne
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@table @asis
+
+@anchor{XREFuibuttongroup__modified__}
+@cindex uibuttongroup __modified__
+@item @code{__modified__}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuibuttongroupbackgroundcolor}
+@cindex uibuttongroup backgroundcolor
+@item @code{backgroundcolor}: def. @code{[1   1   1]}
+
+
+
+@anchor{XREFuibuttongroupbeingdeleted}
+@cindex uibuttongroup beingdeleted
+@item @code{beingdeleted}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuibuttongroupbordertype}
+@cindex uibuttongroup bordertype
+@item @code{bordertype}: @qcode{"beveledin"} | @qcode{"beveledout"} | @{@qcode{"etchedin"}@} | @qcode{"etchedout"} | @qcode{"line"} | @qcode{"none"}
+
+
+
+@anchor{XREFuibuttongroupborderwidth}
+@cindex uibuttongroup borderwidth
+@item @code{borderwidth}: def. @code{1}
+
+
+
+@anchor{XREFuibuttongroupbusyaction}
+@cindex uibuttongroup busyaction
+@item @code{busyaction}: @qcode{"cancel"} | @{@qcode{"queue"}@}
+
+
+
+@anchor{XREFuibuttongroupbuttondownfcn}
+@cindex uibuttongroup buttondownfcn
+@item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFuibuttongroupchildren}
+@cindex uibuttongroup children
+@item @code{children} (read-only): vector of graphics handles, def. @code{[](0x1)}
+Graphics handles of the uibuttongroup's children.
+
+
+@anchor{XREFuibuttongroupclipping}
+@cindex uibuttongroup clipping
+@item @code{clipping}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{clipping} is @qcode{"on"}, the uibuttongroup is clipped in its parent axes limits.
+
+
+@anchor{XREFuibuttongroupcreatefcn}
+@cindex uibuttongroup createfcn
+@item @code{createfcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately after uibuttongroup has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultuibuttongroupcreatefcn", 'disp ("uibuttongroup created!")')}.
+
+
+@anchor{XREFuibuttongroupdeletefcn}
+@cindex uibuttongroup deletefcn
+@item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately before uibuttongroup is deleted.
+
+
+@anchor{XREFuibuttongroupfontangle}
+@cindex uibuttongroup fontangle
+@item @code{fontangle}: @qcode{"italic"} | @{@qcode{"normal"}@} | @qcode{"oblique"}
+
+
+
+@anchor{XREFuibuttongroupfontname}
+@cindex uibuttongroup fontname
+@item @code{fontname}: def. @qcode{"*"}
+
+
+
+@anchor{XREFuibuttongroupfontsize}
+@cindex uibuttongroup fontsize
+@item @code{fontsize}: def. @code{10}
+
+
+
+@anchor{XREFuibuttongroupfontunits}
+@cindex uibuttongroup fontunits
+@item @code{fontunits}: @qcode{"centimeters"} | @qcode{"inches"} | @qcode{"normalized"} | @qcode{"pixels"} | @{@qcode{"points"}@}
+
+
+
+@anchor{XREFuibuttongroupfontweight}
+@cindex uibuttongroup fontweight
+@item @code{fontweight}: @qcode{"bold"} | @qcode{"demi"} | @qcode{"light"} | @{@qcode{"normal"}@}
+
+
+
+@anchor{XREFuibuttongroupforegroundcolor}
+@cindex uibuttongroup foregroundcolor
+@item @code{foregroundcolor}: def. @code{[0   0   0]}
+
+
+
+@anchor{XREFuibuttongrouphandlevisibility}
+@cindex uibuttongroup handlevisibility
+@item @code{handlevisibility}: @qcode{"callback"} | @qcode{"off"} | @{@qcode{"on"}@}
+If @code{handlevisibility} is @qcode{"off"}, the uibuttongroup's handle is not visible in its parent's "children" property.
+
+
+@anchor{XREFuibuttongrouphighlightcolor}
+@cindex uibuttongroup highlightcolor
+@item @code{highlightcolor}: def. @code{[1   1   1]}
+
+
+
+@anchor{XREFuibuttongrouphittest}
+@cindex uibuttongroup hittest
+@item @code{hittest}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuibuttongroupinterruptible}
+@cindex uibuttongroup interruptible
+@item @code{interruptible}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuibuttongroupparent}
+@cindex uibuttongroup parent
+@item @code{parent}: graphics handle
+Handle of the parent graphics object.
+
+
+@anchor{XREFuibuttongroupposition}
+@cindex uibuttongroup position
+@item @code{position}: def. @code{[0   0   1   1]}
+
+
+
+@anchor{XREFuibuttongroupresizefcn}
+@cindex uibuttongroup resizefcn
+@item @code{resizefcn}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuibuttongroupselected}
+@cindex uibuttongroup selected
+@item @code{selected}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuibuttongroupselectedobject}
+@cindex uibuttongroup selectedobject
+@item @code{selectedobject}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuibuttongroupselectionchangedfcn}
+@cindex uibuttongroup selectionchangedfcn
+@item @code{selectionchangedfcn}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuibuttongroupselectionhighlight}
+@cindex uibuttongroup selectionhighlight
+@item @code{selectionhighlight}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuibuttongroupshadowcolor}
+@cindex uibuttongroup shadowcolor
+@item @code{shadowcolor}: def. @code{[0   0   0]}
+
+
+
+@anchor{XREFuibuttongroupsizechangedfcn}
+@cindex uibuttongroup sizechangedfcn
+@item @code{sizechangedfcn}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuibuttongrouptag}
+@cindex uibuttongroup tag
+@item @code{tag}: string, def. @qcode{""}
+A user-defined string to label the graphics object.
+
+
+@anchor{XREFuibuttongrouptitle}
+@cindex uibuttongroup title
+@item @code{title}: def. @qcode{""}
+
+
+
+@anchor{XREFuibuttongrouptitleposition}
+@cindex uibuttongroup titleposition
+@item @code{titleposition}: @qcode{"centerbottom"} | @qcode{"centertop"} | @qcode{"leftbottom"} | @{@qcode{"lefttop"}@} | @qcode{"rightbottom"} | @qcode{"righttop"}
+
+
+
+@anchor{XREFuibuttongrouptype}
+@cindex uibuttongroup type
+@item @code{type} (read-only): string
+Class name of the graphics object.  @code{type} is always @qcode{"uibuttongroup"}
+
+
+@anchor{XREFuibuttongroupuicontextmenu}
+@cindex uibuttongroup uicontextmenu
+@item @code{uicontextmenu}: graphics handle, def. @code{[](0x0)}
+Graphics handle of the uicontextmenu object that is currently associated to this uibuttongroup object.
+
+
+@anchor{XREFuibuttongroupunits}
+@cindex uibuttongroup units
+@item @code{units}: @qcode{"centimeters"} | @qcode{"characters"} | @qcode{"inches"} | @{@qcode{"normalized"}@} | @qcode{"pixels"} | @qcode{"points"}
+
+
+
+@anchor{XREFuibuttongroupuserdata}
+@cindex uibuttongroup userdata
+@item @code{userdata}: Any Octave data, def. @code{[](0x0)}
+User-defined data to associate with the graphics object.
+
+
+@anchor{XREFuibuttongroupvisible}
+@cindex uibuttongroup visible
+@item @code{visible}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{visible} is @qcode{"off"}, the uibuttongroup is not rendered on screen.
+
+@end table

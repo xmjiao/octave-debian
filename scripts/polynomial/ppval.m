@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{yi} =} ppval (@var{pp}, @var{xi})
+## @deftypefn {} {@var{yi} =} ppval (@var{pp}, @var{xi})
 ## Evaluate the piecewise polynomial structure @var{pp} at the points @var{xi}.
 ##
 ## If @var{pp} describes a scalar polynomial function, the result is an array
@@ -129,7 +129,7 @@ endfunction
 %! ret = zeros (2, 4, 2);
 %! ret(:,:,1) = ppval (pp, breaks');
 %! ret(:,:,2) = ppval (pp, breaks');
-%! assert (ppval (pp, [breaks',breaks']), ret)
+%! assert (ppval (pp, [breaks',breaks']), ret);
 
 ## Test input validation
 %!error ppval ()

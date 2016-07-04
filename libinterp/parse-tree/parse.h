@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_parse_h)
+#if ! defined (octave_parse_h)
 #define octave_parse_h 1
+
+#include "octave-config.h"
 
 #include <cstdio>
 
@@ -79,7 +81,7 @@ class tree_switch_case;
 class tree_switch_case_list;
 class tree_switch_command;
 
-#include "oct-obj.h"
+#include "ovl.h"
 
 // Nonzero means print parser debugging info (-d).
 extern int octave_debug;
@@ -103,17 +105,17 @@ reverse_lookup_autoload (const std::string& nm);
 
 extern OCTINTERP_API octave_function *
 load_fcn_from_file (const std::string& file_name,
-                    const std::string& dir_name = std::string (),
-                    const std::string& dispatch_type = std::string (),
-                    const std::string& package_name = std::string (),
-                    const std::string& fcn_name = std::string (),
+                    const std::string& dir_name = "",
+                    const std::string& dispatch_type = "",
+                    const std::string& package_name = "",
+                    const std::string& fcn_name = "",
                     bool autoload = false);
 
 extern OCTINTERP_API void
 source_file (const std::string& file_name,
-             const std::string& context = std::string (),
+             const std::string& context = "",
              bool verbose = false, bool require_file = true,
-             const std::string& warn_for = std::string ());
+             const std::string& warn_for = "");
 
 extern OCTINTERP_API octave_value_list
 feval (const std::string& name,
@@ -145,22 +147,14 @@ octave_base_parser
 {
 public:
 
-  octave_base_parser (octave_base_lexer& lxr)
-    : endfunction_found (false),
-      autoloading (false), fcn_file_from_relative_lookup (false),
-      parsing_subfunctions (false), max_fcn_depth (0),
-      curr_fcn_depth (0), primary_fcn_scope (-1),
-      curr_class_name (), curr_package_name (), function_scopes (),
-      primary_fcn_ptr (0), subfunction_names (), classdef_object (0),
-      stmt_list (0), lexer (lxr)
-  { }
+  octave_base_parser (octave_base_lexer& lxr);
 
   ~octave_base_parser (void);
 
   void reset (void);
 
   // Error mesages for mismatched end tokens.
-  void end_error (const char *type, token::end_tok_type ettype, int l, int c);
+  void end_token_error (token *tok, token::end_tok_type expected);
 
   // Check to see that end tokens are properly matched.
   bool end_token_ok (token *tok, token::end_tok_type expected);
@@ -385,7 +379,7 @@ public:
   set_stmt_print_flag (tree_statement_list *, char, bool);
 
   // Finish building a statement.
-  template <class T>
+  template <typename T>
   tree_statement *make_statement (T *arg);
 
   // Create a statement list.
@@ -397,7 +391,11 @@ public:
                          tree_statement *stmt, bool warn_missing_semi);
 
   // Generic error messages.
-  void bison_error (const char *s);
+  void bison_error (const std::string& s, int l = -1, int c = -1);
+
+  // Contains error message if Bison-generated parser returns non-zero
+  // status.
+  std::string parse_error_msg;
 
   // Have we found an explicit end to a function?
   bool endfunction_found;
@@ -409,7 +407,7 @@ public:
   // element.
   bool fcn_file_from_relative_lookup;
 
-  // FALSE if we are still at the primary function. Subfunctions can
+  // FALSE if we are still at the primary function.  Subfunctions can
   // only be declared inside function files.
   bool parsing_subfunctions;
 
@@ -420,11 +418,11 @@ public:
   // = 0 currently outside any function.
   // = 1 inside the primary function or a subfunction.
   // > 1 means we are looking at a function definition that seems to be
-  //     inside a function. Note that the function still might not be a
+  //     inside a function.  Note that the function still might not be a
   //     nested function.
   int curr_fcn_depth;
 
-  // Scope where we install all subfunctions and nested functions. Only
+  // Scope where we install all subfunctions and nested functions.  Only
   // used while reading function files.
   symbol_table::scope_id primary_fcn_scope;
 
@@ -437,7 +435,7 @@ public:
   std::string curr_package_name;
 
   // A stack holding the nested function scopes being parsed.
-  // We don't use std::stack, because we want the clear method. Also, we
+  // We don't use std::stack, because we want the clear method.  Also, we
   // must access one from the top
   std::vector<symbol_table::scope_id> function_scopes;
 
@@ -457,6 +455,9 @@ public:
 
   // State of the lexer.
   octave_base_lexer& lexer;
+
+  // Internal state of the Bison parser.
+  void *parser_state;
 
 private:
 
@@ -507,21 +508,14 @@ octave_push_parser : public octave_base_parser
 public:
 
   octave_push_parser (void)
-    : octave_base_parser (*(new octave_push_lexer ())), parser_state (0)
-  {
-    init ();
-  }
+    : octave_base_parser (*(new octave_push_lexer ()))
+  { }
 
-  ~octave_push_parser (void);
-
-  void init (void);
+  ~octave_push_parser (void) { }
 
   int run (const std::string& input, bool eof);
 
 private:
-
-  // Internal state of the Bison parser.
-  void *parser_state;
 
   // No copying!
 

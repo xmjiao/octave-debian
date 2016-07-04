@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -91,8 +92,8 @@ Next: <a href="Figure-Properties.html#Figure-Properties" accesskey="n" rel="next
 <a name="XREFrootcallbackobject"></a><a name="index-root-callbackobject"></a>
 </dd>
 <dt><code>callbackobject</code> (read-only): graphics handle, def. <code>[](0x0)</code></dt>
-<dd>
-
+<dd><p>Graphics handle of the current object whose callback is executing.
+</p>
 
 <a name="XREFrootchildren"></a><a name="index-root-children"></a>
 </dd>
@@ -130,47 +131,11 @@ Next: <a href="Figure-Properties.html#Figure-Properties" accesskey="n" rel="next
 <dd><p><code>deletefcn</code> is unused.
 </p>
 
-<a name="XREFrootdiary"></a><a name="index-root-diary"></a>
-</dd>
-<dt><code>diary</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
-<dd><p>If <code>diary</code> is <code>&quot;on&quot;</code>, the Octave command window session is saved to file.  See <a href="#XREFrootdiaryfile">diaryfile&nbsp;property<!-- /@w --></a>.
-</p>
-
-<a name="XREFrootdiaryfile"></a><a name="index-root-diaryfile"></a>
-</dd>
-<dt><code>diaryfile</code>: string, def. <code>&quot;diary&quot;</code></dt>
-<dd><p>The name of the diary file.  See <a href="Diary-and-Echo-Commands.html#XREFdiary">diary&nbsp;function<!-- /@w --></a>.
-</p>
-
-<a name="XREFrootecho"></a><a name="index-root-echo"></a>
-</dd>
-<dt><code>echo</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
-<dd><p>Control whether Octave displays commands executed from scripts.  See <a href="Diary-and-Echo-Commands.html#XREFecho">echo&nbsp;function<!-- /@w --></a>.
-</p>
-
-<a name="XREFrooterrormessage"></a><a name="index-root-errormessage"></a>
-</dd>
-<dt><code>errormessage</code> (read-only): string, def. <code>&quot;&quot;</code></dt>
-<dd><p>The last error message raised.  See <a href="Catching-Errors.html#XREFlasterr">lasterr&nbsp;function<!-- /@w --></a>.
-</p>
-
 <a name="XREFrootfixedwidthfontname"></a><a name="index-root-fixedwidthfontname"></a>
 </dd>
 <dt><code>fixedwidthfontname</code>: string, def. <code>&quot;Courier&quot;</code></dt>
 <dd>
 
-
-<a name="XREFrootformat"></a><a name="index-root-format"></a>
-</dd>
-<dt><code>format</code>: <code>&quot;+&quot;</code> | <code>&quot;bank&quot;</code> | <code>&quot;bit&quot;</code> | <code>&quot;hex&quot;</code> | <code>&quot;long&quot;</code> | <code>&quot;longe&quot;</code> | <code>&quot;longeng&quot;</code> | <code>&quot;longg&quot;</code> | <code>&quot;native-bit&quot;</code> | <code>&quot;native-hex&quot;</code> | <code>&quot;none&quot;</code> | <code>&quot;rat&quot;</code> | {<code>&quot;short&quot;</code>} | <code>&quot;shorte&quot;</code> | <code>&quot;shorteng&quot;</code> | <code>&quot;shortg&quot;</code></dt>
-<dd><p>This property is a wrapper around the <code>format</code> function.  See <a href="Terminal-Output.html#XREFformat">format&nbsp;function<!-- /@w --></a>.
-</p>
-
-<a name="XREFrootformatspacing"></a><a name="index-root-formatspacing"></a>
-</dd>
-<dt><code>formatspacing</code>: <code>&quot;compact&quot;</code> | {<code>&quot;loose&quot;</code>}</dt>
-<dd><p>This property is a wrapper around the <code>format</code> function.  See <a href="Terminal-Output.html#XREFformat">format&nbsp;function<!-- /@w --></a>.
-</p>
 
 <a name="XREFroothandlevisibility"></a><a name="index-root-handlevisibility"></a>
 </dd>
@@ -190,15 +155,9 @@ Next: <a href="Figure-Properties.html#Figure-Properties" accesskey="n" rel="next
 <dd><p><code>interruptible</code> is unused.
 </p>
 
-<a name="XREFrootlanguage"></a><a name="index-root-language"></a>
-</dd>
-<dt><code>language</code>: string, def. <code>&quot;ascii&quot;</code></dt>
-<dd>
-
-
 <a name="XREFrootmonitorpositions"></a><a name="index-root-monitorpositions"></a>
 </dd>
-<dt><code>monitorpositions</code>:</dt>
+<dt><code>monitorpositions</code> (read-only):</dt>
 <dd><p><code>monitorpositions</code> is unused.
 </p>
 
@@ -218,12 +177,6 @@ Next: <a href="Figure-Properties.html#Figure-Properties" accesskey="n" rel="next
 </dd>
 <dt><code>pointerwindow</code> (read-only): graphics handle, def. <code>0</code></dt>
 <dd><p><code>pointerwindow</code> is unused.
-</p>
-
-<a name="XREFrootrecursionlimit"></a><a name="index-root-recursionlimit"></a>
-</dd>
-<dt><code>recursionlimit</code>: double, def. <code>256</code></dt>
-<dd><p>The maximum number of times a function can be called recursively.  See <a href="Recursion.html#XREFmax_005frecursion_005fdepth"><span class="nolinebreak">max_recursion_depth</span>&nbsp;function<!-- /@w --></a>.
 </p>
 
 <a name="XREFrootscreendepth"></a><a name="index-root-screendepth"></a>

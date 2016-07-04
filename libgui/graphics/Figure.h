@@ -20,10 +20,11 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifndef __QtHandles_Figure__
-#define __QtHandles_Figure__ 1
+#if ! defined (octave_Figure_h)
+#define octave_Figure_h 1
 
 #include <QRect>
+#include <QStatusBar>
 
 #include "GenericEventNotify.h"
 #include "MenuContainer.h"
@@ -40,13 +41,13 @@ enum MouseMode
   // NOTE: These values must match the order of the buttons in the
   // MouseModeActionGroup object.
 
-  NoMode        = 0,
-  RotateMode    = 1,
-  ZoomInMode    = 2,
-  ZoomOutMode   = 3,
-  PanMode       = 4,
-  TextMode      = 5,
-  SelectMode    = 6
+  NoMode      = 0,
+  RotateMode  = 1,
+  ZoomInMode  = 2,
+  ZoomOutMode = 3,
+  PanMode     = 4,
+  TextMode    = 5,
+  SelectMode  = 6
 };
 
 class Container;
@@ -78,6 +79,7 @@ public:
 
   Container* innerContainer (void);
   QWidget* menu (void);
+  void updateStatusBar (ColumnVector pt);
 
   bool eventNotifyBefore (QObject* watched, QEvent* event);
   void eventNotifyAfter (QObject* watched, QEvent* event);
@@ -111,13 +113,15 @@ private:
   void save_figure_callback (const std::string& file);
   void copy_figure_callback (const std::string& format);
 
+  void enableMouseTracking (void);
+
 private slots:
   void setMouseMode (MouseMode mode);
   void fileSaveFigure (bool prompt = false);
   void fileSaveFigureAs (void);
   void fileCloseFigure (void);
   void editCopy (bool choose_format = false);
-  void helpAboutQtHandles (void);
+  void helpAboutOctave (void);
   void updateMenuBar (void);
   void updateContainer (void);
   void toggleAxes (void);
@@ -132,6 +136,7 @@ private:
   bool m_blockUpdates;
   QToolBar* m_figureToolBar;
   MenuBar* m_menuBar;
+  QStatusBar* m_statusBar;
   QRect m_innerRect;
   QRect m_outerRect;
   MouseModeActionGroup* m_mouseModeGroup;

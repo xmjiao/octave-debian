@@ -19,8 +19,8 @@ along with Octave; see the file COPYING.  If not, see
 <http://www.gnu.org/licenses/>.
 
 */
-#if !defined (octave_find_files_model_h)
-#define octave_find_files_model_h
+#if ! defined (octave_find_files_model_h)
+#define octave_find_files_model_h 1
 
 #include <QAbstractListModel>
 #include <QStringList>
@@ -60,5 +60,4 @@ private:
   int _sortorder;
 };
 
-#endif // octave_find_files_model_h
-
+#endif

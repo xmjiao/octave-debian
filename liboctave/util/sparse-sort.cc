@@ -21,8 +21,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <cassert>
@@ -34,7 +34,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "sparse-sort.h"
 
 // A simple class and instantiation of the octave merge sort class
-// to sort sparse data before matrix creation. This is significantly
+// to sort sparse data before matrix creation.  This is significantly
 // faster than using octave_qsort.
 
 bool

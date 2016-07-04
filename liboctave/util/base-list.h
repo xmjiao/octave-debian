@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_base_list_h)
+#if ! defined (octave_base_list_h)
 #define octave_base_list_h 1
+
+#include "octave-config.h"
 
 #include <cstdlib>
 
@@ -46,7 +48,7 @@ public:
 
   iterator erase (iterator pos) { return lst.erase (pos); }
 
-  template <class P>
+  template <typename P>
   void remove_if (P pred)
   {
     lst.remove_if (pred);
@@ -119,7 +121,7 @@ public:
     return *this;
   }
 
-  ~octave_base_list (void) { }
+  virtual ~octave_base_list (void) { }
 
 private:
 

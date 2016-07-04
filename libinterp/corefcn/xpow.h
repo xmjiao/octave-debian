@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_xpow_h)
+#if ! defined (octave_xpow_h)
 #define octave_xpow_h 1
+
+#include "octave-config.h"
 
 #include "oct-cmplx.h"
 
@@ -90,7 +92,6 @@ extern OCTINTERP_API octave_value elem_xpow (const ComplexMatrix& a,
                                              const Complex& b);
 extern OCTINTERP_API octave_value elem_xpow (const ComplexMatrix& a,
                                              const ComplexMatrix& b);
-
 
 extern OCTINTERP_API octave_value elem_xpow (double a, const NDArray& b);
 extern OCTINTERP_API octave_value elem_xpow (double a, const ComplexNDArray& b);
@@ -172,7 +173,6 @@ extern OCTINTERP_API octave_value elem_xpow (const FloatComplexMatrix& a,
                                              const FloatComplex& b);
 extern OCTINTERP_API octave_value elem_xpow (const FloatComplexMatrix& a,
                                              const FloatComplexMatrix& b);
-
 
 extern OCTINTERP_API octave_value elem_xpow (float a, const FloatNDArray& b);
 extern OCTINTERP_API octave_value elem_xpow (float a,

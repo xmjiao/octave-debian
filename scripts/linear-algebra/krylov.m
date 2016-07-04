@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{u}, @var{h}, @var{nu}] =} krylov (@var{A}, @var{V}, @var{k}, @var{eps1}, @var{pflg})
+## @deftypefn {} {[@var{u}, @var{h}, @var{nu}] =} krylov (@var{A}, @var{V}, @var{k}, @var{eps1}, @var{pflg})
 ## Construct an orthogonal basis @var{u} of block Krylov subspace
 ##
 ## @example
@@ -87,7 +87,7 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
   [m, kb] = size (V);
   if (m != na)
     error ("krylov: A(%d x %d), V(%d x %d): argument dimensions do not match",
-          na, na, m, kb);
+           na, na, m, kb);
   endif
 
   if (! isscalar (k))
@@ -115,7 +115,7 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
   alpha = [];
   nh = 0;
   while (length (alpha) < na) && (columns (V) > 0) && (iter < k)
-    iter++;
+    iter += 1;
 
     ## Get orthogonal basis of V.
     jj = 1;
@@ -137,7 +137,7 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
         endif
         V = V(:,1:(nv-1));
         ## One less reflection.
-        nu--;
+        nu -= 1;
       else
         ## New householder reflection.
         if (pflg)
@@ -171,7 +171,7 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
         endif
 
         ## Advance to next column of V.
-        jj++;
+        jj += 1;
       endif
     endwhile
 
@@ -209,7 +209,7 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
     for i = 1:nu
       hv = U(:,i);
       av = alpha(i);
-      V = V - av*hv*(hv'*V);
+      V -= av*hv*(hv'*V);
       H(i,nu-columns(V)+(1:columns(V))) = V(pivot_vec(i),:);
     endfor
 

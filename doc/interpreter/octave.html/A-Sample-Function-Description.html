@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -73,9 +74,9 @@ to related functions.
 <p>Here is a description of an imaginary function <code>foo</code>:
 </p>
 <dl>
-<dt><a name="index-foo"></a>Function File: <em></em> <strong>foo</strong> <em>(<var>x</var>)</em></dt>
-<dt><a name="index-foo-1"></a>Function File: <em></em> <strong>foo</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
-<dt><a name="index-foo-2"></a>Function File: <em></em> <strong>foo</strong> <em>(<var>x</var>, <var>y</var>, &hellip;)</em></dt>
+<dt><a name="index-foo"></a>: <em></em> <strong>foo</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-foo-1"></a>: <em></em> <strong>foo</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-foo-2"></a>: <em></em> <strong>foo</strong> <em>(<var>x</var>, <var>y</var>, &hellip;)</em></dt>
 <dd><p>The function <code>foo</code> subtracts <var>x</var> from <var>y</var>, then adds the
 remaining arguments to the result.
 </p>
@@ -109,9 +110,7 @@ specifically in the description of the function.  In some sections,
 features common to parameters of several functions are described at the
 beginning.
 </p>
-<p>Functions in Octave may be defined in several different ways.  The
-category name for functions may include a tag that indicates the
-way that the function is defined.  These additional tags include
+<p>Functions in Octave may be defined in several different ways:
 </p>
 <dl compact="compact">
 <dt>Function File</dt>
@@ -141,6 +140,9 @@ arguments.
 </p></dd>
 </dl>
 
+<p>Use <code>which</code> or <code>exist</code> to determine the category of a function
+and where it resides.
+</p>
 <hr>
 <div class="header">
 <p>

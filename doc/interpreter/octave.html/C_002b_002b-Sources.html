@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -58,8 +59,9 @@ Next: <a href="Other-Sources.html#Other-Sources" accesskey="n" rel="next">Other 
 <h3 class="section">D.6 C++ Sources</h3>
 
 <p>Don&rsquo;t use tabs.  Tabs cause trouble.  If you are used to them, set up
-your editor so that it converts tabs to spaces.  Format function headers
-like this:
+your editor so that it converts tabs to spaces.
+</p>
+<p>Format function headers like this:
 </p>
 <div class="example">
 <pre class="example">static bool
@@ -67,16 +69,18 @@ matches_patterns (const string_vector&amp; patterns, int pat_idx,
                   int num_pat, const std::string&amp; name)
 </pre></div>
 
-<p>The function name should start in column 1, and multi-line argument
-lists should be aligned on the first char after the open parenthesis.
-You should put a space before the left open parenthesis and after commas,
-for both function definitions and function calls.
+<p>The return type of the function and any modifiers are specified on the first
+line.  The function name on the second line should start in column 1, and
+multi-line argument lists should be aligned on the first char after the open
+parenthesis.  You should put a space before the left open parenthesis and after
+commas, for both function definitions and function calls.
 </p>
 <p>The recommended indent is 2 spaces.  When indenting, indent the statement
 after control structures (like <code>if</code>, <code>while</code>, etc.).  If there
 is a compound statement, indent <em>both</em> the curly braces and the
 body of the statement (so that the body gets indented by <em>two</em>
-indents).  Example:
+indents).  This format is known as &quot;GNU style&quot; and is an option for some
+code formatting tools.  Example indenting:
 </p>
 <div class="example">
 <pre class="example">if (have_args)
@@ -106,7 +110,10 @@ innermost braces enclosing the split.  Example:
 more readable, even if they are not necessary.  Also, do not hesitate to
 put extra braces anywhere if it improves clarity.
 </p>
-<p>Declare variables just before they are needed.  Use local variables of
+<p>The negation operator is written with a space between the operator
+and its target, e.g., <code>! A</code>.
+</p>
+<p>Declare variables just before they are needed.  Use variables local to
 blocks&mdash;it helps optimization.  Don&rsquo;t write a multi-line variable
 declaration with a single type specification and multiple variables.  If
 the variables don&rsquo;t fit on single line, repeat the type specification.
@@ -126,11 +133,15 @@ names consisting of 1-2 letters.  Do not use mixed case names.
 </p>
 <p>Use Octave&rsquo;s types and classes if possible.  Otherwise, use the C++
 standard library.  Use of STL containers and algorithms is encouraged.
-Use templates wisely to reduce code duplication.  Avoid comma
-expressions, labels and gotos, and explicit typecasts.  If you need to
-typecast, use the modern C++ casting operators.  In functions, minimize
-the number of <code>return</code> statements&mdash;use nested <code>if</code> statements
-if possible.
+Use templates wisely to reduce code duplication.
+</p>
+<p>Avoid comma expressions, labels and gotos, and explicit typecasts.  If you need
+to typecast, use the modern C++ casting operators.  In functions, minimize the
+number of <code>return</code> statements, but elimination of all but one
+<code>return</code> is not required.
+</p>
+<p>When an empty string is required, use <code>&quot;&quot;</code>, rather than creating an empty
+string object with <code>std::string ()</code>.
 </p>
 <hr>
 <div class="header">

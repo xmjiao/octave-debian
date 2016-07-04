@@ -21,8 +21,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <iostream>
@@ -59,8 +59,8 @@ extern "C"
 bool
 FloatComplexRowVector::operator == (const FloatComplexRowVector& a) const
 {
-  octave_idx_type len = length ();
-  if (len != a.length ())
+  octave_idx_type len = numel ();
+  if (len != a.numel ())
     return 0;
   return mx_inline_equal (len, data (), a.data ());
 }
@@ -76,13 +76,10 @@ FloatComplexRowVector::operator != (const FloatComplexRowVector& a) const
 FloatComplexRowVector&
 FloatComplexRowVector::insert (const FloatRowVector& a, octave_idx_type c)
 {
-  octave_idx_type a_len = a.length ();
+  octave_idx_type a_len = a.numel ();
 
-  if (c < 0 || c + a_len > length ())
-    {
-      (*current_liboctave_error_handler) ("range error for insert");
-      return *this;
-    }
+  if (c < 0 || c + a_len > numel ())
+    (*current_liboctave_error_handler) ("range error for insert");
 
   if (a_len > 0)
     {
@@ -99,13 +96,10 @@ FloatComplexRowVector&
 FloatComplexRowVector::insert (const FloatComplexRowVector& a,
                                octave_idx_type c)
 {
-  octave_idx_type a_len = a.length ();
+  octave_idx_type a_len = a.numel ();
 
-  if (c < 0 || c + a_len > length ())
-    {
-      (*current_liboctave_error_handler) ("range error for insert");
-      return *this;
-    }
+  if (c < 0 || c + a_len > numel ())
+    (*current_liboctave_error_handler) ("range error for insert");
 
   if (a_len > 0)
     {
@@ -121,7 +115,7 @@ FloatComplexRowVector::insert (const FloatComplexRowVector& a,
 FloatComplexRowVector&
 FloatComplexRowVector::fill (float val)
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
 
   if (len > 0)
     {
@@ -137,7 +131,7 @@ FloatComplexRowVector::fill (float val)
 FloatComplexRowVector&
 FloatComplexRowVector::fill (const FloatComplex& val)
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
 
   if (len > 0)
     {
@@ -153,13 +147,10 @@ FloatComplexRowVector::fill (const FloatComplex& val)
 FloatComplexRowVector&
 FloatComplexRowVector::fill (float val, octave_idx_type c1, octave_idx_type c2)
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
 
   if (c1 < 0 || c2 < 0 || c1 >= len || c2 >= len)
-    {
-      (*current_liboctave_error_handler) ("range error for fill");
-      return *this;
-    }
+    (*current_liboctave_error_handler) ("range error for fill");
 
   if (c1 > c2) { std::swap (c1, c2); }
 
@@ -178,13 +169,10 @@ FloatComplexRowVector&
 FloatComplexRowVector::fill (const FloatComplex& val,
                              octave_idx_type c1, octave_idx_type c2)
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
 
   if (c1 < 0 || c2 < 0 || c1 >= len || c2 >= len)
-    {
-      (*current_liboctave_error_handler) ("range error for fill");
-      return *this;
-    }
+    (*current_liboctave_error_handler) ("range error for fill");
 
   if (c1 > c2) { std::swap (c1, c2); }
 
@@ -202,9 +190,9 @@ FloatComplexRowVector::fill (const FloatComplex& val,
 FloatComplexRowVector
 FloatComplexRowVector::append (const FloatRowVector& a) const
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
   octave_idx_type nc_insert = len;
-  FloatComplexRowVector retval (len + a.length ());
+  FloatComplexRowVector retval (len + a.numel ());
   retval.insert (*this, 0);
   retval.insert (a, nc_insert);
   return retval;
@@ -213,9 +201,9 @@ FloatComplexRowVector::append (const FloatRowVector& a) const
 FloatComplexRowVector
 FloatComplexRowVector::append (const FloatComplexRowVector& a) const
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
   octave_idx_type nc_insert = len;
-  FloatComplexRowVector retval (len + a.length ());
+  FloatComplexRowVector retval (len + a.numel ());
   retval.insert (*this, 0);
   retval.insert (a, nc_insert);
   return retval;
@@ -272,15 +260,12 @@ FloatComplexRowVector::extract_n (octave_idx_type r1, octave_idx_type n) const
 FloatComplexRowVector&
 FloatComplexRowVector::operator += (const FloatRowVector& a)
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
 
-  octave_idx_type a_len = a.length ();
+  octave_idx_type a_len = a.numel ();
 
   if (len != a_len)
-    {
-      gripe_nonconformant ("operator +=", len, a_len);
-      return *this;
-    }
+    err_nonconformant ("operator +=", len, a_len);
 
   if (len == 0)
     return *this;
@@ -294,15 +279,12 @@ FloatComplexRowVector::operator += (const FloatRowVector& a)
 FloatComplexRowVector&
 FloatComplexRowVector::operator -= (const FloatRowVector& a)
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
 
-  octave_idx_type a_len = a.length ();
+  octave_idx_type a_len = a.numel ();
 
   if (len != a_len)
-    {
-      gripe_nonconformant ("operator -=", len, a_len);
-      return *this;
-    }
+    err_nonconformant ("operator -=", len, a_len);
 
   if (len == 0)
     return *this;
@@ -320,31 +302,29 @@ operator * (const FloatComplexRowVector& v, const FloatComplexMatrix& a)
 {
   FloatComplexRowVector retval;
 
-  octave_idx_type len = v.length ();
+  octave_idx_type len = v.numel ();
 
   octave_idx_type a_nr = a.rows ();
   octave_idx_type a_nc = a.cols ();
 
   if (a_nr != len)
-    gripe_nonconformant ("operator *", 1, len, a_nr, a_nc);
+    err_nonconformant ("operator *", 1, len, a_nr, a_nc);
+
+  if (len == 0)
+    retval.resize (a_nc, 0.0);
   else
     {
-      if (len == 0)
-        retval.resize (a_nc, 0.0);
-      else
-        {
-          // Transpose A to form A'*x == (x'*A)'
+      // Transpose A to form A'*x == (x'*A)'
 
-          octave_idx_type ld = a_nr;
+      octave_idx_type ld = a_nr;
 
-          retval.resize (a_nc);
-          FloatComplex *y = retval.fortran_vec ();
+      retval.resize (a_nc);
+      FloatComplex *y = retval.fortran_vec ();
 
-          F77_XFCN (cgemv, CGEMV, (F77_CONST_CHAR_ARG2 ("T", 1),
-                                   a_nr, a_nc, 1.0, a.data (),
-                                   ld, v.data (), 1, 0.0, y, 1
-                                   F77_CHAR_ARG_LEN (1)));
-        }
+      F77_XFCN (cgemv, CGEMV, (F77_CONST_CHAR_ARG2 ("T", 1),
+                               a_nr, a_nc, 1.0, a.data (),
+                               ld, v.data (), 1, 0.0, y, 1
+                               F77_CHAR_ARG_LEN (1)));
     }
 
   return retval;
@@ -362,7 +342,7 @@ operator * (const FloatRowVector& v, const FloatComplexMatrix& a)
 FloatComplex
 FloatComplexRowVector::min (void) const
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
   if (len == 0)
     return FloatComplex (0.0);
 
@@ -382,7 +362,7 @@ FloatComplexRowVector::min (void) const
 FloatComplex
 FloatComplexRowVector::max (void) const
 {
-  octave_idx_type len = length ();
+  octave_idx_type len = numel ();
   if (len == 0)
     return FloatComplex (0.0);
 
@@ -405,7 +385,7 @@ std::ostream&
 operator << (std::ostream& os, const FloatComplexRowVector& a)
 {
 //  int field_width = os.precision () + 7;
-  for (octave_idx_type i = 0; i < a.length (); i++)
+  for (octave_idx_type i = 0; i < a.numel (); i++)
     os << " " /* setw (field_width) */ << a.elem (i);
   return os;
 }
@@ -413,7 +393,7 @@ operator << (std::ostream& os, const FloatComplexRowVector& a)
 std::istream&
 operator >> (std::istream& is, FloatComplexRowVector& a)
 {
-  octave_idx_type len = a.length ();
+  octave_idx_type len = a.numel ();
 
   if (len > 0)
     {
@@ -446,13 +426,14 @@ operator * (const FloatComplexRowVector& v, const FloatComplexColumnVector& a)
 {
   FloatComplex retval (0.0, 0.0);
 
-  octave_idx_type len = v.length ();
+  octave_idx_type len = v.numel ();
 
-  octave_idx_type a_len = a.length ();
+  octave_idx_type a_len = a.numel ();
 
   if (len != a_len)
-    gripe_nonconformant ("operator *", len, a_len);
-  else if (len != 0)
+    err_nonconformant ("operator *", len, a_len);
+
+  if (len != 0)
     F77_FUNC (xcdotu, XCDOTU) (len, v.data (), 1, a.data (), 1, retval);
 
   return retval;
@@ -463,14 +444,19 @@ operator * (const FloatComplexRowVector& v, const FloatComplexColumnVector& a)
 FloatComplexRowVector
 linspace (const FloatComplex& x1, const FloatComplex& x2, octave_idx_type n)
 {
-  if (n < 1) n = 1;
+  NoAlias<FloatComplexRowVector> retval;
 
-  NoAlias<FloatComplexRowVector> retval (n);
+  if (n < 1)
+    return retval;
+  else
+    retval.clear (n);
+
+  retval(0) = x1;
 
   FloatComplex delta = (x2 - x1) / (n - 1.0f);
-  retval(0) = x1;
   for (octave_idx_type i = 1; i < n-1; i++)
     retval(i) = x1 + static_cast<float> (i)*delta;
+
   retval(n-1) = x2;
 
   return retval;

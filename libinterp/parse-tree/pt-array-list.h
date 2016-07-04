@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_pt_array_list_h)
+#if ! defined (octave_pt_array_list_h)
 #define octave_pt_array_list_h 1
+
+#include "octave-config.h"
 
 #include "base-list.h"
 #include "pt-arg-list.h"
@@ -51,6 +53,13 @@ public:
   bool all_elements_are_constant (void) const;
 
   bool has_magic_end (void) const;
+
+  // FIXME: should we import the functions from the base class and
+  // overload them here, or should we use a different name so we don't
+  // have to do this?  Without the using declaration or a name change,
+  // the base class functions will be hidden.  That may be OK, but it
+  // can also cause some confusion.
+  using tree_expression::copy_base;
 
   void copy_base (const tree_array_list& array_list);
 
