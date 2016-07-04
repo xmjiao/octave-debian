@@ -9,7 +9,7 @@ Copyright: 1992-2016 John W. Eaton <jwe@octave.org>
            1997-2015 David Bateman
            2008-2015 VZLU Prague, a.s., Czech Republic
            1995-2015 Kurt Hornik
-           2010-2015 Rik Wehbring
+           2010-2016 Rik Wehbring
            2008-2015 Jaroslav Hajek
            1998-2015 Andy Adler
            1999-2015 Kai Habel
@@ -23,7 +23,7 @@ Copyright: 1992-2016 John W. Eaton <jwe@octave.org>
            1996-2015 Daniel Calvelo
            2005-2015 Søren Hauberg <hauberg@gmail.com>
            2000-2015 Teemu Ikonen
-           2012-2015 Daniel Kraft
+           2012-2016 Daniel Kraft
            2009-2015 Martin Helm
            2005-2015 William Poetra Yoga Hadisoeseno
            1993-2015 Auburn University
@@ -65,7 +65,7 @@ Copyright: 1992-2016 John W. Eaton <jwe@octave.org>
            2007-2009 John Swensen
            2011-2015 John P. Swensen
            1998-2015 Ariel Tankus
-           2012-2015 Carnë Draug
+           2012-2016 Carnë Draug
            2005-2015 Mohamed Kamoun
            2008-2015 Robert Platt
            2000-2015 Bill Lash
@@ -140,6 +140,11 @@ Copyright: 1992-2016 John W. Eaton <jwe@octave.org>
            2014-2015 Willem Atsma
            2014-2015 Nathan Podlich
            2009-2015 Robert T. Short
+           2016 Olivier Heimlich
+           2015-2016 Lachlan Andrew, Monash University
+           2016 Andrew Thornton
+           2016 Damjan Angelovski
+           2016 Markus Muetzel
 License: GPL-3+
 
 Files: debian/*
