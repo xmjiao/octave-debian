@@ -18,8 +18,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{L} =} ichol (@var{A})
-## @deftypefnx {Function File} {@var{L} =} ichol (@var{A}, @var{opts})
+## @deftypefn  {} {@var{L} =} ichol (@var{A})
+## @deftypefnx {} {@var{L} =} ichol (@var{A}, @var{opts})
 ##
 ## Compute the incomplete Cholesky factorization of the sparse square matrix
 ## @var{A}.
@@ -237,7 +237,7 @@ function L = ichol (A, opts = struct ())
   ## Delegate to specialized ICHOL
   switch (opts.type)
     case "nofill"
-      L  = __ichol0__ (A_in, opts.michol);
+      L = __ichol0__ (A_in, opts.michol);
     case "ict"
       L = __icholt__ (A_in, opts.droptol, opts.michol);
   endswitch
@@ -318,10 +318,10 @@ endfunction
 %! opts.type = "nofill";
 %! opts.michol = "off";
 %! L = ichol (A2, opts);
-%! assert (norm (A2 - L*L', "fro") / norm (A2, "fro"), 0.0893, 1e-4)
+%! assert (norm (A2 - L*L', "fro") / norm (A2, "fro"), 0.0893, 1e-4);
 %! opts.michol = "on";
 %! L = ichol (A2, opts);
-%! assert (norm (A2 - L*L', "fro") / norm (A2, "fro"), 0.2377, 1e-4)
+%! assert (norm (A2 - L*L', "fro") / norm (A2, "fro"), 0.2377, 1e-4);
 %!
 %!test
 %! opts.type = "nofill";
@@ -390,10 +390,10 @@ endfunction
 %! opts.droptol = 1e-1;
 %! opts.michol = "off";
 %! L = ichol (A2, opts);
-%! assert (norm (A2 - L*L', "fro") / norm (A2, "fro"),  0.0893, 1e-4)
+%! assert (norm (A2 - L*L', "fro") / norm (A2, "fro"),  0.0893, 1e-4);
 %! opts.michol = "on";
 %! L = ichol (A2, opts);
-%! assert (norm (A2 - L*L', "fro") / norm (A2, "fro"), 0.2377, 1e-4)
+%! assert (norm (A2 - L*L', "fro") / norm (A2, "fro"), 0.2377, 1e-4);
 %!
 %!test
 %! opts.type = "ict";

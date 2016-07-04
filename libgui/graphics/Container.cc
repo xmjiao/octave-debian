@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QChildEvent>
@@ -92,8 +92,8 @@ Container::resizeEvent (QResizeEvent* /* event */)
               Matrix bb = obj->properties ().get_boundingbox (false);
 
               obj->qWidget<QWidget> ()
-                ->setGeometry (xround (bb(0)), xround (bb(1)),
-                               xround (bb(2)), xround (bb(3)));
+                ->setGeometry (octave::math::round (bb(0)), octave::math::round (bb(1)),
+                               octave::math::round (bb(2)), octave::math::round (bb(3)));
             }
         }
     }

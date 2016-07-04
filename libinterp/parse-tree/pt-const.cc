@@ -20,14 +20,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <iostream>
 
 #include "error.h"
-#include "oct-obj.h"
+#include "ovl.h"
 #include "pager.h"
 #include "pt-const.h"
 #include "pt-walk.h"
@@ -62,8 +62,8 @@ tree_constant::rvalue (int nargout)
 
   if (nargout > 1)
     error ("invalid number of output arguments for constant expression");
-  else
-    retval = rvalue1 (nargout);
+
+  retval = rvalue1 (nargout);
 
   return retval;
 }

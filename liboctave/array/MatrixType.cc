@@ -22,8 +22,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <vector>
@@ -80,7 +80,7 @@ MatrixType::MatrixType (const MatrixType &a)
     }
 }
 
-template<class T>
+template <typename T>
 MatrixType::matrix_type
 matrix_real_probe (const MArray<T>& a)
 {
@@ -138,7 +138,7 @@ matrix_real_probe (const MArray<T>& a)
   return typ;
 }
 
-template<class T>
+template <typename T>
 MatrixType::matrix_type
 matrix_complex_probe (const MArray<std::complex<T> >& a)
 {
@@ -182,7 +182,6 @@ matrix_complex_probe (const MArray<std::complex<T> >& a)
             }
         }
 
-
       if (upper)
         typ = MatrixType::Upper;
       else if (lower)
@@ -213,7 +212,6 @@ MatrixType::MatrixType (const ComplexMatrix &a)
 {
   typ = matrix_complex_probe (a);
 }
-
 
 MatrixType::MatrixType (const FloatMatrix &a)
   : typ (MatrixType::Unknown),
@@ -329,7 +327,7 @@ MatrixType::MatrixType (const SparseMatrix &a)
             }
         }
 
-      if (!singular)
+      if (! singular)
         {
           bandden = double (nnz) /
                     (double (ncols) * (double (lower_band) +
@@ -391,7 +389,7 @@ MatrixType::MatrixType (const SparseMatrix &a)
                     }
                 }
 
-              if (!found)
+              if (! found)
                 break;
             }
 
@@ -511,7 +509,6 @@ MatrixType::MatrixType (const SparseMatrix &a)
                     }
                 }
             }
-
 
           // next, check symmetry and 2x2 positiveness
 
@@ -647,7 +644,7 @@ MatrixType::MatrixType (const SparseComplexMatrix &a)
             }
         }
 
-      if (!singular)
+      if (! singular)
         {
           bandden = double (nnz) /
                     (double (ncols) * (double (lower_band) +
@@ -709,7 +706,7 @@ MatrixType::MatrixType (const SparseComplexMatrix &a)
                     }
                 }
 
-              if (!found)
+              if (! found)
                 break;
             }
 
@@ -854,7 +851,6 @@ MatrixType::MatrixType (const SparseComplexMatrix &a)
                   }
               }
 
-
           if (is_herm)
             {
               if (typ == MatrixType::Full)
@@ -965,7 +961,7 @@ MatrixType::type (bool quiet)
   if (typ != MatrixType::Unknown
       && (full || sp_bandden == octave_sparse_params::get_bandden ()))
     {
-      if (!quiet && octave_sparse_params::get_key ("spumoni") != 0.)
+      if (! quiet && octave_sparse_params::get_key ("spumoni") != 0.)
         warn_cached ();
 
       return typ;

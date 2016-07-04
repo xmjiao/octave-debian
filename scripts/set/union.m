@@ -18,9 +18,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{c} =} union (@var{a}, @var{b})
-## @deftypefnx {Function File} {@var{c} =} union (@var{a}, @var{b}, "rows")
-## @deftypefnx {Function File} {[@var{c}, @var{ia}, @var{ib}] =} union (@dots{})
+## @deftypefn  {} {@var{c} =} union (@var{a}, @var{b})
+## @deftypefnx {} {@var{c} =} union (@var{a}, @var{b}, "rows")
+## @deftypefnx {} {[@var{c}, @var{ia}, @var{ib}] =} union (@dots{})
 ##
 ## Return the unique elements that are in either @var{a} or @var{b} sorted in
 ## ascending order.
@@ -51,7 +51,7 @@ function [y, ia, ib] = union (a, b, varargin)
   [a, b] = validsetargs ("union", a, b, varargin{:});
 
   by_rows = nargin == 3;
-  isrowvec = isvector (a) && isvector (b) && isrow (a) && isrow (b);
+  isrowvec = isrow (a) && isrow (b);
 
   if (by_rows)
     y = [a; b];
@@ -93,6 +93,14 @@ endfunction
 %! [y, ia, ib] = union (a, b.');
 %! assert (y, [1; 2; 3; 4; 5]);
 %! assert (y, sort ([a(ia)'; b(ib)']));
+
+## Test empty cell string array unions
+%!assert (union ({}, []), cell (0,1))
+%!assert (union ([], {}), cell (0,1))
+%!assert (union ([], {'a', 'b'}), {'a';'b'})
+%!assert (union ({'a', 'b'}, []), {'a';'b'})
+%!assert (union (['a', 'b'], {}), {'ab'})
+%!assert (union ({}, ['a', 'b']), {'ab'})
 
 ## Test common input validation for set routines contained in validsetargs
 %!error <cell array of strings cannot be combined> union ({"a"}, 1)

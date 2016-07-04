@@ -17,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {[@var{est}, @var{v}, @var{w}, @var{iter}] =} onenormest (@var{A}, @var{t})
-## @deftypefnx {Function File} {[@var{est}, @var{v}, @var{w}, @var{iter}] =} onenormest (@var{apply}, @var{apply_t}, @var{n}, @var{t})
+## @deftypefn  {} {[@var{est}, @var{v}, @var{w}, @var{iter}] =} onenormest (@var{A}, @var{t})
+## @deftypefnx {} {[@var{est}, @var{v}, @var{w}, @var{iter}] =} onenormest (@var{apply}, @var{apply_t}, @var{n}, @var{t})
 ##
 ## Apply @nospell{Higham and Tisseur's} randomized block 1-norm estimator to
 ## matrix @var{A} using @var{t} test vectors.
@@ -133,7 +133,7 @@ function [est, v, w, iter] = onenormest (varargin)
 
   ## Initial test vectors X.
   X = rand (n, t);
-  X = X ./ (ones (n,1) * sum (abs (X), 1));
+  X ./= ones (n,1) * sum (abs (X), 1);
 
   ## Track if a vertex has been visited.
   been_there = zeros (n, 1);
@@ -281,7 +281,7 @@ endfunction
 %!test
 %! old_state = rand ("state");
 %! restore_state = onCleanup (@() rand ("state", old_state));
-%! rand ('state', 42);  % Initialize to guarantee reproducible results
+%! rand ("state", 42);  # Initialize to guarantee reproducible results
 %! N = 100;
 %! A = rand (N);
 %! [nm1, v1, w1] = onenormest (A);

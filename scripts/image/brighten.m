@@ -17,10 +17,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{map_out} =} brighten (@var{beta})
-## @deftypefnx {Function File} {@var{map_out} =} brighten (@var{map}, @var{beta})
-## @deftypefnx {Function File} {@var{map_out} =} brighten (@var{h}, @var{beta})
-## @deftypefnx {Function File} {} brighten (@dots{})
+## @deftypefn  {} {@var{map_out} =} brighten (@var{beta})
+## @deftypefnx {} {@var{map_out} =} brighten (@var{map}, @var{beta})
+## @deftypefnx {} {@var{map_out} =} brighten (@var{h}, @var{beta})
+## @deftypefnx {} {} brighten (@dots{})
 ## Brighten or darken a colormap.
 ##
 ## The argument @var{beta} must be a scalar between -1 and 1, where a negative
@@ -32,7 +32,8 @@
 ## The first argument can also be a valid graphics handle @var{h}, in which
 ## case @code{brighten} is applied to the colormap associated with this handle.
 ##
-## If no output is specified then the result is written to the current colormap.
+## If no output is specified then the result is written to the current
+## colormap.
 ## @seealso{colormap, contrast}
 ## @end deftypefn
 
@@ -83,7 +84,7 @@ endfunction
 
 %!demo
 %! ## First figure uses default grayscale colormap
-%! figure;
+%! clf;
 %! colormap (gray (64));
 %! image (1:64, linspace (0, 1, 64), repmat ((1:64)', 1, 64));
 %! axis ([1, 64, 0, 1], "ticy", "xy");

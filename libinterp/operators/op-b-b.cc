@@ -20,12 +20,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-bool.h"
 #include "ov-bool-mat.h"
@@ -44,15 +44,17 @@ along with Octave; see the file COPYING.  If not, see
 
 DEFUNOP_OP (not, bool, !)
 
-UNOPDECL (uplus, a)
+static octave_value
+oct_unop_uplus (const octave_base_value& a)
 {
-  CAST_UNOP_ARG (const octave_bool&);
+  const octave_bool& v = dynamic_cast<const octave_bool&> (a);
   return octave_value (v.double_value ());
 }
 
-UNOPDECL (uminus, a)
+static octave_value
+oct_unop_uminus (const octave_base_value& a)
 {
-  CAST_UNOP_ARG (const octave_bool&);
+  const octave_bool& v = dynamic_cast<const octave_bool&> (a);
   return octave_value (- v.double_value ());
 }
 

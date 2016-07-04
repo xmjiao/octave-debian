@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -56,7 +57,7 @@ Next: <a href="Printing-and-Saving-Plots.html#Printing-and-Saving-Plots" accessk
 <hr>
 <a name="Use-of-the-interpreter-Property-1"></a>
 <h4 class="subsection">15.2.8 Use of the <code>interpreter</code> Property</h4>
-
+<a name="XREFinterpreterusage"></a>
 <p>All text objects&mdash;such as titles, labels, legends, and text&mdash;include
 the property <code>&quot;interpreter&quot;</code> that determines the manner in
 which special control sequences in the text are rendered.
@@ -71,10 +72,6 @@ to <code>&quot;none&quot;</code>.
 rendering text.  This allows the insertion of special glyphs such as Greek
 characters or mathematical symbols.  Special characters are inserted by using
 a backslash (\) character followed by a code, as shown in <a href="#tab_003aextended">Table 15.1</a>.
-</p>
-<p>Note that for on-screen display the interpreter property is honored by all
-graphics toolkits.  However for printing, <strong>only</strong> the <code>&quot;gnuplot&quot;</code>
-toolkit renders TeX instructions.
 </p>
 <p>Besides special glyphs, the formatting of the text can be changed within the
 string by using the codes
@@ -175,25 +172,6 @@ immediately following the <code>'^'</code> or <code>'_'</code> is changed.
 
 <div class="float-caption"><p><strong>Table 15.1: </strong>Available special characters in TeX mode</p></div></div><div class="float">
 </div>
-<p>A complete example showing the capabilities of the extended text is
-</p>
-<div class="example">
-<pre class="example">x = 0:0.01:3;
-plot (x, erf (x));
-hold on;
-plot (x,x,&quot;r&quot;);
-axis ([0, 3, 0, 1]);
-text (0.65, 0.6175, strcat ('\leftarrow x = {2/\surd\pi',
-' {\fontsize{16}\int_{\fontsize{8}0}^{\fontsize{8}x}}',
-' e^{-t^2} dt} = 0.6175'))
-</pre></div>
-
-<p>The result of which can be seen in <a href="#fig_003aextendedtext">Figure 15.7</a>
-</p>
-<div class="float"><a name="fig_003aextendedtext"></a>
-<div align="center"><img src="extended.png" alt="extended">
-</div>
-<div class="float-caption"><p><strong>Figure 15.7: </strong>Example of inclusion of text with the TeX interpreter</p></div></div>
 <hr>
 <div class="header">
 <p>

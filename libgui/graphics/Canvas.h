@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifndef __QtHandles_Canvas__
-#define __QtHandles_Canvas__ 1
+#if ! defined (octave_Canvas_h)
+#define octave_Canvas_h 1
 
 #include <QPoint>
 
@@ -106,6 +106,9 @@ protected:
                            const graphics_object& obj);
 
   void annotation_callback (const octave_value_list& args);
+  void select_object (graphics_object obj, QMouseEvent* event,
+                      graphics_object &currentObj, graphics_object &axesObj,
+                      bool axes_only = false);
 
 private:
   graphics_handle m_handle;

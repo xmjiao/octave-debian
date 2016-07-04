@@ -21,8 +21,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QTreeWidget>
@@ -63,7 +63,6 @@ workspace_model::storage_class_default_colors (void)
 
   return colors;
 }
-
 
 QStringList
 workspace_model::storage_class_names (void)
@@ -224,7 +223,6 @@ workspace_model::setData (const QModelIndex& idx, const QVariant& value,
 
   return retval;
 }
-
 
 void
 workspace_model::set_workspace (bool top_level,

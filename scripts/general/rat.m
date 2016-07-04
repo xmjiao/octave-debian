@@ -17,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{s} =} rat (@var{x}, @var{tol})
-## @deftypefnx {Function File} {[@var{n}, @var{d}] =} rat (@var{x}, @var{tol})
+## @deftypefn  {} {@var{s} =} rat (@var{x}, @var{tol})
+## @deftypefnx {} {[@var{n}, @var{d}] =} rat (@var{x}, @var{tol})
 ##
 ## Find a rational approximation to @var{x} within the tolerance defined by
 ## @var{tol} using a continued fraction expansion.
@@ -102,7 +102,7 @@ function [n,d] = rat (x,tol)
 
   if (nargout == 2)
     ## Move the minus sign to the top.
-    n = n .* sign (d);
+    n .*= sign (d);
     d = abs (d);
 
     ## Return the same shape as you receive.
@@ -162,6 +162,6 @@ endfunction
 ## bug #43374
 %!assert (eval (rat (0.75)), [0.75])
 
-%!error rat ();
-%!error rat (1, 2, 3);
+%!error rat ()
+%!error rat (1, 2, 3)
 

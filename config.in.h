@@ -18,9 +18,6 @@
 /* Define to the number of bits in type 'wint_t'. */
 #undef BITSIZEOF_WINT_T
 
-/* Define to 1 to use internal bounds checking. */
-#undef BOUNDS_CHECKING
-
 /* Define to 1 if llvm::CallInst:addAttribute arg type is llvm::Attributes. */
 #undef CALLINST_ADDATTRIBUTE_ARG_IS_ATTRIBUTES
 
@@ -34,15 +31,6 @@
 
 /* Define to the legacy option name if using an older version of cURL. */
 #undef CURLOPT_DIRLISTONLY
-
-/* Define to 1 if C++ reinterpret_cast fails for function pointers. */
-#undef CXX_BROKEN_REINTERPRET_CAST
-
-/* Define to 1 if your C++ runtime library is ISO compliant. */
-#undef CXX_ISO_COMPLIANT_LIBRARY
-
-/* Define to 1 if your compiler supports `<>' stuff for template friends. */
-#undef CXX_NEW_FRIEND_TEMPLATE_DECL
 
 /* Define to 1 if using `alloca.c'. */
 #undef C_ALLOCA
@@ -79,10 +67,16 @@
 /* Define if struct dirent has a member d_ino that actually works. */
 #undef D_INO_IN_DIRENT
 
+/* Define to 1 to build Octave documentation files. */
+#undef ENABLE_DOCS
+
 /* Define to 1 if using dynamic linking. */
 #undef ENABLE_DYNAMIC_LINKING
 
-/* Define to 1 if math.h declares struct exception for matherr(). */
+/* Define to 1 to enable JIT compiler. */
+#undef ENABLE_JIT
+
+/* Define to 1 if math.h declares struct exception for matherr. */
 #undef EXCEPTION_IN_MATH
 
 /* Define to dummy `main' function (if any) required to link to the Fortran
@@ -110,9 +104,6 @@
    instead. Don't use 'offsetof (struct s, d[0])', as this doesn't work with
    MSVC and with C++ compilers. */
 #undef FLEXIBLE_ARRAY_MEMBER
-
-/* Define to volatile if you need to truncate intermediate FP results. */
-#undef FLOAT_TRUNCATE
 
 /* Define as the bit index in the word where to find bit 0 of the exponent of
    'float'. */
@@ -187,6 +178,10 @@
 #undef GNULIB_GETCWD
 
 /* Define to a C preprocessor expression that evaluates to 1 or 0, depending
+   whether the gnulib module lock shall be considered present. */
+#undef GNULIB_LOCK
+
+/* Define to a C preprocessor expression that evaluates to 1 or 0, depending
    whether the gnulib module malloc-gnu shall be considered present. */
 #undef GNULIB_MALLOC_GNU
 
@@ -209,6 +204,10 @@
 /* Define to a C preprocessor expression that evaluates to 1 or 0, depending
    whether the gnulib module scanf shall be considered present. */
 #undef GNULIB_SCANF
+
+/* Define to a C preprocessor expression that evaluates to 1 or 0, depending
+   whether the gnulib module snprintf shall be considered present. */
+#undef GNULIB_SNPRINTF
 
 /* Define to a C preprocessor expression that evaluates to 1 or 0, depending
    whether the gnulib module strerror shall be considered present. */
@@ -302,6 +301,9 @@
 /* Define to 1 when the gnulib module ftello should be tested. */
 #undef GNULIB_TEST_FTELLO
 
+/* Define to 1 when the gnulib module ftruncate should be tested. */
+#undef GNULIB_TEST_FTRUNCATE
+
 /* Define to 1 when the gnulib module getcwd should be tested. */
 #undef GNULIB_TEST_GETCWD
 
@@ -316,6 +318,9 @@
 
 /* Define to 1 when the gnulib module getopt-gnu should be tested. */
 #undef GNULIB_TEST_GETOPT_GNU
+
+/* Define to 1 when the gnulib module getrusage should be tested. */
+#undef GNULIB_TEST_GETRUSAGE
 
 /* Define to 1 when the gnulib module gettimeofday should be tested. */
 #undef GNULIB_TEST_GETTIMEOFDAY
@@ -449,6 +454,9 @@
 /* Define to 1 when the gnulib module sleep should be tested. */
 #undef GNULIB_TEST_SLEEP
 
+/* Define to 1 when the gnulib module snprintf should be tested. */
+#undef GNULIB_TEST_SNPRINTF
+
 /* Define to 1 when the gnulib module stat should be tested. */
 #undef GNULIB_TEST_STAT
 
@@ -466,6 +474,9 @@
 
 /* Define to 1 when the gnulib module strptime should be tested. */
 #undef GNULIB_TEST_STRPTIME
+
+/* Define to 1 when the gnulib module strsignal should be tested. */
+#undef GNULIB_TEST_STRSIGNAL
 
 /* Define to 1 when the gnulib module symlink should be tested. */
 #undef GNULIB_TEST_SYMLINK
@@ -496,6 +507,9 @@
 
 /* Define to 1 when the gnulib module vasprintf should be tested. */
 #undef GNULIB_TEST_VASPRINTF
+
+/* Define to 1 when the gnulib module waitpid should be tested. */
+#undef GNULIB_TEST_WAITPID
 
 /* Define to 1 if you have the `acosh' function. */
 #undef HAVE_ACOSH
@@ -592,6 +606,9 @@
 /* Define to 1 if you have the `chown' function. */
 #undef HAVE_CHOWN
 
+/* Define to 1 if you have the `chsize' function. */
+#undef HAVE_CHSIZE
+
 /* Define to 1 if you have the `closedir' function. */
 #undef HAVE_CLOSEDIR
 
@@ -628,6 +645,24 @@
 /* Define to 1 if you have the <colamd.h> header file. */
 #undef HAVE_COLAMD_H
 
+/* Define to 1 if <complex> provides std::acos(std::complex<T>). */
+#undef HAVE_COMPLEX_STD_ACOS
+
+/* Define to 1 if <complex> provides std::acosh(std::complex<T>). */
+#undef HAVE_COMPLEX_STD_ACOSH
+
+/* Define to 1 if <complex> provides std::asin(std::complex<T>). */
+#undef HAVE_COMPLEX_STD_ASIN
+
+/* Define to 1 if <complex> provides std::asinh(std::complex<T>). */
+#undef HAVE_COMPLEX_STD_ASINH
+
+/* Define to 1 if <complex> provides std::atan(std::complex<T>). */
+#undef HAVE_COMPLEX_STD_ATAN
+
+/* Define to 1 if <complex> provides std::atanh(std::complex<T>). */
+#undef HAVE_COMPLEX_STD_ATANH
+
 /* Define to 1 if you have the <conio.h> header file. */
 #undef HAVE_CONIO_H
 
@@ -663,6 +698,9 @@
 
 /* Define to 1 if you have the <cxsparse/cs.h> header file. */
 #undef HAVE_CXSPARSE_CS_H
+
+/* Define to 1 if CXSparse is version 2.2 or later. */
+#undef HAVE_CXSPARSE_VERSION_OK
 
 /* Define to 1 if C++ library has templated bitwise operators. */
 #undef HAVE_CXX_BITWISE_OP_TEMPLATES
@@ -803,6 +841,10 @@
    */
 #undef HAVE_DECL_SLEEP
 
+/* Define to 1 if you have the declaration of `snprintf', and to 0 if you
+   don't. */
+#undef HAVE_DECL_SNPRINTF
+
 /* Define to 1 if you have the declaration of `strdup', and to 0 if you don't.
    */
 #undef HAVE_DECL_STRDUP
@@ -826,6 +868,10 @@
 /* Define to 1 if you have the declaration of `strnlen', and to 0 if you
    don't. */
 #undef HAVE_DECL_STRNLEN
+
+/* Define to 1 if you have the declaration of `strsignal', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRSIGNAL
 
 /* Define to 1 if you have the declaration of `sys_siglist', and to 0 if you
    don't. */
@@ -862,6 +908,10 @@
 /* Define to 1 if you have the declaration of `_snprintf', and to 0 if you
    don't. */
 #undef HAVE_DECL__SNPRINTF
+
+/* Define to 1 if you have the declaration of `_sys_siglist', and to 0 if you
+   don't. */
+#undef HAVE_DECL__SYS_SIGLIST
 
 /* Define to 1 if the system has the type `dev_t'. */
 #undef HAVE_DEV_T
@@ -926,9 +976,6 @@
 
 /* Define to 1 if you have the `expm1f' function. */
 #undef HAVE_EXPM1F
-
-/* Define to 1 if signed integers use two's complement. */
-#undef HAVE_FAST_INT_OPS
 
 /* Define to 1 if you have the `fchdir' function. */
 #undef HAVE_FCHDIR
@@ -1125,6 +1172,10 @@
 
 /* Define to 1 if you have the <hdf5.h> header file. */
 #undef HAVE_HDF5_H
+
+/* Define to 1 if/when HDF5 supports automatic conversion between integer and
+   floating-point binary data. */
+#undef HAVE_HDF5_INT2FLOAT_CONVERSIONS
 
 /* Define to 1 if you have the `hypotf' function. */
 #undef HAVE_HYPOTF
@@ -1331,6 +1382,12 @@
    when it succeeds. */
 #undef HAVE_MINIMALLY_WORKING_GETCWD
 
+/* Define to 1 if <limits.h> defines the MIN and MAX macros. */
+#undef HAVE_MINMAX_IN_LIMITS_H
+
+/* Define to 1 if <sys/param.h> defines the MIN and MAX macros. */
+#undef HAVE_MINMAX_IN_SYS_PARAM_H
+
 /* Define to 1 if you have the `mkfifo' function. */
 #undef HAVE_MKFIFO
 
@@ -1386,23 +1443,26 @@
 /* Define to 1 if you have the <OpenGL/gl.h> header file. */
 #undef HAVE_OPENGL_GL_H
 
-/* Define if OpenMP is enabled */
-#undef HAVE_OPENMP
-
 /* Define whether openpty exists */
 #undef HAVE_OPENPTY
 
 /* Define to 1 if libcrypto is used for MD5. */
 #undef HAVE_OPENSSL_MD5
 
+/* Define to 1 if libcrypto is used for SHA1. */
+#undef HAVE_OPENSSL_SHA1
+
+/* Define to 1 if libcrypto is used for SHA256. */
+#undef HAVE_OPENSSL_SHA256
+
+/* Define to 1 if libcrypto is used for SHA512. */
+#undef HAVE_OPENSSL_SHA512
+
 /* Define to 1 if OSMesa is available. */
 #undef HAVE_OSMESA
 
 /* Define to 1 if you have the <osmesa.h> header file. */
 #undef HAVE_OSMESA_H
-
-/* Define to 1 if C++ allows overload of char, int8_t, and uint8_t types. */
-#undef HAVE_OVERLOAD_CHAR_INT8_TYPES
 
 /* Define to 1 if getcwd works, except it sometimes fails when it shouldn't,
    setting errno to ERANGE, ENAMETOOLONG, or ENOENT. */
@@ -1423,9 +1483,6 @@
 /* Define to 1 if you have the `pipe' function. */
 #undef HAVE_PIPE
 
-/* Define to 1 if C++ supports operator delete(void *, void *). */
-#undef HAVE_PLACEMENT_DELETE
-
 /* Define to 1 if you have the <poll.h> header file. */
 #undef HAVE_POLL_H
 
@@ -1434,6 +1491,9 @@
 
 /* Define to 1 if you have the `pow' function. */
 #undef HAVE_POW
+
+/* define if GCC supports #pragma GCC diagnostic ... */
+#undef HAVE_PRAGMA_GCC_DIAGNOSTIC
 
 /* Define to 1 if you have the `pstat_getdynamic' function. */
 #undef HAVE_PSTAT_GETDYNAMIC
@@ -1444,8 +1504,14 @@
 /* Define to 1 if you have the <pthread.h> header file. */
 #undef HAVE_PTHREAD_H
 
+/* Define if the <pthread.h> defines PTHREAD_MUTEX_RECURSIVE. */
+#undef HAVE_PTHREAD_MUTEX_RECURSIVE
+
 /* Have PTHREAD_PRIO_INHERIT. */
 #undef HAVE_PTHREAD_PRIO_INHERIT
+
+/* Define if the POSIX multithreading library has read/write locks. */
+#undef HAVE_PTHREAD_RWLOCK
 
 /* Define to 1 if the system has the type `ptrdiff_t'. */
 #undef HAVE_PTRDIFF_T
@@ -1487,8 +1553,8 @@
 /* Define to 1 if the QScintilla library and header files are available */
 #undef HAVE_QSCINTILLA
 
-/* Define to 1 if Qsci has the QsciScintilla::findFirstInSelection ()
-   function. */
+/* Define to 1 if Qsci has the QsciScintilla::findFirstInSelection function.
+   */
 #undef HAVE_QSCI_FINDSELECTION
 
 /* Define to 1 if you have the <Qsci/qscilexermatlab.h> header file. */
@@ -1504,8 +1570,11 @@
    programs (moc, uic, rcc, and lrelease)) */
 #undef HAVE_QT
 
-/* Define to 1 if Qt has the QTabWidget::setMovable() function. */
+/* Define to 1 if Qt has the QTabWidget::setMovable function. */
 #undef HAVE_QTABWIDGET_SETMOVABLE
+
+/* Define to 1 if Qt works with OpenGL libs (GL and GLU) */
+#undef HAVE_QT_GRAPHICS
 
 /* Define to 1 if you have the `raise' function. */
 #undef HAVE_RAISE
@@ -1768,6 +1837,9 @@
 
 /* Define to 1 if getpeername is declared even after undefining macros. */
 #undef HAVE_RAW_DECL_GETPEERNAME
+
+/* Define to 1 if getrusage is declared even after undefining macros. */
+#undef HAVE_RAW_DECL_GETRUSAGE
 
 /* Define to 1 if gets is declared even after undefining macros. */
 #undef HAVE_RAW_DECL_GETS
@@ -2276,6 +2348,9 @@
 /* Define to 1 if vsnprintf is declared even after undefining macros. */
 #undef HAVE_RAW_DECL_VSNPRINTF
 
+/* Define to 1 if waitpid is declared even after undefining macros. */
+#undef HAVE_RAW_DECL_WAITPID
+
 /* Define to 1 if wcpcpy is declared even after undefining macros. */
 #undef HAVE_RAW_DECL_WCPCPY
 
@@ -2390,6 +2465,9 @@
 /* Define to 1 if you have the `readlink' function. */
 #undef HAVE_READLINK
 
+/* Define to 1 if you have the `readlinkat' function. */
+#undef HAVE_READLINKAT
+
 /* Define to 1 if your system has a GNU libc compatible 'realloc' function,
    and to 0 otherwise. */
 #undef HAVE_REALLOC_GNU
@@ -2453,6 +2531,9 @@
 
 /* Define to 1 if you have the `setpwent' function. */
 #undef HAVE_SETPWENT
+
+/* Define to 1 if you have the `setsid' function. */
+#undef HAVE_SETSID
 
 /* Define to 1 if you have the `setvbuf' function. */
 #undef HAVE_SETVBUF
@@ -2701,7 +2782,7 @@
 /* Define to 1 if you have the <sys/utsname.h> header file. */
 #undef HAVE_SYS_UTSNAME_H
 
-/* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
+/* Define to 1 if you have the <sys/wait.h> header file. */
 #undef HAVE_SYS_WAIT_H
 
 /* Define to 1 if you have the `tcgetattr' function. */
@@ -2956,8 +3037,7 @@
    slash. */
 #undef LSTAT_FOLLOWS_SLASHED_SYMLINK
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #undef LT_OBJDIR
 
 /* If malloc(0) is != NULL, define this to 1. Otherwise define this to 0. */
@@ -2991,6 +3071,33 @@
 /* Define to 1 if you want to avoid min/max macro definition in Windows
    headers. */
 #undef NOMINMAX
+
+/* Define to 1 if using 64-bit integers for array dimensions and indexing. */
+#undef OCTAVE_ENABLE_64
+
+/* Define to 1 to use atomic operations for reference counting. */
+#undef OCTAVE_ENABLE_ATOMIC_REFCOUNT
+
+/* Define to 1 to use internal bounds checking. */
+#undef OCTAVE_ENABLE_BOUNDS_CHECK
+
+/* Define to 1 if you need to truncate intermediate FP results. */
+#undef OCTAVE_ENABLE_FLOAT_TRUNCATE
+
+/* Define if OpenMP is enabled */
+#undef OCTAVE_ENABLE_OPENMP
+
+/* Define to 1 if signed integers use two's complement. */
+#undef OCTAVE_HAVE_FAST_INT_OPS
+
+/* Define to 1 if the system has the type 'long long int'. */
+#undef OCTAVE_HAVE_LONG_LONG_INT
+
+/* Define to 1 if C++ allows overload of char, int8_t, and uint8_t types. */
+#undef OCTAVE_HAVE_OVERLOAD_CHAR_INT8_TYPES
+
+/* Define to 1 if the system has the type 'unsigned long long int'. */
+#undef OCTAVE_HAVE_UNSIGNED_LONG_LONG_INT
 
 /* Define to the type of octave_idx_type (64 or 32 bit signed integer). */
 #undef OCTAVE_IDX_TYPE
@@ -3029,6 +3136,9 @@
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */
 #undef PTHREAD_CREATE_JOINABLE
+
+/* Define if the pthread_in_use() detection is hard. */
+#undef PTHREAD_IN_USE_DETECTION_HARD
 
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'ptrdiff_t'. */
@@ -3158,18 +3268,33 @@
 /* Define to 1 if unlink() on a parent directory may succeed */
 #undef UNLINK_PARENT_BUG
 
-/* Define to 1 if using 64-bit integers for array dimensions and indexing. */
-#undef USE_64_BIT_IDX_T
-
-/* Define to 1 to use atomic operations for reference counting. */
-#undef USE_ATOMIC_REFCOUNT
-
 /* Define to 1 if BLAS functions need to be wrapped (potentially needed for
    64-bit OSX only). */
 #undef USE_BLASWRAP
 
+/* Define if the POSIX multithreading library can be used. */
+#undef USE_POSIX_THREADS
+
+/* Define if references to the POSIX multithreading library should be made
+   weak. */
+#undef USE_POSIX_THREADS_WEAK
+
+/* Define if the GNU Pth multithreading library can be used. */
+#undef USE_PTH_THREADS
+
+/* Define if references to the GNU Pth multithreading library should be made
+   weak. */
+#undef USE_PTH_THREADS_WEAK
+
 /* Define to 1 to use the readline library. */
 #undef USE_READLINE
+
+/* Define if the old Solaris multithreading library can be used. */
+#undef USE_SOLARIS_THREADS
+
+/* Define if references to the old Solaris multithreading library should be
+   made weak. */
+#undef USE_SOLARIS_THREADS_WEAK
 
 /* Enable extensions on AIX 3, Interix.  */
 #ifndef _ALL_SOURCE
@@ -3209,6 +3334,9 @@
 
 /* Define to 1 if unordered_map requires the use of tr1 namespace. */
 #undef USE_UNORDERED_MAP_WITH_TR1
+
+/* Define if the native Windows multithreading API can be used. */
+#undef USE_WINDOWS_THREADS
 
 /* Version number of package */
 #undef VERSION

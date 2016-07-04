@@ -20,14 +20,17 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if defined (__WIN32__) && ! defined (_POSIX_VERSION)
+#if ! defined (octave_shared_fcns_h)
+#define octave_shared_fcns_h 1
+
+#if defined (OCTAVE_USE_WINDOWS_API)
 
 #include <windows.h>
 #include <tlhelp32.h>
 
-#ifdef _MSC_VER
-#define popen _popen
-#define pclose _pclose
+#if defined (_MSC_VER)
+#  define popen _popen
+#  define pclose _pclose
 #endif
 
 static std::string
@@ -38,7 +41,7 @@ w32_get_octave_home (void)
   std::string bin_dir;
 
   HANDLE h = CreateToolhelp32Snapshot (TH32CS_SNAPMODULE
-#ifdef TH32CS_SNAPMODULE32
+#if defined (TH32CS_SNAPMODULE32)
                                        | TH32CS_SNAPMODULE32
 #endif
                                        , 0);
@@ -108,7 +111,7 @@ get_octave_home (void)
 {
   std::string oh = octave_getenv ("OCTAVE_HOME");
 
-#if defined (__WIN32__) && ! defined (_POSIX_VERSION)
+#if defined (OCTAVE_USE_WINDOWS_API)
   if (oh.empty ())
     oh = w32_get_octave_home ();
 #endif
@@ -129,7 +132,7 @@ subst_octave_home (const std::string& s)
 
   if (octave_home != prefix)
     {
-      octave_idx_type len = prefix.length ();
+      size_t len = prefix.length ();
 
       if (s.substr (0, len) == prefix)
         retval.replace (0, len, octave_home);
@@ -140,3 +143,5 @@ subst_octave_home (const std::string& s)
 
   return retval;
 }
+
+#endif

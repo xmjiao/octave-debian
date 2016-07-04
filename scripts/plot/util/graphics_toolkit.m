@@ -17,10 +17,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{name} =} graphics_toolkit ()
-## @deftypefnx {Function File} {@var{name} =} graphics_toolkit (@var{hlist})
-## @deftypefnx {Function File} {} graphics_toolkit (@var{name})
-## @deftypefnx {Function File} {} graphics_toolkit (@var{hlist}, @var{name})
+## @deftypefn  {} {@var{name} =} graphics_toolkit ()
+## @deftypefnx {} {@var{name} =} graphics_toolkit (@var{hlist})
+## @deftypefnx {} {} graphics_toolkit (@var{name})
+## @deftypefnx {} {} graphics_toolkit (@var{hlist}, @var{name})
 ## Query or set the default graphics toolkit which is assigned to new figures.
 ##
 ## With no inputs, return the current default graphics toolkit.  If the input
@@ -82,6 +82,14 @@ function retval = graphics_toolkit (name, hlist = [])
   endif
 
   if (! any (strcmp (loaded_graphics_toolkits (), name)))
+    ## FIXME: Special gnuplot handling for versions < 4.2.5 (bug #44978).
+    ## This can probably be deleted in the future once RHEL upgrades gnuplot.
+    if (strcmp (name, "gnuplot"))
+      valid_version = __gnuplot_has_feature__ ("minimum_version");
+      if (valid_version != 1)
+        error ("graphics_toolkit: gnuplot version too old.");
+      endif
+    endif
     feval (["__init_", name, "__"]);
     if (! any (strcmp (loaded_graphics_toolkits (), name)))
       error ("graphics_toolkit: %s toolkit was not correctly loaded", name);
@@ -97,7 +105,7 @@ function retval = graphics_toolkit (name, hlist = [])
 endfunction
 
 
-%!testif HAVE_FLTK
+%!testif HAVE_OPENGL, HAVE_FLTK
 %! unwind_protect
 %!   hf = figure ("visible", "off");
 %!   toolkit = graphics_toolkit ();
@@ -108,7 +116,7 @@ endfunction
 %!   close (hf);
 %! end_unwind_protect
 
-%!testif HAVE_FLTK
+%!testif HAVE_OPENGL, HAVE_FLTK
 %! old_toolkit = graphics_toolkit ();
 %! switch (old_toolkit)
 %!   case {"gnuplot"}

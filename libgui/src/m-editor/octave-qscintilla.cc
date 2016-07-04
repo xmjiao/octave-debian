@@ -22,11 +22,11 @@ along with Octave; see the file COPYING.  If not, see
 
 // Author: Torsten <ttl@justmail.de>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#ifdef HAVE_QSCINTILLA
+#if defined (HAVE_QSCINTILLA)
 
 #include <Qsci/qscilexer.h>
 #include <Qsci/qscicommandset.h>
@@ -45,7 +45,7 @@ octave_qscintilla::octave_qscintilla (QWidget *p)
   // clear scintilla edit shortcuts that are handled by the editor
   QsciCommandSet *cmd_set = standardCommands ();
 
-#ifdef HAVE_QSCI_VERSION_2_6_0
+#if defined (HAVE_QSCI_VERSION_2_6_0)
   // find () was added in QScintilla 2.6
   cmd_set->find (QsciCommand::SelectionCopy)->setKey (0);
   cmd_set->find (QsciCommand::SelectionCut)->setKey (0);
@@ -129,6 +129,9 @@ octave_qscintilla::octave_qscintilla (QWidget *p)
       cmd_list_mac.at (i)->setAlternateKey (key);
     }
 #endif
+
+  // init state of undo/redo action for this tab
+  emit status_update (isUndoAvailable (), isRedoAvailable ());
 }
 
 octave_qscintilla::~octave_qscintilla ()
@@ -156,7 +159,7 @@ octave_qscintilla::get_actual_word ()
   _word_at_cursor = wordAtPoint (local_pos);
   QString lexer_name = lexer ()->lexer ();
   return ((lexer_name == "octave" || lexer_name == "matlab")
-          && !_word_at_cursor.isEmpty ());
+          && ! _word_at_cursor.isEmpty ());
 }
 
 // call documentation or help on the current word
@@ -183,16 +186,15 @@ octave_qscintilla::context_run ()
     contextmenu_run (true);
 }
 
-#ifdef HAVE_QSCI_VERSION_2_6_0
 // context menu requested
 void
 octave_qscintilla::contextMenuEvent (QContextMenuEvent *e)
 {
+#if defined (HAVE_QSCI_VERSION_2_6_0)
   QPoint global_pos, local_pos;                         // the menu's position
   QMenu *context_menu = createStandardContextMenu ();  // standard menu
 
-  // fill context menu with editor's standard actions
-  emit create_context_menu_signal (context_menu);
+  bool in_left_margin = false;
 
   // determine position depending on mouse or keyboard event
   if (e->reason () == QContextMenuEvent::Mouse)
@@ -200,6 +202,8 @@ octave_qscintilla::contextMenuEvent (QContextMenuEvent *e)
       // context menu by mouse
       global_pos = e->globalPos ();            // global mouse position
       local_pos  = e->pos ();                  // local mouse position
+      if (e->x () < marginWidth (1) + marginWidth (2))
+        in_left_margin = true;
     }
   else
     {
@@ -208,36 +212,58 @@ octave_qscintilla::contextMenuEvent (QContextMenuEvent *e)
       QRect editor_rect = geometry ();      // editor rect mapped to global
       editor_rect.moveTopLeft
       (parentWidget ()->mapToGlobal (editor_rect.topLeft ()));
-      if (!editor_rect.contains (global_pos))  // is cursor outside editor?
+      if (! editor_rect.contains (global_pos))  // is cursor outside editor?
         global_pos = editor_rect.topLeft ();   // yes, take top left corner
     }
 
-  // additional custom entries of the context menu
-  context_menu->addSeparator ();   // separator before custom entries
-
-  // help menu: get the position of the mouse or the text cursor
-  // (only for octave files)
-  QString lexer_name = lexer ()->lexer ();
-  if (lexer_name == "octave" || lexer_name == "matlab")
+#if defined (HAVE_QSCI_VERSION_2_6_0)
+  if (! in_left_margin)
+#endif
     {
-      _word_at_cursor = wordAtPoint (local_pos);
-      if (!_word_at_cursor.isEmpty ())
+      // fill context menu with editor's standard actions
+      emit create_context_menu_signal (context_menu);
+
+      // additional custom entries of the context menu
+      context_menu->addSeparator ();   // separator before custom entries
+
+      // help menu: get the position of the mouse or the text cursor
+      // (only for octave files)
+      QString lexer_name = lexer ()->lexer ();
+      if (lexer_name == "octave" || lexer_name == "matlab")
         {
-          context_menu->addAction (tr ("Help on") + " " + _word_at_cursor,
-                                   this, SLOT (contextmenu_help (bool)));
-          context_menu->addAction (tr ("Documentation on")
-                                   + " " + _word_at_cursor,
-                                   this, SLOT (contextmenu_doc (bool)));
-          context_menu->addAction (tr ("Edit") + " " + _word_at_cursor,
-                                   this, SLOT (contextmenu_edit (bool)));
+          _word_at_cursor = wordAtPoint (local_pos);
+          if (! _word_at_cursor.isEmpty ())
+            {
+              context_menu->addAction (tr ("Help on") + " " + _word_at_cursor,
+                                       this, SLOT (contextmenu_help (bool)));
+              context_menu->addAction (tr ("Documentation on")
+                                       + " " + _word_at_cursor,
+                                       this, SLOT (contextmenu_doc (bool)));
+              context_menu->addAction (tr ("Edit") + " " + _word_at_cursor,
+                                       this, SLOT (contextmenu_edit (bool)));
+            }
         }
-    }
+      }
+#if defined (HAVE_QSCI_VERSION_2_6_0)
+    else
+      {
+        // remove all standard actions from scintilla
+        QList<QAction *> all_actions = context_menu->actions ();
+        QAction* a;
+
+        foreach (a, all_actions)
+          context_menu->removeAction (a);
+
+        a = context_menu->addAction (tr ("dbstop if ..."), this,
+                                     SLOT (contextmenu_break_condition (bool)));
+        a->setData (local_pos);
+      }
+#endif
 
   // finaly show the menu
   context_menu->exec (global_pos);
-}
 #endif
-
+}
 
 // handle the menu entry for calling help or doc
 void
@@ -276,10 +302,44 @@ octave_qscintilla::contextmenu_run (bool)
     emit execute_command_in_terminal_signal (commands.at (i));
 }
 
+// wrappers for dbstop related context menu items
+
+// FIXME: Why can't the data be sent as the argument to the function???
+void
+octave_qscintilla::contextmenu_break_condition (bool)
+{
+#if defined (HAVE_QSCI_VERSION_2_6_0)
+  QAction *action = qobject_cast<QAction *>(sender());
+  QPoint local_pos = action->data ().value<QPoint> ();
+
+  // pick point just right of margins, so lineAt doesn't give -1
+  int margins = marginWidth (1) + marginWidth (2) + marginWidth (3);
+  local_pos = QPoint (margins + 1, local_pos.y ());
+
+  emit context_menu_break_condition_signal (lineAt (local_pos));
+#endif
+}
+
+void
+octave_qscintilla::contextmenu_break_once (const QPoint& local_pos)
+{
+#if defined (HAVE_QSCI_VERSION_2_6_0)
+  emit context_menu_break_once (lineAt (local_pos));
+#endif
+}
+
 void
 octave_qscintilla::text_changed ()
 {
   emit status_update (isUndoAvailable (), isRedoAvailable ());
+}
+
+// when edit area gets focus update information on undo/redo actions
+void octave_qscintilla::focusInEvent(QFocusEvent *focusEvent)
+{
+  emit status_update (isUndoAvailable (), isRedoAvailable ());
+
+  QsciScintilla::focusInEvent(focusEvent);
 }
 
 #endif

@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ls_oct_binary_h)
+#if ! defined (octave_ls_oct_binary_h)
 #define octave_ls_oct_binary_h 1
+
+#include "octave-config.h"
 
 extern OCTINTERP_API bool
 save_binary_data (std::ostream& os, const octave_value& tc,
@@ -30,7 +32,7 @@ save_binary_data (std::ostream& os, const octave_value& tc,
 
 extern OCTINTERP_API std::string
 read_binary_data (std::istream& is, bool swap,
-                  oct_mach_info::float_format fmt,
+                  octave::mach_info::float_format fmt,
                   const std::string& filename, bool& global,
                   octave_value& tc, std::string& doc);
 

@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_fCNDArray_h)
+#if ! defined (octave_fCNDArray_h)
 #define octave_fCNDArray_h 1
+
+#include "octave-config.h"
 
 #include "MArray.h"
 
@@ -45,10 +47,10 @@ public:
   FloatComplexNDArray (const FloatComplexNDArray& a)
     : MArray<FloatComplex> (a) { }
 
-  template <class U>
+  template <typename U>
   FloatComplexNDArray (const MArray<U>& a) : MArray<FloatComplex> (a) { }
 
-  template <class U>
+  template <typename U>
   FloatComplexNDArray (const Array<U>& a) : MArray<FloatComplex> (a) { }
 
   FloatComplexNDArray (const charNDArray&);

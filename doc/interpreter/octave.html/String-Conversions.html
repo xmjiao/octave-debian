@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -67,7 +68,7 @@ a hexadecimal number to a floating point number.
 </pre></div>
 
 <a name="XREFbin2dec"></a><dl>
-<dt><a name="index-bin2dec"></a>Function File: <em></em> <strong>bin2dec</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-bin2dec"></a>: <em></em> <strong>bin2dec</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Return the decimal number corresponding to the binary number represented
 by the string <var>s</var>.
 </p>
@@ -97,7 +98,7 @@ converted number per cell element in <var>s</var>.
 
 
 <a name="XREFdec2bin"></a><dl>
-<dt><a name="index-dec2bin"></a>Function File: <em></em> <strong>dec2bin</strong> <em>(<var>d</var>, <var>len</var>)</em></dt>
+<dt><a name="index-dec2bin"></a>: <em></em> <strong>dec2bin</strong> <em>(<var>d</var>, <var>len</var>)</em></dt>
 <dd><p>Return a binary number corresponding to the non-negative integer <var>d</var>,
 as a string of ones and zeros.
 </p>
@@ -120,7 +121,7 @@ digits in the result.
 
 
 <a name="XREFdec2hex"></a><dl>
-<dt><a name="index-dec2hex"></a>Function File: <em></em> <strong>dec2hex</strong> <em>(<var>d</var>, <var>len</var>)</em></dt>
+<dt><a name="index-dec2hex"></a>: <em></em> <strong>dec2hex</strong> <em>(<var>d</var>, <var>len</var>)</em></dt>
 <dd><p>Return the hexadecimal string corresponding to the non-negative integer
 <var>d</var>.
 </p>
@@ -143,7 +144,7 @@ digits in the result.
 
 
 <a name="XREFhex2dec"></a><dl>
-<dt><a name="index-hex2dec"></a>Function File: <em></em> <strong>hex2dec</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-hex2dec"></a>: <em></em> <strong>hex2dec</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Return the integer corresponding to the hexadecimal number represented by
 the string <var>s</var>.
 </p>
@@ -168,8 +169,8 @@ converted number per cell element in <var>s</var>.
 
 
 <a name="XREFdec2base"></a><dl>
-<dt><a name="index-dec2base"></a>Function File: <em></em> <strong>dec2base</strong> <em>(<var>d</var>, <var>base</var>)</em></dt>
-<dt><a name="index-dec2base-1"></a>Function File: <em></em> <strong>dec2base</strong> <em>(<var>d</var>, <var>base</var>, <var>len</var>)</em></dt>
+<dt><a name="index-dec2base"></a>: <em></em> <strong>dec2base</strong> <em>(<var>d</var>, <var>base</var>)</em></dt>
+<dt><a name="index-dec2base-1"></a>: <em></em> <strong>dec2base</strong> <em>(<var>d</var>, <var>base</var>, <var>len</var>)</em></dt>
 <dd><p>Return a string of symbols in base <var>base</var> corresponding to the
 non-negative integer <var>d</var>.
 </p>
@@ -199,7 +200,7 @@ digits in the result.
 
 
 <a name="XREFbase2dec"></a><dl>
-<dt><a name="index-base2dec"></a>Function File: <em></em> <strong>base2dec</strong> <em>(<var>s</var>, <var>base</var>)</em></dt>
+<dt><a name="index-base2dec"></a>: <em></em> <strong>base2dec</strong> <em>(<var>s</var>, <var>base</var>)</em></dt>
 <dd><p>Convert <var>s</var> from a string of digits in base <var>base</var> to a decimal
 integer (base 10).
 </p>
@@ -228,7 +229,7 @@ symbols for the digits of <var>s</var>.  Space (&rsquo; &rsquo;) may not be used
 
 
 <a name="XREFnum2hex"></a><dl>
-<dt><a name="index-num2hex"></a>Built-in Function: <em><var>s</var> =</em> <strong>num2hex</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-num2hex"></a>: <em><var>s</var> =</em> <strong>num2hex</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Typecast a double or single precision number or vector to a 8 or 16
 character hexadecimal string of the IEEE 754 representation of the number.
 </p>
@@ -258,8 +259,8 @@ string has a length of 8.  For example:
 
 
 <a name="XREFhex2num"></a><dl>
-<dt><a name="index-hex2num"></a>Built-in Function: <em><var>n</var> =</em> <strong>hex2num</strong> <em>(<var>s</var>)</em></dt>
-<dt><a name="index-hex2num-1"></a>Built-in Function: <em><var>n</var> =</em> <strong>hex2num</strong> <em>(<var>s</var>, <var>class</var>)</em></dt>
+<dt><a name="index-hex2num"></a>: <em><var>n</var> =</em> <strong>hex2num</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-hex2num-1"></a>: <em><var>n</var> =</em> <strong>hex2num</strong> <em>(<var>s</var>, <var>class</var>)</em></dt>
 <dd><p>Typecast the 16 character hexadecimal character string to an IEEE 754
 double precision number.
 </p>
@@ -288,7 +289,7 @@ hexadecimal string.  For example:
 
 
 <a name="XREFstr2double"></a><dl>
-<dt><a name="index-str2double"></a>Built-in Function: <em></em> <strong>str2double</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-str2double"></a>: <em></em> <strong>str2double</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Convert a string to a real or complex number.
 </p>
 <p>The string must be in one of the following formats where a and b are real
@@ -336,8 +337,8 @@ risk of using <code>eval</code> on unknown data.
 
 
 <a name="XREFstrjust"></a><dl>
-<dt><a name="index-strjust"></a>Function File: <em></em> <strong>strjust</strong> <em>(<var>s</var>)</em></dt>
-<dt><a name="index-strjust-1"></a>Function File: <em></em> <strong>strjust</strong> <em>(<var>s</var>, <var>pos</var>)</em></dt>
+<dt><a name="index-strjust"></a>: <em></em> <strong>strjust</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-strjust-1"></a>: <em></em> <strong>strjust</strong> <em>(<var>s</var>, <var>pos</var>)</em></dt>
 <dd><p>Return the text, <var>s</var>, justified according to <var>pos</var>, which may
 be <code>&quot;left&quot;</code>, <code>&quot;center&quot;</code>, or <code>&quot;right&quot;</code>.
 </p>
@@ -362,8 +363,8 @@ treated as non-white space.
 
 
 <a name="XREFstr2num"></a><dl>
-<dt><a name="index-str2num"></a>Function File: <em><var>x</var> =</em> <strong>str2num</strong> <em>(<var>s</var>)</em></dt>
-<dt><a name="index-str2num-1"></a>Function File: <em>[<var>x</var>, <var>state</var>] =</em> <strong>str2num</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-str2num"></a>: <em><var>x</var> =</em> <strong>str2num</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-str2num-1"></a>: <em>[<var>x</var>, <var>state</var>] =</em> <strong>str2num</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Convert the string (or character array) <var>s</var> to a number (or an array).
 </p>
 <p>Examples:
@@ -392,7 +393,7 @@ conversion, <code>str2num</code> will execute any code contained in the string
 
 
 <a name="XREFtoascii"></a><dl>
-<dt><a name="index-toascii"></a>Mapping Function: <em></em> <strong>toascii</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-toascii"></a>: <em></em> <strong>toascii</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Return ASCII representation of <var>s</var> in a matrix.
 </p>
 <p>For example:
@@ -409,8 +410,8 @@ conversion, <code>str2num</code> will execute any code contained in the string
 
 
 <a name="XREFtolower"></a><dl>
-<dt><a name="index-tolower"></a>Mapping Function: <em></em> <strong>tolower</strong> <em>(<var>s</var>)</em></dt>
-<dt><a name="index-lower"></a>Mapping Function: <em></em> <strong>lower</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-tolower"></a>: <em></em> <strong>tolower</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-lower"></a>: <em></em> <strong>lower</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Return a copy of the string or cell string <var>s</var>, with each uppercase
 character replaced by the corresponding lowercase one; non-alphabetic
 characters are left unchanged.
@@ -427,8 +428,8 @@ characters are left unchanged.
 
 
 <a name="XREFtoupper"></a><dl>
-<dt><a name="index-toupper"></a>Mapping Function: <em></em> <strong>toupper</strong> <em>(<var>s</var>)</em></dt>
-<dt><a name="index-upper"></a>Mapping Function: <em></em> <strong>upper</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-toupper"></a>: <em></em> <strong>toupper</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-upper"></a>: <em></em> <strong>upper</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Return a copy of the string or cell string <var>s</var>, with each lowercase
 character replaced by the corresponding uppercase one; non-alphabetic
 characters are left unchanged.
@@ -445,7 +446,7 @@ characters are left unchanged.
 
 
 <a name="XREFdo_005fstring_005fescapes"></a><dl>
-<dt><a name="index-do_005fstring_005fescapes"></a>Built-in Function: <em></em> <strong>do_string_escapes</strong> <em>(<var>string</var>)</em></dt>
+<dt><a name="index-do_005fstring_005fescapes"></a>: <em></em> <strong>do_string_escapes</strong> <em>(<var>string</var>)</em></dt>
 <dd><p>Convert escape sequences in <var>string</var> to the characters they represent.
 </p>
 <p>Escape sequences begin with a leading backslash
@@ -457,7 +458,7 @@ characters are left unchanged.
 
 
 <a name="XREFundo_005fstring_005fescapes"></a><dl>
-<dt><a name="index-undo_005fstring_005fescapes"></a>Built-in Function: <em></em> <strong>undo_string_escapes</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-undo_005fstring_005fescapes"></a>: <em></em> <strong>undo_string_escapes</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Convert special characters in strings back to their escaped forms.
 </p>
 <p>For example, the expression

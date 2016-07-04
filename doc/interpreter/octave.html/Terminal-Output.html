@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -76,7 +77,7 @@ value of a variable without printing its name, use the function
 values with <code>disp</code> and through the normal echoing mechanism.
 </p>
 <a name="XREFdisp"></a><dl>
-<dt><a name="index-disp"></a>Built-in Function: <em></em> <strong>disp</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-disp"></a>: <em></em> <strong>disp</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>Display the value of <var>x</var>.
 </p>
 <p>For example:
@@ -98,7 +99,7 @@ formatted output in a string.
 
 
 <a name="XREFlist_005fin_005fcolumns"></a><dl>
-<dt><a name="index-list_005fin_005fcolumns"></a>Built-in Function: <em></em> <strong>list_in_columns</strong> <em>(<var>arg</var>, <var>width</var>, <var>prefix</var>)</em></dt>
+<dt><a name="index-list_005fin_005fcolumns"></a>: <em></em> <strong>list_in_columns</strong> <em>(<var>arg</var>, <var>width</var>, <var>prefix</var>)</em></dt>
 <dd><p>Return a string containing the elements of <var>arg</var> listed in columns with
 an overall maximum width of <var>width</var> and optional prefix <var>prefix</var>.
 </p>
@@ -132,7 +133,7 @@ whos ans
 
 
 <a name="XREFterminal_005fsize"></a><dl>
-<dt><a name="index-terminal_005fsize"></a>Built-in Function: <em></em> <strong>terminal_size</strong> <em>()</em></dt>
+<dt><a name="index-terminal_005fsize"></a>: <em></em> <strong>terminal_size</strong> <em>()</em></dt>
 <dd><p>Return a two-element row vector containing the current size of the terminal
 window in characters (rows and columns).
 </p>
@@ -141,8 +142,8 @@ window in characters (rows and columns).
 
 
 <a name="XREFformat"></a><dl>
-<dt><a name="index-format"></a>Command: <em></em> <strong>format</strong></dt>
-<dt><a name="index-format-1"></a>Command: <em></em> <strong>format</strong> <em>options</em></dt>
+<dt><a name="index-format"></a>: <em></em> <strong>format</strong></dt>
+<dt><a name="index-format-1"></a>: <em></em> <strong>format</strong> <em>options</em></dt>
 <dd><p>Reset or specify the format of the output produced by <code>disp</code> and
 Octave&rsquo;s normal echoing mechanism.
 </p>
@@ -180,10 +181,10 @@ current format.
 </dd>
 <dt><code>short e</code></dt>
 <dt><code>long e</code></dt>
-<dd><p>Exponential format.  The number to be represented is split between a mantissa
-and an exponent (power of 10).  The mantissa has 5 significant digits in the
-short format and 15 digits in the long format.
-For example, with the &lsquo;<samp>short e</samp>&rsquo; format, <code>pi</code> is displayed as
+<dd><p>Exponential format.  The number to be represented is split between a
+mantissa and an exponent (power of 10).  The mantissa has 5 significant
+digits in the short format and 15 digits in the long format.  For example,
+with the &lsquo;<samp>short e</samp>&rsquo; format, <code>pi</code> is displayed as
 <code>3.1416e+00</code>.
 </p>
 </dd>
@@ -216,7 +217,7 @@ For example, with the &lsquo;<samp>short g</samp>&rsquo; format,
 <dt><code>short eng</code></dt>
 <dt><code>long eng</code></dt>
 <dd><p>Identical to &lsquo;<samp>short e</samp>&rsquo; or &lsquo;<samp>long e</samp>&rsquo; but displays the value
-using an engineering format, where the exponent is divisible by 3. For
+using an engineering format, where the exponent is divisible by 3.  For
 example, with the &lsquo;<samp>short eng</samp>&rsquo; format, <code>10 * pi</code> is displayed as
 <code>31.4159e+00</code>.
 </p>
@@ -290,8 +291,8 @@ For example, the value of <code>pi</code> is
 </pre></div>
 
 <p>(shown here in two 32 bit sections for typesetting purposes) when
-printed in native-bit format on a workstation which stores 8 byte real values
-in IEEE format with the least significant byte first.
+printed in native-bit format on a workstation which stores 8 byte real
+values in IEEE format with the least significant byte first.
 </p>
 </dd>
 <dt><code>bit</code></dt>

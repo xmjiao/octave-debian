@@ -17,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} shading (@var{type})
-## @deftypefnx {Function File} {} shading (@var{hax}, @var{type})
+## @deftypefn  {} {} shading (@var{type})
+## @deftypefnx {} {} shading (@var{hax}, @var{type})
 ## Set the shading of patch or surface graphic objects.
 ##
 ## Valid arguments for @var{type} are
@@ -57,7 +57,7 @@ function shading (varargin)
   endif
 
   ## Find all patch and surface objects that are descendants of hax
-  ## and  which are not part of a contour plot hggroup.
+  ## and which are not part of a contour plot hggroup.
   hlist = [];
   kids = get (hax, "children");
   while (! isempty (kids))
@@ -109,6 +109,17 @@ endfunction
 %! clf;
 %! colormap ('default');
 %! sombrero ();
+%! shading faceted;
+%! h = findobj (gca (), 'type', 'surface');
+%! facecolor = get (h, 'facecolor');
+%! edgecolor = get (h, 'edgecolor');
+%! set (h, 'edgecolor', facecolor, 'facecolor', edgecolor)
+%! title ({'shading ''faceted''', 'with "edgecolor" and "facecolor" reversed'});
+
+%!demo
+%! clf;
+%! colormap ('default');
+%! sombrero ();
 %! shading flat;
 %! title ('shading ''flat''');
 
@@ -116,8 +127,39 @@ endfunction
 %! clf;
 %! colormap ('default');
 %! sombrero ();
+%! shading flat;
+%! h = findobj (gca (), 'type', 'surface');
+%! facecolor = get (h, 'facecolor');
+%! edgecolor = get (h, 'edgecolor');
+%! set (h, 'edgecolor', facecolor, 'facecolor', edgecolor)
+%! title ({'shading ''flat''', 'with "edgecolor" and "facecolor" reversed'});
+
+%!demo
+%! clf;
+%! colormap ('default');
+%! sombrero ();
 %! shading interp;
 %! title ('shading ''interp''');
+
+%!demo
+%! clf;
+%! colormap ('default');
+%! sombrero ();
+%! shading interp;
+%! h = findobj (gca (), 'type', 'surface');
+%! facecolor = get (h, 'facecolor');
+%! edgecolor = get (h, 'edgecolor');
+%! set (h, 'edgecolor', facecolor, 'facecolor', edgecolor)
+%! title ({'shading ''interp''', 'with "edgecolor" and "facecolor" reversed'});
+
+%!demo
+%! clf
+%! colormap ('default')
+%! peaks ()
+%! shading interp
+%! h = findobj (gca (), 'type', 'surface');
+%! set (h, 'edgecolor', 'k')
+%! title ({'shading ''interp''', 'with "edgecolor" set to black'})
 
 %!demo
 %! clf;
@@ -130,6 +172,17 @@ endfunction
 %! clf;
 %! colormap ('default');
 %! pcolor (peaks ());
+%! shading faceted;
+%! h = findobj (gca (), 'type', 'surface');
+%! facecolor = get (h, 'facecolor');
+%! edgecolor = get (h, 'edgecolor');
+%! set (h, 'edgecolor', facecolor, 'facecolor', edgecolor)
+%! title ({'shading ''faceted''', 'with "edgecolor" and "facecolor" reversed'});
+
+%!demo
+%! clf;
+%! colormap ('default');
+%! pcolor (peaks ());
 %! shading flat;
 %! title ('shading ''flat''');
 
@@ -137,6 +190,28 @@ endfunction
 %! clf;
 %! colormap ('default');
 %! pcolor (peaks ());
+%! shading flat;
+%! h = findobj (gca (), 'type', 'surface');
+%! facecolor = get (h, 'facecolor');
+%! edgecolor = get (h, 'edgecolor');
+%! set (h, 'edgecolor', facecolor, 'facecolor', edgecolor)
+%! title ({'shading ''flat''', 'with "edgecolor" and "facecolor" reversed'});
+
+%!demo
+%! clf;
+%! colormap ('default');
+%! pcolor (peaks ());
 %! shading interp;
 %! title ('shading ''interp''');
+
+%!demo
+%! clf;
+%! colormap ('default');
+%! pcolor (peaks ());
+%! shading interp;
+%! h = findobj (gca (), 'type', 'surface');
+%! facecolor = get (h, 'facecolor');
+%! edgecolor = get (h, 'edgecolor');
+%! set (h, 'edgecolor', facecolor, 'facecolor', edgecolor)
+%! title ({'shading ''interp''', 'with "edgecolor" and "facecolor" reversed'});
 

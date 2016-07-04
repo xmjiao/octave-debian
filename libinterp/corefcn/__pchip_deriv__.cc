@@ -21,14 +21,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "defun.h"
 #include "error.h"
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "utils.h"
 #include "f77-fcn.h"
 
@@ -51,13 +51,13 @@ extern "C"
 // for piecewise polynomials.
 
 DEFUN (__pchip_deriv__, args, ,
-       "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} __pchip_deriv__ (@var{x}, @var{y}, @var{dim})\n\
-Undocumented internal function.\n\
-@end deftypefn")
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} __pchip_deriv__ (@var{x}, @var{y}, @var{dim})
+Undocumented internal function.
+@end deftypefn */)
 {
   octave_value retval;
-  const int nargin = args.length ();
+  int nargin = args.length ();
 
   bool rows = (nargin == 3 && args(2).uint_value () == 2);
 
@@ -68,22 +68,16 @@ Undocumented internal function.\n\
           FloatColumnVector xvec (args(0).float_vector_value ());
           FloatMatrix ymat (args(1).float_matrix_value ());
 
-          octave_idx_type nx = xvec.length ();
+          octave_idx_type nx = xvec.numel ();
 
           if (nx < 2)
-            {
-              error ("__pchip_deriv__: X must be at least of length 2");
-              return retval;
-            }
+            error ("__pchip_deriv__: X must be at least of length 2");
 
           octave_idx_type nyr = ymat.rows ();
           octave_idx_type nyc = ymat.columns ();
 
           if (nx != (rows ? nyc : nyr))
-            {
-              error ("__pchip_deriv__: X and Y dimension mismatch");
-              return retval;
-            }
+            error ("__pchip_deriv__: X and Y dimension mismatch");
 
           FloatMatrix dmat (nyr, nyc);
 
@@ -102,10 +96,7 @@ Undocumented internal function.\n\
               k++;
 
               if (ierr < 0)
-                {
-                  error ("__pchip_deriv__: PCHIM failed with ierr = %i", ierr);
-                  return retval;
-                }
+                error ("__pchip_deriv__: PCHIM failed with ierr = %i", ierr);
             }
 
           retval = dmat;
@@ -115,22 +106,16 @@ Undocumented internal function.\n\
           ColumnVector xvec (args(0).vector_value ());
           Matrix ymat (args(1).matrix_value ());
 
-          octave_idx_type nx = xvec.length ();
+          octave_idx_type nx = xvec.numel ();
 
           if (nx < 2)
-            {
-              error ("__pchip_deriv__: X must be at least of length 2");
-              return retval;
-            }
+            error ("__pchip_deriv__: X must be at least of length 2");
 
           octave_idx_type nyr = ymat.rows ();
           octave_idx_type nyc = ymat.columns ();
 
           if (nx != (rows ? nyc : nyr))
-            {
-              error ("__pchip_deriv__: X and Y dimension mismatch");
-              return retval;
-            }
+            error ("__pchip_deriv__: X and Y dimension mismatch");
 
           Matrix dmat (nyr, nyc);
 
@@ -148,10 +133,7 @@ Undocumented internal function.\n\
               k++;
 
               if (ierr < 0)
-                {
-                  error ("__pchip_deriv__: DPCHIM failed with ierr = %i", ierr);
-                  return retval;
-                }
+                error ("__pchip_deriv__: DPCHIM failed with ierr = %i", ierr);
             }
 
           retval = dmat;

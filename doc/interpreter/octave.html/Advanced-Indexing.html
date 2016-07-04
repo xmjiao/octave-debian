@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -211,8 +212,8 @@ endfor
 result.
 </p>
 <a name="XREFsub2ind"></a><dl>
-<dt><a name="index-sub2ind"></a>Function File: <em><var>ind</var> =</em> <strong>sub2ind</strong> <em>(<var>dims</var>, <var>i</var>, <var>j</var>)</em></dt>
-<dt><a name="index-sub2ind-1"></a>Function File: <em><var>ind</var> =</em> <strong>sub2ind</strong> <em>(<var>dims</var>, <var>s1</var>, <var>s2</var>, &hellip;, <var>sN</var>)</em></dt>
+<dt><a name="index-sub2ind"></a>: <em><var>ind</var> =</em> <strong>sub2ind</strong> <em>(<var>dims</var>, <var>i</var>, <var>j</var>)</em></dt>
+<dt><a name="index-sub2ind-1"></a>: <em><var>ind</var> =</em> <strong>sub2ind</strong> <em>(<var>dims</var>, <var>s1</var>, <var>s2</var>, &hellip;, <var>sN</var>)</em></dt>
 <dd><p>Convert subscripts to a linear index.
 </p>
 <p>The following example shows how to convert the two-dimensional index
@@ -229,7 +230,7 @@ indexed moving from one column to next, filling up all rows in each column.
 
 
 <a name="XREFind2sub"></a><dl>
-<dt><a name="index-ind2sub"></a>Function File: <em>[<var>s1</var>, <var>s2</var>, &hellip;, <var>sN</var>] =</em> <strong>ind2sub</strong> <em>(<var>dims</var>, <var>ind</var>)</em></dt>
+<dt><a name="index-ind2sub"></a>: <em>[<var>s1</var>, <var>s2</var>, &hellip;, <var>sN</var>] =</em> <strong>ind2sub</strong> <em>(<var>dims</var>, <var>ind</var>)</em></dt>
 <dd><p>Convert a linear index to subscripts.
 </p>
 <p>The following example shows how to convert the linear index <code>8</code>
@@ -247,8 +248,8 @@ moving from one column to next, filling up all rows in each column.
 
 
 <a name="XREFisindex"></a><dl>
-<dt><a name="index-isindex"></a>Built-in Function: <em></em> <strong>isindex</strong> <em>(<var>ind</var>)</em></dt>
-<dt><a name="index-isindex-1"></a>Built-in Function: <em></em> <strong>isindex</strong> <em>(<var>ind</var>, <var>n</var>)</em></dt>
+<dt><a name="index-isindex"></a>: <em></em> <strong>isindex</strong> <em>(<var>ind</var>)</em></dt>
+<dt><a name="index-isindex-1"></a>: <em></em> <strong>isindex</strong> <em>(<var>ind</var>, <var>n</var>)</em></dt>
 <dd><p>Return true if <var>ind</var> is a valid index.
 </p>
 <p>Valid indices are either positive integers (although possibly of real data
@@ -265,9 +266,9 @@ character &quot;\0&quot;, it will always be a valid index.
 
 
 <a name="XREFallow_005fnoninteger_005frange_005fas_005findex"></a><dl>
-<dt><a name="index-allow_005fnoninteger_005frange_005fas_005findex"></a>Built-in Function: <em><var>val</var> =</em> <strong>allow_noninteger_range_as_index</strong> <em>()</em></dt>
-<dt><a name="index-allow_005fnoninteger_005frange_005fas_005findex-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>allow_noninteger_range_as_index</strong> <em>(<var>new_val</var>)</em></dt>
-<dt><a name="index-allow_005fnoninteger_005frange_005fas_005findex-2"></a>Built-in Function: <em></em> <strong>allow_noninteger_range_as_index</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dt><a name="index-allow_005fnoninteger_005frange_005fas_005findex"></a>: <em><var>val</var> =</em> <strong>allow_noninteger_range_as_index</strong> <em>()</em></dt>
+<dt><a name="index-allow_005fnoninteger_005frange_005fas_005findex-1"></a>: <em><var>old_val</var> =</em> <strong>allow_noninteger_range_as_index</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-allow_005fnoninteger_005frange_005fas_005findex-2"></a>: <em></em> <strong>allow_noninteger_range_as_index</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
 <dd><p>Query or set the internal variable that controls whether non-integer
 ranges are allowed as indices.
 </p>

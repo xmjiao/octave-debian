@@ -20,12 +20,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-re-mat.h"
 #include "ov-flt-re-mat.h"
@@ -43,15 +43,12 @@ DEFNDUNOP_OP (uminus, matrix, array, -)
 
 DEFUNOP (transpose, matrix)
 {
-  CAST_UNOP_ARG (const octave_matrix&);
+  const octave_matrix& v = dynamic_cast<const octave_matrix&> (a);
 
   if (v.ndims () > 2)
-    {
-      error ("transpose not defined for N-d objects");
-      return octave_value ();
-    }
-  else
-    return octave_value (v.matrix_value ().transpose ());
+    error ("transpose not defined for N-D objects");
+
+  return octave_value (v.matrix_value ().transpose ());
 }
 
 DEFNCUNOP_METHOD (incr, matrix, increment)
@@ -67,7 +64,8 @@ DEFBINOP_OP (mul, matrix, matrix, *)
 
 DEFBINOP (div, matrix, matrix)
 {
-  CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
+  const octave_matrix& v1 = dynamic_cast<const octave_matrix&> (a1);
+  const octave_matrix& v2 = dynamic_cast<const octave_matrix&> (a2);
   MatrixType typ = v2.matrix_type ();
 
   Matrix ret = xdiv (v1.matrix_value (), v2.matrix_value (), typ);
@@ -79,12 +77,12 @@ DEFBINOP (div, matrix, matrix)
 DEFBINOPX (pow, matrix, matrix)
 {
   error ("can't do A ^ B for A and B both matrices");
-  return octave_value ();
 }
 
 DEFBINOP (ldiv, matrix, matrix)
 {
-  CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
+  const octave_matrix& v1 = dynamic_cast<const octave_matrix&> (a1);
+  const octave_matrix& v2 = dynamic_cast<const octave_matrix&> (a2);
   MatrixType typ = v1.matrix_type ();
 
   Matrix ret = xleftdiv (v1.matrix_value (), v2.matrix_value (), typ);
@@ -95,21 +93,24 @@ DEFBINOP (ldiv, matrix, matrix)
 
 DEFBINOP (trans_mul, matrix, matrix)
 {
-  CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
+  const octave_matrix& v1 = dynamic_cast<const octave_matrix&> (a1);
+  const octave_matrix& v2 = dynamic_cast<const octave_matrix&> (a2);
   return octave_value(xgemm (v1.matrix_value (), v2.matrix_value (),
                              blas_trans, blas_no_trans));
 }
 
 DEFBINOP (mul_trans, matrix, matrix)
 {
-  CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
+  const octave_matrix& v1 = dynamic_cast<const octave_matrix&> (a1);
+  const octave_matrix& v2 = dynamic_cast<const octave_matrix&> (a2);
   return octave_value(xgemm (v1.matrix_value (), v2.matrix_value (),
                              blas_no_trans, blas_trans));
 }
 
 DEFBINOP (trans_ldiv, matrix, matrix)
 {
-  CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
+  const octave_matrix& v1 = dynamic_cast<const octave_matrix&> (a1);
+  const octave_matrix& v2 = dynamic_cast<const octave_matrix&> (a2);
   MatrixType typ = v1.matrix_type ();
 
   Matrix ret = xleftdiv (v1.matrix_value (), v2.matrix_value (),
@@ -132,7 +133,8 @@ DEFNDBINOP_FN (el_pow, matrix, matrix, array, array, elem_xpow)
 
 DEFBINOP (el_ldiv, matrix, matrix)
 {
-  CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
+  const octave_matrix& v1 = dynamic_cast<const octave_matrix&> (a1);
+  const octave_matrix& v2 = dynamic_cast<const octave_matrix&> (a2);
 
   return octave_value (quotient (v2.array_value (), v1.array_value ()));
 }
@@ -143,7 +145,6 @@ DEFNDBINOP_FN (el_not_and, matrix, matrix, array, array, mx_el_not_and)
 DEFNDBINOP_FN (el_not_or,  matrix, matrix, array, array, mx_el_not_or)
 DEFNDBINOP_FN (el_and_not, matrix, matrix, array, array, mx_el_and_not)
 DEFNDBINOP_FN (el_or_not,  matrix, matrix, array, array, mx_el_or_not)
-
 
 DEFNDCATOP_FN (m_m, matrix, matrix, array, array, concat)
 
@@ -159,7 +160,7 @@ DEFNDASSIGNOP_FNOP (assign_el_div, matrix, matrix, array, quotient_eq)
 
 CONVDECL (matrix_to_float_matrix)
 {
-  CAST_CONV_ARG (const octave_matrix&);
+  const octave_matrix& v = dynamic_cast<const octave_matrix&> (a);
 
   return new octave_float_matrix (FloatNDArray (v.array_value ()));
 }

@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -59,11 +60,11 @@ Next: <a href="Matrix-Factorizations.html#Matrix-Factorizations" accesskey="n" r
 <a name="index-matrix-functions_002c-basic"></a>
 
 <a name="XREFbalance"></a><dl>
-<dt><a name="index-balance"></a>Built-in Function: <em><var>AA</var> =</em> <strong>balance</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-balance-1"></a>Built-in Function: <em><var>AA</var> =</em> <strong>balance</strong> <em>(<var>A</var>, <var>opt</var>)</em></dt>
-<dt><a name="index-balance-2"></a>Built-in Function: <em>[<var>DD</var>, <var>AA</var>] =</em> <strong>balance</strong> <em>(<var>A</var>, <var>opt</var>)</em></dt>
-<dt><a name="index-balance-3"></a>Built-in Function: <em>[<var>D</var>, <var>P</var>, <var>AA</var>] =</em> <strong>balance</strong> <em>(<var>A</var>, <var>opt</var>)</em></dt>
-<dt><a name="index-balance-4"></a>Built-in Function: <em>[<var>CC</var>, <var>DD</var>, <var>AA</var>, <var>BB</var>] =</em> <strong>balance</strong> <em>(<var>A</var>, <var>B</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-balance"></a>: <em><var>AA</var> =</em> <strong>balance</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-balance-1"></a>: <em><var>AA</var> =</em> <strong>balance</strong> <em>(<var>A</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-balance-2"></a>: <em>[<var>DD</var>, <var>AA</var>] =</em> <strong>balance</strong> <em>(<var>A</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-balance-3"></a>: <em>[<var>D</var>, <var>P</var>, <var>AA</var>] =</em> <strong>balance</strong> <em>(<var>A</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-balance-4"></a>: <em>[<var>CC</var>, <var>DD</var>, <var>AA</var>, <var>BB</var>] =</em> <strong>balance</strong> <em>(<var>A</var>, <var>B</var>, <var>opt</var>)</em></dt>
 <dd>
 <p>Balance the matrix <var>A</var> to reduce numerical errors in future
 calculations.
@@ -106,8 +107,8 @@ in <var>DD</var> for the algebraic eigenvalue problem.
 
 
 <a name="XREFbandwidth"></a><dl>
-<dt><a name="index-bandwidth"></a>Function File: <em><var>bw</var> =</em> <strong>bandwidth</strong> <em>(<var>A</var>, <var>type</var>)</em></dt>
-<dt><a name="index-bandwidth-1"></a>Function File: <em>[<var>lower</var>, <var>upper</var>] =</em> <strong>bandwidth</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-bandwidth"></a>: <em><var>bw</var> =</em> <strong>bandwidth</strong> <em>(<var>A</var>, <var>type</var>)</em></dt>
+<dt><a name="index-bandwidth-1"></a>: <em>[<var>lower</var>, <var>upper</var>] =</em> <strong>bandwidth</strong> <em>(<var>A</var>)</em></dt>
 <dd><p>Compute the bandwidth of <var>A</var>.
 </p>
 <p>The <var>type</var> argument is the string <code>&quot;lower&quot;</code> for the lower
@@ -123,8 +124,8 @@ subdiagonals/superdiagonals with nonzero entries.
 
 
 <a name="XREFcond"></a><dl>
-<dt><a name="index-cond"></a>Function File: <em></em> <strong>cond</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-cond-1"></a>Function File: <em></em> <strong>cond</strong> <em>(<var>A</var>, <var>p</var>)</em></dt>
+<dt><a name="index-cond"></a>: <em></em> <strong>cond</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-cond-1"></a>: <em></em> <strong>cond</strong> <em>(<var>A</var>, <var>p</var>)</em></dt>
 <dd><p>Compute the <var>p</var>-norm condition number of a matrix.
 </p>
 <p><code>cond (<var>A</var>)</code> is defined as
@@ -147,8 +148,8 @@ from numerical computing are not likely to be accurate.
 
 
 <a name="XREFdet"></a><dl>
-<dt><a name="index-det"></a>Built-in Function: <em></em> <strong>det</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-det-1"></a>Built-in Function: <em>[<var>d</var>, <var>rcond</var>] =</em> <strong>det</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-det"></a>: <em></em> <strong>det</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-det-1"></a>: <em>[<var>d</var>, <var>rcond</var>] =</em> <strong>det</strong> <em>(<var>A</var>)</em></dt>
 <dd><p>Compute the determinant of <var>A</var>.
 </p>
 <p>Return an estimate of the reciprocal condition number if requested.
@@ -165,10 +166,10 @@ For that, use any of the condition number functions: <code>cond</code>,
 
 
 <a name="XREFeig"></a><dl>
-<dt><a name="index-eig"></a>Built-in Function: <em><var>lambda</var> =</em> <strong>eig</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-eig-1"></a>Built-in Function: <em><var>lambda</var> =</em> <strong>eig</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
-<dt><a name="index-eig-2"></a>Built-in Function: <em>[<var>V</var>, <var>lambda</var>] =</em> <strong>eig</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-eig-3"></a>Built-in Function: <em>[<var>V</var>, <var>lambda</var>] =</em> <strong>eig</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dt><a name="index-eig"></a>: <em><var>lambda</var> =</em> <strong>eig</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-eig-1"></a>: <em><var>lambda</var> =</em> <strong>eig</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dt><a name="index-eig-2"></a>: <em>[<var>V</var>, <var>lambda</var>] =</em> <strong>eig</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-eig-3"></a>: <em>[<var>V</var>, <var>lambda</var>] =</em> <strong>eig</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
 <dd><p>Compute the eigenvalues (and optionally the eigenvectors) of a matrix
 or a pair of matrices
 </p>
@@ -183,8 +184,8 @@ matrices, if they are real or complex, and if they are symmetric
 
 
 <a name="XREFgivens"></a><dl>
-<dt><a name="index-givens"></a>Built-in Function: <em><var>G</var> =</em> <strong>givens</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
-<dt><a name="index-givens-1"></a>Built-in Function: <em>[<var>c</var>, <var>s</var>] =</em> <strong>givens</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-givens"></a>: <em><var>G</var> =</em> <strong>givens</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-givens-1"></a>: <em>[<var>c</var>, <var>s</var>] =</em> <strong>givens</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
 <dd><p>Compute the Givens rotation matrix <var>G</var>.
 </p>
 <p>The Givens matrix is a 2 by 2 orthogonal matrix
@@ -213,7 +214,7 @@ matrices, if they are real or complex, and if they are symmetric
 
 
 <a name="XREFplanerot"></a><dl>
-<dt><a name="index-planerot"></a>Function File: <em>[<var>G</var>, <var>y</var>] =</em> <strong>planerot</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-planerot"></a>: <em>[<var>G</var>, <var>y</var>] =</em> <strong>planerot</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>Given a two-element column vector, return the
 2 by 2 orthogonal matrix
 <var>G</var> such that
@@ -224,8 +225,8 @@ matrices, if they are real or complex, and if they are symmetric
 
 
 <a name="XREFinv"></a><dl>
-<dt><a name="index-inv"></a>Built-in Function: <em><var>x</var> =</em> <strong>inv</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-inv-1"></a>Built-in Function: <em>[<var>x</var>, <var>rcond</var>] =</em> <strong>inv</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-inv"></a>: <em><var>x</var> =</em> <strong>inv</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-inv-1"></a>: <em>[<var>x</var>, <var>rcond</var>] =</em> <strong>inv</strong> <em>(<var>A</var>)</em></dt>
 <dd><p>Compute the inverse of the square matrix <var>A</var>.
 </p>
 <p>Return an estimate of the reciprocal condition number if requested,
@@ -247,9 +248,9 @@ sparse matrix if possible.
 
 
 <a name="XREFlinsolve"></a><dl>
-<dt><a name="index-linsolve"></a>Function File: <em><var>x</var> =</em> <strong>linsolve</strong> <em>(<var>A</var>, <var>b</var>)</em></dt>
-<dt><a name="index-linsolve-1"></a>Function File: <em><var>x</var> =</em> <strong>linsolve</strong> <em>(<var>A</var>, <var>b</var>, <var>opts</var>)</em></dt>
-<dt><a name="index-linsolve-2"></a>Function File: <em>[<var>x</var>, <var>R</var>] =</em> <strong>linsolve</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-linsolve"></a>: <em><var>x</var> =</em> <strong>linsolve</strong> <em>(<var>A</var>, <var>b</var>)</em></dt>
+<dt><a name="index-linsolve-1"></a>: <em><var>x</var> =</em> <strong>linsolve</strong> <em>(<var>A</var>, <var>b</var>, <var>opts</var>)</em></dt>
+<dt><a name="index-linsolve-2"></a>: <em>[<var>x</var>, <var>R</var>] =</em> <strong>linsolve</strong> <em>(&hellip;)</em></dt>
 <dd><p>Solve the linear system <code>A*x = b</code>.
 </p>
 <p>With no options, this function is equivalent to the left division operator
@@ -308,12 +309,12 @@ result is cached so that it is only done once per linear system.
 
 
 <a name="XREFmatrix_005ftype"></a><dl>
-<dt><a name="index-matrix_005ftype"></a>Built-in Function: <em><var>type</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-matrix_005ftype-1"></a>Built-in Function: <em><var>type</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;nocompute&quot;)</em></dt>
-<dt><a name="index-matrix_005ftype-2"></a>Built-in Function: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, <var>type</var>)</em></dt>
-<dt><a name="index-matrix_005ftype-3"></a>Built-in Function: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;upper&quot;, <var>perm</var>)</em></dt>
-<dt><a name="index-matrix_005ftype-4"></a>Built-in Function: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;lower&quot;, <var>perm</var>)</em></dt>
-<dt><a name="index-matrix_005ftype-5"></a>Built-in Function: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;banded&quot;, <var>nl</var>, <var>nu</var>)</em></dt>
+<dt><a name="index-matrix_005ftype"></a>: <em><var>type</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-matrix_005ftype-1"></a>: <em><var>type</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;nocompute&quot;)</em></dt>
+<dt><a name="index-matrix_005ftype-2"></a>: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, <var>type</var>)</em></dt>
+<dt><a name="index-matrix_005ftype-3"></a>: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;upper&quot;, <var>perm</var>)</em></dt>
+<dt><a name="index-matrix_005ftype-4"></a>: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;lower&quot;, <var>perm</var>)</em></dt>
+<dt><a name="index-matrix_005ftype-5"></a>: <em><var>A</var> =</em> <strong>matrix_type</strong> <em>(<var>A</var>, &quot;banded&quot;, <var>nl</var>, <var>nu</var>)</em></dt>
 <dd><p>Identify the matrix type or mark a matrix as a particular type.
 </p>
 <p>This allows more rapid solutions of linear equations involving <var>A</var> to be
@@ -329,8 +330,8 @@ the matrix to be defined.
 to guess the type if it is still unknown.  This is useful for debugging
 purposes.
 </p>
-<p>The possible matrix types depend on whether the matrix is full or sparse, and
-can be one of the following
+<p>The possible matrix types depend on whether the matrix is full or sparse,
+and can be one of the following
 </p>
 <dl compact="compact">
 <dt><code>&quot;unknown&quot;</code></dt>
@@ -370,8 +371,8 @@ defined by the vector <var>perm</var>.
 <dt><code>&quot;banded&quot;</code></dt>
 <dt><code>&quot;banded positive definite&quot;</code></dt>
 <dd><p>Banded matrix with the band size of <var>nl</var> below the diagonal and <var>nu</var>
-above it.  If <var>nl</var> and <var>nu</var> are 1, then the matrix is tridiagonal and
-treated with specialized code.  In addition the matrix can be marked as
+above it.  If <var>nl</var> and <var>nu</var> are 1, then the matrix is tridiagonal
+and treated with specialized code.  In addition the matrix can be marked as
 probably a positive definite.  (Sparse matrices only)
 </p>
 </dd>
@@ -400,9 +401,9 @@ LU&nbsp;factorization.  Once the matrix has been factorized,
 
 
 <a name="XREFnorm"></a><dl>
-<dt><a name="index-norm"></a>Built-in Function: <em></em> <strong>norm</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-norm-1"></a>Built-in Function: <em></em> <strong>norm</strong> <em>(<var>A</var>, <var>p</var>)</em></dt>
-<dt><a name="index-norm-2"></a>Built-in Function: <em></em> <strong>norm</strong> <em>(<var>A</var>, <var>p</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-norm"></a>: <em></em> <strong>norm</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-norm-1"></a>: <em></em> <strong>norm</strong> <em>(<var>A</var>, <var>p</var>)</em></dt>
+<dt><a name="index-norm-2"></a>: <em></em> <strong>norm</strong> <em>(<var>A</var>, <var>p</var>, <var>opt</var>)</em></dt>
 <dd><p>Compute the p-norm of the matrix <var>A</var>.
 </p>
 <p>If the second argument is missing, <code>p&nbsp;=&nbsp;2</code><!-- /@w --> is assumed.
@@ -472,8 +473,8 @@ compute the norms of each column and return a row vector.
 
 
 <a name="XREFnull"></a><dl>
-<dt><a name="index-null"></a>Function File: <em></em> <strong>null</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-null-1"></a>Function File: <em></em> <strong>null</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-null"></a>: <em></em> <strong>null</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-null-1"></a>: <em></em> <strong>null</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
 <dd><p>Return an orthonormal basis of the null space of <var>A</var>.
 </p>
 <p>The dimension of the null space is taken as the number of singular values of
@@ -489,8 +490,8 @@ it is computed as
 
 
 <a name="XREForth"></a><dl>
-<dt><a name="index-orth"></a>Function File: <em></em> <strong>orth</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-orth-1"></a>Function File: <em></em> <strong>orth</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-orth"></a>: <em></em> <strong>orth</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-orth-1"></a>: <em></em> <strong>orth</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
 <dd><p>Return an orthonormal basis of the range space of <var>A</var>.
 </p>
 <p>The dimension of the range space is taken as the number of singular values
@@ -506,7 +507,7 @@ is computed as
 
 
 <a name="XREFmgorth"></a><dl>
-<dt><a name="index-mgorth"></a>Built-in Function: <em>[<var>y</var>, <var>h</var>] =</em> <strong>mgorth</strong> <em>(<var>x</var>, <var>v</var>)</em></dt>
+<dt><a name="index-mgorth"></a>: <em>[<var>y</var>, <var>h</var>] =</em> <strong>mgorth</strong> <em>(<var>x</var>, <var>v</var>)</em></dt>
 <dd><p>Orthogonalize a given column vector <var>x</var> with respect to a set of
 orthonormal vectors comprising the columns of <var>v</var> using the modified
 Gram-Schmidt method.
@@ -523,8 +524,8 @@ Gram-Schmidt method.
 
 
 <a name="XREFpinv"></a><dl>
-<dt><a name="index-pinv"></a>Built-in Function: <em></em> <strong>pinv</strong> <em>(<var>x</var>)</em></dt>
-<dt><a name="index-pinv-1"></a>Built-in Function: <em></em> <strong>pinv</strong> <em>(<var>x</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-pinv"></a>: <em></em> <strong>pinv</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-pinv-1"></a>: <em></em> <strong>pinv</strong> <em>(<var>x</var>, <var>tol</var>)</em></dt>
 <dd><p>Return the pseudoinverse of <var>x</var>.
 </p>
 <p>Singular values less than <var>tol</var> are ignored.
@@ -541,8 +542,8 @@ Gram-Schmidt method.
 <a name="index-pseudoinverse"></a>
 
 <a name="XREFrank"></a><dl>
-<dt><a name="index-rank"></a>Function File: <em></em> <strong>rank</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-rank-1"></a>Function File: <em></em> <strong>rank</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-rank"></a>: <em></em> <strong>rank</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-rank-1"></a>: <em></em> <strong>rank</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
 <dd><p>Compute the rank of matrix <var>A</var>, using the singular value decomposition.
 </p>
 <p>The rank is taken to be the number of singular values of <var>A</var> that are
@@ -579,7 +580,7 @@ linear combination of -1*row1 + 2*row2.
 
 
 <a name="XREFrcond"></a><dl>
-<dt><a name="index-rcond"></a>Built-in Function: <em><var>c</var> =</em> <strong>rcond</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-rcond"></a>: <em><var>c</var> =</em> <strong>rcond</strong> <em>(<var>A</var>)</em></dt>
 <dd><p>Compute the 1-norm estimate of the reciprocal condition number as returned
 by <small>LAPACK</small>.
 </p>
@@ -595,7 +596,7 @@ instead.
 
 
 <a name="XREFtrace"></a><dl>
-<dt><a name="index-trace"></a>Function File: <em></em> <strong>trace</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-trace"></a>: <em></em> <strong>trace</strong> <em>(<var>A</var>)</em></dt>
 <dd><p>Compute the trace of <var>A</var>, the sum of the elements along the main
 diagonal.
 </p>
@@ -606,9 +607,9 @@ diagonal.
 
 
 <a name="XREFrref"></a><dl>
-<dt><a name="index-rref"></a>Function File: <em></em> <strong>rref</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-rref-1"></a>Function File: <em></em> <strong>rref</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
-<dt><a name="index-rref-2"></a>Function File: <em>[<var>r</var>, <var>k</var>] =</em> <strong>rref</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-rref"></a>: <em></em> <strong>rref</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-rref-1"></a>: <em></em> <strong>rref</strong> <em>(<var>A</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-rref-2"></a>: <em>[<var>r</var>, <var>k</var>] =</em> <strong>rref</strong> <em>(&hellip;)</em></dt>
 <dd><p>Return the reduced row echelon form of <var>A</var>.
 </p>
 <p><var>tol</var> defaults to

@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -67,7 +68,7 @@ function.  In the general case where the noise is assumed to be anisotropic
 the <code>gls</code> is needed.
 </p>
 <a name="XREFols"></a><dl>
-<dt><a name="index-ols"></a>Function File: <em>[<var>beta</var>, <var>sigma</var>, <var>r</var>] =</em> <strong>ols</strong> <em>(<var>y</var>, <var>x</var>)</em></dt>
+<dt><a name="index-ols"></a>: <em>[<var>beta</var>, <var>sigma</var>, <var>r</var>] =</em> <strong>ols</strong> <em>(<var>y</var>, <var>x</var>)</em></dt>
 <dd><p>Ordinary least squares estimation.
 </p>
 <p>OLS applies to the multivariate model
@@ -78,7 +79,8 @@ where
 matrix, <em>b</em> is a <em>k</em> by <em>p</em> matrix, and <em>e</em> is a
 <em>t</em> by <em>p</em> matrix.
 </p>
-<p>Each row of <var>y</var> and <var>x</var> is an observation and each column a variable.
+<p>Each row of <var>y</var> and <var>x</var> is an observation and each column a
+variable.
 </p>
 <p>The return values <var>beta</var>, <var>sigma</var>, and <var>r</var> are defined as
 follows.
@@ -112,7 +114,7 @@ Otherwise, <code><var>beta</var> = pinv (<var>x</var>) * <var>y</var></code> whe
 
 
 <a name="XREFgls"></a><dl>
-<dt><a name="index-gls"></a>Function File: <em>[<var>beta</var>, <var>v</var>, <var>r</var>] =</em> <strong>gls</strong> <em>(<var>y</var>, <var>x</var>, <var>o</var>)</em></dt>
+<dt><a name="index-gls"></a>: <em>[<var>beta</var>, <var>v</var>, <var>r</var>] =</em> <strong>gls</strong> <em>(<var>y</var>, <var>x</var>, <var>o</var>)</em></dt>
 <dd><p>Generalized least squares model.
 </p>
 <p>Perform a generalized least squares estimation for the multivariate model
@@ -147,14 +149,14 @@ defined as follows.
 
 
 <a name="XREFlsqnonneg"></a><dl>
-<dt><a name="index-lsqnonneg"></a>Function File: <em><var>x</var> =</em> <strong>lsqnonneg</strong> <em>(<var>c</var>, <var>d</var>)</em></dt>
-<dt><a name="index-lsqnonneg-1"></a>Function File: <em><var>x</var> =</em> <strong>lsqnonneg</strong> <em>(<var>c</var>, <var>d</var>, <var>x0</var>)</em></dt>
-<dt><a name="index-lsqnonneg-2"></a>Function File: <em><var>x</var> =</em> <strong>lsqnonneg</strong> <em>(<var>c</var>, <var>d</var>, <var>x0</var>, <var>options</var>)</em></dt>
-<dt><a name="index-lsqnonneg-3"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
-<dt><a name="index-lsqnonneg-4"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
-<dt><a name="index-lsqnonneg-5"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
-<dt><a name="index-lsqnonneg-6"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>, <var>output</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
-<dt><a name="index-lsqnonneg-7"></a>Function File: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>, <var>output</var>, <var>lambda</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-lsqnonneg"></a>: <em><var>x</var> =</em> <strong>lsqnonneg</strong> <em>(<var>c</var>, <var>d</var>)</em></dt>
+<dt><a name="index-lsqnonneg-1"></a>: <em><var>x</var> =</em> <strong>lsqnonneg</strong> <em>(<var>c</var>, <var>d</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-lsqnonneg-2"></a>: <em><var>x</var> =</em> <strong>lsqnonneg</strong> <em>(<var>c</var>, <var>d</var>, <var>x0</var>, <var>options</var>)</em></dt>
+<dt><a name="index-lsqnonneg-3"></a>: <em>[<var>x</var>, <var>resnorm</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-lsqnonneg-4"></a>: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-lsqnonneg-5"></a>: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-lsqnonneg-6"></a>: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>, <var>output</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-lsqnonneg-7"></a>: <em>[<var>x</var>, <var>resnorm</var>, <var>residual</var>, <var>exitflag</var>, <var>output</var>, <var>lambda</var>] =</em> <strong>lsqnonneg</strong> <em>(&hellip;)</em></dt>
 <dd><p>Minimize <code>norm (<var>c</var>*<var>x</var> - d)</code> subject to
 <code><var>x</var> &gt;= 0</code>.
 </p>
@@ -204,10 +206,10 @@ enough iterations.)
 
 
 <a name="XREFlscov"></a><dl>
-<dt><a name="index-lscov"></a>Function File: <em><var>x</var> =</em> <strong>lscov</strong> <em>(<var>A</var>, <var>b</var>)</em></dt>
-<dt><a name="index-lscov-1"></a>Function File: <em><var>x</var> =</em> <strong>lscov</strong> <em>(<var>A</var>, <var>b</var>, <var>V</var>)</em></dt>
-<dt><a name="index-lscov-2"></a>Function File: <em><var>x</var> =</em> <strong>lscov</strong> <em>(<var>A</var>, <var>b</var>, <var>V</var>, <var>alg</var>)</em></dt>
-<dt><a name="index-lscov-3"></a>Function File: <em>[<var>x</var>, <var>stdx</var>, <var>mse</var>, <var>S</var>] =</em> <strong>lscov</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-lscov"></a>: <em><var>x</var> =</em> <strong>lscov</strong> <em>(<var>A</var>, <var>b</var>)</em></dt>
+<dt><a name="index-lscov-1"></a>: <em><var>x</var> =</em> <strong>lscov</strong> <em>(<var>A</var>, <var>b</var>, <var>V</var>)</em></dt>
+<dt><a name="index-lscov-2"></a>: <em><var>x</var> =</em> <strong>lscov</strong> <em>(<var>A</var>, <var>b</var>, <var>V</var>, <var>alg</var>)</em></dt>
+<dt><a name="index-lscov-3"></a>: <em>[<var>x</var>, <var>stdx</var>, <var>mse</var>, <var>S</var>] =</em> <strong>lscov</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Compute a generalized linear least squares fit.
 </p>
@@ -241,11 +243,11 @@ scale factors (<em>\sigma^2</em>); and <var>S</var> (p-by-p, or p-by-p-by-k if k
 
 
 <a name="XREFoptimset"></a><dl>
-<dt><a name="index-optimset"></a>Function File: <em></em> <strong>optimset</strong> <em>()</em></dt>
-<dt><a name="index-optimset-1"></a>Function File: <em><var>options</var> =</em> <strong>optimset</strong> <em>()</em></dt>
-<dt><a name="index-optimset-2"></a>Function File: <em><var>options</var> =</em> <strong>optimset</strong> <em>(<var>par</var>, <var>val</var>, &hellip;)</em></dt>
-<dt><a name="index-optimset-3"></a>Function File: <em><var>options</var> =</em> <strong>optimset</strong> <em>(<var>old</var>, <var>par</var>, <var>val</var>, &hellip;)</em></dt>
-<dt><a name="index-optimset-4"></a>Function File: <em><var>options</var> =</em> <strong>optimset</strong> <em>(<var>old</var>, <var>new</var>)</em></dt>
+<dt><a name="index-optimset"></a>: <em></em> <strong>optimset</strong> <em>()</em></dt>
+<dt><a name="index-optimset-1"></a>: <em><var>options</var> =</em> <strong>optimset</strong> <em>()</em></dt>
+<dt><a name="index-optimset-2"></a>: <em><var>options</var> =</em> <strong>optimset</strong> <em>(<var>par</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-optimset-3"></a>: <em><var>options</var> =</em> <strong>optimset</strong> <em>(<var>old</var>, <var>par</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-optimset-4"></a>: <em><var>options</var> =</em> <strong>optimset</strong> <em>(<var>old</var>, <var>new</var>)</em></dt>
 <dd><p>Create options structure for optimization functions.
 </p>
 <p>When called without any input or output arguments, <code>optimset</code> prints
@@ -348,8 +350,8 @@ less than <code>TolX</code> the optimization stops.  Must be a positive scalar.
 
 
 <a name="XREFoptimget"></a><dl>
-<dt><a name="index-optimget"></a>Function File: <em></em> <strong>optimget</strong> <em>(<var>options</var>, <var>parname</var>)</em></dt>
-<dt><a name="index-optimget-1"></a>Function File: <em></em> <strong>optimget</strong> <em>(<var>options</var>, <var>parname</var>, <var>default</var>)</em></dt>
+<dt><a name="index-optimget"></a>: <em></em> <strong>optimget</strong> <em>(<var>options</var>, <var>parname</var>)</em></dt>
+<dt><a name="index-optimget-1"></a>: <em></em> <strong>optimget</strong> <em>(<var>options</var>, <var>parname</var>, <var>default</var>)</em></dt>
 <dd><p>Return the specific option <var>parname</var> from the optimization options
 structure <var>options</var> created by <code>optimset</code>.
 </p>

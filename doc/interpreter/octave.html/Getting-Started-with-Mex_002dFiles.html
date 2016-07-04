@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -64,7 +65,7 @@ command, the use of the command <code>mex</code> is limited to within Octave.
 Compiled mex-files have the extension <samp>.mex</samp>.
 </p>
 <a name="XREFmex"></a><dl>
-<dt><a name="index-mex-1"></a>Command: <em></em> <strong>mex</strong> <em>[options] file &hellip;</em></dt>
+<dt><a name="index-mex-1"></a>: <em></em> <strong>mex</strong> <em>[options] file &hellip;</em></dt>
 <dd><p>Compile source code written in C, C++, or Fortran, to a MEX file.
 </p>
 <p>This is equivalent to <code>mkoctfile --mex [options] file</code>.
@@ -74,7 +75,7 @@ Compiled mex-files have the extension <samp>.mex</samp>.
 
 
 <a name="XREFmexext"></a><dl>
-<dt><a name="index-mexext"></a>Function File: <em></em> <strong>mexext</strong> <em>()</em></dt>
+<dt><a name="index-mexext"></a>: <em></em> <strong>mexext</strong> <em>()</em></dt>
 <dd><p>Return the filename extension used for MEX files.
 </p>
 <p><strong>See also:</strong> <a href="#XREFmex">mex</a>.
@@ -94,8 +95,6 @@ mexFunction (int nlhs, mxArray *plhs[],
 
   mexPrintf (&quot;I have %d inputs and %d outputs\n&quot;, nrhs, nlhs);
 }
-</pre><pre class="example">
-
 </pre></div>
 
 <p>The first line <code>#include &quot;mex.h&quot;</code> makes available all of the definitions
@@ -173,8 +172,6 @@ mexFunction (int nlhs, mxArray *plhs[],
 
   return;
 }
-</pre><pre class="example">
-
 </pre></div>
 
 <p>is in file <samp>myfunc.c</samp>, and it is compiled with

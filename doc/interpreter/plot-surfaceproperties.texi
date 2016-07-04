@@ -40,14 +40,14 @@ Transparency is not yet implemented for surface objects.  @code{alphadatamapping
 
 @anchor{XREFsurfaceambientstrength}
 @cindex surface ambientstrength
-@item @code{ambientstrength}: def. @code{0.30000}
-Light is not yet implemented for surface objects.  @code{ambientstrength} is unused.
+@item @code{ambientstrength}: scalar, def. @code{0.30000}
+Strength of the ambient light. Value between 0.0 and 1.0
 
 
 @anchor{XREFsurfacebackfacelighting}
 @cindex surface backfacelighting
 @item @code{backfacelighting}: @qcode{"lit"} | @{@qcode{"reverselit"}@} | @qcode{"unlit"}
-Light is not yet implemented for surface objects.  @code{backfacelighting} is unused.
+@qcode{"lit"}: The normals are used as is for lighting. @qcode{"reverselit"}: The normals are always oriented towards the point of view. @qcode{"unlit"}: Faces with normals pointing away from the point of view are unlit.
 
 
 @anchor{XREFsurfacebeingdeleted}
@@ -112,8 +112,8 @@ Callback function executed immediately before surface is deleted.
 
 @anchor{XREFsurfacediffusestrength}
 @cindex surface diffusestrength
-@item @code{diffusestrength}: def. @code{0.60000}
-Light is not yet implemented for surface objects.  @code{diffusestrength} is unused.
+@item @code{diffusestrength}: scalar, def. @code{0.60000}
+Strength of the diffuse reflex. Value between 0.0 (no diffuse reflex) and 1.0 (full diffuse reflex).
 
 
 @anchor{XREFsurfacedisplayname}
@@ -137,13 +137,7 @@ Transparency is not yet implemented for surface objects.  @code{edgealpha} is un
 @anchor{XREFsurfaceedgelighting}
 @cindex surface edgelighting
 @item @code{edgelighting}: @qcode{"flat"} | @qcode{"gouraud"} | @{@qcode{"none"}@} | @qcode{"phong"}
-Light is not yet implemented for surface objects.  @code{edgelighting} is unused.
-
-
-@anchor{XREFsurfaceerasemode}
-@cindex surface erasemode
-@item @code{erasemode}: @qcode{"background"} | @qcode{"none"} | @{@qcode{"normal"}@} | @qcode{"xor"}
-@code{erasemode} is unused.
+When set to a value other than @qcode{"none"}, the edges of the object are drawn with light and shadow effects.  Supported values are @qcode{"none"} (no lighting effects), @qcode{"flat"} (facetted look) and @qcode{"gouraud"} (linear interpolation of the lighting effects between the vertices). @qcode{"phong"} is deprecated and has the same effect as @qcode{"gouraud"}.
 
 
 @anchor{XREFsurfacefacealpha}
@@ -160,8 +154,20 @@ Transparency is not yet implemented for surface objects.  @code{facealpha} is un
 
 @anchor{XREFsurfacefacelighting}
 @cindex surface facelighting
-@item @code{facelighting}: @qcode{"flat"} | @qcode{"gouraud"} | @{@qcode{"none"}@} | @qcode{"phong"}
-Light is not yet implemented for surface objects.  @code{facelighting} is unused.
+@item @code{facelighting}: @{@qcode{"flat"}@} | @qcode{"gouraud"} | @qcode{"none"} | @qcode{"phong"}
+When set to a value other than @qcode{"none"}, the faces of the object are drawn with light and shadow effects.  Supported values are @qcode{"none"} (no lighting effects), @qcode{"flat"} (facetted look) and @qcode{"gouraud"} (linear interpolation of the lighting effects between the vertices). @qcode{"phong"} is deprecated and has the same effect as @qcode{"gouraud"}.
+
+
+@anchor{XREFsurfacefacenormals}
+@cindex surface facenormals
+@item @code{facenormals}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFsurfacefacenormalsmode}
+@cindex surface facenormalsmode
+@item @code{facenormalsmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+
 
 
 @anchor{XREFsurfacehandlevisibility}
@@ -230,12 +236,6 @@ If @code{handlevisibility} is @qcode{"off"}, the surface's handle is not visible
 
 
 
-@anchor{XREFsurfacenormalmode}
-@cindex surface normalmode
-@item @code{normalmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
-
-
-
 @anchor{XREFsurfaceparent}
 @cindex surface parent
 @item @code{parent}: graphics handle
@@ -256,20 +256,20 @@ Handle of the parent graphics object.
 
 @anchor{XREFsurfacespecularcolorreflectance}
 @cindex surface specularcolorreflectance
-@item @code{specularcolorreflectance}: def. @code{1}
-Light is not yet implemented for surface objects.  @code{specularcolorreflectance} is unused.
+@item @code{specularcolorreflectance}: scalar, def. @code{1}
+Reflectance for specular color. Value between 0.0 (color of underlying face) and 1.0 (color of light source).
 
 
 @anchor{XREFsurfacespecularexponent}
 @cindex surface specularexponent
-@item @code{specularexponent}: def. @code{10}
-Light is not yet implemented for surface objects.  @code{specularexponent} is unused.
+@item @code{specularexponent}: scalar, def. @code{10}
+Exponent for the specular reflex. The lower the value, the more the reflex is spread out.
 
 
 @anchor{XREFsurfacespecularstrength}
 @cindex surface specularstrength
-@item @code{specularstrength}: def. @code{0.90000}
-Light is not yet implemented for surface objects.  @code{specularstrength} is unused.
+@item @code{specularstrength}: scalar, def. @code{0.90000}
+Strength of the specular reflex. Value between 0.0 (no specular reflex) and 1.0 (full specular reflex).
 
 
 @anchor{XREFsurfacetag}
@@ -299,6 +299,12 @@ User-defined data to associate with the graphics object.
 @anchor{XREFsurfacevertexnormals}
 @cindex surface vertexnormals
 @item @code{vertexnormals}: def. 3-by-3-by-3 double
+
+
+
+@anchor{XREFsurfacevertexnormalsmode}
+@cindex surface vertexnormalsmode
+@item @code{vertexnormalsmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
 
 
 

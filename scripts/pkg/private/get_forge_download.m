@@ -18,12 +18,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{url}, @var{local_file}] =} list_forge_packages ()
+## @deftypefn {} {[@var{url}, @var{local_file}] =} list_forge_packages ()
 ## Undocumented internal function.
 ## @end deftypefn
 
 function [url, local_file] = get_forge_download (name)
   [ver, url] = get_forge_pkg (name);
-  local_file = [name, "-", ver, ".tar.gz"];
+  local_file = [name "-" ver ".tar.gz"];
 endfunction
 

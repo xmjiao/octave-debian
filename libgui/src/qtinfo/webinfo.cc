@@ -24,8 +24,8 @@ along with Octave; see the file COPYING.  If not, see
 // Author: P. L. Lucas
 // Author: Jacob Dawid <jacob.dawid@cybercatalyst.com>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "webinfo.h"
@@ -58,7 +58,7 @@ webinfo::webinfo (QWidget *p)
   _tab_bar->setSizePolicy (QSizePolicy::Preferred,QSizePolicy::Preferred);
   _tab_bar->setExpanding (false);
   _tab_bar->setTabsClosable (true);
-#ifdef HAVE_QTABWIDGET_SETMOVABLE
+#if defined (HAVE_QTABWIDGET_SETMOVABLE)
   _tab_bar->setMovable (true);
 #endif
   hbox_layout->addWidget (_tab_bar);
@@ -78,7 +78,7 @@ webinfo::webinfo (QWidget *p)
   vbox_layout->addLayout (hbox_layout);
 
   _search_line_edit = new QLineEdit(this);
-#ifdef HAVE_SETPLACEHOLDERTEXT
+#if defined (HAVE_SETPLACEHOLDERTEXT)
   _search_line_edit->setPlaceholderText (
     tr ("Type here and press \'Return\' to search"));
 #endif
@@ -300,14 +300,13 @@ webinfo::selectAll ()
     }
 }
 
-
 void
 webinfo::pasteClipboard ()
 {
   if (_search_line_edit->hasFocus ())
     {
       QClipboard *clipboard = QApplication::clipboard ();
-      QString str =  clipboard->text ();
+      QString str = clipboard->text ();
       if (str.length () > 0)
         _search_line_edit->insert (str);
     }

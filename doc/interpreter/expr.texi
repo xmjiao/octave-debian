@@ -317,8 +317,8 @@ result.
 
 @c sub2ind libinterp/corefcn/sub2ind.cc
 @anchor{XREFsub2ind}
-@deftypefn  {Function File} {@var{ind} =} sub2ind (@var{dims}, @var{i}, @var{j})
-@deftypefnx {Function File} {@var{ind} =} sub2ind (@var{dims}, @var{s1}, @var{s2}, @dots{}, @var{sN})
+@deftypefn  {} {@var{ind} =} sub2ind (@var{dims}, @var{i}, @var{j})
+@deftypefnx {} {@var{ind} =} sub2ind (@var{dims}, @var{s1}, @var{s2}, @dots{}, @var{sN})
 Convert subscripts to a linear index.
 
 The following example shows how to convert the two-dimensional index
@@ -337,7 +337,7 @@ linear_index = sub2ind ([3, 3], 2, 3)
 
 @c ind2sub libinterp/corefcn/sub2ind.cc
 @anchor{XREFind2sub}
-@deftypefn {Function File} {[@var{s1}, @var{s2}, @dots{}, @var{sN}] =} ind2sub (@var{dims}, @var{ind})
+@deftypefn {} {[@var{s1}, @var{s2}, @dots{}, @var{sN}] =} ind2sub (@var{dims}, @var{ind})
 Convert a linear index to subscripts.
 
 The following example shows how to convert the linear index @code{8}
@@ -357,8 +357,8 @@ moving from one column to next, filling up all rows in each column.
 
 @c isindex libinterp/corefcn/utils.cc
 @anchor{XREFisindex}
-@deftypefn  {Built-in Function} {} isindex (@var{ind})
-@deftypefnx {Built-in Function} {} isindex (@var{ind}, @var{n})
+@deftypefn  {} {} isindex (@var{ind})
+@deftypefnx {} {} isindex (@var{ind}, @var{n})
 Return true if @var{ind} is a valid index.
 
 Valid indices are either positive integers (although possibly of real data
@@ -376,9 +376,9 @@ character @nospell{"@xbackslashchar{}0"}, it will always be a valid index.
 
 @c allow_noninteger_range_as_index libinterp/octave-value/ov-range.cc
 @anchor{XREFallow_noninteger_range_as_index}
-@deftypefn  {Built-in Function} {@var{val} =} allow_noninteger_range_as_index ()
-@deftypefnx {Built-in Function} {@var{old_val} =} allow_noninteger_range_as_index (@var{new_val})
-@deftypefnx {Built-in Function} {} allow_noninteger_range_as_index (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} allow_noninteger_range_as_index ()
+@deftypefnx {} {@var{old_val} =} allow_noninteger_range_as_index (@var{new_val})
+@deftypefnx {} {} allow_noninteger_range_as_index (@var{new_val}, "local")
 Query or set the internal variable that controls whether non-integer
 ranges are allowed as indices.
 
@@ -564,9 +564,9 @@ the recursion depth and prevents Octave from recursing infinitely.
 
 @c max_recursion_depth libinterp/parse-tree/pt-eval.cc
 @anchor{XREFmax_recursion_depth}
-@deftypefn  {Built-in Function} {@var{val} =} max_recursion_depth ()
-@deftypefnx {Built-in Function} {@var{old_val} =} max_recursion_depth (@var{new_val})
-@deftypefnx {Built-in Function} {} max_recursion_depth (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} max_recursion_depth ()
+@deftypefnx {} {@var{old_val} =} max_recursion_depth (@var{new_val})
+@deftypefnx {} {} max_recursion_depth (@var{new_val}, "local")
 Query or set the internal limit on the number of times a function may
 be called recursively.
 
@@ -750,7 +750,7 @@ useful in this case.
 @opindex '
 @c ctranspose libinterp/corefcn/data.cc
 @anchor{XREFctranspose}
-@deftypefn {Built-in Function} {} ctranspose (@var{x})
+@deftypefn {} {} ctranspose (@var{x})
 Return the complex conjugate transpose of @var{x}.
 
 This function and @tcode{x'} are equivalent.
@@ -761,7 +761,7 @@ This function and @tcode{x'} are equivalent.
 @opindex .\
 @c ldivide libinterp/corefcn/data.cc
 @anchor{XREFldivide}
-@deftypefn {Built-in Function} {} ldivide (@var{x}, @var{y})
+@deftypefn {} {} ldivide (@var{x}, @var{y})
 Return the element-by-element left division of @var{x} and @var{y}.
 
 This function and @w{@tcode{x .@xbackslashchar{} y}} are equivalent.
@@ -772,7 +772,7 @@ This function and @w{@tcode{x .@xbackslashchar{} y}} are equivalent.
 @opindex -
 @c minus libinterp/corefcn/data.cc
 @anchor{XREFminus}
-@deftypefn {Built-in Function} {} minus (@var{x}, @var{y})
+@deftypefn {} {} minus (@var{x}, @var{y})
 This function and @w{@tcode{x - y}} are equivalent.
 @seealso{@ref{XREFplus,,plus}, @ref{XREFuminus,,uminus}}
 @end deftypefn
@@ -781,7 +781,7 @@ This function and @w{@tcode{x - y}} are equivalent.
 @opindex \
 @c mldivide libinterp/corefcn/data.cc
 @anchor{XREFmldivide}
-@deftypefn {Built-in Function} {} mldivide (@var{x}, @var{y})
+@deftypefn {} {} mldivide (@var{x}, @var{y})
 Return the matrix left division of @var{x} and @var{y}.
 
 This function and @w{@tcode{x @xbackslashchar{} y}} are equivalent.
@@ -793,7 +793,7 @@ This function and @w{@tcode{x @xbackslashchar{} y}} are equivalent.
 @opindex ^
 @c mpower libinterp/corefcn/data.cc
 @anchor{XREFmpower}
-@deftypefn {Built-in Function} {} mpower (@var{x}, @var{y})
+@deftypefn {} {} mpower (@var{x}, @var{y})
 Return the matrix power operation of @var{x} raised to the @var{y} power.
 
 This function and @w{@tcode{x ^ y}} are equivalent.
@@ -804,7 +804,7 @@ This function and @w{@tcode{x ^ y}} are equivalent.
 @opindex /
 @c mrdivide libinterp/corefcn/data.cc
 @anchor{XREFmrdivide}
-@deftypefn {Built-in Function} {} mrdivide (@var{x}, @var{y})
+@deftypefn {} {} mrdivide (@var{x}, @var{y})
 Return the matrix right division of @var{x} and @var{y}.
 
 This function and @w{@tcode{x / y}} are equivalent.
@@ -815,8 +815,8 @@ This function and @w{@tcode{x / y}} are equivalent.
 @opindex *
 @c mtimes libinterp/corefcn/data.cc
 @anchor{XREFmtimes}
-@deftypefn  {Built-in Function} {} mtimes (@var{x}, @var{y})
-@deftypefnx {Built-in Function} {} mtimes (@var{x1}, @var{x2}, @dots{})
+@deftypefn  {} {} mtimes (@var{x}, @var{y})
+@deftypefnx {} {} mtimes (@var{x1}, @var{x2}, @dots{})
 Return the matrix multiplication product of inputs.
 
 This function and @w{@tcode{x * y}} are equivalent.
@@ -835,8 +835,8 @@ At least one argument is required.
 @opindex +
 @c plus libinterp/corefcn/data.cc
 @anchor{XREFplus}
-@deftypefn  {Built-in Function} {} plus (@var{x}, @var{y})
-@deftypefnx {Built-in Function} {} plus (@var{x1}, @var{x2}, @dots{})
+@deftypefn  {} {} plus (@var{x}, @var{y})
+@deftypefnx {} {} plus (@var{x1}, @var{x2}, @dots{})
 This function and @w{@tcode{x + y}} are equivalent.
 
 If more arguments are given, the summation is applied
@@ -855,7 +855,7 @@ At least one argument is required.
 @opindex .^
 @c power libinterp/corefcn/data.cc
 @anchor{XREFpower}
-@deftypefn {Built-in Function} {} power (@var{x}, @var{y})
+@deftypefn {} {} power (@var{x}, @var{y})
 Return the element-by-element operation of @var{x} raised to the
 @var{y} power.
 
@@ -872,7 +872,7 @@ non-negative argument (angle).  Use @code{realpow}, @code{realsqrt},
 @opindex ./
 @c rdivide libinterp/corefcn/data.cc
 @anchor{XREFrdivide}
-@deftypefn {Built-in Function} {} rdivide (@var{x}, @var{y})
+@deftypefn {} {} rdivide (@var{x}, @var{y})
 Return the element-by-element right division of @var{x} and @var{y}.
 
 This function and @w{@tcode{x ./ y}} are equivalent.
@@ -883,8 +883,8 @@ This function and @w{@tcode{x ./ y}} are equivalent.
 @opindex .*
 @c times libinterp/corefcn/data.cc
 @anchor{XREFtimes}
-@deftypefn  {Built-in Function} {} times (@var{x}, @var{y})
-@deftypefnx {Built-in Function} {} times (@var{x1}, @var{x2}, @dots{})
+@deftypefn  {} {} times (@var{x}, @var{y})
+@deftypefnx {} {} times (@var{x1}, @var{x2}, @dots{})
 Return the element-by-element multiplication product of inputs.
 
 This function and @w{@tcode{x .* y}} are equivalent.
@@ -903,7 +903,7 @@ At least one argument is required.
 @opindex .'
 @c transpose libinterp/corefcn/data.cc
 @anchor{XREFtranspose}
-@deftypefn {Built-in Function} {} transpose (@var{x})
+@deftypefn {} {} transpose (@var{x})
 Return the transpose of @var{x}.
 
 This function and @tcode{x.'} are equivalent.
@@ -914,7 +914,7 @@ This function and @tcode{x.'} are equivalent.
 @opindex -
 @c uminus libinterp/corefcn/data.cc
 @anchor{XREFuminus}
-@deftypefn {Built-in Function} {} uminus (@var{x})
+@deftypefn {} {} uminus (@var{x})
 This function and @w{@tcode{- x}} are equivalent.
 @seealso{@ref{XREFuplus,,uplus}, @ref{XREFminus,,minus}}
 @end deftypefn
@@ -923,7 +923,7 @@ This function and @w{@tcode{- x}} are equivalent.
 @opindex +
 @c uplus libinterp/corefcn/data.cc
 @anchor{XREFuplus}
-@deftypefn {Built-in Function} {} uplus (@var{x})
+@deftypefn {} {} uplus (@var{x})
 This function and @w{@tcode{+ x}} are equivalent.
 @seealso{@ref{XREFuminus,,uminus}, @ref{XREFplus,,plus}, @ref{XREFminus,,minus}}
 @end deftypefn
@@ -1012,7 +1012,7 @@ function, not with the comparison operators listed above.
 @opindex ==
 @c eq libinterp/corefcn/data.cc
 @anchor{XREFeq}
-@deftypefn {Built-in Function} {} eq (@var{x}, @var{y})
+@deftypefn {} {} eq (@var{x}, @var{y})
 Return true if the two inputs are equal.
 
 This function is equivalent to @w{@code{x == y}}.
@@ -1023,7 +1023,7 @@ This function is equivalent to @w{@code{x == y}}.
 @opindex >=
 @c ge libinterp/corefcn/data.cc
 @anchor{XREFge}
-@deftypefn {Built-in Function} {} ge (@var{x}, @var{y})
+@deftypefn {} {} ge (@var{x}, @var{y})
 This function is equivalent to @w{@code{x >= y}}.
 @seealso{@ref{XREFle,,le}, @ref{XREFeq,,eq}, @ref{XREFgt,,gt}, @ref{XREFne,,ne}, @ref{XREFlt,,lt}}
 @end deftypefn
@@ -1032,23 +1032,23 @@ This function is equivalent to @w{@code{x >= y}}.
 @opindex >
 @c gt libinterp/corefcn/data.cc
 @anchor{XREFgt}
-@deftypefn {Built-in Function} {} gt (@var{x}, @var{y})
+@deftypefn {} {} gt (@var{x}, @var{y})
 This function is equivalent to @w{@code{x > y}}.
 @seealso{@ref{XREFle,,le}, @ref{XREFeq,,eq}, @ref{XREFge,,ge}, @ref{XREFne,,ne}, @ref{XREFlt,,lt}}
 @end deftypefn
 
 
-@c isequal scripts/general/isequal.m
+@c isequal scripts/scripts/general/isequal.m
 @anchor{XREFisequal}
-@deftypefn {Function File} {} isequal (@var{x1}, @var{x2}, @dots{})
+@deftypefn {} {} isequal (@var{x1}, @var{x2}, @dots{})
 Return true if all of @var{x1}, @var{x2}, @dots{} are equal.
 @seealso{@ref{XREFisequaln,,isequaln}}
 @end deftypefn
 
 
-@c isequaln scripts/general/isequaln.m
+@c isequaln scripts/scripts/general/isequaln.m
 @anchor{XREFisequaln}
-@deftypefn {Function File} {} isequaln (@var{x1}, @var{x2}, @dots{})
+@deftypefn {} {} isequaln (@var{x1}, @var{x2}, @dots{})
 Return true if all of @var{x1}, @var{x2}, @dots{} are equal under the
 additional assumption that NaN == NaN (no comparison of NaN placeholders
 in dataset).
@@ -1059,7 +1059,7 @@ in dataset).
 @opindex <=
 @c le libinterp/corefcn/data.cc
 @anchor{XREFle}
-@deftypefn {Built-in Function} {} le (@var{x}, @var{y})
+@deftypefn {} {} le (@var{x}, @var{y})
 This function is equivalent to @w{@code{x <= y}}.
 @seealso{@ref{XREFeq,,eq}, @ref{XREFge,,ge}, @ref{XREFgt,,gt}, @ref{XREFne,,ne}, @ref{XREFlt,,lt}}
 @end deftypefn
@@ -1068,7 +1068,7 @@ This function is equivalent to @w{@code{x <= y}}.
 @opindex <
 @c lt libinterp/corefcn/data.cc
 @anchor{XREFlt}
-@deftypefn {Built-in Function} {} lt (@var{x}, @var{y})
+@deftypefn {} {} lt (@var{x}, @var{y})
 This function is equivalent to @w{@code{x < y}}.
 @seealso{@ref{XREFle,,le}, @ref{XREFeq,,eq}, @ref{XREFge,,ge}, @ref{XREFgt,,gt}, @ref{XREFne,,ne}}
 @end deftypefn
@@ -1078,7 +1078,7 @@ This function is equivalent to @w{@code{x < y}}.
 @opindex ~=
 @c ne libinterp/corefcn/data.cc
 @anchor{XREFne}
-@deftypefn {Built-in Function} {} ne (@var{x}, @var{y})
+@deftypefn {} {} ne (@var{x}, @var{y})
 Return true if the two inputs are not equal.
 
 This function is equivalent to @w{@code{x != y}}.
@@ -1183,8 +1183,8 @@ described for matrix-valued operands.
 @opindex &
 @c and libinterp/corefcn/data.cc
 @anchor{XREFand}
-@deftypefn  {Built-in Function} {@var{z} =} and (@var{x}, @var{y})
-@deftypefnx {Built-in Function} {@var{z} =} and (@var{x1}, @var{x2}, @dots{})
+@deftypefn  {} {@var{z} =} and (@var{x}, @var{y})
+@deftypefnx {} {@var{z} =} and (@var{x1}, @var{x2}, @dots{})
 Return the logical AND of @var{x} and @var{y}.
 
 This function is equivalent to the operator syntax @w{@code{x & y}}.  If
@@ -1204,7 +1204,7 @@ At least one argument is required.
 @opindex !
 @c not libinterp/corefcn/data.cc
 @anchor{XREFnot}
-@deftypefn {Built-in Function} {@var{z} =} not (@var{x})
+@deftypefn {} {@var{z} =} not (@var{x})
 Return the logical NOT of @var{x}.
 
 This function is equivalent to the operator syntax @w{@code{! x}}.
@@ -1215,8 +1215,8 @@ This function is equivalent to the operator syntax @w{@code{! x}}.
 @opindex |
 @c or libinterp/corefcn/data.cc
 @anchor{XREFor}
-@deftypefn  {Built-in Function} {@var{z} =} or (@var{x}, @var{y})
-@deftypefnx {Built-in Function} {@var{z} =} or (@var{x1}, @var{x2}, @dots{})
+@deftypefn  {} {@var{z} =} or (@var{x}, @var{y})
+@deftypefnx {} {@var{z} =} or (@var{x1}, @var{x2}, @dots{})
 Return the logical OR of @var{x} and @var{y}.
 
 This function is equivalent to the operator syntax @w{@code{x | y}}.  If
@@ -1334,14 +1334,35 @@ though the use of the @samp{&} and @samp{|} operators in this way is
 strongly discouraged.  Instead, you should use the @samp{&&} and @samp{||}
 operators that always have short-circuit behavior.
 
+@c do_braindead_shortcircuit_evaluation libinterp/parse-tree/pt-binop.cc
+@anchor{XREFdo_braindead_shortcircuit_evaluation}
+@deftypefn  {} {@var{val} =} do_braindead_shortcircuit_evaluation ()
+@deftypefnx {} {@var{old_val} =} do_braindead_shortcircuit_evaluation (@var{new_val})
+@deftypefnx {} {} do_braindead_shortcircuit_evaluation (@var{new_val}, "local")
+Query or set the internal variable that controls whether Octave will
+do short-circuit evaluation of @samp{|} and @samp{&} operators inside the
+conditions of if or while statements.
+
+This feature is only provided for compatibility with @sc{matlab} and should
+not be used unless you are porting old code that relies on this feature.
+
+To obtain short-circuit behavior for logical expressions in new programs,
+you should always use the @samp{&&} and @samp{||} operators.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@end deftypefn
+
+
 Finally, the ternary operator (?:) is not supported in Octave.  If
 short-circuiting is not important, it can be replaced by the @code{ifelse}
 function.
 
 @c merge libinterp/corefcn/data.cc
 @anchor{XREFmerge}
-@deftypefn  {Built-in Function} {} merge (@var{mask}, @var{tval}, @var{fval})
-@deftypefnx {Built-in Function} {} ifelse (@var{mask}, @var{tval}, @var{fval})
+@deftypefn  {} {} merge (@var{mask}, @var{tval}, @var{fval})
+@deftypefnx {} {} ifelse (@var{mask}, @var{tval}, @var{fval})
 Merge elements of @var{true_val} and @var{false_val}, depending on the
 value of @var{mask}.
 

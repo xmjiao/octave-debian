@@ -98,11 +98,11 @@ detect a non-Hermitian matrix.
 
 @c balance libinterp/corefcn/balance.cc
 @anchor{XREFbalance}
-@deftypefn  {Built-in Function} {@var{AA} =} balance (@var{A})
-@deftypefnx {Built-in Function} {@var{AA} =} balance (@var{A}, @var{opt})
-@deftypefnx {Built-in Function} {[@var{DD}, @var{AA}] =} balance (@var{A}, @var{opt})
-@deftypefnx {Built-in Function} {[@var{D}, @var{P}, @var{AA}] =} balance (@var{A}, @var{opt})
-@deftypefnx {Built-in Function} {[@var{CC}, @var{DD}, @var{AA}, @var{BB}] =} balance (@var{A}, @var{B}, @var{opt})
+@deftypefn  {} {@var{AA} =} balance (@var{A})
+@deftypefnx {} {@var{AA} =} balance (@var{A}, @var{opt})
+@deftypefnx {} {[@var{DD}, @var{AA}] =} balance (@var{A}, @var{opt})
+@deftypefnx {} {[@var{D}, @var{P}, @var{AA}] =} balance (@var{A}, @var{opt})
+@deftypefnx {} {[@var{CC}, @var{DD}, @var{AA}, @var{BB}] =} balance (@var{A}, @var{B}, @var{opt})
 
 Balance the matrix @var{A} to reduce numerical errors in future
 calculations.
@@ -142,10 +142,10 @@ Generalized eigenvalue problem balancing uses Ward's algorithm
 @end deftypefn
 
 
-@c bandwidth scripts/linear-algebra/bandwidth.m
+@c bandwidth scripts/scripts/linear-algebra/bandwidth.m
 @anchor{XREFbandwidth}
-@deftypefn  {Function File} {@var{bw} =} bandwidth (@var{A}, @var{type})
-@deftypefnx {Function File} {[@var{lower}, @var{upper}] =} bandwidth (@var{A})
+@deftypefn  {} {@var{bw} =} bandwidth (@var{A}, @var{type})
+@deftypefnx {} {[@var{lower}, @var{upper}] =} bandwidth (@var{A})
 Compute the bandwidth of @var{A}.
 
 The @var{type} argument is the string @qcode{"lower"} for the lower
@@ -159,10 +159,10 @@ subdiagonals/superdiagonals with nonzero entries.
 @end deftypefn
 
 
-@c cond scripts/linear-algebra/cond.m
+@c cond scripts/scripts/linear-algebra/cond.m
 @anchor{XREFcond}
-@deftypefn  {Function File} {} cond (@var{A})
-@deftypefnx {Function File} {} cond (@var{A}, @var{p})
+@deftypefn  {} {} cond (@var{A})
+@deftypefnx {} {} cond (@var{A}, @var{p})
 Compute the @var{p}-norm condition number of a matrix.
 
 @code{cond (@var{A})} is defined as
@@ -190,8 +190,8 @@ from numerical computing are not likely to be accurate.
 
 @c det libinterp/corefcn/det.cc
 @anchor{XREFdet}
-@deftypefn  {Built-in Function} {} det (@var{A})
-@deftypefnx {Built-in Function} {[@var{d}, @var{rcond}] =} det (@var{A})
+@deftypefn  {} {} det (@var{A})
+@deftypefnx {} {[@var{d}, @var{rcond}] =} det (@var{A})
 Compute the determinant of @var{A}.
 
 Return an estimate of the reciprocal condition number if requested.
@@ -208,10 +208,10 @@ For that, use any of the condition number functions: @code{cond},
 
 @c eig libinterp/corefcn/eig.cc
 @anchor{XREFeig}
-@deftypefn  {Built-in Function} {@var{lambda} =} eig (@var{A})
-@deftypefnx {Built-in Function} {@var{lambda} =} eig (@var{A}, @var{B})
-@deftypefnx {Built-in Function} {[@var{V}, @var{lambda}] =} eig (@var{A})
-@deftypefnx {Built-in Function} {[@var{V}, @var{lambda}] =} eig (@var{A}, @var{B})
+@deftypefn  {} {@var{lambda} =} eig (@var{A})
+@deftypefnx {} {@var{lambda} =} eig (@var{A}, @var{B})
+@deftypefnx {} {[@var{V}, @var{lambda}] =} eig (@var{A})
+@deftypefnx {} {[@var{V}, @var{lambda}] =} eig (@var{A}, @var{B})
 Compute the eigenvalues (and optionally the eigenvectors) of a matrix
 or a pair of matrices
 
@@ -226,8 +226,8 @@ The eigenvalues returned by @code{eig} are not ordered.
 
 @c givens libinterp/corefcn/givens.cc
 @anchor{XREFgivens}
-@deftypefn  {Built-in Function} {@var{G} =} givens (@var{x}, @var{y})
-@deftypefnx {Built-in Function} {[@var{c}, @var{s}] =} givens (@var{x}, @var{y})
+@deftypefn  {} {@var{G} =} givens (@var{x}, @var{y})
+@deftypefnx {} {[@var{c}, @var{s}] =} givens (@var{x}, @var{y})
 Compute the Givens rotation matrix @var{G}.
 
 @tex
@@ -269,9 +269,9 @@ givens (1, 1)
 @end deftypefn
 
 
-@c planerot scripts/linear-algebra/planerot.m
+@c planerot scripts/scripts/linear-algebra/planerot.m
 @anchor{XREFplanerot}
-@deftypefn {Function File} {[@var{G}, @var{y}] =} planerot (@var{x})
+@deftypefn {} {[@var{G}, @var{y}] =} planerot (@var{x})
 Given a two-element column vector, return the
 @tex
 $2 \times 2$ orthogonal matrix
@@ -287,8 +287,8 @@ $2 \times 2$ orthogonal matrix
 
 @c inv libinterp/corefcn/inv.cc
 @anchor{XREFinv}
-@deftypefn  {Built-in Function} {@var{x} =} inv (@var{A})
-@deftypefnx {Built-in Function} {[@var{x}, @var{rcond}] =} inv (@var{A})
+@deftypefn  {} {@var{x} =} inv (@var{A})
+@deftypefnx {} {[@var{x}, @var{rcond}] =} inv (@var{A})
 Compute the inverse of the square matrix @var{A}.
 
 Return an estimate of the reciprocal condition number if requested,
@@ -308,11 +308,11 @@ sparse matrix if possible.
 @end deftypefn
 
 
-@c linsolve scripts/linear-algebra/linsolve.m
+@c linsolve scripts/scripts/linear-algebra/linsolve.m
 @anchor{XREFlinsolve}
-@deftypefn  {Function File} {@var{x} =} linsolve (@var{A}, @var{b})
-@deftypefnx {Function File} {@var{x} =} linsolve (@var{A}, @var{b}, @var{opts})
-@deftypefnx {Function File} {[@var{x}, @var{R}] =} linsolve (@dots{})
+@deftypefn  {} {@var{x} =} linsolve (@var{A}, @var{b})
+@deftypefnx {} {@var{x} =} linsolve (@var{A}, @var{b}, @var{opts})
+@deftypefnx {} {[@var{x}, @var{R}] =} linsolve (@dots{})
 Solve the linear system @code{A*x = b}.
 
 With no options, this function is equivalent to the left division operator
@@ -364,12 +364,12 @@ The optional second output @var{R} is the inverse condition number of
 
 @c matrix_type libinterp/corefcn/matrix_type.cc
 @anchor{XREFmatrix_type}
-@deftypefn  {Built-in Function} {@var{type} =} matrix_type (@var{A})
-@deftypefnx {Built-in Function} {@var{type} =} matrix_type (@var{A}, "nocompute")
-@deftypefnx {Built-in Function} {@var{A} =} matrix_type (@var{A}, @var{type})
-@deftypefnx {Built-in Function} {@var{A} =} matrix_type (@var{A}, "upper", @var{perm})
-@deftypefnx {Built-in Function} {@var{A} =} matrix_type (@var{A}, "lower", @var{perm})
-@deftypefnx {Built-in Function} {@var{A} =} matrix_type (@var{A}, "banded", @var{nl}, @var{nu})
+@deftypefn  {} {@var{type} =} matrix_type (@var{A})
+@deftypefnx {} {@var{type} =} matrix_type (@var{A}, "nocompute")
+@deftypefnx {} {@var{A} =} matrix_type (@var{A}, @var{type})
+@deftypefnx {} {@var{A} =} matrix_type (@var{A}, "upper", @var{perm})
+@deftypefnx {} {@var{A} =} matrix_type (@var{A}, "lower", @var{perm})
+@deftypefnx {} {@var{A} =} matrix_type (@var{A}, "banded", @var{nl}, @var{nu})
 Identify the matrix type or mark a matrix as a particular type.
 
 This allows more rapid solutions of linear equations involving @var{A} to be
@@ -385,8 +385,8 @@ If the option @qcode{"nocompute"} is given, the function will not attempt
 to guess the type if it is still unknown.  This is useful for debugging
 purposes.
 
-The possible matrix types depend on whether the matrix is full or sparse, and
-can be one of the following
+The possible matrix types depend on whether the matrix is full or sparse,
+and can be one of the following
 
 @table @asis
 @item @qcode{"unknown"}
@@ -419,8 +419,8 @@ defined by the vector @var{perm}.
 @item  @qcode{"banded"}
 @itemx @qcode{"banded positive definite"}
 Banded matrix with the band size of @var{nl} below the diagonal and @var{nu}
-above it.  If @var{nl} and @var{nu} are 1, then the matrix is tridiagonal and
-treated with specialized code.  In addition the matrix can be marked as
+above it.  If @var{nl} and @var{nu} are 1, then the matrix is tridiagonal
+and treated with specialized code.  In addition the matrix can be marked as
 probably a positive definite.  (Sparse matrices only)
 
 @item @qcode{"singular"}
@@ -448,9 +448,9 @@ LU@tie{}factorization.  Once the matrix has been factorized,
 
 @c norm libinterp/corefcn/data.cc
 @anchor{XREFnorm}
-@deftypefn  {Built-in Function} {} norm (@var{A})
-@deftypefnx {Built-in Function} {} norm (@var{A}, @var{p})
-@deftypefnx {Built-in Function} {} norm (@var{A}, @var{p}, @var{opt})
+@deftypefn  {} {} norm (@var{A})
+@deftypefnx {} {} norm (@var{A}, @var{p})
+@deftypefnx {} {} norm (@var{A}, @var{p}, @var{opt})
 Compute the p-norm of the matrix @var{A}.
 
 If the second argument is missing, @w{@code{p = 2}} is assumed.
@@ -507,10 +507,10 @@ compute the norms of each column and return a row vector.
 @end deftypefn
 
 
-@c null scripts/linear-algebra/null.m
+@c null scripts/scripts/linear-algebra/null.m
 @anchor{XREFnull}
-@deftypefn  {Function File} {} null (@var{A})
-@deftypefnx {Function File} {} null (@var{A}, @var{tol})
+@deftypefn  {} {} null (@var{A})
+@deftypefnx {} {} null (@var{A}, @var{tol})
 Return an orthonormal basis of the null space of @var{A}.
 
 The dimension of the null space is taken as the number of singular values of
@@ -524,10 +524,10 @@ max (size (@var{A})) * max (svd (@var{A})) * eps
 @end deftypefn
 
 
-@c orth scripts/linear-algebra/orth.m
+@c orth scripts/scripts/linear-algebra/orth.m
 @anchor{XREForth}
-@deftypefn  {Function File} {} orth (@var{A})
-@deftypefnx {Function File} {} orth (@var{A}, @var{tol})
+@deftypefn  {} {} orth (@var{A})
+@deftypefnx {} {} orth (@var{A}, @var{tol})
 Return an orthonormal basis of the range space of @var{A}.
 
 The dimension of the range space is taken as the number of singular values
@@ -543,7 +543,7 @@ max (size (@var{A})) * max (svd (@var{A})) * eps
 
 @c mgorth libinterp/corefcn/mgorth.cc
 @anchor{XREFmgorth}
-@deftypefn {Built-in Function} {[@var{y}, @var{h}] =} mgorth (@var{x}, @var{v})
+@deftypefn {} {[@var{y}, @var{h}] =} mgorth (@var{x}, @var{v})
 Orthogonalize a given column vector @var{x} with respect to a set of
 orthonormal vectors comprising the columns of @var{v} using the modified
 Gram-Schmidt method.
@@ -563,8 +563,8 @@ On exit, @var{y} is a unit vector such that:
 
 @c pinv libinterp/corefcn/pinv.cc
 @anchor{XREFpinv}
-@deftypefn  {Built-in Function} {} pinv (@var{x})
-@deftypefnx {Built-in Function} {} pinv (@var{x}, @var{tol})
+@deftypefn  {} {} pinv (@var{x})
+@deftypefnx {} {} pinv (@var{x}, @var{tol})
 Return the pseudoinverse of @var{x}.
 
 Singular values less than @var{tol} are ignored.
@@ -581,10 +581,10 @@ where @code{sigma_max (@var{x})} is the maximal singular value of @var{x}.
 
 @cindex pseudoinverse
 
-@c rank scripts/linear-algebra/rank.m
+@c rank scripts/scripts/linear-algebra/rank.m
 @anchor{XREFrank}
-@deftypefn  {Function File} {} rank (@var{A})
-@deftypefnx {Function File} {} rank (@var{A}, @var{tol})
+@deftypefn  {} {} rank (@var{A})
+@deftypefnx {} {} rank (@var{A}, @var{tol})
 Compute the rank of matrix @var{A}, using the singular value decomposition.
 
 The rank is taken to be the number of singular values of @var{A} that are
@@ -625,7 +625,7 @@ linear combination of -1*row1 + 2*row2.
 
 @c rcond libinterp/corefcn/rcond.cc
 @anchor{XREFrcond}
-@deftypefn {Built-in Function} {@var{c} =} rcond (@var{A})
+@deftypefn {} {@var{c} =} rcond (@var{A})
 Compute the 1-norm estimate of the reciprocal condition number as returned
 by @sc{lapack}.
 
@@ -639,9 +639,9 @@ instead.
 @end deftypefn
 
 
-@c trace scripts/linear-algebra/trace.m
+@c trace scripts/scripts/linear-algebra/trace.m
 @anchor{XREFtrace}
-@deftypefn {Function File} {} trace (@var{A})
+@deftypefn {} {} trace (@var{A})
 Compute the trace of @var{A}, the sum of the elements along the main
 diagonal.
 
@@ -650,11 +650,11 @@ The implementation is straightforward: @code{sum (diag (@var{A}))}.
 @end deftypefn
 
 
-@c rref scripts/linear-algebra/rref.m
+@c rref scripts/scripts/linear-algebra/rref.m
 @anchor{XREFrref}
-@deftypefn  {Function File} {} rref (@var{A})
-@deftypefnx {Function File} {} rref (@var{A}, @var{tol})
-@deftypefnx {Function File} {[@var{r}, @var{k}] =} rref (@dots{})
+@deftypefn  {} {} rref (@var{A})
+@deftypefnx {} {} rref (@var{A}, @var{tol})
+@deftypefnx {} {[@var{r}, @var{k}] =} rref (@dots{})
 Return the reduced row echelon form of @var{A}.
 
 @var{tol} defaults to
@@ -673,17 +673,18 @@ performed.
 
 @c chol libinterp/dldfcn/chol.cc
 @anchor{XREFchol}
-@deftypefn  {Loadable Function} {@var{R} =} chol (@var{A})
-@deftypefnx {Loadable Function} {[@var{R}, @var{p}] =} chol (@var{A})
-@deftypefnx {Loadable Function} {[@var{R}, @var{p}, @var{Q}] =} chol (@var{S})
-@deftypefnx {Loadable Function} {[@var{R}, @var{p}, @var{Q}] =} chol (@var{S}, "vector")
-@deftypefnx {Loadable Function} {[@var{L}, @dots{}] =} chol (@dots{}, "lower")
-@deftypefnx {Loadable Function} {[@var{L}, @dots{}] =} chol (@dots{}, "upper")
+@deftypefn  {} {@var{R} =} chol (@var{A})
+@deftypefnx {} {[@var{R}, @var{p}] =} chol (@var{A})
+@deftypefnx {} {[@var{R}, @var{p}, @var{Q}] =} chol (@var{A})
+@deftypefnx {} {[@var{R}, @var{p}, @var{Q}] =} chol (@var{A}, "vector")
+@deftypefnx {} {[@var{L}, @dots{}] =} chol (@dots{}, "lower")
+@deftypefnx {} {[@var{R}, @dots{}] =} chol (@dots{}, "upper")
 @cindex Cholesky factorization
-Compute the Cholesky@tie{}factor, @var{R}, of the symmetric positive definite
-matrix @var{A}.
+Compute the upper Cholesky@tie{}factor, @var{R}, of the real symmetric
+or complex Hermitian positive definite matrix @var{A}.
 
-The Cholesky@tie{}factor is defined by
+The upper Cholesky@tie{}factor @var{R} is computed by using the upper
+triangular part of matrix @var{A} and is defined by
 @tex
 $ R^T R = A $.
 @end tex
@@ -695,15 +696,36 @@ $ R^T R = A $.
 
 @end ifnottex
 
-Called with one output argument @code{chol} fails if @var{A} or @var{S} is
-not positive definite.  With two or more output arguments @var{p} flags
-whether the matrix was positive definite and @code{chol} does not fail.  A
-zero value indicated that the matrix was positive definite and the @var{R}
-gives the factorization, and @var{p} will have a positive value otherwise.
+Calling @code{chol} using the optional @qcode{"upper"} flag has the
+same behavior.  In contrast, using the optional @qcode{"lower"} flag,
+@code{chol} returns the lower triangular factorization, computed by using
+the lower triangular part of matrix @var{A}, such that
+@tex
+$ L L^T = A $.
+@end tex
+@ifnottex
 
-If called with 3 outputs then a sparsity preserving row/column permutation
-is applied to @var{A} prior to the factorization.  That is @var{R} is the
-factorization of @code{@var{A}(@var{Q},@var{Q})} such that
+@example
+@var{L} * @var{L}' = @var{A}.
+@end example
+
+@end ifnottex
+
+Called with one output argument @code{chol} fails if matrix @var{A} is
+not positive definite.  Note that if matrix @var{A} is not real symmetric
+or complex Hermitian then the lower triangular part is considered to be
+the (complex conjugate) transpose of the upper triangular part, or vice
+versa, given the @qcode{"lower"} flag.
+
+Called with two or more output arguments @var{p} flags whether the matrix
+@var{A} was positive definite and @code{chol} does not fail.  A zero value
+of @var{p} indicates that matrix @var{A} is positive definite and @var{R}
+gives the factorization.  Otherwise, @var{p} will have a positive value.
+
+If called with three output arguments matrix @var{A} must be sparse and
+a sparsity preserving row/column permutation is applied to matrix @var{A}
+prior to the factorization.  That is @var{R} is the factorization of
+@code{@var{A}(@var{Q},@var{Q})} such that
 @tex
 $ R^T R = Q^T A Q$.
 @end tex
@@ -716,8 +738,8 @@ $ R^T R = Q^T A Q$.
 @end ifnottex
 
 The sparsity preserving permutation is generally returned as a matrix.
-However, given the flag @qcode{"vector"}, @var{Q} will be returned as a
-vector such that
+However, given the optional flag @qcode{"vector"}, @var{Q} will be
+returned as a vector such that
 @tex
 $ R^T R = A (Q, Q)$.
 @end tex
@@ -729,23 +751,6 @@ $ R^T R = A (Q, Q)$.
 
 @end ifnottex
 
-Called with either a sparse or full matrix and using the @qcode{"lower"}
-flag, @code{chol} returns the lower triangular factorization such that
-@tex
-$ L L^T = A $.
-@end tex
-@ifnottex
-
-@example
-@var{L} * @var{L}' = @var{A}.
-@end example
-
-@end ifnottex
-
-For full matrices, if the @qcode{"lower"} flag is set only the lower
-triangular part of the matrix is used for the factorization, otherwise the
-upper triangular part is used.
-
 In general the lower triangular factorization is significantly faster for
 sparse matrices.
 @seealso{@ref{XREFhess,,hess}, @ref{XREFlu,,lu}, @ref{XREFqr,,qr}, @ref{XREFqz,,qz}, @ref{XREFschur,,schur}, @ref{XREFsvd,,svd}, @ref{XREFichol,,ichol}, @ref{XREFcholinv,,cholinv}, @ref{XREFchol2inv,,chol2inv}, @ref{XREFcholupdate,,cholupdate}, @ref{XREFcholinsert,,cholinsert}, @ref{XREFcholdelete,,choldelete}, @ref{XREFcholshift,,cholshift}}
@@ -754,7 +759,7 @@ sparse matrices.
 
 @c cholinv libinterp/dldfcn/chol.cc
 @anchor{XREFcholinv}
-@deftypefn {Loadable Function} {} cholinv (@var{A})
+@deftypefn {} {} cholinv (@var{A})
 Compute the inverse of the symmetric positive definite matrix @var{A} using
 the Cholesky@tie{}factorization.
 @seealso{@ref{XREFchol,,chol}, @ref{XREFchol2inv,,chol2inv}, @ref{XREFinv,,inv}}
@@ -763,7 +768,7 @@ the Cholesky@tie{}factorization.
 
 @c chol2inv libinterp/dldfcn/chol.cc
 @anchor{XREFchol2inv}
-@deftypefn {Loadable Function} {} chol2inv (@var{U})
+@deftypefn {} {} chol2inv (@var{U})
 Invert a symmetric, positive definite square matrix from its Cholesky
 decomposition, @var{U}.
 
@@ -776,7 +781,7 @@ diagonal elements.  @code{chol2inv (@var{U})} provides
 
 @c cholupdate libinterp/dldfcn/chol.cc
 @anchor{XREFcholupdate}
-@deftypefn {Loadable Function} {[@var{R1}, @var{info}] =} cholupdate (@var{R}, @var{u}, @var{op})
+@deftypefn {} {[@var{R1}, @var{info}] =} cholupdate (@var{R}, @var{u}, @var{op})
 Update or downdate a Cholesky@tie{}factorization.
 
 Given an upper triangular matrix @var{R} and a column vector @var{u},
@@ -809,8 +814,8 @@ If @var{info} is not present, an error message is printed in cases 1 and 2.
 
 @c cholinsert libinterp/dldfcn/chol.cc
 @anchor{XREFcholinsert}
-@deftypefn  {Loadable Function} {@var{R1} =} cholinsert (@var{R}, @var{j}, @var{u})
-@deftypefnx {Loadable Function} {[@var{R1}, @var{info}] =} cholinsert (@var{R}, @var{j}, @var{u})
+@deftypefn  {} {@var{R1} =} cholinsert (@var{R}, @var{j}, @var{u})
+@deftypefnx {} {[@var{R1}, @var{info}] =} cholinsert (@var{R}, @var{j}, @var{u})
 Given a Cholesky@tie{}factorization of a real symmetric or complex Hermitian
 positive definite matrix @w{@var{A} = @var{R}'*@var{R}}, @var{R}@tie{}upper
 triangular, return the Cholesky@tie{}factorization of
@@ -834,7 +839,7 @@ If @var{info} is not present, an error message is printed in cases 1 and 2.
 
 @c choldelete libinterp/dldfcn/chol.cc
 @anchor{XREFcholdelete}
-@deftypefn {Loadable Function} {@var{R1} =} choldelete (@var{R}, @var{j})
+@deftypefn {} {@var{R1} =} choldelete (@var{R}, @var{j})
 Given a Cholesky@tie{}factorization of a real symmetric or complex Hermitian
 positive definite matrix @w{@var{A} = @var{R}'*@var{R}}, @var{R}@tie{}upper
 triangular, return the Cholesky@tie{}factorization of @w{A(p,p)}, where
@@ -845,7 +850,7 @@ triangular, return the Cholesky@tie{}factorization of @w{A(p,p)}, where
 
 @c cholshift libinterp/dldfcn/chol.cc
 @anchor{XREFcholshift}
-@deftypefn {Loadable Function} {@var{R1} =} cholshift (@var{R}, @var{i}, @var{j})
+@deftypefn {} {@var{R1} =} cholshift (@var{R}, @var{i}, @var{j})
 Given a Cholesky@tie{}factorization of a real symmetric or complex Hermitian
 positive definite matrix @w{@var{A} = @var{R}'*@var{R}}, @var{R}@tie{}upper
 triangular, return the Cholesky@tie{}factorization of
@@ -860,8 +865,8 @@ triangular, return the Cholesky@tie{}factorization of
 
 @c hess libinterp/corefcn/hess.cc
 @anchor{XREFhess}
-@deftypefn  {Built-in Function} {@var{H} =} hess (@var{A})
-@deftypefnx {Built-in Function} {[@var{P}, @var{H}] =} hess (@var{A})
+@deftypefn  {} {@var{H} =} hess (@var{A})
+@deftypefnx {} {[@var{P}, @var{H}] =} hess (@var{A})
 @cindex Hessenberg decomposition
 Compute the Hessenberg decomposition of the matrix @var{A}.
 
@@ -890,18 +895,18 @@ IEEE Transactions on Automatic Control, 1979).
 
 @c lu libinterp/corefcn/lu.cc
 @anchor{XREFlu}
-@deftypefn  {Built-in Function} {[@var{L}, @var{U}] =} lu (@var{A})
-@deftypefnx {Built-in Function} {[@var{L}, @var{U}, @var{P}] =} lu (@var{A})
-@deftypefnx {Built-in Function} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} lu (@var{S})
-@deftypefnx {Built-in Function} {[@var{L}, @var{U}, @var{P}, @var{Q}, @var{R}] =} lu (@var{S})
-@deftypefnx {Built-in Function} {[@dots{}] =} lu (@var{S}, @var{thres})
-@deftypefnx {Built-in Function} {@var{y} =} lu (@dots{})
-@deftypefnx {Built-in Function} {[@dots{}] =} lu (@dots{}, "vector")
+@deftypefn  {} {[@var{L}, @var{U}] =} lu (@var{A})
+@deftypefnx {} {[@var{L}, @var{U}, @var{P}] =} lu (@var{A})
+@deftypefnx {} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} lu (@var{S})
+@deftypefnx {} {[@var{L}, @var{U}, @var{P}, @var{Q}, @var{R}] =} lu (@var{S})
+@deftypefnx {} {[@dots{}] =} lu (@var{S}, @var{thres})
+@deftypefnx {} {@var{y} =} lu (@dots{})
+@deftypefnx {} {[@dots{}] =} lu (@dots{}, "vector")
 @cindex LU decomposition
 Compute the LU@tie{}decomposition of @var{A}.
 
-If @var{A} is full subroutines from @sc{lapack} are used and if @var{A} is
-sparse then @sc{umfpack} is used.
+If @var{A} is full then subroutines from @sc{lapack} are used, and if
+@var{A} is sparse then @sc{umfpack} is used.
 
 The result is returned in a permuted form, according to the optional return
 value @var{P}.  For example, given the matrix @code{a = [1, 2; 3, 4]},
@@ -934,7 +939,7 @@ p =
 
 The matrix is not required to be square.
 
-When called with two or three output arguments and a spare input matrix,
+When called with two or three output arguments and a sparse input matrix,
 @code{lu} does not attempt to perform sparsity preserving column
 permutations.  Called with a fourth output argument, the sparsity
 preserving column transformation @var{Q} is returned, such that
@@ -956,24 +961,24 @@ the values defined by @code{spparms} are used ([0.1, 0.001]).
 
 Given the string argument @qcode{"vector"}, @code{lu} returns the values
 of @var{P} and @var{Q} as vector values, such that for full matrix,
-@code{@var{A} (@var{P},:) = @var{L} * @var{U}}, and @code{@var{R}(@var{P},:)
-* @var{A} (:, @var{Q}) = @var{L} * @var{U}}.
+@code{@var{A}(@var{P},:) = @var{L} * @var{U}}, and @code{@var{R}(@var{P},:)
+* @var{A}(:,@var{Q}) = @var{L} * @var{U}}.
 
 With two output arguments, returns the permuted forms of the upper and
 lower triangular matrices, such that @code{@var{A} = @var{L} * @var{U}}.
-With one output argument @var{y}, then the matrix returned by the @sc{lapack}
-routines is returned.  If the input matrix is sparse then the matrix @var{L}
-is embedded into @var{U} to give a return value similar to the full case.
-For both full and sparse matrices, @code{lu} loses the permutation
-information.
+With one output argument @var{y}, then the matrix returned by the
+@sc{lapack} routines is returned.  If the input matrix is sparse then the
+matrix @var{L} is embedded into @var{U} to give a return value similar to
+the full case.  For both full and sparse matrices, @code{lu} loses the
+permutation information.
 @seealso{@ref{XREFluupdate,,luupdate}, @ref{XREFilu,,ilu}, @ref{XREFchol,,chol}, @ref{XREFhess,,hess}, @ref{XREFqr,,qr}, @ref{XREFqz,,qz}, @ref{XREFschur,,schur}, @ref{XREFsvd,,svd}}
 @end deftypefn
 
 
 @c luupdate libinterp/corefcn/lu.cc
 @anchor{XREFluupdate}
-@deftypefn  {Built-in Function} {[@var{L}, @var{U}] =} luupdate (@var{L}, @var{U}, @var{x}, @var{y})
-@deftypefnx {Built-in Function} {[@var{L}, @var{U}, @var{P}] =} luupdate (@var{L}, @var{U}, @var{P}, @var{x}, @var{y})
+@deftypefn  {} {[@var{L}, @var{U}] =} luupdate (@var{L}, @var{U}, @var{x}, @var{y})
+@deftypefnx {} {[@var{L}, @var{U}, @var{P}] =} luupdate (@var{L}, @var{U}, @var{P}, @var{x}, @var{y})
 Given an LU@tie{}factorization of a real or complex matrix
 @w{@var{A} = @var{L}*@var{U}}, @var{L}@tie{}lower unit trapezoidal and
 @var{U}@tie{}upper trapezoidal, return the LU@tie{}factorization
@@ -1018,10 +1023,10 @@ factorization from scratch.
 
 @c qr libinterp/dldfcn/qr.cc
 @anchor{XREFqr}
-@deftypefn  {Loadable Function} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A})
-@deftypefnx {Loadable Function} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}, '0')
-@deftypefnx {Loadable Function} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B})
-@deftypefnx {Loadable Function} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B}, '0')
+@deftypefn  {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A})
+@deftypefnx {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}, '0')
+@deftypefnx {} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B})
+@deftypefnx {} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B}, '0')
 @cindex QR factorization
 Compute the QR@tie{}factorization of @var{A}, using standard @sc{lapack}
 subroutines.
@@ -1079,9 +1084,9 @@ $QR = A$ where $Q$ is an orthogonal matrix and $R$ is upper triangular.
 @var{R} is upper triangular.
 @end ifnottex
 
-If given a second argument of @qcode{'0'}, @code{qr} returns an economy-sized
-QR@tie{}factorization, omitting zero rows of @var{R} and the corresponding
-columns of @var{Q}.
+If given a second argument of @qcode{'0'}, @code{qr} returns an
+economy-sized QR@tie{}factorization, omitting zero rows of @var{R} and the
+corresponding columns of @var{Q}.
 
 If the matrix @var{A} is full, the permuted QR@tie{}factorization
 @code{[@var{Q}, @var{R}, @var{P}] = qr (@var{A})} forms the
@@ -1146,15 +1151,15 @@ x = @var{R} \ @var{C}
 
 @c qrupdate libinterp/dldfcn/qr.cc
 @anchor{XREFqrupdate}
-@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrupdate (@var{Q}, @var{R}, @var{u}, @var{v})
+@deftypefn {} {[@var{Q1}, @var{R1}] =} qrupdate (@var{Q}, @var{R}, @var{u}, @var{v})
 Given a QR@tie{}factorization of a real or complex matrix
 @w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
 @var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
 @w{@var{A} + @var{u}*@var{v}'}, where @var{u} and @var{v} are column vectors
 (rank-1 update) or matrices with equal number of columns
-(rank-k update).  Notice that the latter case is done as a sequence of rank-1
-updates; thus, for k large enough, it will be both faster and more accurate
-to recompute the factorization from scratch.
+(rank-k update).  Notice that the latter case is done as a sequence of
+rank-1 updates; thus, for k large enough, it will be both faster and more
+accurate to recompute the factorization from scratch.
 
 The QR@tie{}factorization supplied may be either full (Q is square) or
 economized (R is square).
@@ -1165,7 +1170,7 @@ economized (R is square).
 
 @c qrinsert libinterp/dldfcn/qr.cc
 @anchor{XREFqrinsert}
-@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrinsert (@var{Q}, @var{R}, @var{j}, @var{x}, @var{orient})
+@deftypefn {} {[@var{Q1}, @var{R1}] =} qrinsert (@var{Q}, @var{R}, @var{j}, @var{x}, @var{orient})
 Given a QR@tie{}factorization of a real or complex matrix
 @w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
 @var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
@@ -1192,7 +1197,7 @@ If @var{orient} is @qcode{"row"}, full factorization is needed.
 
 @c qrdelete libinterp/dldfcn/qr.cc
 @anchor{XREFqrdelete}
-@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrdelete (@var{Q}, @var{R}, @var{j}, @var{orient})
+@deftypefn {} {[@var{Q1}, @var{R1}] =} qrdelete (@var{Q}, @var{R}, @var{j}, @var{orient})
 Given a QR@tie{}factorization of a real or complex matrix
 @w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
 @var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
@@ -1219,7 +1224,7 @@ If @var{orient} is @qcode{"row"}, full factorization is needed.
 
 @c qrshift libinterp/dldfcn/qr.cc
 @anchor{XREFqrshift}
-@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrshift (@var{Q}, @var{R}, @var{i}, @var{j})
+@deftypefn {} {[@var{Q1}, @var{R1}] =} qrshift (@var{Q}, @var{R}, @var{i}, @var{j})
 Given a QR@tie{}factorization of a real or complex matrix
 @w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
 @var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization
@@ -1234,8 +1239,8 @@ of @w{@var{A}(:,p)}, where @w{p} is the permutation @*
 
 @c qz libinterp/corefcn/qz.cc
 @anchor{XREFqz}
-@deftypefn  {Built-in Function} {@var{lambda} =} qz (@var{A}, @var{B})
-@deftypefnx {Built-in Function} {@var{lambda} =} qz (@var{A}, @var{B}, @var{opt})
+@deftypefn  {} {@var{lambda} =} qz (@var{A}, @var{B})
+@deftypefnx {} {@var{lambda} =} qz (@var{A}, @var{B}, @var{opt})
 QZ@tie{}decomposition of the generalized eigenvalue problem
 (@math{A x = s B x}).
 
@@ -1316,9 +1321,9 @@ compatibility with @sc{matlab}.
 @end deftypefn
 
 
-@c qzhess scripts/linear-algebra/qzhess.m
+@c qzhess scripts/scripts/linear-algebra/qzhess.m
 @anchor{XREFqzhess}
-@deftypefn {Function File} {[@var{aa}, @var{bb}, @var{q}, @var{z}] =} qzhess (@var{A}, @var{B})
+@deftypefn {} {[@var{aa}, @var{bb}, @var{q}, @var{z}] =} qzhess (@var{A}, @var{B})
 Compute the Hessenberg-triangular decomposition of the matrix pencil
 @code{(@var{A}, @var{B})}, returning
 @code{@var{aa} = @var{q} * @var{A} * @var{z}},
@@ -1349,11 +1354,11 @@ Algorithm taken from @nospell{Golub and Van Loan},
 
 @c schur libinterp/corefcn/schur.cc
 @anchor{XREFschur}
-@deftypefn  {Built-in Function} {@var{S} =} schur (@var{A})
-@deftypefnx {Built-in Function} {@var{S} =} schur (@var{A}, "real")
-@deftypefnx {Built-in Function} {@var{S} =} schur (@var{A}, "complex")
-@deftypefnx {Built-in Function} {@var{S} =} schur (@var{A}, @var{opt})
-@deftypefnx {Built-in Function} {[@var{U}, @var{S}] =} schur (@dots{})
+@deftypefn  {} {@var{S} =} schur (@var{A})
+@deftypefnx {} {@var{S} =} schur (@var{A}, "real")
+@deftypefnx {} {@var{S} =} schur (@var{A}, "complex")
+@deftypefnx {} {@var{S} =} schur (@var{A}, @var{opt})
+@deftypefnx {} {[@var{U}, @var{S}] =} schur (@dots{})
 @cindex Schur decomposition
 Compute the Schur@tie{}decomposition of @var{A}.
 
@@ -1421,9 +1426,9 @@ in control (see @code{are} and @code{dare}).
 
 @c rsf2csf libinterp/corefcn/schur.cc
 @anchor{XREFrsf2csf}
-@deftypefn {Function File} {[@var{U}, @var{T}] =} rsf2csf (@var{UR}, @var{TR})
-Convert a real, upper quasi-triangular Schur@tie{}form @var{TR} to a complex,
-upper triangular Schur@tie{}form @var{T}.
+@deftypefn {} {[@var{U}, @var{T}] =} rsf2csf (@var{UR}, @var{TR})
+Convert a real, upper quasi-triangular Schur@tie{}form @var{TR} to a
+complex, upper triangular Schur@tie{}form @var{T}.
 
 Note that the following relations hold:
 
@@ -1443,7 +1448,7 @@ Note also that @var{U} and @var{T} are not unique.
 
 @c ordschur libinterp/corefcn/ordschur.cc
 @anchor{XREFordschur}
-@deftypefn {Loadable Function} {[@var{UR}, @var{SR}] =} ordschur (@var{U}, @var{S}, @var{select})
+@deftypefn {} {[@var{UR}, @var{SR}] =} ordschur (@var{U}, @var{S}, @var{select})
 Reorders the real Schur factorization (@var{U},@var{S}) obtained with the
 @code{schur} function, so that selected eigenvalues appear in the upper left
 diagonal blocks of the quasi triangular Schur matrix.
@@ -1487,9 +1492,9 @@ is in the upper left corner, by doing:
 @end deftypefn
 
 
-@c subspace scripts/linear-algebra/subspace.m
+@c subspace scripts/scripts/linear-algebra/subspace.m
 @anchor{XREFsubspace}
-@deftypefn {Function File} {@var{angle} =} subspace (@var{A}, @var{B})
+@deftypefn {} {@var{angle} =} subspace (@var{A}, @var{B})
 Determine the largest principal angle between two subspaces
 spanned by the columns of matrices @var{A} and @var{B}.
 @end deftypefn
@@ -1497,9 +1502,9 @@ spanned by the columns of matrices @var{A} and @var{B}.
 
 @c svd libinterp/corefcn/svd.cc
 @anchor{XREFsvd}
-@deftypefn  {Built-in Function} {@var{s} =} svd (@var{A})
-@deftypefnx {Built-in Function} {[@var{U}, @var{S}, @var{V}] =} svd (@var{A})
-@deftypefnx {Built-in Function} {[@var{U}, @var{S}, @var{V}] =} svd (@var{A}, @var{econ})
+@deftypefn  {} {@var{s} =} svd (@var{A})
+@deftypefnx {} {[@var{U}, @var{S}, @var{V}] =} svd (@var{A})
+@deftypefnx {} {[@var{U}, @var{S}, @var{V}] =} svd (@var{A}, @var{econ})
 @cindex singular value decomposition
 Compute the singular value decomposition of @var{A}
 @tex
@@ -1583,9 +1588,9 @@ decomposition, eliminating the unnecessary rows or columns of @var{U} or
 
 @c svd_driver libinterp/corefcn/svd.cc
 @anchor{XREFsvd_driver}
-@deftypefn  {Built-in Function} {@var{val} =} svd_driver ()
-@deftypefnx {Built-in Function} {@var{old_val} =} svd_driver (@var{new_val})
-@deftypefnx {Built-in Function} {} svd_driver (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} svd_driver ()
+@deftypefnx {} {@var{old_val} =} svd_driver (@var{new_val})
+@deftypefnx {} {} svd_driver (@var{new_val}, "local")
 Query or set the underlying @sc{lapack} driver used by @code{svd}.
 
 Currently recognized values are @qcode{"gesvd"} and @qcode{"gesdd"}.
@@ -1598,11 +1603,11 @@ The original variable value is restored when exiting the function.
 @end deftypefn
 
 
-@c FIXME -- should there be a new section here?
+@c FIXME: should there be a new section here?
 
-@c housh scripts/linear-algebra/housh.m
+@c housh scripts/scripts/linear-algebra/housh.m
 @anchor{XREFhoush}
-@deftypefn {Function File} {[@var{housv}, @var{beta}, @var{zer}] =} housh (@var{x}, @var{j}, @var{z})
+@deftypefn {} {[@var{housv}, @var{beta}, @var{zer}] =} housh (@var{x}, @var{j}, @var{z})
 Compute Householder reflection vector @var{housv} to reflect @var{x} to be
 the j-th column of identity, i.e.,
 
@@ -1640,9 +1645,9 @@ householder vector
 @end deftypefn
 
 
-@c krylov scripts/linear-algebra/krylov.m
+@c krylov scripts/scripts/linear-algebra/krylov.m
 @anchor{XREFkrylov}
-@deftypefn {Function File} {[@var{u}, @var{h}, @var{nu}] =} krylov (@var{A}, @var{V}, @var{k}, @var{eps1}, @var{pflg})
+@deftypefn {} {[@var{u}, @var{h}, @var{nu}] =} krylov (@var{A}, @var{V}, @var{k}, @var{eps1}, @var{pflg})
 Construct an orthogonal basis @var{u} of block Krylov subspace
 
 @example
@@ -1683,9 +1688,9 @@ the 42nd IEEE Conference on Decision and Control, December 2003.
 @section Functions of a Matrix
 @cindex matrix, functions of
 
-@c expm scripts/linear-algebra/expm.m
+@c expm scripts/scripts/linear-algebra/expm.m
 @anchor{XREFexpm}
-@deftypefn {Function File} {} expm (@var{A})
+@deftypefn {} {} expm (@var{A})
 Return the exponential of a matrix.
 
 The matrix exponential is defined as the infinite Taylor series
@@ -1741,11 +1746,11 @@ is ill-conditioned.
 @end deftypefn
 
 
-@c logm scripts/linear-algebra/logm.m
+@c logm scripts/scripts/linear-algebra/logm.m
 @anchor{XREFlogm}
-@deftypefn  {Function File} {@var{s} =} logm (@var{A})
-@deftypefnx {Function File} {@var{s} =} logm (@var{A}, @var{opt_iters})
-@deftypefnx {Function File} {[@var{s}, @var{iters}] =} logm (@dots{})
+@deftypefn  {} {@var{s} =} logm (@var{A})
+@deftypefnx {} {@var{s} =} logm (@var{A}, @var{opt_iters})
+@deftypefnx {} {[@var{s}, @var{iters}] =} logm (@dots{})
 Compute the matrix logarithm of the square matrix @var{A}.
 
 The implementation utilizes a Pad@'e approximant and the identity
@@ -1765,8 +1770,8 @@ computed.
 
 @c sqrtm libinterp/corefcn/sqrtm.cc
 @anchor{XREFsqrtm}
-@deftypefn  {Built-in Function} {@var{s} =} sqrtm (@var{A})
-@deftypefnx {Built-in Function} {[@var{s}, @var{error_estimate}] =} sqrtm (@var{A})
+@deftypefn  {} {@var{s} =} sqrtm (@var{A})
+@deftypefnx {} {[@var{s}, @var{error_estimate}] =} sqrtm (@var{A})
 Compute the matrix square root of the square matrix @var{A}.
 
 Ref: @nospell{N.J. Higham}.  @cite{A New sqrtm for @sc{matlab}}.  Numerical
@@ -1778,8 +1783,8 @@ Mathematics, Manchester, England, January 1999.
 
 @c kron libinterp/corefcn/kron.cc
 @anchor{XREFkron}
-@deftypefn  {Built-in Function} {} kron (@var{A}, @var{B})
-@deftypefnx {Built-in Function} {} kron (@var{A1}, @var{A2}, @dots{})
+@deftypefn  {} {} kron (@var{A}, @var{B})
+@deftypefnx {} {} kron (@var{A1}, @var{A2}, @dots{})
 Form the Kronecker product of two or more matrices.
 
 This is defined block by block as
@@ -1813,7 +1818,7 @@ Since the Kronecker product is associative, this is well-defined.
 
 @c blkmm libinterp/corefcn/dot.cc
 @anchor{XREFblkmm}
-@deftypefn {Built-in Function} {} blkmm (@var{A}, @var{B})
+@deftypefn {} {} blkmm (@var{A}, @var{B})
 Compute products of matrix blocks.
 
 The blocks are given as 2-dimensional subarrays of the arrays @var{A},
@@ -1833,7 +1838,7 @@ endfor
 
 @c sylvester libinterp/corefcn/sylvester.cc
 @anchor{XREFsylvester}
-@deftypefn {Built-in Function} {@var{X} =} syl (@var{A}, @var{B}, @var{C})
+@deftypefn {} {@var{X} =} syl (@var{A}, @var{B}, @var{C})
 Solve the Sylvester equation
 @tex
 $$
@@ -1864,11 +1869,11 @@ sylvester ([1, 2; 3, 4], [5, 6; 7, 8], [9, 10; 11, 12])
 @section Specialized Solvers
 @cindex matrix, specialized solvers
 
-@c bicg scripts/sparse/bicg.m
+@c bicg scripts/scripts/sparse/bicg.m
 @anchor{XREFbicg}
-@deftypefn  {Function File} {@var{x} =} bicg (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
-@deftypefnx {Function File} {@var{x} =} bicg (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
-@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} bicg (@var{A}, @var{b}, @dots{})
+@deftypefn  {} {@var{x} =} bicg (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+@deftypefnx {} {@var{x} =} bicg (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
+@deftypefnx {} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} bicg (@var{A}, @var{b}, @dots{})
 Solve @code{A x = b} using the Bi-conjugate gradient iterative method.
 
 @itemize @minus
@@ -1920,11 +1925,11 @@ iteration.
 @end deftypefn
 
 
-@c bicgstab scripts/sparse/bicgstab.m
+@c bicgstab scripts/scripts/sparse/bicgstab.m
 @anchor{XREFbicgstab}
-@deftypefn  {Function File} {@var{x} =} bicgstab (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
-@deftypefnx {Function File} {@var{x} =} bicgstab (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
-@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} bicgstab (@var{A}, @var{b}, @dots{})
+@deftypefn  {} {@var{x} =} bicgstab (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+@deftypefnx {} {@var{x} =} bicgstab (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
+@deftypefnx {} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} bicgstab (@var{A}, @var{b}, @dots{})
 Solve @code{A x = b} using the stabilizied Bi-conjugate gradient iterative
 method.
 
@@ -1974,11 +1979,11 @@ iteration.
 @end deftypefn
 
 
-@c cgs scripts/sparse/cgs.m
+@c cgs scripts/scripts/sparse/cgs.m
 @anchor{XREFcgs}
-@deftypefn  {Function File} {@var{x} =} cgs (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
-@deftypefnx {Function File} {@var{x} =} cgs (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
-@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} cgs (@var{A}, @var{b}, @dots{})
+@deftypefn  {} {@var{x} =} cgs (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+@deftypefnx {} {@var{x} =} cgs (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
+@deftypefnx {} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} cgs (@var{A}, @var{b}, @dots{})
 Solve @code{A x = b}, where @var{A} is a square matrix, using the
 Conjugate Gradients Squared method.
 
@@ -2027,11 +2032,11 @@ each iteration.
 @end deftypefn
 
 
-@c gmres scripts/sparse/gmres.m
+@c gmres scripts/scripts/sparse/gmres.m
 @anchor{XREFgmres}
-@deftypefn  {Function File} {@var{x} =} gmres (@var{A}, @var{b}, @var{m}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
-@deftypefnx {Function File} {@var{x} =} gmres (@var{A}, @var{b}, @var{m}, @var{rtol}, @var{maxit}, @var{P})
-@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} gmres (@dots{})
+@deftypefn  {} {@var{x} =} gmres (@var{A}, @var{b}, @var{m}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+@deftypefnx {} {@var{x} =} gmres (@var{A}, @var{b}, @var{m}, @var{rtol}, @var{maxit}, @var{P})
+@deftypefnx {} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} gmres (@dots{})
 Solve @code{A x = b} using the Preconditioned GMRES iterative method with
 restart, a.k.a. PGMRES(m).
 
@@ -2084,11 +2089,11 @@ iteration.
 @end deftypefn
 
 
-@c qmr scripts/sparse/qmr.m
+@c qmr scripts/scripts/sparse/qmr.m
 @anchor{XREFqmr}
-@deftypefn  {Function File} {@var{x} =} qmr (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
-@deftypefnx {Function File} {@var{x} =} qmr (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
-@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} qmr (@var{A}, @var{b}, @dots{})
+@deftypefn  {} {@var{x} =} qmr (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+@deftypefnx {} {@var{x} =} qmr (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
+@deftypefnx {} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} qmr (@var{A}, @var{b}, @dots{})
 Solve @code{A x = b} using the Quasi-Minimal Residual iterative method
 (without look-ahead).
 

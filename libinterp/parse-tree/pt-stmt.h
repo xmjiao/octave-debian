@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_pt_stmt_h)
+#if ! defined (octave_pt_stmt_h)
 #define octave_pt_stmt_h 1
+
+#include "octave-config.h"
 
 class octave_value_list;
 
@@ -65,11 +67,12 @@ public:
 
   bool is_expression (void) const { return expr != 0; }
 
-  void set_breakpoint (void);
+  void set_breakpoint (const std::string& condition);
 
   void delete_breakpoint (void);
 
-  bool is_breakpoint (void) const;
+  bool is_breakpoint (bool check_valid = false) const;
+  std::string bp_cond () const;
 
   int line (void) const;
   int column (void) const;
@@ -159,14 +162,17 @@ public:
 
   bool is_script_body (void) const { return script_body; }
 
-  int set_breakpoint (int line);
+  int set_breakpoint (int line, const std::string& condition);
 
   void delete_breakpoint (int line);
 
   octave_value_list list_breakpoints (void);
 
+  std::list<bp_type> breakpoints_and_conds (void);
+
   bp_table::intmap add_breakpoint (const std::string& file,
-                                   const bp_table::intmap& line);
+                                   const bp_table::intmap& line,
+                                   const std::string& condition);
 
   bp_table::intmap remove_all_breakpoints (const std::string& file);
 

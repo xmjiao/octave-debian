@@ -20,50 +20,21 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_gl_render_h)
+#if ! defined (octave_gl_render_h)
 #define octave_gl_render_h 1
 
-#ifdef HAVE_WINDOWS_H
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif
-
-#ifdef HAVE_GL_GL_H
-#include <GL/gl.h>
-#elif defined HAVE_OPENGL_GL_H || defined HAVE_FRAMEWORK_OPENGL
-#include <OpenGL/gl.h>
-#endif
-
-#ifdef HAVE_GL_GLU_H
-#include <GL/glu.h>
-#elif defined HAVE_OPENGL_GLU_H || defined HAVE_FRAMEWORK_OPENGL
-#include <OpenGL/glu.h>
-#endif
-
-#ifdef HAVE_GL_GLEXT_H
-#include <GL/glext.h>
-#elif defined HAVE_OPENGL_GLEXT_H || defined HAVE_FRAMEWORK_OPENGL
-#include <OpenGL/glext.h>
-#endif
+#include "octave-config.h"
 
 #include "graphics.h"
-#include "txt-eng-ft.h"
-
-#if defined (HAVE_OPENGL)
+#include "text-renderer.h"
 
 class
 OCTINTERP_API
 opengl_renderer
 {
 public:
-  opengl_renderer (void)
-    : toolkit (), xform (), xmin (), xmax (), ymin (), ymax (),
-    zmin (), zmax (), xZ1 (), xZ2 (), marker_id (), filled_marker_id (),
-    camera_pos (), camera_dir ()
-#if HAVE_FREETYPE
-    , text_renderer ()
-#endif
-  { }
+
+  opengl_renderer (void);
 
   virtual ~opengl_renderer (void) { }
 
@@ -71,7 +42,7 @@ public:
 
   virtual void draw (const Matrix& hlist, bool toplevel = false)
   {
-    int len = hlist.length ();
+    int len = hlist.numel ();
 
     for (int i = len-1; i >= 0; i--)
       {
@@ -85,18 +56,22 @@ public:
   virtual void set_viewport (int w, int h);
   virtual graphics_xform get_transform (void) const { return xform; }
 
+  virtual void finish (void);
+
 protected:
   virtual void draw_figure (const figure::properties& props);
   virtual void draw_axes (const axes::properties& props);
   virtual void draw_line (const line::properties& props);
   virtual void draw_surface (const surface::properties& props);
   virtual void draw_patch (const patch::properties& props);
+  virtual void draw_light (const light::properties& props);
   virtual void draw_hggroup (const hggroup::properties& props);
   virtual void draw_text (const text::properties& props);
   virtual void draw_image (const image::properties& props);
   virtual void draw_uipanel (const uipanel::properties& props,
                              const graphics_object& go);
-
+  virtual void draw_uibuttongroup (const uibuttongroup::properties& props,
+                                   const graphics_object& go);
   virtual void init_gl_context (bool enhanced, const Matrix& backgroundColor);
   virtual void setup_opengl_transformation (const axes::properties& props);
 
@@ -108,6 +83,10 @@ protected:
                             double z1, double z2);
   virtual void set_clipping (bool on);
   virtual void set_font (const base_properties& props);
+  virtual void set_interpreter (const caseless_str& interp)
+  {
+    interpreter = interp;
+  }
 
   virtual void init_marker (const std::string& m, double size, float width);
   virtual void end_marker (void);
@@ -120,12 +99,19 @@ protected:
                                int halign = 0, int valign = 0,
                                double rotation = 0.0);
 
+  virtual void text_to_strlist (const std::string& txt,
+                                std::list<text_renderer::string>& lst,
+                                Matrix& bbox,
+                                int halign = 0, int valign = 0,
+                                double rotation = 0.0);
+
   virtual Matrix render_text (const std::string& txt,
                               double x, double y, double z,
                               int halign, int valign, double rotation = 0.0);
 
-  virtual void draw_pixels (GLsizei w, GLsizei h, GLenum format,
-                            GLenum type, const GLvoid *data);
+  virtual void draw_pixels (int w, int h, const float *data);
+  virtual void draw_pixels (int w, int h, const uint8_t *data);
+  virtual void draw_pixels (int w, int h, const uint16_t *data);
 
   virtual void render_grid (const std::string& gridstyle, const Matrix& ticks,
                             double lim1, double lim2,
@@ -145,22 +131,17 @@ protected:
                                  int& wmax, int& hmax);
 
 private:
-  opengl_renderer (const opengl_renderer&)
-    : toolkit (), xform (), xmin (), xmax (), ymin (), ymax (),
-    zmin (), zmax (), xZ1 (), xZ2 (), marker_id (), filled_marker_id (),
-    camera_pos (), camera_dir ()
-#if HAVE_FREETYPE
-    , text_renderer ()
-#endif
-  { }
 
-  opengl_renderer& operator = (const opengl_renderer&)
-  { return *this; }
+  // No copying!
+
+  opengl_renderer (const opengl_renderer&);
+
+  opengl_renderer& operator = (const opengl_renderer&);
 
   bool is_nan_or_inf (double x, double y, double z) const
   {
-    return (xisnan (x) || xisnan (y) || xisnan (z)
-            || xisinf (x) || xisinf (y) || xisinf (z));
+    return (octave::math::isnan (x) || octave::math::isnan (y) || octave::math::isnan (z)
+            || octave::math::isinf (x) || octave::math::isinf (y) || octave::math::isinf (z));
   }
 
   octave_uint8 clip_code (double x, double y, double z) const
@@ -173,6 +154,8 @@ private:
             | (z > zmax ? 1 : 0) << 5
             | (is_nan_or_inf (x, y, z) ? 0 : 1) << 6);
   }
+
+  void set_normal (int bfl_mode, const NDArray& n, int j, int i);
 
   unsigned int make_marker_list (const std::string& m, double size,
                                  bool filled) const;
@@ -204,18 +187,20 @@ private:
   // call lists identifiers for markers
   unsigned int marker_id, filled_marker_id;
 
-  // camera information for primitive sorting
-  ColumnVector camera_pos, camera_dir;
+  // camera information for primitive sorting and lighting
+  ColumnVector camera_pos, camera_dir, view_vector;
 
-#if HAVE_FREETYPE
-  // FreeType render, used for text rendering
-  ft_render text_renderer;
-#endif
+  // interpreter to be used by text_to_pixels
+  caseless_str interpreter;
+
+  text_renderer txt_renderer;
+
+  // light object present and visible
+  int num_lights;
+  unsigned int current_light;
 
 private:
   class patch_tesselator;
 };
-
-#endif
 
 #endif

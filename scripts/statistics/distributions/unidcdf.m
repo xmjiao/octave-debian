@@ -18,7 +18,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} unidcdf (@var{x}, @var{n})
+## @deftypefn {} {} unidcdf (@var{x}, @var{n})
 ## For each element of @var{x}, compute the cumulative distribution function
 ## (CDF) at @var{x} of a discrete uniform distribution which assumes
 ## the integer values 1--@var{n} with equal probability.
@@ -52,10 +52,10 @@ function cdf = unidcdf (x, n)
     cdf(knan) = NaN;
   endif
 
-  k = (x >= n) & !knan;
+  k = (x >= n) & ! knan;
   cdf(k) = 1;
 
-  k = (x >= 1) & (x < n) & !knan;
+  k = (x >= 1) & (x < n) & ! knan;
   if (isscalar (n))
     cdf(k) = floor (x(k)) / n;
   else

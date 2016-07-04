@@ -20,21 +20,23 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_lo_math_h)
+#if ! defined (octave_lo_math_h)
 #define octave_lo_math_h 1
 
+#include "octave-config.h"
+
 #if defined (__cplusplus)
-#include <cmath>
+#  include <cmath>
 // if #undef log2 is missing in cmath, undef it here
-#if defined (log2)
-#undef log2
-#endif
+#  if defined (log2)
+#    undef log2
+#  endif
 #else
-#include <math.h>
+#  include <math.h>
 #endif
 
 #if defined (HAVE_SUNMATH_H)
-#include <sunmath.h>
+#  include <sunmath.h>
 #endif
 
 #endif

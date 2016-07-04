@@ -21,12 +21,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-typeinfo.h"
 #include "ov-bool-mat.h"
@@ -42,19 +42,19 @@ DEFUNOP_OP (not, sparse_bool_matrix, !)
 
 DEFUNOP (uplus, sparse_bool_matrix)
 {
-  CAST_UNOP_ARG (const octave_sparse_bool_matrix&);
+  const octave_sparse_bool_matrix& v = dynamic_cast<const octave_sparse_bool_matrix&> (a);
   return octave_value (v.sparse_matrix_value ());
 }
 
 DEFUNOP (uminus, sparse_bool_matrix)
 {
-  CAST_UNOP_ARG (const octave_sparse_bool_matrix&);
+  const octave_sparse_bool_matrix& v = dynamic_cast<const octave_sparse_bool_matrix&> (a);
   return octave_value (- v.sparse_matrix_value ());
 }
 
 DEFUNOP (transpose, sparse_bool_matrix)
 {
-  CAST_UNOP_ARG (const octave_sparse_bool_matrix&);
+  const octave_sparse_bool_matrix& v = dynamic_cast<const octave_sparse_bool_matrix&> (a);
   return octave_value (v.sparse_bool_matrix_value ().transpose ());
 }
 
@@ -77,7 +77,7 @@ DEFASSIGNOP_FN (assign, sparse_bool_matrix, sparse_bool_matrix,
 
 CONVDECL (bool_matrix_to_double_matrix)
 {
-  CAST_CONV_ARG (const octave_sparse_bool_matrix&);
+  const octave_sparse_bool_matrix& v = dynamic_cast<const octave_sparse_bool_matrix&> (a);
 
   return new octave_sparse_matrix (SparseMatrix
                                     (v.sparse_bool_matrix_value ()));

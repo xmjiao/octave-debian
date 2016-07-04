@@ -18,7 +18,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} hygepdf (@var{x}, @var{t}, @var{m}, @var{n})
+## @deftypefn {} {} hygepdf (@var{x}, @var{t}, @var{m}, @var{n})
 ## Compute the probability density function (PDF) at @var{x} of the
 ## hypergeometric distribution with parameters @var{t}, @var{m}, and @var{n}.
 ##
@@ -65,7 +65,7 @@ function pdf = hygepdf (x, t, m, n)
 
   pdf(nel) = NaN;
 
-  k = !nel & !zel;
+  k = ! nel & ! zel;
   if (any (k(:)))
     if (isscalar (t) && isscalar (m) && isscalar (n))
       pdf(k) = (bincoeff (m, x(k)) .* bincoeff (t-m, n-x(k))

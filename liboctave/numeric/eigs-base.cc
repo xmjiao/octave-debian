@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <cfloat>
@@ -29,26 +29,21 @@ along with Octave; see the file COPYING.  If not, see
 #include <vector>
 #include <iostream>
 
-#include "f77-fcn.h"
-#include "oct-locbuf.h"
-#include "quit.h"
-#include "SparsedbleLU.h"
-#include "SparseCmplxLU.h"
-#include "dSparse.h"
 #include "CSparse.h"
+#include "lu.h"
 #include "MatrixType.h"
-#include "SparsedbleCHOL.h"
-#include "SparseCmplxCHOL.h"
+#include "chol.h"
+#include "dSparse.h"
+#include "eigs-base.h"
+#include "f77-fcn.h"
+#include "mx-ops.h"
+#include "oct-locbuf.h"
 #include "oct-rand.h"
-#include "dbleCHOL.h"
-#include "CmplxCHOL.h"
-#include "dbleLU.h"
-#include "CmplxLU.h"
+#include "quit.h"
+#include "sparse-chol.h"
+#include "sparse-lu.h"
 
-#ifdef HAVE_ARPACK
-typedef ColumnVector (*EigsFunc) (const ColumnVector &x, int &eigs_error);
-typedef ComplexColumnVector (*EigsComplexFunc)
-  (const ComplexColumnVector &x, int &eigs_error);
+#if defined (HAVE_ARPACK)
 
 // Arpack and blas fortran functions we call.
 extern "C"
@@ -153,7 +148,6 @@ extern "C"
                            const octave_idx_type&
                            F77_CHAR_ARG_LEN_DECL);
 
-
   F77_RET_T
   F77_FUNC (zgemv, ZGEMV) (F77_CONST_CHAR_ARG_DECL,
                            const octave_idx_type&, const octave_idx_type&,
@@ -165,48 +159,6 @@ extern "C"
 
 }
 
-
-#if !defined (CXX_NEW_FRIEND_TEMPLATE_DECL)
-static octave_idx_type
-lusolve (const SparseMatrix&, const SparseMatrix&, Matrix&);
-
-static octave_idx_type
-lusolve (const SparseComplexMatrix&, const SparseComplexMatrix&,
-         ComplexMatrix&);
-
-static octave_idx_type
-lusolve (const Matrix&, const Matrix&, Matrix&);
-
-static octave_idx_type
-lusolve (const ComplexMatrix&, const ComplexMatrix&, ComplexMatrix&);
-
-static ComplexMatrix
-ltsolve (const SparseComplexMatrix&, const ColumnVector&,
-         const ComplexMatrix&);
-
-static Matrix
-ltsolve (const SparseMatrix&, const ColumnVector&, const Matrix&,);
-
-static ComplexMatrix
-ltsolve (const ComplexMatrix&, const ColumnVector&, const ComplexMatrix&);
-
-static Matrix
-ltsolve (const Matrix&, const ColumnVector&, const Matrix&,);
-
-static ComplexMatrix
-utsolve (const SparseComplexMatrix&, const ColumnVector&, const ComplexMatrix&);
-
-static Matrix
-utsolve (const SparseMatrix&, const ColumnVector&, const Matrix&);
-
-static ComplexMatrix
-utsolve (const ComplexMatrix&, const ColumnVector&, const ComplexMatrix&);
-
-static Matrix
-utsolve (const Matrix&, const ColumnVector&, const Matrix&);
-
-#endif
-
 static void
 warn_convergence (void)
 {
@@ -216,7 +168,7 @@ warn_convergence (void)
      "an eigenvalue so convergence is not guaranteed");
 }
 
-template <class M, class SM>
+template <typename M, typename SM>
 static octave_idx_type
 lusolve (const SM& L, const SM& U, M& m)
 {
@@ -234,7 +186,7 @@ lusolve (const SM& L, const SM& U, M& m)
   return err;
 }
 
-template <class SM, class M>
+template <typename SM, typename M>
 static M
 ltsolve (const SM& L, const ColumnVector& Q, const M& m)
 {
@@ -247,7 +199,7 @@ ltsolve (const SM& L, const ColumnVector& Q, const M& m)
   M retval;
   const double* qv = Q.fortran_vec ();
 
-  if (!err)
+  if (! err)
     {
       retval.resize (n, b_nc);
       for (octave_idx_type j = 0; j < b_nc; j++)
@@ -261,7 +213,7 @@ ltsolve (const SM& L, const ColumnVector& Q, const M& m)
   return retval;
 }
 
-template <class SM, class M>
+template <typename SM, typename M>
 static M
 utsolve (const SM& U, const ColumnVector& Q, const M& m)
 {
@@ -308,13 +260,9 @@ vector_product (const Matrix& m, const double *x, double *y)
                            F77_CHAR_ARG_LEN (1)));
 
   if (f77_exception_encountered)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable error in dgemv");
-      return false;
-    }
-  else
-    return true;
+    (*current_liboctave_error_handler) ("eigs: unrecoverable error in dgemv");
+
+  return true;
 }
 
 static bool
@@ -345,20 +293,16 @@ vector_product (const ComplexMatrix& m, const Complex *x, Complex *y)
                            F77_CHAR_ARG_LEN (1)));
 
   if (f77_exception_encountered)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable error in zgemv");
-      return false;
-    }
-  else
-    return true;
+    (*current_liboctave_error_handler) ("eigs: unrecoverable error in zgemv");
+
+  return true;
 }
 
 static bool
 make_cholb (Matrix& b, Matrix& bt, ColumnVector& permB)
 {
   octave_idx_type info;
-  CHOL fact (b, info);
+  chol<Matrix> fact (b, info);
   octave_idx_type n = b.cols ();
 
   if (info != 0)
@@ -378,7 +322,7 @@ static bool
 make_cholb (SparseMatrix& b, SparseMatrix& bt, ColumnVector& permB)
 {
   octave_idx_type info;
-  SparseCHOL fact (b, info, false);
+  sparse_chol<SparseMatrix> fact (b, info, false);
 
   if (fact.P () != 0)
     return false;
@@ -395,7 +339,7 @@ static bool
 make_cholb (ComplexMatrix& b, ComplexMatrix& bt, ColumnVector& permB)
 {
   octave_idx_type info;
-  ComplexCHOL fact (b, info);
+  chol<ComplexMatrix> fact (b, info);
   octave_idx_type n = b.cols ();
 
   if (info != 0)
@@ -416,7 +360,7 @@ make_cholb (SparseComplexMatrix& b, SparseComplexMatrix& bt,
             ColumnVector& permB)
 {
   octave_idx_type info;
-  SparseComplexCHOL fact (b, info, false);
+  sparse_chol<SparseComplexMatrix> fact (b, info, false);
 
   if (fact.P () != 0)
     return false;
@@ -445,7 +389,7 @@ LuAminusSigmaB (const SparseMatrix &m, const SparseMatrix &b,
     {
       if (cholB)
         {
-          if (permB.length ())
+          if (permB.numel ())
             {
               SparseMatrix tmp(n,n,n);
               for (octave_idx_type i = 0; i < n; i++)
@@ -457,15 +401,14 @@ LuAminusSigmaB (const SparseMatrix &m, const SparseMatrix &b,
                 }
               tmp.xcidx (n) = n;
 
-              AminusSigmaB = AminusSigmaB - sigma * tmp *
-                             b.transpose () * b * tmp.transpose ();
+              AminusSigmaB -= sigma * tmp *
+                              b.transpose () * b * tmp.transpose ();
             }
           else
-            AminusSigmaB = AminusSigmaB - sigma *
-                           b.transpose () * b;
+            AminusSigmaB -= sigma * b.transpose () * b;
         }
       else
-        AminusSigmaB = AminusSigmaB - sigma * b;
+        AminusSigmaB -= sigma * b;
     }
   else
     {
@@ -480,10 +423,10 @@ LuAminusSigmaB (const SparseMatrix &m, const SparseMatrix &b,
           sigmat.xcidx (i+1) = i + 1;
         }
 
-      AminusSigmaB = AminusSigmaB - sigmat;
+      AminusSigmaB -= sigmat;
     }
 
-  SparseLU fact (AminusSigmaB);
+  sparse_lu<SparseMatrix> fact (AminusSigmaB);
 
   L = fact.L ();
   U = fact.U ();
@@ -497,8 +440,8 @@ LuAminusSigmaB (const SparseMatrix &m, const SparseMatrix &b,
     }
 
   // Test condition number of LU decomposition
-  double minU = octave_NaN;
-  double maxU = octave_NaN;
+  double minU = octave::numeric_limits<double>::NaN ();
+  double maxU = octave::numeric_limits<double>::NaN ();
   for (octave_idx_type j = 0; j < n; j++)
     {
       double d = 0.;
@@ -506,17 +449,17 @@ LuAminusSigmaB (const SparseMatrix &m, const SparseMatrix &b,
           && U.xridx (U.xcidx (j+1)-1) == j)
         d = std::abs (U.xdata (U.xcidx (j+1)-1));
 
-      if (xisnan (minU) || d < minU)
+      if (octave::math::isnan (minU) || d < minU)
         minU = d;
 
-      if (xisnan (maxU) || d > maxU)
+      if (octave::math::isnan (maxU) || d > maxU)
         maxU = d;
     }
 
   double rcond = (minU / maxU);
   volatile double rcond_plus_one = rcond + 1.0;
 
-  if (rcond_plus_one == 1.0 || xisnan (rcond))
+  if (rcond_plus_one == 1.0 || octave::math::isnan (rcond))
     warn_convergence ();
 
   return true;
@@ -542,7 +485,7 @@ LuAminusSigmaB (const Matrix &m, const Matrix &b,
           const double *pB = permB.fortran_vec ();
           double *p = AminusSigmaB.fortran_vec ();
 
-          if (permB.length ())
+          if (permB.numel ())
             {
               for (octave_idx_type j = 0;
                    j < b.cols (); j++)
@@ -552,10 +495,10 @@ LuAminusSigmaB (const Matrix &m, const Matrix &b,
                                      static_cast<octave_idx_type>(pB[j]));
             }
           else
-            AminusSigmaB = AminusSigmaB - tmp;
+            AminusSigmaB -= tmp;
         }
       else
-        AminusSigmaB = AminusSigmaB - sigma * b;
+        AminusSigmaB -= sigma * b;
     }
   else
     {
@@ -565,7 +508,7 @@ LuAminusSigmaB (const Matrix &m, const Matrix &b,
         p[i*(n+1)] -= sigma;
     }
 
-  LU fact (AminusSigmaB);
+  lu<Matrix> fact (AminusSigmaB);
 
   L = fact.P ().transpose () * fact.L ();
   U = fact.U ();
@@ -573,22 +516,22 @@ LuAminusSigmaB (const Matrix &m, const Matrix &b,
     P[j] = Q[j] = j;
 
   // Test condition number of LU decomposition
-  double minU = octave_NaN;
-  double maxU = octave_NaN;
+  double minU = octave::numeric_limits<double>::NaN ();
+  double maxU = octave::numeric_limits<double>::NaN ();
   for (octave_idx_type j = 0; j < n; j++)
     {
       double d = std::abs (U.xelem (j,j));
-      if (xisnan (minU) || d < minU)
+      if (octave::math::isnan (minU) || d < minU)
         minU = d;
 
-      if (xisnan (maxU) || d > maxU)
+      if (octave::math::isnan (maxU) || d > maxU)
         maxU = d;
     }
 
   double rcond = (minU / maxU);
   volatile double rcond_plus_one = rcond + 1.0;
 
-  if (rcond_plus_one == 1.0 || xisnan (rcond))
+  if (rcond_plus_one == 1.0 || octave::math::isnan (rcond))
     warn_convergence ();
 
   return true;
@@ -610,7 +553,7 @@ LuAminusSigmaB (const SparseComplexMatrix &m, const SparseComplexMatrix &b,
     {
       if (cholB)
         {
-          if (permB.length ())
+          if (permB.numel ())
             {
               SparseMatrix tmp(n,n,n);
               for (octave_idx_type i = 0; i < n; i++)
@@ -622,14 +565,14 @@ LuAminusSigmaB (const SparseComplexMatrix &m, const SparseComplexMatrix &b,
                 }
               tmp.xcidx (n) = n;
 
-              AminusSigmaB = AminusSigmaB - tmp * b.hermitian () * b *
-                             tmp.transpose () * sigma;
+              AminusSigmaB -= tmp * b.hermitian () * b *
+                              tmp.transpose () * sigma;
             }
           else
-            AminusSigmaB = AminusSigmaB - sigma * b.hermitian () * b;
+            AminusSigmaB -= sigma * b.hermitian () * b;
         }
       else
-        AminusSigmaB = AminusSigmaB - sigma * b;
+        AminusSigmaB -= sigma * b;
     }
   else
     {
@@ -644,10 +587,10 @@ LuAminusSigmaB (const SparseComplexMatrix &m, const SparseComplexMatrix &b,
           sigmat.xcidx (i+1) = i + 1;
         }
 
-      AminusSigmaB = AminusSigmaB - sigmat;
+      AminusSigmaB -= sigmat;
     }
 
-  SparseComplexLU fact (AminusSigmaB);
+  sparse_lu<SparseComplexMatrix> fact (AminusSigmaB);
 
   L = fact.L ();
   U = fact.U ();
@@ -661,8 +604,8 @@ LuAminusSigmaB (const SparseComplexMatrix &m, const SparseComplexMatrix &b,
     }
 
   // Test condition number of LU decomposition
-  double minU = octave_NaN;
-  double maxU = octave_NaN;
+  double minU = octave::numeric_limits<double>::NaN ();
+  double maxU = octave::numeric_limits<double>::NaN ();
   for (octave_idx_type j = 0; j < n; j++)
     {
       double d = 0.;
@@ -670,17 +613,17 @@ LuAminusSigmaB (const SparseComplexMatrix &m, const SparseComplexMatrix &b,
           && U.xridx (U.xcidx (j+1)-1) == j)
         d = std::abs (U.xdata (U.xcidx (j+1)-1));
 
-      if (xisnan (minU) || d < minU)
+      if (octave::math::isnan (minU) || d < minU)
         minU = d;
 
-      if (xisnan (maxU) || d > maxU)
+      if (octave::math::isnan (maxU) || d > maxU)
         maxU = d;
     }
 
   double rcond = (minU / maxU);
   volatile double rcond_plus_one = rcond + 1.0;
 
-  if (rcond_plus_one == 1.0 || xisnan (rcond))
+  if (rcond_plus_one == 1.0 || octave::math::isnan (rcond))
     warn_convergence ();
 
   return true;
@@ -706,7 +649,7 @@ LuAminusSigmaB (const ComplexMatrix &m, const ComplexMatrix &b,
           const double *pB = permB.fortran_vec ();
           Complex *p = AminusSigmaB.fortran_vec ();
 
-          if (permB.length ())
+          if (permB.numel ())
             {
               for (octave_idx_type j = 0;
                    j < b.cols (); j++)
@@ -716,10 +659,10 @@ LuAminusSigmaB (const ComplexMatrix &m, const ComplexMatrix &b,
                                      static_cast<octave_idx_type>(pB[j]));
             }
           else
-            AminusSigmaB = AminusSigmaB - tmp;
+            AminusSigmaB -= tmp;
         }
       else
-        AminusSigmaB = AminusSigmaB - sigma * b;
+        AminusSigmaB -= sigma * b;
     }
   else
     {
@@ -729,7 +672,7 @@ LuAminusSigmaB (const ComplexMatrix &m, const ComplexMatrix &b,
         p[i*(n+1)] -= sigma;
     }
 
-  ComplexLU fact (AminusSigmaB);
+  lu<ComplexMatrix> fact (AminusSigmaB);
 
   L = fact.P ().transpose () * fact.L ();
   U = fact.U ();
@@ -737,28 +680,28 @@ LuAminusSigmaB (const ComplexMatrix &m, const ComplexMatrix &b,
     P[j] = Q[j] = j;
 
   // Test condition number of LU decomposition
-  double minU = octave_NaN;
-  double maxU = octave_NaN;
+  double minU = octave::numeric_limits<double>::NaN ();
+  double maxU = octave::numeric_limits<double>::NaN ();
   for (octave_idx_type j = 0; j < n; j++)
     {
       double d = std::abs (U.xelem (j,j));
-      if (xisnan (minU) || d < minU)
+      if (octave::math::isnan (minU) || d < minU)
         minU = d;
 
-      if (xisnan (maxU) || d > maxU)
+      if (octave::math::isnan (maxU) || d > maxU)
         maxU = d;
     }
 
   double rcond = (minU / maxU);
   volatile double rcond_plus_one = rcond + 1.0;
 
-  if (rcond_plus_one == 1.0 || xisnan (rcond))
+  if (rcond_plus_one == 1.0 || octave::math::isnan (rcond))
     warn_convergence ();
 
   return true;
 }
 
-template <class M>
+template <typename M>
 octave_idx_type
 EigsRealSymmetricMatrix (const M& m, const std::string typ,
                          octave_idx_type k, octave_idx_type p,
@@ -778,16 +721,10 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
   M bt;
 
   if (m.rows () != m.cols ())
-    {
-      (*current_liboctave_error_handler) ("eigs: A must be square");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: A must be square");
   if (have_b && (m.rows () != b.rows () || m.rows () != b.cols ()))
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: B must be square and the same size as A");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: B must be square and the same size as A");
 
   if (resid.is_empty ())
     {
@@ -798,11 +735,7 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
     }
 
   if (n < 3)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: n must be at least 3");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: n must be at least 3");
 
   if (p < 0)
     {
@@ -812,66 +745,42 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
         p = 20;
 
       if (p > n - 1)
-        p = n - 1 ;
+        p = n - 1;
     }
 
   if (k < 1 || k > n - 2)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1-1).\n"
-         "      Use 'eig (full (A))' instead");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1-1).\n"
+       "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: opts.p must be greater than k and less than n");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: opts.p must be greater than k and less than n");
 
-  if (have_b && cholB && permB.length () != 0)
+  if (have_b && cholB && ! permB.is_empty ())
     {
       // Check the we really have a permutation vector
-      if (permB.length () != n)
+      if (permB.numel () != n)
+        (*current_liboctave_error_handler) ("eigs: permB vector invalid");
+
+      Array<bool> checked (dim_vector (n, 1), false);
+      for (octave_idx_type i = 0; i < n; i++)
         {
-          (*current_liboctave_error_handler)
-            ("eigs: permB vector invalid");
-          return -1;
-        }
-      else
-        {
-          Array<bool> checked (dim_vector (n, 1), false);
-          for (octave_idx_type i = 0; i < n; i++)
-            {
-              octave_idx_type bidx =
-                static_cast<octave_idx_type> (permB(i));
-              if (checked(bidx) || bidx < 0 || bidx >= n
-                  || D_NINT (bidx) != bidx)
-                {
-                  (*current_liboctave_error_handler)
-                    ("eigs: permB vector invalid");
-                  return -1;
-                }
-            }
+          octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
+
+          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+            (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
 
   if (typ != "LM" && typ != "SM" && typ != "LA" && typ != "SA"
       && typ != "BE" && typ != "LR" && typ != "SR" && typ != "LI"
       && typ != "SI")
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecognized sigma value");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: unrecognized sigma value");
 
   if (typ == "LI" || typ == "SI" || typ == "LR" || typ == "SR")
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: invalid sigma value for real symmetric problem");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: invalid sigma value for real symmetric problem");
 
   if (have_b)
     {
@@ -881,7 +790,7 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
         {
           bt = b;
           b = b.transpose ();
-          if (permB.length () == 0)
+          if (permB.is_empty ())
             {
               permB = ColumnVector (n);
               for (octave_idx_type i = 0; i < n; i++)
@@ -891,11 +800,8 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
       else
         {
           if (! make_cholb (b, bt, permB))
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: The matrix B is not positive definite");
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: The matrix B is not positive definite");
         }
     }
 
@@ -937,13 +843,10 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
          F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: unrecoverable exception encountered in dsaupd");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: unrecoverable exception encountered in dsaupd");
 
-      if (disp > 0 && !xisnan (workl[iptr (5)-1]))
+      if (disp > 0 && ! octave::math::isnan (workl[iptr (5)-1]))
         {
           if (iter++)
             {
@@ -955,12 +858,12 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
             }
 
           // This is a kludge, as ARPACK doesn't give its
-          // iteration pointer. But as workl[iptr(5)-1] is
+          // iteration pointer.  But as workl[iptr(5)-1] is
           // an output value updated at each iteration, setting
           // a value in this array to NaN and testing for it
           // is a way of obtaining the iteration counter.
           if (ido != 99)
-            workl[iptr(5)-1] = octave_NaN;
+            workl[iptr(5)-1] = octave::numeric_limits<double>::NaN ();
         }
 
       if (ido == -1 || ido == 1 || ido == 2)
@@ -976,18 +879,16 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
               for (octave_idx_type i = 0; i < n; i++)
                 workd[i+iptr(1)-1] = mtmp(i,0);
             }
-          else if (!vector_product (m, workd + iptr(0) - 1,
+          else if (! vector_product (m, workd + iptr(0) - 1,
                                     workd + iptr(1) - 1))
             break;
         }
       else
         {
           if (info < 0)
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: error %d in dsaupd", info);
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: error %d in dsaupd", info);
+
           break;
         }
     }
@@ -996,9 +897,9 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
   octave_idx_type info2;
 
   // We have a problem in that the size of the C++ bool
-  // type relative to the fortran logical type. It appears
+  // type relative to the fortran logical type.  It appears
   // that fortran uses 4- or 8-bytes per logical and C++ 1-byte
-  // per bool, though this might be system dependent. As
+  // per bool, though this might be system dependent.  As
   // long as the HOWMNY arg is not "S", the logical array
   // is just workspace for ARPACK, so use int type to
   // avoid problems.
@@ -1019,67 +920,58 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
      F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
+    (*current_liboctave_error_handler)
+      ("eigs: unrecoverable exception encountered in dseupd");
+
+  if (info2 == 0)
     {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable exception encountered in dseupd");
-      return -1;
-    }
-  else
-    {
-      if (info2 == 0)
+      octave_idx_type k2 = k / 2;
+      if (typ != "SM" && typ != "BE")
         {
-          octave_idx_type k2 = k / 2;
+          for (octave_idx_type i = 0; i < k2; i++)
+            {
+              double dtmp = d[i];
+              d[i] = d[k - i - 1];
+              d[k - i - 1] = dtmp;
+            }
+        }
+
+      if (rvec)
+        {
           if (typ != "SM" && typ != "BE")
             {
+              OCTAVE_LOCAL_BUFFER (double, dtmp, n);
+
               for (octave_idx_type i = 0; i < k2; i++)
                 {
-                  double dtmp = d[i];
-                  d[i] = d[k - i - 1];
-                  d[k - i - 1] = dtmp;
+                  octave_idx_type off1 = i * n;
+                  octave_idx_type off2 = (k - i - 1) * n;
+
+                  if (off1 == off2)
+                    continue;
+
+                  for (octave_idx_type j = 0; j < n; j++)
+                    dtmp[j] = z[off1 + j];
+
+                  for (octave_idx_type j = 0; j < n; j++)
+                    z[off1 + j] = z[off2 + j];
+
+                  for (octave_idx_type j = 0; j < n; j++)
+                    z[off2 + j] = dtmp[j];
                 }
             }
 
-          if (rvec)
-            {
-              if (typ != "SM" && typ != "BE")
-                {
-                  OCTAVE_LOCAL_BUFFER (double, dtmp, n);
-
-                  for (octave_idx_type i = 0; i < k2; i++)
-                    {
-                      octave_idx_type off1 = i * n;
-                      octave_idx_type off2 = (k - i - 1) * n;
-
-                      if (off1 == off2)
-                        continue;
-
-                      for (octave_idx_type j = 0; j < n; j++)
-                        dtmp[j] = z[off1 + j];
-
-                      for (octave_idx_type j = 0; j < n; j++)
-                        z[off1 + j] = z[off2 + j];
-
-                      for (octave_idx_type j = 0; j < n; j++)
-                        z[off2 + j] = dtmp[j];
-                    }
-                }
-
-              if (note3)
-                eig_vec = ltsolve (b, permB, eig_vec);
-            }
-        }
-      else
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: error %d in dseupd", info2);
-          return -1;
+          if (note3)
+            eig_vec = ltsolve (b, permB, eig_vec);
         }
     }
+  else
+    (*current_liboctave_error_handler) ("eigs: error %d in dseupd", info2);
 
   return ip(4);
 }
 
-template <class M>
+template <typename M>
 octave_idx_type
 EigsRealSymmetricMatrixShift (const M& m, double sigma,
                               octave_idx_type k, octave_idx_type p,
@@ -1096,16 +988,10 @@ EigsRealSymmetricMatrixShift (const M& m, double sigma,
   std::string typ = "LM";
 
   if (m.rows () != m.cols ())
-    {
-      (*current_liboctave_error_handler) ("eigs: A must be square");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: A must be square");
   if (have_b && (m.rows () != b.rows () || m.rows () != b.cols ()))
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: B must be square and the same size as A");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: B must be square and the same size as A");
 
   // FIXME: The "SM" type for mode 1 seems unstable though faster!!
   //if (! std::abs (sigma))
@@ -1122,19 +1008,12 @@ EigsRealSymmetricMatrixShift (const M& m, double sigma,
     }
 
   if (n < 3)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: n must be at least 3");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: n must be at least 3");
 
   if (k <= 0 || k >= n - 1)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1-1).\n"
-         "      Use 'eig (full (A))' instead");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1-1).\n"
+       "      Use 'eig (full (A))' instead");
 
   if (p < 0)
     {
@@ -1144,39 +1023,26 @@ EigsRealSymmetricMatrixShift (const M& m, double sigma,
         p = 20;
 
       if (p > n - 1)
-        p = n - 1 ;
+        p = n - 1;
     }
 
   if (p <= k || p >= n)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: opts.p must be greater than k and less than n");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: opts.p must be greater than k and less than n");
 
-  if (have_b && cholB && permB.length () != 0)
+  if (have_b && cholB && ! permB.is_empty ())
     {
       // Check the we really have a permutation vector
-      if (permB.length () != n)
+      if (permB.numel () != n)
+        (*current_liboctave_error_handler) ("eigs: permB vector invalid");
+
+      Array<bool> checked (dim_vector (n, 1), false);
+      for (octave_idx_type i = 0; i < n; i++)
         {
-          (*current_liboctave_error_handler) ("eigs: permB vector invalid");
-          return -1;
-        }
-      else
-        {
-          Array<bool> checked (dim_vector (n, 1), false);
-          for (octave_idx_type i = 0; i < n; i++)
-            {
-              octave_idx_type bidx =
-                static_cast<octave_idx_type> (permB(i));
-              if (checked(bidx) || bidx < 0 || bidx >= n
-                  || D_NINT (bidx) != bidx)
-                {
-                  (*current_liboctave_error_handler)
-                    ("eigs: permB vector invalid");
-                  return -1;
-                }
-            }
+          octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
+
+          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+            (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
 
@@ -1230,13 +1096,10 @@ EigsRealSymmetricMatrixShift (const M& m, double sigma,
          F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: unrecoverable exception encountered in dsaupd");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: unrecoverable exception encountered in dsaupd");
 
-      if (disp > 0 && !xisnan (workl[iptr (5)-1]))
+      if (disp > 0 && ! octave::math::isnan (workl[iptr (5)-1]))
         {
           if (iter++)
             {
@@ -1248,12 +1111,12 @@ EigsRealSymmetricMatrixShift (const M& m, double sigma,
             }
 
           // This is a kludge, as ARPACK doesn't give its
-          // iteration pointer. But as workl[iptr(5)-1] is
+          // iteration pointer.  But as workl[iptr(5)-1] is
           // an output value updated at each iteration, setting
           // a value in this array to NaN and testing for it
           // is a way of obtaining the iteration counter.
           if (ido != 99)
-            workl[iptr(5)-1] = octave_NaN;
+            workl[iptr(5)-1] = octave::numeric_limits<double>::NaN ();
         }
 
       if (ido == -1 || ido == 1 || ido == 2)
@@ -1320,11 +1183,9 @@ EigsRealSymmetricMatrixShift (const M& m, double sigma,
       else
         {
           if (info < 0)
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: error %d in dsaupd", info);
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: error %d in dsaupd", info);
+
           break;
         }
     }
@@ -1333,9 +1194,9 @@ EigsRealSymmetricMatrixShift (const M& m, double sigma,
   octave_idx_type info2;
 
   // We have a problem in that the size of the C++ bool
-  // type relative to the fortran logical type. It appears
+  // type relative to the fortran logical type.  It appears
   // that fortran uses 4- or 8-bytes per logical and C++ 1-byte
-  // per bool, though this might be system dependent. As
+  // per bool, though this might be system dependent.  As
   // long as the HOWMNY arg is not "S", the logical array
   // is just workspace for ARPACK, so use int type to
   // avoid problems.
@@ -1356,53 +1217,44 @@ EigsRealSymmetricMatrixShift (const M& m, double sigma,
      F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
+    (*current_liboctave_error_handler)
+      ("eigs: unrecoverable exception encountered in dseupd");
+
+  if (info2 == 0)
     {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable exception encountered in dseupd");
-      return -1;
-    }
-  else
-    {
-      if (info2 == 0)
+      octave_idx_type k2 = k / 2;
+      for (octave_idx_type i = 0; i < k2; i++)
         {
-          octave_idx_type k2 = k / 2;
+          double dtmp = d[i];
+          d[i] = d[k - i - 1];
+          d[k - i - 1] = dtmp;
+        }
+
+      if (rvec)
+        {
+          OCTAVE_LOCAL_BUFFER (double, dtmp, n);
+
           for (octave_idx_type i = 0; i < k2; i++)
             {
-              double dtmp = d[i];
-              d[i] = d[k - i - 1];
-              d[k - i - 1] = dtmp;
+              octave_idx_type off1 = i * n;
+              octave_idx_type off2 = (k - i - 1) * n;
+
+              if (off1 == off2)
+                continue;
+
+              for (octave_idx_type j = 0; j < n; j++)
+                dtmp[j] = z[off1 + j];
+
+              for (octave_idx_type j = 0; j < n; j++)
+                z[off1 + j] = z[off2 + j];
+
+              for (octave_idx_type j = 0; j < n; j++)
+                z[off2 + j] = dtmp[j];
             }
-
-          if (rvec)
-            {
-              OCTAVE_LOCAL_BUFFER (double, dtmp, n);
-
-              for (octave_idx_type i = 0; i < k2; i++)
-                {
-                  octave_idx_type off1 = i * n;
-                  octave_idx_type off2 = (k - i - 1) * n;
-
-                  if (off1 == off2)
-                    continue;
-
-                  for (octave_idx_type j = 0; j < n; j++)
-                    dtmp[j] = z[off1 + j];
-
-                  for (octave_idx_type j = 0; j < n; j++)
-                    z[off1 + j] = z[off2 + j];
-
-                  for (octave_idx_type j = 0; j < n; j++)
-                    z[off2 + j] = dtmp[j];
-                }
-            }
-        }
-      else
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: error %d in dseupd", info2);
-          return -1;
         }
     }
+  else
+    (*current_liboctave_error_handler) ("eigs: error %d in dseupd", info2);
 
   return ip(4);
 }
@@ -1431,11 +1283,7 @@ EigsRealSymmetricFunc (EigsFunc fun, octave_idx_type n,
     }
 
   if (n < 3)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: n must be at least 3");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: n must be at least 3");
 
   if (p < 0)
     {
@@ -1445,38 +1293,28 @@ EigsRealSymmetricFunc (EigsFunc fun, octave_idx_type n,
         p = 20;
 
       if (p > n - 1)
-        p = n - 1 ;
+        p = n - 1;
     }
 
   if (k <= 0 || k >= n - 1)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
-         "      Use 'eig (full (A))' instead");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+       "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: opts.p must be greater than k and less than n");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: opts.p must be greater than k and less than n");
 
   if (! have_sigma)
     {
       if (typ != "LM" && typ != "SM" && typ != "LA" && typ != "SA"
           && typ != "BE" && typ != "LR" && typ != "SR" && typ != "LI"
           && typ != "SI")
-        (*current_liboctave_error_handler)
-          ("eigs: unrecognized sigma value");
+        (*current_liboctave_error_handler) ("eigs: unrecognized sigma value");
 
       if (typ == "LI" || typ == "SI" || typ == "LR" || typ == "SR")
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: invalid sigma value for real symmetric problem");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: invalid sigma value for real symmetric problem");
 
       if (typ == "SM")
         {
@@ -1531,13 +1369,10 @@ EigsRealSymmetricFunc (EigsFunc fun, octave_idx_type n,
          F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: unrecoverable exception encountered in dsaupd");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: unrecoverable exception encountered in dsaupd");
 
-      if (disp > 0 && !xisnan (workl[iptr (5)-1]))
+      if (disp > 0 && ! octave::math::isnan (workl[iptr (5)-1]))
         {
           if (iter++)
             {
@@ -1549,14 +1384,13 @@ EigsRealSymmetricFunc (EigsFunc fun, octave_idx_type n,
             }
 
           // This is a kludge, as ARPACK doesn't give its
-          // iteration pointer. But as workl[iptr(5)-1] is
+          // iteration pointer.  But as workl[iptr(5)-1] is
           // an output value updated at each iteration, setting
           // a value in this array to NaN and testing for it
           // is a way of obtaining the iteration counter.
           if (ido != 99)
-            workl[iptr(5)-1] = octave_NaN;
+            workl[iptr(5)-1] = octave::numeric_limits<double>::NaN ();
         }
-
 
       if (ido == -1 || ido == 1 || ido == 2)
         {
@@ -1578,11 +1412,9 @@ EigsRealSymmetricFunc (EigsFunc fun, octave_idx_type n,
       else
         {
           if (info < 0)
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: error %d in dsaupd", info);
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: error %d in dsaupd", info);
+
           break;
         }
     }
@@ -1591,9 +1423,9 @@ EigsRealSymmetricFunc (EigsFunc fun, octave_idx_type n,
   octave_idx_type info2;
 
   // We have a problem in that the size of the C++ bool
-  // type relative to the fortran logical type. It appears
+  // type relative to the fortran logical type.  It appears
   // that fortran uses 4- or 8-bytes per logical and C++ 1-byte
-  // per bool, though this might be system dependent. As
+  // per bool, though this might be system dependent.  As
   // long as the HOWMNY arg is not "S", the logical array
   // is just workspace for ARPACK, so use int type to
   // avoid problems.
@@ -1614,64 +1446,55 @@ EigsRealSymmetricFunc (EigsFunc fun, octave_idx_type n,
      F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
+    (*current_liboctave_error_handler)
+      ("eigs: unrecoverable exception encountered in dseupd");
+
+  if (info2 == 0)
     {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable exception encountered in dseupd");
-      return -1;
-    }
-  else
-    {
-      if (info2 == 0)
+      octave_idx_type k2 = k / 2;
+      if (typ != "SM" && typ != "BE")
         {
-          octave_idx_type k2 = k / 2;
+          for (octave_idx_type i = 0; i < k2; i++)
+            {
+              double dtmp = d[i];
+              d[i] = d[k - i - 1];
+              d[k - i - 1] = dtmp;
+            }
+        }
+
+      if (rvec)
+        {
           if (typ != "SM" && typ != "BE")
             {
+              OCTAVE_LOCAL_BUFFER (double, dtmp, n);
+
               for (octave_idx_type i = 0; i < k2; i++)
                 {
-                  double dtmp = d[i];
-                  d[i] = d[k - i - 1];
-                  d[k - i - 1] = dtmp;
+                  octave_idx_type off1 = i * n;
+                  octave_idx_type off2 = (k - i - 1) * n;
+
+                  if (off1 == off2)
+                    continue;
+
+                  for (octave_idx_type j = 0; j < n; j++)
+                    dtmp[j] = z[off1 + j];
+
+                  for (octave_idx_type j = 0; j < n; j++)
+                    z[off1 + j] = z[off2 + j];
+
+                  for (octave_idx_type j = 0; j < n; j++)
+                    z[off2 + j] = dtmp[j];
                 }
             }
-
-          if (rvec)
-            {
-              if (typ != "SM" && typ != "BE")
-                {
-                  OCTAVE_LOCAL_BUFFER (double, dtmp, n);
-
-                  for (octave_idx_type i = 0; i < k2; i++)
-                    {
-                      octave_idx_type off1 = i * n;
-                      octave_idx_type off2 = (k - i - 1) * n;
-
-                      if (off1 == off2)
-                        continue;
-
-                      for (octave_idx_type j = 0; j < n; j++)
-                        dtmp[j] = z[off1 + j];
-
-                      for (octave_idx_type j = 0; j < n; j++)
-                        z[off1 + j] = z[off2 + j];
-
-                      for (octave_idx_type j = 0; j < n; j++)
-                        z[off2 + j] = dtmp[j];
-                    }
-                }
-            }
-        }
-      else
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: error %d in dseupd", info2);
-          return -1;
         }
     }
+  else
+    (*current_liboctave_error_handler) ("eigs: error %d in dseupd", info2);
 
   return ip(4);
 }
 
-template <class M>
+template <typename M>
 octave_idx_type
 EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
                             octave_idx_type k, octave_idx_type p,
@@ -1692,16 +1515,10 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
   M bt;
 
   if (m.rows () != m.cols ())
-    {
-      (*current_liboctave_error_handler) ("eigs: A must be square");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: A must be square");
   if (have_b && (m.rows () != b.rows () || m.rows () != b.cols ()))
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: B must be square and the same size as A");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: B must be square and the same size as A");
 
   if (resid.is_empty ())
     {
@@ -1712,11 +1529,7 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
     }
 
   if (n < 3)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: n must be at least 3");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: n must be at least 3");
 
   if (p < 0)
     {
@@ -1726,66 +1539,42 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
         p = 20;
 
       if (p > n - 1)
-        p = n - 1 ;
+        p = n - 1;
     }
 
   if (k <= 0 || k >= n - 1)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
-         "      Use 'eig (full (A))' instead");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+       "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: opts.p must be greater than k and less than n");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: opts.p must be greater than k and less than n");
 
-  if (have_b && cholB && permB.length () != 0)
+  if (have_b && cholB && ! permB.is_empty ())
     {
       // Check the we really have a permutation vector
-      if (permB.length () != n)
+      if (permB.numel () != n)
+        (*current_liboctave_error_handler) ("eigs: permB vector invalid");
+
+      Array<bool> checked (dim_vector (n, 1), false);
+      for (octave_idx_type i = 0; i < n; i++)
         {
-          (*current_liboctave_error_handler)
-            ("eigs: permB vector invalid");
-          return -1;
-        }
-      else
-        {
-          Array<bool> checked (dim_vector (n, 1), false);
-          for (octave_idx_type i = 0; i < n; i++)
-            {
-              octave_idx_type bidx =
-                static_cast<octave_idx_type> (permB(i));
-              if (checked(bidx) || bidx < 0 || bidx >= n
-                  || D_NINT (bidx) != bidx)
-                {
-                  (*current_liboctave_error_handler)
-                    ("eigs: permB vector invalid");
-                  return -1;
-                }
-            }
+          octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
+
+          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+            (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
 
   if (typ != "LM" && typ != "SM" && typ != "LA" && typ != "SA"
       && typ != "BE" && typ != "LR" && typ != "SR" && typ != "LI"
       && typ != "SI")
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecognized sigma value");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: unrecognized sigma value");
 
   if (typ == "LA" || typ == "SA" || typ == "BE")
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: invalid sigma value for unsymmetric problem");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: invalid sigma value for unsymmetric problem");
 
   if (have_b)
     {
@@ -1795,7 +1584,7 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
         {
           bt = b;
           b = b.transpose ();
-          if (permB.length () == 0)
+          if (permB.is_empty ())
             {
               permB = ColumnVector (n);
               for (octave_idx_type i = 0; i < n; i++)
@@ -1805,11 +1594,8 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
       else
         {
           if (! make_cholb (b, bt, permB))
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: The matrix B is not positive definite");
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: The matrix B is not positive definite");
         }
     }
 
@@ -1851,13 +1637,10 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
          F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: unrecoverable exception encountered in dnaupd");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: unrecoverable exception encountered in dnaupd");
 
-      if (disp > 0 && !xisnan(workl[iptr(5)-1]))
+      if (disp > 0 && ! octave::math::isnan(workl[iptr(5)-1]))
         {
           if (iter++)
             {
@@ -1869,12 +1652,12 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
             }
 
           // This is a kludge, as ARPACK doesn't give its
-          // iteration pointer. But as workl[iptr(5)-1] is
+          // iteration pointer.  But as workl[iptr(5)-1] is
           // an output value updated at each iteration, setting
           // a value in this array to NaN and testing for it
           // is a way of obtaining the iteration counter.
           if (ido != 99)
-            workl[iptr(5)-1] = octave_NaN;
+            workl[iptr(5)-1] = octave::numeric_limits<double>::NaN ();
         }
 
       if (ido == -1 || ido == 1 || ido == 2)
@@ -1890,18 +1673,16 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
               for (octave_idx_type i = 0; i < n; i++)
                 workd[i+iptr(1)-1] = mtmp(i,0);
             }
-          else if (!vector_product (m, workd + iptr(0) - 1,
+          else if (! vector_product (m, workd + iptr(0) - 1,
                                     workd + iptr(1) - 1))
             break;
         }
       else
         {
           if (info < 0)
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: error %d in dnaupd", info);
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: error %d in dnaupd", info);
+
           break;
         }
     }
@@ -1910,9 +1691,9 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
   octave_idx_type info2;
 
   // We have a problem in that the size of the C++ bool
-  // type relative to the fortran logical type. It appears
+  // type relative to the fortran logical type.  It appears
   // that fortran uses 4- or 8-bytes per logical and C++ 1-byte
-  // per bool, though this might be system dependent. As
+  // per bool, though this might be system dependent.  As
   // long as the HOWMNY arg is not "S", the logical array
   // is just workspace for ARPACK, so use int type to
   // avoid problems.
@@ -1943,104 +1724,95 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
      F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable exception encountered in dneupd");
-      return -1;
-    }
-  else
-    {
-      eig_val.resize (k+1);
-      Complex *d = eig_val.fortran_vec ();
+    (*current_liboctave_error_handler)
+      ("eigs: unrecoverable exception encountered in dneupd");
 
-      if (info2 == 0)
+  eig_val.resize (k+1);
+  Complex *d = eig_val.fortran_vec ();
+
+  if (info2 == 0)
+    {
+      octave_idx_type jj = 0;
+      for (octave_idx_type i = 0; i < k+1; i++)
         {
-          octave_idx_type jj = 0;
-          for (octave_idx_type i = 0; i < k+1; i++)
-            {
-              if (dr[i] == 0.0 && di[i] == 0.0 && jj == 0)
-                jj++;
-              else
-                d[i-jj] = Complex (dr[i], di[i]);
-            }
-          if (jj == 0 && !rvec)
-            for (octave_idx_type i = 0; i < k; i++)
-              d[i] = d[i+1];
+          if (dr[i] == 0.0 && di[i] == 0.0 && jj == 0)
+            jj++;
+          else
+            d[i-jj] = Complex (dr[i], di[i]);
+        }
+      if (jj == 0 && ! rvec)
+        for (octave_idx_type i = 0; i < k; i++)
+          d[i] = d[i+1];
 
-          octave_idx_type k2 = k / 2;
+      octave_idx_type k2 = k / 2;
+      for (octave_idx_type i = 0; i < k2; i++)
+        {
+          Complex dtmp = d[i];
+          d[i] = d[k - i - 1];
+          d[k - i - 1] = dtmp;
+        }
+      eig_val.resize (k);
+
+      if (rvec)
+        {
+          OCTAVE_LOCAL_BUFFER (double, dtmp, n);
+
           for (octave_idx_type i = 0; i < k2; i++)
             {
-              Complex dtmp = d[i];
-              d[i] = d[k - i - 1];
-              d[k - i - 1] = dtmp;
-            }
-          eig_val.resize (k);
+              octave_idx_type off1 = i * n;
+              octave_idx_type off2 = (k - i - 1) * n;
 
-          if (rvec)
+              if (off1 == off2)
+                continue;
+
+              for (octave_idx_type j = 0; j < n; j++)
+                dtmp[j] = z[off1 + j];
+
+              for (octave_idx_type j = 0; j < n; j++)
+                z[off1 + j] = z[off2 + j];
+
+              for (octave_idx_type j = 0; j < n; j++)
+                z[off2 + j] = dtmp[j];
+            }
+
+          eig_vec.resize (n, k);
+          octave_idx_type i = 0;
+          while (i < k)
             {
-              OCTAVE_LOCAL_BUFFER (double, dtmp, n);
-
-              for (octave_idx_type i = 0; i < k2; i++)
+              octave_idx_type off1 = i * n;
+              octave_idx_type off2 = (i+1) * n;
+              if (std::imag (eig_val(i)) == 0)
                 {
-                  octave_idx_type off1 = i * n;
-                  octave_idx_type off2 = (k - i - 1) * n;
-
-                  if (off1 == off2)
-                    continue;
-
                   for (octave_idx_type j = 0; j < n; j++)
-                    dtmp[j] = z[off1 + j];
-
-                  for (octave_idx_type j = 0; j < n; j++)
-                    z[off1 + j] = z[off2 + j];
-
-                  for (octave_idx_type j = 0; j < n; j++)
-                    z[off2 + j] = dtmp[j];
+                    eig_vec(j,i) =
+                      Complex (z[j+off1],0.);
+                  i++;
                 }
-
-              eig_vec.resize (n, k);
-              octave_idx_type i = 0;
-              while (i < k)
+              else
                 {
-                  octave_idx_type off1 = i * n;
-                  octave_idx_type off2 = (i+1) * n;
-                  if (std::imag (eig_val(i)) == 0)
+                  for (octave_idx_type j = 0; j < n; j++)
                     {
-                      for (octave_idx_type j = 0; j < n; j++)
-                        eig_vec(j,i) =
-                          Complex (z[j+off1],0.);
-                      i++;
+                      eig_vec(j,i) =
+                        Complex (z[j+off1],z[j+off2]);
+                      if (i < k - 1)
+                        eig_vec(j,i+1) =
+                          Complex (z[j+off1],-z[j+off2]);
                     }
-                  else
-                    {
-                      for (octave_idx_type j = 0; j < n; j++)
-                        {
-                          eig_vec(j,i) =
-                            Complex (z[j+off1],z[j+off2]);
-                          if (i < k - 1)
-                            eig_vec(j,i+1) =
-                              Complex (z[j+off1],-z[j+off2]);
-                        }
-                      i+=2;
-                    }
+                  i+=2;
                 }
-
-              if (note3)
-                eig_vec = ltsolve (M(b), permB, eig_vec);
             }
-        }
-      else
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: error %d in dneupd", info2);
-          return -1;
+
+          if (note3)
+            eig_vec = ltsolve (M(b), permB, eig_vec);
         }
     }
+  else
+    (*current_liboctave_error_handler) ("eigs: error %d in dneupd", info2);
 
   return ip(4);
 }
 
-template <class M>
+template <typename M>
 octave_idx_type
 EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
                                  octave_idx_type k, octave_idx_type p,
@@ -2059,16 +1831,10 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
   double sigmai = 0.;
 
   if (m.rows () != m.cols ())
-    {
-      (*current_liboctave_error_handler) ("eigs: A must be square");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: A must be square");
   if (have_b && (m.rows () != b.rows () || m.rows () != b.cols ()))
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: B must be square and the same size as A");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: B must be square and the same size as A");
 
   // FIXME: The "SM" type for mode 1 seems unstable though faster!!
   //if (! std::abs (sigmar))
@@ -2085,11 +1851,7 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
     }
 
   if (n < 3)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: n must be at least 3");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: n must be at least 3");
 
   if (p < 0)
     {
@@ -2099,47 +1861,31 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
         p = 20;
 
       if (p > n - 1)
-        p = n - 1 ;
+        p = n - 1;
     }
 
   if (k <= 0 || k >= n - 1)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
-         "      Use 'eig (full (A))' instead");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+       "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: opts.p must be greater than k and less than n");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: opts.p must be greater than k and less than n");
 
-  if (have_b && cholB && permB.length () != 0)
+  if (have_b && cholB && ! permB.is_empty ())
     {
       // Check that we really have a permutation vector
-      if (permB.length () != n)
+      if (permB.numel () != n)
+        (*current_liboctave_error_handler) ("eigs: permB vector invalid");
+
+      Array<bool> checked (dim_vector (n, 1), false);
+      for (octave_idx_type i = 0; i < n; i++)
         {
-          (*current_liboctave_error_handler) ("eigs: permB vector invalid");
-          return -1;
-        }
-      else
-        {
-          Array<bool> checked (dim_vector (n, 1), false);
-          for (octave_idx_type i = 0; i < n; i++)
-            {
-              octave_idx_type bidx =
-                static_cast<octave_idx_type> (permB(i));
-              if (checked(bidx) || bidx < 0 || bidx >= n
-                  || D_NINT (bidx) != bidx)
-                {
-                  (*current_liboctave_error_handler)
-                    ("eigs: permB vector invalid");
-                  return -1;
-                }
-            }
+          octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
+
+          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+            (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
 
@@ -2193,13 +1939,10 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
          F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: unrecoverable exception encountered in dsaupd");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: unrecoverable exception encountered in dsaupd");
 
-      if (disp > 0 && !xisnan (workl[iptr (5)-1]))
+      if (disp > 0 && ! octave::math::isnan (workl[iptr (5)-1]))
         {
           if (iter++)
             {
@@ -2211,12 +1954,12 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
             }
 
           // This is a kludge, as ARPACK doesn't give its
-          // iteration pointer. But as workl[iptr(5)-1] is
+          // iteration pointer.  But as workl[iptr(5)-1] is
           // an output value updated at each iteration, setting
           // a value in this array to NaN and testing for it
           // is a way of obtaining the iteration counter.
           if (ido != 99)
-            workl[iptr(5)-1] = octave_NaN;
+            workl[iptr(5)-1] = octave::numeric_limits<double>::NaN ();
         }
 
       if (ido == -1 || ido == 1 || ido == 2)
@@ -2283,11 +2026,9 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
       else
         {
           if (info < 0)
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: error %d in dsaupd", info);
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: error %d in dsaupd", info);
+
           break;
         }
     }
@@ -2296,9 +2037,9 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
   octave_idx_type info2;
 
   // We have a problem in that the size of the C++ bool
-  // type relative to the fortran logical type. It appears
+  // type relative to the fortran logical type.  It appears
   // that fortran uses 4- or 8-bytes per logical and C++ 1-byte
-  // per bool, though this might be system dependent. As
+  // per bool, though this might be system dependent.  As
   // long as the HOWMNY arg is not "S", the logical array
   // is just workspace for ARPACK, so use int type to
   // avoid problems.
@@ -2329,96 +2070,87 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
      F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable exception encountered in dneupd");
-      return -1;
-    }
-  else
-    {
-      eig_val.resize (k+1);
-      Complex *d = eig_val.fortran_vec ();
+    (*current_liboctave_error_handler)
+      ("eigs: unrecoverable exception encountered in dneupd");
 
-      if (info2 == 0)
+  eig_val.resize (k+1);
+  Complex *d = eig_val.fortran_vec ();
+
+  if (info2 == 0)
+    {
+      octave_idx_type jj = 0;
+      for (octave_idx_type i = 0; i < k+1; i++)
         {
-          octave_idx_type jj = 0;
-          for (octave_idx_type i = 0; i < k+1; i++)
-            {
-              if (dr[i] == 0.0 && di[i] == 0.0 && jj == 0)
-                jj++;
-              else
-                d[i-jj] = Complex (dr[i], di[i]);
-            }
-          if (jj == 0 && !rvec)
-            for (octave_idx_type i = 0; i < k; i++)
-              d[i] = d[i+1];
+          if (dr[i] == 0.0 && di[i] == 0.0 && jj == 0)
+            jj++;
+          else
+            d[i-jj] = Complex (dr[i], di[i]);
+        }
+      if (jj == 0 && ! rvec)
+        for (octave_idx_type i = 0; i < k; i++)
+          d[i] = d[i+1];
 
-          octave_idx_type k2 = k / 2;
+      octave_idx_type k2 = k / 2;
+      for (octave_idx_type i = 0; i < k2; i++)
+        {
+          Complex dtmp = d[i];
+          d[i] = d[k - i - 1];
+          d[k - i - 1] = dtmp;
+        }
+      eig_val.resize (k);
+
+      if (rvec)
+        {
+          OCTAVE_LOCAL_BUFFER (double, dtmp, n);
+
           for (octave_idx_type i = 0; i < k2; i++)
             {
-              Complex dtmp = d[i];
-              d[i] = d[k - i - 1];
-              d[k - i - 1] = dtmp;
-            }
-          eig_val.resize (k);
+              octave_idx_type off1 = i * n;
+              octave_idx_type off2 = (k - i - 1) * n;
 
-          if (rvec)
+              if (off1 == off2)
+                continue;
+
+              for (octave_idx_type j = 0; j < n; j++)
+                dtmp[j] = z[off1 + j];
+
+              for (octave_idx_type j = 0; j < n; j++)
+                z[off1 + j] = z[off2 + j];
+
+              for (octave_idx_type j = 0; j < n; j++)
+                z[off2 + j] = dtmp[j];
+            }
+
+          eig_vec.resize (n, k);
+          octave_idx_type i = 0;
+          while (i < k)
             {
-              OCTAVE_LOCAL_BUFFER (double, dtmp, n);
-
-              for (octave_idx_type i = 0; i < k2; i++)
+              octave_idx_type off1 = i * n;
+              octave_idx_type off2 = (i+1) * n;
+              if (std::imag (eig_val(i)) == 0)
                 {
-                  octave_idx_type off1 = i * n;
-                  octave_idx_type off2 = (k - i - 1) * n;
-
-                  if (off1 == off2)
-                    continue;
-
                   for (octave_idx_type j = 0; j < n; j++)
-                    dtmp[j] = z[off1 + j];
-
-                  for (octave_idx_type j = 0; j < n; j++)
-                    z[off1 + j] = z[off2 + j];
-
-                  for (octave_idx_type j = 0; j < n; j++)
-                    z[off2 + j] = dtmp[j];
+                    eig_vec(j,i) =
+                      Complex (z[j+off1],0.);
+                  i++;
                 }
-
-              eig_vec.resize (n, k);
-              octave_idx_type i = 0;
-              while (i < k)
+              else
                 {
-                  octave_idx_type off1 = i * n;
-                  octave_idx_type off2 = (i+1) * n;
-                  if (std::imag (eig_val(i)) == 0)
+                  for (octave_idx_type j = 0; j < n; j++)
                     {
-                      for (octave_idx_type j = 0; j < n; j++)
-                        eig_vec(j,i) =
-                          Complex (z[j+off1],0.);
-                      i++;
+                      eig_vec(j,i) =
+                        Complex (z[j+off1],z[j+off2]);
+                      if (i < k - 1)
+                        eig_vec(j,i+1) =
+                          Complex (z[j+off1],-z[j+off2]);
                     }
-                  else
-                    {
-                      for (octave_idx_type j = 0; j < n; j++)
-                        {
-                          eig_vec(j,i) =
-                            Complex (z[j+off1],z[j+off2]);
-                          if (i < k - 1)
-                            eig_vec(j,i+1) =
-                              Complex (z[j+off1],-z[j+off2]);
-                        }
-                      i+=2;
-                    }
+                  i+=2;
                 }
             }
-        }
-      else
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: error %d in dneupd", info2);
-          return -1;
         }
     }
+  else
+    (*current_liboctave_error_handler) ("eigs: error %d in dneupd", info2);
 
   return ip(4);
 }
@@ -2448,11 +2180,7 @@ EigsRealNonSymmetricFunc (EigsFunc fun, octave_idx_type n,
     }
 
   if (n < 3)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: n must be at least 3");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: n must be at least 3");
 
   if (p < 0)
     {
@@ -2462,39 +2190,28 @@ EigsRealNonSymmetricFunc (EigsFunc fun, octave_idx_type n,
         p = 20;
 
       if (p > n - 1)
-        p = n - 1 ;
+        p = n - 1;
     }
 
   if (k <= 0 || k >= n - 1)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
-         "      Use 'eig (full (A))' instead");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+       "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: opts.p must be greater than k and less than n");
-      return -1;
-    }
-
+    (*current_liboctave_error_handler)
+      ("eigs: opts.p must be greater than k and less than n");
 
   if (! have_sigma)
     {
       if (typ != "LM" && typ != "SM" && typ != "LA" && typ != "SA"
           && typ != "BE" && typ != "LR" && typ != "SR" && typ != "LI"
           && typ != "SI")
-        (*current_liboctave_error_handler)
-          ("eigs: unrecognized sigma value");
+        (*current_liboctave_error_handler) ("eigs: unrecognized sigma value");
 
       if (typ == "LA" || typ == "SA" || typ == "BE")
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: invalid sigma value for unsymmetric problem");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: invalid sigma value for unsymmetric problem");
 
       if (typ == "SM")
         {
@@ -2549,13 +2266,10 @@ EigsRealNonSymmetricFunc (EigsFunc fun, octave_idx_type n,
          F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: unrecoverable exception encountered in dnaupd");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: unrecoverable exception encountered in dnaupd");
 
-      if (disp > 0 && !xisnan(workl[iptr(5)-1]))
+      if (disp > 0 && ! octave::math::isnan(workl[iptr(5)-1]))
         {
           if (iter++)
             {
@@ -2567,12 +2281,12 @@ EigsRealNonSymmetricFunc (EigsFunc fun, octave_idx_type n,
             }
 
           // This is a kludge, as ARPACK doesn't give its
-          // iteration pointer. But as workl[iptr(5)-1] is
+          // iteration pointer.  But as workl[iptr(5)-1] is
           // an output value updated at each iteration, setting
           // a value in this array to NaN and testing for it
           // is a way of obtaining the iteration counter.
           if (ido != 99)
-            workl[iptr(5)-1] = octave_NaN;
+            workl[iptr(5)-1] = octave::numeric_limits<double>::NaN ();
         }
 
       if (ido == -1 || ido == 1 || ido == 2)
@@ -2595,11 +2309,9 @@ EigsRealNonSymmetricFunc (EigsFunc fun, octave_idx_type n,
       else
         {
           if (info < 0)
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: error %d in dsaupd", info);
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: error %d in dsaupd", info);
+
           break;
         }
     }
@@ -2608,9 +2320,9 @@ EigsRealNonSymmetricFunc (EigsFunc fun, octave_idx_type n,
   octave_idx_type info2;
 
   // We have a problem in that the size of the C++ bool
-  // type relative to the fortran logical type. It appears
+  // type relative to the fortran logical type.  It appears
   // that fortran uses 4- or 8-bytes per logical and C++ 1-byte
-  // per bool, though this might be system dependent. As
+  // per bool, though this might be system dependent.  As
   // long as the HOWMNY arg is not "S", the logical array
   // is just workspace for ARPACK, so use int type to
   // avoid problems.
@@ -2641,101 +2353,92 @@ EigsRealNonSymmetricFunc (EigsFunc fun, octave_idx_type n,
      F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable exception encountered in dneupd");
-      return -1;
-    }
-  else
-    {
-      eig_val.resize (k+1);
-      Complex *d = eig_val.fortran_vec ();
+    (*current_liboctave_error_handler)
+      ("eigs: unrecoverable exception encountered in dneupd");
 
-      if (info2 == 0)
+  eig_val.resize (k+1);
+  Complex *d = eig_val.fortran_vec ();
+
+  if (info2 == 0)
+    {
+      octave_idx_type jj = 0;
+      for (octave_idx_type i = 0; i < k+1; i++)
         {
-          octave_idx_type jj = 0;
-          for (octave_idx_type i = 0; i < k+1; i++)
-            {
-              if (dr[i] == 0.0 && di[i] == 0.0 && jj == 0)
-                jj++;
-              else
-                d[i-jj] = Complex (dr[i], di[i]);
-            }
-          if (jj == 0 && !rvec)
-            for (octave_idx_type i = 0; i < k; i++)
-              d[i] = d[i+1];
+          if (dr[i] == 0.0 && di[i] == 0.0 && jj == 0)
+            jj++;
+          else
+            d[i-jj] = Complex (dr[i], di[i]);
+        }
+      if (jj == 0 && ! rvec)
+        for (octave_idx_type i = 0; i < k; i++)
+          d[i] = d[i+1];
 
-          octave_idx_type k2 = k / 2;
+      octave_idx_type k2 = k / 2;
+      for (octave_idx_type i = 0; i < k2; i++)
+        {
+          Complex dtmp = d[i];
+          d[i] = d[k - i - 1];
+          d[k - i - 1] = dtmp;
+        }
+      eig_val.resize (k);
+
+      if (rvec)
+        {
+          OCTAVE_LOCAL_BUFFER (double, dtmp, n);
+
           for (octave_idx_type i = 0; i < k2; i++)
             {
-              Complex dtmp = d[i];
-              d[i] = d[k - i - 1];
-              d[k - i - 1] = dtmp;
-            }
-          eig_val.resize (k);
+              octave_idx_type off1 = i * n;
+              octave_idx_type off2 = (k - i - 1) * n;
 
-          if (rvec)
+              if (off1 == off2)
+                continue;
+
+              for (octave_idx_type j = 0; j < n; j++)
+                dtmp[j] = z[off1 + j];
+
+              for (octave_idx_type j = 0; j < n; j++)
+                z[off1 + j] = z[off2 + j];
+
+              for (octave_idx_type j = 0; j < n; j++)
+                z[off2 + j] = dtmp[j];
+            }
+
+          eig_vec.resize (n, k);
+          octave_idx_type i = 0;
+          while (i < k)
             {
-              OCTAVE_LOCAL_BUFFER (double, dtmp, n);
-
-              for (octave_idx_type i = 0; i < k2; i++)
+              octave_idx_type off1 = i * n;
+              octave_idx_type off2 = (i+1) * n;
+              if (std::imag (eig_val(i)) == 0)
                 {
-                  octave_idx_type off1 = i * n;
-                  octave_idx_type off2 = (k - i - 1) * n;
-
-                  if (off1 == off2)
-                    continue;
-
                   for (octave_idx_type j = 0; j < n; j++)
-                    dtmp[j] = z[off1 + j];
-
-                  for (octave_idx_type j = 0; j < n; j++)
-                    z[off1 + j] = z[off2 + j];
-
-                  for (octave_idx_type j = 0; j < n; j++)
-                    z[off2 + j] = dtmp[j];
+                    eig_vec(j,i) =
+                      Complex (z[j+off1],0.);
+                  i++;
                 }
-
-              eig_vec.resize (n, k);
-              octave_idx_type i = 0;
-              while (i < k)
+              else
                 {
-                  octave_idx_type off1 = i * n;
-                  octave_idx_type off2 = (i+1) * n;
-                  if (std::imag (eig_val(i)) == 0)
+                  for (octave_idx_type j = 0; j < n; j++)
                     {
-                      for (octave_idx_type j = 0; j < n; j++)
-                        eig_vec(j,i) =
-                          Complex (z[j+off1],0.);
-                      i++;
+                      eig_vec(j,i) =
+                        Complex (z[j+off1],z[j+off2]);
+                      if (i < k - 1)
+                        eig_vec(j,i+1) =
+                          Complex (z[j+off1],-z[j+off2]);
                     }
-                  else
-                    {
-                      for (octave_idx_type j = 0; j < n; j++)
-                        {
-                          eig_vec(j,i) =
-                            Complex (z[j+off1],z[j+off2]);
-                          if (i < k - 1)
-                            eig_vec(j,i+1) =
-                              Complex (z[j+off1],-z[j+off2]);
-                        }
-                      i+=2;
-                    }
+                  i+=2;
                 }
             }
-        }
-      else
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: error %d in dneupd", info2);
-          return -1;
         }
     }
+  else
+    (*current_liboctave_error_handler) ("eigs: error %d in dneupd", info2);
 
   return ip(4);
 }
 
-template <class M>
+template <typename M>
 octave_idx_type
 EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
                                octave_idx_type k, octave_idx_type p,
@@ -2756,16 +2459,10 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
   M bt;
 
   if (m.rows () != m.cols ())
-    {
-      (*current_liboctave_error_handler) ("eigs: A must be square");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: A must be square");
   if (have_b && (m.rows () != b.rows () || m.rows () != b.cols ()))
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: B must be square and the same size as A");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: B must be square and the same size as A");
 
   if (cresid.is_empty ())
     {
@@ -2780,11 +2477,7 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
     }
 
   if (n < 3)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: n must be at least 3");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: n must be at least 3");
 
   if (p < 0)
     {
@@ -2794,66 +2487,42 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
         p = 20;
 
       if (p > n - 1)
-        p = n - 1 ;
+        p = n - 1;
     }
 
   if (k <= 0 || k >= n - 1)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
-         "      Use 'eig (full (A))' instead");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+       "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: opts.p must be greater than k and less than n");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: opts.p must be greater than k and less than n");
 
-  if (have_b && cholB && permB.length () != 0)
+  if (have_b && cholB && ! permB.is_empty ())
     {
       // Check the we really have a permutation vector
-      if (permB.length () != n)
+      if (permB.numel () != n)
+        (*current_liboctave_error_handler) ("eigs: permB vector invalid");
+
+      Array<bool> checked (dim_vector (n, 1), false);
+      for (octave_idx_type i = 0; i < n; i++)
         {
-          (*current_liboctave_error_handler)
-            ("eigs: permB vector invalid");
-          return -1;
-        }
-      else
-        {
-          Array<bool> checked (dim_vector (n, 1), false);
-          for (octave_idx_type i = 0; i < n; i++)
-            {
-              octave_idx_type bidx =
-                static_cast<octave_idx_type> (permB(i));
-              if (checked(bidx) || bidx < 0 || bidx >= n
-                  || D_NINT (bidx) != bidx)
-                {
-                  (*current_liboctave_error_handler)
-                    ("eigs: permB vector invalid");
-                  return -1;
-                }
-            }
+          octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
+
+          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+            (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
 
   if (typ != "LM" && typ != "SM" && typ != "LA" && typ != "SA"
       && typ != "BE" && typ != "LR" && typ != "SR" && typ != "LI"
       && typ != "SI")
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecognized sigma value");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: unrecognized sigma value");
 
   if (typ == "LA" || typ == "SA" || typ == "BE")
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: invalid sigma value for complex problem");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: invalid sigma value for complex problem");
 
   if (have_b)
     {
@@ -2863,7 +2532,7 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
         {
           bt = b;
           b = b.hermitian ();
-          if (permB.length () == 0)
+          if (permB.is_empty ())
             {
               permB = ColumnVector (n);
               for (octave_idx_type i = 0; i < n; i++)
@@ -2873,11 +2542,8 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
       else
         {
           if (! make_cholb (b, bt, permB))
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: The matrix B is not positive definite");
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: The matrix B is not positive definite");
         }
     }
 
@@ -2920,13 +2586,10 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
          F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: unrecoverable exception encountered in znaupd");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: unrecoverable exception encountered in znaupd");
 
-      if (disp > 0 && !xisnan (workl[iptr (5)-1]))
+      if (disp > 0 && ! octave::math::isnan (workl[iptr (5)-1]))
         {
           if (iter++)
             {
@@ -2938,12 +2601,12 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
             }
 
           // This is a kludge, as ARPACK doesn't give its
-          // iteration pointer. But as workl[iptr(5)-1] is
+          // iteration pointer.  But as workl[iptr(5)-1] is
           // an output value updated at each iteration, setting
           // a value in this array to NaN and testing for it
           // is a way of obtaining the iteration counter.
           if (ido != 99)
-            workl[iptr(5)-1] = octave_NaN;
+            workl[iptr(5)-1] = octave::numeric_limits<double>::NaN ();
         }
 
       if (ido == -1 || ido == 1 || ido == 2)
@@ -2958,18 +2621,16 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
                 workd[i+iptr(1)-1] = mtmp(i,0);
 
             }
-          else if (!vector_product (m, workd + iptr(0) - 1,
+          else if (! vector_product (m, workd + iptr(0) - 1,
                                     workd + iptr(1) - 1))
             break;
         }
       else
         {
           if (info < 0)
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: error %d in znaupd", info);
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: error %d in znaupd", info);
+
           break;
         }
     }
@@ -2978,9 +2639,9 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
   octave_idx_type info2;
 
   // We have a problem in that the size of the C++ bool
-  // type relative to the fortran logical type. It appears
+  // type relative to the fortran logical type.  It appears
   // that fortran uses 4- or 8-bytes per logical and C++ 1-byte
-  // per bool, though this might be system dependent. As
+  // per bool, though this might be system dependent.  As
   // long as the HOWMNY arg is not "S", the logical array
   // is just workspace for ARPACK, so use int type to
   // avoid problems.
@@ -3003,11 +2664,8 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
      F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable exception encountered in zneupd");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: unrecoverable exception encountered in zneupd");
 
   if (info2 == 0)
     {
@@ -3047,16 +2705,12 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
         }
     }
   else
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: error %d in zneupd", info2);
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: error %d in zneupd", info2);
 
   return ip(4);
 }
 
-template <class M>
+template <typename M>
 octave_idx_type
 EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
                                     octave_idx_type k, octave_idx_type p,
@@ -3075,16 +2729,10 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
   std::string typ = "LM";
 
   if (m.rows () != m.cols ())
-    {
-      (*current_liboctave_error_handler) ("eigs: A must be square");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: A must be square");
   if (have_b && (m.rows () != b.rows () || m.rows () != b.cols ()))
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: B must be square and the same size as A");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: B must be square and the same size as A");
 
   // FIXME: The "SM" type for mode 1 seems unstable though faster!!
   //if (! std::abs (sigma))
@@ -3105,11 +2753,7 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
     }
 
   if (n < 3)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: n must be at least 3");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: n must be at least 3");
 
   if (p < 0)
     {
@@ -3119,47 +2763,31 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
         p = 20;
 
       if (p > n - 1)
-        p = n - 1 ;
+        p = n - 1;
     }
 
   if (k <= 0 || k >= n - 1)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
-         "      Use 'eig (full (A))' instead");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+       "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: opts.p must be greater than k and less than n");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: opts.p must be greater than k and less than n");
 
-  if (have_b && cholB && permB.length () != 0)
+  if (have_b && cholB && ! permB.is_empty ())
     {
       // Check that we really have a permutation vector
-      if (permB.length () != n)
+      if (permB.numel () != n)
+        (*current_liboctave_error_handler) ("eigs: permB vector invalid");
+
+      Array<bool> checked (dim_vector (n, 1), false);
+      for (octave_idx_type i = 0; i < n; i++)
         {
-          (*current_liboctave_error_handler) ("eigs: permB vector invalid");
-          return -1;
-        }
-      else
-        {
-          Array<bool> checked (dim_vector (n, 1), false);
-          for (octave_idx_type i = 0; i < n; i++)
-            {
-              octave_idx_type bidx =
-                static_cast<octave_idx_type> (permB(i));
-              if (checked(bidx) || bidx < 0 || bidx >= n
-                  || D_NINT (bidx) != bidx)
-                {
-                  (*current_liboctave_error_handler)
-                    ("eigs: permB vector invalid");
-                  return -1;
-                }
-            }
+          octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
+
+          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+            (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
 
@@ -3214,13 +2842,10 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
          F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: unrecoverable exception encountered in znaupd");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: unrecoverable exception encountered in znaupd");
 
-      if (disp > 0 && !xisnan(workl[iptr(5)-1]))
+      if (disp > 0 && ! octave::math::isnan(workl[iptr(5)-1]))
         {
           if (iter++)
             {
@@ -3232,12 +2857,12 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
             }
 
           // This is a kludge, as ARPACK doesn't give its
-          // iteration pointer. But as workl[iptr(5)-1] is
+          // iteration pointer.  But as workl[iptr(5)-1] is
           // an output value updated at each iteration, setting
           // a value in this array to NaN and testing for it
           // is a way of obtaining the iteration counter.
           if (ido != 99)
-            workl[iptr(5)-1] = octave_NaN;
+            workl[iptr(5)-1] = octave::numeric_limits<double>::NaN ();
         }
 
       if (ido == -1 || ido == 1 || ido == 2)
@@ -3305,11 +2930,9 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
       else
         {
           if (info < 0)
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: error %d in dsaupd", info);
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: error %d in dsaupd", info);
+
           break;
         }
     }
@@ -3318,9 +2941,9 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
   octave_idx_type info2;
 
   // We have a problem in that the size of the C++ bool
-  // type relative to the fortran logical type. It appears
+  // type relative to the fortran logical type.  It appears
   // that fortran uses 4- or 8-bytes per logical and C++ 1-byte
-  // per bool, though this might be system dependent. As
+  // per bool, though this might be system dependent.  As
   // long as the HOWMNY arg is not "S", the logical array
   // is just workspace for ARPACK, so use int type to
   // avoid problems.
@@ -3343,11 +2966,8 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
      F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable exception encountered in zneupd");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: unrecoverable exception encountered in zneupd");
 
   if (info2 == 0)
     {
@@ -3384,11 +3004,8 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
         }
     }
   else
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: error %d in zneupd", info2);
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: error %d in zneupd", info2);
 
   return ip(4);
 }
@@ -3422,11 +3039,8 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
     }
 
   if (n < 3)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: n must be at least 3");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: n must be at least 3");
 
   if (p < 0)
     {
@@ -3436,38 +3050,28 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
         p = 20;
 
       if (p > n - 1)
-        p = n - 1 ;
+        p = n - 1;
     }
 
   if (k <= 0 || k >= n - 1)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
-         "      Use 'eig (full (A))' instead");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+       "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: opts.p must be greater than k and less than n");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: opts.p must be greater than k and less than n");
 
   if (! have_sigma)
     {
       if (typ != "LM" && typ != "SM" && typ != "LA" && typ != "SA"
           && typ != "BE" && typ != "LR" && typ != "SR" && typ != "LI"
           && typ != "SI")
-        (*current_liboctave_error_handler)
-          ("eigs: unrecognized sigma value");
+        (*current_liboctave_error_handler) ("eigs: unrecognized sigma value");
 
       if (typ == "LA" || typ == "SA" || typ == "BE")
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: invalid sigma value for complex problem");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: invalid sigma value for complex problem");
 
       if (typ == "SM")
         {
@@ -3523,13 +3127,10 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
          F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
-        {
-          (*current_liboctave_error_handler)
-            ("eigs: unrecoverable exception encountered in znaupd");
-          return -1;
-        }
+        (*current_liboctave_error_handler)
+          ("eigs: unrecoverable exception encountered in znaupd");
 
-      if (disp > 0 && !xisnan(workl[iptr(5)-1]))
+      if (disp > 0 && ! octave::math::isnan(workl[iptr(5)-1]))
         {
           if (iter++)
             {
@@ -3541,12 +3142,12 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
             }
 
           // This is a kludge, as ARPACK doesn't give its
-          // iteration pointer. But as workl[iptr(5)-1] is
+          // iteration pointer.  But as workl[iptr(5)-1] is
           // an output value updated at each iteration, setting
           // a value in this array to NaN and testing for it
           // is a way of obtaining the iteration counter.
           if (ido != 99)
-            workl[iptr(5)-1] = octave_NaN;
+            workl[iptr(5)-1] = octave::numeric_limits<double>::NaN ();
         }
 
       if (ido == -1 || ido == 1 || ido == 2)
@@ -3569,11 +3170,9 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
       else
         {
           if (info < 0)
-            {
-              (*current_liboctave_error_handler)
-                ("eigs: error %d in dsaupd", info);
-              return -1;
-            }
+            (*current_liboctave_error_handler)
+              ("eigs: error %d in dsaupd", info);
+
           break;
         }
     }
@@ -3582,9 +3181,9 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
   octave_idx_type info2;
 
   // We have a problem in that the size of the C++ bool
-  // type relative to the fortran logical type. It appears
+  // type relative to the fortran logical type.  It appears
   // that fortran uses 4- or 8-bytes per logical and C++ 1-byte
-  // per bool, though this might be system dependent. As
+  // per bool, though this might be system dependent.  As
   // long as the HOWMNY arg is not "S", the logical array
   // is just workspace for ARPACK, so use int type to
   // avoid problems.
@@ -3607,11 +3206,8 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
      F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: unrecoverable exception encountered in zneupd");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("eigs: unrecoverable exception encountered in zneupd");
 
   if (info2 == 0)
     {
@@ -3648,236 +3244,127 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
         }
     }
   else
-    {
-      (*current_liboctave_error_handler)
-        ("eigs: error %d in zneupd", info2);
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("eigs: error %d in zneupd", info2);
 
   return ip(4);
 }
 
-#if !defined (CXX_NEW_FRIEND_TEMPLATE_DECL)
-extern octave_idx_type
-EigsRealSymmetricMatrix (const Matrix& m, const std::string typ,
-                         octave_idx_type k, octave_idx_type p,
-                         octave_idx_type &info, Matrix &eig_vec,
-                         ColumnVector &eig_val, const Matrix& b,
-                         ColumnVector &permB, ColumnVector &resid,
-                         std::ostream &os,
-                         double tol = std::numeric_limits<double>::epsilon (),
-                         bool rvec = false, bool cholB = 0, int disp = 0,
-                         int maxit = 300);
+// Instantiations for the types we need.
 
-extern octave_idx_type
-EigsRealSymmetricMatrix (const SparseMatrix& m, const std::string typ,
-                         octave_idx_type k, octave_idx_type p,
-                         octave_idx_type &info, Matrix &eig_vec,
-                         ColumnVector &eig_val, const SparseMatrix& b,
-                         ColumnVector &permB, ColumnVector &resid,
-                         std::ostream& os,
-                         double tol = std::numeric_limits<double>::epsilon (),
-                         bool rvec = false, bool cholB = 0, int disp = 0,
-                         int maxit = 300);
+// Matrix
 
-extern octave_idx_type
-EigsRealSymmetricMatrixShift (const Matrix& m, double sigma,
-                              octave_idx_type k, octave_idx_type p,
-                              octave_idx_type &info, Matrix &eig_vec,
-                              ColumnVector &eig_val, const Matrix& b,
-                              ColumnVector &permB, ColumnVector &resid,
-                              std::ostream &os,
-                              double tol = std::numeric_limits<double>::epsilon (),
-                              bool rvec = false, bool cholB = 0, int disp = 0,
-                              int maxit = 300);
+template
+octave_idx_type
+EigsRealSymmetricMatrix<Matrix>
+  (const Matrix& m, const std::string typ, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, Matrix& eig_vec,
+   ColumnVector& eig_val, const Matrix& _b, ColumnVector& permB,
+   ColumnVector& resid, std::ostream& os, double tol, bool rvec,
+   bool cholB, int disp, int maxit);
 
-extern octave_idx_type
-EigsRealSymmetricMatrixShift (const SparseMatrix& m, double sigma,
-                              octave_idx_type k, octave_idx_type p,
-                              octave_idx_type &info, Matrix &eig_vec,
-                              ColumnVector &eig_val, const SparseMatrix& b,
-                              ColumnVector &permB, ColumnVector &resid,
-                              std::ostream &os,
-                              double tol = std::numeric_limits<double>::epsilon (),
-                              bool rvec = false, bool cholB = 0, int disp = 0,
-                              int maxit = 300);
+template
+octave_idx_type
+EigsRealSymmetricMatrixShift<Matrix>
+  (const Matrix& m, double sigma, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, Matrix& eig_vec,
+   ColumnVector& eig_val, const Matrix& _b, ColumnVector& permB,
+   ColumnVector& resid, std::ostream& os, double tol, bool rvec,
+   bool cholB, int disp, int maxit);
 
-extern octave_idx_type
-EigsRealSymmetricFunc (EigsFunc fun, octave_idx_type n,
-                       const std::string &typ, double sigma,
-                       octave_idx_type k, octave_idx_type p,
-                       octave_idx_type &info,
-                       Matrix &eig_vec, ColumnVector &eig_val,
-                       ColumnVector &resid, std::ostream &os,
-                       double tol = std::numeric_limits<double>::epsilon (),
-                       bool rvec = false, bool cholB = 0, int disp = 0,
-                       int maxit = 300);
+template
+octave_idx_type
+EigsRealNonSymmetricMatrix<Matrix>
+  (const Matrix& m, const std::string typ, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, ComplexMatrix& eig_vec,
+   ComplexColumnVector& eig_val, const Matrix& _b, ColumnVector& permB,
+   ColumnVector& resid, std::ostream& os, double tol, bool rvec,
+   bool cholB, int disp, int maxit);
 
-extern octave_idx_type
-EigsRealNonSymmetricMatrix (const Matrix& m, const std::string typ,
-                            octave_idx_type k, octave_idx_type p,
-                            octave_idx_type &info, ComplexMatrix &eig_vec,
-                            ComplexColumnVector &eig_val, const Matrix& b,
-                            ColumnVector &permB, ColumnVector &resid,
-                            std::ostream &os,
-                            double tol = std::numeric_limits<double>::epsilon (),
-                            bool rvec = false, bool cholB = 0, int disp = 0,
-                            int maxit = 300);
+template
+octave_idx_type
+EigsRealNonSymmetricMatrixShift<Matrix>
+  (const Matrix& m, double sigmar, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, ComplexMatrix& eig_vec,
+   ComplexColumnVector& eig_val, const Matrix& _b, ColumnVector& permB,
+   ColumnVector& resid, std::ostream& os, double tol, bool rvec,
+   bool cholB, int disp, int maxit);
 
-extern octave_idx_type
-EigsRealNonSymmetricMatrix (const SparseMatrix& m, const std::string typ,
-                            octave_idx_type k, octave_idx_type p,
-                            octave_idx_type &info, ComplexMatrix &eig_vec,
-                            ComplexColumnVector &eig_val,
-                            const SparseMatrix& b,
-                            ColumnVector &permB, ColumnVector &resid,
-                            std::ostream &os,
-                            double tol = std::numeric_limits<double>::epsilon (),
-                            bool rvec = false, bool cholB = 0, int disp = 0,
-                            int maxit = 300);
+// SparseMatrix
 
-extern octave_idx_type
-EigsRealNonSymmetricMatrixShift (const Matrix& m, double sigma,
-                                 octave_idx_type k, octave_idx_type p,
-                                 octave_idx_type &info,
-                                 ComplexMatrix &eig_vec,
-                                 ComplexColumnVector &eig_val, const Matrix& b,
-                                 ColumnVector &permB, ColumnVector &resid,
-                                 std::ostream &os,
-                                 double tol = std::numeric_limits<double>::epsilon (),
-                                 bool rvec = false, bool cholB = 0,
-                                 int disp = 0, int maxit = 300);
+template
+octave_idx_type
+EigsRealSymmetricMatrix<SparseMatrix>
+  (const SparseMatrix& m, const std::string typ, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, Matrix& eig_vec,
+   ColumnVector& eig_val, const SparseMatrix& _b, ColumnVector& permB,
+   ColumnVector& resid, std::ostream& os, double tol, bool rvec,
+   bool cholB, int disp, int maxit);
 
-extern octave_idx_type
-EigsRealNonSymmetricMatrixShift (const SparseMatrix& m, double sigma,
-                                 octave_idx_type k, octave_idx_type p,
-                                 octave_idx_type &info,
-                                 ComplexMatrix &eig_vec,
-                                 ComplexColumnVector &eig_val,
-                                 const SparseMatrix& b,
-                                 ColumnVector &permB, ColumnVector &resid,
-                                 std::ostream &os,
-                                 double tol = std::numeric_limits<double>::epsilon (),
-                                 bool rvec = false, bool cholB = 0,
-                                 int disp = 0, int maxit = 300);
+template
+octave_idx_type
+EigsRealSymmetricMatrixShift<SparseMatrix>
+  (const SparseMatrix& m, double sigma, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, Matrix& eig_vec,
+   ColumnVector& eig_val, const SparseMatrix& _b, ColumnVector& permB,
+   ColumnVector& resid, std::ostream& os, double tol, bool rvec,
+   bool cholB, int disp, int maxit);
 
-extern octave_idx_type
-EigsRealNonSymmetricFunc (EigsFunc fun, octave_idx_type n,
-                          const std::string &_typ, double sigma,
-                          octave_idx_type k, octave_idx_type p,
-                          octave_idx_type &info, ComplexMatrix &eig_vec,
-                          ComplexColumnVector &eig_val,
-                          ColumnVector &resid, std::ostream& os,
-                          double tol = std::numeric_limits<double>::epsilon (),
-                          bool rvec = false, bool cholB = 0, int disp = 0,
-                          int maxit = 300);
+template
+octave_idx_type
+EigsRealNonSymmetricMatrix<SparseMatrix>
+  (const SparseMatrix& m, const std::string typ, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, ComplexMatrix& eig_vec,
+   ComplexColumnVector& eig_val, const SparseMatrix& _b, ColumnVector& permB,
+   ColumnVector& resid, std::ostream& os, double tol, bool rvec,
+   bool cholB, int disp, int maxit);
 
-extern octave_idx_type
-EigsComplexNonSymmetricMatrix (const ComplexMatrix& m, const std::string typ,
-                               octave_idx_type k, octave_idx_type p,
-                               octave_idx_type &info, ComplexMatrix &eig_vec,
-                               ComplexColumnVector &eig_val,
-                               const ComplexMatrix& b, ColumnVector &permB,
-                               ComplexColumnVector &resid,
-                               std::ostream &os,
-                               double tol = std::numeric_limits<double>::epsilon (),
-                               bool rvec = false, bool cholB = 0, int disp = 0,
-                               int maxit = 300);
+template
+octave_idx_type
+EigsRealNonSymmetricMatrixShift<SparseMatrix>
+  (const SparseMatrix& m, double sigmar, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, ComplexMatrix& eig_vec,
+   ComplexColumnVector& eig_val, const SparseMatrix& _b, ColumnVector& permB,
+   ColumnVector& resid, std::ostream& os, double tol, bool rvec,
+   bool cholB, int disp, int maxit);
 
-extern octave_idx_type
-EigsComplexNonSymmetricMatrix (const SparseComplexMatrix& m,
-                               const std::string typ, octave_idx_type k,
-                               octave_idx_type p, octave_idx_type &info,
-                               ComplexMatrix &eig_vec,
-                               ComplexColumnVector &eig_val,
-                               const SparseComplexMatrix& b,
-                               ColumnVector &permB,
-                               ComplexColumnVector &resid,
-                               std::ostream &os,
-                               double tol = std::numeric_limits<double>::epsilon (),
-                               bool rvec = false, bool cholB = 0, int disp = 0,
-                               int maxit = 300);
+// ComplexMatrix
 
-extern octave_idx_type
-EigsComplexNonSymmetricMatrixShift (const ComplexMatrix& m, Complex sigma,
-                                    octave_idx_type k, octave_idx_type p,
-                                    octave_idx_type &info,
-                                    ComplexMatrix &eig_vec,
-                                    ComplexColumnVector &eig_val,
-                                    const ComplexMatrix& b,
-                                    ColumnVector &permB,
-                                    ComplexColumnVector &resid,
-                                    std::ostream &os,
-                                    double tol = std::numeric_limits<double>::epsilon (),
-                                    bool rvec = false, bool cholB = 0,
-                                    int disp = 0, int maxit = 300);
+template
+octave_idx_type
+EigsComplexNonSymmetricMatrix<ComplexMatrix>
+  (const ComplexMatrix& m, const std::string typ, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, ComplexMatrix& eig_vec,
+   ComplexColumnVector& eig_val, const ComplexMatrix& _b, ColumnVector& permB,
+   ComplexColumnVector& cresid, std::ostream& os, double tol,
+   bool rvec, bool cholB, int disp, int maxit);
 
-extern octave_idx_type
-EigsComplexNonSymmetricMatrixShift (const SparseComplexMatrix& m,
-                                    Complex sigma,
-                                    octave_idx_type k, octave_idx_type p,
-                                    octave_idx_type &info,
-                                    ComplexMatrix &eig_vec,
-                                    ComplexColumnVector &eig_val,
-                                    const SparseComplexMatrix& b,
-                                    ColumnVector &permB,
-                                    ComplexColumnVector &resid,
-                                    std::ostream &os,
-                                    double tol = std::numeric_limits<double>::epsilon (),
-                                    bool rvec = false, bool cholB = 0,
-                                    int disp = 0, int maxit = 300);
+template
+octave_idx_type
+EigsComplexNonSymmetricMatrixShift<ComplexMatrix>
+  (const ComplexMatrix& m, Complex sigma, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, ComplexMatrix& eig_vec,
+   ComplexColumnVector& eig_val, const ComplexMatrix& _b, ColumnVector& permB,
+   ComplexColumnVector& cresid, std::ostream& os, double tol,
+   bool rvec, bool cholB, int disp, int maxit);
 
-extern octave_idx_type
-EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
-                             const std::string &_typ, Complex sigma,
-                             octave_idx_type k, octave_idx_type p,
-                             octave_idx_type &info, ComplexMatrix &eig_vec,
-                             ComplexColumnVector &eig_val,
-                             ComplexColumnVector &resid, std::ostream& os,
-                             double tol = std::numeric_limits<double>::epsilon (),
-                             bool rvec = false, bool cholB = 0,
-                             int disp = 0, int maxit = 300);
-#endif
+// SparseComplexMatrix
 
-#ifndef _MSC_VER
-template octave_idx_type
-lusolve (const SparseMatrix&, const SparseMatrix&, Matrix&);
+template
+octave_idx_type
+EigsComplexNonSymmetricMatrix<SparseComplexMatrix>
+  (const SparseComplexMatrix& m, const std::string typ, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, ComplexMatrix& eig_vec,
+   ComplexColumnVector& eig_val, const SparseComplexMatrix& _b,
+   ColumnVector& permB, ComplexColumnVector& cresid, std::ostream& os,
+   double tol, bool rvec, bool cholB, int disp, int maxit);
 
-template octave_idx_type
-lusolve (const SparseComplexMatrix&, const SparseComplexMatrix&,
-         ComplexMatrix&);
-
-template octave_idx_type
-lusolve (const Matrix&, const Matrix&, Matrix&);
-
-template octave_idx_type
-lusolve (const ComplexMatrix&, const ComplexMatrix&, ComplexMatrix&);
-
-template ComplexMatrix
-ltsolve (const SparseComplexMatrix&, const ColumnVector&,
-         const ComplexMatrix&);
-
-template Matrix
-ltsolve (const SparseMatrix&, const ColumnVector&, const Matrix&);
-
-template ComplexMatrix
-ltsolve (const ComplexMatrix&, const ColumnVector&, const ComplexMatrix&);
-
-template Matrix
-ltsolve (const Matrix&, const ColumnVector&, const Matrix&);
-
-template ComplexMatrix
-utsolve (const SparseComplexMatrix&, const ColumnVector&,
-         const ComplexMatrix&);
-
-template Matrix
-utsolve (const SparseMatrix&, const ColumnVector&, const Matrix&);
-
-template ComplexMatrix
-utsolve (const ComplexMatrix&, const ColumnVector&, const ComplexMatrix&);
-
-template Matrix
-utsolve (const Matrix&, const ColumnVector&, const Matrix&);
-#endif
+template
+octave_idx_type
+EigsComplexNonSymmetricMatrixShift<SparseComplexMatrix>
+  (const SparseComplexMatrix& m, Complex sigma, octave_idx_type k,
+   octave_idx_type p, octave_idx_type& info, ComplexMatrix& eig_vec,
+   ComplexColumnVector& eig_val, const SparseComplexMatrix& _b,
+   ColumnVector& permB, ComplexColumnVector& cresid, std::ostream& os,
+   double tol, bool rvec, bool cholB, int disp, int maxit);
 
 #endif

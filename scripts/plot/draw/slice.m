@@ -17,20 +17,20 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} slice (@var{x}, @var{y}, @var{z}, @var{v}, @var{sx}, @var{sy}, @var{sz})
-## @deftypefnx {Function File} {} slice (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi})
-## @deftypefnx {Function File} {} slice (@var{v}, @var{sx}, @var{sy}, @var{sz})
-## @deftypefnx {Function File} {} slice (@var{v}, @var{xi}, @var{yi}, @var{zi})
-## @deftypefnx {Function File} {} slice (@dots{}, @var{method})
-## @deftypefnx {Function File} {} slice (@var{hax}, @dots{})
-## @deftypefnx {Function File} {@var{h} =} slice (@dots{})
+## @deftypefn  {} {} slice (@var{x}, @var{y}, @var{z}, @var{v}, @var{sx}, @var{sy}, @var{sz})
+## @deftypefnx {} {} slice (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi})
+## @deftypefnx {} {} slice (@var{v}, @var{sx}, @var{sy}, @var{sz})
+## @deftypefnx {} {} slice (@var{v}, @var{xi}, @var{yi}, @var{zi})
+## @deftypefnx {} {} slice (@dots{}, @var{method})
+## @deftypefnx {} {} slice (@var{hax}, @dots{})
+## @deftypefnx {} {@var{h} =} slice (@dots{})
 ## Plot slices of 3-D data/scalar fields.
 ##
 ## Each element of the 3-dimensional array @var{v} represents a scalar value at
 ## a location given by the parameters @var{x}, @var{y}, and @var{z}.  The
 ## parameters @var{x}, @var{x}, and @var{z} are either 3-dimensional arrays of
 ## the same size as the array @var{v} in the @qcode{"meshgrid"} format or
-## vectors.  The parameters @var{xi}, etc. respect a similar format to
+## vectors.  The parameters @var{xi}, etc.@: respect a similar format to
 ## @var{x}, etc., and they represent the points at which the array @var{vi}
 ## is interpolated using interp3.  The vectors @var{sx}, @var{sy}, and
 ## @var{sz} contain points of orthogonal slices of the respective axes.

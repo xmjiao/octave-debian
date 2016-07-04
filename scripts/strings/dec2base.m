@@ -17,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} dec2base (@var{d}, @var{base})
-## @deftypefnx {Function File} {} dec2base (@var{d}, @var{base}, @var{len})
+## @deftypefn  {} {} dec2base (@var{d}, @var{base})
+## @deftypefnx {} {} dec2base (@var{d}, @var{base}, @var{len})
 ## Return a string of symbols in base @var{base} corresponding to the
 ## non-negative integer @var{d}.
 ##
@@ -108,7 +108,7 @@ function retval = dec2base (d, base, len)
   ## convert digits to symbols
   retval = reshape (symbols(digits+1), size (digits));
 
-  ## Check if the first element is the zero symbol. It seems possible
+  ## Check if the first element is the zero symbol.  It seems possible
   ## that LEN is provided, and is less than the computed MAX_LEN and
   ## MAX_LEN is computed to be one larger than necessary, so we would
   ## have a leading zero to remove.  But if LEN >= MAX_LEN, we should
@@ -156,7 +156,7 @@ endfunction
 
 %!test
 %! a = 0:3;
-%! assert (dec2base (!a, 2, 1), ["1"; "0"; "0"; "0"])
+%! assert (dec2base (! a, 2, 1), ["1"; "0"; "0"; "0"]);
 
 ## Test input validation
 %!error dec2base ()

@@ -22,8 +22,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <list>
@@ -32,9 +32,9 @@ along with Octave; see the file COPYING.  If not, see
 #include <vector>
 
 #if defined (HAVE_PCRE_H)
-#include <pcre.h>
+#  include <pcre.h>
 #elif defined (HAVE_PCRE_PCRE_H)
-#include <pcre/pcre.h>
+#  include <pcre/pcre.h>
 #endif
 
 #include "Matrix.h"
@@ -84,22 +84,19 @@ regexp::compile_internal (void)
                || pattern.at (new_pos + 3) == '!'))
         {
           // The syntax of named tokens in pcre is "(?P<name>...)" while
-          // we need a syntax "(?<name>...)", so fix that here. Also an
+          // we need a syntax "(?<name>...)", so fix that here.  Also an
           // expression like
           // "(?<first>\w+)\s+(?<last>\w+)|(?<last>\w+),\s+(?<first>\w+)"
           // should be perfectly legal, while pcre does not allow the same
-          // named token name on both sides of the alternative. Also fix
+          // named token name on both sides of the alternative.  Also fix
           // that here by replacing name tokens by dummy names, and dealing
           // with the dummy names later.
 
           size_t tmp_pos = pattern.find_first_of ('>', new_pos);
 
           if (tmp_pos == std::string::npos)
-            {
-              (*current_liboctave_error_handler)
-                ("regexp: syntax error in pattern");
-              return;
-            }
+            (*current_liboctave_error_handler)
+              ("regexp: syntax error in pattern");
 
           std::string tmp_name =
             pattern.substr (new_pos+3, tmp_pos-new_pos-3);
@@ -141,7 +138,7 @@ regexp::compile_internal (void)
           // Find lookbehind operators of arbitrary length (ie like
           // "(?<=[a-z]*)") and replace with a maximum length operator
           // as PCRE can not yet handle arbitrary length lookahead
-          // operators. Use the string length as the maximum length to
+          // operators.  Use the string length as the maximum length to
           // avoid issues.
 
           int brackets = 1;
@@ -176,7 +173,7 @@ regexp::compile_internal (void)
 
               if (tmp_pos3 != std::string::npos && tmp_pos3 < tmp_pos1)
                 {
-                  if (!lookbehind_warned)
+                  if (! lookbehind_warned)
                     {
                       lookbehind_warned = true;
                       (*current_liboctave_warning_with_id_handler)
@@ -235,8 +232,7 @@ regexp::compile_internal (void)
 
   if (! data)
     (*current_liboctave_error_handler)
-      ("%s: %s at position %d of expression", who.c_str (),
-       err, erroffset);
+      ("%s: %s at position %d of expression", who.c_str (), err, erroffset);
 }
 
 regexp::match_data
@@ -309,13 +305,11 @@ regexp::match (const std::string& buffer)
         }
 
       if (matches < 0 && matches != PCRE_ERROR_NOMATCH)
-        {
-          (*current_liboctave_error_handler)
-            ("%s: internal error calling pcre_exec; error code from pcre_exec is %i",
-             who.c_str (), matches);
-          return retval;
-        }
-      else if (matches == PCRE_ERROR_NOMATCH)
+        (*current_liboctave_error_handler)
+          ("%s: internal error calling pcre_exec; "
+           "error code from pcre_exec is %i", who.c_str (), matches);
+
+      if (matches == PCRE_ERROR_NOMATCH)
         break;
       else if (ovector[1] <= ovector[0] && ! options.emptymatch ())
         {
@@ -352,12 +346,9 @@ regexp::match (const std::string& buffer)
                                                 matches, &listptr);
 
           if (status == PCRE_ERROR_NOMEMORY)
-            {
-              (*current_liboctave_error_handler)
-                ("%s: cannot allocate memory in pcre_get_substring_list",
-                 who.c_str ());
-              return retval;
-            }
+            (*current_liboctave_error_handler)
+              ("%s: cannot allocate memory in pcre_get_substring_list",
+               who.c_str ());
 
           string_vector tokens (pos_match);
           string_vector named_tokens (nnames);
@@ -434,11 +425,11 @@ regexp::is_match (const std::string& buffer)
 Array<bool>
 regexp::is_match (const string_vector& buffer)
 {
-  octave_idx_type len = buffer.length ();
+  octave_idx_type len = buffer.numel ();
 
   Array<bool> retval (dim_vector (len, 1));
 
-  for (octave_idx_type i = 0; i < buffer.length (); i++)
+  for (octave_idx_type i = 0; i < buffer.numel (); i++)
     retval(i) = is_match (buffer(i));
 
   return retval;
@@ -450,7 +441,6 @@ typedef struct
   size_t pos;
   int num;
 } rep_token_t;
-
 
 std::string
 regexp::replace (const std::string& buffer, const std::string& replacement)

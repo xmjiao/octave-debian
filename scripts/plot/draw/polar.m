@@ -17,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} polar (@var{theta}, @var{rho})
-## @deftypefnx {Function File} {} polar (@var{theta}, @var{rho}, @var{fmt})
-## @deftypefnx {Function File} {} polar (@var{cplx})
-## @deftypefnx {Function File} {} polar (@var{cplx}, @var{fmt})
-## @deftypefnx {Function File} {} polar (@var{hax}, @dots{})
-## @deftypefnx {Function File} {@var{h} =} polar (@dots{})
+## @deftypefn  {} {} polar (@var{theta}, @var{rho})
+## @deftypefnx {} {} polar (@var{theta}, @var{rho}, @var{fmt})
+## @deftypefnx {} {} polar (@var{cplx})
+## @deftypefnx {} {} polar (@var{cplx}, @var{fmt})
+## @deftypefnx {} {} polar (@var{hax}, @dots{})
+## @deftypefnx {} {@var{h} =} polar (@dots{})
 ## Create a 2-D plot from polar coordinates @var{theta} and @var{rho}.
 ##
 ## If a single complex input @var{cplx} is given then the real part is used
@@ -127,7 +127,8 @@ function h = polar (varargin)
       addlistener (hax, "fontsize", {@__update_text__, hg, "fontsize"});
       addlistener (hax, "fontunits", {@__update_text__, hg, "fontunits"});
       addlistener (hax, "fontweight", {@__update_text__, hg, "fontweight"});
-      addlistener (hax, "interpreter", {@__update_text__, hg, "interpreter"});
+      addlistener (hax, "ticklabelinterpreter",
+                   {@__update_text__, hg, "interpreter"});
       addlistener (hax, "layer", {@__update_layer__, hg});
       addlistener (hax, "gridlinestyle",{@__update_lines__,hg,"gridlinestyle"});
       addlistener (hax, "linewidth", {@__update_lines__, hg, "linewidth"});
@@ -155,15 +156,24 @@ endfunction
 
 function rtick = __calc_rtick__ (hax, maxr)
   ## FIXME: workaround: calculate r(ho)tick from xtick
-  savexlim = get (hax, "xlim");
-  saveylim = get (hax, "ylim");
+  ##        It would be better to just calculate the values,
+  ##        but that code is deep in the C++ for the plot engines.
+  saved_lims = get (hax, {"xlim", "ylim"});
   set (hax, "xlim", [-maxr maxr], "ylim", [-maxr maxr]);
+
   xtick = get (hax, "xtick");
-  rtick = xtick(find (xtick > 0, 1):find (xtick >= maxr, 1));
-  if (isempty (rtick))
-    rtick = [0.5 1];
+  minidx = find (xtick > 0, 1);
+  maxidx = find (xtick >= maxr, 1);
+  if (! isempty (maxidx))
+    rtick = xtick(minidx:maxidx);
+  else
+    ## Add one more tick through linear interpolation
+    rtick = xtick(minidx:end);
+    rtick(end+1) = xtick(end) + diff (xtick(end-1:end));
   endif
-  set (hax, "xlim", savexlim, "ylim", saveylim);
+
+  set (hax, {"xlim", "ylim"}, saved_lims);
+
 endfunction
 
 function retval = __plr1__ (h, theta, fmt)
@@ -186,6 +196,7 @@ function retval = __plr2__ (h, theta, rho, fmt)
   if (ndims (theta) > 2 || ndims (rho) > 2)
     error ("polar: THETA and RHO must be 2-D objects");
   endif
+
   theta = real (theta);
   rho = real (rho);
 
@@ -302,6 +313,7 @@ function __update_layer__ (hax, ~, hg)
   unwind_protect_cleanup
     set (0, "showhiddenhandles", shh);
   end_unwind_protect
+
 endfunction
 
 function __update_polar_grid__ (hax, ~, hg)
@@ -325,8 +337,10 @@ function __update_polar_grid__ (hax, ~, hg)
             "linewidth", get(hax, "linewidth")};
   ## "fontunits" should be first because it affects "fontsize" property.
   tprops(1:2:12) = {"fontunits", "fontangle", "fontname", "fontsize", ...
-                    "fontweight", "interpreter"};
+                    "fontweight", "ticklabelinterpreter"};
   tprops(2:2:12) = get (hax, tprops(1:2:12));
+  tprops(1:2:12) = strrep (tprops(1:2:12), "ticklabelinterpreter",
+                           "interpreter");
 
   ## The number of points used for a circle
   circle_points = 50;
@@ -381,7 +395,7 @@ function resetaxis (~, ~, hax)
     dellistener (hax, "fontsize");
     dellistener (hax, "fontunits");
     dellistener (hax, "fontweight");
-    dellistener (hax, "interpreter");
+    dellistener (hax, "ticklabelinterpreter");
     dellistener (hax, "layer");
     dellistener (hax, "gridlinestyle");
     dellistener (hax, "linewidth");

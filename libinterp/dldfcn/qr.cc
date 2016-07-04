@@ -22,37 +22,38 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#include "CmplxQR.h"
-#include "CmplxQRP.h"
-#include "dbleQR.h"
-#include "dbleQRP.h"
-#include "fCmplxQR.h"
-#include "fCmplxQRP.h"
-#include "floatQR.h"
-#include "floatQRP.h"
-#include "SparseQR.h"
-#include "SparseCmplxQR.h"
-
+#include "qr.h"
+#include "qrp.h"
+#include "sparse-qr.h"
 
 #include "defun-dld.h"
 #include "error.h"
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "utils.h"
 
-template <class MT>
+template <typename MT>
 static octave_value
-get_qr_r (const base_qr<MT>& fact)
+get_qr_r (const qr<MT>& fact)
 {
   MT R = fact.R ();
   if (R.is_square () && fact.regular ())
     return octave_value (R, MatrixType (MatrixType::Upper));
   else
     return R;
+}
+
+template <typename T>
+static typename qr<T>::type
+qr_type (int nargin, int nargout)
+{
+  return ((nargout == 0 || nargout == 1)
+          ? qr<T>::raw
+          : (nargin == 2) ? qr<T>::economy : qr<T>::std);
 }
 
 // [Q, R] = qr (X):      form Q unitary and R upper triangular such
@@ -73,141 +74,138 @@ get_qr_r (const base_qr<MT>& fact)
 // that R = triu (qr (X))
 
 DEFUN_DLD (qr, args, nargout,
-           "-*- texinfo -*-\n\
-@deftypefn  {Loadable Function} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A})\n\
-@deftypefnx {Loadable Function} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}, '0')\n\
-@deftypefnx {Loadable Function} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B})\n\
-@deftypefnx {Loadable Function} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B}, '0')\n\
-@cindex QR factorization\n\
-Compute the QR@tie{}factorization of @var{A}, using standard @sc{lapack}\n\
-subroutines.\n\
-\n\
-For example, given the matrix @code{@var{A} = [1, 2; 3, 4]},\n\
-\n\
-@example\n\
-[@var{Q}, @var{R}] = qr (@var{A})\n\
-@end example\n\
-\n\
-@noindent\n\
-returns\n\
-\n\
-@example\n\
-@group\n\
-@var{Q} =\n\
-\n\
-  -0.31623  -0.94868\n\
-  -0.94868   0.31623\n\
-\n\
-@var{R} =\n\
-\n\
-  -3.16228  -4.42719\n\
-   0.00000  -0.63246\n\
-@end group\n\
-@end example\n\
-\n\
-The @code{qr} factorization has applications in the solution of least\n\
-squares problems\n\
-@tex\n\
-$$\n\
-\\min_x \\left\\Vert A x - b \\right\\Vert_2\n\
-$$\n\
-@end tex\n\
-@ifnottex\n\
-\n\
-@example\n\
-min norm(A x - b)\n\
-@end example\n\
-\n\
-@end ifnottex\n\
-for overdetermined systems of equations (i.e.,\n\
-@tex\n\
-$A$\n\
-@end tex\n\
-@ifnottex\n\
-@var{A}\n\
-@end ifnottex\n\
-is a tall, thin matrix).  The QR@tie{}factorization is\n\
-@tex\n\
-$QR = A$ where $Q$ is an orthogonal matrix and $R$ is upper triangular.\n\
-@end tex\n\
-@ifnottex\n\
-@code{@var{Q} * @var{R} = @var{A}} where @var{Q} is an orthogonal matrix and\n\
-@var{R} is upper triangular.\n\
-@end ifnottex\n\
-\n\
-If given a second argument of @qcode{'0'}, @code{qr} returns an economy-sized\n\
-QR@tie{}factorization, omitting zero rows of @var{R} and the corresponding\n\
-columns of @var{Q}.\n\
-\n\
-If the matrix @var{A} is full, the permuted QR@tie{}factorization\n\
-@code{[@var{Q}, @var{R}, @var{P}] = qr (@var{A})} forms the\n\
-QR@tie{}factorization such that the diagonal entries of @var{R} are\n\
-decreasing in magnitude order.  For example, given the matrix\n\
-@code{a = [1, 2; 3, 4]},\n\
-\n\
-@example\n\
-[@var{Q}, @var{R}, @var{P}] = qr (@var{A})\n\
-@end example\n\
-\n\
-@noindent\n\
-returns\n\
-\n\
-@example\n\
-@group\n\
-@var{Q} =\n\
-\n\
-  -0.44721  -0.89443\n\
-  -0.89443   0.44721\n\
-\n\
-@var{R} =\n\
-\n\
-  -4.47214  -3.13050\n\
-   0.00000   0.44721\n\
-\n\
-@var{P} =\n\
-\n\
-   0  1\n\
-   1  0\n\
-@end group\n\
-@end example\n\
-\n\
-The permuted @code{qr} factorization\n\
-@code{[@var{Q}, @var{R}, @var{P}] = qr (@var{A})} factorization allows the\n\
-construction of an orthogonal basis of @code{span (A)}.\n\
-\n\
-If the matrix @var{A} is sparse, then compute the sparse\n\
-QR@tie{}factorization of @var{A}, using @sc{CSparse}.  As the matrix @var{Q}\n\
-is in general a full matrix, this function returns the @var{Q}-less\n\
-factorization @var{R} of @var{A}, such that\n\
-@code{@var{R} = chol (@var{A}' * @var{A})}.\n\
-\n\
-If the final argument is the scalar @code{0} and the number of rows is\n\
-larger than the number of columns, then an economy factorization is\n\
-returned.  That is @var{R} will have only @code{size (@var{A},1)} rows.\n\
-\n\
-If an additional matrix @var{B} is supplied, then @code{qr} returns\n\
-@var{C}, where @code{@var{C} = @var{Q}' * @var{B}}.  This allows the\n\
-least squares approximation of @code{@var{A} \\ @var{B}} to be calculated\n\
-as\n\
-\n\
-@example\n\
-@group\n\
-[@var{C}, @var{R}] = qr (@var{A}, @var{B})\n\
-x = @var{R} \\ @var{C}\n\
-@end group\n\
-@end example\n\
-@seealso{chol, hess, lu, qz, schur, svd, qrupdate, qrinsert, qrdelete, qrshift}\n\
-@end deftypefn")
-{
-  octave_value_list retval;
+           doc: /* -*- texinfo -*-
+@deftypefn  {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A})
+@deftypefnx {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}, '0')
+@deftypefnx {} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B})
+@deftypefnx {} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B}, '0')
+@cindex QR factorization
+Compute the QR@tie{}factorization of @var{A}, using standard @sc{lapack}
+subroutines.
 
+For example, given the matrix @code{@var{A} = [1, 2; 3, 4]},
+
+@example
+[@var{Q}, @var{R}] = qr (@var{A})
+@end example
+
+@noindent
+returns
+
+@example
+@group
+@var{Q} =
+
+  -0.31623  -0.94868
+  -0.94868   0.31623
+
+@var{R} =
+
+  -3.16228  -4.42719
+   0.00000  -0.63246
+@end group
+@end example
+
+The @code{qr} factorization has applications in the solution of least
+squares problems
+@tex
+$$
+\min_x \left\Vert A x - b \right\Vert_2
+$$
+@end tex
+@ifnottex
+
+@example
+min norm(A x - b)
+@end example
+
+@end ifnottex
+for overdetermined systems of equations (i.e.,
+@tex
+$A$
+@end tex
+@ifnottex
+@var{A}
+@end ifnottex
+is a tall, thin matrix).  The QR@tie{}factorization is
+@tex
+$QR = A$ where $Q$ is an orthogonal matrix and $R$ is upper triangular.
+@end tex
+@ifnottex
+@code{@var{Q} * @var{R} = @var{A}} where @var{Q} is an orthogonal matrix and
+@var{R} is upper triangular.
+@end ifnottex
+
+If given a second argument of @qcode{'0'}, @code{qr} returns an
+economy-sized QR@tie{}factorization, omitting zero rows of @var{R} and the
+corresponding columns of @var{Q}.
+
+If the matrix @var{A} is full, the permuted QR@tie{}factorization
+@code{[@var{Q}, @var{R}, @var{P}] = qr (@var{A})} forms the
+QR@tie{}factorization such that the diagonal entries of @var{R} are
+decreasing in magnitude order.  For example, given the matrix
+@code{a = [1, 2; 3, 4]},
+
+@example
+[@var{Q}, @var{R}, @var{P}] = qr (@var{A})
+@end example
+
+@noindent
+returns
+
+@example
+@group
+@var{Q} =
+
+  -0.44721  -0.89443
+  -0.89443   0.44721
+
+@var{R} =
+
+  -4.47214  -3.13050
+   0.00000   0.44721
+
+@var{P} =
+
+   0  1
+   1  0
+@end group
+@end example
+
+The permuted @code{qr} factorization
+@code{[@var{Q}, @var{R}, @var{P}] = qr (@var{A})} factorization allows the
+construction of an orthogonal basis of @code{span (A)}.
+
+If the matrix @var{A} is sparse, then compute the sparse
+QR@tie{}factorization of @var{A}, using @sc{CSparse}.  As the matrix @var{Q}
+is in general a full matrix, this function returns the @var{Q}-less
+factorization @var{R} of @var{A}, such that
+@code{@var{R} = chol (@var{A}' * @var{A})}.
+
+If the final argument is the scalar @code{0} and the number of rows is
+larger than the number of columns, then an economy factorization is
+returned.  That is @var{R} will have only @code{size (@var{A},1)} rows.
+
+If an additional matrix @var{B} is supplied, then @code{qr} returns
+@var{C}, where @code{@var{C} = @var{Q}' * @var{B}}.  This allows the
+least squares approximation of @code{@var{A} \ @var{B}} to be calculated
+as
+
+@example
+@group
+[@var{C}, @var{R}] = qr (@var{A}, @var{B})
+x = @var{R} \ @var{C}
+@end group
+@end example
+@seealso{chol, hess, lu, qz, schur, svd, qrupdate, qrinsert, qrdelete, qrshift}
+@end deftypefn */)
+{
   int nargin = args.length ();
 
   if (nargin < 1 || nargin > (args(0).is_sparse_type () ? 3 : 2))
-    {
-      print_usage ();
-      return retval;
-    }
+    print_usage ();
+
+  octave_value_list retval;
 
   octave_value arg = args(0);
 
@@ -240,136 +238,111 @@ x = @var{R} \\ @var{C}\n\
             is_cmplx = true;
         }
 
-      if (!error_state)
+      if (is_cmplx)
         {
-          if (have_b && nargout < 2)
-            error ("qr: incorrect number of output arguments");
-          else if (is_cmplx)
+          sparse_qr<SparseComplexMatrix> q (arg.sparse_complex_matrix_value ());
+
+          if (have_b > 0)
             {
-              SparseComplexQR q (arg.sparse_complex_matrix_value ());
-              if (!error_state)
-                {
-                  if (have_b > 0)
-                    {
-                      retval(1) = q.R (economy);
-                      retval(0) = q.C (args(have_b).complex_matrix_value ());
-                      if (arg.rows () < arg.columns ())
-                        warning ("qr: non minimum norm solution for under-determined problem");
-                    }
-                  else if (nargout > 1)
-                    {
-                      retval(1) = q.R (economy);
-                      retval(0) = q.Q ();
-                    }
-                  else
-                    retval(0) = q.R (economy);
-                }
+              retval = ovl (q.C (args(have_b).complex_matrix_value ()),
+                            q.R (economy));
+              if (arg.rows () < arg.columns ())
+                warning ("qr: non minimum norm solution for under-determined problem");
             }
+          else if (nargout > 1)
+            retval = ovl (q.Q (), q.R (economy));
           else
+            retval = ovl (q.R (economy));
+        }
+      else
+        {
+          sparse_qr<SparseMatrix> q (arg.sparse_matrix_value ());
+
+          if (have_b > 0)
             {
-              SparseQR q (arg.sparse_matrix_value ());
-              if (!error_state)
-                {
-                  if (have_b > 0)
-                    {
-                      retval(1) = q.R (economy);
-                      retval(0) = q.C (args(have_b).matrix_value ());
-                      if (args(0).rows () < args(0).columns ())
-                        warning ("qr: non minimum norm solution for under-determined problem");
-                    }
-                  else if (nargout > 1)
-                    {
-                      retval(1) = q.R (economy);
-                      retval(0) = q.Q ();
-                    }
-                  else
-                    retval(0) = q.R (economy);
-                }
+              retval = ovl (q.C (args(have_b).matrix_value ()), q.R (economy));
+              if (args(0).rows () < args(0).columns ())
+                warning ("qr: non minimum norm solution for under-determined problem");
             }
+          else if (nargout > 1)
+            retval = ovl (q.Q (), q.R (economy));
+          else
+            retval = ovl (q.R (economy));
         }
     }
   else
     {
-      QR::type type = (nargout == 0 || nargout == 1) ? QR::raw
-                                                     : nargin == 2
-                                                       ? QR::economy : QR::std;
-
       if (arg.is_single_type ())
         {
           if (arg.is_real_type ())
             {
+              qr<FloatMatrix>::type type
+                = qr_type<FloatMatrix> (nargin, nargout);
+
               FloatMatrix m = arg.float_matrix_value ();
 
-              if (! error_state)
+              switch (nargout)
                 {
-                  switch (nargout)
-                    {
-                    case 0:
-                    case 1:
-                      {
-                        FloatQR fact (m, type);
-                        retval(0) = fact.R ();
-                      }
-                      break;
+                case 0:
+                case 1:
+                  {
+                    qr<FloatMatrix> fact (m, type);
+                    retval = ovl (fact.R ());
+                  }
+                  break;
 
-                    case 2:
-                      {
-                        FloatQR fact (m, type);
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                      break;
+                case 2:
+                  {
+                    qr<FloatMatrix> fact (m, type);
+                    retval = ovl (fact.Q (), get_qr_r (fact));
+                  }
+                  break;
 
-                    default:
-                      {
-                        FloatQRP fact (m, type);
-                        if (type == QR::economy)
-                          retval(2) = fact.Pvec ();
-                        else
-                          retval(2) = fact.P ();
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                      break;
-                    }
+                default:
+                  {
+                    qrp<FloatMatrix> fact (m, type);
+
+                    if (type == qr<FloatMatrix>::economy)
+                      retval = ovl (fact.Q (), get_qr_r (fact), fact.Pvec ());
+                    else
+                      retval = ovl (fact.Q (), get_qr_r (fact), fact.P ());
+                  }
+                  break;
                 }
             }
           else if (arg.is_complex_type ())
             {
+              qr<FloatComplexMatrix>::type type
+                = qr_type<FloatComplexMatrix> (nargin, nargout);
+
               FloatComplexMatrix m = arg.float_complex_matrix_value ();
 
-              if (! error_state)
+              switch (nargout)
                 {
-                  switch (nargout)
-                    {
-                    case 0:
-                    case 1:
-                      {
-                        FloatComplexQR fact (m, type);
-                        retval(0) = fact.R ();
-                      }
-                      break;
+                case 0:
+                case 1:
+                  {
+                    qr<FloatComplexMatrix> fact (m, type);
+                    retval = ovl (fact.R ());
+                  }
+                  break;
 
-                    case 2:
-                      {
-                        FloatComplexQR fact (m, type);
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                      break;
+                case 2:
+                  {
+                    qr<FloatComplexMatrix> fact (m, type);
+                    retval = ovl (fact.Q (), get_qr_r (fact));
+                  }
+                  break;
 
-                    default:
-                      {
-                        FloatComplexQRP fact (m, type);
-                        if (type == QR::economy)
-                          retval(2) = fact.Pvec ();
-                        else
-                          retval(2) = fact.P ();
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                      break;
-                    }
+                default:
+                  {
+                    qrp<FloatComplexMatrix> fact (m, type);
+                    if (type == qr<FloatComplexMatrix>::economy)
+                      retval = ovl (fact.Q (), get_qr_r (fact), fact.Pvec ());
+                    else
+                      retval = ovl (fact.Q (), get_qr_r (fact), fact.P ());
+                  }
+                  break;
                 }
             }
         }
@@ -377,82 +350,75 @@ x = @var{R} \\ @var{C}\n\
         {
           if (arg.is_real_type ())
             {
+              qr<Matrix>::type type = qr_type<Matrix> (nargin, nargout);
+
               Matrix m = arg.matrix_value ();
 
-              if (! error_state)
+              switch (nargout)
                 {
-                  switch (nargout)
-                    {
-                    case 0:
-                    case 1:
-                      {
-                        QR fact (m, type);
-                        retval(0) = fact.R ();
-                      }
-                      break;
+                case 0:
+                case 1:
+                  {
+                    qr<Matrix> fact (m, type);
+                    retval = ovl (fact.R ());
+                  }
+                  break;
 
-                    case 2:
-                      {
-                        QR fact (m, type);
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                      break;
+                case 2:
+                  {
+                    qr<Matrix> fact (m, type);
+                    retval = ovl (fact.Q (), get_qr_r (fact));
+                  }
+                  break;
 
-                    default:
-                      {
-                        QRP fact (m, type);
-                        if (type == QR::economy)
-                          retval(2) = fact.Pvec ();
-                        else
-                          retval(2) = fact.P ();
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                      break;
-                    }
+                default:
+                  {
+                    qrp<Matrix> fact (m, type);
+                    if (type == qr<Matrix>::economy)
+                      retval = ovl (fact.Q (), get_qr_r (fact), fact.Pvec ());
+                    else
+                      retval = ovl (fact.Q (), get_qr_r (fact), fact.P ());
+                  }
+                  break;
                 }
             }
           else if (arg.is_complex_type ())
             {
+              qr<ComplexMatrix>::type type
+                = qr_type<ComplexMatrix> (nargin, nargout);
+
               ComplexMatrix m = arg.complex_matrix_value ();
 
-              if (! error_state)
+              switch (nargout)
                 {
-                  switch (nargout)
-                    {
-                    case 0:
-                    case 1:
-                      {
-                        ComplexQR fact (m, type);
-                        retval(0) = fact.R ();
-                      }
-                      break;
+                case 0:
+                case 1:
+                  {
+                    qr<ComplexMatrix> fact (m, type);
+                    retval = ovl (fact.R ());
+                  }
+                  break;
 
-                    case 2:
-                      {
-                        ComplexQR fact (m, type);
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                      break;
+                case 2:
+                  {
+                    qr<ComplexMatrix> fact (m, type);
+                    retval = ovl (fact.Q (), get_qr_r (fact));
+                  }
+                  break;
 
-                    default:
-                      {
-                        ComplexQRP fact (m, type);
-                        if (type == QR::economy)
-                          retval(2) = fact.Pvec ();
-                        else
-                          retval(2) = fact.P ();
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                      break;
-                    }
+                default:
+                  {
+                    qrp<ComplexMatrix> fact (m, type);
+                    if (type == qr<ComplexMatrix>::economy)
+                      retval = ovl (fact.Q (), get_qr_r (fact), fact.Pvec ());
+                    else
+                      retval = ovl (fact.Q (), get_qr_r (fact), fact.P ());
+                  }
+                  break;
                 }
             }
           else
-            gripe_wrong_type_arg ("qr", arg);
+            err_wrong_type_arg ("qr", arg);
         }
     }
 
@@ -673,7 +639,7 @@ x = @var{R} \\ @var{C}\n\
 %! n = 20;  d = 0.2;
 %! a = sprandn (n,n,d) + speye (n,n);
 %! r = qr (a);
-%! assert (r'*r, a'*a, 1e-10)
+%! assert (r'*r, a'*a, 1e-10);
 
 %!testif HAVE_COLAMD
 %! n = 20;  d = 0.2;
@@ -681,20 +647,20 @@ x = @var{R} \\ @var{C}\n\
 %! q = symamd (a);
 %! a = a(q,q);
 %! r = qr (a);
-%! assert (r'*r, a'*a, 1e-10)
+%! assert (r'*r, a'*a, 1e-10);
 
 %!testif HAVE_CXSPARSE
 %! n = 20;  d = 0.2;
 %! a = sprandn (n,n,d) + speye (n,n);
 %! [c,r] = qr (a, ones (n,1));
-%! assert (r\c, full (a)\ones (n,1), 10e-10)
+%! assert (r\c, full (a)\ones (n,1), 10e-10);
 
 %!testif HAVE_CXSPARSE
 %! n = 20;  d = 0.2;
 %! a = sprandn (n,n,d) + speye (n,n);
 %! b = randn (n,2);
 %! [c,r] = qr (a, b);
-%! assert (r\c, full (a)\b, 10e-10)
+%! assert (r\c, full (a)\b, 10e-10);
 
 %% Test under-determined systems!!
 %!#testif HAVE_CXSPARSE
@@ -702,13 +668,13 @@ x = @var{R} \\ @var{C}\n\
 %! a = sprandn (n,n+1,d) + speye (n,n+1);
 %! b = randn (n,2);
 %! [c,r] = qr (a, b);
-%! assert (r\c, full (a)\b, 10e-10)
+%! assert (r\c, full (a)\b, 10e-10);
 
 %!testif HAVE_CXSPARSE
 %! n = 20;  d = 0.2;
 %! a = 1i*sprandn (n,n,d) + speye (n,n);
 %! r = qr (a);
-%! assert (r'*r,a'*a,1e-10)
+%! assert (r'*r,a'*a,1e-10);
 
 %!testif HAVE_COLAMD
 %! n = 20;  d = 0.2;
@@ -716,20 +682,20 @@ x = @var{R} \\ @var{C}\n\
 %! q = symamd (a);
 %! a = a(q,q);
 %! r = qr (a);
-%! assert (r'*r, a'*a, 1e-10)
+%! assert (r'*r, a'*a, 1e-10);
 
 %!testif HAVE_CXSPARSE
 %! n = 20;  d = 0.2;
 %! a = 1i*sprandn (n,n,d) + speye (n,n);
 %! [c,r] = qr (a, ones (n,1));
-%! assert (r\c, full (a)\ones (n,1), 10e-10)
+%! assert (r\c, full (a)\ones (n,1), 10e-10);
 
 %!testif HAVE_CXSPARSE
 %! n = 20;  d = 0.2;
 %! a = 1i*sprandn (n,n,d) + speye (n,n);
 %! b = randn (n,2);
 %! [c,r] = qr (a, b);
-%! assert (r\c, full (a)\b, 10e-10)
+%! assert (r\c, full (a)\b, 10e-10);
 
 %% Test under-determined systems!!
 %!#testif HAVE_CXSPARSE
@@ -737,9 +703,8 @@ x = @var{R} \\ @var{C}\n\
 %! a = 1i*sprandn (n,n+1,d) + speye (n,n+1);
 %! b = randn (n,2);
 %! [c,r] = qr (a, b);
-%! assert (r\c, full (a)\b, 10e-10)
+%! assert (r\c, full (a)\b, 10e-10);
 
-%!error qr (sprandn (10,10,0.2), ones (10,1))
 */
 
 static
@@ -761,117 +726,99 @@ bool check_index (const octave_value& i, bool vector_allowed = false)
 }
 
 DEFUN_DLD (qrupdate, args, ,
-           "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrupdate (@var{Q}, @var{R}, @var{u}, @var{v})\n\
-Given a QR@tie{}factorization of a real or complex matrix\n\
-@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and\n\
-@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of\n\
-@w{@var{A} + @var{u}*@var{v}'}, where @var{u} and @var{v} are column vectors\n\
-(rank-1 update) or matrices with equal number of columns\n\
-(rank-k update).  Notice that the latter case is done as a sequence of rank-1\n\
-updates; thus, for k large enough, it will be both faster and more accurate\n\
-to recompute the factorization from scratch.\n\
-\n\
-The QR@tie{}factorization supplied may be either full (Q is square) or\n\
-economized (R is square).\n\
-\n\
-@seealso{qr, qrinsert, qrdelete, qrshift}\n\
-@end deftypefn")
+           doc: /* -*- texinfo -*-
+@deftypefn {} {[@var{Q1}, @var{R1}] =} qrupdate (@var{Q}, @var{R}, @var{u}, @var{v})
+Given a QR@tie{}factorization of a real or complex matrix
+@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
+@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
+@w{@var{A} + @var{u}*@var{v}'}, where @var{u} and @var{v} are column vectors
+(rank-1 update) or matrices with equal number of columns
+(rank-k update).  Notice that the latter case is done as a sequence of
+rank-1 updates; thus, for k large enough, it will be both faster and more
+accurate to recompute the factorization from scratch.
+
+The QR@tie{}factorization supplied may be either full (Q is square) or
+economized (R is square).
+
+@seealso{qr, qrinsert, qrdelete, qrshift}
+@end deftypefn */)
 {
-  octave_idx_type nargin = args.length ();
   octave_value_list retval;
 
-  if (nargin != 4)
-    {
-      print_usage ();
-      return retval;
-    }
+  if (args.length () != 4)
+    print_usage ();
 
   octave_value argq = args(0);
   octave_value argr = args(1);
   octave_value argu = args(2);
   octave_value argv = args(3);
 
-  if (argq.is_numeric_type () && argr.is_numeric_type ()
-      && argu.is_numeric_type () && argv.is_numeric_type ())
+  if (! argq.is_numeric_type () || ! argr.is_numeric_type ()
+      || ! argu.is_numeric_type () || ! argv.is_numeric_type ())
+    print_usage ();
+
+  if (! check_qr_dims (argq, argr, true))
+    error ("qrupdate: Q and R dimensions don't match");
+
+  if (argq.is_real_type () && argr.is_real_type () && argu.is_real_type ()
+      && argv.is_real_type ())
     {
-      if (check_qr_dims (argq, argr, true))
+      // all real case
+      if (argq.is_single_type () || argr.is_single_type ()
+          || argu.is_single_type () || argv.is_single_type ())
         {
-          if (argq.is_real_type ()
-              && argr.is_real_type ()
-              && argu.is_real_type ()
-              && argv.is_real_type ())
-            {
-              // all real case
-              if (argq.is_single_type ()
-                  || argr.is_single_type ()
-                  || argu.is_single_type ()
-                  || argv.is_single_type ())
-                {
-                  FloatMatrix Q = argq.float_matrix_value ();
-                  FloatMatrix R = argr.float_matrix_value ();
-                  FloatMatrix u = argu.float_matrix_value ();
-                  FloatMatrix v = argv.float_matrix_value ();
+          FloatMatrix Q = argq.float_matrix_value ();
+          FloatMatrix R = argr.float_matrix_value ();
+          FloatMatrix u = argu.float_matrix_value ();
+          FloatMatrix v = argv.float_matrix_value ();
 
-                  FloatQR fact (Q, R);
-                  fact.update (u, v);
+          qr<FloatMatrix> fact (Q, R);
+          fact.update (u, v);
 
-                  retval(1) = get_qr_r (fact);
-                  retval(0) = fact.Q ();
-                }
-              else
-                {
-                  Matrix Q = argq.matrix_value ();
-                  Matrix R = argr.matrix_value ();
-                  Matrix u = argu.matrix_value ();
-                  Matrix v = argv.matrix_value ();
-
-                  QR fact (Q, R);
-                  fact.update (u, v);
-
-                  retval(1) = get_qr_r (fact);
-                  retval(0) = fact.Q ();
-                }
-            }
-          else
-            {
-              // complex case
-              if (argq.is_single_type ()
-                  || argr.is_single_type ()
-                  || argu.is_single_type ()
-                  || argv.is_single_type ())
-                {
-                  FloatComplexMatrix Q = argq.float_complex_matrix_value ();
-                  FloatComplexMatrix R = argr.float_complex_matrix_value ();
-                  FloatComplexMatrix u = argu.float_complex_matrix_value ();
-                  FloatComplexMatrix v = argv.float_complex_matrix_value ();
-
-                  FloatComplexQR fact (Q, R);
-                  fact.update (u, v);
-
-                  retval(1) = get_qr_r (fact);
-                  retval(0) = fact.Q ();
-                }
-              else
-                {
-                  ComplexMatrix Q = argq.complex_matrix_value ();
-                  ComplexMatrix R = argr.complex_matrix_value ();
-                  ComplexMatrix u = argu.complex_matrix_value ();
-                  ComplexMatrix v = argv.complex_matrix_value ();
-
-                  ComplexQR fact (Q, R);
-                  fact.update (u, v);
-
-                  retval(1) = get_qr_r (fact);
-                  retval(0) = fact.Q ();
-                }
-            }
+          retval = ovl (fact.Q (), get_qr_r (fact));
         }
       else
-        error ("qrupdate: Q and R dimensions don't match");
+        {
+          Matrix Q = argq.matrix_value ();
+          Matrix R = argr.matrix_value ();
+          Matrix u = argu.matrix_value ();
+          Matrix v = argv.matrix_value ();
+
+          qr<Matrix> fact (Q, R);
+          fact.update (u, v);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
     }
   else
-    error ("qrupdate: Q, R, U, and V must be numeric");
+    {
+      // complex case
+      if (argq.is_single_type () || argr.is_single_type ()
+          || argu.is_single_type () || argv.is_single_type ())
+        {
+          FloatComplexMatrix Q = argq.float_complex_matrix_value ();
+          FloatComplexMatrix R = argr.float_complex_matrix_value ();
+          FloatComplexMatrix u = argu.float_complex_matrix_value ();
+          FloatComplexMatrix v = argv.float_complex_matrix_value ();
+
+          qr<FloatComplexMatrix> fact (Q, R);
+          fact.update (u, v);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
+      else
+        {
+          ComplexMatrix Q = argq.complex_matrix_value ();
+          ComplexMatrix R = argr.complex_matrix_value ();
+          ComplexMatrix u = argu.complex_matrix_value ();
+          ComplexMatrix v = argv.complex_matrix_value ();
+
+          qr<ComplexMatrix> fact (Q, R);
+          fact.update (u, v);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
+    }
 
   return retval;
 }
@@ -941,160 +888,137 @@ economized (R is square).\n\
 */
 
 DEFUN_DLD (qrinsert, args, ,
-           "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrinsert (@var{Q}, @var{R}, @var{j}, @var{x}, @var{orient})\n\
-Given a QR@tie{}factorization of a real or complex matrix\n\
-@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and\n\
-@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of\n\
-@w{[A(:,1:j-1) x A(:,j:n)]}, where @var{u} is a column vector to be inserted\n\
-into @var{A} (if @var{orient} is @qcode{\"col\"}), or the\n\
-QR@tie{}factorization of @w{[A(1:j-1,:);x;A(:,j:n)]}, where @var{x} is a row\n\
-vector to be inserted into @var{A} (if @var{orient} is @qcode{\"row\"}).\n\
-\n\
-The default value of @var{orient} is @qcode{\"col\"}.  If @var{orient} is\n\
-@qcode{\"col\"}, @var{u} may be a matrix and @var{j} an index vector\n\
-resulting in the QR@tie{}factorization of a matrix @var{B} such that\n\
-@w{B(:,@var{j})} gives @var{u} and @w{B(:,@var{j}) = []} gives @var{A}.\n\
-Notice that the latter case is done as a sequence of k insertions;\n\
-thus, for k large enough, it will be both faster and more accurate to\n\
-recompute the factorization from scratch.\n\
-\n\
-If @var{orient} is @qcode{\"col\"}, the QR@tie{}factorization supplied may\n\
-be either full (Q is square) or economized (R is square).\n\
-\n\
-If @var{orient} is @qcode{\"row\"}, full factorization is needed.\n\
-@seealso{qr, qrupdate, qrdelete, qrshift}\n\
-@end deftypefn")
+           doc: /* -*- texinfo -*-
+@deftypefn {} {[@var{Q1}, @var{R1}] =} qrinsert (@var{Q}, @var{R}, @var{j}, @var{x}, @var{orient})
+Given a QR@tie{}factorization of a real or complex matrix
+@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
+@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
+@w{[A(:,1:j-1) x A(:,j:n)]}, where @var{u} is a column vector to be inserted
+into @var{A} (if @var{orient} is @qcode{"col"}), or the
+QR@tie{}factorization of @w{[A(1:j-1,:);x;A(:,j:n)]}, where @var{x} is a row
+vector to be inserted into @var{A} (if @var{orient} is @qcode{"row"}).
+
+The default value of @var{orient} is @qcode{"col"}.  If @var{orient} is
+@qcode{"col"}, @var{u} may be a matrix and @var{j} an index vector
+resulting in the QR@tie{}factorization of a matrix @var{B} such that
+@w{B(:,@var{j})} gives @var{u} and @w{B(:,@var{j}) = []} gives @var{A}.
+Notice that the latter case is done as a sequence of k insertions;
+thus, for k large enough, it will be both faster and more accurate to
+recompute the factorization from scratch.
+
+If @var{orient} is @qcode{"col"}, the QR@tie{}factorization supplied may
+be either full (Q is square) or economized (R is square).
+
+If @var{orient} is @qcode{"row"}, full factorization is needed.
+@seealso{qr, qrupdate, qrdelete, qrshift}
+@end deftypefn */)
 {
-  octave_idx_type nargin = args.length ();
-  octave_value_list retval;
+  int nargin = args.length ();
 
   if (nargin < 4 || nargin > 5)
-    {
-      print_usage ();
-      return retval;
-    }
+    print_usage ();
 
   octave_value argq = args(0);
   octave_value argr = args(1);
   octave_value argj = args(2);
   octave_value argx = args(3);
 
-  if (argq.is_numeric_type () && argr.is_numeric_type ()
-      && argx.is_numeric_type ()
-      && (nargin < 5 || args(4).is_string ()))
+  if (! argq.is_numeric_type () || ! argr.is_numeric_type ()
+      || ! argx.is_numeric_type ()
+      || (nargin > 4 && ! args(4).is_string ()))
+    print_usage ();
+
+  std::string orient = (nargin < 5) ? "col" : args(4).string_value ();
+  bool col = (orient == "col");
+
+  if (! col && orient != "row")
+    error ("qrinsert: ORIENT must be \"col\" or \"row\"");
+
+  if (! check_qr_dims (argq, argr, col) || (! col && argx.rows () != 1))
+    error ("qrinsert: dimension mismatch");
+
+  if (! check_index (argj, col))
+    error ("qrinsert: invalid index J");
+
+  octave_value_list retval;
+
+  MArray<octave_idx_type> j = argj.octave_idx_type_vector_value ();
+
+  octave_idx_type one = 1;
+
+  if (argq.is_real_type () && argr.is_real_type () && argx.is_real_type ())
     {
-      std::string orient = (nargin < 5) ? "col" : args(4).string_value ();
+      // real case
+      if (argq.is_single_type () || argr.is_single_type ()
+          || argx.is_single_type ())
+        {
+          FloatMatrix Q = argq.float_matrix_value ();
+          FloatMatrix R = argr.float_matrix_value ();
+          FloatMatrix x = argx.float_matrix_value ();
 
-      bool col = orient == "col";
+          qr<FloatMatrix> fact (Q, R);
 
-      if (col || orient == "row")
-        if (check_qr_dims (argq, argr, col)
-            && (col || argx.rows () == 1))
-          {
-            if (check_index (argj, col))
-              {
-                MArray<octave_idx_type> j
-                  = argj.octave_idx_type_vector_value ();
+          if (col)
+            fact.insert_col (x, j-one);
+          else
+            fact.insert_row (x.row (0), j(0)-one);
 
-                octave_idx_type one = 1;
-
-                if (argq.is_real_type ()
-                    && argr.is_real_type ()
-                    && argx.is_real_type ())
-                  {
-                    // real case
-                    if (argq.is_single_type ()
-                        || argr.is_single_type ()
-                        || argx.is_single_type ())
-                      {
-                        FloatMatrix Q = argq.float_matrix_value ();
-                        FloatMatrix R = argr.float_matrix_value ();
-                        FloatMatrix x = argx.float_matrix_value ();
-
-                        FloatQR fact (Q, R);
-
-                        if (col)
-                          fact.insert_col (x, j-one);
-                        else
-                          fact.insert_row (x.row (0), j(0)-one);
-
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-
-                      }
-                    else
-                      {
-                        Matrix Q = argq.matrix_value ();
-                        Matrix R = argr.matrix_value ();
-                        Matrix x = argx.matrix_value ();
-
-                        QR fact (Q, R);
-
-                        if (col)
-                          fact.insert_col (x, j-one);
-                        else
-                          fact.insert_row (x.row (0), j(0)-one);
-
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-
-                      }
-                  }
-                else
-                  {
-                    // complex case
-                    if (argq.is_single_type ()
-                        || argr.is_single_type ()
-                        || argx.is_single_type ())
-                      {
-                        FloatComplexMatrix Q =
-                          argq.float_complex_matrix_value ();
-                        FloatComplexMatrix R =
-                          argr.float_complex_matrix_value ();
-                        FloatComplexMatrix x =
-                          argx.float_complex_matrix_value ();
-
-                        FloatComplexQR fact (Q, R);
-
-                        if (col)
-                          fact.insert_col (x, j-one);
-                        else
-                          fact.insert_row (x.row (0), j(0)-one);
-
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                    else
-                      {
-                        ComplexMatrix Q = argq.complex_matrix_value ();
-                        ComplexMatrix R = argr.complex_matrix_value ();
-                        ComplexMatrix x = argx.complex_matrix_value ();
-
-                        ComplexQR fact (Q, R);
-
-                        if (col)
-                          fact.insert_col (x, j-one);
-                        else
-                          fact.insert_row (x.row (0), j(0)-one);
-
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                  }
-
-              }
-            else
-              error ("qrinsert: invalid index J");
-          }
-        else
-          error ("qrinsert: dimension mismatch");
-
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
       else
-        error ("qrinsert: ORIENT must be \"col\" or \"row\"");
+        {
+          Matrix Q = argq.matrix_value ();
+          Matrix R = argr.matrix_value ();
+          Matrix x = argx.matrix_value ();
+
+          qr<Matrix> fact (Q, R);
+
+          if (col)
+            fact.insert_col (x, j-one);
+          else
+            fact.insert_row (x.row (0), j(0)-one);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
     }
   else
-    print_usage ();
+    {
+      // complex case
+      if (argq.is_single_type () || argr.is_single_type ()
+          || argx.is_single_type ())
+        {
+          FloatComplexMatrix Q =
+            argq.float_complex_matrix_value ();
+          FloatComplexMatrix R =
+            argr.float_complex_matrix_value ();
+          FloatComplexMatrix x =
+            argx.float_complex_matrix_value ();
+
+          qr<FloatComplexMatrix> fact (Q, R);
+
+          if (col)
+            fact.insert_col (x, j-one);
+          else
+            fact.insert_row (x.row (0), j(0)-one);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
+      else
+        {
+          ComplexMatrix Q = argq.complex_matrix_value ();
+          ComplexMatrix R = argr.complex_matrix_value ();
+          ComplexMatrix x = argx.complex_matrix_value ();
+
+          qr<ComplexMatrix> fact (Q, R);
+
+          if (col)
+            fact.insert_col (x, j-one);
+          else
+            fact.insert_row (x.row (0), j(0)-one);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
+    }
 
   return retval;
 }
@@ -1160,146 +1084,127 @@ If @var{orient} is @qcode{\"row\"}, full factorization is needed.\n\
 */
 
 DEFUN_DLD (qrdelete, args, ,
-           "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrdelete (@var{Q}, @var{R}, @var{j}, @var{orient})\n\
-Given a QR@tie{}factorization of a real or complex matrix\n\
-@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and\n\
-@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of\n\
-@w{[A(:,1:j-1) A(:,j+1:n)]}, i.e., @var{A} with one column deleted\n\
-(if @var{orient} is @qcode{\"col\"}), or the QR@tie{}factorization of\n\
-@w{[A(1:j-1,:);A(j+1:n,:)]}, i.e., @var{A} with one row deleted (if\n\
-@var{orient} is @qcode{\"row\"}).\n\
-\n\
-The default value of @var{orient} is @qcode{\"col\"}.\n\
-\n\
-If @var{orient} is @qcode{\"col\"}, @var{j} may be an index vector\n\
-resulting in the QR@tie{}factorization of a matrix @var{B} such that\n\
-@w{A(:,@var{j}) = []} gives @var{B}.  Notice that the latter case is done as\n\
-a sequence of k deletions; thus, for k large enough, it will be both faster\n\
-and more accurate to recompute the factorization from scratch.\n\
-\n\
-If @var{orient} is @qcode{\"col\"}, the QR@tie{}factorization supplied may\n\
-be either full (Q is square) or economized (R is square).\n\
-\n\
-If @var{orient} is @qcode{\"row\"}, full factorization is needed.\n\
-@seealso{qr, qrupdate, qrinsert, qrshift}\n\
-@end deftypefn")
+           doc: /* -*- texinfo -*-
+@deftypefn {} {[@var{Q1}, @var{R1}] =} qrdelete (@var{Q}, @var{R}, @var{j}, @var{orient})
+Given a QR@tie{}factorization of a real or complex matrix
+@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
+@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
+@w{[A(:,1:j-1) A(:,j+1:n)]}, i.e., @var{A} with one column deleted
+(if @var{orient} is @qcode{"col"}), or the QR@tie{}factorization of
+@w{[A(1:j-1,:);A(j+1:n,:)]}, i.e., @var{A} with one row deleted (if
+@var{orient} is @qcode{"row"}).
+
+The default value of @var{orient} is @qcode{"col"}.
+
+If @var{orient} is @qcode{"col"}, @var{j} may be an index vector
+resulting in the QR@tie{}factorization of a matrix @var{B} such that
+@w{A(:,@var{j}) = []} gives @var{B}.  Notice that the latter case is done as
+a sequence of k deletions; thus, for k large enough, it will be both faster
+and more accurate to recompute the factorization from scratch.
+
+If @var{orient} is @qcode{"col"}, the QR@tie{}factorization supplied may
+be either full (Q is square) or economized (R is square).
+
+If @var{orient} is @qcode{"row"}, full factorization is needed.
+@seealso{qr, qrupdate, qrinsert, qrshift}
+@end deftypefn */)
 {
-  octave_idx_type nargin = args.length ();
-  octave_value_list retval;
+  int nargin = args.length ();
 
   if (nargin < 3 || nargin > 4)
-    {
-      print_usage ();
-      return retval;
-    }
+    print_usage ();
 
   octave_value argq = args(0);
   octave_value argr = args(1);
   octave_value argj = args(2);
 
-  if (argq.is_numeric_type () && argr.is_numeric_type ()
-      && (nargin < 4 || args(3).is_string ()))
+  if (! argq.is_numeric_type () || ! argr.is_numeric_type ()
+      || (nargin > 3 && ! args(3).is_string ()))
+    print_usage ();
+
+  std::string orient = (nargin < 4) ? "col" : args(3).string_value ();
+  bool col = orient == "col";
+
+  if (! col && orient != "row")
+    error ("qrdelete: ORIENT must be \"col\" or \"row\"");
+
+  if (! check_qr_dims (argq, argr, col))
+    error ("qrdelete: dimension mismatch");
+
+  MArray<octave_idx_type> j = argj.octave_idx_type_vector_value ();
+  if (! check_index (argj, col))
+    error ("qrdelete: invalid index J");
+
+  octave_value_list retval;
+
+  octave_idx_type one = 1;
+
+  if (argq.is_real_type () && argr.is_real_type ())
     {
-      std::string orient = (nargin < 4) ? "col" : args(3).string_value ();
+      // real case
+      if (argq.is_single_type () || argr.is_single_type ())
+        {
+          FloatMatrix Q = argq.float_matrix_value ();
+          FloatMatrix R = argr.float_matrix_value ();
 
-      bool col = orient == "col";
+          qr<FloatMatrix> fact (Q, R);
 
-      if (col || orient == "row")
-        if (check_qr_dims (argq, argr, col))
-          {
-            if (check_index (argj, col))
-              {
-                MArray<octave_idx_type> j
-                  = argj.octave_idx_type_vector_value ();
+          if (col)
+            fact.delete_col (j-one);
+          else
+            fact.delete_row (j(0)-one);
 
-                octave_idx_type one = 1;
-
-                if (argq.is_real_type ()
-                    && argr.is_real_type ())
-                  {
-                    // real case
-                    if (argq.is_single_type ()
-                        || argr.is_single_type ())
-                      {
-                        FloatMatrix Q = argq.float_matrix_value ();
-                        FloatMatrix R = argr.float_matrix_value ();
-
-                        FloatQR fact (Q, R);
-
-                        if (col)
-                          fact.delete_col (j-one);
-                        else
-                          fact.delete_row (j(0)-one);
-
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                    else
-                      {
-                        Matrix Q = argq.matrix_value ();
-                        Matrix R = argr.matrix_value ();
-
-                        QR fact (Q, R);
-
-                        if (col)
-                          fact.delete_col (j-one);
-                        else
-                          fact.delete_row (j(0)-one);
-
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                  }
-                else
-                  {
-                    // complex case
-                    if (argq.is_single_type ()
-                        || argr.is_single_type ())
-                      {
-                        FloatComplexMatrix Q =
-                          argq.float_complex_matrix_value ();
-                        FloatComplexMatrix R =
-                          argr.float_complex_matrix_value ();
-
-                        FloatComplexQR fact (Q, R);
-
-                        if (col)
-                          fact.delete_col (j-one);
-                        else
-                          fact.delete_row (j(0)-one);
-
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                    else
-                      {
-                        ComplexMatrix Q = argq.complex_matrix_value ();
-                        ComplexMatrix R = argr.complex_matrix_value ();
-
-                        ComplexQR fact (Q, R);
-
-                        if (col)
-                          fact.delete_col (j-one);
-                        else
-                          fact.delete_row (j(0)-one);
-
-                        retval(1) = get_qr_r (fact);
-                        retval(0) = fact.Q ();
-                      }
-                  }
-              }
-            else
-              error ("qrdelete: invalid index J");
-          }
-        else
-          error ("qrdelete: dimension mismatch");
-
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
       else
-        error ("qrdelete: ORIENT must be \"col\" or \"row\"");
+        {
+          Matrix Q = argq.matrix_value ();
+          Matrix R = argr.matrix_value ();
+
+          qr<Matrix> fact (Q, R);
+
+          if (col)
+            fact.delete_col (j-one);
+          else
+            fact.delete_row (j(0)-one);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
     }
   else
-    print_usage ();
+    {
+      // complex case
+      if (argq.is_single_type () || argr.is_single_type ())
+        {
+          FloatComplexMatrix Q =
+            argq.float_complex_matrix_value ();
+          FloatComplexMatrix R =
+            argr.float_complex_matrix_value ();
+
+          qr<FloatComplexMatrix> fact (Q, R);
+
+          if (col)
+            fact.delete_col (j-one);
+          else
+            fact.delete_row (j(0)-one);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
+      else
+        {
+          ComplexMatrix Q = argq.complex_matrix_value ();
+          ComplexMatrix R = argr.complex_matrix_value ();
+
+          qr<ComplexMatrix> fact (Q, R);
+
+          if (col)
+            fact.delete_col (j-one);
+          else
+            fact.delete_row (j(0)-one);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
+    }
 
   return retval;
 }
@@ -1424,106 +1329,91 @@ If @var{orient} is @qcode{\"row\"}, full factorization is needed.\n\
 */
 
 DEFUN_DLD (qrshift, args, ,
-           "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrshift (@var{Q}, @var{R}, @var{i}, @var{j})\n\
-Given a QR@tie{}factorization of a real or complex matrix\n\
-@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and\n\
-@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization\n\
-of @w{@var{A}(:,p)}, where @w{p} is the permutation @*\n\
-@code{p = [1:i-1, shift(i:j, 1), j+1:n]} if @w{@var{i} < @var{j}} @*\n\
- or @*\n\
-@code{p = [1:j-1, shift(j:i,-1), i+1:n]} if @w{@var{j} < @var{i}}.  @*\n\
-\n\
-@seealso{qr, qrupdate, qrinsert, qrdelete}\n\
-@end deftypefn")
-{
-  octave_idx_type nargin = args.length ();
-  octave_value_list retval;
+           doc: /* -*- texinfo -*-
+@deftypefn {} {[@var{Q1}, @var{R1}] =} qrshift (@var{Q}, @var{R}, @var{i}, @var{j})
+Given a QR@tie{}factorization of a real or complex matrix
+@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
+@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization
+of @w{@var{A}(:,p)}, where @w{p} is the permutation @*
+@code{p = [1:i-1, shift(i:j, 1), j+1:n]} if @w{@var{i} < @var{j}} @*
+ or @*
+@code{p = [1:j-1, shift(j:i,-1), i+1:n]} if @w{@var{j} < @var{i}}.  @*
 
-  if (nargin != 4)
-    {
-      print_usage ();
-      return retval;
-    }
+@seealso{qr, qrupdate, qrinsert, qrdelete}
+@end deftypefn */)
+{
+  if (args.length () != 4)
+    print_usage ();
 
   octave_value argq = args(0);
   octave_value argr = args(1);
   octave_value argi = args(2);
   octave_value argj = args(3);
 
-  if (argq.is_numeric_type () && argr.is_numeric_type ())
+  if (! argq.is_numeric_type () || ! argr.is_numeric_type ())
+    print_usage ();
+
+  if (! check_qr_dims (argq, argr, true))
+    error ("qrshift: dimensions mismatch");
+
+  octave_idx_type i = argi.idx_type_value ();
+  octave_idx_type j = argj.idx_type_value ();
+
+  if (! check_index (argi) || ! check_index (argj))
+    error ("qrshift: invalid index I or J");
+
+  octave_value_list retval;
+
+  if (argq.is_real_type () && argr.is_real_type ())
     {
-      if (check_qr_dims (argq, argr, true))
+      // all real case
+      if (argq.is_single_type ()
+          && argr.is_single_type ())
         {
-          if (check_index (argi) && check_index (argj))
-            {
-              octave_idx_type i = argi.int_value ();
-              octave_idx_type j = argj.int_value ();
+          FloatMatrix Q = argq.float_matrix_value ();
+          FloatMatrix R = argr.float_matrix_value ();
 
-              if (argq.is_real_type ()
-                  && argr.is_real_type ())
-                {
-                  // all real case
-                  if (argq.is_single_type ()
-                      && argr.is_single_type ())
-                    {
-                      FloatMatrix Q = argq.float_matrix_value ();
-                      FloatMatrix R = argr.float_matrix_value ();
+          qr<FloatMatrix> fact (Q, R);
+          fact.shift_cols (i-1, j-1);
 
-                      FloatQR fact (Q, R);
-                      fact.shift_cols (i-1, j-1);
-
-                      retval(1) = get_qr_r (fact);
-                      retval(0) = fact.Q ();
-                    }
-                  else
-                    {
-                      Matrix Q = argq.matrix_value ();
-                      Matrix R = argr.matrix_value ();
-
-                      QR fact (Q, R);
-                      fact.shift_cols (i-1, j-1);
-
-                      retval(1) = get_qr_r (fact);
-                      retval(0) = fact.Q ();
-                    }
-                }
-              else
-                {
-                  // complex case
-                  if (argq.is_single_type ()
-                      && argr.is_single_type ())
-                    {
-                      FloatComplexMatrix Q = argq.float_complex_matrix_value ();
-                      FloatComplexMatrix R = argr.float_complex_matrix_value ();
-
-                      FloatComplexQR fact (Q, R);
-                      fact.shift_cols (i-1, j-1);
-
-                      retval(1) = get_qr_r (fact);
-                      retval(0) = fact.Q ();
-                    }
-                  else
-                    {
-                      ComplexMatrix Q = argq.complex_matrix_value ();
-                      ComplexMatrix R = argr.complex_matrix_value ();
-
-                      ComplexQR fact (Q, R);
-                      fact.shift_cols (i-1, j-1);
-
-                      retval(1) = get_qr_r (fact);
-                      retval(0) = fact.Q ();
-                    }
-                }
-            }
-          else
-            error ("qrshift: invalid index I or J");
+          retval = ovl (fact.Q (), get_qr_r (fact));
         }
       else
-        error ("qrshift: dimensions mismatch");
+        {
+          Matrix Q = argq.matrix_value ();
+          Matrix R = argr.matrix_value ();
+
+          qr<Matrix> fact (Q, R);
+          fact.shift_cols (i-1, j-1);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
     }
   else
-    error ("qrshift: Q and R must be numeric");
+    {
+      // complex case
+      if (argq.is_single_type ()
+          && argr.is_single_type ())
+        {
+          FloatComplexMatrix Q = argq.float_complex_matrix_value ();
+          FloatComplexMatrix R = argr.float_complex_matrix_value ();
+
+          qr<FloatComplexMatrix> fact (Q, R);
+          fact.shift_cols (i-1, j-1);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
+      else
+        {
+          ComplexMatrix Q = argq.complex_matrix_value ();
+          ComplexMatrix R = argr.complex_matrix_value ();
+
+          qr<ComplexMatrix> fact (Q, R);
+          fact.shift_cols (i-1, j-1);
+
+          retval = ovl (fact.Q (), get_qr_r (fact));
+        }
+    }
 
   return retval;
 }

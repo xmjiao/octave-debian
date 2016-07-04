@@ -22,8 +22,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_Sparse_op_defs_h)
+#if ! defined (octave_Sparse_op_defs_h)
 #define octave_Sparse_op_defs_h 1
+
+#include "octave-config.h"
 
 #include "Array-util.h"
 #include "oct-locbuf.h"
@@ -369,7 +371,7 @@ along with Octave; see the file COPYING.  If not, see
           } \
       } \
     else if (m1_nr != m2_nr || m1_nc != m2_nc) \
-      gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+      err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
     else \
       { \
         r = R (m1_nr, m1_nc, (m1.nnz () + m2.nnz ())); \
@@ -378,12 +380,12 @@ along with Octave; see the file COPYING.  If not, see
         r.cidx (0) = 0; \
         for (octave_idx_type i = 0 ; i < m1_nc ; i++) \
           { \
-            octave_idx_type  ja = m1.cidx (i); \
-            octave_idx_type  ja_max = m1.cidx (i+1); \
-            bool ja_lt_max= ja < ja_max; \
+            octave_idx_type ja = m1.cidx (i); \
+            octave_idx_type ja_max = m1.cidx (i+1); \
+            bool ja_lt_max = ja < ja_max; \
             \
-            octave_idx_type  jb = m2.cidx (i); \
-            octave_idx_type  jb_max = m2.cidx (i+1); \
+            octave_idx_type jb = m2.cidx (i); \
+            octave_idx_type jb_max = m2.cidx (i+1); \
             bool jb_lt_max = jb < jb_max; \
             \
             while (ja_lt_max || jb_lt_max) \
@@ -477,7 +479,7 @@ along with Octave; see the file COPYING.  If not, see
           } \
       } \
     else if (m1_nr != m2_nr || m1_nc != m2_nc) \
-      gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+      err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
     else \
       { \
         r = R (m1_nr, m1_nc, (m1.nnz () > m2.nnz () ? m1.nnz () : m2.nnz ())); \
@@ -486,12 +488,12 @@ along with Octave; see the file COPYING.  If not, see
         r.cidx (0) = 0; \
         for (octave_idx_type i = 0 ; i < m1_nc ; i++) \
           { \
-            octave_idx_type  ja = m1.cidx (i); \
-            octave_idx_type  ja_max = m1.cidx (i+1); \
-            bool ja_lt_max= ja < ja_max; \
+            octave_idx_type ja = m1.cidx (i); \
+            octave_idx_type ja_max = m1.cidx (i+1); \
+            bool ja_lt_max = ja < ja_max; \
             \
-            octave_idx_type  jb = m2.cidx (i); \
-            octave_idx_type  jb_max = m2.cidx (i+1); \
+            octave_idx_type jb = m2.cidx (i); \
+            octave_idx_type jb_max = m2.cidx (i+1); \
             bool jb_lt_max = jb < jb_max; \
             \
             while (ja_lt_max || jb_lt_max) \
@@ -593,7 +595,7 @@ along with Octave; see the file COPYING.  If not, see
           } \
       } \
     else if (m1_nr != m2_nr || m1_nc != m2_nc) \
-      gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+      err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
     else \
       { \
  \
@@ -602,12 +604,12 @@ along with Octave; see the file COPYING.  If not, see
         \
         for (octave_idx_type i = 0 ; i < m1_nc ; i++) \
           { \
-            octave_idx_type  ja = m1.cidx (i); \
-            octave_idx_type  ja_max = m1.cidx (i+1); \
-            bool ja_lt_max= ja < ja_max; \
+            octave_idx_type ja = m1.cidx (i); \
+            octave_idx_type ja_max = m1.cidx (i+1); \
+            bool ja_lt_max = ja < ja_max; \
             \
-            octave_idx_type  jb = m2.cidx (i); \
-            octave_idx_type  jb_max = m2.cidx (i+1); \
+            octave_idx_type jb = m2.cidx (i); \
+            octave_idx_type jb_max = m2.cidx (i+1); \
             bool jb_lt_max = jb < jb_max; \
             \
             while (ja_lt_max || jb_lt_max) \
@@ -816,7 +818,7 @@ along with Octave; see the file COPYING.  If not, see
     else \
       { \
         if ((m1_nr != 0 || m1_nc != 0) && (m2_nr != 0 || m2_nc != 0)) \
-          gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+          err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
       } \
     return r; \
   }
@@ -964,7 +966,7 @@ along with Octave; see the file COPYING.  If not, see
     else \
       { \
         if ((m1_nr != 0 || m1_nc != 0) && (m2_nr != 0 || m2_nc != 0)) \
-          gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+          err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
       } \
     return r; \
   }
@@ -993,7 +995,7 @@ along with Octave; see the file COPYING.  If not, see
     if (m2_nr == 1 && m2_nc == 1) \
       r = R (m1 OP m2.elem (0,0)); \
     else if (m1_nr != m2_nr || m1_nc != m2_nc) \
-      gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+      err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
     else \
       { \
         r = R (F (m1, m2.matrix_value ())); \
@@ -1016,7 +1018,7 @@ along with Octave; see the file COPYING.  If not, see
     if (m2_nr == 1 && m2_nc == 1) \
       r = R (m1 OP m2.elem (0,0)); \
     else if (m1_nr != m2_nr || m1_nc != m2_nc) \
-      gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+      err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
     else \
       { \
         if (do_mx_check (m1, mx_inline_all_finite<M1::element_type>)) \
@@ -1104,7 +1106,7 @@ along with Octave; see the file COPYING.  If not, see
     else \
       { \
         if ((m1_nr != 0 || m1_nc != 0) && (m2_nr != 0 || m2_nc != 0)) \
-          gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+          err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
       } \
     return r; \
   }
@@ -1170,7 +1172,7 @@ along with Octave; see the file COPYING.  If not, see
     else \
       { \
         if ((m1_nr != 0 || m1_nc != 0) && (m2_nr != 0 || m2_nc != 0)) \
-          gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+          err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
       } \
     return r; \
   }
@@ -1199,7 +1201,7 @@ along with Octave; see the file COPYING.  If not, see
     if (m1_nr == 1 && m1_nc == 1) \
       r = R (m1.elem (0,0) OP m2); \
     else if (m1_nr != m2_nr || m1_nc != m2_nc) \
-      gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+      err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
     else \
       { \
         r = R (m1.matrix_value () OP m2); \
@@ -1230,7 +1232,7 @@ along with Octave; see the file COPYING.  If not, see
     if (m1_nr == 1 && m1_nc == 1) \
       r = R (m1.elem (0,0) OP m2); \
     else if (m1_nr != m2_nr || m1_nc != m2_nc) \
-      gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+      err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
     else \
       { \
         if (SPARSE_SMM_BIN_OP_2_CHECK_ ## F(M2::element_type)) \
@@ -1317,7 +1319,7 @@ along with Octave; see the file COPYING.  If not, see
     else \
       { \
         if ((m1_nr != 0 || m1_nc != 0) && (m2_nr != 0 || m2_nc != 0)) \
-          gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+          err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
       } \
     return r; \
   }
@@ -1383,7 +1385,7 @@ along with Octave; see the file COPYING.  If not, see
     else \
       { \
         if ((m1_nr != 0 || m1_nc != 0) && (m2_nr != 0 || m2_nc != 0)) \
-          gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
+          err_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
       } \
     return r; \
   }
@@ -1464,7 +1466,6 @@ along with Octave; see the file COPYING.  If not, see
     retval = RET_TYPE (nr,nc); \
  \
   return retval
-
 
 #define SPARSE_CUMPROD(RET_TYPE, ELT_TYPE, FCN) \
  \
@@ -1550,7 +1551,7 @@ along with Octave; see the file COPYING.  If not, see
           octave_idx_type nel = 0; \
           for (octave_idx_type i = 0; i < nr; i++) \
             if (tmp[i] != EL_TYPE ())  \
-              nel++ ; \
+              nel++; \
           retval = RET_TYPE (nr, static_cast<octave_idx_type> (1), nel); \
           retval.cidx (0) = 0; \
           retval.cidx (1) = nel; \
@@ -1577,7 +1578,7 @@ along with Octave; see the file COPYING.  If not, see
           octave_idx_type nel = 0; \
           for (octave_idx_type i = 0; i < nc; i++) \
             if (tmp[i] != EL_TYPE ())  \
-              nel++ ; \
+              nel++; \
           retval = RET_TYPE (static_cast<octave_idx_type> (1), nc, nel); \
           retval.cidx (0) = 0; \
           nel = 0; \
@@ -1660,7 +1661,6 @@ along with Octave; see the file COPYING.  If not, see
                         SPARSE_REDUCTION_OP_COL_EXPR (OP), \
                         INIT_VAL, MT_RESULT)
 
-
 // Don't break from this loop if the test succeeds because
 // we are looping over the rows and not the columns in the inner loop.
 #define SPARSE_ANY_ALL_OP_ROW_CODE(TEST_OP, TEST_TRUE_VAL) \
@@ -1741,10 +1741,7 @@ along with Octave; see the file COPYING.  If not, see
      return r; \
    } \
   else if (nc != a_nr) \
-    { \
-      gripe_nonconformant ("operator *", nr, nc, a_nr, a_nc); \
-      return RET_TYPE (); \
-    } \
+    err_nonconformant ("operator *", nr, nc, a_nr, a_nc); \
   else \
     { \
       OCTAVE_LOCAL_BUFFER (octave_idx_type, w, nr); \
@@ -1759,7 +1756,7 @@ along with Octave; see the file COPYING.  If not, see
         { \
           for (octave_idx_type j = a.cidx (i); j < a.cidx (i+1); j++) \
             { \
-              octave_idx_type  col = a.ridx (j); \
+              octave_idx_type col = a.ridx (j); \
               for (octave_idx_type k = m.cidx (col) ; k < m.cidx (col+1); k++) \
                 { \
                   if (w[m.ridx (k)] < i + 1) \
@@ -1786,7 +1783,7 @@ along with Octave; see the file COPYING.  If not, see
           /* The optimal break-point as estimated from simulations */ \
           /* Note that Mergesort is O(nz log(nz)) while searching all */ \
           /* values is O(nr), where nz here is nonzero per row of */ \
-          /* length nr. The test itself was then derived from the */ \
+          /* length nr.  The test itself was then derived from the */ \
           /* simulation with random square matrices and the observation */ \
           /* of the number of nonzero elements in the output matrix */ \
           /* it was found that the breakpoints were */ \
@@ -1873,10 +1870,7 @@ along with Octave; see the file COPYING.  If not, see
       return retval; \
     } \
   else if (nc != a_nr) \
-    { \
-      gripe_nonconformant ("operator *", nr, nc, a_nr, a_nc); \
-      return RET_TYPE (); \
-    } \
+    err_nonconformant ("operator *", nr, nc, a_nr, a_nc); \
   else \
     { \
       RET_TYPE retval (nr, a_nc, ZERO); \
@@ -1908,10 +1902,7 @@ along with Octave; see the file COPYING.  If not, see
       return retval; \
     } \
   else if (nr != a_nr) \
-    { \
-      gripe_nonconformant ("operator *", nc, nr, a_nr, a_nc); \
-      return RET_TYPE (); \
-    } \
+    err_nonconformant ("operator *", nc, nr, a_nr, a_nc); \
   else \
     { \
       RET_TYPE retval (nc, a_nc); \
@@ -1944,10 +1935,7 @@ along with Octave; see the file COPYING.  If not, see
       return retval; \
     } \
   else if (nc != a_nr) \
-    { \
-      gripe_nonconformant ("operator *", nr, nc, a_nr, a_nc); \
-      return RET_TYPE (); \
-    } \
+    err_nonconformant ("operator *", nr, nc, a_nr, a_nc); \
   else \
     { \
       RET_TYPE retval (nr, a_nc, ZERO); \
@@ -1980,10 +1968,7 @@ along with Octave; see the file COPYING.  If not, see
       return retval; \
     } \
   else if (nc != a_nc) \
-    { \
-      gripe_nonconformant ("operator *", nr, nc, a_nc, a_nr); \
-      return RET_TYPE (); \
-    } \
+    err_nonconformant ("operator *", nr, nc, a_nc, a_nr); \
   else \
     { \
       RET_TYPE retval (nr, a_nr, ZERO); \

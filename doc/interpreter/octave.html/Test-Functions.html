@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -58,15 +59,15 @@ Next: <a href="Demonstration-Functions.html#Demonstration-Functions" accesskey="
 <h3 class="section">B.1 Test Functions</h3>
 
 <a name="XREFtest"></a><dl>
-<dt><a name="index-test"></a>Command: <em></em> <strong>test</strong> <em><var>name</var></em></dt>
-<dt><a name="index-test-1"></a>Command: <em></em> <strong>test</strong> <em><var>name</var> quiet|normal|verbose</em></dt>
-<dt><a name="index-test-2"></a>Function File: <em></em> <strong>test</strong> <em>(&quot;<var>name</var>&quot;, &quot;quiet|normal|verbose&quot;, <var>fid</var>)</em></dt>
-<dt><a name="index-test-3"></a>Function File: <em></em> <strong>test</strong> <em>(&quot;<var>name</var>&quot;, &quot;quiet|normal|verbose&quot;, <var>fname</var>)</em></dt>
-<dt><a name="index-test-4"></a>Function File: <em><var>success</var> =</em> <strong>test</strong> <em>(&hellip;)</em></dt>
-<dt><a name="index-test-5"></a>Function File: <em>[<var>n</var>, <var>nmax</var>, <var>nxfail</var>, <var>nskip</var>] =</em> <strong>test</strong> <em>(&hellip;)</em></dt>
-<dt><a name="index-test-6"></a>Function File: <em>[<var>code</var>, <var>idx</var>] =</em> <strong>test</strong> <em>(&quot;<var>name</var>&quot;, &quot;grabdemo&quot;)</em></dt>
-<dt><a name="index-test-7"></a>Function File: <em></em> <strong>test</strong> <em>([], &quot;explain&quot;, <var>fid</var>)</em></dt>
-<dt><a name="index-test-8"></a>Function File: <em></em> <strong>test</strong> <em>([], &quot;explain&quot;, <var>fname</var>)</em></dt>
+<dt><a name="index-test"></a>: <em></em> <strong>test</strong> <em><var>name</var></em></dt>
+<dt><a name="index-test-1"></a>: <em></em> <strong>test</strong> <em><var>name</var> quiet|normal|verbose</em></dt>
+<dt><a name="index-test-2"></a>: <em></em> <strong>test</strong> <em>(&quot;<var>name</var>&quot;, &quot;quiet|normal|verbose&quot;, <var>fid</var>)</em></dt>
+<dt><a name="index-test-3"></a>: <em></em> <strong>test</strong> <em>(&quot;<var>name</var>&quot;, &quot;quiet|normal|verbose&quot;, <var>fname</var>)</em></dt>
+<dt><a name="index-test-4"></a>: <em><var>success</var> =</em> <strong>test</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-test-5"></a>: <em>[<var>n</var>, <var>nmax</var>, <var>nxfail</var>, <var>nskip</var>] =</em> <strong>test</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-test-6"></a>: <em>[<var>code</var>, <var>idx</var>] =</em> <strong>test</strong> <em>(&quot;<var>name</var>&quot;, &quot;grabdemo&quot;)</em></dt>
+<dt><a name="index-test-7"></a>: <em></em> <strong>test</strong> <em>([], &quot;explain&quot;, <var>fid</var>)</em></dt>
+<dt><a name="index-test-8"></a>: <em></em> <strong>test</strong> <em>([], &quot;explain&quot;, <var>fname</var>)</em></dt>
 <dd>
 <p>Perform built-in self-tests from the first file in the loadpath matching
 <var>name</var>.
@@ -125,7 +126,7 @@ processing, but still print the results to the screen, use <code>stdout</code> f
 returns true if all of the tests were successful.  If called with more
 than one output argument then the number of successful tests (<var>n</var>),
 the total number of tests in the file (<var>nmax</var>), the number of xtest
-failures (<var>nxfail</var>), and the number of skipped tests (<var>nskip</var> are
+failures (<var>nxfail</var>), and the number of skipped tests (<var>nskip</var>) are
 returned.
 </p>
 <p>Example
@@ -173,8 +174,8 @@ A block is defined by indentation as in Python.  Lines beginning with
 <p>For example:
 </p>
 <div class="example">
-<pre class="example">%!test error (&quot;this test fails!&quot;);
-%!test &quot;test doesn't fail. it doesn't generate an error&quot;;
+<pre class="example">%!test error (&quot;this test fails!&quot;)
+%!test &quot;test doesn't fail.  it doesn't generate an error&quot;
 </pre></div>
 
 <p>When a test fails, you will see something like:
@@ -214,8 +215,8 @@ with <code>assert</code> the previous test is reduced to:
 absolutely or relatively.  For example, the following all succeed:
 </p>
 <div class="example">
-<pre class="example">%!test assert (1+eps, 1, 2*eps)          # absolute error
-%!test assert (100+100*eps, 100, -2*eps) # relative error
+<pre class="example">%!test assert (1+eps, 1, 2*eps)           # absolute error
+%!test assert (100+100*eps, 100, -2*eps)  # relative error
 </pre></div>
 
 <p>You can also do the comparison yourself, but still have assert
@@ -251,8 +252,8 @@ for <code>svds</code> begin with
 <pre class="example">%!testif HAVE_ARPACK
 </pre></div>
 
-<p>Review <samp>config.h</samp> or <code>octave_config_info (&quot;features&quot;)</code> to see some
-of the possible values to check.
+<p>Review <samp>config.h</samp> or <code>__octave_config_info__ (&quot;build_features&quot;)</code>
+to see some of the possible values to check.
 </p>
 <p>Sometimes during development there is a test that should work but is
 known to fail.  You still want to leave the test in because when the
@@ -281,9 +282,9 @@ is empty), and then uses it in several subsequent tests.
 <div class="example">
 <pre class="example">%!shared <var>a</var>
 %! <var>a</var> = [1, 2, 3; 4, 5, 6];
-%!assert (kron ([1; 2], <var>a</var>), [ <var>a</var>; 2*<var>a</var> ]);
-%!assert (kron ([1, 2], <var>a</var>), [ <var>a</var>, 2*<var>a</var> ]);
-%!assert (kron ([1,2; 3,4], <var>a</var>), [ <var>a</var>,2*<var>a</var>; 3*<var>a</var>,4*<var>a</var> ]);
+%!assert (kron ([1; 2], <var>a</var>), [ <var>a</var>; 2*<var>a</var> ])
+%!assert (kron ([1, 2], <var>a</var>), [ <var>a</var>, 2*<var>a</var> ])
+%!assert (kron ([1,2; 3,4], <var>a</var>), [ <var>a</var>,2*<var>a</var>; 3*<var>a</var>,4*<var>a</var> ])
 </pre></div>
 
 <p>You can share several variables at the same time:
@@ -298,7 +299,7 @@ is empty), and then uses it in several subsequent tests.
 <pre class="example">%!function <var>a</var> = fn (<var>b</var>)
 %!  <var>a</var> = 2*<var>b</var>;
 %!endfunction
-%!assert (fn(2), 4);
+%!assert (fn(2), 4)
 </pre></div>
 
 <p>Note that all previous variables and values are lost when a new
@@ -313,7 +314,7 @@ The following is nearly identical to the example above, but does nothing.
 <pre class="example">%!function <var>a</var> = fn (<var>b</var>)
 %!  <var>a</var> = 2*<var>b</var>;
 %!endfunction
-%! assert (fn(2), 4);
+%!assert (fn(2), 4)
 </pre></div>
 
 <p>Because there is a space after &lsquo;<samp>%!</samp>&rsquo; the <code>assert</code> statement does
@@ -325,19 +326,19 @@ is correct using an optional regular expression <code>&lt;pattern&gt;</code>.
 For example:
 </p>
 <div class="example">
-<pre class="example">%!error &lt;passes!&gt; error (&quot;this test passes!&quot;);
+<pre class="example">%!error &lt;passes!&gt; error (&quot;this test passes!&quot;)
 </pre></div>
 
 <p>If the code doesn&rsquo;t generate an error, the test fails.  For example:
 </p>
 <div class="example">
-<pre class="example">%!error &quot;this is an error because it succeeds.&quot;;
+<pre class="example">%!error &quot;this is an error because it succeeds.&quot;
 </pre></div>
 
 <p>produces
 </p>
 <div class="example">
-<pre class="example">  ***** error &quot;this is an error because it succeeds.&quot;;
+<pre class="example">  ***** error &quot;this is an error because it succeeds.&quot;
 !!!!! test failed: no error
 </pre></div>
 
@@ -380,7 +381,7 @@ in the log file but not executed.  For example:
 </pre></div>
 
 <p>The following trivial code snippet provides examples for the use of
-fail, assert, error and xtest:
+fail, assert, error, and xtest:
 </p>
 <div class="example">
 <pre class="example">function output = must_be_zero (<var>input</var>)
@@ -390,26 +391,26 @@ fail, assert, error and xtest:
   output = input;
 endfunction
 
-%!fail (&quot;must_be_zero (1)&quot;);
-%!assert (must_be_zero (0), 0);
-%!error &lt;Nonzero&gt; must_be_zero (1);
-%!xtest error (&quot;This code generates an error&quot;);
+%!fail (&quot;must_be_zero (1)&quot;)
+%!assert (must_be_zero (0), 0)
+%!error &lt;Nonzero&gt; must_be_zero (1)
+%!xtest error (&quot;This code generates an error&quot;)
 </pre></div>
 
-<p>When putting this a file <samp>must_be_zero.m</samp>, and running the test, we see
+<p>When putting this in a file <samp>must_be_zero.m</samp>, and running the test, we see
 </p>
 <div class="example">
 <pre class="example">test must_be_zero verbose
 
 &rArr;
 &gt;&gt;&gt;&gt;&gt; /path/to/must_be_zero.m
-  ***** fail (&quot;must_be_zero (1)&quot;);
-  ***** assert (must_be_zero (0), 0);
-  ***** error &lt;Nonzero&gt; must_be_zero (1);
-  ***** xtest error (&quot;This code generates an error&quot;);
+***** fail (&quot;must_be_zero (1)&quot;)
+***** assert (must_be_zero (0), 0)
+***** error &lt;Nonzero&gt; must_be_zero (1)
+***** xtest error (&quot;This code generates an error&quot;)
 !!!!! known failure
 This code generates an error
-PASSES 4 out of 4 tests (1 expected failures)
+PASSES 3 out of 4 tests (1 expected failure)
 </pre></div>
 
 <a name="Block-type-summary_003a"></a>
@@ -458,8 +459,31 @@ PASSES 4 out of 4 tests (1 expected failures)
 </dd>
 <dt><code>%!assert (x, y, tol)</code></dt>
 <dd><p>shorthand for <code>%!test assert (x, y, tol)</code>
-</p></dd>
+</p>
+</dd>
+<dt><code>%!fail (CODE, PATTERN)</code></dt>
+<dd><p>shorthand for <code>%!test fail (CODE, PATTERN)</code>
+</p>
+</dd>
 </dl>
+
+<p>When coding tests the Octave convention is that lines that begin with a block
+type do not have a semicolon at the end.  Any code that is within a block,
+however, is normal Octave code and usually will have a trailing semicolon.
+For example,
+</p>
+<div class="example">
+<pre class="example">## bare block instantiation
+%!assert (sin (0), 0)
+</pre></div>
+
+<p>but
+</p>
+<div class="example">
+<pre class="example">## test block with normal Octave code
+%!test
+%! assert (sin (0), 0);
+</pre></div>
 
 <p>You can also create test scripts for built-in functions and your own C++
 functions.  To do so, put a file with the bare function name (no .m
@@ -486,12 +510,12 @@ path and the user will have to remember to type
 <code>test (&quot;funcname.cc&quot;)</code>.
 </p>
 <a name="XREFassert"></a><dl>
-<dt><a name="index-assert"></a>Function File: <em></em> <strong>assert</strong> <em>(<var>cond</var>)</em></dt>
-<dt><a name="index-assert-1"></a>Function File: <em></em> <strong>assert</strong> <em>(<var>cond</var>, <var>errmsg</var>)</em></dt>
-<dt><a name="index-assert-2"></a>Function File: <em></em> <strong>assert</strong> <em>(<var>cond</var>, <var>errmsg</var>, &hellip;)</em></dt>
-<dt><a name="index-assert-3"></a>Function File: <em></em> <strong>assert</strong> <em>(<var>cond</var>, <var>msg_id</var>, <var>errmsg</var>, &hellip;)</em></dt>
-<dt><a name="index-assert-4"></a>Function File: <em></em> <strong>assert</strong> <em>(<var>observed</var>, <var>expected</var>)</em></dt>
-<dt><a name="index-assert-5"></a>Function File: <em></em> <strong>assert</strong> <em>(<var>observed</var>, <var>expected</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-assert"></a>: <em></em> <strong>assert</strong> <em>(<var>cond</var>)</em></dt>
+<dt><a name="index-assert-1"></a>: <em></em> <strong>assert</strong> <em>(<var>cond</var>, <var>errmsg</var>)</em></dt>
+<dt><a name="index-assert-2"></a>: <em></em> <strong>assert</strong> <em>(<var>cond</var>, <var>errmsg</var>, &hellip;)</em></dt>
+<dt><a name="index-assert-3"></a>: <em></em> <strong>assert</strong> <em>(<var>cond</var>, <var>msg_id</var>, <var>errmsg</var>, &hellip;)</em></dt>
+<dt><a name="index-assert-4"></a>: <em></em> <strong>assert</strong> <em>(<var>observed</var>, <var>expected</var>)</em></dt>
+<dt><a name="index-assert-5"></a>: <em></em> <strong>assert</strong> <em>(<var>observed</var>, <var>expected</var>, <var>tol</var>)</em></dt>
 <dd>
 <p>Produce an error if the specified condition is not met.
 </p>
@@ -541,10 +565,10 @@ element-by-element basis.
 
 
 <a name="XREFfail"></a><dl>
-<dt><a name="index-fail"></a>Function File: <em></em> <strong>fail</strong> <em>(<var>code</var>)</em></dt>
-<dt><a name="index-fail-1"></a>Function File: <em></em> <strong>fail</strong> <em>(<var>code</var>, <var>pattern</var>)</em></dt>
-<dt><a name="index-fail-2"></a>Function File: <em></em> <strong>fail</strong> <em>(<var>code</var>, &quot;warning&quot;)</em></dt>
-<dt><a name="index-fail-3"></a>Function File: <em></em> <strong>fail</strong> <em>(<var>code</var>, &quot;warning&quot;, <var>pattern</var>)</em></dt>
+<dt><a name="index-fail"></a>: <em></em> <strong>fail</strong> <em>(<var>code</var>)</em></dt>
+<dt><a name="index-fail-1"></a>: <em></em> <strong>fail</strong> <em>(<var>code</var>, <var>pattern</var>)</em></dt>
+<dt><a name="index-fail-2"></a>: <em></em> <strong>fail</strong> <em>(<var>code</var>, &quot;warning&quot;)</em></dt>
+<dt><a name="index-fail-3"></a>: <em></em> <strong>fail</strong> <em>(<var>code</var>, &quot;warning&quot;, <var>pattern</var>)</em></dt>
 <dd>
 <p>Return true if <var>code</var> fails with an error message matching
 <var>pattern</var>, otherwise produce an error.

@@ -20,6 +20,11 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
+#if ! defined (octave_octave_default_image_h)
+#define octave_octave_default_image_h 1
+
+#include "octave-config.h"
+
 static char default_im_data[] =
 {
   31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,
@@ -280,3 +285,4 @@ static char default_im_data[] =
   31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31
 };
 
+#endif

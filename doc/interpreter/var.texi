@@ -65,7 +65,7 @@ to hold a string value in the same program.  Variables may not be used
 before they have been given a value.  Doing so results in an error.
 
 @cindex @code{ans}
-@c ans scripts/miscellaneous/ans.m
+@c ans scripts/scripts/help/ans.m
 @anchor{XREFans}
 @defvr {Automatic Variable} ans
 The most recently computed result that was not explicitly assigned to a
@@ -84,16 +84,16 @@ is evaluated, the value returned by @code{ans} is 25.
 
 @c isvarname libinterp/corefcn/utils.cc
 @anchor{XREFisvarname}
-@deftypefn {Built-in Function} {} isvarname (@var{name})
+@deftypefn {} {} isvarname (@var{name})
 Return true if @var{name} is a valid variable name.
 @seealso{@ref{XREFiskeyword,,iskeyword}, @ref{XREFexist,,exist}, @ref{XREFwho,,who}}
 @end deftypefn
 
 
-@c genvarname scripts/miscellaneous/genvarname.m
+@c genvarname scripts/scripts/miscellaneous/genvarname.m
 @anchor{XREFgenvarname}
-@deftypefn  {Function File} {@var{varname} =} genvarname (@var{str})
-@deftypefnx {Function File} {@var{varname} =} genvarname (@var{str}, @var{exclusions})
+@deftypefn  {} {@var{varname} =} genvarname (@var{str})
+@deftypefnx {} {@var{varname} =} genvarname (@var{str}, @var{exclusions})
 Create valid unique variable name(s) from @var{str}.
 
 If @var{str} is a cellstr, then a unique variable is created for each cell
@@ -169,9 +169,9 @@ function names such as @qcode{"sin"}.  Such names should be included in
 @end deftypefn
 
 
-@c namelengthmax scripts/miscellaneous/namelengthmax.m
+@c namelengthmax scripts/scripts/miscellaneous/namelengthmax.m
 @anchor{XREFnamelengthmax}
-@deftypefn {Function File} {} namelengthmax ()
+@deftypefn {} {} namelengthmax ()
 Return the @sc{matlab} compatible maximum variable name length.
 
 Octave is capable of storing strings up to @math{2^{31} - 1} in length.
@@ -284,7 +284,7 @@ the function works with a @emph{copy} of its argument.
 
 @c isglobal libinterp/corefcn/variables.cc
 @anchor{XREFisglobal}
-@deftypefn {Built-in Function} {} isglobal (@var{name})
+@deftypefn {} {} isglobal (@var{name})
 Return true if @var{name} is a globally visible variable.
 
 For example:
@@ -448,10 +448,10 @@ who -variables
 
 @c who libinterp/corefcn/variables.cc
 @anchor{XREFwho}
-@deftypefn  {Command} {} who
-@deftypefnx {Command} {} who pattern @dots{}
-@deftypefnx {Command} {} who option pattern @dots{}
-@deftypefnx {Command} {C =} who ("pattern", @dots{})
+@deftypefn  {} {} who
+@deftypefnx {} {} who pattern @dots{}
+@deftypefnx {} {} who option pattern @dots{}
+@deftypefnx {} {C =} who ("pattern", @dots{})
 List currently defined variables matching the given patterns.
 
 Valid pattern syntax is the same as described for the @code{clear} command.
@@ -484,10 +484,10 @@ matching the given patterns.
 
 @c whos libinterp/corefcn/variables.cc
 @anchor{XREFwhos}
-@deftypefn  {Command} {} whos
-@deftypefnx {Command} {} whos pattern @dots{}
-@deftypefnx {Command} {} whos option pattern @dots{}
-@deftypefnx {Built-in Function} {S =} whos ("pattern", @dots{})
+@deftypefn  {} {} whos
+@deftypefnx {} {} whos pattern @dots{}
+@deftypefnx {} {} whos option pattern @dots{}
+@deftypefnx {} {S =} whos ("pattern", @dots{})
 Provide detailed information on currently defined variables matching the
 given patterns.
 
@@ -549,9 +549,9 @@ complex, nesting, persistent.
 
 @c whos_line_format libinterp/corefcn/variables.cc
 @anchor{XREFwhos_line_format}
-@deftypefn  {Built-in Function} {@var{val} =} whos_line_format ()
-@deftypefnx {Built-in Function} {@var{old_val} =} whos_line_format (@var{new_val})
-@deftypefnx {Built-in Function} {} whos_line_format (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} whos_line_format ()
+@deftypefnx {} {@var{old_val} =} whos_line_format (@var{new_val})
+@deftypefnx {} {} whos_line_format (@var{new_val}, "local")
 Query or set the format string used by the command @code{whos}.
 
 A full format string is:
@@ -604,12 +604,12 @@ The @code{width} parameter is a positive integer specifying the minimum
 number of columns used for printing.  No maximum is needed as the field will
 auto-expand as required.
 
-The parameters @code{left-min} and @code{balance} are only available when the
-column-aligned modifier is used with the command @samp{%s}.
-@code{balance} specifies the column number within the field width which will
-be aligned between entries.  Numbering starts from 0 which indicates the
-leftmost column.  @code{left-min} specifies the minimum field width to the
-left of the specified balance column.
+The parameters @code{left-min} and @code{balance} are only available when
+the column-aligned modifier is used with the command @samp{%s}.
+@code{balance} specifies the column number within the field width which
+will be aligned between entries.  Numbering starts from 0 which indicates
+the leftmost column.  @code{left-min} specifies the minimum field width to
+the left of the specified balance column.
 
 The default format is:
 
@@ -637,8 +637,8 @@ endif
 
 @c exist libinterp/corefcn/variables.cc
 @anchor{XREFexist}
-@deftypefn  {Built-in Function} {@var{c} =} exist (@var{name})
-@deftypefnx {Built-in Function} {@var{c} =} exist (@var{name}, @var{type})
+@deftypefn  {} {@var{c} =} exist (@var{name})
+@deftypefnx {} {@var{c} =} exist (@var{name}, @var{type})
 Check for the existence of @var{name} as a variable, function, file,
 directory, or class.
 
@@ -649,7 +649,7 @@ The return code @var{c} is one of
 @var{name} is a variable.
 
 @item 2
-@var{name} is an absolute file name, an ordinary file in Octave's
+@var{name} is an absolute filename, an ordinary file in Octave's
 @code{path}, or (after appending @samp{.m}) a function file in Octave's
 @code{path}.
 
@@ -700,6 +700,11 @@ Octave's search path.  If you want information about other types of files
 not on the search path you should use some combination of the functions
 @code{file_in_path} and @code{stat} instead.
 
+Programming Note: If @var{name} is implemented by a buggy .oct/.mex file,
+calling @var{exist} may cause Octave to crash.  To maintain high
+performance, Octave trusts .oct/.mex files instead of @nospell{sandboxing}
+them.
+
 @seealso{@ref{XREFfile_in_loadpath,,file_in_loadpath}, @ref{XREFfile_in_path,,file_in_path}, @ref{XREFdir_in_loadpath,,dir_in_loadpath}, @ref{XREFstat,,stat}}
 @end deftypefn
 
@@ -721,7 +726,7 @@ function allows this.
 
 @c clear libinterp/corefcn/variables.cc
 @anchor{XREFclear}
-@deftypefn {Command} {} clear [options] pattern @dots{}
+@deftypefn {} {} clear [options] pattern @dots{}
 Delete the names matching the given patterns from the symbol table.
 
 The pattern may contain the following special characters:
@@ -794,9 +799,9 @@ without the dash as well.
 @end deftypefn
 
 
-@c pack scripts/miscellaneous/pack.m
+@c pack scripts/scripts/miscellaneous/pack.m
 @anchor{XREFpack}
-@deftypefn {Function File} {} pack ()
+@deftypefn {} {} pack ()
 Consolidate workspace memory in @sc{matlab}.
 
 This function is provided for compatibility, but does nothing in Octave.
@@ -808,11 +813,11 @@ Information about a function or variable such as its location in the
 file system can also be acquired from within Octave.  This is usually
 only useful during development of programs, and not within a program.
 
-@c type scripts/help/type.m
+@c type scripts/scripts/help/type.m
 @anchor{XREFtype}
-@deftypefn  {Command} {} type @var{name} @dots{}
-@deftypefnx {Command} {} type -q @var{name} @dots{}
-@deftypefnx {Function File} {text =} type ("@var{name}", @dots{})
+@deftypefn  {} {} type @var{name} @dots{}
+@deftypefnx {} {} type -q @var{name} @dots{}
+@deftypefnx {} {text =} type ("@var{name}", @dots{})
 Display the contents of @var{name} which may be a file, function (m-file),
 variable, operator, or keyword.
 
@@ -826,9 +831,9 @@ corresponds to the contents of each requested function.
 @end deftypefn
 
 
-@c which scripts/help/which.m
+@c which scripts/scripts/help/which.m
 @anchor{XREFwhich}
-@deftypefn {Command} {} which name @dots{}
+@deftypefn {} {} which name @dots{}
 Display the type of each @var{name}.
 
 If @var{name} is defined from a function file, the full name of the file is
@@ -837,11 +842,11 @@ also displayed.
 @end deftypefn
 
 
-@c what scripts/miscellaneous/what.m
+@c what scripts/scripts/miscellaneous/what.m
 @anchor{XREFwhat}
-@deftypefn  {Command} {} what
-@deftypefnx {Command} {} what @var{dir}
-@deftypefnx {Function File} {w =} what (@var{dir})
+@deftypefn  {} {} what
+@deftypefnx {} {} what @var{dir}
+@deftypefnx {} {w =} what (@var{dir})
 List the Octave specific files in directory @var{dir}.
 
 If @var{dir} is not specified then the current directory is used.

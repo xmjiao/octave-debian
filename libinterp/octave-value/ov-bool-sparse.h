@@ -21,8 +21,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_bool_sparse_h)
+#if ! defined (octave_ov_bool_sparse_h)
 #define octave_ov_bool_sparse_h 1
+
+#include "octave-config.h"
 
 #include <cstdlib>
 
@@ -84,7 +86,7 @@ public:
 
   octave_base_value *try_narrowing_conversion (void);
 
-  // FIXME Adapt idx_vector to allow sparse logical indexing without overflow!!
+  // FIXME: Adapt idx_vector to allow sparse logical indexing without overflow!
   idx_vector index_vector (bool /* require_integers */ = false) const
   {
     return idx_vector (matrix);
@@ -133,7 +135,7 @@ public:
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
   bool load_binary (std::istream& is, bool swap,
-                    oct_mach_info::float_format fmt);
+                    octave::mach_info::float_format fmt);
 
   bool save_hdf5 (octave_hdf5_id loc_id, const char *name, bool save_as_floats);
 
@@ -149,7 +151,6 @@ public:
   }
 
 protected:
-
 
   DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA
 };

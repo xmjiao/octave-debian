@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{vars} =} symvar (@var{str})
+## @deftypefn {} {@var{vars} =} symvar (@var{str})
 ## Identify the symbolic variable names in the string @var{str}.
 ##
 ## Common constant names such as @code{i}, @code{j}, @code{pi}, @code{Inf} and
@@ -40,6 +40,7 @@
 ## @end deftypefn
 
 function vars = symvar (str)
+
   vars = argnames (inline (str));
   ## Correct for auto-generated 'x' variable when no symvar was found.
   if (numel (vars) == 1 && strcmp (vars{1}, "x") && ! any (str == "x"))

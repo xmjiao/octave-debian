@@ -57,9 +57,6 @@ The ‘line’ properties are:
 ‘displayname’: string | cell array of strings, def. ""
      Text for the legend entry corresponding to this line.
 
-‘erasemode’: "background" | "none" | {"normal"} | "xor"
-     ‘erasemode’ is unused.
-
 ‘handlevisibility’: "callback" | "off" | {"on"}
      If ‘handlevisibility’ is "off", the line’s handle is not visible in
      its parent’s "children" property.
@@ -181,9 +178,6 @@ The ‘text’ properties are:
 
 ‘editing’: {"off"} | "on"
 
-‘erasemode’: "background" | "none" | {"normal"} | "xor"
-     ‘erasemode’ is unused.
-
 ‘extent’ (read-only): def. ‘[0.000000 -0.005843 0.000000 0.032136]’
 
 ‘fontangle’: "italic" | {"normal"} | "oblique"
@@ -211,6 +205,8 @@ The ‘text’ properties are:
 ‘horizontalalignment’: "center" | {"left"} | "right"
 
 ‘interpreter’: "latex" | "none" | {"tex"}
+     Control the way the "string" property is interpreted.  *Note
+     Use of the interpreter property: XREFinterpreterusage.
 
 ‘interruptible’: "off" | {"on"}
 
@@ -311,9 +307,6 @@ The ‘image’ properties are:
 ‘displayname’: string | cell array of strings, def. ""
      Text for the legend entry corresponding to this image.
 
-‘erasemode’: "background" | "none" | {"normal"} | "xor"
-     ‘erasemode’ is unused.
-
 ‘handlevisibility’: "callback" | "off" | {"on"}
      If ‘handlevisibility’ is "off", the image’s handle is not visible
      in its parent’s "children" property.
@@ -374,12 +367,12 @@ The ‘patch’ properties are:
      ‘alphadatamapping’ is unused.
 
 ‘ambientstrength’: scalar, def. ‘0.30000’
-     Light is not yet implemented for patch objects.  ‘ambientstrength’
-     is unused.
+     Strength of the ambient light.  Value between 0.0 and 1.0
 
 ‘backfacelighting’: "lit" | {"reverselit"} | "unlit"
-     Light is not yet implemented for patch objects.  ‘backfacelighting’
-     is unused.
+     "lit": The normals are used as is for lighting.  "reverselit": The
+     normals are always oriented towards the point of view.  "unlit":
+     Faces with normals pointing away from the point of view are unlit.
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -419,8 +412,8 @@ The ‘patch’ properties are:
      Callback function executed immediately before patch is deleted.
 
 ‘diffusestrength’: scalar, def. ‘0.60000’
-     Light is not yet implemented for patch objects.  ‘diffusestrength’
-     is unused.
+     Strength of the diffuse reflex.  Value between 0.0 (no diffuse
+     reflex) and 1.0 (full diffuse reflex).
 
 ‘displayname’: def. ""
      Text of the legend entry corresponding to this patch.
@@ -432,11 +425,11 @@ The ‘patch’ properties are:
 ‘edgecolor’: def. ‘[0 0 0]’
 
 ‘edgelighting’: "flat" | "gouraud" | {"none"} | "phong"
-     Light is not yet implemented for patch objects.  ‘edgelighting’ is
-     unused.
-
-‘erasemode’: "background" | "none" | {"normal"} | "xor"
-     ‘erasemode’ is unused.
+     When set to a value other than "none", the edges of the object are
+     drawn with light and shadow effects.  Supported values are "none"
+     (no lighting effects), "flat" (facetted look) and "gouraud" (linear
+     interpolation of the lighting effects between the vertices).
+     "phong" is deprecated and has the same effect as "gouraud".
 
 ‘facealpha’: scalar | matrix, def. ‘1’
      Transparency is not yet implemented for patch objects.  ‘facealpha’
@@ -444,9 +437,16 @@ The ‘patch’ properties are:
 
 ‘facecolor’: {colorspec} | "none" | "flat" | "interp", def. ‘[0 0 0]’
 
-‘facelighting’: "flat" | "gouraud" | {"none"} | "phong"
-     Light is not yet implemented for patch objects.  ‘facelighting’ is
-     unused.
+‘facelighting’: {"flat"} | "gouraud" | "none" | "phong"
+     When set to a value other than "none", the faces of the object are
+     drawn with light and shadow effects.  Supported values are "none"
+     (no lighting effects), "flat" (facetted look) and "gouraud" (linear
+     interpolation of the lighting effects between the vertices).
+     "phong" is deprecated and has the same effect as "gouraud".
+
+‘facenormals’: def. ‘[](0x0)’
+
+‘facenormalsmode’: {"auto"} | "manual"
 
 ‘faces’: def. ‘[1 2 3]’
 
@@ -483,8 +483,6 @@ The ‘patch’ properties are:
 ‘markersize’: scalar, def. ‘6’
      *Note line markersize property: XREFlinemarkersize.
 
-‘normalmode’: {"auto"} | "manual"
-
 ‘parent’: graphics handle
      Handle of the parent graphics object.
 
@@ -493,16 +491,16 @@ The ‘patch’ properties are:
 ‘selectionhighlight’: "off" | {"on"}
 
 ‘specularcolorreflectance’: scalar, def. ‘1’
-     Light is not yet implemented for patch objects.
-     ‘specularcolorreflectance’ is unused.
+     Reflectance for specular color.  Value between 0.0 (color of
+     underlying face) and 1.0 (color of light source).
 
 ‘specularexponent’: scalar, def. ‘10’
-     Light is not yet implemented for patch objects.  ‘specularexponent’
-     is unused.
+     Exponent for the specular reflex.  The lower the value, the more
+     the reflex is spread out.
 
 ‘specularstrength’: scalar, def. ‘0.90000’
-     Light is not yet implemented for patch objects.  ‘specularstrength’
-     is unused.
+     Strength of the specular reflex.  Value between 0.0 (no specular
+     reflex) and 1.0 (full specular reflex).
 
 ‘tag’: string, def. ""
      A user-defined string to label the graphics object.
@@ -519,6 +517,8 @@ The ‘patch’ properties are:
 
 ‘vertexnormals’: def. ‘[](0x0)’
 
+‘vertexnormalsmode’: {"auto"} | "manual"
+
 ‘vertices’: vector | matrix, def. 3-by-2 double
 
 ‘visible’: "off" | {"on"}
@@ -531,7 +531,7 @@ The ‘patch’ properties are:
 ‘zdata’: vector | matrix, def. ‘[](0x0)’
 
 
-File: octave.info,  Node: Surface Properties,  Prev: Patch Properties,  Up: Graphics Object Properties
+File: octave.info,  Node: Surface Properties,  Next: Light Properties,  Prev: Patch Properties,  Up: Graphics Object Properties
 
 15.3.3.8 Surface Properties
 ...........................
@@ -548,13 +548,13 @@ The ‘surface’ properties are:
      Transparency is not yet implemented for surface objects.
      ‘alphadatamapping’ is unused.
 
-‘ambientstrength’: def. ‘0.30000’
-     Light is not yet implemented for surface objects.
-     ‘ambientstrength’ is unused.
+‘ambientstrength’: scalar, def. ‘0.30000’
+     Strength of the ambient light.  Value between 0.0 and 1.0
 
 ‘backfacelighting’: "lit" | {"reverselit"} | "unlit"
-     Light is not yet implemented for surface objects.
-     ‘backfacelighting’ is unused.
+     "lit": The normals are used as is for lighting.  "reverselit": The
+     normals are always oriented towards the point of view.  "unlit":
+     Faces with normals pointing away from the point of view are unlit.
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -584,9 +584,9 @@ The ‘surface’ properties are:
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before surface is deleted.
 
-‘diffusestrength’: def. ‘0.60000’
-     Light is not yet implemented for surface objects.
-     ‘diffusestrength’ is unused.
+‘diffusestrength’: scalar, def. ‘0.60000’
+     Strength of the diffuse reflex.  Value between 0.0 (no diffuse
+     reflex) and 1.0 (full diffuse reflex).
 
 ‘displayname’: def. ""
      Text for the legend entry corresponding to this surface.
@@ -598,11 +598,11 @@ The ‘surface’ properties are:
 ‘edgecolor’: def. ‘[0 0 0]’
 
 ‘edgelighting’: "flat" | "gouraud" | {"none"} | "phong"
-     Light is not yet implemented for surface objects.  ‘edgelighting’
-     is unused.
-
-‘erasemode’: "background" | "none" | {"normal"} | "xor"
-     ‘erasemode’ is unused.
+     When set to a value other than "none", the edges of the object are
+     drawn with light and shadow effects.  Supported values are "none"
+     (no lighting effects), "flat" (facetted look) and "gouraud" (linear
+     interpolation of the lighting effects between the vertices).
+     "phong" is deprecated and has the same effect as "gouraud".
 
 ‘facealpha’: scalar | matrix, def. ‘1’
      Transparency is not yet implemented for surface objects.
@@ -610,9 +610,16 @@ The ‘surface’ properties are:
 
 ‘facecolor’: {"flat"} | "interp" | "none" | "texturemap"
 
-‘facelighting’: "flat" | "gouraud" | {"none"} | "phong"
-     Light is not yet implemented for surface objects.  ‘facelighting’
-     is unused.
+‘facelighting’: {"flat"} | "gouraud" | "none" | "phong"
+     When set to a value other than "none", the faces of the object are
+     drawn with light and shadow effects.  Supported values are "none"
+     (no lighting effects), "flat" (facetted look) and "gouraud" (linear
+     interpolation of the lighting effects between the vertices).
+     "phong" is deprecated and has the same effect as "gouraud".
+
+‘facenormals’: def. ‘[](0x0)’
+
+‘facenormalsmode’: {"auto"} | "manual"
 
 ‘handlevisibility’: "callback" | "off" | {"on"}
      If ‘handlevisibility’ is "off", the surface’s handle is not visible
@@ -644,8 +651,6 @@ The ‘surface’ properties are:
 
 ‘meshstyle’: {"both"} | "column" | "row"
 
-‘normalmode’: {"auto"} | "manual"
-
 ‘parent’: graphics handle
      Handle of the parent graphics object.
 
@@ -653,17 +658,17 @@ The ‘surface’ properties are:
 
 ‘selectionhighlight’: "off" | {"on"}
 
-‘specularcolorreflectance’: def. ‘1’
-     Light is not yet implemented for surface objects.
-     ‘specularcolorreflectance’ is unused.
+‘specularcolorreflectance’: scalar, def. ‘1’
+     Reflectance for specular color.  Value between 0.0 (color of
+     underlying face) and 1.0 (color of light source).
 
-‘specularexponent’: def. ‘10’
-     Light is not yet implemented for surface objects.
-     ‘specularexponent’ is unused.
+‘specularexponent’: scalar, def. ‘10’
+     Exponent for the specular reflex.  The lower the value, the more
+     the reflex is spread out.
 
-‘specularstrength’: def. ‘0.90000’
-     Light is not yet implemented for surface objects.
-     ‘specularstrength’ is unused.
+‘specularstrength’: scalar, def. ‘0.90000’
+     Strength of the specular reflex.  Value between 0.0 (no specular
+     reflex) and 1.0 (full specular reflex).
 
 ‘tag’: string, def. ""
      A user-defined string to label the graphics object.
@@ -679,6 +684,8 @@ The ‘surface’ properties are:
      User-defined data to associate with the graphics object.
 
 ‘vertexnormals’: def. 3-by-3-by-3 double
+
+‘vertexnormalsmode’: {"auto"} | "manual"
 
 ‘visible’: "off" | {"on"}
      If ‘visible’ is "off", the surface is not rendered on screen.
@@ -696,20 +703,773 @@ The ‘surface’ properties are:
 ‘zdatasource’: def. ""
 
 
+File: octave.info,  Node: Light Properties,  Next: Uimenu Properties,  Prev: Surface Properties,  Up: Graphics Object Properties
+
+15.3.3.9 Light Properties
+.........................
+
+The ‘light’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘beingdeleted’: {"off"} | "on"
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     ‘children’ is unused.
+
+‘clipping’: "off" | {"on"}
+     If ‘clipping’ is "on", the light is clipped in its parent axes
+     limits.
+
+‘color’: colorspec, def. ‘[1 1 1]’
+     Color of the light source.  *Note colorspec: Colors.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after light has been
+     created.  Function is set by using default property on root object,
+     e.g., ‘set (0, "defaultlightcreatefcn", 'disp ("light
+     created!")')’.
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before light is deleted.
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the light’s handle is not visible
+     in its parent’s "children" property.
+
+‘hittest’: "off" | {"on"}
+
+‘interruptible’: "off" | {"on"}
+
+‘parent’: graphics handle
+     Handle of the parent graphics object.
+
+‘position’: def. ‘[1 0 1]’
+     Position of the light source.
+
+‘selected’: {"off"} | "on"
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘style’: {"infinite"} | "local"
+     This string defines whether the light emanates from a light source
+     at infinite distance ("infinite") or from a local point source
+     ("local").  Only the default value "infinite" is supported.
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always "light"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this light object.
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the light is not rendered on screen.
+
+
+File: octave.info,  Node: Uimenu Properties,  Next: Uibuttongroup Properties,  Prev: Light Properties,  Up: Graphics Object Properties
+
+15.3.3.10 Uimenu Properties
+...........................
+
+The ‘uimenu’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘accelerator’: def. ""
+
+‘beingdeleted’: {"off"} | "on"
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     ‘buttondownfcn’ is unused.
+
+‘callback’: def. ‘[](0x0)’
+
+‘checked’: {"off"} | "on"
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the uimenu’s children.
+
+‘clipping’: "off" | {"on"}
+     If ‘clipping’ is "on", the uimenu is clipped in its parent axes
+     limits.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after uimenu has been
+     created.  Function is set by using default property on root object,
+     e.g., ‘set (0, "defaultuimenucreatefcn", 'disp ("uimenu
+     created!")')’.
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before uimenu is deleted.
+
+‘enable’: "off" | {"on"}
+
+‘foregroundcolor’: def. ‘[0 0 0]’
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the uimenu’s handle is not visible
+     in its parent’s "children" property.
+
+‘hittest’: "off" | {"on"}
+
+‘interruptible’: "off" | {"on"}
+
+‘label’: def. ""
+
+‘parent’: graphics handle
+     Handle of the parent graphics object.
+
+‘position’: def. ‘0’
+
+‘selected’: {"off"} | "on"
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘separator’: {"off"} | "on"
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always "uimenu"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this uimenu object.
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the uimenu is not rendered on screen.
+
+
+File: octave.info,  Node: Uibuttongroup Properties,  Next: Uicontextmenu Properties,  Prev: Uimenu Properties,  Up: Graphics Object Properties
+
+15.3.3.11 Uibuttongroup Properties
+..................................
+
+The ‘uibuttongroup’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘backgroundcolor’: def. ‘[1 1 1]’
+
+‘beingdeleted’: {"off"} | "on"
+
+‘bordertype’: "beveledin" | "beveledout" | {"etchedin"} | "etchedout" | "line" | "none"
+
+‘borderwidth’: def. ‘1’
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the uibuttongroup’s children.
+
+‘clipping’: "off" | {"on"}
+     If ‘clipping’ is "on", the uibuttongroup is clipped in its parent
+     axes limits.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after uibuttongroup has been
+     created.  Function is set by using default property on root object,
+     e.g., ‘set (0, "defaultuibuttongroupcreatefcn", 'disp
+     ("uibuttongroup created!")')’.
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before uibuttongroup is
+     deleted.
+
+‘fontangle’: "italic" | {"normal"} | "oblique"
+
+‘fontname’: def. "*"
+
+‘fontsize’: def. ‘10’
+
+‘fontunits’: "centimeters" | "inches" | "normalized" | "pixels" | {"points"}
+
+‘fontweight’: "bold" | "demi" | "light" | {"normal"}
+
+‘foregroundcolor’: def. ‘[0 0 0]’
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the uibuttongroup’s handle is not
+     visible in its parent’s "children" property.
+
+‘highlightcolor’: def. ‘[1 1 1]’
+
+‘hittest’: "off" | {"on"}
+
+‘interruptible’: "off" | {"on"}
+
+‘parent’: graphics handle
+     Handle of the parent graphics object.
+
+‘position’: def. ‘[0 0 1 1]’
+
+‘resizefcn’: def. ‘[](0x0)’
+
+‘selected’: {"off"} | "on"
+
+‘selectedobject’: def. ‘[](0x0)’
+
+‘selectionchangedfcn’: def. ‘[](0x0)’
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘shadowcolor’: def. ‘[0 0 0]’
+
+‘sizechangedfcn’: def. ‘[](0x0)’
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘title’: def. ""
+
+‘titleposition’: "centerbottom" | "centertop" | "leftbottom" | {"lefttop"} | "rightbottom" | "righttop"
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always
+     "uibuttongroup"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this uibuttongroup object.
+
+‘units’: "centimeters" | "characters" | "inches" | {"normalized"} | "pixels" | "points"
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the uibuttongroup is not rendered on screen.
+
+
+File: octave.info,  Node: Uicontextmenu Properties,  Next: Uipanel Properties,  Prev: Uibuttongroup Properties,  Up: Graphics Object Properties
+
+15.3.3.12 Uicontextmenu Properties
+..................................
+
+The ‘uicontextmenu’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘beingdeleted’: {"off"} | "on"
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     ‘buttondownfcn’ is unused.
+
+‘callback’: def. ‘[](0x0)’
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the uicontextmenu’s children.
+
+‘clipping’: "off" | {"on"}
+     If ‘clipping’ is "on", the uicontextmenu is clipped in its parent
+     axes limits.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after uicontextmenu has been
+     created.  Function is set by using default property on root object,
+     e.g., ‘set (0, "defaultuicontextmenucreatefcn", 'disp
+     ("uicontextmenu created!")')’.
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before uicontextmenu is
+     deleted.
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the uicontextmenu’s handle is not
+     visible in its parent’s "children" property.
+
+‘hittest’: "off" | {"on"}
+
+‘interruptible’: "off" | {"on"}
+
+‘parent’: graphics handle
+     Handle of the parent graphics object.
+
+‘position’: def. ‘[0 0]’
+
+‘selected’: {"off"} | "on"
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always
+     "uicontextmenu"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this uicontextmenu object.
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the uicontextmenu is not rendered on screen.
+
+
+File: octave.info,  Node: Uipanel Properties,  Next: Uicontrol Properties,  Prev: Uicontextmenu Properties,  Up: Graphics Object Properties
+
+15.3.3.13 Uipanel Properties
+............................
+
+The ‘uipanel’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘backgroundcolor’: def. ‘[1 1 1]’
+
+‘beingdeleted’: {"off"} | "on"
+
+‘bordertype’: "beveledin" | "beveledout" | {"etchedin"} | "etchedout" | "line" | "none"
+
+‘borderwidth’: def. ‘1’
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the uipanel’s children.
+
+‘clipping’: "off" | {"on"}
+     If ‘clipping’ is "on", the uipanel is clipped in its parent axes
+     limits.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after uipanel has been
+     created.  Function is set by using default property on root object,
+     e.g., ‘set (0, "defaultuipanelcreatefcn", 'disp ("uipanel
+     created!")')’.
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before uipanel is deleted.
+
+‘fontangle’: "italic" | {"normal"} | "oblique"
+
+‘fontname’: def. "*"
+
+‘fontsize’: def. ‘10’
+
+‘fontunits’: "centimeters" | "inches" | "normalized" | "pixels" | {"points"}
+
+‘fontweight’: "bold" | "demi" | "light" | {"normal"}
+
+‘foregroundcolor’: def. ‘[0 0 0]’
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the uipanel’s handle is not visible
+     in its parent’s "children" property.
+
+‘highlightcolor’: def. ‘[1 1 1]’
+
+‘hittest’: "off" | {"on"}
+
+‘interruptible’: "off" | {"on"}
+
+‘parent’: graphics handle
+     Handle of the parent graphics object.
+
+‘position’: def. ‘[0 0 1 1]’
+
+‘resizefcn’: def. ‘[](0x0)’
+
+‘selected’: {"off"} | "on"
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘shadowcolor’: def. ‘[0 0 0]’
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘title’: def. ""
+
+‘titleposition’: "centerbottom" | "centertop" | "leftbottom" | {"lefttop"} | "rightbottom" | "righttop"
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always "uipanel"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this uipanel object.
+
+‘units’: "centimeters" | "characters" | "inches" | {"normalized"} | "pixels" | "points"
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the uipanel is not rendered on screen.
+
+
+File: octave.info,  Node: Uicontrol Properties,  Next: Uitoolbar Properties,  Prev: Uipanel Properties,  Up: Graphics Object Properties
+
+15.3.3.14 Uicontrol Properties
+..............................
+
+The ‘uicontrol’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘backgroundcolor’: def. ‘[1 1 1]’
+
+‘beingdeleted’: {"off"} | "on"
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+
+‘callback’: def. ‘[](0x0)’
+
+‘cdata’: def. ‘[](0x0)’
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the uicontrol’s children.
+
+‘clipping’: "off" | {"on"}
+     If ‘clipping’ is "on", the uicontrol is clipped in its parent axes
+     limits.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after uicontrol has been
+     created.  Function is set by using default property on root object,
+     e.g., ‘set (0, "defaultuicontrolcreatefcn", 'disp ("uicontrol
+     created!")')’.
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before uicontrol is deleted.
+
+‘enable’: "inactive" | "off" | {"on"}
+
+‘extent’ (read-only): def. ‘[0 0 0 0]’
+
+‘fontangle’: "italic" | {"normal"} | "oblique"
+
+‘fontname’: def. "*"
+
+‘fontsize’: def. ‘10’
+
+‘fontunits’: "centimeters" | "inches" | "normalized" | "pixels" | {"points"}
+
+‘fontweight’: "bold" | "demi" | "light" | {"normal"}
+
+‘foregroundcolor’: def. ‘[0 0 0]’
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the uicontrol’s handle is not
+     visible in its parent’s "children" property.
+
+‘hittest’: "off" | {"on"}
+
+‘horizontalalignment’: {"center"} | "left" | "right"
+
+‘interruptible’: "off" | {"on"}
+
+‘keypressfcn’: def. ‘[](0x0)’
+
+‘listboxtop’: def. ‘1’
+
+‘max’: def. ‘1’
+
+‘min’: def. ‘0’
+
+‘parent’: graphics handle
+     Handle of the parent graphics object.
+
+‘position’: def. ‘[0 0 80 30]’
+
+‘selected’: {"off"} | "on"
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘sliderstep’: def. ‘[0.010000 0.100000]’
+
+‘string’: def. ""
+
+‘style’: "checkbox" | "edit" | "frame" | "listbox" | "popupmenu" | {"pushbutton"} | "radiobutton" | "slider" | "text" | "togglebutton"
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘tooltipstring’: def. ""
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always "uicontrol"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this uicontrol object.
+
+‘units’: "centimeters" | "characters" | "inches" | "normalized" | {"pixels"} | "points"
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘value’: def. ‘1’
+
+‘verticalalignment’: "bottom" | {"middle"} | "top"
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the uicontrol is not rendered on screen.
+
+
+File: octave.info,  Node: Uitoolbar Properties,  Next: Uipushtool Properties,  Prev: Uicontrol Properties,  Up: Graphics Object Properties
+
+15.3.3.15 Uitoolbar Properties
+..............................
+
+The ‘uitoolbar’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘beingdeleted’: {"off"} | "on"
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     ‘buttondownfcn’ is unused.
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the uitoolbar’s children.
+
+‘clipping’: "off" | {"on"}
+     If ‘clipping’ is "on", the uitoolbar is clipped in its parent axes
+     limits.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after uitoolbar has been
+     created.  Function is set by using default property on root object,
+     e.g., ‘set (0, "defaultuitoolbarcreatefcn", 'disp ("uitoolbar
+     created!")')’.
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before uitoolbar is deleted.
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the uitoolbar’s handle is not
+     visible in its parent’s "children" property.
+
+‘hittest’: "off" | {"on"}
+
+‘interruptible’: "off" | {"on"}
+
+‘parent’: graphics handle
+     Handle of the parent graphics object.
+
+‘selected’: {"off"} | "on"
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always "uitoolbar"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this uitoolbar object.
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the uitoolbar is not rendered on screen.
+
+
+File: octave.info,  Node: Uipushtool Properties,  Next: Uitoggletool Properties,  Prev: Uitoolbar Properties,  Up: Graphics Object Properties
+
+15.3.3.16 Uipushtool Properties
+...............................
+
+The ‘uipushtool’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘beingdeleted’: {"off"} | "on"
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     ‘buttondownfcn’ is unused.
+
+‘cdata’: def. ‘[](0x0)’
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the uipushtool’s children.
+
+‘clickedcallback’: def. ‘[](0x0)’
+
+‘clipping’: "off" | {"on"}
+     If ‘clipping’ is "on", the uipushtool is clipped in its parent axes
+     limits.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after uipushtool has been
+     created.  Function is set by using default property on root object,
+     e.g., ‘set (0, "defaultuipushtoolcreatefcn", 'disp ("uipushtool
+     created!")')’.
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before uipushtool is
+     deleted.
+
+‘enable’: "off" | {"on"}
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the uipushtool’s handle is not
+     visible in its parent’s "children" property.
+
+‘hittest’: "off" | {"on"}
+
+‘interruptible’: "off" | {"on"}
+
+‘parent’: graphics handle
+     Handle of the parent graphics object.
+
+‘selected’: {"off"} | "on"
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘separator’: {"off"} | "on"
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘tooltipstring’: def. ""
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always "uipushtool"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this uipushtool object.
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the uipushtool is not rendered on screen.
+
+
+File: octave.info,  Node: Uitoggletool Properties,  Prev: Uipushtool Properties,  Up: Graphics Object Properties
+
+15.3.3.17 Uitoggletool Properties
+.................................
+
+The ‘uitoggletool’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘beingdeleted’: {"off"} | "on"
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     ‘buttondownfcn’ is unused.
+
+‘cdata’: def. ‘[](0x0)’
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the uitoggletool’s children.
+
+‘clickedcallback’: def. ‘[](0x0)’
+
+‘clipping’: "off" | {"on"}
+     If ‘clipping’ is "on", the uitoggletool is clipped in its parent
+     axes limits.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after uitoggletool has been
+     created.  Function is set by using default property on root object,
+     e.g., ‘set (0, "defaultuitoggletoolcreatefcn", 'disp ("uitoggletool
+     created!")')’.
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before uitoggletool is
+     deleted.
+
+‘enable’: "off" | {"on"}
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the uitoggletool’s handle is not
+     visible in its parent’s "children" property.
+
+‘hittest’: "off" | {"on"}
+
+‘interruptible’: "off" | {"on"}
+
+‘offcallback’: def. ‘[](0x0)’
+
+‘oncallback’: def. ‘[](0x0)’
+
+‘parent’: graphics handle
+     Handle of the parent graphics object.
+
+‘selected’: {"off"} | "on"
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘separator’: {"off"} | "on"
+
+‘state’: {"off"} | "on"
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘tooltipstring’: def. ""
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always "uitoggletool"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this uitoggletool object.
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the uitoggletool is not rendered on screen.
+
+
 File: octave.info,  Node: Searching Properties,  Next: Managing Default Properties,  Prev: Graphics Object Properties,  Up: Graphics Data Structures
 
 15.3.4 Searching Properties
 ---------------------------
 
- -- Function File: H = findobj ()
- -- Function File: H = findobj (PROP_NAME, PROP_VALUE, ...)
- -- Function File: H = findobj (PROP_NAME, PROP_VALUE, "-LOGICAL_OP",
-          PROP_NAME, PROP_VALUE)
- -- Function File: H = findobj ("-property", PROP_NAME)
- -- Function File: H = findobj ("-regexp", PROP_NAME, PATTERN)
- -- Function File: H = findobj (HLIST, ...)
- -- Function File: H = findobj (HLIST, "flat", ...)
- -- Function File: H = findobj (HLIST, "-depth", D, ...)
+ -- : H = findobj ()
+ -- : H = findobj (PROP_NAME, PROP_VALUE, ...)
+ -- : H = findobj (PROP_NAME, PROP_VALUE, "-LOGICAL_OP", PROP_NAME,
+          PROP_VALUE)
+ -- : H = findobj ("-property", PROP_NAME)
+ -- : H = findobj ("-regexp", PROP_NAME, PATTERN)
+ -- : H = findobj (HLIST, ...)
+ -- : H = findobj (HLIST, "flat", ...)
+ -- : H = findobj (HLIST, "-depth", D, ...)
      Find graphics object with specified property values.
 
      The simplest form is
@@ -753,15 +1513,15 @@ File: octave.info,  Node: Searching Properties,  Next: Managing Default Properti
      See also: *note findall: XREFfindall, *note allchild: XREFallchild,
      *note get: XREFget, *note set: XREFset.
 
- -- Function File: H = findall ()
- -- Function File: H = findall (PROP_NAME, PROP_VALUE, ...)
- -- Function File: H = findall (PROP_NAME, PROP_VALUE, "-LOGICAL_OP",
-          PROP_NAME, PROP_VALUE)
- -- Function File: H = findall ("-property", PROP_NAME)
- -- Function File: H = findall ("-regexp", PROP_NAME, PATTERN)
- -- Function File: H = findall (HLIST, ...)
- -- Function File: H = findall (HLIST, "flat", ...)
- -- Function File: H = findall (HLIST, "-depth", D, ...)
+ -- : H = findall ()
+ -- : H = findall (PROP_NAME, PROP_VALUE, ...)
+ -- : H = findall (PROP_NAME, PROP_VALUE, "-LOGICAL_OP", PROP_NAME,
+          PROP_VALUE)
+ -- : H = findall ("-property", PROP_NAME)
+ -- : H = findall ("-regexp", PROP_NAME, PATTERN)
+ -- : H = findall (HLIST, ...)
+ -- : H = findall (HLIST, "flat", ...)
+ -- : H = findall (HLIST, "-depth", D, ...)
      Find graphics object, including hidden ones, with specified
      property values.
 
@@ -834,7 +1594,7 @@ removes the user-defined default line color setting from the current
 axes object.  To quickly remove all user-defined defaults use the
 ‘reset’ function.
 
- -- Built-in Function: reset (H)
+ -- : reset (H)
      Reset the properties of the graphic object H to their default
      values.
 
@@ -947,7 +1707,7 @@ Marker styles are specified by the following properties:
    The ‘colstyle’ function will parse a ‘plot’-style specification and
 will return the color, line, and marker values that would result.
 
- -- Function File: [STYLE, COLOR, MARKER, MSG] = colstyle (LINESPEC)
+ -- : [STYLE, COLOR, MARKER, MSG] = colstyle (LINESPEC)
      Parse LINESPEC and return the line style, color, and markers given.
 
      In the case of an error, the string MSG will return the text of the
@@ -1005,8 +1765,8 @@ objects are
    The object and figure that the event occurred in that resulted in the
 callback being called can be found with the ‘gcbo’ and ‘gcbf’ functions.
 
- -- Function File: H = gcbo ()
- -- Function File: [H, FIG] = gcbo ()
+ -- : H = gcbo ()
+ -- : [H, FIG] = gcbo ()
      Return a handle to the object whose callback is currently
      executing.
 
@@ -1023,7 +1783,7 @@ callback being called can be found with the ‘gcbo’ and ‘gcbf’ functions.
      XREFgca, *note gcf: XREFgcf, *note get: XREFget, *note set:
      XREFset.
 
- -- Function File: FIG = gcbf ()
+ -- : FIG = gcbf ()
      Return a handle to the figure containing the object whose callback
      is currently executing.
 
@@ -1048,8 +1808,8 @@ Octave has a provision for attaching application-defined data to a
 graphics handle.  The data can be anything which is meaningful to the
 application, and will be completely ignored by Octave.
 
- -- Function File: setappdata (H, NAME, VALUE)
- -- Function File: setappdata (H, NAME1, VALUE1, NAME2, VALUE3, ...)
+ -- : setappdata (H, NAME, VALUE)
+ -- : setappdata (H, NAME1, VALUE1, NAME2, VALUE3, ...)
      Set the application data NAME to VALUE for the graphics object with
      handle H.
 
@@ -1062,8 +1822,8 @@ application, and will be completely ignored by Octave.
      XREFguidata, *note get: XREFget, *note set: XREFset, *note getpref:
      XREFgetpref, *note setpref: XREFsetpref.
 
- -- Function File: VALUE = getappdata (H, NAME)
- -- Function File: APPDATA = getappdata (H)
+ -- : VALUE = getappdata (H, NAME)
+ -- : APPDATA = getappdata (H)
      Return the VALUE of the application data NAME for the graphics
      object with handle H.
 
@@ -1076,8 +1836,8 @@ application, and will be completely ignored by Octave.
      XREFguidata, *note get: XREFget, *note set: XREFset, *note getpref:
      XREFgetpref, *note setpref: XREFsetpref.
 
- -- Function File: rmappdata (H, NAME)
- -- Function File: rmappdata (H, NAME1, NAME2, ...)
+ -- : rmappdata (H, NAME)
+ -- : rmappdata (H, NAME1, NAME2, ...)
      Delete the application data NAME from the graphics object with
      handle H.
 
@@ -1087,7 +1847,7 @@ application, and will be completely ignored by Octave.
      See also: *note setappdata: XREFsetappdata, *note getappdata:
      XREFgetappdata, *note isappdata: XREFisappdata.
 
- -- Function File: VALID = isappdata (H, NAME)
+ -- : VALID = isappdata (H, NAME)
      Return true if the named application data, NAME, exists for the
      graphics object with handle H.
 
@@ -1110,10 +1870,10 @@ properties linked in such a way that changes to one of the properties
 results in changes in the others.  A graphic object that groups other
 objects is an ‘hggroup’
 
- -- Function File: hggroup ()
- -- Function File: hggroup (HAX)
- -- Function File: hggroup (..., PROPERTY, VALUE, ...)
- -- Function File: H = hggroup (...)
+ -- : hggroup ()
+ -- : hggroup (HAX)
+ -- : hggroup (..., PROPERTY, VALUE, ...)
+ -- : H = hggroup (...)
      Create handle graphics group object with axes parent HAX.
 
      If no parent is specified, the group is created in the current
@@ -1149,8 +1909,8 @@ visibility directly.  The default properties of an ‘hggroup’ are the
 same as the set of common properties for the other graphics objects.
 Additional properties can be added with the ‘addproperty’ function.
 
- -- Built-in Function: addproperty (NAME, H, TYPE)
- -- Built-in Function: addproperty (NAME, H, TYPE, ARG, ...)
+ -- : addproperty (NAME, H, TYPE)
+ -- : addproperty (NAME, H, TYPE, ARG, ...)
      Create a new property named NAME in graphics object H.
 
      TYPE determines the type of the property to create.  ARGS usually
@@ -1220,7 +1980,7 @@ graphics object.  Add so to control the way in which this newly added
 property is used, the ‘addlistener’ function is used to define a
 callback function that is executed when the property is altered.
 
- -- Built-in Function: addlistener (H, PROP, FCN)
+ -- : addlistener (H, PROP, FCN)
      Register FCN as listener for the property PROP of the graphics
      object H.
 
@@ -1250,7 +2010,7 @@ callback function that is executed when the property is altered.
      See also: *note addproperty: XREFaddproperty, *note hggroup:
      XREFhggroup.
 
- -- Built-in Function: dellistener (H, PROP, FCN)
+ -- : dellistener (H, PROP, FCN)
      Remove the registration of FCN as a listener for the property PROP
      of the graphics object H.
 
@@ -1296,8 +2056,8 @@ can be used to simplify the above to be
      h2 = plot (x, cos (x), "color", [0, 1, 0], "parent", hg);
      hlink = linkprop ([hg, h1, h2], "color");
 
- -- Function File: HLINK = linkprop (H, "PROP")
- -- Function File: HLINK = linkprop (H, {"PROP1", "PROP2", ...})
+ -- : HLINK = linkprop (H, "PROP")
+ -- : HLINK = linkprop (H, {"PROP1", "PROP2", ...})
      Link graphic object properties, such that a change in one is
      propagated to the others.
 
@@ -1328,8 +2088,8 @@ can be used to simplify the above to be
 
      See also: *note linkaxes: XREFlinkaxes.
 
- -- Function File: linkaxes (HAX)
- -- Function File: linkaxes (HAX, OPTSTR)
+ -- : linkaxes (HAX)
+ -- : linkaxes (HAX, OPTSTR)
      Link the axis limits of 2-D plots such that a change in one is
      propagated to the others.
 
@@ -1421,9 +2181,9 @@ string parameters that contain an expression that is evaluated to update
 the relevant data property of the group when the ‘refreshdata’ function
 is called.
 
- -- Function File: refreshdata ()
- -- Function File: refreshdata (H)
- -- Function File: refreshdata (H, WORKSPACE)
+ -- : refreshdata ()
+ -- : refreshdata (H)
+ -- : refreshdata (H, WORKSPACE)
      Evaluate any ‘datasource’ properties of the current figure and
      update the plot if the corresponding data has changed.
 
@@ -1926,10 +2686,10 @@ File: octave.info,  Node: Graphics Toolkits,  Prev: Object Groups,  Up: Advanced
 15.4.7 Graphics Toolkits
 ------------------------
 
- -- Function File: NAME = graphics_toolkit ()
- -- Function File: NAME = graphics_toolkit (HLIST)
- -- Function File: graphics_toolkit (NAME)
- -- Function File: graphics_toolkit (HLIST, NAME)
+ -- : NAME = graphics_toolkit ()
+ -- : NAME = graphics_toolkit (HLIST)
+ -- : graphics_toolkit (NAME)
+ -- : graphics_toolkit (HLIST, NAME)
      Query or set the default graphics toolkit which is assigned to new
      figures.
 
@@ -1946,19 +2706,19 @@ File: octave.info,  Node: Graphics Toolkits,  Prev: Object Groups,  Up: Advanced
      See also: *note available_graphics_toolkits:
      XREFavailable_graphics_toolkits.
 
- -- Built-in Function: available_graphics_toolkits ()
+ -- : available_graphics_toolkits ()
      Return a cell array of registered graphics toolkits.
 
      See also: *note graphics_toolkit: XREFgraphics_toolkit, *note
      register_graphics_toolkit: XREFregister_graphics_toolkit.
 
- -- Built-in Function: loaded_graphics_toolkits ()
+ -- : loaded_graphics_toolkits ()
      Return a cell array of the currently loaded graphics toolkits.
 
      See also: *note available_graphics_toolkits:
      XREFavailable_graphics_toolkits.
 
- -- Built-in Function: register_graphics_toolkit (TOOLKIT)
+ -- : register_graphics_toolkit (TOOLKIT)
      List TOOLKIT as an available graphics toolkit.
 
      See also: *note available_graphics_toolkits:
@@ -1978,9 +2738,8 @@ The specific behavior of the backend toolkit may be modified using the
 following utility functions.  Note: Not all functions apply to every
 graphics toolkit.
 
- -- Loadable Function: [PROG, ARGS] = gnuplot_binary ()
- -- Loadable Function: [OLD_PROG, OLD_ARGS] = gnuplot_binary (NEW_PROG,
-          ARG1, ...)
+ -- : [PROG, ARGS] = gnuplot_binary ()
+ -- : [OLD_PROG, OLD_ARGS] = gnuplot_binary (NEW_PROG, ARG1, ...)
      Query or set the name of the program invoked by the plot command
      when the graphics toolkit is set to "gnuplot".
 
@@ -2021,8 +2780,8 @@ all of the elements of a matrix satisfy some condition.  The ‘find’
 function is also useful in determining which elements of a matrix meet a
 specified condition.
 
- -- Built-in Function: any (X)
- -- Built-in Function: any (X, DIM)
+ -- : any (X)
+ -- : any (X, DIM)
      For a vector argument, return true (logical 1) if any element of
      the vector is nonzero.
 
@@ -2041,8 +2800,8 @@ specified condition.
 
      See also: *note all: XREFall.
 
- -- Built-in Function: all (X)
- -- Built-in Function: all (X, DIM)
+ -- : all (X)
+ -- : all (X, DIM)
      For a vector argument, return true (logical 1) if all elements of
      the vector are nonzero.
 
@@ -2071,8 +2830,8 @@ tests a random 5 by 5 matrix to see if all of its elements are less than
 ‘while’ statements) Octave treats the test as if you had typed ‘all (all
 (condition))’.
 
- -- Function File: Z = xor (X, Y)
- -- Function File: Z = xor (X1, X2, ...)
+ -- : Z = xor (X, Y)
+ -- : Z = xor (X1, X2, ...)
      Return the “exclusive or” of X and Y.
 
      For boolean expressions X and Y, ‘xor (X, Y)’ is true if and only
@@ -2095,9 +2854,9 @@ tests a random 5 by 5 matrix to see if all of its elements are less than
 
      See also: *note and: XREFand, *note or: XREFor, *note not: XREFnot.
 
- -- Built-in Function: diff (X)
- -- Built-in Function: diff (X, K)
- -- Built-in Function: diff (X, K, DIM)
+ -- : diff (X)
+ -- : diff (X, K)
+ -- : diff (X, K, DIM)
      If X is a vector of length n, ‘diff (X)’ is the vector of first
      differences X(2) - X(1), ..., X(n) - X(n-1).
 
@@ -2117,7 +2876,7 @@ tests a random 5 by 5 matrix to see if all of its elements are less than
 
      See also: *note sort: XREFsort, *note merge: XREFmerge.
 
- -- Mapping Function: isinf (X)
+ -- : isinf (X)
      Return a logical array which is true where the elements of X are
      infinite and false where they are not.
 
@@ -2129,7 +2888,7 @@ tests a random 5 by 5 matrix to see if all of its elements are less than
      See also: *note isfinite: XREFisfinite, *note isnan: XREFisnan,
      *note isna: XREFisna.
 
- -- Mapping Function: isnan (X)
+ -- : isnan (X)
      Return a logical array which is true where the elements of X are
      NaN values and false where they are not.
 
@@ -2141,7 +2900,7 @@ tests a random 5 by 5 matrix to see if all of its elements are less than
      See also: *note isna: XREFisna, *note isinf: XREFisinf, *note
      isfinite: XREFisfinite.
 
- -- Mapping Function: isfinite (X)
+ -- : isfinite (X)
      Return a logical array which is true where the elements of X are
      finite values and false where they are not.
 
@@ -2153,7 +2912,7 @@ tests a random 5 by 5 matrix to see if all of its elements are less than
      See also: *note isinf: XREFisinf, *note isnan: XREFisnan, *note
      isna: XREFisna.
 
- -- Function File: [ERR, Y1, ...] = common_size (X1, ...)
+ -- : [ERR, Y1, ...] = common_size (X1, ...)
      Determine if all input arguments are either scalar or of common
      size.
 
@@ -2170,11 +2929,11 @@ tests a random 5 by 5 matrix to see if all of its elements are less than
      This is useful for implementing functions where arguments can
      either be scalars or of common size.
 
- -- Built-in Function: IDX = find (X)
- -- Built-in Function: IDX = find (X, N)
- -- Built-in Function: IDX = find (X, N, DIRECTION)
- -- Built-in Function: [i, j] = find (...)
- -- Built-in Function: [i, j, v] = find (...)
+ -- : IDX = find (X)
+ -- : IDX = find (X, N)
+ -- : IDX = find (X, N, DIRECTION)
+ -- : [i, j] = find (...)
+ -- : [i, j, v] = find (...)
      Return a vector of indices of nonzero elements of a matrix, as a
      row if X is a row vector or as a column otherwise.
 
@@ -2217,8 +2976,8 @@ tests a random 5 by 5 matrix to see if all of its elements are less than
 
      See also: *note nonzeros: XREFnonzeros.
 
- -- Built-in Function: IDX = lookup (TABLE, Y)
- -- Built-in Function: IDX = lookup (TABLE, Y, OPT)
+ -- : IDX = lookup (TABLE, Y)
+ -- : IDX = lookup (TABLE, Y, OPT)
      Lookup values in a sorted table.
 
      This function is usually used as a prelude to interpolation.
@@ -2269,7 +3028,7 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 16.2 Rearranging Matrices
 =========================
 
- -- Function File: fliplr (X)
+ -- : fliplr (X)
      Flip array left to right.
 
      Return a copy of X with the order of the columns reversed.  In
@@ -2283,7 +3042,7 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note flipud: XREFflipud, *note flip: XREFflip, *note
      rot90: XREFrot90, *note rotdim: XREFrotdim.
 
- -- Function File: flipud (X)
+ -- : flipud (X)
      Flip array upside down.
 
      Return a copy of X with the order of the rows reversed.  In other
@@ -2297,8 +3056,8 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note fliplr: XREFfliplr, *note flip: XREFflip, *note
      rot90: XREFrot90, *note rotdim: XREFrotdim.
 
- -- Function File: flip (X)
- -- Function File: flip (X, DIM)
+ -- : flip (X)
+ -- : flip (X, DIM)
      Flip array across dimension DIM.
 
      Return a copy of X flipped about the dimension DIM.  DIM defaults
@@ -2325,8 +3084,8 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      rot90: XREFrot90, *note rotdim: XREFrotdim, *note permute:
      XREFpermute, *note transpose: XREFtranspose.
 
- -- Function File: rot90 (A)
- -- Function File: rot90 (A, K)
+ -- : rot90 (A)
+ -- : rot90 (A, K)
      Rotate array by 90 degree increments.
 
      Return a copy of A with the elements rotated counterclockwise in
@@ -2355,9 +3114,9 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note rotdim: XREFrotdim, *note fliplr: XREFfliplr, *note
      flipud: XREFflipud, *note flip: XREFflip.
 
- -- Function File: rotdim (X)
- -- Function File: rotdim (X, N)
- -- Function File: rotdim (X, N, PLANE)
+ -- : rotdim (X)
+ -- : rotdim (X, N)
+ -- : rotdim (X, N, PLANE)
      Return a copy of X with the elements rotated counterclockwise in
      90-degree increments.
 
@@ -2386,7 +3145,7 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note rot90: XREFrot90, *note fliplr: XREFfliplr, *note
      flipud: XREFflipud, *note flip: XREFflip.
 
- -- Built-in Function: cat (DIM, ARRAY1, ARRAY2, ..., ARRAYN)
+ -- : cat (DIM, ARRAY1, ARRAY2, ..., ARRAYN)
      Return the concatenation of N-D array objects, ARRAY1, ARRAY2, ...,
      ARRAYN along dimension DIM.
 
@@ -2418,7 +3177,7 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 
      See also: *note horzcat: XREFhorzcat, *note vertcat: XREFvertcat.
 
- -- Built-in Function: horzcat (ARRAY1, ARRAY2, ..., ARRAYN)
+ -- : horzcat (ARRAY1, ARRAY2, ..., ARRAYN)
      Return the horizontal concatenation of N-D array objects, ARRAY1,
      ARRAY2, ..., ARRAYN along dimension 2.
 
@@ -2429,7 +3188,7 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 
      See also: *note cat: XREFcat, *note vertcat: XREFvertcat.
 
- -- Built-in Function: vertcat (ARRAY1, ARRAY2, ..., ARRAYN)
+ -- : vertcat (ARRAY1, ARRAY2, ..., ARRAYN)
      Return the vertical concatenation of N-D array objects, ARRAY1,
      ARRAY2, ..., ARRAYN along dimension 1.
 
@@ -2440,7 +3199,7 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 
      See also: *note cat: XREFcat, *note horzcat: XREFhorzcat.
 
- -- Built-in Function: permute (A, PERM)
+ -- : permute (A, PERM)
      Return the generalized transpose for an N-D array object A.
 
      The permutation vector PERM must contain the elements ‘1:ndims (A)’
@@ -2463,7 +3222,7 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 
      See also: *note ipermute: XREFipermute.
 
- -- Built-in Function: ipermute (A, IPERM)
+ -- : ipermute (A, IPERM)
      The inverse of the ‘permute’ function.
 
      The expression
@@ -2474,10 +3233,10 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 
      See also: *note permute: XREFpermute.
 
- -- Built-in Function: reshape (A, M, N, ...)
- -- Built-in Function: reshape (A, [M N ...])
- -- Built-in Function: reshape (A, ..., [], ...)
- -- Built-in Function: reshape (A, SIZE)
+ -- : reshape (A, M, N, ...)
+ -- : reshape (A, [M N ...])
+ -- : reshape (A, ..., [], ...)
+ -- : reshape (A, SIZE)
      Return a matrix with the specified dimensions (M, N, ...) whose
      elements are taken from the matrix A.
 
@@ -2503,9 +3262,9 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      postpad: XREFpostpad, *note cat: XREFcat, *note squeeze:
      XREFsqueeze.
 
- -- Built-in Function: resize (X, M)
- -- Built-in Function: resize (X, M, N, ...)
- -- Built-in Function: resize (X, [M N ...])
+ -- : resize (X, M)
+ -- : resize (X, M, N, ...)
+ -- : resize (X, [M N ...])
      Resize X cutting off elements as necessary.
 
      In the result, element with certain indices is equal to the
@@ -2540,14 +3299,20 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note reshape: XREFreshape, *note postpad: XREFpostpad,
      *note prepad: XREFprepad, *note cat: XREFcat.
 
- -- Function File: Y = circshift (X, N)
+ -- : Y = circshift (X, N)
+ -- : Y = circshift (X, N, DIM)
      Circularly shift the values of the array X.
 
      N must be a vector of integers no longer than the number of
      dimensions in X.  The values of N can be either positive or
-     negative, which determines the direction in which the values or X
+     negative, which determines the direction in which the values of X
      are shifted.  If an element of N is zero, then the corresponding
-     dimension of X will not be shifted.  For example:
+     dimension of X will not be shifted.
+
+     If a scalar DIM is given then operate along the specified
+     dimension.  In this case N must be a scalar as well.
+
+     Examples:
 
           x = [1, 2, 3; 4, 5, 6; 7, 8, 9];
           circshift (x, 1)
@@ -2566,8 +3331,8 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note permute: XREFpermute, *note ipermute: XREFipermute,
      *note shiftdim: XREFshiftdim.
 
- -- Function File: shift (X, B)
- -- Function File: shift (X, B, DIM)
+ -- : shift (X, B)
+ -- : shift (X, B, DIM)
      If X is a vector, perform a circular shift of length B of the
      elements of X.
 
@@ -2576,8 +3341,8 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      If the optional DIM argument is given, operate along this
      dimension.
 
- -- Function File: Y = shiftdim (X, N)
- -- Function File: [Y, NS] = shiftdim (X)
+ -- : Y = shiftdim (X, N)
+ -- : [Y, NS] = shiftdim (X)
      Shift the dimensions of X by N, where N must be an integer scalar.
 
      When N is positive, the dimensions of X are shifted to the left,
@@ -2604,10 +3369,10 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      *note ipermute: XREFipermute, *note circshift: XREFcircshift, *note
      squeeze: XREFsqueeze.
 
- -- Built-in Function: [S, I] = sort (X)
- -- Built-in Function: [S, I] = sort (X, DIM)
- -- Built-in Function: [S, I] = sort (X, MODE)
- -- Built-in Function: [S, I] = sort (X, DIM, MODE)
+ -- : [S, I] = sort (X)
+ -- : [S, I] = sort (X, DIM)
+ -- : [S, I] = sort (X, MODE)
+ -- : [S, I] = sort (X, DIM, MODE)
      Return a copy of X with the elements arranged in increasing order.
 
      For matrices, ‘sort’ orders the elements within columns
@@ -2660,8 +3425,8 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note sortrows: XREFsortrows, *note issorted:
      XREFissorted.
 
- -- Function File: [S, I] = sortrows (A)
- -- Function File: [S, I] = sortrows (A, C)
+ -- : [S, I] = sortrows (A)
+ -- : [S, I] = sortrows (A, C)
      Sort the rows of the matrix A according to the order of the columns
      specified in C.
 
@@ -2684,9 +3449,9 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 
      See also: *note sort: XREFsort.
 
- -- Built-in Function: issorted (A)
- -- Built-in Function: issorted (A, MODE)
- -- Built-in Function: issorted (A, "rows", MODE)
+ -- : issorted (A)
+ -- : issorted (A, MODE)
+ -- : issorted (A, "rows", MODE)
      Return true if the array is sorted according to MODE, which may be
      either "ascending", "descending", or "either".
 
@@ -2701,8 +3466,8 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 
      See also: *note sort: XREFsort, *note sortrows: XREFsortrows.
 
- -- Built-in Function: nth_element (X, N)
- -- Built-in Function: nth_element (X, N, DIM)
+ -- : nth_element (X, N)
+ -- : nth_element (X, N, DIM)
      Select the n-th smallest element of a vector, using the ordering
      defined by ‘sort’.
 
@@ -2725,12 +3490,12 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note sort: XREFsort, *note min: XREFmin, *note max:
      XREFmax.
 
- -- Function File: tril (A)
- -- Function File: tril (A, K)
- -- Function File: tril (A, K, PACK)
- -- Function File: triu (A)
- -- Function File: triu (A, K)
- -- Function File: triu (A, K, PACK)
+ -- : tril (A)
+ -- : tril (A, K)
+ -- : tril (A, K, PACK)
+ -- : triu (A)
+ -- : triu (A, K)
+ -- : triu (A, K, PACK)
      Return a new matrix formed by extracting the lower (‘tril’) or
      upper (‘triu’) triangular part of the matrix A, and setting all
      other elements to zero.
@@ -2768,8 +3533,8 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 
      See also: *note diag: XREFdiag.
 
- -- Built-in Function: V = vec (X)
- -- Built-in Function: V = vec (X, DIM)
+ -- : V = vec (X)
+ -- : V = vec (X, DIM)
      Return the vector obtained by stacking the columns of the matrix X
      one above the other.
 
@@ -2782,7 +3547,7 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note vech: XREFvech, *note resize: XREFresize, *note
      cat: XREFcat.
 
- -- Function File: vech (X)
+ -- : vech (X)
      Return the vector obtained by eliminating all superdiagonal
      elements of the square matrix X and stacking the result one column
      above the other.
@@ -2793,9 +3558,9 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
 
      See also: *note vec: XREFvec.
 
- -- Function File: prepad (X, L)
- -- Function File: prepad (X, L, C)
- -- Function File: prepad (X, L, C, DIM)
+ -- : prepad (X, L)
+ -- : prepad (X, L, C)
+ -- : prepad (X, L, C, DIM)
      Prepend the scalar value C to the vector X until it is of length L.
      If C is not given, a value of 0 is used.
 
@@ -2813,9 +3578,9 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note postpad: XREFpostpad, *note cat: XREFcat, *note
      resize: XREFresize.
 
- -- Function File: postpad (X, L)
- -- Function File: postpad (X, L, C)
- -- Function File: postpad (X, L, C, DIM)
+ -- : postpad (X, L)
+ -- : postpad (X, L, C)
+ -- : postpad (X, L, C, DIM)
      Append the scalar value C to the vector X until it is of length L.
      If C is not given, a value of 0 is used.
 
@@ -2833,11 +3598,11 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      See also: *note prepad: XREFprepad, *note cat: XREFcat, *note
      resize: XREFresize.
 
- -- Built-in Function: M = diag (V)
- -- Built-in Function: M = diag (V, K)
- -- Built-in Function: M = diag (V, M, N)
- -- Built-in Function: V = diag (M)
- -- Built-in Function: V = diag (M, K)
+ -- : M = diag (V)
+ -- : M = diag (V, K)
+ -- : M = diag (V, M, N)
+ -- : V = diag (M)
+ -- : V = diag (M, K)
      Return a diagonal matrix with vector V on diagonal K.
 
      The second argument is optional.  If it is positive, the vector is
@@ -2858,7 +3623,7 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      Given a matrix argument, instead of a vector, ‘diag’ extracts the
      K-th diagonal of the matrix.
 
- -- Function File: blkdiag (A, B, C, ...)
+ -- : blkdiag (A, B, C, ...)
      Build a block diagonal matrix from A, B, C, ...
 
      All arguments must be numeric and either two-dimensional matrices
@@ -2874,10 +3639,10 @@ File: octave.info,  Node: Special Utility Matrices,  Next: Famous Matrices,  Pre
 16.3 Special Utility Matrices
 =============================
 
- -- Built-in Function: eye (N)
- -- Built-in Function: eye (M, N)
- -- Built-in Function: eye ([M N])
- -- Built-in Function: eye (..., CLASS)
+ -- : eye (N)
+ -- : eye (M, N)
+ -- : eye ([M N])
+ -- : eye (..., CLASS)
      Return an identity matrix.
 
      If invoked with a single scalar argument N, return a square NxN
@@ -2913,11 +3678,11 @@ File: octave.info,  Node: Special Utility Matrices,  Next: Famous Matrices,  Pre
      See also: *note speye: XREFspeye, *note ones: XREFones, *note
      zeros: XREFzeros.
 
- -- Built-in Function: ones (N)
- -- Built-in Function: ones (M, N)
- -- Built-in Function: ones (M, N, K, ...)
- -- Built-in Function: ones ([M N ...])
- -- Built-in Function: ones (..., CLASS)
+ -- : ones (N)
+ -- : ones (M, N)
+ -- : ones (M, N, K, ...)
+ -- : ones ([M N ...])
+ -- : ones (..., CLASS)
      Return a matrix or N-dimensional array whose elements are all 1.
 
      If invoked with a single scalar integer argument N, return a square
@@ -2938,11 +3703,11 @@ File: octave.info,  Node: Special Utility Matrices,  Next: Famous Matrices,  Pre
 
      See also: *note zeros: XREFzeros.
 
- -- Built-in Function: zeros (N)
- -- Built-in Function: zeros (M, N)
- -- Built-in Function: zeros (M, N, K, ...)
- -- Built-in Function: zeros ([M N ...])
- -- Built-in Function: zeros (..., CLASS)
+ -- : zeros (N)
+ -- : zeros (M, N)
+ -- : zeros (M, N, K, ...)
+ -- : zeros ([M N ...])
+ -- : zeros (..., CLASS)
      Return a matrix or N-dimensional array whose elements are all 0.
 
      If invoked with a single scalar integer argument, return a square
@@ -2958,11 +3723,13 @@ File: octave.info,  Node: Special Utility Matrices,  Next: Famous Matrices,  Pre
 
      See also: *note ones: XREFones.
 
- -- Function File: repmat (A, M)
- -- Function File: repmat (A, M, N)
- -- Function File: repmat (A, M, N, P ...)
- -- Function File: repmat (A, [M N])
- -- Function File: repmat (A, [M N P ...])
+ -- : repmat (A, M)
+ -- : repmat (A, M, N)
+ -- : repmat (A, M, N, P ...)
+ -- : repmat (A, [M N])
+ -- : repmat (A, [M N P ...])
+     Repeat matrix or N-D array.
+
      Form a block matrix of size M by N, with a copy of matrix A as each
      element.
 
@@ -2971,9 +3738,10 @@ File: octave.info,  Node: Special Utility Matrices,  Next: Famous Matrices,  Pre
      across each dimension M, N, P, ..., in a vector in the second
      argument.
 
-     See also: *note repelems: XREFrepelems.
+     See also: *note bsxfun: XREFbsxfun, *note kron: XREFkron, *note
+     repelems: XREFrepelems.
 
- -- Built-in Function: repelems (X, R)
+ -- : repelems (X, R)
      Construct a vector of repeated elements from X.
 
      R is a 2xN integer matrix specifying which elements to repeat and
@@ -2996,8 +3764,8 @@ File: octave.info,  Node: Special Utility Matrices,  Next: Famous Matrices,  Pre
    The functions ‘linspace’ and ‘logspace’ make it very easy to create
 vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
 
- -- Built-in Function: linspace (BASE, LIMIT)
- -- Built-in Function: linspace (BASE, LIMIT, N)
+ -- : linspace (BASE, LIMIT)
+ -- : linspace (BASE, LIMIT, N)
      Return a row vector with N linearly spaced elements between BASE
      and LIMIT.
 
@@ -3006,18 +3774,20 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
      greater than LIMIT, the elements are stored in decreasing order.
      If the number of points is not specified, a value of 100 is used.
 
-     The ‘linspace’ function always returns a row vector if both BASE
-     and LIMIT are scalars.  If one, or both, of them are column
-     vectors, ‘linspace’ returns a matrix.
+     The ‘linspace’ function returns a row vector when both BASE and
+     LIMIT are scalars.  If one, or both, inputs are vectors, then
+     ‘linspace’ transforms them to column vectors and returns a matrix
+     where each row is an independent sequence between
+     ‘BASE(ROW_N), LIMIT(ROW_N)’.
 
      For compatibility with MATLAB, return the second argument (LIMIT)
      if fewer than two values are requested.
 
      See also: *note logspace: XREFlogspace.
 
- -- Function File: logspace (A, B)
- -- Function File: logspace (A, B, N)
- -- Function File: logspace (A, pi, N)
+ -- : logspace (A, B)
+ -- : logspace (A, B, N)
+ -- : logspace (A, pi, N)
      Return a row vector with N elements logarithmically spaced from
      10^A to 10^B.
 
@@ -3032,17 +3802,17 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
 
      See also: *note linspace: XREFlinspace.
 
- -- Built-in Function: rand (N)
- -- Built-in Function: rand (M, N, ...)
- -- Built-in Function: rand ([M N ...])
- -- Built-in Function: V = rand ("state")
- -- Built-in Function: rand ("state", V)
- -- Built-in Function: rand ("state", "reset")
- -- Built-in Function: V = rand ("seed")
- -- Built-in Function: rand ("seed", V)
- -- Built-in Function: rand ("seed", "reset")
- -- Built-in Function: rand (..., "single")
- -- Built-in Function: rand (..., "double")
+ -- : rand (N)
+ -- : rand (M, N, ...)
+ -- : rand ([M N ...])
+ -- : V = rand ("state")
+ -- : rand ("state", V)
+ -- : rand ("state", "reset")
+ -- : V = rand ("seed")
+ -- : rand ("seed", V)
+ -- : rand ("seed", "reset")
+ -- : rand (..., "single")
+ -- : rand (..., "double")
      Return a matrix with random elements uniformly distributed on the
      interval (0, 1).
 
@@ -3109,11 +3879,11 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
      See also: *note randn: XREFrandn, *note rande: XREFrande, *note
      randg: XREFrandg, *note randp: XREFrandp.
 
- -- Function File: randi (IMAX)
- -- Function File: randi (IMAX, N)
- -- Function File: randi (IMAX, M, N, ...)
- -- Function File: randi ([IMIN IMAX], ...)
- -- Function File: randi (..., "CLASS")
+ -- : randi (IMAX)
+ -- : randi (IMAX, N)
+ -- : randi (IMAX, M, N, ...)
+ -- : randi ([IMIN IMAX], ...)
+ -- : randi (..., "CLASS")
      Return random integers in the range 1:IMAX.
 
      Additional arguments determine the shape of the return matrix.
@@ -3141,17 +3911,17 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
 
      See also: *note rand: XREFrand.
 
- -- Built-in Function: randn (N)
- -- Built-in Function: randn (M, N, ...)
- -- Built-in Function: randn ([M N ...])
- -- Built-in Function: V = randn ("state")
- -- Built-in Function: randn ("state", V)
- -- Built-in Function: randn ("state", "reset")
- -- Built-in Function: V = randn ("seed")
- -- Built-in Function: randn ("seed", V)
- -- Built-in Function: randn ("seed", "reset")
- -- Built-in Function: randn (..., "single")
- -- Built-in Function: randn (..., "double")
+ -- : randn (N)
+ -- : randn (M, N, ...)
+ -- : randn ([M N ...])
+ -- : V = randn ("state")
+ -- : randn ("state", V)
+ -- : randn ("state", "reset")
+ -- : V = randn ("seed")
+ -- : randn ("seed", V)
+ -- : randn ("seed", "reset")
+ -- : randn (..., "single")
+ -- : randn (..., "double")
      Return a matrix with normally distributed random elements having
      zero mean and variance one.
 
@@ -3170,17 +3940,17 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
      See also: *note rand: XREFrand, *note rande: XREFrande, *note
      randg: XREFrandg, *note randp: XREFrandp.
 
- -- Built-in Function: rande (N)
- -- Built-in Function: rande (M, N, ...)
- -- Built-in Function: rande ([M N ...])
- -- Built-in Function: V = rande ("state")
- -- Built-in Function: rande ("state", V)
- -- Built-in Function: rande ("state", "reset")
- -- Built-in Function: V = rande ("seed")
- -- Built-in Function: rande ("seed", V)
- -- Built-in Function: rande ("seed", "reset")
- -- Built-in Function: rande (..., "single")
- -- Built-in Function: rande (..., "double")
+ -- : rande (N)
+ -- : rande (M, N, ...)
+ -- : rande ([M N ...])
+ -- : V = rande ("state")
+ -- : rande ("state", V)
+ -- : rande ("state", "reset")
+ -- : V = rande ("seed")
+ -- : rande ("seed", V)
+ -- : rande ("seed", "reset")
+ -- : rande (..., "single")
+ -- : rande (..., "double")
      Return a matrix with exponentially distributed random elements.
 
      The arguments are handled the same as the arguments for ‘rand’.
@@ -3199,17 +3969,17 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
      See also: *note rand: XREFrand, *note randn: XREFrandn, *note
      randg: XREFrandg, *note randp: XREFrandp.
 
- -- Built-in Function: randp (L, N)
- -- Built-in Function: randp (L, M, N, ...)
- -- Built-in Function: randp (L, [M N ...])
- -- Built-in Function: V = randp ("state")
- -- Built-in Function: randp ("state", V)
- -- Built-in Function: randp ("state", "reset")
- -- Built-in Function: V = randp ("seed")
- -- Built-in Function: randp ("seed", V)
- -- Built-in Function: randp ("seed", "reset")
- -- Built-in Function: randp (..., "single")
- -- Built-in Function: randp (..., "double")
+ -- : randp (L, N)
+ -- : randp (L, M, N, ...)
+ -- : randp (L, [M N ...])
+ -- : V = randp ("state")
+ -- : randp ("state", V)
+ -- : randp ("state", "reset")
+ -- : V = randp ("seed")
+ -- : randp ("seed", V)
+ -- : randp ("seed", "reset")
+ -- : randp (..., "single")
+ -- : randp (..., "double")
      Return a matrix with Poisson distributed random elements with mean
      value parameter given by the first argument, L.
 
@@ -3246,17 +4016,17 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
      See also: *note rand: XREFrand, *note randn: XREFrandn, *note
      rande: XREFrande, *note randg: XREFrandg.
 
- -- Built-in Function: randg (N)
- -- Built-in Function: randg (M, N, ...)
- -- Built-in Function: randg ([M N ...])
- -- Built-in Function: V = randg ("state")
- -- Built-in Function: randg ("state", V)
- -- Built-in Function: randg ("state", "reset")
- -- Built-in Function: V = randg ("seed")
- -- Built-in Function: randg ("seed", V)
- -- Built-in Function: randg ("seed", "reset")
- -- Built-in Function: randg (..., "single")
- -- Built-in Function: randg (..., "double")
+ -- : randg (N)
+ -- : randg (M, N, ...)
+ -- : randg ([M N ...])
+ -- : V = randg ("state")
+ -- : randg ("state", V)
+ -- : randg ("state", "reset")
+ -- : V = randg ("seed")
+ -- : randg ("seed", V)
+ -- : randg ("seed", "reset")
+ -- : randg (..., "single")
+ -- : randg (..., "double")
      Return a matrix with ‘gamma (A,1)’ distributed random elements.
 
      The arguments are handled the same as the arguments for ‘rand’,
@@ -3292,7 +4062,6 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
                ## r2 equals 1 if n2 is infinite
                r2 = 2 * randg (n2 / 2) / n2
                r = r1 / r2
-
 
      negative ‘binomial (n, p)’ for ‘n > 0’, ‘0 < p <= 1’
 
@@ -3359,8 +4128,8 @@ compiled by Barry W. Brown and James Lovato of the Department of
 Biomathematics at The University of Texas, M.D. Anderson Cancer Center,
 Houston, TX 77030.
 
- -- Built-in Function: randperm (N)
- -- Built-in Function: randperm (N, M)
+ -- : randperm (N)
+ -- : randperm (N, M)
      Return a row vector containing a random permutation of ‘1:N’.
 
      If M is supplied, return M unique entries, sampled without
@@ -3385,101 +4154,99 @@ File: octave.info,  Node: Famous Matrices,  Prev: Special Utility Matrices,  Up:
 
 The following functions return famous matrix forms.
 
- -- Function File: gallery (NAME)
- -- Function File: gallery (NAME, ARGS)
+ -- : gallery (NAME)
+ -- : gallery (NAME, ARGS)
      Create interesting matrices for testing.
 
- -- Function File: C = gallery ("cauchy", X)
- -- Function File: C = gallery ("cauchy", X, Y)
+ -- : C = gallery ("cauchy", X)
+ -- : C = gallery ("cauchy", X, Y)
      Create a Cauchy matrix.
 
- -- Function File: C = gallery ("chebspec", N)
- -- Function File: C = gallery ("chebspec", N, K)
+ -- : C = gallery ("chebspec", N)
+ -- : C = gallery ("chebspec", N, K)
      Create a Chebyshev spectral differentiation matrix.
 
- -- Function File: C = gallery ("chebvand", P)
- -- Function File: C = gallery ("chebvand", M, P)
+ -- : C = gallery ("chebvand", P)
+ -- : C = gallery ("chebvand", M, P)
      Create a Vandermonde-like matrix for the Chebyshev polynomials.
 
- -- Function File: A = gallery ("chow", N)
- -- Function File: A = gallery ("chow", N, ALPHA)
- -- Function File: A = gallery ("chow", N, ALPHA, DELTA)
+ -- : A = gallery ("chow", N)
+ -- : A = gallery ("chow", N, ALPHA)
+ -- : A = gallery ("chow", N, ALPHA, DELTA)
      Create a Chow matrix – a singular Toeplitz lower Hessenberg matrix.
 
- -- Function File: C = gallery ("circul", V)
+ -- : C = gallery ("circul", V)
      Create a circulant matrix.
 
- -- Function File: A = gallery ("clement", N)
- -- Function File: A = gallery ("clement", N, K)
+ -- : A = gallery ("clement", N)
+ -- : A = gallery ("clement", N, K)
      Create a tridiagonal matrix with zero diagonal entries.
 
- -- Function File: C = gallery ("compar", A)
- -- Function File: C = gallery ("compar", A, K)
+ -- : C = gallery ("compar", A)
+ -- : C = gallery ("compar", A, K)
      Create a comparison matrix.
 
- -- Function File: A = gallery ("condex", N)
- -- Function File: A = gallery ("condex", N, K)
- -- Function File: A = gallery ("condex", N, K, THETA)
+ -- : A = gallery ("condex", N)
+ -- : A = gallery ("condex", N, K)
+ -- : A = gallery ("condex", N, K, THETA)
      Create a ‘counterexample’ matrix to a condition estimator.
 
- -- Function File: A = gallery ("cycol", [M N])
- -- Function File: A = gallery ("cycol", N)
- -- Function File: A = gallery (..., K)
+ -- : A = gallery ("cycol", [M N])
+ -- : A = gallery ("cycol", N)
+ -- : A = gallery (..., K)
      Create a matrix whose columns repeat cyclically.
 
- -- Function File: [C, D, E] = gallery ("dorr", N)
- -- Function File: [C, D, E] = gallery ("dorr", N, THETA)
- -- Function File: A = gallery ("dorr", ...)
+ -- : [C, D, E] = gallery ("dorr", N)
+ -- : [C, D, E] = gallery ("dorr", N, THETA)
+ -- : A = gallery ("dorr", ...)
      Create a diagonally dominant, ill-conditioned, tridiagonal matrix.
 
- -- Function File: A = gallery ("dramadah", N)
- -- Function File: A = gallery ("dramadah", N, K)
+ -- : A = gallery ("dramadah", N)
+ -- : A = gallery ("dramadah", N, K)
      Create a (0, 1) matrix whose inverse has large integer entries.
 
- -- Function File: A = gallery ("fiedler", C)
+ -- : A = gallery ("fiedler", C)
      Create a symmetric Fiedler matrix.
 
- -- Function File: A = gallery ("forsythe", N)
- -- Function File: A = gallery ("forsythe", N, ALPHA)
- -- Function File: A = gallery ("forsythe", N, ALPHA, LAMBDA)
+ -- : A = gallery ("forsythe", N)
+ -- : A = gallery ("forsythe", N, ALPHA)
+ -- : A = gallery ("forsythe", N, ALPHA, LAMBDA)
      Create a Forsythe matrix (a perturbed Jordan block).
 
- -- Function File: F = gallery ("frank", N)
- -- Function File: F = gallery ("frank", N, K)
+ -- : F = gallery ("frank", N)
+ -- : F = gallery ("frank", N, K)
      Create a Frank matrix (ill-conditioned eigenvalues).
 
- -- Function File: C = gallery ("gcdmat", N)
+ -- : C = gallery ("gcdmat", N)
      Create a greatest common divisor matrix.
 
      C is an N-by-N matrix whose values correspond to the greatest
      common divisor of its coordinate values, i.e., C(i,j) correspond
      ‘gcd (i, j)’.
 
- -- Function File: A = gallery ("gearmat", N)
- -- Function File: A = gallery ("gearmat", N, I)
- -- Function File: A = gallery ("gearmat", N, I, J)
+ -- : A = gallery ("gearmat", N)
+ -- : A = gallery ("gearmat", N, I)
+ -- : A = gallery ("gearmat", N, I, J)
      Create a Gear matrix.
 
- -- Function File: G = gallery ("grcar", N)
- -- Function File: G = gallery ("grcar", N, K)
+ -- : G = gallery ("grcar", N)
+ -- : G = gallery ("grcar", N, K)
      Create a Toeplitz matrix with sensitive eigenvalues.
 
- -- Function File: A = gallery ("hanowa", N)
- -- Function File: A = gallery ("hanowa", N, D)
+ -- : A = gallery ("hanowa", N)
+ -- : A = gallery ("hanowa", N, D)
      Create a matrix whose eigenvalues lie on a vertical line in the
      complex plane.
 
- -- Function File: V = gallery ("house", X)
- -- Function File: [V, BETA] = gallery ("house", X)
+ -- : V = gallery ("house", X)
+ -- : [V, BETA] = gallery ("house", X)
      Create a householder matrix.
 
- -- Function File: A = gallery ("integerdata", IMAX, [M N ...], J)
- -- Function File: A = gallery ("integerdata", IMAX, M, N, ..., J)
- -- Function File: A = gallery ("integerdata", [IMIN, IMAX], [M N ...],
-          J)
- -- Function File: A = gallery ("integerdata", [IMIN, IMAX], M, N, ...,
-          J)
- -- Function File: A = gallery ("integerdata", ..., "CLASS")
+ -- : A = gallery ("integerdata", IMAX, [M N ...], J)
+ -- : A = gallery ("integerdata", IMAX, M, N, ..., J)
+ -- : A = gallery ("integerdata", [IMIN, IMAX], [M N ...], J)
+ -- : A = gallery ("integerdata", [IMIN, IMAX], M, N, ..., J)
+ -- : A = gallery ("integerdata", ..., "CLASS")
      Create a matrix with random integers in the range [1, IMAX].  If
      IMIN is given then the integers are in the range [IMIN, IMAX].
 
@@ -3496,62 +4263,62 @@ The following functions return famous matrix forms.
      "int8", "int16", int32", "single", "double".  The default is
      "double".
 
- -- Function File: A = gallery ("invhess", X)
- -- Function File: A = gallery ("invhess", X, Y)
+ -- : A = gallery ("invhess", X)
+ -- : A = gallery ("invhess", X, Y)
      Create the inverse of an upper Hessenberg matrix.
 
- -- Function File: A = gallery ("invol", N)
+ -- : A = gallery ("invol", N)
      Create an involutory matrix.
 
- -- Function File: A = gallery ("ipjfact", N)
- -- Function File: A = gallery ("ipjfact", N, K)
+ -- : A = gallery ("ipjfact", N)
+ -- : A = gallery ("ipjfact", N, K)
      Create a Hankel matrix with factorial elements.
 
- -- Function File: A = gallery ("jordbloc", N)
- -- Function File: A = gallery ("jordbloc", N, LAMBDA)
+ -- : A = gallery ("jordbloc", N)
+ -- : A = gallery ("jordbloc", N, LAMBDA)
      Create a Jordan block.
 
- -- Function File: U = gallery ("kahan", N)
- -- Function File: U = gallery ("kahan", N, THETA)
- -- Function File: U = gallery ("kahan", N, THETA, PERT)
+ -- : U = gallery ("kahan", N)
+ -- : U = gallery ("kahan", N, THETA)
+ -- : U = gallery ("kahan", N, THETA, PERT)
      Create a Kahan matrix (upper trapezoidal).
 
- -- Function File: A = gallery ("kms", N)
- -- Function File: A = gallery ("kms", N, RHO)
+ -- : A = gallery ("kms", N)
+ -- : A = gallery ("kms", N, RHO)
      Create a Kac-Murdock-Szego Toeplitz matrix.
 
- -- Function File: B = gallery ("krylov", A)
- -- Function File: B = gallery ("krylov", A, X)
- -- Function File: B = gallery ("krylov", A, X, J)
+ -- : B = gallery ("krylov", A)
+ -- : B = gallery ("krylov", A, X)
+ -- : B = gallery ("krylov", A, X, J)
      Create a Krylov matrix.
 
- -- Function File: A = gallery ("lauchli", N)
- -- Function File: A = gallery ("lauchli", N, MU)
+ -- : A = gallery ("lauchli", N)
+ -- : A = gallery ("lauchli", N, MU)
      Create a Lauchli matrix (rectangular).
 
- -- Function File: A = gallery ("lehmer", N)
+ -- : A = gallery ("lehmer", N)
      Create a Lehmer matrix (symmetric positive definite).
 
- -- Function File: T = gallery ("lesp", N)
+ -- : T = gallery ("lesp", N)
      Create a tridiagonal matrix with real, sensitive eigenvalues.
 
- -- Function File: A = gallery ("lotkin", N)
+ -- : A = gallery ("lotkin", N)
      Create a Lotkin matrix.
 
- -- Function File: A = gallery ("minij", N)
+ -- : A = gallery ("minij", N)
      Create a symmetric positive definite matrix MIN(i,j).
 
- -- Function File: A = gallery ("moler", N)
- -- Function File: A = gallery ("moler", N, ALPHA)
+ -- : A = gallery ("moler", N)
+ -- : A = gallery ("moler", N, ALPHA)
      Create a Moler matrix (symmetric positive definite).
 
- -- Function File: [A, T] = gallery ("neumann", N)
+ -- : [A, T] = gallery ("neumann", N)
      Create a singular matrix from the discrete Neumann problem
      (sparse).
 
- -- Function File: A = gallery ("normaldata", [M N ...], J)
- -- Function File: A = gallery ("normaldata", M, N, ..., J)
- -- Function File: A = gallery ("normaldata", ..., "CLASS")
+ -- : A = gallery ("normaldata", [M N ...], J)
+ -- : A = gallery ("normaldata", M, N, ..., J)
+ -- : A = gallery ("normaldata", ..., "CLASS")
      Create a matrix with random samples from the standard normal
      distribution (mean = 0, std = 1).
 
@@ -3567,82 +4334,82 @@ The following functions return famous matrix forms.
      matrix.  Possible values for CLASS: "single", "double".  The
      default is "double".
 
- -- Function File: Q = gallery ("orthog", N)
- -- Function File: Q = gallery ("orthog", N, K)
+ -- : Q = gallery ("orthog", N)
+ -- : Q = gallery ("orthog", N, K)
      Create orthogonal and nearly orthogonal matrices.
 
- -- Function File: A = gallery ("parter", N)
+ -- : A = gallery ("parter", N)
      Create a Parter matrix (a Toeplitz matrix with singular values near
      pi).
 
- -- Function File: P = gallery ("pei", N)
- -- Function File: P = gallery ("pei", N, ALPHA)
+ -- : P = gallery ("pei", N)
+ -- : P = gallery ("pei", N, ALPHA)
      Create a Pei matrix.
 
- -- Function File: A = gallery ("Poisson", N)
+ -- : A = gallery ("Poisson", N)
      Create a block tridiagonal matrix from Poisson’s equation (sparse).
 
- -- Function File: A = gallery ("prolate", N)
- -- Function File: A = gallery ("prolate", N, W)
+ -- : A = gallery ("prolate", N)
+ -- : A = gallery ("prolate", N, W)
      Create a prolate matrix (symmetric, ill-conditioned Toeplitz
      matrix).
 
- -- Function File: H = gallery ("randhess", X)
+ -- : H = gallery ("randhess", X)
      Create a random, orthogonal upper Hessenberg matrix.
 
- -- Function File: A = gallery ("rando", N)
- -- Function File: A = gallery ("rando", N, K)
+ -- : A = gallery ("rando", N)
+ -- : A = gallery ("rando", N, K)
      Create a random matrix with elements -1, 0 or 1.
 
- -- Function File: A = gallery ("randsvd", N)
- -- Function File: A = gallery ("randsvd", N, KAPPA)
- -- Function File: A = gallery ("randsvd", N, KAPPA, MODE)
- -- Function File: A = gallery ("randsvd", N, KAPPA, MODE, KL)
- -- Function File: A = gallery ("randsvd", N, KAPPA, MODE, KL, KU)
+ -- : A = gallery ("randsvd", N)
+ -- : A = gallery ("randsvd", N, KAPPA)
+ -- : A = gallery ("randsvd", N, KAPPA, MODE)
+ -- : A = gallery ("randsvd", N, KAPPA, MODE, KL)
+ -- : A = gallery ("randsvd", N, KAPPA, MODE, KL, KU)
      Create a random matrix with pre-assigned singular values.
 
- -- Function File: A = gallery ("redheff", N)
+ -- : A = gallery ("redheff", N)
      Create a zero and ones matrix of Redheffer associated with the
      Riemann hypothesis.
 
- -- Function File: A = gallery ("riemann", N)
+ -- : A = gallery ("riemann", N)
      Create a matrix associated with the Riemann hypothesis.
 
- -- Function File: A = gallery ("ris", N)
+ -- : A = gallery ("ris", N)
      Create a symmetric Hankel matrix.
 
- -- Function File: A = gallery ("smoke", N)
- -- Function File: A = gallery ("smoke", N, K)
+ -- : A = gallery ("smoke", N)
+ -- : A = gallery ("smoke", N, K)
      Create a complex matrix, with a ‘smoke ring’ pseudospectrum.
 
- -- Function File: T = gallery ("toeppd", N)
- -- Function File: T = gallery ("toeppd", N, M)
- -- Function File: T = gallery ("toeppd", N, M, W)
- -- Function File: T = gallery ("toeppd", N, M, W, THETA)
+ -- : T = gallery ("toeppd", N)
+ -- : T = gallery ("toeppd", N, M)
+ -- : T = gallery ("toeppd", N, M, W)
+ -- : T = gallery ("toeppd", N, M, W, THETA)
      Create a symmetric positive definite Toeplitz matrix.
 
- -- Function File: P = gallery ("toeppen", N)
- -- Function File: P = gallery ("toeppen", N, A)
- -- Function File: P = gallery ("toeppen", N, A, B)
- -- Function File: P = gallery ("toeppen", N, A, B, C)
- -- Function File: P = gallery ("toeppen", N, A, B, C, D)
- -- Function File: P = gallery ("toeppen", N, A, B, C, D, E)
+ -- : P = gallery ("toeppen", N)
+ -- : P = gallery ("toeppen", N, A)
+ -- : P = gallery ("toeppen", N, A, B)
+ -- : P = gallery ("toeppen", N, A, B, C)
+ -- : P = gallery ("toeppen", N, A, B, C, D)
+ -- : P = gallery ("toeppen", N, A, B, C, D, E)
      Create a pentadiagonal Toeplitz matrix (sparse).
 
- -- Function File: A = gallery ("tridiag", X, Y, Z)
- -- Function File: A = gallery ("tridiag", N)
- -- Function File: A = gallery ("tridiag", N, C, D, E)
+ -- : A = gallery ("tridiag", X, Y, Z)
+ -- : A = gallery ("tridiag", N)
+ -- : A = gallery ("tridiag", N, C, D, E)
      Create a tridiagonal matrix (sparse).
 
- -- Function File: T = gallery ("triw", N)
- -- Function File: T = gallery ("triw", N, ALPHA)
- -- Function File: T = gallery ("triw", N, ALPHA, K)
+ -- : T = gallery ("triw", N)
+ -- : T = gallery ("triw", N, ALPHA)
+ -- : T = gallery ("triw", N, ALPHA, K)
      Create an upper triangular matrix discussed by Kahan, Golub, and
      Wilkinson.
 
- -- Function File: A = gallery ("uniformdata", [M N ...], J)
- -- Function File: A = gallery ("uniformdata", M, N, ..., J)
- -- Function File: A = gallery ("uniformdata", ..., "CLASS")
+ -- : A = gallery ("uniformdata", [M N ...], J)
+ -- : A = gallery ("uniformdata", M, N, ..., J)
+ -- : A = gallery ("uniformdata", ..., "CLASS")
      Create a matrix with random samples from the standard uniform
      distribution (range [0,1]).
 
@@ -3658,14 +4425,14 @@ The following functions return famous matrix forms.
      matrix.  Possible values for CLASS: "single", "double".  The
      default is "double".
 
- -- Function File: A = gallery ("wathen", NX, NY)
- -- Function File: A = gallery ("wathen", NX, NY, K)
+ -- : A = gallery ("wathen", NX, NY)
+ -- : A = gallery ("wathen", NX, NY, K)
      Create the Wathen matrix.
 
- -- Function File: [A, B] = gallery ("wilk", N)
+ -- : [A, B] = gallery ("wilk", N)
      Create various specific matrices devised/discussed by Wilkinson.
 
- -- Function File: hadamard (N)
+ -- : hadamard (N)
      Construct a Hadamard matrix (Hn) of size N-by-N.
 
      The size N must be of the form 2^k * p in which p is one of 1, 12,
@@ -3689,8 +4456,8 @@ The following functions return famous matrix forms.
      See also: *note compan: XREFcompan, *note hankel: XREFhankel, *note
      toeplitz: XREFtoeplitz.
 
- -- Function File: hankel (C)
- -- Function File: hankel (C, R)
+ -- : hankel (C)
+ -- : hankel (C, R)
      Return the Hankel matrix constructed from the first column C, and
      (optionally) the last row R.
 
@@ -3707,7 +4474,7 @@ The following functions return famous matrix forms.
      See also: *note hadamard: XREFhadamard, *note toeplitz:
      XREFtoeplitz.
 
- -- Function File: hilb (N)
+ -- : hilb (N)
      Return the Hilbert matrix of order N.
 
      The i,j element of a Hilbert matrix is defined as
@@ -3727,7 +4494,7 @@ The following functions return famous matrix forms.
 
      See also: *note invhilb: XREFinvhilb.
 
- -- Function File: invhilb (N)
+ -- : invhilb (N)
      Return the inverse of the Hilbert matrix of order N.
 
      This can be computed exactly using
@@ -3758,7 +4525,7 @@ The following functions return famous matrix forms.
 
      See also: *note hilb: XREFhilb.
 
- -- Function File: magic (N)
+ -- : magic (N)
 
      Create an N-by-N magic square.
 
@@ -3766,10 +4533,12 @@ The following functions return famous matrix forms.
      the row sums, column sums, and diagonal sums are all equal to the
      same value.
 
-     Note: N must be greater than 2 for the magic square to exist.
+     Note: N must be a scalar greater than or equal to 3.  If you supply
+     N less than 3, magic returns either a nonmagic square, or else the
+     degenerate magic squares 1 and [].
 
- -- Function File: pascal (N)
- -- Function File: pascal (N, T)
+ -- : pascal (N)
+ -- : pascal (N, T)
      Return the Pascal matrix of order N if ‘T = 0’.
 
      The default value of T is 0.
@@ -3787,7 +4556,7 @@ The following functions return famous matrix forms.
 
      See also: *note chol: XREFchol.
 
- -- Function File: rosser ()
+ -- : rosser ()
      Return the Rosser matrix.
 
      This is a difficult test case used to evaluate eigenvalue
@@ -3795,8 +4564,8 @@ The following functions return famous matrix forms.
 
      See also: *note wilkinson: XREFwilkinson, *note eig: XREFeig.
 
- -- Function File: toeplitz (C)
- -- Function File: toeplitz (C, R)
+ -- : toeplitz (C)
+ -- : toeplitz (C, R)
      Return the Toeplitz matrix constructed from the first column C, and
      (optionally) the first row R.
 
@@ -3816,8 +4585,8 @@ The following functions return famous matrix forms.
 
      See also: *note hankel: XREFhankel.
 
- -- Function File: vander (C)
- -- Function File: vander (C, N)
+ -- : vander (C)
+ -- : vander (C, N)
      Return the Vandermonde matrix whose next to last column is C.
 
      If N is specified, it determines the number of columns; otherwise,
@@ -3834,7 +4603,7 @@ The following functions return famous matrix forms.
 
      See also: *note polyfit: XREFpolyfit.
 
- -- Function File: wilkinson (N)
+ -- : wilkinson (N)
      Return the Wilkinson matrix of order N.
 
      Wilkinson matrices are symmetric and tridiagonal with pairs of
@@ -3876,19 +4645,19 @@ File: octave.info,  Node: Exponents and Logarithms,  Next: Complex Arithmetic,  
 17.1 Exponents and Logarithms
 =============================
 
- -- Mapping Function: exp (X)
+ -- : exp (X)
      Compute ‘e^x’ for each element of X.
 
      To compute the matrix exponential, see *note Linear Algebra::.
 
      See also: *note log: XREFlog.
 
- -- Mapping Function: expm1 (X)
+ -- : expm1 (X)
      Compute ‘exp (X) - 1’ accurately in the neighborhood of zero.
 
      See also: *note exp: XREFexp.
 
- -- Mapping Function: log (X)
+ -- : log (X)
      Compute the natural logarithm, ‘ln (X)’, for each element of X.
 
      To compute the matrix logarithm, see *note Linear Algebra::.
@@ -3896,7 +4665,7 @@ File: octave.info,  Node: Exponents and Logarithms,  Next: Complex Arithmetic,  
      See also: *note exp: XREFexp, *note log1p: XREFlog1p, *note log2:
      XREFlog2, *note log10: XREFlog10, *note logspace: XREFlogspace.
 
- -- Function File: reallog (X)
+ -- : reallog (X)
      Return the real-valued natural logarithm of each element of X.
 
      If any element results in a complex return value ‘reallog’ aborts
@@ -3905,20 +4674,20 @@ File: octave.info,  Node: Exponents and Logarithms,  Next: Complex Arithmetic,  
      See also: *note log: XREFlog, *note realpow: XREFrealpow, *note
      realsqrt: XREFrealsqrt.
 
- -- Mapping Function: log1p (X)
+ -- : log1p (X)
      Compute ‘log (1 + X)’ accurately in the neighborhood of zero.
 
      See also: *note log: XREFlog, *note exp: XREFexp, *note expm1:
      XREFexpm1.
 
- -- Mapping Function: log10 (X)
+ -- : log10 (X)
      Compute the base-10 logarithm of each element of X.
 
      See also: *note log: XREFlog, *note log2: XREFlog2, *note logspace:
      XREFlogspace, *note exp: XREFexp.
 
- -- Mapping Function: log2 (X)
- -- Mapping Function: [F, E] = log2 (X)
+ -- : log2 (X)
+ -- : [F, E] = log2 (X)
      Compute the base-2 logarithm of each element of X.
 
      If called with two output arguments, split X into binary mantissa
@@ -3928,8 +4697,8 @@ File: octave.info,  Node: Exponents and Logarithms,  Next: Complex Arithmetic,  
      See also: *note pow2: XREFpow2, *note log: XREFlog, *note log10:
      XREFlog10, *note exp: XREFexp.
 
- -- Function File: pow2 (X)
- -- Function File: pow2 (F, E)
+ -- : pow2 (X)
+ -- : pow2 (F, E)
      With one input argument, compute 2 .^ x for each element of X.
 
      With two input arguments, return f .* (2 .^ e).
@@ -3937,7 +4706,7 @@ File: octave.info,  Node: Exponents and Logarithms,  Next: Complex Arithmetic,  
      See also: *note log2: XREFlog2, *note nextpow2: XREFnextpow2, *note
      power: XREFpower.
 
- -- Function File: nextpow2 (X)
+ -- : nextpow2 (X)
      Compute the exponent for the smallest power of two larger than the
      input.
 
@@ -3946,7 +4715,7 @@ File: octave.info,  Node: Exponents and Logarithms,  Next: Complex Arithmetic,  
 
      See also: *note pow2: XREFpow2, *note log2: XREFlog2.
 
- -- Function File: realpow (X, Y)
+ -- : realpow (X, Y)
      Compute the real-valued, element-by-element power operator.
 
      This is equivalent to ‘X .^ Y’, except that ‘realpow’ reports an
@@ -3955,7 +4724,7 @@ File: octave.info,  Node: Exponents and Logarithms,  Next: Complex Arithmetic,  
      See also: *note power: XREFpower, *note reallog: XREFreallog, *note
      realsqrt: XREFrealsqrt.
 
- -- Mapping Function: sqrt (X)
+ -- : sqrt (X)
      Compute the square root of each element of X.
 
      If X is negative, a complex result is returned.
@@ -3964,7 +4733,7 @@ File: octave.info,  Node: Exponents and Logarithms,  Next: Complex Arithmetic,  
 
      See also: *note realsqrt: XREFrealsqrt, *note nthroot: XREFnthroot.
 
- -- Function File: realsqrt (X)
+ -- : realsqrt (X)
      Return the real-valued square root of each element of X.
 
      If any element results in a complex return value ‘realsqrt’ aborts
@@ -3973,14 +4742,14 @@ File: octave.info,  Node: Exponents and Logarithms,  Next: Complex Arithmetic,  
      See also: *note sqrt: XREFsqrt, *note realpow: XREFrealpow, *note
      reallog: XREFreallog.
 
- -- Mapping Function: cbrt (X)
+ -- : cbrt (X)
      Compute the real cube root of each element of X.
 
      Unlike ‘X^(1/3)’, the result will be negative if X is negative.
 
      See also: *note nthroot: XREFnthroot.
 
- -- Function File: nthroot (X, N)
+ -- : nthroot (X, N)
 
      Compute the real (non-complex) N-th root of X.
 
@@ -4007,7 +4776,7 @@ File: octave.info,  Node: Complex Arithmetic,  Next: Trigonometry,  Prev: Expone
 In the descriptions of the following functions, Z is the complex number
 X + IY, where I is defined as ‘sqrt (-1)’.
 
- -- Mapping Function: abs (Z)
+ -- : abs (Z)
      Compute the magnitude of Z.
 
      The magnitude is defined as |Z| = ‘sqrt (x^2 + y^2)’.
@@ -4019,8 +4788,8 @@ X + IY, where I is defined as ‘sqrt (-1)’.
 
      See also: *note arg: XREFarg.
 
- -- Mapping Function: arg (Z)
- -- Mapping Function: angle (Z)
+ -- : arg (Z)
+ -- : angle (Z)
      Compute the argument, i.e., angle of Z.
 
      This is defined as, THETA = ‘atan2 (Y, X)’, in radians.
@@ -4032,16 +4801,16 @@ X + IY, where I is defined as ‘sqrt (-1)’.
 
      See also: *note abs: XREFabs.
 
- -- Mapping Function: conj (Z)
+ -- : conj (Z)
      Return the complex conjugate of Z.
 
      The complex conjugate is defined as ‘conj (Z)’ = X - IY.
 
      See also: *note real: XREFreal, *note imag: XREFimag.
 
- -- Function File: cplxpair (Z)
- -- Function File: cplxpair (Z, TOL)
- -- Function File: cplxpair (Z, TOL, DIM)
+ -- : cplxpair (Z)
+ -- : cplxpair (Z, TOL)
+ -- : cplxpair (Z, TOL, DIM)
      Sort the numbers Z into complex conjugate pairs ordered by
      increasing real part.
 
@@ -4049,7 +4818,9 @@ X + IY, where I is defined as ‘sqrt (-1)’.
      pair.  All real numbers (those with ‘abs (imag (Z) / Z) < TOL’) are
      placed after the complex pairs.
 
-     If TOL is unspecified the default value is 100*‘eps’.
+     TOL is a weighting factor which determines the tolerance of
+     matching.  The default value is 100 and the resulting tolerance for
+     a given complex pair is ‘100 * eps (abs (Z(i)))’.
 
      By default the complex pairs are sorted along the first
      non-singleton dimension of Z.  If DIM is specified, then the
@@ -4060,14 +4831,14 @@ X + IY, where I is defined as ‘sqrt (-1)’.
      within TOL).  Note that there is no defined order for pairs with
      identical real parts but differing imaginary parts.
 
-          cplxpair (exp(2i*pi*[0:4]'/5)) == exp(2i*pi*[3; 2; 4; 1; 0]/5)
+          cplxpair (exp (2i*pi*[0:4]'/5)) == exp (2i*pi*[3; 2; 4; 1; 0]/5)
 
- -- Mapping Function: imag (Z)
+ -- : imag (Z)
      Return the imaginary part of Z as a real number.
 
      See also: *note real: XREFreal, *note conj: XREFconj.
 
- -- Mapping Function: real (Z)
+ -- : real (Z)
      Return the real part of Z.
 
      See also: *note imag: XREFimag, *note conj: XREFconj.
@@ -4080,12 +4851,12 @@ File: octave.info,  Node: Trigonometry,  Next: Sums and Products,  Prev: Complex
 
 Octave provides the following trigonometric functions where angles are
 specified in radians.  To convert from degrees to radians multiply by
-‘pi/180’ (e.g., ‘sin (30 * pi/180)’ returns the sine of 30 degrees).  As
-an alternative, Octave provides a number of trigonometric functions
-which work directly on an argument specified in degrees.  These
-functions are named after the base trigonometric function with a ‘d’
-suffix.  For example, ‘sin’ expects an angle in radians while ‘sind’
-expects an angle in degrees.
+‘pi/180’ or use the ‘deg2rad’ function.  For example, ‘sin (30 *
+pi/180)’ returns the sine of 30 degrees.  As an alternative, Octave
+provides a number of trigonometric functions which work directly on an
+argument specified in degrees.  These functions are named after the base
+trigonometric function with a ‘d’ suffix.  As an example, ‘sin’ expects
+an angle in radians while ‘sind’ expects an angle in degrees.
 
    Octave uses the C library trigonometric functions.  It is expected
 that these functions are defined by the ISO/IEC 9899 Standard.  This
@@ -4101,136 +4872,174 @@ implements the behavior given in the Standard.  Including ‘atan2(+- 0,
    It should be noted that MATLAB uses different definitions which
 apparently do not distinguish -0.
 
- -- Mapping Function: sin (X)
+ -- : RAD = deg2rad (DEG)
+
+     Convert degrees to radians.
+
+     The input DEG must be a scalar, vector, or N-dimensional array of
+     double or single floating point values.  DEG may be complex in
+     which case the real and imaginary components are converted
+     separately.
+
+     The output RAD is the same size and shape as DEG with degrees
+     converted to radians using the conversion constant ‘pi/180’.
+
+     Example:
+
+          deg2rad ([0, 90, 180, 270, 360])
+            ⇒  0.00000   1.57080   3.14159   4.71239   6.28319
+
+     See also: *note rad2deg: XREFrad2deg.
+
+ -- : DEG = rad2deg (RAD)
+
+     Convert radians to degrees.
+
+     The input RAD must be a scalar, vector, or N-dimensional array of
+     double or single floating point values.  RAD may be complex in
+     which case the real and imaginary components are converted
+     separately.
+
+     The output DEG is the same size and shape as RAD with radians
+     converted to degrees using the conversion constant ‘180/pi’.
+
+     Example:
+
+          rad2deg ([0, pi/2, pi, 3/2*pi, 2*pi])
+            ⇒  0    90   180   270   360
+
+     See also: *note deg2rad: XREFdeg2rad.
+
+ -- : sin (X)
      Compute the sine for each element of X in radians.
 
      See also: *note asin: XREFasin, *note sind: XREFsind, *note sinh:
      XREFsinh.
 
- -- Mapping Function: cos (X)
+ -- : cos (X)
      Compute the cosine for each element of X in radians.
 
      See also: *note acos: XREFacos, *note cosd: XREFcosd, *note cosh:
      XREFcosh.
 
- -- Mapping Function: tan (Z)
+ -- : tan (Z)
      Compute the tangent for each element of X in radians.
 
      See also: *note atan: XREFatan, *note tand: XREFtand, *note tanh:
      XREFtanh.
 
- -- Mapping Function: sec (X)
+ -- : sec (X)
      Compute the secant for each element of X in radians.
 
      See also: *note asec: XREFasec, *note secd: XREFsecd, *note sech:
      XREFsech.
 
- -- Mapping Function: csc (X)
+ -- : csc (X)
      Compute the cosecant for each element of X in radians.
 
      See also: *note acsc: XREFacsc, *note cscd: XREFcscd, *note csch:
      XREFcsch.
 
- -- Mapping Function: cot (X)
+ -- : cot (X)
      Compute the cotangent for each element of X in radians.
 
      See also: *note acot: XREFacot, *note cotd: XREFcotd, *note coth:
      XREFcoth.
 
- -- Mapping Function: asin (X)
+ -- : asin (X)
      Compute the inverse sine in radians for each element of X.
 
      See also: *note sin: XREFsin, *note asind: XREFasind.
 
- -- Mapping Function: acos (X)
+ -- : acos (X)
      Compute the inverse cosine in radians for each element of X.
 
      See also: *note cos: XREFcos, *note acosd: XREFacosd.
 
- -- Mapping Function: atan (X)
+ -- : atan (X)
      Compute the inverse tangent in radians for each element of X.
 
      See also: *note tan: XREFtan, *note atand: XREFatand.
 
- -- Mapping Function: asec (X)
+ -- : asec (X)
      Compute the inverse secant in radians for each element of X.
 
      See also: *note sec: XREFsec, *note asecd: XREFasecd.
 
- -- Mapping Function: acsc (X)
+ -- : acsc (X)
      Compute the inverse cosecant in radians for each element of X.
 
      See also: *note csc: XREFcsc, *note acscd: XREFacscd.
 
- -- Mapping Function: acot (X)
+ -- : acot (X)
      Compute the inverse cotangent in radians for each element of X.
 
      See also: *note cot: XREFcot, *note acotd: XREFacotd.
 
- -- Mapping Function: sinh (X)
+ -- : sinh (X)
      Compute the hyperbolic sine for each element of X.
 
      See also: *note asinh: XREFasinh, *note cosh: XREFcosh, *note tanh:
      XREFtanh.
 
- -- Mapping Function: cosh (X)
+ -- : cosh (X)
      Compute the hyperbolic cosine for each element of X.
 
      See also: *note acosh: XREFacosh, *note sinh: XREFsinh, *note tanh:
      XREFtanh.
 
- -- Mapping Function: tanh (X)
+ -- : tanh (X)
      Compute hyperbolic tangent for each element of X.
 
      See also: *note atanh: XREFatanh, *note sinh: XREFsinh, *note cosh:
      XREFcosh.
 
- -- Mapping Function: sech (X)
+ -- : sech (X)
      Compute the hyperbolic secant of each element of X.
 
      See also: *note asech: XREFasech.
 
- -- Mapping Function: csch (X)
+ -- : csch (X)
      Compute the hyperbolic cosecant of each element of X.
 
      See also: *note acsch: XREFacsch.
 
- -- Mapping Function: coth (X)
+ -- : coth (X)
      Compute the hyperbolic cotangent of each element of X.
 
      See also: *note acoth: XREFacoth.
 
- -- Mapping Function: asinh (X)
+ -- : asinh (X)
      Compute the inverse hyperbolic sine for each element of X.
 
      See also: *note sinh: XREFsinh.
 
- -- Mapping Function: acosh (X)
+ -- : acosh (X)
      Compute the inverse hyperbolic cosine for each element of X.
 
      See also: *note cosh: XREFcosh.
 
- -- Mapping Function: atanh (X)
+ -- : atanh (X)
      Compute the inverse hyperbolic tangent for each element of X.
 
      See also: *note tanh: XREFtanh.
 
- -- Mapping Function: asech (X)
+ -- : asech (X)
      Compute the inverse hyperbolic secant of each element of X.
 
      See also: *note sech: XREFsech.
 
- -- Mapping Function: acsch (X)
+ -- : acsch (X)
      Compute the inverse hyperbolic cosecant of each element of X.
 
      See also: *note csch: XREFcsch.
 
- -- Mapping Function: acoth (X)
+ -- : acoth (X)
      Compute the inverse hyperbolic cotangent of each element of X.
 
      See also: *note coth: XREFcoth.
 
- -- Mapping Function: atan2 (Y, X)
+ -- : atan2 (Y, X)
      Compute atan (Y / X) for corresponding elements of Y and X.
 
      Y and X must match in size and orientation.  The signs of elements
@@ -4252,21 +5061,21 @@ when using radians.  For example:
      cos (pi/2)
           ⇒ 6.1230e-17
 
- -- Function File: sind (X)
+ -- : sind (X)
      Compute the sine for each element of X in degrees.
 
      Returns zero for elements where ‘X/180’ is an integer.
 
      See also: *note asind: XREFasind, *note sin: XREFsin.
 
- -- Function File: cosd (X)
+ -- : cosd (X)
      Compute the cosine for each element of X in degrees.
 
      Returns zero for elements where ‘(X-90)/180’ is an integer.
 
      See also: *note acosd: XREFacosd, *note cos: XREFcos.
 
- -- Function File: tand (X)
+ -- : tand (X)
      Compute the tangent for each element of X in degrees.
 
      Returns zero for elements where ‘X/180’ is an integer and ‘Inf’ for
@@ -4274,53 +5083,53 @@ when using radians.  For example:
 
      See also: *note atand: XREFatand, *note tan: XREFtan.
 
- -- Function File: secd (X)
+ -- : secd (X)
      Compute the secant for each element of X in degrees.
 
      See also: *note asecd: XREFasecd, *note sec: XREFsec.
 
- -- Function File: cscd (X)
+ -- : cscd (X)
      Compute the cosecant for each element of X in degrees.
 
      See also: *note acscd: XREFacscd, *note csc: XREFcsc.
 
- -- Function File: cotd (X)
+ -- : cotd (X)
      Compute the cotangent for each element of X in degrees.
 
      See also: *note acotd: XREFacotd, *note cot: XREFcot.
 
- -- Function File: asind (X)
+ -- : asind (X)
      Compute the inverse sine in degrees for each element of X.
 
      See also: *note sind: XREFsind, *note asin: XREFasin.
 
- -- Function File: acosd (X)
+ -- : acosd (X)
      Compute the inverse cosine in degrees for each element of X.
 
      See also: *note cosd: XREFcosd, *note acos: XREFacos.
 
- -- Function File: atand (X)
+ -- : atand (X)
      Compute the inverse tangent in degrees for each element of X.
 
      See also: *note tand: XREFtand, *note atan: XREFatan.
 
- -- Function File: atan2d (Y, X)
+ -- : atan2d (Y, X)
      Compute atan2 (Y / X) in degrees for corresponding elements from Y
      and X.
 
      See also: *note tand: XREFtand, *note atan2: XREFatan2.
 
- -- Function File: asecd (X)
+ -- : asecd (X)
      Compute the inverse secant in degrees for each element of X.
 
      See also: *note secd: XREFsecd, *note asec: XREFasec.
 
- -- Function File: acscd (X)
+ -- : acscd (X)
      Compute the inverse cosecant in degrees for each element of X.
 
      See also: *note cscd: XREFcscd, *note acsc: XREFacsc.
 
- -- Function File: acotd (X)
+ -- : acotd (X)
      Compute the inverse cotangent in degrees for each element of X.
 
      See also: *note cotd: XREFcotd, *note acot: XREFacot.
@@ -4331,11 +5140,11 @@ File: octave.info,  Node: Sums and Products,  Next: Utility Functions,  Prev: Tr
 17.4 Sums and Products
 ======================
 
- -- Built-in Function: sum (X)
- -- Built-in Function: sum (X, DIM)
- -- Built-in Function: sum (..., "native")
- -- Built-in Function: sum (..., "double")
- -- Built-in Function: sum (..., "extra")
+ -- : sum (X)
+ -- : sum (X, DIM)
+ -- : sum (..., "native")
+ -- : sum (..., "double")
+ -- : sum (..., "extra")
      Sum of elements along dimension DIM.
 
      If DIM is omitted, it defaults to the first non-singleton
@@ -4364,10 +5173,10 @@ File: octave.info,  Node: Sums and Products,  Next: Utility Functions,  Prev: Tr
      See also: *note cumsum: XREFcumsum, *note sumsq: XREFsumsq, *note
      prod: XREFprod.
 
- -- Built-in Function: prod (X)
- -- Built-in Function: prod (X, DIM)
- -- Built-in Function: prod (..., "native")
- -- Built-in Function: prod (..., "double")
+ -- : prod (X)
+ -- : prod (X, DIM)
+ -- : prod (..., "native")
+ -- : prod (..., "double")
      Product of elements along dimension DIM.
 
      If DIM is omitted, it defaults to the first non-singleton
@@ -4390,32 +5199,42 @@ File: octave.info,  Node: Sums and Products,  Next: Utility Functions,  Prev: Tr
 
      See also: *note cumprod: XREFcumprod, *note sum: XREFsum.
 
- -- Built-in Function: cumsum (X)
- -- Built-in Function: cumsum (X, DIM)
- -- Built-in Function: cumsum (..., "native")
- -- Built-in Function: cumsum (..., "double")
- -- Built-in Function: cumsum (..., "extra")
+ -- : cumsum (X)
+ -- : cumsum (X, DIM)
+ -- : cumsum (..., "native")
+ -- : cumsum (..., "double")
+ -- : cumsum (..., "extra")
      Cumulative sum of elements along dimension DIM.
 
      If DIM is omitted, it defaults to the first non-singleton
-     dimension.
+     dimension.  For example:
+
+          cumsum ([1, 2; 3, 4; 5, 6])
+             ⇒  1   2
+                 4   6
+                 9  12
 
      See ‘sum’ for an explanation of the optional parameters "native",
      "double", and "extra".
 
      See also: *note sum: XREFsum, *note cumprod: XREFcumprod.
 
- -- Built-in Function: cumprod (X)
- -- Built-in Function: cumprod (X, DIM)
+ -- : cumprod (X)
+ -- : cumprod (X, DIM)
      Cumulative product of elements along dimension DIM.
 
      If DIM is omitted, it defaults to the first non-singleton
-     dimension.
+     dimension.  For example:
+
+          cumprod ([1, 2; 3, 4; 5, 6])
+             ⇒  1   2
+                 3   8
+                15  48
 
      See also: *note prod: XREFprod, *note cumsum: XREFcumsum.
 
- -- Built-in Function: sumsq (X)
- -- Built-in Function: sumsq (X, DIM)
+ -- : sumsq (X)
+ -- : sumsq (X, DIM)
      Sum of squares of elements along dimension DIM.
 
      If DIM is omitted, it defaults to the first non-singleton
@@ -4435,7 +5254,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
 17.5 Utility Functions
 ======================
 
- -- Mapping Function: ceil (X)
+ -- : ceil (X)
      Return the smallest integer not less than X.
 
      This is equivalent to rounding towards positive infinity.
@@ -4448,7 +5267,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note floor: XREFfloor, *note round: XREFround, *note
      fix: XREFfix.
 
- -- Mapping Function: fix (X)
+ -- : fix (X)
      Truncate fractional portion of X and return the integer portion.
 
      This is equivalent to rounding towards zero.  If X is complex,
@@ -4460,7 +5279,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note ceil: XREFceil, *note floor: XREFfloor, *note
      round: XREFround.
 
- -- Mapping Function: floor (X)
+ -- : floor (X)
      Return the largest integer not greater than X.
 
      This is equivalent to rounding towards negative infinity.  If X is
@@ -4472,7 +5291,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note ceil: XREFceil, *note round: XREFround, *note fix:
      XREFfix.
 
- -- Mapping Function: round (X)
+ -- : round (X)
      Return the integer nearest to X.
 
      If X is complex, return ‘round (real (X)) + round (imag (X)) * I’.
@@ -4485,7 +5304,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note ceil: XREFceil, *note floor: XREFfloor, *note fix:
      XREFfix, *note roundb: XREFroundb.
 
- -- Mapping Function: roundb (X)
+ -- : roundb (X)
      Return the integer nearest to X.  If there are two nearest
      integers, return the even one (banker’s rounding).
 
@@ -4494,10 +5313,10 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
 
      See also: *note round: XREFround.
 
- -- Built-in Function: max (X)
- -- Built-in Function: max (X, [], DIM)
- -- Built-in Function: [W, IW] = max (X)
- -- Built-in Function: max (X, Y)
+ -- : max (X)
+ -- : max (X, [], DIM)
+ -- : [W, IW] = max (X)
+ -- : max (X, Y)
      Find maximum values in the array X.
 
      For a vector argument, return the maximum value.  For a matrix
@@ -4544,10 +5363,10 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note min: XREFmin, *note cummax: XREFcummax, *note
      cummin: XREFcummin.
 
- -- Built-in Function: min (X)
- -- Built-in Function: min (X, [], DIM)
- -- Built-in Function: [W, IW] = min (X)
- -- Built-in Function: min (X, Y)
+ -- : min (X)
+ -- : min (X, [], DIM)
+ -- : [W, IW] = min (X)
+ -- : min (X, Y)
      Find minimum values in the array X.
 
      For a vector argument, return the minimum value.  For a matrix
@@ -4594,9 +5413,9 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note max: XREFmax, *note cummin: XREFcummin, *note
      cummax: XREFcummax.
 
- -- Built-in Function: cummax (X)
- -- Built-in Function: cummax (X, DIM)
- -- Built-in Function: [W, IW] = cummax (...)
+ -- : cummax (X)
+ -- : cummax (X, DIM)
+ -- : [W, IW] = cummax (...)
      Return the cumulative maximum values along dimension DIM.
 
      If DIM is unspecified it defaults to column-wise operation.  For
@@ -4616,9 +5435,9 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note cummin: XREFcummin, *note max: XREFmax, *note min:
      XREFmin.
 
- -- Built-in Function: cummin (X)
- -- Built-in Function: cummin (X, DIM)
- -- Built-in Function: [W, IW] = cummin (X)
+ -- : cummin (X)
+ -- : cummin (X, DIM)
+ -- : [W, IW] = cummin (X)
      Return the cumulative minimum values along dimension DIM.
 
      If DIM is unspecified it defaults to column-wise operation.  For
@@ -4638,8 +5457,8 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note cummax: XREFcummax, *note min: XREFmin, *note max:
      XREFmax.
 
- -- Built-in Function: hypot (X, Y)
- -- Built-in Function: hypot (X, Y, Z, ...)
+ -- : hypot (X, Y)
+ -- : hypot (X, Y, Z, ...)
      Compute the element-by-element square root of the sum of the
      squares of X and Y.
 
@@ -4652,13 +5471,13 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
           hypot (hypot (X, Y), Z)
           hypot (hypot (hypot (X, Y), Z), W), etc.
 
- -- Function File: DX = gradient (M)
- -- Function File: [DX, DY, DZ, ...] = gradient (M)
- -- Function File: [...] = gradient (M, S)
- -- Function File: [...] = gradient (M, X, Y, Z, ...)
- -- Function File: [...] = gradient (F, X0)
- -- Function File: [...] = gradient (F, X0, S)
- -- Function File: [...] = gradient (F, X0, X, Y, ...)
+ -- : DX = gradient (M)
+ -- : [DX, DY, DZ, ...] = gradient (M)
+ -- : [...] = gradient (M, S)
+ -- : [...] = gradient (M, X, Y, Z, ...)
+ -- : [...] = gradient (F, X0)
+ -- : [...] = gradient (F, X0, S)
+ -- : [...] = gradient (F, X0, X, Y, ...)
 
      Calculate the gradient of sampled data or a function.
 
@@ -4693,7 +5512,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
 
      See also: *note diff: XREFdiff, *note del2: XREFdel2.
 
- -- Built-in Function: dot (X, Y, DIM)
+ -- : dot (X, Y, DIM)
      Compute the dot product of two vectors.
 
      If X and Y are matrices, calculate the dot products along the first
@@ -4708,8 +5527,8 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
 
      See also: *note cross: XREFcross, *note divergence: XREFdivergence.
 
- -- Function File: cross (X, Y)
- -- Function File: cross (X, Y, DIM)
+ -- : cross (X, Y)
+ -- : cross (X, Y, DIM)
      Compute the vector cross product of two 3-dimensional vectors X and
      Y.
 
@@ -4727,10 +5546,10 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note dot: XREFdot, *note curl: XREFcurl, *note
      divergence: XREFdivergence.
 
- -- Function File: DIV = divergence (X, Y, Z, FX, FY, FZ)
- -- Function File: DIV = divergence (FX, FY, FZ)
- -- Function File: DIV = divergence (X, Y, FX, FY)
- -- Function File: DIV = divergence (FX, FY)
+ -- : DIV = divergence (X, Y, Z, FX, FY, FZ)
+ -- : DIV = divergence (FX, FY, FZ)
+ -- : DIV = divergence (X, Y, FX, FY)
+ -- : DIV = divergence (FX, FY)
      Calculate divergence of a vector field given by the arrays FX, FY,
      and FZ or FX, FY respectively.
 
@@ -4744,11 +5563,11 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note curl: XREFcurl, *note gradient: XREFgradient, *note
      del2: XREFdel2, *note dot: XREFdot.
 
- -- Function File: [CX, CY, CZ, V] = curl (X, Y, Z, FX, FY, FZ)
- -- Function File: [CZ, V] = curl (X, Y, FX, FY)
- -- Function File: [...] = curl (FX, FY, FZ)
- -- Function File: [...] = curl (FX, FY)
- -- Function File: V = curl (...)
+ -- : [CX, CY, CZ, V] = curl (X, Y, Z, FX, FY, FZ)
+ -- : [CZ, V] = curl (X, Y, FX, FY)
+ -- : [...] = curl (FX, FY, FZ)
+ -- : [...] = curl (FX, FY)
+ -- : V = curl (...)
      Calculate curl of vector field given by the arrays FX, FY, and FZ
      or FX, FY respectively.
 
@@ -4766,9 +5585,9 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note divergence: XREFdivergence, *note gradient:
      XREFgradient, *note del2: XREFdel2, *note cross: XREFcross.
 
- -- Function File: D = del2 (M)
- -- Function File: D = del2 (M, H)
- -- Function File: D = del2 (M, DX, DY, ...)
+ -- : D = del2 (M)
+ -- : D = del2 (M, H)
+ -- : D = del2 (M, DX, DY, ...)
 
      Calculate the discrete Laplace operator.
 
@@ -4796,7 +5615,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
 
      See also: *note gradient: XREFgradient, *note diff: XREFdiff.
 
- -- Function File: factorial (N)
+ -- : factorial (N)
      Return the factorial of N where N is a real non-negative integer.
 
      If N is a scalar, this is equivalent to ‘prod (1:N)’.  For vector
@@ -4811,8 +5630,8 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note prod: XREFprod, *note gamma: XREFgamma, *note
      gammaln: XREFgammaln.
 
- -- Function File: PF = factor (Q)
- -- Function File: [PF, N] = factor (Q)
+ -- : PF = factor (Q)
+ -- : [PF, N] = factor (Q)
      Return the prime factorization of Q.
 
      The prime factorization is defined as ‘prod (PF) == Q’ where every
@@ -4821,14 +5640,14 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      With two output arguments, return the unique prime factors PF and
      their multiplicities.  That is, ‘prod (PF .^ N) == Q’.
 
-     Implementation Note: The input Q must be less than ‘bitmax’
+     Implementation Note: The input Q must be less than ‘flintmax’
      (9.0072e+15) in order to factor correctly.
 
      See also: *note gcd: XREFgcd, *note lcm: XREFlcm, *note isprime:
      XREFisprime, *note primes: XREFprimes.
 
- -- Built-in Function: G = gcd (A1, A2, ...)
- -- Built-in Function: [G, V1, ...] = gcd (A1, A2, ...)
+ -- : G = gcd (A1, A2, ...)
+ -- : [G, V1, ...] = gcd (A1, A2, ...)
      Compute the greatest common divisor of A1, A2, ....
 
      If more than one argument is given then all arguments must be the
@@ -4852,8 +5671,8 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note lcm: XREFlcm, *note factor: XREFfactor, *note
      isprime: XREFisprime.
 
- -- Mapping Function: lcm (X, Y)
- -- Mapping Function: lcm (X, Y, ...)
+ -- : lcm (X, Y)
+ -- : lcm (X, Y, ...)
      Compute the least common multiple of X and Y, or of the list of all
      arguments.
 
@@ -4862,7 +5681,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note factor: XREFfactor, *note gcd: XREFgcd, *note
      isprime: XREFisprime.
 
- -- Function File: chop (X, NDIGITS, BASE)
+ -- : chop (X, NDIGITS, BASE)
      Truncate elements of X to a length of NDIGITS such that the
      resulting numbers are exactly divisible by BASE.
 
@@ -4873,7 +5692,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
           chop (-pi, 5, 5)
              ⇒ -3.14150000000000
 
- -- Mapping Function: rem (X, Y)
+ -- : rem (X, Y)
      Return the remainder of the division ‘X / Y’.
 
      The remainder is computed using the expression
@@ -4881,11 +5700,26 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
           x - y .* fix (x ./ y)
 
      An error message is printed if the dimensions of the arguments do
-     not agree, or if either of the arguments is complex.
+     not agree, or if either argument is complex.
+
+     Programming Notes: Floating point numbers within a few eps of an
+     integer will be rounded to an integer before computation for
+     compatibility with MATLAB.
+
+     By convention,
+
+          rem (X, 0) = NaN  if X is a floating point variable
+          rem (X, 0) = 0    if X is an integer variable
+          rem (X, Y)        returns a value with the signbit from X
+
+     For the opposite conventions see the ‘mod’ function.  In general,
+     ‘rem’ is best when computing the remainder after division of two
+     _positive_ numbers.  For negative numbers, or when the values are
+     periodic, ‘mod’ is a better choice.
 
      See also: *note mod: XREFmod.
 
- -- Mapping Function: mod (X, Y)
+ -- : mod (X, Y)
      Compute the modulo of X and Y.
 
      Conceptually this is given by
@@ -4895,14 +5729,26 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      and is written such that the correct modulus is returned for
      integer types.  This function handles negative values correctly.
      That is, ‘mod (-1, 3)’ is 2, not -1, as ‘rem (-1, 3)’ returns.
-     ‘mod (X, 0)’ returns X.
 
      An error results if the dimensions of the arguments do not agree,
      or if either of the arguments is complex.
 
+     Programming Notes: Floating point numbers within a few eps of an
+     integer will be rounded to an integer before computation for
+     compatibility with MATLAB.
+
+     By convention,
+
+          mod (X, 0) = X
+          mod (X, Y)      returns a value with the signbit from Y
+
+     For the opposite conventions see the ‘rem’ function.  In general,
+     ‘mod’ is a better choice than ‘rem’ when any of the inputs are
+     negative numbers or when the values are periodic.
+
      See also: *note rem: XREFrem.
 
- -- Function File: primes (N)
+ -- : primes (N)
      Return all primes up to N.
 
      The output data class (double, single, uint32, etc.)  is the same
@@ -4919,15 +5765,15 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
      See also: *note list_primes: XREFlist_primes, *note isprime:
      XREFisprime.
 
- -- Function File: list_primes ()
- -- Function File: list_primes (N)
+ -- : list_primes ()
+ -- : list_primes (N)
      List the first N primes.
 
      If N is unspecified, the first 25 primes are listed.
 
      See also: *note primes: XREFprimes, *note isprime: XREFisprime.
 
- -- Mapping Function: sign (X)
+ -- : sign (X)
      Compute the “signum” function.
 
      This is defined as
@@ -4944,7 +5790,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
 
      See also: *note signbit: XREFsignbit.
 
- -- Mapping Function: signbit (X)
+ -- : signbit (X)
      Return logical true if the value of X has its sign bit set and
      false otherwise.
 
@@ -4964,7 +5810,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
 17.6 Special Functions
 ======================
 
- -- Built-in Function: [A, IERR] = airy (K, Z, OPT)
+ -- : [A, IERR] = airy (K, Z, OPT)
      Compute Airy functions of the first and second kind, and their
      derivatives.
 
@@ -4997,11 +5843,11 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
        5. Error—no computation, algorithm termination condition not met,
           return ‘NaN’.
 
- -- Built-in Function: [J, IERR] = besselj (ALPHA, X, OPT)
- -- Built-in Function: [Y, IERR] = bessely (ALPHA, X, OPT)
- -- Built-in Function: [I, IERR] = besseli (ALPHA, X, OPT)
- -- Built-in Function: [K, IERR] = besselk (ALPHA, X, OPT)
- -- Built-in Function: [H, IERR] = besselh (ALPHA, K, X, OPT)
+ -- : [J, IERR] = besselj (ALPHA, X, OPT)
+ -- : [Y, IERR] = bessely (ALPHA, X, OPT)
+ -- : [I, IERR] = besseli (ALPHA, X, OPT)
+ -- : [K, IERR] = besselk (ALPHA, X, OPT)
+ -- : [H, IERR] = besselh (ALPHA, K, X, OPT)
      Compute Bessel or Hankel functions of various kinds:
 
      ‘besselj’
@@ -5054,7 +5900,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
        5. Error—no computation, algorithm termination condition not met,
           return ‘NaN’.
 
- -- Mapping Function: beta (A, B)
+ -- : beta (A, B)
      Compute the Beta function for real inputs A and B.
 
      The Beta function definition is
@@ -5069,7 +5915,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      See also: *note betaln: XREFbetaln, *note betainc: XREFbetainc,
      *note betaincinv: XREFbetaincinv.
 
- -- Mapping Function: betainc (X, A, B)
+ -- : betainc (X, A, B)
      Compute the regularized incomplete Beta function.
 
      The regularized incomplete Beta function is defined by
@@ -5086,7 +5932,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      See also: *note betaincinv: XREFbetaincinv, *note beta: XREFbeta,
      *note betaln: XREFbetaln.
 
- -- Mapping Function: betaincinv (Y, A, B)
+ -- : betaincinv (Y, A, B)
      Compute the inverse of the incomplete Beta function.
 
      The inverse is the value X such that
@@ -5096,7 +5942,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      See also: *note betainc: XREFbetainc, *note beta: XREFbeta, *note
      betaln: XREFbetaln.
 
- -- Mapping Function: betaln (A, B)
+ -- : betaln (A, B)
      Compute the natural logarithm of the Beta function for real inputs
      A and B.
 
@@ -5113,7 +5959,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      See also: *note beta: XREFbeta, *note betainc: XREFbetainc, *note
      betaincinv: XREFbetaincinv, *note gammaln: XREFgammaln.
 
- -- Mapping Function: bincoeff (N, K)
+ -- : bincoeff (N, K)
      Return the binomial coefficient of N and K, defined as
 
            /   \
@@ -5133,7 +5979,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
 
      See also: *note nchoosek: XREFnchoosek.
 
- -- Function File: commutation_matrix (M, N)
+ -- : commutation_matrix (M, N)
      Return the commutation matrix K(m,n) which is the unique M*N by M*N
      matrix such that K(m,n) * vec(A) = vec(A') for all m by n matrices
      A.
@@ -5143,7 +5989,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      See Magnus and Neudecker (1988), ‘Matrix Differential Calculus with
      Applications in Statistics and Econometrics.’
 
- -- Function File: duplication_matrix (N)
+ -- : duplication_matrix (N)
      Return the duplication matrix Dn which is the unique n^2 by
      n*(n+1)/2 matrix such that Dn vech (A) = vec (A) for all symmetric
      n by n matrices A.
@@ -5151,7 +5997,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      See Magnus and Neudecker (1988), ‘Matrix Differential Calculus with
      Applications in Statistics and Econometrics.’
 
- -- Mapping Function: dawson (Z)
+ -- : dawson (Z)
      Compute the Dawson (scaled imaginary error) function.
 
      The Dawson function is defined as
@@ -5162,8 +6008,8 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      XREFerfcx, *note erfi: XREFerfi, *note erfinv: XREFerfinv, *note
      erfcinv: XREFerfcinv.
 
- -- Built-in Function: [SN, CN, DN, ERR] = ellipj (U, M)
- -- Built-in Function: [SN, CN, DN, ERR] = ellipj (U, M, TOL)
+ -- : [SN, CN, DN, ERR] = ellipj (U, M)
+ -- : [SN, CN, DN, ERR] = ellipj (U, M, TOL)
      Compute the Jacobi elliptic functions SN, CN, and DN of complex
      argument U and real parameter M.
 
@@ -5193,9 +6039,9 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
 
      See also: *note ellipke: XREFellipke.
 
- -- Function File: K = ellipke (M)
- -- Function File: K = ellipke (M, TOL)
- -- Function File: [K, E] = ellipke (...)
+ -- : K = ellipke (M)
+ -- : K = ellipke (M, TOL)
+ -- : [K, E] = ellipke (...)
      Compute complete elliptic integrals of the first K(M) and second
      E(M) kind.
 
@@ -5231,7 +6077,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
 
      See also: *note ellipj: XREFellipj.
 
- -- Mapping Function: erf (Z)
+ -- : erf (Z)
      Compute the error function.
 
      The error function is defined as
@@ -5246,7 +6092,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      XREFerfi, *note dawson: XREFdawson, *note erfinv: XREFerfinv, *note
      erfcinv: XREFerfcinv.
 
- -- Mapping Function: erfc (Z)
+ -- : erfc (Z)
      Compute the complementary error function.
 
      The complementary error function is defined as ‘1 - erf (Z)’.
@@ -5255,7 +6101,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      erfi: XREFerfi, *note dawson: XREFdawson, *note erf: XREFerf, *note
      erfinv: XREFerfinv.
 
- -- Mapping Function: erfcx (Z)
+ -- : erfcx (Z)
      Compute the scaled complementary error function.
 
      The scaled complementary error function is defined as
@@ -5266,7 +6112,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      XREFerfi, *note dawson: XREFdawson, *note erfinv: XREFerfinv, *note
      erfcinv: XREFerfcinv.
 
- -- Mapping Function: erfi (Z)
+ -- : erfi (Z)
      Compute the imaginary error function.
 
      The imaginary error function is defined as
@@ -5277,7 +6123,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      XREFerfcx, *note dawson: XREFdawson, *note erfinv: XREFerfinv,
      *note erfcinv: XREFerfcinv.
 
- -- Mapping Function: erfinv (X)
+ -- : erfinv (X)
      Compute the inverse error function.
 
      The inverse error function is defined such that
@@ -5288,7 +6134,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      XREFerfcx, *note erfi: XREFerfi, *note dawson: XREFdawson, *note
      erfcinv: XREFerfcinv.
 
- -- Mapping Function: erfcinv (X)
+ -- : erfcinv (X)
      Compute the inverse complementary error function.
 
      The inverse complementary error function is defined such that
@@ -5299,7 +6145,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      XREFerfcx, *note erfi: XREFerfi, *note dawson: XREFdawson, *note
      erfinv: XREFerfinv.
 
- -- Function File: expint (X)
+ -- : expint (X)
      Compute the exponential integral:
 
                      infinity
@@ -5321,7 +6167,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      The two definitions are related, for positive real values of X, by
      ‘E_1 (-x) = -Ei (x) - i*pi’.
 
- -- Mapping Function: gamma (Z)
+ -- : gamma (Z)
      Compute the Gamma function.
 
      The Gamma function is defined as
@@ -5341,9 +6187,9 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      See also: *note gammainc: XREFgammainc, *note gammaln: XREFgammaln,
      *note factorial: XREFfactorial.
 
- -- Mapping Function: gammainc (X, A)
- -- Mapping Function: gammainc (X, A, "lower")
- -- Mapping Function: gammainc (X, A, "upper")
+ -- : gammainc (X, A)
+ -- : gammainc (X, A, "lower")
+ -- : gammainc (X, A, "upper")
      Compute the normalized incomplete gamma function.
 
      This is defined as
@@ -5372,8 +6218,8 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
 
      See also: *note gamma: XREFgamma, *note gammaln: XREFgammaln.
 
- -- Function File: L = legendre (N, X)
- -- Function File: L = legendre (N, X, NORMALIZATION)
+ -- : L = legendre (N, X)
+ -- : L = legendre (N, X, NORMALIZATION)
      Compute the Legendre function of degree N and order M = 0 ... N.
 
      The value N must be a real non-negative integer.
@@ -5436,11 +6282,31 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
           NP(x) = P(x) * (-1)  * [-------------]
             n      n                  (n+m)!
 
- -- Mapping Function: gammaln (X)
- -- Mapping Function: lgamma (X)
+ -- : gammaln (X)
+ -- : lgamma (X)
      Return the natural logarithm of the gamma function of X.
 
      See also: *note gamma: XREFgamma, *note gammainc: XREFgammainc.
+
+ -- : psi (Z)
+ -- : psi (K, Z)
+     Compute the psi (polygamma) function.
+
+     The polygamma functions are the Kth derivative of the logarithm of
+     the gamma function.  If unspecified, K defaults to zero.  A value
+     of zero computes the digamma function, a value of 1, the trigamma
+     function, and so on.
+
+     The digamma function is defined:
+
+          psi (z) = d (log (gamma (z))) / dx
+
+     When computing the digamma function (when K equals zero), Z can
+     have any value real or complex value.  However, for polygamma
+     functions (K higher than 0), Z must be real and non-negative.
+
+     See also: *note gamma: XREFgamma, *note gammainc: XREFgammainc,
+     *note gammaln: XREFgammaln.
 
 
 File: octave.info,  Node: Rational Approximations,  Next: Coordinate Transformations,  Prev: Special Functions,  Up: Arithmetic
@@ -5448,8 +6314,8 @@ File: octave.info,  Node: Rational Approximations,  Next: Coordinate Transformat
 17.7 Rational Approximations
 ============================
 
- -- Function File: S = rat (X, TOL)
- -- Function File: [N, D] = rat (X, TOL)
+ -- : S = rat (X, TOL)
+ -- : [N, D] = rat (X, TOL)
 
      Find a rational approximation to X within the tolerance defined by
      TOL using a continued fraction expansion.
@@ -5465,7 +6331,7 @@ File: octave.info,  Node: Rational Approximations,  Next: Coordinate Transformat
 
      See also: *note rats: XREFrats.
 
- -- Built-in Function: rats (X, LEN)
+ -- : rats (X, LEN)
      Convert X into a rational approximation represented as a string.
 
      The string can be converted back into a matrix as follows:
@@ -5488,11 +6354,11 @@ File: octave.info,  Node: Coordinate Transformations,  Next: Mathematical Consta
 17.8 Coordinate Transformations
 ===============================
 
- -- Function File: [THETA, R] = cart2pol (X, Y)
- -- Function File: [THETA, R, Z] = cart2pol (X, Y, Z)
- -- Function File: [THETA, R] = cart2pol (C)
- -- Function File: [THETA, R, Z] = cart2pol (C)
- -- Function File: P = cart2pol (...)
+ -- : [THETA, R] = cart2pol (X, Y)
+ -- : [THETA, R, Z] = cart2pol (X, Y, Z)
+ -- : [THETA, R] = cart2pol (C)
+ -- : [THETA, R, Z] = cart2pol (C)
+ -- : P = cart2pol (...)
 
      Transform Cartesian coordinates to polar or cylindrical
      coordinates.
@@ -5512,11 +6378,11 @@ File: octave.info,  Node: Coordinate Transformations,  Next: Mathematical Consta
      See also: *note pol2cart: XREFpol2cart, *note cart2sph:
      XREFcart2sph, *note sph2cart: XREFsph2cart.
 
- -- Function File: [X, Y] = pol2cart (THETA, R)
- -- Function File: [X, Y, Z] = pol2cart (THETA, R, Z)
- -- Function File: [X, Y] = pol2cart (P)
- -- Function File: [X, Y, Z] = pol2cart (P)
- -- Function File: C = pol2cart (...)
+ -- : [X, Y] = pol2cart (THETA, R)
+ -- : [X, Y, Z] = pol2cart (THETA, R, Z)
+ -- : [X, Y] = pol2cart (P)
+ -- : [X, Y, Z] = pol2cart (P)
+ -- : C = pol2cart (...)
      Transform polar or cylindrical coordinates to Cartesian
      coordinates.
 
@@ -5534,9 +6400,9 @@ File: octave.info,  Node: Coordinate Transformations,  Next: Mathematical Consta
      See also: *note cart2pol: XREFcart2pol, *note sph2cart:
      XREFsph2cart, *note cart2sph: XREFcart2sph.
 
- -- Function File: [THETA, PHI, R] = cart2sph (X, Y, Z)
- -- Function File: [THETA, PHI, R] = cart2sph (C)
- -- Function File: S = cart2sph (...)
+ -- : [THETA, PHI, R] = cart2sph (X, Y, Z)
+ -- : [THETA, PHI, R] = cart2sph (C)
+ -- : S = cart2sph (...)
      Transform Cartesian coordinates to spherical coordinates.
 
      The inputs X, Y, and Z must be the same shape, or scalar.  If
@@ -5556,9 +6422,9 @@ File: octave.info,  Node: Coordinate Transformations,  Next: Mathematical Consta
      See also: *note sph2cart: XREFsph2cart, *note cart2pol:
      XREFcart2pol, *note pol2cart: XREFpol2cart.
 
- -- Function File: [X, Y, Z] = sph2cart (THETA, PHI, R)
- -- Function File: [X, Y, Z] = sph2cart (S)
- -- Function File: C = sph2cart (...)
+ -- : [X, Y, Z] = sph2cart (THETA, PHI, R)
+ -- : [X, Y, Z] = sph2cart (S)
+ -- : C = sph2cart (...)
      Transform spherical coordinates to Cartesian coordinates.
 
      The inputs THETA, PHI, and R must be the same shape, or scalar.  If
@@ -5583,11 +6449,11 @@ File: octave.info,  Node: Mathematical Constants,  Prev: Coordinate Transformati
 17.9 Mathematical Constants
 ===========================
 
- -- Built-in Function: e
- -- Built-in Function: e (N)
- -- Built-in Function: e (N, M)
- -- Built-in Function: e (N, M, K, ...)
- -- Built-in Function: e (..., CLASS)
+ -- : e
+ -- : e (N)
+ -- : e (N, M)
+ -- : e (N, M, K, ...)
+ -- : e (..., CLASS)
      Return a scalar, matrix, or N-dimensional array whose elements are
      all equal to the base of natural logarithms.
 
@@ -5608,11 +6474,11 @@ File: octave.info,  Node: Mathematical Constants,  Prev: Coordinate Transformati
      See also: *note log: XREFlog, *note exp: XREFexp, *note pi: XREFpi,
      *note I: XREFI.
 
- -- Built-in Function: pi
- -- Built-in Function: pi (N)
- -- Built-in Function: pi (N, M)
- -- Built-in Function: pi (N, M, K, ...)
- -- Built-in Function: pi (..., CLASS)
+ -- : pi
+ -- : pi (N)
+ -- : pi (N, M)
+ -- : pi (N, M, K, ...)
+ -- : pi (..., CLASS)
      Return a scalar, matrix, or N-dimensional array whose elements are
      all equal to the ratio of the circumference of a circle to its
      diameter.
@@ -5634,11 +6500,11 @@ File: octave.info,  Node: Mathematical Constants,  Prev: Coordinate Transformati
 
      See also: *note e: XREFe, *note I: XREFI.
 
- -- Built-in Function: I
- -- Built-in Function: I (N)
- -- Built-in Function: I (N, M)
- -- Built-in Function: I (N, M, K, ...)
- -- Built-in Function: I (..., CLASS)
+ -- : I
+ -- : I (N)
+ -- : I (N, M)
+ -- : I (N, M, K, ...)
+ -- : I (..., CLASS)
      Return a scalar, matrix, or N-dimensional array whose elements are
      all equal to the pure imaginary unit, defined as ‘sqrt (-1)’.
 
@@ -5661,11 +6527,11 @@ File: octave.info,  Node: Mathematical Constants,  Prev: Coordinate Transformati
      See also: *note e: XREFe, *note pi: XREFpi, *note log: XREFlog,
      *note exp: XREFexp.
 
- -- Built-in Function: Inf
- -- Built-in Function: Inf (N)
- -- Built-in Function: Inf (N, M)
- -- Built-in Function: Inf (N, M, K, ...)
- -- Built-in Function: Inf (..., CLASS)
+ -- : Inf
+ -- : Inf (N)
+ -- : Inf (N, M)
+ -- : Inf (N, M, K, ...)
+ -- : Inf (..., CLASS)
      Return a scalar, matrix or N-dimensional array whose elements are
      all equal to the IEEE representation for positive infinity.
 
@@ -5691,11 +6557,11 @@ File: octave.info,  Node: Mathematical Constants,  Prev: Coordinate Transformati
 
      See also: *note isinf: XREFisinf, *note NaN: XREFNaN.
 
- -- Built-in Function: NaN
- -- Built-in Function: NaN (N)
- -- Built-in Function: NaN (N, M)
- -- Built-in Function: NaN (N, M, K, ...)
- -- Built-in Function: NaN (..., CLASS)
+ -- : NaN
+ -- : NaN (N)
+ -- : NaN (N, M)
+ -- : NaN (N, M, K, ...)
+ -- : NaN (..., CLASS)
      Return a scalar, matrix, or N-dimensional array whose elements are
      all equal to the IEEE symbol NaN (Not a Number).
 
@@ -5723,11 +6589,11 @@ File: octave.info,  Node: Mathematical Constants,  Prev: Coordinate Transformati
 
      See also: *note isnan: XREFisnan, *note Inf: XREFInf.
 
- -- Built-in Function: eps
- -- Built-in Function: eps (X)
- -- Built-in Function: eps (N, M)
- -- Built-in Function: eps (N, M, K, ...)
- -- Built-in Function: eps (..., CLASS)
+ -- : eps
+ -- : eps (X)
+ -- : eps (N, M)
+ -- : eps (N, M, K, ...)
+ -- : eps (..., CLASS)
      Return a scalar, matrix or N-dimensional array whose elements are
      all eps, the machine precision.
 
@@ -5749,13 +6615,13 @@ File: octave.info,  Node: Mathematical Constants,  Prev: Coordinate Transformati
      specifies the return type and may be either "double" or "single".
 
      See also: *note realmax: XREFrealmax, *note realmin: XREFrealmin,
-     *note intmax: XREFintmax, *note bitmax: XREFbitmax.
+     *note intmax: XREFintmax, *note flintmax: XREFflintmax.
 
- -- Built-in Function: realmax
- -- Built-in Function: realmax (N)
- -- Built-in Function: realmax (N, M)
- -- Built-in Function: realmax (N, M, K, ...)
- -- Built-in Function: realmax (..., CLASS)
+ -- : realmax
+ -- : realmax (N)
+ -- : realmax (N, M)
+ -- : realmax (N, M, K, ...)
+ -- : realmax (..., CLASS)
      Return a scalar, matrix, or N-dimensional array whose elements are
      all equal to the largest floating point number that is
      representable.
@@ -5779,13 +6645,13 @@ File: octave.info,  Node: Mathematical Constants,  Prev: Coordinate Transformati
      either "double" or "single".
 
      See also: *note realmin: XREFrealmin, *note intmax: XREFintmax,
-     *note bitmax: XREFbitmax, *note eps: XREFeps.
+     *note flintmax: XREFflintmax, *note eps: XREFeps.
 
- -- Built-in Function: realmin
- -- Built-in Function: realmin (N)
- -- Built-in Function: realmin (N, M)
- -- Built-in Function: realmin (N, M, K, ...)
- -- Built-in Function: realmin (..., CLASS)
+ -- : realmin
+ -- : realmin (N)
+ -- : realmin (N, M)
+ -- : realmin (N, M, K, ...)
+ -- : realmin (..., CLASS)
      Return a scalar, matrix, or N-dimensional array whose elements are
      all equal to the smallest normalized floating point number that is
      representable.
@@ -5886,11 +6752,11 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 18.2 Basic Matrix Functions
 ===========================
 
- -- Built-in Function: AA = balance (A)
- -- Built-in Function: AA = balance (A, OPT)
- -- Built-in Function: [DD, AA] = balance (A, OPT)
- -- Built-in Function: [D, P, AA] = balance (A, OPT)
- -- Built-in Function: [CC, DD, AA, BB] = balance (A, B, OPT)
+ -- : AA = balance (A)
+ -- : AA = balance (A, OPT)
+ -- : [DD, AA] = balance (A, OPT)
+ -- : [D, P, AA] = balance (A, OPT)
+ -- : [CC, DD, AA, BB] = balance (A, B, OPT)
 
      Balance the matrix A to reduce numerical errors in future
      calculations.
@@ -5924,8 +6790,8 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
      Generalized eigenvalue problem balancing uses Ward’s algorithm
      (SIAM Journal on Scientific and Statistical Computing, 1981).
 
- -- Function File: BW = bandwidth (A, TYPE)
- -- Function File: [LOWER, UPPER] = bandwidth (A)
+ -- : BW = bandwidth (A, TYPE)
+ -- : [LOWER, UPPER] = bandwidth (A)
      Compute the bandwidth of A.
 
      The TYPE argument is the string "lower" for the lower bandwidth and
@@ -5938,8 +6804,8 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
      See also: *note isbanded: XREFisbanded, *note isdiag: XREFisdiag,
      *note istril: XREFistril, *note istriu: XREFistriu.
 
- -- Function File: cond (A)
- -- Function File: cond (A, P)
+ -- : cond (A)
+ -- : cond (A, P)
      Compute the P-norm condition number of a matrix.
 
      ‘cond (A)’ is defined as ‘norm (A, P) * norm (inv (A), P)’.
@@ -5960,8 +6826,8 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
      See also: *note condest: XREFcondest, *note rcond: XREFrcond, *note
      norm: XREFnorm, *note svd: XREFsvd.
 
- -- Built-in Function: det (A)
- -- Built-in Function: [D, RCOND] = det (A)
+ -- : det (A)
+ -- : [D, RCOND] = det (A)
      Compute the determinant of A.
 
      Return an estimate of the reciprocal condition number if requested.
@@ -5976,10 +6842,10 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
      See also: *note cond: XREFcond, *note condest: XREFcondest, *note
      rcond: XREFrcond.
 
- -- Built-in Function: LAMBDA = eig (A)
- -- Built-in Function: LAMBDA = eig (A, B)
- -- Built-in Function: [V, LAMBDA] = eig (A)
- -- Built-in Function: [V, LAMBDA] = eig (A, B)
+ -- : LAMBDA = eig (A)
+ -- : LAMBDA = eig (A, B)
+ -- : [V, LAMBDA] = eig (A)
+ -- : [V, LAMBDA] = eig (A, B)
      Compute the eigenvalues (and optionally the eigenvectors) of a
      matrix or a pair of matrices
 
@@ -5991,8 +6857,8 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 
      See also: *note eigs: XREFeigs, *note svd: XREFsvd.
 
- -- Built-in Function: G = givens (X, Y)
- -- Built-in Function: [C, S] = givens (X, Y)
+ -- : G = givens (X, Y)
+ -- : [C, S] = givens (X, Y)
      Compute the Givens rotation matrix G.
 
      The Givens matrix is a 2 by 2 orthogonal matrix
@@ -6016,14 +6882,14 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 
      See also: *note planerot: XREFplanerot.
 
- -- Function File: [G, Y] = planerot (X)
+ -- : [G, Y] = planerot (X)
      Given a two-element column vector, return the 2 by 2 orthogonal
      matrix G such that ‘Y = G * X’ and ‘Y(2) = 0’.
 
      See also: *note givens: XREFgivens.
 
- -- Built-in Function: X = inv (A)
- -- Built-in Function: [X, RCOND] = inv (A)
+ -- : X = inv (A)
+ -- : [X, RCOND] = inv (A)
      Compute the inverse of the square matrix A.
 
      Return an estimate of the reciprocal condition number if requested,
@@ -6041,9 +6907,9 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 
      See also: *note ldivide: XREFldivide, *note rdivide: XREFrdivide.
 
- -- Function File: X = linsolve (A, B)
- -- Function File: X = linsolve (A, B, OPTS)
- -- Function File: [X, R] = linsolve (...)
+ -- : X = linsolve (A, B)
+ -- : X = linsolve (A, B, OPTS)
+ -- : [X, R] = linsolve (...)
      Solve the linear system ‘A*x = b’.
 
      With no options, this function is equivalent to the left division
@@ -6093,12 +6959,12 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
      See also: *note mldivide: XREFmldivide, *note matrix_type:
      XREFmatrix_type, *note rcond: XREFrcond.
 
- -- Built-in Function: TYPE = matrix_type (A)
- -- Built-in Function: TYPE = matrix_type (A, "nocompute")
- -- Built-in Function: A = matrix_type (A, TYPE)
- -- Built-in Function: A = matrix_type (A, "upper", PERM)
- -- Built-in Function: A = matrix_type (A, "lower", PERM)
- -- Built-in Function: A = matrix_type (A, "banded", NL, NU)
+ -- : TYPE = matrix_type (A)
+ -- : TYPE = matrix_type (A, "nocompute")
+ -- : A = matrix_type (A, TYPE)
+ -- : A = matrix_type (A, "upper", PERM)
+ -- : A = matrix_type (A, "lower", PERM)
+ -- : A = matrix_type (A, "banded", NL, NU)
      Identify the matrix type or mark a matrix as a particular type.
 
      This allows more rapid solutions of linear equations involving A to
@@ -6174,9 +7040,9 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
      has been factorized, ‘matrix_type’ will return the correct
      classification of the matrix.
 
- -- Built-in Function: norm (A)
- -- Built-in Function: norm (A, P)
- -- Built-in Function: norm (A, P, OPT)
+ -- : norm (A)
+ -- : norm (A, P)
+ -- : norm (A, P, OPT)
      Compute the p-norm of the matrix A.
 
      If the second argument is missing, ‘p = 2’ is assumed.
@@ -6226,8 +7092,8 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 
      See also: *note cond: XREFcond, *note svd: XREFsvd.
 
- -- Function File: null (A)
- -- Function File: null (A, TOL)
+ -- : null (A)
+ -- : null (A, TOL)
      Return an orthonormal basis of the null space of A.
 
      The dimension of the null space is taken as the number of singular
@@ -6238,8 +7104,8 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 
      See also: *note orth: XREForth.
 
- -- Function File: orth (A)
- -- Function File: orth (A, TOL)
+ -- : orth (A)
+ -- : orth (A, TOL)
      Return an orthonormal basis of the range space of A.
 
      The dimension of the range space is taken as the number of singular
@@ -6250,7 +7116,7 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 
      See also: *note null: XREFnull.
 
- -- Built-in Function: [Y, H] = mgorth (X, V)
+ -- : [Y, H] = mgorth (X, V)
      Orthogonalize a given column vector X with respect to a set of
      orthonormal vectors comprising the columns of V using the modified
      Gram-Schmidt method.
@@ -6261,8 +7127,8 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
             V' * Y = 0
             X = [V, Y]*H'
 
- -- Built-in Function: pinv (X)
- -- Built-in Function: pinv (X, TOL)
+ -- : pinv (X)
+ -- : pinv (X, TOL)
      Return the pseudoinverse of X.
 
      Singular values less than TOL are ignored.
@@ -6273,8 +7139,8 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 
      where ‘sigma_max (X)’ is the maximal singular value of X.
 
- -- Function File: rank (A)
- -- Function File: rank (A, TOL)
+ -- : rank (A)
+ -- : rank (A, TOL)
      Compute the rank of matrix A, using the singular value
      decomposition.
 
@@ -6306,7 +7172,7 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
      See also: *note null: XREFnull, *note sprank: XREFsprank, *note
      svd: XREFsvd.
 
- -- Built-in Function: C = rcond (A)
+ -- : C = rcond (A)
      Compute the 1-norm estimate of the reciprocal condition number as
      returned by LAPACK.
 
@@ -6318,7 +7184,7 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 
      See also: *note cond: XREFcond, *note condest: XREFcondest.
 
- -- Function File: trace (A)
+ -- : trace (A)
      Compute the trace of A, the sum of the elements along the main
      diagonal.
 
@@ -6326,9 +7192,9 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 
      See also: *note eig: XREFeig.
 
- -- Function File: rref (A)
- -- Function File: rref (A, TOL)
- -- Function File: [R, K] = rref (...)
+ -- : rref (A)
+ -- : rref (A, TOL)
+ -- : [R, K] = rref (...)
      Return the reduced row echelon form of A.
 
      TOL defaults to ‘eps * max (size (A)) * norm (A, inf)’.
@@ -6343,46 +7209,50 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
 18.3 Matrix Factorizations
 ==========================
 
- -- Loadable Function: R = chol (A)
- -- Loadable Function: [R, P] = chol (A)
- -- Loadable Function: [R, P, Q] = chol (S)
- -- Loadable Function: [R, P, Q] = chol (S, "vector")
- -- Loadable Function: [L, ...] = chol (..., "lower")
- -- Loadable Function: [L, ...] = chol (..., "upper")
-     Compute the Cholesky factor, R, of the symmetric positive definite
-     matrix A.
+ -- : R = chol (A)
+ -- : [R, P] = chol (A)
+ -- : [R, P, Q] = chol (A)
+ -- : [R, P, Q] = chol (A, "vector")
+ -- : [L, ...] = chol (..., "lower")
+ -- : [R, ...] = chol (..., "upper")
+     Compute the upper Cholesky factor, R, of the real symmetric or
+     complex Hermitian positive definite matrix A.
 
-     The Cholesky factor is defined by
+     The upper Cholesky factor R is computed by using the upper
+     triangular part of matrix A and is defined by
 
           R' * R = A.
 
-     Called with one output argument ‘chol’ fails if A or S is not
-     positive definite.  With two or more output arguments P flags
-     whether the matrix was positive definite and ‘chol’ does not fail.
-     A zero value indicated that the matrix was positive definite and
-     the R gives the factorization, and P will have a positive value
-     otherwise.
+     Calling ‘chol’ using the optional "upper" flag has the same
+     behavior.  In contrast, using the optional "lower" flag, ‘chol’
+     returns the lower triangular factorization, computed by using the
+     lower triangular part of matrix A, such that
 
-     If called with 3 outputs then a sparsity preserving row/column
-     permutation is applied to A prior to the factorization.  That is R
-     is the factorization of ‘A(Q,Q)’ such that
+          L * L' = A.
+
+     Called with one output argument ‘chol’ fails if matrix A is not
+     positive definite.  Note that if matrix A is not real symmetric or
+     complex Hermitian then the lower triangular part is considered to
+     be the (complex conjugate) transpose of the upper triangular part,
+     or vice versa, given the "lower" flag.
+
+     Called with two or more output arguments P flags whether the matrix
+     A was positive definite and ‘chol’ does not fail.  A zero value of
+     P indicates that matrix A is positive definite and R gives the
+     factorization.  Otherwise, P will have a positive value.
+
+     If called with three output arguments matrix A must be sparse and a
+     sparsity preserving row/column permutation is applied to matrix A
+     prior to the factorization.  That is R is the factorization of
+     ‘A(Q,Q)’ such that
 
           R' * R = Q' * A * Q.
 
      The sparsity preserving permutation is generally returned as a
-     matrix.  However, given the flag "vector", Q will be returned as a
-     vector such that
+     matrix.  However, given the optional flag "vector", Q will be
+     returned as a vector such that
 
           R' * R = A(Q, Q).
-
-     Called with either a sparse or full matrix and using the "lower"
-     flag, ‘chol’ returns the lower triangular factorization such that
-
-          L * L' = A.
-
-     For full matrices, if the "lower" flag is set only the lower
-     triangular part of the matrix is used for the factorization,
-     otherwise the upper triangular part is used.
 
      In general the lower triangular factorization is significantly
      faster for sparse matrices.
@@ -6394,14 +7264,14 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      XREFcholinsert, *note choldelete: XREFcholdelete, *note cholshift:
      XREFcholshift.
 
- -- Loadable Function: cholinv (A)
+ -- : cholinv (A)
      Compute the inverse of the symmetric positive definite matrix A
      using the Cholesky factorization.
 
      See also: *note chol: XREFchol, *note chol2inv: XREFchol2inv, *note
      inv: XREFinv.
 
- -- Loadable Function: chol2inv (U)
+ -- : chol2inv (U)
      Invert a symmetric, positive definite square matrix from its
      Cholesky decomposition, U.
 
@@ -6412,7 +7282,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note chol: XREFchol, *note cholinv: XREFcholinv, *note
      inv: XREFinv.
 
- -- Loadable Function: [R1, INFO] = cholupdate (R, U, OP)
+ -- : [R1, INFO] = cholupdate (R, U, OP)
      Update or downdate a Cholesky factorization.
 
      Given an upper triangular matrix R and a column vector U, attempt
@@ -6436,8 +7306,8 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note chol: XREFchol, *note cholinsert: XREFcholinsert,
      *note choldelete: XREFcholdelete, *note cholshift: XREFcholshift.
 
- -- Loadable Function: R1 = cholinsert (R, J, U)
- -- Loadable Function: [R1, INFO] = cholinsert (R, J, U)
+ -- : R1 = cholinsert (R, J, U)
+ -- : [R1, INFO] = cholinsert (R, J, U)
      Given a Cholesky factorization of a real symmetric or complex
      Hermitian positive definite matrix A = R’*R, R upper triangular,
      return the Cholesky factorization of A1, where A1(p,p) = A,
@@ -6458,7 +7328,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note chol: XREFchol, *note cholupdate: XREFcholupdate,
      *note choldelete: XREFcholdelete, *note cholshift: XREFcholshift.
 
- -- Loadable Function: R1 = choldelete (R, J)
+ -- : R1 = choldelete (R, J)
      Given a Cholesky factorization of a real symmetric or complex
      Hermitian positive definite matrix A = R’*R, R upper triangular,
      return the Cholesky factorization of A(p,p), where
@@ -6467,7 +7337,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note chol: XREFchol, *note cholupdate: XREFcholupdate,
      *note cholinsert: XREFcholinsert, *note cholshift: XREFcholshift.
 
- -- Loadable Function: R1 = cholshift (R, I, J)
+ -- : R1 = cholshift (R, I, J)
      Given a Cholesky factorization of a real symmetric or complex
      Hermitian positive definite matrix A = R’*R, R upper triangular,
      return the Cholesky factorization of A(p,p), where p is the
@@ -6479,8 +7349,8 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note chol: XREFchol, *note cholupdate: XREFcholupdate,
      *note cholinsert: XREFcholinsert, *note choldelete: XREFcholdelete.
 
- -- Built-in Function: H = hess (A)
- -- Built-in Function: [P, H] = hess (A)
+ -- : H = hess (A)
+ -- : [P, H] = hess (A)
      Compute the Hessenberg decomposition of the matrix A.
 
      The Hessenberg decomposition is ‘P * H * P' = A’ where P is a
@@ -6497,17 +7367,17 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      XREFlu, *note qr: XREFqr, *note qz: XREFqz, *note schur: XREFschur,
      *note svd: XREFsvd.
 
- -- Built-in Function: [L, U] = lu (A)
- -- Built-in Function: [L, U, P] = lu (A)
- -- Built-in Function: [L, U, P, Q] = lu (S)
- -- Built-in Function: [L, U, P, Q, R] = lu (S)
- -- Built-in Function: [...] = lu (S, THRES)
- -- Built-in Function: Y = lu (...)
- -- Built-in Function: [...] = lu (..., "vector")
+ -- : [L, U] = lu (A)
+ -- : [L, U, P] = lu (A)
+ -- : [L, U, P, Q] = lu (S)
+ -- : [L, U, P, Q, R] = lu (S)
+ -- : [...] = lu (S, THRES)
+ -- : Y = lu (...)
+ -- : [...] = lu (..., "vector")
      Compute the LU decomposition of A.
 
-     If A is full subroutines from LAPACK are used and if A is sparse
-     then UMFPACK is used.
+     If A is full then subroutines from LAPACK are used, and if A is
+     sparse then UMFPACK is used.
 
      The result is returned in a permuted form, according to the
      optional return value P.  For example, given the matrix ‘a = [1, 2;
@@ -6534,7 +7404,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
 
      The matrix is not required to be square.
 
-     When called with two or three output arguments and a spare input
+     When called with two or three output arguments and a sparse input
      matrix, ‘lu’ does not attempt to perform sparsity preserving column
      permutations.  Called with a fourth output argument, the sparsity
      preserving column transformation Q is returned, such that ‘P * A *
@@ -6554,8 +7424,8 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      default, the values defined by ‘spparms’ are used ([0.1, 0.001]).
 
      Given the string argument "vector", ‘lu’ returns the values of P
-     and Q as vector values, such that for full matrix, ‘A (P,:) = L *
-     U’, and ‘R(P,:) * A (:, Q) = L * U’.
+     and Q as vector values, such that for full matrix, ‘A(P,:) = L *
+     U’, and ‘R(P,:) * A(:,Q) = L * U’.
 
      With two output arguments, returns the permuted forms of the upper
      and lower triangular matrices, such that ‘A = L * U’.  With one
@@ -6569,8 +7439,8 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      chol: XREFchol, *note hess: XREFhess, *note qr: XREFqr, *note qz:
      XREFqz, *note schur: XREFschur, *note svd: XREFsvd.
 
- -- Built-in Function: [L, U] = luupdate (L, U, X, Y)
- -- Built-in Function: [L, U, P] = luupdate (L, U, P, X, Y)
+ -- : [L, U] = luupdate (L, U, X, Y)
+ -- : [L, U, P] = luupdate (L, U, P, X, Y)
      Given an LU factorization of a real or complex matrix A = L*U,
      L lower unit trapezoidal and U upper trapezoidal, return the
      LU factorization of A + X*Y.’, where X and Y are column vectors
@@ -6603,10 +7473,10 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note lu: XREFlu, *note cholupdate: XREFcholupdate, *note
      qrupdate: XREFqrupdate.
 
- -- Loadable Function: [Q, R, P] = qr (A)
- -- Loadable Function: [Q, R, P] = qr (A, '0')
- -- Loadable Function: [C, R] = qr (A, B)
- -- Loadable Function: [C, R] = qr (A, B, '0')
+ -- : [Q, R, P] = qr (A)
+ -- : [Q, R, P] = qr (A, '0')
+ -- : [C, R] = qr (A, B)
+ -- : [C, R] = qr (A, B, '0')
      Compute the QR factorization of A, using standard LAPACK
      subroutines.
 
@@ -6688,7 +7558,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      XREFqrinsert, *note qrdelete: XREFqrdelete, *note qrshift:
      XREFqrshift.
 
- -- Loadable Function: [Q1, R1] = qrupdate (Q, R, U, V)
+ -- : [Q1, R1] = qrupdate (Q, R, U, V)
      Given a QR factorization of a real or complex matrix A = Q*R,
      Q unitary and R upper trapezoidal, return the QR factorization of
      A + U*V’, where U and V are column vectors (rank-1 update) or
@@ -6703,7 +7573,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note qr: XREFqr, *note qrinsert: XREFqrinsert, *note
      qrdelete: XREFqrdelete, *note qrshift: XREFqrshift.
 
- -- Loadable Function: [Q1, R1] = qrinsert (Q, R, J, X, ORIENT)
+ -- : [Q1, R1] = qrinsert (Q, R, J, X, ORIENT)
      Given a QR factorization of a real or complex matrix A = Q*R,
      Q unitary and R upper trapezoidal, return the QR factorization of
      [A(:,1:j-1) x A(:,j:n)], where U is a column vector to be inserted
@@ -6726,7 +7596,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note qr: XREFqr, *note qrupdate: XREFqrupdate, *note
      qrdelete: XREFqrdelete, *note qrshift: XREFqrshift.
 
- -- Loadable Function: [Q1, R1] = qrdelete (Q, R, J, ORIENT)
+ -- : [Q1, R1] = qrdelete (Q, R, J, ORIENT)
      Given a QR factorization of a real or complex matrix A = Q*R,
      Q unitary and R upper trapezoidal, return the QR factorization of
      [A(:,1:j-1) A(:,j+1:n)], i.e., A with one column deleted (if ORIENT
@@ -6749,7 +7619,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note qr: XREFqr, *note qrupdate: XREFqrupdate, *note
      qrinsert: XREFqrinsert, *note qrshift: XREFqrshift.
 
- -- Loadable Function: [Q1, R1] = qrshift (Q, R, I, J)
+ -- : [Q1, R1] = qrshift (Q, R, I, J)
      Given a QR factorization of a real or complex matrix A = Q*R,
      Q unitary and R upper trapezoidal, return the QR factorization of
      A(:,p), where p is the permutation
@@ -6760,8 +7630,8 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note qr: XREFqr, *note qrupdate: XREFqrupdate, *note
      qrinsert: XREFqrinsert, *note qrdelete: XREFqrdelete.
 
- -- Built-in Function: LAMBDA = qz (A, B)
- -- Built-in Function: LAMBDA = qz (A, B, OPT)
+ -- : LAMBDA = qz (A, B)
+ -- : LAMBDA = qz (A, B, OPT)
      QZ decomposition of the generalized eigenvalue problem (A x = s B
      x).
 
@@ -6822,7 +7692,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      XREFqr, *note qzhess: XREFqzhess, *note schur: XREFschur, *note
      svd: XREFsvd.
 
- -- Function File: [AA, BB, Q, Z] = qzhess (A, B)
+ -- : [AA, BB, Q, Z] = qzhess (A, B)
      Compute the Hessenberg-triangular decomposition of the matrix
      pencil ‘(A, B)’, returning ‘AA = Q * A * Z’, ‘BB = Q * B * Z’, with
      Q and Z orthogonal.
@@ -6845,11 +7715,11 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      XREFhess, *note qr: XREFqr, *note qz: XREFqz, *note schur:
      XREFschur, *note svd: XREFsvd.
 
- -- Built-in Function: S = schur (A)
- -- Built-in Function: S = schur (A, "real")
- -- Built-in Function: S = schur (A, "complex")
- -- Built-in Function: S = schur (A, OPT)
- -- Built-in Function: [U, S] = schur (...)
+ -- : S = schur (A)
+ -- : S = schur (A, "real")
+ -- : S = schur (A, "complex")
+ -- : S = schur (A, OPT)
+ -- : [U, S] = schur (...)
      Compute the Schur decomposition of A.
 
      The Schur decomposition is defined as
@@ -6885,7 +7755,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      *note lu: XREFlu, *note chol: XREFchol, *note hess: XREFhess, *note
      qr: XREFqr, *note qz: XREFqz, *note svd: XREFsvd.
 
- -- Function File: [U, T] = rsf2csf (UR, TR)
+ -- : [U, T] = rsf2csf (UR, TR)
      Convert a real, upper quasi-triangular Schur form TR to a complex,
      upper triangular Schur form T.
 
@@ -6897,7 +7767,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
 
      See also: *note schur: XREFschur.
 
- -- Loadable Function: [UR, SR] = ordschur (U, S, SELECT)
+ -- : [UR, SR] = ordschur (U, S, SELECT)
      Reorders the real Schur factorization (U,S) obtained with the
      ‘schur’ function, so that selected eigenvalues appear in the upper
      left diagonal blocks of the quasi triangular Schur matrix.
@@ -6930,13 +7800,13 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
 
      See also: *note schur: XREFschur.
 
- -- Function File: ANGLE = subspace (A, B)
+ -- : ANGLE = subspace (A, B)
      Determine the largest principal angle between two subspaces spanned
      by the columns of matrices A and B.
 
- -- Built-in Function: S = svd (A)
- -- Built-in Function: [U, S, V] = svd (A)
- -- Built-in Function: [U, S, V] = svd (A, ECON)
+ -- : S = svd (A)
+ -- : [U, S, V] = svd (A)
+ -- : [U, S, V] = svd (A, ECON)
      Compute the singular value decomposition of A
 
           A = U*S*V'
@@ -6987,9 +7857,9 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      *note eig: XREFeig, *note lu: XREFlu, *note chol: XREFchol, *note
      hess: XREFhess, *note qr: XREFqr, *note qz: XREFqz.
 
- -- Built-in Function: VAL = svd_driver ()
- -- Built-in Function: OLD_VAL = svd_driver (NEW_VAL)
- -- Built-in Function: svd_driver (NEW_VAL, "local")
+ -- : VAL = svd_driver ()
+ -- : OLD_VAL = svd_driver (NEW_VAL)
+ -- : svd_driver (NEW_VAL, "local")
      Query or set the underlying LAPACK driver used by ‘svd’.
 
      Currently recognized values are "gesvd" and "gesdd".  The default
@@ -7002,7 +7872,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
 
      See also: *note svd: XREFsvd.
 
- -- Function File: [HOUSV, BETA, ZER] = housh (X, J, Z)
+ -- : [HOUSV, BETA, ZER] = housh (X, J, Z)
      Compute Householder reflection vector HOUSV to reflect X to be the
      j-th column of identity, i.e.,
 
@@ -7028,7 +7898,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      HOUSV
           householder vector
 
- -- Function File: [U, H, NU] = krylov (A, V, K, EPS1, PFLG)
+ -- : [U, H, NU] = krylov (A, V, K, EPS1, PFLG)
      Construct an orthogonal basis U of block Krylov subspace
 
           [v a*v a^2*v ... a^(k+1)*v]
@@ -7066,7 +7936,7 @@ File: octave.info,  Node: Functions of a Matrix,  Next: Specialized Solvers,  Pr
 18.4 Functions of a Matrix
 ==========================
 
- -- Function File: expm (A)
+ -- : expm (A)
      Return the exponential of a matrix.
 
      The matrix exponential is defined as the infinite Taylor series
@@ -7090,9 +7960,9 @@ File: octave.info,  Node: Functions of a Matrix,  Next: Specialized Solvers,  Pr
 
      See also: *note logm: XREFlogm, *note sqrtm: XREFsqrtm.
 
- -- Function File: S = logm (A)
- -- Function File: S = logm (A, OPT_ITERS)
- -- Function File: [S, ITERS] = logm (...)
+ -- : S = logm (A)
+ -- : S = logm (A, OPT_ITERS)
+ -- : [S, ITERS] = logm (...)
      Compute the matrix logarithm of the square matrix A.
 
      The implementation utilizes a Padé approximant and the identity
@@ -7107,8 +7977,8 @@ File: octave.info,  Node: Functions of a Matrix,  Next: Specialized Solvers,  Pr
 
      See also: *note expm: XREFexpm, *note sqrtm: XREFsqrtm.
 
- -- Built-in Function: S = sqrtm (A)
- -- Built-in Function: [S, ERROR_ESTIMATE] = sqrtm (A)
+ -- : S = sqrtm (A)
+ -- : [S, ERROR_ESTIMATE] = sqrtm (A)
      Compute the matrix square root of the square matrix A.
 
      Ref: N.J. Higham.  ‘A New sqrtm for MATLAB’.  Numerical Analysis
@@ -7117,8 +7987,8 @@ File: octave.info,  Node: Functions of a Matrix,  Next: Specialized Solvers,  Pr
 
      See also: *note expm: XREFexpm, *note logm: XREFlogm.
 
- -- Built-in Function: kron (A, B)
- -- Built-in Function: kron (A1, A2, ...)
+ -- : kron (A, B)
+ -- : kron (A1, A2, ...)
      Form the Kronecker product of two or more matrices.
 
      This is defined block by block as
@@ -7139,7 +8009,7 @@ File: octave.info,  Node: Functions of a Matrix,  Next: Specialized Solvers,  Pr
 
      Since the Kronecker product is associative, this is well-defined.
 
- -- Built-in Function: blkmm (A, B)
+ -- : blkmm (A, B)
      Compute products of matrix blocks.
 
      The blocks are given as 2-dimensional subarrays of the arrays A, B.
@@ -7151,7 +8021,7 @@ File: octave.info,  Node: Functions of a Matrix,  Next: Specialized Solvers,  Pr
             C(:,:,i) = A(:,:,i) * B(:,:,i)
           endfor
 
- -- Built-in Function: X = syl (A, B, C)
+ -- : X = syl (A, B, C)
      Solve the Sylvester equation
 
           A X + X B = C
@@ -7169,9 +8039,9 @@ File: octave.info,  Node: Specialized Solvers,  Prev: Functions of a Matrix,  Up
 18.5 Specialized Solvers
 ========================
 
- -- Function File: X = bicg (A, B, RTOL, MAXIT, M1, M2, X0)
- -- Function File: X = bicg (A, B, RTOL, MAXIT, P)
- -- Function File: [X, FLAG, RELRES, ITER, RESVEC] = bicg (A, B, ...)
+ -- : X = bicg (A, B, RTOL, MAXIT, M1, M2, X0)
+ -- : X = bicg (A, B, RTOL, MAXIT, P)
+ -- : [X, FLAG, RELRES, ITER, RESVEC] = bicg (A, B, ...)
      Solve ‘A x = b’ using the Bi-conjugate gradient iterative method.
 
         − RTOL is the relative tolerance, if not given or set to [] the
@@ -7215,10 +8085,9 @@ File: octave.info,  Node: Specialized Solvers,  Prev: Functions of a Matrix,  Up
      See also: *note bicgstab: XREFbicgstab, *note cgs: XREFcgs, *note
      gmres: XREFgmres, *note pcg: XREFpcg, *note qmr: XREFqmr.
 
- -- Function File: X = bicgstab (A, B, RTOL, MAXIT, M1, M2, X0)
- -- Function File: X = bicgstab (A, B, RTOL, MAXIT, P)
- -- Function File: [X, FLAG, RELRES, ITER, RESVEC] = bicgstab (A, B,
-          ...)
+ -- : X = bicgstab (A, B, RTOL, MAXIT, M1, M2, X0)
+ -- : X = bicgstab (A, B, RTOL, MAXIT, P)
+ -- : [X, FLAG, RELRES, ITER, RESVEC] = bicgstab (A, B, ...)
      Solve ‘A x = b’ using the stabilizied Bi-conjugate gradient
      iterative method.
 
@@ -7261,9 +8130,9 @@ File: octave.info,  Node: Specialized Solvers,  Prev: Functions of a Matrix,  Up
      See also: *note bicg: XREFbicg, *note cgs: XREFcgs, *note gmres:
      XREFgmres, *note pcg: XREFpcg, *note qmr: XREFqmr.
 
- -- Function File: X = cgs (A, B, RTOL, MAXIT, M1, M2, X0)
- -- Function File: X = cgs (A, B, RTOL, MAXIT, P)
- -- Function File: [X, FLAG, RELRES, ITER, RESVEC] = cgs (A, B, ...)
+ -- : X = cgs (A, B, RTOL, MAXIT, M1, M2, X0)
+ -- : X = cgs (A, B, RTOL, MAXIT, P)
+ -- : [X, FLAG, RELRES, ITER, RESVEC] = cgs (A, B, ...)
      Solve ‘A x = b’, where A is a square matrix, using the Conjugate
      Gradients Squared method.
 
@@ -7306,9 +8175,9 @@ File: octave.info,  Node: Specialized Solvers,  Prev: Functions of a Matrix,  Up
      See also: *note pcg: XREFpcg, *note bicgstab: XREFbicgstab, *note
      bicg: XREFbicg, *note gmres: XREFgmres, *note qmr: XREFqmr.
 
- -- Function File: X = gmres (A, B, M, RTOL, MAXIT, M1, M2, X0)
- -- Function File: X = gmres (A, B, M, RTOL, MAXIT, P)
- -- Function File: [X, FLAG, RELRES, ITER, RESVEC] = gmres (...)
+ -- : X = gmres (A, B, M, RTOL, MAXIT, M1, M2, X0)
+ -- : X = gmres (A, B, M, RTOL, MAXIT, P)
+ -- : [X, FLAG, RELRES, ITER, RESVEC] = gmres (...)
      Solve ‘A x = b’ using the Preconditioned GMRES iterative method
      with restart, a.k.a.  PGMRES(m).
 
@@ -7356,9 +8225,9 @@ File: octave.info,  Node: Specialized Solvers,  Prev: Functions of a Matrix,  Up
      cgs: XREFcgs, *note pcg: XREFpcg, *note pcr: XREFpcr, *note qmr:
      XREFqmr.
 
- -- Function File: X = qmr (A, B, RTOL, MAXIT, M1, M2, X0)
- -- Function File: X = qmr (A, B, RTOL, MAXIT, P)
- -- Function File: [X, FLAG, RELRES, ITER, RESVEC] = qmr (A, B, ...)
+ -- : X = qmr (A, B, RTOL, MAXIT, M1, M2, X0)
+ -- : X = qmr (A, B, RTOL, MAXIT, P)
+ -- : [X, FLAG, RELRES, ITER, RESVEC] = qmr (A, B, ...)
      Solve ‘A x = b’ using the Quasi-Minimal Residual iterative method
      (without look-ahead).
 
@@ -7514,7 +8383,7 @@ which exploits the fact that ‘a > 5’ produces a boolean index.
 (operators like ‘.*’ and ‘.^’).  *Note Arithmetic Ops::.  For simple
 inline functions, the ‘vectorize’ function can do this automatically.
 
- -- Built-in Function: vectorize (FUN)
+ -- : vectorize (FUN)
      Create a vectorized version of the inline function FUN by replacing
      all occurrences of ‘*’, ‘/’, etc., with ‘.*’, ‘./’, etc.
 
@@ -7691,7 +8560,7 @@ Note the usage of permute to match the dimensions of the ‘[0.8, 0.9,
    For functions that are not written with broadcasting semantics,
 ‘bsxfun’ can be useful for coercing them to broadcast.
 
- -- Built-in Function: bsxfun (F, A, B)
+ -- : bsxfun (F, A, B)
      The binary singleton expansion function performs broadcasting, that
      is, it applies a binary function F element-by-element to two array
      arguments A and B, and expands as necessary singleton dimensions in
@@ -7803,12 +8672,12 @@ difficult or impossible for various reasons.  For those situations,
 Octave provides facilities for applying a function to each element of an
 array, cell, or struct.
 
- -- Function File: arrayfun (FUNC, A)
- -- Function File: X = arrayfun (FUNC, A)
- -- Function File: X = arrayfun (FUNC, A, B, ...)
- -- Function File: [X, Y, ...] = arrayfun (FUNC, A, ...)
- -- Function File: arrayfun (..., "UniformOutput", VAL)
- -- Function File: arrayfun (..., "ErrorHandler", ERRFUNC)
+ -- : arrayfun (FUNC, A)
+ -- : X = arrayfun (FUNC, A)
+ -- : X = arrayfun (FUNC, A, B, ...)
+ -- : [X, Y, ...] = arrayfun (FUNC, A, ...)
+ -- : arrayfun (..., "UniformOutput", VAL)
+ -- : arrayfun (..., "ErrorHandler", ERRFUNC)
 
      Execute a function on each element of an array.
 
@@ -7895,7 +8764,7 @@ array, cell, or struct.
      See also: *note spfun: XREFspfun, *note cellfun: XREFcellfun, *note
      structfun: XREFstructfun.
 
- -- Function File: Y = spfun (F, S)
+ -- : Y = spfun (F, S)
      Compute ‘f(S)’ for the nonzero values of S.
 
      This results in a sparse matrix with the same structure as S.  The
@@ -7905,14 +8774,14 @@ array, cell, or struct.
      See also: *note arrayfun: XREFarrayfun, *note cellfun: XREFcellfun,
      *note structfun: XREFstructfun.
 
- -- Built-in Function: cellfun (NAME, C)
- -- Built-in Function: cellfun ("size", C, K)
- -- Built-in Function: cellfun ("isclass", C, CLASS)
- -- Built-in Function: cellfun (FUNC, C)
- -- Built-in Function: cellfun (FUNC, C, D)
- -- Built-in Function: [A, ...] = cellfun (...)
- -- Built-in Function: cellfun (..., "ErrorHandler", ERRFUNC)
- -- Built-in Function: cellfun (..., "UniformOutput", VAL)
+ -- : cellfun (NAME, C)
+ -- : cellfun ("size", C, K)
+ -- : cellfun ("isclass", C, CLASS)
+ -- : cellfun (FUNC, C)
+ -- : cellfun (FUNC, C, D)
+ -- : [A, ...] = cellfun (...)
+ -- : cellfun (..., "ErrorHandler", ERRFUNC)
+ -- : cellfun (..., "UniformOutput", VAL)
 
      Evaluate the function named NAME on the elements of the cell array
      C.
@@ -7997,7 +8866,7 @@ array, cell, or struct.
 
      where there is an additional input argument to ERRFUNC relative to
      FUNC, given by S.  This is a structure with the elements
-     "identifier", "message" and "index", giving respectively the error
+     "identifier", "message", and "index" giving respectively the error
      identifier, the error message, and the index into the input
      arguments of the element that caused the error.  For example:
 
@@ -8019,10 +8888,10 @@ array, cell, or struct.
      See also: *note arrayfun: XREFarrayfun, *note structfun:
      XREFstructfun, *note spfun: XREFspfun.
 
- -- Function File: structfun (FUNC, S)
- -- Function File: [A, ...] = structfun (...)
- -- Function File: structfun (..., "ErrorHandler", ERRFUNC)
- -- Function File: structfun (..., "UniformOutput", VAL)
+ -- : structfun (FUNC, S)
+ -- : [A, ...] = structfun (...)
+ -- : structfun (..., "ErrorHandler", ERRFUNC)
+ -- : structfun (..., "UniformOutput", VAL)
 
      Evaluate the function named NAME on the fields of the structure S.
      The fields of S are passed to the function FUNC individually.
@@ -8073,344 +8942,4 @@ built-in addition function ‘@plus’ or define an anonymous function
 ‘@(x,y) x + y’.  But, the anonymous function is 60% slower than the
 first method.  *Note Operator Overloading::, for a list of basic
 functions which might be used in place of anonymous ones.
-
-
-File: octave.info,  Node: Accumulation,  Next: JIT Compiler,  Prev: Function Application,  Up: Vectorization and Faster Code Execution
-
-19.4 Accumulation
-=================
-
-Whenever it’s possible to categorize according to indices the elements
-of an array when performing a computation, accumulation functions can be
-useful.
-
- -- Function File: accumarray (SUBS, VALS, SZ, FUNC, FILLVAL, ISSPARSE)
- -- Function File: accumarray (SUBS, VALS, ...)
-
-     Create an array by accumulating the elements of a vector into the
-     positions defined by their subscripts.
-
-     The subscripts are defined by the rows of the matrix SUBS and the
-     values by VALS.  Each row of SUBS corresponds to one of the values
-     in VALS.  If VALS is a scalar, it will be used for each of the row
-     of SUBS.  If SUBS is a cell array of vectors, all vectors must be
-     of the same length, and the subscripts in the Kth vector must
-     correspond to the Kth dimension of the result.
-
-     The size of the matrix will be determined by the subscripts
-     themselves.  However, if SZ is defined it determines the matrix
-     size.  The length of SZ must correspond to the number of columns in
-     SUBS.  An exception is if SUBS has only one column, in which case
-     SZ may be the dimensions of a vector and the subscripts of SUBS are
-     taken as the indices into it.
-
-     The default action of ‘accumarray’ is to sum the elements with the
-     same subscripts.  This behavior can be modified by defining the
-     FUNC function.  This should be a function or function handle that
-     accepts a column vector and returns a scalar.  The result of the
-     function should not depend on the order of the subscripts.
-
-     The elements of the returned array that have no subscripts
-     associated with them are set to zero.  Defining FILLVAL to some
-     other value allows these values to be defined.  This behavior
-     changes, however, for certain values of FUNC.  If FUNC is ‘min’
-     (respectively, ‘max’) then the result will be filled with the
-     minimum (respectively, maximum) integer if VALS is of integral
-     type, logical false (respectively, logical true) if VALS is of
-     logical type, zero if FILLVAL is zero and all values are
-     non-positive (respectively, non-negative), and NaN otherwise.
-
-     By default ‘accumarray’ returns a full matrix.  If ISSPARSE is
-     logically true, then a sparse matrix is returned instead.
-
-     The following ‘accumarray’ example constructs a frequency table
-     that in the first column counts how many occurrences each number in
-     the second column has, taken from the vector X.  Note the usage of
-     ‘unique’ for assigning to all repeated elements of X the same index
-     (*note unique: XREFunique.).
-
-          X = [91, 92, 90, 92, 90, 89, 91, 89, 90, 100, 100, 100];
-          [U, ~, J] = unique (X);
-          [accumarray(J', 1), U']
-            ⇒  2    89
-                3    90
-                2    91
-                2    92
-                3   100
-
-     Another example, where the result is a multi-dimensional 3-D array
-     and the default value (zero) appears in the output:
-
-          accumarray ([1, 1, 1;
-                       2, 1, 2;
-                       2, 3, 2;
-                       2, 1, 2;
-                       2, 3, 2], 101:105)
-          ⇒ ans(:,:,1) = [101, 0, 0; 0, 0, 0]
-          ⇒ ans(:,:,2) = [0, 0, 0; 206, 0, 208]
-
-     The sparse option can be used as an alternative to the ‘sparse’
-     constructor (*note sparse: XREFsparse.).  Thus
-
-          sparse (I, J, SV)
-
-     can be written with ‘accumarray’ as
-
-          accumarray ([I, J], SV', [], [], 0, true)
-
-     For repeated indices, ‘sparse’ adds the corresponding value.  To
-     take the minimum instead, use ‘min’ as an accumulator function:
-
-          accumarray ([I, J], SV', [], @min, 0, true)
-
-     The complexity of accumarray in general for the non-sparse case is
-     generally O(M+N), where N is the number of subscripts and M is the
-     maximum subscript (linearized in multi-dimensional case).  If FUNC
-     is one of ‘@sum’ (default), ‘@max’, ‘@min’ or ‘@(x) {x}’, an
-     optimized code path is used.  Note that for general reduction
-     function the interpreter overhead can play a major part and it may
-     be more efficient to do multiple accumarray calls and compute the
-     results in a vectorized manner.
-
-     See also: *note accumdim: XREFaccumdim, *note unique: XREFunique,
-     *note sparse: XREFsparse.
-
- -- Function File: accumdim (SUBS, VALS, DIM, N, FUNC, FILLVAL)
-     Create an array by accumulating the slices of an array into the
-     positions defined by their subscripts along a specified dimension.
-
-     The subscripts are defined by the index vector SUBS.  The dimension
-     is specified by DIM.  If not given, it defaults to the first
-     non-singleton dimension.  The length of SUBS must be equal to ‘size
-     (VALS, DIM)’.
-
-     The extent of the result matrix in the working dimension will be
-     determined by the subscripts themselves.  However, if N is defined
-     it determines this extent.
-
-     The default action of ‘accumdim’ is to sum the subarrays with the
-     same subscripts.  This behavior can be modified by defining the
-     FUNC function.  This should be a function or function handle that
-     accepts an array and a dimension, and reduces the array along this
-     dimension.  As a special exception, the built-in ‘min’ and ‘max’
-     functions can be used directly, and ‘accumdim’ accounts for the
-     middle empty argument that is used in their calling.
-
-     The slices of the returned array that have no subscripts associated
-     with them are set to zero.  Defining FILLVAL to some other value
-     allows these values to be defined.
-
-     An example of the use of ‘accumdim’ is:
-
-          accumdim ([1, 2, 1, 2, 1], [ 7, -10,   4;
-                                      -5, -12,   8;
-                                     -12,   2,   8;
-                                     -10,   9,  -3;
-                                      -5,  -3, -13])
-          ⇒ [-10,-11,-1;-15,-3,5]
-
-     See also: *note accumarray: XREFaccumarray.
-
-
-File: octave.info,  Node: JIT Compiler,  Next: Miscellaneous Techniques,  Prev: Accumulation,  Up: Vectorization and Faster Code Execution
-
-19.5 JIT Compiler
-=================
-
-Vectorization is the preferred technique for eliminating loops and
-speeding up code.  Nevertheless, it is not always possible to replace
-every loop.  In such situations it may be worth trying Octave’s
-*experimental* Just-In-Time (JIT) compiler.
-
-   A JIT compiler works by analyzing the body of a loop, translating the
-Octave statements into another language, compiling the new code segment
-into an executable, and then running the executable and collecting any
-results.  The process is not simple and there is a significant amount of
-work to perform for each step.  It can still make sense, however, if the
-number of loop iterations is large.  Because Octave is an interpreted
-language every time through a loop Octave must parse the statements in
-the loop body before executing them.  With a JIT compiler this is done
-just once when the body is translated to another language.
-
-   The JIT compiler is a very new feature in Octave and not all valid
-Octave statements can currently be accelerated.  However, if no other
-technique is available it may be worth benchmarking the code with JIT
-enabled.  The function ‘jit_enable’ is used to turn compilation on or
-off.  The function ‘jit_startcnt’ sets the threshold for acceleration.
-Loops with iteration counts above ‘jit_startcnt’ will be accelerated.
-The functions ‘jit_failcnt’ and ‘debug_jit’ are not likely to be of use
-to anyone not working directly on the implementation of the JIT
-compiler.
-
- -- Built-in Function: VAL = jit_enable ()
- -- Built-in Function: OLD_VAL = jit_enable (NEW_VAL)
- -- Built-in Function: jit_enable (NEW_VAL, "local")
-     Query or set the internal variable that enables Octave’s JIT
-     compiler.
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note jit_startcnt: XREFjit_startcnt, *note debug_jit:
-     XREFdebug_jit.
-
- -- Built-in Function: VAL = jit_startcnt ()
- -- Built-in Function: OLD_VAL = jit_startcnt (NEW_VAL)
- -- Built-in Function: jit_startcnt (NEW_VAL, "local")
-     Query or set the internal variable that determines whether JIT
-     compilation will take place for a specific loop.
-
-     Because compilation is a costly operation it does not make sense to
-     employ JIT when the loop count is low.  By default only loops with
-     greater than 1000 iterations will be accelerated.
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note jit_enable: XREFjit_enable, *note jit_failcnt:
-     XREFjit_failcnt, *note debug_jit: XREFdebug_jit.
-
- -- Built-in Function: VAL = jit_failcnt ()
- -- Built-in Function: OLD_VAL = jit_failcnt (NEW_VAL)
- -- Built-in Function: jit_failcnt (NEW_VAL, "local")
-     Query or set the internal variable that counts the number of JIT
-     fail exceptions for Octave’s JIT compiler.
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note jit_enable: XREFjit_enable, *note jit_startcnt:
-     XREFjit_startcnt, *note debug_jit: XREFdebug_jit.
-
- -- Built-in Function: VAL = debug_jit ()
- -- Built-in Function: OLD_VAL = debug_jit (NEW_VAL)
- -- Built-in Function: debug_jit (NEW_VAL, "local")
-     Query or set the internal variable that determines whether
-     debugging/tracing is enabled for Octave’s JIT compiler.
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note jit_enable: XREFjit_enable, *note jit_startcnt:
-     XREFjit_startcnt.
-
-
-File: octave.info,  Node: Miscellaneous Techniques,  Next: Examples,  Prev: JIT Compiler,  Up: Vectorization and Faster Code Execution
-
-19.6 Miscellaneous Techniques
-=============================
-
-Here are some other ways of improving the execution speed of Octave
-programs.
-
-   • Avoid computing costly intermediate results multiple times.  Octave
-     currently does not eliminate common subexpressions.  Also, certain
-     internal computation results are cached for variables.  For
-     instance, if a matrix variable is used multiple times as an index,
-     checking the indices (and internal conversion to integers) is only
-     done once.
-
-   • Be aware of lazy copies (copy-on-write).  When a copy of an object
-     is created, the data is not immediately copied, but rather shared.
-     The actual copying is postponed until the copied data needs to be
-     modified.  For example:
-
-          a = zeros (1000); # create a 1000x1000 matrix
-          b = a; # no copying done here
-          b(1) = 1; # copying done here
-
-     Lazy copying applies to whole Octave objects such as matrices,
-     cells, struct, and also individual cell or struct elements (not
-     array elements).
-
-     Additionally, index expressions also use lazy copying when Octave
-     can determine that the indexed portion is contiguous in memory.
-     For example:
-
-          a = zeros (1000); # create a 1000x1000 matrix
-          b = a(:,10:100);  # no copying done here
-          b = a(10:100,:);  # copying done here
-
-     This applies to arrays (matrices), cell arrays, and structs indexed
-     using ‘()’.  Index expressions generating comma-separated lists can
-     also benefit from shallow copying in some cases.  In particular,
-     when A is a struct array, expressions like ‘{a.x}, {a(:,2).x}’ will
-     use lazy copying, so that data can be shared between a struct array
-     and a cell array.
-
-     Most indexing expressions do not live longer than their parent
-     objects.  In rare cases, however, a lazily copied slice outlasts
-     its parent, in which case it becomes orphaned, still occupying
-     unnecessarily more memory than needed.  To provide a remedy working
-     in most real cases, Octave checks for orphaned lazy slices at
-     certain situations, when a value is stored into a "permanent"
-     location, such as a named variable or cell or struct element, and
-     possibly economizes them.  For example:
-
-          a = zeros (1000); # create a 1000x1000 matrix
-          b = a(:,10:100);  # lazy slice
-          a = []; # the original "a" array is still allocated
-          c{1} = b; # b is reallocated at this point
-
-   • Avoid deep recursion.  Function calls to m-file functions carry a
-     relatively significant overhead, so rewriting a recursion as a loop
-     often helps.  Also, note that the maximum level of recursion is
-     limited.
-
-   • Avoid resizing matrices unnecessarily.  When building a single
-     result matrix from a series of calculations, set the size of the
-     result matrix first, then insert values into it.  Write
-
-          result = zeros (big_n, big_m)
-          for i = over:and_over
-            ridx = ...
-            cidx = ...
-            result(ridx, cidx) = new_value ();
-          endfor
-
-     instead of
-
-          result = [];
-          for i = ever:and_ever
-            result = [ result, new_value() ];
-          endfor
-
-     Sometimes the number of items can not be computed in advance, and
-     stack-like operations are needed.  When elements are being
-     repeatedly inserted or removed from the end of an array, Octave
-     detects it as stack usage and attempts to use a smarter memory
-     management strategy by pre-allocating the array in bigger chunks.
-     This strategy is also applied to cell and struct arrays.
-
-          a = [];
-          while (condition)
-            ...
-            a(end+1) = value; # "push" operation
-            ...
-            a(end) = []; # "pop" operation
-            ...
-          endwhile
-
-   • Avoid calling ‘eval’ or ‘feval’ excessively.  Parsing input or
-     looking up the name of a function in the symbol table are
-     relatively expensive operations.
-
-     If you are using ‘eval’ merely as an exception handling mechanism,
-     and not because you need to execute some arbitrary text, use the
-     ‘try’ statement instead.  *Note The try Statement::.
-
-   • Use ‘ignore_function_time_stamp’ when appropriate.  If you are
-     calling lots of functions, and none of them will need to change
-     during your run, set the variable ‘ignore_function_time_stamp’ to
-     "all".  This will stop Octave from checking the time stamp of a
-     function file to see if it has been updated while the program is
-     being run.
 

@@ -26,20 +26,20 @@
 @node Object Oriented Programming
 @chapter Object Oriented Programming
 
-Octave includes the capability to include user classes, including the
-features of operator and function overloading.  Equally a user class
-can be used to encapsulate certain properties of the class so that
-they cannot be altered accidentally and can be set up to address the
-issue of class precedence in mixed class operations.
+Octave has the ability to create user-defined classes---including the
+capabilities of operator and function overloading.  Classes can protect
+internal properties so that they may not be altered accidentally which
+facilitates data encapsulation.  In addition, rules can be created to address
+the issue of class precedence in mixed class operations.
 
-This chapter discussions the means of constructing a user class with
-the example of a polynomial class, how to query and set the properties
-of this class, together with the means to overload operators and
-functions.
+This chapter discusses the means of constructing a user class, how to query and
+set the properties of a class, and how to overload operators and functions.
+Throughout this chapter real code examples are given using a class designed
+for polynomials.
 
 @menu
 * Creating a Class::
-* Manipulating Classes::
+* Class Methods::
 * Indexing Objects::
 * Overloading Objects::
 * Inheritance and Aggregation::
@@ -48,12 +48,12 @@ functions.
 @node Creating a Class
 @section Creating a Class
 
-We use in the following text a polynomial class to demonstrate the use
-of object oriented programming within Octave.  This class was chosen as
-it is simple, and so doesn't distract unnecessarily from the
-discussion of the programming features of Octave.  However, even still
-a small understand of the polynomial class itself is necessary to
-fully grasp the techniques described.
+This chapter illustrates user-defined classes and object oriented programming
+through a custom class designed for polynomials.  This class was chosen for
+its simplicity which does not distract unnecessarily from the discussion of
+the programming features of Octave.  Even so, a bit of background on the goals
+of the polynomial class is necessary before the syntax and techniques of Octave
+object oriented programming are introduced.
 
 The polynomial class is used to represent polynomials of the form
 @tex
@@ -74,7 +74,7 @@ where
 $a_0$, $a_1$, etc. are elements of $\Re$.
 @end tex
 @ifnottex
-a0, a1, etc. are real scalars.
+a0, a1, etc.@: are real scalars.
 @end ifnottex
 Thus the polynomial can be represented by a vector
 
@@ -82,24 +82,22 @@ Thus the polynomial can be represented by a vector
 a = [a0, a1, a2, @dots{}, an];
 @end example
 
-We therefore now have sufficient information about the requirements of
-the class constructor for our polynomial class to write it.  All object
-oriented classes in Octave, must be contained with a directory taking
-the name of the class, prepended with the @@ symbol.  For example, with
-our polynomial class, we would place the methods defining the class in
-the @@polynomial directory.
+This is a sufficient specification to begin writing the constructor for the
+polynomial class.  All object oriented classes in Octave must be located in a
+directory that is the name of the class prepended with the @samp{@@} symbol.
+For example, the polynomial class will have all of its methods defined in the
+@file{@@polynomial} directory.
 
-The constructor of the class, must have the name of the class itself
-and so in our example the constructor with have the name
-@file{@@polynomial/polynomial.m}.  Also ideally when the constructor is
-called with no arguments to should return a value object.  So for example
-our polynomial might look like
+The constructor for the class must be the name of the class itself; in this
+example the constructor resides in the file @file{@@polynomial/polynomial.m}.
+Ideally, even when the constructor is called with no arguments it should return
+a valid object.  A constructor for the polynomial class might look like
 
 @example
 @verbatim
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} polynomial ()
-## @deftypefnx {Function File} {} polynomial (@var{a})
+## @deftypefn  {} {} polynomial ()
+## @deftypefnx {} {} polynomial (@var{a})
 ## Create a polynomial object representing the polynomial
 ##
 ## @example
@@ -111,51 +109,55 @@ our polynomial might look like
 ## @end deftypefn
 
 function p = polynomial (a)
+
+  if (nargin > 1)
+    print_usage ();
+  endif
+
   if (nargin == 0)
     p.poly = [0];
     p = class (p, "polynomial");
-  elseif (nargin == 1)
+  else
     if (strcmp (class (a), "polynomial"))
       p = a;
-    elseif (isvector (a) && isreal (a))
-      p.poly = a(:).';
+    elseif (isreal (a) && isvector (a))
+      p.poly = a(:).';  # force row vector
       p = class (p, "polynomial");
     else
-      error ("polynomial: expecting real vector");
+      error ("@polynomial: A must be a real vector");
     endif
-  else
-    print_usage ();
   endif
+
 endfunction
 @end verbatim
-
 @end example
 
-Note that the return value of the constructor must be the output of
-the @code{class} function called with the first argument being a
-structure and the second argument being the class name.  An example of
-the call to this constructor function is then
+Note that the return value of the constructor must be the output of the
+@code{class} function.  The first argument to the @code{class} function is a
+structure and the second is the name of the class itself.  An example of
+calling the class constructor to create an instance is
 
 @example
 p = polynomial ([1, 0, 1]);
 @end example
 
-Note that methods of a class can be documented.  The help for the
-constructor itself can be obtained with the constructor name, that is
-for the polynomial constructor @code{help polynomial} will return the
-help string.  Also the help can be obtained by restricting the search
-for the help to a particular class, for example @code{help
-@@polynomial/polynomial}.  This second method is the only means of
-getting help for the overloaded methods and functions of the class.
+Methods are defined by m-files in the class directory and can have embedded
+documentation the same as any other m-file.  The help for the constructor can
+be obtained by using the constructor name alone, that is, for the polynomial
+constructor @code{help polynomial} will return the help string.  Help can be
+restricted to a particular class by using the class directory name followed
+by the method.  For example, @code{help @@polynomial/polynomial} is another
+way of displaying the help string for the polynomial constructor.  This second
+means is the only way to obtain help for the overloaded methods and functions
+of a class.
 
-The same is true for other Octave functions that take a function name
-as an argument.  For example @code{type @@polynomial/display} will
-print the code of the display method of the polynomial class to the
-screen, and @code{dbstop @@polynomial/display} will set a breakpoint
-at the first executable line of the display method of the polynomial
-class.
+The same specification mechanism can be used wherever Octave expects a function
+name.  For example @code{type @@polynomial/display} will print the code of the
+display method of the polynomial class to the screen, and
+@code{dbstop @@polynomial/display} will set a breakpoint at the first
+executable line of the display method of the polynomial class.
 
-To check where a variable is a user class, the @code{isobject} and
+To check whether a variable belongs to a user class, the @code{isobject} and
 @code{isa} functions can be used.  For example:
 
 @example
@@ -170,21 +172,21 @@ isa (p, "polynomial")
 
 @c isobject libinterp/octave-value/ov-class.cc
 @anchor{XREFisobject}
-@deftypefn {Built-in Function} {} isobject (@var{x})
+@deftypefn {} {} isobject (@var{x})
 Return true if @var{x} is a class object.
 @seealso{@ref{XREFclass,,class}, @ref{XREFtypeinfo,,typeinfo}, @ref{XREFisa,,isa}, @ref{XREFismethod,,ismethod}, @ref{XREFisprop,,isprop}}
 @end deftypefn
 
 
 @noindent
-The available methods of a class can be displayed with the
-@code{methods} function.
+The available methods of a class can be displayed with the @code{methods}
+function.
 
-@c methods scripts/general/methods.m
+@c methods scripts/scripts/general/methods.m
 @anchor{XREFmethods}
-@deftypefn  {Function File} {} methods (@var{obj})
-@deftypefnx {Function File} {} methods ("@var{classname}")
-@deftypefnx {Function File} {@var{mtds} =} methods (@dots{})
+@deftypefn  {} {} methods (@var{obj})
+@deftypefnx {} {} methods ("@var{classname}")
+@deftypefnx {} {@var{mtds} =} methods (@dots{})
 
 Return a cell array containing the names of the methods for the
 object @var{obj} or the named class @var{classname}.
@@ -196,14 +198,15 @@ object @var{obj} or the named class @var{classname}.
 
 
 @noindent
-To inquire whether a particular method is available to a user class, the
+To inquire whether a particular method exists for a user class, the
 @code{ismethod} function can be used.
 
 @c ismethod libinterp/octave-value/ov-class.cc
 @anchor{XREFismethod}
-@deftypefn {Built-in Function} {} ismethod (@var{obj}, @var{method})
-Return true if @var{obj} is a class object and the string @var{method}
-is a method of this class.
+@deftypefn  {} {} ismethod (@var{obj}, @var{method})
+@deftypefnx {} {} ismethod (@var{clsname}, @var{method})
+Return true if the string @var{method} is a valid method of the object
+@var{obj} or of the class @var{clsname}.
 @seealso{@ref{XREFisprop,,isprop}, @ref{XREFisobject,,isobject}}
 @end deftypefn
 
@@ -219,31 +222,40 @@ ismethod (p, "roots")
 @end group
 @end example
 
-@node Manipulating Classes
-@section Manipulating Classes
+@node Class Methods
+@section Class Methods
 
-There are a number of basic classes methods that can be defined to allow
-the contents of the classes to be queried and set.  The most basic of
-these is the @code{display} method.  The @code{display} method is used
-by Octave when displaying a class on the screen, due to an expression
-that is not terminated with a semicolon.  If this method is not defined,
-then Octave will printed nothing when displaying the contents of a class.
+There are a number of basic class methods that can (and should) be defined to
+allow the contents of the classes to be queried and set.  The most basic of
+these is the @code{display} method.  The @code{display} method is used by
+Octave whenever a class should be displayed on the screen.  Usually this is the
+result of an Octave expression that doesn't end with a semicolon.  If this
+method is not defined, then Octave won't print anything when displaying the
+contents of a class which can be confusing.
 
-@c display scripts/general/display.m
+@c display scripts/scripts/general/display.m
 @anchor{XREFdisplay}
-@deftypefn {Function File} {} display (@var{a})
-Display the contents of an object.
+@deftypefn {} {} display (@var{obj})
+Display the contents of the object @var{obj}.
 
-If @var{a} is an object of the class @qcode{"myclass"}, then @code{display}
-is called in a case like
+The Octave interpreter calls the @code{display} function whenever it needs
+to present a class on-screen.  Typically, this would be a statement which
+does not end in a semicolon to suppress output.  For example:
 
 @example
-myclass (@dots{})
+myobj = myclass (@dots{})
 @end example
 
-@noindent
-where Octave is required to display the contents of a variable of the
-type @qcode{"myclass"}.
+User-defined classes should overload the @code{display} method so that
+something useful is printed for a class object.  Otherwise, Octave will
+report only that the object is an instance of its class.
+
+@example
+@group
+myobj = myclass (@dots{})
+  @result{} myobj = <class myclass>
+@end group
+@end example
 
 @seealso{@ref{XREFclass,,class}, @ref{XREFsubsref,,subsref}, @ref{XREFsubsasgn,,subsasgn}}
 @end deftypefn
@@ -255,124 +267,131 @@ An example of a display method for the polynomial class might be
 @example
 @verbatim
 function display (p)
+
+  printf ("%s =", inputname (1));
+
   a = p.poly;
   first = true;
-  fprintf ("%s =", inputname (1));
   for i = 1 : length (a);
     if (a(i) != 0)
       if (first)
         first = false;
-      elseif (a(i) > 0)
-        fprintf (" +");
+      elseif (a(i) > 0 || isnan (a(i)))
+        printf (" +");
       endif
       if (a(i) < 0)
-        fprintf (" -");
+        printf (" -");
       endif
       if (i == 1)
-        fprintf (" %g", abs (a(i)));
-      elseif (abs(a(i)) != 1)
-        fprintf (" %g *", abs (a(i)));
+        printf (" %.5g", abs (a(i)));
+      elseif (abs (a(i)) != 1)
+        printf (" %.5g *", abs (a(i)));
       endif
       if (i > 1)
-        fprintf (" X");
+        printf (" X");
       endif
       if (i > 2)
-        fprintf (" ^ %d", i - 1);
+        printf (" ^ %d", i - 1);
       endif
     endif
   endfor
+
   if (first)
-    fprintf (" 0");
+    printf (" 0");
   endif
-  fprintf ("\n");
+  printf ("\n");
+
 endfunction
 @end verbatim
-
 @end example
 
 @noindent
-Note that in the display method, it makes sense to start the method
-with the line @code{fprintf ("%s =", inputname (1))} to be consistent
-with the rest of Octave and print the variable name to be displayed
-when displaying the class.
+Note that in the display method it makes sense to start the method with the
+line @w{@code{printf ("%s =", inputname (1))}} to be consistent with the rest
+of Octave which prints the variable name to be displayed followed by the value.
 
-To be consistent with the Octave graphic handle classes, a class
-should also define the @code{get} and @code{set} methods.  The
-@code{get} method should accept one or two arguments, and given one
-argument of the appropriate class it should return a structure with
-all of the properties of the class.  For example:
+To be consistent with the Octave graphic handle classes, a class should also
+define the @code{get} and @code{set} methods.  The @code{get} method accepts
+one or two arguments.  The first argument is an object of the appropriate
+class.  If no second argument is given then the method should return a
+structure with all the properties of the class.  If the optional second
+argument is given it should be a property name and the specified property
+should be retrieved.
 
 @example
 @verbatim
-function s = get (p, f)
-  if (nargin == 1)
-    s.poly = p.poly;
-  elseif (nargin == 2)
-    if (ischar (f))
-      switch (f)
-        case "poly"
-          s = p.poly;
-        otherwise
-          error ("get: invalid property %s", f);
-      endswitch
-    else
-      error ("get: expecting the property to be a string");
-    endif
-  else
+function val = get (p, prop)
+
+  if (nargin < 1 || nargin > 2)
     print_usage ();
   endif
+
+  if (nargin == 1)
+    val.poly = p.poly;
+  else
+    if (! ischar (prop))
+      error ("@polynomial/get: PROPERTY must be a string");
+    endif
+
+    switch (prop)
+      case "poly"
+        val = p.poly;
+      otherwise
+        error ('@polynomial/get: invalid PROPERTY "%s"', prop);
+    endswitch
+  endif
+
 endfunction
 @end verbatim
-
 @end example
 
 @noindent
-Similarly, the @code{set} method should taken as its first argument an
-object to modify, and then take property/value pairs to be modified.
+Similarly, the first argument to the @code{set} method should be an object and
+any additional arguments should be property/value pairs.
 
 @example
 @verbatim
-function s = set (p, varargin)
-  s = p;
-  if (length (varargin) < 2 || rem (length (varargin), 2) != 0)
-    error ("set: expecting property/value pairs");
+function pout = set (p, varargin)
+
+  if (numel (varargin) < 2 || rem (numel (varargin), 2) != 0)
+    error ("@polynomial/set: expecting PROPERTY/VALUE pairs");
   endif
-  while (length (varargin) > 1)
+
+  pout = p;
+  while (numel (varargin) > 1)
     prop = varargin{1};
-    val = varargin{2};
+    val  = varargin{2};
     varargin(1:2) = [];
-    if (ischar (prop) && strcmp (prop, "poly"))
-      if (isvector (val) && isreal (val))
-        s.poly = val(:).';
-      else
-        error ("set: expecting the value to be a real vector");
-      endif
-    else
-      error ("set: invalid property of polynomial class");
+    if (! ischar (prop) || ! strcmp (prop, "poly"))
+      error ("@polynomial/set: invalid PROPERTY for polynomial class");
+    elseif (! (isreal (val) && isvector (val)))
+      error ("@polynomial/set: VALUE must be a real vector");
     endif
+
+    pout.poly = val(:).';  # force row vector
   endwhile
+
 endfunction
 @end verbatim
-
 @end example
 
 @noindent
-Note that as Octave does not implement pass by reference, than the
-modified object is the return value of the @code{set} method and it
-must be called like
+Note that Octave does not implement pass by reference; Therefore, to modify an
+object requires an assignment statement using the return value from the
+@code{set} method.
 
 @example
-p = set (p, "a", [1, 0, 0, 0, 1]);
+p = set (p, "poly", [1, 0, 0, 0, 1]);
 @end example
 
 @noindent
-Also the @code{set} method makes use of the @code{subsasgn} method of
-the class, and this method must be defined.  The @code{subsasgn} method
-is discussed in the next section.
+The @code{set} method makes use of the @code{subsasgn} method of the class, and
+therefore this method must also be defined.  The @code{subsasgn} method is
+discussed more thoroughly in the next section (@pxref{Indexing Objects}).
 
-Finally, user classes can be considered as a special type of a
-structure, and so they can be saved to a file in the same manner as a
-structure.  For example:
+Finally, user classes can be considered to be a special type of a structure,
+and they can be saved to a file in the same manner as a structure.  For
+example:
 
 @example
 @group
@@ -384,15 +403,14 @@ load userclass.mat
 @end example
 
 @noindent
-All of the file formats supported by @code{save} and @code{load} are
-supported.  In certain circumstances, a user class might either contain
-a field that it makes no sense to save or a field that needs to be
-initialized before it is saved.  This can be done with the
-@code{saveobj} method of the class
+All of the file formats supported by @code{save} and @code{load} are supported.
+In certain circumstances a user class might contain a field that it doesn't
+make sense to save, or a field that needs to be initialized before it is saved.
+This can be done with the @code{saveobj} method of the class.
 
-@c saveobj scripts/general/saveobj.m
+@c saveobj scripts/scripts/general/saveobj.m
 @anchor{XREFsaveobj}
-@deftypefn {Function File} {@var{b} =} saveobj (@var{a})
+@deftypefn {} {@var{b} =} saveobj (@var{a})
 Method of a class to manipulate an object prior to saving it to a file.
 
 The function @code{saveobj} is called when the object @var{a} is saved
@@ -417,14 +435,14 @@ endfunction
 
 
 @noindent
-@code{saveobj} is called just prior to saving the class to a
-file.  Likely, the @code{loadobj} method is called just after a class
-is loaded from a file, and can be used to ensure that any removed
-fields are reinserted into the user object.
+@code{saveobj} is called just prior to saving the class to a file.  Similarly,
+the @code{loadobj} method is called just after a class is loaded from a file,
+and can be used to ensure that any removed fields are reinserted into the user
+object.
 
-@c loadobj scripts/general/loadobj.m
+@c loadobj scripts/scripts/general/loadobj.m
 @anchor{XREFloadobj}
-@deftypefn {Function File} {@var{b} =} loadobj (@var{a})
+@deftypefn {} {@var{b} =} loadobj (@var{a})
 Method of a class to manipulate an object after loading it from a file.
 
 The function @code{loadobj} is called when the object @var{a} is loaded
@@ -456,25 +474,25 @@ endfunction
 @node Defining Indexing And Indexed Assignment
 @subsection Defining Indexing And Indexed Assignment
 
-Objects can be indexed with parentheses, either like
-@code{@var{a} (@var{idx})} or like @code{@var{a} @{@var{idx}@}}, or even
-like @code{@var{a} (@var{idx}).@var{field}}.  However, it is up to the user
-to decide what this indexing actually means.  In the case of our polynomial
-class @code{@var{p} (@var{n})} might mean either the coefficient of the
-@var{n}-th power of the polynomial, or it might be the evaluation of the
+Objects can be indexed with parentheses or braces, either like
+@code{@var{obj}(@var{idx})} or like @code{@var{obj}@{@var{idx}@}}, or even
+like @code{@var{obj}(@var{idx}).@var{field}}.  However, it is up to the
+programmer to decide what this indexing actually means.  In the case of the
+polynomial class @code{@var{p}(@var{n})} might mean either the coefficient of
+the @var{n}-th power of the polynomial, or it might be the evaluation of the
 polynomial at @var{n}.  The meaning of this subscripted referencing is
 determined by the @code{subsref} method.
 
 @c subsref libinterp/octave-value/ov.cc
 @anchor{XREFsubsref}
-@deftypefn {Built-in Function} {} subsref (@var{val}, @var{idx})
-Perform the subscripted element selection operation according to the
-subscript specified by @var{idx}.
+@deftypefn {} {} subsref (@var{val}, @var{idx})
+Perform the subscripted element selection operation on @var{val} according
+to the subscript specified by @var{idx}.
 
-The subscript @var{idx} is expected to be a structure array with fields
-@samp{type} and @samp{subs}.  Valid values for @samp{type} are
-@samp{"()"}, @samp{"@{@}"}, and @samp{"."}.  The @samp{subs} field may
-be either @samp{":"} or a cell array of index values.
+The subscript @var{idx} must be a structure array with fields @samp{type}
+and @samp{subs}.  Valid values for @samp{type} are @qcode{"()"},
+@qcode{"@{@}"}, and @qcode{"."}.  The @samp{subs} field may be either
+@qcode{":"} or a cell array of index values.
 
 The following example shows how to extract the first two columns of a matrix
 
@@ -494,7 +512,7 @@ subsref (val, idx)
 @end example
 
 @noindent
-Note that this is the same as writing @code{val(:,1:2)}.
+Note that this is the same as writing @code{val(:, 1:2)}.
 
 If @var{idx} is an empty structure array with fields @samp{type} and
 @samp{subs}, return @var{val}.
@@ -502,52 +520,58 @@ If @var{idx} is an empty structure array with fields @samp{type} and
 @end deftypefn
 
 
-For example we might decide that indexing with @qcode{"()"} evaluates the
-polynomial and indexing with @qcode{"@{@}"} returns the @var{n}-th coefficient
-(of @var{n}-th power).  In this case the @code{subsref} method of our
-polynomial class might look like
+For example, this class uses the convention that indexing with @qcode{"()"}
+evaluates the polynomial and indexing with @qcode{"@{@}"} returns the
+@var{n}-th coefficient (of the @var{n}-th power).  The code for the
+@code{subsref} method looks like
 
 @example
 @verbatim
-function b = subsref (a, s)
+function r = subsref (p, s)
+
   if (isempty (s))
-    error ("polynomial: missing index");
+    error ("@polynomial/subsref: missing index");
   endif
+
   switch (s(1).type)
+
     case "()"
-      ind = s(1).subs;
-      if (numel (ind) != 1)
-        error ("polynomial: need exactly one index");
-      else
-        b = polyval (fliplr (a.poly), ind{1});
+      idx = s(1).subs;
+      if (numel (idx) != 1)
+        error ("@polynomial/subsref: need exactly one index");
       endif
+      r = polyval (fliplr (p.poly), idx{1});
+
     case "{}"
-      ind = s(1).subs;
-      if (numel (ind) != 1)
-        error ("polynomial: need exactly one index");
-      else
-        if (isnumeric (ind{1}))
-          b = a.poly(ind{1}+1);
-        else
-          b = a.poly(ind{1});
-        endif
+      idx = s(1).subs;
+      if (numel (idx) != 1)
+        error ("@polynomial/subsref: need exactly one index");
       endif
+
+      if (isnumeric (idx{1}))
+        r = p.poly(idx{1}+1);
+      else
+        r = p.poly(idx{1});
+      endif
+
     case "."
       fld = s.subs;
-      if (strcmp (fld, "poly"))
-        b = a.poly;
-      else
-        error ("@polynomial/subsref: invalid property \"%s\"", fld);
+      if (! strcmp (fld, "poly"))
+        error ('@polynomial/subsref: invalid property "%s"', fld);
       endif
+      r = p.poly;
+
     otherwise
-      error ("invalid subscript type");
+      error ("@polynomial/subsref: invalid subscript type");
+
   endswitch
+
   if (numel (s) > 1)
-    b = subsref (b, s(2:end));
+    r = subsref (r, s(2:end));
   endif
+
 endfunction
 @end verbatim
-
 @end example
 
 The equivalent functionality for subscripted assignments uses the
@@ -555,14 +579,14 @@ The equivalent functionality for subscripted assignments uses the
 
 @c subsasgn libinterp/octave-value/ov.cc
 @anchor{XREFsubsasgn}
-@deftypefn {Built-in Function} {} subsasgn (@var{val}, @var{idx}, @var{rhs})
+@deftypefn {} {} subsasgn (@var{val}, @var{idx}, @var{rhs})
 Perform the subscripted assignment operation according to the subscript
 specified by @var{idx}.
 
-The subscript @var{idx} is expected to be a structure array with fields
-@samp{type} and @samp{subs}.  Valid values for @samp{type} are
-@samp{"()"}, @samp{"@{@}"}, and @samp{"."}.  The @samp{subs} field may
-be either @samp{":"} or a cell array of index values.
+The subscript @var{idx} must be a structure array with fields @samp{type}
+and @samp{subs}.  Valid values for @samp{type} are @qcode{"()"},
+@qcode{"@{@}"}, and @qcode{"."}.  The @samp{subs} field may be either
+@qcode{":"} or a cell array of index values.
 
 The following example shows how to set the two first columns of a 3-by-3
 matrix to zero.
@@ -579,27 +603,29 @@ subsasgn (val, idx, 0)
 @end group
 @end example
 
-Note that this is the same as writing @code{val(:,1:2) = 0}.
+Note that this is the same as writing @code{val(:, 1:2) = 0}.
 
 If @var{idx} is an empty structure array with fields @samp{type} and
 @samp{subs}, return @var{rhs}.
-@seealso{@ref{XREFsubsref,,subsref}, @ref{XREFsubstruct,,substruct}}
+@seealso{@ref{XREFsubsref,,subsref}, @ref{XREFsubstruct,,substruct}, @ref{XREFoptimize_subsasgn_calls,,optimize_subsasgn_calls}}
 @end deftypefn
 
 
 @c optimize_subsasgn_calls libinterp/octave-value/ov-usr-fcn.cc
 @anchor{XREFoptimize_subsasgn_calls}
-@deftypefn  {Built-in Function} {@var{val} =} optimize_subsasgn_calls ()
-@deftypefnx {Built-in Function} {@var{old_val} =} optimize_subsasgn_calls (@var{new_val})
-@deftypefnx {Built-in Function} {} optimize_subsasgn_calls (@var{new_val}, "local")
-Query or set the internal flag for subsasgn method call optimizations.
+@deftypefn  {} {@var{val} =} optimize_subsasgn_calls ()
+@deftypefnx {} {@var{old_val} =} optimize_subsasgn_calls (@var{new_val})
+@deftypefnx {} {} optimize_subsasgn_calls (@var{new_val}, "local")
+Query or set the internal flag for @code{subsasgn} method call
+optimizations.
 
 If true, Octave will attempt to eliminate the redundant copying when calling
-the subsasgn method of a user-defined class.
+the @code{subsasgn} method of a user-defined class.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
+@seealso{@ref{XREFsubsasgn,,subsasgn}}
 @end deftypefn
 
 
@@ -608,10 +634,9 @@ whole index chain, while they usually handle only the first element.  It is the
 responsibility of these methods to handle the rest of the chain (if needed),
 usually by forwarding it again to @code{subsref} or @code{subsasgn}.
 
-If you wish to use the @code{end} keyword in subscripted expressions
-of an object, then the user needs to define the @code{end} method for
-the class.  For example, the @code{end} method for our polynomial class might
-look like
+If you wish to use the @code{end} keyword in subscripted expressions of an
+object, then there must be an @code{end} method defined.  For example, the
+@code{end} method for the polynomial class might look like
 
 @example
 @group
@@ -619,48 +644,47 @@ look like
 function r = end (obj, index_pos, num_indices)
 
   if (num_indices != 1)
-    error ("polynomial object may only have one index")
+    error ("polynomial object may only have one index");
   endif
 
   r = length (obj.poly) - 1;
 
 endfunction
 @end verbatim
-
 @end group
 @end example
 
 @noindent
-which is a fairly generic @code{end} method that has a behavior similar to
-the @code{end} keyword for Octave Array classes.  It can then be used as
-follows:
+which is a fairly generic @code{end} method that has a behavior similar to the
+@code{end} keyword for Octave Array classes.  An example using the polynomial
+class is then
 
 @example
 @group
 p = polynomial ([1,2,3,4]);
-p(end-1)
+p@{end-1@}
   @result{} 3
 @end group
 @end example
 
-Objects can also be used as the index in a subscripted expression themselves
-and this is controlled with the @code{subsindex} function.
+Objects can also be used themselves as the index in a subscripted expression
+and this is controlled by the @code{subsindex} function.
 
-@c subsindex scripts/general/subsindex.m
+@c subsindex scripts/scripts/general/subsindex.m
 @anchor{XREFsubsindex}
-@deftypefn {Function File} {@var{idx} =} subsindex (@var{a})
+@deftypefn {} {@var{idx} =} subsindex (@var{obj})
 Convert an object to an index vector.
 
-When @var{a} is a class object defined with a class constructor, then
+When @var{obj} is a class object defined with a class constructor, then
 @code{subsindex} is the overloading method that allows the conversion of
 this class object to a valid indexing vector.  It is important to note that
 @code{subsindex} must return a zero-based real integer vector of the class
-@qcode{"double"}.  For example, if the class constructor
+@qcode{"double"}.  For example, if the class constructor were
 
 @example
 @group
-function b = myclass (a)
-  b = class (struct ("a", a), "myclass");
+function obj = myclass (a)
+  obj = class (struct ("a", a), "myclass");
 endfunction
 @end group
 @end example
@@ -670,14 +694,14 @@ then the @code{subsindex} function
 
 @example
 @group
-function idx = subsindex (a)
-  idx = double (a.a) - 1.0;
+function idx = subsindex (obj)
+  idx = double (obj.a) - 1.0;
 endfunction
 @end group
 @end example
 
 @noindent
-can then be used as follows
+could be used as follows
 
 @example
 @group
@@ -692,13 +716,12 @@ b(a)
 @end deftypefn
 
 
-Finally, objects can equally be used like ranges, using the @code{colon}
-method
+Finally, objects can be used like ranges by providing a @code{colon} method.
 
 @c colon libinterp/corefcn/data.cc
 @anchor{XREFcolon}
-@deftypefn  {Built-in Function} {@var{r} =} colon (@var{base}, @var{limit})
-@deftypefnx {Built-in Function} {@var{r} =} colon (@var{base}, @var{increment}, @var{limit})
+@deftypefn  {} {@var{r} =} colon (@var{base}, @var{limit})
+@deftypefnx {} {@var{r} =} colon (@var{base}, @var{increment}, @var{limit})
 Return the result of the colon expression corresponding to @var{base},
 @var{limit}, and optionally, @var{increment}.
 
@@ -710,75 +733,69 @@ or @w{@code{base : increment : limit}}.
 @node Indexed Assignment Optimization
 @subsection Indexed Assignment Optimization
 
-Octave's ubiquitous lazily-copied pass-by-value semantics implies
-a problem for performance of user-defined subsasgn methods.  Imagine
-a call to subsasgn:
+Octave's ubiquitous lazily-copied pass-by-value semantics implies a problem for
+performance of user-defined @code{subsasgn} methods.  Imagine the following
+call to @code{subsasgn}
 
 @example
 @group
-  ss = substruct ("()",@{1@});
-  x = subsasgn (x, ss, 1);
+ss = substruct ("()", @{1@});
+x = subsasgn (x, ss, 1);
 @end group
 @end example
 
 @noindent
-and the corresponding method looking like this:
+where the corresponding method looking like this:
 
 @example
 @group
-  function x = subsasgn (x, ss, val)
-    @dots{}
-    x.myfield (ss.subs@{1@}) = val;
-  endfunction
+function x = subsasgn (x, ss, val)
+  @dots{}
+  x.myfield (ss.subs@{1@}) = val;
+endfunction
 @end group
 @end example
 
-The problem is that on entry to the subsasgn method, @code{x} is still
-referenced from the caller's scope, which means that the method will
-first need to unshare (copy) @code{x} and @code{x.myfield} before performing
-the assignment.  Upon completing the call, unless an error occurs,
-the result is immediately assigned to @code{x} in the caller's scope,
-so that the previous value of @code{x.myfield} is forgotten.  Hence, the
-Octave language implies a copy of N elements (N being the size of
-@code{x.myfield}), where modifying just a single element would actually
-suffice, i.e., degrades a constant-time operation to linear-time one.
-This may be a real problem for user classes that intrinsically store large
-arrays.
+The problem is that on entry to the @code{subsasgn} method, @code{x} is still
+referenced from the caller's scope, which means that the method will first need
+to unshare (copy) @code{x} and @code{x.myfield} before performing the
+assignment.  Upon completing the call, unless an error occurs, the result is
+immediately assigned to @code{x} in the caller's scope, so that the previous
+value of @code{x.myfield} is forgotten.  Hence, the Octave language implies a
+copy of N elements (N being the size of @code{x.myfield}), where modifying just
+a single element would actually suffice.  In other words, a constant-time
+operation is degraded to linear-time one.  This may be a real problem for user
+classes that intrinsically store large arrays.
 
-To partially solve the problem, Octave uses a special optimization for
-user-defined subsasgn methods coded as m-files.  When the method
-gets called as a result of the built-in assignment syntax (not direct subsasgn
-call as shown above), i.e.
-
-@example
-  x(1) = 1;
-@end example
-
-@b{AND} if the subsasgn method is declared with identical input and output argument,
-like in the example above, then Octave will ignore the copy of @code{x} inside
-the caller's scope; therefore, any changes made to @code{x} during the method
-execution will directly affect the caller's copy as well.
+To partially solve the problem Octave uses a special optimization for
+user-defined @code{subsasgn} methods coded as m-files.  When the method gets
+called as a result of the built-in assignment syntax (not a direct
+@code{subsasgn} call as shown above), i.e., @w{@code{x(1) = 1}},  @b{AND} if
+the @code{subsasgn} method is declared with identical input and output
+arguments, as in the example above, then Octave will ignore the copy of
+@code{x} inside the caller's scope; therefore, any changes made to @code{x}
+during the method execution will directly affect the caller's copy as well.
 This allows, for instance, defining a polynomial class where modifying a single
 element takes constant time.
 
 It is important to understand the implications that this optimization brings.
-Since no extra copy of @code{x} in the caller's scope will exist, it is
+Since no extra copy of @code{x} will exist in the caller's scope, it is
 @emph{solely} the callee's responsibility to not leave @code{x} in an invalid
-state if an error occurs throughout the execution.  Also, if the method
-partially changes @code{x} and then errors out, the changes @emph{will} affect
-@code{x} in the caller's scope.  Deleting or completely replacing @code{x}
-inside subsasgn will not do anything, however, only indexed assignments matter.
+state if an error occurs during the execution.  Also, if the method partially
+changes @code{x} and then errors out, the changes @emph{will} affect @code{x}
+in the caller's scope.  Deleting or completely replacing @code{x} inside
+subsasgn will not do anything, however, only indexed assignments matter.
 
 Since this optimization may change the way code works (especially if badly
 written), a built-in variable @code{optimize_subsasgn_calls} is provided to
-control it.  It is on by default.  Another option to avoid the effect is to
-declare subsasgn methods with different output and input arguments, like this:
+control it.  It is on by default.  Another way to avoid the optimization is to
+declare subsasgn methods with different output and input arguments like this:
 
 @example
 @group
-  function y = subsasgn (x, ss, val)
-    @dots{}
-  endfunction
+function y = subsasgn (x, ss, val)
+  @dots{}
+endfunction
 @end group
 @end example
 
@@ -794,66 +811,67 @@ declare subsasgn methods with different output and input arguments, like this:
 @node Function Overloading
 @subsection Function Overloading
 
-Any Octave function can be overloaded, and allows an object specific
-version of this function to be called as needed.  A pertinent example
-for our polynomial class might be to overload the @code{polyval} function
-like
+Any Octave function can be overloaded, and this allows an object-specific
+version of a function to be called as needed.  A pertinent example for the
+polynomial class might be to overload the @code{polyval} function.
 
 @example
 @group
 @verbatim
 function [y, dy] = polyval (p, varargin)
-  if (nargout == 2)
+
+  if (nargout > 1)
     [y, dy] = polyval (fliplr (p.poly), varargin{:});
   else
     y = polyval (fliplr (p.poly), varargin{:});
   endif
+
 endfunction
 @end verbatim
-
 @end group
 @end example
 
 This function just hands off the work to the normal Octave @code{polyval}
-function.  Another interesting example for an overloaded function for our
+function.  Another interesting example of an overloaded function for the
 polynomial class is the @code{plot} function.
 
 @example
 @group
 @verbatim
 function h = plot (p, varargin)
+
   n = 128;
   rmax = max (abs (roots (p.poly)));
   x = [0 : (n - 1)] / (n - 1) * 2.2 * rmax - 1.1 * rmax;
   if (nargout > 0)
-    h = plot (x, p(x), varargin{:});
+    h = plot (x, polyval (p, x), varargin{:});
   else
-    plot (x, p(x), varargin{:});
+    plot (x, polyval (p, x), varargin{:});
   endif
+
 endfunction
 @end verbatim
-
 @end group
 @end example
 
 @noindent
-which allows polynomials to be plotted in the domain near the region
-of the roots of the polynomial.
+which allows polynomials to be plotted in the domain near the region of the
+roots of the polynomial.
 
-Functions that are of particular interest to be overloaded are the class
-conversion functions such as @code{double}.  Overloading these functions
-allows the @code{cast} function to work with the user class and can aid
-in the use of methods of other classes with the user class.  An example
-@code{double} function for our polynomial class might look like.
+Functions that are of particular interest for overloading are the class
+conversion functions such as @code{double}.  Overloading these functions allows
+the @code{cast} function to work with a user class.  It can also can aid in the
+use of a class object with methods and functions from other classes since the
+object can be transformed to the requisite input form for the new function.
+An example @code{double} function for the polynomial class might look like
 
 @example
 @group
 @verbatim
-function b = double (a)
-  b = a.poly;
+function a = double (p)
+  a = p.poly;
 endfunction
 @end verbatim
-
 @end group
 @end example
 
@@ -1011,71 +1029,70 @@ width 0.6pt \tabskip=0pt\cr
 @caption{Available overloaded operators and their corresponding class method}
 @end float
 
-An example @code{mtimes} method for our polynomial class might look like
+An example @code{mtimes} method for the polynomial class might look like
 
 @example
 @group
 @verbatim
-function y = mtimes (a, b)
-  y = polynomial (conv (double (a), double (b)));
+function p = mtimes (a, b)
+  p = polynomial (conv (double (a), double (b)));
 endfunction
 @end verbatim
-
 @end group
 @end example
 
 @node Precedence of Objects
 @subsection Precedence of Objects
 
-Many functions and operators take two or more arguments and so the
-case can easily arise that these functions are called with objects of
-different classes.  It is therefore necessary to determine the precedence
-of which method of which class to call when there are mixed objects given
-to a function or operator.  To do this the @code{superiorto} and
-@code{inferiorto} functions can be used
+Many functions and operators take two or more arguments and the situation can
+easily arise where these functions are called with objects of different
+classes.  It is therefore necessary to determine the precedence of which method
+from which class to call when there are mixed objects given to a function or
+operator.  To do this the @code{superiorto} and @code{inferiorto} functions can
+be used
 
 @c superiorto libinterp/octave-value/ov-class.cc
 @anchor{XREFsuperiorto}
-@deftypefn {Built-in Function} {} superiorto (@var{class_name}, @dots{})
-When called from a class constructor, mark the object currently
-constructed as having a higher precedence than @var{class_name}.
+@deftypefn {} {} superiorto (@var{class_name}, @dots{})
+When called from a class constructor, mark the object currently constructed
+as having a higher precedence than @var{class_name}.
 
-More that one such class can be specified in a single call.
-This function may only be called from a class constructor.
+More that one such class can be specified in a single call.  This function
+may @emph{only} be called from a class constructor.
 @seealso{@ref{XREFinferiorto,,inferiorto}}
 @end deftypefn
 
 
 @c inferiorto libinterp/octave-value/ov-class.cc
 @anchor{XREFinferiorto}
-@deftypefn {Built-in Function} {} inferiorto (@var{class_name}, @dots{})
-When called from a class constructor, mark the object currently
-constructed as having a lower precedence than @var{class_name}.
+@deftypefn {} {} inferiorto (@var{class_name}, @dots{})
+When called from a class constructor, mark the object currently constructed
+as having a lower precedence than @var{class_name}.
 
-More that one such class can be specified in a single call.
-This function may only be called from a class constructor.
+More that one such class can be specified in a single call.  This function
+may @emph{only} be called from a class constructor.
 @seealso{@ref{XREFsuperiorto,,superiorto}}
 @end deftypefn
 
 
-For example with our polynomial class consider the case
+With the polynomial class, consider the case
 
 @example
 2 * polynomial ([1, 0, 1]);
 @end example
 
 @noindent
-That mixes an object of the class @qcode{"double"} with an object of the class
-@qcode{"polynomial"}.  In this case we like to ensure that the return type of
-the above is of the type @qcode{"polynomial"} and so we use the
-@code{superiorto} function in the class constructor.  In particular our
-polynomial class constructor would be modified to be
+that mixes an object of the class @qcode{"double"} with an object of the class
+@qcode{"polynomial"}.  In this case the return type should be
+@qcode{"polynomial"} and so the @code{superiorto} function is used in the class
+constructor.  In particular the polynomial class constructor would be modified
+to
 
 @example
 @verbatim
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} polynomial ()
-## @deftypefnx {Function File} {} polynomial (@var{a})
+## @deftypefn  {} {} polynomial ()
+## @deftypefnx {} {} polynomial (@var{a})
 ## Create a polynomial object representing the polynomial
 ##
 ## @example
@@ -1087,53 +1104,55 @@ polynomial class constructor would be modified to be
 ## @end deftypefn
 
 function p = polynomial (a)
+
+  if (nargin > 1)
+    print_usage ();
+  endif
+
   if (nargin == 0)
     p.poly = [0];
     p = class (p, "polynomial");
-  elseif (nargin == 1)
+  else
     if (strcmp (class (a), "polynomial"))
       p = a;
-    elseif (isvector (a) && isreal (a))
-      p.poly = a(:).';
+    elseif (isreal (a) && isvector (a))
+      p.poly = a(:).';  # force row vector
       p = class (p, "polynomial");
     else
-      error ("polynomial: expecting real vector");
+      error ("@polynomial: A must be a real vector");
     endif
-  else
-    print_usage ();
   endif
+
   superiorto ("double");
+
 endfunction
 @end verbatim
-
 @end example
 
-Note that user classes always have higher precedence than built-in
-Octave types.  So in fact marking our polynomial class higher than the
-@qcode{"double"} class is in fact not necessary.
+Note that user classes @emph{always} have higher precedence than built-in
+Octave types.  Thus, marking the polynomial class higher than the
+@qcode{"double"} class is not actually necessary.
 
-When faced with two objects that have the same precedence, Octave will use the
-method of the object that appears first on the list of arguments.
+When confronted with two objects of equal precedence, Octave will use the
+method of the object that appears first in the list of arguments.
 
 @node Inheritance and Aggregation
 @section Inheritance and Aggregation
 
-Using classes to build new classes is supported by octave through the
-use of both inheritance and aggregation.
+Using classes to build new classes is supported by Octave through the use of
+both inheritance and aggregation.
 
-Class inheritance is provided by octave using the @code{class}
-function in the class constructor.  As in the case of the polynomial
-class, the octave programmer will create a struct that contains the
-data fields required by the class, and then call the class function to
-indicate that an object is to be created from the struct.  Creating a
-child of an existing object is done by creating an object of the
-parent class and providing that object as the third argument of the
-class function.
+Class inheritance is provided by Octave using the @code{class} function in the
+class constructor.  As in the case of the polynomial class, the Octave
+programmer will create a structure that contains the data fields required by
+the class, and then call the @code{class} function to indicate that an object
+is to be created from the structure.  Creating a child of an existing object is
+done by creating an object of the parent class and providing that object as the
+third argument of the class function.
 
-This is easily demonstrated by example.  Suppose the programmer needs
-an FIR filter, i.e., a filter with a numerator polynomial but a unity
-denominator polynomial.  In traditional octave programming, this would
-be performed as follows.
+This is most easily demonstrated by example.  Suppose the programmer needs a
+FIR filter, i.e., a filter with a numerator polynomial but a denominator of 1.
+In traditional Octave programming this would be performed as follows.
 
 @example
 @group
@@ -1143,124 +1162,125 @@ octave:3> y = filter (n, 1, x);
 @end group
 @end example
 
-The equivalent class could be implemented in a class directory
-@@FIRfilter that is on the octave path.  The constructor is a file
-FIRfilter.m in the class directory.
+The equivalent behavior can be implemented as a class @@FIRfilter.  The
+constructor for this class is the file @file{FIRfilter.m} in the class
+directory @file{@@FIRfilter}.
 
 @example
 @verbatim
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} FIRfilter ()
-## @deftypefnx {Function File} {} FIRfilter (@var{p})
+## @deftypefn  {} {} FIRfilter ()
+## @deftypefnx {} {} FIRfilter (@var{p})
 ## Create a FIR filter with polynomial @var{p} as coefficient vector.
 ## @end deftypefn
 
 function f = FIRfilter (p)
 
-  f.polynomial = [];
-  if (nargin == 0)
-    p = @polynomial ([1]);
-  elseif (nargin == 1)
-    if (!isa (p, "polynomial"))
-      error ("FIRfilter: expecting polynomial as input argument");
-    endif
-  else
+  if (nargin > 1)
     print_usage ();
   endif
+
+  if (nargin == 0)
+    p = @polynomial ([1]);
+  elseif (! isa (p, "polynomial"))
+    error ("@FIRfilter: P must be a polynomial object");
+  endif
+
+  f.polynomial = [];
   f = class (f, "FIRfilter", p);
+
 endfunction
 @end verbatim
-
 @end example
 
-As before, the leading comments provide command-line documentation for
-the class constructor.  This constructor is very similar to the
-polynomial class constructor, except that we pass a polynomial object
-as the third argument to the class function, telling octave that the
-FIRfilter class will be derived from the polynomial class.  Our FIR
-filter does not have any data fields, but we must provide a struct to
-the @code{class} function.  The @code{class} function will add an
-element named polynomial to the object struct, so we simply add a
-dummy element named polynomial as the first line of the constructor.
-This dummy element will be overwritten by the class function.
+As before, the leading comments provide documentation for the class
+constructor.  This constructor is very similar to the polynomial class
+constructor, except that a polynomial object is passed as the third argument to
+the @code{class} function, telling Octave that the @w{FIRfilter} class will be
+derived from the polynomial class.  The FIR filter class itself does not have
+any data fields, but it must provide a struct to the @code{class} function.
+Given that the @@polynomial constructor will add an element named
+@var{polynomial} to the object struct, the @@FIRfilter just initializes a
+struct with a dummy field @var{polynomial} which will later be overwritten.
 
-Note further that all our examples provide for the case in which no
-arguments are supplied.  This is important since octave will call the
-constructor with no arguments when loading objects from save files to
-determine the inheritance structure.
+Note that the sample code always provides for the case in which no arguments
+are supplied.  This is important because Octave will call a constructor with
+no arguments when loading objects from saved files in order to determine the
+inheritance structure.
 
-A class may be a child of more than one class (see the documentation
-for the @code{class} function), and inheritance may be nested.  There
-is no limitation to the number of parents or the level of nesting
-other than memory or other physical issues.
+A class may be a child of more than one class (@pxref{XREFclass,,class}), and
+inheritance may be nested.  There is no limitation to the number of parents or
+the level of nesting other than memory or other physical issues.
 
-As before, we need a @code{display} method.  A simple example might be
+As before, a class requires a @code{display} method.  A simple example might be
 
 @example
 @group
 @verbatim
 function display (f)
-
+  printf ("%s.polynomial", inputname (1));
   display (f.polynomial);
-
 endfunction
-
 @end verbatim
-
 @end group
 @end example
 
-Note that we have used the polynomial field of the struct to display
-the filter coefficients.
+Note that the @w{FIRfilter}'s display method relies on the display method
+from the polynomial class to actually display the filter coefficients.
 
-Once we have the class constructor and display method, we may create
-an object by calling the class constructor.  We may also check the
-class type and examine the underlying structure.
+Once a constructor and display method exist, it is possible to create an
+instance of the class.  It is also possible to check the class type and examine
+the underlying structure.
 
 @example
 @group
 octave:1> f = FIRfilter (polynomial ([1 1 1]/3))
-f.polynomial = 0.333333 + 0.333333 * X + 0.333333 * X ^ 2
+f.polynomial = 0.33333 + 0.33333 * X + 0.33333 * X ^ 2
 octave:2> class (f)
 ans = FIRfilter
-octave:3> isa (f,"FIRfilter")
+octave:3> isa (f, "FIRfilter")
 ans =  1
-octave:4> isa (f,"polynomial")
+octave:4> isa (f, "polynomial")
 ans =  1
 octave:5> struct (f)
 ans =
-@{
-polynomial = 0.333333 + 0.333333 * X + 0.333333 * X ^ 2
-@}
+
+  scalar structure containing the fields:
+
+polynomial = 0.33333 + 0.33333 * X + 0.33333 * X ^ 2
 @end group
 @end example
 
-We only need to define a method to actually process data with our
-filter and our class is usable.  It is also useful to provide a means
-of changing the data stored in the class.  Since the fields in the
-underlying struct are private by default, we could provide a mechanism
-to access the fields.  The @code{subsref} method may be used for both.
+The only thing remaining to make this class usable is a method for processing
+data.  But before that, it is usually desirable to also have a way of changing
+the data stored in a class.  Since the fields in the underlying struct are
+private by default, it is necessary to provide a mechanism to access the
+fields.  The @code{subsref} method may be used for both tasks.
 
 @example
 @verbatim
-function out = subsref (f, x)
+function r = subsref (f, x)
+
   switch (x.type)
+
     case "()"
       n = f.polynomial;
-      out = filter (n.poly, 1, x.subs{1});
+      r = filter (n.poly, 1, x.subs{1});
+
     case "."
       fld = x.subs;
-      if (strcmp (fld, "polynomial"))
-        out = f.polynomial;
-      else
-        error ("@FIRfilter/subsref: invalid property \"%s\"", fld);
+      if (! strcmp (fld, "polynomial"))
+        error ('@FIRfilter/subsref: invalid property "%s"', fld);
       endif
+      r = f.polynomial;
+
     otherwise
       error ("@FIRfilter/subsref: invalid subscript type for FIR filter");
+
   endswitch
+
 endfunction
 @end verbatim
-
 @end example
 
 The @qcode{"()"} case allows us to filter data using the polynomial provided
@@ -1287,78 +1307,85 @@ The @qcode{"."} case allows us to view the contents of the polynomial field.
 @group
 octave:1> f = FIRfilter (polynomial ([1 1 1]/3));
 octave:2> f.polynomial
-ans = 0.333333 + 0.333333 * X + 0.333333 * X ^ 2
+ans = 0.33333 + 0.33333 * X + 0.33333 * X ^ 2
 @end group
 @end example
 
-In order to change the contents of the object, we need to define a
-@code{subsasgn} method.  For example, we may make the polynomial field
-publicly writable.
+In order to change the contents of the object a @code{subsasgn} method is
+needed.  For example, the following code makes the polynomial field publicly
+writable
 
 @example
 @group
 @verbatim
-function out = subsasgn (f, index, val)
+function fout = subsasgn (f, index, val)
+
   switch (index.type)
     case "."
       fld = index.subs;
-      if (strcmp (fld, "polynomial"))
-        out = f;
-        out.polynomial = val;
-      else
-        error ("@FIRfilter/subsref: invalid property \"%s\"", fld);
+      if (! strcmp (fld, "polynomial"))
+        error ('@FIRfilter/subsasgn: invalid property "%s"', fld);
       endif
+      fout = f;
+      fout.polynomial = val;
+
     otherwise
-      error ("FIRfilter/subsagn: Invalid index type")
+      error ("@FIRfilter/subsasgn: Invalid index type")
   endswitch
+
 endfunction
 @end verbatim
-
 @end group
 @end example
 
-So that
+@noindent
+so that
 
 @example
 @group
-octave:6> f = FIRfilter ();
-octave:7> f.polynomial = polynomial ([1 2 3]);
+octave:1> f = FIRfilter ();
+octave:2> f.polynomial = polynomial ([1 2 3])
 f.polynomial = 1 + 2 * X + 3 * X ^ 2
 @end group
 @end example
 
-Defining the FIRfilter class as a child of the polynomial class
-implies that and FIRfilter object may be used any place that a
-polynomial may be used.  This is not a normal use of a filter, so that
-aggregation may be a more sensible design approach.  In this case, the
-polynomial is simply a field in the class structure.  A class
-constructor for this case might be
+Defining the @w{FIRfilter} class as a child of the polynomial class implies
+that a @w{FIRfilter} object may be used any place that a polynomial object may
+be used.  This is not a normal use of a filter.  It may be a more sensible
+design approach to use aggregation rather than inheritance.  In this case, the
+polynomial is simply a field in the class structure.  A class constructor for
+the aggregation case might be
 
 @example
 @verbatim
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} FIRfilter ()
-## @deftypefnx {Function File} {} FIRfilter (@var{p})
+## @deftypefn  {} {} FIRfilter ()
+## @deftypefnx {} {} FIRfilter (@var{p})
 ## Create a FIR filter with polynomial @var{p} as coefficient vector.
 ## @end deftypefn
 
 function f = FIRfilter (p)
 
-  if (nargin == 0)
-    f.polynomial = @polynomial ([1]);
-  elseif (nargin == 1)
-    if (isa (p, "polynomial"))
-      f.polynomial = p;
-    else
-      error ("FIRfilter: expecting polynomial as input argument");
-    endif
-  else
+  if (nargin > 1)
     print_usage ();
   endif
+
+  if (nargin == 0)
+    f.polynomial = @polynomial ([1]);
+  else
+    if (! isa (p, "polynomial"))
+      error ("@FIRfilter: P must be a polynomial object");
+    endif
+
+    f.polynomial = p;
+  endif
+
   f = class (f, "FIRfilter");
+
 endfunction
 @end verbatim
-
 @end example
 
-For our example, the remaining class methods remain unchanged.
+For this example only the constructor needs changing, and all other class
+methods stay the same.
+

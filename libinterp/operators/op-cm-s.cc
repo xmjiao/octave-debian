@@ -20,15 +20,15 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "mx-cm-s.h"
 #include "mx-cnda-s.h"
 
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-cx-mat.h"
 #include "ov-re-mat.h"
@@ -46,12 +46,13 @@ DEFNDBINOP_OP (mul, complex_matrix, scalar, complex_array, scalar, *)
 
 DEFBINOP (div, complex_matrix, scalar)
 {
-  CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_scalar&);
+  const octave_complex_matrix& v1 = dynamic_cast<const octave_complex_matrix&> (a1);
+  const octave_scalar& v2 = dynamic_cast<const octave_scalar&> (a2);
 
   double d = v2.double_value ();
 
   if (d == 0.0)
-    gripe_divide_by_zero ();
+    warn_divide_by_zero ();
 
   return octave_value (v1.complex_array_value () / d);
 }
@@ -60,7 +61,8 @@ DEFBINOP_FN (pow, complex_matrix, scalar, xpow)
 
 DEFBINOP (ldiv, complex_matrix, scalar)
 {
-  CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_scalar&);
+  const octave_complex_matrix& v1 = dynamic_cast<const octave_complex_matrix&> (a1);
+  const octave_scalar& v2 = dynamic_cast<const octave_scalar&> (a2);
 
   ComplexMatrix m1 = v1.complex_matrix_value ();
   Matrix m2 = v2.matrix_value ();
@@ -83,12 +85,13 @@ DEFNDBINOP_OP (el_mul, complex_matrix, scalar, complex_array, scalar, *)
 
 DEFBINOP (el_div, complex_matrix, scalar)
 {
-  CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_scalar&);
+  const octave_complex_matrix& v1 = dynamic_cast<const octave_complex_matrix&> (a1);
+  const octave_scalar& v2 = dynamic_cast<const octave_scalar&> (a2);
 
   double d = v2.double_value ();
 
   if (d == 0.0)
-    gripe_divide_by_zero ();
+    warn_divide_by_zero ();
 
   return octave_value (v1.complex_array_value () / d);
 }
@@ -97,7 +100,8 @@ DEFNDBINOP_FN (el_pow, complex_matrix, scalar, complex_array, scalar, elem_xpow)
 
 DEFBINOP (el_ldiv, complex_matrix, scalar)
 {
-  CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_scalar&);
+  const octave_complex_matrix& v1 = dynamic_cast<const octave_complex_matrix&> (a1);
+  const octave_scalar& v2 = dynamic_cast<const octave_scalar&> (a2);
 
   return x_el_div (v2.double_value (), v1.complex_array_value ());
 }

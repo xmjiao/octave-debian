@@ -17,13 +17,13 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} stem (@var{y})
-## @deftypefnx {Function File} {} stem (@var{x}, @var{y})
-## @deftypefnx {Function File} {} stem (@dots{}, @var{linespec})
-## @deftypefnx {Function File} {} stem (@dots{}, "filled")
-## @deftypefnx {Function File} {} stem (@dots{}, @var{prop}, @var{val}, @dots{})
-## @deftypefnx {Function File} {} stem (@var{hax}, @dots{})
-## @deftypefnx {Function File} {@var{h} =} stem (@dots{})
+## @deftypefn  {} {} stem (@var{y})
+## @deftypefnx {} {} stem (@var{x}, @var{y})
+## @deftypefnx {} {} stem (@dots{}, @var{linespec})
+## @deftypefnx {} {} stem (@dots{}, "filled")
+## @deftypefnx {} {} stem (@dots{}, @var{prop}, @var{val}, @dots{})
+## @deftypefnx {} {} stem (@var{hax}, @dots{})
+## @deftypefnx {} {@var{h} =} stem (@dots{})
 ## Plot a 2-D stem graph.
 ##
 ## If only one argument is given, it is taken as the y-values and the
@@ -199,7 +199,7 @@ endfunction
 %! set (gca (), 'xlim', [1, N-1], 'ylim', [0, 1]);
 %! title ('stem plot data modified through hggroup handle');
 %! for k=2:N
-%!   set (hs, 'xdata', x(1:k), 'ydata', y(1:k))
+%!   set (hs, 'xdata', x(1:k), 'ydata', y(1:k));
 %!   drawnow ();
 %!   pause (0.2);
 %! end
@@ -209,12 +209,12 @@ endfunction
 %! hf = figure ("visible", "off");
 %! unwind_protect
 %!   h = stem ([1 2; 1.5 2.5], [1 1;2 2]);
-%!   assert (get (h(1), "baseline"), get (h(2), "baseline"))
+%!   assert (get (h(1), "baseline"), get (h(2), "baseline"));
 %!   bv = 0.3;
-%!   set (h(1), "basevalue", bv)
-%!   assert (get (get (h(1), "baseline"), "basevalue"), bv)
-%!   assert (get (h(1), "basevalue"), bv)
-%!   assert (get (h(2), "basevalue"), bv)
+%!   set (h(1), "basevalue", bv);
+%!   assert (get (get (h(1), "baseline"), "basevalue"), bv);
+%!   assert (get (h(1), "basevalue"), bv);
+%!   assert (get (h(2), "basevalue"), bv);
 %! unwind_protect_cleanup
 %!   close (hf);
 %! end_unwind_protect

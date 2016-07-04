@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QAction>
@@ -52,6 +52,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "file-ops.h"
 #include "unwind-prot.h"
 #include "utils.h"
+#include "version.h"
 
 #include "octave-qt-link.h"
 
@@ -59,8 +60,6 @@ along with Octave; see the file COPYING.  If not, see
 
 namespace QtHandles
 {
-
-#define ABOUT_TEXT "<b>QtHandles</b> - a Qt-based toolkit for <a href=\"http://www.octave.org\">Octave</a>.<br><br>Copyright (C) 2011-2015 Michael Goffioul"
 
 DECLARE_GENERICEVENTNOTIFY_SENDER(MenuBar, QMenuBar);
 
@@ -108,8 +107,8 @@ boundingBoxToRect (const Matrix& bb)
 
   if (bb.numel () == 4)
     {
-      r = QRect (xround (bb(0)), xround (bb(1)),
-                 xround (bb(2)), xround (bb(3)));
+      r = QRect (octave::math::round (bb(0)), octave::math::round (bb(1)),
+                 octave::math::round (bb(2)), octave::math::round (bb(3)));
       if (! r.isValid ())
         r = QRect ();
     }
@@ -132,48 +131,59 @@ Figure::Figure (const graphics_object& go, FigureWindow* win)
 
   figure::properties& fp = properties<figure> ();
 
-  createFigureToolBarAndMenuBar ();
+  // Status bar
+  m_statusBar = win->statusBar ();
+  int boffset = 0;
 
-  int offset = 0;
+  // Toolbar and menubar
+  createFigureToolBarAndMenuBar ();
+  int toffset = 0;
+
   if (fp.toolbar_is ("figure") ||
       (fp.toolbar_is ("auto") && fp.menubar_is ("figure") &&
        ! hasUiControlChildren (fp)))
-    offset += m_figureToolBar->sizeHint ().height ();
+    {
+      toffset += m_figureToolBar->sizeHint ().height ();
+      boffset += m_statusBar->sizeHint ().height ();
+    }
   else
-    m_figureToolBar->hide ();
+    {
+      m_figureToolBar->hide ();
+      m_statusBar->hide ();
+    }
+
   if (fp.menubar_is ("figure") || hasUiMenuChildren (fp))
-    offset += m_menuBar->sizeHint ().height () + 1;
+    toffset += m_menuBar->sizeHint ().height () + 1;
   else
     m_menuBar->hide ();
 
   m_innerRect = boundingBoxToRect (fp.get_boundingbox (true));
   m_outerRect = boundingBoxToRect (fp.get_boundingbox (false));
 
-  //qDebug () << "Figure::Figure:" << m_innerRect;
-  win->setGeometry (m_innerRect.adjusted (0, -offset, 0, 0));
-  //qDebug () << "Figure::Figure(adjusted)" << m_innerRect.adjusted (0, -offset, 0, 0);
-  win->setWindowTitle (Utils::fromStdString (fp.get_title ()));
+  win->setGeometry (m_innerRect.adjusted (0, -toffset, 0, boffset));
 
-  int eventMask = 0;
-  if (! fp.get_keypressfcn ().is_empty ())
-    eventMask |= Canvas::KeyPress;
-  if (! fp.get_keyreleasefcn ().is_empty ())
-    eventMask |= Canvas::KeyRelease;
-  m_container->canvas (m_handle)->setEventMask (eventMask);
+  // Enable mouse tracking unconditionally
+  enableMouseTracking ();
 
-  if (! fp.get_windowbuttonmotionfcn ().is_empty ())
-    {
-      m_container->setMouseTracking (true);
-      m_container->canvas (m_handle)->qWidget ()->setMouseTracking (true);
-    }
+  // When this constructor gets called all properties are already
+  // set, even non default. We force "update" here to get things right.
+
+  // Figure title
+  update (figure::properties::ID_NUMBERTITLE);
+
+  // Decide what keyboard events we listen to
+  m_container->canvas (m_handle)->setEventMask (0);
+  update (figure::properties::ID_KEYPRESSFCN);
+  update (figure::properties::ID_KEYRELEASEFCN);
+
+  // modal style
+  update (figure::properties::ID_WINDOWSTYLE);
+
+  // Visibility
+  update (figure::properties::ID_VISIBLE);
 
   connect (this, SIGNAL (asyncUpdate (void)),
            this, SLOT (updateContainer (void)));
-
-  if (fp.is_visible ())
-    QTimer::singleShot (0, win, SLOT (show ()));
-  else
-    win->hide ();
 
   win->addReceiver (this);
   m_container->addReceiver (this);
@@ -315,20 +325,19 @@ Figure::createFigureToolBarAndMenuBar (void)
   fileMenu->addAction (tr ("Save &As"), this, SLOT (fileSaveFigureAs (void)));
   fileMenu->addSeparator ();
   fileMenu->addAction (tr ("&Close Figure"), this,
-                       SLOT (fileCloseFigure (void)), Qt::CTRL|Qt::Key_W);
+                       SLOT (fileCloseFigure (void)), Qt::CTRL | Qt::Key_W);
 
   QMenu* editMenu = m_menuBar->addMenu (tr ("&Edit"));
   editMenu->menuAction ()->setObjectName ("builtinMenu");
   editMenu->addAction (tr ("Cop&y"), this, SLOT (editCopy (bool)),
-                       Qt::CTRL|Qt::Key_C);
+                       Qt::CTRL | Qt::Key_C);
   editMenu->addSeparator ();
   editMenu->addActions (m_mouseModeGroup->actions ());
 
   QMenu* helpMenu = m_menuBar->addMenu (tr ("&Help"));
   helpMenu->menuAction ()->setObjectName ("builtinMenu");
-  helpMenu->addAction (tr ("&About QtHandles"), this,
-                       SLOT (helpAboutQtHandles (void)));
-  helpMenu->addAction (tr ("About &Qt"), qApp, SLOT (aboutQt (void)));
+  helpMenu->addAction (tr ("About Octave"), this,
+                       SLOT (helpAboutOctave (void)));
 
   m_menuBar->addReceiver (this);
 }
@@ -362,12 +371,14 @@ Figure::redraw (void)
     }
 
   foreach (QFrame* frame,
-           qWidget<QWidget> ()->findChildren<QFrame*> ("UIPanel"))
+           qWidget<QWidget> ()->findChildren<QFrame*> ())
     {
-      Object* obj = Object::fromQObject (frame);
+      if (frame->objectName () == "UIPanel" || frame->objectName () == "UIButtonGroup") {
+        Object* obj = Object::fromQObject (frame);
 
-      if (obj)
-        obj->slotRedraw ();
+        if (obj)
+          obj->slotRedraw ();
+      }
     }
 
   updateFigureToolBarAndMenuBar ();
@@ -411,17 +422,20 @@ Figure::update (int pId)
     case figure::properties::ID_POSITION:
         {
           m_innerRect = boundingBoxToRect (fp.get_boundingbox (true));
-          //qDebug () << "Figure::update(position):" << m_innerRect;
-          int offset = 0;
+          int toffset = 0;
+          int boffset = 0;
 
           foreach (QToolBar* tb, win->findChildren<QToolBar*> ())
             if (! tb->isHidden ())
-              offset += tb->sizeHint ().height ();
+              toffset += tb->sizeHint ().height ();
+
           if (! m_menuBar->isHidden ())
-            offset += m_menuBar->sizeHint ().height () + 1;
-          //qDebug () << "Figure::update(position)(adjusted):" << m_innerRect.adjusted (0, -offset, 0, 0);
-          win->setGeometry (m_innerRect.adjusted (0, -offset, 0, 0));
-          //qDebug () << "Figure::update(position): done";
+            toffset += m_menuBar->sizeHint ().height () + 1;
+
+          if (! m_statusBar->isHidden ())
+            boffset += m_statusBar->sizeHint ().height () + 1;
+
+          win->setGeometry (m_innerRect.adjusted (0, -toffset, 0, boffset));
         }
       break;
 
@@ -467,14 +481,22 @@ Figure::update (int pId)
         m_container->canvas (m_handle)->addEventMask (Canvas::KeyRelease);
       break;
 
-    case figure::properties::ID_WINDOWBUTTONMOTIONFCN:
+    case figure::properties::ID_WINDOWSTYLE:
+      if (fp.windowstyle_is ("modal"))
         {
-          bool hasCallback = ! fp.get_windowbuttonmotionfcn ().is_empty ();
+          bool is_visible = win->isVisible ();
 
-          m_container->setMouseTracking (hasCallback);
-          foreach (QWidget* w, m_container->findChildren<QWidget*> ())
-            { w->setMouseTracking (hasCallback); }
+          // if window is already visible, need to hide and reshow it in order to
+          // make it use the modal settings
+          if (is_visible)
+            win->setVisible (false);
+
+          win->setWindowModality (Qt::ApplicationModal);
+          win->setVisible (is_visible);
         }
+      else
+        win->setWindowModality (Qt::NonModal);
+
       break;
 
     default:
@@ -489,17 +511,19 @@ Figure::showFigureToolBar (bool visible)
 {
   if ((! m_figureToolBar->isHidden ()) != visible)
     {
-      int dy = m_figureToolBar->sizeHint ().height ();
+      int dy1 = m_figureToolBar->sizeHint ().height ();
+      int dy2 = m_statusBar->sizeHint ().height ();
       QRect r = qWidget<QWidget> ()->geometry ();
 
       if (! visible)
-        r.adjust (0, dy, 0, 0);
+        r.adjust (0, dy1, 0, -dy2);
       else
-        r.adjust (0, -dy, 0, 0);
+        r.adjust (0, -dy1, 0, dy2);
 
       m_blockUpdates = true;
       qWidget<QWidget> ()->setGeometry (r);
       m_figureToolBar->setVisible (visible);
+      m_statusBar->setVisible (visible);
       m_blockUpdates = false;
 
       updateBoundingBox (false);
@@ -549,6 +573,15 @@ Figure::updateMenuBar (void)
 
   if (go.valid_object ())
     showMenuBar (Utils::properties<figure> (go).menubar_is ("figure"));
+}
+
+void
+Figure::updateStatusBar (ColumnVector pt)
+{
+  if (! m_statusBar->isHidden ())
+    m_statusBar->showMessage (QString ("(%1, %2)")
+                              .arg (pt(0), 0, 'g', 5)
+                              .arg (pt(1), 0, 'g', 5));
 }
 
 QWidget*
@@ -705,9 +738,17 @@ Figure::eventNotifyAfter (QObject* watched, QEvent* xevent)
                   ()->isWidgetType())
                 {
                   gh_manager::auto_lock lock;
-                  const figure::properties& fp = properties<figure> ();
+                  update (figure::properties::ID_TOOLBAR);
 
-                  showFigureToolBar (! hasUiControlChildren (fp));
+                  enableMouseTracking ();
+                }
+
+            case QEvent::ChildRemoved:
+              if (dynamic_cast<QChildEvent*> (xevent)->child
+                  ()->isWidgetType())
+                {
+                  gh_manager::auto_lock lock;
+                  update (figure::properties::ID_TOOLBAR);
                 }
 
             default:
@@ -753,10 +794,13 @@ Figure::eventNotifyAfter (QObject* watched, QEvent* xevent)
 }
 
 void
-Figure::helpAboutQtHandles (void)
+Figure::helpAboutOctave (void)
 {
-  QMessageBox::about (qWidget<QMainWindow> (), tr ("About QtHandles"),
-                      ABOUT_TEXT);
+  std::string message
+    = octave_name_version_copyright_copying_warranty_and_bugs (true);
+
+  QMessageBox::about (qWidget<QMainWindow> (), tr ("About Octave"),
+                      QString::fromStdString (message));
 }
 
 void
@@ -824,7 +868,7 @@ Figure::copy_figure_callback (const std::string& format)
 {
   std::string msg;
 
-  std::string file = octave_tempnam ("", "oct-", msg) + "." + format;
+  std::string file = octave::sys::tempnam ("", "oct-", msg) + "." + format;
 
   if (file.empty ())
     {
@@ -954,6 +998,16 @@ Figure::autoAxes (void)
 
   if (canvas)
     canvas->autoAxes (m_handle);
+}
+
+void
+Figure::enableMouseTracking (void)
+{
+  // Enable mouse tracking on every widgets
+  m_container->setMouseTracking (true);
+  m_container->canvas (m_handle)->qWidget ()->setMouseTracking (true);
+  foreach (QWidget* w, m_container->findChildren<QWidget*> ())
+    { w->setMouseTracking (true); }
 }
 
 }; // namespace QtHandles

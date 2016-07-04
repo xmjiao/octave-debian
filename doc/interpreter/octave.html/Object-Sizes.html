@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -64,7 +65,7 @@ data structure type doesn&rsquo;t have rows or columns, so the <code>rows</code>
 <code>columns</code> functions return -1 for structure arguments.
 </p>
 <a name="XREFndims"></a><dl>
-<dt><a name="index-ndims"></a>Built-in Function: <em></em> <strong>ndims</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-ndims"></a>: <em></em> <strong>ndims</strong> <em>(<var>a</var>)</em></dt>
 <dd><p>Return the number of dimensions of <var>a</var>.
 </p>
 <p>For any array, the result will always be greater than or equal to 2.
@@ -80,7 +81,7 @@ Trailing singleton dimensions are not counted.
 
 
 <a name="XREFcolumns"></a><dl>
-<dt><a name="index-columns"></a>Built-in Function: <em></em> <strong>columns</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-columns"></a>: <em></em> <strong>columns</strong> <em>(<var>a</var>)</em></dt>
 <dd><p>Return the number of columns of <var>a</var>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFrows">rows</a>, <a href="#XREFsize">size</a>, <a href="#XREFlength">length</a>, <a href="#XREFnumel">numel</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisscalar">isscalar</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisvector">isvector</a>, <a href="Predicates-for-Numeric-Objects.html#XREFismatrix">ismatrix</a>.
@@ -88,7 +89,7 @@ Trailing singleton dimensions are not counted.
 
 
 <a name="XREFrows"></a><dl>
-<dt><a name="index-rows"></a>Built-in Function: <em></em> <strong>rows</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-rows"></a>: <em></em> <strong>rows</strong> <em>(<var>a</var>)</em></dt>
 <dd><p>Return the number of rows of <var>a</var>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFcolumns">columns</a>, <a href="#XREFsize">size</a>, <a href="#XREFlength">length</a>, <a href="#XREFnumel">numel</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisscalar">isscalar</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisvector">isvector</a>, <a href="Predicates-for-Numeric-Objects.html#XREFismatrix">ismatrix</a>.
@@ -96,8 +97,8 @@ Trailing singleton dimensions are not counted.
 
 
 <a name="XREFnumel"></a><dl>
-<dt><a name="index-numel"></a>Built-in Function: <em></em> <strong>numel</strong> <em>(<var>a</var>)</em></dt>
-<dt><a name="index-numel-1"></a>Built-in Function: <em></em> <strong>numel</strong> <em>(<var>a</var>, <var>idx1</var>, <var>idx2</var>, &hellip;)</em></dt>
+<dt><a name="index-numel"></a>: <em></em> <strong>numel</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-numel-1"></a>: <em></em> <strong>numel</strong> <em>(<var>a</var>, <var>idx1</var>, <var>idx2</var>, &hellip;)</em></dt>
 <dd><p>Return the number of elements in the object <var>a</var>.
 </p>
 <p>Optionally, if indices <var>idx1</var>, <var>idx2</var>, &hellip; are supplied,
@@ -134,7 +135,7 @@ indexing, i.e., <code>object{&hellip;}</code> or <code>object(&hellip;).field</c
 
 
 <a name="XREFlength"></a><dl>
-<dt><a name="index-length"></a>Built-in Function: <em></em> <strong>length</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-length"></a>: <em></em> <strong>length</strong> <em>(<var>a</var>)</em></dt>
 <dd><p>Return the length of the object <var>a</var>.
 </p>
 <p>The length is 0 for empty objects, 1 for scalars, and the number of elements
@@ -147,8 +148,8 @@ of elements along the largest dimension
 
 
 <a name="XREFsize"></a><dl>
-<dt><a name="index-size"></a>Built-in Function: <em></em> <strong>size</strong> <em>(<var>a</var>)</em></dt>
-<dt><a name="index-size-1"></a>Built-in Function: <em></em> <strong>size</strong> <em>(<var>a</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-size"></a>: <em></em> <strong>size</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-size-1"></a>: <em></em> <strong>size</strong> <em>(<var>a</var>, <var>dim</var>)</em></dt>
 <dd><p>Return the number of rows and columns of <var>a</var>.
 </p>
 <p>With one input argument and one output argument, the result is returned
@@ -180,7 +181,7 @@ corresponding dimension.  For example,
 
 
 <a name="XREFisempty"></a><dl>
-<dt><a name="index-isempty"></a>Built-in Function: <em></em> <strong>isempty</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-isempty"></a>: <em></em> <strong>isempty</strong> <em>(<var>a</var>)</em></dt>
 <dd><p>Return true if <var>a</var> is an empty matrix (any one of its dimensions is
 zero).
 </p>
@@ -189,7 +190,7 @@ zero).
 
 
 <a name="XREFisnull"></a><dl>
-<dt><a name="index-isnull"></a>Built-in Function: <em></em> <strong>isnull</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-isnull"></a>: <em></em> <strong>isnull</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>Return true if <var>x</var> is a special null matrix, string, or single quoted
 string.
 </p>
@@ -213,7 +214,7 @@ distinguish the cases:
 
 
 <a name="XREFsizeof"></a><dl>
-<dt><a name="index-sizeof"></a>Built-in Function: <em></em> <strong>sizeof</strong> <em>(<var>val</var>)</em></dt>
+<dt><a name="index-sizeof"></a>: <em></em> <strong>sizeof</strong> <em>(<var>val</var>)</em></dt>
 <dd><p>Return the size of <var>val</var> in bytes.
 </p>
 <p><strong>See also:</strong> <a href="Status-of-Variables.html#XREFwhos">whos</a>.
@@ -221,7 +222,7 @@ distinguish the cases:
 
 
 <a name="XREFsize_005fequal"></a><dl>
-<dt><a name="index-size_005fequal"></a>Built-in Function: <em></em> <strong>size_equal</strong> <em>(<var>a</var>, <var>b</var>, &hellip;)</em></dt>
+<dt><a name="index-size_005fequal"></a>: <em></em> <strong>size_equal</strong> <em>(<var>a</var>, <var>b</var>, &hellip;)</em></dt>
 <dd><p>Return true if the dimensions of all arguments agree.
 </p>
 <p>Trailing singleton dimensions are ignored.
@@ -232,7 +233,7 @@ When called with a single or no argument <code>size_equal</code> returns true.
 
 
 <a name="XREFsqueeze"></a><dl>
-<dt><a name="index-squeeze"></a>Built-in Function: <em></em> <strong>squeeze</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-squeeze"></a>: <em></em> <strong>squeeze</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>Remove singleton dimensions from <var>x</var> and return the result.
 </p>
 <p>Note that for compatibility with <small>MATLAB</small>, all objects have

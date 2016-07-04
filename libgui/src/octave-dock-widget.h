@@ -20,7 +20,7 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_octave_dock_widget_h)
+#if ! defined (octave_octave_dock_widget_h)
 #define octave_octave_dock_widget_h 1
 
 #include <QDockWidget>
@@ -101,8 +101,6 @@ protected slots:
 
   // event filter for double clicks into the window decoration elements
   bool eventFilter(QObject *obj, QEvent *e);
-
-  virtual void add_actions (QList<QAction *> action_list);
 
 private slots:
 

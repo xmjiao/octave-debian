@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -63,9 +64,9 @@ or when waiting for input.  The
 <code>drawnow</code> function is used to cause a plot window to be updated.
 </p>
 <a name="XREFdrawnow"></a><dl>
-<dt><a name="index-drawnow"></a>Built-in Function: <em></em> <strong>drawnow</strong> <em>()</em></dt>
-<dt><a name="index-drawnow-1"></a>Built-in Function: <em></em> <strong>drawnow</strong> <em>(&quot;expose&quot;)</em></dt>
-<dt><a name="index-drawnow-2"></a>Built-in Function: <em></em> <strong>drawnow</strong> <em>(<var>term</var>, <var>file</var>, <var>mono</var>, <var>debug_file</var>)</em></dt>
+<dt><a name="index-drawnow"></a>: <em></em> <strong>drawnow</strong> <em>()</em></dt>
+<dt><a name="index-drawnow-1"></a>: <em></em> <strong>drawnow</strong> <em>(&quot;expose&quot;)</em></dt>
+<dt><a name="index-drawnow-2"></a>: <em></em> <strong>drawnow</strong> <em>(<var>term</var>, <var>file</var>, <var>debug_file</var>)</em></dt>
 <dd><p>Update figure windows and their children.
 </p>
 <p>The event queue is flushed and any callbacks generated are executed.
@@ -85,8 +86,8 @@ function can also be used to cause an update of the current figure, even if
 it is not modified.
 </p>
 <a name="XREFrefresh"></a><dl>
-<dt><a name="index-refresh"></a>Function File: <em></em> <strong>refresh</strong> <em>()</em></dt>
-<dt><a name="index-refresh-1"></a>Function File: <em></em> <strong>refresh</strong> <em>(<var>h</var>)</em></dt>
+<dt><a name="index-refresh"></a>: <em></em> <strong>refresh</strong> <em>()</em></dt>
+<dt><a name="index-refresh-1"></a>: <em></em> <strong>refresh</strong> <em>(<var>h</var>)</em></dt>
 <dd><p>Refresh a figure, forcing it to be redrawn.
 </p>
 <p>When called without an argument the current figure is redrawn.  Otherwise,
@@ -115,10 +116,10 @@ off, consecutive plotting commands like this will only display the last
 plot.
 </p>
 <a name="XREFnewplot"></a><dl>
-<dt><a name="index-newplot"></a>Function File: <em></em> <strong>newplot</strong> <em>()</em></dt>
-<dt><a name="index-newplot-1"></a>Function File: <em></em> <strong>newplot</strong> <em>(<var>hfig</var>)</em></dt>
-<dt><a name="index-newplot-2"></a>Function File: <em></em> <strong>newplot</strong> <em>(<var>hax</var>)</em></dt>
-<dt><a name="index-newplot-3"></a>Function File: <em><var>hax</var> =</em> <strong>newplot</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-newplot"></a>: <em></em> <strong>newplot</strong> <em>()</em></dt>
+<dt><a name="index-newplot-1"></a>: <em></em> <strong>newplot</strong> <em>(<var>hfig</var>)</em></dt>
+<dt><a name="index-newplot-2"></a>: <em></em> <strong>newplot</strong> <em>(<var>hax</var>)</em></dt>
+<dt><a name="index-newplot-3"></a>: <em><var>hax</var> =</em> <strong>newplot</strong> <em>(&hellip;)</em></dt>
 <dd><p>Prepare graphics engine to produce a new plot.
 </p>
 <p>This function is called at the beginning of all high-level plotting
@@ -167,11 +168,11 @@ current axis.
 
 
 <a name="XREFhold"></a><dl>
-<dt><a name="index-hold"></a>Command: <em></em> <strong>hold</strong></dt>
-<dt><a name="index-hold-1"></a>Command: <em></em> <strong>hold</strong> <em>on</em></dt>
-<dt><a name="index-hold-2"></a>Command: <em></em> <strong>hold</strong> <em>off</em></dt>
-<dt><a name="index-hold-3"></a>Command: <em></em> <strong>hold</strong> <em>all</em></dt>
-<dt><a name="index-hold-4"></a>Function File: <em></em> <strong>hold</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-hold"></a>: <em></em> <strong>hold</strong></dt>
+<dt><a name="index-hold-1"></a>: <em></em> <strong>hold</strong> <em>on</em></dt>
+<dt><a name="index-hold-2"></a>: <em></em> <strong>hold</strong> <em>off</em></dt>
+<dt><a name="index-hold-3"></a>: <em></em> <strong>hold</strong> <em>all</em></dt>
+<dt><a name="index-hold-4"></a>: <em></em> <strong>hold</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dd><p>Toggle or set the <code>&quot;hold&quot;</code> state of the plotting engine which
 determines whether new graphic objects are added to the plot or replace
 the existing objects.
@@ -208,9 +209,9 @@ for this axis rather than the current axes returned by <code>gca</code>.
 
 
 <a name="XREFishold"></a><dl>
-<dt><a name="index-ishold"></a>Command: <em></em> <strong>ishold</strong></dt>
-<dt><a name="index-ishold-1"></a>Function File: <em></em> <strong>ishold</strong> <em>(<var>hax</var>)</em></dt>
-<dt><a name="index-ishold-2"></a>Function File: <em></em> <strong>ishold</strong> <em>(<var>hfig</var>)</em></dt>
+<dt><a name="index-ishold"></a>: <em></em> <strong>ishold</strong></dt>
+<dt><a name="index-ishold-1"></a>: <em></em> <strong>ishold</strong> <em>(<var>hax</var>)</em></dt>
+<dt><a name="index-ishold-2"></a>: <em></em> <strong>ishold</strong> <em>(<var>hfig</var>)</em></dt>
 <dd><p>Return true if the next plot will be added to the current plot, or
 false if the plot device will be cleared before drawing the next plot.
 </p>
@@ -227,11 +228,11 @@ a graphics object, call <code>delete</code> on its index.  To close the
 figure window, call the <code>close</code> function.
 </p>
 <a name="XREFclf"></a><dl>
-<dt><a name="index-clf"></a>Command: <em></em> <strong>clf</strong></dt>
-<dt><a name="index-clf-1"></a>Command: <em></em> <strong>clf</strong> <em>reset</em></dt>
-<dt><a name="index-clf-2"></a>Function File: <em></em> <strong>clf</strong> <em>(<var>hfig</var>)</em></dt>
-<dt><a name="index-clf-3"></a>Function File: <em></em> <strong>clf</strong> <em>(<var>hfig</var>, &quot;reset&quot;)</em></dt>
-<dt><a name="index-clf-4"></a>Function File: <em><var>h</var> =</em> <strong>clf</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-clf"></a>: <em></em> <strong>clf</strong></dt>
+<dt><a name="index-clf-1"></a>: <em></em> <strong>clf</strong> <em>reset</em></dt>
+<dt><a name="index-clf-2"></a>: <em></em> <strong>clf</strong> <em>(<var>hfig</var>)</em></dt>
+<dt><a name="index-clf-3"></a>: <em></em> <strong>clf</strong> <em>(<var>hfig</var>, &quot;reset&quot;)</em></dt>
+<dt><a name="index-clf-4"></a>: <em><var>h</var> =</em> <strong>clf</strong> <em>(&hellip;)</em></dt>
 <dd><p>Clear the current figure window.
 </p>
 <p><code>clf</code> operates by deleting child graphics objects with visible
@@ -253,10 +254,10 @@ window that was cleared.
 
 
 <a name="XREFcla"></a><dl>
-<dt><a name="index-cla"></a>Command: <em></em> <strong>cla</strong></dt>
-<dt><a name="index-cla-1"></a>Command: <em></em> <strong>cla</strong> <em>reset</em></dt>
-<dt><a name="index-cla-2"></a>Function File: <em></em> <strong>cla</strong> <em>(<var>hax</var>)</em></dt>
-<dt><a name="index-cla-3"></a>Function File: <em></em> <strong>cla</strong> <em>(<var>hax</var>, &quot;reset&quot;)</em></dt>
+<dt><a name="index-cla"></a>: <em></em> <strong>cla</strong></dt>
+<dt><a name="index-cla-1"></a>: <em></em> <strong>cla</strong> <em>reset</em></dt>
+<dt><a name="index-cla-2"></a>: <em></em> <strong>cla</strong> <em>(<var>hax</var>)</em></dt>
+<dt><a name="index-cla-3"></a>: <em></em> <strong>cla</strong> <em>(<var>hax</var>, &quot;reset&quot;)</em></dt>
 <dd><p>Clear the current axes.
 </p>
 <p><code>cla</code> operates by deleting child graphic objects with visible
@@ -275,7 +276,7 @@ this axis rather than the current axes returned by <code>gca</code>.
 
 
 <a name="XREFshg"></a><dl>
-<dt><a name="index-shg"></a>Command: <em></em> <strong>shg</strong></dt>
+<dt><a name="index-shg"></a>: <em></em> <strong>shg</strong></dt>
 <dd><p>Show the graph window.
 </p>
 <p>Currently, this is the same as executing <code>drawnow</code>.
@@ -285,9 +286,9 @@ this axis rather than the current axes returned by <code>gca</code>.
 
 
 <a name="XREFdelete"></a><dl>
-<dt><a name="index-delete"></a>Function File: <em></em> <strong>delete</strong> <em>(<var>file</var>)</em></dt>
-<dt><a name="index-delete-1"></a>Function File: <em></em> <strong>delete</strong> <em>(<var>file1</var>, <var>file2</var>, &hellip;)</em></dt>
-<dt><a name="index-delete-2"></a>Function File: <em></em> <strong>delete</strong> <em>(<var>handle</var>)</em></dt>
+<dt><a name="index-delete"></a>: <em></em> <strong>delete</strong> <em>(<var>file</var>)</em></dt>
+<dt><a name="index-delete-1"></a>: <em></em> <strong>delete</strong> <em>(<var>file1</var>, <var>file2</var>, &hellip;)</em></dt>
+<dt><a name="index-delete-2"></a>: <em></em> <strong>delete</strong> <em>(<var>handle</var>)</em></dt>
 <dd><p>Delete the named file or graphics handle.
 </p>
 <p><var>file</var> may contain globbing patterns such as &lsquo;<samp>*</samp>&rsquo;.  Multiple files
@@ -303,12 +304,13 @@ features from a plot without clearing the entire figure.
 
 
 <a name="XREFclose"></a><dl>
-<dt><a name="index-close"></a>Command: <em></em> <strong>close</strong></dt>
-<dt><a name="index-close-1"></a>Command: <em></em> <strong>close</strong> <em>(<var>h</var>)</em></dt>
-<dt><a name="index-close-2"></a>Command: <em></em> <strong>close</strong> <em><var>h</var></em></dt>
-<dt><a name="index-close-3"></a>Command: <em></em> <strong>close</strong> <em>all</em></dt>
-<dt><a name="index-close-4"></a>Command: <em></em> <strong>close</strong> <em>all hidden</em></dt>
-<dt><a name="index-close-5"></a>Command: <em></em> <strong>close</strong> <em>all force</em></dt>
+<dt><a name="index-close"></a>: <em></em> <strong>close</strong></dt>
+<dt><a name="index-close-1"></a>: <em></em> <strong>close</strong> <em><var>h</var></em></dt>
+<dt><a name="index-close-2"></a>: <em></em> <strong>close</strong> <em>(<var>h</var>)</em></dt>
+<dt><a name="index-close-3"></a>: <em></em> <strong>close</strong> <em>(<var>h</var>, &quot;force&quot;)</em></dt>
+<dt><a name="index-close-4"></a>: <em></em> <strong>close</strong> <em>all</em></dt>
+<dt><a name="index-close-5"></a>: <em></em> <strong>close</strong> <em>all hidden</em></dt>
+<dt><a name="index-close-6"></a>: <em></em> <strong>close</strong> <em>all force</em></dt>
 <dd><p>Close figure window(s).
 </p>
 <p>When called with no arguments, close the current figure.  This is equivalent
@@ -321,9 +323,8 @@ of graphics handles, then close each figure in <var>h</var>.
 <p>If the argument <code>&quot;all hidden&quot;</code> is given then all figures, including
 hidden ones, are closed.
 </p>
-<p>If the argument <code>&quot;all force&quot;</code> is given then all figures are closed
-even when <code>&quot;closerequestfcn&quot;</code> has been altered to prevent closing
-the window.
+<p>If the argument <code>&quot;force&quot;</code> is given then figures are closed even when
+<code>&quot;closerequestfcn&quot;</code> has been altered to prevent closing the window.
 </p>
 <p>Implementation Note: <code>close</code> operates by calling the function specified
 by the <code>&quot;closerequestfcn&quot;</code> property for each figure.  By default, the
@@ -338,7 +339,7 @@ function to close a window do not use <code>close</code> to avoid recursion.
 
 
 <a name="XREFclosereq"></a><dl>
-<dt><a name="index-closereq"></a>Function File: <em></em> <strong>closereq</strong> <em>()</em></dt>
+<dt><a name="index-closereq"></a>: <em></em> <strong>closereq</strong> <em>()</em></dt>
 <dd><p>Close the current figure and delete all graphics objects associated with it.
 </p>
 <p>By default, the <code>&quot;closerequestfcn&quot;</code> property of a new plot figure

@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -81,24 +82,67 @@ index in the color map, and each row in the color map corresponds to
 an RGB color.  The color map must be of class <code>double</code> with values
 between 0 and 1.
 </p>
+<a name="XREFim2double"></a><dl>
+<dt><a name="index-im2double"></a>: <em></em> <strong>im2double</strong> <em>(<var>img</var>)</em></dt>
+<dt><a name="index-im2double-1"></a>: <em></em> <strong>im2double</strong> <em>(<var>img</var>, &quot;indexed&quot;)</em></dt>
+<dd><p>Convert image to double precision.
+</p>
+<p>The conversion of <var>img</var> to double precision, is dependent
+on the type of input image.  The following input classes are
+supported:
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>uint8, uint16, and int16</samp>&rsquo;</dt>
+<dd><p>The range of values from the class is scaled to the interval [0 1].
+</p>
+</dd>
+<dt>&lsquo;<samp>logical</samp>&rsquo;</dt>
+<dd><p>True and false values are assigned a value of 0 and 1 respectively.
+</p>
+</dd>
+<dt>&lsquo;<samp>single</samp>&rsquo;</dt>
+<dd><p>Values are cast to double.
+</p>
+</dd>
+<dt>&lsquo;<samp>double</samp>&rsquo;</dt>
+<dd><p>Returns the same image.
+</p>
+</dd>
+</dl>
+
+<p>If <var>img</var> is an indexed image, then the second argument should be
+the string <code>&quot;indexed&quot;</code>.  If so, then <var>img</var> must either be
+of floating point class, or unsigned integer class and it will simply
+be cast to double.  If it is an integer class, a +1 offset is applied.
+</p>
+
+<p><strong>See also:</strong> <a href="Numeric-Data-Types.html#XREFdouble">double</a>.
+</p></dd></dl>
+
+
 <a name="XREFiscolormap"></a><dl>
-<dt><a name="index-iscolormap"></a>Function File: <em></em> <strong>iscolormap</strong> <em>(<var>cmap</var>)</em></dt>
+<dt><a name="index-iscolormap"></a>: <em></em> <strong>iscolormap</strong> <em>(<var>cmap</var>)</em></dt>
 <dd><p>Return true if <var>cmap</var> is a colormap.
 </p>
-<p>A colormap is a real matrix with <var>n</var> rows and 3 columns.  Each row
-represents a single color.  The columns contain red, green, and blue
-intensities respectively.  All entries must be between 0 and 1 inclusive.
+<p>A colormap is a real matrix, of class single or double, with 3 columns.
+Each row represents a single color.  The 3 columns contain red, green,
+and blue intensities respectively.
 </p>
+<p>All values in a colormap should be in the [0 1] range but this is not
+enforced.  Each function must decide what to do for values outside this
+range.
+</p>
+
 <p><strong>See also:</strong> <a href="#XREFcolormap">colormap</a>, <a href="#XREFrgbplot">rgbplot</a>.
 </p></dd></dl>
 
 
 <a name="XREFgray2ind"></a><dl>
-<dt><a name="index-gray2ind"></a>Function File: <em><var>img</var> =</em> <strong>gray2ind</strong> <em>(<var>I</var>)</em></dt>
-<dt><a name="index-gray2ind-1"></a>Function File: <em><var>img</var> =</em> <strong>gray2ind</strong> <em>(<var>I</var>, <var>n</var>)</em></dt>
-<dt><a name="index-gray2ind-2"></a>Function File: <em><var>img</var> =</em> <strong>gray2ind</strong> <em>(<var>BW</var>)</em></dt>
-<dt><a name="index-gray2ind-3"></a>Function File: <em><var>img</var> =</em> <strong>gray2ind</strong> <em>(<var>BW</var>, <var>n</var>)</em></dt>
-<dt><a name="index-gray2ind-4"></a>Function File: <em>[<var>img</var>, <var>map</var>] =</em> <strong>gray2ind</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-gray2ind"></a>: <em><var>img</var> =</em> <strong>gray2ind</strong> <em>(<var>I</var>)</em></dt>
+<dt><a name="index-gray2ind-1"></a>: <em><var>img</var> =</em> <strong>gray2ind</strong> <em>(<var>I</var>, <var>n</var>)</em></dt>
+<dt><a name="index-gray2ind-2"></a>: <em><var>img</var> =</em> <strong>gray2ind</strong> <em>(<var>BW</var>)</em></dt>
+<dt><a name="index-gray2ind-3"></a>: <em><var>img</var> =</em> <strong>gray2ind</strong> <em>(<var>BW</var>, <var>n</var>)</em></dt>
+<dt><a name="index-gray2ind-4"></a>: <em>[<var>img</var>, <var>map</var>] =</em> <strong>gray2ind</strong> <em>(&hellip;)</em></dt>
 <dd><p>Convert a grayscale or binary intensity image to an indexed image.
 </p>
 <p>The indexed image will consist of <var>n</var> different intensity values.
@@ -113,7 +157,7 @@ black and white images.
 
 
 <a name="XREFind2gray"></a><dl>
-<dt><a name="index-ind2gray"></a>Function File: <em><var>I</var> =</em> <strong>ind2gray</strong> <em>(<var>x</var>, <var>map</var>)</em></dt>
+<dt><a name="index-ind2gray"></a>: <em><var>I</var> =</em> <strong>ind2gray</strong> <em>(<var>x</var>, <var>map</var>)</em></dt>
 <dd><p>Convert a color indexed image to a grayscale intensity image.
 </p>
 <p>The image <var>x</var> must be an indexed image which will be converted using the
@@ -135,8 +179,8 @@ using a single color channel from <code>ind2rgb</code>.
 
 
 <a name="XREFrgb2ind"></a><dl>
-<dt><a name="index-rgb2ind"></a>Function File: <em>[<var>x</var>, <var>map</var>] =</em> <strong>rgb2ind</strong> <em>(<var>rgb</var>)</em></dt>
-<dt><a name="index-rgb2ind-1"></a>Function File: <em>[<var>x</var>, <var>map</var>] =</em> <strong>rgb2ind</strong> <em>(<var>R</var>, <var>G</var>, <var>B</var>)</em></dt>
+<dt><a name="index-rgb2ind"></a>: <em>[<var>x</var>, <var>map</var>] =</em> <strong>rgb2ind</strong> <em>(<var>rgb</var>)</em></dt>
+<dt><a name="index-rgb2ind-1"></a>: <em>[<var>x</var>, <var>map</var>] =</em> <strong>rgb2ind</strong> <em>(<var>R</var>, <var>G</var>, <var>B</var>)</em></dt>
 <dd><p>Convert an image in red-green-blue (RGB) color space to an indexed image.
 </p>
 <p>The input image <var>rgb</var> can be specified as a single matrix of size
@@ -160,8 +204,8 @@ as separate variables.
 
 
 <a name="XREFind2rgb"></a><dl>
-<dt><a name="index-ind2rgb"></a>Function File: <em><var>rgb</var> =</em> <strong>ind2rgb</strong> <em>(<var>x</var>, <var>map</var>)</em></dt>
-<dt><a name="index-ind2rgb-1"></a>Function File: <em>[<var>R</var>, <var>G</var>, <var>B</var>] =</em> <strong>ind2rgb</strong> <em>(<var>x</var>, <var>map</var>)</em></dt>
+<dt><a name="index-ind2rgb"></a>: <em><var>rgb</var> =</em> <strong>ind2rgb</strong> <em>(<var>x</var>, <var>map</var>)</em></dt>
+<dt><a name="index-ind2rgb-1"></a>: <em>[<var>R</var>, <var>G</var>, <var>B</var>] =</em> <strong>ind2rgb</strong> <em>(<var>x</var>, <var>map</var>)</em></dt>
 <dd><p>Convert an indexed image to red, green, and blue color components.
 </p>
 <p>The image <var>x</var> must be an indexed image which will be converted using the
@@ -183,15 +227,12 @@ supported.
 
 
 <a name="XREFcolormap"></a><dl>
-<dt><a name="index-colormap"></a>Function File: <em><var>cmap</var> =</em> <strong>colormap</strong> <em>()</em></dt>
-<dt><a name="index-colormap-1"></a>Function File: <em><var>cmap</var> =</em> <strong>colormap</strong> <em>(<var>map</var>)</em></dt>
-<dt><a name="index-colormap-2"></a>Function File: <em><var>cmap</var> =</em> <strong>colormap</strong> <em>(&quot;default&quot;)</em></dt>
-<dt><a name="index-colormap-3"></a>Function File: <em><var>cmap</var> =</em> <strong>colormap</strong> <em>(&quot;<var>map_name</var>&quot;)</em></dt>
-<dt><a name="index-colormap-4"></a>Function File: <em><var>cmap</var> =</em> <strong>colormap</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
-<dt><a name="index-colormap-5"></a>Command: <em></em> <strong>colormap</strong> <em><var>map_name</var></em></dt>
-<dt><a name="index-colormap-6"></a>Function File: <em><var>cmaps</var> =</em> <strong>colormap</strong> <em>(&quot;list&quot;)</em></dt>
-<dt><a name="index-colormap-7"></a>Function File: <em></em> <strong>colormap</strong> <em>(&quot;register&quot;, &quot;<var>name</var>&quot;)</em></dt>
-<dt><a name="index-colormap-8"></a>Function File: <em></em> <strong>colormap</strong> <em>(&quot;unregister&quot;, &quot;<var>name</var>&quot;)</em></dt>
+<dt><a name="index-colormap"></a>: <em><var>cmap</var> =</em> <strong>colormap</strong> <em>()</em></dt>
+<dt><a name="index-colormap-1"></a>: <em><var>cmap</var> =</em> <strong>colormap</strong> <em>(<var>map</var>)</em></dt>
+<dt><a name="index-colormap-2"></a>: <em><var>cmap</var> =</em> <strong>colormap</strong> <em>(<code>&quot;default&quot;</code>)</em></dt>
+<dt><a name="index-colormap-3"></a>: <em><var>cmap</var> =</em> <strong>colormap</strong> <em>(<var>map_name</var>)</em></dt>
+<dt><a name="index-colormap-4"></a>: <em><var>cmap</var> =</em> <strong>colormap</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-colormap-5"></a>: <em></em> <strong>colormap</strong> <em><var>map_name</var></em></dt>
 <dd><p>Query or set the current colormap.
 </p>
 <p>With no input arguments, <code>colormap</code> returns the current color map.
@@ -201,11 +242,11 @@ colormap should be an <var>n</var> row by 3 column matrix.  The columns
 contain red, green, and blue intensities respectively.  All entries
 must be between 0 and 1 inclusive.  The new colormap is returned.
 </p>
-<p><code>colormap (&quot;default&quot;)</code> restores the default colormap (the
-<code>jet</code> map with 64 entries).  The default colormap is returned.
+<p><code>colormap (<code>&quot;default&quot;</code>)</code> restores the default colormap (the
+<code>viridis</code> map with 64 entries).  The default colormap is returned.
 </p>
-<p>The map may also be specified by a string, <code>&quot;<var>map_name</var>&quot;</code>, where
-<var>map_name</var> is the name of a function that returns a colormap.
+<p>The map may also be specified by a string, <var>map_name</var>, which
+is the name of a function that returns a colormap.
 </p>
 <p>If the first argument <var>hax</var> is an axes handle, then the colormap for
 the parent figure of <var>hax</var> is queried or set.
@@ -213,19 +254,15 @@ the parent figure of <var>hax</var> is queried or set.
 <p>For convenience, it is also possible to use this function with the
 command form, <code>colormap <var>map_name</var></code>.
 </p>
-<p><code>colormap (&quot;list&quot;)</code> returns a cell array with all of the available
-colormaps.  The options <code>&quot;register&quot;</code> and <code>&quot;unregister&quot;</code>
-add or remove the colormap <var>name</var> from this list.
-</p>
 
-<p><strong>See also:</strong> <a href="#XREFjet">jet</a>.
+<p><strong>See also:</strong> <a href="#XREFviridis">viridis</a>.
 </p></dd></dl>
 
 
 <a name="XREFrgbplot"></a><dl>
-<dt><a name="index-rgbplot"></a>Function File: <em></em> <strong>rgbplot</strong> <em>(<var>cmap</var>)</em></dt>
-<dt><a name="index-rgbplot-1"></a>Function File: <em></em> <strong>rgbplot</strong> <em>(<var>cmap</var>, <var>style</var>)</em></dt>
-<dt><a name="index-rgbplot-2"></a>Function File: <em><var>h</var> =</em> <strong>rgbplot</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-rgbplot"></a>: <em></em> <strong>rgbplot</strong> <em>(<var>cmap</var>)</em></dt>
+<dt><a name="index-rgbplot-1"></a>: <em></em> <strong>rgbplot</strong> <em>(<var>cmap</var>, <var>style</var>)</em></dt>
+<dt><a name="index-rgbplot-2"></a>: <em><var>h</var> =</em> <strong>rgbplot</strong> <em>(&hellip;)</em></dt>
 <dd><p>Plot the components of a colormap.
 </p>
 <p>Two different <var>style</var>s are available for displaying the <var>cmap</var>:
@@ -254,8 +291,8 @@ option.
 
 
 <a name="XREFautumn"></a><dl>
-<dt><a name="index-autumn"></a>Function File: <em><var>map</var> =</em> <strong>autumn</strong> <em>()</em></dt>
-<dt><a name="index-autumn-1"></a>Function File: <em><var>map</var> =</em> <strong>autumn</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-autumn"></a>: <em><var>map</var> =</em> <strong>autumn</strong> <em>()</em></dt>
+<dt><a name="index-autumn-1"></a>: <em><var>map</var> =</em> <strong>autumn</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.
 This colormap ranges from red through orange to yellow.
 </p>
@@ -267,8 +304,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFbone"></a><dl>
-<dt><a name="index-bone"></a>Function File: <em><var>map</var> =</em> <strong>bone</strong> <em>()</em></dt>
-<dt><a name="index-bone-1"></a>Function File: <em><var>map</var> =</em> <strong>bone</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-bone"></a>: <em><var>map</var> =</em> <strong>bone</strong> <em>()</em></dt>
+<dt><a name="index-bone-1"></a>: <em><var>map</var> =</em> <strong>bone</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap varies from black to white with
 gray-blue shades.
 </p>
@@ -280,14 +317,14 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFcolorcube"></a><dl>
-<dt><a name="index-colorcube"></a>Function File: <em><var>map</var> =</em> <strong>colorcube</strong> <em>()</em></dt>
-<dt><a name="index-colorcube-1"></a>Function File: <em><var>map</var> =</em> <strong>colorcube</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-colorcube"></a>: <em><var>map</var> =</em> <strong>colorcube</strong> <em>()</em></dt>
+<dt><a name="index-colorcube-1"></a>: <em><var>map</var> =</em> <strong>colorcube</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap is composed of as many equally
 spaced colors (not grays) in the RGB color space as possible.
 </p>
-<p>If there are not a perfect number <var>n</var> of regularly spaced colors then the
-remaining entries in the colormap are gradients of pure red, green, blue,
-and gray.
+<p>If there are not a perfect number <var>n</var> of regularly spaced colors then
+the remaining entries in the colormap are gradients of pure red, green,
+blue, and gray.
 </p>
 <p>The argument <var>n</var> must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
@@ -297,8 +334,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFcool"></a><dl>
-<dt><a name="index-cool"></a>Function File: <em><var>map</var> =</em> <strong>cool</strong> <em>()</em></dt>
-<dt><a name="index-cool-1"></a>Function File: <em><var>map</var> =</em> <strong>cool</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-cool"></a>: <em><var>map</var> =</em> <strong>cool</strong> <em>()</em></dt>
+<dt><a name="index-cool-1"></a>: <em><var>map</var> =</em> <strong>cool</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  The colormap varies from cyan to magenta.
 </p>
 <p>The argument <var>n</var> must be a scalar.
@@ -309,8 +346,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFcopper"></a><dl>
-<dt><a name="index-copper"></a>Function File: <em><var>map</var> =</em> <strong>copper</strong> <em>()</em></dt>
-<dt><a name="index-copper-1"></a>Function File: <em><var>map</var> =</em> <strong>copper</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-copper"></a>: <em><var>map</var> =</em> <strong>copper</strong> <em>()</em></dt>
+<dt><a name="index-copper-1"></a>: <em><var>map</var> =</em> <strong>copper</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap varies from black to a light copper
 tone.
 </p>
@@ -322,13 +359,13 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFcubehelix"></a><dl>
-<dt><a name="index-cubehelix"></a>Function File: <em><var>map</var> =</em> <strong>cubehelix</strong> <em>()</em></dt>
-<dt><a name="index-cubehelix-1"></a>Function File: <em><var>map</var> =</em> <strong>cubehelix</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-cubehelix"></a>: <em><var>map</var> =</em> <strong>cubehelix</strong> <em>()</em></dt>
+<dt><a name="index-cubehelix-1"></a>: <em><var>map</var> =</em> <strong>cubehelix</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create cubehelix colormap.
 </p>
 <p>This colormap varies from black to white going though blue, green, and red
 tones while maintaining a monotonically increasing perception of intensity.
-This is achieved by transversing a color cube from black to white through
+This is achieved by traversing a color cube from black to white through
 a helix, hence the name cubehelix, while taking into account the perceived
 brightness of each channel according to the NTSC specifications from 1953.
 </p>
@@ -349,8 +386,8 @@ images&quot;</cite>, Bulletin of the Astronomical Society of India, 39, 289.
 
 
 <a name="XREFflag"></a><dl>
-<dt><a name="index-flag"></a>Function File: <em><var>map</var> =</em> <strong>flag</strong> <em>()</em></dt>
-<dt><a name="index-flag-1"></a>Function File: <em><var>map</var> =</em> <strong>flag</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-flag"></a>: <em><var>map</var> =</em> <strong>flag</strong> <em>()</em></dt>
+<dt><a name="index-flag-1"></a>: <em><var>map</var> =</em> <strong>flag</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap cycles through red, white, blue, and
 black with each index change.
 </p>
@@ -362,8 +399,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFgray"></a><dl>
-<dt><a name="index-gray"></a>Function File: <em><var>map</var> =</em> <strong>gray</strong> <em>()</em></dt>
-<dt><a name="index-gray-1"></a>Function File: <em><var>map</var> =</em> <strong>gray</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-gray"></a>: <em><var>map</var> =</em> <strong>gray</strong> <em>()</em></dt>
+<dt><a name="index-gray-1"></a>: <em><var>map</var> =</em> <strong>gray</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create gray colormap.  This colormap varies from black to white with shades
 of gray.
 </p>
@@ -375,8 +412,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFhot"></a><dl>
-<dt><a name="index-hot"></a>Function File: <em><var>map</var> =</em> <strong>hot</strong> <em>()</em></dt>
-<dt><a name="index-hot-1"></a>Function File: <em><var>map</var> =</em> <strong>hot</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-hot"></a>: <em><var>map</var> =</em> <strong>hot</strong> <em>()</em></dt>
+<dt><a name="index-hot-1"></a>: <em><var>map</var> =</em> <strong>hot</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap ranges from black through dark red,
 red, orange, yellow, to white.
 </p>
@@ -388,7 +425,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFhsv"></a><dl>
-<dt><a name="index-hsv"></a>Function File: <em></em> <strong>hsv</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-hsv"></a>: <em></em> <strong>hsv</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap begins with red, changes through
 yellow, green, cyan, blue, and magenta, before returning to red.
 </p>
@@ -405,8 +442,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFjet"></a><dl>
-<dt><a name="index-jet"></a>Function File: <em><var>map</var> =</em> <strong>jet</strong> <em>()</em></dt>
-<dt><a name="index-jet-1"></a>Function File: <em><var>map</var> =</em> <strong>jet</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-jet"></a>: <em><var>map</var> =</em> <strong>jet</strong> <em>()</em></dt>
+<dt><a name="index-jet-1"></a>: <em><var>map</var> =</em> <strong>jet</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap ranges from dark blue through blue,
 cyan, green, yellow, red, to dark red.
 </p>
@@ -418,8 +455,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFlines"></a><dl>
-<dt><a name="index-lines"></a>Function File: <em><var>map</var> =</em> <strong>lines</strong> <em>()</em></dt>
-<dt><a name="index-lines-1"></a>Function File: <em><var>map</var> =</em> <strong>lines</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-lines"></a>: <em><var>map</var> =</em> <strong>lines</strong> <em>()</em></dt>
+<dt><a name="index-lines-1"></a>: <em><var>map</var> =</em> <strong>lines</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap is composed of the list of colors
 in the current axes <code>&quot;ColorOrder&quot;</code> property.  The default is blue,
 green, red, cyan, pink, yellow, and gray.
@@ -432,8 +469,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFocean"></a><dl>
-<dt><a name="index-ocean"></a>Function File: <em><var>map</var> =</em> <strong>ocean</strong> <em>()</em></dt>
-<dt><a name="index-ocean-1"></a>Function File: <em><var>map</var> =</em> <strong>ocean</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-ocean"></a>: <em><var>map</var> =</em> <strong>ocean</strong> <em>()</em></dt>
+<dt><a name="index-ocean-1"></a>: <em><var>map</var> =</em> <strong>ocean</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap varies from black to white with shades
 of blue.
 </p>
@@ -445,8 +482,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFpink"></a><dl>
-<dt><a name="index-pink"></a>Function File: <em><var>map</var> =</em> <strong>pink</strong> <em>()</em></dt>
-<dt><a name="index-pink-1"></a>Function File: <em><var>map</var> =</em> <strong>pink</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-pink"></a>: <em><var>map</var> =</em> <strong>pink</strong> <em>()</em></dt>
+<dt><a name="index-pink-1"></a>: <em><var>map</var> =</em> <strong>pink</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap varies from black to white with
 shades of gray-pink.
 </p>
@@ -460,8 +497,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFprism"></a><dl>
-<dt><a name="index-prism"></a>Function File: <em><var>map</var> =</em> <strong>prism</strong> <em>()</em></dt>
-<dt><a name="index-prism-1"></a>Function File: <em><var>map</var> =</em> <strong>prism</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-prism"></a>: <em><var>map</var> =</em> <strong>prism</strong> <em>()</em></dt>
+<dt><a name="index-prism-1"></a>: <em><var>map</var> =</em> <strong>prism</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap cycles through red, orange, yellow,
 green, blue and violet with each index change.
 </p>
@@ -473,8 +510,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFrainbow"></a><dl>
-<dt><a name="index-rainbow"></a>Function File: <em><var>map</var> =</em> <strong>rainbow</strong> <em>()</em></dt>
-<dt><a name="index-rainbow-1"></a>Function File: <em><var>map</var> =</em> <strong>rainbow</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-rainbow"></a>: <em><var>map</var> =</em> <strong>rainbow</strong> <em>()</em></dt>
+<dt><a name="index-rainbow-1"></a>: <em><var>map</var> =</em> <strong>rainbow</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap ranges from red through orange,
 yellow, green, blue, to violet.
 </p>
@@ -486,8 +523,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFspring"></a><dl>
-<dt><a name="index-spring"></a>Function File: <em><var>map</var> =</em> <strong>spring</strong> <em>()</em></dt>
-<dt><a name="index-spring-1"></a>Function File: <em><var>map</var> =</em> <strong>spring</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-spring"></a>: <em><var>map</var> =</em> <strong>spring</strong> <em>()</em></dt>
+<dt><a name="index-spring-1"></a>: <em><var>map</var> =</em> <strong>spring</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap varies from magenta to yellow.
 </p>
 <p>The argument <var>n</var> must be a scalar.
@@ -498,8 +535,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFsummer"></a><dl>
-<dt><a name="index-summer"></a>Function File: <em><var>map</var> =</em> <strong>summer</strong> <em>()</em></dt>
-<dt><a name="index-summer-1"></a>Function File: <em><var>map</var> =</em> <strong>summer</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-summer"></a>: <em><var>map</var> =</em> <strong>summer</strong> <em>()</em></dt>
+<dt><a name="index-summer-1"></a>: <em><var>map</var> =</em> <strong>summer</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap varies from green to yellow.
 </p>
 <p>The argument <var>n</var> must be a scalar.
@@ -509,9 +546,22 @@ If unspecified, the length of the current colormap, or 64, is used.
 </p></dd></dl>
 
 
+<a name="XREFviridis"></a><dl>
+<dt><a name="index-viridis"></a>: <em><var>map</var> =</em> <strong>viridis</strong> <em>()</em></dt>
+<dt><a name="index-viridis-1"></a>: <em><var>map</var> =</em> <strong>viridis</strong> <em>(<var>n</var>)</em></dt>
+<dd><p>Create color colormap.  This colormap ranges from dark purplish-blue through
+blue, green, to yellow.
+</p>
+<p>The argument <var>n</var> must be a scalar.
+If unspecified, the length of the current colormap, or 64, is used.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcolormap">colormap</a>.
+</p></dd></dl>
+
+
 <a name="XREFwhite"></a><dl>
-<dt><a name="index-white"></a>Function File: <em><var>map</var> =</em> <strong>white</strong> <em>()</em></dt>
-<dt><a name="index-white-1"></a>Function File: <em><var>map</var> =</em> <strong>white</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-white"></a>: <em><var>map</var> =</em> <strong>white</strong> <em>()</em></dt>
+<dt><a name="index-white-1"></a>: <em><var>map</var> =</em> <strong>white</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap is completely white.
 </p>
 <p>The argument <var>n</var> must be a scalar.
@@ -522,8 +572,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFwinter"></a><dl>
-<dt><a name="index-winter"></a>Function File: <em><var>map</var> =</em> <strong>winter</strong> <em>()</em></dt>
-<dt><a name="index-winter-1"></a>Function File: <em><var>map</var> =</em> <strong>winter</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-winter"></a>: <em><var>map</var> =</em> <strong>winter</strong> <em>()</em></dt>
+<dt><a name="index-winter-1"></a>: <em><var>map</var> =</em> <strong>winter</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap varies from blue to green.
 </p>
 <p>The argument <var>n</var> must be a scalar.
@@ -534,8 +584,8 @@ If unspecified, the length of the current colormap, or 64, is used.
 
 
 <a name="XREFcontrast"></a><dl>
-<dt><a name="index-contrast"></a>Function File: <em><var>cmap</var> =</em> <strong>contrast</strong> <em>(<var>x</var>)</em></dt>
-<dt><a name="index-contrast-1"></a>Function File: <em><var>cmap</var> =</em> <strong>contrast</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
+<dt><a name="index-contrast"></a>: <em><var>cmap</var> =</em> <strong>contrast</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-contrast-1"></a>: <em><var>cmap</var> =</em> <strong>contrast</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
 <dd><p>Return a gray colormap that maximizes the contrast in an image.
 </p>
 <p>The returned colormap will have <var>n</var> rows.  If <var>n</var> is not defined
@@ -549,10 +599,10 @@ then the size of the current colormap is used.
 replace it.
 </p>
 <a name="XREFbrighten"></a><dl>
-<dt><a name="index-brighten"></a>Function File: <em><var>map_out</var> =</em> <strong>brighten</strong> <em>(<var>beta</var>)</em></dt>
-<dt><a name="index-brighten-1"></a>Function File: <em><var>map_out</var> =</em> <strong>brighten</strong> <em>(<var>map</var>, <var>beta</var>)</em></dt>
-<dt><a name="index-brighten-2"></a>Function File: <em><var>map_out</var> =</em> <strong>brighten</strong> <em>(<var>h</var>, <var>beta</var>)</em></dt>
-<dt><a name="index-brighten-3"></a>Function File: <em></em> <strong>brighten</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-brighten"></a>: <em><var>map_out</var> =</em> <strong>brighten</strong> <em>(<var>beta</var>)</em></dt>
+<dt><a name="index-brighten-1"></a>: <em><var>map_out</var> =</em> <strong>brighten</strong> <em>(<var>map</var>, <var>beta</var>)</em></dt>
+<dt><a name="index-brighten-2"></a>: <em><var>map_out</var> =</em> <strong>brighten</strong> <em>(<var>h</var>, <var>beta</var>)</em></dt>
+<dt><a name="index-brighten-3"></a>: <em></em> <strong>brighten</strong> <em>(&hellip;)</em></dt>
 <dd><p>Brighten or darken a colormap.
 </p>
 <p>The argument <var>beta</var> must be a scalar between -1 and 1, where a negative
@@ -564,17 +614,18 @@ colormap.
 <p>The first argument can also be a valid graphics handle <var>h</var>, in which
 case <code>brighten</code> is applied to the colormap associated with this handle.
 </p>
-<p>If no output is specified then the result is written to the current colormap.
+<p>If no output is specified then the result is written to the current
+colormap.
 </p>
 <p><strong>See also:</strong> <a href="#XREFcolormap">colormap</a>, <a href="#XREFcontrast">contrast</a>.
 </p></dd></dl>
 
 
 <a name="XREFspinmap"></a><dl>
-<dt><a name="index-spinmap"></a>Function File: <em></em> <strong>spinmap</strong> <em>()</em></dt>
-<dt><a name="index-spinmap-1"></a>Function File: <em></em> <strong>spinmap</strong> <em>(<var>t</var>)</em></dt>
-<dt><a name="index-spinmap-2"></a>Function File: <em></em> <strong>spinmap</strong> <em>(<var>t</var>, <var>inc</var>)</em></dt>
-<dt><a name="index-spinmap-3"></a>Function File: <em></em> <strong>spinmap</strong> <em>(&quot;inf&quot;)</em></dt>
+<dt><a name="index-spinmap"></a>: <em></em> <strong>spinmap</strong> <em>()</em></dt>
+<dt><a name="index-spinmap-1"></a>: <em></em> <strong>spinmap</strong> <em>(<var>t</var>)</em></dt>
+<dt><a name="index-spinmap-2"></a>: <em></em> <strong>spinmap</strong> <em>(<var>t</var>, <var>inc</var>)</em></dt>
+<dt><a name="index-spinmap-3"></a>: <em></em> <strong>spinmap</strong> <em>(&quot;inf&quot;)</em></dt>
 <dd><p>Cycle the colormap for <var>t</var> seconds with a color increment of <var>inc</var>.
 </p>
 <p>Both parameters are optional.  The default cycle time is 5 seconds and the
@@ -590,10 +641,10 @@ value of <var>inc</var> will cause faster cycling through the colormap.
 
 
 <a name="XREFwhitebg"></a><dl>
-<dt><a name="index-whitebg"></a>Function File: <em></em> <strong>whitebg</strong> <em>()</em></dt>
-<dt><a name="index-whitebg-1"></a>Function File: <em></em> <strong>whitebg</strong> <em>(<var>color</var>)</em></dt>
-<dt><a name="index-whitebg-2"></a>Function File: <em></em> <strong>whitebg</strong> <em>(&quot;none&quot;)</em></dt>
-<dt><a name="index-whitebg-3"></a>Function File: <em></em> <strong>whitebg</strong> <em>(<var>hfig</var>, &hellip;)</em></dt>
+<dt><a name="index-whitebg"></a>: <em></em> <strong>whitebg</strong> <em>()</em></dt>
+<dt><a name="index-whitebg-1"></a>: <em></em> <strong>whitebg</strong> <em>(<var>color</var>)</em></dt>
+<dt><a name="index-whitebg-2"></a>: <em></em> <strong>whitebg</strong> <em>(&quot;none&quot;)</em></dt>
+<dt><a name="index-whitebg-3"></a>: <em></em> <strong>whitebg</strong> <em>(<var>hfig</var>, &hellip;)</em></dt>
 <dd><p>Invert the colors in the current color scheme.
 </p>
 <p>The root properties are also inverted such that all subsequent plot use the
@@ -615,9 +666,9 @@ root properties will not be changed.
 <p>The following functions can be used to manipulate colormaps.
 </p>
 <a name="XREFcmunique"></a><dl>
-<dt><a name="index-cmunique"></a>Function File: <em>[<var>Y</var>, <var>newmap</var>] =</em> <strong>cmunique</strong> <em>(<var>X</var>, <var>map</var>)</em></dt>
-<dt><a name="index-cmunique-1"></a>Function File: <em>[<var>Y</var>, <var>newmap</var>] =</em> <strong>cmunique</strong> <em>(<var>RGB</var>)</em></dt>
-<dt><a name="index-cmunique-2"></a>Function File: <em>[<var>Y</var>, <var>newmap</var>] =</em> <strong>cmunique</strong> <em>(<var>I</var>)</em></dt>
+<dt><a name="index-cmunique"></a>: <em>[<var>Y</var>, <var>newmap</var>] =</em> <strong>cmunique</strong> <em>(<var>X</var>, <var>map</var>)</em></dt>
+<dt><a name="index-cmunique-1"></a>: <em>[<var>Y</var>, <var>newmap</var>] =</em> <strong>cmunique</strong> <em>(<var>RGB</var>)</em></dt>
+<dt><a name="index-cmunique-2"></a>: <em>[<var>Y</var>, <var>newmap</var>] =</em> <strong>cmunique</strong> <em>(<var>I</var>)</em></dt>
 <dd><p>Convert an input image <var>X</var> to an ouput indexed image <var>Y</var> which uses
 the smallest colormap possible <var>newmap</var>.
 </p>
@@ -627,9 +678,9 @@ eliminated.  The output image, <var>Y</var>, is the original input image with
 the indices adjusted to match the new, possibly smaller, colormap.
 </p>
 <p>When the input is an RGB image (an MxNx3 array), the output
-colormap will contain one entry for every unique color in the original image.
-In the worst case the new map could have as many rows as the number of
-pixels in the original image.
+colormap will contain one entry for every unique color in the original
+image.  In the worst case the new map could have as many rows as the
+number of pixels in the original image.
 </p>
 <p>When the input is a grayscale image <var>I</var>, the output colormap will
 contain one entry for every unique intensity value in the original image.
@@ -651,8 +702,8 @@ less than or equal to 256.  Otherwise, the output image is of class double.
 
 
 <a name="XREFcmpermute"></a><dl>
-<dt><a name="index-cmpermute"></a>Function File: <em>[<var>Y</var>, <var>newmap</var>] =</em> <strong>cmpermute</strong> <em>(<var>X</var>, <var>map</var>)</em></dt>
-<dt><a name="index-cmpermute-1"></a>Function File: <em>[<var>Y</var>, <var>newmap</var>] =</em> <strong>cmpermute</strong> <em>(<var>X</var>, <var>map</var>, <var>index</var>)</em></dt>
+<dt><a name="index-cmpermute"></a>: <em>[<var>Y</var>, <var>newmap</var>] =</em> <strong>cmpermute</strong> <em>(<var>X</var>, <var>map</var>)</em></dt>
+<dt><a name="index-cmpermute-1"></a>: <em>[<var>Y</var>, <var>newmap</var>] =</em> <strong>cmpermute</strong> <em>(<var>X</var>, <var>map</var>, <var>index</var>)</em></dt>
 <dd><p>Reorder colors in a colormap.
 </p>
 <p>When called with only two arguments, <code>cmpermute</code> randomly rearranges

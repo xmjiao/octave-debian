@@ -70,9 +70,9 @@ $Ax = b$ where $x \geq 0$.
 @noindent
 The @code{glpk} function also supports variations of this problem.
 
-@c glpk scripts/optimization/glpk.m
+@c glpk scripts/scripts/optimization/glpk.m
 @anchor{XREFglpk}
-@deftypefn {Function File} {[@var{xopt}, @var{fmin}, @var{errnum}, @var{extra}] =} glpk (@var{c}, @var{A}, @var{b}, @var{lb}, @var{ub}, @var{ctype}, @var{vartype}, @var{sense}, @var{param})
+@deftypefn {} {[@var{xopt}, @var{fmin}, @var{errnum}, @var{extra}] =} glpk (@var{c}, @var{A}, @var{b}, @var{lb}, @var{ub}, @var{ctype}, @var{vartype}, @var{sense}, @var{param})
 Solve a linear program using the GNU @sc{glpk} library.
 
 Given three arguments, @code{glpk} solves the following standard LP:
@@ -565,14 +565,14 @@ $$
 
 @end ifnottex
 
-@c qp scripts/optimization/qp.m
+@c qp scripts/scripts/optimization/qp.m
 @anchor{XREFqp}
-@deftypefn  {Function File} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H})
-@deftypefnx {Function File} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H}, @var{q})
-@deftypefnx {Function File} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H}, @var{q}, @var{A}, @var{b})
-@deftypefnx {Function File} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H}, @var{q}, @var{A}, @var{b}, @var{lb}, @var{ub})
-@deftypefnx {Function File} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H}, @var{q}, @var{A}, @var{b}, @var{lb}, @var{ub}, @var{A_lb}, @var{A_in}, @var{A_ub})
-@deftypefnx {Function File} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@dots{}, @var{options})
+@deftypefn  {} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H})
+@deftypefnx {} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H}, @var{q})
+@deftypefnx {} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H}, @var{q}, @var{A}, @var{b})
+@deftypefnx {} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H}, @var{q}, @var{A}, @var{b}, @var{lb}, @var{ub})
+@deftypefnx {} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H}, @var{q}, @var{A}, @var{b}, @var{lb}, @var{ub}, @var{A_lb}, @var{A_in}, @var{A_ub})
+@deftypefnx {} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@dots{}, @var{options})
 Solve a quadratic program (QP).
 
 Solve the quadratic program defined by
@@ -661,14 +661,14 @@ The problem is infeasible.
 @end deftypefn
 
 
-@c pqpnonneg scripts/optimization/pqpnonneg.m
+@c pqpnonneg scripts/scripts/optimization/pqpnonneg.m
 @anchor{XREFpqpnonneg}
-@deftypefn  {Function File} {@var{x} =} pqpnonneg (@var{c}, @var{d})
-@deftypefnx {Function File} {@var{x} =} pqpnonneg (@var{c}, @var{d}, @var{x0})
-@deftypefnx {Function File} {[@var{x}, @var{minval}] =} pqpnonneg (@dots{})
-@deftypefnx {Function File} {[@var{x}, @var{minval}, @var{exitflag}] =} pqpnonneg (@dots{})
-@deftypefnx {Function File} {[@var{x}, @var{minval}, @var{exitflag}, @var{output}] =} pqpnonneg (@dots{})
-@deftypefnx {Function File} {[@var{x}, @var{minval}, @var{exitflag}, @var{output}, @var{lambda}] =} pqpnonneg (@dots{})
+@deftypefn  {} {@var{x} =} pqpnonneg (@var{c}, @var{d})
+@deftypefnx {} {@var{x} =} pqpnonneg (@var{c}, @var{d}, @var{x0})
+@deftypefnx {} {[@var{x}, @var{minval}] =} pqpnonneg (@dots{})
+@deftypefnx {} {[@var{x}, @var{minval}, @var{exitflag}] =} pqpnonneg (@dots{})
+@deftypefnx {} {[@var{x}, @var{minval}, @var{exitflag}, @var{output}] =} pqpnonneg (@dots{})
+@deftypefnx {} {[@var{x}, @var{minval}, @var{exitflag}, @var{output}, @var{lambda}] =} pqpnonneg (@dots{})
 Minimize @code{1/2*x'*c*x + d'*x} subject to @code{@var{x} >= 0}.
 
 @var{c} ## and @var{d} must be real, and @var{c} must be symmetric and
@@ -714,14 +714,14 @@ Not implemented.
 Octave can also perform general nonlinear minimization using a
 successive quadratic programming solver.
 
-@c sqp scripts/optimization/sqp.m
+@c sqp scripts/scripts/optimization/sqp.m
 @anchor{XREFsqp}
-@deftypefn  {Function File} {[@var{x}, @var{obj}, @var{info}, @var{iter}, @var{nf}, @var{lambda}] =} sqp (@var{x0}, @var{phi})
-@deftypefnx {Function File} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g})
-@deftypefnx {Function File} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h})
-@deftypefnx {Function File} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub})
-@deftypefnx {Function File} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub}, @var{maxiter})
-@deftypefnx {Function File} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub}, @var{maxiter}, @var{tol})
+@deftypefn  {} {[@var{x}, @var{obj}, @var{info}, @var{iter}, @var{nf}, @var{lambda}] =} sqp (@var{x0}, @var{phi})
+@deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g})
+@deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h})
+@deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub})
+@deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub}, @var{maxiter})
+@deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g}, @var{h}, @var{lb}, @var{ub}, @var{maxiter}, @var{tol})
 Minimize an objective function using sequential quadratic programming (SQP).
 
 Solve the nonlinear program
@@ -903,9 +903,9 @@ can be solved using the @samp{\} or @samp{/} operators, or the @code{ols}
 function.  In the general case where the noise is assumed to be anisotropic
 the @code{gls} is needed.
 
-@c ols scripts/statistics/base/ols.m
+@c ols scripts/scripts/statistics/base/ols.m
 @anchor{XREFols}
-@deftypefn {Function File} {[@var{beta}, @var{sigma}, @var{r}] =} ols (@var{y}, @var{x})
+@deftypefn {} {[@var{beta}, @var{sigma}, @var{r}] =} ols (@var{y}, @var{x})
 Ordinary least squares estimation.
 
 OLS applies to the multivariate model
@@ -929,7 +929,8 @@ matrix, @math{b} is a @math{k} by @math{p} matrix, and @math{e} is a
 @math{t} by @math{p} matrix.
 @end ifnottex
 
-Each row of @var{y} and @var{x} is an observation and each column a variable.
+Each row of @var{y} and @var{x} is an observation and each column a
+variable.
 
 The return values @var{beta}, @var{sigma}, and @var{r} are defined as
 follows.
@@ -966,9 +967,9 @@ The matrix of OLS residuals, @code{@var{r} = @var{y} - @var{x}*@var{beta}}.
 @end deftypefn
 
 
-@c gls scripts/statistics/base/gls.m
+@c gls scripts/scripts/statistics/base/gls.m
 @anchor{XREFgls}
-@deftypefn {Function File} {[@var{beta}, @var{v}, @var{r}] =} gls (@var{y}, @var{x}, @var{o})
+@deftypefn {} {[@var{beta}, @var{v}, @var{r}] =} gls (@var{y}, @var{x}, @var{o})
 Generalized least squares model.
 
 Perform a generalized least squares estimation for the multivariate model
@@ -1012,16 +1013,16 @@ The matrix of GLS residuals, @math{r = y - x*beta}.
 @end deftypefn
 
 
-@c lsqnonneg scripts/optimization/lsqnonneg.m
+@c lsqnonneg scripts/scripts/optimization/lsqnonneg.m
 @anchor{XREFlsqnonneg}
-@deftypefn  {Function File} {@var{x} =} lsqnonneg (@var{c}, @var{d})
-@deftypefnx {Function File} {@var{x} =} lsqnonneg (@var{c}, @var{d}, @var{x0})
-@deftypefnx {Function File} {@var{x} =} lsqnonneg (@var{c}, @var{d}, @var{x0}, @var{options})
-@deftypefnx {Function File} {[@var{x}, @var{resnorm}] =} lsqnonneg (@dots{})
-@deftypefnx {Function File} {[@var{x}, @var{resnorm}, @var{residual}] =} lsqnonneg (@dots{})
-@deftypefnx {Function File} {[@var{x}, @var{resnorm}, @var{residual}, @var{exitflag}] =} lsqnonneg (@dots{})
-@deftypefnx {Function File} {[@var{x}, @var{resnorm}, @var{residual}, @var{exitflag}, @var{output}] =} lsqnonneg (@dots{})
-@deftypefnx {Function File} {[@var{x}, @var{resnorm}, @var{residual}, @var{exitflag}, @var{output}, @var{lambda}] =} lsqnonneg (@dots{})
+@deftypefn  {} {@var{x} =} lsqnonneg (@var{c}, @var{d})
+@deftypefnx {} {@var{x} =} lsqnonneg (@var{c}, @var{d}, @var{x0})
+@deftypefnx {} {@var{x} =} lsqnonneg (@var{c}, @var{d}, @var{x0}, @var{options})
+@deftypefnx {} {[@var{x}, @var{resnorm}] =} lsqnonneg (@dots{})
+@deftypefnx {} {[@var{x}, @var{resnorm}, @var{residual}] =} lsqnonneg (@dots{})
+@deftypefnx {} {[@var{x}, @var{resnorm}, @var{residual}, @var{exitflag}] =} lsqnonneg (@dots{})
+@deftypefnx {} {[@var{x}, @var{resnorm}, @var{residual}, @var{exitflag}, @var{output}] =} lsqnonneg (@dots{})
+@deftypefnx {} {[@var{x}, @var{resnorm}, @var{residual}, @var{exitflag}, @var{output}, @var{lambda}] =} lsqnonneg (@dots{})
 Minimize @code{norm (@var{c}*@var{x} - d)} subject to
 @code{@var{x} >= 0}.
 
@@ -1069,12 +1070,12 @@ Not implemented.
 @end deftypefn
 
 
-@c lscov scripts/statistics/base/lscov.m
+@c lscov scripts/scripts/statistics/base/lscov.m
 @anchor{XREFlscov}
-@deftypefn  {Function File} {@var{x} =} lscov (@var{A}, @var{b})
-@deftypefnx {Function File} {@var{x} =} lscov (@var{A}, @var{b}, @var{V})
-@deftypefnx {Function File} {@var{x} =} lscov (@var{A}, @var{b}, @var{V}, @var{alg})
-@deftypefnx {Function File} {[@var{x}, @var{stdx}, @var{mse}, @var{S}] =} lscov (@dots{})
+@deftypefn  {} {@var{x} =} lscov (@var{A}, @var{b})
+@deftypefnx {} {@var{x} =} lscov (@var{A}, @var{b}, @var{V})
+@deftypefnx {} {@var{x} =} lscov (@var{A}, @var{b}, @var{V}, @var{alg})
+@deftypefnx {} {[@var{x}, @var{stdx}, @var{mse}, @var{S}] =} lscov (@dots{})
 
 Compute a generalized linear least squares fit.
 
@@ -1106,13 +1107,13 @@ Reference: @nospell{Golub and Van Loan} (1996),
 @end deftypefn
 
 
-@c optimset scripts/optimization/optimset.m
+@c optimset scripts/scripts/optimization/optimset.m
 @anchor{XREFoptimset}
-@deftypefn  {Function File} {} optimset ()
-@deftypefnx {Function File} {@var{options} =} optimset ()
-@deftypefnx {Function File} {@var{options} =} optimset (@var{par}, @var{val}, @dots{})
-@deftypefnx {Function File} {@var{options} =} optimset (@var{old}, @var{par}, @var{val}, @dots{})
-@deftypefnx {Function File} {@var{options} =} optimset (@var{old}, @var{new})
+@deftypefn  {} {} optimset ()
+@deftypefnx {} {@var{options} =} optimset ()
+@deftypefnx {} {@var{options} =} optimset (@var{par}, @var{val}, @dots{})
+@deftypefnx {} {@var{options} =} optimset (@var{old}, @var{par}, @var{val}, @dots{})
+@deftypefnx {} {@var{options} =} optimset (@var{old}, @var{new})
 Create options structure for optimization functions.
 
 When called without any input or output arguments, @code{optimset} prints
@@ -1204,10 +1205,10 @@ less than @code{TolX} the optimization stops.  Must be a positive scalar.
 @end deftypefn
 
 
-@c optimget scripts/optimization/optimget.m
+@c optimget scripts/scripts/optimization/optimget.m
 @anchor{XREFoptimget}
-@deftypefn  {Function File} {} optimget (@var{options}, @var{parname})
-@deftypefnx {Function File} {} optimget (@var{options}, @var{parname}, @var{default})
+@deftypefn  {} {} optimget (@var{options}, @var{parname})
+@deftypefnx {} {} optimget (@var{options}, @var{parname}, @var{default})
 Return the specific option @var{parname} from the optimization options
 structure @var{options} created by @code{optimset}.
 

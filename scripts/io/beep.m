@@ -17,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} beep ()
+## @deftypefn {} {} beep ()
 ## Produce a beep from the speaker (or visual bell).
 ##
 ## This function sends the alarm character @qcode{"@xbackslashchar{}a"} to
-## the terminal. Depending on the user's configuration this may produce an
+## the terminal.  Depending on the user's configuration this may produce an
 ## audible beep, a visual bell, or nothing at all.
 ## @seealso{puts, fputs, printf, fprintf}
 ## @end deftypefn

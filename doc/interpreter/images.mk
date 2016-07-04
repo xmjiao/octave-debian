@@ -1,268 +1,265 @@
-## DO NOT EDIT -- generated from module-files by config-module.awk
+## DO NOT EDIT -- generated from module-files by images.awk
 
-IMAGES_SRC =
-IMAGES_EPS =
-IMAGES_PDF =
-IMAGES_PNG =
-IMAGES_TXT =
-IMAGES_SRC += geometryimages.m
-GEOMETRYIMAGES_EPS = voronoi.eps triplot.eps griddata.eps convhull.eps delaunay.eps inpolygon.eps
-IMAGES_EPS += $(GEOMETRYIMAGES_EPS)
-voronoi.eps: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('voronoi', 'eps');"
-triplot.eps: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('triplot', 'eps');"
-griddata.eps: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('griddata', 'eps');"
-convhull.eps: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('convhull', 'eps');"
-delaunay.eps: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('delaunay', 'eps');"
-inpolygon.eps: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('inpolygon', 'eps');"
-GEOMETRYIMAGES_PDF = voronoi.pdf triplot.pdf griddata.pdf convhull.pdf delaunay.pdf inpolygon.pdf
-IMAGES_PDF += $(GEOMETRYIMAGES_PDF)
-voronoi.pdf: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('voronoi', 'pdf');"
-triplot.pdf: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('triplot', 'pdf');"
-griddata.pdf: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('griddata', 'pdf');"
-convhull.pdf: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('convhull', 'pdf');"
-delaunay.pdf: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('delaunay', 'pdf');"
-inpolygon.pdf: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('inpolygon', 'pdf');"
-GEOMETRYIMAGES_PNG = voronoi.png triplot.png griddata.png convhull.png delaunay.png inpolygon.png
-IMAGES_PNG += $(GEOMETRYIMAGES_PNG)
-voronoi.png: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('voronoi', 'png');"
-triplot.png: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('triplot', 'png');"
-griddata.png: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('griddata', 'png');"
-convhull.png: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('convhull', 'png');"
-delaunay.png: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('delaunay', 'png');"
-inpolygon.png: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('inpolygon', 'png');"
-GEOMETRYIMAGES_TXT = voronoi.txt triplot.txt griddata.txt convhull.txt delaunay.txt inpolygon.txt
-IMAGES_TXT += $(GEOMETRYIMAGES_TXT)
-voronoi.txt: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('voronoi', 'txt');"
-triplot.txt: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('triplot', 'txt');"
-griddata.txt: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('griddata', 'txt');"
-convhull.txt: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('convhull', 'txt');"
-delaunay.txt: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('delaunay', 'txt');"
-inpolygon.txt: geometryimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "geometryimages ('inpolygon', 'txt');"
-IMAGES_SRC += interpimages.m
-INTERPIMAGES_EPS = interpft.eps interpn.eps interpderiv1.eps interpderiv2.eps
-IMAGES_EPS += $(INTERPIMAGES_EPS)
-interpft.eps: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpft', 'eps');"
-interpn.eps: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpn', 'eps');"
-interpderiv1.eps: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpderiv1', 'eps');"
-interpderiv2.eps: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpderiv2', 'eps');"
-INTERPIMAGES_PDF = interpft.pdf interpn.pdf interpderiv1.pdf interpderiv2.pdf
-IMAGES_PDF += $(INTERPIMAGES_PDF)
-interpft.pdf: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpft', 'pdf');"
-interpn.pdf: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpn', 'pdf');"
-interpderiv1.pdf: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpderiv1', 'pdf');"
-interpderiv2.pdf: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpderiv2', 'pdf');"
-INTERPIMAGES_PNG = interpft.png interpn.png interpderiv1.png interpderiv2.png
-IMAGES_PNG += $(INTERPIMAGES_PNG)
-interpft.png: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpft', 'png');"
-interpn.png: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpn', 'png');"
-interpderiv1.png: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpderiv1', 'png');"
-interpderiv2.png: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpderiv2', 'png');"
-INTERPIMAGES_TXT = interpft.txt interpn.txt interpderiv1.txt interpderiv2.txt
-IMAGES_TXT += $(INTERPIMAGES_TXT)
-interpft.txt: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpft', 'txt');"
-interpn.txt: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpn', 'txt');"
-interpderiv1.txt: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpderiv1', 'txt');"
-interpderiv2.txt: interpimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "interpimages ('interpderiv2', 'txt');"
-IMAGES_SRC += plotimages.m
-PLOTIMAGES_EPS = plot.eps hist.eps errorbar.eps polar.eps mesh.eps plot3.eps extended.eps
-IMAGES_EPS += $(PLOTIMAGES_EPS)
-plot.eps: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('plot', 'eps');"
-hist.eps: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('hist', 'eps');"
-errorbar.eps: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('errorbar', 'eps');"
-polar.eps: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('polar', 'eps');"
-mesh.eps: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('mesh', 'eps');"
-plot3.eps: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('plot3', 'eps');"
-extended.eps: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('extended', 'eps');"
-PLOTIMAGES_PDF = plot.pdf hist.pdf errorbar.pdf polar.pdf mesh.pdf plot3.pdf extended.pdf
-IMAGES_PDF += $(PLOTIMAGES_PDF)
-plot.pdf: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('plot', 'pdf');"
-hist.pdf: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('hist', 'pdf');"
-errorbar.pdf: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('errorbar', 'pdf');"
-polar.pdf: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('polar', 'pdf');"
-mesh.pdf: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('mesh', 'pdf');"
-plot3.pdf: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('plot3', 'pdf');"
-extended.pdf: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('extended', 'pdf');"
-PLOTIMAGES_PNG = plot.png hist.png errorbar.png polar.png mesh.png plot3.png extended.png
-IMAGES_PNG += $(PLOTIMAGES_PNG)
-plot.png: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('plot', 'png');"
-hist.png: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('hist', 'png');"
-errorbar.png: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('errorbar', 'png');"
-polar.png: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('polar', 'png');"
-mesh.png: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('mesh', 'png');"
-plot3.png: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('plot3', 'png');"
-extended.png: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('extended', 'png');"
-PLOTIMAGES_TXT = plot.txt hist.txt errorbar.txt polar.txt mesh.txt plot3.txt extended.txt
-IMAGES_TXT += $(PLOTIMAGES_TXT)
-plot.txt: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('plot', 'txt');"
-hist.txt: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('hist', 'txt');"
-errorbar.txt: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('errorbar', 'txt');"
-polar.txt: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('polar', 'txt');"
-mesh.txt: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('mesh', 'txt');"
-plot3.txt: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('plot3', 'txt');"
-extended.txt: plotimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "plotimages ('extended', 'txt');"
-IMAGES_SRC += sparseimages.m
-SPARSEIMAGES_EPS = gplot.eps grid.eps spmatrix.eps spchol.eps spcholperm.eps
-IMAGES_EPS += $(SPARSEIMAGES_EPS)
-gplot.eps: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('gplot', 'eps');"
-grid.eps: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('grid', 'eps');"
-spmatrix.eps: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spmatrix', 'eps');"
-spchol.eps: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spchol', 'eps');"
-spcholperm.eps: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spcholperm', 'eps');"
-SPARSEIMAGES_PDF = gplot.pdf grid.pdf spmatrix.pdf spchol.pdf spcholperm.pdf
-IMAGES_PDF += $(SPARSEIMAGES_PDF)
-gplot.pdf: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('gplot', 'pdf');"
-grid.pdf: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('grid', 'pdf');"
-spmatrix.pdf: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spmatrix', 'pdf');"
-spchol.pdf: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spchol', 'pdf');"
-spcholperm.pdf: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spcholperm', 'pdf');"
-SPARSEIMAGES_PNG = gplot.png grid.png spmatrix.png spchol.png spcholperm.png
-IMAGES_PNG += $(SPARSEIMAGES_PNG)
-gplot.png: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('gplot', 'png');"
-grid.png: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('grid', 'png');"
-spmatrix.png: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spmatrix', 'png');"
-spchol.png: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spchol', 'png');"
-spcholperm.png: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spcholperm', 'png');"
-SPARSEIMAGES_TXT = gplot.txt grid.txt spmatrix.txt spchol.txt spcholperm.txt
-IMAGES_TXT += $(SPARSEIMAGES_TXT)
-gplot.txt: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('gplot', 'txt');"
-grid.txt: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('grid', 'txt');"
-spmatrix.txt: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spmatrix', 'txt');"
-spchol.txt: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spchol', 'txt');"
-spcholperm.txt: sparseimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "sparseimages ('spcholperm', 'txt');"
-IMAGES_SRC += splineimages.m
-SPLINEIMAGES_EPS = splinefit1.eps splinefit2.eps splinefit3.eps splinefit4.eps splinefit6.eps
-IMAGES_EPS += $(SPLINEIMAGES_EPS)
-splinefit1.eps: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit1', 'eps');"
-splinefit2.eps: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit2', 'eps');"
-splinefit3.eps: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit3', 'eps');"
-splinefit4.eps: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit4', 'eps');"
-splinefit6.eps: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit6', 'eps');"
-SPLINEIMAGES_PDF = splinefit1.pdf splinefit2.pdf splinefit3.pdf splinefit4.pdf splinefit6.pdf
-IMAGES_PDF += $(SPLINEIMAGES_PDF)
-splinefit1.pdf: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit1', 'pdf');"
-splinefit2.pdf: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit2', 'pdf');"
-splinefit3.pdf: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit3', 'pdf');"
-splinefit4.pdf: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit4', 'pdf');"
-splinefit6.pdf: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit6', 'pdf');"
-SPLINEIMAGES_PNG = splinefit1.png splinefit2.png splinefit3.png splinefit4.png splinefit6.png
-IMAGES_PNG += $(SPLINEIMAGES_PNG)
-splinefit1.png: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit1', 'png');"
-splinefit2.png: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit2', 'png');"
-splinefit3.png: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit3', 'png');"
-splinefit4.png: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit4', 'png');"
-splinefit6.png: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit6', 'png');"
-SPLINEIMAGES_TXT = splinefit1.txt splinefit2.txt splinefit3.txt splinefit4.txt splinefit6.txt
-IMAGES_TXT += $(SPLINEIMAGES_TXT)
-splinefit1.txt: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit1', 'txt');"
-splinefit2.txt: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit2', 'txt');"
-splinefit3.txt: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit3', 'txt');"
-splinefit4.txt: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit4', 'txt');"
-splinefit6.txt: splineimages.m
-	$(AM_V_GEN)$(top_builddir)/run-octave -f -q -H -p $(srcdir) --eval "splineimages ('splinefit6', 'txt');"
+if AMCOND_BUILD_DOCS
+DOC_IMAGES_SRC += doc/interpreter/geometryimages.m
+GEOMETRYIMAGES_EPS = doc/interpreter/voronoi.eps doc/interpreter/triplot.eps doc/interpreter/griddata.eps doc/interpreter/convhull.eps doc/interpreter/delaunay.eps doc/interpreter/inpolygon.eps
+BUILT_DOC_IMAGES_EPS += $(GEOMETRYIMAGES_EPS)
+doc/interpreter/voronoi.eps: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'voronoi', 'eps');"
+doc/interpreter/triplot.eps: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'triplot', 'eps');"
+doc/interpreter/griddata.eps: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'griddata', 'eps');"
+doc/interpreter/convhull.eps: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'convhull', 'eps');"
+doc/interpreter/delaunay.eps: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'delaunay', 'eps');"
+doc/interpreter/inpolygon.eps: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'inpolygon', 'eps');"
+GEOMETRYIMAGES_PDF = doc/interpreter/voronoi.pdf doc/interpreter/triplot.pdf doc/interpreter/griddata.pdf doc/interpreter/convhull.pdf doc/interpreter/delaunay.pdf doc/interpreter/inpolygon.pdf
+BUILT_DOC_IMAGES_PDF += $(GEOMETRYIMAGES_PDF)
+doc/interpreter/voronoi.pdf: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'voronoi', 'pdf');"
+doc/interpreter/triplot.pdf: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'triplot', 'pdf');"
+doc/interpreter/griddata.pdf: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'griddata', 'pdf');"
+doc/interpreter/convhull.pdf: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'convhull', 'pdf');"
+doc/interpreter/delaunay.pdf: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'delaunay', 'pdf');"
+doc/interpreter/inpolygon.pdf: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'inpolygon', 'pdf');"
+GEOMETRYIMAGES_PNG = doc/interpreter/voronoi.png doc/interpreter/triplot.png doc/interpreter/griddata.png doc/interpreter/convhull.png doc/interpreter/delaunay.png doc/interpreter/inpolygon.png
+BUILT_DOC_IMAGES_PNG += $(GEOMETRYIMAGES_PNG)
+doc/interpreter/voronoi.png: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'voronoi', 'png');"
+doc/interpreter/triplot.png: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'triplot', 'png');"
+doc/interpreter/griddata.png: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'griddata', 'png');"
+doc/interpreter/convhull.png: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'convhull', 'png');"
+doc/interpreter/delaunay.png: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'delaunay', 'png');"
+doc/interpreter/inpolygon.png: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'inpolygon', 'png');"
+GEOMETRYIMAGES_TXT = doc/interpreter/voronoi.txt doc/interpreter/triplot.txt doc/interpreter/griddata.txt doc/interpreter/convhull.txt doc/interpreter/delaunay.txt doc/interpreter/inpolygon.txt
+BUILT_DOC_IMAGES_TXT += $(GEOMETRYIMAGES_TXT)
+doc/interpreter/voronoi.txt: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'voronoi', 'txt');"
+doc/interpreter/triplot.txt: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'triplot', 'txt');"
+doc/interpreter/griddata.txt: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'griddata', 'txt');"
+doc/interpreter/convhull.txt: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'convhull', 'txt');"
+doc/interpreter/delaunay.txt: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'delaunay', 'txt');"
+doc/interpreter/inpolygon.txt: doc/interpreter/geometryimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'inpolygon', 'txt');"
+DOC_IMAGES_SRC += doc/interpreter/interpimages.m
+INTERPIMAGES_EPS = doc/interpreter/interpft.eps doc/interpreter/interpn.eps doc/interpreter/interpderiv1.eps doc/interpreter/interpderiv2.eps
+BUILT_DOC_IMAGES_EPS += $(INTERPIMAGES_EPS)
+doc/interpreter/interpft.eps: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpft', 'eps');"
+doc/interpreter/interpn.eps: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpn', 'eps');"
+doc/interpreter/interpderiv1.eps: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpderiv1', 'eps');"
+doc/interpreter/interpderiv2.eps: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpderiv2', 'eps');"
+INTERPIMAGES_PDF = doc/interpreter/interpft.pdf doc/interpreter/interpn.pdf doc/interpreter/interpderiv1.pdf doc/interpreter/interpderiv2.pdf
+BUILT_DOC_IMAGES_PDF += $(INTERPIMAGES_PDF)
+doc/interpreter/interpft.pdf: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpft', 'pdf');"
+doc/interpreter/interpn.pdf: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpn', 'pdf');"
+doc/interpreter/interpderiv1.pdf: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpderiv1', 'pdf');"
+doc/interpreter/interpderiv2.pdf: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpderiv2', 'pdf');"
+INTERPIMAGES_PNG = doc/interpreter/interpft.png doc/interpreter/interpn.png doc/interpreter/interpderiv1.png doc/interpreter/interpderiv2.png
+BUILT_DOC_IMAGES_PNG += $(INTERPIMAGES_PNG)
+doc/interpreter/interpft.png: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpft', 'png');"
+doc/interpreter/interpn.png: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpn', 'png');"
+doc/interpreter/interpderiv1.png: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpderiv1', 'png');"
+doc/interpreter/interpderiv2.png: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpderiv2', 'png');"
+INTERPIMAGES_TXT = doc/interpreter/interpft.txt doc/interpreter/interpn.txt doc/interpreter/interpderiv1.txt doc/interpreter/interpderiv2.txt
+BUILT_DOC_IMAGES_TXT += $(INTERPIMAGES_TXT)
+doc/interpreter/interpft.txt: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpft', 'txt');"
+doc/interpreter/interpn.txt: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpn', 'txt');"
+doc/interpreter/interpderiv1.txt: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpderiv1', 'txt');"
+doc/interpreter/interpderiv2.txt: doc/interpreter/interpimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "interpimages ('doc/interpreter/', 'interpderiv2', 'txt');"
+DOC_IMAGES_SRC += doc/interpreter/plotimages.m
+PLOTIMAGES_EPS = doc/interpreter/plot.eps doc/interpreter/hist.eps doc/interpreter/errorbar.eps doc/interpreter/polar.eps doc/interpreter/mesh.eps doc/interpreter/plot3.eps doc/interpreter/extended.eps
+BUILT_DOC_IMAGES_EPS += $(PLOTIMAGES_EPS)
+doc/interpreter/plot.eps: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'plot', 'eps');"
+doc/interpreter/hist.eps: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'hist', 'eps');"
+doc/interpreter/errorbar.eps: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'errorbar', 'eps');"
+doc/interpreter/polar.eps: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'polar', 'eps');"
+doc/interpreter/mesh.eps: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'mesh', 'eps');"
+doc/interpreter/plot3.eps: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'plot3', 'eps');"
+doc/interpreter/extended.eps: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'extended', 'eps');"
+PLOTIMAGES_PDF = doc/interpreter/plot.pdf doc/interpreter/hist.pdf doc/interpreter/errorbar.pdf doc/interpreter/polar.pdf doc/interpreter/mesh.pdf doc/interpreter/plot3.pdf doc/interpreter/extended.pdf
+BUILT_DOC_IMAGES_PDF += $(PLOTIMAGES_PDF)
+doc/interpreter/plot.pdf: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'plot', 'pdf');"
+doc/interpreter/hist.pdf: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'hist', 'pdf');"
+doc/interpreter/errorbar.pdf: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'errorbar', 'pdf');"
+doc/interpreter/polar.pdf: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'polar', 'pdf');"
+doc/interpreter/mesh.pdf: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'mesh', 'pdf');"
+doc/interpreter/plot3.pdf: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'plot3', 'pdf');"
+doc/interpreter/extended.pdf: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'extended', 'pdf');"
+PLOTIMAGES_PNG = doc/interpreter/plot.png doc/interpreter/hist.png doc/interpreter/errorbar.png doc/interpreter/polar.png doc/interpreter/mesh.png doc/interpreter/plot3.png doc/interpreter/extended.png
+BUILT_DOC_IMAGES_PNG += $(PLOTIMAGES_PNG)
+doc/interpreter/plot.png: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'plot', 'png');"
+doc/interpreter/hist.png: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'hist', 'png');"
+doc/interpreter/errorbar.png: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'errorbar', 'png');"
+doc/interpreter/polar.png: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'polar', 'png');"
+doc/interpreter/mesh.png: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'mesh', 'png');"
+doc/interpreter/plot3.png: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'plot3', 'png');"
+doc/interpreter/extended.png: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'extended', 'png');"
+PLOTIMAGES_TXT = doc/interpreter/plot.txt doc/interpreter/hist.txt doc/interpreter/errorbar.txt doc/interpreter/polar.txt doc/interpreter/mesh.txt doc/interpreter/plot3.txt doc/interpreter/extended.txt
+BUILT_DOC_IMAGES_TXT += $(PLOTIMAGES_TXT)
+doc/interpreter/plot.txt: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'plot', 'txt');"
+doc/interpreter/hist.txt: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'hist', 'txt');"
+doc/interpreter/errorbar.txt: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'errorbar', 'txt');"
+doc/interpreter/polar.txt: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'polar', 'txt');"
+doc/interpreter/mesh.txt: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'mesh', 'txt');"
+doc/interpreter/plot3.txt: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'plot3', 'txt');"
+doc/interpreter/extended.txt: doc/interpreter/plotimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "plotimages ('doc/interpreter/', 'extended', 'txt');"
+DOC_IMAGES_SRC += doc/interpreter/sparseimages.m
+SPARSEIMAGES_EPS = doc/interpreter/gplot.eps doc/interpreter/grid.eps doc/interpreter/spmatrix.eps doc/interpreter/spchol.eps doc/interpreter/spcholperm.eps
+BUILT_DOC_IMAGES_EPS += $(SPARSEIMAGES_EPS)
+doc/interpreter/gplot.eps: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'gplot', 'eps');"
+doc/interpreter/grid.eps: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'grid', 'eps');"
+doc/interpreter/spmatrix.eps: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spmatrix', 'eps');"
+doc/interpreter/spchol.eps: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spchol', 'eps');"
+doc/interpreter/spcholperm.eps: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spcholperm', 'eps');"
+SPARSEIMAGES_PDF = doc/interpreter/gplot.pdf doc/interpreter/grid.pdf doc/interpreter/spmatrix.pdf doc/interpreter/spchol.pdf doc/interpreter/spcholperm.pdf
+BUILT_DOC_IMAGES_PDF += $(SPARSEIMAGES_PDF)
+doc/interpreter/gplot.pdf: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'gplot', 'pdf');"
+doc/interpreter/grid.pdf: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'grid', 'pdf');"
+doc/interpreter/spmatrix.pdf: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spmatrix', 'pdf');"
+doc/interpreter/spchol.pdf: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spchol', 'pdf');"
+doc/interpreter/spcholperm.pdf: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spcholperm', 'pdf');"
+SPARSEIMAGES_PNG = doc/interpreter/gplot.png doc/interpreter/grid.png doc/interpreter/spmatrix.png doc/interpreter/spchol.png doc/interpreter/spcholperm.png
+BUILT_DOC_IMAGES_PNG += $(SPARSEIMAGES_PNG)
+doc/interpreter/gplot.png: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'gplot', 'png');"
+doc/interpreter/grid.png: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'grid', 'png');"
+doc/interpreter/spmatrix.png: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spmatrix', 'png');"
+doc/interpreter/spchol.png: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spchol', 'png');"
+doc/interpreter/spcholperm.png: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spcholperm', 'png');"
+SPARSEIMAGES_TXT = doc/interpreter/gplot.txt doc/interpreter/grid.txt doc/interpreter/spmatrix.txt doc/interpreter/spchol.txt doc/interpreter/spcholperm.txt
+BUILT_DOC_IMAGES_TXT += $(SPARSEIMAGES_TXT)
+doc/interpreter/gplot.txt: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'gplot', 'txt');"
+doc/interpreter/grid.txt: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'grid', 'txt');"
+doc/interpreter/spmatrix.txt: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spmatrix', 'txt');"
+doc/interpreter/spchol.txt: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spchol', 'txt');"
+doc/interpreter/spcholperm.txt: doc/interpreter/sparseimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "sparseimages ('doc/interpreter/', 'spcholperm', 'txt');"
+DOC_IMAGES_SRC += doc/interpreter/splineimages.m
+SPLINEIMAGES_EPS = doc/interpreter/splinefit1.eps doc/interpreter/splinefit2.eps doc/interpreter/splinefit3.eps doc/interpreter/splinefit4.eps doc/interpreter/splinefit6.eps
+BUILT_DOC_IMAGES_EPS += $(SPLINEIMAGES_EPS)
+doc/interpreter/splinefit1.eps: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit1', 'eps');"
+doc/interpreter/splinefit2.eps: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit2', 'eps');"
+doc/interpreter/splinefit3.eps: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit3', 'eps');"
+doc/interpreter/splinefit4.eps: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit4', 'eps');"
+doc/interpreter/splinefit6.eps: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit6', 'eps');"
+SPLINEIMAGES_PDF = doc/interpreter/splinefit1.pdf doc/interpreter/splinefit2.pdf doc/interpreter/splinefit3.pdf doc/interpreter/splinefit4.pdf doc/interpreter/splinefit6.pdf
+BUILT_DOC_IMAGES_PDF += $(SPLINEIMAGES_PDF)
+doc/interpreter/splinefit1.pdf: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit1', 'pdf');"
+doc/interpreter/splinefit2.pdf: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit2', 'pdf');"
+doc/interpreter/splinefit3.pdf: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit3', 'pdf');"
+doc/interpreter/splinefit4.pdf: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit4', 'pdf');"
+doc/interpreter/splinefit6.pdf: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit6', 'pdf');"
+SPLINEIMAGES_PNG = doc/interpreter/splinefit1.png doc/interpreter/splinefit2.png doc/interpreter/splinefit3.png doc/interpreter/splinefit4.png doc/interpreter/splinefit6.png
+BUILT_DOC_IMAGES_PNG += $(SPLINEIMAGES_PNG)
+doc/interpreter/splinefit1.png: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit1', 'png');"
+doc/interpreter/splinefit2.png: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit2', 'png');"
+doc/interpreter/splinefit3.png: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit3', 'png');"
+doc/interpreter/splinefit4.png: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit4', 'png');"
+doc/interpreter/splinefit6.png: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit6', 'png');"
+SPLINEIMAGES_TXT = doc/interpreter/splinefit1.txt doc/interpreter/splinefit2.txt doc/interpreter/splinefit3.txt doc/interpreter/splinefit4.txt doc/interpreter/splinefit6.txt
+BUILT_DOC_IMAGES_TXT += $(SPLINEIMAGES_TXT)
+doc/interpreter/splinefit1.txt: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit1', 'txt');"
+doc/interpreter/splinefit2.txt: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit2', 'txt');"
+doc/interpreter/splinefit3.txt: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit3', 'txt');"
+doc/interpreter/splinefit4.txt: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit4', 'txt');"
+doc/interpreter/splinefit6.txt: doc/interpreter/splineimages.m
+	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "splineimages ('doc/interpreter/', 'splinefit6', 'txt');"
+endif

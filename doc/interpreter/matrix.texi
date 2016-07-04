@@ -45,8 +45,8 @@ a matrix meet a specified condition.
 
 @c any libinterp/corefcn/data.cc
 @anchor{XREFany}
-@deftypefn  {Built-in Function} {} any (@var{x})
-@deftypefnx {Built-in Function} {} any (@var{x}, @var{dim})
+@deftypefn  {} {} any (@var{x})
+@deftypefnx {} {} any (@var{x}, @var{dim})
 For a vector argument, return true (logical 1) if any element of the vector
 is nonzero.
 
@@ -76,8 +76,8 @@ any (eye (2, 4), 2)
 
 @c all libinterp/corefcn/data.cc
 @anchor{XREFall}
-@deftypefn  {Built-in Function} {} all (@var{x})
-@deftypefnx {Built-in Function} {} all (@var{x}, @var{dim})
+@deftypefn  {} {} all (@var{x})
+@deftypefnx {} {} all (@var{x}, @var{dim})
 For a vector argument, return true (logical 1) if all elements of the vector
 are nonzero.
 
@@ -117,10 +117,10 @@ Note that in conditional contexts (like the test clause of @code{if} and
 @code{while} statements) Octave treats the test as if you had typed
 @code{all (all (condition))}.
 
-@c xor scripts/miscellaneous/xor.m
+@c xor scripts/scripts/miscellaneous/xor.m
 @anchor{XREFxor}
-@deftypefn  {Function File} {@var{z} =} xor (@var{x}, @var{y})
-@deftypefnx {Function File} {@var{z} =} xor (@var{x1}, @var{x2}, @dots{})
+@deftypefn  {} {@var{z} =} xor (@var{x}, @var{y})
+@deftypefnx {} {@var{z} =} xor (@var{x1}, @var{x2}, @dots{})
 Return the @dfn{exclusive or} of @var{x} and @var{y}.
 
 For boolean expressions @var{x} and @var{y},
@@ -152,9 +152,9 @@ cumulatively from left to right:
 
 @c diff libinterp/corefcn/data.cc
 @anchor{XREFdiff}
-@deftypefn  {Built-in Function} {} diff (@var{x})
-@deftypefnx {Built-in Function} {} diff (@var{x}, @var{k})
-@deftypefnx {Built-in Function} {} diff (@var{x}, @var{k}, @var{dim})
+@deftypefn  {} {} diff (@var{x})
+@deftypefnx {} {} diff (@var{x}, @var{k})
+@deftypefnx {} {} diff (@var{x}, @var{k}, @var{dim})
 If @var{x} is a vector of length @math{n}, @w{@code{diff (@var{x})}} is the
 vector of first differences
 @tex
@@ -185,7 +185,7 @@ an empty matrix is returned.
 
 @c isinf libinterp/corefcn/mappers.cc
 @anchor{XREFisinf}
-@deftypefn {Mapping Function} {} isinf (@var{x})
+@deftypefn {} {} isinf (@var{x})
 Return a logical array which is true where the elements of @var{x} are
 infinite and false where they are not.
 
@@ -203,7 +203,7 @@ isinf ([13, Inf, NA, NaN])
 
 @c isnan libinterp/corefcn/mappers.cc
 @anchor{XREFisnan}
-@deftypefn {Mapping Function} {} isnan (@var{x})
+@deftypefn {} {} isnan (@var{x})
 Return a logical array which is true where the elements of @var{x} are
 NaN values and false where they are not.
 
@@ -221,7 +221,7 @@ isnan ([13, Inf, NA, NaN])
 
 @c isfinite libinterp/corefcn/mappers.cc
 @anchor{XREFisfinite}
-@deftypefn {Mapping Function} {} isfinite (@var{x})
+@deftypefn {} {} isfinite (@var{x})
 Return a logical array which is true where the elements of @var{x} are
 finite values and false where they are not.
 
@@ -237,9 +237,9 @@ isfinite ([13, Inf, NA, NaN])
 @end deftypefn
 
 
-@c common_size scripts/general/common_size.m
+@c common_size scripts/scripts/general/common_size.m
 @anchor{XREFcommon_size}
-@deftypefn {Function File} {[@var{err}, @var{y1}, @dots{}] =} common_size (@var{x1}, @dots{})
+@deftypefn {} {[@var{err}, @var{y1}, @dots{}] =} common_size (@var{x1}, @dots{})
 Determine if all input arguments are either scalar or of common size.
 
 If true, @var{err} is zero, and @var{yi} is a matrix of the common size
@@ -264,11 +264,11 @@ scalars or of common size.
 
 @c find libinterp/corefcn/find.cc
 @anchor{XREFfind}
-@deftypefn  {Built-in Function} {@var{idx} =} find (@var{x})
-@deftypefnx {Built-in Function} {@var{idx} =} find (@var{x}, @var{n})
-@deftypefnx {Built-in Function} {@var{idx} =} find (@var{x}, @var{n}, @var{direction})
-@deftypefnx {Built-in Function} {[i, j] =} find (@dots{})
-@deftypefnx {Built-in Function} {[i, j, v] =} find (@dots{})
+@deftypefn  {} {@var{idx} =} find (@var{x})
+@deftypefnx {} {@var{idx} =} find (@var{x}, @var{n})
+@deftypefnx {} {@var{idx} =} find (@var{x}, @var{n}, @var{direction})
+@deftypefnx {} {[i, j] =} find (@dots{})
+@deftypefnx {} {[i, j, v] =} find (@dots{})
 Return a vector of indices of nonzero elements of a matrix, as a row if
 @var{x} is a row vector or as a column otherwise.
 
@@ -331,8 +331,8 @@ b = sparse (i, j, v, sz(1), sz(2));
 
 @c lookup libinterp/corefcn/lookup.cc
 @anchor{XREFlookup}
-@deftypefn  {Built-in Function} {@var{idx} =} lookup (@var{table}, @var{y})
-@deftypefnx {Built-in Function} {@var{idx} =} lookup (@var{table}, @var{y}, @var{opt})
+@deftypefn  {} {@var{idx} =} lookup (@var{table}, @var{y})
+@deftypefnx {} {@var{idx} =} lookup (@var{table}, @var{y}, @var{opt})
 Lookup values in a sorted table.
 
 This function is usually used as a prelude to interpolation.
@@ -387,9 +387,9 @@ its elements may have, consult @ref{Status of Variables}.
 @node Rearranging Matrices
 @section Rearranging Matrices
 
-@c fliplr scripts/general/fliplr.m
+@c fliplr scripts/scripts/general/fliplr.m
 @anchor{XREFfliplr}
-@deftypefn {Function File} {} fliplr (@var{x})
+@deftypefn {} {} fliplr (@var{x})
 Flip array left to right.
 
 Return a copy of @var{x} with the order of the columns reversed.  In other
@@ -407,9 +407,9 @@ fliplr ([1, 2; 3, 4])
 @end deftypefn
 
 
-@c flipud scripts/general/flipud.m
+@c flipud scripts/scripts/general/flipud.m
 @anchor{XREFflipud}
-@deftypefn {Function File} {} flipud (@var{x})
+@deftypefn {} {} flipud (@var{x})
 Flip array upside down.
 
 Return a copy of @var{x} with the order of the rows reversed.  In other
@@ -427,10 +427,10 @@ flipud ([1, 2; 3, 4])
 @end deftypefn
 
 
-@c flip scripts/general/flip.m
+@c flip scripts/scripts/general/flip.m
 @anchor{XREFflip}
-@deftypefn  {Function File} {} flip (@var{x})
-@deftypefnx {Function File} {} flip (@var{x}, @var{dim})
+@deftypefn  {} {} flip (@var{x})
+@deftypefnx {} {} flip (@var{x}, @var{dim})
 Flip array across dimension @var{dim}.
 
 Return a copy of @var{x} flipped about the dimension @var{dim}.
@@ -462,10 +462,10 @@ flip ([1 2; 3 4], 2)
 @end deftypefn
 
 
-@c rot90 scripts/general/rot90.m
+@c rot90 scripts/scripts/general/rot90.m
 @anchor{XREFrot90}
-@deftypefn  {Function File} {} rot90 (@var{A})
-@deftypefnx {Function File} {} rot90 (@var{A}, @var{k})
+@deftypefn  {} {} rot90 (@var{A})
+@deftypefnx {} {} rot90 (@var{A}, @var{k})
 Rotate array by 90 degree increments.
 
 Return a copy of @var{A} with the elements rotated counterclockwise in
@@ -504,11 +504,11 @@ i.e., rows and columns.  To perform a rotation on any other plane, use
 @end deftypefn
 
 
-@c rotdim scripts/general/rotdim.m
+@c rotdim scripts/scripts/general/rotdim.m
 @anchor{XREFrotdim}
-@deftypefn  {Function File} {} rotdim (@var{x})
-@deftypefnx {Function File} {} rotdim (@var{x}, @var{n})
-@deftypefnx {Function File} {} rotdim (@var{x}, @var{n}, @var{plane})
+@deftypefn  {} {} rotdim (@var{x})
+@deftypefnx {} {} rotdim (@var{x}, @var{n})
+@deftypefnx {} {} rotdim (@var{x}, @var{n}, @var{plane})
 Return a copy of @var{x} with the elements rotated counterclockwise in
 90-degree increments.
 
@@ -548,7 +548,7 @@ rotdim ([1, 2; 3, 4], 7, [1, 2])
 
 @c cat libinterp/corefcn/data.cc
 @anchor{XREFcat}
-@deftypefn {Built-in Function} {} cat (@var{dim}, @var{array1}, @var{array2}, @dots{}, @var{arrayN})
+@deftypefn {} {} cat (@var{dim}, @var{array1}, @var{array2}, @dots{}, @var{arrayN})
 Return the concatenation of N-D array objects, @var{array1},
 @var{array2}, @dots{}, @var{arrayN} along dimension @var{dim}.
 
@@ -595,7 +595,7 @@ cat (4, ones (2, 2), zeros (2, 2))
 
 @c horzcat libinterp/corefcn/data.cc
 @anchor{XREFhorzcat}
-@deftypefn {Built-in Function} {} horzcat (@var{array1}, @var{array2}, @dots{}, @var{arrayN})
+@deftypefn {} {} horzcat (@var{array1}, @var{array2}, @dots{}, @var{arrayN})
 Return the horizontal concatenation of N-D array objects, @var{array1},
 @var{array2}, @dots{}, @var{arrayN} along dimension 2.
 
@@ -611,7 +611,7 @@ new matrices.  For example:
 
 @c vertcat libinterp/corefcn/data.cc
 @anchor{XREFvertcat}
-@deftypefn {Built-in Function} {} vertcat (@var{array1}, @var{array2}, @dots{}, @var{arrayN})
+@deftypefn {} {} vertcat (@var{array1}, @var{array2}, @dots{}, @var{arrayN})
 Return the vertical concatenation of N-D array objects, @var{array1},
 @var{array2}, @dots{}, @var{arrayN} along dimension 1.
 
@@ -627,7 +627,7 @@ new matrices.  For example:
 
 @c permute libinterp/corefcn/data.cc
 @anchor{XREFpermute}
-@deftypefn {Built-in Function} {} permute (@var{A}, @var{perm})
+@deftypefn {} {} permute (@var{A}, @var{perm})
 Return the generalized transpose for an N-D array object @var{A}.
 
 The permutation vector @var{perm} must contain the elements
@@ -658,7 +658,7 @@ size (permute (@var{x}, [1, 2, 3, 4]))
 
 @c ipermute libinterp/corefcn/data.cc
 @anchor{XREFipermute}
-@deftypefn {Built-in Function} {} ipermute (@var{A}, @var{iperm})
+@deftypefn {} {} ipermute (@var{A}, @var{iperm})
 The inverse of the @code{permute} function.
 
 The expression
@@ -675,10 +675,10 @@ returns the original array @var{A}.
 
 @c reshape libinterp/corefcn/data.cc
 @anchor{XREFreshape}
-@deftypefn  {Built-in Function} {} reshape (@var{A}, @var{m}, @var{n}, @dots{})
-@deftypefnx {Built-in Function} {} reshape (@var{A}, [@var{m} @var{n} @dots{}])
-@deftypefnx {Built-in Function} {} reshape (@var{A}, @dots{}, [], @dots{})
-@deftypefnx {Built-in Function} {} reshape (@var{A}, @var{size})
+@deftypefn  {} {} reshape (@var{A}, @var{m}, @var{n}, @dots{})
+@deftypefnx {} {} reshape (@var{A}, [@var{m} @var{n} @dots{}])
+@deftypefnx {} {} reshape (@var{A}, @dots{}, [], @dots{})
+@deftypefnx {} {} reshape (@var{A}, @var{size})
 Return a matrix with the specified dimensions (@var{m}, @var{n}, @dots{})
 whose elements are taken from the matrix @var{A}.
 
@@ -710,9 +710,9 @@ the unspecified dimension.
 
 @c resize libinterp/corefcn/data.cc
 @anchor{XREFresize}
-@deftypefn  {Built-in Function} {} resize (@var{x}, @var{m})
-@deftypefnx {Built-in Function} {} resize (@var{x}, @var{m}, @var{n}, @dots{})
-@deftypefnx {Built-in Function} {} resize (@var{x}, [@var{m} @var{n} @dots{}])
+@deftypefn  {} {} resize (@var{x}, @var{m})
+@deftypefnx {} {} resize (@var{x}, @var{m}, @var{n}, @dots{})
+@deftypefnx {} {} resize (@var{x}, [@var{m} @var{n} @dots{}])
 Resize @var{x} cutting off elements as necessary.
 
 In the result, element with certain indices is equal to the corresponding
@@ -756,16 +756,22 @@ Resizing an object to fewer dimensions is not possible.
 @end deftypefn
 
 
-@c circshift scripts/general/circshift.m
+@c circshift scripts/scripts/general/circshift.m
 @anchor{XREFcircshift}
-@deftypefn {Function File} {@var{y} =} circshift (@var{x}, @var{n})
+@deftypefn  {} {@var{y} =} circshift (@var{x}, @var{n})
+@deftypefnx {} {@var{y} =} circshift (@var{x}, @var{n}, @var{dim})
 Circularly shift the values of the array @var{x}.
 
-@var{n} must be a vector of integers no longer than the number of
-dimensions in @var{x}.  The values of @var{n} can be either positive or
-negative, which determines the direction in which the values or @var{x}
-are shifted.  If an element of @var{n} is zero, then the corresponding
-dimension of @var{x} will not be shifted.  For example:
+@var{n} must be a vector of integers no longer than the number of dimensions
+in @var{x}.  The values of @var{n} can be either positive or negative, which
+determines the direction in which the values of @var{x} are shifted.  If an
+element of @var{n} is zero, then the corresponding dimension of @var{x} will
+not be shifted.
+
+If a scalar @var{dim} is given then operate along the specified dimension.
+In this case @var{n} must be a scalar as well.
+
+Examples:
 
 @example
 @group
@@ -788,10 +794,10 @@ circshift (x, [0,1])
 @end deftypefn
 
 
-@c shift scripts/general/shift.m
+@c shift scripts/scripts/general/shift.m
 @anchor{XREFshift}
-@deftypefn  {Function File} {} shift (@var{x}, @var{b})
-@deftypefnx {Function File} {} shift (@var{x}, @var{b}, @var{dim})
+@deftypefn  {} {} shift (@var{x}, @var{b})
+@deftypefnx {} {} shift (@var{x}, @var{b}, @var{dim})
 If @var{x} is a vector, perform a circular shift of length @var{b} of
 the elements of @var{x}.
 
@@ -801,10 +807,10 @@ If the optional @var{dim} argument is given, operate along this dimension.
 @end deftypefn
 
 
-@c shiftdim scripts/general/shiftdim.m
+@c shiftdim scripts/scripts/general/shiftdim.m
 @anchor{XREFshiftdim}
-@deftypefn  {Function File} {@var{y} =} shiftdim (@var{x}, @var{n})
-@deftypefnx {Function File} {[@var{y}, @var{ns}] =} shiftdim (@var{x})
+@deftypefn  {} {@var{y} =} shiftdim (@var{x}, @var{n})
+@deftypefnx {} {[@var{y}, @var{ns}] =} shiftdim (@var{x})
 Shift the dimensions of @var{x} by @var{n}, where @var{n} must be
 an integer scalar.
 
@@ -837,10 +843,10 @@ size (shiftdim (x, 1))
 
 @c sort libinterp/corefcn/data.cc
 @anchor{XREFsort}
-@deftypefn  {Built-in Function} {[@var{s}, @var{i}] =} sort (@var{x})
-@deftypefnx {Built-in Function} {[@var{s}, @var{i}] =} sort (@var{x}, @var{dim})
-@deftypefnx {Built-in Function} {[@var{s}, @var{i}] =} sort (@var{x}, @var{mode})
-@deftypefnx {Built-in Function} {[@var{s}, @var{i}] =} sort (@var{x}, @var{dim}, @var{mode})
+@deftypefn  {} {[@var{s}, @var{i}] =} sort (@var{x})
+@deftypefnx {} {[@var{s}, @var{i}] =} sort (@var{x}, @var{dim})
+@deftypefnx {} {[@var{s}, @var{i}] =} sort (@var{x}, @var{mode})
+@deftypefnx {} {[@var{s}, @var{i}] =} sort (@var{x}, @var{dim}, @var{mode})
 Return a copy of @var{x} with the elements arranged in increasing order.
 
 For matrices, @code{sort} orders the elements within columns
@@ -906,10 +912,10 @@ ordered lists.
 @end deftypefn
 
 
-@c sortrows scripts/general/sortrows.m
+@c sortrows scripts/scripts/general/sortrows.m
 @anchor{XREFsortrows}
-@deftypefn  {Function File} {[@var{s}, @var{i}] =} sortrows (@var{A})
-@deftypefnx {Function File} {[@var{s}, @var{i}] =} sortrows (@var{A}, @var{c})
+@deftypefn  {} {[@var{s}, @var{i}] =} sortrows (@var{A})
+@deftypefnx {} {[@var{s}, @var{i}] =} sortrows (@var{A}, @var{c})
 Sort the rows of the matrix @var{A} according to the order of the columns
 specified in @var{c}.
 
@@ -938,9 +944,9 @@ sortrows (x, [-2, 3])
 
 @c issorted libinterp/corefcn/data.cc
 @anchor{XREFissorted}
-@deftypefn  {Built-in Function} {} issorted (@var{a})
-@deftypefnx {Built-in Function} {} issorted (@var{a}, @var{mode})
-@deftypefnx {Built-in Function} {} issorted (@var{a}, "rows", @var{mode})
+@deftypefn  {} {} issorted (@var{a})
+@deftypefnx {} {} issorted (@var{a}, @var{mode})
+@deftypefnx {} {} issorted (@var{a}, "rows", @var{mode})
 Return true if the array is sorted according to @var{mode}, which
 may be either @qcode{"ascending"}, @qcode{"descending"}, or
 @qcode{"either"}.
@@ -957,11 +963,10 @@ This function does not support sparse matrices.
 @end deftypefn
 
 
-
 @c nth_element libinterp/corefcn/data.cc
 @anchor{XREFnth_element}
-@deftypefn  {Built-in Function} {} nth_element (@var{x}, @var{n})
-@deftypefnx {Built-in Function} {} nth_element (@var{x}, @var{n}, @var{dim})
+@deftypefn  {} {} nth_element (@var{x}, @var{n})
+@deftypefnx {} {} nth_element (@var{x}, @var{n}, @var{dim})
 Select the n-th smallest element of a vector, using the ordering defined by
 @code{sort}.
 
@@ -986,12 +991,12 @@ the ratio K/M is small; otherwise, it may be better to use @code{sort}.
 @anchor{XREFtriu}
 @c tril libinterp/corefcn/tril.cc
 @anchor{XREFtril}
-@deftypefn  {Function File} {} tril (@var{A})
-@deftypefnx {Function File} {} tril (@var{A}, @var{k})
-@deftypefnx {Function File} {} tril (@var{A}, @var{k}, @var{pack})
-@deftypefnx {Function File} {} triu (@var{A})
-@deftypefnx {Function File} {} triu (@var{A}, @var{k})
-@deftypefnx {Function File} {} triu (@var{A}, @var{k}, @var{pack})
+@deftypefn  {} {} tril (@var{A})
+@deftypefnx {} {} tril (@var{A}, @var{k})
+@deftypefnx {} {} tril (@var{A}, @var{k}, @var{pack})
+@deftypefnx {} {} triu (@var{A})
+@deftypefnx {} {} triu (@var{A}, @var{k})
+@deftypefnx {} {} triu (@var{A}, @var{k}, @var{pack})
 Return a new matrix formed by extracting the lower (@code{tril})
 or upper (@code{triu}) triangular part of the matrix @var{A}, and
 setting all other elements to zero.
@@ -1041,8 +1046,8 @@ above other.
 
 @c vec libinterp/corefcn/data.cc
 @anchor{XREFvec}
-@deftypefn  {Built-in Function} {@var{v} =} vec (@var{x})
-@deftypefnx {Built-in Function} {@var{v} =} vec (@var{x}, @var{dim})
+@deftypefn  {} {@var{v} =} vec (@var{x})
+@deftypefnx {} {@var{v} =} vec (@var{x}, @var{dim})
 Return the vector obtained by stacking the columns of the matrix @var{x}
 one above the other.
 
@@ -1055,9 +1060,9 @@ with all elements along the last dimension.  This is equivalent to
 @end deftypefn
 
 
-@c vech scripts/linear-algebra/vech.m
+@c vech scripts/scripts/linear-algebra/vech.m
 @anchor{XREFvech}
-@deftypefn {Function File} {} vech (@var{x})
+@deftypefn {} {} vech (@var{x})
 Return the vector obtained by eliminating all superdiagonal elements of
 the square matrix @var{x} and stacking the result one column above the
 other.
@@ -1068,11 +1073,11 @@ and it would be pointless to keep values above the main diagonal.
 @end deftypefn
 
 
-@c prepad scripts/general/prepad.m
+@c prepad scripts/scripts/general/prepad.m
 @anchor{XREFprepad}
-@deftypefn  {Function File} {} prepad (@var{x}, @var{l})
-@deftypefnx {Function File} {} prepad (@var{x}, @var{l}, @var{c})
-@deftypefnx {Function File} {} prepad (@var{x}, @var{l}, @var{c}, @var{dim})
+@deftypefn  {} {} prepad (@var{x}, @var{l})
+@deftypefnx {} {} prepad (@var{x}, @var{l}, @var{c})
+@deftypefnx {} {} prepad (@var{x}, @var{l}, @var{c}, @var{dim})
 Prepend the scalar value @var{c} to the vector @var{x} until it is of length
 @var{l}.  If @var{c} is not given, a value of 0 is used.
 
@@ -1089,11 +1094,11 @@ If @var{dim} is larger than the dimensions of @var{x}, the result will have
 @end deftypefn
 
 
-@c postpad scripts/general/postpad.m
+@c postpad scripts/scripts/general/postpad.m
 @anchor{XREFpostpad}
-@deftypefn  {Function File} {} postpad (@var{x}, @var{l})
-@deftypefnx {Function File} {} postpad (@var{x}, @var{l}, @var{c})
-@deftypefnx {Function File} {} postpad (@var{x}, @var{l}, @var{c}, @var{dim})
+@deftypefn  {} {} postpad (@var{x}, @var{l})
+@deftypefnx {} {} postpad (@var{x}, @var{l}, @var{c})
+@deftypefnx {} {} postpad (@var{x}, @var{l}, @var{c}, @var{dim})
 Append the scalar value @var{c} to the vector @var{x} until it is of length
 @var{l}.  If @var{c} is not given, a value of 0 is used.
 
@@ -1112,11 +1117,11 @@ If @var{dim} is larger than the dimensions of @var{x}, the result will have
 
 @c diag libinterp/corefcn/data.cc
 @anchor{XREFdiag}
-@deftypefn  {Built-in Function} {@var{M} =} diag (@var{v})
-@deftypefnx {Built-in Function} {@var{M} =} diag (@var{v}, @var{k})
-@deftypefnx {Built-in Function} {@var{M} =} diag (@var{v}, @var{m}, @var{n})
-@deftypefnx {Built-in Function} {@var{v} =} diag (@var{M})
-@deftypefnx {Built-in Function} {@var{v} =} diag (@var{M}, @var{k})
+@deftypefn  {} {@var{M} =} diag (@var{v})
+@deftypefnx {} {@var{M} =} diag (@var{v}, @var{k})
+@deftypefnx {} {@var{M} =} diag (@var{v}, @var{m}, @var{n})
+@deftypefnx {} {@var{v} =} diag (@var{M})
+@deftypefnx {} {@var{v} =} diag (@var{M}, @var{k})
 Return a diagonal matrix with vector @var{v} on diagonal @var{k}.
 
 The second argument is optional.  If it is positive, the vector is placed on
@@ -1144,9 +1149,9 @@ Given a matrix argument, instead of a vector, @code{diag} extracts the
 @end deftypefn
 
 
-@c blkdiag scripts/general/blkdiag.m
+@c blkdiag scripts/scripts/general/blkdiag.m
 @anchor{XREFblkdiag}
-@deftypefn {Function File} {} blkdiag (@var{A}, @var{B}, @var{C}, @dots{})
+@deftypefn {} {} blkdiag (@var{A}, @var{B}, @var{C}, @dots{})
 Build a block diagonal matrix from @var{A}, @var{B}, @var{C}, @dots{}
 
 All arguments must be numeric and either two-dimensional matrices or
@@ -1160,10 +1165,10 @@ scalars.  If any argument is of type sparse, the output will also be sparse.
 
 @c eye libinterp/corefcn/data.cc
 @anchor{XREFeye}
-@deftypefn  {Built-in Function} {} eye (@var{n})
-@deftypefnx {Built-in Function} {} eye (@var{m}, @var{n})
-@deftypefnx {Built-in Function} {} eye ([@var{m} @var{n}])
-@deftypefnx {Built-in Function} {} eye (@dots{}, @var{class})
+@deftypefn  {} {} eye (@var{n})
+@deftypefnx {} {} eye (@var{m}, @var{n})
+@deftypefnx {} {} eye ([@var{m} @var{n}])
+@deftypefnx {} {} eye (@dots{}, @var{class})
 Return an identity matrix.
 
 If invoked with a single scalar argument @var{n}, return a square
@@ -1211,11 +1216,11 @@ definitions are for compatibility with @sc{matlab}.
 
 @c ones libinterp/corefcn/data.cc
 @anchor{XREFones}
-@deftypefn  {Built-in Function} {} ones (@var{n})
-@deftypefnx {Built-in Function} {} ones (@var{m}, @var{n})
-@deftypefnx {Built-in Function} {} ones (@var{m}, @var{n}, @var{k}, @dots{})
-@deftypefnx {Built-in Function} {} ones ([@var{m} @var{n} @dots{}])
-@deftypefnx {Built-in Function} {} ones (@dots{}, @var{class})
+@deftypefn  {} {} ones (@var{n})
+@deftypefnx {} {} ones (@var{m}, @var{n})
+@deftypefnx {} {} ones (@var{m}, @var{n}, @var{k}, @dots{})
+@deftypefnx {} {} ones ([@var{m} @var{n} @dots{}])
+@deftypefnx {} {} ones (@dots{}, @var{class})
 Return a matrix or N-dimensional array whose elements are all 1.
 
 If invoked with a single scalar integer argument @var{n}, return a square
@@ -1243,11 +1248,11 @@ val = ones (m,n, "uint8")
 
 @c zeros libinterp/corefcn/data.cc
 @anchor{XREFzeros}
-@deftypefn  {Built-in Function} {} zeros (@var{n})
-@deftypefnx {Built-in Function} {} zeros (@var{m}, @var{n})
-@deftypefnx {Built-in Function} {} zeros (@var{m}, @var{n}, @var{k}, @dots{})
-@deftypefnx {Built-in Function} {} zeros ([@var{m} @var{n} @dots{}])
-@deftypefnx {Built-in Function} {} zeros (@dots{}, @var{class})
+@deftypefn  {} {} zeros (@var{n})
+@deftypefnx {} {} zeros (@var{m}, @var{n})
+@deftypefnx {} {} zeros (@var{m}, @var{n}, @var{k}, @dots{})
+@deftypefnx {} {} zeros ([@var{m} @var{n} @dots{}])
+@deftypefnx {} {} zeros (@dots{}, @var{class})
 Return a matrix or N-dimensional array whose elements are all 0.
 
 If invoked with a single scalar integer argument, return a square
@@ -1266,13 +1271,15 @@ val = zeros (m,n, "uint8")
 @end deftypefn
 
 
-@c repmat scripts/general/repmat.m
+@c repmat scripts/scripts/general/repmat.m
 @anchor{XREFrepmat}
-@deftypefn  {Function File} {} repmat (@var{A}, @var{m})
-@deftypefnx {Function File} {} repmat (@var{A}, @var{m}, @var{n})
-@deftypefnx {Function File} {} repmat (@var{A}, @var{m}, @var{n}, @var{p} @dots{})
-@deftypefnx {Function File} {} repmat (@var{A}, [@var{m} @var{n}])
-@deftypefnx {Function File} {} repmat (@var{A}, [@var{m} @var{n} @var{p} @dots{}])
+@deftypefn  {} {} repmat (@var{A}, @var{m})
+@deftypefnx {} {} repmat (@var{A}, @var{m}, @var{n})
+@deftypefnx {} {} repmat (@var{A}, @var{m}, @var{n}, @var{p} @dots{})
+@deftypefnx {} {} repmat (@var{A}, [@var{m} @var{n}])
+@deftypefnx {} {} repmat (@var{A}, [@var{m} @var{n} @var{p} @dots{}])
+Repeat matrix or N-D array.
+
 Form a block matrix of size @var{m} by @var{n}, with a copy of matrix
 @var{A} as each element.
 
@@ -1280,21 +1287,23 @@ If @var{n} is not specified, form an @var{m} by @var{m} block matrix.  For
 copying along more than two dimensions, specify the number of times to copy
 across each dimension @var{m}, @var{n}, @var{p}, @dots{}, in a vector in the
 second argument.
-@seealso{@ref{XREFrepelems,,repelems}}
+
+@seealso{@ref{XREFbsxfun,,bsxfun}, @ref{XREFkron,,kron}, @ref{XREFrepelems,,repelems}}
 @end deftypefn
 
 
 @c repelems libinterp/corefcn/data.cc
 @anchor{XREFrepelems}
-@deftypefn {Built-in Function} {} repelems (@var{x}, @var{r})
+@deftypefn {} {} repelems (@var{x}, @var{r})
 Construct a vector of repeated elements from @var{x}.
 
-@var{r} is a 2x@var{N} integer matrix specifying which elements to repeat and
-how often to repeat each element.  Entries in the first row, @var{r}(1,j),
-select an element to repeat.  The corresponding entry in the second row,
-@var{r}(2,j), specifies the repeat count.  If @var{x} is a matrix then the
-columns of @var{x} are imagined to be stacked on top of each other for
-purposes of the selection index.  A row vector is always returned.
+@var{r} is a 2x@var{N} integer matrix specifying which elements to repeat
+and how often to repeat each element.  Entries in the first row,
+@var{r}(1,j), select an element to repeat.  The corresponding entry in the
+second row, @var{r}(2,j), specifies the repeat count.  If @var{x} is a
+matrix then the columns of @var{x} are imagined to be stacked on top of
+each other for purposes of the selection index.  A row vector is always
+returned.
 
 Conceptually the result is calculated as follows:
 
@@ -1316,8 +1325,8 @@ create vectors with evenly or logarithmically spaced elements.
 
 @c linspace libinterp/corefcn/data.cc
 @anchor{XREFlinspace}
-@deftypefn  {Built-in Function} {} linspace (@var{base}, @var{limit})
-@deftypefnx {Built-in Function} {} linspace (@var{base}, @var{limit}, @var{n})
+@deftypefn  {} {} linspace (@var{base}, @var{limit})
+@deftypefnx {} {} linspace (@var{base}, @var{limit}, @var{n})
 Return a row vector with @var{n} linearly spaced elements between
 @var{base} and @var{limit}.
 
@@ -1326,9 +1335,11 @@ and @var{limit} are always included in the range.  If @var{base} is greater
 than @var{limit}, the elements are stored in decreasing order.  If the
 number of points is not specified, a value of 100 is used.
 
-The @code{linspace} function always returns a row vector if both @var{base}
-and @var{limit} are scalars.  If one, or both, of them are column vectors,
-@code{linspace} returns a matrix.
+The @code{linspace} function returns a row vector when both @var{base}
+and @var{limit} are scalars.  If one, or both, inputs are vectors, then
+@code{linspace} transforms them to column vectors and returns a matrix where
+each row is an independent sequence between
+@w{@code{@var{base}(@var{row_n}), @var{limit}(@var{row_n})}}.
 
 For compatibility with @sc{matlab}, return the second argument (@var{limit})
 if fewer than two values are requested.
@@ -1336,11 +1347,11 @@ if fewer than two values are requested.
 @end deftypefn
 
 
-@c logspace scripts/general/logspace.m
+@c logspace scripts/scripts/general/logspace.m
 @anchor{XREFlogspace}
-@deftypefn  {Function File} {} logspace (@var{a}, @var{b})
-@deftypefnx {Function File} {} logspace (@var{a}, @var{b}, @var{n})
-@deftypefnx {Function File} {} logspace (@var{a}, pi, @var{n})
+@deftypefn  {} {} logspace (@var{a}, @var{b})
+@deftypefnx {} {} logspace (@var{a}, @var{b}, @var{n})
+@deftypefnx {} {} logspace (@var{a}, pi, @var{n})
 Return a row vector with @var{n} elements logarithmically spaced from
 @tex
 $10^{a}$ to $10^{b}$.
@@ -1382,17 +1393,17 @@ if fewer than two values are requested.
 
 @c rand libinterp/corefcn/rand.cc
 @anchor{XREFrand}
-@deftypefn  {Built-in Function} {} rand (@var{n})
-@deftypefnx {Built-in Function} {} rand (@var{m}, @var{n}, @dots{})
-@deftypefnx {Built-in Function} {} rand ([@var{m} @var{n} @dots{}])
-@deftypefnx {Built-in Function} {@var{v} =} rand ("state")
-@deftypefnx {Built-in Function} {} rand ("state", @var{v})
-@deftypefnx {Built-in Function} {} rand ("state", "reset")
-@deftypefnx {Built-in Function} {@var{v} =} rand ("seed")
-@deftypefnx {Built-in Function} {} rand ("seed", @var{v})
-@deftypefnx {Built-in Function} {} rand ("seed", "reset")
-@deftypefnx {Built-in Function} {} rand (@dots{}, "single")
-@deftypefnx {Built-in Function} {} rand (@dots{}, "double")
+@deftypefn  {} {} rand (@var{n})
+@deftypefnx {} {} rand (@var{m}, @var{n}, @dots{})
+@deftypefnx {} {} rand ([@var{m} @var{n} @dots{}])
+@deftypefnx {} {@var{v} =} rand ("state")
+@deftypefnx {} {} rand ("state", @var{v})
+@deftypefnx {} {} rand ("state", "reset")
+@deftypefnx {} {@var{v} =} rand ("seed")
+@deftypefnx {} {} rand ("seed", @var{v})
+@deftypefnx {} {} rand ("seed", "reset")
+@deftypefnx {} {} rand (@dots{}, "single")
+@deftypefnx {} {} rand (@dots{}, "double")
 Return a matrix with random elements uniformly distributed on the
 interval (0, 1).
 
@@ -1470,13 +1481,13 @@ classes.
 @end deftypefn
 
 
-@c randi scripts/general/randi.m
+@c randi scripts/scripts/general/randi.m
 @anchor{XREFrandi}
-@deftypefn  {Function File} {} randi (@var{imax})
-@deftypefnx {Function File} {} randi (@var{imax}, @var{n})
-@deftypefnx {Function File} {} randi (@var{imax}, @var{m}, @var{n}, @dots{})
-@deftypefnx {Function File} {} randi ([@var{imin} @var{imax}], @dots{})
-@deftypefnx {Function File} {} randi (@dots{}, "@var{class}")
+@deftypefn  {} {} randi (@var{imax})
+@deftypefnx {} {} randi (@var{imax}, @var{n})
+@deftypefnx {} {} randi (@var{imax}, @var{m}, @var{n}, @dots{})
+@deftypefnx {} {} randi ([@var{imin} @var{imax}], @dots{})
+@deftypefnx {} {} randi (@dots{}, "@var{class}")
 Return random integers in the range 1:@var{imax}.
 
 Additional arguments determine the shape of the return matrix.  When no
@@ -1510,17 +1521,17 @@ this value is @w{@math{2^{53} - 1}}.
 
 @c randn libinterp/corefcn/rand.cc
 @anchor{XREFrandn}
-@deftypefn  {Built-in Function} {} randn (@var{n})
-@deftypefnx {Built-in Function} {} randn (@var{m}, @var{n}, @dots{})
-@deftypefnx {Built-in Function} {} randn ([@var{m} @var{n} @dots{}])
-@deftypefnx {Built-in Function} {@var{v} =} randn ("state")
-@deftypefnx {Built-in Function} {} randn ("state", @var{v})
-@deftypefnx {Built-in Function} {} randn ("state", "reset")
-@deftypefnx {Built-in Function} {@var{v} =} randn ("seed")
-@deftypefnx {Built-in Function} {} randn ("seed", @var{v})
-@deftypefnx {Built-in Function} {} randn ("seed", "reset")
-@deftypefnx {Built-in Function} {} randn (@dots{}, "single")
-@deftypefnx {Built-in Function} {} randn (@dots{}, "double")
+@deftypefn  {} {} randn (@var{n})
+@deftypefnx {} {} randn (@var{m}, @var{n}, @dots{})
+@deftypefnx {} {} randn ([@var{m} @var{n} @dots{}])
+@deftypefnx {} {@var{v} =} randn ("state")
+@deftypefnx {} {} randn ("state", @var{v})
+@deftypefnx {} {} randn ("state", "reset")
+@deftypefnx {} {@var{v} =} randn ("seed")
+@deftypefnx {} {} randn ("seed", @var{v})
+@deftypefnx {} {} randn ("seed", "reset")
+@deftypefnx {} {} randn (@dots{}, "single")
+@deftypefnx {} {} randn (@dots{}, "double")
 Return a matrix with normally distributed random elements having zero mean
 and variance one.
 
@@ -1544,17 +1555,17 @@ J. Statistical Software, vol 5, 2000,
 
 @c rande libinterp/corefcn/rand.cc
 @anchor{XREFrande}
-@deftypefn  {Built-in Function} {} rande (@var{n})
-@deftypefnx {Built-in Function} {} rande (@var{m}, @var{n}, @dots{})
-@deftypefnx {Built-in Function} {} rande ([@var{m} @var{n} @dots{}])
-@deftypefnx {Built-in Function} {@var{v} =} rande ("state")
-@deftypefnx {Built-in Function} {} rande ("state", @var{v})
-@deftypefnx {Built-in Function} {} rande ("state", "reset")
-@deftypefnx {Built-in Function} {@var{v} =} rande ("seed")
-@deftypefnx {Built-in Function} {} rande ("seed", @var{v})
-@deftypefnx {Built-in Function} {} rande ("seed", "reset")
-@deftypefnx {Built-in Function} {} rande (@dots{}, "single")
-@deftypefnx {Built-in Function} {} rande (@dots{}, "double")
+@deftypefn  {} {} rande (@var{n})
+@deftypefnx {} {} rande (@var{m}, @var{n}, @dots{})
+@deftypefnx {} {} rande ([@var{m} @var{n} @dots{}])
+@deftypefnx {} {@var{v} =} rande ("state")
+@deftypefnx {} {} rande ("state", @var{v})
+@deftypefnx {} {} rande ("state", "reset")
+@deftypefnx {} {@var{v} =} rande ("seed")
+@deftypefnx {} {} rande ("seed", @var{v})
+@deftypefnx {} {} rande ("seed", "reset")
+@deftypefnx {} {} rande (@dots{}, "single")
+@deftypefnx {} {} rande (@dots{}, "double")
 Return a matrix with exponentially distributed random elements.
 
 The arguments are handled the same as the arguments for @code{rand}.
@@ -1578,17 +1589,17 @@ J. Statistical Software, vol 5, 2000,
 
 @c randp libinterp/corefcn/rand.cc
 @anchor{XREFrandp}
-@deftypefn  {Built-in Function} {} randp (@var{l}, @var{n})
-@deftypefnx {Built-in Function} {} randp (@var{l}, @var{m}, @var{n}, @dots{})
-@deftypefnx {Built-in Function} {} randp (@var{l}, [@var{m} @var{n} @dots{}])
-@deftypefnx {Built-in Function} {@var{v} =} randp ("state")
-@deftypefnx {Built-in Function} {} randp ("state", @var{v})
-@deftypefnx {Built-in Function} {} randp ("state", "reset")
-@deftypefnx {Built-in Function} {@var{v} =} randp ("seed")
-@deftypefnx {Built-in Function} {} randp ("seed", @var{v})
-@deftypefnx {Built-in Function} {} randp ("seed", "reset")
-@deftypefnx {Built-in Function} {} randp (@dots{}, "single")
-@deftypefnx {Built-in Function} {} randp (@dots{}, "double")
+@deftypefn  {} {} randp (@var{l}, @var{n})
+@deftypefnx {} {} randp (@var{l}, @var{m}, @var{n}, @dots{})
+@deftypefnx {} {} randp (@var{l}, [@var{m} @var{n} @dots{}])
+@deftypefnx {} {@var{v} =} randp ("state")
+@deftypefnx {} {} randp ("state", @var{v})
+@deftypefnx {} {} randp ("state", "reset")
+@deftypefnx {} {@var{v} =} randp ("seed")
+@deftypefnx {} {} randp ("seed", @var{v})
+@deftypefnx {} {} randp ("seed", "reset")
+@deftypefnx {} {} randp (@dots{}, "single")
+@deftypefnx {} {} randp (@dots{}, "double")
 Return a matrix with Poisson distributed random elements with mean value
 parameter given by the first argument, @var{l}.
 
@@ -1630,17 +1641,17 @@ classes.
 
 @c randg libinterp/corefcn/rand.cc
 @anchor{XREFrandg}
-@deftypefn  {Built-in Function} {} randg (@var{n})
-@deftypefnx {Built-in Function} {} randg (@var{m}, @var{n}, @dots{})
-@deftypefnx {Built-in Function} {} randg ([@var{m} @var{n} @dots{}])
-@deftypefnx {Built-in Function} {@var{v} =} randg ("state")
-@deftypefnx {Built-in Function} {} randg ("state", @var{v})
-@deftypefnx {Built-in Function} {} randg ("state", "reset")
-@deftypefnx {Built-in Function} {@var{v} =} randg ("seed")
-@deftypefnx {Built-in Function} {} randg ("seed", @var{v})
-@deftypefnx {Built-in Function} {} randg ("seed", "reset")
-@deftypefnx {Built-in Function} {} randg (@dots{}, "single")
-@deftypefnx {Built-in Function} {} randg (@dots{}, "double")
+@deftypefn  {} {} randg (@var{n})
+@deftypefnx {} {} randg (@var{m}, @var{n}, @dots{})
+@deftypefnx {} {} randg ([@var{m} @var{n} @dots{}])
+@deftypefnx {} {@var{v} =} randg ("state")
+@deftypefnx {} {} randg ("state", @var{v})
+@deftypefnx {} {} randg ("state", "reset")
+@deftypefnx {} {@var{v} =} randg ("seed")
+@deftypefnx {} {} randg ("seed", @var{v})
+@deftypefnx {} {} randg ("seed", "reset")
+@deftypefnx {} {} randg (@dots{}, "single")
+@deftypefnx {} {} randg (@dots{}, "double")
 Return a matrix with @code{gamma (@var{a},1)} distributed random elements.
 
 The arguments are handled the same as the arguments for @code{rand}, except
@@ -1691,7 +1702,6 @@ r1 = 2 * randg (n1 / 2) / n1
 ## r2 equals 1 if n2 is infinite
 r2 = 2 * randg (n2 / 2) / n2
 r = r1 / r2
-
 @end group
 @end example
 
@@ -1788,8 +1798,8 @@ Houston, TX 77030.
 
 @c randperm libinterp/corefcn/rand.cc
 @anchor{XREFrandperm}
-@deftypefn  {Built-in Function} {} randperm (@var{n})
-@deftypefnx {Built-in Function} {} randperm (@var{n}, @var{m})
+@deftypefn  {} {} randperm (@var{n})
+@deftypefnx {} {} randperm (@var{n}, @var{m})
 Return a row vector containing a random permutation of @code{1:@var{n}}.
 
 If @var{m} is supplied, return @var{m} unique entries, sampled without
@@ -1808,102 +1818,102 @@ likely.
 
 The following functions return famous matrix forms.
 
-@c gallery scripts/special-matrix/gallery.m
+@c gallery scripts/scripts/special-matrix/gallery.m
 @anchor{XREFgallery}
-@deftypefn  {Function File} {} gallery (@var{name})
-@deftypefnx {Function File} {} gallery (@var{name}, @var{args})
+@deftypefn  {} {} gallery (@var{name})
+@deftypefnx {} {} gallery (@var{name}, @var{args})
 Create interesting matrices for testing.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{c} =} gallery ("cauchy", @var{x})
-@deftypefnx {Function File} {@var{c} =} gallery ("cauchy", @var{x}, @var{y})
+@deftypefn  {} {@var{c} =} gallery ("cauchy", @var{x})
+@deftypefnx {} {@var{c} =} gallery ("cauchy", @var{x}, @var{y})
 Create a Cauchy matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{c} =} gallery ("chebspec", @var{n})
-@deftypefnx {Function File} {@var{c} =} gallery ("chebspec", @var{n}, @var{k})
+@deftypefn  {} {@var{c} =} gallery ("chebspec", @var{n})
+@deftypefnx {} {@var{c} =} gallery ("chebspec", @var{n}, @var{k})
 Create a Chebyshev spectral differentiation matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{c} =} gallery ("chebvand", @var{p})
-@deftypefnx {Function File} {@var{c} =} gallery ("chebvand", @var{m}, @var{p})
+@deftypefn  {} {@var{c} =} gallery ("chebvand", @var{p})
+@deftypefnx {} {@var{c} =} gallery ("chebvand", @var{m}, @var{p})
 Create a Vandermonde-like matrix for the Chebyshev polynomials.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("chow", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("chow", @var{n}, @var{alpha})
-@deftypefnx {Function File} {@var{a} =} gallery ("chow", @var{n}, @var{alpha}, @var{delta})
+@deftypefn  {} {@var{a} =} gallery ("chow", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("chow", @var{n}, @var{alpha})
+@deftypefnx {} {@var{a} =} gallery ("chow", @var{n}, @var{alpha}, @var{delta})
 Create a Chow matrix -- a singular Toeplitz lower Hessenberg matrix.
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{c} =} gallery ("circul", @var{v})
+@deftypefn {} {@var{c} =} gallery ("circul", @var{v})
 Create a circulant matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("clement", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("clement", @var{n}, @var{k})
+@deftypefn  {} {@var{a} =} gallery ("clement", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("clement", @var{n}, @var{k})
 Create a tridiagonal matrix with zero diagonal entries.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{c} =} gallery ("compar", @var{a})
-@deftypefnx {Function File} {@var{c} =} gallery ("compar", @var{a}, @var{k})
+@deftypefn  {} {@var{c} =} gallery ("compar", @var{a})
+@deftypefnx {} {@var{c} =} gallery ("compar", @var{a}, @var{k})
 Create a comparison matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("condex", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("condex", @var{n}, @var{k})
-@deftypefnx {Function File} {@var{a} =} gallery ("condex", @var{n}, @var{k}, @var{theta})
+@deftypefn  {} {@var{a} =} gallery ("condex", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("condex", @var{n}, @var{k})
+@deftypefnx {} {@var{a} =} gallery ("condex", @var{n}, @var{k}, @var{theta})
 Create a `counterexample' matrix to a condition estimator.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("cycol", [@var{m} @var{n}])
-@deftypefnx {Function File} {@var{a} =} gallery ("cycol", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery (@dots{}, @var{k})
+@deftypefn  {} {@var{a} =} gallery ("cycol", [@var{m} @var{n}])
+@deftypefnx {} {@var{a} =} gallery ("cycol", @var{n})
+@deftypefnx {} {@var{a} =} gallery (@dots{}, @var{k})
 Create a matrix whose columns repeat cyclically.
 
 @end deftypefn
 
-@deftypefn  {Function File} {[@var{c}, @var{d}, @var{e}] =} gallery ("dorr", @var{n})
-@deftypefnx {Function File} {[@var{c}, @var{d}, @var{e}] =} gallery ("dorr", @var{n}, @var{theta})
-@deftypefnx {Function File} {@var{a} =} gallery ("dorr", @dots{})
+@deftypefn  {} {[@var{c}, @var{d}, @var{e}] =} gallery ("dorr", @var{n})
+@deftypefnx {} {[@var{c}, @var{d}, @var{e}] =} gallery ("dorr", @var{n}, @var{theta})
+@deftypefnx {} {@var{a} =} gallery ("dorr", @dots{})
 Create a diagonally dominant, ill-conditioned, tridiagonal matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("dramadah", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("dramadah", @var{n}, @var{k})
+@deftypefn  {} {@var{a} =} gallery ("dramadah", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("dramadah", @var{n}, @var{k})
 Create a (0, 1) matrix whose inverse has large integer entries.
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{a} =} gallery ("fiedler", @var{c})
+@deftypefn {} {@var{a} =} gallery ("fiedler", @var{c})
 Create a symmetric @nospell{Fiedler} matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("forsythe", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("forsythe", @var{n}, @var{alpha})
-@deftypefnx {Function File} {@var{a} =} gallery ("forsythe", @var{n}, @var{alpha}, @var{lambda})
+@deftypefn  {} {@var{a} =} gallery ("forsythe", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("forsythe", @var{n}, @var{alpha})
+@deftypefnx {} {@var{a} =} gallery ("forsythe", @var{n}, @var{alpha}, @var{lambda})
 Create a @nospell{Forsythe} matrix (a perturbed Jordan block).
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{f} =} gallery ("frank", @var{n})
-@deftypefnx {Function File} {@var{f} =} gallery ("frank", @var{n}, @var{k})
+@deftypefn  {} {@var{f} =} gallery ("frank", @var{n})
+@deftypefnx {} {@var{f} =} gallery ("frank", @var{n}, @var{k})
 Create a Frank matrix (ill-conditioned eigenvalues).
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{c} =} gallery ("gcdmat", @var{n})
+@deftypefn {} {@var{c} =} gallery ("gcdmat", @var{n})
 Create a greatest common divisor matrix.
 
 @var{c} is an @var{n}-by-@var{n} matrix whose values correspond to the
@@ -1911,43 +1921,43 @@ greatest common divisor of its coordinate values, i.e., @var{c}(i,j)
 correspond @code{gcd (i, j)}.
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("gearmat", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("gearmat", @var{n}, @var{i})
-@deftypefnx {Function File} {@var{a} =} gallery ("gearmat", @var{n}, @var{i}, @var{j})
+@deftypefn  {} {@var{a} =} gallery ("gearmat", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("gearmat", @var{n}, @var{i})
+@deftypefnx {} {@var{a} =} gallery ("gearmat", @var{n}, @var{i}, @var{j})
 Create a Gear matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{g} =} gallery ("grcar", @var{n})
-@deftypefnx {Function File} {@var{g} =} gallery ("grcar", @var{n}, @var{k})
+@deftypefn  {} {@var{g} =} gallery ("grcar", @var{n})
+@deftypefnx {} {@var{g} =} gallery ("grcar", @var{n}, @var{k})
 Create a Toeplitz matrix with sensitive eigenvalues.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("hanowa", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("hanowa", @var{n}, @var{d})
+@deftypefn  {} {@var{a} =} gallery ("hanowa", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("hanowa", @var{n}, @var{d})
 Create a matrix whose eigenvalues lie on a vertical line in the complex
 plane.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{v} =} gallery ("house", @var{x})
-@deftypefnx {Function File} {[@var{v}, @var{beta}] =} gallery ("house", @var{x})
+@deftypefn  {} {@var{v} =} gallery ("house", @var{x})
+@deftypefnx {} {[@var{v}, @var{beta}] =} gallery ("house", @var{x})
 Create a householder matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("integerdata", @var{imax}, [@var{M} @var{N} @dots{}], @var{j})
-@deftypefnx {Function File} {@var{a} =} gallery ("integerdata", @var{imax}, @var{M}, @var{N}, @dots{}, @var{j})
-@deftypefnx {Function File} {@var{a} =} gallery ("integerdata", [@var{imin}, @var{imax}], [@var{M} @var{N} @dots{}], @var{j})
-@deftypefnx {Function File} {@var{a} =} gallery ("integerdata", [@var{imin}, @var{imax}], @var{M}, @var{N}, @dots{}, @var{j})
-@deftypefnx {Function File} {@var{a} =} gallery ("integerdata", @dots{}, "@var{class}")
+@deftypefn  {} {@var{a} =} gallery ("integerdata", @var{imax}, [@var{M} @var{N} @dots{}], @var{j})
+@deftypefnx {} {@var{a} =} gallery ("integerdata", @var{imax}, @var{M}, @var{N}, @dots{}, @var{j})
+@deftypefnx {} {@var{a} =} gallery ("integerdata", [@var{imin}, @var{imax}], [@var{M} @var{N} @dots{}], @var{j})
+@deftypefnx {} {@var{a} =} gallery ("integerdata", [@var{imin}, @var{imax}], @var{M}, @var{N}, @dots{}, @var{j})
+@deftypefnx {} {@var{a} =} gallery ("integerdata", @dots{}, "@var{class}")
 Create a matrix with random integers in the range [1, @var{imax}].
 If @var{imin} is given then the integers are in the range
 [@var{imin}, @var{imax}].
 
-The second input is a matrix of dimensions describing the size of the output.
-The dimensions can also be input as comma-separated arguments.
+The second input is a matrix of dimensions describing the size of the
+output.  The dimensions can also be input as comma-separated arguments.
 
 The input @var{j} is an integer index in the range [0, 2^32-1].  The values
 of the output matrix are always exactly the same (reproducibility) for a
@@ -1960,89 +1970,89 @@ Possible values for @var{class}: @qcode{"uint8"}, @qcode{"uint16"},
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("invhess", @var{x})
-@deftypefnx {Function File} {@var{a} =} gallery ("invhess", @var{x}, @var{y})
+@deftypefn  {} {@var{a} =} gallery ("invhess", @var{x})
+@deftypefnx {} {@var{a} =} gallery ("invhess", @var{x}, @var{y})
 Create the inverse of an upper Hessenberg matrix.
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{a} =} gallery ("invol", @var{n})
+@deftypefn {} {@var{a} =} gallery ("invol", @var{n})
 Create an involutory matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("ipjfact", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("ipjfact", @var{n}, @var{k})
+@deftypefn  {} {@var{a} =} gallery ("ipjfact", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("ipjfact", @var{n}, @var{k})
 Create a Hankel matrix with factorial elements.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("jordbloc", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("jordbloc", @var{n}, @var{lambda})
+@deftypefn  {} {@var{a} =} gallery ("jordbloc", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("jordbloc", @var{n}, @var{lambda})
 Create a Jordan block.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{u} =} gallery ("kahan", @var{n})
-@deftypefnx {Function File} {@var{u} =} gallery ("kahan", @var{n}, @var{theta})
-@deftypefnx {Function File} {@var{u} =} gallery ("kahan", @var{n}, @var{theta}, @var{pert})
+@deftypefn  {} {@var{u} =} gallery ("kahan", @var{n})
+@deftypefnx {} {@var{u} =} gallery ("kahan", @var{n}, @var{theta})
+@deftypefnx {} {@var{u} =} gallery ("kahan", @var{n}, @var{theta}, @var{pert})
 Create a @nospell{Kahan} matrix (upper trapezoidal).
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("kms", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("kms", @var{n}, @var{rho})
+@deftypefn  {} {@var{a} =} gallery ("kms", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("kms", @var{n}, @var{rho})
 Create a @nospell{Kac-Murdock-Szego} Toeplitz matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{b} =} gallery ("krylov", @var{a})
-@deftypefnx {Function File} {@var{b} =} gallery ("krylov", @var{a}, @var{x})
-@deftypefnx {Function File} {@var{b} =} gallery ("krylov", @var{a}, @var{x}, @var{j})
+@deftypefn  {} {@var{b} =} gallery ("krylov", @var{a})
+@deftypefnx {} {@var{b} =} gallery ("krylov", @var{a}, @var{x})
+@deftypefnx {} {@var{b} =} gallery ("krylov", @var{a}, @var{x}, @var{j})
 Create a Krylov matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("lauchli", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("lauchli", @var{n}, @var{mu})
+@deftypefn  {} {@var{a} =} gallery ("lauchli", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("lauchli", @var{n}, @var{mu})
 Create a @nospell{Lauchli} matrix (rectangular).
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{a} =} gallery ("lehmer", @var{n})
+@deftypefn {} {@var{a} =} gallery ("lehmer", @var{n})
 Create a @nospell{Lehmer} matrix (symmetric positive definite).
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{t} =} gallery ("lesp", @var{n})
+@deftypefn {} {@var{t} =} gallery ("lesp", @var{n})
 Create a tridiagonal matrix with real, sensitive eigenvalues.
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{a} =} gallery ("lotkin", @var{n})
+@deftypefn {} {@var{a} =} gallery ("lotkin", @var{n})
 Create a @nospell{Lotkin} matrix.
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{a} =} gallery ("minij", @var{n})
+@deftypefn {} {@var{a} =} gallery ("minij", @var{n})
 Create a symmetric positive definite matrix MIN(i,j).
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("moler", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("moler", @var{n}, @var{alpha})
+@deftypefn  {} {@var{a} =} gallery ("moler", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("moler", @var{n}, @var{alpha})
 Create a @nospell{Moler} matrix (symmetric positive definite).
 
 @end deftypefn
 
-@deftypefn {Function File} {[@var{a}, @var{t}] =} gallery ("neumann", @var{n})
+@deftypefn {} {[@var{a}, @var{t}] =} gallery ("neumann", @var{n})
 Create a singular matrix from the discrete Neumann problem (sparse).
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("normaldata", [@var{M} @var{N} @dots{}], @var{j})
-@deftypefnx {Function File} {@var{a} =} gallery ("normaldata", @var{M}, @var{N}, @dots{}, @var{j})
-@deftypefnx {Function File} {@var{a} =} gallery ("normaldata", @dots{}, "@var{class}")
+@deftypefn  {} {@var{a} =} gallery ("normaldata", [@var{M} @var{N} @dots{}], @var{j})
+@deftypefnx {} {@var{a} =} gallery ("normaldata", @var{M}, @var{N}, @dots{}, @var{j})
+@deftypefnx {} {@var{a} =} gallery ("normaldata", @dots{}, "@var{class}")
 Create a matrix with random samples from the standard normal distribution
 (mean = 0, std = 1).
 
@@ -2059,113 +2069,113 @@ The default is @qcode{"double"}.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{q} =} gallery ("orthog", @var{n})
-@deftypefnx {Function File} {@var{q} =} gallery ("orthog", @var{n}, @var{k})
+@deftypefn  {} {@var{q} =} gallery ("orthog", @var{n})
+@deftypefnx {} {@var{q} =} gallery ("orthog", @var{n}, @var{k})
 Create orthogonal and nearly orthogonal matrices.
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{a} =} gallery ("parter", @var{n})
+@deftypefn {} {@var{a} =} gallery ("parter", @var{n})
 Create a @nospell{Parter} matrix (a Toeplitz matrix with singular values
 near pi).
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{p} =} gallery ("pei", @var{n})
-@deftypefnx {Function File} {@var{p} =} gallery ("pei", @var{n}, @var{alpha})
+@deftypefn  {} {@var{p} =} gallery ("pei", @var{n})
+@deftypefnx {} {@var{p} =} gallery ("pei", @var{n}, @var{alpha})
 Create a Pei matrix.
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{a} =} gallery ("Poisson", @var{n})
+@deftypefn {} {@var{a} =} gallery ("Poisson", @var{n})
 Create a block tridiagonal matrix from Poisson's equation (sparse).
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("prolate", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("prolate", @var{n}, @var{w})
+@deftypefn  {} {@var{a} =} gallery ("prolate", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("prolate", @var{n}, @var{w})
 Create a prolate matrix (symmetric, ill-conditioned Toeplitz matrix).
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{h} =} gallery ("randhess", @var{x})
+@deftypefn {} {@var{h} =} gallery ("randhess", @var{x})
 Create a random, orthogonal upper Hessenberg matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("rando", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("rando", @var{n}, @var{k})
+@deftypefn  {} {@var{a} =} gallery ("rando", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("rando", @var{n}, @var{k})
 Create a random matrix with elements -1, 0 or 1.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("randsvd", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("randsvd", @var{n}, @var{kappa})
-@deftypefnx {Function File} {@var{a} =} gallery ("randsvd", @var{n}, @var{kappa}, @var{mode})
-@deftypefnx {Function File} {@var{a} =} gallery ("randsvd", @var{n}, @var{kappa}, @var{mode}, @var{kl})
-@deftypefnx {Function File} {@var{a} =} gallery ("randsvd", @var{n}, @var{kappa}, @var{mode}, @var{kl}, @var{ku})
+@deftypefn  {} {@var{a} =} gallery ("randsvd", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("randsvd", @var{n}, @var{kappa})
+@deftypefnx {} {@var{a} =} gallery ("randsvd", @var{n}, @var{kappa}, @var{mode})
+@deftypefnx {} {@var{a} =} gallery ("randsvd", @var{n}, @var{kappa}, @var{mode}, @var{kl})
+@deftypefnx {} {@var{a} =} gallery ("randsvd", @var{n}, @var{kappa}, @var{mode}, @var{kl}, @var{ku})
 Create a random matrix with pre-assigned singular values.
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{a} =} gallery ("redheff", @var{n})
+@deftypefn {} {@var{a} =} gallery ("redheff", @var{n})
 Create a zero and ones matrix of @nospell{Redheffer} associated with the
 Riemann hypothesis.
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{a} =} gallery ("riemann", @var{n})
+@deftypefn {} {@var{a} =} gallery ("riemann", @var{n})
 Create a matrix associated with the Riemann hypothesis.
 
 @end deftypefn
 
-@deftypefn {Function File} {@var{a} =} gallery ("ris", @var{n})
+@deftypefn {} {@var{a} =} gallery ("ris", @var{n})
 Create a symmetric Hankel matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("smoke", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("smoke", @var{n}, @var{k})
+@deftypefn  {} {@var{a} =} gallery ("smoke", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("smoke", @var{n}, @var{k})
 Create a complex matrix, with a `smoke ring' pseudospectrum.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{t} =} gallery ("toeppd", @var{n})
-@deftypefnx {Function File} {@var{t} =} gallery ("toeppd", @var{n}, @var{m})
-@deftypefnx {Function File} {@var{t} =} gallery ("toeppd", @var{n}, @var{m}, @var{w})
-@deftypefnx {Function File} {@var{t} =} gallery ("toeppd", @var{n}, @var{m}, @var{w}, @var{theta})
+@deftypefn  {} {@var{t} =} gallery ("toeppd", @var{n})
+@deftypefnx {} {@var{t} =} gallery ("toeppd", @var{n}, @var{m})
+@deftypefnx {} {@var{t} =} gallery ("toeppd", @var{n}, @var{m}, @var{w})
+@deftypefnx {} {@var{t} =} gallery ("toeppd", @var{n}, @var{m}, @var{w}, @var{theta})
 Create a symmetric positive definite Toeplitz matrix.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{p} =} gallery ("toeppen", @var{n})
-@deftypefnx {Function File} {@var{p} =} gallery ("toeppen", @var{n}, @var{a})
-@deftypefnx {Function File} {@var{p} =} gallery ("toeppen", @var{n}, @var{a}, @var{b})
-@deftypefnx {Function File} {@var{p} =} gallery ("toeppen", @var{n}, @var{a}, @var{b}, @var{c})
-@deftypefnx {Function File} {@var{p} =} gallery ("toeppen", @var{n}, @var{a}, @var{b}, @var{c}, @var{d})
-@deftypefnx {Function File} {@var{p} =} gallery ("toeppen", @var{n}, @var{a}, @var{b}, @var{c}, @var{d}, @var{e})
+@deftypefn  {} {@var{p} =} gallery ("toeppen", @var{n})
+@deftypefnx {} {@var{p} =} gallery ("toeppen", @var{n}, @var{a})
+@deftypefnx {} {@var{p} =} gallery ("toeppen", @var{n}, @var{a}, @var{b})
+@deftypefnx {} {@var{p} =} gallery ("toeppen", @var{n}, @var{a}, @var{b}, @var{c})
+@deftypefnx {} {@var{p} =} gallery ("toeppen", @var{n}, @var{a}, @var{b}, @var{c}, @var{d})
+@deftypefnx {} {@var{p} =} gallery ("toeppen", @var{n}, @var{a}, @var{b}, @var{c}, @var{d}, @var{e})
 Create a pentadiagonal Toeplitz matrix (sparse).
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("tridiag", @var{x}, @var{y}, @var{z})
-@deftypefnx {Function File} {@var{a} =} gallery ("tridiag", @var{n})
-@deftypefnx {Function File} {@var{a} =} gallery ("tridiag", @var{n}, @var{c}, @var{d}, @var{e})
+@deftypefn  {} {@var{a} =} gallery ("tridiag", @var{x}, @var{y}, @var{z})
+@deftypefnx {} {@var{a} =} gallery ("tridiag", @var{n})
+@deftypefnx {} {@var{a} =} gallery ("tridiag", @var{n}, @var{c}, @var{d}, @var{e})
 Create a tridiagonal matrix (sparse).
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{t} =} gallery ("triw", @var{n})
-@deftypefnx {Function File} {@var{t} =} gallery ("triw", @var{n}, @var{alpha})
-@deftypefnx {Function File} {@var{t} =} gallery ("triw", @var{n}, @var{alpha}, @var{k})
+@deftypefn  {} {@var{t} =} gallery ("triw", @var{n})
+@deftypefnx {} {@var{t} =} gallery ("triw", @var{n}, @var{alpha})
+@deftypefnx {} {@var{t} =} gallery ("triw", @var{n}, @var{alpha}, @var{k})
 Create an upper triangular matrix discussed by
 @nospell{Kahan, Golub, and Wilkinson}.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("uniformdata", [@var{M} @var{N} @dots{}], @var{j})
-@deftypefnx {Function File} {@var{a} =} gallery ("uniformdata", @var{M}, @var{N}, @dots{}, @var{j})
-@deftypefnx {Function File} {@var{a} =} gallery ("uniformdata", @dots{}, "@var{class}")
+@deftypefn  {} {@var{a} =} gallery ("uniformdata", [@var{M} @var{N} @dots{}], @var{j})
+@deftypefnx {} {@var{a} =} gallery ("uniformdata", @var{M}, @var{N}, @dots{}, @var{j})
+@deftypefnx {} {@var{a} =} gallery ("uniformdata", @dots{}, "@var{class}")
 Create a matrix with random samples from the standard uniform distribution
 (range [0,1]).
 
@@ -2182,21 +2192,21 @@ The default is @qcode{"double"}.
 
 @end deftypefn
 
-@deftypefn  {Function File} {@var{a} =} gallery ("wathen", @var{nx}, @var{ny})
-@deftypefnx {Function File} {@var{a} =} gallery ("wathen", @var{nx}, @var{ny}, @var{k})
+@deftypefn  {} {@var{a} =} gallery ("wathen", @var{nx}, @var{ny})
+@deftypefnx {} {@var{a} =} gallery ("wathen", @var{nx}, @var{ny}, @var{k})
 Create the @nospell{Wathen} matrix.
 
 @end deftypefn
 
-@deftypefn {Function File} {[@var{a}, @var{b}] =} gallery ("wilk", @var{n})
+@deftypefn {} {[@var{a}, @var{b}] =} gallery ("wilk", @var{n})
 Create various specific matrices devised/discussed by Wilkinson.
 
 @end deftypefn
 
 
-@c hadamard scripts/special-matrix/hadamard.m
+@c hadamard scripts/scripts/special-matrix/hadamard.m
 @anchor{XREFhadamard}
-@deftypefn {Function File} {} hadamard (@var{n})
+@deftypefn {} {} hadamard (@var{n})
 Construct a Hadamard matrix (@nospell{Hn}) of size @var{n}-by-@var{n}.
 
 The size @var{n} must be of the form @math{2^k * p} in which p is one of
@@ -2227,16 +2237,17 @@ matrix.
 @end deftypefn
 
 
-@c hankel scripts/special-matrix/hankel.m
+@c hankel scripts/scripts/special-matrix/hankel.m
 @anchor{XREFhankel}
-@deftypefn  {Function File} {} hankel (@var{c})
-@deftypefnx {Function File} {} hankel (@var{c}, @var{r})
+@deftypefn  {} {} hankel (@var{c})
+@deftypefnx {} {} hankel (@var{c}, @var{r})
 Return the Hankel matrix constructed from the first column @var{c}, and
 (optionally) the last row @var{r}.
 
 If the last element of @var{c} is not the same as the first element of
 @var{r}, the last element of @var{c} is used.  If the second argument is
-omitted, it is assumed to be a vector of zeros with the same size as @var{c}.
+omitted, it is assumed to be a vector of zeros with the same size as
+@var{c}.
 
 A Hankel matrix formed from an m-vector @var{c}, and an n-vector @var{r},
 has the elements
@@ -2259,9 +2270,9 @@ H(i,j) = r(i+j-m),  otherwise
 @end deftypefn
 
 
-@c hilb scripts/special-matrix/hilb.m
+@c hilb scripts/scripts/special-matrix/hilb.m
 @anchor{XREFhilb}
-@deftypefn {Function File} {} hilb (@var{n})
+@deftypefn {} {} hilb (@var{n})
 Return the Hilbert matrix of order @var{n}.
 
 The @math{i,j} element of a Hilbert matrix is defined as
@@ -2296,9 +2307,9 @@ cond (hilb (5))
 @end deftypefn
 
 
-@c invhilb scripts/special-matrix/invhilb.m
+@c invhilb scripts/scripts/special-matrix/invhilb.m
 @anchor{XREFinvhilb}
-@deftypefn {Function File} {} invhilb (@var{n})
+@deftypefn {} {} invhilb (@var{n})
 Return the inverse of the Hilbert matrix of order @var{n}.
 
 This can be computed exactly using
@@ -2354,23 +2365,25 @@ finite precision of your computer's floating point arithmetic.
 @end deftypefn
 
 
-@c magic scripts/special-matrix/magic.m
+@c magic scripts/scripts/special-matrix/magic.m
 @anchor{XREFmagic}
-@deftypefn {Function File} {} magic (@var{n})
+@deftypefn {} {} magic (@var{n})
 
 Create an @var{n}-by-@var{n} magic square.
 
 A magic square is an arrangement of the integers @code{1:n^2} such that the
 row sums, column sums, and diagonal sums are all equal to the same value.
 
-Note: @var{n} must be greater than 2 for the magic square to exist.
+Note: @var{n} must be a scalar greater than or equal to 3.  If you supply
+@var{n} less than 3, magic returns either a nonmagic square, or else the
+degenerate magic squares 1 and [].
 @end deftypefn
 
 
-@c pascal scripts/special-matrix/pascal.m
+@c pascal scripts/scripts/special-matrix/pascal.m
 @anchor{XREFpascal}
-@deftypefn  {Function File} {} pascal (@var{n})
-@deftypefnx {Function File} {} pascal (@var{n}, @var{t})
+@deftypefn  {} {} pascal (@var{n})
+@deftypefnx {} {} pascal (@var{n}, @var{t})
 Return the Pascal matrix of order @var{n} if @code{@var{t} = 0}.
 
 The default value of @var{t} is 0.
@@ -2391,9 +2404,9 @@ That is, @code{pascal (@var{n}, 2) ^ 3 == eye (@var{n})}.
 @end deftypefn
 
 
-@c rosser scripts/special-matrix/rosser.m
+@c rosser scripts/scripts/special-matrix/rosser.m
 @anchor{XREFrosser}
-@deftypefn {Function File} {} rosser ()
+@deftypefn {} {} rosser ()
 Return the Rosser matrix.
 
 This is a difficult test case used to evaluate eigenvalue algorithms.
@@ -2401,10 +2414,10 @@ This is a difficult test case used to evaluate eigenvalue algorithms.
 @end deftypefn
 
 
-@c toeplitz scripts/special-matrix/toeplitz.m
+@c toeplitz scripts/scripts/special-matrix/toeplitz.m
 @anchor{XREFtoeplitz}
-@deftypefn  {Function File} {} toeplitz (@var{c})
-@deftypefnx {Function File} {} toeplitz (@var{c}, @var{r})
+@deftypefn  {} {} toeplitz (@var{c})
+@deftypefnx {} {} toeplitz (@var{c}, @var{r})
 Return the Toeplitz matrix constructed from the first column @var{c},
 and (optionally) the first row @var{r}.
 
@@ -2441,10 +2454,10 @@ c(n) c(n-1) c(n-2) @dots{}  c(0)
 @end deftypefn
 
 
-@c vander scripts/special-matrix/vander.m
+@c vander scripts/scripts/special-matrix/vander.m
 @anchor{XREFvander}
-@deftypefn  {Function File} {} vander (@var{c})
-@deftypefnx {Function File} {} vander (@var{c}, @var{n})
+@deftypefn  {} {} vander (@var{c})
+@deftypefnx {} {} vander (@var{c}, @var{n})
 Return the Vandermonde matrix whose next to last column is @var{c}.
 
 If @var{n} is specified, it determines the number of columns; otherwise,
@@ -2477,9 +2490,9 @@ c(n)^(n-1) @dots{} c(n)^2  c(n)  1
 @end deftypefn
 
 
-@c wilkinson scripts/special-matrix/wilkinson.m
+@c wilkinson scripts/scripts/special-matrix/wilkinson.m
 @anchor{XREFwilkinson}
-@deftypefn {Function File} {} wilkinson (@var{n})
+@deftypefn {} {} wilkinson (@var{n})
 Return the Wilkinson matrix of order @var{n}.
 
 Wilkinson matrices are symmetric and tridiagonal with pairs of nearly, but

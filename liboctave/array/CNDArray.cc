@@ -1,4 +1,4 @@
-// N-D Array  manipulations.
+// N-D Array manipulations.
 /*
 
 Copyright (C) 1996-2015 John W. Eaton
@@ -22,8 +22,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <cfloat>
@@ -36,7 +36,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "functor.h"
 #include "lo-ieee.h"
 #include "lo-mappers.h"
-#include "MArray-defs.h"
 #include "mx-base.h"
 #include "mx-op-defs.h"
 #include "mx-cnda-s.h"
@@ -60,7 +59,7 @@ ComplexNDArray::fourier (int dim) const
 {
   dim_vector dv = dims ();
 
-  if (dim > dv.length () || dim < 0)
+  if (dim > dv.ndims () || dim < 0)
     return ComplexNDArray ();
 
   octave_idx_type stride = 1;
@@ -69,9 +68,9 @@ ComplexNDArray::fourier (int dim) const
   for (int i = 0; i < dim; i++)
     stride *= dv(i);
 
-  octave_idx_type howmany = numel () / dv (dim);
+  octave_idx_type howmany = numel () / dv(dim);
   howmany = (stride == 1 ? howmany : (howmany > stride ? stride : howmany));
-  octave_idx_type nloop = (stride == 1 ? 1 : numel () / dv (dim) / stride);
+  octave_idx_type nloop = (stride == 1 ? 1 : numel () / dv(dim) / stride);
   octave_idx_type dist = (stride == 1 ? n : 1);
 
   const Complex *in (fortran_vec ());
@@ -91,7 +90,7 @@ ComplexNDArray::ifourier (int dim) const
 {
   dim_vector dv = dims ();
 
-  if (dim > dv.length () || dim < 0)
+  if (dim > dv.ndims () || dim < 0)
     return ComplexNDArray ();
 
   octave_idx_type stride = 1;
@@ -100,9 +99,9 @@ ComplexNDArray::ifourier (int dim) const
   for (int i = 0; i < dim; i++)
     stride *= dv(i);
 
-  octave_idx_type howmany = numel () / dv (dim);
+  octave_idx_type howmany = numel () / dv(dim);
   howmany = (stride == 1 ? howmany : (howmany > stride ? stride : howmany));
-  octave_idx_type nloop = (stride == 1 ? 1 : numel () / dv (dim) / stride);
+  octave_idx_type nloop = (stride == 1 ? 1 : numel () / dv(dim) / stride);
   octave_idx_type dist = (stride == 1 ? n : 1);
 
   const Complex *in (fortran_vec ());
@@ -121,10 +120,10 @@ ComplexNDArray
 ComplexNDArray::fourier2d (void) const
 {
   dim_vector dv = dims ();
-  if (dv.length () < 2)
+  if (dv.ndims () < 2)
     return ComplexNDArray ();
 
-  dim_vector dv2(dv(0), dv(1));
+  dim_vector dv2 (dv(0), dv(1));
   const Complex *in = fortran_vec ();
   ComplexNDArray retval (dv);
   Complex *out = retval.fortran_vec ();
@@ -141,10 +140,10 @@ ComplexNDArray
 ComplexNDArray::ifourier2d (void) const
 {
   dim_vector dv = dims ();
-  if (dv.length () < 2)
+  if (dv.ndims () < 2)
     return ComplexNDArray ();
 
-  dim_vector dv2(dv(0), dv(1));
+  dim_vector dv2 (dv(0), dv(1));
   const Complex *in = fortran_vec ();
   ComplexNDArray retval (dv);
   Complex *out = retval.fortran_vec ();
@@ -161,7 +160,7 @@ ComplexNDArray
 ComplexNDArray::fourierNd (void) const
 {
   dim_vector dv = dims ();
-  int rank = dv.length ();
+  int rank = dv.ndims ();
 
   const Complex *in (fortran_vec ());
   ComplexNDArray retval (dv);
@@ -176,7 +175,7 @@ ComplexNDArray
 ComplexNDArray::ifourierNd (void) const
 {
   dim_vector dv = dims ();
-  int rank = dv.length ();
+  int rank = dv.ndims ();
 
   const Complex *in (fortran_vec ());
   ComplexNDArray retval (dv);
@@ -211,7 +210,7 @@ ComplexNDArray::fourier (int dim) const
 {
   dim_vector dv = dims ();
 
-  if (dim > dv.length () || dim < 0)
+  if (dim > dv.ndims () || dim < 0)
     return ComplexNDArray ();
 
   ComplexNDArray retval (dv);
@@ -258,7 +257,7 @@ ComplexNDArray::ifourier (int dim) const
 {
   dim_vector dv = dims ();
 
-  if (dim > dv.length () || dim < 0)
+  if (dim > dv.ndims () || dim < 0)
     return ComplexNDArray ();
 
   ComplexNDArray retval (dv);
@@ -402,7 +401,7 @@ ComplexNDArray
 ComplexNDArray::fourierNd (void) const
 {
   dim_vector dv = dims ();
-  int rank = dv.length ();
+  int rank = dv.ndims ();
   ComplexNDArray retval (*this);
   octave_idx_type stride = 1;
 
@@ -449,7 +448,7 @@ ComplexNDArray
 ComplexNDArray::ifourierNd (void) const
 {
   dim_vector dv = dims ();
-  int rank = dv.length ();
+  int rank = dv.ndims ();
   ComplexNDArray retval (*this);
   octave_idx_type stride = 1;
 
@@ -501,7 +500,7 @@ boolNDArray
 ComplexNDArray::operator ! (void) const
 {
   if (any_element_is_nan ())
-    gripe_nan_to_logical_conversion ();
+    err_nan_to_logical_conversion ();
 
   return do_mx_unary_op<bool, Complex> (*this, mx_inline_not);
 }
@@ -535,7 +534,7 @@ ComplexNDArray::all_elements_are_real (void) const
 bool
 ComplexNDArray::all_integers (double& max_val, double& min_val) const
 {
-  octave_idx_type nel = nelem ();
+  octave_idx_type nel = numel ();
 
   if (nel > 0)
     {
@@ -575,7 +574,7 @@ ComplexNDArray::all_integers (double& max_val, double& min_val) const
       if (i_val < min_val)
         min_val = i_val;
 
-      if (D_NINT (r_val) != r_val || D_NINT (i_val) != i_val)
+      if (octave::math::x_nint (r_val) != r_val || octave::math::x_nint (i_val) != i_val)
         return false;
     }
 
@@ -669,7 +668,8 @@ concat (NDArray& ra, ComplexNDArray& rb, const Array<octave_idx_type>& ra_idx)
   return retval;
 }
 
-static const Complex Complex_NaN_result (octave_NaN, octave_NaN);
+static const Complex Complex_NaN_result (octave::numeric_limits<double>::NaN (),
+                                         octave::numeric_limits<double>::NaN ());
 
 ComplexNDArray
 ComplexNDArray::max (int dim) const
@@ -728,19 +728,19 @@ ComplexNDArray::abs (void) const
 boolNDArray
 ComplexNDArray::isnan (void) const
 {
-  return do_mx_unary_map<bool, Complex, xisnan> (*this);
+  return do_mx_unary_map<bool, Complex, octave::math::isnan> (*this);
 }
 
 boolNDArray
 ComplexNDArray::isinf (void) const
 {
-  return do_mx_unary_map<bool, Complex, xisinf> (*this);
+  return do_mx_unary_map<bool, Complex, octave::math::isinf> (*this);
 }
 
 boolNDArray
 ComplexNDArray::isfinite (void) const
 {
-  return do_mx_unary_map<bool, Complex, xfinite> (*this);
+  return do_mx_unary_map<bool, Complex, octave::math::finite> (*this);
 }
 
 ComplexNDArray
@@ -754,47 +754,42 @@ ComplexNDArray::insert (const NDArray& a, octave_idx_type r, octave_idx_type c)
 {
   dim_vector a_dv = a.dims ();
 
-  int n = a_dv.length ();
+  int n = a_dv.ndims ();
 
-  if (n == dimensions.length ())
-    {
-      Array<octave_idx_type> a_ra_idx (dim_vector (a_dv.length (), 1), 0);
-
-      a_ra_idx.elem (0) = r;
-      a_ra_idx.elem (1) = c;
-
-      for (int i = 0; i < n; i++)
-        {
-          if (a_ra_idx (i) < 0 || (a_ra_idx (i) + a_dv (i)) > dimensions (i))
-            {
-              (*current_liboctave_error_handler)
-                ("Array<T>::insert: range error for insert");
-              return *this;
-            }
-        }
-
-      a_ra_idx.elem (0) = 0;
-      a_ra_idx.elem (1) = 0;
-
-      octave_idx_type n_elt = a.numel ();
-
-      // IS make_unique () NECCESSARY HERE??
-
-      for (octave_idx_type i = 0; i < n_elt; i++)
-        {
-          Array<octave_idx_type> ra_idx = a_ra_idx;
-
-          ra_idx.elem (0) = a_ra_idx (0) + r;
-          ra_idx.elem (1) = a_ra_idx (1) + c;
-
-          elem (ra_idx) = a.elem (a_ra_idx);
-
-          increment_index (a_ra_idx, a_dv);
-        }
-    }
-  else
+  if (n != dimensions.ndims ())
     (*current_liboctave_error_handler)
       ("Array<T>::insert: invalid indexing operation");
+
+  Array<octave_idx_type> a_ra_idx (dim_vector (a_dv.ndims (), 1), 0);
+
+  a_ra_idx.elem (0) = r;
+  a_ra_idx.elem (1) = c;
+
+  for (int i = 0; i < n; i++)
+    {
+      if (a_ra_idx(i) < 0 || (a_ra_idx(i) + a_dv(i)) > dimensions(i))
+        (*current_liboctave_error_handler)
+          ("Array<T>::insert: range error for insert");
+    }
+
+  a_ra_idx.elem (0) = 0;
+  a_ra_idx.elem (1) = 0;
+
+  octave_idx_type n_elt = a.numel ();
+
+  // IS make_unique () NECESSARY HERE?
+
+  for (octave_idx_type i = 0; i < n_elt; i++)
+    {
+      Array<octave_idx_type> ra_idx = a_ra_idx;
+
+      ra_idx.elem (0) = a_ra_idx(0) + r;
+      ra_idx.elem (1) = a_ra_idx(1) + c;
+
+      elem (ra_idx) = a.elem (a_ra_idx);
+
+      increment_index (a_ra_idx, a_dv);
+    }
 
   return *this;
 }
@@ -846,7 +841,7 @@ ComplexNDArray::diag (octave_idx_type m, octave_idx_type n) const
 std::ostream&
 operator << (std::ostream& os, const ComplexNDArray& a)
 {
-  octave_idx_type nel = a.nelem ();
+  octave_idx_type nel = a.numel ();
 
   for (octave_idx_type i = 0; i < nel; i++)
     {
@@ -860,7 +855,7 @@ operator << (std::ostream& os, const ComplexNDArray& a)
 std::istream&
 operator >> (std::istream& is, ComplexNDArray& a)
 {
-  octave_idx_type nel = a.nelem ();
+  octave_idx_type nel = a.numel ();
 
   if (nel > 0)
     {
@@ -871,11 +866,9 @@ operator >> (std::istream& is, ComplexNDArray& a)
           if (is)
             a.elem (i) = tmp;
           else
-            goto done;
+            return is;
         }
     }
-
-done:
 
   return is;
 }

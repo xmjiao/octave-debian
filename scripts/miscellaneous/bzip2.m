@@ -18,8 +18,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{filelist} =} bzip2 (@var{files})
-## @deftypefnx {Function File} {@var{filelist} =} bzip2 (@var{files}, @var{dir})
+## @deftypefn  {} {@var{filelist} =} bzip2 (@var{files})
+## @deftypefnx {} {@var{filelist} =} bzip2 (@var{files}, @var{dir})
 ## Compress the list of files specified in @var{files}.
 ##
 ## @var{files} is a character array or cell array of strings.  Shell wildcards
@@ -36,17 +36,14 @@
 ## @seealso{bunzip2, unpack, gzip, zip, tar}
 ## @end deftypefn
 
-function filelist = bzip2 (varargin)
+function [varargout] = bzip2 (varargin)
 
   if (nargin < 1 || nargin > 2 || nargout > 1)
     print_usage ();
   endif
 
-  if (nargout == 0)
-    __xzip__ ("bzip2", "bz2", "bzip2 %s", varargin{:});
-  else
-    filelist = __xzip__ ("bzip2", "bz2", "bzip2 %s", varargin{:});
-  endif
+  [varargout{1:nargout}] = __xzip__ ("bzip2", "bz2", "bzip2 -- %s",
+                                     varargin{:});
 
 endfunction
 

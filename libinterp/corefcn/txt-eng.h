@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if ! defined (txt_eng_h)
-#define txt_eng_h 1
+#if ! defined (octave_txt_eng_h)
+#define octave_txt_eng_h 1
+
+#include "octave-config.h"
 
 #include <memory>
 #include <string>
@@ -438,7 +440,7 @@ private:
 inline text_element*
 text_parser::parse (const std::string& s, const caseless_str& interpreter)
 {
-  std::auto_ptr<text_parser> parser;
+  std::unique_ptr<text_parser> parser;
 
   if (interpreter.compare ("tex"))
     parser.reset (new text_parser_tex ());

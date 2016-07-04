@@ -17,19 +17,19 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} __gnuplot_drawnow__ (@var{h}, @var{term}, @var{file}, @var{mono}, @var{debug_file})
+## @deftypefn {} {} __gnuplot_drawnow__ (@var{h}, @var{term}, @var{file}, @var{debug_file})
 ## Undocumented internal function.
 ## @end deftypefn
 
 ## Author: jwe
 
-function __gnuplot_drawnow__ (h, term, file, mono = false, debug_file)
+function __gnuplot_drawnow__ (h, term, file, debug_file)
 
-  if (nargin < 1 || nargin > 5 || nargin == 2)
+  if (nargin < 1 || nargin > 4 || nargin == 2)
     print_usage ();
   endif
 
-  if (nargin >= 3 && nargin <= 5)
+  if (nargin >= 3 && nargin <= 4)
     ## Produce various output formats, or redirect gnuplot stream to a
     ## debug file.
     plot_stream = [];
@@ -40,11 +40,11 @@ function __gnuplot_drawnow__ (h, term, file, mono = false, debug_file)
       gnuplot_supports_term = __gnuplot_has_terminal__ (term, plot_stream);
       if (gnuplot_supports_term)
         enhanced = gnuplot_set_term (plot_stream(1), true, h, term, file);
-        __go_draw_figure__ (h, plot_stream(1), enhanced, mono);
-        if (nargin == 5)
+        __gnuplot_draw_figure__ (h, plot_stream(1), enhanced);
+        if (nargin == 4)
           fid = fopen (debug_file, "wb");
           enhanced = gnuplot_set_term (fid, true, h, term, file);
-          __go_draw_figure__ (h, fid, enhanced, mono);
+          __gnuplot_draw_figure__ (h, fid, enhanced);
         endif
       else
         error ('__gnuplot_drawnow__: the gnuplot terminal, "%s", is not available',
@@ -83,7 +83,7 @@ function __gnuplot_drawnow__ (h, term, file, mono = false, debug_file)
     else
       enhanced = gnuplot_set_term (plot_stream(1), new_stream, h, term);
     endif
-    __go_draw_figure__ (h, plot_stream(1), enhanced, mono);
+    __gnuplot_draw_figure__ (h, plot_stream(1), enhanced);
     fflush (plot_stream(1));
     if (strcmp (term, "dumb"))
       fid = -1;
@@ -189,10 +189,11 @@ function enhanced = gnuplot_set_term (plot_stream, new_stream, h, term, file)
           gnuplot_size = gnuplot_size / 72;
         endif
         if (all (gnuplot_size > 0))
-          terminals_with_size = {"canvas", "emf", "epslatex", "fig", ...
-                                 "gif", "jpeg", "latex", "pbm", "pdf", ...
-                                 "pdfcairo", "postscript", "png", ...
-                                 "pngcairo", "pstex", "pslatex", "svg", "tikz"};
+          terminals_with_size = {"canvas", "cairolatex", "eepic", "emf", ...
+                                 "epscairo", "epslatex", "fig", "gif", ...
+                                 "jpeg", "latex", "pbm", "pdf", "pdfcairo", ...
+                                 "postscript", "png", "pngcairo", "pstex", ...
+                                 "pslatex", "svg", "tikz"};
           if (__gnuplot_has_feature__ ("windows_figure_position"))
             terminals_with_size{end+1} = "windows";
           endif
@@ -339,7 +340,7 @@ function enhanced = gnuplot_set_term (plot_stream, new_stream, h, term, file)
       endif
     endif
     if (__gnuplot_has_feature__ ("has_termoption_dashed"))
-      fprintf (plot_stream, "set termoption dashed\n")
+      fprintf (plot_stream, "set termoption dashed\n");
     endif
   else
     ## gnuplot will pick up the GNUTERM environment variable itself
@@ -350,6 +351,7 @@ function enhanced = gnuplot_set_term (plot_stream, new_stream, h, term, file)
 endfunction
 
 function term = gnuplot_default_term (plot_stream)
+
   term = lower (getenv ("GNUTERM"));
   ## If not specified, guess the terminal type.
   if (isempty (term) || ! __gnuplot_has_terminal__ (term, plot_stream))
@@ -359,12 +361,13 @@ function term = gnuplot_default_term (plot_stream)
       term = "aqua";
     elseif (! isunix ())
       term = "windows";
-    elseif (! isempty (getenv ("DISPLAY")))
+    elseif (have_window_system ())
       term = "x11";
     else
       term = "dumb";
     endif
   endif
+
 endfunction
 
 function [term, opts] = gnuplot_trim_term (string)
@@ -397,7 +400,9 @@ function ret = output_to_screen (term)
 endfunction
 
 function retval = have_non_legend_axes (h)
+
   retval = false;
+
   all_axes = findall (h, "type", "axes");
   if (! isempty (all_axes))
     n_all_axes = numel (all_axes);
@@ -408,6 +413,7 @@ function retval = have_non_legend_axes (h)
       retval = (n_all_axes - n_legend_axes) > 1;
     endif
   endif
+
 endfunction
 
 

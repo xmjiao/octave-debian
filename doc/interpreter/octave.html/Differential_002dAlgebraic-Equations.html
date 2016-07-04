@@ -15,7 +15,7 @@
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Differential-Equations.html#Differential-Equations" rel="up" title="Differential Equations">
 <link href="Optimization.html#Optimization" rel="next" title="Optimization">
-<link href="Ordinary-Differential-Equations.html#Ordinary-Differential-Equations" rel="prev" title="Ordinary Differential Equations">
+<link href="Matlab_002dcompatible-solvers.html#Matlab_002dcompatible-solvers" rel="prev" title="Matlab-compatible solvers">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -70,7 +71,7 @@ is the derivative of <em>x</em>.  The equation is solved using
 Petzold&rsquo;s DAE solver <small>DASPK</small>.
 </p>
 <a name="XREFdaspk"></a><dl>
-<dt><a name="index-daspk"></a>Built-in Function: <em>[<var>x</var>, <var>xdot</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>daspk</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
+<dt><a name="index-daspk"></a>: <em>[<var>x</var>, <var>xdot</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>daspk</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
 <dd><p>Solve the set of differential-algebraic equations
 </p>
 <div class="example">
@@ -152,9 +153,9 @@ parameters for <code>daspk</code>.
 
 
 <a name="XREFdaspk_005foptions"></a><dl>
-<dt><a name="index-daspk_005foptions"></a>Built-in Function: <em></em> <strong>daspk_options</strong> <em>()</em></dt>
-<dt><a name="index-daspk_005foptions-1"></a>Built-in Function: <em>val =</em> <strong>daspk_options</strong> <em>(<var>opt</var>)</em></dt>
-<dt><a name="index-daspk_005foptions-2"></a>Built-in Function: <em></em> <strong>daspk_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
+<dt><a name="index-daspk_005foptions"></a>: <em></em> <strong>daspk_options</strong> <em>()</em></dt>
+<dt><a name="index-daspk_005foptions-1"></a>: <em>val =</em> <strong>daspk_options</strong> <em>(<var>opt</var>)</em></dt>
+<dt><a name="index-daspk_005foptions-2"></a>: <em></em> <strong>daspk_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
 <dd><p>Query or set options for the function <code>daspk</code>.
 </p>
 <p>When called with no arguments, the names of all available options and
@@ -352,7 +353,7 @@ and <small>DASRT</small>, which can be used to solve DAEs with constraints
 (stopping conditions).
 </p>
 <a name="XREFdassl"></a><dl>
-<dt><a name="index-dassl"></a>Built-in Function: <em>[<var>x</var>, <var>xdot</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>dassl</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
+<dt><a name="index-dassl"></a>: <em>[<var>x</var>, <var>xdot</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>dassl</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
 <dd><p>Solve the set of differential-algebraic equations
 </p>
 <div class="example">
@@ -435,9 +436,9 @@ parameters for <code>dassl</code>.
 
 
 <a name="XREFdassl_005foptions"></a><dl>
-<dt><a name="index-dassl_005foptions"></a>Built-in Function: <em></em> <strong>dassl_options</strong> <em>()</em></dt>
-<dt><a name="index-dassl_005foptions-1"></a>Built-in Function: <em>val =</em> <strong>dassl_options</strong> <em>(<var>opt</var>)</em></dt>
-<dt><a name="index-dassl_005foptions-2"></a>Built-in Function: <em></em> <strong>dassl_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
+<dt><a name="index-dassl_005foptions"></a>: <em></em> <strong>dassl_options</strong> <em>()</em></dt>
+<dt><a name="index-dassl_005foptions-1"></a>: <em>val =</em> <strong>dassl_options</strong> <em>(<var>opt</var>)</em></dt>
+<dt><a name="index-dassl_005foptions-2"></a>: <em></em> <strong>dassl_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
 <dd><p>Query or set options for the function <code>dassl</code>.
 </p>
 <p>When called with no arguments, the names of all available options and
@@ -510,10 +511,10 @@ underlying Fortran code.
 
 
 <a name="XREFdasrt"></a><dl>
-<dt><a name="index-dasrt"></a>Built-in Function: <em>[<var>x</var>, <var>xdot</var>, <var>t_out</var>, <var>istat</var>, <var>msg</var>] =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, [], <var>x_0</var>, <var>xdot_0</var>, <var>t</var>)</em></dt>
-<dt><a name="index-dasrt-1"></a>Built-in Function: <em>&hellip; =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, <var>g</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>)</em></dt>
-<dt><a name="index-dasrt-2"></a>Built-in Function: <em>&hellip; =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, [], <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
-<dt><a name="index-dasrt-3"></a>Built-in Function: <em>&hellip; =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, <var>g</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
+<dt><a name="index-dasrt"></a>: <em>[<var>x</var>, <var>xdot</var>, <var>t_out</var>, <var>istat</var>, <var>msg</var>] =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, [], <var>x_0</var>, <var>xdot_0</var>, <var>t</var>)</em></dt>
+<dt><a name="index-dasrt-1"></a>: <em>&hellip; =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, <var>g</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>)</em></dt>
+<dt><a name="index-dasrt-2"></a>: <em>&hellip; =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, [], <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
+<dt><a name="index-dasrt-3"></a>: <em>&hellip; =</em> <strong>dasrt</strong> <em>(<var>fcn</var>, <var>g</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
 <dd><p>Solve the set of differential-algebraic equations
 </p>
 <div class="example">
@@ -631,9 +632,9 @@ parameters for <code>dasrt</code>.
 
 
 <a name="XREFdasrt_005foptions"></a><dl>
-<dt><a name="index-dasrt_005foptions"></a>Built-in Function: <em></em> <strong>dasrt_options</strong> <em>()</em></dt>
-<dt><a name="index-dasrt_005foptions-1"></a>Built-in Function: <em>val =</em> <strong>dasrt_options</strong> <em>(<var>opt</var>)</em></dt>
-<dt><a name="index-dasrt_005foptions-2"></a>Built-in Function: <em></em> <strong>dasrt_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
+<dt><a name="index-dasrt_005foptions"></a>: <em></em> <strong>dasrt_options</strong> <em>()</em></dt>
+<dt><a name="index-dasrt_005foptions-1"></a>: <em>val =</em> <strong>dasrt_options</strong> <em>(<var>opt</var>)</em></dt>
+<dt><a name="index-dasrt_005foptions-2"></a>: <em></em> <strong>dasrt_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
 <dd><p>Query or set options for the function <code>dasrt</code>.
 </p>
 <p>When called with no arguments, the names of all available options and

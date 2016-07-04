@@ -20,7 +20,9 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
+#endif
 
 #include <cfloat>
 #include <csetjmp>
@@ -36,11 +38,12 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-locbuf.h"
 
 #include "Cell.h"
+#include "error.h"
 // mxArray must be declared as a class before including mexproto.h.
 #include "mxarray.h"
 #include "mexproto.h"
 #include "oct-map.h"
-#include "oct-obj.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-mex-fcn.h"
 #include "ov-usr-fcn.h"
@@ -90,26 +93,17 @@ valid_key (const char *key)
           for (int i = 1; i < nel; i++)
             {
               if (! (isalnum (key[i]) || key[i] == '_'))
-                goto done;
+                return retval;
             }
 
           retval = 1;
         }
     }
 
-done:
-
   return retval;
 }
 
 // ------------------------------------------------------------------
-
-void
-mxArray_base::error (const char *msg) const
-{
-  // FIXME
-  ::error ("%s", msg);
-}
 
 static mwIndex
 calc_single_subscript_internal (mwSize ndims, const mwSize *dims,
@@ -615,10 +609,15 @@ protected:
       ndims (ndims_arg < 2 ? 2 : ndims_arg),
       dims (static_cast<mwSize *> (mxArray::malloc (ndims * sizeof (mwSize))))
   {
-    if (ndims_arg < 2)
+    if (ndims_arg == 0)
       {
         dims[0] = 0;
         dims[1] = 0;
+      }
+    else if (ndims_arg < 2)
+      {
+        dims[0] = 1;
+        dims[1] = 1;
       }
 
     for (mwIndex i = 0; i < ndims_arg; i++)
@@ -635,7 +634,7 @@ protected:
 
   mxArray_matlab (mxClassID id_arg, const dim_vector& dv)
     : mxArray_base (), class_name (0), id (id_arg),
-      ndims (dv.length ()),
+      ndims (dv.ndims ()),
       dims (static_cast<mwSize *> (mxArray::malloc (ndims * sizeof (mwSize))))
   {
     for (mwIndex i = 0; i < ndims; i++)
@@ -787,109 +786,98 @@ public:
 
   mxArray *get_cell (mwIndex /*idx*/) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   void set_cell (mwIndex /*idx*/, mxArray */*val*/)
   {
-    invalid_type_error ();
+    err_invalid_type ();
   }
 
   double get_scalar (void) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   void *get_data (void) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   void *get_imag_data (void) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   void set_data (void */*pr*/)
   {
-    invalid_type_error ();
+    err_invalid_type ();
   }
 
   void set_imag_data (void */*pi*/)
   {
-    invalid_type_error ();
+    err_invalid_type ();
   }
 
   mwIndex *get_ir (void) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   mwIndex *get_jc (void) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   mwSize get_nzmax (void) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   void set_ir (mwIndex */*ir*/)
   {
-    invalid_type_error ();
+    err_invalid_type ();
   }
 
   void set_jc (mwIndex */*jc*/)
   {
-    invalid_type_error ();
+    err_invalid_type ();
   }
 
   void set_nzmax (mwSize /*nzmax*/)
   {
-    invalid_type_error ();
+    err_invalid_type ();
   }
 
   int add_field (const char */*key*/)
   {
-    invalid_type_error ();
-    return -1;
+    err_invalid_type ();
   }
 
   void remove_field (int /*key_num*/)
   {
-    invalid_type_error ();
+    err_invalid_type ();
   }
 
   mxArray *get_field_by_number (mwIndex /*index*/, int /*key_num*/) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   void set_field_by_number (mwIndex /*index*/, int /*key_num*/,
                             mxArray */*val*/)
   {
-    invalid_type_error ();
+    err_invalid_type ();
   }
 
   int get_number_of_fields (void) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   const char *get_field_name_by_number (int /*key_num*/) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   int get_field_number (const char */*key*/) const
@@ -899,14 +887,12 @@ public:
 
   int get_string (char */*buf*/, mwSize /*buflen*/) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   char *array_to_string (void) const
   {
-    invalid_type_error ();
-    return 0;
+    err_invalid_type ();
   }
 
   mwIndex calc_single_subscript (mwSize nsubs, mwIndex *subs) const
@@ -973,13 +959,14 @@ private:
   mwSize ndims;
   mwSize *dims;
 
-  void invalid_type_error (void) const
+  OCTAVE_NORETURN void err_invalid_type (void) const
   {
     error ("invalid type for operation");
   }
 
-  // No assignment!  FIXME: should this be implemented?  Note that we
-  // do have a copy constructor.
+  // No assignment!
+  // FIXME: should this be implemented?
+  //        Note that we *do* have a copy constructor.
 
   mxArray_matlab& operator = (const mxArray_matlab&);
 };
@@ -1337,27 +1324,21 @@ protected:
   octave_value
   int_to_ov (const dim_vector& dv) const
   {
-    octave_value retval;
+    if (pi)
+      error ("complex integer types are not supported");
 
     mwSize nel = get_number_of_elements ();
 
     ELT_T *ppr = static_cast<ELT_T *> (pr);
 
-    if (pi)
-      error ("complex integer types are not supported");
-    else
-      {
-        ARRAY_T val (dv);
+    ARRAY_T val (dv);
 
-        ARRAY_ELT_T *ptr = val.fortran_vec ();
+    ARRAY_ELT_T *ptr = val.fortran_vec ();
 
-        for (mwIndex i = 0; i < nel; i++)
-          ptr[i] = ppr[i];
+    for (mwIndex i = 0; i < nel; i++)
+      ptr[i] = ppr[i];
 
-        retval = val;
-      }
-
-    return retval;
+    return octave_value (val);
   }
 
   mxArray_number (const mxArray_number& val)
@@ -2011,7 +1992,23 @@ public:
 
   ~mex (void)
   {
-    if (! memlist.empty ())
+    // We can't use mex::free here because it modifies memlist.
+    while (! memlist.empty ())
+      {
+        std::set<void *>::iterator p = memlist.begin ();
+        xfree (*p);
+        memlist.erase (p);
+      }
+
+    // We can't use mex::free_value here because it modifies arraylist.
+    while (! arraylist.empty ())
+      {
+        std::set<mxArray *>::iterator p = arraylist.begin ();
+        delete *p;
+        arraylist.erase (p);
+      }
+
+    if (! (memlist.empty () && arraylist.empty ()))
       error ("mex: %s: cleanup failed", function_name ());
 
     mxFree (fname);
@@ -2035,39 +2032,16 @@ public:
     return fname;
   }
 
-  // Free all unmarked pointers obtained from malloc and calloc.
-  static void cleanup (void *ptr)
-  {
-    mex *context = static_cast<mex *> (ptr);
-
-    // We can't use mex::free here because it modifies memlist.
-    for (std::set<void *>::iterator p = context->memlist.begin ();
-         p != context->memlist.end (); p++)
-      xfree (*p);
-
-    context->memlist.clear ();
-
-    // We can't use mex::free_value here because it modifies arraylist.
-    for (std::set<mxArray *>::iterator p = context->arraylist.begin ();
-         p != context->arraylist.end (); p++)
-      delete *p;
-
-    context->arraylist.clear ();
-  }
-
   // Allocate memory.
   void *malloc_unmarked (size_t n)
   {
-    void *ptr = gnulib::malloc (n);
+    void *ptr = std::malloc (n);
 
     if (! ptr)
       {
         // FIXME: could use "octave_new_handler();" instead
-
         error ("%s: failed to allocate %d bytes of memory",
                function_name (), n);
-
-        abort ();
       }
 
     global_mark (ptr);
@@ -2105,16 +2079,16 @@ public:
     return ptr;
   }
 
-  // Reallocate a pointer obtained from malloc or calloc. If the
-  // pointer is NULL, allocate using malloc.  We don't need an
-  // "unmarked" version of this.
+  // Reallocate a pointer obtained from malloc or calloc.
+  // If the pointer is NULL, allocate using malloc.
+  // We don't need an "unmarked" version of this.
   void *realloc (void *ptr, size_t n)
   {
     void *v;
 
     if (ptr)
       {
-        v = gnulib::realloc (ptr, n);
+        v = std::realloc (ptr, n);
 
         std::set<void *>::iterator p = memlist.find (ptr);
 
@@ -2159,7 +2133,7 @@ public:
 
             if (p != foreign_memlist.end ())
               foreign_memlist.erase (p);
-#ifdef DEBUG
+#if defined (DEBUG)
             else
               warning ("mxFree: skipping memory not allocated by mxMalloc, mxCalloc, or mxRealloc");
 #endif
@@ -2170,7 +2144,7 @@ public:
   // Mark a pointer to be freed on exit.
   void mark (void *ptr)
   {
-#ifdef DEBUG
+#if defined (DEBUG)
     if (memlist.find (ptr) != memlist.end ())
       warning ("%s: double registration ignored", function_name ());
 #endif
@@ -2186,7 +2160,7 @@ public:
 
     if (p != memlist.end ())
       memlist.erase (p);
-#ifdef DEBUG
+#if defined (DEBUG)
     else
       warning ("%s: value not marked", function_name ());
 #endif
@@ -2209,7 +2183,7 @@ public:
   // Mark a pointer as one we allocated.
   void mark_foreign (void *ptr)
   {
-#ifdef DEBUG
+#if defined (DEBUG)
     if (foreign_memlist.find (ptr) != foreign_memlist.end ())
       warning ("%s: double registration ignored", function_name ());
 #endif
@@ -2224,7 +2198,7 @@ public:
 
     if (p != foreign_memlist.end ())
       foreign_memlist.erase (p);
-#ifdef DEBUG
+#if defined (DEBUG)
     else
       warning ("%s: value not marked", function_name ());
 #endif
@@ -2251,7 +2225,7 @@ public:
         arraylist.erase (p);
         delete ptr;
       }
-#ifdef DEBUG
+#if defined (DEBUG)
     else
       warning ("mex::free_value: skipping memory not allocated by mex::make_value");
 #endif
@@ -2266,12 +2240,6 @@ public:
 
   // 1 if error should be returned to MEX file, 0 if abort.
   int trap_feval_error;
-
-  // longjmp return point if mexErrMsgTxt or error.
-  jmp_buf jump;
-
-  // Trigger a long jump back to the mex calling function.
-  void abort (void) { longjmp (jump, 1); }
 
 private:
 
@@ -2297,7 +2265,7 @@ private:
   // Mark a pointer as one we allocated.
   void global_mark (void *ptr)
   {
-#ifdef DEBUG
+#if defined (DEBUG)
     if (global_memlist.find (ptr) != global_memlist.end ())
       warning ("%s: double registration ignored", function_name ());
 #endif
@@ -2312,7 +2280,7 @@ private:
 
     if (p != global_memlist.end ())
       global_memlist.erase (p);
-#ifdef DEBUG
+#if defined (DEBUG)
     else
       warning ("%s: value not marked", function_name ());
 #endif
@@ -2335,7 +2303,7 @@ mex *mex_context = 0;
 void *
 mxArray::malloc (size_t n)
 {
-  return mex_context ? mex_context->malloc_unmarked (n) : gnulib::malloc (n);
+  return mex_context ? mex_context->malloc_unmarked (n) : std::malloc (n);
 }
 
 void *
@@ -2437,14 +2405,14 @@ mxCalloc (size_t n, size_t size)
 void *
 mxMalloc (size_t n)
 {
-  return mex_context ? mex_context->malloc (n) : gnulib::malloc (n);
+  return mex_context ? mex_context->malloc (n) : std::malloc (n);
 }
 
 void *
 mxRealloc (void *ptr, size_t size)
 {
   return mex_context ? mex_context->realloc (ptr, size)
-                     : gnulib::realloc (ptr, size);
+                     : std::realloc (ptr, size);
 }
 
 void
@@ -2713,12 +2681,13 @@ mxIsEmpty (const mxArray *ptr)
   return ptr->is_empty ();
 }
 
-// Just plain odd thing to ask of a value.
+// FIXME: Just plain odd thing to ask of a value.
+// Still, Octave is incompatible because it does not implement this.
 int
-mxIsFromGlobalWS (const mxArray */*ptr*/)
+mxIsFromGlobalWS (const mxArray * /*ptr*/)
 {
-  // FIXME
-  abort ();
+  mexErrMsgTxt ("mxIsFromGlobalWS() is unimplemented");
+
   return 0;
 }
 
@@ -3002,6 +2971,8 @@ octave_value_list
 call_mex (bool have_fmex, void *f, const octave_value_list& args,
           int nargout_arg, octave_mex_function *curr_mex_fcn)
 {
+  octave_quit ();
+
   // Use at least 1 for nargout since even for zero specified args,
   // still want to be able to return an ans.
 
@@ -3017,59 +2988,48 @@ call_mex (bool have_fmex, void *f, const octave_value_list& args,
   for (int i = 0; i < nout; i++)
     argout[i] = 0;
 
-  unwind_protect_safe frame;
+  octave::unwind_protect_safe frame;
 
   // Save old mex pointer.
   frame.protect_var (mex_context);
 
   mex context (curr_mex_fcn);
 
-  frame.add_fcn (mex::cleanup, static_cast<void *> (&context));
-
   for (int i = 0; i < nargin; i++)
     argin[i] = context.make_value (args(i));
 
-  if (setjmp (context.jump) == 0)
+  mex_context = &context;
+
+  if (have_fmex)
     {
-      mex_context = &context;
+      fmex_fptr fcn = reinterpret_cast<fmex_fptr> (f);
 
-      if (have_fmex)
-        {
-          fmex_fptr fcn = FCN_PTR_CAST (fmex_fptr, f);
+      int tmp_nargout = nargout;
+      int tmp_nargin = nargin;
 
-          int tmp_nargout = nargout;
-          int tmp_nargin = nargin;
+      fcn (tmp_nargout, argout, tmp_nargin, argin);
+    }
+  else
+    {
+      cmex_fptr fcn = reinterpret_cast<cmex_fptr> (f);
 
-          fcn (tmp_nargout, argout, tmp_nargin, argin);
-        }
-      else
-        {
-          cmex_fptr fcn = FCN_PTR_CAST (cmex_fptr, f);
-
-          fcn (nargout, argout, nargin, argin);
-        }
+      fcn (nargout, argout, nargin, argin);
     }
 
   // Convert returned array entries back into octave values.
 
   octave_value_list retval;
 
-  if (! error_state)
+  if (nargout == 0 && argout[0])
     {
-      if (nargout == 0 && argout[0])
-        {
-          // We have something for ans.
-          nargout = 1;
-        }
-
-      retval.resize (nargout);
-
-      for (int i = 0; i < nargout; i++)
-        retval(i) = mxArray::as_octave_value (argout[i]);
+      // We have something for ans.
+      nargout = 1;
     }
 
-  // Clean up mex resources.
-  frame.run ();
+  retval.resize (nargout);
+
+  for (int i = 0; i < nargout; i++)
+    retval(i) = mxArray::as_octave_value (argout[i]);
 
   return retval;
 }
@@ -3091,28 +3051,34 @@ mexCallMATLAB (int nargout, mxArray *argout[], int nargin,
   // FIXME: do we need unwind protect to clean up args?  Off hand, I
   // would say that this problem is endemic to Octave and we will
   // continue to have memory leaks after Ctrl-C until proper exception
-  // handling is implemented.  longjmp() only clears the stack, so any
-  // class which allocates data on the heap is going to leak.
+  // handling is implemented.
 
+  // FIXME: Proper exception handling has been implemented (Jan. 2016).
+  //        Can this code be re-factored?
   args.resize (nargin);
 
   for (int i = 0; i < nargin; i++)
     args(i) = mxArray::as_octave_value (argin[i]);
 
-  octave_value_list retval = feval (fname, args, nargout);
+  bool execution_error = false;
 
-  if (error_state && mex_context->trap_feval_error == 0)
+  octave_value_list retval;
+
+  try
     {
-      // FIXME: is this the correct way to clean up?  abort() is
-      // going to trigger a long jump, so the normal class destructors
-      // will not be called.  Hopefully this will reduce things to a
-      // tiny leak.  Maybe create a new octave memory tracer type
-      // which prints a friendly message every time it is
-      // created/copied/deleted to check this.
+      retval = feval (fname, args, nargout);
+    }
+  catch (const octave_execution_exception&)
+    {
+      if (mex_context->trap_feval_error)
+        recover_from_exception ();
+      else
+        {
+          args.resize (0);
+          retval.resize (0);
 
-      args.resize (0);
-      retval.resize (0);
-      mex_context->abort ();
+          throw;
+        }
     }
 
   int num_to_copy = retval.length ();
@@ -3132,13 +3098,7 @@ mexCallMATLAB (int nargout, mxArray *argout[], int nargin,
   while (num_to_copy < nargout)
     argout[num_to_copy++] = 0;
 
-  if (error_state)
-    {
-      error_state = 0;
-      return 1;
-    }
-  else
-    return 0;
+  return execution_error ? 1 : 0;
 }
 
 void
@@ -3157,14 +3117,21 @@ mexEvalString (const char *s)
 
   octave_value_list ret;
 
-  ret = eval_string (s, false, parse_status, 0);
+  bool execution_error = false;
 
-  if (parse_status || error_state)
+  try
     {
-      error_state = 0;
-
-      retval = 1;
+      ret = eval_string (s, false, parse_status, 0);
     }
+  catch (const octave_execution_exception&)
+    {
+      recover_from_exception ();
+
+      execution_error = true;
+    }
+
+  if (parse_status || execution_error)
+    retval = 1;
 
   return retval;
 }
@@ -3180,8 +3147,6 @@ mexErrMsgTxt (const char *s)
       // Octave's error routine requires a non-null input so use a SPACE.
       error (" ");
     }
-
-  mex_context->abort ();
 }
 
 void
@@ -3204,8 +3169,6 @@ mexErrMsgIdAndTxt (const char *id, const char *fmt, ...)
       // Octave's error routine requires a non-null input so use a SPACE.
       error (" ");
     }
-
-  mex_context->abort ();
 }
 
 void
@@ -3257,7 +3220,7 @@ mexGetVariable (const char *space, const char *name)
     {
       // FIXME: should this be in variables.cc?
 
-      unwind_protect frame;
+      octave::unwind_protect frame;
 
       bool caller = ! strcmp (space, "caller");
       bool base = ! strcmp (space, "base");
@@ -3270,9 +3233,6 @@ mexGetVariable (const char *space, const char *name)
           if (base)
             {
               octave_call_stack::goto_base_frame ();
-
-              if (error_state)
-                return retval;
 
               frame.add_fcn (octave_call_stack::pop);
             }
@@ -3320,7 +3280,7 @@ mexPutVariable (const char *space, const char *name, const mxArray *ptr)
     {
       // FIXME: should this be in variables.cc?
 
-      unwind_protect frame;
+      octave::unwind_protect frame;
 
       bool caller = ! strcmp (space, "caller");
       bool base = ! strcmp (space, "base");
@@ -3333,9 +3293,6 @@ mexPutVariable (const char *space, const char *name, const mxArray *ptr)
           if (base)
             {
               octave_call_stack::goto_base_frame ();
-
-              if (error_state)
-                return 1;
 
               frame.add_fcn (octave_call_stack::pop);
             }
@@ -3380,10 +3337,12 @@ const mxArray *
 mexGet (double handle, const char *property)
 {
   mxArray *m = 0;
+
   octave_value ret = get_property_from_handle (handle, property, "mexGet");
 
-  if (!error_state && ret.is_defined ())
+  if (ret.is_defined ())
     m = ret.as_mxArray ();
+
   return m;
 }
 

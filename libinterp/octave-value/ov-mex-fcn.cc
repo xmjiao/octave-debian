@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "oct-shlib.h"
@@ -29,8 +29,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <defaults.h>
 #include "dynamic-ld.h"
 #include "error.h"
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov-mex-fcn.h"
 #include "ov.h"
 #include "profiler.h"
@@ -42,7 +42,7 @@ DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_mex_function,
                                      "mex function", "mex function");
 
 octave_mex_function::octave_mex_function
-  (void *fptr, bool fmex, const octave_shlib& shl,
+  (void *fptr, bool fmex, const octave::dynamic_library& shl,
    const std::string& nm)
   : octave_function (nm), mex_fcn_ptr (fptr), exit_fcn_ptr (0),
     have_fmex (fmex), sh_lib (shl)
@@ -70,7 +70,7 @@ octave_mex_function::fcn_file_name (void) const
   return sh_lib.file_name ();
 }
 
-octave_time
+octave::sys::time
 octave_mex_function::time_parsed (void) const
 {
   return sh_lib.time_loaded ();
@@ -132,32 +132,20 @@ octave_mex_function::do_multi_index_op (int nargout,
 {
   octave_value_list retval;
 
-  if (error_state)
-    return retval;
-
   if (args.has_magic_colon ())
-    ::error ("invalid use of colon in function argument list");
-  else
-    {
-      unwind_protect frame;
+    error ("invalid use of colon in function argument list");
 
-      octave_call_stack::push (this);
+  octave::unwind_protect frame;
 
-      frame.add_fcn (octave_call_stack::pop);
+  octave_call_stack::push (this);
 
-      try
-        {
-          BEGIN_PROFILER_BLOCK (octave_mex_function)
+  frame.add_fcn (octave_call_stack::pop);
 
-          retval = call_mex (have_fmex, mex_fcn_ptr, args, nargout, this);
+  BEGIN_PROFILER_BLOCK (octave_mex_function)
 
-          END_PROFILER_BLOCK
-        }
-      catch (octave_execution_exception)
-        {
-          gripe_library_execution_error ();
-        }
-    }
+    retval = call_mex (have_fmex, mex_fcn_ptr, args, nargout, this);
+
+  END_PROFILER_BLOCK
 
   return retval;
 }

@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QApplication>
@@ -61,7 +61,7 @@ QStringList
 fromStringVector (const string_vector& v)
 {
   QStringList l;
-  octave_idx_type n = v.length ();
+  octave_idx_type n = v.numel ();
 
   for (octave_idx_type i = 0; i < n; i++)
     l << fromStdString (v[i]);
@@ -85,20 +85,20 @@ Cell toCellString (const QStringList& l)
 {
   QStringList tmp = l;
 
-  // dont get any empty lines from end of the list
-  while ((tmp.length () > 0) && (tmp.last ().length () == 0))
+  // don't get any empty lines from end of the list
+  while ((tmp.length () > 0) && tmp.last ().isEmpty ())
     {
       tmp.removeLast ();
     }
-  // no strings will be a a 1x1 cell with empty string
-  if (tmp.length () == 0)
+  // no strings converts to a 1x1 cell with empty string
+  if (tmp.isEmpty ())
     tmp += "";
 
   Cell v(toStringVector (tmp));
   return v;
 }
 
-template <class T>
+template <typename T>
 QFont
 computeFont (const typename T::properties& props, int height)
 {
@@ -135,6 +135,8 @@ template QFont computeFont<uicontrol> (const uicontrol::properties& props,
 template QFont computeFont<uipanel> (const uipanel::properties& props,
                                      int height);
 
+template QFont computeFont<uibuttongroup> (const uibuttongroup::properties& props,
+                                           int height);
 QColor
 fromRgb (const Matrix& rgb)
 {
@@ -178,7 +180,7 @@ figureSelectionType (QMouseEvent* event, bool isDoubleClick)
           else if (buttons == Qt::RightButton)
             return std::string ("alt");
 #if defined (Q_WS_WIN)
-          else if (buttons == (Qt::LeftButton|Qt::RightButton))
+          else if (buttons == (Qt::LeftButton | Qt::RightButton))
             return std::string ("extend");
 #elif defined (Q_WS_X11)
           else if (buttons == Qt::MidButton)
@@ -277,7 +279,7 @@ makeImageFromCData (const octave_value& v, int width, int height)
 {
   dim_vector dv (v.dims ());
 
-  if (dv.length () == 3 && dv(2) == 3)
+  if (dv.ndims () == 3 && dv(2) == 3)
     {
       int w = qMin (dv(1), static_cast<octave_idx_type> (width));
       int h = qMin (dv(0), static_cast<octave_idx_type> (height));
@@ -313,12 +315,12 @@ makeImageFromCData (const octave_value& v, int width, int height)
                 float r = f(j, i, 0);
                 float g = f(j, i, 1);
                 float b = f(j, i, 2);
-                int a = (xisnan (r) || xisnan (g) || xisnan (b) ? 0 : 255);
+                int a = (octave::math::isnan (r) || octave::math::isnan (g) || octave::math::isnan (b) ? 0 : 255);
 
                 img.setPixel (x_off + i, y_off + j,
-                              qRgba (xround (r * 255),
-                                     xround (g * 255),
-                                     xround (b * 255),
+                              qRgba (octave::math::round (r * 255),
+                                     octave::math::round (g * 255),
+                                     octave::math::round (b * 255),
                                      a));
               }
         }
@@ -332,12 +334,12 @@ makeImageFromCData (const octave_value& v, int width, int height)
                 double r = d(j, i, 0);
                 double g = d(j, i, 1);
                 double b = d(j, i, 2);
-                int a = (xisnan (r) || xisnan (g) || xisnan (b) ? 0 : 255);
+                int a = (octave::math::isnan (r) || octave::math::isnan (g) || octave::math::isnan (b) ? 0 : 255);
 
                 img.setPixel (x_off + i, y_off + j,
-                              qRgba (xround (r * 255),
-                                     xround (g * 255),
-                                     xround (b * 255),
+                              qRgba (octave::math::round (r * 255),
+                                     octave::math::round (g * 255),
+                                     octave::math::round (b * 255),
                                      a));
               }
         }
@@ -362,14 +364,14 @@ makeKeyEventStruct (QKeyEvent* event)
   if (mods & Qt::ShiftModifier)
     modList.push_back ("shift");
   if (mods & Qt::ControlModifier)
-#ifdef Q_OS_MAC
+#if defined (Q_OS_MAC)
     modList.push_back ("command");
 #else
     modList.push_back ("control");
 #endif
   if (mods & Qt::AltModifier)
     modList.push_back ("alt");
-#ifdef Q_OS_MAC
+#if defined (Q_OS_MAC)
   if (mods & Qt::MetaModifier)
     modList.push_back ("control");
 #endif

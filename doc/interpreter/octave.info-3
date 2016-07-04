@@ -21,6 +21,51 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Simple Output,  Next: Line-Oriented Input,  Prev: Opening and Closing Files,  Up: C-Style I/O Functions
+
+14.2.2 Simple Output
+--------------------
+
+Once a file has been opened for writing a string can be written to the
+file using the ‘fputs’ function.  The following example shows how to
+write the string ‘Free Software is needed for Free Science’ to the file
+‘free.txt’.
+
+     filename = "free.txt";
+     fid = fopen (filename, "w");
+     fputs (fid, "Free Software is needed for Free Science");
+     fclose (fid);
+
+ -- : fputs (FID, STRING)
+ -- : STATUS = fputs (FID, STRING)
+     Write the string STRING to the file with file descriptor FID.
+
+     The string is written to the file with no additional formatting.
+     Use ‘fdisp’ instead to automatically append a newline character
+     appropriate for the local machine.
+
+     Return a non-negative number on success or EOF on error.
+
+     See also: *note fdisp: XREFfdisp, *note fprintf: XREFfprintf, *note
+     fwrite: XREFfwrite, *note fopen: XREFfopen.
+
+   A function much similar to ‘fputs’ is available for writing data to
+the screen.  The ‘puts’ function works just like ‘fputs’ except it
+doesn’t take a file pointer as its input.
+
+ -- : puts (STRING)
+ -- : STATUS = puts (STRING)
+     Write a string to the standard output with no formatting.
+
+     The string is written verbatim to the standard output.  Use ‘disp’
+     to automatically append a newline character appropriate for the
+     local machine.
+
+     Return a non-negative number on success and EOF on error.
+
+     See also: *note fputs: XREFfputs, *note disp: XREFdisp.
+
+
 File: octave.info,  Node: Line-Oriented Input,  Next: Formatted Output,  Prev: Simple Output,  Up: C-Style I/O Functions
 
 14.2.3 Line-Oriented Input
@@ -38,8 +83,8 @@ illustrates
 This of course assumes that the file ‘free.txt’ exists and contains the
 line ‘Free Software is needed for Free Science’.
 
- -- Built-in Function: STR = fgetl (FID)
- -- Built-in Function: STR = fgetl (FID, LEN)
+ -- : STR = fgetl (FID)
+ -- : STR = fgetl (FID, LEN)
      Read characters from a file, stopping after a newline, or EOF, or
      LEN characters have been read.
 
@@ -55,8 +100,8 @@ line ‘Free Software is needed for Free Science’.
      See also: *note fgets: XREFfgets, *note fscanf: XREFfscanf, *note
      fread: XREFfread, *note fopen: XREFfopen.
 
- -- Built-in Function: STR = fgets (FID)
- -- Built-in Function: STR = fgets (FID, LEN)
+ -- : STR = fgets (FID)
+ -- : STR = fgets (FID, LEN)
      Read characters from a file, stopping after a newline, or EOF, or
      LEN characters have been read.
 
@@ -72,9 +117,9 @@ line ‘Free Software is needed for Free Science’.
      See also: *note fputs: XREFfputs, *note fgetl: XREFfgetl, *note
      fscanf: XREFfscanf, *note fread: XREFfread, *note fopen: XREFfopen.
 
- -- Built-in Function: NLINES = fskipl (FID)
- -- Built-in Function: NLINES = fskipl (FID, COUNT)
- -- Built-in Function: NLINES = fskipl (FID, Inf)
+ -- : NLINES = fskipl (FID)
+ -- : NLINES = fskipl (FID, COUNT)
+ -- : NLINES = fskipl (FID, Inf)
      Read and skip COUNT lines from the file specified by the file
      descriptor FID.
 
@@ -108,7 +153,7 @@ performance of printing vector and matrix values.
 in the template string (e.g., "\n" => newline) are expanded even when
 the template string is defined with single quotes.
 
- -- Built-in Function: printf (TEMPLATE, ...)
+ -- : printf (TEMPLATE, ...)
      Print optional arguments under the control of the template string
      TEMPLATE to the stream ‘stdout’ and return the number of characters
      printed.
@@ -124,9 +169,9 @@ the template string is defined with single quotes.
      See also: *note fprintf: XREFfprintf, *note sprintf: XREFsprintf,
      *note scanf: XREFscanf.
 
- -- Built-in Function: fprintf (FID, TEMPLATE, ...)
- -- Built-in Function: fprintf (TEMPLATE, ...)
- -- Built-in Function: NUMBYTES = fprintf (...)
+ -- : fprintf (FID, TEMPLATE, ...)
+ -- : fprintf (TEMPLATE, ...)
+ -- : NUMBYTES = fprintf (...)
      This function is equivalent to ‘printf’, except that the output is
      written to the file descriptor FID instead of ‘stdout’.
 
@@ -145,7 +190,7 @@ the template string is defined with single quotes.
      fwrite: XREFfwrite, *note fscanf: XREFfscanf, *note printf:
      XREFprintf, *note sprintf: XREFsprintf, *note fopen: XREFfopen.
 
- -- Built-in Function: sprintf (TEMPLATE, ...)
+ -- : sprintf (TEMPLATE, ...)
      This is like ‘printf’, except that the output is returned as a
      string.
 
@@ -526,10 +571,8 @@ formatted input.  There are two forms of each of these functions.  One
 can be used to extract vectors of data from a file, and the other is
 more ‘C-like’.
 
- -- Built-in Function: [VAL, COUNT, ERRMSG] = fscanf (FID, TEMPLATE,
-          SIZE)
- -- Built-in Function: [V1, V2, ..., COUNT, ERRMSG] = fscanf (FID,
-          TEMPLATE, "C")
+ -- : [VAL, COUNT, ERRMSG] = fscanf (FID, TEMPLATE, SIZE)
+ -- : [V1, V2, ..., COUNT, ERRMSG] = fscanf (FID, TEMPLATE, "C")
      In the first form, read from FID according to TEMPLATE, returning
      the result in the matrix VAL.
 
@@ -575,9 +618,8 @@ more ‘C-like’.
      fread: XREFfread, *note scanf: XREFscanf, *note sscanf: XREFsscanf,
      *note fopen: XREFfopen.
 
- -- Built-in Function: [VAL, COUNT, ERRMSG] = scanf (TEMPLATE, SIZE)
- -- Built-in Function: [V1, V2, ..., COUNT, ERRMSG]] = scanf (TEMPLATE,
-          "C")
+ -- : [VAL, COUNT, ERRMSG] = scanf (TEMPLATE, SIZE)
+ -- : [V1, V2, ..., COUNT, ERRMSG]] = scanf (TEMPLATE, "C")
      This is equivalent to calling ‘fscanf’ with FID = ‘stdin’.
 
      It is currently not useful to call ‘scanf’ in interactive programs.
@@ -585,10 +627,8 @@ more ‘C-like’.
      See also: *note fscanf: XREFfscanf, *note sscanf: XREFsscanf, *note
      printf: XREFprintf.
 
- -- Built-in Function: [VAL, COUNT, ERRMSG, POS] = sscanf (STRING,
-          TEMPLATE, SIZE)
- -- Built-in Function: [V1, V2, ..., COUNT, ERRMSG] = sscanf (STRING,
-          TEMPLATE, "C")
+ -- : [VAL, COUNT, ERRMSG, POS] = sscanf (STRING, TEMPLATE, SIZE)
+ -- : [V1, V2, ..., COUNT, ERRMSG] = sscanf (STRING, TEMPLATE, "C")
      This is like ‘fscanf’, except that the characters are taken from
      the string STRING instead of from a stream.
 
@@ -797,12 +837,12 @@ same names.  They are able to automatically swap the byte order of
 integer data and convert among the supported floating point formats as
 the data are read.
 
- -- Built-in Function: VAL = fread (FID)
- -- Built-in Function: VAL = fread (FID, SIZE)
- -- Built-in Function: VAL = fread (FID, SIZE, PRECISION)
- -- Built-in Function: VAL = fread (FID, SIZE, PRECISION, SKIP)
- -- Built-in Function: VAL = fread (FID, SIZE, PRECISION, SKIP, ARCH)
- -- Built-in Function: [VAL, COUNT] = fread (...)
+ -- : VAL = fread (FID)
+ -- : VAL = fread (FID, SIZE)
+ -- : VAL = fread (FID, SIZE, PRECISION)
+ -- : VAL = fread (FID, SIZE, PRECISION, SKIP)
+ -- : VAL = fread (FID, SIZE, PRECISION, SKIP, ARCH)
+ -- : [VAL, COUNT] = fread (...)
      Read binary data from the file specified by the file descriptor
      FID.
 
@@ -960,11 +1000,11 @@ the data are read.
      See also: *note fwrite: XREFfwrite, *note fgets: XREFfgets, *note
      fgetl: XREFfgetl, *note fscanf: XREFfscanf, *note fopen: XREFfopen.
 
- -- Built-in Function: fwrite (FID, DATA)
- -- Built-in Function: fwrite (FID, DATA, PRECISION)
- -- Built-in Function: fwrite (FID, DATA, PRECISION, SKIP)
- -- Built-in Function: fwrite (FID, DATA, PRECISION, SKIP, ARCH)
- -- Built-in Function: COUNT = fwrite (...)
+ -- : fwrite (FID, DATA)
+ -- : fwrite (FID, DATA, PRECISION)
+ -- : fwrite (FID, DATA, PRECISION, SKIP)
+ -- : fwrite (FID, DATA, PRECISION, SKIP, ARCH)
+ -- : COUNT = fwrite (...)
      Write data in binary form to the file specified by the file
      descriptor FID, returning the number of values COUNT successfully
      written to the file.
@@ -992,8 +1032,8 @@ This is most commonly used when an external program launched from within
 Octave needs to access data.  When Octave exits all temporary files will
 be deleted, so this step need not be executed manually.
 
- -- Built-in Function: [FID, NAME, MSG] = mkstemp ("TEMPLATE")
- -- Built-in Function: [FID, NAME, MSG] = mkstemp ("TEMPLATE", DELETE)
+ -- : [FID, NAME, MSG] = mkstemp ("TEMPLATE")
+ -- : [FID, NAME, MSG] = mkstemp ("TEMPLATE", DELETE)
      Return the file descriptor FID corresponding to a new temporary
      file with a unique name created from TEMPLATE.
 
@@ -1015,7 +1055,7 @@ be deleted, so this step need not be executed manually.
      *note P_tmpdir: XREFP_tmpdir, *note tmpfile: XREFtmpfile, *note
      fopen: XREFfopen.
 
- -- Built-in Function: [FID, MSG] = tmpfile ()
+ -- : [FID, MSG] = tmpfile ()
      Return the file ID corresponding to a new temporary file with a
      unique name.
 
@@ -1029,10 +1069,10 @@ be deleted, so this step need not be executed manually.
      See also: *note tempname: XREFtempname, *note mkstemp: XREFmkstemp,
      *note tempdir: XREFtempdir, *note P_tmpdir: XREFP_tmpdir.
 
- -- Built-in Function: FNAME = tempname ()
- -- Built-in Function: FNAME = tempname (DIR)
- -- Built-in Function: FNAME = tempname (DIR, PREFIX)
-     Return a unique temporary file name as a string.
+ -- : FNAME = tempname ()
+ -- : FNAME = tempname (DIR)
+ -- : FNAME = tempname (DIR, PREFIX)
+     Return a unique temporary filename as a string.
 
      If PREFIX is omitted, a value of "oct-" is used.
 
@@ -1048,7 +1088,7 @@ be deleted, so this step need not be executed manually.
      See also: *note mkstemp: XREFmkstemp, *note tempdir: XREFtempdir,
      *note P_tmpdir: XREFP_tmpdir, *note tmpfile: XREFtmpfile.
 
- -- Function File: DIR = tempdir ()
+ -- : DIR = tempdir ()
      Return the name of the host system’s directory for temporary files.
 
      The directory name is taken first from the environment variable
@@ -1059,7 +1099,7 @@ be deleted, so this step need not be executed manually.
      XREFtempname, *note mkstemp: XREFmkstemp, *note tmpfile:
      XREFtmpfile.
 
- -- Built-in Function: P_tmpdir ()
+ -- : P_tmpdir ()
      Return the name of the host system’s *default* directory for
      temporary files.
 
@@ -1095,7 +1135,7 @@ contents of a file and then process it, than it is to read it line by
 line.  This has the potential advantage of removing the loop in the
 above code.
 
- -- Built-in Function: STATUS = feof (FID)
+ -- : STATUS = feof (FID)
      Return 1 if an end-of-file condition has been encountered for the
      file specified by file descriptor FID and 0 otherwise.
 
@@ -1106,9 +1146,9 @@ above code.
      See also: *note fread: XREFfread, *note frewind: XREFfrewind, *note
      fseek: XREFfseek, *note fclear: XREFfclear, *note fopen: XREFfopen.
 
- -- Built-in Function: MSG = ferror (FID)
- -- Built-in Function: [MSG, ERR] = ferror (FID)
- -- Built-in Function: [DOTS] = ferror (FID, "clear")
+ -- : MSG = ferror (FID)
+ -- : [MSG, ERR] = ferror (FID)
+ -- : [DOTS] = ferror (FID, "clear")
      Query the error status of the stream specified by file descriptor
      FID
 
@@ -1127,13 +1167,13 @@ above code.
 
      See also: *note fclear: XREFfclear, *note fopen: XREFfopen.
 
- -- Built-in Function: fclear (FID)
+ -- : fclear (FID)
      Clear the stream state for the file specified by the file
      descriptor FID.
 
      See also: *note ferror: XREFferror, *note fopen: XREFfopen.
 
- -- Built-in Function: freport ()
+ -- : freport ()
      Print a list of which files have been opened, and whether they are
      open for reading, writing, or both.
 
@@ -1160,16 +1200,16 @@ File: octave.info,  Node: File Positioning,  Prev: EOF and Errors,  Up: C-Style 
 Three functions are available for setting and determining the position
 of the file pointer for a given file.
 
- -- Built-in Function: POS = ftell (FID)
+ -- : POS = ftell (FID)
      Return the position of the file pointer as the number of characters
      from the beginning of the file specified by file descriptor FID.
 
      See also: *note fseek: XREFfseek, *note frewind: XREFfrewind, *note
      feof: XREFfeof, *note fopen: XREFfopen.
 
- -- Built-in Function: fseek (FID, OFFSET)
- -- Built-in Function: fseek (FID, OFFSET, ORIGIN)
- -- Built-in Function: STATUS = fseek (...)
+ -- : fseek (FID, OFFSET)
+ -- : fseek (FID, OFFSET, ORIGIN)
+ -- : STATUS = fseek (...)
      Set the file pointer to the location OFFSET within the file FID.
 
      The pointer is positioned OFFSET characters from the ORIGIN, which
@@ -1184,9 +1224,9 @@ of the file pointer for a given file.
      See also: *note fskipl: XREFfskipl, *note frewind: XREFfrewind,
      *note ftell: XREFftell, *note fopen: XREFfopen.
 
- -- Built-in Function: SEEK_SET ()
- -- Built-in Function: SEEK_CUR ()
- -- Built-in Function: SEEK_END ()
+ -- : SEEK_SET ()
+ -- : SEEK_CUR ()
+ -- : SEEK_END ()
      Return the numerical value to pass to ‘fseek’ to perform one of the
      following actions:
 
@@ -1201,8 +1241,8 @@ of the file pointer for a given file.
 
      See also: *note fseek: XREFfseek.
 
- -- Built-in Function: frewind (FID)
- -- Built-in Function: STATUS = frewind (FID)
+ -- : frewind (FID)
+ -- : STATUS = frewind (FID)
      Move the file pointer to the beginning of the file specified by
      file descriptor FID.
 
@@ -1246,15 +1286,16 @@ provided by access to OpenGL.  Which plotting system is used is
 controlled by the ‘graphics_toolkit’ function.  *Note Graphics
 Toolkits::.
 
-   The function call ‘graphics_toolkit ("fltk")’ selects the FLTK/OpenGL
-system, and ‘graphics_toolkit ("gnuplot")’ selects the gnuplot system.
-The two systems may be used selectively through the use of the
+   The function call ‘graphics_toolkit ("qt")’ selects the Qt/OpenGL
+system, ‘graphics_toolkit ("fltk")’ selects the FLTK/OpenGL system, and
+‘graphics_toolkit ("gnuplot")’ selects the gnuplot system.  The three
+systems may be used selectively through the use of the
 ‘graphics_toolkit’ property of the graphics handle for each figure.
 This is explained in *note Graphics Data Structures::.  *Caution:* The
-FLTK toolkit uses single precision variables internally which limits the
-maximum value that can be displayed to approximately 10^{38}.  If your
-data contains larger values you must use the gnuplot toolkit which
-supports values up to 10^{308}.
+OpenGL-based toolkits use single precision variables internally which
+limits the maximum value that can be displayed to approximately 10^{38}.
+If your data contains larger values you must use the gnuplot toolkit
+which supports values up to 10^{308}.
 
 
 File: octave.info,  Node: High-Level Plotting,  Next: Graphics Data Structures,  Prev: Introduction to Plotting,  Up: Plotting
@@ -1311,13 +1352,13 @@ graph.
 
 Figure 15.1: Simple Two-Dimensional Plot.
 
- -- Function File: plot (Y)
- -- Function File: plot (X, Y)
- -- Function File: plot (X, Y, FMT)
- -- Function File: plot (..., PROPERTY, VALUE, ...)
- -- Function File: plot (X1, Y1, ..., XN, YN)
- -- Function File: plot (HAX, ...)
- -- Function File: H = plot (...)
+ -- : plot (Y)
+ -- : plot (X, Y)
+ -- : plot (X, Y, FMT)
+ -- : plot (..., PROPERTY, VALUE, ...)
+ -- : plot (X1, Y1, ..., XN, YN)
+ -- : plot (HAX, ...)
+ -- : H = plot (...)
      Produce 2-D plots.
 
      Many different combinations of arguments are possible.  The
@@ -1470,11 +1511,11 @@ Figure 15.1: Simple Two-Dimensional Plot.
    The ‘plotyy’ function may be used to create a plot with two
 independent y axes.
 
- -- Function File: plotyy (X1, Y1, X2, Y2)
- -- Function File: plotyy (..., FUN)
- -- Function File: plotyy (..., FUN1, FUN2)
- -- Function File: plotyy (HAX, ...)
- -- Function File: [AX, H1, H2] = plotyy (...)
+ -- : plotyy (X1, Y1, X2, Y2)
+ -- : plotyy (..., FUN)
+ -- : plotyy (..., FUN1, FUN2)
+ -- : plotyy (HAX, ...)
+ -- : [AX, H1, H2] = plotyy (...)
      Plot two sets of data with independent y-axes and a common x-axis.
 
      The arguments X1 and Y1 define the arguments for the first plot and
@@ -1510,12 +1551,12 @@ independent y axes.
 ‘plot’ function, but produce plots in which one or both of the axes use
 log scales.
 
- -- Function File: semilogx (Y)
- -- Function File: semilogx (X, Y)
- -- Function File: semilogx (X, Y, PROPERTY, VALUE, ...)
- -- Function File: semilogx (X, Y, FMT)
- -- Function File: semilogx (HAX, ...)
- -- Function File: H = semilogx (...)
+ -- : semilogx (Y)
+ -- : semilogx (X, Y)
+ -- : semilogx (X, Y, PROPERTY, VALUE, ...)
+ -- : semilogx (X, Y, FMT)
+ -- : semilogx (HAX, ...)
+ -- : H = semilogx (...)
      Produce a 2-D plot using a logarithmic scale for the x-axis.
 
      See the documentation of ‘plot’ for a description of the arguments
@@ -1530,12 +1571,12 @@ log scales.
      See also: *note plot: XREFplot, *note semilogy: XREFsemilogy, *note
      loglog: XREFloglog.
 
- -- Function File: semilogy (Y)
- -- Function File: semilogy (X, Y)
- -- Function File: semilogy (X, Y, PROPERTY, VALUE, ...)
- -- Function File: semilogy (X, Y, FMT)
- -- Function File: semilogy (H, ...)
- -- Function File: H = semilogy (...)
+ -- : semilogy (Y)
+ -- : semilogy (X, Y)
+ -- : semilogy (X, Y, PROPERTY, VALUE, ...)
+ -- : semilogy (X, Y, FMT)
+ -- : semilogy (H, ...)
+ -- : H = semilogy (...)
      Produce a 2-D plot using a logarithmic scale for the y-axis.
 
      See the documentation of ‘plot’ for a description of the arguments
@@ -1550,12 +1591,12 @@ log scales.
      See also: *note plot: XREFplot, *note semilogx: XREFsemilogx, *note
      loglog: XREFloglog.
 
- -- Function File: loglog (Y)
- -- Function File: loglog (X, Y)
- -- Function File: loglog (X, Y, PROP, VALUE, ...)
- -- Function File: loglog (X, Y, FMT)
- -- Function File: loglog (HAX, ...)
- -- Function File: H = loglog (...)
+ -- : loglog (Y)
+ -- : loglog (X, Y)
+ -- : loglog (X, Y, PROP, VALUE, ...)
+ -- : loglog (X, Y, FMT)
+ -- : loglog (HAX, ...)
+ -- : H = loglog (...)
      Produce a 2-D plot using logarithmic scales for both axes.
 
      See the documentation of ‘plot’ for a description of the arguments
@@ -1585,13 +1626,13 @@ shown in *note Figure 15.2: fig:hist.
 
 Figure 15.2: Histogram.
 
- -- Function File: bar (Y)
- -- Function File: bar (X, Y)
- -- Function File: bar (..., W)
- -- Function File: bar (..., STYLE)
- -- Function File: bar (..., PROP, VAL, ...)
- -- Function File: bar (HAX, ...)
- -- Function File: H = bar (..., PROP, VAL, ...)
+ -- : bar (Y)
+ -- : bar (X, Y)
+ -- : bar (..., W)
+ -- : bar (..., STYLE)
+ -- : bar (..., PROP, VAL, ...)
+ -- : bar (HAX, ...)
+ -- : H = bar (..., PROP, VAL, ...)
      Produce a bar graph from two vectors of X-Y data.
 
      If only one argument is given, Y, it is taken as a vector of Y
@@ -1661,13 +1702,13 @@ Figure 15.2: Histogram.
      See also: *note barh: XREFbarh, *note hist: XREFhist, *note pie:
      XREFpie, *note plot: XREFplot, *note patch: XREFpatch.
 
- -- Function File: barh (Y)
- -- Function File: barh (X, Y)
- -- Function File: barh (..., W)
- -- Function File: barh (..., STYLE)
- -- Function File: barh (..., PROP, VAL, ...)
- -- Function File: barh (HAX, ...)
- -- Function File: H = barh (..., PROP, VAL, ...)
+ -- : barh (Y)
+ -- : barh (X, Y)
+ -- : barh (..., W)
+ -- : barh (..., STYLE)
+ -- : barh (..., PROP, VAL, ...)
+ -- : barh (HAX, ...)
+ -- : H = barh (..., PROP, VAL, ...)
      Produce a horizontal bar graph from two vectors of X-Y data.
 
      If only one argument is given, it is taken as a vector of Y values
@@ -1711,13 +1752,13 @@ Figure 15.2: Histogram.
      See also: *note bar: XREFbar, *note hist: XREFhist, *note pie:
      XREFpie, *note plot: XREFplot, *note patch: XREFpatch.
 
- -- Function File: hist (Y)
- -- Function File: hist (Y, X)
- -- Function File: hist (Y, NBINS)
- -- Function File: hist (Y, X, NORM)
- -- Function File: hist (..., PROP, VAL, ...)
- -- Function File: hist (HAX, ...)
- -- Function File: [NN, XX] = hist (...)
+ -- : hist (Y)
+ -- : hist (Y, X)
+ -- : hist (Y, NBINS)
+ -- : hist (Y, X, NORM)
+ -- : hist (..., PROP, VAL, ...)
+ -- : hist (HAX, ...)
+ -- : [NN, XX] = hist (...)
      Produce histogram counts or plots.
 
      With one vector input argument, Y, plot a histogram of the values
@@ -1757,9 +1798,9 @@ Figure 15.2: Histogram.
      See also: *note histc: XREFhistc, *note bar: XREFbar, *note pie:
      XREFpie, *note rose: XREFrose.
 
- -- Function File: stemleaf (X, CAPTION)
- -- Function File: stemleaf (X, CAPTION, STEM_SZ)
- -- Function File: PLOTSTR = stemleaf (...)
+ -- : stemleaf (X, CAPTION)
+ -- : stemleaf (X, CAPTION, STEM_SZ)
+ -- : PLOTSTR = stemleaf (...)
      Compute and display a stem and leaf plot of the vector X.
 
      The input X should be a vector of integers.  Any non-integer values
@@ -1806,13 +1847,13 @@ Figure 15.2: Histogram.
      use ‘XS = sort (X)’ before calling ‘stemleaf (XS)’.
 
      The stem and leaf plot and associated displays are described in:
-     Ch.  3, ‘Exploratory Data Analysis’ by J. W. Tukey, Addison-Wesley,
-     1977.
+     Chapter 3, ‘Exploratory Data Analysis’ by J. W. Tukey,
+     Addison-Wesley, 1977.
 
      See also: *note hist: XREFhist, *note printd: XREFprintd.
 
- -- Function File: printd (OBJ, FILENAME)
- -- Function File: OUT_FILE = printd (...)
+ -- : printd (OBJ, FILENAME)
+ -- : OUT_FILE = printd (...)
 
      Convert any object acceptable to ‘disp’ into the format selected by
      the suffix of FILENAME.
@@ -1825,13 +1866,13 @@ Figure 15.2: Histogram.
 
      See also: *note stemleaf: XREFstemleaf.
 
- -- Function File: stairs (Y)
- -- Function File: stairs (X, Y)
- -- Function File: stairs (..., STYLE)
- -- Function File: stairs (..., PROP, VAL, ...)
- -- Function File: stairs (HAX, ...)
- -- Function File: H = stairs (...)
- -- Function File: [XSTEP, YSTEP] = stairs (...)
+ -- : stairs (Y)
+ -- : stairs (X, Y)
+ -- : stairs (..., STYLE)
+ -- : stairs (..., PROP, VAL, ...)
+ -- : stairs (HAX, ...)
+ -- : H = stairs (...)
+ -- : [XSTEP, YSTEP] = stairs (...)
      Produce a stairstep plot.
 
      The arguments X and Y may be vectors or matrices.  If only one
@@ -1863,13 +1904,13 @@ Figure 15.2: Histogram.
      See also: *note bar: XREFbar, *note hist: XREFhist, *note plot:
      XREFplot, *note stem: XREFstem.
 
- -- Function File: stem (Y)
- -- Function File: stem (X, Y)
- -- Function File: stem (..., LINESPEC)
- -- Function File: stem (..., "filled")
- -- Function File: stem (..., PROP, VAL, ...)
- -- Function File: stem (HAX, ...)
- -- Function File: H = stem (...)
+ -- : stem (Y)
+ -- : stem (X, Y)
+ -- : stem (..., LINESPEC)
+ -- : stem (..., "filled")
+ -- : stem (..., PROP, VAL, ...)
+ -- : stem (HAX, ...)
+ -- : H = stem (...)
      Plot a 2-D stem graph.
 
      If only one argument is given, it is taken as the y-values and the
@@ -1952,12 +1993,12 @@ Figure 15.2: Histogram.
      See also: *note stem3: XREFstem3, *note bar: XREFbar, *note hist:
      XREFhist, *note plot: XREFplot, *note stairs: XREFstairs.
 
- -- Function File: stem3 (X, Y, Z)
- -- Function File: stem3 (..., LINESPEC)
- -- Function File: stem3 (..., "filled")
- -- Function File: stem3 (..., PROP, VAL, ...)
- -- Function File: stem3 (HAX, ...)
- -- Function File: H = stem3 (...)
+ -- : stem3 (X, Y, Z)
+ -- : stem3 (..., LINESPEC)
+ -- : stem3 (..., "filled")
+ -- : stem3 (..., PROP, VAL, ...)
+ -- : stem3 (HAX, ...)
+ -- : H = stem3 (...)
      Plot a 3-D stem graph.
 
      Stems are drawn from the height Z to the location in the x-y plane
@@ -1992,14 +2033,14 @@ Figure 15.2: Histogram.
      See also: *note stem: XREFstem, *note bar: XREFbar, *note hist:
      XREFhist, *note plot: XREFplot.
 
- -- Function File: scatter (X, Y)
- -- Function File: scatter (X, Y, S)
- -- Function File: scatter (X, Y, S, C)
- -- Function File: scatter (..., STYLE)
- -- Function File: scatter (..., "filled")
- -- Function File: scatter (..., PROP, VAL, ...)
- -- Function File: scatter (HAX, ...)
- -- Function File: H = scatter (...)
+ -- : scatter (X, Y)
+ -- : scatter (X, Y, S)
+ -- : scatter (X, Y, S, C)
+ -- : scatter (..., STYLE)
+ -- : scatter (..., "filled")
+ -- : scatter (..., PROP, VAL, ...)
+ -- : scatter (HAX, ...)
+ -- : H = scatter (...)
      Draw a 2-D scatter plot.
 
      A marker is plotted at each point defined by the coordinates in the
@@ -2038,11 +2079,11 @@ Figure 15.2: Histogram.
      See also: *note scatter3: XREFscatter3, *note patch: XREFpatch,
      *note plot: XREFplot.
 
- -- Function File: plotmatrix (X, Y)
- -- Function File: plotmatrix (X)
- -- Function File: plotmatrix (..., STYLE)
- -- Function File: plotmatrix (HAX, ...)
- -- Function File: [H, AX, BIGAX, P, PAX] = plotmatrix (...)
+ -- : plotmatrix (X, Y)
+ -- : plotmatrix (X)
+ -- : plotmatrix (..., STYLE)
+ -- : plotmatrix (HAX, ...)
+ -- : [H, AX, BIGAX, P, PAX] = plotmatrix (...)
      Scatter plot of the columns of one matrix against another.
 
      Given the arguments X and Y that have a matching number of rows,
@@ -2080,10 +2121,10 @@ Figure 15.2: Histogram.
 
      See also: *note scatter: XREFscatter, *note plot: XREFplot.
 
- -- Function File: pareto (Y)
- -- Function File: pareto (Y, X)
- -- Function File: pareto (HAX, ...)
- -- Function File: H = pareto (...)
+ -- : pareto (Y)
+ -- : pareto (Y, X)
+ -- : pareto (HAX, ...)
+ -- : H = pareto (...)
      Draw a Pareto chart.
 
      A Pareto chart is a bar graph that arranges information in such a
@@ -2122,12 +2163,12 @@ Figure 15.2: Histogram.
      See also: *note bar: XREFbar, *note barh: XREFbarh, *note hist:
      XREFhist, *note pie: XREFpie, *note plot: XREFplot.
 
- -- Function File: rose (TH)
- -- Function File: rose (TH, NBINS)
- -- Function File: rose (TH, BINS)
- -- Function File: rose (HAX, ...)
- -- Function File: H = rose (...)
- -- Function File: [THOUT ROUT] = rose (...)
+ -- : rose (TH)
+ -- : rose (TH, NBINS)
+ -- : rose (TH, BINS)
+ -- : rose (HAX, ...)
+ -- : H = rose (...)
+ -- : [THOUT ROUT] = rose (...)
      Plot an angular histogram.
 
      With one vector argument, TH, plot the histogram with 20 angular
@@ -2156,13 +2197,13 @@ Figure 15.2: Histogram.
    The ‘contour’, ‘contourf’ and ‘contourc’ functions produce
 two-dimensional contour plots from three-dimensional data.
 
- -- Function File: contour (Z)
- -- Function File: contour (Z, VN)
- -- Function File: contour (X, Y, Z)
- -- Function File: contour (X, Y, Z, VN)
- -- Function File: contour (..., STYLE)
- -- Function File: contour (HAX, ...)
- -- Function File: [C, H] = contour (...)
+ -- : contour (Z)
+ -- : contour (Z, VN)
+ -- : contour (X, Y, Z)
+ -- : contour (X, Y, Z, VN)
+ -- : contour (..., STYLE)
+ -- : contour (HAX, ...)
+ -- : [C, H] = contour (...)
      Create a 2-D contour plot.
 
      Plot level curves (contour lines) of the matrix Z, using the
@@ -2195,13 +2236,13 @@ two-dimensional contour plots from three-dimensional data.
      *note surfc: XREFsurfc, *note caxis: XREFcaxis, *note colormap:
      XREFcolormap, *note plot: XREFplot.
 
- -- Function File: contourf (Z)
- -- Function File: contourf (Z, VN)
- -- Function File: contourf (X, Y, Z)
- -- Function File: contourf (X, Y, Z, VN)
- -- Function File: contourf (..., STYLE)
- -- Function File: contourf (HAX, ...)
- -- Function File: [C, H] = contourf (...)
+ -- : contourf (Z)
+ -- : contourf (Z, VN)
+ -- : contourf (X, Y, Z)
+ -- : contourf (X, Y, Z, VN)
+ -- : contourf (..., STYLE)
+ -- : contourf (HAX, ...)
+ -- : [C, H] = contourf (...)
      Create a 2-D contour plot with filled intervals.
 
      Plot level curves (contour lines) of the matrix Z and fill the
@@ -2236,10 +2277,10 @@ two-dimensional contour plots from three-dimensional data.
      *note surfc: XREFsurfc, *note caxis: XREFcaxis, *note colormap:
      XREFcolormap, *note plot: XREFplot.
 
- -- Function File: [C, LEV] = contourc (Z)
- -- Function File: [C, LEV] = contourc (Z, VN)
- -- Function File: [C, LEV] = contourc (X, Y, Z)
- -- Function File: [C, LEV] = contourc (X, Y, Z, VN)
+ -- : [C, LEV] = contourc (Z)
+ -- : [C, LEV] = contourc (Z, VN)
+ -- : [C, LEV] = contourc (X, Y, Z)
+ -- : [C, LEV] = contourc (X, Y, Z, VN)
      Compute contour lines (isolines of constant Z value).
 
      The matrix Z contains height values above the rectangular grid
@@ -2277,13 +2318,13 @@ two-dimensional contour plots from three-dimensional data.
      See also: *note contour: XREFcontour, *note contourf: XREFcontourf,
      *note contour3: XREFcontour3, *note clabel: XREFclabel.
 
- -- Function File: contour3 (Z)
- -- Function File: contour3 (Z, VN)
- -- Function File: contour3 (X, Y, Z)
- -- Function File: contour3 (X, Y, Z, VN)
- -- Function File: contour3 (..., STYLE)
- -- Function File: contour3 (HAX, ...)
- -- Function File: [C, H] = contour3 (...)
+ -- : contour3 (Z)
+ -- : contour3 (Z, VN)
+ -- : contour3 (X, Y, Z)
+ -- : contour3 (X, Y, Z, VN)
+ -- : contour3 (..., STYLE)
+ -- : contour3 (HAX, ...)
+ -- : [C, H] = contour3 (...)
      Create a 3-D contour plot.
 
      ‘contour3’ plots level curves (contour lines) of the matrix Z at a
@@ -2337,16 +2378,16 @@ produces the figure shown in *note Figure 15.3: fig:errorbar.
 
 Figure 15.3: Errorbar plot.
 
- -- Function File: errorbar (Y, EY)
- -- Function File: errorbar (Y, ..., FMT)
- -- Function File: errorbar (X, Y, EY)
- -- Function File: errorbar (X, Y, ERR, FMT)
- -- Function File: errorbar (X, Y, LERR, UERR, FMT)
- -- Function File: errorbar (X, Y, EX, EY, FMT)
- -- Function File: errorbar (X, Y, LX, UX, LY, UY, FMT)
- -- Function File: errorbar (X1, Y1, ..., FMT, XN, YN, ...)
- -- Function File: errorbar (HAX, ...)
- -- Function File: H = errorbar (...)
+ -- : errorbar (Y, EY)
+ -- : errorbar (Y, ..., FMT)
+ -- : errorbar (X, Y, EY)
+ -- : errorbar (X, Y, ERR, FMT)
+ -- : errorbar (X, Y, LERR, UERR, FMT)
+ -- : errorbar (X, Y, EX, EY, FMT)
+ -- : errorbar (X, Y, LX, UX, LY, UY, FMT)
+ -- : errorbar (X1, Y1, ..., FMT, XN, YN, ...)
+ -- : errorbar (HAX, ...)
+ -- : H = errorbar (...)
      Create a 2-D plot with errorbars.
 
      Many different combinations of arguments are possible.  The
@@ -2460,16 +2501,16 @@ Figure 15.3: Errorbar plot.
      XREFsemilogyerr, *note loglogerr: XREFloglogerr, *note plot:
      XREFplot.
 
- -- Function File: semilogxerr (Y, EY)
- -- Function File: semilogxerr (Y, ..., FMT)
- -- Function File: semilogxerr (X, Y, EY)
- -- Function File: semilogxerr (X, Y, ERR, FMT)
- -- Function File: semilogxerr (X, Y, LERR, UERR, FMT)
- -- Function File: semilogxerr (X, Y, EX, EY, FMT)
- -- Function File: semilogxerr (X, Y, LX, UX, LY, UY, FMT)
- -- Function File: semilogxerr (X1, Y1, ..., FMT, XN, YN, ...)
- -- Function File: semilogxerr (HAX, ...)
- -- Function File: H = semilogxerr (...)
+ -- : semilogxerr (Y, EY)
+ -- : semilogxerr (Y, ..., FMT)
+ -- : semilogxerr (X, Y, EY)
+ -- : semilogxerr (X, Y, ERR, FMT)
+ -- : semilogxerr (X, Y, LERR, UERR, FMT)
+ -- : semilogxerr (X, Y, EX, EY, FMT)
+ -- : semilogxerr (X, Y, LX, UX, LY, UY, FMT)
+ -- : semilogxerr (X1, Y1, ..., FMT, XN, YN, ...)
+ -- : semilogxerr (HAX, ...)
+ -- : H = semilogxerr (...)
      Produce 2-D plots using a logarithmic scale for the x-axis and
      errorbars at each data point.
 
@@ -2489,16 +2530,16 @@ Figure 15.3: Errorbar plot.
      See also: *note errorbar: XREFerrorbar, *note semilogyerr:
      XREFsemilogyerr, *note loglogerr: XREFloglogerr.
 
- -- Function File: semilogyerr (Y, EY)
- -- Function File: semilogyerr (Y, ..., FMT)
- -- Function File: semilogyerr (X, Y, EY)
- -- Function File: semilogyerr (X, Y, ERR, FMT)
- -- Function File: semilogyerr (X, Y, LERR, UERR, FMT)
- -- Function File: semilogyerr (X, Y, EX, EY, FMT)
- -- Function File: semilogyerr (X, Y, LX, UX, LY, UY, FMT)
- -- Function File: semilogyerr (X1, Y1, ..., FMT, XN, YN, ...)
- -- Function File: semilogyerr (HAX, ...)
- -- Function File: H = semilogyerr (...)
+ -- : semilogyerr (Y, EY)
+ -- : semilogyerr (Y, ..., FMT)
+ -- : semilogyerr (X, Y, EY)
+ -- : semilogyerr (X, Y, ERR, FMT)
+ -- : semilogyerr (X, Y, LERR, UERR, FMT)
+ -- : semilogyerr (X, Y, EX, EY, FMT)
+ -- : semilogyerr (X, Y, LX, UX, LY, UY, FMT)
+ -- : semilogyerr (X1, Y1, ..., FMT, XN, YN, ...)
+ -- : semilogyerr (HAX, ...)
+ -- : H = semilogyerr (...)
      Produce 2-D plots using a logarithmic scale for the y-axis and
      errorbars at each data point.
 
@@ -2518,16 +2559,16 @@ Figure 15.3: Errorbar plot.
      See also: *note errorbar: XREFerrorbar, *note semilogxerr:
      XREFsemilogxerr, *note loglogerr: XREFloglogerr.
 
- -- Function File: loglogerr (Y, EY)
- -- Function File: loglogerr (Y, ..., FMT)
- -- Function File: loglogerr (X, Y, EY)
- -- Function File: loglogerr (X, Y, ERR, FMT)
- -- Function File: loglogerr (X, Y, LERR, UERR, FMT)
- -- Function File: loglogerr (X, Y, EX, EY, FMT)
- -- Function File: loglogerr (X, Y, LX, UX, LY, UY, FMT)
- -- Function File: loglogerr (X1, Y1, ..., FMT, XN, YN, ...)
- -- Function File: loglogerr (HAX, ...)
- -- Function File: H = loglogerr (...)
+ -- : loglogerr (Y, EY)
+ -- : loglogerr (Y, ..., FMT)
+ -- : loglogerr (X, Y, EY)
+ -- : loglogerr (X, Y, ERR, FMT)
+ -- : loglogerr (X, Y, LERR, UERR, FMT)
+ -- : loglogerr (X, Y, EX, EY, FMT)
+ -- : loglogerr (X, Y, LX, UX, LY, UY, FMT)
+ -- : loglogerr (X1, Y1, ..., FMT, XN, YN, ...)
+ -- : loglogerr (HAX, ...)
+ -- : H = loglogerr (...)
      Produce 2-D plots on a double logarithm axis with errorbars.
 
      Many different combinations of arguments are possible.  The most
@@ -2561,12 +2602,12 @@ produces the spiral plot shown in *note Figure 15.4: fig:polar.
 
 Figure 15.4: Polar plot.
 
- -- Function File: polar (THETA, RHO)
- -- Function File: polar (THETA, RHO, FMT)
- -- Function File: polar (CPLX)
- -- Function File: polar (CPLX, FMT)
- -- Function File: polar (HAX, ...)
- -- Function File: H = polar (...)
+ -- : polar (THETA, RHO)
+ -- : polar (THETA, RHO, FMT)
+ -- : polar (CPLX)
+ -- : polar (CPLX, FMT)
+ -- : polar (HAX, ...)
+ -- : H = polar (...)
      Create a 2-D plot from polar coordinates THETA and RHO.
 
      If a single complex input CPLX is given then the real part is used
@@ -2594,11 +2635,11 @@ Figure 15.4: Polar plot.
      See also: *note rose: XREFrose, *note compass: XREFcompass, *note
      plot: XREFplot.
 
- -- Function File: pie (X)
- -- Function File: pie (..., EXPLODE)
- -- Function File: pie (..., LABELS)
- -- Function File: pie (HAX, ...);
- -- Function File: H = pie (...);
+ -- : pie (X)
+ -- : pie (..., EXPLODE)
+ -- : pie (..., LABELS)
+ -- : pie (HAX, ...);
+ -- : H = pie (...);
      Plot a 2-D pie chart.
 
      When called with a single vector argument, produce a pie chart of
@@ -2627,11 +2668,11 @@ Figure 15.4: Polar plot.
      See also: *note pie3: XREFpie3, *note bar: XREFbar, *note hist:
      XREFhist, *note rose: XREFrose.
 
- -- Function File: pie3 (X)
- -- Function File: pie3 (..., EXPLODE)
- -- Function File: pie3 (..., LABELS)
- -- Function File: pie3 (HAX, ...);
- -- Function File: H = pie3 (...);
+ -- : pie3 (X)
+ -- : pie3 (..., EXPLODE)
+ -- : pie3 (..., LABELS)
+ -- : pie3 (HAX, ...);
+ -- : H = pie3 (...);
      Plot a 3-D pie chart.
 
      Called with a single vector argument, produces a 3-D pie chart of
@@ -2660,13 +2701,13 @@ Figure 15.4: Polar plot.
      See also: *note pie: XREFpie, *note bar: XREFbar, *note hist:
      XREFhist, *note rose: XREFrose.
 
- -- Function File: quiver (U, V)
- -- Function File: quiver (X, Y, U, V)
- -- Function File: quiver (..., S)
- -- Function File: quiver (..., STYLE)
- -- Function File: quiver (..., "filled")
- -- Function File: quiver (HAX, ...)
- -- Function File: H = quiver (...)
+ -- : quiver (U, V)
+ -- : quiver (X, Y, U, V)
+ -- : quiver (..., S)
+ -- : quiver (..., STYLE)
+ -- : quiver (..., "filled")
+ -- : quiver (HAX, ...)
+ -- : H = quiver (...)
 
      Plot a 2-D vector field with arrows.
 
@@ -2702,13 +2743,13 @@ Figure 15.4: Polar plot.
      See also: *note quiver3: XREFquiver3, *note compass: XREFcompass,
      *note feather: XREFfeather, *note plot: XREFplot.
 
- -- Function File: quiver3 (U, V, W)
- -- Function File: quiver3 (X, Y, Z, U, V, W)
- -- Function File: quiver3 (..., S)
- -- Function File: quiver3 (..., STYLE)
- -- Function File: quiver3 (..., "filled")
- -- Function File: quiver3 (HAX, ...)
- -- Function File: H = quiver3 (...)
+ -- : quiver3 (U, V, W)
+ -- : quiver3 (X, Y, Z, U, V, W)
+ -- : quiver3 (..., S)
+ -- : quiver3 (..., STYLE)
+ -- : quiver3 (..., "filled")
+ -- : quiver3 (HAX, ...)
+ -- : H = quiver3 (...)
 
      Plot a 3-D vector field with arrows.
 
@@ -2746,11 +2787,11 @@ Figure 15.4: Polar plot.
      See also: *note quiver: XREFquiver, *note compass: XREFcompass,
      *note feather: XREFfeather, *note plot: XREFplot.
 
- -- Function File: compass (U, V)
- -- Function File: compass (Z)
- -- Function File: compass (..., STYLE)
- -- Function File: compass (HAX, ...)
- -- Function File: H = compass (...)
+ -- : compass (U, V)
+ -- : compass (Z)
+ -- : compass (..., STYLE)
+ -- : compass (HAX, ...)
+ -- : H = compass (...)
 
      Plot the ‘(U, V)’ components of a vector field emanating from the
      origin of a polar plot.
@@ -2774,11 +2815,11 @@ Figure 15.4: Polar plot.
      See also: *note polar: XREFpolar, *note feather: XREFfeather, *note
      quiver: XREFquiver, *note rose: XREFrose, *note plot: XREFplot.
 
- -- Function File: feather (U, V)
- -- Function File: feather (Z)
- -- Function File: feather (..., STYLE)
- -- Function File: feather (HAX, ...)
- -- Function File: H = feather (...)
+ -- : feather (U, V)
+ -- : feather (Z)
+ -- : feather (..., STYLE)
+ -- : feather (HAX, ...)
+ -- : H = feather (...)
 
      Plot the ‘(U, V)’ components of a vector field emanating from
      equidistant points on the x-axis.
@@ -2801,10 +2842,10 @@ Figure 15.4: Polar plot.
      See also: *note plot: XREFplot, *note quiver: XREFquiver, *note
      compass: XREFcompass.
 
- -- Function File: pcolor (X, Y, C)
- -- Function File: pcolor (C)
- -- Function File: pcolor (HAX, ...)
- -- Function File: H = pcolor (...)
+ -- : pcolor (X, Y, C)
+ -- : pcolor (C)
+ -- : pcolor (HAX, ...)
+ -- : H = pcolor (...)
      Produce a 2-D density plot.
 
      A ‘pcolor’ plot draws rectangles with colors from the matrix C over
@@ -2839,12 +2880,12 @@ Figure 15.4: Polar plot.
      meshgrid: XREFmeshgrid, *note contour: XREFcontour, *note imagesc:
      XREFimagesc.
 
- -- Function File: area (Y)
- -- Function File: area (X, Y)
- -- Function File: area (..., LVL)
- -- Function File: area (..., PROP, VAL, ...)
- -- Function File: area (HAX, ...)
- -- Function File: H = area (...)
+ -- : area (Y)
+ -- : area (X, Y)
+ -- : area (..., LVL)
+ -- : area (..., PROP, VAL, ...)
+ -- : area (HAX, ...)
+ -- : H = area (...)
      Area plot of the columns of Y.
 
      This plot shows the contributions of each column value to the row
@@ -2875,11 +2916,11 @@ Figure 15.4: Polar plot.
 
      See also: *note plot: XREFplot, *note patch: XREFpatch.
 
- -- Function File: fill (X, Y, C)
- -- Function File: fill (X1, Y1, C1, X2, Y2, C2)
- -- Function File: fill (..., PROP, VAL)
- -- Function File: fill (HAX, ...)
- -- Function File: H = fill (...)
+ -- : fill (X, Y, C)
+ -- : fill (X1, Y1, C1, X2, Y2, C2)
+ -- : fill (..., PROP, VAL)
+ -- : fill (HAX, ...)
+ -- : H = fill (...)
      Create one or more filled 2-D polygons.
 
      The inputs X and Y are the coordinates of the polygon vertices.  If
@@ -2919,10 +2960,10 @@ Figure 15.4: Polar plot.
      See also: *note patch: XREFpatch, *note caxis: XREFcaxis, *note
      colormap: XREFcolormap.
 
- -- Function File: comet (Y)
- -- Function File: comet (X, Y)
- -- Function File: comet (X, Y, P)
- -- Function File: comet (HAX, ...)
+ -- : comet (Y)
+ -- : comet (X, Y)
+ -- : comet (X, Y, P)
+ -- : comet (HAX, ...)
      Produce a simple comet style animation along the trajectory
      provided by the input coordinate vectors (X, Y).
 
@@ -2937,10 +2978,10 @@ Figure 15.4: Polar plot.
 
      See also: *note comet3: XREFcomet3.
 
- -- Function File: comet3 (Z)
- -- Function File: comet3 (X, Y, Z)
- -- Function File: comet3 (X, Y, Z, P)
- -- Function File: comet3 (HAX, ...)
+ -- : comet3 (Z)
+ -- : comet3 (X, Y, Z)
+ -- : comet3 (X, Y, Z, P)
+ -- : comet3 (HAX, ...)
      Produce a simple comet style animation along the trajectory
      provided by the input coordinate vectors (X, Y, Z).
 
@@ -2955,7 +2996,7 @@ Figure 15.4: Polar plot.
 
      See also: *note comet: XREFcomet.
 
- -- Function File: [X, MAP] = frame2im (F)
+ -- : [X, MAP] = frame2im (F)
      Convert movie frame to indexed image.
 
      A movie frame is simply a struct with the fields "cdata" and
@@ -2968,8 +3009,8 @@ Figure 15.4: Polar plot.
 
      See also: *note im2frame: XREFim2frame.
 
- -- Function File: im2frame (RGB)
- -- Function File: im2frame (X, MAP)
+ -- : im2frame (RGB)
+ -- : im2frame (X, MAP)
      Convert image to movie frame.
 
      A movie frame is simply a struct with the fields "cdata" and
@@ -2992,14 +3033,14 @@ The axis function may be used to change the axis limits of an existing
 plot and various other axis properties, such as the aspect ratio and the
 appearance of tic marks.
 
- -- Function File: axis ()
- -- Function File: axis ([X_lo X_hi])
- -- Function File: axis ([X_lo X_hi Y_lo Y_hi])
- -- Function File: axis ([X_lo X_hi Y_lo Y_hi Z_lo Z_hi])
- -- Function File: axis (OPTION)
- -- Function File: axis (..., OPTION)
- -- Function File: axis (HAX, ...)
- -- Function File: LIMITS = axis ()
+ -- : axis ()
+ -- : axis ([X_lo X_hi])
+ -- : axis ([X_lo X_hi Y_lo Y_hi])
+ -- : axis ([X_lo X_hi Y_lo Y_hi Z_lo Z_hi])
+ -- : axis (OPTION)
+ -- : axis (..., OPTION)
+ -- : axis (HAX, ...)
+ -- : LIMITS = axis ()
      Set axis limits and appearance.
 
      The argument LIMITS should be a 2-, 4-, or 6-element vector.  The
@@ -3031,10 +3072,11 @@ appearance of tic marks.
      The following options control the aspect ratio of the axes.
 
      "square"
-          Force a square aspect ratio.
+          Force a square axis aspect ratio.
 
      "equal"
-          Force x distance to equal y-distance.
+          Force x-axis unit distance to equal y-axis (and z-axis) unit
+          distance.
 
      "normal"
           Restore default aspect ratio.
@@ -3095,11 +3137,11 @@ appearance of tic marks.
    Similarly the axis limits of the colormap can be changed with the
 caxis function.
 
- -- Function File: caxis ([cmin cmax])
- -- Function File: caxis ("auto")
- -- Function File: caxis ("manual")
- -- Function File: caxis (HAX, ...)
- -- Function File: LIMITS = caxis ()
+ -- : caxis ([cmin cmax])
+ -- : caxis ("auto")
+ -- : caxis ("manual")
+ -- : caxis (HAX, ...)
+ -- : LIMITS = caxis ()
      Query or set color axis limits for plots.
 
      The limits argument should be a 2-element vector specifying the
@@ -3124,12 +3166,12 @@ caxis function.
    The ‘xlim’, ‘ylim’, and ‘zlim’ functions may be used to get or set
 individual axis limits.  Each has the same form.
 
- -- Function File: XLIMITS = xlim ()
- -- Function File: XMODE = xlim ("mode")
- -- Function File: xlim ([X_LO X_HI])
- -- Function File: xlim ("auto")
- -- Function File: xlim ("manual")
- -- Function File: xlim (HAX, ...)
+ -- : XLIMITS = xlim ()
+ -- : XMODE = xlim ("mode")
+ -- : xlim ([X_LO X_HI])
+ -- : xlim ("auto")
+ -- : xlim ("manual")
+ -- : xlim (HAX, ...)
      Query or set the limits of the x-axis for the current plot.
 
      Called without arguments ‘xlim’ returns the x-axis limits of the
@@ -3169,11 +3211,11 @@ example,
 produces a plot that is equivalent to the one above, but also includes a
 legend displaying the name of the plotted function.
 
- -- Function File: fplot (FN, LIMITS)
- -- Function File: fplot (..., TOL)
- -- Function File: fplot (..., N)
- -- Function File: fplot (..., FMT)
- -- Function File: [X, Y] = fplot (...)
+ -- : fplot (FN, LIMITS)
+ -- : fplot (..., TOL)
+ -- : fplot (..., N)
+ -- : fplot (..., FMT)
+ -- : [X, Y] = fplot (...)
      Plot a function FN within the range defined by LIMITS.
 
      FN is a function handle, inline function, or string containing the
@@ -3224,13 +3266,13 @@ legend displaying the name of the plotted function.
    Other functions that can create two-dimensional plots directly from a
 function include ‘ezplot’, ‘ezcontour’, ‘ezcontourf’ and ‘ezpolar’.
 
- -- Function File: ezplot (F)
- -- Function File: ezplot (F2V)
- -- Function File: ezplot (FX, FY)
- -- Function File: ezplot (..., DOM)
- -- Function File: ezplot (..., N)
- -- Function File: ezplot (HAX, ...)
- -- Function File: H = ezplot (...)
+ -- : ezplot (F)
+ -- : ezplot (F2V)
+ -- : ezplot (FX, FY)
+ -- : ezplot (..., DOM)
+ -- : ezplot (..., N)
+ -- : ezplot (HAX, ...)
+ -- : H = ezplot (...)
 
      Plot the 2-D curve defined by the function F.
 
@@ -3274,11 +3316,11 @@ function include ‘ezplot’, ‘ezcontour’, ‘ezcontourf’ and ‘ezpolar�
      ezmeshc: XREFezmeshc, *note ezsurf: XREFezsurf, *note ezsurfc:
      XREFezsurfc.
 
- -- Function File: ezcontour (F)
- -- Function File: ezcontour (..., DOM)
- -- Function File: ezcontour (..., N)
- -- Function File: ezcontour (HAX, ...)
- -- Function File: H = ezcontour (...)
+ -- : ezcontour (F)
+ -- : ezcontour (..., DOM)
+ -- : ezcontour (..., N)
+ -- : ezcontour (HAX, ...)
+ -- : H = ezcontour (...)
 
      Plot the contour lines of a function.
 
@@ -3309,11 +3351,11 @@ function include ‘ezplot’, ‘ezcontour’, ‘ezcontourf’ and ‘ezpolar�
      XREFezcontourf, *note ezplot: XREFezplot, *note ezmeshc:
      XREFezmeshc, *note ezsurfc: XREFezsurfc.
 
- -- Function File: ezcontourf (F)
- -- Function File: ezcontourf (..., DOM)
- -- Function File: ezcontourf (..., N)
- -- Function File: ezcontourf (HAX, ...)
- -- Function File: H = ezcontourf (...)
+ -- : ezcontourf (F)
+ -- : ezcontourf (..., DOM)
+ -- : ezcontourf (..., N)
+ -- : ezcontourf (HAX, ...)
+ -- : H = ezcontourf (...)
 
      Plot the filled contour lines of a function.
 
@@ -3344,11 +3386,11 @@ function include ‘ezplot’, ‘ezcontour’, ‘ezcontourf’ and ‘ezpolar�
      XREFezcontour, *note ezplot: XREFezplot, *note ezmeshc:
      XREFezmeshc, *note ezsurfc: XREFezsurfc.
 
- -- Function File: ezpolar (F)
- -- Function File: ezpolar (..., DOM)
- -- Function File: ezpolar (..., N)
- -- Function File: ezpolar (HAX, ...)
- -- Function File: H = ezpolar (...)
+ -- : ezpolar (F)
+ -- : ezpolar (..., DOM)
+ -- : ezpolar (..., N)
+ -- : ezpolar (HAX, ...)
+ -- : H = ezpolar (...)
 
      Plot a 2-D function in polar coordinates.
 
@@ -3381,13 +3423,13 @@ File: octave.info,  Node: Two-dimensional Geometric Shapes,  Prev: Two-dimension
 15.2.1.3 Two-dimensional Geometric Shapes
 .........................................
 
- -- Function File: rectangle ()
- -- Function File: rectangle (..., "Position", POS)
- -- Function File: rectangle (..., "Curvature", CURV)
- -- Function File: rectangle (..., "EdgeColor", EC)
- -- Function File: rectangle (..., "FaceColor", FC)
- -- Function File: rectangle (HAX, ...)
- -- Function File: H = rectangle (...)
+ -- : rectangle ()
+ -- : rectangle (..., "Position", POS)
+ -- : rectangle (..., "Curvature", CURV)
+ -- : rectangle (..., "EdgeColor", EC)
+ -- : rectangle (..., "FaceColor", FC)
+ -- : rectangle (HAX, ...)
+ -- : H = rectangle (...)
      Draw a rectangular patch defined by POS and CURV.
 
      The variable ‘POS(1:2)’ defines the lower left-hand corner of the
@@ -3470,12 +3512,12 @@ Figure 15.6: Three-dimensional spiral.
    Finally, the ‘view’ function changes the viewpoint for
 three-dimensional plots.
 
- -- Function File: mesh (X, Y, Z)
- -- Function File: mesh (Z)
- -- Function File: mesh (..., C)
- -- Function File: mesh (..., PROP, VAL, ...)
- -- Function File: mesh (HAX, ...)
- -- Function File: H = mesh (...)
+ -- : mesh (X, Y, Z)
+ -- : mesh (Z)
+ -- : mesh (..., C)
+ -- : mesh (..., PROP, VAL, ...)
+ -- : mesh (HAX, ...)
+ -- : H = mesh (...)
      Plot a 3-D wireframe mesh.
 
      The wireframe mesh is plotted using rectangles.  The vertices of
@@ -3509,12 +3551,12 @@ three-dimensional plots.
      shading: XREFshading, *note colormap: XREFcolormap, *note caxis:
      XREFcaxis.
 
- -- Function File: meshc (X, Y, Z)
- -- Function File: meshc (Z)
- -- Function File: meshc (..., C)
- -- Function File: meshc (..., PROP, VAL, ...)
- -- Function File: meshc (HAX, ...)
- -- Function File: H = meshc (...)
+ -- : meshc (X, Y, Z)
+ -- : meshc (Z)
+ -- : meshc (..., C)
+ -- : meshc (..., PROP, VAL, ...)
+ -- : meshc (HAX, ...)
+ -- : H = meshc (...)
      Plot a 3-D wireframe mesh with underlying contour lines.
 
      The wireframe mesh is plotted using rectangles.  The vertices of
@@ -3548,12 +3590,12 @@ three-dimensional plots.
      XREFmeshgrid, *note hidden: XREFhidden, *note shading: XREFshading,
      *note colormap: XREFcolormap, *note caxis: XREFcaxis.
 
- -- Function File: meshz (X, Y, Z)
- -- Function File: meshz (Z)
- -- Function File: meshz (..., C)
- -- Function File: meshz (..., PROP, VAL, ...)
- -- Function File: meshz (HAX, ...)
- -- Function File: H = meshz (...)
+ -- : meshz (X, Y, Z)
+ -- : meshz (Z)
+ -- : meshz (..., C)
+ -- : meshz (..., PROP, VAL, ...)
+ -- : meshz (HAX, ...)
+ -- : H = meshz (...)
      Plot a 3-D wireframe mesh with a surrounding curtain.
 
      The wireframe mesh is plotted using rectangles.  The vertices of
@@ -3586,10 +3628,10 @@ three-dimensional plots.
      XREFmeshgrid, *note hidden: XREFhidden, *note shading: XREFshading,
      *note colormap: XREFcolormap, *note caxis: XREFcaxis.
 
- -- Command: hidden
- -- Command: hidden on
- -- Command: hidden off
- -- Function File: MODE = hidden (...)
+ -- : hidden
+ -- : hidden on
+ -- : hidden off
+ -- : MODE = hidden (...)
      Control mesh hidden line removal.
 
      When called with no argument the hidden line removal state is
@@ -3612,12 +3654,12 @@ three-dimensional plots.
      XREFezmeshc, *note trimesh: XREFtrimesh, *note waterfall:
      XREFwaterfall.
 
- -- Function File: surf (X, Y, Z)
- -- Function File: surf (Z)
- -- Function File: surf (..., C)
- -- Function File: surf (..., PROP, VAL, ...)
- -- Function File: surf (HAX, ...)
- -- Function File: H = surf (...)
+ -- : surf (X, Y, Z)
+ -- : surf (Z)
+ -- : surf (..., C)
+ -- : surf (..., PROP, VAL, ...)
+ -- : surf (HAX, ...)
+ -- : H = surf (...)
      Plot a 3-D surface mesh.
 
      The surface mesh is plotted using shaded rectangles.  The vertices
@@ -3655,12 +3697,12 @@ three-dimensional plots.
      hidden: XREFhidden, *note shading: XREFshading, *note colormap:
      XREFcolormap, *note caxis: XREFcaxis.
 
- -- Function File: surfc (X, Y, Z)
- -- Function File: surfc (Z)
- -- Function File: surfc (..., C)
- -- Function File: surfc (..., PROP, VAL, ...)
- -- Function File: surfc (HAX, ...)
- -- Function File: H = surfc (...)
+ -- : surfc (X, Y, Z)
+ -- : surfc (Z)
+ -- : surfc (..., C)
+ -- : surfc (..., PROP, VAL, ...)
+ -- : surfc (HAX, ...)
+ -- : H = surfc (...)
      Plot a 3-D surface mesh with underlying contour lines.
 
      The surface mesh is plotted using shaded rectangles.  The vertices
@@ -3698,14 +3740,14 @@ three-dimensional plots.
      hidden: XREFhidden, *note shading: XREFshading, *note colormap:
      XREFcolormap, *note caxis: XREFcaxis.
 
- -- Function File: surfl (Z)
- -- Function File: surfl (X, Y, Z)
- -- Function File: surfl (..., LSRC)
- -- Function File: surfl (X, Y, Z, LSRC, P)
- -- Function File: surfl (..., "cdata")
- -- Function File: surfl (..., "light")
- -- Function File: surfl (HAX, ...)
- -- Function File: H = surfl (...)
+ -- : surfl (Z)
+ -- : surfl (X, Y, Z)
+ -- : surfl (..., LSRC)
+ -- : surfl (X, Y, Z, LSRC, P)
+ -- : surfl (..., "cdata")
+ -- : surfl (..., "light")
+ -- : surfl (HAX, ...)
+ -- : H = surfl (...)
      Plot a 3-D surface using shading based on various lighting models.
 
      The surface mesh is plotted using shaded rectangles.  The vertices
@@ -3754,11 +3796,11 @@ three-dimensional plots.
      *note surf: XREFsurf, *note shading: XREFshading, *note colormap:
      XREFcolormap, *note caxis: XREFcaxis.
 
- -- Function File: surfnorm (X, Y, Z)
- -- Function File: surfnorm (Z)
- -- Function File: surfnorm (..., PROP, VAL, ...)
- -- Function File: surfnorm (HAX, ...)
- -- Function File: [NX, NY, NZ] = surfnorm (...)
+ -- : surfnorm (X, Y, Z)
+ -- : surfnorm (Z)
+ -- : surfnorm (..., PROP, VAL, ...)
+ -- : surfnorm (HAX, ...)
+ -- : [NX, NY, NZ] = surfnorm (...)
      Find the vectors normal to a meshgridded surface.
 
      If X and Y are vectors, then a typical vertex is (X(j), Y(i),
@@ -3776,29 +3818,39 @@ three-dimensional plots.
      axis, rather than the current axes returned by ‘gca’.
 
      If output arguments are requested then the components of the normal
-     vectors are returned in NX, NY, and NZ and no plot is made.
+     vectors are returned in NX, NY, and NZ and no plot is made.  The
+     normal vectors are unnormalized (magnitude != 1).  To normalize,
+     use
+
+          mag = sqrt (nx.^2 + ny.^2 + nz.^2);
+          nx ./= len;  ny ./= len;  nz ./= len;
 
      An example of the use of ‘surfnorm’ is
 
           surfnorm (peaks (25));
 
      Algorithm: The normal vectors are calculated by taking the cross
-     product of the diagonals of each of the quadrilaterals in the
-     meshgrid to find the normal vectors of the centers of these
-     quadrilaterals.  The four nearest normal vectors to the meshgrid
-     points are then averaged to obtain the normal to the surface at the
-     meshgridded points.
+     product of the diagonals of each of the quadrilateral faces in the
+     meshgrid to find the normal vectors at the center of each face.
+     Next, for each meshgrid point the four nearest normal vectors are
+     averaged to obtain the final normal to the surface at the meshgrid
+     point.
+
+     For surface objects, the "VertexNormals" property contains
+     equivalent information, except possibly near the boundary of the
+     surface where different interpolation schemes may yield slightly
+     different values.
 
      See also: *note isonormals: XREFisonormals, *note quiver3:
      XREFquiver3, *note surf: XREFsurf, *note meshgrid: XREFmeshgrid.
 
- -- Function File: [FV] = isosurface (VAL, ISO)
- -- Function File: [FV] = isosurface (X, Y, Z, VAL, ISO)
- -- Function File: [FV] = isosurface (..., "noshare", "verbose")
- -- Function File: [FVC] = isosurface (..., COL)
- -- Function File: [F, V] = isosurface (X, Y, Z, VAL, ISO)
- -- Function File: [F, V, C] = isosurface (X, Y, Z, VAL, ISO, COL)
- -- Function File: isosurface (X, Y, Z, VAL, ISO, COL, OPT)
+ -- : [FV] = isosurface (VAL, ISO)
+ -- : [FV] = isosurface (X, Y, Z, VAL, ISO)
+ -- : [FV] = isosurface (..., "noshare", "verbose")
+ -- : [FVC] = isosurface (..., COL)
+ -- : [F, V] = isosurface (X, Y, Z, VAL, ISO)
+ -- : [F, V, C] = isosurface (X, Y, Z, VAL, ISO, COL)
+ -- : isosurface (X, Y, Z, VAL, ISO, COL, OPT)
 
      Calculate isosurface of 3-D data.
 
@@ -3883,12 +3935,12 @@ three-dimensional plots.
      See also: *note isonormals: XREFisonormals, *note isocolors:
      XREFisocolors.
 
- -- Function File: [N] = isonormals (VAL, V)
- -- Function File: [N] = isonormals (VAL, P)
- -- Function File: [N] = isonormals (X, Y, Z, VAL, V)
- -- Function File: [N] = isonormals (X, Y, Z, VAL, P)
- -- Function File: [N] = isonormals (..., "negate")
- -- Function File: isonormals (..., P)
+ -- : [N] = isonormals (VAL, V)
+ -- : [N] = isonormals (VAL, P)
+ -- : [N] = isonormals (X, Y, Z, VAL, V)
+ -- : [N] = isonormals (X, Y, Z, VAL, P)
+ -- : [N] = isonormals (..., "negate")
+ -- : isonormals (..., P)
 
      Calculate normals to an isosurface.
 
@@ -3913,7 +3965,7 @@ three-dimensional plots.
 
      For example:
 
-          function [] = isofinish (p)
+          function isofinish (p)
             set (gca, "PlotBoxAspectRatioMode", "manual", ...
                       "PlotBoxAspectRatio", [1 1 1]);
             set (p, "VertexNormals", -get (p,"VertexNormals")); # Revert normals
@@ -3957,12 +4009,12 @@ three-dimensional plots.
      See also: *note isosurface: XREFisosurface, *note isocolors:
      XREFisocolors.
 
- -- Function File: [CD] = isocolors (C, V)
- -- Function File: [CD] = isocolors (X, Y, Z, C, V)
- -- Function File: [CD] = isocolors (X, Y, Z, R, G, B, V)
- -- Function File: [CD] = isocolors (R, G, B, V)
- -- Function File: [CD] = isocolors (..., P)
- -- Function File: isocolors (...)
+ -- : [CD] = isocolors (C, V)
+ -- : [CD] = isocolors (X, Y, Z, C, V)
+ -- : [CD] = isocolors (X, Y, Z, R, G, B, V)
+ -- : [CD] = isocolors (R, G, B, V)
+ -- : [CD] = isocolors (..., P)
+ -- : isocolors (...)
 
      Compute isosurface colors.
 
@@ -3989,7 +4041,7 @@ three-dimensional plots.
 
      For example:
 
-          function [] = isofinish (p)
+          function isofinish (p)
             set (gca, "PlotBoxAspectRatioMode", "manual", ...
                       "PlotBoxAspectRatio", [1 1 1]);
             set (p, "FaceColor", "interp");
@@ -4034,11 +4086,11 @@ three-dimensional plots.
      See also: *note isosurface: XREFisosurface, *note isonormals:
      XREFisonormals.
 
- -- Function File: shrinkfaces (P, SF)
- -- Function File: NFV = shrinkfaces (P, SF)
- -- Function File: NFV = shrinkfaces (FV, SF)
- -- Function File: NFV = shrinkfaces (F, V, SF)
- -- Function File: [NF, NV] = shrinkfaces (...)
+ -- : shrinkfaces (P, SF)
+ -- : NFV = shrinkfaces (P, SF)
+ -- : NFV = shrinkfaces (FV, SF)
+ -- : NFV = shrinkfaces (F, V, SF)
+ -- : [NF, NV] = shrinkfaces (...)
 
      Reduce the size of faces in a patch by the shrink factor SF.
 
@@ -4078,7 +4130,7 @@ three-dimensional plots.
 
      See also: *note patch: XREFpatch.
 
- -- Function File: diffuse (SX, SY, SZ, LV)
+ -- : diffuse (SX, SY, SZ, LV)
      Calculate the diffuse reflection strength of a surface defined by
      the normal vector elements SX, SY, SZ.
 
@@ -4088,8 +4140,8 @@ three-dimensional plots.
 
      See also: *note specular: XREFspecular, *note surfl: XREFsurfl.
 
- -- Function File: specular (SX, SY, SZ, LV, VV)
- -- Function File: specular (SX, SY, SZ, LV, VV, SE)
+ -- : specular (SX, SY, SZ, LV, VV)
+ -- : specular (SX, SY, SZ, LV, VV, SE)
      Calculate the specular reflection strength of a surface defined by
      the normal vector elements SX, SY, SZ using Phong’s approximation.
 
@@ -4103,10 +4155,10 @@ three-dimensional plots.
 
      See also: *note diffuse: XREFdiffuse, *note surfl: XREFsurfl.
 
- -- Function File: [XX, YY] = meshgrid (X, Y)
- -- Function File: [XX, YY, ZZ] = meshgrid (X, Y, Z)
- -- Function File: [XX, YY] = meshgrid (X)
- -- Function File: [XX, YY, ZZ] = meshgrid (X)
+ -- : [XX, YY] = meshgrid (X, Y)
+ -- : [XX, YY, ZZ] = meshgrid (X, Y, Z)
+ -- : [XX, YY] = meshgrid (X)
+ -- : [XX, YY, ZZ] = meshgrid (X)
      Given vectors of X and Y coordinates, return matrices XX and YY
      corresponding to a full 2-D grid.
 
@@ -4139,8 +4191,8 @@ three-dimensional plots.
      See also: *note ndgrid: XREFndgrid, *note mesh: XREFmesh, *note
      contour: XREFcontour, *note surf: XREFsurf.
 
- -- Function File: [Y1, Y2, ..., Yn] = ndgrid (X1, X2, ..., Xn)
- -- Function File: [Y1, Y2, ..., Yn] = ndgrid (X)
+ -- : [Y1, Y2, ..., Yn] = ndgrid (X1, X2, ..., Xn)
+ -- : [Y1, Y2, ..., Yn] = ndgrid (X)
      Given n vectors X1, ..., Xn, ‘ndgrid’ returns n arrays of dimension
      n.
 
@@ -4159,13 +4211,13 @@ three-dimensional plots.
 
      See also: *note meshgrid: XREFmeshgrid.
 
- -- Function File: plot3 (X, Y, Z)
- -- Function File: plot3 (X, Y, Z, PROP, VALUE, ...)
- -- Function File: plot3 (X, Y, Z, FMT)
- -- Function File: plot3 (X, CPLX)
- -- Function File: plot3 (CPLX)
- -- Function File: plot3 (HAX, ...)
- -- Function File: H = plot3 (...)
+ -- : plot3 (X, Y, Z)
+ -- : plot3 (X, Y, Z, PROP, VALUE, ...)
+ -- : plot3 (X, Y, Z, FMT)
+ -- : plot3 (X, CPLX)
+ -- : plot3 (CPLX)
+ -- : plot3 (HAX, ...)
+ -- : H = plot3 (...)
      Produce 3-D plots.
 
      Many different combinations of arguments are possible.  The
@@ -4224,13 +4276,13 @@ three-dimensional plots.
 
      See also: *note ezplot3: XREFezplot3, *note plot: XREFplot.
 
- -- Function File: view (AZIMUTH, ELEVATION)
- -- Function File: view ([AZIMUTH ELEVATION])
- -- Function File: view ([X Y Z])
- -- Function File: view (2)
- -- Function File: view (3)
- -- Function File: view (HAX, ...)
- -- Function File: [AZIMUTH, ELEVATION] = view ()
+ -- : view (AZIMUTH, ELEVATION)
+ -- : view ([AZIMUTH ELEVATION])
+ -- : view ([X Y Z])
+ -- : view (2)
+ -- : view (3)
+ -- : view (HAX, ...)
+ -- : [AZIMUTH, ELEVATION] = view ()
      Query or set the viewpoint for the current axes.
 
      The parameters AZIMUTH and ELEVATION can be given as two arguments
@@ -4248,20 +4300,20 @@ three-dimensional plots.
 
      If no inputs are given, return the current AZIMUTH and ELEVATION.
 
- -- Function File: slice (X, Y, Z, V, SX, SY, SZ)
- -- Function File: slice (X, Y, Z, V, XI, YI, ZI)
- -- Function File: slice (V, SX, SY, SZ)
- -- Function File: slice (V, XI, YI, ZI)
- -- Function File: slice (..., METHOD)
- -- Function File: slice (HAX, ...)
- -- Function File: H = slice (...)
+ -- : slice (X, Y, Z, V, SX, SY, SZ)
+ -- : slice (X, Y, Z, V, XI, YI, ZI)
+ -- : slice (V, SX, SY, SZ)
+ -- : slice (V, XI, YI, ZI)
+ -- : slice (..., METHOD)
+ -- : slice (HAX, ...)
+ -- : H = slice (...)
      Plot slices of 3-D data/scalar fields.
 
      Each element of the 3-dimensional array V represents a scalar value
      at a location given by the parameters X, Y, and Z.  The parameters
      X, X, and Z are either 3-dimensional arrays of the same size as the
      array V in the "meshgrid" format or vectors.  The parameters XI,
-     etc.  respect a similar format to X, etc., and they represent the
+     etc. respect a similar format to X, etc., and they represent the
      points at which the array VI is interpolated using interp3.  The
      vectors SX, SY, and SZ contain points of orthogonal slices of the
      respective axes.
@@ -4306,16 +4358,20 @@ three-dimensional plots.
      See also: *note interp3: XREFinterp3, *note surface: XREFsurface,
      *note pcolor: XREFpcolor.
 
- -- Function File: ribbon (Y)
- -- Function File: ribbon (X, Y)
- -- Function File: ribbon (X, Y, WIDTH)
- -- Function File: ribbon (HAX, ...)
- -- Function File: H = ribbon (...)
+ -- : ribbon (Y)
+ -- : ribbon (X, Y)
+ -- : ribbon (X, Y, WIDTH)
+ -- : ribbon (HAX, ...)
+ -- : H = ribbon (...)
      Draw a ribbon plot for the columns of Y vs.  X.
 
+     If X is omitted, a vector containing the row numbers is assumed
+     (‘1:rows (Y)’).  Alternatively, X can also be a vector with same
+     number of elements as rows of Y in which case the same X is used
+     for each column of Y.
+
      The optional parameter WIDTH specifies the width of a single ribbon
-     (default is 0.75).  If X is omitted, a vector containing the row
-     numbers is assumed (‘1:rows (Y)’).
+     (default is 0.75).
 
      If the first argument HAX is an axes handle, then plot into this
      axis, rather than the current axes returned by ‘gca’.
@@ -4326,8 +4382,8 @@ three-dimensional plots.
      See also: *note surface: XREFsurface, *note waterfall:
      XREFwaterfall.
 
- -- Function File: shading (TYPE)
- -- Function File: shading (HAX, TYPE)
+ -- : shading (TYPE)
+ -- : shading (HAX, TYPE)
      Set the shading of patch or surface graphic objects.
 
      Valid arguments for TYPE are
@@ -4349,14 +4405,14 @@ three-dimensional plots.
      XREFpatch, *note pcolor: XREFpcolor, *note surf: XREFsurf, *note
      surface: XREFsurface, *note hidden: XREFhidden.
 
- -- Function File: scatter3 (X, Y, Z)
- -- Function File: scatter3 (X, Y, Z, S)
- -- Function File: scatter3 (X, Y, Z, S, C)
- -- Function File: scatter3 (..., STYLE)
- -- Function File: scatter3 (..., "filled")
- -- Function File: scatter3 (..., PROP, VAL)
- -- Function File: scatter3 (HAX, ...)
- -- Function File: H = scatter3 (...)
+ -- : scatter3 (X, Y, Z)
+ -- : scatter3 (X, Y, Z, S)
+ -- : scatter3 (X, Y, Z, S, C)
+ -- : scatter3 (..., STYLE)
+ -- : scatter3 (..., "filled")
+ -- : scatter3 (..., PROP, VAL)
+ -- : scatter3 (HAX, ...)
+ -- : H = scatter3 (...)
      Draw a 3-D scatter plot.
 
      A marker is plotted at each point defined by the coordinates in the
@@ -4392,12 +4448,12 @@ three-dimensional plots.
      See also: *note scatter: XREFscatter, *note patch: XREFpatch, *note
      plot: XREFplot.
 
- -- Function File: waterfall (X, Y, Z)
- -- Function File: waterfall (Z)
- -- Function File: waterfall (..., C)
- -- Function File: waterfall (..., PROP, VAL, ...)
- -- Function File: waterfall (HAX, ...)
- -- Function File: H = waterfall (...)
+ -- : waterfall (X, Y, Z)
+ -- : waterfall (Z)
+ -- : waterfall (..., C)
+ -- : waterfall (..., PROP, VAL, ...)
+ -- : waterfall (HAX, ...)
+ -- : H = waterfall (...)
      Plot a 3-D waterfall plot.
 
      A waterfall plot is similar to a ‘meshz’ plot except only mesh
@@ -4449,11 +4505,11 @@ For three-dimensional plots the aspect ratio can be set for data with
 ‘daspect’ and for the plot box with ‘pbaspect’.  *Note Axis
 Configuration::, for controlling the x-, y-, and z-limits for plotting.
 
- -- Function File: DATA_ASPECT_RATIO = daspect ()
- -- Function File: daspect (DATA_ASPECT_RATIO)
- -- Function File: daspect (MODE)
- -- Function File: DATA_ASPECT_RATIO_MODE = daspect ("mode")
- -- Function File: daspect (HAX, ...)
+ -- : DATA_ASPECT_RATIO = daspect ()
+ -- : daspect (DATA_ASPECT_RATIO)
+ -- : daspect (MODE)
+ -- : DATA_ASPECT_RATIO_MODE = daspect ("mode")
+ -- : daspect (HAX, ...)
      Query or set the data aspect ratio of the current axes.
 
      The aspect ratio is a normalized 3-element vector representing the
@@ -4475,11 +4531,11 @@ Configuration::, for controlling the x-, y-, and z-limits for plotting.
      See also: *note axis: XREFaxis, *note pbaspect: XREFpbaspect, *note
      xlim: XREFxlim, *note ylim: XREFylim, *note zlim: XREFzlim.
 
- -- Function File: PLOT_BOX_ASPECT_RATIO = pbaspect ( )
- -- Function File: pbaspect (PLOT_BOX_ASPECT_RATIO)
- -- Function File: pbaspect (MODE)
- -- Function File: PLOT_BOX_ASPECT_RATIO_MODE = pbaspect ("mode")
- -- Function File: pbaspect (HAX, ...)
+ -- : PLOT_BOX_ASPECT_RATIO = pbaspect ( )
+ -- : pbaspect (PLOT_BOX_ASPECT_RATIO)
+ -- : pbaspect (MODE)
+ -- : PLOT_BOX_ASPECT_RATIO_MODE = pbaspect ("mode")
+ -- : pbaspect (HAX, ...)
 
      Query or set the plot box aspect ratio of the current axes.
 
@@ -4508,11 +4564,11 @@ File: octave.info,  Node: Three-dimensional Function Plotting,  Next: Three-dime
 15.2.2.2 Three-dimensional Function Plotting
 ............................................
 
- -- Function File: ezplot3 (FX, FY, FZ)
- -- Function File: ezplot3 (..., DOM)
- -- Function File: ezplot3 (..., N)
- -- Function File: ezplot3 (HAX, ...)
- -- Function File: H = ezplot3 (...)
+ -- : ezplot3 (FX, FY, FZ)
+ -- : ezplot3 (..., DOM)
+ -- : ezplot3 (..., N)
+ -- : ezplot3 (HAX, ...)
+ -- : H = ezplot3 (...)
 
      Plot a parametrically defined curve in three dimensions.
 
@@ -4540,13 +4596,13 @@ File: octave.info,  Node: Three-dimensional Function Plotting,  Next: Three-dime
      See also: *note plot3: XREFplot3, *note ezplot: XREFezplot, *note
      ezmesh: XREFezmesh, *note ezsurf: XREFezsurf.
 
- -- Function File: ezmesh (F)
- -- Function File: ezmesh (FX, FY, FZ)
- -- Function File: ezmesh (..., DOM)
- -- Function File: ezmesh (..., N)
- -- Function File: ezmesh (..., "circ")
- -- Function File: ezmesh (HAX, ...)
- -- Function File: H = ezmesh (...)
+ -- : ezmesh (F)
+ -- : ezmesh (FX, FY, FZ)
+ -- : ezmesh (..., DOM)
+ -- : ezmesh (..., N)
+ -- : ezmesh (..., "circ")
+ -- : ezmesh (HAX, ...)
+ -- : H = ezmesh (...)
 
      Plot the mesh defined by a function.
 
@@ -4590,13 +4646,13 @@ File: octave.info,  Node: Three-dimensional Function Plotting,  Next: Three-dime
      ezplot: XREFezplot, *note ezsurf: XREFezsurf, *note ezsurfc:
      XREFezsurfc, *note hidden: XREFhidden.
 
- -- Function File: ezmeshc (F)
- -- Function File: ezmeshc (FX, FY, FZ)
- -- Function File: ezmeshc (..., DOM)
- -- Function File: ezmeshc (..., N)
- -- Function File: ezmeshc (..., "circ")
- -- Function File: ezmeshc (HAX, ...)
- -- Function File: H = ezmeshc (...)
+ -- : ezmeshc (F)
+ -- : ezmeshc (FX, FY, FZ)
+ -- : ezmeshc (..., DOM)
+ -- : ezmeshc (..., N)
+ -- : ezmeshc (..., "circ")
+ -- : ezmeshc (HAX, ...)
+ -- : H = ezmeshc (...)
 
      Plot the mesh and contour lines defined by a function.
 
@@ -4634,13 +4690,13 @@ File: octave.info,  Node: Three-dimensional Function Plotting,  Next: Three-dime
      ezplot: XREFezplot, *note ezsurf: XREFezsurf, *note ezsurfc:
      XREFezsurfc, *note hidden: XREFhidden.
 
- -- Function File: ezsurf (F)
- -- Function File: ezsurf (FX, FY, FZ)
- -- Function File: ezsurf (..., DOM)
- -- Function File: ezsurf (..., N)
- -- Function File: ezsurf (..., "circ")
- -- Function File: ezsurf (HAX, ...)
- -- Function File: H = ezsurf (...)
+ -- : ezsurf (F)
+ -- : ezsurf (FX, FY, FZ)
+ -- : ezsurf (..., DOM)
+ -- : ezsurf (..., N)
+ -- : ezsurf (..., "circ")
+ -- : ezsurf (HAX, ...)
+ -- : H = ezsurf (...)
 
      Plot the surface defined by a function.
 
@@ -4684,13 +4740,13 @@ File: octave.info,  Node: Three-dimensional Function Plotting,  Next: Three-dime
      ezplot: XREFezplot, *note ezmesh: XREFezmesh, *note ezmeshc:
      XREFezmeshc, *note shading: XREFshading.
 
- -- Function File: ezsurfc (F)
- -- Function File: ezsurfc (FX, FY, FZ)
- -- Function File: ezsurfc (..., DOM)
- -- Function File: ezsurfc (..., N)
- -- Function File: ezsurfc (..., "circ")
- -- Function File: ezsurfc (HAX, ...)
- -- Function File: H = ezsurfc (...)
+ -- : ezsurfc (F)
+ -- : ezsurfc (FX, FY, FZ)
+ -- : ezsurfc (..., DOM)
+ -- : ezsurfc (..., N)
+ -- : ezsurfc (..., "circ")
+ -- : ezsurfc (HAX, ...)
+ -- : H = ezsurfc (...)
 
      Plot the surface and contour lines defined by a function.
 
@@ -4734,11 +4790,11 @@ File: octave.info,  Node: Three-dimensional Geometric Shapes,  Prev: Three-dimen
 15.2.2.3 Three-dimensional Geometric Shapes
 ...........................................
 
- -- Command: cylinder
- -- Function File: cylinder (R)
- -- Function File: cylinder (R, N)
- -- Function File: cylinder (HAX, ...)
- -- Function File: [X, Y, Z] = cylinder (...)
+ -- : cylinder
+ -- : cylinder (R)
+ -- : cylinder (R, N)
+ -- : cylinder (HAX, ...)
+ -- : [X, Y, Z] = cylinder (...)
      Plot a 3-D unit cylinder.
 
      The optional input R is a vector specifying the radius along the
@@ -4764,10 +4820,10 @@ File: octave.info,  Node: Three-dimensional Geometric Shapes,  Prev: Three-dimen
      See also: *note ellipsoid: XREFellipsoid, *note rectangle:
      XREFrectangle, *note sphere: XREFsphere.
 
- -- Function File: sphere ()
- -- Function File: sphere (N)
- -- Function File: sphere (HAX, ...)
- -- Function File: [X, Y, Z] = sphere (...)
+ -- : sphere ()
+ -- : sphere (N)
+ -- : sphere (HAX, ...)
+ -- : [X, Y, Z] = sphere (...)
      Plot a 3-D unit sphere.
 
      The optional input N determines the number of faces around the
@@ -4790,10 +4846,10 @@ File: octave.info,  Node: Three-dimensional Geometric Shapes,  Prev: Three-dimen
      See also: *note cylinder: XREFcylinder, *note ellipsoid:
      XREFellipsoid, *note rectangle: XREFrectangle.
 
- -- Function File: ellipsoid (XC, YC, ZC, XR, YR, ZR, N)
- -- Function File: ellipsoid (..., N)
- -- Function File: ellipsoid (HAX, ...)
- -- Function File: [X, Y, Z] = ellipsoid (...)
+ -- : ellipsoid (XC, YC, ZC, XR, YR, ZR, N)
+ -- : ellipsoid (..., N)
+ -- : ellipsoid (HAX, ...)
+ -- : [X, Y, Z] = ellipsoid (...)
      Plot a 3-D ellipsoid.
 
      The inputs XC, YC, ZC specify the center of the ellipsoid.  The
@@ -4837,10 +4893,10 @@ lines are on.
 to highlight parts of a plot using the ‘annotation’ function.  Those
 objects are drawn in an invisible axes, on top of every other axes.
 
- -- Function File: title (STRING)
- -- Function File: title (STRING, PROP, VAL, ...)
- -- Function File: title (HAX, ...)
- -- Function File: H = title (...)
+ -- : title (STRING)
+ -- : title (STRING, PROP, VAL, ...)
+ -- : title (HAX, ...)
+ -- : H = title (...)
      Specify the string used as a title for the current axis.
 
      An optional list of PROPERTY/VALUE pairs can be used to change the
@@ -4855,16 +4911,16 @@ objects are drawn in an invisible axes, on top of every other axes.
      See also: *note xlabel: XREFxlabel, *note ylabel: XREFylabel, *note
      zlabel: XREFzlabel, *note text: XREFtext.
 
- -- Function File: legend (STR1, STR2, ...)
- -- Function File: legend (MATSTR)
- -- Function File: legend (CELLSTR)
- -- Function File: legend (..., "location", POS)
- -- Function File: legend (..., "orientation", ORIENT)
- -- Function File: legend (HAX, ...)
- -- Function File: legend (HOBJS, ...)
- -- Function File: legend (HAX, HOBJS, ...)
- -- Function File: legend ("OPTION")
- -- Function File: [HLEG, HLEG_OBJ, HPLOT, LABELS] = legend (...)
+ -- : legend (STR1, STR2, ...)
+ -- : legend (MATSTR)
+ -- : legend (CELLSTR)
+ -- : legend (..., "location", POS)
+ -- : legend (..., "orientation", ORIENT)
+ -- : legend (HAX, ...)
+ -- : legend (HOBJS, ...)
+ -- : legend (HAX, HOBJS, ...)
+ -- : legend ("OPTION")
+ -- : [HLEG, HLEG_OBJ, HPLOT, LABELS] = legend (...)
 
      Display a legend for the current axes using the specified strings
      as labels.
@@ -4950,10 +5006,10 @@ objects are drawn in an invisible axes, on top of every other axes.
      Properties of the legend object may be manipulated directly by
      using ‘set’.
 
- -- Function File: text (X, Y, STRING)
- -- Function File: text (X, Y, Z, STRING)
- -- Function File: text (..., PROP, VAL, ...)
- -- Function File: H = text (...)
+ -- : text (X, Y, STRING)
+ -- : text (X, Y, Z, STRING)
+ -- : text (..., PROP, VAL, ...)
+ -- : H = text (...)
      Create a text object with text STRING at position X, Y, (Z) on the
      current axes.
 
@@ -4973,10 +5029,10 @@ objects are drawn in an invisible axes, on top of every other axes.
 
    See *note Text Properties:: for the properties that you can set.
 
- -- Function File: xlabel (STRING)
- -- Function File: xlabel (STRING, PROPERTY, VAL, ...)
- -- Function File: xlabel (HAX, ...)
- -- Function File: H = xlabel (...)
+ -- : xlabel (STRING)
+ -- : xlabel (STRING, PROPERTY, VAL, ...)
+ -- : xlabel (HAX, ...)
+ -- : H = xlabel (...)
      Specify the string used to label the x-axis of the current axis.
 
      An optional list of PROPERTY/VALUE pairs can be used to change the
@@ -4992,12 +5048,12 @@ objects are drawn in an invisible axes, on top of every other axes.
      datetick: XREFdatetick, *note title: XREFtitle, *note text:
      XREFtext.
 
- -- Function File: clabel (C, H)
- -- Function File: clabel (C, H, V)
- -- Function File: clabel (C, H, "manual")
- -- Function File: clabel (C)
- -- Function File: clabel (..., PROP, VAL, ...)
- -- Function File: H = clabel (...)
+ -- : clabel (C, H)
+ -- : clabel (C, H, V)
+ -- : clabel (C, H, "manual")
+ -- : clabel (C)
+ -- : clabel (..., PROP, VAL, ...)
+ -- : H = clabel (...)
      Add labels to the contours of a contour plot.
 
      The contour levels are specified by the contour matrix C which is
@@ -5033,10 +5089,10 @@ objects are drawn in an invisible axes, on top of every other axes.
      *note contour3: XREFcontour3, *note meshc: XREFmeshc, *note surfc:
      XREFsurfc, *note text: XREFtext.
 
- -- Command: box
- -- Command: box on
- -- Command: box off
- -- Function File: box (HAX, ...)
+ -- : box
+ -- : box on
+ -- : box off
+ -- : box (HAX, ...)
      Control display of the axis border.
 
      The argument may be either "on" or "off".  If it is omitted, the
@@ -5047,13 +5103,13 @@ objects are drawn in an invisible axes, on top of every other axes.
 
      See also: *note axis: XREFaxis, *note grid: XREFgrid.
 
- -- Command: grid
- -- Command: grid on
- -- Command: grid off
- -- Command: grid minor
- -- Command: grid minor on
- -- Command: grid minor off
- -- Function File: grid (HAX, ...)
+ -- : grid
+ -- : grid on
+ -- : grid off
+ -- : grid minor
+ -- : grid minor on
+ -- : grid minor off
+ -- : grid (HAX, ...)
      Control the display of plot grid lines.
 
      The function state input may be either "on" or "off".  If it is
@@ -5072,15 +5128,15 @@ objects are drawn in an invisible axes, on top of every other axes.
 
      See also: *note axis: XREFaxis, *note box: XREFbox.
 
- -- Command: colorbar
- -- Function File: colorbar (LOC)
- -- Function File: colorbar (DELETE_OPTION)
- -- Function File: colorbar (HCB, ...)
- -- Function File: colorbar (HAX, ...)
- -- Function File: colorbar (..., "peer", HAX, ...)
- -- Function File: colorbar (..., "location", LOC, ...)
- -- Function File: colorbar (..., PROP, VAL, ...)
- -- Function File: H = colorbar (...)
+ -- : colorbar
+ -- : colorbar (LOC)
+ -- : colorbar (DELETE_OPTION)
+ -- : colorbar (HCB, ...)
+ -- : colorbar (HAX, ...)
+ -- : colorbar (..., "peer", HAX, ...)
+ -- : colorbar (..., "location", LOC, ...)
+ -- : colorbar (..., PROP, VAL, ...)
+ -- : H = colorbar (...)
      Add a colorbar to the current axes.
 
      A colorbar displays the current colormap along with numerical
@@ -5139,17 +5195,17 @@ objects are drawn in an invisible axes, on top of every other axes.
 
      See also: *note colormap: XREFcolormap.
 
- -- Function File: annotation (TYPE)
- -- Function File: annotation ("line", X, Y)
- -- Function File: annotation ("arrow", X, Y)
- -- Function File: annotation ("doublearrow", X, Y)
- -- Function File: annotation ("textarrow", X, Y)
- -- Function File: annotation ("textbox", POS)
- -- Function File: annotation ("rectangle", POS)
- -- Function File: annotation ("ellipse", POS)
- -- Function File: annotation (..., PROP, VAL)
- -- Function File: annotation (HF, ...)
- -- Function File: H = annotation (...)
+ -- : annotation (TYPE)
+ -- : annotation ("line", X, Y)
+ -- : annotation ("arrow", X, Y)
+ -- : annotation ("doublearrow", X, Y)
+ -- : annotation ("textarrow", X, Y)
+ -- : annotation ("textbox", POS)
+ -- : annotation ("rectangle", POS)
+ -- : annotation ("ellipse", POS)
+ -- : annotation (..., PROP, VAL)
+ -- : annotation (HF, ...)
+ -- : H = annotation (...)
      Draw annotations to emphasize parts of a figure.
 
      You may build a default annotation by specifying only the TYPE of
@@ -5286,14 +5342,14 @@ into two plotting areas (two rows and one column) and makes the first
 plot area active.  The grid of plot areas created by ‘subplot’ is
 numbered in column-major order (top to bottom, left to right).
 
- -- Function File: subplot (ROWS, COLS, INDEX)
- -- Function File: subplot (RCN)
- -- Function File: subplot (HAX)
- -- Function File: subplot (..., "align")
- -- Function File: subplot (..., "replace")
- -- Function File: subplot (..., "position", POS)
- -- Function File: subplot (..., PROP, VAL, ...)
- -- Function File: HAX = subplot (...)
+ -- : subplot (ROWS, COLS, INDEX)
+ -- : subplot (RCN)
+ -- : subplot (HAX)
+ -- : subplot (..., "align")
+ -- : subplot (..., "replace")
+ -- : subplot (..., "position", POS)
+ -- : subplot (..., PROP, VAL, ...)
+ -- : HAX = subplot (...)
      Set up a plot grid with ROWS by COLS subwindows and set the current
      axes for plotting (‘gca’) to the location given by INDEX.
 
@@ -5362,11 +5418,11 @@ example,
 creates two figures, with the first displaying a sine wave and the
 second a cosine wave.  Figure numbers must be positive integers.
 
- -- Command: figure
- -- Command: figure N
- -- Function File: figure (N)
- -- Function File: figure (..., "PROPERTY", VALUE, ...)
- -- Function File: H = figure (...)
+ -- : figure
+ -- : figure N
+ -- : figure (N)
+ -- : figure (..., "PROPERTY", VALUE, ...)
+ -- : H = figure (...)
      Create a new figure window for plotting.
 
      If no arguments are specified, a new figure with the next available
@@ -5392,12 +5448,12 @@ File: octave.info,  Node: Manipulation of Plot Objects,  Next: Manipulation of P
 15.2.6 Manipulation of Plot Objects
 -----------------------------------
 
- -- Command: pan
- -- Command: pan on
- -- Command: pan off
- -- Command: pan xon
- -- Command: pan yon
- -- Function File: pan (HFIG, OPTION)
+ -- : pan
+ -- : pan on
+ -- : pan off
+ -- : pan xon
+ -- : pan yon
+ -- : pan (HFIG, OPTION)
      Control the interactive panning mode of a figure in the GUI.
 
      Given the option "on" or "off", set the interactive pan mode on or
@@ -5413,8 +5469,8 @@ File: octave.info,  Node: Manipulation of Plot Objects,  Next: Manipulation of P
 
      See also: *note rotate3d: XREFrotate3d, *note zoom: XREFzoom.
 
- -- Function File: rotate (H, DIR, ALPHA)
- -- Function File: rotate (..., ORIGIN)
+ -- : rotate (H, DIR, ALPHA)
+ -- : rotate (..., ORIGIN)
      Rotate the plot object H through ALPHA degrees around the line with
      direction DIR and origin ORIGIN.
 
@@ -5427,10 +5483,10 @@ File: octave.info,  Node: Manipulation of Plot Objects,  Next: Manipulation of P
      Graphics objects that may be rotated are lines, surfaces, patches,
      and images.
 
- -- Command: rotate3d
- -- Command: rotate3d on
- -- Command: rotate3d off
- -- Function File: rotate3d (HFIG, OPTION)
+ -- : rotate3d
+ -- : rotate3d on
+ -- : rotate3d off
+ -- : rotate3d (HFIG, OPTION)
      Control the interactive 3-D rotation mode of a figure in the GUI.
 
      Given the option "on" or "off", set the interactive rotate mode on
@@ -5443,15 +5499,15 @@ File: octave.info,  Node: Manipulation of Plot Objects,  Next: Manipulation of P
 
      See also: *note pan: XREFpan, *note zoom: XREFzoom.
 
- -- Command: zoom
- -- Command: zoom (FACTOR)
- -- Command: zoom on
- -- Command: zoom off
- -- Command: zoom xon
- -- Command: zoom yon
- -- Command: zoom out
- -- Command: zoom reset
- -- Command: zoom (HFIG, OPTION)
+ -- : zoom
+ -- : zoom (FACTOR)
+ -- : zoom on
+ -- : zoom off
+ -- : zoom xon
+ -- : zoom yon
+ -- : zoom out
+ -- : zoom reset
+ -- : zoom (HFIG, OPTION)
      Zoom the current axes object or control the interactive zoom mode
      of a figure in the GUI.
 
@@ -5489,9 +5545,9 @@ By default, Octave refreshes the plot window when a prompt is printed,
 or when waiting for input.  The ‘drawnow’ function is used to cause a
 plot window to be updated.
 
- -- Built-in Function: drawnow ()
- -- Built-in Function: drawnow ("expose")
- -- Built-in Function: drawnow (TERM, FILE, MONO, DEBUG_FILE)
+ -- : drawnow ()
+ -- : drawnow ("expose")
+ -- : drawnow (TERM, FILE, DEBUG_FILE)
      Update figure windows and their children.
 
      The event queue is flushed and any callbacks generated are
@@ -5509,8 +5565,8 @@ plot window to be updated.
 function can also be used to cause an update of the current figure, even
 if it is not modified.
 
- -- Function File: refresh ()
- -- Function File: refresh (H)
+ -- : refresh ()
+ -- : refresh (H)
      Refresh a figure, forcing it to be redrawn.
 
      When called without an argument the current figure is redrawn.
@@ -5534,10 +5590,10 @@ displays sine and cosine waves on the same axes.  If the hold state is
 off, consecutive plotting commands like this will only display the last
 plot.
 
- -- Function File: newplot ()
- -- Function File: newplot (HFIG)
- -- Function File: newplot (HAX)
- -- Function File: HAX = newplot (...)
+ -- : newplot ()
+ -- : newplot (HFIG)
+ -- : newplot (HAX)
+ -- : HAX = newplot (...)
      Prepare graphics engine to produce a new plot.
 
      This function is called at the beginning of all high-level plotting
@@ -5588,11 +5644,11 @@ plot.
      *Caution:* Calling ‘newplot’ may change the current figure and
      current axis.
 
- -- Command: hold
- -- Command: hold on
- -- Command: hold off
- -- Command: hold all
- -- Function File: hold (HAX, ...)
+ -- : hold
+ -- : hold on
+ -- : hold off
+ -- : hold all
+ -- : hold (HAX, ...)
      Toggle or set the "hold" state of the plotting engine which
      determines whether new graphic objects are added to the plot or
      replace the existing objects.
@@ -5622,9 +5678,9 @@ plot.
      See also: *note ishold: XREFishold, *note cla: XREFcla, *note clf:
      XREFclf, *note newplot: XREFnewplot.
 
- -- Command: ishold
- -- Function File: ishold (HAX)
- -- Function File: ishold (HFIG)
+ -- : ishold
+ -- : ishold (HAX)
+ -- : ishold (HFIG)
      Return true if the next plot will be added to the current plot, or
      false if the plot device will be cleared before drawing the next
      plot.
@@ -5640,11 +5696,11 @@ the top of the window stack, call the ‘shg’ function.  To delete a
 graphics object, call ‘delete’ on its index.  To close the figure
 window, call the ‘close’ function.
 
- -- Command: clf
- -- Command: clf reset
- -- Function File: clf (HFIG)
- -- Function File: clf (HFIG, "reset")
- -- Function File: H = clf (...)
+ -- : clf
+ -- : clf reset
+ -- : clf (HFIG)
+ -- : clf (HFIG, "reset")
+ -- : H = clf (...)
      Clear the current figure window.
 
      ‘clf’ operates by deleting child graphics objects with visible
@@ -5664,10 +5720,10 @@ window, call the ‘close’ function.
      See also: *note cla: XREFcla, *note close: XREFclose, *note delete:
      XREFdelete, *note reset: XREFreset.
 
- -- Command: cla
- -- Command: cla reset
- -- Function File: cla (HAX)
- -- Function File: cla (HAX, "reset")
+ -- : cla
+ -- : cla reset
+ -- : cla (HAX)
+ -- : cla (HAX, "reset")
      Clear the current axes.
 
      ‘cla’ operates by deleting child graphic objects with visible
@@ -5684,16 +5740,16 @@ window, call the ‘close’ function.
      See also: *note clf: XREFclf, *note delete: XREFdelete, *note
      reset: XREFreset.
 
- -- Command: shg
+ -- : shg
      Show the graph window.
 
      Currently, this is the same as executing ‘drawnow’.
 
      See also: *note drawnow: XREFdrawnow, *note figure: XREFfigure.
 
- -- Function File: delete (FILE)
- -- Function File: delete (FILE1, FILE2, ...)
- -- Function File: delete (HANDLE)
+ -- : delete (FILE)
+ -- : delete (FILE1, FILE2, ...)
+ -- : delete (HANDLE)
      Delete the named file or graphics handle.
 
      FILE may contain globbing patterns such as ‘*’.  Multiple files to
@@ -5707,12 +5763,13 @@ window, call the ‘close’ function.
      See also: *note clf: XREFclf, *note cla: XREFcla, *note unlink:
      XREFunlink, *note rmdir: XREFrmdir.
 
- -- Command: close
- -- Command: close (H)
- -- Command: close H
- -- Command: close all
- -- Command: close all hidden
- -- Command: close all force
+ -- : close
+ -- : close H
+ -- : close (H)
+ -- : close (H, "force")
+ -- : close all
+ -- : close all hidden
+ -- : close all force
      Close figure window(s).
 
      When called with no arguments, close the current figure.  This is
@@ -5725,9 +5782,8 @@ window, call the ‘close’ function.
      If the argument "all hidden" is given then all figures, including
      hidden ones, are closed.
 
-     If the argument "all force" is given then all figures are closed
-     even when "closerequestfcn" has been altered to prevent closing the
-     window.
+     If the argument "force" is given then figures are closed even when
+     "closerequestfcn" has been altered to prevent closing the window.
 
      Implementation Note: ‘close’ operates by calling the function
      specified by the "closerequestfcn" property for each figure.  By
@@ -5739,7 +5795,7 @@ window, call the ‘close’ function.
 
      See also: *note closereq: XREFclosereq, *note delete: XREFdelete.
 
- -- Function File: closereq ()
+ -- : closereq ()
      Close the current figure and delete all graphics objects associated
      with it.
 
@@ -5769,10 +5825,6 @@ rendering text.  This allows the insertion of special glyphs such as
 Greek characters or mathematical symbols.  Special characters are
 inserted by using a backslash (\) character followed by a code, as shown
 in *note Table 15.1: tab:extended.
-
-   Note that for on-screen display the interpreter property is honored
-by all graphics toolkits.  However for printing, *only* the "gnuplot"
-toolkit renders TeX instructions.
 
    Besides special glyphs, the formatting of the text can be changed
 within the string by using the codes
@@ -5865,17 +5917,6 @@ Other
 
 Table 15.1: Available special characters in TeX mode
 
-   A complete example showing the capabilities of the extended text is
-
-     x = 0:0.01:3;
-     plot (x, erf (x));
-     hold on;
-     plot (x,x,"r");
-     axis ([0, 3, 0, 1]);
-     text (0.65, 0.6175, strcat ('\leftarrow x = {2/\surd\pi',
-     ' {\fontsize{16}\int_{\fontsize{8}0}^{\fontsize{8}x}}',
-     ' e^{-t^2} dt} = 0.6175'))
-
 
 File: octave.info,  Node: Printing and Saving Plots,  Next: Interacting with Plots,  Prev: Use of the interpreter Property,  Up: High-Level Plotting
 
@@ -5894,25 +5935,48 @@ prints the current figure to a color PostScript printer.  And,
 saves the current figure to an encapsulated PostScript file called
 ‘foo.eps’.
 
-   The different graphic toolkits have different print capabilities.  In
-particular, the OpenGL based toolkits such as ‘fltk’ do not support the
-"interpreter" property of text objects.  This means special symbols
-drawn with the "tex" interpreter will appear correctly on-screen but
-will be rendered with interpreter "none" when printing.  Switch graphics
-toolkits for printing if this is a concern.
+   The current graphic toolkits produce very similar graphic displays
+but differ in their capability to display text and in print
+capabilities.  In particular, the OpenGL based toolkits such as ‘fltk’
+and ‘qt’ do not support the "interpreter" property of text objects.
+This means that when using OpenGL toolkits special symbols drawn with
+the "tex" interpreter will appear correctly on-screen but will be
+rendered with interpreter "none" when printing unless one of the
+standalone (see below) modes is used.  These modes provide access to the
+pdflatex processor and therefore allow full use of LaTeX commands.
 
- -- Function File: print ()
- -- Function File: print (OPTIONS)
- -- Function File: print (FILENAME, OPTIONS)
- -- Function File: print (H, FILENAME, OPTIONS)
+   A complete example showing the capabilities of text printing using
+the ‘-dpdflatexstandalone’ option is:
+
+     x = 0:0.01:3;
+     hf = figure ();
+     plot (x, erf (x));
+     hold on;
+     plot (x, x, "r");
+     axis ([0, 3, 0, 1]);
+     text (0.65, 0.6175, ['$\displaystyle\leftarrow x = {2\over\sqrt{\pi}}'...
+                          '\int_{0}^{x}e^{-t^2} dt = 0.6175$']);
+     xlabel ("x");
+     ylabel ("erf (x)");
+     title ("erf (x) with text annotation");
+     set (hf, "visible", "off");
+     print (hf, "plot15_7.pdf", "-dpdflatexstandalone");
+     set (hf, "visible", "on");
+     system ("pdflatex plot15_7");
+     open ("plot15_7.pdf");
+
+ -- : print ()
+ -- : print (OPTIONS)
+ -- : print (FILENAME, OPTIONS)
+ -- : print (H, FILENAME, OPTIONS)
      Print a plot, or save it to a file.
 
      Both output formatted for printing (PDF and PostScript), and many
      bitmapped and vector image formats are supported.
 
-     FILENAME defines the name of the output file.  If the file name has
+     FILENAME defines the name of the output file.  If the filename has
      no suffix, one is inferred from the specified device and appended
-     to the file name.  If no filename is specified, the output is sent
+     to the filename.  If no filename is specified, the output is sent
      to the printer.
 
      H specifies the handle of the figure to print.  If no handle is
@@ -6011,13 +6075,29 @@ toolkits for printing if this is a concern.
                ‘pdflatex’ device, and any of the ‘standalone’ formats,
                are not available with the Gnuplot toolkit.
 
-          ‘tikz’
-               Generate a LaTeX file using PGF/TikZ.  For the FLTK
-               toolkit the result is PGF.
+          ‘epscairo’
+          ‘pdfcairo’
+          ‘epscairolatex’
+          ‘pdfcairolatex’
+          ‘epscairolatexstandalone’
+          ‘pdfcairolatexstandalone’
+               Generate Cairo based output when using the Gnuplot
+               graphics toolkit.  The ‘epscairo’ and ‘pdfcairo’ devices
+               are synonymous with the ‘epsc’ device.  The LaTeX
+               variants generate a LaTeX file, ‘FILENAME.tex’, for the
+               text portions of a plot, and an image file,
+               ‘FILENAME.(eps|pdf)’, for the graph portion of the plot.
+               The ‘standalone’ variants behave as described for
+               ‘epslatexstandalone’ above.
 
           ‘ill’
           ‘aifm’
                Adobe Illustrator (Obsolete for Gnuplot versions > 4.2)
+
+          ‘canvas’
+               Javascript-based drawing on HTML5 canvas viewable in a
+               web browser (only available for the Gnuplot graphics
+               toolkit).
 
           ‘cdr’
           ‘corel’
@@ -6036,8 +6116,20 @@ toolkits for printing if this is a concern.
                control whether the special flag should be set for the
                text in the figure.  (default is ‘-textnormal’)
 
+          ‘gif’
+               GIF image (only available for the Gnuplot graphics
+               toolkit)
+
           ‘hpgl’
                HP plotter language
+
+          ‘jpg’
+          ‘jpeg’
+               JPEG image
+
+          ‘latex’
+               LaTeX picture environment (only available for the Gnuplot
+               graphics toolkit).
 
           ‘mf’
                Metafont
@@ -6045,22 +6137,21 @@ toolkits for printing if this is a concern.
           ‘png’
                Portable network graphics
 
-          ‘jpg’
-          ‘jpeg’
-               JPEG image
-
-          ‘gif’
-               GIF image (only available for the Gnuplot graphics
-               toolkit)
-
           ‘pbm’
                PBMplus
 
-          ‘svg’
-               Scalable vector graphics
-
           ‘pdf’
                Portable document format
+
+     ‘svg’
+          Scalable vector graphics
+
+     ‘tikz’
+     ‘tikzstandalone’
+          Generate a LaTeX file using PGF/TikZ.  For the FLTK toolkit
+          the result is PGF.  The ‘tikzstandalone’ device produces a
+          LaTeX document which includes the TikZ file (‘tikzstandalone’
+          is only available for the Gnuplot graphics toolkit).
 
           If the device is omitted, it is inferred from the file
           extension, or if there is no filename it is sent to the
@@ -6158,8 +6249,8 @@ toolkits for printing if this is a concern.
      See also: *note saveas: XREFsaveas, *note hgsave: XREFhgsave, *note
      orient: XREForient, *note figure: XREFfigure.
 
- -- Function File: saveas (H, FILENAME)
- -- Function File: saveas (H, FILENAME, FMT)
+ -- : saveas (H, FILENAME)
+ -- : saveas (H, FILENAME, FMT)
      Save graphic object H to the file FILENAME in graphic format FMT.
 
      FMT should be one of the following formats:
@@ -6193,10 +6284,10 @@ toolkits for printing if this is a concern.
      See also: *note print: XREFprint, *note hgsave: XREFhgsave, *note
      orient: XREForient.
 
- -- Function File: orient (ORIENTATION)
- -- Function File: orient (HFIG, ORIENTATION)
- -- Function File: ORIENTATION = orient ()
- -- Function File: ORIENTATION = orient (HFIG)
+ -- : orient (ORIENTATION)
+ -- : orient (HFIG, ORIENTATION)
+ -- : ORIENTATION = orient ()
+ -- : ORIENTATION = orient (HFIG)
      Query or set the print orientation for figure HFIG.
 
      Valid values for ORIENTATION are "portrait", "landscape", and
@@ -6229,9 +6320,9 @@ styles, etc.—can be made easily from within Octave.  The
 ‘hgsave’/‘hgload’ commands can be used to save and re-create a graphics
 object.
 
- -- Function File: hgsave (FILENAME)
- -- Function File: hgsave (H, FILENAME)
- -- Function File: hgsave (H, FILENAME, FMT)
+ -- : hgsave (FILENAME)
+ -- : hgsave (H, FILENAME)
+ -- : hgsave (H, FILENAME, FMT)
      Save the graphics handle H to the file FILENAME in the format FMT.
 
      If unspecified, H is the current figure as returned by ‘gcf’.
@@ -6260,7 +6351,7 @@ object.
      See also: *note hgload: XREFhgload, *note hdl2struct:
      XREFhdl2struct, *note saveas: XREFsaveas, *note print: XREFprint.
 
- -- Function File: H = hgload (FILENAME)
+ -- : H = hgload (FILENAME)
      Load the graphics object in FILENAME into the graphics handle H.
 
      If FILENAME has no extension, Octave will try to find the file with
@@ -6276,12 +6367,11 @@ File: octave.info,  Node: Interacting with Plots,  Next: Test Plotting Functions
 ------------------------------
 
 The user can select points on a plot with the ‘ginput’ function or
-selection the position at which to place text on the plot with the
-‘gtext’ function using the mouse.  Menus may also be created and
-populated with specific user commands via the ‘uimenu’ function.
+select the position at which to place text on the plot with the ‘gtext’
+function using the mouse.
 
- -- Function File: [X, Y, BUTTONS] = ginput (N)
- -- Function File: [X, Y, BUTTONS] = ginput ()
+ -- : [X, Y, BUTTONS] = ginput (N)
+ -- : [X, Y, BUTTONS] = ginput ()
      Return the position and type of mouse button clicks and/or key
      strokes in the current figure window.
 
@@ -6302,8 +6392,8 @@ populated with specific user commands via the ‘uimenu’ function.
      See also: *note gtext: XREFgtext, *note waitforbuttonpress:
      XREFwaitforbuttonpress.
 
- -- Function File: waitforbuttonpress ()
- -- Function File: B = waitforbuttonpress ()
+ -- : waitforbuttonpress ()
+ -- : B = waitforbuttonpress ()
      Wait for mouse click or key press over the current figure window.
 
      The return value of B is 0 if a mouse button was pressed or 1 if a
@@ -6312,11 +6402,11 @@ populated with specific user commands via the ‘uimenu’ function.
      See also: *note waitfor: XREFwaitfor, *note ginput: XREFginput,
      *note kbhit: XREFkbhit.
 
- -- Function File: gtext (S)
- -- Function File: gtext ({S1, S2, ...})
- -- Function File: gtext ({S1; S2; ...})
- -- Function File: gtext (..., PROP, VAL, ...)
- -- Function File: H = gtext (...)
+ -- : gtext (S)
+ -- : gtext ({S1, S2, ...})
+ -- : gtext ({S1; S2; ...})
+ -- : gtext (..., PROP, VAL, ...)
+ -- : H = gtext (...)
      Place text on the current figure using the mouse.
 
      The text is defined by the string S.  If S is a cell string
@@ -6333,61 +6423,8 @@ populated with specific user commands via the ‘uimenu’ function.
 
      See also: *note ginput: XREFginput, *note text: XREFtext.
 
- -- Function File: HUI = uimenu (PROPERTY, VALUE, ...)
- -- Function File: HUI = uimenu (H, PROPERTY, VALUE, ...)
-     Create a uimenu object and return a handle to it.
-
-     If H is omitted then a top-level menu for the current figure is
-     created.  If H is given then a submenu relative to H is created.
-
-     uimenu objects have the following specific properties:
-
-     "accelerator"
-          A string containing the key combination together with CTRL to
-          execute this menu entry (e.g., "x" for CTRL+x).
-
-     "callback"
-          Is the function called when this menu entry is executed.  It
-          can be either a function string (e.g., "myfun"), a function
-          handle (e.g., @myfun) or a cell array containing the function
-          handle and arguments for the callback function (e.g., {@myfun,
-          arg1, arg2}).
-
-     "checked"
-          Can be set "on" or "off".  Sets a mark at this menu entry.
-
-     "enable"
-          Can be set "on" or "off".  If disabled the menu entry cannot
-          be selected and it is grayed out.
-
-     "foregroundcolor"
-          A color value setting the text color for this menu entry.
-
-     "label"
-          A string containing the label for this menu entry.  A
-          "&"-symbol can be used to mark the "accelerator" character
-          (e.g., "E&xit")
-
-     "position"
-          An scalar value containing the relative menu position.  The
-          entry with the lowest value is at the first position starting
-          from left or top.
-
-     "separator"
-          Can be set "on" or "off".  If enabled it draws a separator
-          line above the current position.  It is ignored for top level
-          entries.
-
-     Examples:
-
-          f = uimenu ("label", "&File", "accelerator", "f");
-          e = uimenu ("label", "&Edit", "accelerator", "e");
-          uimenu (f, "label", "Close", "accelerator", "q", ...
-                     "callback", "close (gcf)");
-          uimenu (e, "label", "Toggle &Grid", "accelerator", "g", ...
-                     "callback", "grid (gca)");
-
-     See also: *note figure: XREFfigure.
+   More sophisticated user interaction mechanisms can be obtained using
+the ui* family of functions, *note UI Elements::.
 
 
 File: octave.info,  Node: Test Plotting Functions,  Prev: Interacting with Plots,  Up: High-Level Plotting
@@ -6399,10 +6436,10 @@ The functions ‘sombrero’ and ‘peaks’ provide a way to check that
 plotting is working.  Typing either ‘sombrero’ or ‘peaks’ at the Octave
 prompt should display a three-dimensional plot.
 
- -- Function File: sombrero ()
- -- Function File: sombrero (N)
- -- Function File: Z = sombrero (...)
- -- Function File: [X, Y, Z] = sombrero (...)
+ -- : sombrero ()
+ -- : sombrero (N)
+ -- : Z = sombrero (...)
+ -- : [X, Y, Z] = sombrero (...)
      Plot the familiar 3-D sombrero function.
 
      The function plotted is
@@ -6422,11 +6459,11 @@ prompt should display a three-dimensional plot.
      See also: *note peaks: XREFpeaks, *note meshgrid: XREFmeshgrid,
      *note mesh: XREFmesh, *note surf: XREFsurf.
 
- -- Function File: peaks ()
- -- Function File: peaks (N)
- -- Function File: peaks (X, Y)
- -- Function File: Z = peaks (...)
- -- Function File: [X, Y, Z] = peaks (...)
+ -- : peaks ()
+ -- : peaks (N)
+ -- : peaks (X, Y)
+ -- : Z = peaks (...)
+ -- : [X, Y, Z] = peaks (...)
      Plot a function with lots of local maxima and minima.
 
      The function has the form
@@ -6478,7 +6515,7 @@ in order to address the data structures which control visual display.  A
 graphics handle may point to any one of a number of different base
 object types and these objects are the graphics data structures
 themselves.  The primitive graphic object types are: ‘figure’, ‘axes’,
-‘line’, ‘text’, ‘patch’, ‘surface’, ‘text’, and ‘image’.
+‘line’, ‘text’, ‘patch’, ‘surface’, ‘text’, ‘image’, and ‘light’.
 
    Each of these objects has a function by the same name, and, each of
 these functions returns a graphics handle pointing to an object of the
@@ -6503,7 +6540,7 @@ properties of the root object.
    3.  Below the ‘figure’ objects are ‘axes’ objects.
 
    4.  Below the ‘axes’ objects are ‘line’, ‘text’, ‘patch’, ‘surface’,
-and ‘image’ objects.
+‘image’, and ‘light’ objects.
 
    Graphics handles may be distinguished from function handles (*note
 Function Handles::) by means of the function ‘ishandle’.  ‘ishandle’
@@ -6572,7 +6609,7 @@ allowed properties are wanted they may be displayed by: ‘get (h, "")’.
    The uses of ‘get’ and ‘set’ are further explained in *note get:
 XREFget, *note set: XREFset.
 
- -- Function File: RES = isprop (OBJ, "PROP")
+ -- : RES = isprop (OBJ, "PROP")
      Return true if PROP is a property of the object OBJ.
 
      OBJ may also be an array of objects in which case RES will be a
@@ -6604,7 +6641,7 @@ figure
 
 axes
      A set of axes.  This object is a child of a figure object and may
-     be a parent of line, text, image, patch, or surface objects.
+     be a parent of line, text, image, patch, surface, or light objects.
 
 line
      A line in two or three dimensions.
@@ -6621,16 +6658,19 @@ patch
 surface
      A three-dimensional surface.
 
+light
+     A light object used for lighting effects on patches and surfaces.
+
 15.3.2.1 Creating Graphics Objects
 ..................................
 
 You can create any graphics object primitive by calling the function of
 the same name as the object; In other words, ‘figure’, ‘axes’, ‘line’,
-‘text’, ‘image’, ‘patch’, and ‘surface’ functions.  These fundamental
-graphic objects automatically become children of the current axes object
-as if ‘hold on’ was in place.  Seperately, axes will automatically
-become children of the current figure object and figures will become
-children of the root object 0.
+‘text’, ‘image’, ‘patch’, ‘surface’, and ‘light’ functions.  These
+fundamental graphic objects automatically become children of the current
+axes object as if ‘hold on’ was in place.  Seperately, axes will
+automatically become children of the current figure object and figures
+will become children of the root object 0.
 
    If this auto-joining feature is not desired then it is important to
 call ‘newplot’ first to prepare a new figure and axes for plotting.
@@ -6639,10 +6679,10 @@ which will both create the plot and then populate it with low-level
 graphics objects.  Instead of calling ‘line’, use ‘plot’.  Or use ‘surf’
 instead of ‘surface’.  Or use ‘fill’ instead of ‘patch’.
 
- -- Function File: axes ()
- -- Function File: axes (PROPERTY, VALUE, ...)
- -- Function File: axes (HAX)
- -- Function File: H = axes (...)
+ -- : axes ()
+ -- : axes (PROPERTY, VALUE, ...)
+ -- : axes (HAX)
+ -- : H = axes (...)
      Create an axes object and return a handle to it, or set the current
      axes to HAX.
 
@@ -6659,14 +6699,14 @@ instead of ‘surface’.  Or use ‘fill’ instead of ‘patch’.
      See also: *note gca: XREFgca, *note set: XREFset, *note get:
      XREFget.
 
- -- Function File: line ()
- -- Function File: line (X, Y)
- -- Function File: line (X, Y, PROPERTY, VALUE, ...)
- -- Function File: line (X, Y, Z)
- -- Function File: line (X, Y, Z, PROPERTY, VALUE, ...)
- -- Function File: line (PROPERTY, VALUE, ...)
- -- Function File: line (HAX, ...)
- -- Function File: H = line (...)
+ -- : line ()
+ -- : line (X, Y)
+ -- : line (X, Y, PROPERTY, VALUE, ...)
+ -- : line (X, Y, Z)
+ -- : line (X, Y, Z, PROPERTY, VALUE, ...)
+ -- : line (PROPERTY, VALUE, ...)
+ -- : line (HAX, ...)
+ -- : H = line (...)
      Create line object from X and Y (and possibly Z) and insert in the
      current axes.
 
@@ -6683,14 +6723,14 @@ instead of ‘surface’.  Or use ‘fill’ instead of ‘patch’.
      rectangle: XREFrectangle, *note surface: XREFsurface, *note text:
      XREFtext.
 
- -- Function File: patch ()
- -- Function File: patch (X, Y, C)
- -- Function File: patch (X, Y, Z, C)
- -- Function File: patch (FV)
- -- Function File: patch ("Faces", FACES, "Vertices", VERTS, ...)
- -- Function File: patch (..., PROP, VAL, ...)
- -- Function File: patch (HAX, ...)
- -- Function File: H = patch (...)
+ -- : patch ()
+ -- : patch (X, Y, C)
+ -- : patch (X, Y, Z, C)
+ -- : patch (FV)
+ -- : patch ("Faces", FACES, "Vertices", VERTS, ...)
+ -- : patch (..., PROP, VAL, ...)
+ -- : patch (HAX, ...)
+ -- : H = patch (...)
      Create patch object in the current axes with vertices at locations
      (X, Y) and of color C.
 
@@ -6738,13 +6778,13 @@ instead of ‘surface’.  Or use ‘fill’ instead of ‘patch’.
      See also: *note fill: XREFfill, *note get: XREFget, *note set:
      XREFset.
 
- -- Function File: surface (X, Y, Z, C)
- -- Function File: surface (X, Y, Z)
- -- Function File: surface (Z, C)
- -- Function File: surface (Z)
- -- Function File: surface (..., PROP, VAL, ...)
- -- Function File: surface (HAX, ...)
- -- Function File: H = surface (...)
+ -- : surface (X, Y, Z, C)
+ -- : surface (X, Y, Z)
+ -- : surface (Z, C)
+ -- : surface (Z)
+ -- : surface (..., PROP, VAL, ...)
+ -- : surface (HAX, ...)
+ -- : H = surface (...)
      Create a surface graphic object given matrices X and Y from
      ‘meshgrid’ and a matrix of values Z corresponding to the X and Y
      coordinates of the surface.
@@ -6766,6 +6806,49 @@ instead of ‘surface’.  Or use ‘fill’ instead of ‘patch’.
      See also: *note surf: XREFsurf, *note mesh: XREFmesh, *note patch:
      XREFpatch, *note line: XREFline.
 
+ -- : light ()
+ -- : light (..., PROP, VAL, ...)
+ -- : light (HAX, ...)
+ -- : H = light (...)
+     Create light object in the current axes or for axes HAX.
+
+     When a light object is present in an axes object and the properties
+     "EdgeLighting" or "FaceLighting" of a ‘patch’ or ‘surface’ object
+     are set to a value other than "none", these objects are drawn with
+     light and shadow effects.  Supported values for these properties
+     are "none" (no lighting effects), "flat" (facetted look of the
+     objects) and "gouraud" (linear interpolation of the lighting
+     effects between the vertices).  For ‘patch’ objects, the normals
+     must be set manually (property "VertexNormals").
+
+     Up to eight light objects are supported per axes.
+
+     Lighting is only supported for graphics toolkits supporting OpenGL
+     (i.e.  "fltk" and "qt").
+
+     The following properties specific to the light object can be passed
+     with their respective values:
+
+     "Color": The color of the light object can be passed as an
+          RGB-vector (e.g.  [1 0 0] for red) or as a string (e.g.  "r"
+          for red).  The default color is white ([1 1 1]).
+
+     "Position": The direction from which the light emanates as an
+          1x3-vector.  The default direction is [1 0 1].
+
+     "Style": This string defines whether the light emanates from a
+          light source at infinite distance ("infinite") or from a local
+          point source ("local").  Only the default value "infinite" is
+          supported.
+
+     If ‘light’ is called with an axes handle HAX, it must be passed as
+     the first argument.
+
+     Optionally, the handle to the light object is returned in H.
+
+     See also: *note get: XREFget, *note set: XREFset, *note patch:
+     XREFpatch, *note surface: XREFsurface.
+
 15.3.2.2 Handle Functions
 .........................
 
@@ -6773,7 +6856,7 @@ To determine whether a variable is a graphics object index, or an index
 to an axes or figure, use the functions ‘ishandle’, ‘isaxes’, and
 ‘isfigure’.
 
- -- Built-in Function: ishandle (H)
+ -- : ishandle (H)
      Return true if H is a graphics handle and false otherwise.
 
      H may also be a matrix of handles in which case a logical array is
@@ -6782,15 +6865,16 @@ to an axes or figure, use the functions ‘ishandle’, ‘isaxes’, and
 
      See also: *note isaxes: XREFisaxes, *note isfigure: XREFisfigure.
 
- -- Function File: ishghandle (H)
-     Return true if H is a graphics handle and false otherwise.
+ -- : ishghandle (H)
+ -- : ishghandle (H, TYPE)
+     Return true if H is a graphics handle (of type TYPE) and false
+     otherwise.
 
-     This function is equivalent to ‘ishandle’ and is provided for
-     compatibility with MATLAB.
+     When no TYPE is specified the function is equivalent to ‘ishandle’.
 
      See also: *note ishandle: XREFishandle.
 
- -- Function File: isaxes (H)
+ -- : isaxes (H)
      Return true if H is an axes graphics handle and false otherwise.
 
      If H is a matrix then return a logical array which is true where
@@ -6799,7 +6883,7 @@ to an axes or figure, use the functions ‘ishandle’, ‘isaxes’, and
 
      See also: *note isaxes: XREFisaxes, *note ishandle: XREFishandle.
 
- -- Function File: isfigure (H)
+ -- : isfigure (H)
      Return true if H is a figure graphics handle and false otherwise.
 
      If H is a matrix then return a logical array which is true where
@@ -6812,7 +6896,7 @@ to an axes or figure, use the functions ‘ishandle’, ‘isaxes’, and
 creates one if none exists.  Similarly, ‘gca’ returns the current axes
 object, or creates one (and its parent figure object) if none exists.
 
- -- Function File: H = gcf ()
+ -- : H = gcf ()
      Return a handle to the current figure.
 
      The current figure is the default target for graphics output.  If
@@ -6840,7 +6924,7 @@ object, or creates one (and its parent figure object) if none exists.
      XREFgcbf, *note gcbo: XREFgcbo, *note get: XREFget, *note set:
      XREFset.
 
- -- Function File: H = gca ()
+ -- : H = gca ()
      Return a handle to the current axis object.
 
      The current axis is the default target for graphics output.  In the
@@ -6866,8 +6950,8 @@ object, or creates one (and its parent figure object) if none exists.
      XREFgcbf, *note gcbo: XREFgcbo, *note get: XREFget, *note set:
      XREFset.
 
- -- Function File: H = gco ()
- -- Function File: H = gco (FIG)
+ -- : H = gco ()
+ -- : H = gco (FIG)
      Return a handle to the current object of the current figure, or a
      handle to the current object of the figure with handle FIG.
 
@@ -6939,8 +7023,8 @@ objects.  If ‘set’ is called with two arguments (a graphic handle and a
 property name) then only the defaults for the requested property are
 returned.
 
- -- Built-in Function: VAL = get (H)
- -- Built-in Function: VAL = get (H, P)
+ -- : VAL = get (H)
+ -- : VAL = get (H, P)
      Return the value of the named property P from the graphics handle
      H.
 
@@ -6951,11 +7035,11 @@ returned.
 
      See also: *note set: XREFset.
 
- -- Built-in Function: set (H, PROPERTY, VALUE, ...)
- -- Built-in Function: set (H, PROPERTIES, VALUES)
- -- Built-in Function: set (H, PV)
- -- Built-in Function: VALUE_LIST = set (H, PROPERTY)
- -- Built-in Function: ALL_VALUE_LIST = set (H)
+ -- : set (H, PROPERTY, VALUE, ...)
+ -- : set (H, PROPERTIES, VALUES)
+ -- : set (H, PV)
+ -- : VALUE_LIST = set (H, PROPERTY)
+ -- : ALL_VALUE_LIST = set (H)
      Set named property values for the graphics handle (or vector of
      graphics handles) H.
 
@@ -7009,8 +7093,8 @@ returned.
 
      See also: *note get: XREFget.
 
- -- Function File: PARENT = ancestor (H, TYPE)
- -- Function File: PARENT = ancestor (H, TYPE, "toplevel")
+ -- : PARENT = ancestor (H, TYPE)
+ -- : PARENT = ancestor (H, TYPE, "toplevel")
      Return the first ancestor of handle object H whose type matches
      TYPE, where TYPE is a character string.
 
@@ -7026,7 +7110,7 @@ returned.
      See also: *note findobj: XREFfindobj, *note findall: XREFfindall,
      *note allchild: XREFallchild.
 
- -- Function File: H = allchild (HANDLES)
+ -- : H = allchild (HANDLES)
      Find all children, including hidden children, of a graphics object.
 
      This function is similar to ‘get (h, "children")’, but also returns
@@ -7039,7 +7123,7 @@ returned.
      See also: *note findall: XREFfindall, *note findobj: XREFfindobj,
      *note get: XREFget, *note set: XREFset.
 
- -- Function File: findfigs ()
+ -- : findfigs ()
      Find all visible figures that are currently off the screen and move
      them onto the screen.
 
@@ -7059,7 +7143,7 @@ can be made such as modifying a title or legend.
      fig_struct = load ("myplot.fig");
      struct2hdl (fig_struct);
 
- -- Function File: S = hdl2struct (H)
+ -- : S = hdl2struct (H)
      Return a structure, S, whose fields describe the properties of the
      object, and its children, associated with the handle, H.
 
@@ -7069,9 +7153,9 @@ can be made such as modifying a title or legend.
      See also: *note struct2hdl: XREFstruct2hdl, *note hgsave:
      XREFhgsave, *note findobj: XREFfindobj.
 
- -- Function File: H = struct2hdl (S)
- -- Function File: H = struct2hdl (S, P)
- -- Function File: H = struct2hdl (S, P, HILEV)
+ -- : H = struct2hdl (S)
+ -- : H = struct2hdl (S, P)
+ -- : H = struct2hdl (S, P, HILEV)
      Construct a graphics handle object H from the structure S.
 
      The structure must contain the fields "handle", "type", "children",
@@ -7089,13 +7173,20 @@ can be made such as modifying a title or legend.
      See also: *note hdl2struct: XREFhdl2struct, *note hgload:
      XREFhgload, *note findobj: XREFfindobj.
 
- -- Function File: HNEW = copyobj (HORIG)
- -- Function File: HNEW = copyobj (HORIG, HPARENT)
-     Construct a copy of the graphic object associated with handle HORIG
-     and return a handle HNEW to the new object.
+ -- : HNEW = copyobj (HORIG)
+ -- : HNEW = copyobj (HORIG, HPARENT)
+     Construct a copy of the graphic objects associated with the handles
+     HORIG and return new handles HNEW to the new objects.
 
      If a parent handle HPARENT (root, figure, axes, or hggroup) is
      specified, the copied object will be created as a child of HPARENT.
+
+     If HORIG is a vector of handles, and HPARENT is a scalar, then each
+     handle in the vector HNEW has its "Parent" property set to HPARENT.
+     Conversely, if HORIG is a scalar and HPARENT a vector, then each
+     parent object will receive a copy of HORIG.  If HORIG and HPARENT
+     are both vectors with the same number of elements then ‘HNEW(i)’
+     will have parent ‘HPARENT(i)’.
 
      See also: *note struct2hdl: XREFstruct2hdl, *note hdl2struct:
      XREFhdl2struct, *note findobj: XREFfindobj.
@@ -7116,6 +7207,15 @@ File: octave.info,  Node: Graphics Object Properties,  Next: Searching Propertie
 * Image Properties::
 * Patch Properties::
 * Surface Properties::
+* Light Properties::
+* Uimenu Properties::
+* Uibuttongroup Properties::
+* Uicontextmenu Properties::
+* Uipanel Properties::
+* Uicontrol Properties::
+* Uitoolbar Properties::
+* Uipushtool Properties::
+* Uitoggletool Properties::
 
 In this Section the graphics object properties are discussed in detail,
 starting with the root figure properties and continuing through the
@@ -7149,6 +7249,7 @@ The ‘root figure’ properties are:
      ‘buttondownfcn’ is unused.
 
 ‘callbackobject’ (read-only): graphics handle, def. ‘[](0x0)’
+     Graphics handle of the current object whose callback is executing.
 
 ‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
      Graphics handles of the root’s children.
@@ -7167,30 +7268,7 @@ The ‘root figure’ properties are:
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      ‘deletefcn’ is unused.
 
-‘diary’: {"off"} | "on"
-     If ‘diary’ is "on", the Octave command window session is saved to
-     file.  *Note diaryfile property: XREFrootdiaryfile.
-
-‘diaryfile’: string, def. "diary"
-     The name of the diary file.  *Note diary function: XREFdiary.
-
-‘echo’: {"off"} | "on"
-     Control whether Octave displays commands executed from scripts.
-     *Note echo function: XREFecho.
-
-‘errormessage’ (read-only): string, def. ""
-     The last error message raised.  *Note lasterr function:
-     XREFlasterr.
-
 ‘fixedwidthfontname’: string, def. "Courier"
-
-‘format’: "+" | "bank" | "bit" | "hex" | "long" | "longe" | "longeng" | "longg" | "native-bit" | "native-hex" | "none" | "rat" | {"short"} | "shorte" | "shorteng" | "shortg"
-     This property is a wrapper around the ‘format’ function.  *Note
-     format function: XREFformat.
-
-‘formatspacing’: "compact" | {"loose"}
-     This property is a wrapper around the ‘format’ function.  *Note
-     format function: XREFformat.
 
 ‘handlevisibility’: "callback" | "off" | {"on"}
      ‘handlevisibility’ is unused.
@@ -7201,9 +7279,7 @@ The ‘root figure’ properties are:
 ‘interruptible’: "off" | {"on"}
      ‘interruptible’ is unused.
 
-‘language’: string, def. "ascii"
-
-‘monitorpositions’:
+‘monitorpositions’ (read-only):
      ‘monitorpositions’ is unused.
 
 ‘parent’: graphics handle, def. ‘[](0x0)’
@@ -7215,10 +7291,6 @@ The ‘root figure’ properties are:
 
 ‘pointerwindow’ (read-only): graphics handle, def. ‘0’
      ‘pointerwindow’ is unused.
-
-‘recursionlimit’: double, def. ‘256’
-     The maximum number of times a function can be called recursively.
-     *Note max_recursion_depth function: XREFmax_recursion_depth.
 
 ‘screendepth’ (read-only): double
 
@@ -7261,6 +7333,30 @@ File: octave.info,  Node: Figure Properties,  Next: Axes Properties,  Prev: Root
 ..........................
 
 The ‘figure’ properties are:
+
+   s =
+
+   scalar structure containing the fields:
+
+   valid = default = doc = The value for the ‘papersize’, and
+‘paperposition’ properties depends upon __prop__.  The horizontal and
+vertical values for ‘papersize’ and ‘paperposition’ reverse order when
+__prop__ is switched between ‘"portrait"’ and ‘"landscape"’.
+printdefault = 1
+
+   s =
+
+   scalar structure containing the fields:
+
+   valid = default = doc = __prop__ is deprecated.  Use ‘sizechangedfcn’
+instead.  printdefault = 1
+
+   s =
+
+   scalar structure containing the fields:
+
+   valid = default = doc = Callback triggered when the figure window
+size is changed.  printdefault = 1
 
 ‘__modified__’: "off" | {"on"}
 
@@ -7323,10 +7419,11 @@ The ‘figure’ properties are:
 ‘dockcontrols’: {"off"} | "on"
      ‘dockcontrols’ is unused.
 
-‘doublebuffer’: "off" | {"on"}
-
 ‘filename’: string, def. ""
-     The filename used when saving the plot figure
+     The filename used when saving the plot figure.
+
+‘graphicssmoothing’: "off" | {"on"}
+     Use smoothing techniques to reduce the appearance of jagged lines.
 
 ‘handlevisibility’: "callback" | "off" | {"on"}
      If ‘handlevisibility’ is "off", the figure’s handle is not visible
@@ -7339,7 +7436,9 @@ The ‘figure’ properties are:
 
 ‘interruptible’: "off" | {"on"}
 
-‘inverthardcopy’: {"off"} | "on"
+‘inverthardcopy’: "off" | {"on"}
+     Replace the figure and axes background color with white when
+     printing.
 
 ‘keypressfcn’: string | function handle, def. ‘[](0x0)’
 
@@ -7362,8 +7461,6 @@ The ‘figure’ properties are:
      Control the display of the figure menu bar in the upper left of the
      figure.
 
-‘mincolormap’: def. ‘64’
-
 ‘name’: string, def. ""
      Name to be displayed in the figure title bar.  The name is
      displayed to the right of any title determined by the ‘numbertitle’
@@ -7377,31 +7474,50 @@ The ‘figure’ properties are:
 
 ‘outerposition’: four-element vector, def. ‘[-1 -1 -1 -1]’
 
-‘paperorientation’: "landscape" | {"portrait"} | "rotated"
+‘paperorientation’: "landscape" | {"portrait"}
+     The value for the ‘papersize’, and ‘paperposition’ properties
+     depends upon ‘paperorientation’.  The horizontal and vertical
+     values for ‘papersize’ and ‘paperposition’ reverse order when
+     ‘paperorientation’ is switched between ‘"portrait"’ and
+     ‘"landscape"’.
 
 ‘paperposition’: four-element vector, def. ‘[0.25000 2.50000 8.00000 6.00000]’
-     Vector ‘[x0 y0 width height]’ defining the position of the figure
-     (in ‘paperunits’ units) on the printed page.  Setting
-     ‘paperposition’ also forces the ‘paperpositionmode’ property to be
-     set to "manual".
+     Vector ‘[left bottom width height]’ defining the position and size
+     of the figure (in ‘paperunits’ units) on the printed page.  The
+     position ‘[left bottom]’ defines the lower left corner of the
+     figure on the page, and the size is defined by ‘[width height]’.
+     For output formats not implicitly rendered on paper, ‘width’ and
+     ‘height’ define the size of the image and the position information
+     is ignored.  Setting ‘paperposition’ also forces the
+     ‘paperpositionmode’ property to be set to "manual".
 
 ‘paperpositionmode’: "auto" | {"manual"}
      If ‘paperpositionmode’ is set to "auto", the ‘paperposition’
      property is automatically computed: the printed figure will have
      the same size as the on-screen figure and will be centered on the
-     output page.
+     output page.  Setting the ‘paperpositionmode’ to ‘"auto"’ does not
+     modify the value of the ‘paperposition’ property.
 
 ‘papersize’: two-element vector, def. ‘[8.5000 11.0000]’
      Vector ‘[width height]’ defining the size of the paper for
-     printing.  Setting this property forces the ‘papertype’ property to
-     be set to "<custom>".
+     printing.  Setting the ‘papersize’ property to a value, not
+     associated with one of the defined ‘papertypes’ and consistent with
+     the setting for ‘paperorientation’, forces the ‘papertype’ property
+     to the value "<custom>".  If ‘papersize’ is set to a value
+     associated with a supported ‘papertype’ and consistent with the
+     ‘paperorientation’, the ‘papertype’ value is modified to the
+     associated value.
 
 ‘papertype’: "<custom>" | "a" | "a0" | "a1" | "a2" | "a3" | "a4" | "a5" | "arch-a" | "arch-b" | "arch-c" | "arch-d" | "arch-e" | "b" | "b0" | "b1" | "b2" | "b3" | "b4" | "b5" | "c" | "d" | "e" | "tabloid" | "uslegal" | {"usletter"}
      Name of the paper used for printed output.  Setting ‘papertype’
-     also changes ‘papersize’ accordingly.
+     also changes ‘papersize’, while maintaining consistency with the
+     ‘paperorientation’ property.
 
 ‘paperunits’: "centimeters" | {"inches"} | "normalized" | "points"
-     The unit used to compute the ‘paperposition’ property.
+     The unit used to compute the ‘paperposition’ property.  For
+     ‘paperunits’ set to ‘"pixels"’, the conversion between physical
+     units (ex: ‘"inches"’) and ‘"pixels"’ is dependent on the
+     ‘screenpixelsperinch’ property of the root object.
 
 ‘parent’: graphics handle, def. ‘0’
      Handle of the parent graphics object.
@@ -7417,26 +7533,32 @@ The ‘figure’ properties are:
 
 ‘position’: four-element vector, def. ‘[300 200 560 420]’
 
-‘renderer’: "none" | "opengl" | {"painters"} | "zbuffer"
+‘renderer’: {"opengl"} | "painters"
 
 ‘renderermode’: {"auto"} | "manual"
 
 ‘resize’: "off" | {"on"}
+     ‘resize’ is unused.
 
 ‘resizefcn’: string | function handle, def. ‘[](0x0)’
+     ‘resizefcn’ is deprecated.  Use ‘sizechangedfcn’ instead.
 
 ‘selected’: {"off"} | "on"
 
 ‘selectionhighlight’: "off" | {"on"}
 
 ‘selectiontype’: "alt" | "extend" | {"normal"} | "open"
-     ‘selectiontype’ is unused.
+
+‘sizechangedfcn’: string | function handle, def. ‘[](0x0)’
+     Callback triggered when the figure window size is changed.
 
 ‘tag’: string, def. ""
      A user-defined string to label the graphics object.
 
 ‘toolbar’: {"auto"} | "figure" | "none"
-     ‘toolbar’ is unused.
+     Control the display of the toolbar along the bottom of the figure
+     window.  When set to "auto", the display is based on the value of
+     the ‘menubar’ property.
 
 ‘type’ (read-only): string
      Class name of the graphics object.  ‘type’ is always "figure"
@@ -7475,16 +7597,18 @@ The ‘figure’ properties are:
 ‘windowscrollwheelfcn’: string | function handle, def. ‘[](0x0)’
 
 ‘windowstyle’: "docked" | "modal" | {"normal"}
+     The window style of a figure.  One of the following values:
+     ‘normal’
+          Set the window style as non modal.
+     ‘modal’
+          Set the window as modal so that it will stay on top of all
+          normal figures.
+     ‘docked’
+          Setting the window style as docked currently does not dock the
+          window.
 
-‘wvisual’: def. ""
-
-‘wvisualmode’: {"auto"} | "manual"
-
-‘xdisplay’: def. ""
-
-‘xvisual’: def. ""
-
-‘xvisualmode’: {"auto"} | "manual"
+     Changing modes of a visible figure may cause the figure to close
+     and reopen.
 
 
 File: octave.info,  Node: Axes Properties,  Next: Line Properties,  Prev: Figure Properties,  Up: Graphics Object Properties
@@ -7512,6 +7636,9 @@ The ‘axes’ properties are:
 
 ‘box’: "off" | {"on"}
      Control whether the axes has a surrounding box.
+
+‘boxstyle’: {"back"} | "full"
+     ‘boxstyle’ is unused.
 
 ‘busyaction’: "cancel" | {"queue"}
 
@@ -7546,11 +7673,17 @@ The ‘axes’ properties are:
 ‘clipping’: "off" | {"on"}
      ‘clipping’ is unused.
 
+‘clippingstyle’: {"3dbox"} | "rectangle"
+     ‘clippingstyle’ is unused.
+
 ‘color’: colorspec, def. ‘[1 1 1]’
      Color of the axes background.  *Note colorspec: Colors.
 
 ‘colororder’: N-by-3 RGB matrix, def. 7-by-3 double
      RGB values used by plot function for automatic line coloring.
+
+‘colororderindex’: def. ‘1’
+     ‘colororderindex’ is unused.
 
 ‘createfcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately after axes has been created.
@@ -7581,7 +7714,7 @@ The ‘axes’ properties are:
 
 ‘drawmode’: "fast" | {"normal"}
 
-‘fontangle’: "italic" | {"normal"} | "oblique"
+‘fontangle’: "italic" | {"normal"}
 
 ‘fontname’: string, def. "*"
      Name of the font used for axes annotations.
@@ -7590,10 +7723,26 @@ The ‘axes’ properties are:
      Size of the font used for axes annotations.  *Note
      fontunits property: XREFaxesfontunits.
 
+‘fontsmoothing’: "off" | {"on"}
+     ‘fontsmoothing’ is unused.
+
 ‘fontunits’: "centimeters" | "inches" | "normalized" | "pixels" | {"points"}
      Unit used to interpret ‘fontsize’ property.
 
-‘fontweight’: "bold" | "demi" | "light" | {"normal"}
+‘fontweight’: "bold" | {"normal"}
+
+‘gridalpha’: def. ‘0.15000’
+     Transparency is not yet implemented for axes objects.  ‘gridalpha’
+     is unused.
+
+‘gridalphamode’: {"auto"} | "manual"
+     ‘gridalphamode’ is unused.
+
+‘gridcolor’: def. ‘[0.15000 0.15000 0.15000]’
+     ‘gridcolor’ is unused.
+
+‘gridcolormode’: {"auto"} | "manual"
+     ‘gridcolormode’ is unused.
 
 ‘gridlinestyle’: "-" | "–" | "-." | {":"} | "none"
 
@@ -7603,17 +7752,35 @@ The ‘axes’ properties are:
 
 ‘hittest’: "off" | {"on"}
 
-‘interpreter’: "latex" | {"none"} | "tex"
-
 ‘interruptible’: "off" | {"on"}
+
+‘labelfontsizemultiplier’: def. ‘1.1000’
+     ‘labelfontsizemultiplier’ is unused.
 
 ‘layer’: {"bottom"} | "top"
      Control whether the axes is drawn below child graphics objects
-     (ticks, labels, etc.  covered by plotted objects) or above.
+     (ticks, labels, etc. covered by plotted objects) or above.
 
 ‘linestyleorder’: def. "-"
+     ‘linestyleorder’ is unused.
+
+‘linestyleorderindex’: def. ‘1’
+     ‘linestyleorderindex’ is unused.
 
 ‘linewidth’: def. ‘0.50000’
+
+‘minorgridalpha’: def. ‘0.25000’
+     Transparency is not yet implemented for axes objects.
+     ‘minorgridalpha’ is unused.
+
+‘minorgridalphamode’: {"auto"} | "manual"
+     ‘minorgridalphamode’ is unused.
+
+‘minorgridcolor’: def. ‘[0.10000 0.10000 0.10000]’
+     ‘minorgridcolor’ is unused.
+
+‘minorgridcolormode’: {"auto"} | "manual"
+     ‘minorgridcolormode’ is unused.
 
 ‘minorgridlinestyle’: "-" | "–" | "-." | {":"} | "none"
 
@@ -7634,6 +7801,9 @@ The ‘axes’ properties are:
 ‘parent’: graphics handle
      Handle of the parent graphics object.
 
+‘pickableparts’: "all" | "none" | {"visible"}
+     ‘pickableparts’ is unused.
+
 ‘plotboxaspectratio’: def. ‘[1 1 1]’
 
 ‘plotboxaspectratiomode’: {"auto"} | "manual"
@@ -7648,10 +7818,14 @@ The ‘axes’ properties are:
      respectively.  *Note outerposition property: XREFaxesouterposition.
 
 ‘projection’: {"orthographic"} | "perspective"
+     ‘projection’ is unused.
 
 ‘selected’: {"off"} | "on"
 
 ‘selectionhighlight’: "off" | {"on"}
+
+‘sortmethod’: "childorder" | {"depth"}
+     ‘sortmethod’ is unused.
 
 ‘tag’: string, def. ""
      A user-defined string to label the graphics object.
@@ -7662,6 +7836,10 @@ The ‘axes’ properties are:
 
 ‘tickdirmode’: {"auto"} | "manual"
 
+‘ticklabelinterpreter’: "latex" | "none" | {"tex"}
+     Control the way x/y/zticklabel properties are interpreted.  *Note
+     Use of the interpreter property: XREFinterpreterusage.
+
 ‘ticklength’: two-element vector, def. ‘[0.010000 0.025000]’
      Two-element vector ‘[2Dlen 3Dlen]’ specifying the length of the
      tickmarks relative to the longest visible axis.
@@ -7670,6 +7848,12 @@ The ‘axes’ properties are:
 
 ‘title’: graphics handle
      Graphics handle of the title text object.
+
+‘titlefontsizemultiplier’: def. ‘1.1000’
+     ‘titlefontsizemultiplier’ is unused.
+
+‘titlefontweight’: {"bold"} | "normal"
+     ‘titlefontweight’ is unused.
 
 ‘type’ (read-only): string
      Class name of the graphics object.  ‘type’ is always "axes"
@@ -7694,6 +7878,9 @@ The ‘axes’ properties are:
 
 ‘xcolor’: {colorspec} | "none", def. ‘[0 0 0]’
      Color of the x-axis.  *Note colorspec: Colors.
+
+‘xcolormode’: {"auto"} | "manual"
+     ‘xcolormode’ is unused.
 
 ‘xdir’: {"normal"} | "reverse"
 
@@ -7727,12 +7914,18 @@ The ‘axes’ properties are:
 
 ‘xticklabelmode’: {"auto"} | "manual"
 
+‘xticklabelrotation’: def. ‘0’
+     ‘xticklabelrotation’ is unused.
+
 ‘xtickmode’: {"auto"} | "manual"
 
 ‘yaxislocation’: {"left"} | "right" | "zero"
 
 ‘ycolor’: {colorspec} | "none", def. ‘[0 0 0]’
      Color of the y-axis.  *Note colorspec: Colors.
+
+‘ycolormode’: {"auto"} | "manual"
+     ‘ycolormode’ is unused.
 
 ‘ydir’: {"normal"} | "reverse"
 
@@ -7766,10 +7959,16 @@ The ‘axes’ properties are:
 
 ‘yticklabelmode’: {"auto"} | "manual"
 
+‘yticklabelrotation’: def. ‘0’
+     ‘yticklabelrotation’ is unused.
+
 ‘ytickmode’: {"auto"} | "manual"
 
 ‘zcolor’: {colorspec} | "none", def. ‘[0 0 0]’
      Color of the z-axis.  *Note colorspec: Colors.
+
+‘zcolormode’: {"auto"} | "manual"
+     ‘zcolormode’ is unused.
 
 ‘zdir’: {"normal"} | "reverse"
 
@@ -7802,6 +8001,9 @@ The ‘axes’ properties are:
      ‘zticklabelmode’ property to be set to "manual".
 
 ‘zticklabelmode’: {"auto"} | "manual"
+
+‘zticklabelrotation’: def. ‘0’
+     ‘zticklabelrotation’ is unused.
 
 ‘ztickmode’: {"auto"} | "manual"
 

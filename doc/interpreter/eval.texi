@@ -29,10 +29,10 @@ Sometimes, you may find it necessary to evaluate an expression that has
 been computed and stored in a string, which is exactly what the
 @code{eval} function lets you do.
 
-@c eval libinterp/parse-tree/oct-parse.cc
+@c eval libinterp/parse-tree/oct-parse.in.yy
 @anchor{XREFeval}
-@deftypefn  {Built-in Function} {} eval (@var{try})
-@deftypefnx {Built-in Function} {} eval (@var{try}, @var{catch})
+@deftypefn  {} {} eval (@var{try})
+@deftypefnx {} {} eval (@var{try}, @var{catch})
 Parse the string @var{try} and evaluate it as if it were an Octave
 program.
 
@@ -63,9 +63,43 @@ eval ('error ("This is a bad example");',
 Programming Note: if you are only using @code{eval} as an error-capturing
 mechanism, rather than for the execution of arbitrary code strings,
 Consider using try/catch blocks or unwind_protect/unwind_protect_cleanup
-blocks instead.  These techniques have higher performance and don't introduce
-the security considerations that the evaluation of arbitrary code does.
-@seealso{@ref{XREFevalin,,evalin}}
+blocks instead.  These techniques have higher performance and don't
+introduce the security considerations that the evaluation of arbitrary code
+does.
+@seealso{@ref{XREFevalin,,evalin}, @ref{XREFevalc,,evalc}, @ref{XREFassignin,,assignin}, @ref{XREFfeval,,feval}}
+@end deftypefn
+
+
+The @code{evalc} function additionally captures any console output
+produced by the evaluated expression.
+
+@c evalc libinterp/parse-tree/oct-parse.in.yy
+@anchor{XREFevalc}
+@deftypefn  {} {@var{s} =} evalc (@var{try})
+@deftypefnx {} {@var{s} =} evalc (@var{try}, @var{catch})
+Parse and evaluate the string @var{try} as if it were an Octave program,
+while capturing the output into the return variable @var{s}.
+
+If execution fails, evaluate the optional string @var{catch}.
+
+This function behaves like @code{eval}, but any output or warning messages
+which would normally be written to the console are captured and returned in
+the string @var{s}.
+
+The @code{diary} is disabled during the execution of this function.  When
+@code{system} is used, any output produced by external programs is
+@emph{not} captured, unless their output is captured by the @code{system}
+function itself.
+
+@example
+@group
+s = evalc ("t = 42"), t
+  @result{} s = t =  42
+
+  @result{} t =  42
+@end group
+@end example
+@seealso{@ref{XREFeval,,eval}, @ref{XREFdiary,,diary}}
 @end deftypefn
 
 
@@ -123,9 +157,9 @@ function, etc.  @xref{Predicates for Numeric Objects},
 for a list of predicates for numeric objects, and @pxref{Status of
 Variables}, for a description of the @code{exist} function.
 
-@c feval libinterp/parse-tree/oct-parse.cc
+@c feval libinterp/parse-tree/oct-parse.in.yy
 @anchor{XREFfeval}
-@deftypefn {Built-in Function} {} feval (@var{name}, @dots{})
+@deftypefn {} {} feval (@var{name}, @dots{})
 Evaluate the function named @var{name}.
 
 Any arguments after the first are passed as inputs to the named function.
@@ -167,20 +201,20 @@ instead.
 A similar function @code{run} exists for calling user script files, that
 are not necessarily on the user path
 
-@c run scripts/miscellaneous/run.m
+@c run scripts/scripts/miscellaneous/run.m
 @anchor{XREFrun}
-@deftypefn  {Command} {} run @var{script}
-@deftypefnx {Function File} {} run ("@var{script}")
+@deftypefn  {} {} run @var{script}
+@deftypefnx {} {} run ("@var{script}")
 Run @var{script} in the current workspace.
 
 Scripts which reside in directories specified in Octave's load path, and
 which end with the extension @file{".m"}, can be run simply by typing
 their name.  For scripts not located on the load path, use @code{run}.
 
-The file name @var{script} can be a bare, fully qualified, or relative
-filename and with or without a file extension.  If no extension is specified,
-Octave will first search for a script with the @file{".m"} extension before
-falling back to the script name without an extension.
+The filename @var{script} can be a bare, fully qualified, or relative
+filename and with or without a file extension.  If no extension is
+specified, Octave will first search for a script with the @file{".m"}
+extension before falling back to the script name without an extension.
 
 Implementation Note: If @var{script} includes a path component, then
 @code{run} first changes the working directory to the directory where
@@ -279,19 +313,19 @@ the given pattern.  Other examples such as @code{save} and @code{load}
 are written in C++ where all Octave variables
 are in the @samp{caller} context and @code{evalin} is not needed.
 
-@c evalin libinterp/parse-tree/oct-parse.cc
+@c evalin libinterp/parse-tree/oct-parse.in.yy
 @anchor{XREFevalin}
-@deftypefn  {Built-in Function} {} evalin (@var{context}, @var{try})
-@deftypefnx {Built-in Function} {} evalin (@var{context}, @var{try}, @var{catch})
+@deftypefn  {} {} evalin (@var{context}, @var{try})
+@deftypefnx {} {} evalin (@var{context}, @var{try}, @var{catch})
 Like @code{eval}, except that the expressions are evaluated in the context
 @var{context}, which may be either @qcode{"caller"} or @qcode{"base"}.
 @seealso{@ref{XREFeval,,eval}, @ref{XREFassignin,,assignin}}
 @end deftypefn
 
 
-@c assignin libinterp/parse-tree/oct-parse.cc
+@c assignin libinterp/parse-tree/oct-parse.in.yy
 @anchor{XREFassignin}
-@deftypefn {Built-in Function} {} assignin (@var{context}, @var{varname}, @var{value})
+@deftypefn {} {} assignin (@var{context}, @var{varname}, @var{value})
 Assign @var{value} to @var{varname} in context @var{context}, which
 may be either @qcode{"base"} or @qcode{"caller"}.
 @seealso{@ref{XREFevalin,,evalin}}

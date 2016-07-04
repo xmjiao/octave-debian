@@ -18,9 +18,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} rgbplot (@var{cmap})
-## @deftypefnx {Function File} {} rgbplot (@var{cmap}, @var{style})
-## @deftypefnx {Function File} {@var{h} =} rgbplot (@dots{})
+## @deftypefn  {} {} rgbplot (@var{cmap})
+## @deftypefnx {} {} rgbplot (@var{cmap}, @var{style})
+## @deftypefnx {} {@var{h} =} rgbplot (@dots{})
 ## Plot the components of a colormap.
 ##
 ## Two different @var{style}s are available for displaying the @var{cmap}:
@@ -59,7 +59,8 @@ function h = rgbplot (cmap, style = "profile")
   switch (tolower (style))
     case "profile"
       htmp = plot (cmap(:,1),"r", cmap(:,2),"g", cmap(:,3),"b");
-      set (gca, 'ytick', 0:0.1:1);
+      set (gca (), 'ytick', 0:0.1:1);
+      set (gca (), 'xlim', [0 rows(cmap)]);
     case "composite"
       htmp = image (1:rows(cmap));
       set (gca, 'ytick', []);

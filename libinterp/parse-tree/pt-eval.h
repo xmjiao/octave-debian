@@ -20,14 +20,16 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_pt_eval_h)
+#if ! defined (octave_pt_eval_h)
 #define octave_pt_eval_h 1
+
+#include "octave-config.h"
 
 #include <stack>
 #include <string>
 
 #include "comment-list.h"
-#include "oct-obj.h"
+#include "ovl.h"
 #include "pt-walk.h"
 
 class tree_expression;

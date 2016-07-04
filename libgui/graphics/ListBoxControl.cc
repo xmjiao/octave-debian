@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QListWidget>
@@ -43,11 +43,12 @@ updateSelection (QListWidget* list, const Matrix& value)
 
   for (octave_idx_type i = 0; i < n; i++)
     {
-      int idx = xround (value(i));
+      int idx = octave::math::round (value(i));
 
       if (1 <= idx && idx <= lc)
         {
           list->item (idx-1)->setSelected (true);
+          list->scrollToItem (list->item (idx-1));
           if (i == 0
               && list->selectionMode () == QAbstractItemView::SingleSelection)
             break;
@@ -95,11 +96,12 @@ ListBoxControl::ListBoxControl (const graphics_object& go, QListWidget* list)
 
       for (octave_idx_type i = 0; i < n; i++)
         {
-          int idx = xround (value(i));
+          int idx = octave::math::round (value(i));
 
           if (1 <= idx && idx <= lc)
             {
               list->item (idx-1)->setSelected (true);
+              list->scrollToItem (list->item (idx-1));
               if (i == 0 && (list->selectionMode ()
                              == QAbstractItemView::SingleSelection))
                 break;

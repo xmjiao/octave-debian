@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_pt_decl_h)
+#if ! defined (octave_pt_decl_h)
 #define octave_pt_decl_h 1
+
+#include "octave-config.h"
 
 class tree_expression;
 class tree_identifier;
@@ -74,8 +76,8 @@ public:
 
     if (nargout > 1)
       error ("invalid number of output arguments in declaration list");
-    else
-      retval = rvalue1 (nargout);
+
+    retval = rvalue1 (nargout);
 
     return retval;
   }

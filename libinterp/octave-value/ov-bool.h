@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_bool_h)
+#if ! defined (octave_ov_bool_h)
 #define octave_ov_bool_h 1
+
+#include "octave-config.h"
 
 #include <cstdlib>
 
@@ -182,7 +184,7 @@ public:
   SparseMatrix sparse_matrix_value (bool = false) const
   { return SparseMatrix (Matrix (1, 1, scalar)); }
 
-  // FIXME Need SparseComplexMatrix (Matrix) constructor!!!
+  // FIXME: Need SparseComplexMatrix (Matrix) constructor!
   SparseComplexMatrix sparse_complex_matrix_value (bool = false) const
   { return SparseComplexMatrix (sparse_matrix_value ()); }
 
@@ -216,7 +218,7 @@ public:
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
   bool load_binary (std::istream& is, bool swap,
-                    oct_mach_info::float_format fmt);
+                    octave::mach_info::float_format fmt);
 
   bool save_hdf5 (octave_hdf5_id loc_id, const char *name, bool save_as_floats);
 
@@ -224,7 +226,7 @@ public:
 
   int write (octave_stream& os, int block_size,
              oct_data_conv::data_type output_type, int skip,
-             oct_mach_info::float_format flt_fmt) const
+             octave::mach_info::float_format flt_fmt) const
   {
     return os.write (bool_array_value (), block_size, output_type,
                      skip, flt_fmt);
@@ -240,7 +242,6 @@ public:
   }
 
 private:
-
 
   DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA
 };

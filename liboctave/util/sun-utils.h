@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_sun_utils_h)
+#if ! defined (octave_sun_utils_h)
 #define octave_sun_utils_h 1
+
+#include "octave-config.h"
 
 // This is only needed to dereference pointers to doubles if mixing
 // GCC and Sun SPARC f77/cc compiled code.  See the GCC manual (where the

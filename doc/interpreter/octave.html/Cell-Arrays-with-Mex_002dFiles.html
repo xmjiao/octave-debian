@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -81,8 +82,6 @@ mexFunction (int nlhs, mxArray* plhs[],
   for (i = 0; i &lt; n; i++)
     plhs[i] = mxDuplicateArray (mxGetCell (prhs[0], i));
 }
-</pre><pre class="example">
-
 </pre></div>
 
 <p>The output is identical to the oct-file version as well.

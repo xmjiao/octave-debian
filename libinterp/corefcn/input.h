@@ -22,15 +22,17 @@ along with Octave; see the file COPYING.  If not, see
 
 // Use the GNU readline library for command line editing and hisory.
 
-#if !defined (octave_input_h)
+#if ! defined (octave_input_h)
 #define octave_input_h 1
+
+#include "octave-config.h"
 
 #include <cstdio>
 
 #include <string>
 
 #include "oct-time.h"
-#include "oct-obj.h"
+#include "ovl.h"
 #include "pager.h"
 
 class octave_value;
@@ -80,7 +82,7 @@ enum echo_state
 
 extern int Vecho_executing_commands;
 
-extern octave_time Vlast_prompt_time;
+extern octave::sys::time Vlast_prompt_time;
 
 class
 octave_base_reader

@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_oct_locbuf_h)
+#if ! defined (octave_oct_locbuf_h)
 #define octave_oct_locbuf_h 1
+
+#include "octave-config.h"
 
 #include <cstddef>
 #include "oct-cmplx.h"
@@ -30,7 +32,7 @@ along with Octave; see the file COPYING.  If not, see
 // that gets deleted automatically.  For common POD types, we provide
 // specializations.
 
-template <class T>
+template <typename T>
 class octave_local_buffer
 {
 public:
@@ -40,7 +42,9 @@ public:
     if (size)
       data = new T [size];
   }
+
   ~octave_local_buffer (void) { delete [] data; }
+
   operator T *() const { return data; }
 
 private:
@@ -137,7 +141,7 @@ SPECIALIZE_POD_BUFFER (FloatComplex);
 // MORE ?
 
 // All pointers and const pointers are also POD types.
-template <class T>
+template <typename T>
 class octave_local_buffer<T *> : private octave_chunk_buffer
 {
 public:
@@ -148,7 +152,7 @@ public:
   operator T **() const { return reinterpret_cast<T **> (this->data ()); }
 };
 
-template <class T>
+template <typename T>
 class octave_local_buffer<const T *> : private octave_chunk_buffer
 {
 public:
@@ -163,7 +167,7 @@ public:
 };
 
 // If the compiler supports dynamic stack arrays, we can use the
-// attached hack to place small buffer arrays on the stack. It may be
+// attached hack to place small buffer arrays on the stack.  It may be
 // even faster than our obstack-like optimization, but is dangerous
 // because stack is a very limited resource, so we disable it.
 
@@ -185,7 +189,7 @@ public:
      <= OCTAVE_LOCAL_BUFFER_MAX_STACK_SIZE; \
   T _bufaut_ ## buf [_lbufaut_ ## buf ? _bufsize_ ## buf : 0]; \
   octave_local_buffer<T> _bufheap_ ## buf \
-    (!_lbufaut_ ## buf ? _bufsize_ ## buf : 0); \
+    (! _lbufaut_ ## buf ? _bufsize_ ## buf : 0); \
   T *buf = _lbufaut_ ## buf \
     ? _bufaut_ ## buf : static_cast<T *> (_bufheap_ ## buf)
 

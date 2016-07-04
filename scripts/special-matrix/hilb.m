@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} hilb (@var{n})
+## @deftypefn {} {} hilb (@var{n})
 ## Return the Hilbert matrix of order @var{n}.
 ##
 ## The @math{i,j} element of a Hilbert matrix is defined as
@@ -65,7 +65,7 @@ function retval = hilb (n)
   tmp = 1:n;
   for i = 1:n
     retval(i, :) = 1.0 ./ tmp;
-    tmp++;
+    tmp += 1;
   endfor
 
 endfunction

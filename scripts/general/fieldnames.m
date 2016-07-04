@@ -17,10 +17,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{names} =} fieldnames (@var{struct})
-## @deftypefnx {Function File} {@var{names} =} fieldnames (@var{obj})
-## @deftypefnx {Function File} {@var{names} =} fieldnames (@var{javaobj})
-## @deftypefnx {Function File} {@var{names} =} fieldnames ("@var{jclassname}")
+## @deftypefn  {} {@var{names} =} fieldnames (@var{struct})
+## @deftypefnx {} {@var{names} =} fieldnames (@var{obj})
+## @deftypefnx {} {@var{names} =} fieldnames (@var{javaobj})
+## @deftypefnx {} {@var{names} =} fieldnames ("@var{jclassname}")
 ## Return a cell array of strings with the names of the fields in the
 ## specified input.
 ##
@@ -48,7 +48,7 @@ function names = fieldnames (obj)
   elseif (isjava (obj) || ischar (obj))
     ## FIXME: Function prototype that excepts java obj exists, but doesn't
     ##        work if obj is java.lang.String.  Convert obj to classname.
-    ## FIXME this is now working for objects whose class is in the dynamic
+    ## FIXME: this is now working for objects whose class is in the dynamic
     ##        classpath but will continue to fail if such classnames are used
     ##        instead (see bug #42710)
     if (isa (obj, "java.lang.String"))

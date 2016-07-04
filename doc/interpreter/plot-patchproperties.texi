@@ -35,13 +35,13 @@ Transparency is not yet implemented for patch objects.  @code{alphadatamapping} 
 @anchor{XREFpatchambientstrength}
 @cindex patch ambientstrength
 @item @code{ambientstrength}: scalar, def. @code{0.30000}
-Light is not yet implemented for patch objects.  @code{ambientstrength} is unused.
+Strength of the ambient light. Value between 0.0 and 1.0
 
 
 @anchor{XREFpatchbackfacelighting}
 @cindex patch backfacelighting
 @item @code{backfacelighting}: @qcode{"lit"} | @{@qcode{"reverselit"}@} | @qcode{"unlit"}
-Light is not yet implemented for patch objects.  @code{backfacelighting} is unused.
+@qcode{"lit"}: The normals are used as is for lighting. @qcode{"reverselit"}: The normals are always oriented towards the point of view. @qcode{"unlit"}: Faces with normals pointing away from the point of view are unlit.
 
 
 @anchor{XREFpatchbeingdeleted}
@@ -108,7 +108,7 @@ Callback function executed immediately before patch is deleted.
 @anchor{XREFpatchdiffusestrength}
 @cindex patch diffusestrength
 @item @code{diffusestrength}: scalar, def. @code{0.60000}
-Light is not yet implemented for patch objects.  @code{diffusestrength} is unused.
+Strength of the diffuse reflex. Value between 0.0 (no diffuse reflex) and 1.0 (full diffuse reflex).
 
 
 @anchor{XREFpatchdisplayname}
@@ -132,13 +132,7 @@ Transparency is not yet implemented for patch objects.  @code{edgealpha} is unus
 @anchor{XREFpatchedgelighting}
 @cindex patch edgelighting
 @item @code{edgelighting}: @qcode{"flat"} | @qcode{"gouraud"} | @{@qcode{"none"}@} | @qcode{"phong"}
-Light is not yet implemented for patch objects.  @code{edgelighting} is unused.
-
-
-@anchor{XREFpatcherasemode}
-@cindex patch erasemode
-@item @code{erasemode}: @qcode{"background"} | @qcode{"none"} | @{@qcode{"normal"}@} | @qcode{"xor"}
-@code{erasemode} is unused.
+When set to a value other than @qcode{"none"}, the edges of the object are drawn with light and shadow effects.  Supported values are @qcode{"none"} (no lighting effects), @qcode{"flat"} (facetted look) and @qcode{"gouraud"} (linear interpolation of the lighting effects between the vertices). @qcode{"phong"} is deprecated and has the same effect as @qcode{"gouraud"}.
 
 
 @anchor{XREFpatchfacealpha}
@@ -155,8 +149,20 @@ Transparency is not yet implemented for patch objects.  @code{facealpha} is unus
 
 @anchor{XREFpatchfacelighting}
 @cindex patch facelighting
-@item @code{facelighting}: @qcode{"flat"} | @qcode{"gouraud"} | @{@qcode{"none"}@} | @qcode{"phong"}
-Light is not yet implemented for patch objects.  @code{facelighting} is unused.
+@item @code{facelighting}: @{@qcode{"flat"}@} | @qcode{"gouraud"} | @qcode{"none"} | @qcode{"phong"}
+When set to a value other than @qcode{"none"}, the faces of the object are drawn with light and shadow effects. Supported values are @qcode{"none"} (no lighting effects), @qcode{"flat"} (facetted look) and @qcode{"gouraud"} (linear interpolation of the lighting effects between the vertices). @qcode{"phong"} is deprecated and has the same effect as @qcode{"gouraud"}.
+
+
+@anchor{XREFpatchfacenormals}
+@cindex patch facenormals
+@item @code{facenormals}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFpatchfacenormalsmode}
+@cindex patch facenormalsmode
+@item @code{facenormalsmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+
 
 
 @anchor{XREFpatchfaces}
@@ -237,12 +243,6 @@ If @code{handlevisibility} is @qcode{"off"}, the patch's handle is not visible i
 @xref{XREFlinemarkersize, , @w{line markersize property}}.
 
 
-@anchor{XREFpatchnormalmode}
-@cindex patch normalmode
-@item @code{normalmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
-
-
-
 @anchor{XREFpatchparent}
 @cindex patch parent
 @item @code{parent}: graphics handle
@@ -264,19 +264,19 @@ Handle of the parent graphics object.
 @anchor{XREFpatchspecularcolorreflectance}
 @cindex patch specularcolorreflectance
 @item @code{specularcolorreflectance}: scalar, def. @code{1}
-Light is not yet implemented for patch objects.  @code{specularcolorreflectance} is unused.
+Reflectance for specular color.  Value between 0.0 (color of underlying face) and 1.0 (color of light source).
 
 
 @anchor{XREFpatchspecularexponent}
 @cindex patch specularexponent
 @item @code{specularexponent}: scalar, def. @code{10}
-Light is not yet implemented for patch objects.  @code{specularexponent} is unused.
+Exponent for the specular reflex.  The lower the value, the more the reflex is spread out.
 
 
 @anchor{XREFpatchspecularstrength}
 @cindex patch specularstrength
 @item @code{specularstrength}: scalar, def. @code{0.90000}
-Light is not yet implemented for patch objects.  @code{specularstrength} is unused.
+Strength of the specular reflex.  Value between 0.0 (no specular reflex) and 1.0 (full specular reflex).
 
 
 @anchor{XREFpatchtag}
@@ -306,6 +306,12 @@ User-defined data to associate with the graphics object.
 @anchor{XREFpatchvertexnormals}
 @cindex patch vertexnormals
 @item @code{vertexnormals}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFpatchvertexnormalsmode}
+@cindex patch vertexnormalsmode
+@item @code{vertexnormalsmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
 
 
 

@@ -18,8 +18,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{l} =} legendre (@var{n}, @var{x})
-## @deftypefnx {Function File} {@var{l} =} legendre (@var{n}, @var{x}, @var{normalization})
+## @deftypefn  {} {@var{l} =} legendre (@var{n}, @var{x})
+## @deftypefnx {} {@var{l} =} legendre (@var{n}, @var{x}, @var{normalization})
 ## Compute the Legendre function of degree @var{n} and order
 ## @var{m} = 0 @dots{} @var{n}.
 ##
@@ -192,7 +192,7 @@ function retval = legendre (n, x, normalization)
       error ('legendre: NORMALIZATION option must be "unnorm", "norm", or "sch"');
   endswitch
 
-  scale = scale * ones (size (x));
+  scale *= ones (size (x));
 
   ## Based on the recurrence relation below
   ##            m                 m              m

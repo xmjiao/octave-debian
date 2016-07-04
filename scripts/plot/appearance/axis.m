@@ -17,14 +17,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} axis ()
-## @deftypefnx {Function File} {} axis ([@var{x}_lo @var{x}_hi])
-## @deftypefnx {Function File} {} axis ([@var{x}_lo @var{x}_hi @var{y}_lo @var{y}_hi])
-## @deftypefnx {Function File} {} axis ([@var{x}_lo @var{x}_hi @var{y}_lo @var{y}_hi @var{z}_lo @var{z}_hi])
-## @deftypefnx {Function File} {} axis (@var{option})
-## @deftypefnx {Function File} {} axis (@dots{}, @var{option})
-## @deftypefnx {Function File} {} axis (@var{hax}, @dots{})
-## @deftypefnx {Function File} {@var{limits} =} axis ()
+## @deftypefn  {} {} axis ()
+## @deftypefnx {} {} axis ([@var{x}_lo @var{x}_hi])
+## @deftypefnx {} {} axis ([@var{x}_lo @var{x}_hi @var{y}_lo @var{y}_hi])
+## @deftypefnx {} {} axis ([@var{x}_lo @var{x}_hi @var{y}_lo @var{y}_hi @var{z}_lo @var{z}_hi])
+## @deftypefnx {} {} axis (@var{option})
+## @deftypefnx {} {} axis (@dots{}, @var{option})
+## @deftypefnx {} {} axis (@var{hax}, @dots{})
+## @deftypefnx {} {@var{limits} =} axis ()
 ## Set axis limits and appearance.
 ##
 ## The argument @var{limits} should be a 2-, 4-, or 6-element vector.  The
@@ -61,10 +61,10 @@
 ##
 ## @table @asis
 ## @item @qcode{"square"}
-## Force a square aspect ratio.
+## Force a square axis aspect ratio.
 ##
 ## @item @qcode{"equal"}
-## Force x distance to equal y-distance.
+## Force x-axis unit distance to equal y-axis (and z-axis) unit distance.
 ##
 ## @item @qcode{"normal"}
 ## Restore default aspect ratio.
@@ -191,14 +191,6 @@ function limits = __axis__ (ca, ax, varargin)
       set (ca, "dataaspectratiomode", "auto",
                "plotboxaspectratio", [1, 1, 1]);
     elseif (strcmp (ax, "equal"))
-      if (strcmp (get (ancestor (ca, "figure"), "__graphics_toolkit__"), "gnuplot"))
-        ## FIXME: gnuplot applies the aspect ratio activepostionproperty.
-        set (ca, "activepositionproperty", "position");
-        ## The following line is a trick used to trigger the recalculation of
-        ## aspect related magnitudes even if the aspect ratio is the same
-        ## (useful with the x11 gnuplot terminal after a window resize)
-        set (ca, "dataaspectratiomode", "auto");
-      endif
       set (ca, "dataaspectratio", [1, 1, 1], "plotboxaspectratio", [5 4 4]);
 
     elseif (strcmpi (ax, "normal"))
@@ -279,7 +271,7 @@ function limits = __axis__ (ca, ax, varargin)
       endif
 
     else
-      warning ("unknown axis option '%s'", ax);
+      warning ("axis: unknown option '%s'", ax);
     endif
 
   elseif (isvector (ax))
@@ -287,12 +279,12 @@ function limits = __axis__ (ca, ax, varargin)
     len = length (ax);
 
     if (len != 2 && len != 4 && len != 6)
-      error ("axis: expecting vector with 2, 4, or 6 elements");
+      error ("axis: LIMITS vector must have 2, 4, or 6 elements");
     endif
 
     for i = 1:2:len
       if (ax(i) >= ax(i+1))
-        error ("axis: limits(%d) must be less than limits(%d)", i, i+1);
+        error ("axis: LIMITS(%d) must be less than LIMITS(%d)", i, i+1);
       endif
     endfor
 
@@ -322,19 +314,19 @@ function lims = __get_tight_lims__ (ca, ax)
 
   ## Get the limits for axis ("tight").
   ## AX should be one of "x", "y", or "z".
-  kids = findobj (ca, "-property", strcat (ax, "data"));
+  kids = findobj (ca, "-property", [ax "data"]);
   ## The data properties for hggroups mirror their children.
   ## Exclude the redundant hgroup values.
   hg_kids = findobj (kids, "type", "hggroup");
   kids = setdiff (kids, hg_kids);
   if (isempty (kids))
     ## Return the current limits.
-    lims = get (ca, strcat (ax, "lim"));
+    lims = get (ca, [ax "lim"]);
   else
-    data = get (kids, strcat (ax, "data"));
+    data = get (kids, [ax "data"]);
     types = get (kids, "type");
 
-    scale = get (ca, strcat (ax, "scale"));
+    scale = get (ca, [ax "scale"]);
     if (! iscell (data))
       data = {data};
     endif
@@ -375,15 +367,15 @@ function __do_tight_option__ (ca)
   if (all (xlim == 0))
     xlim = eps () * [-1 1];
   elseif (diff (xlim == 0))
-    xlim = xlim .* (1 + eps () * [-1, 1]);
+    xlim .*= (1 + eps () * [-1, 1]);
   endif
   ylim = __get_tight_lims__ (ca, "y");
   if (all (ylim == 0))
     ylim = eps () * [-1 1];
   elseif (diff (ylim == 0))
-    ylim = ylim .* (1 + eps () * [-1, 1]);
+    ylim .*= (1 + eps () * [-1, 1]);
   endif
-  set (ca, "xlim", xlim, "ylim", ylim)
+  set (ca, "xlim", xlim, "ylim", ylim);
   nd = __calc_dimensions__ (ca);
   is3dview = (get (ca, "view")(2) != 90);
   if (nd > 2 && is3dview)
@@ -391,7 +383,7 @@ function __do_tight_option__ (ca)
     if (all (zlim == 0))
       zlim = eps () * [-1 1];
     elseif (diff (zlim == 0))
-      zlim = zlim .* (1 + eps () * [-1, 1]);
+      zlim .*= (1 + eps () * [-1, 1]);
     endif
     set (ca, "zlim", zlim);
   endif

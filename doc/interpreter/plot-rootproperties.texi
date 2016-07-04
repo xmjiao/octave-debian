@@ -47,7 +47,7 @@
 @anchor{XREFrootcallbackobject}
 @cindex root callbackobject
 @item @code{callbackobject} (read-only): graphics handle, def. @code{[](0x0)}
-
+Graphics handle of the current object whose callback is executing.
 
 
 @anchor{XREFrootchildren}
@@ -86,46 +86,10 @@ Graphics handle of the current figure.
 @code{deletefcn} is unused.
 
 
-@anchor{XREFrootdiary}
-@cindex root diary
-@item @code{diary}: @{@qcode{"off"}@} | @qcode{"on"}
-If @code{diary} is @qcode{"on"}, the Octave command window session is saved to file.  @xref{XREFrootdiaryfile, , @w{diaryfile property}}.
-
-
-@anchor{XREFrootdiaryfile}
-@cindex root diaryfile
-@item @code{diaryfile}: string, def. @qcode{"diary"}
-The name of the diary file.  @xref{XREFdiary, , @w{diary function}}.
-
-
-@anchor{XREFrootecho}
-@cindex root echo
-@item @code{echo}: @{@qcode{"off"}@} | @qcode{"on"}
-Control whether Octave displays commands executed from scripts.  @xref{XREFecho, , @w{echo function}}.
-
-
-@anchor{XREFrooterrormessage}
-@cindex root errormessage
-@item @code{errormessage} (read-only): string, def. @qcode{""}
-The last error message raised.  @xref{XREFlasterr, , @w{lasterr function}}.
-
-
 @anchor{XREFrootfixedwidthfontname}
 @cindex root fixedwidthfontname
 @item @code{fixedwidthfontname}: string, def. @qcode{"Courier"}
 
-
-
-@anchor{XREFrootformat}
-@cindex root format
-@item @code{format}: @qcode{"+"} | @qcode{"bank"} | @qcode{"bit"} | @qcode{"hex"} | @qcode{"long"} | @qcode{"longe"} | @qcode{"longeng"} | @qcode{"longg"} | @qcode{"native-bit"} | @qcode{"native-hex"} | @qcode{"none"} | @qcode{"rat"} | @{@qcode{"short"}@} | @qcode{"shorte"} | @qcode{"shorteng"} | @qcode{"shortg"}
-This property is a wrapper around the @code{format} function.  @xref{XREFformat, , @w{format function}}.
-
-
-@anchor{XREFrootformatspacing}
-@cindex root formatspacing
-@item @code{formatspacing}: @qcode{"compact"} | @{@qcode{"loose"}@}
-This property is a wrapper around the @code{format} function.  @xref{XREFformat, , @w{format function}}.
 
 
 @anchor{XREFroothandlevisibility}
@@ -146,15 +110,9 @@ This property is a wrapper around the @code{format} function.  @xref{XREFformat,
 @code{interruptible} is unused.
 
 
-@anchor{XREFrootlanguage}
-@cindex root language
-@item @code{language}: string, def. @qcode{"ascii"}
-
-
-
 @anchor{XREFrootmonitorpositions}
 @cindex root monitorpositions
-@item @code{monitorpositions}:
+@item @code{monitorpositions} (read-only):
 @code{monitorpositions} is unused.
 
 
@@ -174,12 +132,6 @@ Root figure has no parent graphics object.  @code{parent} is always empty.
 @cindex root pointerwindow
 @item @code{pointerwindow} (read-only): graphics handle, def. @code{0}
 @code{pointerwindow} is unused.
-
-
-@anchor{XREFrootrecursionlimit}
-@cindex root recursionlimit
-@item @code{recursionlimit}: double, def. @code{256}
-The maximum number of times a function can be called recursively.  @xref{XREFmax_recursion_depth, , @w{max_recursion_depth function}}.
 
 
 @anchor{XREFrootscreendepth}

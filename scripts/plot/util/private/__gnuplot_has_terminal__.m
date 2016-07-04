@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{has_terminal} =} __gnuplot_has_terminal__ (@var{terminal})
+## @deftypefn {} {@var{has_terminal} =} __gnuplot_has_terminal__ (@var{terminal})
 ## Undocumented internal function.
 ## @end deftypefn
 
@@ -45,7 +45,7 @@ function gnuplot_supports_term = __gnuplot_has_terminal__ (term, plot_stream)
       endif
     endif
   else
-    ## Gnuplot 4.0 terminals. No new terminals were added until 4.4 which
+    ## Gnuplot 4.0 terminals.  No new terminals were added until 4.4 which
     ## allows the list of terminals to be obtained from GPVAL_TERMINALS.
     available_terminals = {"aifm", "aqua", "canvas", "cgm", "corel", ...
                            "dumb", "dxf", "eepic", "emf", "epslatex", ...

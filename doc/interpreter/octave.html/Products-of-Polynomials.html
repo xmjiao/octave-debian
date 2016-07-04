@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -58,8 +59,8 @@ Next: <a href="Derivatives-_002f-Integrals-_002f-Transforms.html#Derivatives-_00
 <h3 class="section">28.3 Products of Polynomials</h3>
 
 <a name="XREFconv"></a><dl>
-<dt><a name="index-conv"></a>Function File: <em></em> <strong>conv</strong> <em>(<var>a</var>, <var>b</var>)</em></dt>
-<dt><a name="index-conv-1"></a>Function File: <em></em> <strong>conv</strong> <em>(<var>a</var>, <var>b</var>, <var>shape</var>)</em></dt>
+<dt><a name="index-conv"></a>: <em></em> <strong>conv</strong> <em>(<var>a</var>, <var>b</var>)</em></dt>
+<dt><a name="index-conv-1"></a>: <em></em> <strong>conv</strong> <em>(<var>a</var>, <var>b</var>, <var>shape</var>)</em></dt>
 <dd><p>Convolve two vectors <var>a</var> and <var>b</var>.
 </p>
 <p>The output convolution is a vector with length equal to
@@ -85,8 +86,8 @@ convolution represents the coefficient vector of the product polynomial.
 
 
 <a name="XREFconvn"></a><dl>
-<dt><a name="index-convn"></a>Built-in Function: <em><var>C</var> =</em> <strong>convn</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
-<dt><a name="index-convn-1"></a>Built-in Function: <em><var>C</var> =</em> <strong>convn</strong> <em>(<var>A</var>, <var>B</var>, <var>shape</var>)</em></dt>
+<dt><a name="index-convn"></a>: <em><var>C</var> =</em> <strong>convn</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dt><a name="index-convn-1"></a>: <em><var>C</var> =</em> <strong>convn</strong> <em>(<var>A</var>, <var>B</var>, <var>shape</var>)</em></dt>
 <dd><p>Return the n-D convolution of <var>A</var> and <var>B</var>.
 </p>
 <p>The size of the result is determined by the optional <var>shape</var> argument
@@ -115,7 +116,7 @@ The size of the result is <code>max (size (A) - size (B) + 1, 0)</code>.
 
 
 <a name="XREFdeconv"></a><dl>
-<dt><a name="index-deconv"></a>Function File: <em></em> <strong>deconv</strong> <em>(<var>y</var>, <var>a</var>)</em></dt>
+<dt><a name="index-deconv"></a>: <em></em> <strong>deconv</strong> <em>(<var>y</var>, <var>a</var>)</em></dt>
 <dd><p>Deconvolve two vectors.
 </p>
 <p><code>[b, r] = deconv (y, a)</code> solves for <var>b</var> and <var>r</var> such that
@@ -130,9 +131,9 @@ a remainder polynomial of lowest order.
 
 
 <a name="XREFconv2"></a><dl>
-<dt><a name="index-conv2"></a>Built-in Function: <em></em> <strong>conv2</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
-<dt><a name="index-conv2-1"></a>Built-in Function: <em></em> <strong>conv2</strong> <em>(<var>v1</var>, <var>v2</var>, <var>m</var>)</em></dt>
-<dt><a name="index-conv2-2"></a>Built-in Function: <em></em> <strong>conv2</strong> <em>(&hellip;, <var>shape</var>)</em></dt>
+<dt><a name="index-conv2"></a>: <em></em> <strong>conv2</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dt><a name="index-conv2-1"></a>: <em></em> <strong>conv2</strong> <em>(<var>v1</var>, <var>v2</var>, <var>m</var>)</em></dt>
+<dt><a name="index-conv2-2"></a>: <em></em> <strong>conv2</strong> <em>(&hellip;, <var>shape</var>)</em></dt>
 <dd><p>Return the 2-D convolution of <var>A</var> and <var>B</var>.
 </p>
 <p>The size of the result is determined by the optional <var>shape</var> argument
@@ -164,8 +165,8 @@ The size of the result is <code>max (size (A) - size (B) + 1, 0)</code>.
 
 
 <a name="XREFpolygcd"></a><dl>
-<dt><a name="index-polygcd"></a>Function File: <em><var>q</var> =</em> <strong>polygcd</strong> <em>(<var>b</var>, <var>a</var>)</em></dt>
-<dt><a name="index-polygcd-1"></a>Function File: <em><var>q</var> =</em> <strong>polygcd</strong> <em>(<var>b</var>, <var>a</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-polygcd"></a>: <em><var>q</var> =</em> <strong>polygcd</strong> <em>(<var>b</var>, <var>a</var>)</em></dt>
+<dt><a name="index-polygcd-1"></a>: <em><var>q</var> =</em> <strong>polygcd</strong> <em>(<var>b</var>, <var>a</var>, <var>tol</var>)</em></dt>
 <dd>
 <p>Find the greatest common divisor of two polynomials.
 </p>
@@ -192,9 +193,9 @@ deconv (poly (1:8), polygcd (poly (1:8), poly (3:12))) - poly (1:2)
 
 
 <a name="XREFresidue"></a><dl>
-<dt><a name="index-residue"></a>Function File: <em>[<var>r</var>, <var>p</var>, <var>k</var>, <var>e</var>] =</em> <strong>residue</strong> <em>(<var>b</var>, <var>a</var>)</em></dt>
-<dt><a name="index-residue-1"></a>Function File: <em>[<var>b</var>, <var>a</var>] =</em> <strong>residue</strong> <em>(<var>r</var>, <var>p</var>, <var>k</var>)</em></dt>
-<dt><a name="index-residue-2"></a>Function File: <em>[<var>b</var>, <var>a</var>] =</em> <strong>residue</strong> <em>(<var>r</var>, <var>p</var>, <var>k</var>, <var>e</var>)</em></dt>
+<dt><a name="index-residue"></a>: <em>[<var>r</var>, <var>p</var>, <var>k</var>, <var>e</var>] =</em> <strong>residue</strong> <em>(<var>b</var>, <var>a</var>)</em></dt>
+<dt><a name="index-residue-1"></a>: <em>[<var>b</var>, <var>a</var>] =</em> <strong>residue</strong> <em>(<var>r</var>, <var>p</var>, <var>k</var>)</em></dt>
+<dt><a name="index-residue-2"></a>: <em>[<var>b</var>, <var>a</var>] =</em> <strong>residue</strong> <em>(<var>r</var>, <var>p</var>, <var>k</var>, <var>e</var>)</em></dt>
 <dd><p>The first calling form computes the partial fraction expansion for the
 quotient of the polynomials, <var>b</var> and <var>a</var>.
 </p>
@@ -238,8 +239,8 @@ partial fraction expansion; represented by the residues, poles, and a direct
 polynomial specified by <var>r</var>, <var>p</var> and <var>k</var>, and the pole
 multiplicity <var>e</var>.
 </p>
-<p>If the multiplicity, <var>e</var>, is not explicitly specified the multiplicity is
-determined by the function <code>mpoles</code>.
+<p>If the multiplicity, <var>e</var>, is not explicitly specified the
+multiplicity is determined by the function <code>mpoles</code>.
 </p>
 <p>For example:
 </p>

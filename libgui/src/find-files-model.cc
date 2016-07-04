@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QFileIconProvider>
@@ -71,10 +71,11 @@ public:
     else
       return ! lessThan (leftval, rightval);
   }
+
 private:
   int _sortorder;
-};
 
+};
 
 find_files_model::find_files_model (QObject *p)
   : QAbstractListModel (p)
@@ -85,8 +86,7 @@ find_files_model::find_files_model (QObject *p)
 }
 
 find_files_model::~find_files_model ()
-{
-}
+{ }
 
 void
 find_files_model::clear ()

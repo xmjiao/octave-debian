@@ -21,8 +21,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <cctype>
@@ -36,7 +36,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-base-mat.h"
 #include "ov-base-mat.cc"
 #include "ov-ch-mat.h"
-#include "gripes.h"
+#include "errwarn.h"
 #include "pr-output.h"
 
 template class octave_base_matrix<charNDArray>;
@@ -56,15 +56,13 @@ octave_char_matrix::double_value (bool) const
 {
   double retval = lo_ieee_nan_value ();
 
-  if (rows () > 0 && columns () > 0)
-    {
-      gripe_implicit_conversion ("Octave:array-to-scalar",
-                                 "character matrix", "real scalar");
+  if (rows () == 0 || columns () == 0)
+    err_invalid_conversion ("character matrix", "real scalar");
 
-      retval = static_cast<unsigned char> (matrix (0, 0));
-    }
-  else
-    gripe_invalid_conversion ("character matrix", "real scalar");
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            "character matrix", "real scalar");
+
+  retval = static_cast<unsigned char> (matrix(0, 0));
 
   return retval;
 }
@@ -74,15 +72,13 @@ octave_char_matrix::float_value (bool) const
 {
   float retval = lo_ieee_float_nan_value ();
 
-  if (rows () > 0 && columns () > 0)
-    {
-      gripe_implicit_conversion ("Octave:array-to-scalar",
-                                 "character matrix", "real scalar");
+  if (rows () == 0 && columns () == 0)
+    err_invalid_conversion ("character matrix", "real scalar");
 
-      retval = static_cast<unsigned char> (matrix (0, 0));
-    }
-  else
-    gripe_invalid_conversion ("character matrix", "real scalar");
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            "character matrix", "real scalar");
+
+  retval = static_cast<unsigned char> (matrix(0, 0));
 
   return retval;
 }
@@ -92,15 +88,13 @@ octave_char_matrix::int64_scalar_value () const
 {
   octave_int64 retval = 0;
 
-  if (rows () > 0 && columns () > 0)
-    {
-      gripe_implicit_conversion ("Octave:array-to-scalar",
-                                 "character matrix", "int64 scalar");
+  if (rows () == 0 || columns () == 0)
+    err_invalid_conversion ("character matrix", "int64 scalar");
 
-      retval = octave_int64 (matrix (0, 0));
-    }
-  else
-    gripe_invalid_conversion ("character matrix", "int64 scalar");
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            "character matrix", "int64 scalar");
+
+  retval = octave_int64 (matrix(0, 0));
 
   return retval;
 }
@@ -110,15 +104,13 @@ octave_char_matrix::uint64_scalar_value () const
 {
   octave_uint64 retval = 0;
 
-  if (rows () > 0 && columns () > 0)
-    {
-      gripe_implicit_conversion ("Octave:array-to-scalar",
-                                 "character matrix", "uint64 scalar");
+  if (rows () == 0 || columns () == 0)
+    err_invalid_conversion ("character matrix", "uint64 scalar");
 
-      retval = octave_uint64 (matrix (0, 0));
-    }
-  else
-    gripe_invalid_conversion ("character matrix", "uint64 scalar");
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            "character matrix", "uint64 scalar");
+
+  retval = octave_uint64 (matrix(0, 0));
 
   return retval;
 }
@@ -130,15 +122,13 @@ octave_char_matrix::complex_value (bool) const
 
   Complex retval (tmp, tmp);
 
-  if (rows () > 0 && columns () > 0)
-    {
-      gripe_implicit_conversion ("Octave:array-to-scalar",
-                                 "character matrix", "complex scalar");
+  if (rows () == 0 && columns () == 0)
+    err_invalid_conversion ("character matrix", "complex scalar");
 
-      retval = static_cast<unsigned char> (matrix (0, 0));
-    }
-  else
-    gripe_invalid_conversion ("character matrix", "complex scalar");
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            "character matrix", "complex scalar");
+
+  retval = static_cast<unsigned char> (matrix(0, 0));
 
   return retval;
 }
@@ -150,15 +140,13 @@ octave_char_matrix::float_complex_value (bool) const
 
   FloatComplex retval (tmp, tmp);
 
-  if (rows () > 0 && columns () > 0)
-    {
-      gripe_implicit_conversion ("Octave:array-to-scalar",
-                                 "character matrix", "complex scalar");
+  if (rows () == 0 || columns () == 0)
+    err_invalid_conversion ("character matrix", "complex scalar");
 
-      retval = static_cast<unsigned char> (matrix (0, 0));
-    }
-  else
-    gripe_invalid_conversion ("character matrix", "complex scalar");
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            "character matrix", "complex scalar");
+
+  retval = static_cast<unsigned char> (matrix(0, 0));
 
   return retval;
 }
@@ -195,7 +183,7 @@ octave_char_matrix::as_mxArray (void) const
 // functions are int (*) (int), even in C++.  Wicked!
 static inline int xisascii (int c)
 {
-#ifdef HAVE_ISASCII
+#if defined (HAVE_ISASCII)
   return isascii (c);
 #else
   return (c >= 0x00 && c <= 0x7f);
@@ -204,7 +192,7 @@ static inline int xisascii (int c)
 
 static inline int xtoascii (int c)
 {
-#ifdef HAVE_TOASCII
+#if defined (HAVE_TOASCII)
   return toascii (c);
 #else
   return (c & 0x7F);
@@ -238,8 +226,8 @@ octave_char_matrix::map (unary_mapper_t umap) const
     STRING_MAPPER (xtolower, std::tolower, char);
     STRING_MAPPER (xtoupper, std::toupper, char);
 
-      // For Matlab compatibility, these should work on ASCII values
-      // without error or warning.
+    // For Matlab compatibility, these should work on ASCII values
+    // without error or warning.
     case umap_abs:
     case umap_ceil:
     case umap_fix:
@@ -255,7 +243,7 @@ octave_char_matrix::map (unary_mapper_t umap) const
       }
 
     default:
-      error ("%s: expecting numeric argument", get_umap_name (umap));
+      error ("%s: argument must be numeric", get_umap_name (umap));
       break;
     }
 

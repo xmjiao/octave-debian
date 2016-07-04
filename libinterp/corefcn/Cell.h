@@ -21,8 +21,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_Cell_h)
+#if ! defined (octave_Cell_h)
 #define octave_Cell_h 1
+
+#include "octave-config.h"
 
 #include <string>
 
@@ -138,7 +140,7 @@ private:
   Cell map (ctype_mapper) const;
 };
 
-template<>
+template <>
 inline Cell octave_value_extract<Cell> (const octave_value& v)
 { return v.cell_value (); }
 

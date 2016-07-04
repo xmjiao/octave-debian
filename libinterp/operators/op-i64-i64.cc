@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "mx-i64nda-i8.h"
@@ -66,8 +66,8 @@ along with Octave; see the file COPYING.  If not, see
 #include "mx-i64-fnda.h"
 #include "mx-fnda-i64.h"
 
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-int16.h"
 #include "ov-int32.h"

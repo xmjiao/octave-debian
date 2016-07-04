@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "EIG.h"
@@ -76,7 +76,6 @@ extern "C"
   F77_FUNC (dpotrf, DPOTRF) (F77_CONST_CHAR_ARG_DECL,
                              const octave_idx_type&, double*,
                              const octave_idx_type&, octave_idx_type&
-                             F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
@@ -84,7 +83,6 @@ extern "C"
                              const octave_idx_type&,
                              Complex*, const octave_idx_type&,
                              octave_idx_type&
-                             F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
@@ -140,11 +138,8 @@ octave_idx_type
 EIG::init (const Matrix& a, bool calc_ev)
 {
   if (a.any_element_is_inf_or_nan ())
-    {
-      (*current_liboctave_error_handler)
-        ("EIG: matrix contains Inf or NaN values");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("EIG: matrix contains Inf or NaN values");
 
   if (a.is_symmetric ())
     return symmetric_init (a, calc_ev);
@@ -152,10 +147,7 @@ EIG::init (const Matrix& a, bool calc_ev)
   octave_idx_type n = a.rows ();
 
   if (n != a.cols ())
-    {
-      (*current_liboctave_error_handler) ("EIG requires square matrix");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires square matrix");
 
   octave_idx_type info = 0;
 
@@ -185,67 +177,56 @@ EIG::init (const Matrix& a, bool calc_ev)
                            F77_CHAR_ARG_LEN (1)
                            F77_CHAR_ARG_LEN (1)));
 
-  if (info == 0)
+  if (info != 0)
+    (*current_liboctave_error_handler) ("dgeev workspace query failed");
+
+  lwork = static_cast<octave_idx_type> (dummy_work);
+  Array<double> work (dim_vector (lwork, 1));
+  double *pwork = work.fortran_vec ();
+
+  F77_XFCN (dgeev, DGEEV, (F77_CONST_CHAR_ARG2 ("N", 1),
+                           F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
+                           n, tmp_data, n, pwr, pwi, dummy,
+                           idummy, pvr, n, pwork, lwork, info
+                           F77_CHAR_ARG_LEN (1)
+                           F77_CHAR_ARG_LEN (1)));
+
+  if (info < 0)
+    (*current_liboctave_error_handler) ("unrecoverable error in dgeev");
+
+  if (info > 0)
+    (*current_liboctave_error_handler) ("dgeev failed to converge");
+
+  lambda.resize (n);
+  octave_idx_type nvr = calc_ev ? n : 0;
+  v.resize (nvr, nvr);
+
+  for (octave_idx_type j = 0; j < n; j++)
     {
-      lwork = static_cast<octave_idx_type> (dummy_work);
-      Array<double> work (dim_vector (lwork, 1));
-      double *pwork = work.fortran_vec ();
-
-      F77_XFCN (dgeev, DGEEV, (F77_CONST_CHAR_ARG2 ("N", 1),
-                               F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
-                               n, tmp_data, n, pwr, pwi, dummy,
-                               idummy, pvr, n, pwork, lwork, info
-                               F77_CHAR_ARG_LEN (1)
-                               F77_CHAR_ARG_LEN (1)));
-
-      if (info < 0)
+      if (wi.elem (j) == 0.0)
         {
-          (*current_liboctave_error_handler) ("unrecoverable error in dgeev");
-          return info;
+          lambda.elem (j) = Complex (wr.elem (j));
+          for (octave_idx_type i = 0; i < nvr; i++)
+            v.elem (i, j) = vr.elem (i, j);
         }
-
-      if (info > 0)
+      else
         {
-          (*current_liboctave_error_handler) ("dgeev failed to converge");
-          return info;
-        }
+          if (j+1 >= n)
+            (*current_liboctave_error_handler) ("EIG: internal error");
 
-      lambda.resize (n);
-      octave_idx_type nvr = calc_ev ? n : 0;
-      v.resize (nvr, nvr);
+          lambda.elem (j) = Complex (wr.elem (j), wi.elem (j));
+          lambda.elem (j+1) = Complex (wr.elem (j+1), wi.elem (j+1));
 
-      for (octave_idx_type j = 0; j < n; j++)
-        {
-          if (wi.elem (j) == 0.0)
+          for (octave_idx_type i = 0; i < nvr; i++)
             {
-              lambda.elem (j) = Complex (wr.elem (j));
-              for (octave_idx_type i = 0; i < nvr; i++)
-                v.elem (i, j) = vr.elem (i, j);
+              double real_part = vr.elem (i, j);
+              double imag_part = vr.elem (i, j+1);
+              v.elem (i, j) = Complex (real_part, imag_part);
+              v.elem (i, j+1) = Complex (real_part, -imag_part);
             }
-          else
-            {
-              if (j+1 >= n)
-                {
-                  (*current_liboctave_error_handler) ("EIG: internal error");
-                  return -1;
-                }
-
-              lambda.elem (j) = Complex (wr.elem (j), wi.elem (j));
-              lambda.elem (j+1) = Complex (wr.elem (j+1), wi.elem (j+1));
-
-              for (octave_idx_type i = 0; i < nvr; i++)
-                {
-                  double real_part = vr.elem (i, j);
-                  double imag_part = vr.elem (i, j+1);
-                  v.elem (i, j) = Complex (real_part, imag_part);
-                  v.elem (i, j+1) = Complex (real_part, -imag_part);
-                }
-              j++;
-            }
+          j++;
         }
     }
-  else
-    (*current_liboctave_error_handler) ("dgeev workspace query failed");
 
   return info;
 }
@@ -256,10 +237,7 @@ EIG::symmetric_init (const Matrix& a, bool calc_ev)
   octave_idx_type n = a.rows ();
 
   if (n != a.cols ())
-    {
-      (*current_liboctave_error_handler) ("EIG requires square matrix");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires square matrix");
 
   octave_idx_type info = 0;
 
@@ -278,35 +256,27 @@ EIG::symmetric_init (const Matrix& a, bool calc_ev)
                            F77_CHAR_ARG_LEN (1)
                            F77_CHAR_ARG_LEN (1)));
 
-  if (info == 0)
-    {
-      lwork = static_cast<octave_idx_type> (dummy_work);
-      Array<double> work (dim_vector (lwork, 1));
-      double *pwork = work.fortran_vec ();
-
-      F77_XFCN (dsyev, DSYEV, (F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
-                               F77_CONST_CHAR_ARG2 ("U", 1),
-                               n, tmp_data, n, pwr, pwork, lwork, info
-                               F77_CHAR_ARG_LEN (1)
-                               F77_CHAR_ARG_LEN (1)));
-
-      if (info < 0)
-        {
-          (*current_liboctave_error_handler) ("unrecoverable error in dsyev");
-          return info;
-        }
-
-      if (info > 0)
-        {
-          (*current_liboctave_error_handler) ("dsyev failed to converge");
-          return info;
-        }
-
-      lambda = ComplexColumnVector (wr);
-      v = calc_ev ? ComplexMatrix (atmp) : ComplexMatrix ();
-    }
-  else
+  if (info != 0)
     (*current_liboctave_error_handler) ("dsyev workspace query failed");
+
+  lwork = static_cast<octave_idx_type> (dummy_work);
+  Array<double> work (dim_vector (lwork, 1));
+  double *pwork = work.fortran_vec ();
+
+  F77_XFCN (dsyev, DSYEV, (F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
+                           F77_CONST_CHAR_ARG2 ("U", 1),
+                           n, tmp_data, n, pwr, pwork, lwork, info
+                           F77_CHAR_ARG_LEN (1)
+                           F77_CHAR_ARG_LEN (1)));
+
+  if (info < 0)
+    (*current_liboctave_error_handler) ("unrecoverable error in dsyev");
+
+  if (info > 0)
+    (*current_liboctave_error_handler) ("dsyev failed to converge");
+
+  lambda = ComplexColumnVector (wr);
+  v = calc_ev ? ComplexMatrix (atmp) : ComplexMatrix ();
 
   return info;
 }
@@ -315,11 +285,8 @@ octave_idx_type
 EIG::init (const ComplexMatrix& a, bool calc_ev)
 {
   if (a.any_element_is_inf_or_nan ())
-    {
-      (*current_liboctave_error_handler)
-        ("EIG: matrix contains Inf or NaN values");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("EIG: matrix contains Inf or NaN values");
 
   if (a.is_hermitian ())
     return hermitian_init (a, calc_ev);
@@ -327,10 +294,7 @@ EIG::init (const ComplexMatrix& a, bool calc_ev)
   octave_idx_type n = a.rows ();
 
   if (n != a.cols ())
-    {
-      (*current_liboctave_error_handler) ("EIG requires square matrix");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires square matrix");
 
   octave_idx_type info = 0;
 
@@ -361,36 +325,28 @@ EIG::init (const ComplexMatrix& a, bool calc_ev)
                            F77_CHAR_ARG_LEN (1)
                            F77_CHAR_ARG_LEN (1)));
 
-  if (info == 0)
-    {
-      lwork = static_cast<octave_idx_type> (dummy_work.real ());
-      Array<Complex> work (dim_vector (lwork, 1));
-      Complex *pwork = work.fortran_vec ();
-
-      F77_XFCN (zgeev, ZGEEV, (F77_CONST_CHAR_ARG2 ("N", 1),
-                               F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
-                               n, tmp_data, n, pw, dummy, idummy,
-                               pv, n, pwork, lwork, prwork, info
-                               F77_CHAR_ARG_LEN (1)
-                               F77_CHAR_ARG_LEN (1)));
-
-      if (info < 0)
-        {
-          (*current_liboctave_error_handler) ("unrecoverable error in zgeev");
-          return info;
-        }
-
-      if (info > 0)
-        {
-          (*current_liboctave_error_handler) ("zgeev failed to converge");
-          return info;
-        }
-
-      lambda = w;
-      v = vtmp;
-    }
-  else
+  if (info != 0)
     (*current_liboctave_error_handler) ("zgeev workspace query failed");
+
+  lwork = static_cast<octave_idx_type> (dummy_work.real ());
+  Array<Complex> work (dim_vector (lwork, 1));
+  Complex *pwork = work.fortran_vec ();
+
+  F77_XFCN (zgeev, ZGEEV, (F77_CONST_CHAR_ARG2 ("N", 1),
+                           F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
+                           n, tmp_data, n, pw, dummy, idummy,
+                           pv, n, pwork, lwork, prwork, info
+                           F77_CHAR_ARG_LEN (1)
+                           F77_CHAR_ARG_LEN (1)));
+
+  if (info < 0)
+    (*current_liboctave_error_handler) ("unrecoverable error in zgeev");
+
+  if (info > 0)
+    (*current_liboctave_error_handler) ("zgeev failed to converge");
+
+  lambda = w;
+  v = vtmp;
 
   return info;
 }
@@ -401,10 +357,7 @@ EIG::hermitian_init (const ComplexMatrix& a, bool calc_ev)
   octave_idx_type n = a.rows ();
 
   if (n != a.cols ())
-    {
-      (*current_liboctave_error_handler) ("EIG requires square matrix");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires square matrix");
 
   octave_idx_type info = 0;
 
@@ -428,35 +381,27 @@ EIG::hermitian_init (const ComplexMatrix& a, bool calc_ev)
                            F77_CHAR_ARG_LEN (1)
                            F77_CHAR_ARG_LEN (1)));
 
-  if (info == 0)
-    {
-      lwork = static_cast<octave_idx_type> (dummy_work.real ());
-      Array<Complex> work (dim_vector (lwork, 1));
-      Complex *pwork = work.fortran_vec ();
-
-      F77_XFCN (zheev, ZHEEV, (F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
-                               F77_CONST_CHAR_ARG2 ("U", 1),
-                               n, tmp_data, n, pwr, pwork, lwork, prwork, info
-                               F77_CHAR_ARG_LEN (1)
-                               F77_CHAR_ARG_LEN (1)));
-
-      if (info < 0)
-        {
-          (*current_liboctave_error_handler) ("unrecoverable error in zheev");
-          return info;
-        }
-
-      if (info > 0)
-        {
-          (*current_liboctave_error_handler) ("zheev failed to converge");
-          return info;
-        }
-
-      lambda = ComplexColumnVector (wr);
-      v = calc_ev ? ComplexMatrix (atmp) : ComplexMatrix ();
-    }
-  else
+  if (info != 0)
     (*current_liboctave_error_handler) ("zheev workspace query failed");
+
+  lwork = static_cast<octave_idx_type> (dummy_work.real ());
+  Array<Complex> work (dim_vector (lwork, 1));
+  Complex *pwork = work.fortran_vec ();
+
+  F77_XFCN (zheev, ZHEEV, (F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
+                           F77_CONST_CHAR_ARG2 ("U", 1),
+                           n, tmp_data, n, pwr, pwork, lwork, prwork, info
+                           F77_CHAR_ARG_LEN (1)
+                           F77_CHAR_ARG_LEN (1)));
+
+  if (info < 0)
+    (*current_liboctave_error_handler) ("unrecoverable error in zheev");
+
+  if (info > 0)
+    (*current_liboctave_error_handler) ("zheev failed to converge");
+
+  lambda = ComplexColumnVector (wr);
+  v = calc_ev ? ComplexMatrix (atmp) : ComplexMatrix ();
 
   return info;
 }
@@ -465,26 +410,17 @@ octave_idx_type
 EIG::init (const Matrix& a, const Matrix& b, bool calc_ev)
 {
   if (a.any_element_is_inf_or_nan () || b.any_element_is_inf_or_nan ())
-    {
-      (*current_liboctave_error_handler)
-        ("EIG: matrix contains Inf or NaN values");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("EIG: matrix contains Inf or NaN values");
 
   octave_idx_type n = a.rows ();
   octave_idx_type nb = b.rows ();
 
   if (n != a.cols () || nb != b.cols ())
-    {
-      (*current_liboctave_error_handler) ("EIG requires square matrix");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires square matrix");
 
   if (n != nb)
-    {
-      (*current_liboctave_error_handler) ("EIG requires same size matrices");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires same size matrices");
 
   octave_idx_type info = 0;
 
@@ -494,7 +430,6 @@ EIG::init (const Matrix& a, const Matrix& b, bool calc_ev)
   F77_XFCN (dpotrf, DPOTRF, (F77_CONST_CHAR_ARG2 ("L", 1),
                              n, tmp_data, n,
                              info
-                             F77_CHAR_ARG_LEN (1)
                              F77_CHAR_ARG_LEN (1)));
 
   if (a.is_symmetric () && b.is_symmetric () && info == 0)
@@ -534,71 +469,60 @@ EIG::init (const Matrix& a, const Matrix& b, bool calc_ev)
                            F77_CHAR_ARG_LEN (1)
                            F77_CHAR_ARG_LEN (1)));
 
-  if (info == 0)
+  if (info != 0)
+    (*current_liboctave_error_handler) ("dggev workspace query failed");
+
+  lwork = static_cast<octave_idx_type> (dummy_work);
+  Array<double> work (dim_vector (lwork, 1));
+  double *pwork = work.fortran_vec ();
+
+  F77_XFCN (dggev, DGGEV, (F77_CONST_CHAR_ARG2 ("N", 1),
+                           F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
+                           n, atmp_data, n, btmp_data, n,
+                           par, pai, pbeta,
+                           dummy, idummy, pvr, n,
+                           pwork, lwork, info
+                           F77_CHAR_ARG_LEN (1)
+                           F77_CHAR_ARG_LEN (1)));
+
+  if (info < 0)
+    (*current_liboctave_error_handler) ("unrecoverable error in dggev");
+
+  if (info > 0)
+    (*current_liboctave_error_handler) ("dggev failed to converge");
+
+  lambda.resize (n);
+  octave_idx_type nvr = calc_ev ? n : 0;
+  v.resize (nvr, nvr);
+
+  for (octave_idx_type j = 0; j < n; j++)
     {
-      lwork = static_cast<octave_idx_type> (dummy_work);
-      Array<double> work (dim_vector (lwork, 1));
-      double *pwork = work.fortran_vec ();
-
-      F77_XFCN (dggev, DGGEV, (F77_CONST_CHAR_ARG2 ("N", 1),
-                               F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
-                               n, atmp_data, n, btmp_data, n,
-                               par, pai, pbeta,
-                               dummy, idummy, pvr, n,
-                               pwork, lwork, info
-                               F77_CHAR_ARG_LEN (1)
-                               F77_CHAR_ARG_LEN (1)));
-
-      if (info < 0)
+      if (ai.elem (j) == 0.0)
         {
-          (*current_liboctave_error_handler) ("unrecoverable error in dggev");
-          return info;
+          lambda.elem (j) = Complex (ar.elem (j) / beta.elem (j));
+          for (octave_idx_type i = 0; i < nvr; i++)
+            v.elem (i, j) = vr.elem (i, j);
         }
-
-      if (info > 0)
+      else
         {
-          (*current_liboctave_error_handler) ("dggev failed to converge");
-          return info;
-        }
+          if (j+1 >= n)
+            (*current_liboctave_error_handler) ("EIG: internal error");
 
-      lambda.resize (n);
-      octave_idx_type nvr = calc_ev ? n : 0;
-      v.resize (nvr, nvr);
+          lambda.elem (j) = Complex (ar.elem (j) / beta.elem (j),
+                                     ai.elem (j) / beta.elem (j));
+          lambda.elem (j+1) = Complex (ar.elem (j+1) / beta.elem (j+1),
+                                       ai.elem (j+1) / beta.elem (j+1));
 
-      for (octave_idx_type j = 0; j < n; j++)
-        {
-          if (ai.elem (j) == 0.0)
+          for (octave_idx_type i = 0; i < nvr; i++)
             {
-              lambda.elem (j) = Complex (ar.elem (j) / beta.elem (j));
-              for (octave_idx_type i = 0; i < nvr; i++)
-                v.elem (i, j) = vr.elem (i, j);
+              double real_part = vr.elem (i, j);
+              double imag_part = vr.elem (i, j+1);
+              v.elem (i, j) = Complex (real_part, imag_part);
+              v.elem (i, j+1) = Complex (real_part, -imag_part);
             }
-          else
-            {
-              if (j+1 >= n)
-                {
-                  (*current_liboctave_error_handler) ("EIG: internal error");
-                  return -1;
-                }
-
-              lambda.elem (j) = Complex (ar.elem (j) / beta.elem (j),
-                                         ai.elem (j) / beta.elem (j));
-              lambda.elem (j+1) = Complex (ar.elem (j+1) / beta.elem (j+1),
-                                           ai.elem (j+1) / beta.elem (j+1));
-
-              for (octave_idx_type i = 0; i < nvr; i++)
-                {
-                  double real_part = vr.elem (i, j);
-                  double imag_part = vr.elem (i, j+1);
-                  v.elem (i, j) = Complex (real_part, imag_part);
-                  v.elem (i, j+1) = Complex (real_part, -imag_part);
-                }
-              j++;
-            }
+          j++;
         }
     }
-  else
-    (*current_liboctave_error_handler) ("dggev workspace query failed");
 
   return info;
 }
@@ -610,16 +534,10 @@ EIG::symmetric_init (const Matrix& a, const Matrix& b, bool calc_ev)
   octave_idx_type nb = b.rows ();
 
   if (n != a.cols () || nb != b.cols ())
-    {
-      (*current_liboctave_error_handler) ("EIG requires square matrix");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires square matrix");
 
   if (n != nb)
-    {
-      (*current_liboctave_error_handler) ("EIG requires same size matrices");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires same size matrices");
 
   octave_idx_type info = 0;
 
@@ -643,37 +561,29 @@ EIG::symmetric_init (const Matrix& a, const Matrix& b, bool calc_ev)
                            F77_CHAR_ARG_LEN (1)
                            F77_CHAR_ARG_LEN (1)));
 
-  if (info == 0)
-    {
-      lwork = static_cast<octave_idx_type> (dummy_work);
-      Array<double> work (dim_vector (lwork, 1));
-      double *pwork = work.fortran_vec ();
-
-      F77_XFCN (dsygv, DSYGV, (1, F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
-                               F77_CONST_CHAR_ARG2 ("U", 1),
-                               n, atmp_data, n,
-                               btmp_data, n,
-                               pwr, pwork, lwork, info
-                               F77_CHAR_ARG_LEN (1)
-                               F77_CHAR_ARG_LEN (1)));
-
-      if (info < 0)
-        {
-          (*current_liboctave_error_handler) ("unrecoverable error in dsygv");
-          return info;
-        }
-
-      if (info > 0)
-        {
-          (*current_liboctave_error_handler) ("dsygv failed to converge");
-          return info;
-        }
-
-      lambda = ComplexColumnVector (wr);
-      v = calc_ev ? ComplexMatrix (atmp) : ComplexMatrix ();
-    }
-  else
+  if (info != 0)
     (*current_liboctave_error_handler) ("dsygv workspace query failed");
+
+  lwork = static_cast<octave_idx_type> (dummy_work);
+  Array<double> work (dim_vector (lwork, 1));
+  double *pwork = work.fortran_vec ();
+
+  F77_XFCN (dsygv, DSYGV, (1, F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
+                           F77_CONST_CHAR_ARG2 ("U", 1),
+                           n, atmp_data, n,
+                           btmp_data, n,
+                           pwr, pwork, lwork, info
+                           F77_CHAR_ARG_LEN (1)
+                           F77_CHAR_ARG_LEN (1)));
+
+  if (info < 0)
+    (*current_liboctave_error_handler) ("unrecoverable error in dsygv");
+
+  if (info > 0)
+    (*current_liboctave_error_handler) ("dsygv failed to converge");
+
+  lambda = ComplexColumnVector (wr);
+  v = calc_ev ? ComplexMatrix (atmp) : ComplexMatrix ();
 
   return info;
 }
@@ -682,26 +592,17 @@ octave_idx_type
 EIG::init (const ComplexMatrix& a, const ComplexMatrix& b, bool calc_ev)
 {
   if (a.any_element_is_inf_or_nan () || b.any_element_is_inf_or_nan ())
-    {
-      (*current_liboctave_error_handler)
-        ("EIG: matrix contains Inf or NaN values");
-      return -1;
-    }
+    (*current_liboctave_error_handler)
+      ("EIG: matrix contains Inf or NaN values");
 
   octave_idx_type n = a.rows ();
   octave_idx_type nb = b.rows ();
 
   if (n != a.cols () || nb != b.cols ())
-    {
-      (*current_liboctave_error_handler) ("EIG requires square matrix");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires square matrix");
 
   if (n != nb)
-    {
-      (*current_liboctave_error_handler) ("EIG requires same size matrices");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires same size matrices");
 
   octave_idx_type info = 0;
 
@@ -711,11 +612,10 @@ EIG::init (const ComplexMatrix& a, const ComplexMatrix& b, bool calc_ev)
   F77_XFCN (zpotrf, ZPOTRF, (F77_CONST_CHAR_ARG2 ("L", 1),
                              n, tmp_data, n,
                              info
-                             F77_CHAR_ARG_LEN (1)
                              F77_CHAR_ARG_LEN (1)));
 
   if (a.is_hermitian () && b.is_hermitian () && info == 0)
-    return hermitian_init (a, calc_ev);
+    return hermitian_init (a, b, calc_ev);
 
   ComplexMatrix atmp = a;
   Complex *atmp_data = atmp.fortran_vec ();
@@ -751,41 +651,33 @@ EIG::init (const ComplexMatrix& a, const ComplexMatrix& b, bool calc_ev)
                            F77_CHAR_ARG_LEN (1)
                            F77_CHAR_ARG_LEN (1)));
 
-  if (info == 0)
-    {
-      lwork = static_cast<octave_idx_type> (dummy_work.real ());
-      Array<Complex> work (dim_vector (lwork, 1));
-      Complex *pwork = work.fortran_vec ();
-
-      F77_XFCN (zggev, ZGGEV, (F77_CONST_CHAR_ARG2 ("N", 1),
-                               F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
-                               n, atmp_data, n, btmp_data, n,
-                               palpha, pbeta, dummy, idummy,
-                               pv, n, pwork, lwork, prwork, info
-                               F77_CHAR_ARG_LEN (1)
-                               F77_CHAR_ARG_LEN (1)));
-
-      if (info < 0)
-        {
-          (*current_liboctave_error_handler) ("unrecoverable error in zggev");
-          return info;
-        }
-
-      if (info > 0)
-        {
-          (*current_liboctave_error_handler) ("zggev failed to converge");
-          return info;
-        }
-
-      lambda.resize (n);
-
-      for (octave_idx_type j = 0; j < n; j++)
-        lambda.elem (j) = alpha.elem (j) / beta.elem (j);
-
-      v = vtmp;
-    }
-  else
+  if (info != 0)
     (*current_liboctave_error_handler) ("zggev workspace query failed");
+
+  lwork = static_cast<octave_idx_type> (dummy_work.real ());
+  Array<Complex> work (dim_vector (lwork, 1));
+  Complex *pwork = work.fortran_vec ();
+
+  F77_XFCN (zggev, ZGGEV, (F77_CONST_CHAR_ARG2 ("N", 1),
+                           F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
+                           n, atmp_data, n, btmp_data, n,
+                           palpha, pbeta, dummy, idummy,
+                           pv, n, pwork, lwork, prwork, info
+                           F77_CHAR_ARG_LEN (1)
+                           F77_CHAR_ARG_LEN (1)));
+
+  if (info < 0)
+    (*current_liboctave_error_handler) ("unrecoverable error in zggev");
+
+  if (info > 0)
+    (*current_liboctave_error_handler) ("zggev failed to converge");
+
+  lambda.resize (n);
+
+  for (octave_idx_type j = 0; j < n; j++)
+    lambda.elem (j) = alpha.elem (j) / beta.elem (j);
+
+  v = vtmp;
 
   return info;
 }
@@ -798,16 +690,10 @@ EIG::hermitian_init (const ComplexMatrix& a, const ComplexMatrix& b,
   octave_idx_type nb = b.rows ();
 
   if (n != a.cols () || nb != b.cols ())
-    {
-      (*current_liboctave_error_handler) ("EIG requires square matrix");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires square matrix");
 
   if (n != nb)
-    {
-      (*current_liboctave_error_handler) ("EIG requires same size matrices");
-      return -1;
-    }
+    (*current_liboctave_error_handler) ("EIG requires same size matrices");
 
   octave_idx_type info = 0;
 
@@ -836,37 +722,29 @@ EIG::hermitian_init (const ComplexMatrix& a, const ComplexMatrix& b,
                            F77_CHAR_ARG_LEN (1)
                            F77_CHAR_ARG_LEN (1)));
 
-  if (info == 0)
-    {
-      lwork = static_cast<octave_idx_type> (dummy_work.real ());
-      Array<Complex> work (dim_vector (lwork, 1));
-      Complex *pwork = work.fortran_vec ();
-
-      F77_XFCN (zhegv, ZHEGV, (1, F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
-                               F77_CONST_CHAR_ARG2 ("U", 1),
-                               n, atmp_data, n,
-                               btmp_data, n,
-                               pwr, pwork, lwork, prwork, info
-                               F77_CHAR_ARG_LEN (1)
-                               F77_CHAR_ARG_LEN (1)));
-
-      if (info < 0)
-        {
-          (*current_liboctave_error_handler) ("unrecoverable error in zhegv");
-          return info;
-        }
-
-      if (info > 0)
-        {
-          (*current_liboctave_error_handler) ("zhegv failed to converge");
-          return info;
-        }
-
-      lambda = ComplexColumnVector (wr);
-      v = calc_ev ? ComplexMatrix (atmp) : ComplexMatrix ();
-    }
-  else
+  if (info != 0)
     (*current_liboctave_error_handler) ("zhegv workspace query failed");
+
+  lwork = static_cast<octave_idx_type> (dummy_work.real ());
+  Array<Complex> work (dim_vector (lwork, 1));
+  Complex *pwork = work.fortran_vec ();
+
+  F77_XFCN (zhegv, ZHEGV, (1, F77_CONST_CHAR_ARG2 (calc_ev ? "V" : "N", 1),
+                           F77_CONST_CHAR_ARG2 ("U", 1),
+                           n, atmp_data, n,
+                           btmp_data, n,
+                           pwr, pwork, lwork, prwork, info
+                           F77_CHAR_ARG_LEN (1)
+                           F77_CHAR_ARG_LEN (1)));
+
+  if (info < 0)
+    (*current_liboctave_error_handler) ("unrecoverable error in zhegv");
+
+  if (info > 0)
+    (*current_liboctave_error_handler) ("zhegv failed to converge");
+
+  lambda = ComplexColumnVector (wr);
+  v = calc_ev ? ComplexMatrix (atmp) : ComplexMatrix ();
 
   return info;
 }

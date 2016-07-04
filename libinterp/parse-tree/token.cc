@@ -20,14 +20,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <cassert>
 
 #include "error.h"
-#include "oct-obj.h"
+#include "ovl.h"
 #include "symtab.h"
 #include "token.h"
 #include "utils.h"

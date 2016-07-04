@@ -20,12 +20,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_uint8NDArray_h)
+#if ! defined (octave_uint8NDArray_h)
 #define octave_uint8NDArray_h 1
+
+#include "octave-config.h"
 
 #include "intNDArray.h"
 #include "mx-op-decl.h"
-#include "oct-inttypes.h"
+#include "oct-inttypes-fwd.h"
 #include "bsxfun-decl.h"
 
 typedef intNDArray<octave_uint8> uint8NDArray;

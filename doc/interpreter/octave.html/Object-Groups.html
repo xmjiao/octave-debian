@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -65,10 +66,10 @@ results in changes in the others.  A graphic object that groups other
 objects is an <code>hggroup</code>
 </p>
 <a name="XREFhggroup"></a><dl>
-<dt><a name="index-hggroup"></a>Function File: <em></em> <strong>hggroup</strong> <em>()</em></dt>
-<dt><a name="index-hggroup-1"></a>Function File: <em></em> <strong>hggroup</strong> <em>(<var>hax</var>)</em></dt>
-<dt><a name="index-hggroup-2"></a>Function File: <em></em> <strong>hggroup</strong> <em>(&hellip;, <var>property</var>, <var>value</var>, &hellip;)</em></dt>
-<dt><a name="index-hggroup-3"></a>Function File: <em><var>h</var> =</em> <strong>hggroup</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-hggroup"></a>: <em></em> <strong>hggroup</strong> <em>()</em></dt>
+<dt><a name="index-hggroup-1"></a>: <em></em> <strong>hggroup</strong> <em>(<var>hax</var>)</em></dt>
+<dt><a name="index-hggroup-2"></a>: <em></em> <strong>hggroup</strong> <em>(&hellip;, <var>property</var>, <var>value</var>, &hellip;)</em></dt>
+<dt><a name="index-hggroup-3"></a>: <em><var>h</var> =</em> <strong>hggroup</strong> <em>(&hellip;)</em></dt>
 <dd><p>Create handle graphics group object with axes parent <var>hax</var>.
 </p>
 <p>If no parent is specified, the group is created in the current axes.
@@ -108,8 +109,8 @@ objects.  Additional properties can be added with the <code>addproperty</code>
 function.
 </p>
 <a name="XREFaddproperty"></a><dl>
-<dt><a name="index-addproperty"></a>Built-in Function: <em></em> <strong>addproperty</strong> <em>(<var>name</var>, <var>h</var>, <var>type</var>)</em></dt>
-<dt><a name="index-addproperty-1"></a>Built-in Function: <em></em> <strong>addproperty</strong> <em>(<var>name</var>, <var>h</var>, <var>type</var>, <var>arg</var>, &hellip;)</em></dt>
+<dt><a name="index-addproperty"></a>: <em></em> <strong>addproperty</strong> <em>(<var>name</var>, <var>h</var>, <var>type</var>)</em></dt>
+<dt><a name="index-addproperty-1"></a>: <em></em> <strong>addproperty</strong> <em>(<var>name</var>, <var>h</var>, <var>type</var>, <var>arg</var>, &hellip;)</em></dt>
 <dd><p>Create a new property named <var>name</var> in graphics object <var>h</var>.
 </p>
 <p><var>type</var> determines the type of the property to create.  <var>args</var>
@@ -193,7 +194,7 @@ property is used, the <code>addlistener</code> function is used to define a
 callback function that is executed when the property is altered.
 </p>
 <a name="XREFaddlistener"></a><dl>
-<dt><a name="index-addlistener"></a>Built-in Function: <em></em> <strong>addlistener</strong> <em>(<var>h</var>, <var>prop</var>, <var>fcn</var>)</em></dt>
+<dt><a name="index-addlistener"></a>: <em></em> <strong>addlistener</strong> <em>(<var>h</var>, <var>prop</var>, <var>fcn</var>)</em></dt>
 <dd><p>Register <var>fcn</var> as listener for the property <var>prop</var> of the graphics
 object <var>h</var>.
 </p>
@@ -227,7 +228,7 @@ addlistener (gcf, &quot;position&quot;, {@my_listener, &quot;my string&quot;})
 
 
 <a name="XREFdellistener"></a><dl>
-<dt><a name="index-dellistener"></a>Built-in Function: <em></em> <strong>dellistener</strong> <em>(<var>h</var>, <var>prop</var>, <var>fcn</var>)</em></dt>
+<dt><a name="index-dellistener"></a>: <em></em> <strong>dellistener</strong> <em>(<var>h</var>, <var>prop</var>, <var>fcn</var>)</em></dt>
 <dd><p>Remove the registration of <var>fcn</var> as a listener for the property
 <var>prop</var> of the graphics object <var>h</var>.
 </p>
@@ -283,8 +284,8 @@ hlink = linkprop ([hg, h1, h2], &quot;color&quot;);
 </pre></div>
 
 <a name="XREFlinkprop"></a><dl>
-<dt><a name="index-linkprop"></a>Function File: <em><var>hlink</var> =</em> <strong>linkprop</strong> <em>(<var>h</var>, &quot;<var>prop</var>&quot;)</em></dt>
-<dt><a name="index-linkprop-1"></a>Function File: <em><var>hlink</var> =</em> <strong>linkprop</strong> <em>(<var>h</var>, {&quot;<var>prop1</var>&quot;, &quot;<var>prop2</var>&quot;, &hellip;})</em></dt>
+<dt><a name="index-linkprop"></a>: <em><var>hlink</var> =</em> <strong>linkprop</strong> <em>(<var>h</var>, &quot;<var>prop</var>&quot;)</em></dt>
+<dt><a name="index-linkprop-1"></a>: <em><var>hlink</var> =</em> <strong>linkprop</strong> <em>(<var>h</var>, {&quot;<var>prop1</var>&quot;, &quot;<var>prop2</var>&quot;, &hellip;})</em></dt>
 <dd><p>Link graphic object properties, such that a change in one is propagated to
 the others.
 </p>
@@ -321,8 +322,8 @@ set (h2, &quot;linestyle&quot;, &quot;--&quot;);
 
 
 <a name="XREFlinkaxes"></a><dl>
-<dt><a name="index-linkaxes"></a>Function File: <em></em> <strong>linkaxes</strong> <em>(<var>hax</var>)</em></dt>
-<dt><a name="index-linkaxes-1"></a>Function File: <em></em> <strong>linkaxes</strong> <em>(<var>hax</var>, <var>optstr</var>)</em></dt>
+<dt><a name="index-linkaxes"></a>: <em></em> <strong>linkaxes</strong> <em>(<var>hax</var>)</em></dt>
+<dt><a name="index-linkaxes-1"></a>: <em></em> <strong>linkaxes</strong> <em>(<var>hax</var>, <var>optstr</var>)</em></dt>
 <dd><p>Link the axis limits of 2-D plots such that a change in one is propagated
 to the others.
 </p>

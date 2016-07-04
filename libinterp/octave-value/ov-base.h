@@ -21,8 +21,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_base_h)
+#if ! defined (octave_ov_base_h)
 #define octave_ov_base_h 1
+
+#include "octave-config.h"
 
 #include <cstdlib>
 
@@ -36,7 +38,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "str-vec.h"
 
 #include "error.h"
-#include "oct-hdf5-id.h"
+#include "oct-hdf5-types.h"
 
 class Cell;
 class mxArray;
@@ -110,7 +112,7 @@ inline bool btyp_isarray (builtin_type_t btyp)
 extern OCTINTERP_API
 builtin_type_t btyp_mixed_numeric (builtin_type_t x, builtin_type_t y);
 
-template <class T>
+template <typename T>
 struct class_to_btyp
 {
   static const builtin_type_t btyp = btyp_unknown;
@@ -139,6 +141,8 @@ DEF_CLASS_TO_BTYP (char, btyp_char);
 // T_ID is the type id of struct objects, set by register_type().
 // T_NAME is the type name of struct objects.
 
+#define OCTAVE_EMPTY_CPP_ARG /* empty */
+
 #define DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA \
   DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA2 (OCTAVE_EMPTY_CPP_ARG)
 
@@ -159,7 +163,6 @@ DEF_CLASS_TO_BTYP (char, btyp_char);
     static int t_id; \
     static const std::string t_name; \
     static const std::string c_name;
-
 
 #define DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA(t, n, c) \
   int t::t_id (-1); \
@@ -211,7 +214,7 @@ public:
 
   virtual ~octave_base_value (void) { }
 
-  // Unconditional clone. Always clones.
+  // Unconditional clone.  Always clones.
   virtual octave_base_value *
   clone (void) const { return new octave_base_value (*this); }
 
@@ -219,7 +222,7 @@ public:
   virtual octave_base_value *
   empty_clone (void) const;
 
-  // Unique clone. Usually clones, but may be overridden to fake the
+  // Unique clone.  Usually clones, but may be overridden to fake the
   // cloning when sharing copies is to be controlled from within an
   // instance (see octave_class).
   virtual octave_base_value *
@@ -306,11 +309,13 @@ public:
   }
 
   virtual int ndims (void) const
-  { return dims ().length (); }
+  { return dims ().ndims (); }
 
   virtual octave_idx_type numel (void) const { return dims ().numel (); }
 
-  virtual octave_idx_type capacity (void) const { return numel (); }
+  OCTAVE_DEPRECATED ("use 'numel' instead")
+  virtual octave_idx_type capacity (void) const
+  { return numel (); }
 
   virtual size_t byte_size (void) const { return 0; }
 
@@ -559,7 +564,7 @@ public:
 
   virtual uint64NDArray uint64_array_value (void) const;
 
-  virtual string_vector all_strings (bool pad = false) const;
+  virtual string_vector string_vector_value (bool pad = false) const;
 
   virtual std::string string_value (bool force = false) const;
 
@@ -609,6 +614,11 @@ public:
 
   virtual void convert_to_row_or_column_vector (void);
 
+  // The following extractor functions don't perform any implicit type
+  // conversions.
+
+  virtual std::string xstring_value () const;
+
   virtual bool print_as_scalar (void) const { return false; }
 
   virtual void print (std::ostream& os, bool pr_as_read_syntax = false);
@@ -634,7 +644,7 @@ public:
   virtual bool save_binary (std::ostream& os, bool& save_as_floats);
 
   virtual bool load_binary (std::istream& is, bool swap,
-                            oct_mach_info::float_format fmt);
+                            octave::mach_info::float_format fmt);
 
   virtual bool
   save_hdf5 (octave_hdf5_id loc_id, const char *name, bool save_as_floats);
@@ -645,7 +655,7 @@ public:
   virtual int
   write (octave_stream& os, int block_size,
          oct_data_conv::data_type output_type, int skip,
-         oct_mach_info::float_format flt_fmt) const;
+         octave::mach_info::float_format flt_fmt) const;
 
   virtual void *mex_get_data (void) const { return 0; }
 
@@ -680,7 +690,7 @@ public:
 
   virtual void dump (std::ostream& os) const;
 
-  // Standard mappers. Register new ones here.
+  // Standard mappers.  Register new ones here.
   enum unary_mapper_t
   {
     umap_abs,
@@ -706,7 +716,7 @@ public:
     umap_dawson,
     umap_exp,
     umap_expm1,
-    umap_finite,
+    umap_isfinite,
     umap_fix,
     umap_floor,
     umap_gamma,
@@ -753,12 +763,12 @@ public:
   // These are fast indexing & assignment shortcuts for extracting
   // or inserting a single scalar from/to an array.
 
-  // Extract the n-th element, aka val(n). Result is undefined if val is not an
-  // array type or n is out of range. Never error.
+  // Extract the n-th element, aka val(n).  Result is undefined if val is not
+  // an array type or n is out of range.  Never error.
   virtual octave_value
   fast_elem_extract (octave_idx_type n) const;
 
-  // Assign the n-th element, aka val(n) = x. Returns false if val is not an
+  // Assign the n-th element, aka val(n) = x.  Returns false if val is not an
   // array type, x is not a matching scalar type, or n is out of range.
   // Never error.
   virtual bool
@@ -770,14 +780,14 @@ public:
   virtual bool
   fast_elem_insert_self (void *where, builtin_type_t btyp) const;
 
-  // Grab the reference count. For use by jit.
+  // Grab the reference count.  For use by jit.
   void
   grab (void)
   {
     ++count;
   }
 
-  // Release the reference count. For use by jit.
+  // Release the reference count.  For use by jit.
   void
   release (void)
   {
@@ -819,10 +829,12 @@ protected:
 
   static const char *get_umap_name (unary_mapper_t);
 
-  void gripe_load (const char *type) const;
-  void gripe_save (const char *type) const;
+  void warn_load (const char *type) const;
+  void warn_save (const char *type) const;
 
 private:
+
+  void wrong_type_arg_error (void) const;
 
   static int curr_print_indent_level;
   static bool beginning_of_line;

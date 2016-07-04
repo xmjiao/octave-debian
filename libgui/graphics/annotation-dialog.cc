@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "annotation-dialog.h"
@@ -59,7 +59,6 @@ annotation_dialog::init ()
   // connect signals
   connect (ui->button_box, SIGNAL (clicked (QAbstractButton *)),
            this, SLOT (button_clicked (QAbstractButton *)));
-
 
   connect (ui->edit_string, SIGNAL (textChanged (const QString&)),
            this, SLOT (edit_string_changed (const QString&)));
@@ -147,7 +146,7 @@ void
 annotation_dialog::set_gui_props ()
 {
   // set the gui to the values from the props
-  octave_idx_type len  = props.length ();
+  octave_idx_type len = props.length ();
 
   for (int i=0; i<len/2; i++)
     {

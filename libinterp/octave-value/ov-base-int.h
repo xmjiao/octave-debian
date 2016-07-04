@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_base_int_h)
+#if ! defined (octave_ov_base_int_h)
 #define octave_ov_base_int_h 1
+
+#include "octave-config.h"
 
 #include <cstdlib>
 
@@ -39,7 +41,7 @@ along with Octave; see the file COPYING.  If not, see
 
 // base int matrix values.
 
-template <class T>
+template <typename T>
 class
 octave_base_int_matrix : public octave_base_matrix<T>
 {
@@ -76,7 +78,7 @@ public:
   bool save_binary (std::ostream& os, bool&);
 
   bool load_binary (std::istream& is, bool swap,
-                    oct_mach_info::float_format);
+                    octave::mach_info::float_format);
 
   bool save_hdf5 (octave_hdf5_id loc_id, const char *name, bool);
 
@@ -85,7 +87,7 @@ public:
 
 // base int scalar values.
 
-template <class T>
+template <typename T>
 class
 octave_base_int_scalar : public octave_base_scalar<T>
 {
@@ -121,7 +123,7 @@ public:
   bool save_binary (std::ostream& os, bool&);
 
   bool load_binary (std::istream& is, bool swap,
-                    oct_mach_info::float_format);
+                    octave::mach_info::float_format);
 
   bool save_hdf5 (octave_hdf5_id loc_id, const char *name, bool);
 

@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 // Instantiate Arrays of short int values.
@@ -29,8 +29,8 @@ along with Octave; see the file COPYING.  If not, see
 #include "Array.h"
 #include "Array.cc"
 
-#define INLINE_ASCENDING_SORT
-#define INLINE_DESCENDING_SORT
+#define INLINE_ASCENDING_SORT 1
+#define INLINE_DESCENDING_SORT 1
 #include "oct-sort.cc"
 
 // Prevent implicit instantiations on some systems (Windows, others?)

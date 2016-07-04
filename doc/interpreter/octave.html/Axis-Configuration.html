@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -62,14 +63,14 @@ plot and various other axis properties, such as the aspect ratio and the
 appearance of tic marks.
 </p>
 <a name="XREFaxis"></a><dl>
-<dt><a name="index-axis"></a>Function File: <em></em> <strong>axis</strong> <em>()</em></dt>
-<dt><a name="index-axis-1"></a>Function File: <em></em> <strong>axis</strong> <em>([<var>x</var>_lo <var>x</var>_hi])</em></dt>
-<dt><a name="index-axis-2"></a>Function File: <em></em> <strong>axis</strong> <em>([<var>x</var>_lo <var>x</var>_hi <var>y</var>_lo <var>y</var>_hi])</em></dt>
-<dt><a name="index-axis-3"></a>Function File: <em></em> <strong>axis</strong> <em>([<var>x</var>_lo <var>x</var>_hi <var>y</var>_lo <var>y</var>_hi <var>z</var>_lo <var>z</var>_hi])</em></dt>
-<dt><a name="index-axis-4"></a>Function File: <em></em> <strong>axis</strong> <em>(<var>option</var>)</em></dt>
-<dt><a name="index-axis-5"></a>Function File: <em></em> <strong>axis</strong> <em>(&hellip;, <var>option</var>)</em></dt>
-<dt><a name="index-axis-6"></a>Function File: <em></em> <strong>axis</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
-<dt><a name="index-axis-7"></a>Function File: <em><var>limits</var> =</em> <strong>axis</strong> <em>()</em></dt>
+<dt><a name="index-axis"></a>: <em></em> <strong>axis</strong> <em>()</em></dt>
+<dt><a name="index-axis-1"></a>: <em></em> <strong>axis</strong> <em>([<var>x</var>_lo <var>x</var>_hi])</em></dt>
+<dt><a name="index-axis-2"></a>: <em></em> <strong>axis</strong> <em>([<var>x</var>_lo <var>x</var>_hi <var>y</var>_lo <var>y</var>_hi])</em></dt>
+<dt><a name="index-axis-3"></a>: <em></em> <strong>axis</strong> <em>([<var>x</var>_lo <var>x</var>_hi <var>y</var>_lo <var>y</var>_hi <var>z</var>_lo <var>z</var>_hi])</em></dt>
+<dt><a name="index-axis-4"></a>: <em></em> <strong>axis</strong> <em>(<var>option</var>)</em></dt>
+<dt><a name="index-axis-5"></a>: <em></em> <strong>axis</strong> <em>(&hellip;, <var>option</var>)</em></dt>
+<dt><a name="index-axis-6"></a>: <em></em> <strong>axis</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-axis-7"></a>: <em><var>limits</var> =</em> <strong>axis</strong> <em>()</em></dt>
 <dd><p>Set axis limits and appearance.
 </p>
 <p>The argument <var>limits</var> should be a 2-, 4-, or 6-element vector.  The
@@ -103,11 +104,11 @@ arguments may be used to specify various axis properties.  For example,
 </p>
 <dl compact="compact">
 <dt><code>&quot;square&quot;</code></dt>
-<dd><p>Force a square aspect ratio.
+<dd><p>Force a square axis aspect ratio.
 </p>
 </dd>
 <dt><code>&quot;equal&quot;</code></dt>
-<dd><p>Force x distance to equal y-distance.
+<dd><p>Force x-axis unit distance to equal y-axis (and z-axis) unit distance.
 </p>
 </dd>
 <dt><code>&quot;normal&quot;</code></dt>
@@ -188,11 +189,11 @@ axes rather than the current axes returned by <code>gca</code>.
 function.
 </p>
 <a name="XREFcaxis"></a><dl>
-<dt><a name="index-caxis"></a>Function File: <em></em> <strong>caxis</strong> <em>([cmin cmax])</em></dt>
-<dt><a name="index-caxis-1"></a>Function File: <em></em> <strong>caxis</strong> <em>(&quot;auto&quot;)</em></dt>
-<dt><a name="index-caxis-2"></a>Function File: <em></em> <strong>caxis</strong> <em>(&quot;manual&quot;)</em></dt>
-<dt><a name="index-caxis-3"></a>Function File: <em></em> <strong>caxis</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
-<dt><a name="index-caxis-4"></a>Function File: <em><var>limits</var> =</em> <strong>caxis</strong> <em>()</em></dt>
+<dt><a name="index-caxis"></a>: <em></em> <strong>caxis</strong> <em>([cmin cmax])</em></dt>
+<dt><a name="index-caxis-1"></a>: <em></em> <strong>caxis</strong> <em>(&quot;auto&quot;)</em></dt>
+<dt><a name="index-caxis-2"></a>: <em></em> <strong>caxis</strong> <em>(&quot;manual&quot;)</em></dt>
+<dt><a name="index-caxis-3"></a>: <em></em> <strong>caxis</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-caxis-4"></a>: <em><var>limits</var> =</em> <strong>caxis</strong> <em>()</em></dt>
 <dd><p>Query or set color axis limits for plots.
 </p>
 <p>The limits argument should be a 2-element vector specifying the lower and
@@ -221,12 +222,12 @@ get or set individual axis limits.  Each has the same form.
 <a name="XREFylim"></a><a name="XREFzlim"></a><a name="index-ylim"></a>
 <a name="index-zlim"></a>
 <a name="XREFxlim"></a><dl>
-<dt><a name="index-xlim"></a>Function File: <em><var>xlimits</var> =</em> <strong>xlim</strong> <em>()</em></dt>
-<dt><a name="index-xlim-1"></a>Function File: <em><var>xmode</var> =</em> <strong>xlim</strong> <em>(&quot;mode&quot;)</em></dt>
-<dt><a name="index-xlim-2"></a>Function File: <em></em> <strong>xlim</strong> <em>([<var>x_lo</var> <var>x_hi</var>])</em></dt>
-<dt><a name="index-xlim-3"></a>Function File: <em></em> <strong>xlim</strong> <em>(&quot;auto&quot;)</em></dt>
-<dt><a name="index-xlim-4"></a>Function File: <em></em> <strong>xlim</strong> <em>(&quot;manual&quot;)</em></dt>
-<dt><a name="index-xlim-5"></a>Function File: <em></em> <strong>xlim</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-xlim"></a>: <em><var>xlimits</var> =</em> <strong>xlim</strong> <em>()</em></dt>
+<dt><a name="index-xlim-1"></a>: <em><var>xmode</var> =</em> <strong>xlim</strong> <em>(&quot;mode&quot;)</em></dt>
+<dt><a name="index-xlim-2"></a>: <em></em> <strong>xlim</strong> <em>([<var>x_lo</var> <var>x_hi</var>])</em></dt>
+<dt><a name="index-xlim-3"></a>: <em></em> <strong>xlim</strong> <em>(&quot;auto&quot;)</em></dt>
+<dt><a name="index-xlim-4"></a>: <em></em> <strong>xlim</strong> <em>(&quot;manual&quot;)</em></dt>
+<dt><a name="index-xlim-5"></a>: <em></em> <strong>xlim</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dd><p>Query or set the limits of the x-axis for the current plot.
 </p>
 <p>Called without arguments <code>xlim</code> returns the x-axis limits of the

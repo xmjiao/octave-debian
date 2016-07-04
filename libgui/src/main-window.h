@@ -21,7 +21,7 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_main_window_h)
+#if ! defined (octave_main_window_h)
 #define octave_main_window_h 1
 
 // Qt includes
@@ -36,7 +36,6 @@ along with Octave; see the file COPYING.  If not, see
 #include <QCloseEvent>
 #include <QToolButton>
 #include <QComboBox>
-#include <QSemaphore>
 #include <QPointer>
 
 // Editor includes
@@ -92,13 +91,14 @@ signals:
   void init_terminal_size_signal (void);
   void new_file_signal (const QString&);
   void open_file_signal (const QString&);
+  void edit_mfile_request (const QString&, const QString&, const QString&, int);
 
   void show_doc_signal (const QString&);
 
   void insert_debugger_pointer_signal (const QString& file, int line);
   void delete_debugger_pointer_signal (const QString& file, int line);
   void update_breakpoint_marker_signal (bool insert, const QString& file,
-                                        int line);
+                                        int line, const QString& cond);
 
   void copyClipboard_signal (void);
   void pasteClipboard_signal (void);
@@ -123,6 +123,7 @@ public slots:
   void handle_undo_request (void);
   void new_file (const QString& commands = QString ());
   void open_file (const QString& file_name = QString ());
+  void edit_mfile (const QString&, int);
   void open_online_documentation_page (void);
   void display_release_notes (void);
   void load_and_display_community_news (int serial = -1);
@@ -166,7 +167,8 @@ public slots:
   void handle_insert_debugger_pointer_request (const QString& file, int line);
   void handle_delete_debugger_pointer_request (const QString& file, int line);
   void handle_update_breakpoint_marker_request (bool insert,
-                                                const QString& file, int line);
+                                                const QString& file, int line,
+						const QString& cond);
 
   void read_settings (void);
   void init_terminal_size (void);
@@ -204,6 +206,7 @@ public slots:
 
   void handle_show_doc (const QString &file);
 
+  void execute_octave_interpreter (void);
   void handle_octave_ready ();
 
   // find files dialog
@@ -212,7 +215,6 @@ public slots:
 
   // setting global shortcuts
   void set_global_shortcuts (bool enable);
-  void set_global_edit_shortcuts (bool enable);
 
   void set_screen_size (int ht, int wd);
 
@@ -223,6 +225,9 @@ public slots:
   // get the dockwidgets
   QList<octave_dock_widget *> get_dock_widget_list ()
     { return dock_widget_list (); }
+
+private slots:
+  void disable_menu_shortcuts (bool disable);
 
 protected:
   void closeEvent (QCloseEvent * closeEvent);
@@ -236,7 +241,6 @@ private:
   QAction *add_action (QMenu *menu, const QIcon &icon, const QString &text,
                        const char *member, const QWidget *receiver = 0);
 
-  void enable_menu_shortcuts (bool enable);
   QMenu* m_add_menu (QMenuBar *p, QString text);
   void construct_menu_bar (void);
   void construct_file_menu (QMenuBar *p);
@@ -285,16 +289,11 @@ private:
 
   void queue_command (octave_cmd *cmd);
 
-  void queue_debug (QString command);
-
-  void execute_debug_callback ();
-
   void configure_shortcuts ();
 
   workspace_model *_workspace_model;
 
   QHash<QMenu*, QStringList> _hash_menu_text;
-
 
   // Toolbars.
   QStatusBar *status_bar;
@@ -306,19 +305,9 @@ private:
   documentation_dock_widget *doc_browser_window;
   file_editor_interface *editor_window;
   workspace_view *workspace_window;
-  QList<octave_dock_widget *> dock_widget_list ()
-  {
-    QList<octave_dock_widget *> list = QList<octave_dock_widget *> ();
-    list.append (static_cast<octave_dock_widget *> (command_window));
-    list.append (static_cast<octave_dock_widget *> (history_window));
-    list.append (static_cast<octave_dock_widget *> (file_browser_window));
-    list.append (static_cast<octave_dock_widget *> (doc_browser_window));
-#ifdef HAVE_QSCINTILLA
-    list.append (static_cast<octave_dock_widget *> (editor_window));
-#endif
-    list.append (static_cast<octave_dock_widget *> (workspace_window));
-    return list;
-  }
+
+  QList<octave_dock_widget *> dock_widget_list ();
+
   octave_dock_widget *_active_dock;
 
   QString _release_notes_icon;
@@ -406,16 +395,9 @@ private:
   // and related callback
 
   // the queue for the command structures
-  QList<octave_cmd *> _cmd_queue;
-  // semaphores used for handling the queue
-  QSemaphore   _cmd_processing;
-  QMutex       _cmd_queue_mutex;
+  octave_command_queue _cmd_queue;
 
-  // semaphore to synchronize debug signals and related callbacks
-  QStringList *_dbg_queue;
-  QSemaphore   _dbg_processing;
-  QMutex       _dbg_queue_mutex;
-
+  // some class global flags
   bool _prevent_readline_conflicts;
   bool _suppress_dbg_location;
   bool _start_gui;
@@ -451,4 +433,4 @@ private:
   bool connect_to_web;
 };
 
-#endif // MAINWINDOW_H
+#endif

@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QComboBox>
@@ -105,10 +105,8 @@ void PopupMenuControl::update (int pId)
 
           if (value.numel () > 0)
             {
-              if (value(0) !=  static_cast<int>(value(0)))
-                {
+              if (value(0) != static_cast<int>(value(0)))
                 warning ("popupmenu value should be integer");
-                }
               else
                 {
                   int newIndex = int (value(0)) - 1;

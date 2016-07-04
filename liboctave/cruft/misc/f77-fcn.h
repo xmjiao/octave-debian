@@ -20,12 +20,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_f77_fcn_h)
+#if ! defined (octave_f77_fcn_h)
 #define octave_f77_fcn_h 1
+
+#include "octave-config.h"
 
 #include "quit.h"
 
-#ifdef __cplusplus
+#if defined (__cplusplus)
 extern "C" {
 #endif
 
@@ -45,8 +47,7 @@ extern "C" {
    here, we'll restore the previous context and return.  We may also
    end up here if an interrupt is processed when the Fortran
    subroutine is called.  In that case, we resotre the context and go
-   to the top level.  The error_state should be checked immediately
-   after this macro is used. */
+   to the top level. */
 
 #define F77_XFCN(f, F, args) \
   do \
@@ -75,9 +76,9 @@ extern "C" {
   while (0)
 
 /* So we can check to see if an exception has occurred. */
-CRUFT_API extern int f77_exception_encountered;
+OCTAVE_API extern int f77_exception_encountered;
 
-#if !defined (F77_FCN)
+#if ! defined (F77_FCN)
 #define F77_FCN(f, F) F77_FUNC (f, F)
 #endif
 
@@ -155,7 +156,7 @@ not returning a value from a function declared to return something.
 #define F77_CONST_CHAR_ARG_DEF(s, len) octave_cray_ftn_ch_dsc s
 #define F77_CHAR_ARG_LEN_DEF(len)
 #define F77_CHAR_ARG_USE(s) s.ptr
-#define F77_CHAR_ARG_LEN_USE(s, len) (s.mask.len>>3)
+#define F77_CHAR_ARG_LEN_USE(s, len) (s.mask.len >> 3)
 
 /* Use this macro to declare the return type of a C-language function
    that is supposed to act like a Fortran subroutine.  */
@@ -166,14 +167,14 @@ not returning a value from a function declared to return something.
    to be used as the last statement of such a function that has been
    tagged with a "noreturn" attribute.  */
 #define F77_RETURN(retval) return retval;
-#if defined (HAVE_ATTR_NORETURN)
-#define F77_NORETURN(retval)
+#if defined (HAVE_OCTAVE_NORETURN_ATTR)
+#  define F77_NORETURN(retval)
 #else
-#define F77_NORETURN(retval) return retval;
+#  define F77_NORETURN(retval) return retval;
 #endif
 
-/* FIXME -- these should work for SV1 or Y-MP systems but will
-   need to be changed for others.  */
+/* FIXME: These should work for SV1 or Y-MP systems but will
+          need to be changed for others.  */
 
 typedef union
 {
@@ -189,10 +190,10 @@ typedef union
 
 typedef void *octave_cray_ftn_ch_dsc;
 
-#ifdef __cplusplus
-#define OCTAVE_F77_FCN_INLINE inline
+#if defined (__cplusplus)
+#  define OCTAVE_F77_FCN_INLINE inline
 #else
-#define OCTAVE_F77_FCN_INLINE
+#  define OCTAVE_F77_FCN_INLINE
 #endif
 
 static OCTAVE_F77_FCN_INLINE octave_cray_ftn_ch_dsc
@@ -213,8 +214,8 @@ octave_make_cray_const_ftn_ch_dsc (const char *ptr_arg, unsigned long len_arg)
   return *((octave_cray_ftn_ch_dsc *) &desc);
 }
 
-#ifdef __cplusplus
-#undef OCTAVE_F77_FCN_INLINE
+#if defined (__cplusplus)
+#  undef OCTAVE_F77_FCN_INLINE
 #endif
 
 #elif defined (F77_USES_VISUAL_FORTRAN_CALLING_CONVENTION)
@@ -264,14 +265,13 @@ octave_make_cray_const_ftn_ch_dsc (const char *ptr_arg, unsigned long len_arg)
 #define F77_RET_T int
 
 #define F77_RETURN(retval) return retval;
-#if defined (HAVE_ATTR_NORETURN)
-#define F77_NORETURN(retval)
+#if defined (HAVE_OCTAVE_NORETURN_ATTR)
+#  define F77_NORETURN(retval)
 #else
-#define F77_NORETURN(retval) return retval;
+#  define F77_NORETURN(retval) return retval;
 #endif
 
 #endif
-
 
 /* Build a C string local variable CS from the Fortran string parameter S
    declared as F77_CHAR_ARG_DEF(s, len) or F77_CONST_CHAR_ARG_DEF(s, len).
@@ -284,11 +284,12 @@ octave_make_cray_const_ftn_ch_dsc (const char *ptr_arg, unsigned long len_arg)
  cs[F77_CHAR_ARG_LEN_USE(s, len)] = '\0'
 
 
-extern CRUFT_API F77_RET_T
+OCTAVE_NORETURN OCTAVE_API extern
+F77_RET_T
 F77_FUNC (xstopx, XSTOPX) (F77_CONST_CHAR_ARG_DECL
-                           F77_CHAR_ARG_LEN_DECL) GCC_ATTR_NORETURN;
+                           F77_CHAR_ARG_LEN_DECL);
 
-#ifdef __cplusplus
+#if defined (__cplusplus)
 }
 #endif
 

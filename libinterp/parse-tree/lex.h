@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_lex_h)
+#if ! defined (octave_lex_h)
 #define octave_lex_h 1
+
+#include "octave-config.h"
 
 #include <deque>
 #include <limits>
@@ -576,7 +578,7 @@ public:
 
   bool inside_any_object_index (void);
 
-  bool is_variable (const std::string& name);
+  bool is_variable (const std::string& name, symbol_table::scope_id scope);
 
   int is_keyword_token (const std::string& s);
 
@@ -606,15 +608,15 @@ public:
 
   void maybe_warn_separator_insert (char sep);
 
-  void gripe_single_quote_string (void);
+  void warn_single_quote_string (void);
 
-  void gripe_language_extension (const std::string& msg);
+  void warn_language_extension (const std::string& msg);
 
-  void maybe_gripe_language_extension_comment (char c);
+  void maybe_warn_language_extension_comment (char c);
 
-  void gripe_language_extension_continuation (void);
+  void warn_language_extension_continuation (void);
 
-  void gripe_language_extension_operator (const std::string& op);
+  void warn_language_extension_operator (const std::string& op);
 
   void push_token (token *);
 
@@ -771,7 +773,7 @@ octave_push_lexer : public octave_base_lexer
 {
 public:
 
-  octave_push_lexer (const std::string& input = std::string (),
+  octave_push_lexer (const std::string& input = "",
                      bool eof = false)
     : octave_base_lexer (), pflag (1)
   {

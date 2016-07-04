@@ -33,15 +33,15 @@ Octave supports several methods for one-dimensional interpolation, most
 of which are described in this section.  @ref{Polynomial Interpolation}
 and @ref{Interpolation on Scattered Data} describe additional methods.
 
-@c interp1 scripts/general/interp1.m
+@c interp1 scripts/scripts/general/interp1.m
 @anchor{XREFinterp1}
-@deftypefn  {Function File} {@var{yi} =} interp1 (@var{x}, @var{y}, @var{xi})
-@deftypefnx {Function File} {@var{yi} =} interp1 (@var{y}, @var{xi})
-@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, @var{method})
-@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, @var{extrap})
-@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, "left")
-@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, "right")
-@deftypefnx {Function File} {@var{pp} =} interp1 (@dots{}, "pp")
+@deftypefn  {} {@var{yi} =} interp1 (@var{x}, @var{y}, @var{xi})
+@deftypefnx {} {@var{yi} =} interp1 (@var{y}, @var{xi})
+@deftypefnx {} {@var{yi} =} interp1 (@dots{}, @var{method})
+@deftypefnx {} {@var{yi} =} interp1 (@dots{}, @var{extrap})
+@deftypefnx {} {@var{yi} =} interp1 (@dots{}, "left")
+@deftypefnx {} {@var{yi} =} interp1 (@dots{}, "right")
+@deftypefnx {} {@var{pp} =} interp1 (@dots{}, "pp")
 
 One-dimensional interpolation.
 
@@ -91,8 +91,8 @@ If the string argument @qcode{"pp"} is specified, then @var{xi} should not
 be supplied and @code{interp1} returns a piecewise polynomial object.  This
 object can later be used with @code{ppval} to evaluate the interpolation.
 There is an equivalence, such that @code{ppval (interp1 (@var{x},
-@var{y}, @var{method}, @qcode{"pp"}), @var{xi}) == interp1 (@var{x}, @var{y},
-@var{xi}, @var{method}, @qcode{"extrap"})}.
+@var{y}, @var{method}, @qcode{"pp"}), @var{xi}) == interp1 (@var{x},
+@var{y}, @var{xi}, @var{method}, @qcode{"extrap"})}.
 
 Duplicate points in @var{x} specify a discontinuous interpolant.  There
 may be at most 2 consecutive points with the same value.
@@ -181,10 +181,10 @@ Fourier interpolation, is a resampling technique where a signal is
 converted to the frequency domain, padded with zeros and then
 reconverted to the time domain.
 
-@c interpft scripts/general/interpft.m
+@c interpft scripts/scripts/general/interpft.m
 @anchor{XREFinterpft}
-@deftypefn  {Function File} {} interpft (@var{x}, @var{n})
-@deftypefnx {Function File} {} interpft (@var{x}, @var{n}, @var{dim})
+@deftypefn  {} {} interpft (@var{x}, @var{n})
+@deftypefnx {} {} interpft (@var{x}, @var{n}, @var{dim})
 
 Fourier interpolation.
 
@@ -238,10 +238,10 @@ functions, as can be seen in @ref{fig:interpft}.
 In addition, the support functions @code{spline} and @code{lookup} that
 underlie the @code{interp1} function can be called directly.
 
-@c spline scripts/polynomial/spline.m
+@c spline scripts/scripts/polynomial/spline.m
 @anchor{XREFspline}
-@deftypefn  {Function File} {@var{pp} =} spline (@var{x}, @var{y})
-@deftypefnx {Function File} {@var{yi} =} spline (@var{x}, @var{y}, @var{xi})
+@deftypefn  {} {@var{pp} =} spline (@var{x}, @var{y})
+@deftypefnx {} {@var{yi} =} spline (@var{x}, @var{y}, @var{xi})
 Return the cubic spline interpolant of points @var{x} and @var{y}.
 
 When called with two arguments, return the piecewise polynomial @var{pp}
@@ -299,14 +299,14 @@ There are three multi-dimensional interpolation functions in Octave, with
 similar capabilities.  Methods using Delaunay tessellation are described
 in @ref{Interpolation on Scattered Data}.
 
-@c interp2 scripts/general/interp2.m
+@c interp2 scripts/scripts/general/interp2.m
 @anchor{XREFinterp2}
-@deftypefn  {Function File} {@var{zi} =} interp2 (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi})
-@deftypefnx {Function File} {@var{zi} =} interp2 (@var{z}, @var{xi}, @var{yi})
-@deftypefnx {Function File} {@var{zi} =} interp2 (@var{z}, @var{n})
-@deftypefnx {Function File} {@var{zi} =} interp2 (@var{z})
-@deftypefnx {Function File} {@var{zi} =} interp2 (@dots{}, @var{method})
-@deftypefnx {Function File} {@var{zi} =} interp2 (@dots{}, @var{method}, @var{extrap})
+@deftypefn  {} {@var{zi} =} interp2 (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi})
+@deftypefnx {} {@var{zi} =} interp2 (@var{z}, @var{xi}, @var{yi})
+@deftypefnx {} {@var{zi} =} interp2 (@var{z}, @var{n})
+@deftypefnx {} {@var{zi} =} interp2 (@var{z})
+@deftypefnx {} {@var{zi} =} interp2 (@dots{}, @var{method})
+@deftypefnx {} {@var{zi} =} interp2 (@dots{}, @var{method}, @var{extrap})
 
 Two-dimensional interpolation.
 
@@ -363,14 +363,14 @@ is @qcode{"NA"}.
 @end deftypefn
 
 
-@c interp3 scripts/general/interp3.m
+@c interp3 scripts/scripts/general/interp3.m
 @anchor{XREFinterp3}
-@deftypefn  {Function File} {@var{vi} =} interp3 (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi})
-@deftypefnx {Function File} {@var{vi} =} interp3 (@var{v}, @var{xi}, @var{yi}, @var{zi})
-@deftypefnx {Function File} {@var{vi} =} interp3 (@var{v}, @var{n})
-@deftypefnx {Function File} {@var{vi} =} interp3 (@var{v})
-@deftypefnx {Function File} {@var{vi} =} interp3 (@dots{}, @var{method})
-@deftypefnx {Function File} {@var{vi} =} interp3 (@dots{}, @var{method}, @var{extrapval})
+@deftypefn  {} {@var{vi} =} interp3 (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi})
+@deftypefnx {} {@var{vi} =} interp3 (@var{v}, @var{xi}, @var{yi}, @var{zi})
+@deftypefnx {} {@var{vi} =} interp3 (@var{v}, @var{n})
+@deftypefnx {} {@var{vi} =} interp3 (@var{v})
+@deftypefnx {} {@var{vi} =} interp3 (@dots{}, @var{method})
+@deftypefnx {} {@var{vi} =} interp3 (@dots{}, @var{method}, @var{extrapval})
 
 Three-dimensional interpolation.
 
@@ -392,12 +392,12 @@ This saves memory if the grid is regular and the distance between points is
 not important.
 
 If called with a single reference data matrix @var{v} and a refinement
-value @var{n}, then perform interpolation over a 3-D grid where each original
-interval has been recursively subdivided @var{n} times.  This results in
-@code{2^@var{n}-1} additional points for every interval in the original
-grid.  If @var{n} is omitted a value of 1 is used.  As an example, the
-interval [0,1] with @code{@var{n}==2} results in a refined interval with
-points at [0, 1/4, 1/2, 3/4, 1].
+value @var{n}, then perform interpolation over a 3-D grid where each
+original interval has been recursively subdivided @var{n} times.  This
+results in @code{2^@var{n}-1} additional points for every interval in the
+original grid.  If @var{n} is omitted a value of 1 is used.  As an
+example, the interval [0,1] with @code{@var{n}==2} results in a refined
+interval with points at [0, 1/4, 1/2, 3/4, 1].
 
 The interpolation @var{method} is one of:
 
@@ -427,14 +427,14 @@ any other @var{method} is @qcode{"NA"}.
 @end deftypefn
 
 
-@c interpn scripts/general/interpn.m
+@c interpn scripts/scripts/general/interpn.m
 @anchor{XREFinterpn}
-@deftypefn  {Function File} {@var{vi} =} interpn (@var{x1}, @var{x2}, @dots{}, @var{v}, @var{y1}, @var{y2}, @dots{})
-@deftypefnx {Function File} {@var{vi} =} interpn (@var{v}, @var{y1}, @var{y2}, @dots{})
-@deftypefnx {Function File} {@var{vi} =} interpn (@var{v}, @var{m})
-@deftypefnx {Function File} {@var{vi} =} interpn (@var{v})
-@deftypefnx {Function File} {@var{vi} =} interpn (@dots{}, @var{method})
-@deftypefnx {Function File} {@var{vi} =} interpn (@dots{}, @var{method}, @var{extrapval})
+@deftypefn  {} {@var{vi} =} interpn (@var{x1}, @var{x2}, @dots{}, @var{v}, @var{y1}, @var{y2}, @dots{})
+@deftypefnx {} {@var{vi} =} interpn (@var{v}, @var{y1}, @var{y2}, @dots{})
+@deftypefnx {} {@var{vi} =} interpn (@var{v}, @var{m})
+@deftypefnx {} {@var{vi} =} interpn (@var{v})
+@deftypefnx {} {@var{vi} =} interpn (@dots{}, @var{method})
+@deftypefnx {} {@var{vi} =} interpn (@dots{}, @var{method}, @var{extrapval})
 
 Perform @var{n}-dimensional interpolation, where @var{n} is at least two.
 

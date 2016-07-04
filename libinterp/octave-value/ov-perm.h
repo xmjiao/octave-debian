@@ -20,15 +20,17 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ov_perm_h)
+#if ! defined (octave_ov_perm_h)
 #define octave_ov_perm_h 1
+
+#include "octave-config.h"
 
 #include "mx-base.h"
 #include "str-vec.h"
 
 #include "ov-base.h"
 #include "ov-typeinfo.h"
-#include "oct-obj.h"
+#include "ovl.h"
 
 class
 OCTINTERP_API
@@ -201,11 +203,11 @@ public:
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
   bool load_binary (std::istream& is, bool swap,
-                    oct_mach_info::float_format fmt);
+                    octave::mach_info::float_format fmt);
 
   int write (octave_stream& os, int block_size,
              oct_data_conv::data_type output_type, int skip,
-             oct_mach_info::float_format flt_fmt) const;
+             octave::mach_info::float_format flt_fmt) const;
 
   mxArray *as_mxArray (void) const;
 
@@ -229,7 +231,6 @@ protected:
   mutable octave_value dense_cache;
 
 private:
-
 
   DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA
 };

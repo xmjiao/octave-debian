@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -103,7 +104,7 @@ function, etc.  See <a href="Predicates-for-Numeric-Objects.html#Predicates-for-
 for a list of predicates for numeric objects, and see <a href="Status-of-Variables.html#Status-of-Variables">Status of Variables</a>, for a description of the <code>exist</code> function.
 </p>
 <a name="XREFfeval"></a><dl>
-<dt><a name="index-feval"></a>Built-in Function: <em></em> <strong>feval</strong> <em>(<var>name</var>, &hellip;)</em></dt>
+<dt><a name="index-feval"></a>: <em></em> <strong>feval</strong> <em>(<var>name</var>, &hellip;)</em></dt>
 <dd><p>Evaluate the function named <var>name</var>.
 </p>
 <p>Any arguments after the first are passed as inputs to the named function.
@@ -140,18 +141,18 @@ instead.
 are not necessarily on the user path
 </p>
 <a name="XREFrun"></a><dl>
-<dt><a name="index-run"></a>Command: <em></em> <strong>run</strong> <em><var>script</var></em></dt>
-<dt><a name="index-run-1"></a>Function File: <em></em> <strong>run</strong> <em>(&quot;<var>script</var>&quot;)</em></dt>
+<dt><a name="index-run"></a>: <em></em> <strong>run</strong> <em><var>script</var></em></dt>
+<dt><a name="index-run-1"></a>: <em></em> <strong>run</strong> <em>(&quot;<var>script</var>&quot;)</em></dt>
 <dd><p>Run <var>script</var> in the current workspace.
 </p>
 <p>Scripts which reside in directories specified in Octave&rsquo;s load path, and
 which end with the extension <samp>&quot;.m&quot;</samp>, can be run simply by typing
 their name.  For scripts not located on the load path, use <code>run</code>.
 </p>
-<p>The file name <var>script</var> can be a bare, fully qualified, or relative
-filename and with or without a file extension.  If no extension is specified,
-Octave will first search for a script with the <samp>&quot;.m&quot;</samp> extension before
-falling back to the script name without an extension.
+<p>The filename <var>script</var> can be a bare, fully qualified, or relative
+filename and with or without a file extension.  If no extension is
+specified, Octave will first search for a script with the <samp>&quot;.m&quot;</samp>
+extension before falling back to the script name without an extension.
 </p>
 <p>Implementation Note: If <var>script</var> includes a path component, then
 <code>run</code> first changes the working directory to the directory where

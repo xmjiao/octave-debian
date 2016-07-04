@@ -18,7 +18,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} discrete_cdf (@var{x}, @var{v}, @var{p})
+## @deftypefn {} {} discrete_cdf (@var{x}, @var{v}, @var{p})
 ## For each element of @var{x}, compute the cumulative distribution function
 ## (CDF) at @var{x} of a univariate discrete distribution which assumes the
 ## values in @var{v} with probabilities @var{p}.
@@ -77,5 +77,5 @@ endfunction
 %!error discrete_cdf (1, ones (2,1), ones (1,1))
 %!error discrete_cdf (1, ones (2,1), [1 -1])
 %!error discrete_cdf (1, ones (2,1), [1 NaN])
-%!error discrete_cdf (1, ones (2,1), [0  0])
+%!error discrete_cdf (1, ones (2,1), [0 0])
 

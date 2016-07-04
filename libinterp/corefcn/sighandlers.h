@@ -30,33 +30,22 @@ Free Software Foundation, Inc.
 
 // This file should always be included after config.h!
 
-#if !defined (octave_sighandlers_h)
+#if ! defined (octave_sighandlers_h)
 #define octave_sighandlers_h 1
 
-// Include signal.h, not csignal since the latter might only define
-// the ANSI standard C signal interface.
+#include "octave-config.h"
 
-#include <signal.h>
-
-#include "syswait.h"
-#include "siglist.h"
+#include "signal-wrappers.h"
 
 #include "base-list.h"
-
-typedef void sig_handler (int);
 
 // FIXME: the data should probably be private...
 
 struct
 octave_interrupt_handler
 {
-#ifdef SIGINT
-  sig_handler *int_handler;
-#endif
-
-#ifdef SIGBREAK
-  sig_handler *brk_handler;
-#endif
+  octave_sig_handler *int_handler;
+  octave_sig_handler *brk_handler;
 };
 
 // Nonzero means we have already printed a message for this series of
@@ -66,9 +55,13 @@ extern int pipe_handler_error_count;
 // TRUE means we can be interrupted.
 extern OCTINTERP_API bool can_interrupt;
 
-extern OCTINTERP_API
-sig_handler *octave_set_signal_handler (int, sig_handler *,
-                                        bool restart_syscalls = true);
+extern OCTINTERP_API octave_sig_handler *
+octave_set_signal_handler (int sig, octave_sig_handler *,
+                           bool restart_syscalls = true);
+
+extern OCTINTERP_API octave_sig_handler *
+octave_set_signal_handler (const char *signame, octave_sig_handler *,
+                           bool restart_syscalls = true);
 
 extern OCTINTERP_API void install_signal_handlers (void);
 
@@ -81,10 +74,6 @@ extern OCTINTERP_API octave_interrupt_handler octave_ignore_interrupts (void);
 extern OCTINTERP_API octave_interrupt_handler
 octave_set_interrupt_handler (const volatile octave_interrupt_handler&,
                               bool restart_syscalls = true);
-
-#if defined (__WIN32__) && ! defined (__CYGWIN__)
-extern OCTINTERP_API void w32_raise_sigint (void);
-#endif
 
 // extern void ignore_sigchld (void);
 

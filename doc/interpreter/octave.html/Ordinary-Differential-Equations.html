@@ -14,7 +14,7 @@
 <link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Differential-Equations.html#Differential-Equations" rel="up" title="Differential Equations">
-<link href="Differential_002dAlgebraic-Equations.html#Differential_002dAlgebraic-Equations" rel="next" title="Differential-Algebraic Equations">
+<link href="Matlab_002dcompatible-solvers.html#Matlab_002dcompatible-solvers" rel="next" title="Matlab-compatible solvers">
 <link href="Differential-Equations.html#Differential-Equations" rel="prev" title="Differential Equations">
 <style type="text/css">
 <!--
@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -71,8 +72,8 @@ dt
 
 
 <a name="XREFlsode"></a><dl>
-<dt><a name="index-lsode"></a>Built-in Function: <em>[<var>x</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>lsode</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>t</var>)</em></dt>
-<dt><a name="index-lsode-1"></a>Built-in Function: <em>[<var>x</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>lsode</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
+<dt><a name="index-lsode"></a>: <em>[<var>x</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>lsode</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>t</var>)</em></dt>
+<dt><a name="index-lsode-1"></a>: <em>[<var>x</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>lsode</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
 <dd><p>Ordinary Differential Equation (ODE) solver.
 </p>
 <p>The set of differential equations to solve is
@@ -158,9 +159,9 @@ parameters for <code>lsode</code>.
 
 
 <a name="XREFlsode_005foptions"></a><dl>
-<dt><a name="index-lsode_005foptions"></a>Built-in Function: <em></em> <strong>lsode_options</strong> <em>()</em></dt>
-<dt><a name="index-lsode_005foptions-1"></a>Built-in Function: <em>val =</em> <strong>lsode_options</strong> <em>(<var>opt</var>)</em></dt>
-<dt><a name="index-lsode_005foptions-2"></a>Built-in Function: <em></em> <strong>lsode_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
+<dt><a name="index-lsode_005foptions"></a>: <em></em> <strong>lsode_options</strong> <em>()</em></dt>
+<dt><a name="index-lsode_005foptions-1"></a>: <em>val =</em> <strong>lsode_options</strong> <em>(<var>opt</var>)</em></dt>
+<dt><a name="index-lsode_005foptions-2"></a>: <em></em> <strong>lsode_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
 <dd><p>Query or set options for the function <code>lsode</code>.
 </p>
 <p>When called with no arguments, the names of all available options and
@@ -283,6 +284,11 @@ for more information about the inner workings of <code>lsode</code>.
 Octave distribution in the examples directory under the name
 <samp>oregonator.m</samp>.
 </p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Matlab_002dcompatible-solvers.html#Matlab_002dcompatible-solvers" accesskey="1">Matlab-compatible solvers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
 <hr>
 <div class="header">
 <p>

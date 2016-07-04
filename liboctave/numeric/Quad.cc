@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "Quad.h"
@@ -126,7 +126,7 @@ double
 DefQuad::do_integrate (octave_idx_type& ier, octave_idx_type& neval,
                        double& abserr)
 {
-  octave_idx_type npts = singularities.capacity () + 2;
+  octave_idx_type npts = singularities.numel () + 2;
   double *points = singularities.fortran_vec ();
   double result = 0.0;
 
@@ -156,7 +156,6 @@ float
 DefQuad::do_integrate (octave_idx_type&, octave_idx_type&, float&)
 {
   (*current_liboctave_error_handler) ("incorrect integration function called");
-  return 0.0;
 }
 
 double
@@ -210,21 +209,19 @@ float
 IndefQuad::do_integrate (octave_idx_type&, octave_idx_type&, float&)
 {
   (*current_liboctave_error_handler) ("incorrect integration function called");
-  return 0.0;
 }
 
 double
 FloatDefQuad::do_integrate (octave_idx_type&, octave_idx_type&, double&)
 {
   (*current_liboctave_error_handler) ("incorrect integration function called");
-  return 0.0;
 }
 
 float
 FloatDefQuad::do_integrate (octave_idx_type& ier, octave_idx_type& neval,
                             float& abserr)
 {
-  octave_idx_type npts = singularities.capacity () + 2;
+  octave_idx_type npts = singularities.numel () + 2;
   float *points = singularities.fortran_vec ();
   float result = 0.0;
 
@@ -254,7 +251,6 @@ double
 FloatIndefQuad::do_integrate (octave_idx_type&, octave_idx_type&, double&)
 {
   (*current_liboctave_error_handler) ("incorrect integration function called");
-  return 0.0;
 }
 
 float

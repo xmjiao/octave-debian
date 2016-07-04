@@ -17,15 +17,15 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Command} {} colorbar
-## @deftypefnx {Function File} {} colorbar (@var{loc})
-## @deftypefnx {Function File} {} colorbar (@var{delete_option})
-## @deftypefnx {Function File} {} colorbar (@var{hcb}, @dots{})
-## @deftypefnx {Function File} {} colorbar (@var{hax}, @dots{})
-## @deftypefnx {Function File} {} colorbar (@dots{}, "peer", @var{hax}, @dots{})
-## @deftypefnx {Function File} {} colorbar (@dots{}, "location", @var{loc}, @dots{})
-## @deftypefnx {Function File} {} colorbar (@dots{}, @var{prop}, @var{val}, @dots{})
-## @deftypefnx {Function File} {@var{h} =} colorbar (@dots{})
+## @deftypefn  {} {} colorbar
+## @deftypefnx {} {} colorbar (@var{loc})
+## @deftypefnx {} {} colorbar (@var{delete_option})
+## @deftypefnx {} {} colorbar (@var{hcb}, @dots{})
+## @deftypefnx {} {} colorbar (@var{hax}, @dots{})
+## @deftypefnx {} {} colorbar (@dots{}, "peer", @var{hax}, @dots{})
+## @deftypefnx {} {} colorbar (@dots{}, "location", @var{loc}, @dots{})
+## @deftypefnx {} {} colorbar (@dots{}, @var{prop}, @var{val}, @dots{})
+## @deftypefnx {} {@var{h} =} colorbar (@dots{})
 ## Add a colorbar to the current axes.
 ##
 ## A colorbar displays the current colormap along with numerical rulings
@@ -109,7 +109,7 @@ function h = colorbar (varargin)
           else
             ax = varargin{i++};
             if (! isscalar (ax) && ! isaxes (ax))
-              error ('colorbar: expecting an axes handle following "peer"');
+              error ('colorbar: invalid axes handle following "peer"');
             endif
           endif
         case {"north", "south", "east", "west",
@@ -254,8 +254,8 @@ function h = colorbar (varargin)
 endfunction
 
 function deletecolorbar (h, d, hc, orig_props)
-  ## Don't delete the colorbar and reset the axis size if the
-  ## parent figure is being deleted.
+  ## Don't delete the colorbar and reset the axis size
+  ## if the parent figure is being deleted.
   if (isaxes (hc)
       && (isempty (gcbf ()) || strcmp (get (gcbf (), "beingdeleted"), "off")))
     if (strcmp (get (hc, "beingdeleted"), "off"))
@@ -272,9 +272,11 @@ function deletecolorbar (h, d, hc, orig_props)
       set (ax, "units", units);
     endif
   endif
+
 endfunction
 
 function resetaxis (cax, d, ax, orig_props)
+
   if (isaxes (ax))
     ## FIXME: Probably don't want to delete everyone's listeners on colormap.
     dellistener (ancestor (ax, "figure"), "colormap");
@@ -292,9 +294,11 @@ function resetaxis (cax, d, ax, orig_props)
              "activepositionproperty", orig_props.activepositionproperty);
     set (ax, "units", units);
   endif
+
 endfunction
 
 function update_colorbar_clim (hax, d, hi, vert)
+
   if (isaxes (hax)
       && (isempty (gcbf ()) || strcmp (get (gcbf (), "beingdeleted"), "off")))
     clen = rows (get (ancestor (hax, "figure"), "colormap"));
@@ -312,6 +316,7 @@ function update_colorbar_clim (hax, d, hi, vert)
       set (hiax, "xlim", cext);
     endif
   endif
+
 endfunction
 
 function update_colorbar_cmap (hf, d, hi, vert, init_sz)
@@ -331,9 +336,11 @@ function update_colorbar_cmap (hf, d, hi, vert, init_sz)
       update_colorbar_clim (get (hi, "parent"), d, hi, vert);
     endif
   endif
+
 endfunction
 
 function update_colorbar_axis (h, d, cax, orig_props)
+
   if (isaxes (cax)
       && (isempty (gcbf ()) || strcmp (get (gcbf (), "beingdeleted"),"off")))
     loc = get (cax, "location");
@@ -363,6 +370,7 @@ function update_colorbar_axis (h, d, cax, orig_props)
     endif
 
   endif
+
 endfunction
 
 function [pos, cpos, vertical, mirr] = __position_colorbox__ (cbox, obj, cf)
@@ -398,48 +406,48 @@ function [pos, cpos, vertical, mirr] = __position_colorbox__ (cbox, obj, cf)
   switch (cbox)
     case "northoutside"
       origin = pos(1:2) + [0., 0.9] .* sz + [1, -1] .* off;
-      sz = sz .* [1.0, 0.06];
+      sz .*= [1.0, 0.06];
       pos(4) = 0.8 * pos(4);
       mirr = true;
       vertical = false;
     case "north"
       origin = pos(1:2) + [0.05, 0.9] .* sz + [1, -1] .* off;
-      sz = sz .* [1.0, 0.06] * 0.9;
+      sz .*= [1.0, 0.06] * 0.9;
       mirr = false;
       vertical = false;
     case "southoutside"
       origin = pos(1:2) + off;
-      sz = sz .* [1.0, 0.06];
+      sz .*= [1.0, 0.06];
       pos(2) = pos(2) + pos(4) * 0.2;
       pos(4) = 0.8 * pos(4);
       mirr = false;
       vertical = false;
     case "south"
       origin = pos(1:2) + [0.05, 0.05] .* sz + off;
-      sz = sz .* [1.0, 0.06] * 0.9;
+      sz .*= [1.0, 0.06] * 0.9;
       mirr = true;
       vertical = false;
     case "eastoutside"
       origin = pos(1:2) + [0.9, 0] .* sz + [-1, 1] .* off;
-      sz = sz .* [0.06, 1.0];
+      sz .*= [0.06, 1.0];
       pos(3) = 0.8 * pos(3);
       mirr = true;
       vertical = true;
     case "east"
       origin = pos(1:2) + [0.9, 0.05] .* sz + [-1, 1] .* off;
-      sz = sz .* [0.06, 1.0] * 0.9;
+      sz .*= [0.06, 1.0] * 0.9;
       mirr = false;
       vertical = true;
     case "westoutside"
       origin = pos(1:2) + off;
-      sz = sz .* [0.06, 1.0];
+      sz .*= [0.06, 1.0];
       pos(1) = pos(1) + pos(3) * 0.2;
       pos(3) = 0.8 * pos(3);
       mirr = false;
       vertical = true;
     case "west"
       origin = pos(1:2) + [0.05, 0.05] .* sz + off;
-      sz = sz .* [0.06, 1.0] .* 0.9;
+      sz .*= [0.06, 1.0] .* 0.9;
       mirr = true;
       vertical = true;
   endswitch

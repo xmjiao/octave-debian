@@ -21,14 +21,13 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "oct-cmplx.h"
 
 #include "MSparse.h"
-#include "MSparse.cc"
 
 template class OCTAVE_API MSparse<Complex>;
 

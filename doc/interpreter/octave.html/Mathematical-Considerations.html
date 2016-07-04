@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -179,8 +180,8 @@ and ldiv (\) operators, and so no the user does not need to explicitly
 reorder the matrix to maximize performance.
 </p>
 <a name="XREFamd"></a><dl>
-<dt><a name="index-amd"></a>Loadable Function: <em><var>p</var> =</em> <strong>amd</strong> <em>(<var>S</var>)</em></dt>
-<dt><a name="index-amd-1"></a>Loadable Function: <em><var>p</var> =</em> <strong>amd</strong> <em>(<var>S</var>, <var>opts</var>)</em></dt>
+<dt><a name="index-amd"></a>: <em><var>p</var> =</em> <strong>amd</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-amd-1"></a>: <em><var>p</var> =</em> <strong>amd</strong> <em>(<var>S</var>, <var>opts</var>)</em></dt>
 <dd>
 <p>Return the approximate minimum degree permutation of a matrix.
 </p>
@@ -216,17 +217,17 @@ absorption.  The default is not to perform aggressive absorption.
 
 
 <a name="XREFccolamd"></a><dl>
-<dt><a name="index-ccolamd"></a>Loadable Function: <em><var>p</var> =</em> <strong>ccolamd</strong> <em>(<var>S</var>)</em></dt>
-<dt><a name="index-ccolamd-1"></a>Loadable Function: <em><var>p</var> =</em> <strong>ccolamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
-<dt><a name="index-ccolamd-2"></a>Loadable Function: <em><var>p</var> =</em> <strong>ccolamd</strong> <em>(<var>S</var>, <var>knobs</var>, <var>cmember</var>)</em></dt>
-<dt><a name="index-ccolamd-3"></a>Loadable Function: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>ccolamd</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-ccolamd"></a>: <em><var>p</var> =</em> <strong>ccolamd</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-ccolamd-1"></a>: <em><var>p</var> =</em> <strong>ccolamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
+<dt><a name="index-ccolamd-2"></a>: <em><var>p</var> =</em> <strong>ccolamd</strong> <em>(<var>S</var>, <var>knobs</var>, <var>cmember</var>)</em></dt>
+<dt><a name="index-ccolamd-3"></a>: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>ccolamd</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Constrained column approximate minimum degree permutation.
 </p>
 <p><code><var>p</var> = ccolamd (<var>S</var>)</code> returns the column approximate minimum
-degree permutation vector for the sparse matrix <var>S</var>.  For a non-symmetric
-matrix <var>S</var>, <code><var>S</var>(:, <var>p</var>)</code> tends to have sparser
-LU&nbsp;factors than <var>S</var>.
+degree permutation vector for the sparse matrix <var>S</var>.  For a
+non-symmetric matrix <var>S</var>, <code><var>S</var>(:, <var>p</var>)</code> tends to have
+sparser LU&nbsp;factors than <var>S</var>.
 <code>chol (<var>S</var>(:, <var>p</var>)' * <var>S</var>(:, <var>p</var>))</code> also tends to be
 sparser than <code>chol (<var>S</var>' * <var>S</var>)</code>.
 <code><var>p</var> = ccolamd (<var>S</var>, 1)</code> optimizes the ordering for
@@ -314,10 +315,10 @@ ccolamd, csymamd, amd, colamd, symamd, and other related orderings.
 
 
 <a name="XREFcolamd"></a><dl>
-<dt><a name="index-colamd"></a>Loadable Function: <em><var>p</var> =</em> <strong>colamd</strong> <em>(<var>S</var>)</em></dt>
-<dt><a name="index-colamd-1"></a>Loadable Function: <em><var>p</var> =</em> <strong>colamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
-<dt><a name="index-colamd-2"></a>Loadable Function: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>colamd</strong> <em>(<var>S</var>)</em></dt>
-<dt><a name="index-colamd-3"></a>Loadable Function: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>colamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
+<dt><a name="index-colamd"></a>: <em><var>p</var> =</em> <strong>colamd</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-colamd-1"></a>: <em><var>p</var> =</em> <strong>colamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
+<dt><a name="index-colamd-2"></a>: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>colamd</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-colamd-3"></a>: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>colamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
 <dd>
 <p>Compute the column approximate minimum degree permutation.
 </p>
@@ -328,8 +329,8 @@ sparser LU&nbsp;factors than <var>S</var>.  The Cholesky&nbsp;factorization of
 <code><var>S</var>(:,<var>p</var>)' * <var>S</var>(:,<var>p</var>)</code> also tends to be sparser
 than that of <code><var>S</var>' * <var>S</var></code>.
 </p>
-<p><var>knobs</var> is an optional one- to three-element input vector.  If <var>S</var> is
-m-by-n, then rows with more than <code>max(16,<var>knobs</var>(1)*sqrt(n))</code>
+<p><var>knobs</var> is an optional one- to three-element input vector.  If <var>S</var>
+is m-by-n, then rows with more than <code>max(16,<var>knobs</var>(1)*sqrt(n))</code>
 entries are ignored.  Columns with more than
 <code>max (16,<var>knobs</var>(2)*sqrt(min(m,n)))</code> entries are removed prior to
 ordering, and ordered last in the output permutation <var>p</var>.  Only
@@ -354,11 +355,12 @@ in each column, with a non-negative number of entries in each column (!)
 and so on.  If a matrix is invalid, then <small>COLAMD</small> may or may not be able
 to continue.  If there are duplicate entries (a row index appears two or
 more times in the same column) or if the row indices in a column are out
-of order, then <small>COLAMD</small> can correct these errors by ignoring the duplicate
-entries and sorting each column of its internal copy of the matrix
-<var>S</var> (the input matrix <var>S</var> is not repaired, however).  If a matrix
-is invalid in other ways then <small>COLAMD</small> cannot continue, an error message
-is printed, and no output arguments (<var>p</var> or <var>stats</var>) are returned.
+of order, then <small>COLAMD</small> can correct these errors by ignoring the
+duplicate entries and sorting each column of its internal copy of the
+matrix <var>S</var> (the input matrix <var>S</var> is not repaired, however).  If a
+matrix is invalid in other ways then <small>COLAMD</small> cannot continue, an error
+message is printed, and no output arguments (<var>p</var> or <var>stats</var>) are
+returned.
 <small>COLAMD</small> is thus a simple way to check a sparse matrix to see if it&rsquo;s
 valid.
 </p>
@@ -384,7 +386,7 @@ Xerox PARC, and Esmond Ng, Oak Ridge National Laboratory.  (see
 
 
 <a name="XREFcolperm"></a><dl>
-<dt><a name="index-colperm"></a>Function File: <em><var>p</var> =</em> <strong>colperm</strong> <em>(<var>s</var>)</em></dt>
+<dt><a name="index-colperm"></a>: <em><var>p</var> =</em> <strong>colperm</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Return the column permutations such that the columns of
 <code><var>s</var> (:, <var>p</var>)</code> are ordered in terms of increasing number of
 nonzero elements.
@@ -396,16 +398,16 @@ increasing number of nonzeros elements.
 
 
 <a name="XREFcsymamd"></a><dl>
-<dt><a name="index-csymamd"></a>Loadable Function: <em><var>p</var> =</em> <strong>csymamd</strong> <em>(<var>S</var>)</em></dt>
-<dt><a name="index-csymamd-1"></a>Loadable Function: <em><var>p</var> =</em> <strong>csymamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
-<dt><a name="index-csymamd-2"></a>Loadable Function: <em><var>p</var> =</em> <strong>csymamd</strong> <em>(<var>S</var>, <var>knobs</var>, <var>cmember</var>)</em></dt>
-<dt><a name="index-csymamd-3"></a>Loadable Function: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>csymamd</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-csymamd"></a>: <em><var>p</var> =</em> <strong>csymamd</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-csymamd-1"></a>: <em><var>p</var> =</em> <strong>csymamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
+<dt><a name="index-csymamd-2"></a>: <em><var>p</var> =</em> <strong>csymamd</strong> <em>(<var>S</var>, <var>knobs</var>, <var>cmember</var>)</em></dt>
+<dt><a name="index-csymamd-3"></a>: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>csymamd</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>For a symmetric positive definite matrix <var>S</var>, return the permutation
 vector <var>p</var> such that <code><var>S</var>(<var>p</var>,<var>p</var>)</code> tends to have a
 sparser Cholesky&nbsp;factor than <var>S</var>.
 </p>
-<p>Sometimes <code>csymamd</code> works well for symmetric indefinite matrices too. 
+<p>Sometimes <code>csymamd</code> works well for symmetric indefinite matrices too.
 The matrix <var>S</var> is assumed to be symmetric; only the strictly lower
 triangular part is referenced.  <var>S</var> must be square.  The ordering is
 followed by an elimination tree post-ordering.
@@ -431,12 +433,13 @@ last in the output permutation (subject to the cmember constraints).
 </dd>
 </dl>
 
-<p><var>cmember</var> is an optional vector of length n. It defines the constraints
+<p><var>cmember</var> is an optional vector of length n.  It defines the constraints
 on the ordering.  If <code><var>cmember</var>(j) = <var>S</var></code>, then row/column j is
 in constraint set <var>c</var> (<var>c</var> must be in the range 1 to n).  In the
 output permutation <var>p</var>, rows/columns in set 1 appear first, followed
 by all rows/columns in set 2, and so on.  <code><var>cmember</var> = ones (1,n)</code>
-if not present or empty.  <code>csymamd (<var>S</var>,[],1:n)</code> returns <code>1:n</code>.
+if not present or empty.  <code>csymamd (<var>S</var>,[],1:n)</code> returns
+<code>1:n</code>.
 </p>
 <p><code><var>p</var> = csymamd (<var>S</var>)</code> is about the same as
 <code><var>p</var> = symamd (<var>S</var>)</code>.  <var>knobs</var> and its default values
@@ -465,8 +468,8 @@ ccolamd, csymamd, amd, colamd, symamd, and other related orderings.
 
 
 <a name="XREFdmperm"></a><dl>
-<dt><a name="index-dmperm"></a>Loadable Function: <em><var>p</var> =</em> <strong>dmperm</strong> <em>(<var>S</var>)</em></dt>
-<dt><a name="index-dmperm-1"></a>Loadable Function: <em>[<var>p</var>, <var>q</var>, <var>r</var>, <var>S</var>] =</em> <strong>dmperm</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-dmperm"></a>: <em><var>p</var> =</em> <strong>dmperm</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-dmperm-1"></a>: <em>[<var>p</var>, <var>q</var>, <var>r</var>, <var>S</var>] =</em> <strong>dmperm</strong> <em>(<var>S</var>)</em></dt>
 <dd>
 <a name="index-Dulmage_002dMendelsohn-decomposition"></a>
 <p>Perform a Dulmage-Mendelsohn permutation of the sparse matrix
@@ -490,27 +493,27 @@ ACM Trans. Math. Software, 16(4):303-324, 1990.
 
 
 <a name="XREFsymamd"></a><dl>
-<dt><a name="index-symamd"></a>Loadable Function: <em><var>p</var> =</em> <strong>symamd</strong> <em>(<var>S</var>)</em></dt>
-<dt><a name="index-symamd-1"></a>Loadable Function: <em><var>p</var> =</em> <strong>symamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
-<dt><a name="index-symamd-2"></a>Loadable Function: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>symamd</strong> <em>(<var>S</var>)</em></dt>
-<dt><a name="index-symamd-3"></a>Loadable Function: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>symamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
+<dt><a name="index-symamd"></a>: <em><var>p</var> =</em> <strong>symamd</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-symamd-1"></a>: <em><var>p</var> =</em> <strong>symamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
+<dt><a name="index-symamd-2"></a>: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>symamd</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-symamd-3"></a>: <em>[<var>p</var>, <var>stats</var>] =</em> <strong>symamd</strong> <em>(<var>S</var>, <var>knobs</var>)</em></dt>
 <dd>
 <p>For a symmetric positive definite matrix <var>S</var>, returns the permutation
 vector p such that <code><var>S</var>(<var>p</var>, <var>p</var>)</code> tends to have a
 sparser Cholesky&nbsp;factor than <var>S</var>.
 </p>
-<p>Sometimes <code>symamd</code> works well for symmetric indefinite matrices too. 
+<p>Sometimes <code>symamd</code> works well for symmetric indefinite matrices too.
 The matrix <var>S</var> is assumed to be symmetric; only the strictly lower
 triangular part is referenced.  <var>S</var> must be square.
 </p>
 <p><var>knobs</var> is an optional one- to two-element input vector.  If <var>S</var> is
 n-by-n, then rows and columns with more than
-<code>max (16,<var>knobs</var>(1)*sqrt(n))</code> entries are removed prior to ordering,
-and ordered last in the output permutation <var>p</var>.  No rows/columns are
-removed if <code><var>knobs</var>(1) &lt; 0</code>.  If <code><var>knobs</var> (2)</code> is nonzero,
-<code>stats</code> and <var>knobs</var> are printed.  The default is
-<code><var>knobs</var> = [10 0]</code>.  Note that <var>knobs</var> differs from earlier
-versions of <code>symamd</code>.
+<code>max (16,<var>knobs</var>(1)*sqrt(n))</code> entries are removed prior to
+ordering, and ordered last in the output permutation <var>p</var>.  No
+rows/columns are removed if <code><var>knobs</var>(1) &lt; 0</code>.  If
+<code><var>knobs</var> (2)</code> is nonzero, <code>stats</code> and <var>knobs</var> are
+printed.  The default is <code><var>knobs</var> = [10 0]</code>.  Note that
+<var>knobs</var> differs from earlier versions of <code>symamd</code>.
 </p>
 <p><var>stats</var> is an optional 20-element output vector that provides data
 about the ordering and the validity of the input matrix <var>S</var>.  Ordering
@@ -556,7 +559,7 @@ Xerox PARC, and Esmond Ng, Oak Ridge National Laboratory.  (see
 
 
 <a name="XREFsymrcm"></a><dl>
-<dt><a name="index-symrcm"></a>Loadable Function: <em><var>p</var> =</em> <strong>symrcm</strong> <em>(<var>S</var>)</em></dt>
+<dt><a name="index-symrcm"></a>: <em><var>p</var> =</em> <strong>symrcm</strong> <em>(<var>S</var>)</em></dt>
 <dd><p>Return the symmetric reverse Cuthill-McKee permutation of <var>S</var>.
 </p>
 <p><var>p</var> is a permutation vector such that

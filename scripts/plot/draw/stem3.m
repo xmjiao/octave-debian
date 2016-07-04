@@ -17,17 +17,18 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} stem3 (@var{x}, @var{y}, @var{z})
-## @deftypefnx {Function File} {} stem3 (@dots{}, @var{linespec})
-## @deftypefnx {Function File} {} stem3 (@dots{}, "filled")
-## @deftypefnx {Function File} {} stem3 (@dots{}, @var{prop}, @var{val}, @dots{})
-## @deftypefnx {Function File} {} stem3 (@var{hax}, @dots{})
-## @deftypefnx {Function File} {@var{h} =} stem3 (@dots{})
+## @deftypefn  {} {} stem3 (@var{x}, @var{y}, @var{z})
+## @deftypefnx {} {} stem3 (@dots{}, @var{linespec})
+## @deftypefnx {} {} stem3 (@dots{}, "filled")
+## @deftypefnx {} {} stem3 (@dots{}, @var{prop}, @var{val}, @dots{})
+## @deftypefnx {} {} stem3 (@var{hax}, @dots{})
+## @deftypefnx {} {@var{h} =} stem3 (@dots{})
 ## Plot a 3-D stem graph.
 ##
 ## Stems are drawn from the height @var{z} to the location in the x-y plane
 ## determined by @var{x} and @var{y}.  The default color is @qcode{"b"} (blue),
-## the default line style is @qcode{"-"}, and the default marker is @qcode{"o"}.
+## the default line style is @qcode{"-"}, and the default marker is
+## @qcode{"o"}.
 ##
 ## The line style can be altered by the @code{linespec} argument in the same
 ## manner as the @code{plot} command.  If the @qcode{"filled"} argument is
@@ -86,7 +87,7 @@ endfunction
 %!error <X, Y, and Z must be numeric> stem3 ({1}, 1, 1)
 %!error <X, Y, and Z must be numeric> stem3 (1, {1}, 1)
 %!error <X, Y, and Z must be numeric> stem3 (1, 1, {1})
-%!error <inconsistent sizes for X, Y, and Z> stem3 (ones (2,2), 1, 1);
-%!error <inconsistent sizes for X, Y, and Z> stem3 (1, ones (2,2), 1);
-%!error <inconsistent sizes for X, Y, and Z> stem3 (1, 1, ones (2,2));
+%!error <inconsistent sizes for X, Y, and Z> stem3 (ones (2,2), 1, 1)
+%!error <inconsistent sizes for X, Y, and Z> stem3 (1, ones (2,2), 1)
+%!error <inconsistent sizes for X, Y, and Z> stem3 (1, 1, ones (2,2))
 %!error <No value specified for property "FOO"> stem3 (1, "FOO")

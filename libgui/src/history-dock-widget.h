@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifndef HISTORYDOCKWIDGET_H
-#define HISTORYDOCKWIDGET_H
+#if ! defined (octave_history_dock_widget_h)
+#define octave_history_dock_widget_h 1
 
 #include <QLineEdit>
 #include <QListView>
@@ -67,6 +67,7 @@ private slots:
   void handle_contextmenu_copy (bool flag);
   void handle_contextmenu_evaluate (bool flag);
   void handle_contextmenu_create_script (bool flag);
+  void handle_contextmenu_filter (void);
   void ctxMenu (const QPoint &pos);
 
   void copyClipboard ();
@@ -86,7 +87,9 @@ private:
 
   QCheckBox *_filter_checkbox;
   QComboBox *_filter;
+  QWidget *_filter_widget;
+  bool _filter_shown;
   enum { MaxFilterHistory = 10 };
 };
 
-#endif // HISTORYDOCKWIDGET_H
+#endif

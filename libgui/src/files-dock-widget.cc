@@ -21,8 +21,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include "resource-manager.h"
@@ -68,6 +68,22 @@ files_dock_widget::files_dock_widget (QWidget *p)
   setWindowIcon (QIcon (":/actions/icons/logo.png"));
   set_title (tr ("File Browser"));
   setToolTip (tr ("Browse your files"));
+
+  _sig_mapper = 0;
+
+  _columns_shown = QStringList ();
+  _columns_shown.append (tr ("File size"));
+  _columns_shown.append (tr ("File type"));
+  _columns_shown.append (tr ("Date modified"));
+  _columns_shown.append (tr ("Show hidden"));
+  _columns_shown.append (tr ("Alternating row colors"));
+
+  _columns_shown_keys = QStringList ();
+  _columns_shown_keys.append (tr ("filesdockwidget/showFileSize"));
+  _columns_shown_keys.append (tr ("filesdockwidget/showFileType"));
+  _columns_shown_keys.append (tr ("filesdockwidget/showLastModified"));
+  _columns_shown_keys.append (tr ("filesdockwidget/showHiddenFiles"));
+  _columns_shown_keys.append (tr ("filesdockwidget/useAlternatingRowColors"));
 
   QWidget *container = new QWidget (this);
 
@@ -180,15 +196,6 @@ files_dock_widget::files_dock_widget (QWidget *p)
     }
 
   _file_system_model = new QFileSystemModel (this);
-  if (settings->value ("filesdockwidget/showHiddenFiles",false).toBool ())
-    {
-      _file_system_model->setFilter (QDir::NoDotAndDotDot | QDir::AllEntries
-                                     | QDir::Hidden);
-    }
-  else
-    {
-      _file_system_model->setFilter (QDir::NoDotAndDotDot | QDir::AllEntries);
-    }
   QModelIndex rootPathIndex = _file_system_model->setRootPath (
                                 startup_dir.absolutePath ());
 
@@ -244,8 +251,8 @@ files_dock_widget::files_dock_widget (QWidget *p)
 
   container->setLayout (vbox_layout);
 
-  // TODO: Add right-click contextual menus for copying, pasting,
-  //       deleting files (and others).
+  // FIXME: Add right-click contextual menus for copying, pasting,
+  //        deleting files (and others).
 
   connect (_current_directory->lineEdit (), SIGNAL (returnPressed ()),
            this, SLOT (accept_directory_line_edit ()));
@@ -283,6 +290,9 @@ files_dock_widget::~files_dock_widget ()
   settings->setValue ("filesdockwidget/mru_dir_list", dirs);
 
   settings->sync ();
+
+  if (_sig_mapper)
+    delete _sig_mapper;
 }
 
 void
@@ -349,7 +359,6 @@ files_dock_widget::display_directory (const QString& dir, bool set_octave_dir)
           _file_tree_view->setRootIndex (_file_system_model->
                                          index (fileInfo.absoluteFilePath ()));
           _file_system_model->setRootPath (fileInfo.absoluteFilePath ());
-          _file_system_model->sort (0, Qt::AscendingOrder);
           if (_sync_octave_dir && set_octave_dir)
             process_set_current_dir (fileInfo.absoluteFilePath ());
 
@@ -368,12 +377,21 @@ files_dock_widget::display_directory (const QString& dir, bool set_octave_dir)
         {
           QString abs_fname = fileInfo.absoluteFilePath ();
 
+          QString suffix = fileInfo.suffix ().toLower ();
+          QSettings *settings = resource_manager::get_settings ();
+          QString ext = settings->value ("filesdockwidget/txt_file_extensions",
+                                         "m;c;cc;cpp;h;txt").toString ();
+          QStringList extensions = ext.split(";", QString::SkipEmptyParts);
+
           if (QFile::exists (abs_fname))
             {
               if (is_octave_data_file (abs_fname.toStdString ()))
                 emit load_file_signal (abs_fname);
-              else
+              else if (extensions.contains (suffix))
                 emit open_file (fileInfo.absoluteFilePath ());
+              else
+                open_item_in_app (_file_tree_view->selectionModel ()
+                                  ->currentIndex ());
             }
         }
     }
@@ -390,44 +408,29 @@ files_dock_widget::open_item_in_app (const QModelIndex& index)
   QDesktopServices::openUrl (QUrl::fromLocalFile (file));
 }
 
-void files_dock_widget::toggle_headercontextitem_filesize ()
+void files_dock_widget::toggle_header (int col)
 {
   QSettings *settings = resource_manager::get_settings ();
-  settings->setValue
-    ("filesdockwidget/showFileSize",
-     ! settings->value ("filesdockwidget/showFileSize",false).toBool ());
-  settings->sync ();
-  this->notice_settings (settings);
-}
 
-void files_dock_widget::toggle_headercontextitem_filetype ()
-{
-  QSettings *settings = resource_manager::get_settings ();
-  settings->setValue
-    ("filesdockwidget/showFileType",
-     ! settings->value ("filesdockwidget/showFileType",false).toBool ());
+  QString key = _columns_shown_keys.at (col);
+  bool shown = settings->value (key,false).toBool ();
+  settings->setValue (key, ! shown);
   settings->sync ();
-  this->notice_settings (settings);
-}
 
-void files_dock_widget::toggle_headercontextitem_datemodified ()
-{
-  QSettings *settings = resource_manager::get_settings ();
-  settings->setValue
-    ("filesdockwidget/showLastModified",
-     ! settings->value ("filesdockwidget/showLastModified",false).toBool ());
-  settings->sync ();
-  this->notice_settings (settings);
-}
-
-void files_dock_widget::toggle_headercontextitem_showhidden ()
-{
-  QSettings *settings = resource_manager::get_settings ();
-  settings->setValue
-    ("filesdockwidget/showHiddenFiles",
-     ! settings->value ("filesdockwidget/showHiddenFiles",false).toBool ());
-  settings->sync ();
-  this->notice_settings (settings);
+  switch (col)
+    {
+      case 0:
+      case 1:
+      case 2:
+        // toggle column visibility
+        _file_tree_view->setColumnHidden (col + 1, shown);
+        break;
+      case 3:
+      case 4:
+        // other actions depending on new settings
+        notice_settings (settings);
+        break;
+    }
 }
 
 void
@@ -435,39 +438,23 @@ files_dock_widget::headercontextmenu_requested (const QPoint& mpos)
 {
   QMenu menu (this);
 
+  if (_sig_mapper)
+    delete _sig_mapper;
+  _sig_mapper = new QSignalMapper (this);
+
   QSettings *settings = resource_manager::get_settings ();
 
-  QAction fileSizeAction (tr ("File size"), &menu);
-  fileSizeAction.setCheckable (true);
-  fileSizeAction.setChecked (
-    settings->value ("filesdockwidget/showFileSize",false).toBool ());
-  connect (&fileSizeAction, SIGNAL(triggered ()),
-           this, SLOT (toggle_headercontextitem_filesize ()));
-  menu.addAction (&fileSizeAction);
+  for (int i = 0; i < _columns_shown.size (); i++)
+    {
+      QAction *action = menu.addAction (_columns_shown.at (i),
+                                        _sig_mapper, SLOT (map ()));
+      _sig_mapper->setMapping(action, i);
+      action->setCheckable (true);
+      action->setChecked (
+            settings->value (_columns_shown_keys.at (i),true).toBool ());
+    }
 
-  QAction fileTypeAction (tr ("File type"), &menu);
-  fileTypeAction.setCheckable (true);
-  fileTypeAction.setChecked (
-    settings->value ("filesdockwidget/showFileType",false).toBool ());
-  connect (&fileTypeAction, SIGNAL(triggered ()),
-           this, SLOT (toggle_headercontextitem_filetype ()));
-  menu.addAction (&fileTypeAction);
-
-  QAction dateModifiedAction (tr ("Date modified"), &menu);
-  dateModifiedAction.setCheckable (true);
-  dateModifiedAction.setChecked(
-    settings->value ("filesdockwidget/showLastModified",false).toBool ());
-  connect (&dateModifiedAction, SIGNAL(triggered ()),
-           this, SLOT (toggle_headercontextitem_datemodified ()));
-  menu.addAction (&dateModifiedAction);
-
-  QAction showHiddenAction (tr ("Show hidden"), &menu);
-  showHiddenAction.setCheckable (true);
-  showHiddenAction.setChecked (
-    settings->value ("filesdockwidget/showHiddenFiles",false).toBool ());
-  connect (&showHiddenAction, SIGNAL (triggered ()),
-           this, SLOT (toggle_headercontextitem_showhidden ()));
-  menu.addAction (&showHiddenAction);
+  connect (_sig_mapper, SIGNAL (mapped (int)), this, SLOT (toggle_header (int)));
 
   menu.exec (_file_tree_view->mapToGlobal (mpos));
 }
@@ -499,8 +486,15 @@ files_dock_widget::contextmenu_requested (const QPoint& mpos)
       menu.addAction (resource_manager::icon ("document-open"), tr ("Open"),
                       this, SLOT (contextmenu_open (bool)));
 
-      menu.addAction (tr ("Open in Default Application"),
-                      this, SLOT (contextmenu_open_in_app (bool)));
+      if (info.isDir ())
+        {
+          menu.addAction (tr ("Open in System File Explorer"),
+                          this, SLOT (contextmenu_open_in_app (bool)));
+        }
+
+      if (info.isFile ())
+        menu.addAction (tr ("Open in Text Editor"),
+                        this, SLOT (contextmenu_open_in_editor (bool)));
 
       menu.addAction (tr ("Copy Selection to Clipboard"),
                       this, SLOT (contextmenu_copy_selection (bool)));
@@ -557,12 +551,22 @@ files_dock_widget::contextmenu_open (bool)
     {
       QFileInfo file = _file_system_model->fileInfo (*it);
       if (file.exists ())
-        {
-          if (file.isFile ())
-            emit open_file (file.absoluteFilePath ());
-          else
-            set_current_directory (file.absoluteFilePath ());
-        }
+        display_directory (file.absoluteFilePath ());
+    }
+}
+
+void
+files_dock_widget::contextmenu_open_in_editor (bool)
+{
+
+  QItemSelectionModel *m = _file_tree_view->selectionModel ();
+  QModelIndexList rows = m->selectedRows ();
+
+  for (QModelIndexList::iterator it = rows.begin (); it != rows.end (); it++)
+    {
+      QFileInfo file = _file_system_model->fileInfo (*it);
+      if (file.exists ())
+        emit open_file (file.absoluteFilePath ());
     }
 }
 
@@ -672,7 +676,7 @@ files_dock_widget::contextmenu_delete (bool)
       if (QMessageBox::question (this, tr ("Delete file/directory"),
                                  tr ("Are you sure you want to delete\n")
                                  + info.filePath (),
-                                 QMessageBox::Yes|QMessageBox::No)
+                                 QMessageBox::Yes | QMessageBox::No)
           == QMessageBox::Yes)
         {
           if (info.isDir ())
@@ -787,33 +791,27 @@ files_dock_widget::notice_settings (const QSettings *settings)
 
   _navigation_tool_bar->setIconSize (QSize (icon_size,icon_size));
 
-  // file names are always shown, other columns can be hidden by settings
-  _file_tree_view->setColumnHidden (0, false);
-  _file_tree_view->setColumnHidden (1,
-    ! settings->value ("filesdockwidget/showFileSize",false).toBool ());
-  _file_tree_view->setColumnHidden (2,
-    ! settings->value ("filesdockwidget/showFileType",false).toBool ());
-  _file_tree_view->setColumnHidden (3,
-    ! settings->value ("filesdockwidget/showLastModified",false).toBool ());
-  _file_tree_view->setAlternatingRowColors (
-    settings->value ("filesdockwidget/useAlternatingRowColors",true).toBool ());
-  if (settings->value ("filesdockwidget/showHiddenFiles",false).toBool ())
-    {
+  // filenames are always shown, other columns can be hidden by settings
+  for (int i = 0; i < 3; i++)
+     _file_tree_view->setColumnHidden (i + 1, ! settings->value (
+                                  _columns_shown_keys.at (i),false).toBool ());
+
+  if (settings->value (_columns_shown_keys.at (3),false).toBool ())
       _file_system_model->setFilter (QDir::NoDotAndDotDot | QDir::AllEntries
                                      | QDir::Hidden);
-    }
   else
-    {
       _file_system_model->setFilter (QDir::NoDotAndDotDot | QDir::AllEntries);
-    }
+
+  _file_tree_view->setAlternatingRowColors (
+    settings->value (_columns_shown_keys.at (4),true).toBool ());
   _file_tree_view->setModel (_file_system_model);
 
   // enable the buttons to sync octave/browser dir
   // only if this is not done by default
   _sync_octave_dir
     = settings->value ("filesdockwidget/sync_octave_directory",false).toBool ();
-  _sync_octave_directory_action->setEnabled (!_sync_octave_dir);
-  _sync_browser_directory_action->setEnabled (!_sync_octave_dir);
+  _sync_octave_directory_action->setEnabled (! _sync_octave_dir);
+  _sync_browser_directory_action->setEnabled (! _sync_octave_dir);
 
   if (_sync_octave_dir)
     display_directory (_octave_dir);  // sync browser to octave dir
@@ -823,7 +821,7 @@ files_dock_widget::notice_settings (const QSettings *settings)
 void
 files_dock_widget::popdownmenu_home (bool)
 {
-  QString dir = QString::fromStdString (octave_env::get_home_directory ());
+  QString dir = QString::fromStdString (octave::sys::env::get_home_directory ());
 
   if (dir.isEmpty ())
     dir = QDir::homePath ();
@@ -926,7 +924,7 @@ files_dock_widget::pasteClipboard ()
   if (_current_directory->hasFocus ())
     {
       QClipboard *clipboard = QApplication::clipboard ();
-      QString str =  clipboard->text ();
+      QString str = clipboard->text ();
       QLineEdit * edit = _current_directory->lineEdit ();
       if (edit && str.length () > 0)
         edit->insert (str);

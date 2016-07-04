@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 // Instantiate MArrays of short int values.
@@ -32,7 +32,7 @@ along with Octave; see the file COPYING.  If not, see
 template class OCTAVE_API MArray<short>;
 
 // Explicit instantiation, as this seems to be required by weird compilers
-// like MSVC. This should be harmless on other compilers.
+// like MSVC.  This should be harmless on other compilers.
 template short xmin<short> (short, short);
 template short xmax<short> (short, short);
 

@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_oct_rl_edit_h)
+#if ! defined (octave_oct_rl_edit_h)
 #define octave_oct_rl_edit_h 1
+
+#include "octave-config.h"
 
 typedef int (*rl_startup_hook_fcn_ptr) (void);
 
@@ -35,6 +37,8 @@ typedef char ** (*rl_attempted_completion_fcn_ptr) (const char *, int, int);
 
 typedef char * (*rl_completer_fcn_ptr) (const char *, int);
 
+typedef char * (*rl_completion_hook_fcn_ptr) (void);
+
 typedef char * (*rl_quoting_fcn_ptr) (char *, int, char *);
 
 typedef char * (*rl_dequoting_fcn_ptr) (char *, int);
@@ -43,7 +47,7 @@ typedef int (*rl_char_is_quoted_fcn_ptr) (char *, int);
 
 typedef int (*rl_command_fcn_ptr) (int, int);
 
-#ifdef __cplusplus
+#if defined (__cplusplus)
 extern "C"
 {
 #endif
@@ -116,6 +120,10 @@ extern void octave_rl_set_basic_word_break_characters (const char *);
 
 extern void octave_rl_set_completer_word_break_characters (const char *);
 
+extern char *octave_rl_get_completer_word_break_characters (void);
+
+extern void octave_rl_set_completion_word_break_hook (rl_completion_hook_fcn_ptr);
+
 extern void octave_rl_set_basic_quote_characters (const char *);
 
 extern void octave_rl_set_filename_quote_characters (const char *);
@@ -154,7 +162,7 @@ extern char octave_rl_prompt_start_ignore (void);
 
 extern char octave_rl_prompt_end_ignore (void);
 
-extern void octave_rl_add_defun (const char *, rl_fcn_ptr, char);
+extern void octave_rl_add_defun (const char *, rl_fcn_ptr, int);
 
 extern void octave_rl_set_terminal_name (const char *);
 
@@ -164,11 +172,11 @@ extern int octave_rl_history_search_forward (int, int);
 
 extern int octave_rl_history_search_backward (int, int);
 
-extern char octave_rl_ctrl (char);
+extern int octave_rl_ctrl (char);
 
-extern char octave_rl_meta (char);
+extern int octave_rl_meta (char);
 
-#ifdef __cplusplus
+#if defined (__cplusplus)
 }
 #endif
 

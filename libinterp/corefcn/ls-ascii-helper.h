@@ -20,8 +20,10 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_ls_ascii_helper_h)
+#if ! defined (octave_ls_ascii_helper_h)
 #define octave_ls_ascii_helper_h 1
+
+#include "octave-config.h"
 
 #include <iosfwd>
 #include <string>

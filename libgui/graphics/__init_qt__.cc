@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QApplication>
@@ -82,6 +82,15 @@ __init__ (void)
           root.set ("defaultuipanelhighlightcolor",
                     octave_value (Utils::toRgb (p.color (QPalette::Light))));
           root.set ("defaultuipanelshadowcolor",
+                    octave_value (Utils::toRgb (p.color (QPalette::Dark))));
+          root.set ("defaultuibuttongroupbackgroundcolor",
+                    octave_value (Utils::toRgb (p.color (QPalette::Window))));
+          root.set ("defaultuibuttongroupforegroundcolor",
+                    octave_value (Utils::toRgb
+                                  (p.color (QPalette::WindowText))));
+          root.set ("defaultuibuttongrouphighlightcolor",
+                    octave_value (Utils::toRgb (p.color (QPalette::Light))));
+          root.set ("defaultuibuttongroupshadowcolor",
                     octave_value (Utils::toRgb (p.color (QPalette::Dark))));
 
           qtHandlesInitialized = true;
@@ -190,7 +199,7 @@ DEFUN (__uigetfile_qt__, args, , "")
   // Expected arguments:
   //   args(0) : File filter as a cell array {ext1, name1; ext2, name2; ...}
   //   args(1) : Dialog title
-  //   args(2) : Default file name
+  //   args(2) : Default filename
   //   args(3) : Dialog position [ignored]
   //   args(4) : Multiselection "on"/"off"
   //   args(5) : Default directory
@@ -272,7 +281,7 @@ DEFUN (__uiputfile_qt__, args, , "")
   // Expected arguments:
   //   args(0) : File filter as a cell array {ext1, name1; ext2, name2; ...}
   //   args(1) : Dialog title
-  //   args(2) : Default file name
+  //   args(2) : Default filename
   //   args(3) : Dialog position [ignored]
   //   args(4) : Tag [ignored]
   //   args(5) : Default directory

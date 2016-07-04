@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <string>
@@ -30,7 +30,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "version.h"
 
 static std::string
-octave_warranty_statement (const std::string& extra_info = std::string ())
+octave_warranty_statement (const std::string& extra_info = "")
 {
   return "There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or\n\
 FITNESS FOR A PARTICULAR PURPOSE."

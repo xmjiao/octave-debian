@@ -21,8 +21,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <iostream>
@@ -130,10 +130,10 @@ profile_data_accumulator::tree_node::build_flat (flat_profile& data) const
 octave_value
 profile_data_accumulator::tree_node::get_hierarchical (double* total) const
 {
-  /* Note that we don't generate the entry just for this node, but rather
-     a struct-array with entries for all children.  This way, the top-node
-     (for which we don't want a real entry) generates already the final
-     hierarchical profile data.  */
+  // Note that we don't generate the entry just for this node, but
+  // rather a struct-array with entries for all children.  This way, the
+  // top-node (for which we don't want a real entry) generates already
+  // the final hierarchical profile data.
 
   const octave_idx_type n = children.size ();
 
@@ -265,10 +265,7 @@ void
 profile_data_accumulator::reset (void)
 {
   if (is_active ())
-    {
-      error ("Can't reset active profiler.");
-      return;
-    }
+    error ("Can't reset active profiler.");
 
   known_functions.clear ();
   fcn_index.clear ();
@@ -373,7 +370,7 @@ profile_data_accumulator::get_hierarchical (void) const
 double
 profile_data_accumulator::query_time (void) const
 {
-  octave_time now;
+  octave::sys::time now;
 
   // FIXME: is this volatile declaration really needed?
   // See bug #34210 for additional details.
@@ -396,65 +393,50 @@ profile_data_accumulator profiler;
 
 // Enable or disable the profiler data collection.
 DEFUN (__profiler_enable__, args, ,
-       "-*- texinfo -*-\n\
-@deftypefn {Function File} {} __profiler_enable__ ()\n\
-Undocumented internal function.\n\
-@end deftypefn")
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} __profiler_enable__ ()
+Undocumented internal function.
+@end deftypefn */)
 {
-  octave_value_list retval;
+  int nargin = args.length ();
 
-  const int nargin = args.length ();
+  if (nargin > 1)
+    print_usage ();
+
   if (nargin > 0)
-    {
-      if (nargin > 1)
-        {
-          print_usage ();
-          return retval;
-        }
+    profiler.set_active (args(0).bool_value ());
 
-      profiler.set_active (args(0).bool_value ());
-    }
-
-  retval(0) = profiler.is_active ();
-
-  return retval;
+  return ovl (profiler.is_active ());
 }
 
 // Clear all collected profiling data.
 DEFUN (__profiler_reset__, args, ,
-       "-*- texinfo -*-\n\
-@deftypefn {Function File} {} __profiler_reset__ ()\n\
-Undocumented internal function.\n\
-@end deftypefn")
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} __profiler_reset__ ()
+Undocumented internal function.
+@end deftypefn */)
 {
-  octave_value_list retval;
-  const int nargin = args.length ();
-
-  if (nargin > 0)
+  if (args.length () > 0)
     warning ("profiler_reset: ignoring extra arguments");
 
   profiler.reset ();
 
-  return retval;
+  return ovl ();
 }
 
 // Query the timings collected by the profiler.
 DEFUN (__profiler_data__, args, nargout,
-       "-*- texinfo -*-\n\
-@deftypefn {Function File} {} __profiler_data__ ()\n\
-Undocumented internal function.\n\
-@end deftypefn")
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} __profiler_data__ ()
+Undocumented internal function.
+@end deftypefn */)
 {
-  octave_value_list retval;
-  const int nargin = args.length ();
-
-  if (nargin > 0)
+  if (args.length () > 0)
     warning ("profiler_data: ignoring extra arguments");
 
   if (nargout > 1)
-    retval(1) = profiler.get_hierarchical ();
-  retval(0) = profiler.get_flat ();
-
-  return retval;
+    return ovl (profiler.get_flat (), profiler.get_hierarchical ());
+  else
+    return ovl (profiler.get_flat ());
 }
 

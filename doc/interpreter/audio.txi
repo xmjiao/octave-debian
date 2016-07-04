@@ -42,6 +42,8 @@ wav, flac and ogg vorbis.
 
 @DOCSTRING(audiowrite)
 
+@DOCSTRING(audioformats)
+
 @node Audio Device Information
 @section Audio Device Information
 
@@ -182,6 +184,3 @@ files holding data in mu-law encoding end in @file{au}, @file{mu}, or
 
 @DOCSTRING(soundsc)
 
-@DOCSTRING(wavread)
-
-@DOCSTRING(wavwrite)

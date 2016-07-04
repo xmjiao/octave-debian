@@ -20,12 +20,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
-#include "gripes.h"
-#include "oct-obj.h"
+#include "errwarn.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-bool-mat.h"
 #include "ov-scalar.h"
@@ -58,15 +58,12 @@ DEFNCUNOP_METHOD (invert, bool_matrix, invert)
 
 DEFUNOP (transpose, bool_matrix)
 {
-  CAST_UNOP_ARG (const octave_bool_matrix&);
+  const octave_bool_matrix& v = dynamic_cast<const octave_bool_matrix&> (a);
 
   if (v.ndims () > 2)
-    {
-      error ("transpose not defined for N-d objects");
-      return octave_value ();
-    }
-  else
-    return octave_value (v.bool_matrix_value ().transpose ());
+    error ("transpose not defined for N-D objects");
+
+  return octave_value (v.bool_matrix_value ().transpose ());
 }
 
 // bool matrix by bool matrix ops.
@@ -120,8 +117,7 @@ oct_assignop_conv_and_assign (octave_base_value& a1,
 
   boolNDArray v2 = a2.bool_array_value (true);
 
-  if (! error_state)
-    v1.assign (idx, v2);
+  v1.assign (idx, v2);
 
   return octave_value ();
 }

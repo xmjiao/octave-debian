@@ -17,13 +17,13 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} bar (@var{y})
-## @deftypefnx {Function File} {} bar (@var{x}, @var{y})
-## @deftypefnx {Function File} {} bar (@dots{}, @var{w})
-## @deftypefnx {Function File} {} bar (@dots{}, @var{style})
-## @deftypefnx {Function File} {} bar (@dots{}, @var{prop}, @var{val}, @dots{})
-## @deftypefnx {Function File} {} bar (@var{hax}, @dots{})
-## @deftypefnx {Function File} {@var{h} =} bar (@dots{}, @var{prop}, @var{val}, @dots{})
+## @deftypefn  {} {} bar (@var{y})
+## @deftypefnx {} {} bar (@var{x}, @var{y})
+## @deftypefnx {} {} bar (@dots{}, @var{w})
+## @deftypefnx {} {} bar (@dots{}, @var{style})
+## @deftypefnx {} {} bar (@dots{}, @var{prop}, @var{val}, @dots{})
+## @deftypefnx {} {} bar (@var{hax}, @dots{})
+## @deftypefnx {} {@var{h} =} bar (@dots{}, @var{prop}, @var{val}, @dots{})
 ## Produce a bar graph from two vectors of X-Y data.
 ##
 ## If only one argument is given, @var{y}, it is taken as a vector of Y values
@@ -40,7 +40,8 @@
 ##
 ## @table @asis
 ## @item @qcode{"grouped"} (default)
-## Side-by-side bars with a gap between bars and centered over the X-coordinate.
+## Side-by-side bars with a gap between bars and centered over the
+## X-coordinate.
 ##
 ## @item  @qcode{"stacked"}
 ## Bars are stacked so that each X value has a single bar composed of

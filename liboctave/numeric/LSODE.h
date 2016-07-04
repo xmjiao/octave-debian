@@ -20,13 +20,14 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if !defined (octave_LSODE_h)
+#if ! defined (octave_LSODE_h)
 #define octave_LSODE_h 1
+
+#include "octave-config.h"
 
 #include <cfloat>
 
 #include "LSODE-opts.h"
-#include "lo-math.h"
 
 class
 OCTAVE_API

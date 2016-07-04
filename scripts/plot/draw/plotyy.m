@@ -17,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} plotyy (@var{x1}, @var{y1}, @var{x2}, @var{y2})
-## @deftypefnx {Function File} {} plotyy (@dots{}, @var{fun})
-## @deftypefnx {Function File} {} plotyy (@dots{}, @var{fun1}, @var{fun2})
-## @deftypefnx {Function File} {} plotyy (@var{hax}, @dots{})
-## @deftypefnx {Function File} {[@var{ax}, @var{h1}, @var{h2}] =} plotyy (@dots{})
+## @deftypefn  {} {} plotyy (@var{x1}, @var{y1}, @var{x2}, @var{y2})
+## @deftypefnx {} {} plotyy (@dots{}, @var{fun})
+## @deftypefnx {} {} plotyy (@dots{}, @var{fun1}, @var{fun2})
+## @deftypefnx {} {} plotyy (@var{hax}, @dots{})
+## @deftypefnx {} {[@var{ax}, @var{h1}, @var{h2}] =} plotyy (@dots{})
 ## Plot two sets of data with independent y-axes and a common x-axis.
 ##
 ## The arguments @var{x1} and @var{y1} define the arguments for the first plot
@@ -112,7 +112,7 @@ function [ax, h1, h2] = __plotyy__ (ax, x1, y1, x2, y2, fun1 = @plot, fun2)
 
   h1 = feval (fun1, x1, y1);
 
-  set (ax(1), "color", "none", "ycolor", getcolor (h1(1)), "xlim", xlim);
+  set (ax(1), "ycolor", getcolor (h1(1)), "xlim", xlim);
 
   set (gcf (), "nextplot", "add");
 
@@ -181,7 +181,7 @@ function [ax, h1, h2] = __plotyy__ (ax, x1, y1, x2, y2, fun1 = @plot, fun2)
   elseif (ishandle (ax(1)))
     set (ax(1), "__plotyy_axes__", ax);
   else
-    error ("plotyy.m: This shouldn't happen. File a bug report.");
+    error ("plotyy.m: This shouldn't happen.  File a bug report.");
   endif
   if (ishandle (ax(2)) && ! isprop (ax(2), "__plotyy_axes__"))
     addproperty ("__plotyy_axes__", ax(2), "data");
@@ -189,8 +189,9 @@ function [ax, h1, h2] = __plotyy__ (ax, x1, y1, x2, y2, fun1 = @plot, fun2)
   elseif (ishandle (ax(2)))
     set (ax(2), "__plotyy_axes__", ax);
   else
-    error ("plotyy.m: This shouldn't happen. File a bug report.");
+    error ("plotyy.m: This shouldn't happen.  File a bug report.");
   endif
+
 endfunction
 
 function deleteplotyy (h, ~, ax2, t2)
@@ -204,6 +205,7 @@ endfunction
 
 function update_nextplot (h, ~, ax2)
   persistent recursion = false;
+
   if (! recursion)
     unwind_protect
       recursion = true;
@@ -212,6 +214,7 @@ function update_nextplot (h, ~, ax2)
       recursion = false;
     end_unwind_protect
   endif
+
 endfunction
 
 function update_position (h, ~, ax2)
@@ -252,9 +255,11 @@ function update_position (h, ~, ax2)
       recursion = false;
     end_unwind_protect
   endif
+
 endfunction
 
 function color = getcolor (ax)
+
   obj = get (ax);
   if (isfield (obj, "color"))
     color = obj.color;
@@ -265,6 +270,7 @@ function color = getcolor (ax)
   else
     color = [0, 0, 0];
   endif
+
 endfunction
 
 
@@ -298,7 +304,7 @@ endfunction
 %! axis square;
 
 %!demo
-%! clf
+%! clf;
 %! hold on
 %! t = (0:0.1:9);
 %! x = sin (t);

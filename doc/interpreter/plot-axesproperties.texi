@@ -62,6 +62,12 @@ Light is not yet implemented for axes objects.  @code{ambientlightcolor} is unus
 Control whether the axes has a surrounding box.
 
 
+@anchor{XREFaxesboxstyle}
+@cindex axes boxstyle
+@item @code{boxstyle}: @{@qcode{"back"}@} | @qcode{"full"}
+@code{boxstyle} is unused.
+
+
 @anchor{XREFaxesbusyaction}
 @cindex axes busyaction
 @item @code{busyaction}: @qcode{"cancel"} | @{@qcode{"queue"}@}
@@ -146,6 +152,12 @@ Define the limits for the color axis of image children.  Setting @code{clim} als
 @code{clipping} is unused.
 
 
+@anchor{XREFaxesclippingstyle}
+@cindex axes clippingstyle
+@item @code{clippingstyle}: @{@qcode{"3dbox"}@} | @qcode{"rectangle"}
+@code{clippingstyle} is unused.
+
+
 @anchor{XREFaxescolor}
 @cindex axes color
 @item @code{color}: colorspec, def. @code{[1   1   1]}
@@ -156,6 +168,12 @@ Color of the axes background.  @xref{Colors, , colorspec}.
 @cindex axes colororder
 @item @code{colororder}: N-by-3 RGB matrix, def. 7-by-3 double
 RGB values used by plot function for automatic line coloring.
+
+
+@anchor{XREFaxescolororderindex}
+@cindex axes colororderindex
+@item @code{colororderindex}: def. @code{1}
+@code{colororderindex} is unused.
 
 
 @anchor{XREFaxescreatefcn}
@@ -196,7 +214,7 @@ Callback function executed immediately before axes is deleted.
 
 @anchor{XREFaxesfontangle}
 @cindex axes fontangle
-@item @code{fontangle}: @qcode{"italic"} | @{@qcode{"normal"}@} | @qcode{"oblique"}
+@item @code{fontangle}: @qcode{"italic"} | @{@qcode{"normal"}@}
 
 
 
@@ -212,6 +230,12 @@ Name of the font used for axes annotations.
 Size of the font used for axes annotations.  @xref{XREFaxesfontunits, , @w{fontunits property}}.
 
 
+@anchor{XREFaxesfontsmoothing}
+@cindex axes fontsmoothing
+@item @code{fontsmoothing}: @qcode{"off"} | @{@qcode{"on"}@}
+@code{fontsmoothing} is unused.
+
+
 @anchor{XREFaxesfontunits}
 @cindex axes fontunits
 @item @code{fontunits}: @qcode{"centimeters"} | @qcode{"inches"} | @qcode{"normalized"} | @qcode{"pixels"} | @{@qcode{"points"}@}
@@ -220,8 +244,32 @@ Unit used to interpret @code{fontsize} property.
 
 @anchor{XREFaxesfontweight}
 @cindex axes fontweight
-@item @code{fontweight}: @qcode{"bold"} | @qcode{"demi"} | @qcode{"light"} | @{@qcode{"normal"}@}
+@item @code{fontweight}: @qcode{"bold"} | @{@qcode{"normal"}@}
 
+
+
+@anchor{XREFaxesgridalpha}
+@cindex axes gridalpha
+@item @code{gridalpha}: def. @code{0.15000}
+Transparency is not yet implemented for axes objects.  @code{gridalpha} is unused.
+
+
+@anchor{XREFaxesgridalphamode}
+@cindex axes gridalphamode
+@item @code{gridalphamode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+@code{gridalphamode} is unused.
+
+
+@anchor{XREFaxesgridcolor}
+@cindex axes gridcolor
+@item @code{gridcolor}: def. @code{[0.15000   0.15000   0.15000]}
+@code{gridcolor} is unused.
+
+
+@anchor{XREFaxesgridcolormode}
+@cindex axes gridcolormode
+@item @code{gridcolormode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+@code{gridcolormode} is unused.
 
 
 @anchor{XREFaxesgridlinestyle}
@@ -242,34 +290,64 @@ If @code{handlevisibility} is @qcode{"off"}, the axes's handle is not visible in
 
 
 
-@anchor{XREFaxesinterpreter}
-@cindex axes interpreter
-@item @code{interpreter}: @qcode{"latex"} | @{@qcode{"none"}@} | @qcode{"tex"}
-
-
-
 @anchor{XREFaxesinterruptible}
 @cindex axes interruptible
 @item @code{interruptible}: @qcode{"off"} | @{@qcode{"on"}@}
 
 
 
+@anchor{XREFaxeslabelfontsizemultiplier}
+@cindex axes labelfontsizemultiplier
+@item @code{labelfontsizemultiplier}: def. @code{1.1000}
+@code{labelfontsizemultiplier} is unused.
+
+
 @anchor{XREFaxeslayer}
 @cindex axes layer
 @item @code{layer}: @{@qcode{"bottom"}@} | @qcode{"top"}
-Control whether the axes is drawn below child graphics objects (ticks, labels, etc. covered by plotted objects) or above.
+Control whether the axes is drawn below child graphics objects (ticks, labels, etc.@: covered by plotted objects) or above.
 
 
 @anchor{XREFaxeslinestyleorder}
 @cindex axes linestyleorder
 @item @code{linestyleorder}: def. @qcode{"-"}
+@code{linestyleorder} is unused.
 
+
+@anchor{XREFaxeslinestyleorderindex}
+@cindex axes linestyleorderindex
+@item @code{linestyleorderindex}: def. @code{1}
+@code{linestyleorderindex} is unused.
 
 
 @anchor{XREFaxeslinewidth}
 @cindex axes linewidth
 @item @code{linewidth}: def. @code{0.50000}
 
+
+
+@anchor{XREFaxesminorgridalpha}
+@cindex axes minorgridalpha
+@item @code{minorgridalpha}: def. @code{0.25000}
+Transparency is not yet implemented for axes objects.  @code{minorgridalpha} is unused.
+
+
+@anchor{XREFaxesminorgridalphamode}
+@cindex axes minorgridalphamode
+@item @code{minorgridalphamode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+@code{minorgridalphamode} is unused.
+
+
+@anchor{XREFaxesminorgridcolor}
+@cindex axes minorgridcolor
+@item @code{minorgridcolor}: def. @code{[0.10000   0.10000   0.10000]}
+@code{minorgridcolor} is unused.
+
+
+@anchor{XREFaxesminorgridcolormode}
+@cindex axes minorgridcolormode
+@item @code{minorgridcolormode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+@code{minorgridcolormode} is unused.
 
 
 @anchor{XREFaxesminorgridlinestyle}
@@ -302,6 +380,12 @@ Specify the position of the plot including titles, axes, and legend.  The four e
 Handle of the parent graphics object.
 
 
+@anchor{XREFaxespickableparts}
+@cindex axes pickableparts
+@item @code{pickableparts}: @qcode{"all"} | @qcode{"none"} | @{@qcode{"visible"}@}
+@code{pickableparts} is unused.
+
+
 @anchor{XREFaxesplotboxaspectratio}
 @cindex axes plotboxaspectratio
 @item @code{plotboxaspectratio}: def. @code{[1   1   1]}
@@ -323,7 +407,7 @@ Specify the position of the plot excluding titles, axes, and legend.  The four e
 @anchor{XREFaxesprojection}
 @cindex axes projection
 @item @code{projection}: @{@qcode{"orthographic"}@} | @qcode{"perspective"}
-
+@code{projection} is unused.
 
 
 @anchor{XREFaxesselected}
@@ -336,6 +420,12 @@ Specify the position of the plot excluding titles, axes, and legend.  The four e
 @cindex axes selectionhighlight
 @item @code{selectionhighlight}: @qcode{"off"} | @{@qcode{"on"}@}
 
+
+
+@anchor{XREFaxessortmethod}
+@cindex axes sortmethod
+@item @code{sortmethod}: @qcode{"childorder"} | @{@qcode{"depth"}@}
+@code{sortmethod} is unused.
 
 
 @anchor{XREFaxestag}
@@ -356,6 +446,13 @@ Control whether axes tick marks project "in" to the plot box or "out".
 
 
 
+@anchor{XREFaxesticklabelinterpreter}
+@cindex axes ticklabelinterpreter
+@item @code{ticklabelinterpreter}: @qcode{"latex"} | @qcode{"none"} | @{@qcode{"tex"}@}
+Control the way x/y/zticklabel properties are interpreted.
+@xref{XREFinterpreterusage, , @w{Use of the interpreter property}}.
+
+
 @anchor{XREFaxesticklength}
 @cindex axes ticklength
 @item @code{ticklength}: two-element vector, def. @code{[0.010000   0.025000]}
@@ -372,6 +469,18 @@ Two-element vector @code{[2Dlen 3Dlen]} specifying the length of the tickmarks r
 @cindex axes title
 @item @code{title}: graphics handle
 Graphics handle of the title text object.
+
+
+@anchor{XREFaxestitlefontsizemultiplier}
+@cindex axes titlefontsizemultiplier
+@item @code{titlefontsizemultiplier}: def. @code{1.1000}
+@code{titlefontsizemultiplier} is unused.
+
+
+@anchor{XREFaxestitlefontweight}
+@cindex axes titlefontweight
+@item @code{titlefontweight}: @{@qcode{"bold"}@} | @qcode{"normal"}
+@code{titlefontweight} is unused.
 
 
 @anchor{XREFaxestype}
@@ -420,6 +529,12 @@ If @code{visible} is @qcode{"off"}, the axes is not rendered on screen.
 @cindex axes xcolor
 @item @code{xcolor}: @{colorspec@} | @qcode{"none"}, def. @code{[0   0   0]}
 Color of the x-axis.  @xref{Colors, , colorspec}.
+
+
+@anchor{XREFaxesxcolormode}
+@cindex axes xcolormode
+@item @code{xcolormode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+@code{xcolormode} is unused.
 
 
 @anchor{XREFaxesxdir}
@@ -488,6 +603,12 @@ Labels of x tick marks.  Setting @code{xticklabel} also forces the @code{xtickla
 
 
 
+@anchor{XREFaxesxticklabelrotation}
+@cindex axes xticklabelrotation
+@item @code{xticklabelrotation}: def. @code{0}
+@code{xticklabelrotation} is unused.
+
+
 @anchor{XREFaxesxtickmode}
 @cindex axes xtickmode
 @item @code{xtickmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
@@ -504,6 +625,12 @@ Labels of x tick marks.  Setting @code{xticklabel} also forces the @code{xtickla
 @cindex axes ycolor
 @item @code{ycolor}: @{colorspec@} | @qcode{"none"}, def. @code{[0   0   0]}
 Color of the y-axis.  @xref{Colors, , colorspec}.
+
+
+@anchor{XREFaxesycolormode}
+@cindex axes ycolormode
+@item @code{ycolormode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+@code{ycolormode} is unused.
 
 
 @anchor{XREFaxesydir}
@@ -572,6 +699,12 @@ Labels of y tick marks.  Setting @code{yticklabel} also forces the @code{ytickla
 
 
 
+@anchor{XREFaxesyticklabelrotation}
+@cindex axes yticklabelrotation
+@item @code{yticklabelrotation}: def. @code{0}
+@code{yticklabelrotation} is unused.
+
+
 @anchor{XREFaxesytickmode}
 @cindex axes ytickmode
 @item @code{ytickmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
@@ -582,6 +715,12 @@ Labels of y tick marks.  Setting @code{yticklabel} also forces the @code{ytickla
 @cindex axes zcolor
 @item @code{zcolor}: @{colorspec@} | @qcode{"none"}, def. @code{[0   0   0]}
 Color of the z-axis.  @xref{Colors, , colorspec}.
+
+
+@anchor{XREFaxeszcolormode}
+@cindex axes zcolormode
+@item @code{zcolormode}: @{@qcode{"auto"}@} | @qcode{"manual"}
+@code{zcolormode} is unused.
 
 
 @anchor{XREFaxeszdir}
@@ -648,6 +787,12 @@ Labels of z tick marks.  Setting @code{zticklabel} also forces the @code{ztickla
 @cindex axes zticklabelmode
 @item @code{zticklabelmode}: @{@qcode{"auto"}@} | @qcode{"manual"}
 
+
+
+@anchor{XREFaxeszticklabelrotation}
+@cindex axes zticklabelrotation
+@item @code{zticklabelrotation}: def. @code{0}
+@code{zticklabelrotation} is unused.
 
 
 @anchor{XREFaxesztickmode}

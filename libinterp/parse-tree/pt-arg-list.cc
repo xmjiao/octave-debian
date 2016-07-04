@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <iostream>
@@ -32,7 +32,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "defun.h"
 #include "error.h"
 #include "oct-lvalue.h"
-#include "oct-obj.h"
+#include "ovl.h"
 #include "ov.h"
 #include "ov-usr-fcn.h"
 #include "parse.h"
@@ -127,75 +127,73 @@ static int index_position = 0;
 static int num_indices = 0;
 
 DEFCONSTFUN (end, , ,
-             "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} end\n\
-The magic index @qcode{\"end\"} refers to the last valid entry in an indexing\n\
-operation.\n\
-\n\
-Example:\n\
-\n\
-@example\n\
-@group\n\
-@var{x} = [ 1 2 3\n\
-      4 5 6 ];\n\
-@var{x}(1,end)\n\
-    @result{} 3\n\
-@var{x}(end,1)\n\
-    @result{} 4\n\
-@var{x}(end,end)\n\
-    @result{} 6\n\
-@end group\n\
-@end example\n\
-@end deftypefn")
+             doc: /* -*- texinfo -*-
+@deftypefn {} {} end
+The magic index @qcode{"end"} refers to the last valid entry in an
+indexing operation.
+
+Example:
+
+@example
+@group
+@var{x} = [ 1 2 3
+      4 5 6 ];
+@var{x}(1,end)
+    @result{} 3
+@var{x}(end,1)
+    @result{} 4
+@var{x}(end,end)
+    @result{} 6
+@end group
+@end example
+@end deftypefn */)
 {
   octave_value retval;
 
-  if (indexed_object)
+  if (! indexed_object)
+    error ("invalid use of end");
+
+  if (indexed_object->is_object ())
     {
-      if (indexed_object->is_object ())
-        {
-          octave_value_list args;
+      octave_value_list args;
 
-          args(2) = num_indices;
-          args(1) = index_position + 1;
-          args(0) = *indexed_object;
+      args(2) = num_indices;
+      args(1) = index_position + 1;
+      args(0) = *indexed_object;
 
-          std::string class_name = indexed_object->class_name ();
+      std::string class_name = indexed_object->class_name ();
 
-          octave_value meth = symbol_table::find_method ("end", class_name);
+      octave_value meth = symbol_table::find_method ("end", class_name);
 
-          if (meth.is_defined ())
-            return feval (meth.function_value (), args, 1);
-        }
-
-      dim_vector dv = indexed_object->dims ();
-      int ndims = dv.length ();
-
-      if (num_indices < ndims)
-        {
-          for (int i = num_indices; i < ndims; i++)
-            dv(num_indices-1) *= dv(i);
-
-          if (num_indices == 1)
-            {
-              ndims = 2;
-              dv.resize (ndims);
-              dv(1) = 1;
-            }
-          else
-            {
-              ndims = num_indices;
-              dv.resize (ndims);
-            }
-        }
-
-      if (index_position < ndims)
-        retval = dv(index_position);
-      else
-        retval = 1;
+      if (meth.is_defined ())
+        return feval (meth.function_value (), args, 1);
     }
+
+  dim_vector dv = indexed_object->dims ();
+  int ndims = dv.ndims ();
+
+  if (num_indices < ndims)
+    {
+      for (int i = num_indices; i < ndims; i++)
+        dv(num_indices-1) *= dv(i);
+
+      if (num_indices == 1)
+        {
+          ndims = 2;
+          dv.resize (ndims);
+          dv(1) = 1;
+        }
+      else
+        {
+          ndims = num_indices;
+          dv.resize (ndims);
+        }
+    }
+
+  if (index_position < ndims)
+    retval = dv(index_position);
   else
-    ::error ("invalid use of end");
+    retval = 1;
 
   return retval;
 }
@@ -211,7 +209,7 @@ tree_argument_list::convert_to_const_vector (const octave_value *object)
                        && ! (object->is_function ()
                              || object->is_function_handle ()));
 
-  unwind_protect frame;
+  octave::unwind_protect frame;
 
   if (stash_object)
     {
@@ -242,19 +240,10 @@ tree_argument_list::convert_to_const_vector (const octave_value *object)
         {
           octave_value tmp = elt->rvalue1 ();
 
-          if (error_state)
-            {
-              ::error ("evaluating argument list element number %d", k+1);
-              args.clear ();
-              break;
-            }
-          else
-            {
-              if (tmp.is_cs_list ())
-                args.push_back (tmp.list_value ());
-              else if (tmp.is_defined ())
-                args.push_back (tmp);
-            }
+          if (tmp.is_cs_list ())
+            args.push_back (tmp.list_value ());
+          else if (tmp.is_defined ())
+            args.push_back (tmp);
         }
       else
         {

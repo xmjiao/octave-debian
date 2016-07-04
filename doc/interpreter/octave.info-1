@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 4.0.3.
+corresponds to GNU Octave version 4.1.0+.
 
 * Menu:
 
@@ -69,7 +69,6 @@ corresponds to GNU Octave version 4.0.3.
 * Object Oriented Programming::
 * GUI Development::
 * System Utilities::
-* Java Interface::
 * Packages::
 * External Code Interface::
 * Test and Demo Functions::
@@ -427,6 +426,13 @@ Graphics Object Properties
 * Image Properties::
 * Patch Properties::
 * Surface Properties::
+* Uimenu Properties::
+* Uicontextmenu Properties::
+* Uipanel Properties::
+* Uicontrol Properties::
+* Uitoolbar Properties::
+* Uipushtool Properties::
+* Uitoggletool Properties::
 
 Advanced Plotting
 
@@ -553,6 +559,10 @@ Differential Equations
 * Ordinary Differential Equations::
 * Differential-Algebraic Equations::
 
+Ordinary Differential Equations
+
+* Matlab-compatible solvers::
+
 Optimization
 
 * Linear Programming::
@@ -630,7 +640,7 @@ Audio Recorder
 Object Oriented Programming
 
 * Creating a Class::
-* Manipulating Classes::
+* Class Methods::
 * Indexing Objects::
 * Overloading Objects::
 * Inheritance and Aggregation::
@@ -675,20 +685,6 @@ Networking Utilities
 * URL Manipulation::
 * Base64 and Binary Data Transmission::
 
-Java Interface
-
-* Java Interface Functions::
-* Dialog Box Functions::
-* FAQ - Frequently asked Questions::
-
-FAQ - Frequently asked Questions
-
-* How to distinguish between Octave and Matlab?::
-* How to make Java classes available?::
-* How to create an instance of a Java class?::
-* How can I handle memory limitations?::
-* Which TeX symbols are implemented in dialog functions?::
-
 Packages
 
 * Installing and Removing Packages::
@@ -708,6 +704,7 @@ External Code Interface
 * Oct-Files::
 * Mex-Files::
 * Standalone Programs::
+* Java Interface::
 
 Oct-Files
 
@@ -741,6 +738,13 @@ Mex-Files
 * Sparse Matrices with Mex-Files::
 * Calling Other Functions in Mex-Files::
 
+Java Interface
+
+* Java Interface Functions::
+* Making Java classes available::
+* Creating an instance of a Java class::
+* Handling Java memory limitations::
+
 Test and Demo Functions
 
 * Test Functions::
@@ -767,7 +771,8 @@ Trouble
 
 * Actual Bugs::                 Bugs we will fix later.
 * Reporting Bugs::
-* Service::
+* How To Get Help with Octave::
+* How to distinguish between Octave and Matlab::
 
 Reporting Bugs
 
@@ -867,81 +872,82 @@ Ben Abbott               Drew Abbot               Andy Adler
 Adam H. Aitkenhead       Giles Anderson           Joel Andersson
 Lachlan Andrew           Pedro Angelo             Muthiah Annamalai
 Markus Appel             Branden Archer           Willem Atsma
-Marco Atzeri             Shai Ayal                Roger Banks
-Ben Barrowes             Alexander Barth          David Bateman
-Heinz Bauschke           Julien Bect              Stefan Beller
-Roman Belov              Markus Bergholz          Karl Berry
-Ethan Biery              David Billinghurst       Don Bindner
-Jakub Bogusz             Moritz Borgmann          Paul Boven
-Richard Bovey            John Bradshaw            Marcus Brinkmann
-Max Brister              Remy Bruno               Clemens Buchacher
-Ansgar Burchard          Marco Caliari            Daniel Calvelo
-John C. Campbell         Juan Pablo Carbajal      Jean-Francois Cardoso
-Joao Cardoso             Larrie Carr              David Castelow
-Vincent Cautaerts        Clinton Chee             Albert Chin-A-Young
-Carsten Clark            Catalin Codreanu         J. D. Cole
-Martin Costabel          Michael Creel            Richard Crozier
-Jeff Cunningham          Martin Dalecki           Jacob Dawid
-Jorge Barros de Abreu    Carlo de Falco           Thomas D. Dean
-Philippe Defert          Bill Denney              Fabian Deutsch
-Christos Dimitrakakis    Pantxo Diribarne         Vivek Dogra
-John Donoghue            David M. Doolin          Carnë Draug
-Pascal A. Dupuis         John W. Eaton            Dirk Eddelbuettel
-Pieter Eendebak          Paul Eggert              Stephen Eglen
-Peter Ekberg             Edmund Grimley Evans     Rolf Fabian
-Gunnar Farnebäck         Massimiliano Fasi        Stephen Fegan
-Ramon Garcia Fernandez   Torsten Finke            Colin Foster
-Jose Daniel Munoz        Brad Froehle             Castor Fu
-Frias
-Eduardo Gallestey        Walter Gautschi          Klaus Gebhardt
-Driss Ghaddab            Eugenio Gianniti         Nicolo Giorgetti
-Arun Giridhar            Michael D. Godfrey       Michael Goffioul
-Glenn Golden             Tomislav Goles           Keith Goodman
-Brian Gough              Michael C. Grant         Steffen Groot
-Etienne Grossmann        David Grundberg          Kyle Guinn
-Vaibhav Gupta            Peter Gustafson          Kai Habel
-Patrick Häcker           William P. Y.            Jaroslav Hajek
-                         Hadisoeseno
-Benjamin Hall            Kim Hansen               Søren Hauberg
-Dave Hawthorne           Daniel Heiserer          Martin Helm
-Stefan Hepp              Martin Hepperle          Jordi Gutiérrez
-                                                  Hermoso
-Yozo Hida                Ryan Hinton              Roman Hodek
-A. Scottedward Hodel     Richard Allan Holcombe   Tom Holroyd
-David Hoover             Kurt Hornik              Christopher Hulbert
-Cyril Humbert            John Hunt                Teemu Ikonen
-Alan W. Irwin            Allan Jacobs             Geoff Jacobsen
-Vytautas Jančauskas      Nick Jankowski           Mats Jansson
-Cai Jianming             Steven G. Johnson        Heikki Junes
-Matthias Jüschke         Atsushi Kajita           Jarkko Kaleva
-Avinoam Kalma            Mohamed Kamoun           Lute Kamstra
-Fotios Kasolis           Thomas Kasper            Joel Keay
-Mumit Khan               Paul Kienzle             Aaron A. King
-Erik Kjellson            Arno J. Klaassen         Alexander Klein
-Geoffrey Knauth          Heine Kolltveit          Ken Kouno
-Kacper Kowalik           Daniel Kraft             Nir Krakauer
-Aravindh                 Oyvind Kristiansen       Artem Krosheninnikov
-Krishnamoorthy
-Piotr Krzyzanowski       Volker Kuhlmann          Ilya Kurdyukov
-Tetsuro Kurita           Philipp Kutin            Miroslaw Kwasniak
-Rafael Laboissiere       Kai Labusch              Claude Lacoursiere
-Walter Landry            Bill Lash                Dirk Laurie
-Maurice LeBrun           Friedrich Leisch         Johannes Leuschner
-Thorsten Liebig          Jyh-miin Lin             Timo Lindfors
-Benjamin Lindner         Ross Lippert             David Livings
-Sebastien Loisel         Erik de Castro Lopo      Massimo Lorenzin
-Emil Lucretiu            Yi-Hong Lyu              Hoxide Ma
-Colin Macdonald          James Macnicol           Jens-Uwe Mager
-Stefan Mahr              Rob Mahurin              Alexander Mamonov
-Ricardo Marranita        Orestes Mas              Axel Mathéi
-Makoto Matsumoto         Tatsuro Matsuoka         Christoph Mayer
-Laurent Mazet            G. D. McBain             Ronald van der Meer
-Júlio Hoffimann Mendes   Ed Meyer                 Thorsten Meyer
-Stefan Miereis           Petr Mikulik             Mike Miller
-Serviscope Minor         Stefan Monnier           Antoine Moreau
-Kai P. Mueller           Armin Müller             Hannes Müller
-Victor Munoz             PrasannaKumar            Iain Murray
-                         Muralidharan
+Marco Atzeri             Ander Aurrekoetxea       Shai Ayal
+Roger Banks              Ben Barrowes             Alexander Barth
+David Bateman            Heinz Bauschke           Julien Bect
+Stefan Beller            Roman Belov              Markus Bergholz
+Karl Berry               Ethan Biery              David Billinghurst
+Don Bindner              Jakub Bogusz             Moritz Borgmann
+Paul Boven               Richard Bovey            John Bradshaw
+Marcus Brinkmann         Max Brister              Remy Bruno
+Clemens Buchacher        Ansgar Burchard          Marco Caliari
+Daniel Calvelo           John C. Campbell         Juan Pablo Carbajal
+Jean-Francois Cardoso    Joao Cardoso             Larrie Carr
+David Castelow           Vincent Cautaerts        Clinton Chee
+Albert Chin-A-Young      Carsten Clark            Catalin Codreanu
+J. D. Cole               Martin Costabel          Michael Creel
+Richard Crozier          Jeff Cunningham          Martin Dalecki
+Jacob Dawid              Jorge Barros de Abreu    Carlo de Falco
+Thomas D. Dean           Philippe Defert          Bill Denney
+Fabian Deutsch           Christos Dimitrakakis    Pantxo Diribarne
+Vivek Dogra              John Donoghue            David M. Doolin
+Carnë Draug              Pascal A. Dupuis         John W. Eaton
+Dirk Eddelbuettel        Pieter Eendebak          Paul Eggert
+Stephen Eglen            Peter Ekberg             Edmund Grimley Evans
+Rolf Fabian              Gunnar Farnebäck         Massimiliano Fasi
+Stephen Fegan            Ramon Garcia Fernandez   Torsten Finke
+Colin Foster             Jose Daniel Munoz        Brad Froehle
+                         Frias
+Castor Fu                Eduardo Gallestey        Walter Gautschi
+Klaus Gebhardt           Driss Ghaddab            Eugenio Gianniti
+Nicolo Giorgetti         Arun Giridhar            Michael D. Godfrey
+Michael Goffioul         Glenn Golden             Tomislav Goles
+Keith Goodman            Brian Gough              Michael C. Grant
+Steffen Groot            Etienne Grossmann        David Grundberg
+Kyle Guinn               Vaibhav Gupta            Peter Gustafson
+Kai Habel                Patrick Häcker           William P. Y.
+                                                  Hadisoeseno
+Jaroslav Hajek           Benjamin Hall            Kim Hansen
+Søren Hauberg            Dave Hawthorne           Daniel Heiserer
+Martin Helm              Stefan Hepp              Martin Hepperle
+Jordi Gutiérrez          Yozo Hida                Ryan Hinton
+Hermoso
+Roman Hodek              A. Scottedward Hodel     Richard Allan Holcombe
+Tom Holroyd              David Hoover             Kurt Hornik
+Christopher Hulbert      Cyril Humbert            John Hunt
+Teemu Ikonen             Alan W. Irwin            Allan Jacobs
+Geoff Jacobsen           Vytautas Jančauskas      Nick Jankowski
+Mats Jansson             Cai Jianming             Steven G. Johnson
+Heikki Junes             Matthias Jüschke         Atsushi Kajita
+Jarkko Kaleva            Avinoam Kalma            Mohamed Kamoun
+Lute Kamstra             Fotios Kasolis           Thomas Kasper
+Joel Keay                Mumit Khan               Paul Kienzle
+Lars Kindermann          Aaron A. King            Erik Kjellson
+Arno J. Klaassen         Alexander Klein          Geoffrey Knauth
+Heine Kolltveit          Ken Kouno                Kacper Kowalik
+Daniel Kraft             Nir Krakauer             Aravindh
+                                                  Krishnamoorthy
+Oyvind Kristiansen       Artem Krosheninnikov     Piotr Krzyzanowski
+Volker Kuhlmann          Ilya Kurdyukov           Tetsuro Kurita
+Philipp Kutin            Miroslaw Kwasniak        Rafael Laboissiere
+Kai Labusch              Claude Lacoursiere       Walter Landry
+Bill Lash                Dirk Laurie              Maurice LeBrun
+Friedrich Leisch         Johannes Leuschner       Thorsten Liebig
+Jyh-miin Lin             Timo Lindfors            Benjamin Lindner
+Ross Lippert             David Livings            Sebastien Loisel
+Erik de Castro Lopo      Massimo Lorenzin         Emil Lucretiu
+Yi-Hong Lyu              Hoxide Ma                Colin Macdonald
+James Macnicol           Jens-Uwe Mager           Stefan Mahr
+Rob Mahurin              Alexander Mamonov        Ricardo Marranita
+Orestes Mas              Axel Mathéi              Makoto Matsumoto
+Tatsuro Matsuoka         Christoph Mayer          Laurent Mazet
+G. D. McBain             Ronald van der Meer      Júlio Hoffimann Mendes
+Ed Meyer                 Thorsten Meyer           Stefan Miereis
+Petr Mikulik             Mike Miller              Serviscope Minor
+Stefan Monnier           Antoine Moreau           Kai P. Mueller
+Armin Müller             Hannes Müller            Victor Munoz
+PrasannaKumar            Iain Murray              Markus Mützel
+Muralidharan
 Carmen Navarrete         Todd Neal                Philip Nienhuis
 Al Niessner              Felipe G. Nievinski      Rick Niles
 Takuji Nishimura         Kai Noda                 Patrick Noffke
@@ -1059,8 +1065,8 @@ The ‘citation’ function can automatically generate a recommended
 citation text for Octave or any of its packages.  See the help text
 below on how to use ‘citation’.
 
- -- Command: citation
- -- Command: citation PACKAGE
+ -- : citation
+ -- : citation PACKAGE
      Display instructions for citing GNU Octave or its packages in
      publications.
 
@@ -1156,7 +1162,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 4.0.3.
+   This document corresponds to Octave version 4.1.0+.
 
 * Menu:
 
@@ -1436,7 +1442,7 @@ File: octave.info,  Node: Conventions,  Prev: Simple Examples,  Up: Introduction
 1.3 Conventions
 ===============
 
-This section explains the notational conventions that are used in this
+This section explains the notation conventions that are used in this
 manual.  You may want to skip this section and refer back to it later.
 
 * Menu:
@@ -1537,9 +1543,8 @@ File: octave.info,  Node: Format of Descriptions,  Prev: Error Messages,  Up: Co
 
 Functions and commands are described in this manual in a uniform format.
 The first line of a description contains the name of the item followed
-by its arguments, if any.  The category—function, command, or
-whatever—appears at the beginning of the line.  If there are multiple
-ways to invoke the function then each allowable form is listed.
+by its arguments, if any.  If there are multiple ways to invoke the
+function then each allowable form is listed.
 
    The description follows on succeeding lines, sometimes with examples.
 
@@ -1568,9 +1573,9 @@ references to related functions.
 
    Here is a description of an imaginary function ‘foo’:
 
- -- Function File: foo (X)
- -- Function File: foo (X, Y)
- -- Function File: foo (X, Y, ...)
+ -- : foo (X)
+ -- : foo (X, Y)
+ -- : foo (X, Y, ...)
      The function ‘foo’ subtracts X from Y, then adds the remaining
      arguments to the result.
 
@@ -1598,9 +1603,7 @@ are discussed specifically in the description of the function.  In some
 sections, features common to parameters of several functions are
 described at the beginning.
 
-   Functions in Octave may be defined in several different ways.  The
-category name for functions may include a tag that indicates the way
-that the function is defined.  These additional tags include
+   Functions in Octave may be defined in several different ways:
 
 Function File
      The function described is defined using Octave commands stored in a
@@ -1620,22 +1623,24 @@ Mapping Function
      The function described works element-by-element for matrix and
      vector arguments.
 
+   Use ‘which’ or ‘exist’ to determine the category of a function and
+where it resides.
+
 
 File: octave.info,  Node: A Sample Command Description,  Prev: A Sample Function Description,  Up: Format of Descriptions
 
 1.3.5.2 A Sample Command Description
 ....................................
 
-Command descriptions have a format similar to function descriptions,
-except that the word ‘Function’ is replaced by ‘Command’.  Commands are
-functions that may be called without surrounding their arguments in
-parentheses.  For example, here is the description for Octave’s ‘diary’
-command:
+Commands are functions that may be called without surrounding their
+arguments in parentheses.  Command descriptions have a format similar to
+function descriptions.  For example, here is the description for
+Octave’s ‘diary’ command:
 
- -- Command: diary
- -- Command: diary on
- -- Command: diary off
- -- Command: diary FILENAME
+ -- : diary
+ -- : diary on
+ -- : diary off
+ -- : diary FILENAME
      Record a list of all commands _and_ the output they produce, mixed
      together just as they appear on the terminal.
 
@@ -1890,7 +1895,7 @@ Here is a complete list of the command line options that Octave accepts.
 the command line, including the number of arguments and all of the
 options.
 
- -- Built-in Function: argv ()
+ -- : argv ()
      Return the command line arguments passed to Octave.
 
      For example, if you invoked Octave using the command
@@ -1905,14 +1910,14 @@ options.
      Programs::, for an example of how to create an executable Octave
      script.
 
- -- Built-in Function: program_name ()
+ -- : program_name ()
      Return the last component of the value returned by
      ‘program_invocation_name’.
 
      See also: *note program_invocation_name:
      XREFprogram_invocation_name.
 
- -- Built-in Function: program_invocation_name ()
+ -- : program_invocation_name ()
      Return the name that was typed at the shell prompt to run Octave.
 
      If executing a script from the command line (e.g., ‘octave foo.m’)
@@ -1980,6 +1985,11 @@ including function definitions.
      If you start Octave in your home directory, commands from the file
      ‘~/.octaverc’ will only be executed once.
 
+‘startup.m’
+     This file is used to make personal changes to the default Octave
+     environment.  It is executed for MATLAB compatibility, but
+     ‘~/.octaverc’ is the preferred location for configuration changes.
+
    A message will be displayed as each of the startup files is read if
 you invoke Octave with the ‘--verbose’ option but without the ‘--silent’
 option.
@@ -1998,10 +2008,10 @@ save all workspace variables or cleanup temporary files may be placed
 there.  Additional functions to execute on shutdown may be registered
 with ‘atexit’.
 
- -- Built-in Function: exit
- -- Built-in Function: exit (STATUS)
- -- Built-in Function: quit
- -- Built-in Function: quit (STATUS)
+ -- : exit
+ -- : exit (STATUS)
+ -- : quit
+ -- : quit (STATUS)
      Exit the current Octave session.
 
      If the optional integer value STATUS is supplied, pass that value
@@ -2015,8 +2025,8 @@ with ‘atexit’.
 
      See also: *note atexit: XREFatexit.
 
- -- Built-in Function: atexit (FCN)
- -- Built-in Function: atexit (FCN, FLAG)
+ -- : atexit (FCN)
+ -- : atexit (FCN, FLAG)
      Register a function to be called when Octave exits.
 
      For example,
@@ -2060,10 +2070,10 @@ manual and the documentation strings for user-supplied functions and
 variables.  *Note Function Files::, for more information about how to
 document the functions you write.
 
- -- Command: help NAME
- -- Command: help ‘--list’
- -- Command: help ‘.’
- -- Command: help
+ -- : help NAME
+ -- : help ‘--list’
+ -- : help ‘.’
+ -- : help
      Display the help text for NAME.
 
      For example, the command ‘help help’ prints a short message
@@ -2087,8 +2097,8 @@ document the functions you write.
      See also: *note doc: XREFdoc, *note lookfor: XREFlookfor, *note
      which: XREFwhich, *note info: XREFinfo.
 
- -- Command: doc FUNCTION_NAME
- -- Command: doc
+ -- : doc FUNCTION_NAME
+ -- : doc
      Display documentation for the function FUNCTION_NAME directly from
      an online version of the printed manual, using the GNU Info
      browser.
@@ -2104,10 +2114,10 @@ document the functions you write.
 
      See also: *note help: XREFhelp.
 
- -- Command: lookfor STR
- -- Command: lookfor -all STR
- -- Function File: [FCN, HELP1STR] = lookfor (STR)
- -- Function File: [FCN, HELP1STR] = lookfor ("-all", STR)
+ -- : lookfor STR
+ -- : lookfor -all STR
+ -- : [FCN, HELP1STR] = lookfor (STR)
+ -- : [FCN, HELP1STR] = lookfor ("-all", STR)
      Search for the string STR in the documentation of all functions in
      the current function search path.
 
@@ -2139,8 +2149,8 @@ document the functions you write.
    To see what is new in the current release of Octave, use the ‘news’
 function.
 
- -- Command: news
- -- Command: news PACKAGE
+ -- : news
+ -- : news PACKAGE
      Display the current NEWS file for Octave or an installed package.
 
      When called without an argument, display the NEWS file for Octave.
@@ -2150,19 +2160,19 @@ function.
 
      See also: *note ver: XREFver, *note pkg: XREFpkg.
 
- -- Function File: info ()
+ -- : info ()
      Display contact information for the GNU Octave community.
 
- -- Built-in Function: warranty ()
+ -- : warranty ()
      Describe the conditions for copying and distributing Octave.
 
    The following functions can be used to change which programs are used
 for displaying the documentation, and where the documentation can be
 found.
 
- -- Built-in Function: VAL = info_file ()
- -- Built-in Function: OLD_VAL = info_file (NEW_VAL)
- -- Built-in Function: info_file (NEW_VAL, "local")
+ -- : VAL = info_file ()
+ -- : OLD_VAL = info_file (NEW_VAL)
+ -- : info_file (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      Octave info file.
 
@@ -2180,9 +2190,9 @@ found.
      See also: *note info_program: XREFinfo_program, *note doc: XREFdoc,
      *note help: XREFhelp, *note makeinfo_program: XREFmakeinfo_program.
 
- -- Built-in Function: VAL = info_program ()
- -- Built-in Function: OLD_VAL = info_program (NEW_VAL)
- -- Built-in Function: info_program (NEW_VAL, "local")
+ -- : VAL = info_program ()
+ -- : OLD_VAL = info_program (NEW_VAL)
+ -- : info_program (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      info program to run.
 
@@ -2202,9 +2212,9 @@ found.
      See also: *note info_file: XREFinfo_file, *note doc: XREFdoc, *note
      help: XREFhelp, *note makeinfo_program: XREFmakeinfo_program.
 
- -- Built-in Function: VAL = makeinfo_program ()
- -- Built-in Function: OLD_VAL = makeinfo_program (NEW_VAL)
- -- Built-in Function: makeinfo_program (NEW_VAL, "local")
+ -- : VAL = makeinfo_program ()
+ -- : OLD_VAL = makeinfo_program (NEW_VAL)
+ -- : makeinfo_program (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      program that Octave runs to format help text containing Texinfo
      markup commands.
@@ -2220,9 +2230,9 @@ found.
      info_file: XREFinfo_file, *note info_program: XREFinfo_program,
      *note doc: XREFdoc, *note help: XREFhelp.
 
- -- Built-in Function: VAL = texi_macros_file ()
- -- Built-in Function: OLD_VAL = texi_macros_file (NEW_VAL)
- -- Built-in Function: texi_macros_file (NEW_VAL, "local")
+ -- : VAL = texi_macros_file ()
+ -- : OLD_VAL = texi_macros_file (NEW_VAL)
+ -- : texi_macros_file (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      file containing Texinfo macros that are prepended to documentation
      strings before they are passed to makeinfo.
@@ -2241,9 +2251,9 @@ found.
 
      See also: *note makeinfo_program: XREFmakeinfo_program.
 
- -- Built-in Function: VAL = doc_cache_file ()
- -- Built-in Function: OLD_VAL = doc_cache_file (NEW_VAL)
- -- Built-in Function: doc_cache_file (NEW_VAL, "local")
+ -- : VAL = doc_cache_file ()
+ -- : OLD_VAL = doc_cache_file (NEW_VAL)
+ -- : doc_cache_file (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      Octave documentation cache file.
 
@@ -2267,9 +2277,9 @@ found.
 
      See also: *note lookfor: XREFlookfor.
 
- -- Built-in Function: VAL = built_in_docstrings_file ()
- -- Built-in Function: OLD_VAL = built_in_docstrings_file (NEW_VAL)
- -- Built-in Function: built_in_docstrings_file (NEW_VAL, "local")
+ -- : VAL = built_in_docstrings_file ()
+ -- : OLD_VAL = built_in_docstrings_file (NEW_VAL)
+ -- : built_in_docstrings_file (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      file containing docstrings for built-in Octave functions.
 
@@ -2285,9 +2295,9 @@ found.
      itself.  Modifying it during a running session of Octave will have
      no effect.
 
- -- Built-in Function: VAL = suppress_verbose_help_message ()
- -- Built-in Function: OLD_VAL = suppress_verbose_help_message (NEW_VAL)
- -- Built-in Function: suppress_verbose_help_message (NEW_VAL, "local")
+ -- : VAL = suppress_verbose_help_message ()
+ -- : OLD_VAL = suppress_verbose_help_message (NEW_VAL)
+ -- : suppress_verbose_help_message (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will add additional help information to the end of the output from
      the ‘help’ command and usage messages for built-in commands.
@@ -2301,9 +2311,9 @@ found.
 generating the documentation.  They are documented here for completeness
 and because they may occasionally be useful for users.
 
- -- Function File: doc_cache_create (OUT_FILE, DIRECTORY)
- -- Function File: doc_cache_create (OUT_FILE)
- -- Function File: doc_cache_create ()
+ -- : doc_cache_create (OUT_FILE, DIRECTORY)
+ -- : doc_cache_create (OUT_FILE)
+ -- : doc_cache_create ()
      Generate documentation cache for all functions in DIRECTORY.
 
      A documentation cache is generated for all functions in DIRECTORY
@@ -2314,12 +2324,12 @@ and because they may occasionally be useful for users.
      ‘doc-cache’ if not given.
 
      If no directory is given (or it is the empty matrix), a cache for
-     built-in operators, etc.  is generated.
+     built-in functions, operators, and keywords is generated.
 
      See also: *note doc_cache_file: XREFdoc_cache_file, *note lookfor:
      XREFlookfor, *note path: XREFpath.
 
- -- Built-in Function: [TEXT, FORMAT] = get_help_text (NAME)
+ -- : [TEXT, FORMAT] = get_help_text (NAME)
      Return the raw help text of function NAME.
 
      The raw help text is returned in TEXT and the format in FORMAT The
@@ -2329,7 +2339,7 @@ and because they may occasionally be useful for users.
      See also: *note get_help_text_from_file:
      XREFget_help_text_from_file.
 
- -- Built-in Function: [TEXT, FORMAT] = get_help_text_from_file (FNAME)
+ -- : [TEXT, FORMAT] = get_help_text_from_file (FNAME)
      Return the raw help text from the file FNAME.
 
      The raw help text is returned in TEXT and the format in FORMAT The
@@ -2338,9 +2348,9 @@ and because they may occasionally be useful for users.
 
      See also: *note get_help_text: XREFget_help_text.
 
- -- Function File: TEXT = get_first_help_sentence (NAME)
- -- Function File: TEXT = get_first_help_sentence (NAME, MAX_LEN)
- -- Function File: [TEXT, STATUS] = get_first_help_sentence (...)
+ -- : TEXT = get_first_help_sentence (NAME)
+ -- : TEXT = get_first_help_sentence (NAME, MAX_LEN)
+ -- : [TEXT, STATUS] = get_first_help_sentence (...)
      Return the first sentence of a function’s help text.
 
      The first sentence is defined as the text after the function
@@ -2460,8 +2470,8 @@ characters while meta keystrokes operate on words.
    The function ‘clc’ will allow you to clear the screen from within
 Octave programs.
 
- -- Built-in Function: clc ()
- -- Built-in Function: home ()
+ -- : clc ()
+ -- : home ()
      Clear the terminal screen and move the cursor to the upper left
      corner.
 
@@ -2571,9 +2581,9 @@ names for you.
 ‘M-?’
      List the possible completions of the text before the cursor.
 
- -- Built-in Function: VAL = completion_append_char ()
- -- Built-in Function: OLD_VAL = completion_append_char (NEW_VAL)
- -- Built-in Function: completion_append_char (NEW_VAL, "local")
+ -- : VAL = completion_append_char ()
+ -- : OLD_VAL = completion_append_char (NEW_VAL)
+ -- : completion_append_char (NEW_VAL, "local")
      Query or set the internal character variable that is appended to
      successful command-line completion attempts.
 
@@ -2584,7 +2594,7 @@ names for you.
      calls.  The original variable value is restored when exiting the
      function.
 
- -- Built-in Function: completion_matches (HINT)
+ -- : completion_matches (HINT)
      Generate possible completions given HINT.
 
      This function is provided for the benefit of programs like Emacs
@@ -2642,10 +2652,10 @@ place of ‘C-p’ and ‘C-n’ to move through the history list.
 list, Octave provides three functions for viewing, editing, and
 re-running chunks of commands from the history list.
 
- -- Command: history
- -- Command: history OPT1 ...
- -- Built-in Function: H = history ()
- -- Built-in Function: H = history (OPT1, ...)
+ -- : history
+ -- : history OPT1 ...
+ -- : H = history ()
+ -- : H = history (OPT1, ...)
      If invoked with no arguments, ‘history’ displays a list of commands
      that you have executed.
 
@@ -2682,9 +2692,9 @@ re-running chunks of commands from the history list.
      See also: *note edit_history: XREFedit_history, *note run_history:
      XREFrun_history.
 
- -- Command: edit_history
- -- Command: edit_history CMD_NUMBER
- -- Command: edit_history FIRST LAST
+ -- : edit_history
+ -- : edit_history CMD_NUMBER
+ -- : edit_history FIRST LAST
      Edit the history list using the editor named by the variable
      ‘EDITOR’.
 
@@ -2713,9 +2723,9 @@ re-running chunks of commands from the history list.
      See also: *note run_history: XREFrun_history, *note history:
      XREFhistory.
 
- -- Command: run_history
- -- Command: run_history CMD_NUMBER
- -- Command: run_history FIRST LAST
+ -- : run_history
+ -- : run_history CMD_NUMBER
+ -- : run_history FIRST LAST
      Run commands from the history list.
 
      When invoked with no arguments, run the previously executed
@@ -2755,9 +2765,9 @@ re-running chunks of commands from the history list.
 Octave also allows you customize the details of when, where, and how
 history is saved.
 
- -- Built-in Function: VAL = history_save ()
- -- Built-in Function: OLD_VAL = history_save (NEW_VAL)
- -- Built-in Function: history_save (NEW_VAL, "local")
+ -- : VAL = history_save ()
+ -- : OLD_VAL = history_save (NEW_VAL)
+ -- : history_save (NEW_VAL, "local")
      Query or set the internal variable that controls whether commands
      entered on the command line are saved in the history file.
 
@@ -2771,8 +2781,8 @@ history is saved.
      XREFhistory_size, *note history_timestamp_format_string:
      XREFhistory_timestamp_format_string.
 
- -- Built-in Function: VAL = history_control ()
- -- Built-in Function: OLD_VAL = history_control (NEW_VAL)
+ -- : VAL = history_control ()
+ -- : OLD_VAL = history_control (NEW_VAL)
      Query or set the internal variable that specifies how commands are
      saved to the history list.
 
@@ -2797,8 +2807,8 @@ history is saved.
      XREFhistory_timestamp_format_string, *note history_save:
      XREFhistory_save.
 
- -- Built-in Function: VAL = history_file ()
- -- Built-in Function: OLD_VAL = history_file (NEW_VAL)
+ -- : VAL = history_file ()
+ -- : OLD_VAL = history_file (NEW_VAL)
      Query or set the internal variable that specifies the name of the
      file used to store command history.
 
@@ -2809,8 +2819,8 @@ history is saved.
      XREFhistory_save, *note history_timestamp_format_string:
      XREFhistory_timestamp_format_string.
 
- -- Built-in Function: VAL = history_size ()
- -- Built-in Function: OLD_VAL = history_size (NEW_VAL)
+ -- : VAL = history_size ()
+ -- : OLD_VAL = history_size (NEW_VAL)
      Query or set the internal variable that specifies how many entries
      to store in the history file.
 
@@ -2822,11 +2832,9 @@ history is saved.
      XREFhistory_timestamp_format_string, *note history_save:
      XREFhistory_save.
 
- -- Built-in Function: VAL = history_timestamp_format_string ()
- -- Built-in Function: OLD_VAL = history_timestamp_format_string
-          (NEW_VAL)
- -- Built-in Function: history_timestamp_format_string (NEW_VAL,
-          "local")
+ -- : VAL = history_timestamp_format_string ()
+ -- : OLD_VAL = history_timestamp_format_string (NEW_VAL)
+ -- : history_timestamp_format_string (NEW_VAL, "local")
      Query or set the internal variable that specifies the format string
      for the comment line that is written to the history file when
      Octave exits.
@@ -2844,9 +2852,9 @@ history is saved.
      XREFhistory_file, *note history_size: XREFhistory_size, *note
      history_save: XREFhistory_save.
 
- -- Built-in Function: VAL = EDITOR ()
- -- Built-in Function: OLD_VAL = EDITOR (NEW_VAL)
- -- Built-in Function: EDITOR (NEW_VAL, "local")
+ -- : VAL = EDITOR ()
+ -- : OLD_VAL = EDITOR (NEW_VAL)
+ -- : EDITOR (NEW_VAL, "local")
      Query or set the internal variable that specifies the default text
      editor.
 
@@ -2877,7 +2885,7 @@ exact command syntax).  The default configuration file is normally
    Octave provides two commands for initializing Readline and thereby
 changing the command line behavior.
 
- -- Built-in Function: readline_read_init_file (FILE)
+ -- : readline_read_init_file (FILE)
      Read the readline library initialization file FILE.
 
      If FILE is omitted, read the default initialization file (normally
@@ -2888,7 +2896,7 @@ changing the command line behavior.
      See also: *note readline_re_read_init_file:
      XREFreadline_re_read_init_file.
 
- -- Built-in Function: readline_re_read_init_file ()
+ -- : readline_re_read_init_file ()
      Re-read the last readline library initialization file that was
      read.
 
@@ -2953,9 +2961,9 @@ decoded as follows:
 ‘\\’
      A backslash.
 
- -- Built-in Function: VAL = PS1 ()
- -- Built-in Function: OLD_VAL = PS1 (NEW_VAL)
- -- Built-in Function: PS1 (NEW_VAL, "local")
+ -- : VAL = PS1 ()
+ -- : OLD_VAL = PS1 (NEW_VAL)
+ -- : PS1 (NEW_VAL, "local")
      Query or set the primary prompt string.
 
      When executing interactively, Octave displays the primary prompt
@@ -2974,7 +2982,7 @@ decoded as follows:
      You can also use ANSI escape sequences if your terminal supports
      them.  This can be useful for coloring the prompt.  For example,
 
-          PS1 ("\\[\\033[01;31m\\]\\s:\\#> \\[\\033[0m\\]")
+          PS1 ('\[\033[01;31m\]\s:\#> \[\033[0m\]')
 
      will give the default Octave prompt a red coloring.
 
@@ -2985,9 +2993,9 @@ decoded as follows:
 
      See also: *note PS2: XREFPS2, *note PS4: XREFPS4.
 
- -- Built-in Function: VAL = PS2 ()
- -- Built-in Function: OLD_VAL = PS2 (NEW_VAL)
- -- Built-in Function: PS2 (NEW_VAL, "local")
+ -- : VAL = PS2 ()
+ -- : OLD_VAL = PS2 (NEW_VAL)
+ -- : PS2 (NEW_VAL, "local")
      Query or set the secondary prompt string.
 
      The secondary prompt is printed when Octave is expecting additional
@@ -3003,9 +3011,9 @@ decoded as follows:
 
      See also: *note PS1: XREFPS1, *note PS4: XREFPS4.
 
- -- Built-in Function: VAL = PS4 ()
- -- Built-in Function: OLD_VAL = PS4 (NEW_VAL)
- -- Built-in Function: PS4 (NEW_VAL, "local")
+ -- : VAL = PS4 ()
+ -- : OLD_VAL = PS4 (NEW_VAL)
+ -- : PS4 (NEW_VAL, "local")
      Query or set the character string used to prefix output produced
      when echoing commands is enabled.
 
@@ -3031,10 +3039,10 @@ Octave’s diary feature allows you to keep a log of all or part of an
 interactive session by recording the input you type and the output that
 Octave produces in a separate file.
 
- -- Command: diary
- -- Command: diary on
- -- Command: diary off
- -- Command: diary FILENAME
+ -- : diary
+ -- : diary on
+ -- : diary off
+ -- : diary FILENAME
      Record a list of all commands _and_ the output they produce, mixed
      together just as they appear on the terminal.
 
@@ -3052,17 +3060,17 @@ Octave produces in a separate file.
 
      With no arguments, ‘diary’ toggles the current diary state.
 
-     See also: *note history: XREFhistory.
+     See also: *note history: XREFhistory, *note evalc: XREFevalc.
 
    Sometimes it is useful to see the commands in a function or script as
 they are being evaluated.  This can be especially helpful for debugging
 some kinds of problems.
 
- -- Command: echo
- -- Command: echo on
- -- Command: echo off
- -- Command: echo on all
- -- Command: echo off all
+ -- : echo
+ -- : echo on
+ -- : echo off
+ -- : echo on all
+ -- : echo off all
      Control whether commands are displayed as they are executed.
 
      Valid options are:
@@ -3085,9 +3093,9 @@ some kinds of problems.
 
      With no arguments, ‘echo’ toggles the current echo state.
 
- -- Built-in Function: VAL = echo_executing_commands ()
- -- Built-in Function: OLD_VAL = echo_executing_commands (NEW_VAL)
- -- Built-in Function: echo_executing_commands (NEW_VAL, "local")
+ -- : VAL = echo_executing_commands ()
+ -- : OLD_VAL = echo_executing_commands (NEW_VAL)
+ -- : echo_executing_commands (NEW_VAL, "local")
      Query or set the internal variable that controls the echo state.
 
      It may be the sum of the following values:
@@ -3220,7 +3228,7 @@ typed:
 interpreter to be run, and an optional initial command line argument to
 pass to that interpreter.  The operating system then runs the
 interpreter with the given argument and the full argument list of the
-executed program.  The first argument in the list is the full file name
+executed program.  The first argument in the list is the full filename
 of the Octave executable.  The rest of the argument list will either be
 options to Octave, or data files, or both.  The ‘-qf’ options are
 usually specified in stand-alone Octave programs to prevent them from
@@ -3388,8 +3396,8 @@ for more information about Octave’s dynamic linking capabilities.  *note
 User-defined Data Types:: describes what you must do to define a new
 data type for Octave.
 
- -- Built-in Function: typeinfo ()
- -- Built-in Function: typeinfo (EXPR)
+ -- : typeinfo ()
+ -- : typeinfo (EXPR)
 
      Return the type of the expression EXPR, as a string.
 
@@ -3420,9 +3428,9 @@ type and contribute it for distribution in a future release of Octave.
    The data type of a variable can be determined and changed through the
 use of the following functions.
 
- -- Function File: CLASSNAME = class (OBJ)
- -- Function File: class (S, ID)
- -- Function File: class (S, ID, P, ...)
+ -- : CLASSNAME = class (OBJ)
+ -- : class (S, ID)
+ -- : class (S, ID, P, ...)
      Return the class of the object OBJ, or create a class with fields
      from structure S and name (string) ID.
 
@@ -3431,7 +3439,7 @@ use of the following functions.
 
      See also: *note typeinfo: XREFtypeinfo, *note isa: XREFisa.
 
- -- Function File: isa (OBJ, CLASSNAME)
+ -- : isa (OBJ, CLASSNAME)
      Return true if OBJ is an object from the class CLASSNAME.
 
      CLASSNAME may also be one of the following class categories:
@@ -3453,7 +3461,7 @@ use of the following functions.
 
      See also: *note class: XREFclass, *note typeinfo: XREFtypeinfo.
 
- -- Function File: cast (VAL, "TYPE")
+ -- : cast (VAL, "TYPE")
      Convert VAL to data type TYPE.
 
      VAL must be one of the numeric classes:
@@ -3488,7 +3496,7 @@ use of the following functions.
      *note single: XREFsingle, *note logical: XREFlogical, *note char:
      XREFchar, *note class: XREFclass, *note typeinfo: XREFtypeinfo.
 
- -- Built-in Function: Y = typecast (X, "CLASS")
+ -- : Y = typecast (X, "CLASS")
      Return a new array Y resulting from interpreting the data of X in
      memory as data of the numeric class CLASS.
 
@@ -3534,7 +3542,7 @@ use of the following functions.
      See also: *note cast: XREFcast, *note bitpack: XREFbitpack, *note
      bitunpack: XREFbitunpack, *note swapbytes: XREFswapbytes.
 
- -- Function File: swapbytes (X)
+ -- : swapbytes (X)
      Swap the byte order on values, converting from little endian to big
      endian and vice versa.
 
@@ -3545,7 +3553,7 @@ use of the following functions.
 
      See also: *note typecast: XREFtypecast, *note cast: XREFcast.
 
- -- Built-in Function: Y = bitpack (X, CLASS)
+ -- : Y = bitpack (X, CLASS)
      Return a new array Y resulting from interpreting the logical array
      X as raw bit patterns for data of the numeric class CLASS.
 
@@ -3576,7 +3584,7 @@ use of the following functions.
      See also: *note bitunpack: XREFbitunpack, *note typecast:
      XREFtypecast.
 
- -- Built-in Function: Y = bitunpack (X)
+ -- : Y = bitunpack (X)
      Return a logical array Y corresponding to the raw bit patterns of
      X.
 
@@ -3639,11 +3647,11 @@ It is possible to represent missing data explicitly in Octave using ‘NA’
 data is represented as floating point numbers.  In this case missing
 data is represented as a special case of the representation of ‘NaN’.
 
- -- Built-in Function: NA
- -- Built-in Function: NA (N)
- -- Built-in Function: NA (N, M)
- -- Built-in Function: NA (N, M, K, ...)
- -- Built-in Function: NA (..., CLASS)
+ -- : NA
+ -- : NA (N)
+ -- : NA (N, M)
+ -- : NA (N, M, K, ...)
+ -- : NA (..., CLASS)
      Return a scalar, matrix, or N-dimensional array whose elements are
      all equal to the special constant used to designate missing values.
 
@@ -3664,7 +3672,7 @@ data is represented as a special case of the representation of ‘NaN’.
 
      See also: *note isna: XREFisna.
 
- -- Mapping Function: isna (X)
+ -- : isna (X)
      Return a logical array which is true where the elements of X are NA
      (missing) values and false where they are not.
 
@@ -3736,7 +3744,7 @@ expression.  These functions are defined for all objects.  They return
 structure type doesn’t have rows or columns, so the ‘rows’ and ‘columns’
 functions return −1 for structure arguments.
 
- -- Built-in Function: ndims (A)
+ -- : ndims (A)
      Return the number of dimensions of A.
 
      For any array, the result will always be greater than or equal to
@@ -3747,14 +3755,14 @@ functions return −1 for structure arguments.
 
      See also: *note size: XREFsize.
 
- -- Built-in Function: columns (A)
+ -- : columns (A)
      Return the number of columns of A.
 
      See also: *note rows: XREFrows, *note size: XREFsize, *note length:
      XREFlength, *note numel: XREFnumel, *note isscalar: XREFisscalar,
      *note isvector: XREFisvector, *note ismatrix: XREFismatrix.
 
- -- Built-in Function: rows (A)
+ -- : rows (A)
      Return the number of rows of A.
 
      See also: *note columns: XREFcolumns, *note size: XREFsize, *note
@@ -3762,8 +3770,8 @@ functions return −1 for structure arguments.
      XREFisscalar, *note isvector: XREFisvector, *note ismatrix:
      XREFismatrix.
 
- -- Built-in Function: numel (A)
- -- Built-in Function: numel (A, IDX1, IDX2, ...)
+ -- : numel (A)
+ -- : numel (A, IDX1, IDX2, ...)
      Return the number of elements in the object A.
 
      Optionally, if indices IDX1, IDX2, ... are supplied, return the
@@ -3792,7 +3800,7 @@ functions return −1 for structure arguments.
 
      See also: *note size: XREFsize.
 
- -- Built-in Function: length (A)
+ -- : length (A)
      Return the length of the object A.
 
      The length is 0 for empty objects, 1 for scalars, and the number of
@@ -3802,8 +3810,8 @@ functions return −1 for structure arguments.
 
      See also: *note numel: XREFnumel, *note size: XREFsize.
 
- -- Built-in Function: size (A)
- -- Built-in Function: size (A, DIM)
+ -- : size (A)
+ -- : size (A, DIM)
      Return the number of rows and columns of A.
 
      With one input argument and one output argument, the result is
@@ -3830,13 +3838,13 @@ functions return −1 for structure arguments.
      length: XREFlength, *note rows: XREFrows, *note columns:
      XREFcolumns.
 
- -- Built-in Function: isempty (A)
+ -- : isempty (A)
      Return true if A is an empty matrix (any one of its dimensions is
      zero).
 
      See also: *note isnull: XREFisnull, *note isa: XREFisa.
 
- -- Built-in Function: isnull (X)
+ -- : isnull (X)
      Return true if X is a special null matrix, string, or single quoted
      string.
 
@@ -3853,12 +3861,12 @@ functions return −1 for structure arguments.
 
      See also: *note isempty: XREFisempty, *note isindex: XREFisindex.
 
- -- Built-in Function: sizeof (VAL)
+ -- : sizeof (VAL)
      Return the size of VAL in bytes.
 
      See also: *note whos: XREFwhos.
 
- -- Built-in Function: size_equal (A, B, ...)
+ -- : size_equal (A, B, ...)
      Return true if the dimensions of all arguments agree.
 
      Trailing singleton dimensions are ignored.  When called with a
@@ -3867,7 +3875,7 @@ functions return −1 for structure arguments.
      See also: *note size: XREFsize, *note numel: XREFnumel, *note
      ndims: XREFndims.
 
- -- Built-in Function: squeeze (X)
+ -- : squeeze (X)
      Remove singleton dimensions from X and return the result.
 
      Note that for compatibility with MATLAB, all objects have a minimum
@@ -3923,13 +3931,13 @@ does, Octave will print an error message, like this:
 You may also use ‘j’, ‘I’, or ‘J’ in place of the ‘i’ above.  All four
 forms are equivalent.
 
- -- Built-in Function: double (X)
+ -- : double (X)
      Convert X to double precision type.
 
      See also: *note single: XREFsingle.
 
- -- Built-in Function: complex (X)
- -- Built-in Function: complex (RE, IM)
+ -- : complex (X)
+ -- : complex (RE, IM)
      Return a complex value from real arguments.
 
      With 1 real argument X, return the complex result ‘X + 0i’.
@@ -4069,7 +4077,7 @@ compiled.  The allowable number can be queried with the function
 available on your machine, may limit the maximum size of matrices to
 something smaller.
 
- -- Built-in Function: sizemax ()
+ -- : sizemax ()
      Return the largest value allowed for the size of an array.
 
      If Octave is compiled with 64-bit indexing, the result is of class
@@ -4086,9 +4094,9 @@ screen, Octave splits the matrix and displays a header before each
 section to indicate which columns are being displayed.  You can use the
 following variables to control the format of the output.
 
- -- Built-in Function: VAL = output_max_field_width ()
- -- Built-in Function: OLD_VAL = output_max_field_width (NEW_VAL)
- -- Built-in Function: output_max_field_width (NEW_VAL, "local")
+ -- : VAL = output_max_field_width ()
+ -- : OLD_VAL = output_max_field_width (NEW_VAL)
+ -- : output_max_field_width (NEW_VAL, "local")
      Query or set the internal variable that specifies the maximum width
      of a numeric output field.
 
@@ -4101,9 +4109,9 @@ following variables to control the format of the output.
      XREFfixed_point_format, *note output_precision:
      XREFoutput_precision.
 
- -- Built-in Function: VAL = output_precision ()
- -- Built-in Function: OLD_VAL = output_precision (NEW_VAL)
- -- Built-in Function: output_precision (NEW_VAL, "local")
+ -- : VAL = output_precision ()
+ -- : OLD_VAL = output_precision (NEW_VAL)
+ -- : output_precision (NEW_VAL, "local")
      Query or set the internal variable that specifies the minimum
      number of significant figures to display for numeric output.
 
@@ -4121,9 +4129,9 @@ different values of ‘output_precision’ and ‘output_max_field_width’.
 Reasonable combinations can be set using the ‘format’ function.  *Note
 Basic Input and Output::.
 
- -- Built-in Function: VAL = split_long_rows ()
- -- Built-in Function: OLD_VAL = split_long_rows (NEW_VAL)
- -- Built-in Function: split_long_rows (NEW_VAL, "local")
+ -- : VAL = split_long_rows ()
+ -- : OLD_VAL = split_long_rows (NEW_VAL)
+ -- : split_long_rows (NEW_VAL, "local")
      Query or set the internal variable that controls whether rows of a
      matrix may be split when displayed to a terminal window.
 
@@ -4161,9 +4169,9 @@ you can set the built-in variable ‘fixed_point_format’ to a nonzero
 value.  But doing so is not recommended, because it can produce output
 that can easily be misinterpreted.
 
- -- Built-in Function: VAL = fixed_point_format ()
- -- Built-in Function: OLD_VAL = fixed_point_format (NEW_VAL)
- -- Built-in Function: fixed_point_format (NEW_VAL, "local")
+ -- : VAL = fixed_point_format ()
+ -- : OLD_VAL = fixed_point_format (NEW_VAL)
+ -- : fixed_point_format (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will use a scaled format to print matrix values.
 
@@ -4228,9 +4236,9 @@ dimensions equal to zero), the following are true:
 empty matrix symbol, ‘[]’.  The built-in variable
 ‘print_empty_dimensions’ controls this behavior.
 
- -- Built-in Function: VAL = print_empty_dimensions ()
- -- Built-in Function: OLD_VAL = print_empty_dimensions (NEW_VAL)
- -- Built-in Function: print_empty_dimensions (NEW_VAL, "local")
+ -- : VAL = print_empty_dimensions ()
+ -- : OLD_VAL = print_empty_dimensions (NEW_VAL)
+ -- : print_empty_dimensions (NEW_VAL, "local")
      Query or set the internal variable that controls whether the
      dimensions of empty matrices are printed along with the empty
      matrix symbol, ‘[]’.
@@ -4302,9 +4310,9 @@ defines Y to be of type ‘matrix’ and occupies 88 bytes of memory.
    This space saving optimization may be disabled using the function
 “disable_range”.
 
- -- Built-in Function: VAL = disable_range ()
- -- Built-in Function: OLD_VAL = disable_range (NEW_VAL)
- -- Built-in Function: disable_range (NEW_VAL, "local")
+ -- : VAL = disable_range ()
+ -- : OLD_VAL = disable_range (NEW_VAL)
+ -- : disable_range (NEW_VAL, "local")
      Query or set the internal variable that controls whether ranges are
      stored in a special space-efficient format.
 
@@ -4362,7 +4370,7 @@ functions in Octave accept single precision values and return single
 precision answers.  A single precision variable is created with the
 ‘single’ function.
 
- -- Built-in Function: single (X)
+ -- : single (X)
      Convert X to single precision type.
 
      See also: *note double: XREFdouble.
@@ -4417,7 +4425,7 @@ into 32 bit integers.
 As can be seen, floating point values are rounded to the nearest integer
 when converted.
 
- -- Built-in Function: isinteger (X)
+ -- : isinteger (X)
      Return true if X is an integer object (int8, uint8, int16, etc.).
 
      Note that ‘isinteger (14)’ is false because numeric constants in
@@ -4427,63 +4435,63 @@ when converted.
      *note islogical: XREFislogical, *note isnumeric: XREFisnumeric,
      *note isa: XREFisa.
 
- -- Built-in Function: int8 (X)
+ -- : int8 (X)
      Convert X to 8-bit integer type.
 
      See also: *note uint8: XREFuint8, *note int16: XREFint16, *note
      uint16: XREFuint16, *note int32: XREFint32, *note uint32:
      XREFuint32, *note int64: XREFint64, *note uint64: XREFuint64.
 
- -- Built-in Function: uint8 (X)
+ -- : uint8 (X)
      Convert X to unsigned 8-bit integer type.
 
      See also: *note int8: XREFint8, *note int16: XREFint16, *note
      uint16: XREFuint16, *note int32: XREFint32, *note uint32:
      XREFuint32, *note int64: XREFint64, *note uint64: XREFuint64.
 
- -- Built-in Function: int16 (X)
+ -- : int16 (X)
      Convert X to 16-bit integer type.
 
      See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
      uint16: XREFuint16, *note int32: XREFint32, *note uint32:
      XREFuint32, *note int64: XREFint64, *note uint64: XREFuint64.
 
- -- Built-in Function: uint16 (X)
+ -- : uint16 (X)
      Convert X to unsigned 16-bit integer type.
 
      See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
      int16: XREFint16, *note int32: XREFint32, *note uint32: XREFuint32,
      *note int64: XREFint64, *note uint64: XREFuint64.
 
- -- Built-in Function: int32 (X)
+ -- : int32 (X)
      Convert X to 32-bit integer type.
 
      See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
      int16: XREFint16, *note uint16: XREFuint16, *note uint32:
      XREFuint32, *note int64: XREFint64, *note uint64: XREFuint64.
 
- -- Built-in Function: uint32 (X)
+ -- : uint32 (X)
      Convert X to unsigned 32-bit integer type.
 
      See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
      int16: XREFint16, *note uint16: XREFuint16, *note int32: XREFint32,
      *note int64: XREFint64, *note uint64: XREFuint64.
 
- -- Built-in Function: int64 (X)
+ -- : int64 (X)
      Convert X to 64-bit integer type.
 
      See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
      int16: XREFint16, *note uint16: XREFuint16, *note int32: XREFint32,
      *note uint32: XREFuint32, *note uint64: XREFuint64.
 
- -- Built-in Function: uint64 (X)
+ -- : uint64 (X)
      Convert X to unsigned 64-bit integer type.
 
      See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
      int16: XREFint16, *note uint16: XREFuint16, *note int32: XREFint32,
      *note uint32: XREFuint32, *note int64: XREFint64.
 
- -- Built-in Function: intmax (TYPE)
+ -- : intmax (TYPE)
      Return the largest integer that can be represented in an integer
      type.
 
@@ -4515,10 +4523,9 @@ when converted.
 
      The default for TYPE is ‘int32’.
 
-     See also: *note intmin: XREFintmin, *note flintmax: XREFflintmax,
-     *note bitmax: XREFbitmax.
+     See also: *note intmin: XREFintmin, *note flintmax: XREFflintmax.
 
- -- Built-in Function: intmin (TYPE)
+ -- : intmin (TYPE)
      Return the smallest integer that can be represented in an integer
      type.
 
@@ -4550,12 +4557,11 @@ when converted.
 
      The default for TYPE is ‘int32’.
 
-     See also: *note intmax: XREFintmax, *note flintmax: XREFflintmax,
-     *note bitmax: XREFbitmax.
+     See also: *note intmax: XREFintmax, *note flintmax: XREFflintmax.
 
- -- Built-in Function: flintmax ()
- -- Built-in Function: flintmax ("double")
- -- Built-in Function: flintmax ("single")
+ -- : flintmax ()
+ -- : flintmax ("double")
+ -- : flintmax ("single")
      Return the largest integer that can be represented consecutively in
      a floating point value.
 
@@ -4563,8 +4569,8 @@ when converted.
      IEEE 754 compatible systems, ‘flintmax’ is 2^{53} for "double" and
      2^{24} for "single".
 
-     See also: *note bitmax: XREFbitmax, *note intmax: XREFintmax, *note
-     realmax: XREFrealmax, *note realmin: XREFrealmin.
+     See also: *note intmax: XREFintmax, *note realmax: XREFrealmax,
+     *note realmin: XREFrealmin.
 
 * Menu:
 
@@ -4595,7 +4601,7 @@ nearest integer.  This is different from most programming languages,
 where the result is often floored to the nearest integer.  So, the
 result of ‘int32 (5) ./ int32 (8)’ is ‘1’.
 
- -- Function File: idivide (X, Y, OP)
+ -- : idivide (X, Y, OP)
      Integer division with different rounding rules.
 
      The standard behavior of integer division such as ‘A ./ B’ is to
@@ -4645,8 +4651,8 @@ Octave provides a number of functions for the manipulation of numeric
 values on a bit by bit basis.  The basic functions to set and obtain the
 values of individual bits are ‘bitset’ and ‘bitget’.
 
- -- Function File: C = bitset (A, N)
- -- Function File: C = bitset (A, N, VAL)
+ -- : C = bitset (A, N)
+ -- : C = bitset (A, N, VAL)
      Set or reset bit(s) N of the unsigned integers in A.
 
      VAL = 0 resets and VAL = 1 sets the bits.  The least significant
@@ -4657,9 +4663,10 @@ values of individual bits are ‘bitset’ and ‘bitget’.
 
      See also: *note bitand: XREFbitand, *note bitor: XREFbitor, *note
      bitxor: XREFbitxor, *note bitget: XREFbitget, *note bitcmp:
-     XREFbitcmp, *note bitshift: XREFbitshift, *note bitmax: XREFbitmax.
+     XREFbitcmp, *note bitshift: XREFbitshift, *note intmax: XREFintmax,
+     *note flintmax: XREFflintmax.
 
- -- Function File: C = bitget (A, N)
+ -- : C = bitget (A, N)
      Return the status of bit(s) N of the unsigned integers in A.
 
      The least significant bit is N = 1.
@@ -4669,7 +4676,8 @@ values of individual bits are ‘bitset’ and ‘bitget’.
 
      See also: *note bitand: XREFbitand, *note bitor: XREFbitor, *note
      bitxor: XREFbitxor, *note bitset: XREFbitset, *note bitcmp:
-     XREFbitcmp, *note bitshift: XREFbitshift, *note bitmax: XREFbitmax.
+     XREFbitcmp, *note bitshift: XREFbitshift, *note intmax: XREFintmax,
+     *note flintmax: XREFflintmax.
 
    The arguments to all of Octave’s bitwise operations can be scalar or
 arrays, except for ‘bitcmp’, whose K argument must a scalar.  In the
@@ -4693,63 +4701,47 @@ floating point format representation of ‘10’.
 
    As the maximum value that can be represented by a number is important
 for bit manipulation, particularly when forming masks, Octave supplies
-the function ‘bitmax’.
-
- -- Built-in Function: bitmax ()
- -- Built-in Function: bitmax ("double")
- -- Built-in Function: bitmax ("single")
-     Return the largest integer that can be represented within a
-     floating point value.
-
-     The default class is "double", but "single" is a valid option.  On
-     IEEE 754 compatible systems, ‘bitmax’ is 2^{53} - 1 for "double"
-     and 2^{24} -1 for "single".
-
-     See also: *note flintmax: XREFflintmax, *note intmax: XREFintmax,
-     *note realmax: XREFrealmax, *note realmin: XREFrealmin.
-
-   This is the double precision version of the function ‘intmax’,
-previously discussed.
+two utility functions: ‘flintmax’ for floating point integers, and
+‘intmax’ for integer objects (‘uint8’, ‘int64’, etc.).
 
    Octave also includes the basic bitwise ’and’, ’or’, and ’exclusive
 or’ operators.
 
- -- Built-in Function: bitand (X, Y)
+ -- : bitand (X, Y)
      Return the bitwise AND of non-negative integers.
 
-     X, Y must be in the range [0,bitmax]
+     X, Y must be in the range [0,intmax]
 
      See also: *note bitor: XREFbitor, *note bitxor: XREFbitxor, *note
      bitset: XREFbitset, *note bitget: XREFbitget, *note bitcmp:
-     XREFbitcmp, *note bitshift: XREFbitshift, *note bitmax: XREFbitmax.
+     XREFbitcmp, *note bitshift: XREFbitshift, *note intmax: XREFintmax,
+     *note flintmax: XREFflintmax.
 
- -- Built-in Function: bitor (X, Y)
-     Return the bitwise OR of non-negative integers.
-
-     X, Y must be in the range [0,bitmax]
+ -- : bitor (X, Y)
+     Return the bitwise OR of non-negative integers X and Y.
 
      See also: *note bitor: XREFbitor, *note bitxor: XREFbitxor, *note
      bitset: XREFbitset, *note bitget: XREFbitget, *note bitcmp:
-     XREFbitcmp, *note bitshift: XREFbitshift, *note bitmax: XREFbitmax.
+     XREFbitcmp, *note bitshift: XREFbitshift, *note intmax: XREFintmax,
+     *note flintmax: XREFflintmax.
 
- -- Built-in Function: bitxor (X, Y)
-     Return the bitwise XOR of non-negative integers.
-
-     X, Y must be in the range [0,bitmax]
+ -- : bitxor (X, Y)
+     Return the bitwise XOR of non-negative integers X and Y.
 
      See also: *note bitand: XREFbitand, *note bitor: XREFbitor, *note
      bitset: XREFbitset, *note bitget: XREFbitget, *note bitcmp:
-     XREFbitcmp, *note bitshift: XREFbitshift, *note bitmax: XREFbitmax.
+     XREFbitcmp, *note bitshift: XREFbitshift, *note intmax: XREFintmax,
+     *note flintmax: XREFflintmax.
 
    The bitwise ’not’ operator is a unary operator that performs a
 logical negation of each of the bits of the value.  For this to make
 sense, the mask against which the value is negated must be defined.
 Octave’s bitwise ’not’ operator is ‘bitcmp’.
 
- -- Function File: bitcmp (A, K)
+ -- : bitcmp (A, K)
      Return the K-bit complement of integers in A.
 
-     If K is omitted ‘k = log2 (bitmax) + 1’ is assumed.
+     If K is omitted ‘k = log2 (flintmax) + 1’ is assumed.
 
           bitcmp (7,4)
             ⇒ 8
@@ -4761,20 +4753,19 @@ Octave’s bitwise ’not’ operator is ‘bitcmp’.
      See also: *note bitand: XREFbitand, *note bitor: XREFbitor, *note
      bitxor: XREFbitxor, *note bitset: XREFbitset, *note bitget:
      XREFbitget, *note bitcmp: XREFbitcmp, *note bitshift: XREFbitshift,
-     *note bitmax: XREFbitmax.
+     *note flintmax: XREFflintmax.
 
    Octave also includes the ability to left-shift and right-shift values
 bitwise.
 
- -- Built-in Function: bitshift (A, K)
- -- Built-in Function: bitshift (A, K, N)
+ -- : bitshift (A, K)
+ -- : bitshift (A, K, N)
      Return a K bit shift of N-digit unsigned integers in A.
 
      A positive K leads to a left shift; A negative value to a right
      shift.
 
-     If N is omitted it defaults to log2(bitmax)+1.  N must be in the
-     range [1,log2(bitmax)+1] usually [1,33].
+     If N is omitted it defaults to 64.  N must be in the range [1,64].
 
           bitshift (eye (3), 1)
           ⇒
@@ -4787,7 +4778,8 @@ bitwise.
 
      See also: *note bitand: XREFbitand, *note bitor: XREFbitor, *note
      bitxor: XREFbitxor, *note bitset: XREFbitset, *note bitget:
-     XREFbitget, *note bitcmp: XREFbitcmp, *note bitmax: XREFbitmax.
+     XREFbitget, *note bitcmp: XREFbitcmp, *note intmax: XREFintmax,
+     *note flintmax: XREFflintmax.
 
    Bits that are shifted out of either end of the value are lost.
 Octave also uses arithmetic shifts, where the sign bit of the value is
@@ -4838,7 +4830,7 @@ Instead of creating the ‘idx’ array it is possible to replace
    Logical values can also be constructed by casting numeric objects to
 logical values, or by using the ‘true’ or ‘false’ functions.
 
- -- Built-in Function: logical (X)
+ -- : logical (X)
      Convert the numeric object X to logical type.
 
      Any nonzero values will be converted to true (1) while zero values
@@ -4851,9 +4843,9 @@ logical values, or by using the ‘true’ or ‘false’ functions.
      See also: *note double: XREFdouble, *note single: XREFsingle, *note
      char: XREFchar.
 
- -- Built-in Function: true (X)
- -- Built-in Function: true (N, M)
- -- Built-in Function: true (N, M, K, ...)
+ -- : true (X)
+ -- : true (N, M)
+ -- : true (N, M, K, ...)
      Return a matrix or N-dimensional array whose elements are all
      logical 1.
 
@@ -4865,9 +4857,9 @@ logical values, or by using the ‘true’ or ‘false’ functions.
 
      See also: *note false: XREFfalse.
 
- -- Built-in Function: false (X)
- -- Built-in Function: false (N, M)
- -- Built-in Function: false (N, M, K, ...)
+ -- : false (X)
+ -- : false (N, M)
+ -- : false (N, M, K, ...)
      Return a matrix or N-dimensional array whose elements are all
      logical 0.
 
@@ -4963,7 +4955,7 @@ and the length of the input if it is a complex number.
    The following functions are available for determining the type of a
 variable.
 
- -- Built-in Function: isnumeric (X)
+ -- : isnumeric (X)
      Return true if X is a numeric object, i.e., an integer, real, or
      complex array.
 
@@ -4975,15 +4967,15 @@ variable.
      XREFischar, *note iscell: XREFiscell, *note isstruct: XREFisstruct,
      *note isa: XREFisa.
 
- -- Built-in Function: islogical (X)
- -- Built-in Function: isbool (X)
+ -- : islogical (X)
+ -- : isbool (X)
      Return true if X is a logical object.
 
      See also: *note isfloat: XREFisfloat, *note isinteger:
      XREFisinteger, *note ischar: XREFischar, *note isnumeric:
      XREFisnumeric, *note isa: XREFisa.
 
- -- Built-in Function: isfloat (X)
+ -- : isfloat (X)
      Return true if X is a floating-point numeric object.
 
      Objects of class double or single are floating-point objects.
@@ -4992,7 +4984,7 @@ variable.
      *note islogical: XREFislogical, *note isnumeric: XREFisnumeric,
      *note isa: XREFisa.
 
- -- Built-in Function: isreal (X)
+ -- : isreal (X)
      Return true if X is a non-complex matrix or scalar.
 
      For compatibility with MATLAB, this includes logical and character
@@ -5001,21 +4993,21 @@ variable.
      See also: *note iscomplex: XREFiscomplex, *note isnumeric:
      XREFisnumeric, *note isa: XREFisa.
 
- -- Built-in Function: iscomplex (X)
+ -- : iscomplex (X)
      Return true if X is a complex-valued numeric object.
 
      See also: *note isreal: XREFisreal, *note isnumeric: XREFisnumeric,
      *note islogical: XREFislogical, *note ischar: XREFischar, *note
      isfloat: XREFisfloat, *note isa: XREFisa.
 
- -- Built-in Function: ismatrix (A)
+ -- : ismatrix (A)
      Return true if A is a 2-D array.
 
      See also: *note isscalar: XREFisscalar, *note isvector:
      XREFisvector, *note iscell: XREFiscell, *note isstruct:
      XREFisstruct, *note issparse: XREFissparse, *note isa: XREFisa.
 
- -- Function File: isvector (X)
+ -- : isvector (X)
      Return true if X is a vector.
 
      A vector is a 2-D array where one of the dimensions is equal to 1.
@@ -5025,33 +5017,33 @@ variable.
      XREFismatrix, *note size: XREFsize, *note rows: XREFrows, *note
      columns: XREFcolumns, *note length: XREFlength.
 
- -- Function File: isrow (X)
+ -- : isrow (X)
      Return true if X is a row vector 1xN with non-negative N.
 
      See also: *note iscolumn: XREFiscolumn, *note isscalar:
      XREFisscalar, *note isvector: XREFisvector, *note ismatrix:
      XREFismatrix.
 
- -- Function File: iscolumn (X)
+ -- : iscolumn (X)
      Return true if X is a column vector Nx1 with non-negative N.
 
      See also: *note isrow: XREFisrow, *note isscalar: XREFisscalar,
      *note isvector: XREFisvector, *note ismatrix: XREFismatrix.
 
- -- Built-in Function: isscalar (X)
+ -- : isscalar (X)
      Return true if X is a scalar.
 
      See also: *note isvector: XREFisvector, *note ismatrix:
      XREFismatrix.
 
- -- Function File: issquare (X)
+ -- : issquare (X)
      Return true if X is a square matrix.
 
      See also: *note isscalar: XREFisscalar, *note isvector:
      XREFisvector, *note ismatrix: XREFismatrix, *note size: XREFsize.
 
- -- Function File: issymmetric (A)
- -- Function File: issymmetric (A, TOL)
+ -- : issymmetric (A)
+ -- : issymmetric (A, TOL)
      Return true if A is a symmetric matrix within the tolerance
      specified by TOL.
 
@@ -5063,8 +5055,8 @@ variable.
      See also: *note ishermitian: XREFishermitian, *note isdefinite:
      XREFisdefinite.
 
- -- Function File: ishermitian (A)
- -- Function File: ishermitian (A, TOL)
+ -- : ishermitian (A)
+ -- : ishermitian (A, TOL)
      Return true if A is Hermitian within the tolerance specified by
      TOL.
 
@@ -5076,8 +5068,8 @@ variable.
      See also: *note issymmetric: XREFissymmetric, *note isdefinite:
      XREFisdefinite.
 
- -- Function File: isdefinite (A)
- -- Function File: isdefinite (A, TOL)
+ -- : isdefinite (A)
+ -- : isdefinite (A, TOL)
      Return 1 if A is symmetric positive definite within the tolerance
      specified by TOL or 0 if A is symmetric positive semidefinite.
      Otherwise, return -1.
@@ -5087,7 +5079,7 @@ variable.
      See also: *note issymmetric: XREFissymmetric, *note ishermitian:
      XREFishermitian.
 
- -- Function File: isbanded (A, LOWER, UPPER)
+ -- : isbanded (A, LOWER, UPPER)
      Return true if A is a matrix with entries confined between LOWER
      diagonals below the main diagonal and UPPER diagonals above the
      main diagonal.
@@ -5097,14 +5089,14 @@ variable.
      See also: *note isdiag: XREFisdiag, *note istril: XREFistril, *note
      istriu: XREFistriu, *note bandwidth: XREFbandwidth.
 
- -- Function File: isdiag (A)
+ -- : isdiag (A)
      Return true if A is a diagonal matrix.
 
      See also: *note isbanded: XREFisbanded, *note istril: XREFistril,
      *note istriu: XREFistriu, *note diag: XREFdiag, *note bandwidth:
      XREFbandwidth.
 
- -- Function File: istril (A)
+ -- : istril (A)
      Return true if A is a lower triangular matrix.
 
      A lower triangular matrix has nonzero entries only on the main
@@ -5114,7 +5106,7 @@ variable.
      *note isdiag: XREFisdiag, *note tril: XREFtril, *note bandwidth:
      XREFbandwidth.
 
- -- Function File: istriu (A)
+ -- : istriu (A)
      Return true if A is an upper triangular matrix.
 
      An upper triangular matrix has nonzero entries only on the main
@@ -5124,7 +5116,7 @@ variable.
      *note istril: XREFistril, *note triu: XREFtriu, *note bandwidth:
      XREFbandwidth.
 
- -- Function File: isprime (X)
+ -- : isprime (X)
      Return a logical array which is true where the elements of X are
      prime numbers and false where they are not.
 
@@ -5281,13 +5273,13 @@ succession.  For example,
    In scripts the two different string types can be distinguished if
 necessary by using ‘is_dq_string’ and ‘is_sq_string’.
 
- -- Built-in Function: is_dq_string (X)
+ -- : is_dq_string (X)
      Return true if X is a double-quoted character string.
 
      See also: *note is_sq_string: XREFis_sq_string, *note ischar:
      XREFischar.
 
- -- Built-in Function: is_sq_string (X)
+ -- : is_sq_string (X)
      Return true if X is a single-quoted character string.
 
      See also: *note is_dq_string: XREFis_dq_string, *note ischar:
@@ -5318,7 +5310,7 @@ This creates a 2-by-9 character matrix.
    The function ‘ischar’ can be used to test if an object is a character
 matrix.
 
- -- Built-in Function: ischar (X)
+ -- : ischar (X)
      Return true if X is a character array.
 
      See also: *note isfloat: XREFisfloat, *note isinteger:
@@ -5344,9 +5336,9 @@ puts blank characters at the end of strings shorter than the longest
 string.  It is possible to use a different character than the blank
 character using the ‘string_fill_char’ function.
 
- -- Built-in Function: VAL = string_fill_char ()
- -- Built-in Function: OLD_VAL = string_fill_char (NEW_VAL)
- -- Built-in Function: string_fill_char (NEW_VAL, "local")
+ -- : VAL = string_fill_char ()
+ -- : OLD_VAL = string_fill_char (NEW_VAL)
+ -- : string_fill_char (NEW_VAL, "local")
      Query or set the internal variable used to pad all rows of a
      character matrix to the same length.
 
@@ -5381,7 +5373,7 @@ is however possible to create a string without actually writing a text.
 The function ‘blanks’ creates a string of a given length consisting only
 of blank characters (ASCII code 32).
 
- -- Function File: blanks (N)
+ -- : blanks (N)
      Return a string of N blanks.
 
      For example:
@@ -5492,10 +5484,10 @@ horzcat: XREFhorzcat, and *note vertcat: XREFvertcat.
      originates from the internal representation of the strings in a
      string array (*note Character Arrays::).
 
- -- Built-in Function: char (X)
- -- Built-in Function: char (X, ...)
- -- Built-in Function: char (S1, S2, ...)
- -- Built-in Function: char (CELL_ARRAY)
+ -- : char (X)
+ -- : char (X, ...)
+ -- : char (S1, S2, ...)
+ -- : char (CELL_ARRAY)
      Create a string array from one or more numeric matrices, character
      matrices, or cell arrays.
 
@@ -5523,10 +5515,10 @@ horzcat: XREFhorzcat, and *note vertcat: XREFvertcat.
 
      See also: *note strvcat: XREFstrvcat, *note cellstr: XREFcellstr.
 
- -- Built-in Function: strvcat (X)
- -- Built-in Function: strvcat (X, ...)
- -- Built-in Function: strvcat (S1, S2, ...)
- -- Built-in Function: strvcat (CELL_ARRAY)
+ -- : strvcat (X)
+ -- : strvcat (X, ...)
+ -- : strvcat (S1, S2, ...)
+ -- : strvcat (CELL_ARRAY)
      Create a character array from one or more numeric matrices,
      character matrices, or cell arrays.
 
@@ -5554,7 +5546,7 @@ horzcat: XREFhorzcat, and *note vertcat: XREFvertcat.
      See also: *note char: XREFchar, *note strcat: XREFstrcat, *note
      cstrcat: XREFcstrcat.
 
- -- Function File: strcat (S1, S2, ...)
+ -- : strcat (S1, S2, ...)
      Return a string containing all the arguments concatenated
      horizontally.
 
@@ -5593,7 +5585,7 @@ horzcat: XREFhorzcat, and *note vertcat: XREFvertcat.
      See also: *note cstrcat: XREFcstrcat, *note char: XREFchar, *note
      strvcat: XREFstrvcat.
 
- -- Function File: cstrcat (S1, S2, ...)
+ -- : cstrcat (S1, S2, ...)
      Return a string containing all the arguments concatenated
      horizontally with trailing white space preserved.
 
@@ -5625,8 +5617,8 @@ part of complex values and round fractional values to integer.  A more
 flexible way to format numerical data as strings is the ‘sprintf’
 function (*note Formatted Output::, *note sprintf: XREFsprintf.).
 
- -- Function File: S = mat2str (X, N)
- -- Function File: S = mat2str (X, N, "class")
+ -- : S = mat2str (X, N)
+ -- : S = mat2str (X, N, "class")
      Format real, complex, and logical matrices as strings.
 
      The returned string may be used to reconstruct the original matrix
@@ -5660,9 +5652,9 @@ function (*note Formatted Output::, *note sprintf: XREFsprintf.).
      See also: *note sprintf: XREFsprintf, *note num2str: XREFnum2str,
      *note int2str: XREFint2str.
 
- -- Function File: num2str (X)
- -- Function File: num2str (X, PRECISION)
- -- Function File: num2str (X, FORMAT)
+ -- : num2str (X)
+ -- : num2str (X, PRECISION)
+ -- : num2str (X, FORMAT)
      Convert a number (or array) to a string (or a character array).
 
      The optional second argument may either give the number of
@@ -5691,22 +5683,28 @@ function (*note Formatted Output::, *note sprintf: XREFsprintf.).
           num2str (1.234 + 27.3i)
                ⇒ "1.234+27.3i"
 
-     Notes:
+     The ‘num2str’ function is not very flexible.  For better control
+     over the results, use ‘sprintf’ (*note Formatted Output::).
+
+     Programming Notes:
 
      For MATLAB compatibility, leading spaces are stripped before
      returning the string.
 
-     The ‘num2str’ function is not very flexible.  For better control
-     over the results, use ‘sprintf’ (*note Formatted Output::).
+     Integers larger than ‘flintmax’ may not be displayed correctly.
 
      For complex X, the format string may only contain one output
      conversion specification and nothing else.  Otherwise, results will
      be unpredictable.
 
+     Any optional FORMAT specified by the programmer is used without
+     modification.  This is in contrast to MATLAB which tampers with the
+     FORMAT based on internal heuristics.
+
      See also: *note sprintf: XREFsprintf, *note int2str: XREFint2str,
      *note mat2str: XREFmat2str.
 
- -- Function File: int2str (N)
+ -- : int2str (N)
      Convert an integer (or array of integers) to a string (or a
      character array).
 
@@ -5726,6 +5724,11 @@ function (*note Formatted Output::, *note sprintf: XREFsprintf.).
 
      This function is not very flexible.  For better control over the
      results, use ‘sprintf’ (*note Formatted Output::).
+
+     Programming Notes:
+
+     Non-integers are rounded to integers before display.  Only the real
+     part of complex numbers is displayed.
 
      See also: *note sprintf: XREFsprintf, *note num2str: XREFnum2str,
      *note mat2str: XREFmat2str.
@@ -5750,7 +5753,7 @@ To determine if two strings are identical it is necessary to use the
 parameter).  ‘strcmpi’ and ‘strncmpi’ are the corresponding functions
 for case-insensitive comparison.
 
- -- Built-in Function: strcmp (S1, S2)
+ -- : strcmp (S1, S2)
      Return 1 if the character strings S1 and S2 are the same, and 0
      otherwise.
 
@@ -5767,7 +5770,7 @@ for case-insensitive comparison.
      See also: *note strcmpi: XREFstrcmpi, *note strncmp: XREFstrncmp,
      *note strncmpi: XREFstrncmpi.
 
- -- Built-in Function: strncmp (S1, S2, N)
+ -- : strncmp (S1, S2, N)
      Return 1 if the first N characters of strings S1 and S2 are the
      same, and 0 otherwise.
 
@@ -5790,7 +5793,7 @@ for case-insensitive comparison.
      See also: *note strncmpi: XREFstrncmpi, *note strcmp: XREFstrcmp,
      *note strcmpi: XREFstrcmpi.
 
- -- Built-in Function: strcmpi (S1, S2)
+ -- : strcmpi (S1, S2)
      Return 1 if the character strings S1 and S2 are the same,
      disregarding case of alphabetic characters, and 0 otherwise.
 
@@ -5809,7 +5812,7 @@ for case-insensitive comparison.
      See also: *note strcmp: XREFstrcmp, *note strncmp: XREFstrncmp,
      *note strncmpi: XREFstrncmpi.
 
- -- Built-in Function: strncmpi (S1, S2, N)
+ -- : strncmpi (S1, S2, N)
      Return 1 if the first N character of S1 and S2 are the same,
      disregarding case of alphabetic characters, and 0 otherwise.
 
@@ -5849,7 +5852,7 @@ to replace all blank characters with underscores.
    For more complex manipulations, such as searching, replacing, and
 general regular expressions, the following functions come with Octave.
 
- -- Function File: deblank (S)
+ -- : deblank (S)
      Remove trailing whitespace and nulls from S.
 
      If S is a matrix, DEBLANK trims each row to the length of longest
@@ -5866,7 +5869,7 @@ general regular expressions, the following functions come with Octave.
 
      See also: *note strtrim: XREFstrtrim.
 
- -- Function File: strtrim (S)
+ -- : strtrim (S)
      Remove leading and trailing whitespace from S.
 
      If S is a matrix, STRTRIM trims each row to the length of longest
@@ -5883,7 +5886,7 @@ general regular expressions, the following functions come with Octave.
 
      See also: *note deblank: XREFdeblank.
 
- -- Function File: strtrunc (S, N)
+ -- : strtrunc (S, N)
      Truncate the character string S to length N.
 
      If S is a character matrix, then the number of columns is adjusted.
@@ -5891,8 +5894,8 @@ general regular expressions, the following functions come with Octave.
      If S is a cell array of strings, then the operation is performed on
      each cell element and the new cell array is returned.
 
- -- Function File: findstr (S, T)
- -- Function File: findstr (S, T, OVERLAP)
+ -- : findstr (S, T)
+ -- : findstr (S, T, OVERLAP)
      Return the vector of all positions in the longer of the two strings
      S and T where an occurrence of the shorter of the two starts.
 
@@ -5912,10 +5915,10 @@ general regular expressions, the following functions come with Octave.
      strcmpi: XREFstrcmpi, *note strncmpi: XREFstrncmpi, *note find:
      XREFfind.
 
- -- Function File: IDX = strchr (STR, CHARS)
- -- Function File: IDX = strchr (STR, CHARS, N)
- -- Function File: IDX = strchr (STR, CHARS, N, DIRECTION)
- -- Function File: [I, J] = strchr (...)
+ -- : IDX = strchr (STR, CHARS)
+ -- : IDX = strchr (STR, CHARS, N)
+ -- : IDX = strchr (STR, CHARS, N, DIRECTION)
+ -- : [I, J] = strchr (...)
      Search for the string STR for occurrences of characters from the
      set CHARS.
 
@@ -5926,8 +5929,8 @@ general regular expressions, the following functions come with Octave.
 
      See also: *note find: XREFfind.
 
- -- Function File: index (S, T)
- -- Function File: index (S, T, DIRECTION)
+ -- : index (S, T)
+ -- : index (S, T, DIRECTION)
      Return the position of the first occurrence of the string T in the
      string S, or 0 if no occurrence is found.
 
@@ -5943,7 +5946,7 @@ general regular expressions, the following functions come with Octave.
 
      See also: *note find: XREFfind, *note rindex: XREFrindex.
 
- -- Function File: rindex (S, T)
+ -- : rindex (S, T)
      Return the position of the last occurrence of the character string
      T in the character string S, or 0 if no occurrence is found.
 
@@ -5959,9 +5962,9 @@ general regular expressions, the following functions come with Octave.
 
      See also: *note find: XREFfind, *note index: XREFindex.
 
- -- Built-in Function: IDX = strfind (STR, PATTERN)
- -- Built-in Function: IDX = strfind (CELLSTR, PATTERN)
- -- Built-in Function: IDX = strfind (..., "overlaps", VAL)
+ -- : IDX = strfind (STR, PATTERN)
+ -- : IDX = strfind (CELLSTR, PATTERN)
+ -- : IDX = strfind (..., "overlaps", VAL)
      Search for PATTERN in the string STR and return the starting index
      of every such occurrence in the vector IDX.
 
@@ -5998,8 +6001,8 @@ general regular expressions, the following functions come with Octave.
      *note regexp: XREFregexp, *note regexpi: XREFregexpi, *note find:
      XREFfind.
 
- -- Function File: STR = strjoin (CSTR)
- -- Function File: STR = strjoin (CSTR, DELIMITER)
+ -- : STR = strjoin (CSTR)
+ -- : STR = strjoin (CSTR, DELIMITER)
      Join the elements of the cell string array, CSTR, into a single
      string.
 
@@ -6018,8 +6021,8 @@ general regular expressions, the following functions come with Octave.
 
      See also: *note strsplit: XREFstrsplit.
 
- -- Function File: strmatch (S, A)
- -- Function File: strmatch (S, A, "exact")
+ -- : strmatch (S, A)
+ -- : strmatch (S, A, "exact")
      Return indices of entries of A which begin with the string S.
 
      The second argument A must be a string, character matrix, or a cell
@@ -6049,8 +6052,8 @@ general regular expressions, the following functions come with Octave.
      strcmpi: XREFstrcmpi, *note strncmpi: XREFstrncmpi, *note find:
      XREFfind.
 
- -- Function File: [TOK, REM] = strtok (STR)
- -- Function File: [TOK, REM] = strtok (STR, DELIM)
+ -- : [TOK, REM] = strtok (STR)
+ -- : [TOK, REM] = strtok (STR, DELIM)
 
      Find all characters in the string STR up to, but not including, the
      first character which is in the string DELIM.
@@ -6078,10 +6081,10 @@ general regular expressions, the following functions come with Octave.
      See also: *note index: XREFindex, *note strsplit: XREFstrsplit,
      *note strchr: XREFstrchr, *note isspace: XREFisspace.
 
- -- Function File: [CSTR] = strsplit (STR)
- -- Function File: [CSTR] = strsplit (STR, DEL)
- -- Function File: [CSTR] = strsplit (..., NAME, VALUE)
- -- Function File: [CSTR, MATCHES] = strsplit (...)
+ -- : [CSTR] = strsplit (STR)
+ -- : [CSTR] = strsplit (STR, DEL)
+ -- : [CSTR] = strsplit (..., NAME, VALUE)
+ -- : [CSTR, MATCHES] = strsplit (...)
      Split the string STR using the delimiters specified by DEL and
      return a cell string array of substrings.
 
@@ -6183,8 +6186,8 @@ general regular expressions, the following functions come with Octave.
      See also: *note ostrsplit: XREFostrsplit, *note strjoin:
      XREFstrjoin, *note strtok: XREFstrtok, *note regexp: XREFregexp.
 
- -- Function File: [CSTR] = ostrsplit (S, SEP)
- -- Function File: [CSTR] = ostrsplit (S, SEP, STRIP_EMPTY)
+ -- : [CSTR] = ostrsplit (S, SEP)
+ -- : [CSTR] = ostrsplit (S, SEP, STRIP_EMPTY)
      Split the string S using one or more separators SEP and return a
      cell array of strings.
 
@@ -6215,12 +6218,12 @@ general regular expressions, the following functions come with Octave.
 
      See also: *note strsplit: XREFstrsplit, *note strtok: XREFstrtok.
 
- -- Function File: [A, ...] = strread (STR)
- -- Function File: [A, ...] = strread (STR, FORMAT)
- -- Function File: [A, ...] = strread (STR, FORMAT, FORMAT_REPEAT)
- -- Function File: [A, ...] = strread (STR, FORMAT, PROP1, VALUE1, ...)
- -- Function File: [A, ...] = strread (STR, FORMAT, FORMAT_REPEAT,
-          PROP1, VALUE1, ...)
+ -- : [A, ...] = strread (STR)
+ -- : [A, ...] = strread (STR, FORMAT)
+ -- : [A, ...] = strread (STR, FORMAT, FORMAT_REPEAT)
+ -- : [A, ...] = strread (STR, FORMAT, PROP1, VALUE1, ...)
+ -- : [A, ...] = strread (STR, FORMAT, FORMAT_REPEAT, PROP1, VALUE1,
+          ...)
      Read data from a string.
 
      The string STR is split into words that are repeatedly matched to
@@ -6365,9 +6368,9 @@ general regular expressions, the following functions come with Octave.
      XREFtextread, *note load: XREFload, *note dlmread: XREFdlmread,
      *note fscanf: XREFfscanf.
 
- -- Built-in Function: NEWSTR = strrep (STR, PTN, REP)
- -- Built-in Function: NEWSTR = strrep (CELLSTR, PTN, REP)
- -- Built-in Function: NEWSTR = strrep (..., "overlaps", VAL)
+ -- : NEWSTR = strrep (STR, PTN, REP)
+ -- : NEWSTR = strrep (CELLSTR, PTN, REP)
+ -- : NEWSTR = strrep (..., "overlaps", VAL)
      Replace all occurrences of the pattern PTN in the string STR with
      the string REP and return the result.
 
@@ -6386,8 +6389,8 @@ general regular expressions, the following functions come with Octave.
      See also: *note regexprep: XREFregexprep, *note strfind:
      XREFstrfind, *note findstr: XREFfindstr.
 
- -- Function File: substr (S, OFFSET)
- -- Function File: substr (S, OFFSET, LEN)
+ -- : substr (S, OFFSET)
+ -- : substr (S, OFFSET, LEN)
      Return the substring of S which starts at character number OFFSET
      and is LEN characters long.
 
@@ -6409,8 +6412,8 @@ general regular expressions, the following functions come with Octave.
 
      This function is patterned after the equivalent function in Perl.
 
- -- Built-in Function: [S, E, TE, M, T, NM, SP] = regexp (STR, PAT)
- -- Built-in Function: [...] = regexp (STR, PAT, "OPT1", ...)
+ -- : [S, E, TE, M, T, NM, SP] = regexp (STR, PAT)
+ -- : [...] = regexp (STR, PAT, "OPT1", ...)
      Regular expression string matching.
 
      Search for PAT in STR and return the positions and substrings of
@@ -6605,8 +6608,8 @@ general regular expressions, the following functions come with Octave.
      See also: *note regexpi: XREFregexpi, *note strfind: XREFstrfind,
      *note regexprep: XREFregexprep.
 
- -- Built-in Function: [S, E, TE, M, T, NM, SP] = regexpi (STR, PAT)
- -- Built-in Function: [...] = regexpi (STR, PAT, "OPT1", ...)
+ -- : [S, E, TE, M, T, NM, SP] = regexpi (STR, PAT)
+ -- : [...] = regexpi (STR, PAT, "OPT1", ...)
 
      Case insensitive regular expression string matching.
 
@@ -6616,9 +6619,8 @@ general regular expressions, the following functions come with Octave.
 
      See also: *note regexp: XREFregexp.
 
- -- Built-in Function: OUTSTR = regexprep (STRING, PAT, REPSTR)
- -- Built-in Function: OUTSTR = regexprep (STRING, PAT, REPSTR, "OPT1",
-          ...)
+ -- : OUTSTR = regexprep (STRING, PAT, REPSTR)
+ -- : OUTSTR = regexprep (STRING, PAT, REPSTR, "OPT1", ...)
      Replace occurrences of pattern PAT in STRING with REPSTR.
 
      The pattern is a regular expression as documented for ‘regexp’.
@@ -6648,7 +6650,7 @@ general regular expressions, the following functions come with Octave.
      See also: *note regexp: XREFregexp, *note regexpi: XREFregexpi,
      *note strrep: XREFstrrep.
 
- -- Function File: regexptranslate (OP, S)
+ -- : regexptranslate (OP, S)
      Translate a string for use in a regular expression.
 
      This may include either wildcard replacement or special character
@@ -6676,9 +6678,9 @@ general regular expressions, the following functions come with Octave.
      See also: *note regexp: XREFregexp, *note regexpi: XREFregexpi,
      *note regexprep: XREFregexprep.
 
- -- Function File: untabify (T)
- -- Function File: untabify (T, TW)
- -- Function File: untabify (T, TW, DEBLANK)
+ -- : untabify (T)
+ -- : untabify (T, TW)
+ -- : untabify (T, TW, DEBLANK)
      Replace TAB characters in T with spaces.
 
      The input, T, may be either a 2-D character array, or a cell array
@@ -6716,7 +6718,7 @@ hexadecimal number to a floating point number.
      hex2dec ("FF")
            ⇒ 255
 
- -- Function File: bin2dec (S)
+ -- : bin2dec (S)
      Return the decimal number corresponding to the binary number
      represented by the string S.
 
@@ -6740,7 +6742,7 @@ hexadecimal number to a floating point number.
      See also: *note dec2bin: XREFdec2bin, *note base2dec: XREFbase2dec,
      *note hex2dec: XREFhex2dec.
 
- -- Function File: dec2bin (D, LEN)
+ -- : dec2bin (D, LEN)
      Return a binary number corresponding to the non-negative integer D,
      as a string of ones and zeros.
 
@@ -6759,7 +6761,7 @@ hexadecimal number to a floating point number.
      See also: *note bin2dec: XREFbin2dec, *note dec2base: XREFdec2base,
      *note dec2hex: XREFdec2hex.
 
- -- Function File: dec2hex (D, LEN)
+ -- : dec2hex (D, LEN)
      Return the hexadecimal string corresponding to the non-negative
      integer D.
 
@@ -6778,7 +6780,7 @@ hexadecimal number to a floating point number.
      See also: *note hex2dec: XREFhex2dec, *note dec2base: XREFdec2base,
      *note dec2bin: XREFdec2bin.
 
- -- Function File: hex2dec (S)
+ -- : hex2dec (S)
      Return the integer corresponding to the hexadecimal number
      represented by the string S.
 
@@ -6798,8 +6800,8 @@ hexadecimal number to a floating point number.
      See also: *note dec2hex: XREFdec2hex, *note base2dec: XREFbase2dec,
      *note bin2dec: XREFbin2dec.
 
- -- Function File: dec2base (D, BASE)
- -- Function File: dec2base (D, BASE, LEN)
+ -- : dec2base (D, BASE)
+ -- : dec2base (D, BASE, LEN)
      Return a string of symbols in base BASE corresponding to the
      non-negative integer D.
 
@@ -6823,7 +6825,7 @@ hexadecimal number to a floating point number.
      See also: *note base2dec: XREFbase2dec, *note dec2bin: XREFdec2bin,
      *note dec2hex: XREFdec2hex.
 
- -- Function File: base2dec (S, BASE)
+ -- : base2dec (S, BASE)
      Convert S from a string of digits in base BASE to a decimal integer
      (base 10).
 
@@ -6846,7 +6848,7 @@ hexadecimal number to a floating point number.
      See also: *note dec2base: XREFdec2base, *note bin2dec: XREFbin2dec,
      *note hex2dec: XREFhex2dec.
 
- -- Built-in Function: S = num2hex (N)
+ -- : S = num2hex (N)
      Typecast a double or single precision number or vector to a 8 or 16
      character hexadecimal string of the IEEE 754 representation of the
      number.
@@ -6871,8 +6873,8 @@ hexadecimal number to a floating point number.
      See also: *note hex2num: XREFhex2num, *note hex2dec: XREFhex2dec,
      *note dec2hex: XREFdec2hex.
 
- -- Built-in Function: N = hex2num (S)
- -- Built-in Function: N = hex2num (S, CLASS)
+ -- : N = hex2num (S)
+ -- : N = hex2num (S, CLASS)
      Typecast the 16 character hexadecimal character string to an IEEE
      754 double precision number.
 
@@ -6896,7 +6898,7 @@ hexadecimal number to a floating point number.
      See also: *note num2hex: XREFnum2hex, *note hex2dec: XREFhex2dec,
      *note dec2hex: XREFdec2hex.
 
- -- Built-in Function: str2double (S)
+ -- : str2double (S)
      Convert a string to a real or complex number.
 
      The string must be in one of the following formats where a and b
@@ -6939,8 +6941,8 @@ hexadecimal number to a floating point number.
 
      See also: *note str2num: XREFstr2num.
 
- -- Function File: strjust (S)
- -- Function File: strjust (S, POS)
+ -- : strjust (S)
+ -- : strjust (S, POS)
      Return the text, S, justified according to POS, which may be
      "left", "center", or "right".
 
@@ -6961,8 +6963,8 @@ hexadecimal number to a floating point number.
      See also: *note deblank: XREFdeblank, *note strrep: XREFstrrep,
      *note strtrim: XREFstrtrim, *note untabify: XREFuntabify.
 
- -- Function File: X = str2num (S)
- -- Function File: [X, STATE] = str2num (S)
+ -- : X = str2num (S)
+ -- : [X, STATE] = str2num (S)
      Convert the string (or character array) S to a number (or an
      array).
 
@@ -6987,7 +6989,7 @@ hexadecimal number to a floating point number.
 
      See also: *note str2double: XREFstr2double, *note eval: XREFeval.
 
- -- Mapping Function: toascii (S)
+ -- : toascii (S)
      Return ASCII representation of S in a matrix.
 
      For example:
@@ -6998,8 +7000,8 @@ hexadecimal number to a floating point number.
 
      See also: *note char: XREFchar.
 
- -- Mapping Function: tolower (S)
- -- Mapping Function: lower (S)
+ -- : tolower (S)
+ -- : lower (S)
      Return a copy of the string or cell string S, with each uppercase
      character replaced by the corresponding lowercase one;
      non-alphabetic characters are left unchanged.
@@ -7011,8 +7013,8 @@ hexadecimal number to a floating point number.
 
      See also: *note toupper: XREFtoupper.
 
- -- Mapping Function: toupper (S)
- -- Mapping Function: upper (S)
+ -- : toupper (S)
+ -- : upper (S)
      Return a copy of the string or cell string S, with each lowercase
      character replaced by the corresponding uppercase one;
      non-alphabetic characters are left unchanged.
@@ -7024,7 +7026,7 @@ hexadecimal number to a floating point number.
 
      See also: *note tolower: XREFtolower.
 
- -- Built-in Function: do_string_escapes (STRING)
+ -- : do_string_escapes (STRING)
      Convert escape sequences in STRING to the characters they
      represent.
 
@@ -7033,7 +7035,7 @@ hexadecimal number to a floating point number.
 
      See also: *note undo_string_escapes: XREFundo_string_escapes.
 
- -- Built-in Function: undo_string_escapes (S)
+ -- : undo_string_escapes (S)
      Convert special characters in strings back to their escaped forms.
 
      For example, the expression
@@ -7071,7 +7073,7 @@ corresponding character in the string array.  For example:
      isalpha ("!Q@WERT^Y&")
           ⇒ [ 0, 1, 0, 1, 1, 1, 1, 0, 1, 0 ]
 
- -- Mapping Function: isalnum (S)
+ -- : isalnum (S)
      Return a logical array which is true where the elements of S are
      letters or digits and false where they are not.
 
@@ -7081,7 +7083,7 @@ corresponding character in the string array.  For example:
      *note ispunct: XREFispunct, *note isspace: XREFisspace, *note
      iscntrl: XREFiscntrl.
 
- -- Mapping Function: isalpha (S)
+ -- : isalpha (S)
      Return a logical array which is true where the elements of S are
      letters and false where they are not.
 
@@ -7092,7 +7094,7 @@ corresponding character in the string array.  For example:
      isalnum: XREFisalnum, *note islower: XREFislower, *note isupper:
      XREFisupper.
 
- -- Function File: isletter (S)
+ -- : isletter (S)
      Return a logical array which is true where the elements of S are
      letters and false where they are not.
 
@@ -7102,21 +7104,21 @@ corresponding character in the string array.  For example:
      *note ispunct: XREFispunct, *note isspace: XREFisspace, *note
      iscntrl: XREFiscntrl, *note isalnum: XREFisalnum.
 
- -- Mapping Function: islower (S)
+ -- : islower (S)
      Return a logical array which is true where the elements of S are
      lowercase letters and false where they are not.
 
      See also: *note isupper: XREFisupper, *note isalpha: XREFisalpha,
      *note isletter: XREFisletter, *note isalnum: XREFisalnum.
 
- -- Mapping Function: isupper (S)
+ -- : isupper (S)
      Return a logical array which is true where the elements of S are
      uppercase letters and false where they are not.
 
      See also: *note islower: XREFislower, *note isalpha: XREFisalpha,
      *note isletter: XREFisletter, *note isalnum: XREFisalnum.
 
- -- Mapping Function: isdigit (S)
+ -- : isdigit (S)
      Return a logical array which is true where the elements of S are
      decimal digits (0-9) and false where they are not.
 
@@ -7124,20 +7126,20 @@ corresponding character in the string array.  For example:
      *note isletter: XREFisletter, *note ispunct: XREFispunct, *note
      isspace: XREFisspace, *note iscntrl: XREFiscntrl.
 
- -- Mapping Function: isxdigit (S)
+ -- : isxdigit (S)
      Return a logical array which is true where the elements of S are
      hexadecimal digits (0-9 and a-fA-F).
 
      See also: *note isdigit: XREFisdigit.
 
- -- Mapping Function: ispunct (S)
+ -- : ispunct (S)
      Return a logical array which is true where the elements of S are
      punctuation characters and false where they are not.
 
      See also: *note isalpha: XREFisalpha, *note isdigit: XREFisdigit,
      *note isspace: XREFisspace, *note iscntrl: XREFiscntrl.
 
- -- Mapping Function: isspace (S)
+ -- : isspace (S)
      Return a logical array which is true where the elements of S are
      whitespace characters (space, formfeed, newline, carriage return,
      tab, and vertical tab) and false where they are not.
@@ -7145,33 +7147,33 @@ corresponding character in the string array.  For example:
      See also: *note iscntrl: XREFiscntrl, *note ispunct: XREFispunct,
      *note isalpha: XREFisalpha, *note isdigit: XREFisdigit.
 
- -- Mapping Function: iscntrl (S)
+ -- : iscntrl (S)
      Return a logical array which is true where the elements of S are
      control characters and false where they are not.
 
      See also: *note ispunct: XREFispunct, *note isspace: XREFisspace,
      *note isalpha: XREFisalpha, *note isdigit: XREFisdigit.
 
- -- Mapping Function: isgraph (S)
+ -- : isgraph (S)
      Return a logical array which is true where the elements of S are
      printable characters (but not the space character) and false where
      they are not.
 
      See also: *note isprint: XREFisprint.
 
- -- Mapping Function: isprint (S)
+ -- : isprint (S)
      Return a logical array which is true where the elements of S are
      printable characters (including the space character) and false
      where they are not.
 
      See also: *note isgraph: XREFisgraph.
 
- -- Mapping Function: isascii (S)
+ -- : isascii (S)
      Return a logical array which is true where the elements of S are
      ASCII characters (in the range 0 to 127 decimal) and false where
      they are not.
 
- -- Function File: isstrprop (STR, PROP)
+ -- : isstrprop (STR, PROP)
      Test character string properties.
 
      For example:
@@ -7367,9 +7369,9 @@ set with the function ‘struct_levels_to_print’, and the function
 ‘print_struct_array_contents’ may be used to enable printing of the
 contents of structure arrays.
 
- -- Built-in Function: VAL = struct_levels_to_print ()
- -- Built-in Function: OLD_VAL = struct_levels_to_print (NEW_VAL)
- -- Built-in Function: struct_levels_to_print (NEW_VAL, "local")
+ -- : VAL = struct_levels_to_print ()
+ -- : OLD_VAL = struct_levels_to_print (NEW_VAL)
+ -- : struct_levels_to_print (NEW_VAL, "local")
      Query or set the internal variable that specifies the number of
      structure levels to display.
 
@@ -7381,9 +7383,9 @@ contents of structure arrays.
      See also: *note print_struct_array_contents:
      XREFprint_struct_array_contents.
 
- -- Built-in Function: VAL = print_struct_array_contents ()
- -- Built-in Function: OLD_VAL = print_struct_array_contents (NEW_VAL)
- -- Built-in Function: print_struct_array_contents (NEW_VAL, "local")
+ -- : VAL = print_struct_array_contents ()
+ -- : OLD_VAL = print_struct_array_contents (NEW_VAL)
+ -- : print_struct_array_contents (NEW_VAL, "local")
      Query or set the internal variable that specifies whether to print
      struct array contents.
 
@@ -7660,9 +7662,9 @@ following example:
                field2 =  2
              }
 
- -- Built-in Function: S = struct ()
- -- Built-in Function: S = struct (FIELD1, VALUE1, FIELD2, VALUE2, ...)
- -- Built-in Function: S = struct (OBJ)
+ -- : S = struct ()
+ -- : S = struct (FIELD1, VALUE1, FIELD2, VALUE2, ...)
+ -- : S = struct (OBJ)
 
      Create a scalar or array structure and initialize its values.
 
@@ -7717,7 +7719,7 @@ following example:
    The function ‘isstruct’ can be used to test if an object is a
 structure or a structure array.
 
- -- Built-in Function: isstruct (X)
+ -- : isstruct (X)
      Return true if X is a structure or a structure array.
 
      See also: *note ismatrix: XREFismatrix, *note iscell: XREFiscell,
@@ -7732,15 +7734,15 @@ File: octave.info,  Node: Manipulating Structures,  Next: Processing Data in Str
 Other functions that can manipulate the fields of a structure are given
 below.
 
- -- Built-in Function: numfields (S)
+ -- : numfields (S)
      Return the number of fields of the structure S.
 
      See also: *note fieldnames: XREFfieldnames.
 
- -- Function File: NAMES = fieldnames (STRUCT)
- -- Function File: NAMES = fieldnames (OBJ)
- -- Function File: NAMES = fieldnames (JAVAOBJ)
- -- Function File: NAMES = fieldnames ("JCLASSNAME")
+ -- : NAMES = fieldnames (STRUCT)
+ -- : NAMES = fieldnames (OBJ)
+ -- : NAMES = fieldnames (JAVAOBJ)
+ -- : NAMES = fieldnames ("JCLASSNAME")
      Return a cell array of strings with the names of the fields in the
      specified input.
 
@@ -7758,8 +7760,8 @@ below.
      XREFisfield, *note orderfields: XREForderfields, *note struct:
      XREFstruct, *note methods: XREFmethods.
 
- -- Built-in Function: isfield (X, "NAME")
- -- Built-in Function: isfield (X, NAME)
+ -- : isfield (X, "NAME")
+ -- : isfield (X, NAME)
      Return true if the X is a structure and it includes an element
      named NAME.
 
@@ -7768,9 +7770,9 @@ below.
 
      See also: *note fieldnames: XREFfieldnames.
 
- -- Function File: SOUT = setfield (S, FIELD, VAL)
- -- Function File: SOUT = setfield (S, SIDX1, FIELD1, FIDX1, SIDX2,
-          FIELD2, FIDX2, ..., VAL)
+ -- : SOUT = setfield (S, FIELD, VAL)
+ -- : SOUT = setfield (S, SIDX1, FIELD1, FIDX1, SIDX2, FIELD2, FIDX2,
+          ..., VAL)
 
      Return a _copy_ of the structure S with the field member FIELD set
      to the value VAL.
@@ -7844,8 +7846,8 @@ below.
      *note fieldnames: XREFfieldnames, *note isstruct: XREFisstruct,
      *note struct: XREFstruct.
 
- -- Function File: VAL = getfield (S, FIELD)
- -- Function File: VAL = getfield (S, SIDX1, FIELD1, FIDX1, ...)
+ -- : VAL = getfield (S, FIELD)
+ -- : VAL = getfield (S, SIDX1, FIELD1, FIDX1, ...)
      Get the value of the field named FIELD from a structure or nested
      structure S.
 
@@ -7860,8 +7862,8 @@ below.
      *note fieldnames: XREFfieldnames, *note isstruct: XREFisstruct,
      *note struct: XREFstruct.
 
- -- Built-in Function: SOUT = rmfield (S, "F")
- -- Built-in Function: SOUT = rmfield (S, F)
+ -- : SOUT = rmfield (S, "F")
+ -- : SOUT = rmfield (S, F)
      Return a _copy_ of the structure (array) S with the field F
      removed.
 
@@ -7871,11 +7873,11 @@ below.
      See also: *note orderfields: XREForderfields, *note fieldnames:
      XREFfieldnames, *note isfield: XREFisfield.
 
- -- Function File: SOUT = orderfields (S1)
- -- Function File: SOUT = orderfields (S1, S2)
- -- Function File: SOUT = orderfields (S1, {CELLSTR})
- -- Function File: SOUT = orderfields (S1, P)
- -- Function File: [SOUT, P] = orderfields (...)
+ -- : SOUT = orderfields (S1)
+ -- : SOUT = orderfields (S1, S2)
+ -- : SOUT = orderfields (S1, {CELLSTR})
+ -- : SOUT = orderfields (S1, P)
+ -- : [SOUT, P] = orderfields (...)
      Return a _copy_ of S1 with fields arranged alphabetically, or as
      specified by the second input.
 
@@ -7900,6 +7902,7 @@ below.
                     c =  3
                     d =  4
                   }
+
           t = struct ("d", {}, "c", {}, "b", {}, "a", {});
           t2 = orderfields (s, t)
                ⇒ t2 =
@@ -7909,6 +7912,7 @@ below.
                     b =  2
                     a =  1
                   }
+
           t3 = orderfields (s, [3, 2, 4, 1])
                ⇒ t3 =
                   {
@@ -7917,6 +7921,7 @@ below.
                     c =  3
                     d =  4
                   }
+
           [t4, p] = orderfields (s, {"d", "c", "b", "a"})
                ⇒ t4 =
                   {
@@ -7936,7 +7941,7 @@ below.
      XREFrmfield, *note isfield: XREFisfield, *note isstruct:
      XREFisstruct, *note struct: XREFstruct.
 
- -- Function File: substruct (TYPE, SUBS, ...)
+ -- : substruct (TYPE, SUBS, ...)
      Create a subscript structure for use with ‘subsref’ or ‘subsasgn’.
 
      For example:
@@ -7974,7 +7979,7 @@ applied to each field of the structure.  *Note structfun: XREFstructfun.
    Alternatively, to process the data in a structure, the structure
 might be converted to another type of container before being treated.
 
- -- Built-in Function: C = struct2cell (S)
+ -- : C = struct2cell (S)
      Create a new cell array from the objects stored in the struct
      object.
 
@@ -8077,8 +8082,8 @@ previous example.  In some circumstances it makes sense to reference
 them by their index, and this can be performed by the ‘celldisp’
 function.
 
- -- Function File: celldisp (C)
- -- Function File: celldisp (C, NAME)
+ -- : celldisp (C)
+ -- : celldisp (C, NAME)
      Recursively display the contents of a cell array.
 
      By default the values are displayed with the name of the variable
@@ -8109,7 +8114,7 @@ example:
           ⇒ ans = 0
 
 
- -- Built-in Function: iscell (X)
+ -- : iscell (X)
      Return true if X is a cell array object.
 
      See also: *note ismatrix: XREFismatrix, *note isstruct:
@@ -8159,10 +8164,10 @@ arrays.  As do other functions describing the size of an object, such as
 *note length: XREFlength, *note numel: XREFnumel, *note rows: XREFrows,
 and *note columns: XREFcolumns.
 
- -- Built-in Function: cell (N)
- -- Built-in Function: cell (M, N)
- -- Built-in Function: cell (M, N, K, ...)
- -- Built-in Function: cell ([M N ...])
+ -- : cell (N)
+ -- : cell (M, N)
+ -- : cell (M, N, K, ...)
+ -- : cell ([M N ...])
      Create a new cell array object.
 
      If invoked with a single scalar integer argument, return a square
@@ -8177,8 +8182,8 @@ and *note columns: XREFcolumns.
 them, it is possible to convert numerical arrays into cell arrays using
 the ‘num2cell’, ‘mat2cell’ and ‘cellslices’ functions.
 
- -- Built-in Function: C = num2cell (A)
- -- Built-in Function: C = num2cell (A, DIM)
+ -- : C = num2cell (A)
+ -- : C = num2cell (A, DIM)
      Convert the numeric matrix A to a cell array.
 
      If DIM is defined, the value C is of dimension 1 in this dimension
@@ -8205,9 +8210,9 @@ the ‘num2cell’, ‘mat2cell’ and ‘cellslices’ functions.
 
      See also: *note mat2cell: XREFmat2cell.
 
- -- Built-in Function: C = mat2cell (A, M, N)
- -- Built-in Function: C = mat2cell (A, D1, D2, ...)
- -- Built-in Function: C = mat2cell (A, R)
+ -- : C = mat2cell (A, M, N)
+ -- : C = mat2cell (A, D1, D2, ...)
+ -- : C = mat2cell (A, R)
      Convert the matrix A to a cell array.
 
      If A is 2-D, then it is required that ‘sum (M) == size (A, 1)’ and
@@ -8245,7 +8250,7 @@ the ‘num2cell’, ‘mat2cell’ and ‘cellslices’ functions.
      See also: *note num2cell: XREFnum2cell, *note cell2mat:
      XREFcell2mat.
 
- -- Built-in Function: SL = cellslices (X, LB, UB, DIM)
+ -- : SL = cellslices (X, LB, UB, DIM)
      Given an array X, this function produces a cell array of slices
      from the array determined by the index vectors LB, UB, for lower
      and upper bounds, respectively.
@@ -8377,7 +8382,7 @@ objects within the cell array.  By contrast, ‘cellindexmat’ applies
 matrix indexing to the objects within each cell array entry and returns
 the requested values.
 
- -- Built-in Function: Y = cellindexmat (X, VARARGIN)
+ -- : Y = cellindexmat (X, VARARGIN)
      Perform indexing of matrices in a cell array.
 
      Given a cell array of matrices X, this function computes
@@ -8415,7 +8420,7 @@ character array (*note Concatenating Strings::), while the function
                 [2,1] = world
               }
 
- -- Built-in Function: CSTR = cellstr (STRMAT)
+ -- : CSTR = cellstr (STRMAT)
      Create a new cell array object from the elements of the string
      array STRMAT.
 
@@ -8449,7 +8454,7 @@ The following string functions support cell arrays of strings: ‘char’,
    The function ‘iscellstr’ can be used to test if an object is a cell
 array of strings.
 
- -- Built-in Function: iscellstr (CELL)
+ -- : iscellstr (CELL)
      Return true if every element of the cell array CELL is a character
      string.
 
@@ -8472,7 +8477,7 @@ that calls a user-specified function on all elements of a cell array.
 as a matrix or a data structure.  Depending on the data this is possible
 using the ‘cell2mat’ and ‘cell2struct’ functions.
 
- -- Function File: M = cell2mat (C)
+ -- : M = cell2mat (C)
      Convert the cell array C into a matrix by concatenating all
      elements of C into a hyperrectangle.
 
@@ -8483,8 +8488,8 @@ using the ‘cell2mat’ and ‘cell2struct’ functions.
      See also: *note mat2cell: XREFmat2cell, *note num2cell:
      XREFnum2cell.
 
- -- Built-in Function: cell2struct (CELL, FIELDS)
- -- Built-in Function: cell2struct (CELL, FIELDS, DIM)
+ -- : cell2struct (CELL, FIELDS)
+ -- : cell2struct (CELL, FIELDS, DIM)
      Convert CELL to a structure.
 
      The number of fields in FIELDS must match the number of elements in
@@ -8685,14 +8690,14 @@ used before they have been given a value.  Doing so results in an error.
 
      is evaluated, the value returned by ‘ans’ is 25.
 
- -- Built-in Function: isvarname (NAME)
+ -- : isvarname (NAME)
      Return true if NAME is a valid variable name.
 
      See also: *note iskeyword: XREFiskeyword, *note exist: XREFexist,
      *note who: XREFwho.
 
- -- Function File: VARNAME = genvarname (STR)
- -- Function File: VARNAME = genvarname (STR, EXCLUSIONS)
+ -- : VARNAME = genvarname (STR)
+ -- : VARNAME = genvarname (STR, EXCLUSIONS)
      Create valid unique variable name(s) from STR.
 
      If STR is a cellstr, then a unique variable is created for each
@@ -8753,7 +8758,7 @@ used before they have been given a value.  Doing so results in an error.
      XREFiskeyword, *note exist: XREFexist, *note who: XREFwho, *note
      tempname: XREFtempname, *note eval: XREFeval.
 
- -- Function File: namelengthmax ()
+ -- : namelengthmax ()
      Return the MATLAB compatible maximum variable name length.
 
      Octave is capable of storing strings up to 2^{31} - 1 in length.
@@ -8832,7 +8837,7 @@ will display the value of ‘x’ from inside the function as 0, but the
 value of ‘x’ at the top level remains unchanged, because the function
 works with a _copy_ of its argument.
 
- -- Built-in Function: isglobal (NAME)
+ -- : isglobal (NAME)
      Return true if NAME is a globally visible variable.
 
      For example:
@@ -8842,4 +8847,523 @@ works with a _copy_ of its argument.
              ⇒ 1
 
      See also: *note isvarname: XREFisvarname, *note exist: XREFexist.
+
+
+File: octave.info,  Node: Persistent Variables,  Next: Status of Variables,  Prev: Global Variables,  Up: Variables
+
+7.2 Persistent Variables
+========================
+
+A variable that has been declared “persistent” within a function will
+retain its contents in memory between subsequent calls to the same
+function.  The difference between persistent variables and global
+variables is that persistent variables are local in scope to a
+particular function and are not visible elsewhere.
+
+   The following example uses a persistent variable to create a function
+that prints the number of times it has been called.
+
+     function count_calls ()
+       persistent calls = 0;
+       printf ("'count_calls' has been called %d times\n",
+               ++calls);
+     endfunction
+
+     for i = 1:3
+       count_calls ();
+     endfor
+
+     ⊣ 'count_calls' has been called 1 times
+     ⊣ 'count_calls' has been called 2 times
+     ⊣ 'count_calls' has been called 3 times
+
+   As the example shows, a variable may be declared persistent using a
+‘persistent’ declaration statement.  The following statements are all
+persistent declarations.
+
+     persistent a
+     persistent a b
+     persistent c = 2
+     persistent d = 3 e f = 5
+
+   The behavior of persistent variables is equivalent to the behavior of
+static variables in C.
+
+   Like global variables, a persistent variable may only be initialized
+once.  For example, after executing the following code
+
+     persistent pvar = 1
+     persistent pvar = 2
+
+the value of the persistent variable ‘pvar’ is 1, not 2.
+
+   If a persistent variable is declared but not initialized to a
+specific value, it will contain an empty matrix.  So, it is also
+possible to initialize a persistent variable by checking whether it is
+empty, as the following example illustrates.
+
+     function count_calls ()
+       persistent calls;
+       if (isempty (calls))
+         calls = 0;
+       endif
+       printf ("'count_calls' has been called %d times\n",
+               ++calls);
+     endfunction
+
+This implementation behaves in exactly the same way as the previous
+implementation of ‘count_calls’.
+
+   The value of a persistent variable is kept in memory until it is
+explicitly cleared.  Assuming that the implementation of ‘count_calls’
+is saved on disk, we get the following behavior.
+
+     for i = 1:2
+       count_calls ();
+     endfor
+     ⊣ 'count_calls' has been called 1 times
+     ⊣ 'count_calls' has been called 2 times
+
+     clear
+     for i = 1:2
+       count_calls ();
+     endfor
+     ⊣ 'count_calls' has been called 3 times
+     ⊣ 'count_calls' has been called 4 times
+
+     clear all
+     for i = 1:2
+       count_calls ();
+     endfor
+     ⊣ 'count_calls' has been called 1 times
+     ⊣ 'count_calls' has been called 2 times
+
+     clear count_calls
+     for i = 1:2
+       count_calls ();
+     endfor
+     ⊣ 'count_calls' has been called 1 times
+     ⊣ 'count_calls' has been called 2 times
+
+That is, the persistent variable is only removed from memory when the
+function containing the variable is removed.  Note that if the function
+definition is typed directly into the Octave prompt, the persistent
+variable will be cleared by a simple ‘clear’ command as the entire
+function definition will be removed from memory.  If you do not want a
+persistent variable to be removed from memory even if the function is
+cleared, you should use the ‘mlock’ function (*note Function Locking::).
+
+
+File: octave.info,  Node: Status of Variables,  Prev: Persistent Variables,  Up: Variables
+
+7.3 Status of Variables
+=======================
+
+When creating simple one-shot programs it can be very convenient to see
+which variables are available at the prompt.  The function ‘who’ and its
+siblings ‘whos’ and ‘whos_line_format’ will show different information
+about what is in memory, as the following shows.
+
+     str = "A random string";
+     who -variables
+          ⊣ *** local user variables:
+          ⊣
+          ⊣ __nargin__  str
+
+ -- : who
+ -- : who pattern ...
+ -- : who option pattern ...
+ -- : C = who ("pattern", ...)
+     List currently defined variables matching the given patterns.
+
+     Valid pattern syntax is the same as described for the ‘clear’
+     command.  If no patterns are supplied, all variables are listed.
+
+     By default, only variables visible in the local scope are
+     displayed.
+
+     The following are valid options, but may not be combined.
+
+     ‘global’
+          List variables in the global scope rather than the current
+          scope.
+
+     ‘-regexp’
+          The patterns are considered to be regular expressions when
+          matching the variables to display.  The same pattern syntax
+          accepted by the ‘regexp’ function is used.
+
+     ‘-file’
+          The next argument is treated as a filename.  All variables
+          found within the specified file are listed.  No patterns are
+          accepted when reading variables from a file.
+
+     If called as a function, return a cell array of defined variable
+     names matching the given patterns.
+
+     See also: *note whos: XREFwhos, *note isglobal: XREFisglobal, *note
+     isvarname: XREFisvarname, *note exist: XREFexist, *note regexp:
+     XREFregexp.
+
+ -- : whos
+ -- : whos pattern ...
+ -- : whos option pattern ...
+ -- : S = whos ("pattern", ...)
+     Provide detailed information on currently defined variables
+     matching the given patterns.
+
+     Options and pattern syntax are the same as for the ‘who’ command.
+
+     Extended information about each variable is summarized in a table
+     with the following default entries.
+
+     Attr
+          Attributes of the listed variable.  Possible attributes are:
+
+          blank
+               Variable in local scope
+
+          ‘a’
+               Automatic variable.  An automatic variable is one created
+               by the interpreter, for example ‘argn’.
+
+          ‘c’
+               Variable of complex type.
+
+          ‘f’
+               Formal parameter (function argument).
+
+          ‘g’
+               Variable with global scope.
+
+          ‘p’
+               Persistent variable.
+
+     Name
+          The name of the variable.
+
+     Size
+          The logical size of the variable.  A scalar is 1x1, a vector
+          is 1xN or Nx1, a 2-D matrix is MxN.
+
+     Bytes
+          The amount of memory currently used to store the variable.
+
+     Class
+          The class of the variable.  Examples include double, single,
+          char, uint16, cell, and struct.
+
+     The table can be customized to display more or less information
+     through the function ‘whos_line_format’.
+
+     If ‘whos’ is called as a function, return a struct array of defined
+     variable names matching the given patterns.  Fields in the
+     structure describing each variable are: name, size, bytes, class,
+     global, sparse, complex, nesting, persistent.
+
+     See also: *note who: XREFwho, *note whos_line_format:
+     XREFwhos_line_format.
+
+ -- : VAL = whos_line_format ()
+ -- : OLD_VAL = whos_line_format (NEW_VAL)
+ -- : whos_line_format (NEW_VAL, "local")
+     Query or set the format string used by the command ‘whos’.
+
+     A full format string is:
+
+          %[modifier]<command>[:width[:left-min[:balance]]];
+
+     The following command sequences are available:
+
+     ‘%a’
+          Prints attributes of variables (g=global, p=persistent,
+          f=formal parameter, a=automatic variable).
+
+     ‘%b’
+          Prints number of bytes occupied by variables.
+
+     ‘%c’
+          Prints class names of variables.
+
+     ‘%e’
+          Prints elements held by variables.
+
+     ‘%n’
+          Prints variable names.
+
+     ‘%s’
+          Prints dimensions of variables.
+
+     ‘%t’
+          Prints type names of variables.
+
+     Every command may also have an alignment modifier:
+
+     ‘l’
+          Left alignment.
+
+     ‘r’
+          Right alignment (default).
+
+     ‘c’
+          Column-aligned (only applicable to command %s).
+
+     The ‘width’ parameter is a positive integer specifying the minimum
+     number of columns used for printing.  No maximum is needed as the
+     field will auto-expand as required.
+
+     The parameters ‘left-min’ and ‘balance’ are only available when the
+     column-aligned modifier is used with the command ‘%s’.  ‘balance’
+     specifies the column number within the field width which will be
+     aligned between entries.  Numbering starts from 0 which indicates
+     the leftmost column.  ‘left-min’ specifies the minimum field width
+     to the left of the specified balance column.
+
+     The default format is:
+
+     " %a:4; %ln:6; %cs:16:6:1; %rb:12; %lc:-1;\n"
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+     See also: *note whos: XREFwhos.
+
+   Instead of displaying which variables are in memory, it is possible
+to determine if a given variable is available.  That way it is possible
+to alter the behavior of a program depending on the existence of a
+variable.  The following example illustrates this.
+
+     if (! exist ("meaning", "var"))
+       disp ("The program has no 'meaning'");
+     endif
+
+ -- : C = exist (NAME)
+ -- : C = exist (NAME, TYPE)
+     Check for the existence of NAME as a variable, function, file,
+     directory, or class.
+
+     The return code C is one of
+
+     1
+          NAME is a variable.
+
+     2
+          NAME is an absolute filename, an ordinary file in Octave’s
+          ‘path’, or (after appending ‘.m’) a function file in Octave’s
+          ‘path’.
+
+     3
+          NAME is a ‘.oct’ or ‘.mex’ file in Octave’s ‘path’.
+
+     5
+          NAME is a built-in function.
+
+     7
+          NAME is a directory.
+
+     103
+          NAME is a function not associated with a file (entered on the
+          command line).
+
+     0
+          NAME does not exist.
+
+     If the optional argument TYPE is supplied, check only for symbols
+     of the specified type.  Valid types are
+
+     "var"
+          Check only for variables.
+
+     "builtin"
+          Check only for built-in functions.
+
+     "dir"
+          Check only for directories.
+
+     "file"
+          Check only for files and directories.
+
+     "class"
+          Check only for classes.  (Note: This option is accepted, but
+          not currently implemented)
+
+     If no type is given, and there are multiple possible matches for
+     name, ‘exist’ will return a code according to the following
+     priority list: variable, built-in function, oct-file, directory,
+     file, class.
+
+     ‘exist’ returns 2 if a regular file called NAME is present in
+     Octave’s search path.  If you want information about other types of
+     files not on the search path you should use some combination of the
+     functions ‘file_in_path’ and ‘stat’ instead.
+
+     Programming Note: If NAME is implemented by a buggy .oct/.mex file,
+     calling EXIST may cause Octave to crash.  To maintain high
+     performance, Octave trusts .oct/.mex files instead of sandboxing
+     them.
+
+     See also: *note file_in_loadpath: XREFfile_in_loadpath, *note
+     file_in_path: XREFfile_in_path, *note dir_in_loadpath:
+     XREFdir_in_loadpath, *note stat: XREFstat.
+
+   Usually Octave will manage the memory, but sometimes it can be
+practical to remove variables from memory manually.  This is usually
+needed when working with large variables that fill a substantial part of
+the memory.  On a computer that uses the IEEE floating point format, the
+following program allocates a matrix that requires around 128 MB memory.
+
+     large_matrix = zeros (4000, 4000);
+
+Since having this variable in memory might slow down other computations,
+it can be necessary to remove it manually from memory.  The ‘clear’
+function allows this.
+
+ -- : clear [options] pattern ...
+     Delete the names matching the given patterns from the symbol table.
+
+     The pattern may contain the following special characters:
+
+     ‘?’
+          Match any single character.
+
+     ‘*’
+          Match zero or more characters.
+
+     ‘[ LIST ]’
+          Match the list of characters specified by LIST.  If the first
+          character is ‘!’ or ‘^’, match all characters except those
+          specified by LIST.  For example, the pattern ‘[a-zA-Z]’ will
+          match all lowercase and uppercase alphabetic characters.
+
+     For example, the command
+
+          clear foo b*r
+
+     clears the name ‘foo’ and all names that begin with the letter ‘b’
+     and end with the letter ‘r’.
+
+     If ‘clear’ is called without any arguments, all user-defined
+     variables (local and global) are cleared from the symbol table.
+
+     If ‘clear’ is called with at least one argument, only the visible
+     names matching the arguments are cleared.  For example, suppose you
+     have defined a function ‘foo’, and then hidden it by performing the
+     assignment ‘foo = 2’.  Executing the command ‘clear foo’ once will
+     clear the variable definition and restore the definition of ‘foo’
+     as a function.  Executing ‘clear foo’ a second time will clear the
+     function definition.
+
+     The following options are available in both long and short form
+
+     ‘-all, -a’
+          Clear all local and global user-defined variables and all
+          functions from the symbol table.
+
+     ‘-exclusive, -x’
+          Clear the variables that don’t match the following pattern.
+
+     ‘-functions, -f’
+          Clear the function names and the built-in symbols names.
+
+     ‘-global, -g’
+          Clear global symbol names.
+
+     ‘-variables, -v’
+          Clear local variable names.
+
+     ‘-classes, -c’
+          Clears the class structure table and clears all objects.
+
+     ‘-regexp, -r’
+          The arguments are treated as regular expressions as any
+          variables that match will be cleared.
+
+     With the exception of ‘exclusive’, all long options can be used
+     without the dash as well.
+
+     See also: *note who: XREFwho, *note whos: XREFwhos, *note exist:
+     XREFexist.
+
+ -- : pack ()
+     Consolidate workspace memory in MATLAB.
+
+     This function is provided for compatibility, but does nothing in
+     Octave.
+
+     See also: *note clear: XREFclear.
+
+   Information about a function or variable such as its location in the
+file system can also be acquired from within Octave.  This is usually
+only useful during development of programs, and not within a program.
+
+ -- : type NAME ...
+ -- : type -q NAME ...
+ -- : text = type ("NAME", ...)
+     Display the contents of NAME which may be a file, function
+     (m-file), variable, operator, or keyword.
+
+     ‘type’ normally prepends a header line describing the category of
+     NAME such as function or variable; The ‘-q’ option suppresses this
+     behavior.
+
+     If no output variable is used the contents are displayed on screen.
+     Otherwise, a cell array of strings is returned, where each element
+     corresponds to the contents of each requested function.
+
+ -- : which name ...
+     Display the type of each NAME.
+
+     If NAME is defined from a function file, the full name of the file
+     is also displayed.
+
+     See also: *note help: XREFhelp, *note lookfor: XREFlookfor.
+
+ -- : what
+ -- : what DIR
+ -- : w = what (DIR)
+     List the Octave specific files in directory DIR.
+
+     If DIR is not specified then the current directory is used.
+
+     If a return argument is requested, the files found are returned in
+     the structure W.  The structure contains the following fields:
+
+     path
+          Full path to directory DIR
+
+     m
+          Cell array of m-files
+
+     mat
+          Cell array of mat files
+
+     mex
+          Cell array of mex files
+
+     oct
+          Cell array of oct files
+
+     mdl
+          Cell array of mdl files
+
+     slx
+          Cell array of slx files
+
+     p
+          Cell array of p-files
+
+     classes
+          Cell array of class directories (‘@CLASSNAME/’)
+
+     packages
+          Cell array of package directories (‘+PKGNAME/’)
+
+     Compatibility Note: Octave does not support mdl, slx, and p files;
+     nor does it support package directories.  ‘what’ will always return
+     an empty list for these categories.
+
+     See also: *note which: XREFwhich, *note ls: XREFls, *note exist:
+     XREFexist.
 

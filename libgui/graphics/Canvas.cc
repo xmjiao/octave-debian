@@ -20,8 +20,8 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#if defined (HAVE_CONFIG_H)
+#  include "config.h"
 #endif
 
 #include <QApplication>
@@ -41,7 +41,8 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "annotation-dialog.h"
 
-#include "gl2ps-renderer.h"
+#include "gl2ps-print.h"
+#include "oct-opengl.h"
 #include "octave-qt-link.h"
 
 #include "builtin-defun-decls.h"
@@ -268,7 +269,6 @@ Canvas::canvasToggleGrid (const graphics_handle& handle)
           ap.set_zgrid (state);
 
           redraw (true);
-            
         }
     }
 }
@@ -348,18 +348,6 @@ pan_mode (const graphics_object figObj)
 }
 
 static bool
-rotate_enabled (const graphics_object figObj)
-{
-  // Getting rotate mode property:
-  octave_value ov_rm
-    = Utils::properties<figure> (figObj).get___rotate_mode__ ();
-
-  octave_scalar_map rm = ov_rm.scalar_map_value ();
-
-  return rm.contents ("Enable").string_value () == "on";
-}
-
-static bool
 zoom_enabled (const graphics_object figObj)
 {
   // Getting zoom mode property:
@@ -383,16 +371,85 @@ zoom_mode (const graphics_object figObj)
   return zm.contents ("Motion").string_value ();
 }
 
-static std::string
-zoom_direction (const graphics_object figObj)
+void
+Canvas::select_object (graphics_object obj, QMouseEvent* event,
+                       graphics_object &currentObj, graphics_object &axesObj,
+                       bool axes_only)
 {
-  // Getting zoom mode property:
-  octave_value ov_zm
-    = Utils::properties<figure> (figObj).get___zoom_mode__ ();
+  QList<graphics_object> axesList;
+  Matrix children = obj.get_properties ().get_all_children ();
+  octave_idx_type num_children = children.numel ();
 
-  octave_scalar_map zm = ov_zm.scalar_map_value ();
+  for (int i = 0; i < num_children; i++)
+    {
+      graphics_object childObj (gh_manager::get_object (children(i)));
 
-  return zm.contents ("Direction").string_value ();
+      if (childObj.isa ("axes"))
+        axesList.append (childObj);
+      else if (childObj.isa ("uicontrol") || childObj.isa ("uipanel")
+               || childObj.isa ("uibuttongroup"))
+        {
+          Matrix bb = childObj.get_properties ().get_boundingbox (false);
+          QRectF r (bb(0), bb(1), bb(2), bb(3));
+
+          r.adjust (-5, -5, 5, 5);
+          if (r.contains (event->posF ()))
+            {
+              currentObj = childObj;
+              break;
+            }
+        }
+    }
+
+  if (axes_only)
+    {
+      QPoint pt = event->pos ();
+
+      for (QList<graphics_object>::ConstIterator it = axesList.begin ();
+           it != axesList.end (); ++it)
+        {
+          const axes::properties& ap =
+            dynamic_cast<const axes::properties&> ((*it).get_properties ());
+
+          ColumnVector p0 = ap.pixel2coord (pt.x (), pt.y ());
+          Matrix xlim = ap.get_xlim ().matrix_value ();
+          Matrix ylim = ap.get_ylim ().matrix_value ();
+
+          if (xlim(0) < p0(0) && xlim(1) > p0(0)
+              && ylim(0) < p0(1) && ylim(1) > p0(1))
+            {
+              axesObj = *it;
+              return;
+            }
+        }
+    }
+  else if (! currentObj)
+    {
+      for (QList<graphics_object>::ConstIterator it = axesList.begin ();
+           it != axesList.end (); ++it)
+        {
+          graphics_object go = selectFromAxes (*it, event->pos ());
+
+          if (go)
+            {
+              currentObj = go;
+              axesObj = *it;
+            }
+          // FIXME: is this really necessary? the axes object should
+          //        have been selected through selectFromAxes anyway
+          else if (it->get_properties ().is_hittest ())
+            {
+              Matrix bb = it->get_properties ().get_boundingbox (true);
+              QRectF r (bb(0), bb(1), bb(2), bb(3));
+
+              if (r.contains (event->posF ()))
+                axesObj = *it;
+            }
+
+          if (axesObj && currentObj)
+            break;
+        }
+    }
 }
 
 void
@@ -460,9 +517,35 @@ Canvas::canvasMouseMoveEvent (QMouseEvent* event)
         {
           graphics_object figObj (obj.get_ancestor ("figure"));
 
-          updateCurrentPoint (figObj, obj, event);
-          gh_manager::post_callback (figObj.get_handle (),
-                                     "windowbuttonmotionfcn");
+          if (figObj.valid_object () &&
+              ! figObj.get ("windowbuttonmotionfcn").is_empty ())
+            {
+              updateCurrentPoint (figObj, obj, event);
+              gh_manager::post_callback (figObj.get_handle (),
+                                         "windowbuttonmotionfcn");
+            }
+        }
+    }
+
+  // Update mouse coordinates in the figure window status bar
+  graphics_object obj = gh_manager::get_object (m_handle);
+  graphics_object figObj = obj.get_ancestor ("figure");
+
+  if (figObj.valid_object () && obj.valid_object ())
+    {
+      graphics_object currentObj, axesObj;
+      select_object (obj, event, currentObj, axesObj, true);
+
+      if (axesObj.valid_object ())
+        {
+          // FIXME: should we use signal/slot mechanism instead of
+          //        directly calling parent fig methods
+          Figure* fig =
+            dynamic_cast<Figure*> (Backend::toolkitObject (figObj));
+          axes::properties& ap = Utils::properties<axes> (axesObj);
+
+          if (fig)
+            fig->updateStatusBar (ap.pixel2coord (event->x (), event->y ()));
         }
     }
 }
@@ -512,68 +595,18 @@ Canvas::canvasMousePressEvent (QMouseEvent* event)
     {
       graphics_object figObj (obj.get_ancestor ("figure"));
       graphics_object currentObj, axesObj;
-      QList<graphics_object> axesList;
 
-      Matrix children = obj.get_properties ().get_all_children ();
-      octave_idx_type num_children = children.numel ();
+      select_object (obj, event, currentObj, axesObj);
 
-      for (int i = 0; i < num_children; i++)
+      if (axesObj)
         {
-          graphics_object childObj (gh_manager::get_object (children(i)));
-
-          if (childObj.isa ("axes"))
-            axesList.append (childObj);
-          else if (childObj.isa ("uicontrol") || childObj.isa ("uipanel"))
-            {
-              Matrix bb = childObj.get_properties ().get_boundingbox (false);
-              QRectF r (bb(0), bb(1), bb(2), bb(3));
-
-              r.adjust (-5, -5, 5, 5);
-              if (r.contains (event->posF ()))
-                {
-                  currentObj = childObj;
-                  break;
-                }
-            }
-        }
-
-      if (! currentObj)
-        {
-          for (QList<graphics_object>::ConstIterator it = axesList.begin ();
-               it != axesList.end (); ++it)
-            {
-              graphics_object go = selectFromAxes (*it, event->pos ());
-
-              if (go)
-                {
-                  currentObj = go;
-                  axesObj = *it;
-                }
-              // FIXME: is this really necessary? the axes object should
-              //        have been selected through selectFromAxes anyway
-              else if (it->get_properties ().is_hittest ())
-                {
-                  Matrix bb = it->get_properties ().get_boundingbox (true);
-                  QRectF r (bb(0), bb(1), bb(2), bb(3));
-
-                  if (r.contains (event->posF ()))
-                    axesObj = *it;
-                }
-
-              if (axesObj && currentObj)
-                break;
-            }
-
-          if (axesObj)
-            {
               if (axesObj.get_properties ().handlevisibility_is ("on")
                   && axesObj.get_properties ().get_tag () != "legend"
                   && axesObj.get_properties ().get_tag () != "colorbar")
-                Utils::properties<figure> (figObj)
-                  .set_currentaxes (axesObj.get_handle ().as_octave_value ());
-              if (! currentObj)
-                currentObj = axesObj;
-            }
+            Utils::properties<figure> (figObj)
+              .set_currentaxes (axesObj.get_handle ().as_octave_value ());
+          if (! currentObj)
+            currentObj = axesObj;
         }
 
       if (! currentObj)
@@ -583,7 +616,7 @@ Canvas::canvasMousePressEvent (QMouseEvent* event)
         Utils::properties<figure> (figObj)
           .set_currentobject (currentObj.get_handle ().as_octave_value ());
       else
-        Utils::properties<figure> (figObj).set_currentobject (octave_NaN);
+        Utils::properties<figure> (figObj).set_currentobject (octave::numeric_limits<double>::NaN ());
 
       Figure* fig = dynamic_cast<Figure*> (Backend::toolkitObject (figObj));
 
@@ -606,7 +639,7 @@ Canvas::canvasMousePressEvent (QMouseEvent* event)
 
           if (currentObj.get ("buttondownfcn").is_empty ())
             {
-              graphics_object parentObj = 
+              graphics_object parentObj =
                 gh_manager::get_object (currentObj.get_parent ());
 
               if (parentObj.valid_object () && parentObj.isa ("hggroup"))
