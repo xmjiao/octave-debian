@@ -1,3 +1,11 @@
+octave (4.0.3-1) unstable; urgency=medium
+
+  * Imported Upstream version 4.0.3
+  * d/copyright: Reflect upstream changes
+  * d/p/install_libraries_publically: Refresh for new upstream version
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 04 Jul 2016 00:40:13 -0300
+
 octave (4.0.2-1) unstable; urgency=medium
 
   * Imported Upstream version 4.0.2
