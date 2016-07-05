@@ -7,27 +7,37 @@ Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
 Reviewed-by: Rafael Laboissiere <rafael@debian.org>
 Last-Update: 2016-07-03
---- a/liboctave/Makefile.am
-+++ b/liboctave/Makefile.am
-@@ -34,7 +34,8 @@
+--- a/libinterp/module.mk
++++ b/libinterp/module.mk
+@@ -27,7 +27,7 @@ libinterp_liboctinterp_la_CFLAGS = $(AM_CFLAGS) $(WARN_CFLAGS)
  
- AM_CXXFLAGS += $(WARN_CXXFLAGS)
+ libinterp_liboctinterp_la_CXXFLAGS = $(AM_CXXFLAGS) $(WARN_CXXFLAGS)
  
--octlib_LTLIBRARIES = liboctave.la
-+lib_LTLIBRARIES = liboctave.la
-+octlib_LTLIBRARIES =
+-octlib_LTLIBRARIES += libinterp/liboctinterp.la
++lib_LTLIBRARIES += libinterp/liboctinterp.la
  
- EXTRA_DIST =
+ BUILT_SOURCES += \
+   libinterp/builtin-defun-decls.h \
+diff --git a/liboctave/module.mk b/liboctave/module.mk
+index 5a08652..07727fc 100644
+--- a/liboctave/module.mk
++++ b/liboctave/module.mk
+@@ -22,7 +22,7 @@ liboctave_liboctave_la_CFLAGS = $(AM_CFLAGS) $(WARN_CFLAGS)
  
---- a/libinterp/Makefile.am
-+++ b/libinterp/Makefile.am
-@@ -40,7 +40,8 @@
+ liboctave_liboctave_la_CXXFLAGS = $(AM_CXXFLAGS) $(WARN_CXXFLAGS)
  
- AM_CXXFLAGS += $(WARN_CXXFLAGS)
+-octlib_LTLIBRARIES += liboctave/liboctave.la
++lib_LTLIBRARIES += liboctave/liboctave.la
  
--octlib_LTLIBRARIES = liboctinterp.la
-+lib_LTLIBRARIES = liboctinterp.la
-+octlib_LTLIBRARIES =
+ BUILT_INCS = \
+   $(BUILT_LIBOCTAVE_OPERATORS_INC) \
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -207,6 +207,7 @@ OCTAVE_CROSS_TOOLS =
+ OCTAVE_INTERPRETER_TARGETS =
  
- ## This is the subset of $(BUILT_SOURCES) that may be included by source
- ## files that are preprocessed to make $(DEF_FILES).  This ensures that
+ octlib_LTLIBRARIES =
++lib_LTLIBRARIES =
+ noinst_LTLIBRARIES =
+ 
+ octinclude_HEADERS =
