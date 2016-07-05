@@ -1,3 +1,18 @@
+octave (4.1.0~hg.20160703.22033-1) experimental; urgency=medium
+
+  * Imported Upstream version 4.1.0~hg.20160703.22033
+  * d/copyright: Reflect upstream changes
+  * Refresh patches for new upstream version:
+    + d/p/drop_versioned_binaries.diff
+    + d/p/install_libraries_publicall
+    + d/p/mkoctfile-mpi.diff
+    + d/p/always-build-octave-jar.patch
+    + d/p/hdf5-flags.patch
+    + d/p/hdf5-mkoctfile.patch
+  * d/p/no_pdf_in_print.diff: Drop patch
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 05 Jul 2016 03:32:50 -0300
+
 octave (4.0.3-1) unstable; urgency=medium
 
   * Imported Upstream version 4.0.3
