@@ -2,23 +2,25 @@ Description: Do not install versioned binaries
  We don't need them.
 Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
-Reviewed-by: Rafael Laboissiere <rafael@laboissiere.net>
-Last-Update: 2015-04-17
---- a/src/Makefile.am
-+++ b/src/Makefile.am
-@@ -166,7 +166,7 @@ mkoctfile.cc: mkoctfile.in.cc Makefile
- main.cc: main.in.cc Makefile
- 	$(AM_V_GEN)$(do_subst_default_vals)
+Reviewed-by: Rafael Laboissiere <rafael@debian.org>
+Last-Update: 2016-07-03
+diff --git a/src/module.mk b/src/module.mk
+index e125d83..40b2b46 100644
+--- a/src/module.mk
++++ b/src/module.mk
+@@ -215,7 +215,7 @@ src/octave-build-info.cc: src/octave-build-info.in.cc HG-ID | src/$(octave-dirst
+ 
+ ALL_LOCAL_TARGETS += $(OCTAVE_VERSION_LINKS) $(OCTAVE_CROSS_TOOLS)
  
 -install-exec-hook: make-version-links
-+install-exec-hook: 
++install-exec-hook:
  
  uninstall-local: remove-version-links
  
 --- a/scripts/miscellaneous/mkoctfile.m
 +++ b/scripts/miscellaneous/mkoctfile.m
 @@ -148,7 +148,7 @@ function [output, status] = mkoctfile (v
-   ext = octave_config_info ("EXEEXT");
+   ext = __octave_config_info__ ("EXEEXT");
  
    shell_script = fullfile (bindir,
 -                           sprintf ("mkoctfile-%s%s", OCTAVE_VERSION, ext));
@@ -28,9 +30,9 @@ Last-Update: 2015-04-17
      __gripe_missing_component__ ("mkoctfile", "mkoctfile");
 --- a/scripts/pkg/private/configure_make.m
 +++ b/scripts/pkg/private/configure_make.m
-@@ -30,10 +30,10 @@ function configure_make (desc, packdir,
+@@ -31,10 +31,10 @@ function configure_make (desc, packdir,
      ver = version ();
-     ext = octave_config_info ("EXEEXT");
+     ext = __octave_config_info__ ("EXEEXT");
      mkoctfile_program = fullfile (octave_bindir, ...
 -                                  sprintf ("mkoctfile-%s%s", ver, ext));
 +                                  "mkoctfile");
@@ -44,7 +46,7 @@ Last-Update: 2015-04-17
        __gripe_missing_component__ ("pkg", "mkoctfile");
 --- a/src/main.in.cc
 +++ b/src/main.in.cc
-@@ -433,7 +433,7 @@ main (int argc, char **argv)
+@@ -221,7 +221,7 @@ main (int argc, char **argv)
    std::string octave_bindir = get_octave_bindir ();
    std::string octave_archlibdir = get_octave_archlibdir ();
    std::string octave_cli
@@ -52,4 +54,4 @@ Last-Update: 2015-04-17
 +    = octave_bindir + dir_sep_char + "octave-cli";
    std::string octave_gui = octave_archlibdir + dir_sep_char + "octave-gui";
  
- #if defined (HAVE_OCTAVE_GUI)
+ #if defined (HAVE_OCTAVE_QT_GUI)
