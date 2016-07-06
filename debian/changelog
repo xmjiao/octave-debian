@@ -1,3 +1,9 @@
+octave (4.1.0~hg.20160703.22033-2) experimental; urgency=medium
+
+  * d/rules: Avoid triggering the build of Bison-generated files
+
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 06 Jul 2016 14:23:20 -0300
+
 octave (4.1.0~hg.20160703.22033-1) experimental; urgency=medium
 
   * Imported Upstream version 4.1.0~hg.20160703.22033
