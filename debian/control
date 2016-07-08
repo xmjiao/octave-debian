@@ -13,8 +13,10 @@ Build-Depends: automake,
   dpkg-dev (>= 1.16.1),
   epstool,
   flex,
+  g++-6,
   gawk,
-  gfortran,
+  gcc-6,
+  gfortran-6,
   ghostscript,
   gnuplot-nox,
   javahelper,
@@ -217,7 +219,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  libhdf5-dev (>= 1.8.8) | libhdf5-openmpi-dev (>= 1.8.8) | libhdf5-mpich-dev (>= 1.8.8),
  libgl1-mesa-dev | libgl-dev,
  libblas-dev (>=1.2-7) | libblas.so, liblapack-dev (>=3.2.1-7) | liblapack.so,
- libfftw3-dev, gfortran, gcc, g++
+ libfftw3-dev, gfortran-6, gcc-6, g++-6
 Section: libdevel
 Description: Development files for the GNU Octave language
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily

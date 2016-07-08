@@ -42,6 +42,11 @@ ifneq ($(wildcard /usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial/libhdf5.so),)
 	--with-hdf5-libdir=/usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial
 endif
 
+# Force gcc-6
+export CC=gcc-6
+export CXX=g++-6
+export F77=gfortran-6
+
 %:
 	dh $@ --with autoreconf --parallel
 
