@@ -3,14 +3,14 @@ Description: Do not install versioned binaries
 Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
 Reviewed-by: Rafael Laboissiere <rafael@debian.org>
-Last-Update: 2016-07-03
+Last-Update: 2016-07-08
 diff --git a/src/module.mk b/src/module.mk
 index e125d83..40b2b46 100644
 --- a/src/module.mk
 +++ b/src/module.mk
 @@ -215,7 +215,7 @@ src/octave-build-info.cc: src/octave-build-info.in.cc HG-ID | src/$(octave-dirst
  
- ALL_LOCAL_TARGETS += $(OCTAVE_VERSION_LINKS) $(OCTAVE_CROSS_TOOLS)
+ ALL_LOCAL_TARGETS += $(OCTAVE_CROSS_TOOLS)
  
 -install-exec-hook: make-version-links
 +install-exec-hook:
