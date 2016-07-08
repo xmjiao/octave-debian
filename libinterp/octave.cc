@@ -34,15 +34,15 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iostream>
 
-#include <getopt.h>
-
 #include "cmd-edit.h"
 #include "f77-fcn.h"
 #include "file-ops.h"
 #include "file-stat.h"
+#include "getopt-wrapper.h"
 #include "lo-error.h"
 #include "oct-env.h"
 #include "str-vec.h"
+#include "signal-wrappers.h"
 #include "unistd-wrappers.h"
 
 #include "build-env.h"
@@ -423,13 +423,13 @@ execute_eval_option_code (const std::string& code)
 
   octave_save_signal_mask ();
 
-  can_interrupt = true;
+  octave::can_interrupt = true;
 
-  octave_signal_hook = octave_signal_handler;
+  octave_signal_hook = octave::signal_handler;
   octave_interrupt_hook = 0;
   octave_bad_alloc_hook = 0;
 
-  octave_catch_interrupts ();
+  octave::catch_interrupts ();
 
   octave_initialized = true;
 
@@ -468,13 +468,13 @@ execute_command_line_file (const std::string& fname)
 
   octave_save_signal_mask ();
 
-  can_interrupt = true;
+  octave::can_interrupt = true;
 
-  octave_signal_hook = octave_signal_handler;
+  octave_signal_hook = octave::signal_handler;
   octave_interrupt_hook = 0;
   octave_bad_alloc_hook = 0;
 
-  octave_catch_interrupts ();
+  octave::catch_interrupts ();
 
   octave_initialized = true;
 
@@ -586,7 +586,8 @@ octave_process_command_line (int argc, char **argv)
     {
       int long_idx;
 
-      int optc = getopt_long (argc, argv, short_opts, long_opts, &long_idx);
+      int optc = octave_getopt_long_wrapper (argc, argv, short_opts,
+                                             long_opts, &long_idx);
 
       if (optc < 0)
         break;
@@ -815,7 +816,7 @@ octave_initialize_interpreter (int argc, char **argv, int embedded)
   initialize_error_handlers ();
 
   if (! embedded)
-    install_signal_handlers ();
+    octave::install_signal_handlers ();
   else
     quit_allowed = false;
 

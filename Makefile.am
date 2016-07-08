@@ -229,7 +229,7 @@ SUBDIRS = libgnu
 BUILT_SOURCES += libgnu/libgnu.la
 
 libgnu/libgnu.la: oct-conf-post.h
-	cd libgnu; $(MAKE) all
+	cd libgnu && $(MAKE) $(AM_MAKEFLAGS) all
 
 include liboctave/module.mk
 include libinterp/module.mk
@@ -428,6 +428,12 @@ distclean-local:
 	if [ "x${srcdir}" != "x." ]; then rm -f HG-ID; fi
 
 maintainer-clean-local: doc-maintainer-clean
+
+## The 'clean-aminfo' target is defined by Automake >= 1.11.  We want to
+## distribute all Texinfo docs with the source distribution and not delete
+## them on 'clean', so we override this target to do nothing by default.
+
+clean-aminfo:
 
 define move_if_change_rule
   if [ -s $(1) ]; then \

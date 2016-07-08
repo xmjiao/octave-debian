@@ -3840,7 +3840,7 @@ public:
       radio_property gridalphamode , "{auto}|manual"
       color_property gridcolor , color_property (color_values (0.15, 0.15, 0.15), radio_values ("none"))
       radio_property gridcolormode , "{auto}|manual"
-      radio_property gridlinestyle , "{:}|-|--|-.|none"
+      radio_property gridlinestyle , "{-}|--|:|-.|none"
       double_property labelfontsizemultiplier , 1.1
       radio_property layer u , "{bottom}|top"
       // FIXME: should be kind of string array.
@@ -3922,7 +3922,6 @@ public:
       radio_property ztickmode u , "{auto}|manual"
       // Octave-specific properties
       double_property mousewheelzoom , 0.5
-      bool_property __hold_all__ h , "off"
       // hidden properties for alignment of subplots
       radio_property autopos_tag h , "{none}|subplot"
       // hidden properties for inset

@@ -441,12 +441,15 @@ where different interpolation schemes may yield slightly different values.
 
 <a name="XREFisosurface"></a><dl>
 <dt><a name="index-isosurface"></a>: <em>[<var>fv</var>] =</em> <strong>isosurface</strong> <em>(<var>val</var>, <var>iso</var>)</em></dt>
-<dt><a name="index-isosurface-1"></a>: <em>[<var>fv</var>] =</em> <strong>isosurface</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>iso</var>)</em></dt>
-<dt><a name="index-isosurface-2"></a>: <em>[<var>fv</var>] =</em> <strong>isosurface</strong> <em>(&hellip;, &quot;noshare&quot;, &quot;verbose&quot;)</em></dt>
-<dt><a name="index-isosurface-3"></a>: <em>[<var>fvc</var>] =</em> <strong>isosurface</strong> <em>(&hellip;, <var>col</var>)</em></dt>
-<dt><a name="index-isosurface-4"></a>: <em>[<var>f</var>, <var>v</var>] =</em> <strong>isosurface</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>iso</var>)</em></dt>
-<dt><a name="index-isosurface-5"></a>: <em>[<var>f</var>, <var>v</var>, <var>c</var>] =</em> <strong>isosurface</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>iso</var>, <var>col</var>)</em></dt>
-<dt><a name="index-isosurface-6"></a>: <em></em> <strong>isosurface</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>iso</var>, <var>col</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-isosurface-1"></a>: <em>[<var>fv</var>] =</em> <strong>isosurface</strong> <em>(<var>val</var>)</em></dt>
+<dt><a name="index-isosurface-2"></a>: <em>[<var>fv</var>] =</em> <strong>isosurface</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>iso</var>)</em></dt>
+<dt><a name="index-isosurface-3"></a>: <em>[<var>fv</var>] =</em> <strong>isosurface</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>)</em></dt>
+<dt><a name="index-isosurface-4"></a>: <em>[<var>fvc</var>] =</em> <strong>isosurface</strong> <em>(&hellip;, <var>col</var>)</em></dt>
+<dt><a name="index-isosurface-5"></a>: <em>[<var>fv</var>] =</em> <strong>isosurface</strong> <em>(&hellip;, &quot;noshare&quot;)</em></dt>
+<dt><a name="index-isosurface-6"></a>: <em>[<var>fv</var>] =</em> <strong>isosurface</strong> <em>(&hellip;, &quot;verbose&quot;)</em></dt>
+<dt><a name="index-isosurface-7"></a>: <em>[<var>f</var>, <var>v</var>] =</em> <strong>isosurface</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-isosurface-8"></a>: <em>[<var>f</var>, <var>v</var>, <var>c</var>] =</em> <strong>isosurface</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-isosurface-9"></a>: <em></em> <strong>isosurface</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Calculate isosurface of 3-D data.
 </p>
@@ -454,32 +457,41 @@ where different interpolation schemes may yield slightly different values.
 <var>val</var> is a three-dimensional array that contains the data of an
 isosurface geometry and the second input argument <var>iso</var> keeps the
 isovalue as a scalar value then return a structure array <var>fv</var>
-that contains the fields <var>Faces</var> and <var>Vertices</var> at computed
-points <code>[x, y, z] = meshgrid (1:l, 1:m, 1:n)</code>.  The output
+that contains the fields <var>faces</var> and <var>vertices</var> at computed
+points <code>[x, y, z] = meshgrid (1:l, 1:m, 1:n)</code>. The output
 argument <var>fv</var> can directly be taken as an input argument for the
 <code>patch</code> function.
 </p>
-<p>If called with further input arguments <var>x</var>, <var>y</var> and <var>z</var>
-which are three&ndash;dimensional arrays with the same size than <var>val</var>
-then the volume data is taken at those given points.
+<p>If <var>iso</var> is omitted or empty, a &quot;good&quot; value for an isosurface is
+determined from <var>val</var>.
 </p>
-<p>The string input argument <code>&quot;noshare&quot;</code> is only for compatibility and
-has no effect.  If given the string input argument
-<code>&quot;verbose&quot;</code> then print messages to the command line interface about
-the current progress.
+<p>If called with further input arguments <var>x</var>, <var>y</var> and <var>z</var>
+which are three&ndash;dimensional arrays with the same size as <var>val</var> or
+vectors with lengths corresponding to the dimensions of <var>val</var>, then the
+volume data is taken at those given points. If <var>x</var>, <var>y</var> or <var>z</var>
+are empty, the grid corresponds to the indices in the respective direction
+(see <code>meshgrid</code>).
 </p>
 <p>If called with the input argument <var>col</var> which is a
-three-dimensional array of the same size than <var>val</var> then take
+three-dimensional array of the same size as <var>val</var>, take
 those values for the interpolation of coloring the isosurface
-geometry.  Add the field <var>FaceVertexCData</var> to the structure
-array <var>fv</var>.
+geometry. In this case, the structure array <var>fv</var> has the additional field
+<var>facevertexcdata</var>.
 </p>
-<p>If called with two or three output arguments then return the
-information about the faces <var>f</var>, vertices <var>v</var> and color data
-<var>c</var> as separate arrays instead of a single structure array.
+<p>If given the string input argument <code>&quot;noshare&quot;</code>, vertices might be
+returned multiple times for different faces. The default behavior is to
+search vertices shared by adjacent faces with <code>unique</code> which might be
+time consuming.
+The string input argument <code>&quot;verbose&quot;</code> is only for compatibility and
+has no effect.
+The string input arguments must be passed after the other arguments.
 </p>
-<p>If called with no output argument then directly process the
-isosurface geometry with the <code>patch</code> command.
+<p>If called with two or three output arguments, return the information about
+the faces <var>f</var>, vertices <var>v</var> and color data <var>c</var> as separate arrays
+instead of a single structure array.
+</p>
+<p>If called with no output argument, the isosurface geometry is directly
+processed with the <code>patch</code> command.
 </p>
 <p>For example,
 </p>
@@ -490,7 +502,8 @@ isosurface (x, y, z, val, .5);
 </pre></div>
 
 <p>will directly draw a random isosurface geometry in a graphics window.
-Another example for an isosurface geometry with different additional
+</p>
+<p>Another example for an isosurface geometry with different additional
 coloring
 </p>
 <div class="smallexample">
@@ -498,40 +511,44 @@ coloring
 iso = .4;  # Change isovalue to .1 to display a sphere
 lin = linspace (0, 2, N);
 [x, y, z] = meshgrid (lin, lin, lin);
-c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
+val = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
 figure (); # Open another figure window
 
 subplot (2,2,1); view (-38, 20);
-[f, v] = isosurface (x, y, z, c, iso);
+[f, v] = isosurface (x, y, z, val, iso);
 p = patch (&quot;Faces&quot;, f, &quot;Vertices&quot;, v, &quot;EdgeColor&quot;, &quot;none&quot;);
 set (gca, &quot;PlotBoxAspectRatioMode&quot;, &quot;manual&quot;, ...
           &quot;PlotBoxAspectRatio&quot;, [1 1 1]);
-# set (p, &quot;FaceColor&quot;, &quot;green&quot;, &quot;FaceLighting&quot;, &quot;phong&quot;);
-# light (&quot;Position&quot;, [1 1 5]); # Available with the JHandles package
+isonormals (x, y, z, val, p)
+set (p, &quot;FaceColor&quot;, &quot;green&quot;, &quot;FaceLighting&quot;, &quot;gouraud&quot;);
+light (&quot;Position&quot;, [1 1 5]);
 
 subplot (2,2,2); view (-38, 20);
 p = patch (&quot;Faces&quot;, f, &quot;Vertices&quot;, v, &quot;EdgeColor&quot;, &quot;blue&quot;);
 set (gca, &quot;PlotBoxAspectRatioMode&quot;, &quot;manual&quot;, ...
           &quot;PlotBoxAspectRatio&quot;, [1 1 1]);
-# set (p, &quot;FaceColor&quot;, &quot;none&quot;, &quot;FaceLighting&quot;, &quot;phong&quot;);
-# light (&quot;Position&quot;, [1 1 5]);
+isonormals (x, y, z, val, p)
+set (p, &quot;FaceColor&quot;, &quot;none&quot;, &quot;EdgeLighting&quot;, &quot;gouraud&quot;);
+light (&quot;Position&quot;, [1 1 5]);
 
 subplot (2,2,3); view (-38, 20);
-[f, v, c] = isosurface (x, y, z, c, iso, y);
+[f, v, c] = isosurface (x, y, z, val, iso, y);
 p = patch (&quot;Faces&quot;, f, &quot;Vertices&quot;, v, &quot;FaceVertexCData&quot;, c, ...
            &quot;FaceColor&quot;, &quot;interp&quot;, &quot;EdgeColor&quot;, &quot;none&quot;);
 set (gca, &quot;PlotBoxAspectRatioMode&quot;, &quot;manual&quot;, ...
           &quot;PlotBoxAspectRatio&quot;, [1 1 1]);
-# set (p, &quot;FaceLighting&quot;, &quot;phong&quot;);
-# light (&quot;Position&quot;, [1 1 5]);
+isonormals (x, y, z, val, p)
+set (p, &quot;FaceLighting&quot;, &quot;gouraud&quot;);
+light (&quot;Position&quot;, [1 1 5]);
 
 subplot (2,2,4); view (-38, 20);
 p = patch (&quot;Faces&quot;, f, &quot;Vertices&quot;, v, &quot;FaceVertexCData&quot;, c, ...
            &quot;FaceColor&quot;, &quot;interp&quot;, &quot;EdgeColor&quot;, &quot;blue&quot;);
 set (gca, &quot;PlotBoxAspectRatioMode&quot;, &quot;manual&quot;, ...
           &quot;PlotBoxAspectRatio&quot;, [1 1 1]);
-# set (p, &quot;FaceLighting&quot;, &quot;phong&quot;);
-# light (&quot;Position&quot;, [1 1 5]);
+isonormals (x, y, z, val, p)
+set (p, &quot;FaceLighting&quot;, &quot;gouraud&quot;);
+light (&quot;Position&quot;, [1 1 5]);
 </pre></div>
 
 

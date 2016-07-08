@@ -14234,12 +14234,15 @@ isofinish (p);
 @c isosurface scripts/scripts/plot/draw/isosurface.m
 -*- texinfo -*-
 @deftypefn  {} {[@var{fv}] =} isosurface (@var{val}, @var{iso})
+@deftypefnx {} {[@var{fv}] =} isosurface (@var{val})
 @deftypefnx {} {[@var{fv}] =} isosurface (@var{x}, @var{y}, @var{z}, @var{val}, @var{iso})
-@deftypefnx {} {[@var{fv}] =} isosurface (@dots{}, "noshare", "verbose")
+@deftypefnx {} {[@var{fv}] =} isosurface (@var{x}, @var{y}, @var{z}, @var{val})
 @deftypefnx {} {[@var{fvc}] =} isosurface (@dots{}, @var{col})
-@deftypefnx {} {[@var{f}, @var{v}] =} isosurface (@var{x}, @var{y}, @var{z}, @var{val}, @var{iso})
-@deftypefnx {} {[@var{f}, @var{v}, @var{c}] =} isosurface (@var{x}, @var{y}, @var{z}, @var{val}, @var{iso}, @var{col})
-@deftypefnx {} {} isosurface (@var{x}, @var{y}, @var{z}, @var{val}, @var{iso}, @var{col}, @var{opt})
+@deftypefnx {} {[@var{fv}] =} isosurface (@dots{}, "noshare")
+@deftypefnx {} {[@var{fv}] =} isosurface (@dots{}, "verbose")
+@deftypefnx {} {[@var{f}, @var{v}] =} isosurface (@dots{})
+@deftypefnx {} {[@var{f}, @var{v}, @var{c}] =} isosurface (@dots{})
+@deftypefnx {} {} isosurface (@dots{})
 
 Calculate isosurface of 3-D data.
 
@@ -14247,32 +14250,41 @@ If called with one output argument and the first input argument
 @var{val} is a three-dimensional array that contains the data of an
 isosurface geometry and the second input argument @var{iso} keeps the
 isovalue as a scalar value then return a structure array @var{fv}
-that contains the fields @var{Faces} and @var{Vertices} at computed
-points @command{[x, y, z] = meshgrid (1:l, 1:m, 1:n)}.  The output
+that contains the fields @var{faces} and @var{vertices} at computed
+points @command{[x, y, z] = meshgrid (1:l, 1:m, 1:n)}. The output
 argument @var{fv} can directly be taken as an input argument for the
 @command{patch} function.
 
-If called with further input arguments @var{x}, @var{y} and @var{z}
-which are three--dimensional arrays with the same size than @var{val}
-then the volume data is taken at those given points.
+If @var{iso} is omitted or empty, a "good" value for an isosurface is
+determined from @var{val}.
 
-The string input argument @qcode{"noshare"} is only for compatibility and
-has no effect.  If given the string input argument
-@qcode{"verbose"} then print messages to the command line interface about
-the current progress.
+If called with further input arguments @var{x}, @var{y} and @var{z}
+which are three--dimensional arrays with the same size as @var{val} or
+vectors with lengths corresponding to the dimensions of @var{val}, then the
+volume data is taken at those given points. If @var{x}, @var{y} or @var{z}
+are empty, the grid corresponds to the indices in the respective direction
+(see @command{meshgrid}).
 
 If called with the input argument @var{col} which is a
-three-dimensional array of the same size than @var{val} then take
+three-dimensional array of the same size as @var{val}, take
 those values for the interpolation of coloring the isosurface
-geometry.  Add the field @var{FaceVertexCData} to the structure
-array @var{fv}.
+geometry. In this case, the structure array @var{fv} has the additional field
+@var{facevertexcdata}.
 
-If called with two or three output arguments then return the
-information about the faces @var{f}, vertices @var{v} and color data
-@var{c} as separate arrays instead of a single structure array.
+If given the string input argument @qcode{"noshare"}, vertices might be
+returned multiple times for different faces. The default behavior is to
+search vertices shared by adjacent faces with @command{unique} which might be
+time consuming.
+The string input argument @qcode{"verbose"} is only for compatibility and
+has no effect.
+The string input arguments must be passed after the other arguments.
 
-If called with no output argument then directly process the
-isosurface geometry with the @command{patch} command.
+If called with two or three output arguments, return the information about
+the faces @var{f}, vertices @var{v} and color data @var{c} as separate arrays
+instead of a single structure array.
+
+If called with no output argument, the isosurface geometry is directly
+processed with the @command{patch} command.
 
 For example,
 
@@ -14286,6 +14298,7 @@ isosurface (x, y, z, val, .5);
 
 @noindent
 will directly draw a random isosurface geometry in a graphics window.
+
 Another example for an isosurface geometry with different additional
 coloring
 @c Set example in small font to prevent overfull line
@@ -14295,40 +14308,44 @@ N = 15;    # Increase number of vertices in each direction
 iso = .4;  # Change isovalue to .1 to display a sphere
 lin = linspace (0, 2, N);
 [x, y, z] = meshgrid (lin, lin, lin);
-c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
+val = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
 figure (); # Open another figure window
 
 subplot (2,2,1); view (-38, 20);
-[f, v] = isosurface (x, y, z, c, iso);
+[f, v] = isosurface (x, y, z, val, iso);
 p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
 set (gca, "PlotBoxAspectRatioMode", "manual", ...
           "PlotBoxAspectRatio", [1 1 1]);
-# set (p, "FaceColor", "green", "FaceLighting", "phong");
-# light ("Position", [1 1 5]); # Available with the JHandles package
+isonormals (x, y, z, val, p)
+set (p, "FaceColor", "green", "FaceLighting", "gouraud");
+light ("Position", [1 1 5]);
 
 subplot (2,2,2); view (-38, 20);
 p = patch ("Faces", f, "Vertices", v, "EdgeColor", "blue");
 set (gca, "PlotBoxAspectRatioMode", "manual", ...
           "PlotBoxAspectRatio", [1 1 1]);
-# set (p, "FaceColor", "none", "FaceLighting", "phong");
-# light ("Position", [1 1 5]);
+isonormals (x, y, z, val, p)
+set (p, "FaceColor", "none", "EdgeLighting", "gouraud");
+light ("Position", [1 1 5]);
 
 subplot (2,2,3); view (-38, 20);
-[f, v, c] = isosurface (x, y, z, c, iso, y);
+[f, v, c] = isosurface (x, y, z, val, iso, y);
 p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
            "FaceColor", "interp", "EdgeColor", "none");
 set (gca, "PlotBoxAspectRatioMode", "manual", ...
           "PlotBoxAspectRatio", [1 1 1]);
-# set (p, "FaceLighting", "phong");
-# light ("Position", [1 1 5]);
+isonormals (x, y, z, val, p)
+set (p, "FaceLighting", "gouraud");
+light ("Position", [1 1 5]);
 
 subplot (2,2,4); view (-38, 20);
 p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
            "FaceColor", "interp", "EdgeColor", "blue");
 set (gca, "PlotBoxAspectRatioMode", "manual", ...
           "PlotBoxAspectRatio", [1 1 1]);
-# set (p, "FaceLighting", "phong");
-# light ("Position", [1 1 5]);
+isonormals (x, y, z, val, p)
+set (p, "FaceLighting", "gouraud");
+light ("Position", [1 1 5]);
 @end smallexample
 
 @seealso{isonormals, isocolors}
@@ -17023,7 +17040,6 @@ figure as an Octave object, use @code{hgsave}/@code{hgload}.
 @deftypefn  {} {} hold
 @deftypefnx {} {} hold on
 @deftypefnx {} {} hold off
-@deftypefnx {} {} hold all
 @deftypefnx {} {} hold (@var{hax}, @dots{})
 Toggle or set the @qcode{"hold"} state of the plotting engine which
 determines whether new graphic objects are added to the plot or replace
@@ -17032,12 +17048,11 @@ the existing objects.
 @table @code
 @item hold on
 Retain plot data and settings so that subsequent plot commands are displayed
-on a single graph.
+on a single graph.  Line color and line style are advanced for each new plot
+added.
 
-@item hold all
-Retain plot line color, line style, data, and settings so that subsequent
-plot commands are displayed on a single graph with the next line color and
-style.
+@item hold all (deprecated)
+Equivalent to @code{hold on}.
 
 @item hold off
 Restore default graphics settings which clear the graph and reset axis

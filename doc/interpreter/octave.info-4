@@ -832,7 +832,7 @@ The ‘uimenu’ properties are:
 ‘parent’: graphics handle
      Handle of the parent graphics object.
 
-‘position’: def. ‘0’
+‘position’: def. ‘1’
 
 ‘selected’: {"off"} | "on"
 
@@ -866,7 +866,7 @@ The ‘uibuttongroup’ properties are:
 
 ‘__modified__’: "off" | {"on"}
 
-‘backgroundcolor’: def. ‘[1 1 1]’
+‘backgroundcolor’: def. ‘[0.83137 0.81569 0.78431]’
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -932,7 +932,7 @@ The ‘uibuttongroup’ properties are:
 
 ‘selectionhighlight’: "off" | {"on"}
 
-‘shadowcolor’: def. ‘[0 0 0]’
+‘shadowcolor’: def. ‘[0.41569 0.40784 0.39216]’
 
 ‘sizechangedfcn’: def. ‘[](0x0)’
 
@@ -1039,7 +1039,7 @@ The ‘uipanel’ properties are:
 
 ‘__modified__’: "off" | {"on"}
 
-‘backgroundcolor’: def. ‘[1 1 1]’
+‘backgroundcolor’: def. ‘[0.83137 0.81569 0.78431]’
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -1100,7 +1100,7 @@ The ‘uipanel’ properties are:
 
 ‘selectionhighlight’: "off" | {"on"}
 
-‘shadowcolor’: def. ‘[0 0 0]’
+‘shadowcolor’: def. ‘[0.41569 0.40784 0.39216]’
 
 ‘tag’: string, def. ""
      A user-defined string to label the graphics object.
@@ -1134,7 +1134,7 @@ The ‘uicontrol’ properties are:
 
 ‘__modified__’: "off" | {"on"}
 
-‘backgroundcolor’: def. ‘[1 1 1]’
+‘backgroundcolor’: def. ‘[0.83137 0.81569 0.78431]’
 
 ‘beingdeleted’: {"off"} | "on"
 

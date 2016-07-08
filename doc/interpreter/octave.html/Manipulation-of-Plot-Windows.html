@@ -171,8 +171,7 @@ current axis.
 <dt><a name="index-hold"></a>: <em></em> <strong>hold</strong></dt>
 <dt><a name="index-hold-1"></a>: <em></em> <strong>hold</strong> <em>on</em></dt>
 <dt><a name="index-hold-2"></a>: <em></em> <strong>hold</strong> <em>off</em></dt>
-<dt><a name="index-hold-3"></a>: <em></em> <strong>hold</strong> <em>all</em></dt>
-<dt><a name="index-hold-4"></a>: <em></em> <strong>hold</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-hold-3"></a>: <em></em> <strong>hold</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dd><p>Toggle or set the <code>&quot;hold&quot;</code> state of the plotting engine which
 determines whether new graphic objects are added to the plot or replace
 the existing objects.
@@ -180,13 +179,12 @@ the existing objects.
 <dl compact="compact">
 <dt><code>hold on</code></dt>
 <dd><p>Retain plot data and settings so that subsequent plot commands are displayed
-on a single graph.
+on a single graph.  Line color and line style are advanced for each new plot
+added.
 </p>
 </dd>
-<dt><code>hold all</code></dt>
-<dd><p>Retain plot line color, line style, data, and settings so that subsequent
-plot commands are displayed on a single graph with the next line color and
-style.
+<dt><code>hold all (deprecated)</code></dt>
+<dd><p>Equivalent to <code>hold on</code>.
 </p>
 </dd>
 <dt><code>hold off</code></dt>

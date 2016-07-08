@@ -81,12 +81,11 @@ image_DATA += $(SCRIPTS_IMAGES)
 GEN_FCN_FILES_IN = $(GEN_FCN_FILES:.m=.in.m)
 
 ALL_LOCAL_TARGETS += \
-  $(GEN_FCN_FILES) \
-  $(PKG_ADD_FILES) \
   $(JAR_FILES)
 
 OCTAVE_INTERPRETER_TARGETS += \
-  $(GEN_FCN_FILES)
+  $(GEN_FCN_FILES) \
+  $(PKG_ADD_FILES)
 
 define PKG_ADD_FILE_TEMPLATE
 $(1)/PKG_ADD: $$($(2)_FCN_FILES) $$($(2)_GEN_FCN_FILES) $(1)/$(octave_dirstamp) scripts/mk-pkg-add
@@ -106,10 +105,12 @@ $(foreach f, $(GEN_FCN_FILES), $(eval $(call GEN_FCN_FILES_TEMPLATE, $(f))))
 
 DOCSTRING_FILES += $(srcdir)/scripts/DOCSTRINGS
 
-$(srcdir)/scripts/DOCSTRINGS: $(FCN_FILES) $(GEN_FCN_FILES_IN) | scripts/$(octave-dirstamp)
+$(srcdir)/scripts/DOCSTRINGS: $(FCN_FILES) $(GEN_FCN_FILES_IN) | scripts/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f scripts/DOCSTRINGS-t && \
 	$(PERL) $(srcdir)/scripts/mkdoc.pl "$(srcdir)" $(FCN_FILES) $(GEN_FCN_FILES_IN) > scripts/DOCSTRINGS-t && \
-	mv scripts/DOCSTRINGS-t $@
+	$(call move_if_change_rule,scripts/DOCSTRINGS-t,$@)
+
+DIRSTAMP_FILES += scripts/$(octave_dirstamp)
 
 check-m-sources:
 	@echo "checking whether files in source tree are listed in module.mk files..."; \

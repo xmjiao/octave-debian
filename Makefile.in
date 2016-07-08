@@ -365,47 +365,44 @@ archlib_PROGRAMS = $(am__EXEEXT_1)
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/doc-cache \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/macros.texi
 
-@AMCOND_BUILD_DOCS_TRUE@am__append_55 = \
-@AMCOND_BUILD_DOCS_TRUE@  $(OCTAVE_HTML_STAMP)
-
-@AMCOND_BUILD_DOCS_TRUE@am__append_56 = AUTHORS $(BUILT_DOC_IMAGES) \
+@AMCOND_BUILD_DOCS_TRUE@am__append_55 = AUTHORS $(BUILT_DOC_IMAGES) \
 @AMCOND_BUILD_DOCS_TRUE@	$(BUILT_OCTAVE_TEXI_SRC) \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/doc-cache \
 @AMCOND_BUILD_DOCS_TRUE@	$(refcard_FORMATTED)
-@AMCOND_BUILD_DOCS_TRUE@am__append_57 =  \
+@AMCOND_BUILD_DOCS_TRUE@am__append_56 =  \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/$(octave_dirstamp) \
 @AMCOND_BUILD_DOCS_TRUE@	doc/liboctave/$(octave_dirstamp) \
 @AMCOND_BUILD_DOCS_TRUE@	doc/refcard/$(octave_dirstamp)
-@AMCOND_BUILD_DOCS_TRUE@am__append_58 = \
+@AMCOND_BUILD_DOCS_TRUE@am__append_57 = \
 @AMCOND_BUILD_DOCS_TRUE@  doc/refcard/refcard-a4.log \
 @AMCOND_BUILD_DOCS_TRUE@  doc/refcard/refcard-legal.log \
 @AMCOND_BUILD_DOCS_TRUE@  doc/refcard/refcard-letter.log
 
-@AMCOND_BUILD_DOCS_TRUE@am__append_59 =  \
+@AMCOND_BUILD_DOCS_TRUE@am__append_58 =  \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/geometryimages.m \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/interpimages.m \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/plotimages.m \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/sparseimages.m \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/splineimages.m
-@AMCOND_BUILD_DOCS_TRUE@am__append_60 = $(GEOMETRYIMAGES_EPS) \
+@AMCOND_BUILD_DOCS_TRUE@am__append_59 = $(GEOMETRYIMAGES_EPS) \
 @AMCOND_BUILD_DOCS_TRUE@	$(INTERPIMAGES_EPS) $(PLOTIMAGES_EPS) \
 @AMCOND_BUILD_DOCS_TRUE@	$(SPARSEIMAGES_EPS) \
 @AMCOND_BUILD_DOCS_TRUE@	$(SPLINEIMAGES_EPS)
-@AMCOND_BUILD_DOCS_TRUE@am__append_61 = $(GEOMETRYIMAGES_PDF) \
+@AMCOND_BUILD_DOCS_TRUE@am__append_60 = $(GEOMETRYIMAGES_PDF) \
 @AMCOND_BUILD_DOCS_TRUE@	$(INTERPIMAGES_PDF) $(PLOTIMAGES_PDF) \
 @AMCOND_BUILD_DOCS_TRUE@	$(SPARSEIMAGES_PDF) \
 @AMCOND_BUILD_DOCS_TRUE@	$(SPLINEIMAGES_PDF)
-@AMCOND_BUILD_DOCS_TRUE@am__append_62 = $(GEOMETRYIMAGES_PNG) \
+@AMCOND_BUILD_DOCS_TRUE@am__append_61 = $(GEOMETRYIMAGES_PNG) \
 @AMCOND_BUILD_DOCS_TRUE@	$(INTERPIMAGES_PNG) $(PLOTIMAGES_PNG) \
 @AMCOND_BUILD_DOCS_TRUE@	$(SPARSEIMAGES_PNG) \
 @AMCOND_BUILD_DOCS_TRUE@	$(SPLINEIMAGES_PNG)
-@AMCOND_BUILD_DOCS_TRUE@am__append_63 = $(GEOMETRYIMAGES_TXT) \
+@AMCOND_BUILD_DOCS_TRUE@am__append_62 = $(GEOMETRYIMAGES_TXT) \
 @AMCOND_BUILD_DOCS_TRUE@	$(INTERPIMAGES_TXT) $(PLOTIMAGES_TXT) \
 @AMCOND_BUILD_DOCS_TRUE@	$(SPARSEIMAGES_TXT) \
 @AMCOND_BUILD_DOCS_TRUE@	$(SPLINEIMAGES_TXT)
-@AMCOND_HAVE_BROKEN_STL_ALGO_H_TRUE@am__append_64 = bits/stl_algo.h
-@AMCOND_HAVE_BROKEN_STL_ALGO_H_FALSE@am__append_65 = nonexistent-file
-@AMCOND_INSTALL_BUILD_LOGS_TRUE@am__append_66 = config.log
+@AMCOND_HAVE_BROKEN_STL_ALGO_H_TRUE@am__append_63 = bits/stl_algo.h
+@AMCOND_HAVE_BROKEN_STL_ALGO_H_FALSE@am__append_64 = nonexistent-file
+@AMCOND_INSTALL_BUILD_LOGS_TRUE@am__append_65 = config.log
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
@@ -416,31 +413,23 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/ax_compare_version.m4 \
 	$(top_srcdir)/m4/ax_lapack.m4 $(top_srcdir)/m4/ax_openmp.m4 \
 	$(top_srcdir)/m4/ax_pthread.m4 $(top_srcdir)/m4/base64.m4 \
-	$(top_srcdir)/m4/canonicalize.m4 $(top_srcdir)/m4/ceil.m4 \
-	$(top_srcdir)/m4/ceilf.m4 $(top_srcdir)/m4/chdir-long.m4 \
-	$(top_srcdir)/m4/check-math-lib.m4 $(top_srcdir)/m4/close.m4 \
+	$(top_srcdir)/m4/canonicalize.m4 \
+	$(top_srcdir)/m4/chdir-long.m4 $(top_srcdir)/m4/close.m4 \
 	$(top_srcdir)/m4/closedir.m4 $(top_srcdir)/m4/codeset.m4 \
-	$(top_srcdir)/m4/configmake.m4 $(top_srcdir)/m4/copysign.m4 \
-	$(top_srcdir)/m4/copysignf.m4 $(top_srcdir)/m4/d-ino.m4 \
+	$(top_srcdir)/m4/configmake.m4 $(top_srcdir)/m4/d-ino.m4 \
 	$(top_srcdir)/m4/d-type.m4 $(top_srcdir)/m4/dirent_h.m4 \
 	$(top_srcdir)/m4/dirfd.m4 $(top_srcdir)/m4/dirname.m4 \
 	$(top_srcdir)/m4/double-slash-root.m4 $(top_srcdir)/m4/dup.m4 \
 	$(top_srcdir)/m4/dup2.m4 $(top_srcdir)/m4/eealloc.m4 \
 	$(top_srcdir)/m4/environ.m4 $(top_srcdir)/m4/errno_h.m4 \
 	$(top_srcdir)/m4/error.m4 $(top_srcdir)/m4/exponentd.m4 \
-	$(top_srcdir)/m4/exponentf.m4 $(top_srcdir)/m4/exponentl.m4 \
 	$(top_srcdir)/m4/extensions.m4 \
 	$(top_srcdir)/m4/extern-inline.m4 $(top_srcdir)/m4/fchdir.m4 \
-	$(top_srcdir)/m4/fclose.m4 $(top_srcdir)/m4/fcntl-o.m4 \
-	$(top_srcdir)/m4/fcntl.m4 $(top_srcdir)/m4/fcntl_h.m4 \
-	$(top_srcdir)/m4/fdopendir.m4 $(top_srcdir)/m4/fflush.m4 \
+	$(top_srcdir)/m4/fcntl-o.m4 $(top_srcdir)/m4/fcntl.m4 \
+	$(top_srcdir)/m4/fcntl_h.m4 $(top_srcdir)/m4/fdopendir.m4 \
 	$(top_srcdir)/m4/filemode.m4 $(top_srcdir)/m4/filenamecat.m4 \
 	$(top_srcdir)/m4/flexmember.m4 $(top_srcdir)/m4/float_h.m4 \
-	$(top_srcdir)/m4/floor.m4 $(top_srcdir)/m4/floorf.m4 \
-	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fopen.m4 \
-	$(top_srcdir)/m4/fpieee.m4 $(top_srcdir)/m4/fpurge.m4 \
-	$(top_srcdir)/m4/freading.m4 $(top_srcdir)/m4/frexp.m4 \
-	$(top_srcdir)/m4/frexpf.m4 $(top_srcdir)/m4/fseek.m4 \
+	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fseek.m4 \
 	$(top_srcdir)/m4/fseeko.m4 $(top_srcdir)/m4/fstat.m4 \
 	$(top_srcdir)/m4/fstatat.m4 $(top_srcdir)/m4/ftell.m4 \
 	$(top_srcdir)/m4/ftello.m4 $(top_srcdir)/m4/ftruncate.m4 \
@@ -456,30 +445,25 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/hard-locale.m4 \
 	$(top_srcdir)/m4/include_next.m4 $(top_srcdir)/m4/intmax_t.m4 \
 	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/isatty.m4 \
-	$(top_srcdir)/m4/isnand.m4 $(top_srcdir)/m4/isnanf.m4 \
-	$(top_srcdir)/m4/isnanl.m4 $(top_srcdir)/m4/largefile.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/link.m4 $(top_srcdir)/m4/localcharset.m4 \
-	$(top_srcdir)/m4/locale-fr.m4 $(top_srcdir)/m4/locale-ja.m4 \
-	$(top_srcdir)/m4/locale-zh.m4 $(top_srcdir)/m4/lock.m4 \
-	$(top_srcdir)/m4/log.m4 $(top_srcdir)/m4/log2-ieee.m4 \
-	$(top_srcdir)/m4/log2.m4 $(top_srcdir)/m4/log2f-ieee.m4 \
-	$(top_srcdir)/m4/log2f.m4 $(top_srcdir)/m4/logf.m4 \
-	$(top_srcdir)/m4/longlong.m4 $(top_srcdir)/m4/lseek.m4 \
-	$(top_srcdir)/m4/lstat.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/malloc.m4 \
-	$(top_srcdir)/m4/malloca.m4 $(top_srcdir)/m4/math_h.m4 \
-	$(top_srcdir)/m4/mathfunc.m4 $(top_srcdir)/m4/mbrtowc.m4 \
-	$(top_srcdir)/m4/mbsinit.m4 $(top_srcdir)/m4/mbsrtowcs.m4 \
-	$(top_srcdir)/m4/mbstate_t.m4 $(top_srcdir)/m4/md4.m4 \
-	$(top_srcdir)/m4/md5.m4 $(top_srcdir)/m4/memchr.m4 \
-	$(top_srcdir)/m4/mempcpy.m4 $(top_srcdir)/m4/memrchr.m4 \
-	$(top_srcdir)/m4/minmax.m4 $(top_srcdir)/m4/mkdir.m4 \
-	$(top_srcdir)/m4/mkfifo.m4 $(top_srcdir)/m4/mkostemp.m4 \
-	$(top_srcdir)/m4/mktime.m4 $(top_srcdir)/m4/mmap-anon.m4 \
-	$(top_srcdir)/m4/mode_t.m4 $(top_srcdir)/m4/msvc-inval.m4 \
+	$(top_srcdir)/m4/largefile.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/link.m4 \
+	$(top_srcdir)/m4/localcharset.m4 $(top_srcdir)/m4/locale-fr.m4 \
+	$(top_srcdir)/m4/locale-ja.m4 $(top_srcdir)/m4/locale-zh.m4 \
+	$(top_srcdir)/m4/lock.m4 $(top_srcdir)/m4/longlong.m4 \
+	$(top_srcdir)/m4/lseek.m4 $(top_srcdir)/m4/lstat.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/malloc.m4 $(top_srcdir)/m4/malloca.m4 \
+	$(top_srcdir)/m4/mbrtowc.m4 $(top_srcdir)/m4/mbsinit.m4 \
+	$(top_srcdir)/m4/mbsrtowcs.m4 $(top_srcdir)/m4/mbstate_t.m4 \
+	$(top_srcdir)/m4/md4.m4 $(top_srcdir)/m4/md5.m4 \
+	$(top_srcdir)/m4/memchr.m4 $(top_srcdir)/m4/mempcpy.m4 \
+	$(top_srcdir)/m4/memrchr.m4 $(top_srcdir)/m4/minmax.m4 \
+	$(top_srcdir)/m4/mkdir.m4 $(top_srcdir)/m4/mkfifo.m4 \
+	$(top_srcdir)/m4/mkostemp.m4 $(top_srcdir)/m4/mktime.m4 \
+	$(top_srcdir)/m4/mmap-anon.m4 $(top_srcdir)/m4/mode_t.m4 \
+	$(top_srcdir)/m4/msvc-inval.m4 \
 	$(top_srcdir)/m4/msvc-nothrow.m4 $(top_srcdir)/m4/multiarch.m4 \
 	$(top_srcdir)/m4/nanosleep.m4 $(top_srcdir)/m4/nocrash.m4 \
 	$(top_srcdir)/m4/nproc.m4 $(top_srcdir)/m4/off_t.m4 \
@@ -489,30 +473,27 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/printf.m4 $(top_srcdir)/m4/putenv.m4 \
 	$(top_srcdir)/m4/raise.m4 $(top_srcdir)/m4/readdir.m4 \
 	$(top_srcdir)/m4/readlink.m4 $(top_srcdir)/m4/realloc.m4 \
-	$(top_srcdir)/m4/rename.m4 $(top_srcdir)/m4/rewinddir.m4 \
-	$(top_srcdir)/m4/rmdir.m4 $(top_srcdir)/m4/round.m4 \
-	$(top_srcdir)/m4/roundf.m4 $(top_srcdir)/m4/same.m4 \
-	$(top_srcdir)/m4/save-cwd.m4 $(top_srcdir)/m4/secure_getenv.m4 \
-	$(top_srcdir)/m4/select.m4 $(top_srcdir)/m4/setenv.m4 \
-	$(top_srcdir)/m4/sha1.m4 $(top_srcdir)/m4/sha256.m4 \
-	$(top_srcdir)/m4/sha512.m4 $(top_srcdir)/m4/sigaction.m4 \
-	$(top_srcdir)/m4/signal_h.m4 \
-	$(top_srcdir)/m4/signalblocking.m4 $(top_srcdir)/m4/signbit.m4 \
-	$(top_srcdir)/m4/size_max.m4 $(top_srcdir)/m4/sleep.m4 \
-	$(top_srcdir)/m4/snprintf.m4 $(top_srcdir)/m4/socketlib.m4 \
-	$(top_srcdir)/m4/sockets.m4 $(top_srcdir)/m4/socklen.m4 \
-	$(top_srcdir)/m4/ssize_t.m4 $(top_srcdir)/m4/st_dm_mode.m4 \
-	$(top_srcdir)/m4/stat.m4 $(top_srcdir)/m4/std-gnu11.m4 \
-	$(top_srcdir)/m4/stdalign.m4 $(top_srcdir)/m4/stdbool.m4 \
-	$(top_srcdir)/m4/stddef_h.m4 $(top_srcdir)/m4/stdint.m4 \
-	$(top_srcdir)/m4/stdint_h.m4 $(top_srcdir)/m4/stdio_h.m4 \
-	$(top_srcdir)/m4/stdlib_h.m4 $(top_srcdir)/m4/strcase.m4 \
-	$(top_srcdir)/m4/strdup.m4 $(top_srcdir)/m4/strerror.m4 \
-	$(top_srcdir)/m4/strftime.m4 $(top_srcdir)/m4/string_h.m4 \
-	$(top_srcdir)/m4/strings_h.m4 $(top_srcdir)/m4/strndup.m4 \
-	$(top_srcdir)/m4/strnlen.m4 $(top_srcdir)/m4/strptime.m4 \
-	$(top_srcdir)/m4/strsignal.m4 $(top_srcdir)/m4/symlink.m4 \
-	$(top_srcdir)/m4/sys_resource_h.m4 \
+	$(top_srcdir)/m4/rewinddir.m4 $(top_srcdir)/m4/rmdir.m4 \
+	$(top_srcdir)/m4/same.m4 $(top_srcdir)/m4/save-cwd.m4 \
+	$(top_srcdir)/m4/secure_getenv.m4 $(top_srcdir)/m4/select.m4 \
+	$(top_srcdir)/m4/setenv.m4 $(top_srcdir)/m4/sha1.m4 \
+	$(top_srcdir)/m4/sha256.m4 $(top_srcdir)/m4/sha512.m4 \
+	$(top_srcdir)/m4/sigaction.m4 $(top_srcdir)/m4/signal_h.m4 \
+	$(top_srcdir)/m4/signalblocking.m4 \
+	$(top_srcdir)/m4/size_max.m4 $(top_srcdir)/m4/snprintf.m4 \
+	$(top_srcdir)/m4/socketlib.m4 $(top_srcdir)/m4/sockets.m4 \
+	$(top_srcdir)/m4/socklen.m4 $(top_srcdir)/m4/ssize_t.m4 \
+	$(top_srcdir)/m4/st_dm_mode.m4 $(top_srcdir)/m4/stat.m4 \
+	$(top_srcdir)/m4/std-gnu11.m4 $(top_srcdir)/m4/stdalign.m4 \
+	$(top_srcdir)/m4/stdbool.m4 $(top_srcdir)/m4/stddef_h.m4 \
+	$(top_srcdir)/m4/stdint.m4 $(top_srcdir)/m4/stdint_h.m4 \
+	$(top_srcdir)/m4/stdio_h.m4 $(top_srcdir)/m4/stdlib_h.m4 \
+	$(top_srcdir)/m4/strcase.m4 $(top_srcdir)/m4/strdup.m4 \
+	$(top_srcdir)/m4/strerror.m4 $(top_srcdir)/m4/strftime.m4 \
+	$(top_srcdir)/m4/string_h.m4 $(top_srcdir)/m4/strings_h.m4 \
+	$(top_srcdir)/m4/strndup.m4 $(top_srcdir)/m4/strnlen.m4 \
+	$(top_srcdir)/m4/strptime.m4 $(top_srcdir)/m4/strsignal.m4 \
+	$(top_srcdir)/m4/symlink.m4 $(top_srcdir)/m4/sys_resource_h.m4 \
 	$(top_srcdir)/m4/sys_select_h.m4 \
 	$(top_srcdir)/m4/sys_socket_h.m4 \
 	$(top_srcdir)/m4/sys_stat_h.m4 $(top_srcdir)/m4/sys_time_h.m4 \
@@ -522,19 +503,17 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/sys_wait_h.m4 $(top_srcdir)/m4/tempname.m4 \
 	$(top_srcdir)/m4/threadlib.m4 $(top_srcdir)/m4/time_h.m4 \
 	$(top_srcdir)/m4/time_r.m4 $(top_srcdir)/m4/time_rz.m4 \
-	$(top_srcdir)/m4/timegm.m4 $(top_srcdir)/m4/times.m4 \
-	$(top_srcdir)/m4/tls.m4 $(top_srcdir)/m4/tm_gmtoff.m4 \
-	$(top_srcdir)/m4/tmpdir.m4 $(top_srcdir)/m4/tmpfile.m4 \
-	$(top_srcdir)/m4/trunc.m4 $(top_srcdir)/m4/truncf.m4 \
-	$(top_srcdir)/m4/uname.m4 $(top_srcdir)/m4/unistd-safer.m4 \
-	$(top_srcdir)/m4/unistd_h.m4 $(top_srcdir)/m4/unlink.m4 \
-	$(top_srcdir)/m4/vasnprintf.m4 $(top_srcdir)/m4/vasprintf.m4 \
-	$(top_srcdir)/m4/waitpid.m4 $(top_srcdir)/m4/warn-on-use.m4 \
-	$(top_srcdir)/m4/wchar_h.m4 $(top_srcdir)/m4/wchar_t.m4 \
-	$(top_srcdir)/m4/wctype_h.m4 $(top_srcdir)/m4/wint_t.m4 \
-	$(top_srcdir)/m4/xalloc.m4 $(top_srcdir)/m4/xgetcwd.m4 \
-	$(top_srcdir)/m4/xsize.m4 $(top_srcdir)/m4/xstrndup.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/timegm.m4 $(top_srcdir)/m4/tls.m4 \
+	$(top_srcdir)/m4/tm_gmtoff.m4 $(top_srcdir)/m4/tmpdir.m4 \
+	$(top_srcdir)/m4/tmpfile.m4 $(top_srcdir)/m4/uname.m4 \
+	$(top_srcdir)/m4/unistd-safer.m4 $(top_srcdir)/m4/unistd_h.m4 \
+	$(top_srcdir)/m4/unlink.m4 $(top_srcdir)/m4/vasnprintf.m4 \
+	$(top_srcdir)/m4/vasprintf.m4 $(top_srcdir)/m4/waitpid.m4 \
+	$(top_srcdir)/m4/warn-on-use.m4 $(top_srcdir)/m4/wchar_h.m4 \
+	$(top_srcdir)/m4/wchar_t.m4 $(top_srcdir)/m4/wctype_h.m4 \
+	$(top_srcdir)/m4/wint_t.m4 $(top_srcdir)/m4/xalloc.m4 \
+	$(top_srcdir)/m4/xgetcwd.m4 $(top_srcdir)/m4/xsize.m4 \
+	$(top_srcdir)/m4/xstrndup.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(top_srcdir)/configure \
@@ -2727,6 +2706,7 @@ liboctave_operators_liboperators_la_LINK = $(LIBTOOL) $(AM_V_lt) \
 	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 liboctave_system_libsystem_la_LIBADD =
 am__objects_34 =  \
+	liboctave/system/liboctave_system_libsystem_la-child-list.lo \
 	liboctave/system/liboctave_system_libsystem_la-dir-ops.lo \
 	liboctave/system/liboctave_system_libsystem_la-file-ops.lo \
 	liboctave/system/liboctave_system_libsystem_la-file-stat.lo \
@@ -2789,8 +2769,9 @@ am__objects_37 = liboctave/wrappers/liboctave_wrappers_libwrappers_la-areadlink-
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-dirent-wrappers.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-fcntl-wrappers.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-filepos-wrappers.lo \
-	liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrapper.lo \
+	liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrappers.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-gen-tempname-wrapper.lo \
+	liboctave/wrappers/liboctave_wrappers_libwrappers_la-getopt-wrapper.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-glob-wrappers.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-hash-wrappers.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-mkostemp-wrapper.lo \
@@ -3354,11 +3335,10 @@ am__DIST_COMMON = $(dist_man_MANS) $(srcdir)/Makefile.in \
 	$(top_srcdir)/build-aux/texinfo.tex \
 	$(top_srcdir)/build-aux/ylwrap \
 	$(top_srcdir)/doc/doxyhtml/Doxyfile.in AUTHORS COPYING \
-	ChangeLog INSTALL NEWS README build-aux/ar-lib \
-	build-aux/config.guess build-aux/config.rpath \
-	build-aux/config.sub build-aux/depcomp build-aux/install-sh \
-	build-aux/ltmain.sh build-aux/mdate-sh build-aux/missing \
-	build-aux/texinfo.tex build-aux/ylwrap \
+	ChangeLog NEWS README build-aux/ar-lib build-aux/config.guess \
+	build-aux/config.rpath build-aux/config.sub build-aux/depcomp \
+	build-aux/install-sh build-aux/ltmain.sh build-aux/mdate-sh \
+	build-aux/missing build-aux/texinfo.tex build-aux/ylwrap \
 	libinterp/corefcn/oct-tex-lexer.cc \
 	libinterp/corefcn/oct-tex-parser.cc \
 	libinterp/parse-tree/lex.cc libinterp/parse-tree/oct-parse.cc
@@ -3456,8 +3436,6 @@ CHOLMOD_LIBS = @CHOLMOD_LIBS@
 COLAMD_CPPFLAGS = @COLAMD_CPPFLAGS@
 COLAMD_LDFLAGS = @COLAMD_LDFLAGS@
 COLAMD_LIBS = @COLAMD_LIBS@
-COPYSIGNF_LIBM = @COPYSIGNF_LIBM@
-COPYSIGN_LIBM = @COPYSIGN_LIBM@
 CPICFLAG = @CPICFLAG@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
@@ -3525,8 +3503,6 @@ FGREP = @FGREP@
 FIND = @FIND@
 FLIBS = @FLIBS@
 FLOAT_H = @FLOAT_H@
-FLOORF_LIBM = @FLOORF_LIBM@
-FLOOR_LIBM = @FLOOR_LIBM@
 FLTK_CONFIG = @FLTK_CONFIG@
 FLTK_CPPFLAGS = @FLTK_CPPFLAGS@
 FLTK_LDFLAGS = @FLTK_LDFLAGS@
@@ -3536,8 +3512,6 @@ FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_CPPFLAGS = @FONTCONFIG_CPPFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
 FPICFLAG = @FPICFLAG@
-FREXPF_LIBM = @FREXPF_LIBM@
-FREXP_LIBM = @FREXP_LIBM@
 FT2_CFLAGS = @FT2_CFLAGS@
 FT2_CPPFLAGS = @FT2_CPPFLAGS@
 FT2_LIBS = @FT2_LIBS@
@@ -3553,36 +3527,17 @@ GLPK_LDFLAGS = @GLPK_LDFLAGS@
 GLPK_LIBS = @GLPK_LIBS@
 GNULIB_ACCEPT = @GNULIB_ACCEPT@
 GNULIB_ACCEPT4 = @GNULIB_ACCEPT4@
-GNULIB_ACOSF = @GNULIB_ACOSF@
-GNULIB_ACOSL = @GNULIB_ACOSL@
 GNULIB_ALPHASORT = @GNULIB_ALPHASORT@
-GNULIB_ASINF = @GNULIB_ASINF@
-GNULIB_ASINL = @GNULIB_ASINL@
-GNULIB_ATAN2F = @GNULIB_ATAN2F@
-GNULIB_ATANF = @GNULIB_ATANF@
-GNULIB_ATANL = @GNULIB_ATANL@
 GNULIB_ATOLL = @GNULIB_ATOLL@
 GNULIB_BIND = @GNULIB_BIND@
 GNULIB_BTOWC = @GNULIB_BTOWC@
 GNULIB_CALLOC_POSIX = @GNULIB_CALLOC_POSIX@
 GNULIB_CANONICALIZE_FILE_NAME = @GNULIB_CANONICALIZE_FILE_NAME@
-GNULIB_CBRT = @GNULIB_CBRT@
-GNULIB_CBRTF = @GNULIB_CBRTF@
-GNULIB_CBRTL = @GNULIB_CBRTL@
-GNULIB_CEIL = @GNULIB_CEIL@
-GNULIB_CEILF = @GNULIB_CEILF@
-GNULIB_CEILL = @GNULIB_CEILL@
 GNULIB_CHDIR = @GNULIB_CHDIR@
 GNULIB_CHOWN = @GNULIB_CHOWN@
 GNULIB_CLOSE = @GNULIB_CLOSE@
 GNULIB_CLOSEDIR = @GNULIB_CLOSEDIR@
 GNULIB_CONNECT = @GNULIB_CONNECT@
-GNULIB_COPYSIGN = @GNULIB_COPYSIGN@
-GNULIB_COPYSIGNF = @GNULIB_COPYSIGNF@
-GNULIB_COPYSIGNL = @GNULIB_COPYSIGNL@
-GNULIB_COSF = @GNULIB_COSF@
-GNULIB_COSHF = @GNULIB_COSHF@
-GNULIB_COSL = @GNULIB_COSL@
 GNULIB_DIRFD = @GNULIB_DIRFD@
 GNULIB_DPRINTF = @GNULIB_DPRINTF@
 GNULIB_DUP = @GNULIB_DUP@
@@ -3590,16 +3545,6 @@ GNULIB_DUP2 = @GNULIB_DUP2@
 GNULIB_DUP3 = @GNULIB_DUP3@
 GNULIB_ENVIRON = @GNULIB_ENVIRON@
 GNULIB_EUIDACCESS = @GNULIB_EUIDACCESS@
-GNULIB_EXP2 = @GNULIB_EXP2@
-GNULIB_EXP2F = @GNULIB_EXP2F@
-GNULIB_EXP2L = @GNULIB_EXP2L@
-GNULIB_EXPF = @GNULIB_EXPF@
-GNULIB_EXPL = @GNULIB_EXPL@
-GNULIB_EXPM1 = @GNULIB_EXPM1@
-GNULIB_EXPM1F = @GNULIB_EXPM1F@
-GNULIB_EXPM1L = @GNULIB_EXPM1L@
-GNULIB_FABSF = @GNULIB_FABSF@
-GNULIB_FABSL = @GNULIB_FABSL@
 GNULIB_FACCESSAT = @GNULIB_FACCESSAT@
 GNULIB_FCHDIR = @GNULIB_FCHDIR@
 GNULIB_FCHMODAT = @GNULIB_FCHMODAT@
@@ -3615,15 +3560,6 @@ GNULIB_FFSL = @GNULIB_FFSL@
 GNULIB_FFSLL = @GNULIB_FFSLL@
 GNULIB_FGETC = @GNULIB_FGETC@
 GNULIB_FGETS = @GNULIB_FGETS@
-GNULIB_FLOOR = @GNULIB_FLOOR@
-GNULIB_FLOORF = @GNULIB_FLOORF@
-GNULIB_FLOORL = @GNULIB_FLOORL@
-GNULIB_FMA = @GNULIB_FMA@
-GNULIB_FMAF = @GNULIB_FMAF@
-GNULIB_FMAL = @GNULIB_FMAL@
-GNULIB_FMOD = @GNULIB_FMOD@
-GNULIB_FMODF = @GNULIB_FMODF@
-GNULIB_FMODL = @GNULIB_FMODL@
 GNULIB_FOPEN = @GNULIB_FOPEN@
 GNULIB_FPRINTF = @GNULIB_FPRINTF@
 GNULIB_FPRINTF_POSIX = @GNULIB_FPRINTF_POSIX@
@@ -3632,9 +3568,6 @@ GNULIB_FPUTC = @GNULIB_FPUTC@
 GNULIB_FPUTS = @GNULIB_FPUTS@
 GNULIB_FREAD = @GNULIB_FREAD@
 GNULIB_FREOPEN = @GNULIB_FREOPEN@
-GNULIB_FREXP = @GNULIB_FREXP@
-GNULIB_FREXPF = @GNULIB_FREXPF@
-GNULIB_FREXPL = @GNULIB_FREXPL@
 GNULIB_FSCANF = @GNULIB_FSCANF@
 GNULIB_FSEEK = @GNULIB_FSEEK@
 GNULIB_FSEEKO = @GNULIB_FSEEKO@
@@ -3669,44 +3602,15 @@ GNULIB_GETUSERSHELL = @GNULIB_GETUSERSHELL@
 GNULIB_GL_UNISTD_H_GETOPT = @GNULIB_GL_UNISTD_H_GETOPT@
 GNULIB_GRANTPT = @GNULIB_GRANTPT@
 GNULIB_GROUP_MEMBER = @GNULIB_GROUP_MEMBER@
-GNULIB_HYPOT = @GNULIB_HYPOT@
-GNULIB_HYPOTF = @GNULIB_HYPOTF@
-GNULIB_HYPOTL = @GNULIB_HYPOTL@
-GNULIB_ILOGB = @GNULIB_ILOGB@
-GNULIB_ILOGBF = @GNULIB_ILOGBF@
-GNULIB_ILOGBL = @GNULIB_ILOGBL@
 GNULIB_ISATTY = @GNULIB_ISATTY@
-GNULIB_ISFINITE = @GNULIB_ISFINITE@
-GNULIB_ISINF = @GNULIB_ISINF@
-GNULIB_ISNAN = @GNULIB_ISNAN@
-GNULIB_ISNAND = @GNULIB_ISNAND@
-GNULIB_ISNANF = @GNULIB_ISNANF@
-GNULIB_ISNANL = @GNULIB_ISNANL@
 GNULIB_ISWBLANK = @GNULIB_ISWBLANK@
 GNULIB_ISWCTYPE = @GNULIB_ISWCTYPE@
 GNULIB_LCHMOD = @GNULIB_LCHMOD@
 GNULIB_LCHOWN = @GNULIB_LCHOWN@
-GNULIB_LDEXPF = @GNULIB_LDEXPF@
-GNULIB_LDEXPL = @GNULIB_LDEXPL@
 GNULIB_LINK = @GNULIB_LINK@
 GNULIB_LINKAT = @GNULIB_LINKAT@
 GNULIB_LINK_DEPS = @GNULIB_LINK_DEPS@
 GNULIB_LISTEN = @GNULIB_LISTEN@
-GNULIB_LOG = @GNULIB_LOG@
-GNULIB_LOG10 = @GNULIB_LOG10@
-GNULIB_LOG10F = @GNULIB_LOG10F@
-GNULIB_LOG10L = @GNULIB_LOG10L@
-GNULIB_LOG1P = @GNULIB_LOG1P@
-GNULIB_LOG1PF = @GNULIB_LOG1PF@
-GNULIB_LOG1PL = @GNULIB_LOG1PL@
-GNULIB_LOG2 = @GNULIB_LOG2@
-GNULIB_LOG2F = @GNULIB_LOG2F@
-GNULIB_LOG2L = @GNULIB_LOG2L@
-GNULIB_LOGB = @GNULIB_LOGB@
-GNULIB_LOGBF = @GNULIB_LOGBF@
-GNULIB_LOGBL = @GNULIB_LOGBL@
-GNULIB_LOGF = @GNULIB_LOGF@
-GNULIB_LOGL = @GNULIB_LOGL@
 GNULIB_LSEEK = @GNULIB_LSEEK@
 GNULIB_LSTAT = @GNULIB_LSTAT@
 GNULIB_MALLOC_POSIX = @GNULIB_MALLOC_POSIX@
@@ -3745,9 +3649,6 @@ GNULIB_MKOSTEMPS = @GNULIB_MKOSTEMPS@
 GNULIB_MKSTEMP = @GNULIB_MKSTEMP@
 GNULIB_MKSTEMPS = @GNULIB_MKSTEMPS@
 GNULIB_MKTIME = @GNULIB_MKTIME@
-GNULIB_MODF = @GNULIB_MODF@
-GNULIB_MODFF = @GNULIB_MODFF@
-GNULIB_MODFL = @GNULIB_MODFL@
 GNULIB_NANOSLEEP = @GNULIB_NANOSLEEP@
 GNULIB_NONBLOCKING = @GNULIB_NONBLOCKING@
 GNULIB_OBSTACK_PRINTF = @GNULIB_OBSTACK_PRINTF@
@@ -3761,7 +3662,6 @@ GNULIB_PIPE = @GNULIB_PIPE@
 GNULIB_PIPE2 = @GNULIB_PIPE2@
 GNULIB_POPEN = @GNULIB_POPEN@
 GNULIB_POSIX_OPENPT = @GNULIB_POSIX_OPENPT@
-GNULIB_POWF = @GNULIB_POWF@
 GNULIB_PREAD = @GNULIB_PREAD@
 GNULIB_PRINTF = @GNULIB_PRINTF@
 GNULIB_PRINTF_POSIX = @GNULIB_PRINTF_POSIX@
@@ -3787,20 +3687,11 @@ GNULIB_REALLOC_POSIX = @GNULIB_REALLOC_POSIX@
 GNULIB_REALPATH = @GNULIB_REALPATH@
 GNULIB_RECV = @GNULIB_RECV@
 GNULIB_RECVFROM = @GNULIB_RECVFROM@
-GNULIB_REMAINDER = @GNULIB_REMAINDER@
-GNULIB_REMAINDERF = @GNULIB_REMAINDERF@
-GNULIB_REMAINDERL = @GNULIB_REMAINDERL@
 GNULIB_REMOVE = @GNULIB_REMOVE@
 GNULIB_RENAME = @GNULIB_RENAME@
 GNULIB_RENAMEAT = @GNULIB_RENAMEAT@
 GNULIB_REWINDDIR = @GNULIB_REWINDDIR@
-GNULIB_RINT = @GNULIB_RINT@
-GNULIB_RINTF = @GNULIB_RINTF@
-GNULIB_RINTL = @GNULIB_RINTL@
 GNULIB_RMDIR = @GNULIB_RMDIR@
-GNULIB_ROUND = @GNULIB_ROUND@
-GNULIB_ROUNDF = @GNULIB_ROUNDF@
-GNULIB_ROUNDL = @GNULIB_ROUNDL@
 GNULIB_RPMATCH = @GNULIB_RPMATCH@
 GNULIB_SCANDIR = @GNULIB_SCANDIR@
 GNULIB_SCANF = @GNULIB_SCANF@
@@ -3814,17 +3705,11 @@ GNULIB_SETSOCKOPT = @GNULIB_SETSOCKOPT@
 GNULIB_SHUTDOWN = @GNULIB_SHUTDOWN@
 GNULIB_SIGACTION = @GNULIB_SIGACTION@
 GNULIB_SIGNAL_H_SIGPIPE = @GNULIB_SIGNAL_H_SIGPIPE@
-GNULIB_SIGNBIT = @GNULIB_SIGNBIT@
 GNULIB_SIGPROCMASK = @GNULIB_SIGPROCMASK@
-GNULIB_SINF = @GNULIB_SINF@
-GNULIB_SINHF = @GNULIB_SINHF@
-GNULIB_SINL = @GNULIB_SINL@
 GNULIB_SLEEP = @GNULIB_SLEEP@
 GNULIB_SNPRINTF = @GNULIB_SNPRINTF@
 GNULIB_SOCKET = @GNULIB_SOCKET@
 GNULIB_SPRINTF_POSIX = @GNULIB_SPRINTF_POSIX@
-GNULIB_SQRTF = @GNULIB_SQRTF@
-GNULIB_SQRTL = @GNULIB_SQRTL@
 GNULIB_STAT = @GNULIB_STAT@
 GNULIB_STDIO_H_NONBLOCKING = @GNULIB_STDIO_H_NONBLOCKING@
 GNULIB_STDIO_H_SIGPIPE = @GNULIB_STDIO_H_SIGPIPE@
@@ -3851,18 +3736,12 @@ GNULIB_STRVERSCMP = @GNULIB_STRVERSCMP@
 GNULIB_SYMLINK = @GNULIB_SYMLINK@
 GNULIB_SYMLINKAT = @GNULIB_SYMLINKAT@
 GNULIB_SYSTEM_POSIX = @GNULIB_SYSTEM_POSIX@
-GNULIB_TANF = @GNULIB_TANF@
-GNULIB_TANHF = @GNULIB_TANHF@
-GNULIB_TANL = @GNULIB_TANL@
 GNULIB_TIMEGM = @GNULIB_TIMEGM@
 GNULIB_TIMES = @GNULIB_TIMES@
 GNULIB_TIME_R = @GNULIB_TIME_R@
 GNULIB_TIME_RZ = @GNULIB_TIME_RZ@
 GNULIB_TMPFILE = @GNULIB_TMPFILE@
 GNULIB_TOWCTRANS = @GNULIB_TOWCTRANS@
-GNULIB_TRUNC = @GNULIB_TRUNC@
-GNULIB_TRUNCF = @GNULIB_TRUNCF@
-GNULIB_TRUNCL = @GNULIB_TRUNCL@
 GNULIB_TTYNAME_R = @GNULIB_TTYNAME_R@
 GNULIB_UNAME = @GNULIB_UNAME@
 GNULIB_UNISTD_H_NONBLOCKING = @GNULIB_UNISTD_H_NONBLOCKING@
@@ -3927,50 +3806,18 @@ GPERF = @GPERF@
 GREP = @GREP@
 GXX_VERSION = @GXX_VERSION@
 HAVE_ACCEPT4 = @HAVE_ACCEPT4@
-HAVE_ACOSF = @HAVE_ACOSF@
-HAVE_ACOSL = @HAVE_ACOSL@
 HAVE_ALPHASORT = @HAVE_ALPHASORT@
-HAVE_ASINF = @HAVE_ASINF@
-HAVE_ASINL = @HAVE_ASINL@
-HAVE_ATAN2F = @HAVE_ATAN2F@
-HAVE_ATANF = @HAVE_ATANF@
-HAVE_ATANL = @HAVE_ATANL@
 HAVE_ATOLL = @HAVE_ATOLL@
 HAVE_BTOWC = @HAVE_BTOWC@
 HAVE_CANONICALIZE_FILE_NAME = @HAVE_CANONICALIZE_FILE_NAME@
-HAVE_CBRT = @HAVE_CBRT@
-HAVE_CBRTF = @HAVE_CBRTF@
-HAVE_CBRTL = @HAVE_CBRTL@
 HAVE_CHOWN = @HAVE_CHOWN@
 HAVE_CLOSEDIR = @HAVE_CLOSEDIR@
-HAVE_COPYSIGN = @HAVE_COPYSIGN@
-HAVE_COPYSIGNL = @HAVE_COPYSIGNL@
-HAVE_COSF = @HAVE_COSF@
-HAVE_COSHF = @HAVE_COSHF@
-HAVE_COSL = @HAVE_COSL@
-HAVE_DECL_ACOSL = @HAVE_DECL_ACOSL@
-HAVE_DECL_ASINL = @HAVE_DECL_ASINL@
-HAVE_DECL_ATANL = @HAVE_DECL_ATANL@
-HAVE_DECL_CBRTF = @HAVE_DECL_CBRTF@
-HAVE_DECL_CBRTL = @HAVE_DECL_CBRTL@
-HAVE_DECL_CEILF = @HAVE_DECL_CEILF@
-HAVE_DECL_CEILL = @HAVE_DECL_CEILL@
-HAVE_DECL_COPYSIGNF = @HAVE_DECL_COPYSIGNF@
-HAVE_DECL_COSL = @HAVE_DECL_COSL@
 HAVE_DECL_DIRFD = @HAVE_DECL_DIRFD@
 HAVE_DECL_ENVIRON = @HAVE_DECL_ENVIRON@
-HAVE_DECL_EXP2 = @HAVE_DECL_EXP2@
-HAVE_DECL_EXP2F = @HAVE_DECL_EXP2F@
-HAVE_DECL_EXP2L = @HAVE_DECL_EXP2L@
-HAVE_DECL_EXPL = @HAVE_DECL_EXPL@
-HAVE_DECL_EXPM1L = @HAVE_DECL_EXPM1L@
 HAVE_DECL_FCHDIR = @HAVE_DECL_FCHDIR@
 HAVE_DECL_FDATASYNC = @HAVE_DECL_FDATASYNC@
 HAVE_DECL_FDOPENDIR = @HAVE_DECL_FDOPENDIR@
-HAVE_DECL_FLOORF = @HAVE_DECL_FLOORF@
-HAVE_DECL_FLOORL = @HAVE_DECL_FLOORL@
 HAVE_DECL_FPURGE = @HAVE_DECL_FPURGE@
-HAVE_DECL_FREXPL = @HAVE_DECL_FREXPL@
 HAVE_DECL_FSEEKO = @HAVE_DECL_FSEEKO@
 HAVE_DECL_FTELLO = @HAVE_DECL_FTELLO@
 HAVE_DECL_GETDELIM = @HAVE_DECL_GETDELIM@
@@ -3980,28 +3827,13 @@ HAVE_DECL_GETLOADAVG = @HAVE_DECL_GETLOADAVG@
 HAVE_DECL_GETLOGIN_R = @HAVE_DECL_GETLOGIN_R@
 HAVE_DECL_GETPAGESIZE = @HAVE_DECL_GETPAGESIZE@
 HAVE_DECL_GETUSERSHELL = @HAVE_DECL_GETUSERSHELL@
-HAVE_DECL_LDEXPL = @HAVE_DECL_LDEXPL@
 HAVE_DECL_LOCALTIME_R = @HAVE_DECL_LOCALTIME_R@
-HAVE_DECL_LOG10L = @HAVE_DECL_LOG10L@
-HAVE_DECL_LOG2 = @HAVE_DECL_LOG2@
-HAVE_DECL_LOG2F = @HAVE_DECL_LOG2F@
-HAVE_DECL_LOG2L = @HAVE_DECL_LOG2L@
-HAVE_DECL_LOGB = @HAVE_DECL_LOGB@
-HAVE_DECL_LOGL = @HAVE_DECL_LOGL@
 HAVE_DECL_MEMMEM = @HAVE_DECL_MEMMEM@
 HAVE_DECL_MEMRCHR = @HAVE_DECL_MEMRCHR@
 HAVE_DECL_OBSTACK_PRINTF = @HAVE_DECL_OBSTACK_PRINTF@
-HAVE_DECL_REMAINDER = @HAVE_DECL_REMAINDER@
-HAVE_DECL_REMAINDERL = @HAVE_DECL_REMAINDERL@
-HAVE_DECL_RINTF = @HAVE_DECL_RINTF@
-HAVE_DECL_ROUND = @HAVE_DECL_ROUND@
-HAVE_DECL_ROUNDF = @HAVE_DECL_ROUNDF@
-HAVE_DECL_ROUNDL = @HAVE_DECL_ROUNDL@
 HAVE_DECL_SETENV = @HAVE_DECL_SETENV@
 HAVE_DECL_SETHOSTNAME = @HAVE_DECL_SETHOSTNAME@
-HAVE_DECL_SINL = @HAVE_DECL_SINL@
 HAVE_DECL_SNPRINTF = @HAVE_DECL_SNPRINTF@
-HAVE_DECL_SQRTL = @HAVE_DECL_SQRTL@
 HAVE_DECL_STRDUP = @HAVE_DECL_STRDUP@
 HAVE_DECL_STRERROR_R = @HAVE_DECL_STRERROR_R@
 HAVE_DECL_STRNCASECMP = @HAVE_DECL_STRNCASECMP@
@@ -4009,10 +3841,6 @@ HAVE_DECL_STRNDUP = @HAVE_DECL_STRNDUP@
 HAVE_DECL_STRNLEN = @HAVE_DECL_STRNLEN@
 HAVE_DECL_STRSIGNAL = @HAVE_DECL_STRSIGNAL@
 HAVE_DECL_STRTOK_R = @HAVE_DECL_STRTOK_R@
-HAVE_DECL_TANL = @HAVE_DECL_TANL@
-HAVE_DECL_TRUNC = @HAVE_DECL_TRUNC@
-HAVE_DECL_TRUNCF = @HAVE_DECL_TRUNCF@
-HAVE_DECL_TRUNCL = @HAVE_DECL_TRUNCL@
 HAVE_DECL_TTYNAME_R = @HAVE_DECL_TTYNAME_R@
 HAVE_DECL_UNSETENV = @HAVE_DECL_UNSETENV@
 HAVE_DECL_VSNPRINTF = @HAVE_DECL_VSNPRINTF@
@@ -4023,12 +3851,6 @@ HAVE_DPRINTF = @HAVE_DPRINTF@
 HAVE_DUP2 = @HAVE_DUP2@
 HAVE_DUP3 = @HAVE_DUP3@
 HAVE_EUIDACCESS = @HAVE_EUIDACCESS@
-HAVE_EXPF = @HAVE_EXPF@
-HAVE_EXPL = @HAVE_EXPL@
-HAVE_EXPM1 = @HAVE_EXPM1@
-HAVE_EXPM1F = @HAVE_EXPM1F@
-HAVE_FABSF = @HAVE_FABSF@
-HAVE_FABSL = @HAVE_FABSL@
 HAVE_FACCESSAT = @HAVE_FACCESSAT@
 HAVE_FCHDIR = @HAVE_FCHDIR@
 HAVE_FCHMODAT = @HAVE_FCHMODAT@
@@ -4040,12 +3862,6 @@ HAVE_FEATURES_H = @HAVE_FEATURES_H@
 HAVE_FFS = @HAVE_FFS@
 HAVE_FFSL = @HAVE_FFSL@
 HAVE_FFSLL = @HAVE_FFSLL@
-HAVE_FMA = @HAVE_FMA@
-HAVE_FMAF = @HAVE_FMAF@
-HAVE_FMAL = @HAVE_FMAL@
-HAVE_FMODF = @HAVE_FMODF@
-HAVE_FMODL = @HAVE_FMODL@
-HAVE_FREXPF = @HAVE_FREXPF@
 HAVE_FSEEKO = @HAVE_FSEEKO@
 HAVE_FSTATAT = @HAVE_FSTATAT@
 HAVE_FSYNC = @HAVE_FSYNC@
@@ -4063,31 +3879,13 @@ HAVE_GETSUBOPT = @HAVE_GETSUBOPT@
 HAVE_GETTIMEOFDAY = @HAVE_GETTIMEOFDAY@
 HAVE_GRANTPT = @HAVE_GRANTPT@
 HAVE_GROUP_MEMBER = @HAVE_GROUP_MEMBER@
-HAVE_HYPOTF = @HAVE_HYPOTF@
-HAVE_HYPOTL = @HAVE_HYPOTL@
-HAVE_ILOGB = @HAVE_ILOGB@
-HAVE_ILOGBF = @HAVE_ILOGBF@
-HAVE_ILOGBL = @HAVE_ILOGBL@
 HAVE_INTTYPES_H = @HAVE_INTTYPES_H@
-HAVE_ISNAND = @HAVE_ISNAND@
-HAVE_ISNANF = @HAVE_ISNANF@
-HAVE_ISNANL = @HAVE_ISNANL@
 HAVE_ISWBLANK = @HAVE_ISWBLANK@
 HAVE_ISWCNTRL = @HAVE_ISWCNTRL@
 HAVE_LCHMOD = @HAVE_LCHMOD@
 HAVE_LCHOWN = @HAVE_LCHOWN@
-HAVE_LDEXPF = @HAVE_LDEXPF@
 HAVE_LINK = @HAVE_LINK@
 HAVE_LINKAT = @HAVE_LINKAT@
-HAVE_LOG10F = @HAVE_LOG10F@
-HAVE_LOG10L = @HAVE_LOG10L@
-HAVE_LOG1P = @HAVE_LOG1P@
-HAVE_LOG1PF = @HAVE_LOG1PF@
-HAVE_LOG1PL = @HAVE_LOG1PL@
-HAVE_LOGBF = @HAVE_LOGBF@
-HAVE_LOGBL = @HAVE_LOGBL@
-HAVE_LOGF = @HAVE_LOGF@
-HAVE_LOGL = @HAVE_LOGL@
 HAVE_LONG_LONG_INT = @HAVE_LONG_LONG_INT@
 HAVE_LSTAT = @HAVE_LSTAT@
 HAVE_MAX_ALIGN_T = @HAVE_MAX_ALIGN_T@
@@ -4109,8 +3907,6 @@ HAVE_MKOSTEMP = @HAVE_MKOSTEMP@
 HAVE_MKOSTEMPS = @HAVE_MKOSTEMPS@
 HAVE_MKSTEMP = @HAVE_MKSTEMP@
 HAVE_MKSTEMPS = @HAVE_MKSTEMPS@
-HAVE_MODFF = @HAVE_MODFF@
-HAVE_MODFL = @HAVE_MODFL@
 HAVE_MSVC_INVALID_PARAMETER_HANDLER = @HAVE_MSVC_INVALID_PARAMETER_HANDLER@
 HAVE_NANOSLEEP = @HAVE_NANOSLEEP@
 HAVE_OPENAT = @HAVE_OPENAT@
@@ -4123,7 +3919,6 @@ HAVE_PIPE2 = @HAVE_PIPE2@
 HAVE_POPEN = @HAVE_POPEN@
 HAVE_POSIX_OPENPT = @HAVE_POSIX_OPENPT@
 HAVE_POSIX_SIGNALBLOCKING = @HAVE_POSIX_SIGNALBLOCKING@
-HAVE_POWF = @HAVE_POWF@
 HAVE_PREAD = @HAVE_PREAD@
 HAVE_PSELECT = @HAVE_PSELECT@
 HAVE_PTHREAD_SIGMASK = @HAVE_PTHREAD_SIGMASK@
@@ -4139,14 +3934,9 @@ HAVE_READDIR = @HAVE_READDIR@
 HAVE_READLINK = @HAVE_READLINK@
 HAVE_READLINKAT = @HAVE_READLINKAT@
 HAVE_REALPATH = @HAVE_REALPATH@
-HAVE_REMAINDER = @HAVE_REMAINDER@
-HAVE_REMAINDERF = @HAVE_REMAINDERF@
 HAVE_RENAMEAT = @HAVE_RENAMEAT@
 HAVE_REWINDDIR = @HAVE_REWINDDIR@
-HAVE_RINT = @HAVE_RINT@
-HAVE_RINTL = @HAVE_RINTL@
 HAVE_RPMATCH = @HAVE_RPMATCH@
-HAVE_SAME_LONG_DOUBLE_AS_DOUBLE = @HAVE_SAME_LONG_DOUBLE_AS_DOUBLE@
 HAVE_SA_FAMILY_T = @HAVE_SA_FAMILY_T@
 HAVE_SCANDIR = @HAVE_SCANDIR@
 HAVE_SECURE_GETENV = @HAVE_SECURE_GETENV@
@@ -4159,12 +3949,7 @@ HAVE_SIGNED_SIG_ATOMIC_T = @HAVE_SIGNED_SIG_ATOMIC_T@
 HAVE_SIGNED_WCHAR_T = @HAVE_SIGNED_WCHAR_T@
 HAVE_SIGNED_WINT_T = @HAVE_SIGNED_WINT_T@
 HAVE_SIGSET_T = @HAVE_SIGSET_T@
-HAVE_SINF = @HAVE_SINF@
-HAVE_SINHF = @HAVE_SINHF@
-HAVE_SINL = @HAVE_SINL@
 HAVE_SLEEP = @HAVE_SLEEP@
-HAVE_SQRTF = @HAVE_SQRTF@
-HAVE_SQRTL = @HAVE_SQRTL@
 HAVE_STDINT_H = @HAVE_STDINT_H@
 HAVE_STPCPY = @HAVE_STPCPY@
 HAVE_STPNCPY = @HAVE_STPNCPY@
@@ -4201,9 +3986,6 @@ HAVE_SYS_TIME_H = @HAVE_SYS_TIME_H@
 HAVE_SYS_TYPES_H = @HAVE_SYS_TYPES_H@
 HAVE_SYS_UIO_H = @HAVE_SYS_UIO_H@
 HAVE_SYS_UTSNAME_H = @HAVE_SYS_UTSNAME_H@
-HAVE_TANF = @HAVE_TANF@
-HAVE_TANHF = @HAVE_TANHF@
-HAVE_TANL = @HAVE_TANL@
 HAVE_TIMEGM = @HAVE_TIMEGM@
 HAVE_TIMES = @HAVE_TIMES@
 HAVE_TIMEZONE_T = @HAVE_TIMEZONE_T@
@@ -4270,8 +4052,6 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-ISNAND_LIBM = @ISNAND_LIBM@
-ISNANF_LIBM = @ISNANF_LIBM@
 JAR = @JAR@
 JAVA = @JAVA@
 JAVAC = @JAVAC@
@@ -4319,10 +4099,6 @@ LOCALE_FR = @LOCALE_FR@
 LOCALE_FR_UTF8 = @LOCALE_FR_UTF8@
 LOCALE_JA = @LOCALE_JA@
 LOCALE_ZH_CN = @LOCALE_ZH_CN@
-LOG2F_LIBM = @LOG2F_LIBM@
-LOG2_LIBM = @LOG2_LIBM@
-LOGF_LIBM = @LOGF_LIBM@
-LOG_LIBM = @LOG_LIBM@
 LRELEASE = @LRELEASE@
 LTALLOCA = @LTALLOCA@
 LTLIBINTL = @LTLIBINTL@
@@ -4352,7 +4128,6 @@ NEXT_AS_FIRST_DIRECTIVE_ERRNO_H = @NEXT_AS_FIRST_DIRECTIVE_ERRNO_H@
 NEXT_AS_FIRST_DIRECTIVE_FCNTL_H = @NEXT_AS_FIRST_DIRECTIVE_FCNTL_H@
 NEXT_AS_FIRST_DIRECTIVE_FLOAT_H = @NEXT_AS_FIRST_DIRECTIVE_FLOAT_H@
 NEXT_AS_FIRST_DIRECTIVE_GETOPT_H = @NEXT_AS_FIRST_DIRECTIVE_GETOPT_H@
-NEXT_AS_FIRST_DIRECTIVE_MATH_H = @NEXT_AS_FIRST_DIRECTIVE_MATH_H@
 NEXT_AS_FIRST_DIRECTIVE_SIGNAL_H = @NEXT_AS_FIRST_DIRECTIVE_SIGNAL_H@
 NEXT_AS_FIRST_DIRECTIVE_STDDEF_H = @NEXT_AS_FIRST_DIRECTIVE_STDDEF_H@
 NEXT_AS_FIRST_DIRECTIVE_STDINT_H = @NEXT_AS_FIRST_DIRECTIVE_STDINT_H@
@@ -4379,7 +4154,6 @@ NEXT_ERRNO_H = @NEXT_ERRNO_H@
 NEXT_FCNTL_H = @NEXT_FCNTL_H@
 NEXT_FLOAT_H = @NEXT_FLOAT_H@
 NEXT_GETOPT_H = @NEXT_GETOPT_H@
-NEXT_MATH_H = @NEXT_MATH_H@
 NEXT_SIGNAL_H = @NEXT_SIGNAL_H@
 NEXT_STDDEF_H = @NEXT_STDDEF_H@
 NEXT_STDINT_H = @NEXT_STDINT_H@
@@ -4446,7 +4220,6 @@ PKG_CONFIG = @PKG_CONFIG@
 PORTAUDIO_CPPFLAGS = @PORTAUDIO_CPPFLAGS@
 PORTAUDIO_LDFLAGS = @PORTAUDIO_LDFLAGS@
 PORTAUDIO_LIBS = @PORTAUDIO_LIBS@
-POW_LIBM = @POW_LIBM@
 PRAGMA_COLUMNS = @PRAGMA_COLUMNS@
 PRAGMA_SYSTEM_HEADER = @PRAGMA_SYSTEM_HEADER@
 PTHREAD_CC = @PTHREAD_CC@
@@ -4472,11 +4245,6 @@ READLINE_LIBS = @READLINE_LIBS@
 REPLACE_BTOWC = @REPLACE_BTOWC@
 REPLACE_CALLOC = @REPLACE_CALLOC@
 REPLACE_CANONICALIZE_FILE_NAME = @REPLACE_CANONICALIZE_FILE_NAME@
-REPLACE_CBRTF = @REPLACE_CBRTF@
-REPLACE_CBRTL = @REPLACE_CBRTL@
-REPLACE_CEIL = @REPLACE_CEIL@
-REPLACE_CEILF = @REPLACE_CEILF@
-REPLACE_CEILL = @REPLACE_CEILL@
 REPLACE_CHOWN = @REPLACE_CHOWN@
 REPLACE_CLOSE = @REPLACE_CLOSE@
 REPLACE_CLOSEDIR = @REPLACE_CLOSEDIR@
@@ -4484,33 +4252,16 @@ REPLACE_DIRFD = @REPLACE_DIRFD@
 REPLACE_DPRINTF = @REPLACE_DPRINTF@
 REPLACE_DUP = @REPLACE_DUP@
 REPLACE_DUP2 = @REPLACE_DUP2@
-REPLACE_EXP2 = @REPLACE_EXP2@
-REPLACE_EXP2L = @REPLACE_EXP2L@
-REPLACE_EXPM1 = @REPLACE_EXPM1@
-REPLACE_EXPM1F = @REPLACE_EXPM1F@
-REPLACE_FABSL = @REPLACE_FABSL@
 REPLACE_FCHOWNAT = @REPLACE_FCHOWNAT@
 REPLACE_FCLOSE = @REPLACE_FCLOSE@
 REPLACE_FCNTL = @REPLACE_FCNTL@
 REPLACE_FDOPEN = @REPLACE_FDOPEN@
 REPLACE_FDOPENDIR = @REPLACE_FDOPENDIR@
 REPLACE_FFLUSH = @REPLACE_FFLUSH@
-REPLACE_FLOOR = @REPLACE_FLOOR@
-REPLACE_FLOORF = @REPLACE_FLOORF@
-REPLACE_FLOORL = @REPLACE_FLOORL@
-REPLACE_FMA = @REPLACE_FMA@
-REPLACE_FMAF = @REPLACE_FMAF@
-REPLACE_FMAL = @REPLACE_FMAL@
-REPLACE_FMOD = @REPLACE_FMOD@
-REPLACE_FMODF = @REPLACE_FMODF@
-REPLACE_FMODL = @REPLACE_FMODL@
 REPLACE_FOPEN = @REPLACE_FOPEN@
 REPLACE_FPRINTF = @REPLACE_FPRINTF@
 REPLACE_FPURGE = @REPLACE_FPURGE@
 REPLACE_FREOPEN = @REPLACE_FREOPEN@
-REPLACE_FREXP = @REPLACE_FREXP@
-REPLACE_FREXPF = @REPLACE_FREXPF@
-REPLACE_FREXPL = @REPLACE_FREXPL@
 REPLACE_FSEEK = @REPLACE_FSEEK@
 REPLACE_FSEEKO = @REPLACE_FSEEKO@
 REPLACE_FSTAT = @REPLACE_FSTAT@
@@ -4529,40 +4280,15 @@ REPLACE_GETLOGIN_R = @REPLACE_GETLOGIN_R@
 REPLACE_GETPAGESIZE = @REPLACE_GETPAGESIZE@
 REPLACE_GETTIMEOFDAY = @REPLACE_GETTIMEOFDAY@
 REPLACE_GMTIME = @REPLACE_GMTIME@
-REPLACE_HUGE_VAL = @REPLACE_HUGE_VAL@
-REPLACE_HYPOT = @REPLACE_HYPOT@
-REPLACE_HYPOTF = @REPLACE_HYPOTF@
-REPLACE_HYPOTL = @REPLACE_HYPOTL@
-REPLACE_ILOGB = @REPLACE_ILOGB@
-REPLACE_ILOGBF = @REPLACE_ILOGBF@
 REPLACE_ISATTY = @REPLACE_ISATTY@
-REPLACE_ISFINITE = @REPLACE_ISFINITE@
-REPLACE_ISINF = @REPLACE_ISINF@
-REPLACE_ISNAN = @REPLACE_ISNAN@
 REPLACE_ISWBLANK = @REPLACE_ISWBLANK@
 REPLACE_ISWCNTRL = @REPLACE_ISWCNTRL@
 REPLACE_ITOLD = @REPLACE_ITOLD@
 REPLACE_LCHOWN = @REPLACE_LCHOWN@
-REPLACE_LDEXPL = @REPLACE_LDEXPL@
 REPLACE_LINK = @REPLACE_LINK@
 REPLACE_LINKAT = @REPLACE_LINKAT@
 REPLACE_LOCALTIME = @REPLACE_LOCALTIME@
 REPLACE_LOCALTIME_R = @REPLACE_LOCALTIME_R@
-REPLACE_LOG = @REPLACE_LOG@
-REPLACE_LOG10 = @REPLACE_LOG10@
-REPLACE_LOG10F = @REPLACE_LOG10F@
-REPLACE_LOG10L = @REPLACE_LOG10L@
-REPLACE_LOG1P = @REPLACE_LOG1P@
-REPLACE_LOG1PF = @REPLACE_LOG1PF@
-REPLACE_LOG1PL = @REPLACE_LOG1PL@
-REPLACE_LOG2 = @REPLACE_LOG2@
-REPLACE_LOG2F = @REPLACE_LOG2F@
-REPLACE_LOG2L = @REPLACE_LOG2L@
-REPLACE_LOGB = @REPLACE_LOGB@
-REPLACE_LOGBF = @REPLACE_LOGBF@
-REPLACE_LOGBL = @REPLACE_LOGBL@
-REPLACE_LOGF = @REPLACE_LOGF@
-REPLACE_LOGL = @REPLACE_LOGL@
 REPLACE_LSEEK = @REPLACE_LSEEK@
 REPLACE_LSTAT = @REPLACE_LSTAT@
 REPLACE_MALLOC = @REPLACE_MALLOC@
@@ -4580,10 +4306,6 @@ REPLACE_MKFIFO = @REPLACE_MKFIFO@
 REPLACE_MKNOD = @REPLACE_MKNOD@
 REPLACE_MKSTEMP = @REPLACE_MKSTEMP@
 REPLACE_MKTIME = @REPLACE_MKTIME@
-REPLACE_MODF = @REPLACE_MODF@
-REPLACE_MODFF = @REPLACE_MODFF@
-REPLACE_MODFL = @REPLACE_MODFL@
-REPLACE_NAN = @REPLACE_NAN@
 REPLACE_NANOSLEEP = @REPLACE_NANOSLEEP@
 REPLACE_NULL = @REPLACE_NULL@
 REPLACE_OBSTACK_PRINTF = @REPLACE_OBSTACK_PRINTF@
@@ -4608,24 +4330,15 @@ REPLACE_READLINK = @REPLACE_READLINK@
 REPLACE_READLINKAT = @REPLACE_READLINKAT@
 REPLACE_REALLOC = @REPLACE_REALLOC@
 REPLACE_REALPATH = @REPLACE_REALPATH@
-REPLACE_REMAINDER = @REPLACE_REMAINDER@
-REPLACE_REMAINDERF = @REPLACE_REMAINDERF@
-REPLACE_REMAINDERL = @REPLACE_REMAINDERL@
 REPLACE_REMOVE = @REPLACE_REMOVE@
 REPLACE_RENAME = @REPLACE_RENAME@
 REPLACE_RENAMEAT = @REPLACE_RENAMEAT@
 REPLACE_RMDIR = @REPLACE_RMDIR@
-REPLACE_ROUND = @REPLACE_ROUND@
-REPLACE_ROUNDF = @REPLACE_ROUNDF@
-REPLACE_ROUNDL = @REPLACE_ROUNDL@
 REPLACE_SELECT = @REPLACE_SELECT@
 REPLACE_SETENV = @REPLACE_SETENV@
-REPLACE_SIGNBIT = @REPLACE_SIGNBIT@
-REPLACE_SIGNBIT_USING_GCC = @REPLACE_SIGNBIT_USING_GCC@
 REPLACE_SLEEP = @REPLACE_SLEEP@
 REPLACE_SNPRINTF = @REPLACE_SNPRINTF@
 REPLACE_SPRINTF = @REPLACE_SPRINTF@
-REPLACE_SQRTL = @REPLACE_SQRTL@
 REPLACE_STAT = @REPLACE_STAT@
 REPLACE_STDIO_READ_FUNCS = @REPLACE_STDIO_READ_FUNCS@
 REPLACE_STDIO_WRITE_FUNCS = @REPLACE_STDIO_WRITE_FUNCS@
@@ -4648,9 +4361,6 @@ REPLACE_SYMLINKAT = @REPLACE_SYMLINKAT@
 REPLACE_TIMEGM = @REPLACE_TIMEGM@
 REPLACE_TMPFILE = @REPLACE_TMPFILE@
 REPLACE_TOWLOWER = @REPLACE_TOWLOWER@
-REPLACE_TRUNC = @REPLACE_TRUNC@
-REPLACE_TRUNCF = @REPLACE_TRUNCF@
-REPLACE_TRUNCL = @REPLACE_TRUNCL@
 REPLACE_TTYNAME_R = @REPLACE_TTYNAME_R@
 REPLACE_UNLINK = @REPLACE_UNLINK@
 REPLACE_UNLINKAT = @REPLACE_UNLINKAT@
@@ -4671,8 +4381,6 @@ REPLACE_WCTOB = @REPLACE_WCTOB@
 REPLACE_WCTOMB = @REPLACE_WCTOMB@
 REPLACE_WCWIDTH = @REPLACE_WCWIDTH@
 REPLACE_WRITE = @REPLACE_WRITE@
-ROUNDF_LIBM = @ROUNDF_LIBM@
-ROUND_LIBM = @ROUND_LIBM@
 RSVG_CONVERT = @RSVG_CONVERT@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -4701,8 +4409,6 @@ TERM_LIBS = @TERM_LIBS@
 TEXI2DVI = @TEXI2DVI@
 TEXI2PDF = @TEXI2PDF@
 TIME_H_DEFINES_STRUCT_TIMESPEC = @TIME_H_DEFINES_STRUCT_TIMESPEC@
-TRUNCF_LIBM = @TRUNCF_LIBM@
-TRUNC_LIBM = @TRUNC_LIBM@
 UIC = @UIC@
 UMFPACK_CPPFLAGS = @UMFPACK_CPPFLAGS@
 UMFPACK_LDFLAGS = @UMFPACK_LDFLAGS@
@@ -4857,7 +4563,7 @@ image_DATA = $(SCRIPTS_IMAGES) $(icon_IMAGE_FILES) \
 	etc/icons/octave-logo.ico
 octdata_DATA = $(examples_data_SRC)
 octetc_DATA = $(am__append_28) $(am__append_54) CITATION NEWS \
-	$(am__append_66)
+	$(am__append_65)
 octlocale_DATA = $(am__append_29)
 ACLOCAL_AMFLAGS = -I m4
 DOC_TARGETS = $(am__append_52)
@@ -4914,10 +4620,13 @@ ALL_SUBST_VARS = \
   version
 
 DIRSTAMP_FILES = liboctave/cruft/ranlib/$(octave_dirstamp) \
-	liboctave/cruft/slatec-fn/$(octave_dirstamp) $(am__append_7) \
-	$(am__append_8) $(am__append_12) $(am__append_20) \
-	$(am__append_22) $(am__append_26) $(am__append_30) \
-	src/$(octave_dirstamp) scripts/audio/$(octave_dirstamp) \
+	liboctave/cruft/slatec-fn/$(octave_dirstamp) \
+	liboctave/$(octave_dirstamp) \
+	libinterp/corefcn/$(octave_dirstamp) \
+	libinterp/$(octave_dirstamp) $(am__append_7) $(am__append_8) \
+	$(am__append_12) $(am__append_20) $(am__append_22) \
+	$(am__append_26) $(am__append_30) src/$(octave_dirstamp) \
+	scripts/audio/$(octave_dirstamp) \
 	scripts/deprecated/$(octave_dirstamp) \
 	scripts/elfun/$(octave_dirstamp) \
 	scripts/general/$(octave_dirstamp) \
@@ -4949,8 +4658,8 @@ DIRSTAMP_FILES = liboctave/cruft/ranlib/$(octave_dirstamp) \
 	scripts/strings/$(octave_dirstamp) \
 	scripts/testfun/$(octave_dirstamp) \
 	scripts/time/$(octave_dirstamp) \
-	scripts/@ftp/$(octave_dirstamp) \
-	doc/doxyhtml/$(octave_dirstamp) $(am__append_57) \
+	scripts/@ftp/$(octave_dirstamp) scripts/$(octave_dirstamp) \
+	doc/doxyhtml/$(octave_dirstamp) $(am__append_56) \
 	etc/icons/$(octave_dirstamp) test/$(octave_dirstamp)
 octave_dirstamp = $(am__leading_dot)octave-dirstamp
 CLEANFILES = $(liboctave_CLEANFILES) $(libinterp_CLEANFILES) \
@@ -4987,7 +4696,7 @@ BUILT_SOURCES = libgnu/libgnu.la $(BUILT_INCS) \
 	libinterp/parse-tree/oct-parse.h libinterp/version.h \
 	$(am__append_9) $(am__append_14) $(GENERATED_TEST_FILES) \
 	oct-conf-post.h octave-config.h run-octave $(DIRSTAMP_FILES) \
-	$(am__append_64) $(am__append_65)
+	$(am__append_63) $(am__append_64)
 TEST_FILES = test/fntests.m test/args.tst test/bug-31371.tst \
 	test/bug-38565.tst test/bug-38576.tst test/colormaps.tst \
 	test/command.tst test/complex.tst test/diag-perm.tst \
@@ -5004,12 +4713,12 @@ TEST_FILES = test/fntests.m test/args.tst test/bug-31371.tst \
 	$(classdef_TEST_FILES) $(classes_TEST_FILES) \
 	$(ctor_vs_method_TEST_FILES) \
 	$(fcn_handle_derived_resolution_TEST_FILES) $(nest_TEST_FILES)
-DOC_IMAGES_SRC = $(am__append_59)
+DOC_IMAGES_SRC = $(am__append_58)
 BUILT_DOC_IMAGES = $(am__append_40)
-BUILT_DOC_IMAGES_EPS = $(am__append_60)
-BUILT_DOC_IMAGES_PDF = $(am__append_61)
-BUILT_DOC_IMAGES_PNG = $(am__append_62)
-BUILT_DOC_IMAGES_TXT = $(am__append_63)
+BUILT_DOC_IMAGES_EPS = $(am__append_59)
+BUILT_DOC_IMAGES_PDF = $(am__append_60)
+BUILT_DOC_IMAGES_PNG = $(am__append_61)
+BUILT_DOC_IMAGES_TXT = $(am__append_62)
 DOC_IMAGES = $(am__append_45)
 DOC_IMAGES_EPS = $(am__append_41)
 DOC_IMAGES_PDF = $(am__append_42)
@@ -5112,7 +4821,7 @@ OCTAVE_VERSION_LINKS = src/octave-cli-$(version)$(EXEEXT) \
 OCTAVE_CROSS_TOOLS = $(am__append_38)
 OCTAVE_INTERPRETER_TARGETS = $(OCT_FILES) $(DLDFCN_PKG_ADD_FILE) \
 	$(bin_PROGRAMS) $(OCTAVE_VERSION_LINKS) $(am__append_37) \
-	$(GEN_FCN_FILES)
+	$(GEN_FCN_FILES) $(PKG_ADD_FILES)
 octlib_LTLIBRARIES = liboctave/liboctave.la libinterp/liboctinterp.la \
 	$(am__append_3) $(am__append_5)
 noinst_LTLIBRARIES = liboctave/array/libarray.la \
@@ -5140,8 +4849,7 @@ nodist_octinclude_HEADERS = $(BUILT_INCS) \
 	libinterp/version.h config.h oct-conf-post.h octave-config.h
 DIST_SRC = libinterp/octave.cc libinterp/version.cc \
 	$(OCTAVE_VALUE_SRC) $(PARSE_TREE_SRC) $(COREFCN_SRC)
-ALL_LOCAL_TARGETS = $(OCTAVE_VERSION_LINKS) $(OCTAVE_CROSS_TOOLS) \
-	$(GEN_FCN_FILES) $(PKG_ADD_FILES) $(JAR_FILES) test/.gdbinit \
+ALL_LOCAL_TARGETS = $(OCTAVE_CROSS_TOOLS) $(JAR_FILES) test/.gdbinit \
 	$(OCTAVE_INTERPRETER_TARGETS) .gdbinit $(DOC_TARGETS)
 
 # Subdirectories in which to run make recursively.
@@ -6405,6 +6113,7 @@ liboctave_operators_liboperators_la_CPPFLAGS = $(liboctave_liboctave_la_CPPFLAGS
 liboctave_operators_liboperators_la_CFLAGS = $(liboctave_liboctave_la_CFLAGS)
 liboctave_operators_liboperators_la_CXXFLAGS = $(liboctave_liboctave_la_CXXFLAGS)
 SYSTEM_INC = \
+  liboctave/system/child-list.h \
   liboctave/system/dir-ops.h \
   liboctave/system/file-ops.h \
   liboctave/system/file-stat.h \
@@ -6418,6 +6127,7 @@ SYSTEM_INC = \
   liboctave/system/oct-uname.h
 
 SYSTEM_SRC = \
+  liboctave/system/child-list.cc \
   liboctave/system/dir-ops.cc \
   liboctave/system/file-ops.cc \
   liboctave/system/file-stat.cc \
@@ -6531,8 +6241,9 @@ NOINSTALL_WRAPPERS_INC = \
   liboctave/wrappers/dirent-wrappers.h \
   liboctave/wrappers/fcntl-wrappers.h \
   liboctave/wrappers/filepos-wrappers.h \
-  liboctave/wrappers/fpucw-wrapper.h \
+  liboctave/wrappers/fpucw-wrappers.h \
   liboctave/wrappers/gen-tempname-wrapper.h \
+  liboctave/wrappers/getopt-wrapper.h \
   liboctave/wrappers/glob-wrappers.h \
   liboctave/wrappers/hash-wrappers.h \
   liboctave/wrappers/mkostemp-wrapper.h \
@@ -6563,8 +6274,9 @@ WRAPPERS_SRC = \
   liboctave/wrappers/dirent-wrappers.c \
   liboctave/wrappers/fcntl-wrappers.c \
   liboctave/wrappers/filepos-wrappers.c \
-  liboctave/wrappers/fpucw-wrapper.c \
+  liboctave/wrappers/fpucw-wrappers.c \
   liboctave/wrappers/gen-tempname-wrapper.c \
+  liboctave/wrappers/getopt-wrapper.c \
   liboctave/wrappers/glob-wrappers.c \
   liboctave/wrappers/hash-wrappers.c \
   liboctave/wrappers/mkostemp-wrapper.c \
@@ -8635,6 +8347,7 @@ scripts_plot_appearance_private_DATA = $(scripts_plot_appearance_PRIVATE_FCN_FIL
 scripts_plot_draw_PRIVATE_FCN_FILES = \
   scripts/plot/draw/private/__add_datasource__.m \
   scripts/plot/draw/private/__bar__.m \
+  scripts/plot/draw/private/__calc_isovalue_from_data__.m \
   scripts/plot/draw/private/__contour__.m \
   scripts/plot/draw/private/__errplot__.m \
   scripts/plot/draw/private/__ezplot__.m \
@@ -8646,7 +8359,8 @@ scripts_plot_draw_PRIVATE_FCN_FILES = \
   scripts/plot/draw/private/__plt__.m \
   scripts/plot/draw/private/__quiver__.m \
   scripts/plot/draw/private/__scatter__.m \
-  scripts/plot/draw/private/__stem__.m
+  scripts/plot/draw/private/__stem__.m \
+  scripts/plot/draw/private/__unite_shared_vertices__.m
 
 scripts_plot_draw_FCN_FILES = \
   scripts/plot/draw/area.m \
@@ -9293,9 +9007,9 @@ TAGS_DEPENDENCIES = $(addprefix $(srcdir)/, $(FCN_FILES)) $(GEN_FCN_FILES)
 TAGS_FILES = $(addprefix $(srcdir)/, $(FCN_FILES)) $(GEN_FCN_FILES)
 doc_EXTRA_DIST = doc/doxyhtml/Doxyfile.in doc/doxyhtml/README \
 	$(am__append_53)
-doc_CLEANFILES = $(am__append_58)
-doc_DISTCLEANFILES = $(am__append_55)
-doc_MAINTAINERCLEANFILES = $(am__append_56)
+doc_CLEANFILES = $(am__append_57)
+doc_DISTCLEANFILES = 
+doc_MAINTAINERCLEANFILES = $(am__append_55)
 TEXINPUTS := $(PATH_SEPARATOR)$(abs_top_srcdir)/doc/interpreter$(PATH_SEPARATOR)$(PATH_SEPARATOR)$(abs_top_builddir)/doc/interpreter$(PATH_SEPARATOR)$(abs_top_builddir)/doc/.texmf-var//$(PATH_SEPARATOR)$(TEXINPUTS)$(PATH_SEPARATOR)
 TEXMFCNF := $(PATH_SEPARATOR)$(abs_top_srcdir)/doc$(PATH_SEPARATOR)$(abs_top_builddir)/doc$(PATH_SEPARATOR)$(TEXMFCNF)$(PATH_SEPARATOR)
 TEXMFVAR := $(abs_top_builddir)/doc/.texmf-var
@@ -14235,6 +13949,9 @@ liboctave/system/$(am__dirstamp):
 liboctave/system/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) liboctave/system/$(DEPDIR)
 	@: > liboctave/system/$(DEPDIR)/$(am__dirstamp)
+liboctave/system/liboctave_system_libsystem_la-child-list.lo:  \
+	liboctave/system/$(am__dirstamp) \
+	liboctave/system/$(DEPDIR)/$(am__dirstamp)
 liboctave/system/liboctave_system_libsystem_la-dir-ops.lo:  \
 	liboctave/system/$(am__dirstamp) \
 	liboctave/system/$(DEPDIR)/$(am__dirstamp)
@@ -14388,10 +14105,13 @@ liboctave/wrappers/liboctave_wrappers_libwrappers_la-fcntl-wrappers.lo:  \
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-filepos-wrappers.lo:  \
 	liboctave/wrappers/$(am__dirstamp) \
 	liboctave/wrappers/$(DEPDIR)/$(am__dirstamp)
-liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrapper.lo:  \
+liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrappers.lo:  \
 	liboctave/wrappers/$(am__dirstamp) \
 	liboctave/wrappers/$(DEPDIR)/$(am__dirstamp)
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-gen-tempname-wrapper.lo:  \
+	liboctave/wrappers/$(am__dirstamp) \
+	liboctave/wrappers/$(DEPDIR)/$(am__dirstamp)
+liboctave/wrappers/liboctave_wrappers_libwrappers_la-getopt-wrapper.lo:  \
 	liboctave/wrappers/$(am__dirstamp) \
 	liboctave/wrappers/$(DEPDIR)/$(am__dirstamp)
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-glob-wrappers.lo:  \
@@ -15682,6 +15402,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/operators/$(DEPDIR)/liboctave_operators_liboperators_la-vx-rv-cs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/operators/$(DEPDIR)/liboctave_operators_liboperators_la-vx-s-ccv.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/operators/$(DEPDIR)/liboctave_operators_liboperators_la-vx-s-crv.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@liboctave/system/$(DEPDIR)/liboctave_system_libsystem_la-child-list.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/system/$(DEPDIR)/liboctave_system_libsystem_la-dir-ops.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/system/$(DEPDIR)/liboctave_system_libsystem_la-file-ops.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/system/$(DEPDIR)/liboctave_system_libsystem_la-file-stat.Plo@am__quote@
@@ -15727,8 +15448,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-dirent-wrappers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-fcntl-wrappers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-filepos-wrappers.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-fpucw-wrapper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-fpucw-wrappers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-gen-tempname-wrapper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-getopt-wrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-glob-wrappers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-hash-wrappers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-mkostemp-wrapper.Plo@am__quote@
@@ -15896,12 +15618,12 @@ liboctave/wrappers/liboctave_wrappers_libwrappers_la-filepos-wrappers.lo: liboct
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-filepos-wrappers.lo `test -f 'liboctave/wrappers/filepos-wrappers.c' || echo '$(srcdir)/'`liboctave/wrappers/filepos-wrappers.c
 
-liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrapper.lo: liboctave/wrappers/fpucw-wrapper.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -MT liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrapper.lo -MD -MP -MF liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-fpucw-wrapper.Tpo -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrapper.lo `test -f 'liboctave/wrappers/fpucw-wrapper.c' || echo '$(srcdir)/'`liboctave/wrappers/fpucw-wrapper.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-fpucw-wrapper.Tpo liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-fpucw-wrapper.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='liboctave/wrappers/fpucw-wrapper.c' object='liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrapper.lo' libtool=yes @AMDEPBACKSLASH@
+liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrappers.lo: liboctave/wrappers/fpucw-wrappers.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -MT liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrappers.lo -MD -MP -MF liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-fpucw-wrappers.Tpo -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrappers.lo `test -f 'liboctave/wrappers/fpucw-wrappers.c' || echo '$(srcdir)/'`liboctave/wrappers/fpucw-wrappers.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-fpucw-wrappers.Tpo liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-fpucw-wrappers.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='liboctave/wrappers/fpucw-wrappers.c' object='liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrappers.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrapper.lo `test -f 'liboctave/wrappers/fpucw-wrapper.c' || echo '$(srcdir)/'`liboctave/wrappers/fpucw-wrapper.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-fpucw-wrappers.lo `test -f 'liboctave/wrappers/fpucw-wrappers.c' || echo '$(srcdir)/'`liboctave/wrappers/fpucw-wrappers.c
 
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-gen-tempname-wrapper.lo: liboctave/wrappers/gen-tempname-wrapper.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -MT liboctave/wrappers/liboctave_wrappers_libwrappers_la-gen-tempname-wrapper.lo -MD -MP -MF liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-gen-tempname-wrapper.Tpo -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-gen-tempname-wrapper.lo `test -f 'liboctave/wrappers/gen-tempname-wrapper.c' || echo '$(srcdir)/'`liboctave/wrappers/gen-tempname-wrapper.c
@@ -15909,6 +15631,13 @@ liboctave/wrappers/liboctave_wrappers_libwrappers_la-gen-tempname-wrapper.lo: li
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='liboctave/wrappers/gen-tempname-wrapper.c' object='liboctave/wrappers/liboctave_wrappers_libwrappers_la-gen-tempname-wrapper.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-gen-tempname-wrapper.lo `test -f 'liboctave/wrappers/gen-tempname-wrapper.c' || echo '$(srcdir)/'`liboctave/wrappers/gen-tempname-wrapper.c
+
+liboctave/wrappers/liboctave_wrappers_libwrappers_la-getopt-wrapper.lo: liboctave/wrappers/getopt-wrapper.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -MT liboctave/wrappers/liboctave_wrappers_libwrappers_la-getopt-wrapper.lo -MD -MP -MF liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-getopt-wrapper.Tpo -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-getopt-wrapper.lo `test -f 'liboctave/wrappers/getopt-wrapper.c' || echo '$(srcdir)/'`liboctave/wrappers/getopt-wrapper.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-getopt-wrapper.Tpo liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-getopt-wrapper.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='liboctave/wrappers/getopt-wrapper.c' object='liboctave/wrappers/liboctave_wrappers_libwrappers_la-getopt-wrapper.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-getopt-wrapper.lo `test -f 'liboctave/wrappers/getopt-wrapper.c' || echo '$(srcdir)/'`liboctave/wrappers/getopt-wrapper.c
 
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-glob-wrappers.lo: liboctave/wrappers/glob-wrappers.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -MT liboctave/wrappers/liboctave_wrappers_libwrappers_la-glob-wrappers.lo -MD -MP -MF liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-glob-wrappers.Tpo -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-glob-wrappers.lo `test -f 'liboctave/wrappers/glob-wrappers.c' || echo '$(srcdir)/'`liboctave/wrappers/glob-wrappers.c
@@ -23032,6 +22761,13 @@ liboctave/operators/liboctave_operators_liboperators_la-smx-sbm-bm.lo: liboctave
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_operators_liboperators_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_operators_liboperators_la_CXXFLAGS) $(CXXFLAGS) -c -o liboctave/operators/liboctave_operators_liboperators_la-smx-sbm-bm.lo `test -f 'liboctave/operators/smx-sbm-bm.cc' || echo '$(srcdir)/'`liboctave/operators/smx-sbm-bm.cc
 
+liboctave/system/liboctave_system_libsystem_la-child-list.lo: liboctave/system/child-list.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_system_libsystem_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_system_libsystem_la_CXXFLAGS) $(CXXFLAGS) -MT liboctave/system/liboctave_system_libsystem_la-child-list.lo -MD -MP -MF liboctave/system/$(DEPDIR)/liboctave_system_libsystem_la-child-list.Tpo -c -o liboctave/system/liboctave_system_libsystem_la-child-list.lo `test -f 'liboctave/system/child-list.cc' || echo '$(srcdir)/'`liboctave/system/child-list.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) liboctave/system/$(DEPDIR)/liboctave_system_libsystem_la-child-list.Tpo liboctave/system/$(DEPDIR)/liboctave_system_libsystem_la-child-list.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='liboctave/system/child-list.cc' object='liboctave/system/liboctave_system_libsystem_la-child-list.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_system_libsystem_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_system_libsystem_la_CXXFLAGS) $(CXXFLAGS) -c -o liboctave/system/liboctave_system_libsystem_la-child-list.lo `test -f 'liboctave/system/child-list.cc' || echo '$(srcdir)/'`liboctave/system/child-list.cc
+
 liboctave/system/liboctave_system_libsystem_la-dir-ops.lo: liboctave/system/dir-ops.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_system_libsystem_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_system_libsystem_la_CXXFLAGS) $(CXXFLAGS) -MT liboctave/system/liboctave_system_libsystem_la-dir-ops.lo -MD -MP -MF liboctave/system/$(DEPDIR)/liboctave_system_libsystem_la-dir-ops.Tpo -c -o liboctave/system/liboctave_system_libsystem_la-dir-ops.lo `test -f 'liboctave/system/dir-ops.cc' || echo '$(srcdir)/'`liboctave/system/dir-ops.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) liboctave/system/$(DEPDIR)/liboctave_system_libsystem_la-dir-ops.Tpo liboctave/system/$(DEPDIR)/liboctave_system_libsystem_la-dir-ops.Plo
@@ -24551,16 +24287,6 @@ dist-info: $(INFO_DEPS)
 mostlyclean-aminfo:
 	-rm -rf doc/interpreter/octave.t2d doc/interpreter/octave.t2p \
 	  doc/liboctave/liboctave.t2d doc/liboctave/liboctave.t2p
-
-clean-aminfo:
-	-test -z "doc/interpreter/octave.dvi doc/interpreter/octave.pdf \
-	  doc/interpreter/octave.ps doc/interpreter/octave.html \
-	  doc/liboctave/liboctave.dvi doc/liboctave/liboctave.pdf \
-	  doc/liboctave/liboctave.ps doc/liboctave/liboctave.html" \
-	|| rm -rf doc/interpreter/octave.dvi doc/interpreter/octave.pdf \
-	  doc/interpreter/octave.ps doc/interpreter/octave.html \
-	  doc/liboctave/liboctave.dvi doc/liboctave/liboctave.pdf \
-	  doc/liboctave/liboctave.ps doc/liboctave/liboctave.html
 
 maintainer-clean-aminfo:
 	@list='$(INFO_DEPS)'; for i in $$list; do \
@@ -26830,7 +26556,7 @@ $(DIRSTAMP_FILES):
 	: > $@
 
 libgnu/libgnu.la: oct-conf-post.h
-	cd libgnu; $(MAKE) all
+	cd libgnu && $(MAKE) $(AM_MAKEFLAGS) all
 
 liboctave/cruft/ranlib/ranlib.def: $(RANLIB_SRC) build-aux/mk-f77-def.sh | liboctave/cruft/ranlib/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t $@ && \
@@ -26870,7 +26596,7 @@ $(BUILT_SPARSE_MATRIX_OPERATORS_FILES): liboctave/operators/smx-ops liboctave/op
 $(BUILT_VECTOR_OPERATORS_FILES): liboctave/operators/vx-ops liboctave/operators/mk-ops.awk
 	$(AM_V_GEN)$(run-mk-ops)
 
-liboctave/liboctave-build-info.cc: liboctave/liboctave-build-info.in.cc HG-ID | liboctave/$(octave-dirstamp)
+liboctave/liboctave-build-info.cc: liboctave/liboctave-build-info.in.cc HG-ID | liboctave/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	$(SED) \
 	  -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically by Makefile|" \
@@ -26911,7 +26637,7 @@ libinterp/operators/ops.cc: $(LIBINTERP_OPERATORS_SRC) libinterp/mkops
 	$(SHELL) $(srcdir)/libinterp/mkops $(LIBINTERP_OPERATORS_SRC) > $@-t && \
 	mv $@-t $@
 
-$(OPT_HANDLERS): libinterp/corefcn/%.cc : liboctave/numeric/%.in | libinterp/corefcn/$(octave-dirstamp)
+$(OPT_HANDLERS): libinterp/corefcn/%.cc : liboctave/numeric/%.in | libinterp/corefcn/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t $@ && \
 	$(PERL) $(srcdir)/build-aux/mk-opts.pl --opt-handler-fcns $< > $@-t && \
 	mv $@-t $@
@@ -26920,7 +26646,7 @@ $(OPT_HANDLERS): $(srcdir)/build-aux/mk-opts.pl
 
 #display.df display.lo: CPPFLAGS += $(X11_FLAGS)
 
-$(COREFCN_FT2_DF) : libinterp/corefcn/%.df : libinterp/corefcn/%.cc $(GENERATED_MAKE_BUILTINS_INCS) octave-config.h | libinterp/corefcn/$(octave-dirstamp)
+$(COREFCN_FT2_DF) : libinterp/corefcn/%.df : libinterp/corefcn/%.cc $(GENERATED_MAKE_BUILTINS_INCS) octave-config.h | libinterp/corefcn/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t $@-t1 $@ && \
 	$(CXXCPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	  $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) \
@@ -26930,20 +26656,20 @@ $(COREFCN_FT2_DF) : libinterp/corefcn/%.df : libinterp/corefcn/%.cc $(GENERATED_
 	rm -f $@-t1 && \
 	mv $@-t $@
 
-libinterp/corefcn/defaults.h: libinterp/corefcn/defaults.in.h build-aux/subst-default-vals.sh | libinterp/corefcn/$(octave-dirstamp)
+libinterp/corefcn/defaults.h: libinterp/corefcn/defaults.in.h build-aux/subst-default-vals.sh | libinterp/corefcn/$(octave_dirstamp)
 	$(AM_V_GEN)$(call simple-filter-rule,build-aux/subst-default-vals.sh)
 
-libinterp/corefcn/graphics.h: libinterp/corefcn/graphics.in.h libinterp/genprops.awk | libinterp/corefcn/$(octave-dirstamp)
+libinterp/corefcn/graphics.h: libinterp/corefcn/graphics.in.h libinterp/genprops.awk | libinterp/corefcn/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	$(AWK) -f $(srcdir)/libinterp/genprops.awk $< > $@-t && \
 	mv $@-t $@
 
-libinterp/corefcn/graphics-props.cc: libinterp/corefcn/graphics.in.h libinterp/genprops.awk | libinterp/corefcn/$(octave-dirstamp)
+libinterp/corefcn/graphics-props.cc: libinterp/corefcn/graphics.in.h libinterp/genprops.awk | libinterp/corefcn/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	$(AWK) -v emit_graphics_props=1 -f $(srcdir)/libinterp/genprops.awk $< > $@-t && \
 	mv $@-t $@
 
-libinterp/corefcn/oct-errno.cc: libinterp/corefcn/oct-errno.in.cc | libinterp/corefcn/$(octave-dirstamp)
+libinterp/corefcn/oct-errno.cc: libinterp/corefcn/oct-errno.in.cc | libinterp/corefcn/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	if test -n "$(PERL)"; then \
 	  $(SHELL) $(srcdir)/libinterp/mk-errno-list --perl "$(PERL)" < $< > $@-t; \
@@ -26954,15 +26680,15 @@ libinterp/corefcn/oct-errno.cc: libinterp/corefcn/oct-errno.in.cc | libinterp/co
 	fi && \
 	mv $@-t $@
 
-libinterp/corefcn/mxarray.h: libinterp/corefcn/mxarray.in.h build-aux/mk-mxarray-h.sh | libinterp/corefcn/$(octave-dirstamp)
+libinterp/corefcn/mxarray.h: libinterp/corefcn/mxarray.in.h build-aux/mk-mxarray-h.sh | libinterp/corefcn/$(octave_dirstamp)
 	$(AM_V_GEN)$(call simple-filter-rule,build-aux/mk-mxarray-h.sh)
 
-libinterp/corefcn/oct-tex-lexer.ll: libinterp/corefcn/oct-tex-lexer.in.ll libinterp/corefcn/oct-tex-symbols.in | libinterp/corefcn/$(octave-dirstamp)
+libinterp/corefcn/oct-tex-lexer.ll: libinterp/corefcn/oct-tex-lexer.in.ll libinterp/corefcn/oct-tex-symbols.in | libinterp/corefcn/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	$(AWK) 'BEGIN { print "/* DO NOT EDIT. AUTOMATICALLY GENERATED FROM oct-tex-lexer.in.ll and oct-tex-symbols.in. */"; } /^@SYMBOL_RULES@$$/ { count = 0; while (getline < "$(srcdir)/libinterp/corefcn/oct-tex-symbols.in") { if ($$0 !~ /^#.*/ && NF == 3) { printf("\"\\\\%s\" { yylval->sym = %d; return SYM; }\n", $$1, count); count++; } } getline } ! /^@SYMBOL_RULES@$$/ { print }' $< > $@-t && \
 	mv $@-t $@
 
-libinterp/corefcn/oct-tex-symbols.cc: libinterp/corefcn/oct-tex-symbols.in | libinterp/corefcn/$(octave-dirstamp)
+libinterp/corefcn/oct-tex-symbols.cc: libinterp/corefcn/oct-tex-symbols.in | libinterp/corefcn/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	$(AWK) 'BEGIN { print "// DO NOT EDIT. AUTOMATICALLY GENERATED FROM oct-tex-symbols.in."; print "static uint32_t symbol_codes[][2] = {"; count = 0; } END { print "};"; printf("static int num_symbol_codes = %d;\n", count); } !/^#/ && (NF == 3) { printf("  { %s, %s },\n", $$2, $$3); count++; }' $< > $@-t && \
 	mv $@-t $@
@@ -27004,43 +26730,43 @@ $(srcdir)/libinterp/dldfcn/module.mk: $(srcdir)/libinterp/dldfcn/config-module.s
 %.cc %.h : %.yy
 	$(AM_V_YACC)$(am__skipyacc) $(SHELL) $(YLWRAP) $< y.tab.c $*.cc-t y.tab.h $*.h y.output $*.output -- $(YACCCOMPILE) && $(call move_if_change_rule,$*.cc-t,$*.cc)
 
-libinterp/build-env.cc: libinterp/build-env.in.cc build-aux/subst-config-vals.sh | libinterp/$(octave-dirstamp)
+libinterp/build-env.cc: libinterp/build-env.in.cc build-aux/subst-config-vals.sh | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)$(call simple-filter-rule,build-aux/subst-config-vals.sh)
 
-libinterp/build-env-features.cc: config.h libinterp/build-env-features.sh | libinterp/$(octave-dirstamp)
+libinterp/build-env-features.cc: config.h libinterp/build-env-features.sh | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	$(SHELL) $(srcdir)/libinterp/build-env-features.sh $< > $@-t && \
 	mv $@-t $@
 
-libinterp/version.h: libinterp/version.in.h build-aux/mk-version-h.sh | libinterp/$(octave-dirstamp)
+libinterp/version.h: libinterp/version.in.h build-aux/mk-version-h.sh | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)$(call simple-filter-rule,build-aux/mk-version-h.sh)
 
-libinterp/liboctinterp-build-info.cc: libinterp/liboctinterp-build-info.in.cc HG-ID | libinterp/$(octave-dirstamp)
+libinterp/liboctinterp-build-info.cc: libinterp/liboctinterp-build-info.in.cc HG-ID | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	$(SED) \
 	  -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically by Makefile|" \
 	  -e "s|%OCTAVE_HG_ID%|$(HG_ID_VAR)|" $< > $@-t && \
 	$(simple_move_if_change_rule)
 
-libinterp/builtins.cc: $(ALL_DEFUN_FILES) libinterp/mkbuiltins | libinterp/$(octave-dirstamp)
+libinterp/builtins.cc: $(ALL_DEFUN_FILES) libinterp/mkbuiltins | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	$(SHELL) $(srcdir)/libinterp/mkbuiltins "$(srcdir)" --source $(mkbuiltins_dld_opt) $(ALL_DEFUN_FILES) > $@-t && \
 	mv $@-t $@
 
-libinterp/builtin-defun-decls.h: $(ALL_DEFUN_FILES) libinterp/mkbuiltins | libinterp/$(octave-dirstamp)
+libinterp/builtin-defun-decls.h: $(ALL_DEFUN_FILES) libinterp/mkbuiltins | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	$(SHELL) $(srcdir)/libinterp/mkbuiltins "$(srcdir)" --header $(mkbuiltins_dld_opt) $(ALL_DEFUN_FILES) > $@-t && \
 	$(simple_move_if_change_rule)
 
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@libinterp/dldfcn/PKG_ADD: $(DLDFCN_DEFUN_FILES) libinterp/mk-pkg-add | libinterp/$(octave-dirstamp)
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@libinterp/dldfcn/PKG_ADD: $(DLDFCN_DEFUN_FILES) libinterp/mk-pkg-add | libinterp/$(octave_dirstamp)
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(AM_V_GEN)rm -f $@-t && \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(SHELL) $(srcdir)/libinterp/mk-pkg-add "$(srcdir)" $(DLDFCN_DEFUN_FILES) > $@-t && \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	mv $@-t $@
 
-$(srcdir)/libinterp/DOCSTRINGS: $(ALL_DEFUN_FILES) | libinterp/$(octave-dirstamp)
+$(srcdir)/libinterp/DOCSTRINGS: $(ALL_DEFUN_FILES) | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f libinterp/DOCSTRINGS-t && \
 	$(PERL) $(srcdir)/libinterp/gendoc.pl "$(srcdir)" $(ALL_DEFUN_FILES) > libinterp/DOCSTRINGS-t && \
-	mv libinterp/DOCSTRINGS-t $@
+	$(call move_if_change_rule,libinterp/DOCSTRINGS-t,$@)
 
 install-data-hook: install-oct install-built-in-docstrings
 
@@ -27098,7 +26824,7 @@ libinterp-maintainer-clean: libinterp-distclean
 
 @AMCOND_BUILD_QT_GUI_TRUE@$(octave_gui_UI_H): | libgui/src/$(octave_dirstamp)
 
-@AMCOND_BUILD_QT_GUI_TRUE@libgui/src/liboctgui-build-info.cc: libgui/src/liboctgui-build-info.in.cc HG-ID | libgui/src/$(octave-dirstamp)
+@AMCOND_BUILD_QT_GUI_TRUE@libgui/src/liboctgui-build-info.cc: libgui/src/liboctgui-build-info.in.cc HG-ID | libgui/src/$(octave_dirstamp)
 @AMCOND_BUILD_QT_GUI_TRUE@	$(AM_V_GEN)rm -f $@-t && \
 @AMCOND_BUILD_QT_GUI_TRUE@	$(SED) \
 @AMCOND_BUILD_QT_GUI_TRUE@	  -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically by Makefile|" \
@@ -27192,7 +26918,7 @@ src/mkoctfile.cc: src/mkoctfile.in.cc build-aux/subst-config-vals.sh | src/$(oct
 src/main.cc: src/main.in.cc build-aux/subst-default-vals.sh | src/$(octave_dirstamp)
 	$(AM_V_GEN)$(call simple-filter-rule,build-aux/subst-default-vals.sh)
 
-src/octave-build-info.cc: src/octave-build-info.in.cc HG-ID | src/$(octave-dirstamp)
+src/octave-build-info.cc: src/octave-build-info.in.cc HG-ID | src/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
 	$(SED) \
 	  -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically by Makefile|" \
@@ -27287,10 +27013,10 @@ endef
 
 $(foreach f, $(GEN_FCN_FILES), $(eval $(call GEN_FCN_FILES_TEMPLATE, $(f))))
 
-$(srcdir)/scripts/DOCSTRINGS: $(FCN_FILES) $(GEN_FCN_FILES_IN) | scripts/$(octave-dirstamp)
+$(srcdir)/scripts/DOCSTRINGS: $(FCN_FILES) $(GEN_FCN_FILES_IN) | scripts/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f scripts/DOCSTRINGS-t && \
 	$(PERL) $(srcdir)/scripts/mkdoc.pl "$(srcdir)" $(FCN_FILES) $(GEN_FCN_FILES_IN) > scripts/DOCSTRINGS-t && \
-	mv scripts/DOCSTRINGS-t $@
+	$(call move_if_change_rule,scripts/DOCSTRINGS-t,$@)
 
 check-m-sources:
 	@echo "checking whether files in source tree are listed in module.mk files..."; \
@@ -27632,6 +27358,7 @@ doc-distclean: doc-clean
 
 doc-maintainer-clean: doc-distclean
 	rm -f $(doc_MAINTAINERCLEANFILES)
+	rm -rf $(DVIS) $(HTMLS) $(PDFS) $(PSS)
 @AMCOND_BUILD_DOCS_TRUE@doc/interpreter/voronoi.eps: doc/interpreter/geometryimages.m
 @AMCOND_BUILD_DOCS_TRUE@	$(AM_V_GEN)$(SHELL) run-octave --norc --silent --no-history --path $(abs_top_srcdir)/doc/interpreter/ --eval "geometryimages ('doc/interpreter/', 'voronoi', 'eps');"
 @AMCOND_BUILD_DOCS_TRUE@doc/interpreter/triplot.eps: doc/interpreter/geometryimages.m
@@ -27965,8 +27692,11 @@ uninstall-test-files:
 	done
 .PHONY: uninstall-test-files
 
+clean-local: test-clean
+
 test-clean:
 	rm -f $(test_CLEANFILES)
+	rm -rf $(GENERATED_BC_OVERLOADS_DIRS)
 
 test-distclean: test-clean
 	rm -f $(test_DISTCLEANFILES)
@@ -28063,6 +27793,8 @@ distclean-local:
 	if [ "x${srcdir}" != "x." ]; then rm -f HG-ID; fi
 
 maintainer-clean-local: doc-maintainer-clean
+
+clean-aminfo:
 
 define move_if_change_rule
   if [ -s $(1) ]; then \

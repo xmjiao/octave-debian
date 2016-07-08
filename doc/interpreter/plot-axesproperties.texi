@@ -274,7 +274,7 @@ Transparency is not yet implemented for axes objects.  @code{gridalpha} is unuse
 
 @anchor{XREFaxesgridlinestyle}
 @cindex axes gridlinestyle
-@item @code{gridlinestyle}: @qcode{"-"} | @qcode{"--"} | @qcode{"-."} | @{@qcode{":"}@} | @qcode{"none"}
+@item @code{gridlinestyle}: @{@qcode{"-"}@} | @qcode{"--"} | @qcode{"-."} | @qcode{":"} | @qcode{"none"}
 
 
 

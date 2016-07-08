@@ -42081,28 +42081,33 @@ isosurface
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 3967
+# length: 4573
  -- : [FV] = isosurface (VAL, ISO)
+ -- : [FV] = isosurface (VAL)
  -- : [FV] = isosurface (X, Y, Z, VAL, ISO)
- -- : [FV] = isosurface (..., "noshare", "verbose")
+ -- : [FV] = isosurface (X, Y, Z, VAL)
  -- : [FVC] = isosurface (..., COL)
- -- : [F, V] = isosurface (X, Y, Z, VAL, ISO)
- -- : [F, V, C] = isosurface (X, Y, Z, VAL, ISO, COL)
- -- : isosurface (X, Y, Z, VAL, ISO, COL, OPT)
+ -- : [FV] = isosurface (..., "noshare")
+ -- : [FV] = isosurface (..., "verbose")
+ -- : [F, V] = isosurface (...)
+ -- : [F, V, C] = isosurface (...)
+ -- : isosurface (...)
 
      Calculate isosurface of 3-D data.
 
      If called with one output argument and the first input argument VAL is a three-dimensional array that contains the data of an isosurface geometry and the second input argument ISO keeps the isovalue as a scalar value then return a structure array FV that contains the fields FACES and VERTICES at computed points '[x, y, z] = meshgrid (1:l, 1:m, 1:n)'.  The output argument FV can directly be taken as an input argument for the 'patch' function.
 
-     If called with further input arguments X, Y and Z which are three-dimensional arrays with the same size than VAL then the volume data is taken at those given points.
+     If ISO is omitted or empty, a "good" value for an isosurface is determined from VAL.
 
-     The string input argument "noshare" is only for compatibility and has no effect.  If given the string input argument "verbose" then print messages to the command line interface about the current progress.
+     If called with further input arguments X, Y and Z which are three-dimensional arrays with the same size as VAL or vectors with lengths corresponding to the dimensions of VAL, then the volume data is taken at those given points.  If X, Y or Z are empty, the grid corresponds to the indices in the respective direction (see 'meshgrid').
 
-     If called with the input argument COL which is a three-dimensional array of the same size than VAL then take those values for the interpolation of coloring the isosurface geometry.  Add the field FACEVERTEXCDATA to the structure array FV.
+     If called with the input argument COL which is a three-dimensional array of the same size as VAL, take those values for the interpolation of coloring the isosurface geometry.  In this case, the structure array FV has the additional field FACEVERTEXCDATA.
 
-     If called with two or three output arguments then return the information about the faces F, vertices V and color data C as separate arrays instead of a single structure array.
+     If given the string input argument "noshare", vertices might be returned multiple times for different faces.  The default behavior is to search vertices shared by adjacent faces with 'unique' which might be time consuming.  The string input argument "verbose" is only for compatibility and has no effect.  The string input arguments must be passed after the other arguments.
 
-     If called with no output argument then directly process the isosurface geometry with the 'patch' command.
+     If called with two or three output arguments, return the information about the faces F, vertices V and color data C as separate arrays instead of a single structure array.
+
+     If called with no output argument, the isosurface geometry is directly processed with the 'patch' command.
 
      For example,
 
@@ -42110,46 +42115,52 @@ isosurface
           val = rand (5, 5, 5);
           isosurface (x, y, z, val, .5);
 
-     will directly draw a random isosurface geometry in a graphics window.  Another example for an isosurface geometry with different additional coloring
+     will directly draw a random isosurface geometry in a graphics window.
+
+     Another example for an isosurface geometry with different additional coloring
 
           N = 15;    # Increase number of vertices in each direction
           iso = .4;  # Change isovalue to .1 to display a sphere
           lin = linspace (0, 2, N);
           [x, y, z] = meshgrid (lin, lin, lin);
-          c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
+          val = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
           figure (); # Open another figure window
 
           subplot (2,2,1); view (-38, 20);
-          [f, v] = isosurface (x, y, z, c, iso);
+          [f, v] = isosurface (x, y, z, val, iso);
           p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
           set (gca, "PlotBoxAspectRatioMode", "manual", ...
                     "PlotBoxAspectRatio", [1 1 1]);
-          # set (p, "FaceColor", "green", "FaceLighting", "phong");
-          # light ("Position", [1 1 5]); # Available with the JHandles package
+          isonormals (x, y, z, val, p)
+          set (p, "FaceColor", "green", "FaceLighting", "gouraud");
+          light ("Position", [1 1 5]);
 
           subplot (2,2,2); view (-38, 20);
           p = patch ("Faces", f, "Vertices", v, "EdgeColor", "blue");
           set (gca, "PlotBoxAspectRatioMode", "manual", ...
                     "PlotBoxAspectRatio", [1 1 1]);
-          # set (p, "FaceColor", "none", "FaceLighting", "phong");
-          # light ("Position", [1 1 5]);
+          isonormals (x, y, z, val, p)
+          set (p, "FaceColor", "none", "EdgeLighting", "gouraud");
+          light ("Position", [1 1 5]);
 
           subplot (2,2,3); view (-38, 20);
-          [f, v, c] = isosurface (x, y, z, c, iso, y);
+          [f, v, c] = isosurface (x, y, z, val, iso, y);
           p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
                      "FaceColor", "interp", "EdgeColor", "none");
           set (gca, "PlotBoxAspectRatioMode", "manual", ...
                     "PlotBoxAspectRatio", [1 1 1]);
-          # set (p, "FaceLighting", "phong");
-          # light ("Position", [1 1 5]);
+          isonormals (x, y, z, val, p)
+          set (p, "FaceLighting", "gouraud");
+          light ("Position", [1 1 5]);
 
           subplot (2,2,4); view (-38, 20);
           p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
                      "FaceColor", "interp", "EdgeColor", "blue");
           set (gca, "PlotBoxAspectRatioMode", "manual", ...
                     "PlotBoxAspectRatio", [1 1 1]);
-          # set (p, "FaceLighting", "phong");
-          # light ("Position", [1 1 5]);
+          isonormals (x, y, z, val, p)
+          set (p, "FaceLighting", "gouraud");
+          light ("Position", [1 1 5]);
 
      See also: isonormals, isocolors.
    
@@ -45323,19 +45334,18 @@ hold
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 992
+# length: 924
  -- : hold
  -- : hold on
  -- : hold off
- -- : hold all
  -- : hold (HAX, ...)
      Toggle or set the "hold" state of the plotting engine which determines whether new graphic objects are added to the plot or replace the existing objects.
 
      'hold on'
-          Retain plot data and settings so that subsequent plot commands are displayed on a single graph.
+          Retain plot data and settings so that subsequent plot commands are displayed on a single graph.  Line color and line style are advanced for each new plot added.
 
-     'hold all'
-          Retain plot line color, line style, data, and settings so that subsequent plot commands are displayed on a single graph with the next line color and style.
+     'hold all (deprecated)'
+          Equivalent to 'hold on'.
 
      'hold off'
           Restore default graphics settings which clear the graph and reset axis properties before each new plot command.  (default).
