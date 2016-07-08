@@ -28,7 +28,7 @@
 
 @anchor{XREFuipanelbackgroundcolor}
 @cindex uipanel backgroundcolor
-@item @code{backgroundcolor}: def. @code{[1   1   1]}
+@item @code{backgroundcolor}: def. @code{[0.83137   0.81569   0.78431]}
 
 
 
@@ -178,7 +178,7 @@ Handle of the parent graphics object.
 
 @anchor{XREFuipanelshadowcolor}
 @cindex uipanel shadowcolor
-@item @code{shadowcolor}: def. @code{[0   0   0]}
+@item @code{shadowcolor}: def. @code{[0.41569   0.40784   0.39216]}
 
 
 

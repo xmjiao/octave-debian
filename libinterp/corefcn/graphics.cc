@@ -27,7 +27,6 @@ along with Octave; see the file COPYING.  If not, see
 #include <cctype>
 #include <cfloat>
 #include <cstdlib>
-#include <ctime>
 
 #include <algorithm>
 #include <list>
@@ -40,6 +39,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "file-ops.h"
 #include "file-stat.h"
 #include "oct-locbuf.h"
+#include "oct-time.h"
 #include "singleton-cleanup.h"
 
 #include "builtins.h"
@@ -4836,7 +4836,6 @@ axes::properties::set_defaults (base_graphics_object& bgo,
   tview(1) = 90;
   view = tview;
 
-  __hold_all__ = "off";
   nextplot = "replace";
 
   ambientlightcolor = Matrix (1, 3, 1.0);
@@ -4855,7 +4854,7 @@ axes::properties::set_defaults (base_graphics_object& bgo,
   fontunits = "points";
   fontweight = "normal";
 
-  gridlinestyle = ":";
+  gridlinestyle = "-";
   linestyleorder = "-";
   linewidth = 0.5;
   minorgridlinestyle = ":";
@@ -9551,10 +9550,23 @@ gh_manager::do_execute_callback (const graphics_handle& h,
             recover_from_exception ();
           }
 
+      // Redraw after interacting with a user-interface (ui*) object.
       if (Vdrawnow_requested)
         {
-          Fdrawnow ();
-          Vdrawnow_requested = false;
+          graphics_object go = get_object (h);
+
+          if (go)
+            {
+              std::string go_name = go.get_properties ()
+                                      .graphics_object_name ();
+
+              if (go_name.length () > 1
+                  && go_name[0] == 'u' && go_name[1] == 'i')
+                {
+                  Fdrawnow ();
+                  Vdrawnow_requested = false;
+                }
+            }
         }
     }
 }
@@ -11493,7 +11505,7 @@ In all cases, typing CTRL-C stops program execution immediately.
   int max_arg_index = 0;
   int timeout_index = -1;
 
-  int timeout = 0;
+  double timeout = 0;
 
   if (args.length () > 1)
     {
@@ -11608,8 +11620,7 @@ In all cases, typing CTRL-C stops program execution immediately.
       if (args.length () <= (timeout_index + 1))
         error ("waitfor: missing TIMEOUT value");
 
-      timeout = static_cast<int>
-        (args(timeout_index + 1).xscalar_value ("waitfor: TIMEOUT must be a scalar >= 1"));
+      timeout = args(timeout_index + 1).xscalar_value ("waitfor: TIMEOUT must be a scalar >= 1");
 
       if (timeout < 1)
         {
@@ -11633,10 +11644,10 @@ In all cases, typing CTRL-C stops program execution immediately.
   //        The only "good" implementation would require object
   //        listeners, similar to property listeners.
 
-  time_t start = 0;
+  octave::sys::time start;
 
   if (timeout > 0)
-    start = time (0);
+    start.stamp ();
 
   while (true)
     {
@@ -11663,7 +11674,9 @@ In all cases, typing CTRL-C stops program execution immediately.
 
       if (timeout > 0)
         {
-          if (start + timeout < time (0))
+          octave::sys::time now;
+
+          if (start + timeout < now)
             break;
         }
     }

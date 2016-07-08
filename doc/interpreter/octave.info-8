@@ -3353,7 +3353,7 @@ Concept Index
 * documenting user scripts:              Comments and the Help System.
                                                               (line   6)
 * Dulmage-Mendelsohn decomposition:      Mathematical Considerations.
-                                                              (line 370)
+                                                              (line 421)
 * dynamic classpath:                     Java Interface Functions.
                                                               (line 167)
 * dynamic classpath <1>:                 Making Java classes available.
@@ -4702,9 +4702,9 @@ Function Index
 * allow_noninteger_range_as_index <1>:   Advanced Indexing.  (line  175)
 * allow_noninteger_range_as_index <2>:   Advanced Indexing.  (line  176)
 * amd:                                   Mathematical Considerations.
-                                                             (line  120)
+                                                             (line  171)
 * amd <1>:                               Mathematical Considerations.
-                                                             (line  121)
+                                                             (line  172)
 * ancestor:                              Graphics Objects.   (line  472)
 * ancestor <1>:                          Graphics Objects.   (line  473)
 * and:                                   Element-by-element Boolean Operators.
@@ -4732,17 +4732,17 @@ Function Index
 * arch_rnd:                              Signal Processing.  (line  408)
 * arch_test:                             Signal Processing.  (line  420)
 * area:                                  Two-Dimensional Plots.
-                                                             (line 1545)
+                                                             (line 1557)
 * area <1>:                              Two-Dimensional Plots.
-                                                             (line 1546)
+                                                             (line 1558)
 * area <2>:                              Two-Dimensional Plots.
-                                                             (line 1547)
+                                                             (line 1559)
 * area <3>:                              Two-Dimensional Plots.
-                                                             (line 1548)
+                                                             (line 1560)
 * area <4>:                              Two-Dimensional Plots.
-                                                             (line 1549)
+                                                             (line 1561)
 * area <5>:                              Two-Dimensional Plots.
-                                                             (line 1550)
+                                                             (line 1562)
 * arg:                                   Complex Arithmetic. (line   21)
 * argnames:                              Inline Functions.   (line   47)
 * argv:                                  Command Line Options.
@@ -4860,33 +4860,33 @@ Function Index
 * bandwidth <1>:                         Basic Matrix Functions.
                                                              (line   45)
 * bar:                                   Two-Dimensional Plots.
-                                                             (line  297)
-* bar <1>:                               Two-Dimensional Plots.
-                                                             (line  298)
-* bar <2>:                               Two-Dimensional Plots.
-                                                             (line  299)
-* bar <3>:                               Two-Dimensional Plots.
-                                                             (line  300)
-* bar <4>:                               Two-Dimensional Plots.
-                                                             (line  301)
-* bar <5>:                               Two-Dimensional Plots.
-                                                             (line  302)
-* bar <6>:                               Two-Dimensional Plots.
                                                              (line  303)
+* bar <1>:                               Two-Dimensional Plots.
+                                                             (line  304)
+* bar <2>:                               Two-Dimensional Plots.
+                                                             (line  305)
+* bar <3>:                               Two-Dimensional Plots.
+                                                             (line  306)
+* bar <4>:                               Two-Dimensional Plots.
+                                                             (line  307)
+* bar <5>:                               Two-Dimensional Plots.
+                                                             (line  308)
+* bar <6>:                               Two-Dimensional Plots.
+                                                             (line  309)
 * barh:                                  Two-Dimensional Plots.
-                                                             (line  373)
-* barh <1>:                              Two-Dimensional Plots.
-                                                             (line  374)
-* barh <2>:                              Two-Dimensional Plots.
-                                                             (line  375)
-* barh <3>:                              Two-Dimensional Plots.
-                                                             (line  376)
-* barh <4>:                              Two-Dimensional Plots.
-                                                             (line  377)
-* barh <5>:                              Two-Dimensional Plots.
-                                                             (line  378)
-* barh <6>:                              Two-Dimensional Plots.
                                                              (line  379)
+* barh <1>:                              Two-Dimensional Plots.
+                                                             (line  380)
+* barh <2>:                              Two-Dimensional Plots.
+                                                             (line  381)
+* barh <3>:                              Two-Dimensional Plots.
+                                                             (line  382)
+* barh <4>:                              Two-Dimensional Plots.
+                                                             (line  383)
+* barh <5>:                              Two-Dimensional Plots.
+                                                             (line  384)
+* barh <6>:                              Two-Dimensional Plots.
+                                                             (line  385)
 * bartlett:                              Signal Processing.  (line  478)
 * bartlett_test:                         Tests.              (line   64)
 * base2dec:                              String Conversions. (line  120)
@@ -5047,13 +5047,13 @@ Function Index
 * cbrt:                                  Exponents and Logarithms.
                                                              (line  104)
 * ccolamd:                               Mathematical Considerations.
-                                                             (line  152)
+                                                             (line  203)
 * ccolamd <1>:                           Mathematical Considerations.
-                                                             (line  153)
+                                                             (line  204)
 * ccolamd <2>:                           Mathematical Considerations.
-                                                             (line  154)
+                                                             (line  205)
 * ccolamd <3>:                           Mathematical Considerations.
-                                                             (line  155)
+                                                             (line  206)
 * cd:                                    FTP Objects.        (line   64)
 * cd <1>:                                FTP Objects.        (line   65)
 * cd <2>:                                Current Working Directory.
@@ -5172,13 +5172,13 @@ Function Index
 * citation <1>:                          Citing Octave in Publications.
                                                              (line   14)
 * cla:                                   Manipulation of Plot Windows.
-                                                             (line  185)
+                                                             (line  183)
 * cla <1>:                               Manipulation of Plot Windows.
-                                                             (line  186)
+                                                             (line  184)
 * cla <2>:                               Manipulation of Plot Windows.
-                                                             (line  187)
+                                                             (line  185)
 * cla <3>:                               Manipulation of Plot Windows.
-                                                             (line  188)
+                                                             (line  186)
 * clabel:                                Plot Annotations.   (line  180)
 * clabel <1>:                            Plot Annotations.   (line  181)
 * clabel <2>:                            Plot Annotations.   (line  182)
@@ -5195,35 +5195,35 @@ Function Index
 * clear:                                 Status of Variables.
                                                              (line  267)
 * clf:                                   Manipulation of Plot Windows.
-                                                             (line  161)
+                                                             (line  159)
 * clf <1>:                               Manipulation of Plot Windows.
-                                                             (line  162)
+                                                             (line  160)
 * clf <2>:                               Manipulation of Plot Windows.
-                                                             (line  163)
+                                                             (line  161)
 * clf <3>:                               Manipulation of Plot Windows.
-                                                             (line  164)
+                                                             (line  162)
 * clf <4>:                               Manipulation of Plot Windows.
-                                                             (line  165)
+                                                             (line  163)
 * clock:                                 Timing Utilities.   (line  347)
 * cloglog:                               Basic Statistical Functions.
                                                              (line  198)
 * close:                                 Manipulation of Plot Windows.
-                                                             (line  228)
+                                                             (line  226)
 * close <1>:                             Manipulation of Plot Windows.
-                                                             (line  229)
+                                                             (line  227)
 * close <2>:                             Manipulation of Plot Windows.
-                                                             (line  230)
+                                                             (line  228)
 * close <3>:                             Manipulation of Plot Windows.
-                                                             (line  231)
+                                                             (line  229)
 * close <4>:                             Manipulation of Plot Windows.
-                                                             (line  232)
+                                                             (line  230)
 * close <5>:                             Manipulation of Plot Windows.
-                                                             (line  233)
+                                                             (line  231)
 * close <6>:                             Manipulation of Plot Windows.
-                                                             (line  234)
+                                                             (line  232)
 * close <7>:                             FTP Objects.        (line   35)
 * closereq:                              Manipulation of Plot Windows.
-                                                             (line  260)
+                                                             (line  258)
 * cmpermute:                             Representing Images.
                                                              (line  541)
 * cmpermute <1>:                         Representing Images.
@@ -5235,13 +5235,13 @@ Function Index
 * cmunique <2>:                          Representing Images.
                                                              (line  510)
 * colamd:                                Mathematical Considerations.
-                                                             (line  233)
+                                                             (line  284)
 * colamd <1>:                            Mathematical Considerations.
-                                                             (line  234)
+                                                             (line  285)
 * colamd <2>:                            Mathematical Considerations.
-                                                             (line  235)
+                                                             (line  286)
 * colamd <3>:                            Mathematical Considerations.
-                                                             (line  236)
+                                                             (line  287)
 * colloc:                                Orthogonal Collocation.
                                                              (line    6)
 * colon:                                 Defining Indexing And Indexed Assignment.
@@ -5274,25 +5274,25 @@ Function Index
 * colormap <5>:                          Representing Images.
                                                              (line  151)
 * colperm:                               Mathematical Considerations.
-                                                             (line  301)
+                                                             (line  352)
 * colstyle:                              Marker Styles.      (line   27)
 * columns:                               Object Sizes.       (line   23)
 * comet:                                 Two-Dimensional Plots.
-                                                             (line 1625)
+                                                             (line 1637)
 * comet <1>:                             Two-Dimensional Plots.
-                                                             (line 1626)
+                                                             (line 1638)
 * comet <2>:                             Two-Dimensional Plots.
-                                                             (line 1627)
+                                                             (line 1639)
 * comet <3>:                             Two-Dimensional Plots.
-                                                             (line 1628)
+                                                             (line 1640)
 * comet3:                                Two-Dimensional Plots.
-                                                             (line 1643)
+                                                             (line 1655)
 * comet3 <1>:                            Two-Dimensional Plots.
-                                                             (line 1644)
+                                                             (line 1656)
 * comet3 <2>:                            Two-Dimensional Plots.
-                                                             (line 1645)
+                                                             (line 1657)
 * comet3 <3>:                            Two-Dimensional Plots.
-                                                             (line 1646)
+                                                             (line 1658)
 * command_line_path:                     Manipulating the Load Path.
                                                              (line  160)
 * common_size:                           Finding Elements and Checking Conditions.
@@ -5301,15 +5301,15 @@ Function Index
 * compan:                                Finding Roots.      (line   55)
 * compare_versions:                      System Information. (line  199)
 * compass:                               Two-Dimensional Plots.
-                                                             (line 1452)
+                                                             (line 1464)
 * compass <1>:                           Two-Dimensional Plots.
-                                                             (line 1453)
+                                                             (line 1465)
 * compass <2>:                           Two-Dimensional Plots.
-                                                             (line 1454)
+                                                             (line 1466)
 * compass <3>:                           Two-Dimensional Plots.
-                                                             (line 1455)
+                                                             (line 1467)
 * compass <4>:                           Two-Dimensional Plots.
-                                                             (line 1456)
+                                                             (line 1468)
 * completion_append_char:                Commands For Completion.
                                                              (line   16)
 * completion_append_char <1>:            Commands For Completion.
@@ -5347,55 +5347,55 @@ Function Index
                                                              (line  141)
 * conj:                                  Complex Arithmetic. (line   34)
 * contour:                               Two-Dimensional Plots.
-                                                             (line  868)
-* contour <1>:                           Two-Dimensional Plots.
-                                                             (line  869)
-* contour <2>:                           Two-Dimensional Plots.
-                                                             (line  870)
-* contour <3>:                           Two-Dimensional Plots.
-                                                             (line  871)
-* contour <4>:                           Two-Dimensional Plots.
-                                                             (line  872)
-* contour <5>:                           Two-Dimensional Plots.
-                                                             (line  873)
-* contour <6>:                           Two-Dimensional Plots.
                                                              (line  874)
+* contour <1>:                           Two-Dimensional Plots.
+                                                             (line  875)
+* contour <2>:                           Two-Dimensional Plots.
+                                                             (line  876)
+* contour <3>:                           Two-Dimensional Plots.
+                                                             (line  877)
+* contour <4>:                           Two-Dimensional Plots.
+                                                             (line  878)
+* contour <5>:                           Two-Dimensional Plots.
+                                                             (line  879)
+* contour <6>:                           Two-Dimensional Plots.
+                                                             (line  880)
 * contour3:                              Two-Dimensional Plots.
-                                                             (line  989)
-* contour3 <1>:                          Two-Dimensional Plots.
-                                                             (line  990)
-* contour3 <2>:                          Two-Dimensional Plots.
-                                                             (line  991)
-* contour3 <3>:                          Two-Dimensional Plots.
-                                                             (line  992)
-* contour3 <4>:                          Two-Dimensional Plots.
-                                                             (line  993)
-* contour3 <5>:                          Two-Dimensional Plots.
-                                                             (line  994)
-* contour3 <6>:                          Two-Dimensional Plots.
                                                              (line  995)
+* contour3 <1>:                          Two-Dimensional Plots.
+                                                             (line  996)
+* contour3 <2>:                          Two-Dimensional Plots.
+                                                             (line  997)
+* contour3 <3>:                          Two-Dimensional Plots.
+                                                             (line  998)
+* contour3 <4>:                          Two-Dimensional Plots.
+                                                             (line  999)
+* contour3 <5>:                          Two-Dimensional Plots.
+                                                             (line 1000)
+* contour3 <6>:                          Two-Dimensional Plots.
+                                                             (line 1001)
 * contourc:                              Two-Dimensional Plots.
-                                                             (line  948)
+                                                             (line  954)
 * contourc <1>:                          Two-Dimensional Plots.
-                                                             (line  949)
+                                                             (line  955)
 * contourc <2>:                          Two-Dimensional Plots.
-                                                             (line  950)
+                                                             (line  956)
 * contourc <3>:                          Two-Dimensional Plots.
-                                                             (line  951)
+                                                             (line  957)
 * contourf:                              Two-Dimensional Plots.
-                                                             (line  907)
-* contourf <1>:                          Two-Dimensional Plots.
-                                                             (line  908)
-* contourf <2>:                          Two-Dimensional Plots.
-                                                             (line  909)
-* contourf <3>:                          Two-Dimensional Plots.
-                                                             (line  910)
-* contourf <4>:                          Two-Dimensional Plots.
-                                                             (line  911)
-* contourf <5>:                          Two-Dimensional Plots.
-                                                             (line  912)
-* contourf <6>:                          Two-Dimensional Plots.
                                                              (line  913)
+* contourf <1>:                          Two-Dimensional Plots.
+                                                             (line  914)
+* contourf <2>:                          Two-Dimensional Plots.
+                                                             (line  915)
+* contourf <3>:                          Two-Dimensional Plots.
+                                                             (line  916)
+* contourf <4>:                          Two-Dimensional Plots.
+                                                             (line  917)
+* contourf <5>:                          Two-Dimensional Plots.
+                                                             (line  918)
+* contourf <6>:                          Two-Dimensional Plots.
+                                                             (line  919)
 * contrast:                              Representing Images.
                                                              (line  432)
 * contrast <1>:                          Representing Images.
@@ -5474,13 +5474,13 @@ Function Index
 * csvwrite:                              Simple File I/O.    (line  421)
 * csvwrite <1>:                          Simple File I/O.    (line  422)
 * csymamd:                               Mathematical Considerations.
-                                                             (line  308)
+                                                             (line  359)
 * csymamd <1>:                           Mathematical Considerations.
-                                                             (line  309)
+                                                             (line  360)
 * csymamd <2>:                           Mathematical Considerations.
-                                                             (line  310)
+                                                             (line  361)
 * csymamd <3>:                           Mathematical Considerations.
-                                                             (line  311)
+                                                             (line  362)
 * ctime:                                 Timing Utilities.   (line   78)
 * ctranspose:                            Arithmetic Ops.     (line  122)
 * cubehelix:                             Representing Images.
@@ -5699,11 +5699,11 @@ Function Index
 * delaunayn <1>:                         Delaunay Triangulation.
                                                              (line   75)
 * delete:                                Manipulation of Plot Windows.
-                                                             (line  212)
+                                                             (line  210)
 * delete <1>:                            Manipulation of Plot Windows.
-                                                             (line  213)
+                                                             (line  211)
 * delete <2>:                            Manipulation of Plot Windows.
-                                                             (line  214)
+                                                             (line  212)
 * delete <3>:                            FTP Objects.        (line  100)
 * dellistener:                           Object Groups.      (line  152)
 * demo:                                  Demonstration Functions.
@@ -5756,7 +5756,7 @@ Function Index
                                                              (line   87)
 * diffpara:                              Signal Processing.  (line  514)
 * diffuse:                               Three-Dimensional Plots.
-                                                             (line  662)
+                                                             (line  685)
 * dims:                                  Matrices and Arrays in Oct-Files.
                                                              (line   95)
 * dir:                                   FTP Objects.        (line   77)
@@ -5807,9 +5807,9 @@ Function Index
 * dlmwrite <3>:                          Simple File I/O.    (line  338)
 * dlmwrite <4>:                          Simple File I/O.    (line  339)
 * dmperm:                                Mathematical Considerations.
-                                                             (line  367)
+                                                             (line  418)
 * dmperm <1>:                            Mathematical Considerations.
-                                                             (line  368)
+                                                             (line  419)
 * doc:                                   Getting Help.       (line   41)
 * doc <1>:                               Getting Help.       (line   42)
 * doc_cache_create:                      Getting Help.       (line  259)
@@ -6002,35 +6002,35 @@ Function Index
 * error:                                 Raising Errors.     (line   29)
 * error <1>:                             Raising Errors.     (line   30)
 * errorbar:                              Two-Dimensional Plots.
-                                                             (line 1046)
-* errorbar <1>:                          Two-Dimensional Plots.
-                                                             (line 1047)
-* errorbar <2>:                          Two-Dimensional Plots.
-                                                             (line 1048)
-* errorbar <3>:                          Two-Dimensional Plots.
-                                                             (line 1049)
-* errorbar <4>:                          Two-Dimensional Plots.
-                                                             (line 1050)
-* errorbar <5>:                          Two-Dimensional Plots.
-                                                             (line 1051)
-* errorbar <6>:                          Two-Dimensional Plots.
-                                                             (line 1052)
-* errorbar <7>:                          Two-Dimensional Plots.
-                                                             (line 1053)
-* errorbar <8>:                          Two-Dimensional Plots.
-                                                             (line 1054)
-* errorbar <9>:                          Two-Dimensional Plots.
                                                              (line 1055)
+* errorbar <1>:                          Two-Dimensional Plots.
+                                                             (line 1056)
+* errorbar <2>:                          Two-Dimensional Plots.
+                                                             (line 1057)
+* errorbar <3>:                          Two-Dimensional Plots.
+                                                             (line 1058)
+* errorbar <4>:                          Two-Dimensional Plots.
+                                                             (line 1059)
+* errorbar <5>:                          Two-Dimensional Plots.
+                                                             (line 1060)
+* errorbar <6>:                          Two-Dimensional Plots.
+                                                             (line 1061)
+* errorbar <7>:                          Two-Dimensional Plots.
+                                                             (line 1062)
+* errorbar <8>:                          Two-Dimensional Plots.
+                                                             (line 1063)
+* errorbar <9>:                          Two-Dimensional Plots.
+                                                             (line 1064)
 * errordlg:                              I/O Dialogs.        (line  106)
 * errordlg <1>:                          I/O Dialogs.        (line  107)
 * errordlg <2>:                          I/O Dialogs.        (line  108)
 * errordlg <3>:                          I/O Dialogs.        (line  109)
 * etime:                                 Timing Utilities.   (line  378)
-* etree:                                 Information.        (line  137)
-* etree <1>:                             Information.        (line  138)
-* etree <2>:                             Information.        (line  139)
-* etreeplot:                             Information.        (line  152)
-* etreeplot <1>:                         Information.        (line  153)
+* etree:                                 Information.        (line  154)
+* etree <1>:                             Information.        (line  155)
+* etree <2>:                             Information.        (line  156)
+* etreeplot:                             Information.        (line  169)
+* etreeplot <1>:                         Information.        (line  170)
 * eval:                                  Evaluation.         (line   14)
 * eval <1>:                              Evaluation.         (line   15)
 * evalc:                                 Evaluation.         (line   50)
@@ -6221,15 +6221,15 @@ Function Index
                                                              (line  456)
 * fdisp:                                 Simple File I/O.    (line  318)
 * feather:                               Two-Dimensional Plots.
-                                                             (line 1480)
+                                                             (line 1492)
 * feather <1>:                           Two-Dimensional Plots.
-                                                             (line 1481)
+                                                             (line 1493)
 * feather <2>:                           Two-Dimensional Plots.
-                                                             (line 1482)
+                                                             (line 1494)
 * feather <3>:                           Two-Dimensional Plots.
-                                                             (line 1483)
+                                                             (line 1495)
 * feather <4>:                           Two-Dimensional Plots.
-                                                             (line 1484)
+                                                             (line 1496)
 * feof:                                  EOF and Errors.     (line   24)
 * ferror:                                EOF and Errors.     (line   35)
 * ferror <1>:                            EOF and Errors.     (line   36)
@@ -6311,15 +6311,15 @@ Function Index
 * file_in_path <1>:                      Filesystem Utilities.
                                                              (line  443)
 * fill:                                  Two-Dimensional Plots.
-                                                             (line 1581)
+                                                             (line 1593)
 * fill <1>:                              Two-Dimensional Plots.
-                                                             (line 1582)
+                                                             (line 1594)
 * fill <2>:                              Two-Dimensional Plots.
-                                                             (line 1583)
+                                                             (line 1595)
 * fill <3>:                              Two-Dimensional Plots.
-                                                             (line 1584)
+                                                             (line 1596)
 * fill <4>:                              Two-Dimensional Plots.
-                                                             (line 1585)
+                                                             (line 1597)
 * filter:                                Signal Processing.  (line  246)
 * filter <1>:                            Signal Processing.  (line  247)
 * filter <2>:                            Signal Processing.  (line  248)
@@ -6444,7 +6444,7 @@ Function Index
 * fputs <1>:                             Simple Output.      (line   17)
 * fractdiff:                             Signal Processing.  (line  572)
 * frame2im:                              Two-Dimensional Plots.
-                                                             (line 1661)
+                                                             (line 1673)
 * fread:                                 Binary I/O.         (line   12)
 * fread <1>:                             Binary I/O.         (line   13)
 * fread <2>:                             Binary I/O.         (line   14)
@@ -6756,9 +6756,9 @@ Function Index
                                                              (line   10)
 * gnuplot_binary <1>:                    Customizing Toolkit Behavior.
                                                              (line   11)
-* gplot:                                 Information.        (line  162)
-* gplot <1>:                             Information.        (line  163)
-* gplot <2>:                             Information.        (line  164)
+* gplot:                                 Information.        (line  179)
+* gplot <1>:                             Information.        (line  180)
+* gplot <2>:                             Information.        (line  181)
 * gradient:                              Utility Functions.  (line  223)
 * gradient <1>:                          Utility Functions.  (line  224)
 * gradient <2>:                          Utility Functions.  (line  225)
@@ -6876,28 +6876,28 @@ Function Index
 * hgsave <2>:                            Printing and Saving Plots.
                                                              (line  405)
 * hidden:                                Three-Dimensional Plots.
-                                                             (line  160)
+                                                             (line  166)
 * hidden <1>:                            Three-Dimensional Plots.
-                                                             (line  161)
+                                                             (line  167)
 * hidden <2>:                            Three-Dimensional Plots.
-                                                             (line  162)
+                                                             (line  168)
 * hidden <3>:                            Three-Dimensional Plots.
-                                                             (line  163)
+                                                             (line  169)
 * hilb:                                  Famous Matrices.    (line  331)
 * hist:                                  Two-Dimensional Plots.
-                                                             (line  423)
-* hist <1>:                              Two-Dimensional Plots.
-                                                             (line  424)
-* hist <2>:                              Two-Dimensional Plots.
-                                                             (line  425)
-* hist <3>:                              Two-Dimensional Plots.
-                                                             (line  426)
-* hist <4>:                              Two-Dimensional Plots.
-                                                             (line  427)
-* hist <5>:                              Two-Dimensional Plots.
-                                                             (line  428)
-* hist <6>:                              Two-Dimensional Plots.
                                                              (line  429)
+* hist <1>:                              Two-Dimensional Plots.
+                                                             (line  430)
+* hist <2>:                              Two-Dimensional Plots.
+                                                             (line  431)
+* hist <3>:                              Two-Dimensional Plots.
+                                                             (line  432)
+* hist <4>:                              Two-Dimensional Plots.
+                                                             (line  433)
+* hist <5>:                              Two-Dimensional Plots.
+                                                             (line  434)
+* hist <6>:                              Two-Dimensional Plots.
+                                                             (line  435)
 * histc:                                 Basic Statistical Functions.
                                                              (line   54)
 * histc <1>:                             Basic Statistical Functions.
@@ -6944,8 +6944,6 @@ Function Index
                                                              (line  111)
 * hold <3>:                              Manipulation of Plot Windows.
                                                              (line  112)
-* hold <4>:                              Manipulation of Plot Windows.
-                                                             (line  113)
 * home:                                  Cursor Motion.      (line   60)
 * horzcat:                               Rearranging Matrices.
                                                              (line  155)
@@ -7018,9 +7016,9 @@ Function Index
 * im2double <1>:                         Representing Images.
                                                              (line   28)
 * im2frame:                              Two-Dimensional Plots.
-                                                             (line 1674)
+                                                             (line 1686)
 * im2frame <1>:                          Two-Dimensional Plots.
-                                                             (line 1675)
+                                                             (line 1687)
 * imag:                                  Complex Arithmetic. (line   66)
 * image:                                 Displaying Images.  (line   59)
 * image <1>:                             Displaying Images.  (line   60)
@@ -7294,11 +7292,11 @@ Function Index
 * ishghandle:                            Graphics Objects.   (line  244)
 * ishghandle <1>:                        Graphics Objects.   (line  245)
 * ishold:                                Manipulation of Plot Windows.
-                                                             (line  143)
+                                                             (line  141)
 * ishold <1>:                            Manipulation of Plot Windows.
-                                                             (line  144)
+                                                             (line  142)
 * ishold <2>:                            Manipulation of Plot Windows.
-                                                             (line  145)
+                                                             (line  143)
 * isieee:                                System Information. (line   89)
 * isindex:                               Advanced Indexing.  (line  159)
 * isindex <1>:                           Advanced Indexing.  (line  160)
@@ -7331,43 +7329,49 @@ Function Index
                                                              (line   24)
 * isobject:                              Creating a Class.   (line  102)
 * isocolors:                             Three-Dimensional Plots.
-                                                             (line  541)
+                                                             (line  564)
 * isocolors <1>:                         Three-Dimensional Plots.
-                                                             (line  542)
+                                                             (line  565)
 * isocolors <2>:                         Three-Dimensional Plots.
-                                                             (line  543)
+                                                             (line  566)
 * isocolors <3>:                         Three-Dimensional Plots.
-                                                             (line  544)
+                                                             (line  567)
 * isocolors <4>:                         Three-Dimensional Plots.
-                                                             (line  545)
+                                                             (line  568)
 * isocolors <5>:                         Three-Dimensional Plots.
-                                                             (line  546)
+                                                             (line  569)
 * isonormals:                            Three-Dimensional Plots.
-                                                             (line  467)
+                                                             (line  490)
 * isonormals <1>:                        Three-Dimensional Plots.
-                                                             (line  468)
+                                                             (line  491)
 * isonormals <2>:                        Three-Dimensional Plots.
-                                                             (line  469)
+                                                             (line  492)
 * isonormals <3>:                        Three-Dimensional Plots.
-                                                             (line  470)
+                                                             (line  493)
 * isonormals <4>:                        Three-Dimensional Plots.
-                                                             (line  471)
+                                                             (line  494)
 * isonormals <5>:                        Three-Dimensional Plots.
-                                                             (line  472)
+                                                             (line  495)
 * isosurface:                            Three-Dimensional Plots.
-                                                             (line  376)
-* isosurface <1>:                        Three-Dimensional Plots.
-                                                             (line  377)
-* isosurface <2>:                        Three-Dimensional Plots.
-                                                             (line  378)
-* isosurface <3>:                        Three-Dimensional Plots.
-                                                             (line  379)
-* isosurface <4>:                        Three-Dimensional Plots.
-                                                             (line  380)
-* isosurface <5>:                        Three-Dimensional Plots.
-                                                             (line  381)
-* isosurface <6>:                        Three-Dimensional Plots.
                                                              (line  382)
+* isosurface <1>:                        Three-Dimensional Plots.
+                                                             (line  383)
+* isosurface <2>:                        Three-Dimensional Plots.
+                                                             (line  384)
+* isosurface <3>:                        Three-Dimensional Plots.
+                                                             (line  385)
+* isosurface <4>:                        Three-Dimensional Plots.
+                                                             (line  386)
+* isosurface <5>:                        Three-Dimensional Plots.
+                                                             (line  387)
+* isosurface <6>:                        Three-Dimensional Plots.
+                                                             (line  388)
+* isosurface <7>:                        Three-Dimensional Plots.
+                                                             (line  389)
+* isosurface <8>:                        Three-Dimensional Plots.
+                                                             (line  390)
+* isosurface <9>:                        Three-Dimensional Plots.
+                                                             (line  391)
 * ispc:                                  System Information. (line   71)
 * isplaying:                             Playback.           (line   39)
 * ispref:                                User-Defined Preferences.
@@ -7655,37 +7659,37 @@ Function Index
 * logit:                                 Basic Statistical Functions.
                                                              (line  188)
 * loglog:                                Two-Dimensional Plots.
-                                                             (line  265)
-* loglog <1>:                            Two-Dimensional Plots.
-                                                             (line  266)
-* loglog <2>:                            Two-Dimensional Plots.
-                                                             (line  267)
-* loglog <3>:                            Two-Dimensional Plots.
                                                              (line  268)
-* loglog <4>:                            Two-Dimensional Plots.
+* loglog <1>:                            Two-Dimensional Plots.
                                                              (line  269)
-* loglog <5>:                            Two-Dimensional Plots.
+* loglog <2>:                            Two-Dimensional Plots.
                                                              (line  270)
+* loglog <3>:                            Two-Dimensional Plots.
+                                                             (line  271)
+* loglog <4>:                            Two-Dimensional Plots.
+                                                             (line  272)
+* loglog <5>:                            Two-Dimensional Plots.
+                                                             (line  273)
 * loglogerr:                             Two-Dimensional Plots.
-                                                             (line 1227)
-* loglogerr <1>:                         Two-Dimensional Plots.
-                                                             (line 1228)
-* loglogerr <2>:                         Two-Dimensional Plots.
-                                                             (line 1229)
-* loglogerr <3>:                         Two-Dimensional Plots.
-                                                             (line 1230)
-* loglogerr <4>:                         Two-Dimensional Plots.
-                                                             (line 1231)
-* loglogerr <5>:                         Two-Dimensional Plots.
-                                                             (line 1232)
-* loglogerr <6>:                         Two-Dimensional Plots.
-                                                             (line 1233)
-* loglogerr <7>:                         Two-Dimensional Plots.
-                                                             (line 1234)
-* loglogerr <8>:                         Two-Dimensional Plots.
-                                                             (line 1235)
-* loglogerr <9>:                         Two-Dimensional Plots.
                                                              (line 1236)
+* loglogerr <1>:                         Two-Dimensional Plots.
+                                                             (line 1237)
+* loglogerr <2>:                         Two-Dimensional Plots.
+                                                             (line 1238)
+* loglogerr <3>:                         Two-Dimensional Plots.
+                                                             (line 1239)
+* loglogerr <4>:                         Two-Dimensional Plots.
+                                                             (line 1240)
+* loglogerr <5>:                         Two-Dimensional Plots.
+                                                             (line 1241)
+* loglogerr <6>:                         Two-Dimensional Plots.
+                                                             (line 1242)
+* loglogerr <7>:                         Two-Dimensional Plots.
+                                                             (line 1243)
+* loglogerr <8>:                         Two-Dimensional Plots.
+                                                             (line 1244)
+* loglogerr <9>:                         Two-Dimensional Plots.
+                                                             (line 1245)
 * logm:                                  Functions of a Matrix.
                                                              (line   30)
 * logm <1>:                              Functions of a Matrix.
@@ -7851,49 +7855,49 @@ Function Index
 * merge:                                 Short-circuit Boolean Operators.
                                                              (line  104)
 * mesh:                                  Three-Dimensional Plots.
-                                                             (line   44)
+                                                             (line   50)
 * mesh <1>:                              Three-Dimensional Plots.
-                                                             (line   45)
+                                                             (line   51)
 * mesh <2>:                              Three-Dimensional Plots.
-                                                             (line   46)
+                                                             (line   52)
 * mesh <3>:                              Three-Dimensional Plots.
-                                                             (line   47)
+                                                             (line   53)
 * mesh <4>:                              Three-Dimensional Plots.
-                                                             (line   48)
+                                                             (line   54)
 * mesh <5>:                              Three-Dimensional Plots.
-                                                             (line   49)
+                                                             (line   55)
 * meshc:                                 Three-Dimensional Plots.
-                                                             (line   83)
+                                                             (line   89)
 * meshc <1>:                             Three-Dimensional Plots.
-                                                             (line   84)
+                                                             (line   90)
 * meshc <2>:                             Three-Dimensional Plots.
-                                                             (line   85)
+                                                             (line   91)
 * meshc <3>:                             Three-Dimensional Plots.
-                                                             (line   86)
+                                                             (line   92)
 * meshc <4>:                             Three-Dimensional Plots.
-                                                             (line   87)
+                                                             (line   93)
 * meshc <5>:                             Three-Dimensional Plots.
-                                                             (line   88)
+                                                             (line   94)
 * meshgrid:                              Three-Dimensional Plots.
-                                                             (line  687)
+                                                             (line  710)
 * meshgrid <1>:                          Three-Dimensional Plots.
-                                                             (line  688)
+                                                             (line  711)
 * meshgrid <2>:                          Three-Dimensional Plots.
-                                                             (line  689)
+                                                             (line  712)
 * meshgrid <3>:                          Three-Dimensional Plots.
-                                                             (line  690)
+                                                             (line  713)
 * meshz:                                 Three-Dimensional Plots.
-                                                             (line  122)
+                                                             (line  128)
 * meshz <1>:                             Three-Dimensional Plots.
-                                                             (line  123)
+                                                             (line  129)
 * meshz <2>:                             Three-Dimensional Plots.
-                                                             (line  124)
+                                                             (line  130)
 * meshz <3>:                             Three-Dimensional Plots.
-                                                             (line  125)
+                                                             (line  131)
 * meshz <4>:                             Three-Dimensional Plots.
-                                                             (line  126)
+                                                             (line  132)
 * meshz <5>:                             Three-Dimensional Plots.
-                                                             (line  127)
+                                                             (line  133)
 * methods:                               Creating a Class.   (line  112)
 * methods <1>:                           Creating a Class.   (line  113)
 * methods <2>:                           Creating a Class.   (line  114)
@@ -8044,9 +8048,9 @@ Function Index
 * nchoosek <1>:                          Basic Statistical Functions.
                                                              (line   82)
 * ndgrid:                                Three-Dimensional Plots.
-                                                             (line  723)
+                                                             (line  746)
 * ndgrid <1>:                            Three-Dimensional Plots.
-                                                             (line  724)
+                                                             (line  747)
 * ndims:                                 Object Sizes.       (line   12)
 * ndims <1>:                             Matrices and Arrays in Oct-Files.
                                                              (line   98)
@@ -8313,13 +8317,13 @@ Function Index
 * pan <5>:                               Manipulation of Plot Objects.
                                                              (line   11)
 * pareto:                                Two-Dimensional Plots.
-                                                             (line  792)
+                                                             (line  798)
 * pareto <1>:                            Two-Dimensional Plots.
-                                                             (line  793)
+                                                             (line  799)
 * pareto <2>:                            Two-Dimensional Plots.
-                                                             (line  794)
+                                                             (line  800)
 * pareto <3>:                            Two-Dimensional Plots.
-                                                             (line  795)
+                                                             (line  801)
 * parseparams:                           Variable-length Argument Lists.
                                                              (line   63)
 * parseparams <1>:                       Variable-length Argument Lists.
@@ -8364,13 +8368,13 @@ Function Index
 * pclose:                                Controlling Subprocesses.
                                                              (line  162)
 * pcolor:                                Two-Dimensional Plots.
-                                                             (line 1507)
+                                                             (line 1519)
 * pcolor <1>:                            Two-Dimensional Plots.
-                                                             (line 1508)
+                                                             (line 1520)
 * pcolor <2>:                            Two-Dimensional Plots.
-                                                             (line 1509)
+                                                             (line 1521)
 * pcolor <3>:                            Two-Dimensional Plots.
-                                                             (line 1510)
+                                                             (line 1522)
 * pcr:                                   Iterative Techniques.
                                                              (line  157)
 * pcr <1>:                               Iterative Techniques.
@@ -8412,25 +8416,25 @@ Function Index
 * pi <4>:                                Mathematical Constants.
                                                              (line   35)
 * pie:                                   Two-Dimensional Plots.
-                                                             (line 1300)
+                                                             (line 1312)
 * pie <1>:                               Two-Dimensional Plots.
-                                                             (line 1301)
+                                                             (line 1313)
 * pie <2>:                               Two-Dimensional Plots.
-                                                             (line 1302)
+                                                             (line 1314)
 * pie <3>:                               Two-Dimensional Plots.
-                                                             (line 1303)
+                                                             (line 1315)
 * pie <4>:                               Two-Dimensional Plots.
-                                                             (line 1304)
+                                                             (line 1316)
 * pie3:                                  Two-Dimensional Plots.
-                                                             (line 1333)
+                                                             (line 1345)
 * pie3 <1>:                              Two-Dimensional Plots.
-                                                             (line 1334)
+                                                             (line 1346)
 * pie3 <2>:                              Two-Dimensional Plots.
-                                                             (line 1335)
+                                                             (line 1347)
 * pie3 <3>:                              Two-Dimensional Plots.
-                                                             (line 1336)
+                                                             (line 1348)
 * pie3 <4>:                              Two-Dimensional Plots.
-                                                             (line 1337)
+                                                             (line 1349)
 * pink:                                  Representing Images.
                                                              (line  353)
 * pink <1>:                              Representing Images.
@@ -8458,53 +8462,53 @@ Function Index
 * playblocking <1>:                      Playback.           (line   20)
 * playblocking <2>:                      Playback.           (line   21)
 * plot:                                  Two-Dimensional Plots.
-                                                             (line   26)
-* plot <1>:                              Two-Dimensional Plots.
-                                                             (line   27)
-* plot <2>:                              Two-Dimensional Plots.
-                                                             (line   28)
-* plot <3>:                              Two-Dimensional Plots.
                                                              (line   29)
-* plot <4>:                              Two-Dimensional Plots.
+* plot <1>:                              Two-Dimensional Plots.
                                                              (line   30)
-* plot <5>:                              Two-Dimensional Plots.
+* plot <2>:                              Two-Dimensional Plots.
                                                              (line   31)
-* plot <6>:                              Two-Dimensional Plots.
+* plot <3>:                              Two-Dimensional Plots.
                                                              (line   32)
+* plot <4>:                              Two-Dimensional Plots.
+                                                             (line   33)
+* plot <5>:                              Two-Dimensional Plots.
+                                                             (line   34)
+* plot <6>:                              Two-Dimensional Plots.
+                                                             (line   35)
 * plot3:                                 Three-Dimensional Plots.
-                                                             (line  743)
+                                                             (line  766)
 * plot3 <1>:                             Three-Dimensional Plots.
-                                                             (line  744)
+                                                             (line  767)
 * plot3 <2>:                             Three-Dimensional Plots.
-                                                             (line  745)
+                                                             (line  768)
 * plot3 <3>:                             Three-Dimensional Plots.
-                                                             (line  746)
+                                                             (line  769)
 * plot3 <4>:                             Three-Dimensional Plots.
-                                                             (line  747)
+                                                             (line  770)
 * plot3 <5>:                             Three-Dimensional Plots.
-                                                             (line  748)
+                                                             (line  771)
 * plot3 <6>:                             Three-Dimensional Plots.
-                                                             (line  749)
+                                                             (line  772)
 * plotmatrix:                            Two-Dimensional Plots.
-                                                             (line  750)
+                                                             (line  756)
 * plotmatrix <1>:                        Two-Dimensional Plots.
-                                                             (line  751)
+                                                             (line  757)
 * plotmatrix <2>:                        Two-Dimensional Plots.
-                                                             (line  752)
+                                                             (line  758)
 * plotmatrix <3>:                        Two-Dimensional Plots.
-                                                             (line  753)
+                                                             (line  759)
 * plotmatrix <4>:                        Two-Dimensional Plots.
-                                                             (line  754)
+                                                             (line  760)
 * plotyy:                                Two-Dimensional Plots.
-                                                             (line  185)
-* plotyy <1>:                            Two-Dimensional Plots.
-                                                             (line  186)
-* plotyy <2>:                            Two-Dimensional Plots.
-                                                             (line  187)
-* plotyy <3>:                            Two-Dimensional Plots.
                                                              (line  188)
-* plotyy <4>:                            Two-Dimensional Plots.
+* plotyy <1>:                            Two-Dimensional Plots.
                                                              (line  189)
+* plotyy <2>:                            Two-Dimensional Plots.
+                                                             (line  190)
+* plotyy <3>:                            Two-Dimensional Plots.
+                                                             (line  191)
+* plotyy <4>:                            Two-Dimensional Plots.
+                                                             (line  192)
 * plus:                                  Arithmetic Ops.     (line  183)
 * plus <1>:                              Arithmetic Ops.     (line  184)
 * poisscdf:                              Distributions.      (line  380)
@@ -8529,17 +8533,17 @@ Function Index
 * pol2cart <4>:                          Coordinate Transformations.
                                                              (line   34)
 * polar:                                 Two-Dimensional Plots.
-                                                             (line 1267)
+                                                             (line 1279)
 * polar <1>:                             Two-Dimensional Plots.
-                                                             (line 1268)
+                                                             (line 1280)
 * polar <2>:                             Two-Dimensional Plots.
-                                                             (line 1269)
+                                                             (line 1281)
 * polar <3>:                             Two-Dimensional Plots.
-                                                             (line 1270)
+                                                             (line 1282)
 * polar <4>:                             Two-Dimensional Plots.
-                                                             (line 1271)
+                                                             (line 1283)
 * polar <5>:                             Two-Dimensional Plots.
-                                                             (line 1272)
+                                                             (line 1284)
 * poly:                                  Miscellaneous Functions.
                                                              (line    6)
 * poly <1>:                              Miscellaneous Functions.
@@ -8654,9 +8658,9 @@ Function Index
 * print <3>:                             Printing and Saving Plots.
                                                              (line   51)
 * printd:                                Two-Dimensional Plots.
-                                                             (line  523)
+                                                             (line  529)
 * printd <1>:                            Two-Dimensional Plots.
-                                                             (line  524)
+                                                             (line  530)
 * printf:                                Formatted Output.   (line   17)
 * print_empty_dimensions:                Empty Matrices.     (line   29)
 * print_empty_dimensions <1>:            Empty Matrices.     (line   30)
@@ -8838,33 +8842,33 @@ Function Index
 * quit:                                  Quitting Octave.    (line   16)
 * quit <1>:                              Quitting Octave.    (line   17)
 * quiver:                                Two-Dimensional Plots.
-                                                             (line 1366)
+                                                             (line 1378)
 * quiver <1>:                            Two-Dimensional Plots.
-                                                             (line 1367)
+                                                             (line 1379)
 * quiver <2>:                            Two-Dimensional Plots.
-                                                             (line 1368)
+                                                             (line 1380)
 * quiver <3>:                            Two-Dimensional Plots.
-                                                             (line 1369)
+                                                             (line 1381)
 * quiver <4>:                            Two-Dimensional Plots.
-                                                             (line 1370)
+                                                             (line 1382)
 * quiver <5>:                            Two-Dimensional Plots.
-                                                             (line 1371)
+                                                             (line 1383)
 * quiver <6>:                            Two-Dimensional Plots.
-                                                             (line 1372)
+                                                             (line 1384)
 * quiver3:                               Two-Dimensional Plots.
-                                                             (line 1408)
+                                                             (line 1420)
 * quiver3 <1>:                           Two-Dimensional Plots.
-                                                             (line 1409)
+                                                             (line 1421)
 * quiver3 <2>:                           Two-Dimensional Plots.
-                                                             (line 1410)
+                                                             (line 1422)
 * quiver3 <3>:                           Two-Dimensional Plots.
-                                                             (line 1411)
+                                                             (line 1423)
 * quiver3 <4>:                           Two-Dimensional Plots.
-                                                             (line 1412)
+                                                             (line 1424)
 * quiver3 <5>:                           Two-Dimensional Plots.
-                                                             (line 1413)
+                                                             (line 1425)
 * quiver3 <6>:                           Two-Dimensional Plots.
-                                                             (line 1414)
+                                                             (line 1426)
 * qz:                                    Matrix Factorizations.
                                                              (line  440)
 * qz <1>:                                Matrix Factorizations.
@@ -9177,15 +9181,15 @@ Function Index
 * rgbplot <2>:                           Representing Images.
                                                              (line  177)
 * ribbon:                                Three-Dimensional Plots.
-                                                             (line  891)
+                                                             (line  914)
 * ribbon <1>:                            Three-Dimensional Plots.
-                                                             (line  892)
+                                                             (line  915)
 * ribbon <2>:                            Three-Dimensional Plots.
-                                                             (line  893)
+                                                             (line  916)
 * ribbon <3>:                            Three-Dimensional Plots.
-                                                             (line  894)
+                                                             (line  917)
 * ribbon <4>:                            Three-Dimensional Plots.
-                                                             (line  895)
+                                                             (line  918)
 * rindex:                                Manipulating Strings.
                                                              (line  114)
 * rmappdata:                             Application-defined Data.
@@ -9213,17 +9217,17 @@ Function Index
                                                              (line   76)
 * roots:                                 Finding Roots.      (line   10)
 * rose:                                  Two-Dimensional Plots.
-                                                             (line  834)
+                                                             (line  840)
 * rose <1>:                              Two-Dimensional Plots.
-                                                             (line  835)
+                                                             (line  841)
 * rose <2>:                              Two-Dimensional Plots.
-                                                             (line  836)
+                                                             (line  842)
 * rose <3>:                              Two-Dimensional Plots.
-                                                             (line  837)
+                                                             (line  843)
 * rose <4>:                              Two-Dimensional Plots.
-                                                             (line  838)
+                                                             (line  844)
 * rose <5>:                              Two-Dimensional Plots.
-                                                             (line  839)
+                                                             (line  845)
 * rosser:                                Famous Matrices.    (line  413)
 * rot90:                                 Rearranging Matrices.
                                                              (line   62)
@@ -9314,37 +9318,37 @@ Function Index
 * scanf:                                 Formatted Input.    (line   58)
 * scanf <1>:                             Formatted Input.    (line   59)
 * scatter:                               Two-Dimensional Plots.
-                                                             (line  704)
-* scatter <1>:                           Two-Dimensional Plots.
-                                                             (line  705)
-* scatter <2>:                           Two-Dimensional Plots.
-                                                             (line  706)
-* scatter <3>:                           Two-Dimensional Plots.
-                                                             (line  707)
-* scatter <4>:                           Two-Dimensional Plots.
-                                                             (line  708)
-* scatter <5>:                           Two-Dimensional Plots.
-                                                             (line  709)
-* scatter <6>:                           Two-Dimensional Plots.
                                                              (line  710)
-* scatter <7>:                           Two-Dimensional Plots.
+* scatter <1>:                           Two-Dimensional Plots.
                                                              (line  711)
+* scatter <2>:                           Two-Dimensional Plots.
+                                                             (line  712)
+* scatter <3>:                           Two-Dimensional Plots.
+                                                             (line  713)
+* scatter <4>:                           Two-Dimensional Plots.
+                                                             (line  714)
+* scatter <5>:                           Two-Dimensional Plots.
+                                                             (line  715)
+* scatter <6>:                           Two-Dimensional Plots.
+                                                             (line  716)
+* scatter <7>:                           Two-Dimensional Plots.
+                                                             (line  717)
 * scatter3:                              Three-Dimensional Plots.
-                                                             (line  938)
+                                                             (line  961)
 * scatter3 <1>:                          Three-Dimensional Plots.
-                                                             (line  939)
+                                                             (line  962)
 * scatter3 <2>:                          Three-Dimensional Plots.
-                                                             (line  940)
+                                                             (line  963)
 * scatter3 <3>:                          Three-Dimensional Plots.
-                                                             (line  941)
+                                                             (line  964)
 * scatter3 <4>:                          Three-Dimensional Plots.
-                                                             (line  942)
+                                                             (line  965)
 * scatter3 <5>:                          Three-Dimensional Plots.
-                                                             (line  943)
+                                                             (line  966)
 * scatter3 <6>:                          Three-Dimensional Plots.
-                                                             (line  944)
+                                                             (line  967)
 * scatter3 <7>:                          Three-Dimensional Plots.
-                                                             (line  945)
+                                                             (line  968)
 * schur:                                 Matrix Factorizations.
                                                              (line  526)
 * schur <1>:                             Matrix Factorizations.
@@ -9362,69 +9366,69 @@ Function Index
 * SEEK_END:                              File Positioning.   (line   37)
 * SEEK_SET:                              File Positioning.   (line   35)
 * semilogx:                              Two-Dimensional Plots.
-                                                             (line  225)
-* semilogx <1>:                          Two-Dimensional Plots.
-                                                             (line  226)
-* semilogx <2>:                          Two-Dimensional Plots.
-                                                             (line  227)
-* semilogx <3>:                          Two-Dimensional Plots.
                                                              (line  228)
-* semilogx <4>:                          Two-Dimensional Plots.
+* semilogx <1>:                          Two-Dimensional Plots.
                                                              (line  229)
-* semilogx <5>:                          Two-Dimensional Plots.
+* semilogx <2>:                          Two-Dimensional Plots.
                                                              (line  230)
+* semilogx <3>:                          Two-Dimensional Plots.
+                                                             (line  231)
+* semilogx <4>:                          Two-Dimensional Plots.
+                                                             (line  232)
+* semilogx <5>:                          Two-Dimensional Plots.
+                                                             (line  233)
 * semilogxerr:                           Two-Dimensional Plots.
-                                                             (line 1169)
-* semilogxerr <1>:                       Two-Dimensional Plots.
-                                                             (line 1170)
-* semilogxerr <2>:                       Two-Dimensional Plots.
-                                                             (line 1171)
-* semilogxerr <3>:                       Two-Dimensional Plots.
-                                                             (line 1172)
-* semilogxerr <4>:                       Two-Dimensional Plots.
-                                                             (line 1173)
-* semilogxerr <5>:                       Two-Dimensional Plots.
-                                                             (line 1174)
-* semilogxerr <6>:                       Two-Dimensional Plots.
-                                                             (line 1175)
-* semilogxerr <7>:                       Two-Dimensional Plots.
-                                                             (line 1176)
-* semilogxerr <8>:                       Two-Dimensional Plots.
-                                                             (line 1177)
-* semilogxerr <9>:                       Two-Dimensional Plots.
                                                              (line 1178)
+* semilogxerr <1>:                       Two-Dimensional Plots.
+                                                             (line 1179)
+* semilogxerr <2>:                       Two-Dimensional Plots.
+                                                             (line 1180)
+* semilogxerr <3>:                       Two-Dimensional Plots.
+                                                             (line 1181)
+* semilogxerr <4>:                       Two-Dimensional Plots.
+                                                             (line 1182)
+* semilogxerr <5>:                       Two-Dimensional Plots.
+                                                             (line 1183)
+* semilogxerr <6>:                       Two-Dimensional Plots.
+                                                             (line 1184)
+* semilogxerr <7>:                       Two-Dimensional Plots.
+                                                             (line 1185)
+* semilogxerr <8>:                       Two-Dimensional Plots.
+                                                             (line 1186)
+* semilogxerr <9>:                       Two-Dimensional Plots.
+                                                             (line 1187)
 * semilogy:                              Two-Dimensional Plots.
-                                                             (line  245)
-* semilogy <1>:                          Two-Dimensional Plots.
-                                                             (line  246)
-* semilogy <2>:                          Two-Dimensional Plots.
-                                                             (line  247)
-* semilogy <3>:                          Two-Dimensional Plots.
                                                              (line  248)
-* semilogy <4>:                          Two-Dimensional Plots.
+* semilogy <1>:                          Two-Dimensional Plots.
                                                              (line  249)
-* semilogy <5>:                          Two-Dimensional Plots.
+* semilogy <2>:                          Two-Dimensional Plots.
                                                              (line  250)
+* semilogy <3>:                          Two-Dimensional Plots.
+                                                             (line  251)
+* semilogy <4>:                          Two-Dimensional Plots.
+                                                             (line  252)
+* semilogy <5>:                          Two-Dimensional Plots.
+                                                             (line  253)
 * semilogyerr:                           Two-Dimensional Plots.
-                                                             (line 1198)
-* semilogyerr <1>:                       Two-Dimensional Plots.
-                                                             (line 1199)
-* semilogyerr <2>:                       Two-Dimensional Plots.
-                                                             (line 1200)
-* semilogyerr <3>:                       Two-Dimensional Plots.
-                                                             (line 1201)
-* semilogyerr <4>:                       Two-Dimensional Plots.
-                                                             (line 1202)
-* semilogyerr <5>:                       Two-Dimensional Plots.
-                                                             (line 1203)
-* semilogyerr <6>:                       Two-Dimensional Plots.
-                                                             (line 1204)
-* semilogyerr <7>:                       Two-Dimensional Plots.
-                                                             (line 1205)
-* semilogyerr <8>:                       Two-Dimensional Plots.
-                                                             (line 1206)
-* semilogyerr <9>:                       Two-Dimensional Plots.
                                                              (line 1207)
+* semilogyerr <1>:                       Two-Dimensional Plots.
+                                                             (line 1208)
+* semilogyerr <2>:                       Two-Dimensional Plots.
+                                                             (line 1209)
+* semilogyerr <3>:                       Two-Dimensional Plots.
+                                                             (line 1210)
+* semilogyerr <4>:                       Two-Dimensional Plots.
+                                                             (line 1211)
+* semilogyerr <5>:                       Two-Dimensional Plots.
+                                                             (line 1212)
+* semilogyerr <6>:                       Two-Dimensional Plots.
+                                                             (line 1213)
+* semilogyerr <7>:                       Two-Dimensional Plots.
+                                                             (line 1214)
+* semilogyerr <8>:                       Two-Dimensional Plots.
+                                                             (line 1215)
+* semilogyerr <9>:                       Two-Dimensional Plots.
+                                                             (line 1216)
 * set:                                   Graphics Objects.   (line  414)
 * set <1>:                               Graphics Objects.   (line  415)
 * set <2>:                               Graphics Objects.   (line  416)
@@ -9464,11 +9468,11 @@ Function Index
 * setxor <1>:                            Set Operations.     (line   85)
 * setxor <2>:                            Set Operations.     (line   86)
 * shading:                               Three-Dimensional Plots.
-                                                             (line  915)
+                                                             (line  938)
 * shading <1>:                           Three-Dimensional Plots.
-                                                             (line  916)
+                                                             (line  939)
 * shg:                                   Manipulation of Plot Windows.
-                                                             (line  205)
+                                                             (line  203)
 * shift:                                 Rearranging Matrices.
                                                              (line  309)
 * shift <1>:                             Rearranging Matrices.
@@ -9478,15 +9482,15 @@ Function Index
 * shiftdim <1>:                          Rearranging Matrices.
                                                              (line  320)
 * shrinkfaces:                           Three-Dimensional Plots.
-                                                             (line  618)
+                                                             (line  641)
 * shrinkfaces <1>:                       Three-Dimensional Plots.
-                                                             (line  619)
+                                                             (line  642)
 * shrinkfaces <2>:                       Three-Dimensional Plots.
-                                                             (line  620)
+                                                             (line  643)
 * shrinkfaces <3>:                       Three-Dimensional Plots.
-                                                             (line  621)
+                                                             (line  644)
 * shrinkfaces <4>:                       Three-Dimensional Plots.
-                                                             (line  622)
+                                                             (line  645)
 * SIG:                                   Controlling Subprocesses.
                                                              (line  528)
 * sighup_dumps_octave_core:              Saving Data on Unexpected Exits.
@@ -9527,19 +9531,19 @@ Function Index
 * skewness <2>:                          Descriptive Statistics.
                                                              (line  212)
 * slice:                                 Three-Dimensional Plots.
-                                                             (line  833)
+                                                             (line  856)
 * slice <1>:                             Three-Dimensional Plots.
-                                                             (line  834)
+                                                             (line  857)
 * slice <2>:                             Three-Dimensional Plots.
-                                                             (line  835)
+                                                             (line  858)
 * slice <3>:                             Three-Dimensional Plots.
-                                                             (line  836)
+                                                             (line  859)
 * slice <4>:                             Three-Dimensional Plots.
-                                                             (line  837)
+                                                             (line  860)
 * slice <5>:                             Three-Dimensional Plots.
-                                                             (line  838)
+                                                             (line  861)
 * slice <6>:                             Three-Dimensional Plots.
-                                                             (line  839)
+                                                             (line  862)
 * sombrero:                              Test Plotting Functions.
                                                              (line   10)
 * sombrero <1>:                          Test Plotting Functions.
@@ -9621,9 +9625,9 @@ Function Index
 * spectral_xdf <1>:                      Signal Processing.  (line  722)
 * spectral_xdf <2>:                      Signal Processing.  (line  723)
 * specular:                              Three-Dimensional Plots.
-                                                             (line  672)
+                                                             (line  695)
 * specular <1>:                          Three-Dimensional Plots.
-                                                             (line  673)
+                                                             (line  696)
 * speed:                                 Demonstration Functions.
                                                              (line  115)
 * speed <1>:                             Demonstration Functions.
@@ -9723,9 +9727,9 @@ Function Index
 * sprintf:                               Formatted Output.   (line   54)
 * spstats:                               Information.        (line   48)
 * spstats <1>:                           Information.        (line   49)
-* spy:                                   Information.        (line  124)
-* spy <1>:                               Information.        (line  125)
-* spy <2>:                               Information.        (line  126)
+* spy:                                   Information.        (line  141)
+* spy <1>:                               Information.        (line  142)
+* spy <2>:                               Information.        (line  143)
 * sqp:                                   Nonlinear Programming.
                                                              (line    9)
 * sqp <1>:                               Nonlinear Programming.
@@ -9748,19 +9752,19 @@ Function Index
 * sscanf:                                Formatted Input.    (line   67)
 * sscanf <1>:                            Formatted Input.    (line   68)
 * stairs:                                Two-Dimensional Plots.
-                                                             (line  537)
-* stairs <1>:                            Two-Dimensional Plots.
-                                                             (line  538)
-* stairs <2>:                            Two-Dimensional Plots.
-                                                             (line  539)
-* stairs <3>:                            Two-Dimensional Plots.
-                                                             (line  540)
-* stairs <4>:                            Two-Dimensional Plots.
-                                                             (line  541)
-* stairs <5>:                            Two-Dimensional Plots.
-                                                             (line  542)
-* stairs <6>:                            Two-Dimensional Plots.
                                                              (line  543)
+* stairs <1>:                            Two-Dimensional Plots.
+                                                             (line  544)
+* stairs <2>:                            Two-Dimensional Plots.
+                                                             (line  545)
+* stairs <3>:                            Two-Dimensional Plots.
+                                                             (line  546)
+* stairs <4>:                            Two-Dimensional Plots.
+                                                             (line  547)
+* stairs <5>:                            Two-Dimensional Plots.
+                                                             (line  548)
+* stairs <6>:                            Two-Dimensional Plots.
+                                                             (line  549)
 * stat:                                  Filesystem Utilities.
                                                              (line  183)
 * stat <1>:                              Filesystem Utilities.
@@ -9791,37 +9795,37 @@ Function Index
 * stdout:                                C-Style I/O Functions.
                                                              (line   28)
 * stem:                                  Two-Dimensional Plots.
-                                                             (line  575)
-* stem <1>:                              Two-Dimensional Plots.
-                                                             (line  576)
-* stem <2>:                              Two-Dimensional Plots.
-                                                             (line  577)
-* stem <3>:                              Two-Dimensional Plots.
-                                                             (line  578)
-* stem <4>:                              Two-Dimensional Plots.
-                                                             (line  579)
-* stem <5>:                              Two-Dimensional Plots.
-                                                             (line  580)
-* stem <6>:                              Two-Dimensional Plots.
                                                              (line  581)
+* stem <1>:                              Two-Dimensional Plots.
+                                                             (line  582)
+* stem <2>:                              Two-Dimensional Plots.
+                                                             (line  583)
+* stem <3>:                              Two-Dimensional Plots.
+                                                             (line  584)
+* stem <4>:                              Two-Dimensional Plots.
+                                                             (line  585)
+* stem <5>:                              Two-Dimensional Plots.
+                                                             (line  586)
+* stem <6>:                              Two-Dimensional Plots.
+                                                             (line  587)
 * stem3:                                 Two-Dimensional Plots.
-                                                             (line  664)
+                                                             (line  670)
 * stem3 <1>:                             Two-Dimensional Plots.
-                                                             (line  665)
+                                                             (line  671)
 * stem3 <2>:                             Two-Dimensional Plots.
-                                                             (line  666)
+                                                             (line  672)
 * stem3 <3>:                             Two-Dimensional Plots.
-                                                             (line  667)
+                                                             (line  673)
 * stem3 <4>:                             Two-Dimensional Plots.
-                                                             (line  668)
+                                                             (line  674)
 * stem3 <5>:                             Two-Dimensional Plots.
-                                                             (line  669)
+                                                             (line  675)
 * stemleaf:                              Two-Dimensional Plots.
-                                                             (line  469)
+                                                             (line  475)
 * stemleaf <1>:                          Two-Dimensional Plots.
-                                                             (line  470)
+                                                             (line  476)
 * stemleaf <2>:                          Two-Dimensional Plots.
-                                                             (line  471)
+                                                             (line  477)
 * stft:                                  Signal Processing.  (line  739)
 * stft <1>:                              Signal Processing.  (line  740)
 * stft <2>:                              Signal Processing.  (line  741)
@@ -9984,17 +9988,17 @@ Function Index
 * suppress_verbose_help_message <1>:     Getting Help.       (line  244)
 * suppress_verbose_help_message <2>:     Getting Help.       (line  245)
 * surf:                                  Three-Dimensional Plots.
-                                                             (line  186)
+                                                             (line  192)
 * surf <1>:                              Three-Dimensional Plots.
-                                                             (line  187)
+                                                             (line  193)
 * surf <2>:                              Three-Dimensional Plots.
-                                                             (line  188)
+                                                             (line  194)
 * surf <3>:                              Three-Dimensional Plots.
-                                                             (line  189)
+                                                             (line  195)
 * surf <4>:                              Three-Dimensional Plots.
-                                                             (line  190)
+                                                             (line  196)
 * surf <5>:                              Three-Dimensional Plots.
-                                                             (line  191)
+                                                             (line  197)
 * surface:                               Graphics Objects.   (line  157)
 * surface <1>:                           Graphics Objects.   (line  158)
 * surface <2>:                           Graphics Objects.   (line  159)
@@ -10003,43 +10007,43 @@ Function Index
 * surface <5>:                           Graphics Objects.   (line  162)
 * surface <6>:                           Graphics Objects.   (line  163)
 * surfc:                                 Three-Dimensional Plots.
-                                                             (line  229)
+                                                             (line  235)
 * surfc <1>:                             Three-Dimensional Plots.
-                                                             (line  230)
+                                                             (line  236)
 * surfc <2>:                             Three-Dimensional Plots.
-                                                             (line  231)
+                                                             (line  237)
 * surfc <3>:                             Three-Dimensional Plots.
-                                                             (line  232)
+                                                             (line  238)
 * surfc <4>:                             Three-Dimensional Plots.
-                                                             (line  233)
+                                                             (line  239)
 * surfc <5>:                             Three-Dimensional Plots.
-                                                             (line  234)
+                                                             (line  240)
 * surfl:                                 Three-Dimensional Plots.
-                                                             (line  272)
-* surfl <1>:                             Three-Dimensional Plots.
-                                                             (line  273)
-* surfl <2>:                             Three-Dimensional Plots.
-                                                             (line  274)
-* surfl <3>:                             Three-Dimensional Plots.
-                                                             (line  275)
-* surfl <4>:                             Three-Dimensional Plots.
-                                                             (line  276)
-* surfl <5>:                             Three-Dimensional Plots.
-                                                             (line  277)
-* surfl <6>:                             Three-Dimensional Plots.
                                                              (line  278)
-* surfl <7>:                             Three-Dimensional Plots.
+* surfl <1>:                             Three-Dimensional Plots.
                                                              (line  279)
+* surfl <2>:                             Three-Dimensional Plots.
+                                                             (line  280)
+* surfl <3>:                             Three-Dimensional Plots.
+                                                             (line  281)
+* surfl <4>:                             Three-Dimensional Plots.
+                                                             (line  282)
+* surfl <5>:                             Three-Dimensional Plots.
+                                                             (line  283)
+* surfl <6>:                             Three-Dimensional Plots.
+                                                             (line  284)
+* surfl <7>:                             Three-Dimensional Plots.
+                                                             (line  285)
 * surfnorm:                              Three-Dimensional Plots.
-                                                             (line  328)
+                                                             (line  334)
 * surfnorm <1>:                          Three-Dimensional Plots.
-                                                             (line  329)
+                                                             (line  335)
 * surfnorm <2>:                          Three-Dimensional Plots.
-                                                             (line  330)
+                                                             (line  336)
 * surfnorm <3>:                          Three-Dimensional Plots.
-                                                             (line  331)
+                                                             (line  337)
 * surfnorm <4>:                          Three-Dimensional Plots.
-                                                             (line  332)
+                                                             (line  338)
 * svd:                                   Matrix Factorizations.
                                                              (line  616)
 * svd <1>:                               Matrix Factorizations.
@@ -10069,13 +10073,13 @@ Function Index
 * syl:                                   Functions of a Matrix.
                                                              (line   91)
 * symamd:                                Mathematical Considerations.
-                                                             (line  387)
+                                                             (line  438)
 * symamd <1>:                            Mathematical Considerations.
-                                                             (line  388)
+                                                             (line  439)
 * symamd <2>:                            Mathematical Considerations.
-                                                             (line  389)
+                                                             (line  440)
 * symamd <3>:                            Mathematical Considerations.
-                                                             (line  390)
+                                                             (line  441)
 * symbfact:                              Sparse Linear Algebra.
                                                              (line  269)
 * symbfact <1>:                          Sparse Linear Algebra.
@@ -10087,7 +10091,7 @@ Function Index
 * symlink <1>:                           Filesystem Utilities.
                                                              (line   84)
 * symrcm:                                Mathematical Considerations.
-                                                             (line  451)
+                                                             (line  502)
 * symvar:                                Inline Functions.   (line   62)
 * synthesis:                             Signal Processing.  (line  776)
 * system:                                Controlling Subprocesses.
@@ -10197,10 +10201,10 @@ Function Index
                                                              (line  467)
 * trapz <2>:                             Functions of One Variable.
                                                              (line  468)
-* treelayout:                            Information.        (line  192)
-* treelayout <1>:                        Information.        (line  193)
-* treeplot:                              Information.        (line  178)
-* treeplot <1>:                          Information.        (line  179)
+* treelayout:                            Information.        (line  209)
+* treelayout <1>:                        Information.        (line  210)
+* treeplot:                              Information.        (line  195)
+* treeplot <1>:                          Information.        (line  196)
 * tril:                                  Rearranging Matrices.
                                                              (line  468)
 * tril <1>:                              Rearranging Matrices.
@@ -10451,19 +10455,19 @@ Function Index
 * vertcat:                               Rearranging Matrices.
                                                              (line  166)
 * view:                                  Three-Dimensional Plots.
-                                                             (line  808)
+                                                             (line  831)
 * view <1>:                              Three-Dimensional Plots.
-                                                             (line  809)
+                                                             (line  832)
 * view <2>:                              Three-Dimensional Plots.
-                                                             (line  810)
+                                                             (line  833)
 * view <3>:                              Three-Dimensional Plots.
-                                                             (line  811)
+                                                             (line  834)
 * view <4>:                              Three-Dimensional Plots.
-                                                             (line  812)
+                                                             (line  835)
 * view <5>:                              Three-Dimensional Plots.
-                                                             (line  813)
+                                                             (line  836)
 * view <6>:                              Three-Dimensional Plots.
-                                                             (line  814)
+                                                             (line  837)
 * viridis:                               Representing Images.
                                                              (line  404)
 * viridis <1>:                           Representing Images.
@@ -10511,17 +10515,17 @@ Function Index
 * warning <7>:                           Issuing Warnings.   (line   40)
 * warranty:                              Getting Help.       (line  107)
 * waterfall:                             Three-Dimensional Plots.
-                                                             (line  981)
+                                                             (line 1004)
 * waterfall <1>:                         Three-Dimensional Plots.
-                                                             (line  982)
+                                                             (line 1005)
 * waterfall <2>:                         Three-Dimensional Plots.
-                                                             (line  983)
+                                                             (line 1006)
 * waterfall <3>:                         Three-Dimensional Plots.
-                                                             (line  984)
+                                                             (line 1007)
 * waterfall <4>:                         Three-Dimensional Plots.
-                                                             (line  985)
+                                                             (line 1008)
 * waterfall <5>:                         Three-Dimensional Plots.
-                                                             (line  986)
+                                                             (line 1009)
 * wblcdf:                                Distributions.      (line  475)
 * wblcdf <1>:                            Distributions.      (line  476)
 * wblcdf <2>:                            Distributions.      (line  477)

@@ -20,20 +20,34 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#if ! defined (octave_fpucw_wrapper_h)
-#define octave_fpucw_wrapper_h 1
+#if ! defined (octave_getopt_wrapper_h)
+#define octave_getopt_wrapper_h 1
 
 #if defined __cplusplus
 extern "C" {
 #endif
 
-/* For now, all we need to be able to do is set the control word to
-   the default value.  */
+struct octave_getopt_options
+{
+  const char *name;
+  int has_arg;
+  int *flag;
+  int val;
+};
 
-extern void octave_set_default_fpucw (void);
+#define octave_no_arg 0
+#define octave_required_arg 1
+#define octave_optional_arg 2
+
+extern int
+octave_getopt_long_wrapper (int argc, char *const *argv,
+                            const char *shortopts,
+                            const struct octave_getopt_options *longopts,
+                            int *longind);
 
 #if defined __cplusplus
 }
 #endif
 
 #endif
+

@@ -50,6 +50,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-locbuf.h"
 #include "oct-syscalls.h"
 #include "quit.h"
+#include "signal-wrappers.h"
 #include "singleton-cleanup.h"
 #include "str-vec.h"
 #include "wait-for-input.h"
@@ -658,13 +659,13 @@ octave_call_stack::do_goto_base_frame (void)
 void
 recover_from_exception (void)
 {
-  can_interrupt = true;
+  octave::can_interrupt = true;
   octave_interrupt_immediately = 0;
   octave_interrupt_state = 0;
   octave_signal_caught = 0;
   octave_exception_state = octave_no_exception;
   octave_restore_signal_mask ();
-  octave_catch_interrupts ();
+  octave::catch_interrupts ();
 }
 
 int
@@ -672,13 +673,13 @@ main_loop (void)
 {
   octave_save_signal_mask ();
 
-  can_interrupt = true;
+  octave::can_interrupt = true;
 
-  octave_signal_hook = octave_signal_handler;
+  octave_signal_hook = octave::signal_handler;
   octave_interrupt_hook = 0;
   octave_bad_alloc_hook = 0;
 
-  octave_catch_interrupts ();
+  octave::catch_interrupts ();
 
   octave_initialized = true;
 
@@ -1005,7 +1006,7 @@ run_command_and_return_output (const std::string& cmd_str)
   iprocstream *cmd = new iprocstream (cmd_str.c_str ());
 
   frame.add_delete (cmd);
-  frame.add_fcn (octave_child_list::remove, cmd->pid ());
+  frame.add_fcn (octave::child_list::remove, cmd->pid ());
 
   if (! *cmd)
     error ("system: unable to start subprocess for '%s'", cmd_str.c_str ());

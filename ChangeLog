@@ -1,3 +1,483 @@
+2016-07-07  Mike Miller  <mtmiller@octave.org>
+
+	build: minor correction to workaround rule to build libgnu.la (bug #45578)
+
+	* Makefile.am (libgnu/libgnu.la): Use && to propagate return status of 'cd'.
+	Include $(AM_MAKEFLAGS) placeholder variable for project-wide make options.
+
+	Files: Makefile.am
+
+	build: ensure all files needed to run octave in build dir are declared
+
+	* scripts/module.mk (OCTAVE_INTERPRETER_TARGETS): Include $(PKG_ADD_FILES) in
+	the list, moved from $(ALL_LOCAL_TARGETS).
+	* src/module.mk (ALL_LOCAL_TARGETS): Remove $(OCTAVE_VERSION_LINKS) since it is
+	already listed in $(OCTAVE_INTERPRETER_TARGETS).
+
+	Files: scripts/module.mk src/module.mk
+
+	build: fix typo of $(octave_dirstamp) in build prerequisites
+
+	* libgui/src/module.mk: Fix occurrences of $(octave-dirstamp) typo.
+
+	* libinterp/corefcn/module.mk: Fix occurrences of $(octave-dirstamp) typo.
+	(DIRSTAMP_FILES): Include libinterp/corefcn/$(octave_dirstamp) in the list.
+
+	* libinterp/module.mk: Fix occurrences of $(octave-dirstamp) typo.
+	(DIRSTAMP_FILES): Include libinterp/$(octave_dirstamp) in the list.
+
+	* liboctave/module.mk: Fix occurrences of $(octave-dirstamp) typo.
+	(DIRSTAMP_FILES): Include liboctave/$(octave_dirstamp) in the list.
+
+	* scripts/module.mk: Fix occurrences of $(octave-dirstamp) typo.
+	(DIRSTAMP_FILES): Include scripts/$(octave_dirstamp) in the list.
+
+	* src/module.mk: Fix occurrences of $(octave-dirstamp) typo.
+
+	Files: libgui/src/module.mk libinterp/corefcn/module.mk libinterp/module.mk
+	liboctave/module.mk scripts/module.mk src/module.mk
+
+2016-07-07  John W. Eaton  <jwe@octave.org>
+
+	wrappers for setting long double rounding mode (bug #48319)
+
+	* fpucw-wrappers.c: Rename from fpucw-wrapper.c.
+	* fpucw-wrappers.h: Rename from fpucw-wrapper.h.  Change all uses.
+	* liboctave/wrappers/module.mk: Update.
+	* fpucw-wrappers.h, fpucw-wrappers.c
+	(octave_begin_long_double_rounding, octave_end_long_double_rounding):
+	New functions.
+
+	* oct-inttypes.cc: Use wrapper functions from fpucw-wrappers.h instead
+	of instead of macros from fpucw.h.
+
+	Files: libinterp/octave-value/ov-java.cc liboctave/util/oct-inttypes.cc
+	liboctave/util/oct-inttypes.h liboctave/wrappers/fpucw-wrapper.c
+	liboctave/wrappers/fpucw-wrapper.h liboctave/wrappers/fpucw-
+	wrappers.c liboctave/wrappers/fpucw-wrappers.h
+	liboctave/wrappers/module.mk
+
+	maint: Strip trailing whitespace from source files.
+
+	Files: scripts/plot/draw/isosurface.m
+	scripts/plot/draw/private/__unite_shared_vertices__.m
+	scripts/plot/util/newplot.m
+
+2016-07-07  Rik  <rik@octave.org>
+
+	Fix failing BIST test from cset 9121d6584f6a.
+
+	* __next_line_color__.m: Handle case where there is only one color
+	in ColorOrder so that mod() returns 0.  Reset color_idx to 1 in
+	this case.  Rewrite BIST test to show graphically what is happening.
+
+	* __next_line_style__.m: Handle case where there is only one style
+	in LineStyleOrder.  Reset style_idx to 1 in this case.
+	Rewrite BIST test to show graphically what is happening.
+
+	Files: scripts/plot/util/__next_line_color__.m
+	scripts/plot/util/__next_line_style__.m
+
+	maint: Update gnulib to latest changes.
+
+	Files: .hgsubstate
+
+	Overhaul graphics implementation of hold() (bug #43559).
+
+	* NEWS: Announce possible color changes in plots relying on "hold on".
+
+	* hold.m: Deprecate "hold all" in docstring.  Eliminate use of __hold_all__
+	graphics property.  Update %!demo to use "hold on" only.
+
+	* ishold.m: Put input validation first.  Use switch statement rather than
+	if/else tree for clarity.
+
+	* graphics.in.h: Remove hidden __hold_all__ graphics property of axes.
+
+	* graphics.cc (axes::properties::set_defaults): Remove use of __hold_all__.
+
+	* newplot.m: Delete kluge use of __next_line_color__ and __next_line_style__.
+	Set colororderindex and linestyleorderindex to 1 on new plots.
+
+	* __next_line_color__.m: Completely rewrite to use the axes graphic property
+	"colororderindex" to keep track of which color should be used next.  Also
+	increment "linestyleorderindex" when number of colors used rolls over so that
+	colors will repeat with the next linestyle in the series.  Update BIST test.
+
+	* __next_line_style__.m: Completely rewrite to use the axes graphic property
+	"linestyleorderindex" to keep track of which linestyle should be used next.
+
+	* imagesc.m, axis.m, legend.m: Replace "hold all" with "hold on" in all demos.
+
+	Files: NEWS libinterp/corefcn/graphics.cc libinterp/corefcn/graphics.in.h
+	scripts/image/imagesc.m scripts/plot/appearance/axis.m
+	scripts/plot/appearance/legend.m
+	scripts/plot/util/__next_line_color__.m
+	scripts/plot/util/__next_line_style__.m scripts/plot/util/hold.m
+	scripts/plot/util/ishold.m scripts/plot/util/newplot.m
+
+2016-07-07  Mike Miller  <mtmiller@octave.org>
+
+	maint: use an absolute url for gnulib subrepo, rename back to gnulib
+
+	* .hgsub (gnulib): Rename subrepo and point to gnulib mirror on hg.octave.org.
+	* .hgsubstate: Rename gnulib-hg to gnulib.
+	* bootstrap.conf (GNULIB_SRCDIR): Likewise.
+	* etc/HACKING: Likewise.
+
+	Files: .hgsub .hgsubstate bootstrap.conf etc/HACKING
+
+2016-07-07  John W. Eaton  <jwe@octave.org>
+
+	restore move-if-change rule for DOCSTRINGS files (bug #48430)
+
+	* libinterp/module.mk (libinterp/DOCSTRINGS):: Use move-if-change.
+	* scripts/module.mk (scripts/DOCSTRINGS): Likewise.
+
+	Files: libinterp/module.mk scripts/module.mk
+
+	maint: Strip trailing whitespace from source files.
+
+	Files: liboctave/system/oct-env.cc liboctave/wrappers/time-wrappers.h
+
+	update list of gnulib modules
+
+	* bootstrap.conf (gnulib_modules):
+	Remove unused modules: pathmax, sleep.
+	Remove modules for functions now provided by standard C++:
+	copysign, copysignf, fclose, fflush, float, floor, floorf, fopen,
+	frexp, frexpf, log, log2, log2-ieee, log2f, log2f-ieee, logf,
+	mbrtowc, realloc-gnu, rename, round, roundf, stdint, trunc, truncf.
+
+	Files: bootstrap.conf
+
+	provide wrapper for getopt
+
+	* liboctave/wrappers/getopt-wrapper.c,
+	liboctave/wrappers/getopt-wrapper.h: New files.
+	* liboctave/wrappers/module.mk: Update.
+
+	* octave.cc, options-usage.h: Use wrapper for getopt.
+
+	Files: libinterp/octave.cc libinterp/options-usage.h liboctave/wrappers
+	/getopt-wrapper.c liboctave/wrappers/getopt-wrapper.h
+	liboctave/wrappers/module.mk
+
+2016-07-07  Carnë Draug  <carandraug@octave.org>
+
+	ovl: new constructor with initializer_list to reduce code duplication.
+
+	* libinterp/octave-value/ovl.h (ovl): remove the 11 repeated functions
+	that eased the creation of an octave_value_list from 0 to 10 octave_value
+	objects.  Replace with a single function that makes use of variadic
+	template.  Also add new constructor that works with a initializer_list.
+
+	Files: libinterp/octave-value/ovl.h
+
+2016-07-07  John W. Eaton  <jwe@octave.org>
+
+	provide wrapper for gnulib mktime function
+
+	* time-wrappers.h, time-wrappers.c (octave_mktime_wrapper):
+	New function.
+	* oct-time.cc: Use it.
+
+	Files: liboctave/system/oct-time.cc liboctave/wrappers/time-wrappers.c
+	liboctave/wrappers/time-wrappers.h
+
+	use octave::sys::time instead of C library time function
+
+	* graphics.cc, kpse.cc: Use octave::sys::time instead of calling C
+	library time function directly.
+	* bootstrap.conf: Drop unneeded time and times modules from list
+	(octave::sys::time uses gettimeofday instead of calling time).
+
+	Files: bootstrap.conf libinterp/corefcn/graphics.cc liboctave/util/kpse.cc
+
+2016-07-07  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	Backed out changeset: d3c79eb1b483
+
+	Files: test/bug-46330.tst test/module.mk
+
+2016-06-18  Carnë Draug  <carandraug@octave.org>
+
+	dim_vector: replace 7 constructors with single variadic template (patch #9030).
+
+	* dim-vector.h (dim_vector::dim_vector): a new constructor that uses
+	variadic template to create constructors with any number of dimensions.
+	This replaces all the current macros which only support up to 7 dimensions.
+	The change requires arguments beyond the first two, explicitely be ints.
+	* ft-text-renderer.cc: explicit convert doubles to octave_idx_type.
+
+	Files: libinterp/corefcn/ft-text-renderer.cc liboctave/array/dim-vector.h
+
+2016-07-07  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	Fix usage message in odeset.
+
+	* scripts/ode/odeset.m : Change the message printed when nargout = 0.
+
+	Files: scripts/ode/odeset.m
+
+2016-07-06  Rik  <rik@octave.org>
+
+	Use correct interpretation of alpha variable for gridlnes in gnuplot (bug #48401).
+
+	* __gnuplot_draw_axes__.m: Use (1-obj.alpha) to reverse opaque/transparent
+	definition.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+	Use default gridlinestyle of '-' for Matlab compatibility.
+
+	* graphics.cc (axes::properties::set_defaults): Use '-' for default
+	gridlinestyle.
+
+	* graphics.in.h (AXES_PROPERTIES): Use '-' for default gridlinestyle.
+
+	* grid.m: Don't change gridlinestyle or minorgridlinestyle properties.
+
+	Files: libinterp/corefcn/graphics.cc libinterp/corefcn/graphics.in.h
+	scripts/plot/appearance/grid.m
+
+2016-07-06  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Supply correct key title specs for the gnuplot toolkit (bug #48427).
+
+	* __gnuplot_draw_axes__.m: Copy parent displayname property to objects within
+	  an hggroup.  Add a space between spacing spec and font spec.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-07-06  Rik  <rik@octave.org>
+
+	legend.m: Don't use 'legend' tag for any non-axes, non-legend objects.
+
+	* legend.m: Use "deletelegend" tag for hidden text object used to
+	invoke destructor on legend when axes is destroyed.
+
+	Files: scripts/plot/appearance/legend.m
+
+2016-06-30  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Call Fdrawnow only after ui* callbacks, not all (bug #47216).
+
+	* graphics.cc (gh_manager::do_execute_callback):
+	  Check the name of graphics object starts "ui" before calling Fdrawnow.
+
+	Files: libinterp/corefcn/graphics.cc
+
+2016-07-06  Rik  <rik@octave.org>
+
+	__gnuplot_draw_axes__.m: Use strcmp instead of strcmpi.
+
+	* __gnuplot_draw_axes__.m: Use strcmp instead of strcmpi.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-07-06  John W. Eaton  <jwe@octave.org>
+
+	move signal functions into octave namespace
+
+	* sighandlers.h, sighandlers.cc: Move all functions and variables into
+	the octave namespace.  Change all uses.
+	(base_interrupt_manager, posix_interrupt_manager, interrupt_manager):
+	New classes.
+	(w32_interrupt_manager): Derive from base_interrupt_manager.  Limit
+	Windows-specific code to this class alone.
+	(interrupt_manager::create_instance): Create w32_interrupt_manager
+	instance on Windows systems.
+
+	Files: libinterp/corefcn/debug.cc libinterp/corefcn/gl2ps-print.cc
+	libinterp/corefcn/input.cc libinterp/corefcn/oct-hist.cc
+	libinterp/corefcn/pt-jit.cc libinterp/corefcn/sighandlers.cc
+	libinterp/corefcn/sighandlers.h libinterp/corefcn/sysdep.cc
+	libinterp/corefcn/toplev.cc libinterp/octave.cc
+
+2016-07-06  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Condition grid_idx assignment on existence of axis_idx (bug #48401).
+
+	* __gnuplot_draw_axes__.m: Move initialization of grid_idx to within the
+	  major/minor grid code and choose initial value based upon whether an axis
+	  was drawn.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-07-06  John W. Eaton  <jwe@octave.org>
+
+	move octave_child_list to separate file and define inside namespace
+
+	* liboctave/system/child-list.cc, liboctave/system/child-list.h:
+	New files.
+
+	* liboctave/system/module.mk: Update.
+
+	* sighandlers.h, sighandlers.cc: Move octave_child and
+	octave_child_list classes to separate files in liboctave and defined
+	inside the octave namespace.  Change all uses.
+
+	Files: libinterp/corefcn/pager.cc libinterp/corefcn/sighandlers.cc
+	libinterp/corefcn/sighandlers.h libinterp/corefcn/toplev.cc
+	libinterp/octave.cc liboctave/system/child-list.cc liboctave/system
+	/child-list.h liboctave/system/module.mk
+
+2016-07-06  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Add minor grid line control and alpha blending for gnuplot toolkit (bug #48401).
+
+	* __gnuplot_draw_axes__.m: Replace have_grid with have_major_grid and
+	  have_minor_grid.  Add visible_gls and visible_mgls variables derived from
+	  gridlinestyle and minorgridlinestyle properties.  Add condition visible_gls
+	  to setting grids on and condition visible_mgls to setting minor grids on.
+	  Create a linetype for major and minor grid line if present and use the index
+	  in the 'set grid' command.  Use linetype 0 if not present.
+	  (do_linestyle_command): If the object has an alpha field, convert the value
+	  to 8-bit and add two characters to the front of RGB specification.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-07-06  Rik  <rik@octave.org>
+
+	maint: Periodic merge of stable to default.
+
+	Files: 
+
+2016-07-06  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	Add regression test (bug #46330).
+
+	* test/module.mk: Add new test file.
+
+	* test/bug-46330.tst: Add test case from bug report.
+
+	Files: test/bug-46330.tst test/module.mk
+
+2016-07-06  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Avoid segfault with matrices containing Inf & NaN (bug #46330).
+
+	* liboctave/array/CMatrix.cc (ComplexMatrix::finverse): check for Inf.
+
+	* liboctave/array/CMatrix.cc (ComplexMatrix::fsolve): check for Inf, return
+	appropriate value.
+
+	Files: liboctave/array/CMatrix.cc
+
+2016-07-05  Mike Miller  <mtmiller@octave.org>
+
+	build: delete generated @class subdirectories for test suite on 'make clean'
+
+	* test/module.mk (test-clean): Delete $(GENERATED_BC_OVERLOADS_DIRS).
+	(clean-local): Depend on test-clean.
+
+	Files: test/module.mk
+
+	build: don't delete distributed docs on 'make clean' or 'make distclean' (bug #45646)
+
+	* Makefile.am (clean-aminfo): Disable built-in Automake target that deletes
+	Texinfo documentation on 'make clean'.
+	* doc/module.mk (doc-maintainer-clean): Delete all built Texinfo documentation
+	on 'make maintainer-clean'.
+	* doc/interpreter/module.mk (doc_DISTCLEANFILES): Remove $(OCTAVE_HTML_STAMP)
+	from the list.
+
+	Files: Makefile.am doc/interpreter/module.mk doc/module.mk
+
+	configure: clean up warning messages when building without GraphicsMagick
+
+	* configure.ac: Add a warning message when pkg-config fails to find
+	GraphicsMagick.  Reword all GraphicsMagick warning messages to mention all
+	affected functions.
+
+	Files: configure.ac
+
+2016-07-05  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Add control of grid lines for gnuplot toolkit (bug #48401).
+
+	* __gnuplot_draw_axes__.m: Remove grid commands from before data commands to
+	  after data commands, and use a linetype via do_linestyle_command() for
+	  dashtype, color and linewidth control.
+	  (do_linestyle_command): Condition the extra linetype command on the
+	  presence of points on the plot.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-07-05  Mike Miller  <mtmiller@octave.org>
+
+	build: use pkg-config in OCTAVE_CHECK_LIB without overriding user options
+
+	* acinclude.m4 (OCTAVE_CHECK_LIB): Use pkg-config only when configure is not
+	called with --with-LIB or --without-LIB options.
+
+	Files: m4/acinclude.m4
+
+2016-07-05  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	maint: Cannot test private function, unless bug #38776 is resolved.
+
+	Files: scripts/plot/draw/isosurface.m
+
+2016-07-04  Rik  <rik@octave.org>
+
+	doc: Create images for manual with legends that don't extend out of axes box.
+
+	* geometryimages.m, interpimages.m, splineimages.m:
+	Set defaultfigureposition to value which does not cause legend.m to resize
+	legend box (work around bug #39697).  Use image size of 8x6 inches so that
+	printed result now matches what appears on screen when plotting the same
+	figure.
+
+	Files: doc/interpreter/geometryimages.m doc/interpreter/interpimages.m
+	doc/interpreter/splineimages.m
+
+2016-07-04  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	acinclude.m4: Use pkg-config from OCTAVE_CHECK_LIB whenever possible
+
+	The following patch uses pkg-config to add extra flags if pkg-config
+	finds the module in question in OCTAVE_CHECK_LIB. This was necessary
+	for me in Debian in order to find the HDF5 libraries, and seems useful
+	in general.
+
+	Like it often happens with m4 and autoconf, I cargo-culted and
+	generalised this code from existing checks for sndfile in
+	configure.ac. It probably would make sense to move the original code
+	into its own m4 macro, so we can have a little less code duplication
+	in the autoconf files.
+
+	* acinclude.m4 (OCTAVE_CHECK_LIB): add a generic pkg-config check.
+
+	Files: m4/acinclude.m4
+
+2016-07-03  Markus Muetzel  <markus.muetzel@gmx.de>
+
+	Additional functionality for isosurface.m (bug #46946)
+
+	* isosurface.m: Change input argument checking to be Matlab compatible.
+	Add support for option "noshare" (default behavior changed for Matlab
+	compatibility).
+	* __calc_isovalue_from_data__.m: Add private function to get "good" iso
+	value from data.
+	* __unite_shared_vertices__.m: Add private funtion to find and unite
+	shared vertices for a patch.
+
+	Files: scripts/plot/draw/isosurface.m scripts/plot/draw/module.mk
+	scripts/plot/draw/private/__calc_isovalue_from_data__.m
+	scripts/plot/draw/private/__unite_shared_vertices__.m
+
+2016-07-04  Rik  <rik@octave.org>
+
+	Optimize do_make_absolute for most common calling usage.
+
+	* oct-env.cc: Put in shortcut path to detect when path is '.' which
+	is called every time that Octave returns to prompt.  Rename variable
+	tmp to sep_pos for clarity.
+
+	Files: liboctave/system/oct-env.cc
+
 2016-07-03  Rik  <rik@octave.org>
 
 	run.m: Return to original directory after executing script (bug #48351).

@@ -130,7 +130,7 @@ Handle of the parent graphics object.
 
 @anchor{XREFuimenuposition}
 @cindex uimenu position
-@item @code{position}: def. @code{0}
+@item @code{position}: def. @code{1}
 
 
 
