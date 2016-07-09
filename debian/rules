@@ -56,13 +56,6 @@ clean:
 override_dh_auto_configure:
 	# override normal dh_auto_configure call to pass OpenMP flag to it (#631831)
 	dh_auto_configure -- --enable-openmp $(WITH_JAVA_FLAGS) $(JIT_FLAG) $(HDF5_FLAGS)
-	# Avoid triggering the build of oct-gperf.h
-	touch libinterp/parse-tree/oct-gperf.h
-	# Avoid triggering the build of oct-parse.h oct-tex-parser.h
-	# FIXME: This is a temporary hack and should not be needed
-	# when the upstream tarball is properly generated.
-	touch libinterp/parse-tree/oct-parse.h
-	touch libinterp/corefcn/oct-tex-parser.h
 
 # dh_auto_test tries to run "make test", so override it
 override_dh_auto_test:
