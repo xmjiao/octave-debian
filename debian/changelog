@@ -1,3 +1,13 @@
+octave (4.1.0~hg.20160708.22076-1) experimental; urgency=medium
+
+  * Imported Upstream version 4.1.0~hg.20160708.22076
+  * Force build with gcc-6.
+    Thanks to Mike Miller for the patch
+  * d/p/drop_versioned_binaries.diff: Refresh for new upstream version
+  * d/rules: Remove code for touching automatically generated files
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 09 Jul 2016 10:52:34 -0300
+
 octave (4.1.0~hg.20160703.22033-2) experimental; urgency=medium
 
   * d/rules: Avoid triggering the build of Bison-generated files
