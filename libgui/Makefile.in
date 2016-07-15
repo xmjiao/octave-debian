@@ -169,14 +169,15 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/fcntl.m4 $(top_srcdir)/m4/fcntl_h.m4 \
 	$(top_srcdir)/m4/fdopendir.m4 $(top_srcdir)/m4/fflush.m4 \
 	$(top_srcdir)/m4/filemode.m4 $(top_srcdir)/m4/filenamecat.m4 \
-	$(top_srcdir)/m4/float_h.m4 $(top_srcdir)/m4/floor.m4 \
-	$(top_srcdir)/m4/floorf.m4 $(top_srcdir)/m4/fnmatch.m4 \
-	$(top_srcdir)/m4/fopen.m4 $(top_srcdir)/m4/fpieee.m4 \
-	$(top_srcdir)/m4/fpurge.m4 $(top_srcdir)/m4/freading.m4 \
-	$(top_srcdir)/m4/frexp.m4 $(top_srcdir)/m4/frexpf.m4 \
-	$(top_srcdir)/m4/fseek.m4 $(top_srcdir)/m4/fseeko.m4 \
-	$(top_srcdir)/m4/fstat.m4 $(top_srcdir)/m4/fstatat.m4 \
-	$(top_srcdir)/m4/ftell.m4 $(top_srcdir)/m4/ftello.m4 \
+	$(top_srcdir)/m4/flexmember.m4 $(top_srcdir)/m4/float_h.m4 \
+	$(top_srcdir)/m4/floor.m4 $(top_srcdir)/m4/floorf.m4 \
+	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fopen.m4 \
+	$(top_srcdir)/m4/fpieee.m4 $(top_srcdir)/m4/fpurge.m4 \
+	$(top_srcdir)/m4/freading.m4 $(top_srcdir)/m4/frexp.m4 \
+	$(top_srcdir)/m4/frexpf.m4 $(top_srcdir)/m4/fseek.m4 \
+	$(top_srcdir)/m4/fseeko.m4 $(top_srcdir)/m4/fstat.m4 \
+	$(top_srcdir)/m4/fstatat.m4 $(top_srcdir)/m4/ftell.m4 \
+	$(top_srcdir)/m4/ftello.m4 \
 	$(top_srcdir)/m4/getcwd-abort-bug.m4 \
 	$(top_srcdir)/m4/getcwd-path-max.m4 $(top_srcdir)/m4/getcwd.m4 \
 	$(top_srcdir)/m4/getdtablesize.m4 \
@@ -185,6 +186,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/gl-openssl.m4 $(top_srcdir)/m4/glibc21.m4 \
 	$(top_srcdir)/m4/glob.m4 $(top_srcdir)/m4/gnulib-common.m4 \
 	$(top_srcdir)/m4/gnulib-comp.m4 \
+	$(top_srcdir)/m4/hard-locale.m4 \
 	$(top_srcdir)/m4/include_next.m4 $(top_srcdir)/m4/intmax_t.m4 \
 	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/isatty.m4 \
 	$(top_srcdir)/m4/isnand.m4 $(top_srcdir)/m4/isnanf.m4 \
@@ -243,6 +245,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/sys_types_h.m4 $(top_srcdir)/m4/sys_uio_h.m4 \
 	$(top_srcdir)/m4/sys_utsname_h.m4 $(top_srcdir)/m4/tempname.m4 \
 	$(top_srcdir)/m4/time_h.m4 $(top_srcdir)/m4/time_r.m4 \
+	$(top_srcdir)/m4/time_rz.m4 $(top_srcdir)/m4/timegm.m4 \
 	$(top_srcdir)/m4/times.m4 $(top_srcdir)/m4/tm_gmtoff.m4 \
 	$(top_srcdir)/m4/tmpdir.m4 $(top_srcdir)/m4/tmpfile.m4 \
 	$(top_srcdir)/m4/trunc.m4 $(top_srcdir)/m4/truncf.m4 \
@@ -1082,6 +1085,7 @@ GNULIB_TANL = @GNULIB_TANL@
 GNULIB_TIMEGM = @GNULIB_TIMEGM@
 GNULIB_TIMES = @GNULIB_TIMES@
 GNULIB_TIME_R = @GNULIB_TIME_R@
+GNULIB_TIME_RZ = @GNULIB_TIME_RZ@
 GNULIB_TMPFILE = @GNULIB_TMPFILE@
 GNULIB_TOWCTRANS = @GNULIB_TOWCTRANS@
 GNULIB_TRUNC = @GNULIB_TRUNC@
@@ -1427,6 +1431,7 @@ HAVE_TANHF = @HAVE_TANHF@
 HAVE_TANL = @HAVE_TANL@
 HAVE_TIMEGM = @HAVE_TIMEGM@
 HAVE_TIMES = @HAVE_TIMES@
+HAVE_TIMEZONE_T = @HAVE_TIMEZONE_T@
 HAVE_TYPE_VOLATILE_SIG_ATOMIC_T = @HAVE_TYPE_VOLATILE_SIG_ATOMIC_T@
 HAVE_UNAME = @HAVE_UNAME@
 HAVE_UNISTD_H = @HAVE_UNISTD_H@
@@ -2546,7 +2551,8 @@ LIBOCTAVE_LINK_OPTS = \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@LIBOCTINTERP_LINK_DEPS =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(DLDFCN_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(FT2_LIBS) $(HDF5_LIBS) \
-@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(Z_LIBS) $(FFTW_XLIBS) \
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(MAGICK_LIBS) \
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(FFTW_XLIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(OPENGL_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(X11_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(CARBON_LIBS) \
@@ -2556,15 +2562,17 @@ LIBOCTAVE_LINK_OPTS = \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(am__append_6)
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@LIBOCTINTERP_LINK_DEPS =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(FT2_LIBS) $(HDF5_LIBS) \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(Z_LIBS) $(FFTW_XLIBS) \
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(MAGICK_LIBS) \
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(FFTW_XLIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(OPENGL_LIBS) $(X11_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(CARBON_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(GL2PS_LIBS) $(LLVM_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(JAVA_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(LAPACK_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(am__append_6)
-LIBOCTINTERP_LINK_OPTS = $(FT2_LDFLAGS) $(HDF5_LDFLAGS) $(Z_LDFLAGS) \
-	$(FFTW_XLDFLAGS) $(LLVM_LDFLAGS) $(am__append_7)
+LIBOCTINTERP_LINK_OPTS = $(FT2_LDFLAGS) $(HDF5_LDFLAGS) \
+	$(MAGICK_LDFLAGS) $(Z_LDFLAGS) $(FFTW_XLDFLAGS) \
+	$(LLVM_LDFLAGS) $(am__append_7)
 OCT_LINK_DEPS = $(am__append_8)
 OCT_LINK_OPTS = $(LDFLAGS) $(am__append_9)
 @AMCOND_LINK_ALL_DEPS_TRUE@OCTAVE_LINK_DEPS = $(LIBOCTINTERP_LINK_DEPS)

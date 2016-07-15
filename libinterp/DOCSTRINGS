@@ -1359,6 +1359,57 @@ Undocumented internal function.
 @deftypefn {Built-in Function} {@var{vi} =} __lin_interpn__ (@var{x1}, @var{x2}, @dots{}, @var{xn}, @var{v}, @var{y1}, @var{y2}, @dots{}, @var{yn})
 Undocumented internal function.
 @end deftypefn
+__magick_read__
+@c __magick_read__ libinterp/corefcn/__magick_read__.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {[@var{img}, @var{map}, @var{alpha}] =} __magick_read__ (@var{fname}, @var{options})
+Read image with GraphicsMagick or ImageMagick.
+
+This is a private internal function not intended for direct use.
+Use @code{imread} instead.
+
+@seealso{imfinfo, imformats, imread, imwrite}
+@end deftypefn
+__magick_write__
+@c __magick_write__ libinterp/corefcn/__magick_read__.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __magick_write__ (@var{fname}, @var{fmt}, @var{img}, @var{map}, @var{options})
+Write image with GraphicsMagick or ImageMagick.
+
+This is a private internal function not intended for direct use.
+Use @code{imwrite} instead.
+
+@seealso{imfinfo, imformats, imread, imwrite}
+@end deftypefn
+__magick_ping__
+@c __magick_ping__ libinterp/corefcn/__magick_read__.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __magick_ping__ (@var{fname}, @var{idx})
+Ping image information with GraphicsMagick or ImageMagick.
+
+This is a private internal function not intended for direct use.
+
+@seealso{imfinfo}
+@end deftypefn
+__magick_finfo__
+@c __magick_finfo__ libinterp/corefcn/__magick_read__.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __magick_finfo__ (@var{fname})
+Read image information with GraphicsMagick or ImageMagick.
+
+This is a private internal function not intended for direct use.
+Use @code{imfinfo} instead.
+
+@seealso{imfinfo, imformats, imread, imwrite}
+@end deftypefn
+__magick_formats__
+@c __magick_formats__ libinterp/corefcn/__magick_read__.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __magick_imformats__ (@var{formats})
+Fill formats info with GraphicsMagick CoderInfo.
+
+@seealso{imfinfo, imformats, imread, imwrite}
+@end deftypefn
 __pchip_deriv__
 @c __pchip_deriv__ libinterp/corefcn/__pchip_deriv__.cc
 -*- texinfo -*-
@@ -2942,7 +2993,11 @@ any (eye (2, 4), 2)
 Compute atan (@var{y} / @var{x}) for corresponding elements of @var{y}
 and @var{x}.
 
-@var{y} and @var{x} must match in size and orientation.
+@var{y} and @var{x} must match in size and orientation.  The signs of
+elements of @var{y} and @var{x} are used to determine the quadrats of each
+resulting value.
+
+This function is equivalent to @code{arg (complex (@var{x}, @var{y}))}.
 @seealso{tan, tand, tanh, atanh}
 @end deftypefn
 hypot
@@ -12991,7 +13046,7 @@ current Octave process and replace it with the program named by @var{file}.
 For example,
 
 @example
-exec ("ls" "-l")
+exec ("ls", "-l")
 @end example
 
 @noindent
@@ -15580,57 +15635,6 @@ Undocumented internal function.
 -*- texinfo -*-
 @deftypefn {Loadable Function} {@var{gnuplot_available} =} __have_gnuplot__ ()
 Undocumented internal function.
-@end deftypefn
-__magick_read__
-@c __magick_read__ libinterp/dldfcn/__magick_read__.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {[@var{img}, @var{map}, @var{alpha}] =} __magick_read__ (@var{fname}, @var{options})
-Read image with GraphicsMagick or ImageMagick.
-
-This is a private internal function not intended for direct use.
-Use @code{imread} instead.
-
-@seealso{imfinfo, imformats, imread, imwrite}
-@end deftypefn
-__magick_write__
-@c __magick_write__ libinterp/dldfcn/__magick_read__.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __magick_write__ (@var{fname}, @var{fmt}, @var{img}, @var{map}, @var{options})
-Write image with GraphicsMagick or ImageMagick.
-
-This is a private internal function not intended for direct use.
-Use @code{imwrite} instead.
-
-@seealso{imfinfo, imformats, imread, imwrite}
-@end deftypefn
-__magick_ping__
-@c __magick_ping__ libinterp/dldfcn/__magick_read__.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __magick_ping__ (@var{fname}, @var{idx})
-Ping image information with GraphicsMagick or ImageMagick.
-
-This is a private internal function not intended for direct use.
-
-@seealso{imfinfo}
-@end deftypefn
-__magick_finfo__
-@c __magick_finfo__ libinterp/dldfcn/__magick_read__.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __magick_finfo__ (@var{fname})
-Read image information with GraphicsMagick or ImageMagick.
-
-This is a private internal function not intended for direct use.
-Use @code{imfinfo} instead.
-
-@seealso{imfinfo, imformats, imread, imwrite}
-@end deftypefn
-__magick_formats__
-@c __magick_formats__ libinterp/dldfcn/__magick_read__.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {} __magick_imformats__ (@var{formats})
-Fill formats info with GraphicsMagick CoderInfo.
-
-@seealso{imfinfo, imformats, imread, imwrite}
 @end deftypefn
 __osmesa_print__
 @c __osmesa_print__ libinterp/dldfcn/__osmesa_print__.cc

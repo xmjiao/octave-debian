@@ -1,10 +1,10 @@
-octave (4.0.2-1~bpo8+1) jessie-backports; urgency=medium
+octave (4.0.3-1) unstable; urgency=medium
 
-  * Rebuild for jessie-backports.
-  * Revert renaming of liboctave3 for g++-5 transition.
-  * Reintroduce octave-dbg package.
+  * Imported Upstream version 4.0.3
+  * d/copyright: Reflect upstream changes
+  * d/p/install_libraries_publically: Refresh for new upstream version
 
- -- Sébastien Villemot <sebastien@debian.org>  Sun, 22 May 2016 10:35:28 +0200
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 04 Jul 2016 00:40:13 -0300
 
 octave (4.0.2-1) unstable; urgency=medium
 

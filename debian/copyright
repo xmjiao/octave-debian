@@ -4,8 +4,8 @@ Upstream-Contact: John W. Eaton <jwe@octave.org>
 Source: http://www.octave.org
 
 Files: *
-Copyright: 1992-2015 John W. Eaton <jwe@octave.org>
-           1984-1985, 1987-2015 Free Software Foundation, Inc
+Copyright: 1992-2016 John W. Eaton <jwe@octave.org>
+           1984-1985, 1987-2016 Free Software Foundation, Inc
            1997-2015 David Bateman
            2008-2015 VZLU Prague, a.s., Czech Republic
            1995-2015 Kurt Hornik
@@ -146,7 +146,7 @@ Files: debian/*
 Copyright: Andrew D. Fernandes <adfernan@cnd.mcgill.ca>
            Dale Scheetz <dwarf@polaris.net>
            Dirk Eddelbuettel <edd@debian.org>
-           2005-2009, 2012-2015 Rafael Laboissiere <rafael@laboissiere.net>
+           2005-2009, 2012-2015 Rafael Laboissiere <rafael@debian.org>
            2006-2013 Thomas Weber <tweber@debian.org>
            2011-2015 Sébastien Villemot <sebastien@debian.org>
            2013-2014 Mike Miller <mtmiller@debian.org>

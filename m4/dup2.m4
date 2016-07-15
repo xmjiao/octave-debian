@@ -1,5 +1,5 @@
-#serial 22
-dnl Copyright (C) 2002, 2005, 2007, 2009-2015 Free Software Foundation, Inc.
+#serial 25
+dnl Copyright (C) 2002, 2005, 2007, 2009-2016 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -25,6 +25,12 @@ AC_DEFUN([gl_FUNC_DUP2],
              #include <limits.h>
              #include <sys/resource.h>
              #include <unistd.h>
+             #ifndef RLIM_SAVED_CUR
+             # define RLIM_SAVED_CUR RLIM_INFINITY
+             #endif
+             #ifndef RLIM_SAVED_MAX
+             # define RLIM_SAVED_MAX RLIM_INFINITY
+             #endif
            ]],
            [[int result = 0;
              int bad_fd = INT_MAX;
@@ -39,7 +45,7 @@ AC_DEFUN([gl_FUNC_DUP2],
                if (fcntl (1, F_SETFD, FD_CLOEXEC) == -1)
                  result |= 1;
              #endif
-             if (dup2 (1, 1) == 0)
+             if (dup2 (1, 1) != 1)
                result |= 2;
              #ifdef FD_CLOEXEC
                if (fcntl (1, F_GETFD) != FD_CLOEXEC)
@@ -56,6 +62,16 @@ AC_DEFUN([gl_FUNC_DUP2],
                result |= 32;
              dup2 (2, 255);
              dup2 (2, 256);
+             /* On OS/2 kLIBC, dup2() does not work on a directory fd.  */
+             {
+               int fd = open (".", O_RDONLY);
+               if (fd == -1)
+                 result |= 64;
+               else if (dup2 (fd, fd + 1) == -1)
+                 result |= 128;
+
+               close (fd);
+             }
              return result;]])
         ],
         [gl_cv_func_dup2_works=yes], [gl_cv_func_dup2_works=no],
@@ -69,6 +85,10 @@ AC_DEFUN([gl_FUNC_DUP2],
                    # not EBADF.
              gl_cv_func_dup2_works="guessing no" ;;
            haiku*) # on Haiku alpha 2, dup2(1, 1) resets FD_CLOEXEC.
+             gl_cv_func_dup2_works="guessing no" ;;
+           *-android*) # implemented using dup3(), which fails if oldfd == newfd
+             gl_cv_func_dup2_works="guessing no" ;;
+           os2*) # on OS/2 kLIBC, dup2() does not work on a directory fd.
              gl_cv_func_dup2_works="guessing no" ;;
            *) gl_cv_func_dup2_works="guessing yes" ;;
          esac])

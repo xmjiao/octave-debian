@@ -1,5 +1,5 @@
 /* Create a temporary file.
-   Copyright (C) 2007, 2009-2015 Free Software Foundation, Inc.
+   Copyright (C) 2007, 2009-2016 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ supports_delete_on_close ()
 
       /* According to
          <http://msdn.microsoft.com/en-us/library/windows/desktop/ms724451(v=vs.85).aspx>
-         this structure must be initialised as follows:  */
+         this structure must be initialized as follows:  */
       v.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
 
       if (GetVersionEx (&v))

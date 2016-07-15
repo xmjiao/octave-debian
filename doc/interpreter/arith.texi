@@ -610,7 +610,11 @@ Compute the inverse hyperbolic cotangent of each element of @var{x}.
 Compute atan (@var{y} / @var{x}) for corresponding elements of @var{y}
 and @var{x}.
 
-@var{y} and @var{x} must match in size and orientation.
+@var{y} and @var{x} must match in size and orientation.  The signs of
+elements of @var{y} and @var{x} are used to determine the quadrats of each
+resulting value.
+
+This function is equivalent to @code{arg (complex (@var{x}, @var{y}))}.
 @seealso{@ref{XREFtan,,tan}, @ref{XREFtand,,tand}, @ref{XREFtanh,,tanh}, @ref{XREFatanh,,atanh}}
 @end deftypefn
 

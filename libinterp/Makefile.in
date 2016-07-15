@@ -144,14 +144,15 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/fcntl.m4 $(top_srcdir)/m4/fcntl_h.m4 \
 	$(top_srcdir)/m4/fdopendir.m4 $(top_srcdir)/m4/fflush.m4 \
 	$(top_srcdir)/m4/filemode.m4 $(top_srcdir)/m4/filenamecat.m4 \
-	$(top_srcdir)/m4/float_h.m4 $(top_srcdir)/m4/floor.m4 \
-	$(top_srcdir)/m4/floorf.m4 $(top_srcdir)/m4/fnmatch.m4 \
-	$(top_srcdir)/m4/fopen.m4 $(top_srcdir)/m4/fpieee.m4 \
-	$(top_srcdir)/m4/fpurge.m4 $(top_srcdir)/m4/freading.m4 \
-	$(top_srcdir)/m4/frexp.m4 $(top_srcdir)/m4/frexpf.m4 \
-	$(top_srcdir)/m4/fseek.m4 $(top_srcdir)/m4/fseeko.m4 \
-	$(top_srcdir)/m4/fstat.m4 $(top_srcdir)/m4/fstatat.m4 \
-	$(top_srcdir)/m4/ftell.m4 $(top_srcdir)/m4/ftello.m4 \
+	$(top_srcdir)/m4/flexmember.m4 $(top_srcdir)/m4/float_h.m4 \
+	$(top_srcdir)/m4/floor.m4 $(top_srcdir)/m4/floorf.m4 \
+	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fopen.m4 \
+	$(top_srcdir)/m4/fpieee.m4 $(top_srcdir)/m4/fpurge.m4 \
+	$(top_srcdir)/m4/freading.m4 $(top_srcdir)/m4/frexp.m4 \
+	$(top_srcdir)/m4/frexpf.m4 $(top_srcdir)/m4/fseek.m4 \
+	$(top_srcdir)/m4/fseeko.m4 $(top_srcdir)/m4/fstat.m4 \
+	$(top_srcdir)/m4/fstatat.m4 $(top_srcdir)/m4/ftell.m4 \
+	$(top_srcdir)/m4/ftello.m4 \
 	$(top_srcdir)/m4/getcwd-abort-bug.m4 \
 	$(top_srcdir)/m4/getcwd-path-max.m4 $(top_srcdir)/m4/getcwd.m4 \
 	$(top_srcdir)/m4/getdtablesize.m4 \
@@ -160,6 +161,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/gl-openssl.m4 $(top_srcdir)/m4/glibc21.m4 \
 	$(top_srcdir)/m4/glob.m4 $(top_srcdir)/m4/gnulib-common.m4 \
 	$(top_srcdir)/m4/gnulib-comp.m4 \
+	$(top_srcdir)/m4/hard-locale.m4 \
 	$(top_srcdir)/m4/include_next.m4 $(top_srcdir)/m4/intmax_t.m4 \
 	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/isatty.m4 \
 	$(top_srcdir)/m4/isnand.m4 $(top_srcdir)/m4/isnanf.m4 \
@@ -218,6 +220,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/sys_types_h.m4 $(top_srcdir)/m4/sys_uio_h.m4 \
 	$(top_srcdir)/m4/sys_utsname_h.m4 $(top_srcdir)/m4/tempname.m4 \
 	$(top_srcdir)/m4/time_h.m4 $(top_srcdir)/m4/time_r.m4 \
+	$(top_srcdir)/m4/time_rz.m4 $(top_srcdir)/m4/timegm.m4 \
 	$(top_srcdir)/m4/times.m4 $(top_srcdir)/m4/tm_gmtoff.m4 \
 	$(top_srcdir)/m4/tmpdir.m4 $(top_srcdir)/m4/tmpfile.m4 \
 	$(top_srcdir)/m4/trunc.m4 $(top_srcdir)/m4/truncf.m4 \
@@ -284,6 +287,7 @@ am__objects_3 = corefcn/corefcn_libcorefcn_la-Cell.lo \
 	corefcn/corefcn_libcorefcn_la-__ichol__.lo \
 	corefcn/corefcn_libcorefcn_la-__ilu__.lo \
 	corefcn/corefcn_libcorefcn_la-__lin_interpn__.lo \
+	corefcn/corefcn_libcorefcn_la-__magick_read__.lo \
 	corefcn/corefcn_libcorefcn_la-__pchip_deriv__.lo \
 	corefcn/corefcn_libcorefcn_la-__qp__.lo \
 	corefcn/corefcn_libcorefcn_la-balance.lo \
@@ -438,12 +442,11 @@ am__DEPENDENCIES_2 =
 am__DEPENDENCIES_3 = dldfcn/__delaunayn__.la dldfcn/__eigs__.la \
 	dldfcn/__fltk_uigetfile__.la dldfcn/__glpk__.la \
 	dldfcn/__init_fltk__.la dldfcn/__init_gnuplot__.la \
-	dldfcn/__magick_read__.la dldfcn/__osmesa_print__.la \
-	dldfcn/__voronoi__.la dldfcn/amd.la dldfcn/audiodevinfo.la \
-	dldfcn/audioread.la dldfcn/ccolamd.la dldfcn/chol.la \
-	dldfcn/colamd.la dldfcn/convhulln.la dldfcn/dmperm.la \
-	dldfcn/fftw.la dldfcn/qr.la dldfcn/symbfact.la \
-	dldfcn/symrcm.la
+	dldfcn/__osmesa_print__.la dldfcn/__voronoi__.la dldfcn/amd.la \
+	dldfcn/audiodevinfo.la dldfcn/audioread.la dldfcn/ccolamd.la \
+	dldfcn/chol.la dldfcn/colamd.la dldfcn/convhulln.la \
+	dldfcn/dmperm.la dldfcn/fftw.la dldfcn/qr.la \
+	dldfcn/symbfact.la dldfcn/symrcm.la
 am__DEPENDENCIES_4 = $(am__DEPENDENCIES_3)
 am__DEPENDENCIES_5 = $(am__DEPENDENCIES_2) $(am__DEPENDENCIES_2)
 am__DEPENDENCIES_6 = $(am__DEPENDENCIES_2) $(am__DEPENDENCIES_2) \
@@ -576,20 +579,6 @@ dldfcn___init_gnuplot___la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(dldfcn___init_gnuplot___la_LDFLAGS) $(LDFLAGS) -o $@
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn___init_gnuplot___la_rpath =
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn___init_gnuplot___la_rpath =  \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
-dldfcn___magick_read___la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	../liboctave/liboctave.la $(am__DEPENDENCIES_2) \
-	$(am__DEPENDENCIES_12)
-am_dldfcn___magick_read___la_OBJECTS =  \
-	dldfcn/dldfcn___magick_read___la-__magick_read__.lo
-dldfcn___magick_read___la_OBJECTS =  \
-	$(am_dldfcn___magick_read___la_OBJECTS)
-dldfcn___magick_read___la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
-	$(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(dldfcn___magick_read___la_LDFLAGS) $(LDFLAGS) -o $@
-@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn___magick_read___la_rpath =
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn___magick_read___la_rpath =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
 dldfcn___osmesa_print___la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	../liboctave/liboctave.la $(am__DEPENDENCIES_2) \
@@ -1089,7 +1078,6 @@ SOURCES = $(corefcn_libcorefcn_la_SOURCES) \
 	$(dldfcn___glpk___la_SOURCES) \
 	$(dldfcn___init_fltk___la_SOURCES) \
 	$(dldfcn___init_gnuplot___la_SOURCES) \
-	$(dldfcn___magick_read___la_SOURCES) \
 	$(dldfcn___osmesa_print___la_SOURCES) \
 	$(dldfcn___voronoi___la_SOURCES) $(dldfcn_amd_la_SOURCES) \
 	$(dldfcn_audiodevinfo_la_SOURCES) \
@@ -1110,7 +1098,6 @@ DIST_SOURCES = $(corefcn_libcorefcn_la_SOURCES) \
 	$(dldfcn___glpk___la_SOURCES) \
 	$(dldfcn___init_fltk___la_SOURCES) \
 	$(dldfcn___init_gnuplot___la_SOURCES) \
-	$(dldfcn___magick_read___la_SOURCES) \
 	$(dldfcn___osmesa_print___la_SOURCES) \
 	$(dldfcn___voronoi___la_SOURCES) $(dldfcn_amd_la_SOURCES) \
 	$(dldfcn_audiodevinfo_la_SOURCES) \
@@ -1616,6 +1603,7 @@ GNULIB_TANL = @GNULIB_TANL@
 GNULIB_TIMEGM = @GNULIB_TIMEGM@
 GNULIB_TIMES = @GNULIB_TIMES@
 GNULIB_TIME_R = @GNULIB_TIME_R@
+GNULIB_TIME_RZ = @GNULIB_TIME_RZ@
 GNULIB_TMPFILE = @GNULIB_TMPFILE@
 GNULIB_TOWCTRANS = @GNULIB_TOWCTRANS@
 GNULIB_TRUNC = @GNULIB_TRUNC@
@@ -1961,6 +1949,7 @@ HAVE_TANHF = @HAVE_TANHF@
 HAVE_TANL = @HAVE_TANL@
 HAVE_TIMEGM = @HAVE_TIMEGM@
 HAVE_TIMES = @HAVE_TIMES@
+HAVE_TIMEZONE_T = @HAVE_TIMEZONE_T@
 HAVE_TYPE_VOLATILE_SIG_ATOMIC_T = @HAVE_TYPE_VOLATILE_SIG_ATOMIC_T@
 HAVE_UNAME = @HAVE_UNAME@
 HAVE_UNISTD_H = @HAVE_UNISTD_H@
@@ -2719,7 +2708,8 @@ AM_CPPFLAGS = \
   -Iparse-tree -I$(srcdir)/parse-tree \
   -Icorefcn -I$(srcdir)/corefcn \
   -I$(top_builddir)/libgnu -I$(top_srcdir)/libgnu \
-  $(HDF5_CPPFLAGS)
+  $(HDF5_CPPFLAGS) \
+  $(MAGICK_CPPFLAGS)
 
 octlib_LTLIBRARIES = liboctinterp.la $(am__append_1)
 GENERATED_MAKE_BUILTINS_INCS = \
@@ -3307,6 +3297,7 @@ COREFCN_SRC = \
   corefcn/__ichol__.cc \
   corefcn/__ilu__.cc \
   corefcn/__lin_interpn__.cc \
+  corefcn/__magick_read__.cc \
   corefcn/__pchip_deriv__.cc \
   corefcn/__qp__.cc \
   corefcn/balance.cc \
@@ -3465,7 +3456,6 @@ DLDFCN_SRC = \
   dldfcn/__glpk__.cc \
   dldfcn/__init_fltk__.cc \
   dldfcn/__init_gnuplot__.cc \
-  dldfcn/__magick_read__.cc \
   dldfcn/__osmesa_print__.cc \
   dldfcn/__voronoi__.cc \
   dldfcn/amd.cc \
@@ -3506,10 +3496,6 @@ dldfcn___init_gnuplot___la_SOURCES = dldfcn/__init_gnuplot__.cc
 dldfcn___init_gnuplot___la_CPPFLAGS = $(AM_CPPFLAGS) $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
 dldfcn___init_gnuplot___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
 dldfcn___init_gnuplot___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la  $(OCT_LINK_DEPS)
-dldfcn___magick_read___la_SOURCES = dldfcn/__magick_read__.cc
-dldfcn___magick_read___la_CPPFLAGS = $(AM_CPPFLAGS) $(MAGICK_CPPFLAGS)
-dldfcn___magick_read___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(MAGICK_LDFLAGS) $(OCT_LINK_OPTS)
-dldfcn___magick_read___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(MAGICK_LIBS) $(OCT_LINK_DEPS)
 dldfcn___osmesa_print___la_SOURCES = dldfcn/__osmesa_print__.cc
 dldfcn___osmesa_print___la_CPPFLAGS = $(AM_CPPFLAGS) $(OSMESA_CPPFLAGS) $(FT2_CPPFLAGS)
 dldfcn___osmesa_print___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(OSMESA_LDFLAGS) $(OCT_LINK_OPTS)
@@ -3633,7 +3619,8 @@ LIBOCTAVE_LINK_OPTS = \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@LIBOCTINTERP_LINK_DEPS =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(DLDFCN_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(FT2_LIBS) $(HDF5_LIBS) \
-@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(Z_LIBS) $(FFTW_XLIBS) \
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(MAGICK_LIBS) \
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(FFTW_XLIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(OPENGL_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(X11_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(CARBON_LIBS) \
@@ -3643,15 +3630,17 @@ LIBOCTAVE_LINK_OPTS = \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(am__append_3)
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@LIBOCTINTERP_LINK_DEPS =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(FT2_LIBS) $(HDF5_LIBS) \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(Z_LIBS) $(FFTW_XLIBS) \
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(MAGICK_LIBS) \
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(FFTW_XLIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(OPENGL_LIBS) $(X11_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(CARBON_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(GL2PS_LIBS) $(LLVM_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(JAVA_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(LAPACK_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(am__append_3)
-LIBOCTINTERP_LINK_OPTS = $(FT2_LDFLAGS) $(HDF5_LDFLAGS) $(Z_LDFLAGS) \
-	$(FFTW_XLDFLAGS) $(LLVM_LDFLAGS) $(am__append_4)
+LIBOCTINTERP_LINK_OPTS = $(FT2_LDFLAGS) $(HDF5_LDFLAGS) \
+	$(MAGICK_LDFLAGS) $(Z_LDFLAGS) $(FFTW_XLDFLAGS) \
+	$(LLVM_LDFLAGS) $(am__append_4)
 OCT_LINK_DEPS = $(am__append_5)
 OCT_LINK_OPTS = $(LDFLAGS) $(am__append_6)
 @AMCOND_LINK_ALL_DEPS_TRUE@OCTAVE_LINK_DEPS = $(LIBOCTINTERP_LINK_DEPS)
@@ -3808,6 +3797,8 @@ corefcn/corefcn_libcorefcn_la-__ichol__.lo: corefcn/$(am__dirstamp) \
 corefcn/corefcn_libcorefcn_la-__ilu__.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-__lin_interpn__.lo:  \
+	corefcn/$(am__dirstamp) corefcn/$(DEPDIR)/$(am__dirstamp)
+corefcn/corefcn_libcorefcn_la-__magick_read__.lo:  \
 	corefcn/$(am__dirstamp) corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-__pchip_deriv__.lo:  \
 	corefcn/$(am__dirstamp) corefcn/$(DEPDIR)/$(am__dirstamp)
@@ -4123,11 +4114,6 @@ dldfcn/dldfcn___init_gnuplot___la-__init_gnuplot__.lo:  \
 
 dldfcn/__init_gnuplot__.la: $(dldfcn___init_gnuplot___la_OBJECTS) $(dldfcn___init_gnuplot___la_DEPENDENCIES) $(EXTRA_dldfcn___init_gnuplot___la_DEPENDENCIES) dldfcn/$(am__dirstamp)
 	$(AM_V_CXXLD)$(dldfcn___init_gnuplot___la_LINK) $(am_dldfcn___init_gnuplot___la_rpath) $(dldfcn___init_gnuplot___la_OBJECTS) $(dldfcn___init_gnuplot___la_LIBADD) $(LIBS)
-dldfcn/dldfcn___magick_read___la-__magick_read__.lo:  \
-	dldfcn/$(am__dirstamp) dldfcn/$(DEPDIR)/$(am__dirstamp)
-
-dldfcn/__magick_read__.la: $(dldfcn___magick_read___la_OBJECTS) $(dldfcn___magick_read___la_DEPENDENCIES) $(EXTRA_dldfcn___magick_read___la_DEPENDENCIES) dldfcn/$(am__dirstamp)
-	$(AM_V_CXXLD)$(dldfcn___magick_read___la_LINK) $(am_dldfcn___magick_read___la_rpath) $(dldfcn___magick_read___la_OBJECTS) $(dldfcn___magick_read___la_LIBADD) $(LIBS)
 dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo:  \
 	dldfcn/$(am__dirstamp) dldfcn/$(DEPDIR)/$(am__dirstamp)
 
@@ -4775,6 +4761,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__ichol__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__ilu__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__lin_interpn__.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__magick_read__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__pchip_deriv__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__qp__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-balance.Plo@am__quote@
@@ -4918,7 +4905,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___glpk___la-__glpk__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___init_fltk___la-__init_fltk__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___init_gnuplot___la-__init_gnuplot__.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___magick_read___la-__magick_read__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___osmesa_print___la-__osmesa_print__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___voronoi___la-__voronoi__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn_amd_la-amd.Plo@am__quote@
@@ -5271,6 +5257,13 @@ corefcn/corefcn_libcorefcn_la-__lin_interpn__.lo: corefcn/__lin_interpn__.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/__lin_interpn__.cc' object='corefcn/corefcn_libcorefcn_la-__lin_interpn__.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-__lin_interpn__.lo `test -f 'corefcn/__lin_interpn__.cc' || echo '$(srcdir)/'`corefcn/__lin_interpn__.cc
+
+corefcn/corefcn_libcorefcn_la-__magick_read__.lo: corefcn/__magick_read__.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-__magick_read__.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__magick_read__.Tpo -c -o corefcn/corefcn_libcorefcn_la-__magick_read__.lo `test -f 'corefcn/__magick_read__.cc' || echo '$(srcdir)/'`corefcn/__magick_read__.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__magick_read__.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__magick_read__.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/__magick_read__.cc' object='corefcn/corefcn_libcorefcn_la-__magick_read__.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-__magick_read__.lo `test -f 'corefcn/__magick_read__.cc' || echo '$(srcdir)/'`corefcn/__magick_read__.cc
 
 corefcn/corefcn_libcorefcn_la-__pchip_deriv__.lo: corefcn/__pchip_deriv__.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-__pchip_deriv__.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__pchip_deriv__.Tpo -c -o corefcn/corefcn_libcorefcn_la-__pchip_deriv__.lo `test -f 'corefcn/__pchip_deriv__.cc' || echo '$(srcdir)/'`corefcn/__pchip_deriv__.cc
@@ -6237,13 +6230,6 @@ dldfcn/dldfcn___init_gnuplot___la-__init_gnuplot__.lo: dldfcn/__init_gnuplot__.c
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='dldfcn/__init_gnuplot__.cc' object='dldfcn/dldfcn___init_gnuplot___la-__init_gnuplot__.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn___init_gnuplot___la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dldfcn/dldfcn___init_gnuplot___la-__init_gnuplot__.lo `test -f 'dldfcn/__init_gnuplot__.cc' || echo '$(srcdir)/'`dldfcn/__init_gnuplot__.cc
-
-dldfcn/dldfcn___magick_read___la-__magick_read__.lo: dldfcn/__magick_read__.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn___magick_read___la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dldfcn/dldfcn___magick_read___la-__magick_read__.lo -MD -MP -MF dldfcn/$(DEPDIR)/dldfcn___magick_read___la-__magick_read__.Tpo -c -o dldfcn/dldfcn___magick_read___la-__magick_read__.lo `test -f 'dldfcn/__magick_read__.cc' || echo '$(srcdir)/'`dldfcn/__magick_read__.cc
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) dldfcn/$(DEPDIR)/dldfcn___magick_read___la-__magick_read__.Tpo dldfcn/$(DEPDIR)/dldfcn___magick_read___la-__magick_read__.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='dldfcn/__magick_read__.cc' object='dldfcn/dldfcn___magick_read___la-__magick_read__.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn___magick_read___la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dldfcn/dldfcn___magick_read___la-__magick_read__.lo `test -f 'dldfcn/__magick_read__.cc' || echo '$(srcdir)/'`dldfcn/__magick_read__.cc
 
 dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo: dldfcn/__osmesa_print__.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn___osmesa_print___la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo -MD -MP -MF dldfcn/$(DEPDIR)/dldfcn___osmesa_print___la-__osmesa_print__.Tpo -c -o dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo `test -f 'dldfcn/__osmesa_print__.cc' || echo '$(srcdir)/'`dldfcn/__osmesa_print__.cc
@@ -8780,7 +8766,6 @@ dldfcn/__fltk_uigetfile__.df: CPPFLAGS += $(FLTK_CPPFLAGS) $(FT2_CPPFLAGS)
 dldfcn/__glpk__.df: CPPFLAGS += $(GLPK_CPPFLAGS)
 dldfcn/__init_fltk__.df: CPPFLAGS += $(FLTK_CPPFLAGS) $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
 dldfcn/__init_gnuplot__.df: CPPFLAGS += $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
-dldfcn/__magick_read__.df: CPPFLAGS += $(MAGICK_CPPFLAGS)
 dldfcn/__osmesa_print__.df: CPPFLAGS += $(OSMESA_CPPFLAGS) $(FT2_CPPFLAGS)
 dldfcn/__voronoi__.df: CPPFLAGS += $(QHULL_CPPFLAGS)
 dldfcn/amd.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)

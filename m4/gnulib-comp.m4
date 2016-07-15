@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2015 Free Software Foundation, Inc.
+# Copyright (C) 2002-2016 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,7 +37,11 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_ES$])dnl a valid locale name
   m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
+
+  # Pre-early section.
+  AC_REQUIRE([gl_USE_SYSTEM_EXTENSIONS])
   AC_REQUIRE([gl_PROG_AR_RANLIB])
+
   # Code from module absolute-header:
   # Code from module alloca:
   # Code from module alloca-opt:
@@ -73,7 +77,6 @@ AC_DEFUN([gl_EARLY],
   # Code from module error:
   # Code from module exitfail:
   # Code from module extensions:
-  AC_REQUIRE([gl_USE_SYSTEM_EXTENSIONS])
   # Code from module extern-inline:
   # Code from module fchdir:
   # Code from module fclose:
@@ -87,6 +90,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module filemode:
   # Code from module filename:
   # Code from module filenamecat-lgpl:
+  # Code from module flexmember:
   # Code from module float:
   # Code from module floor:
   # Code from module floorf:
@@ -117,6 +121,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module gettext-h:
   # Code from module gettimeofday:
   # Code from module glob:
+  # Code from module hard-locale:
   # Code from module hash:
   # Code from module hash-pjw:
   # Code from module hash-triple:
@@ -154,6 +159,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module mkfifo:
   # Code from module mkostemp:
   # Code from module mktime:
+  # Code from module mktime-internal:
   # Code from module msvc-inval:
   # Code from module msvc-nothrow:
   # Code from module multiarch:
@@ -184,6 +190,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module save-cwd:
   # Code from module secure_getenv:
   # Code from module select:
+  # Code from module setenv:
   # Code from module sigaction:
   # Code from module signal:
   # Code from module signal-h:
@@ -231,6 +238,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module tempname:
   # Code from module time:
   # Code from module time_r:
+  # Code from module time_rz:
+  # Code from module timegm:
   # Code from module times:
   # Code from module tmpdir:
   # Code from module tmpfile:
@@ -319,7 +328,8 @@ AC_SUBST([LTALLOCA])
   gl_CHECK_TYPE_STRUCT_DIRENT_D_TYPE
   gl_DIRENT_H
   gl_FUNC_DIRFD
-  if test $ac_cv_func_dirfd = no && test $gl_cv_func_dirfd_macro = no; then
+  if test $ac_cv_func_dirfd = no && test $gl_cv_func_dirfd_macro = no \
+     || test $REPLACE_DIRFD = 1; then
     AC_LIBOBJ([dirfd])
     gl_PREREQ_DIRFD
   fi
@@ -380,6 +390,7 @@ AC_SUBST([LTALLOCA])
   gl_STDIO_MODULE_INDICATOR([fflush])
   gl_FILEMODE
   gl_FILE_NAME_CONCAT_LGPL
+  AC_C_FLEXIBLE_ARRAY_MEMBER
   gl_FLOAT_H
   if test $REPLACE_FLOAT_LDBL = 1; then
     AC_LIBOBJ([float])
@@ -519,6 +530,7 @@ AC_SUBST([LTALLOCA])
     AC_LIBOBJ([glob])
     gl_PREREQ_GLOB
   fi
+  gl_HARD_LOCALE
   gl_FUNC_ISATTY
   if test $REPLACE_ISATTY = 1; then
     AC_LIBOBJ([isatty])
@@ -671,11 +683,16 @@ AC_SUBST([LTALLOCA])
     gl_PREREQ_MKTIME
   fi
   gl_TIME_MODULE_INDICATOR([mktime])
-  gl_MSVC_INVAL
+  gl_FUNC_MKTIME_INTERNAL
+  if test $REPLACE_MKTIME = 1; then
+    AC_LIBOBJ([mktime])
+    gl_PREREQ_MKTIME
+  fi
+  AC_REQUIRE([gl_MSVC_INVAL])
   if test $HAVE_MSVC_INVALID_PARAMETER_HANDLER = 1; then
     AC_LIBOBJ([msvc-inval])
   fi
-  gl_MSVC_NOTHROW
+  AC_REQUIRE([gl_MSVC_NOTHROW])
   if test $HAVE_MSVC_INVALID_PARAMETER_HANDLER = 1; then
     AC_LIBOBJ([msvc-nothrow])
   fi
@@ -784,6 +801,11 @@ AC_SUBST([LTALLOCA])
     AC_LIBOBJ([select])
   fi
   gl_SYS_SELECT_MODULE_INDICATOR([select])
+  gl_FUNC_SETENV
+  if test $HAVE_SETENV = 0 || test $REPLACE_SETENV = 1; then
+    AC_LIBOBJ([setenv])
+  fi
+  gl_STDLIB_MODULE_INDICATOR([setenv])
   gl_SIGACTION
   if test $HAVE_SIGACTION = 0; then
     AC_LIBOBJ([sigaction])
@@ -902,6 +924,17 @@ AC_SUBST([LTALLOCA])
     gl_PREREQ_TIME_R
   fi
   gl_TIME_MODULE_INDICATOR([time_r])
+  gl_TIME_RZ
+  if test "$HAVE_TIMEZONE_T" = 0; then
+    AC_LIBOBJ([time_rz])
+  fi
+  gl_TIME_MODULE_INDICATOR([time_rz])
+  gl_FUNC_TIMEGM
+  if test $HAVE_TIMEGM = 0 || test $REPLACE_TIMEGM = 1; then
+    AC_LIBOBJ([timegm])
+    gl_PREREQ_TIMEGM
+  fi
+  gl_TIME_MODULE_INDICATOR([timegm])
   gl_FUNC_TIMES
   if test $HAVE_TIMES = 0; then
     AC_LIBOBJ([times])
@@ -1191,6 +1224,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/glob-libc.h
   lib/glob.c
   lib/glob.in.h
+  lib/hard-locale.c
+  lib/hard-locale.h
   lib/hash-pjw.c
   lib/hash-pjw.h
   lib/hash-triple.c
@@ -1280,6 +1315,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/save-cwd.h
   lib/secure_getenv.c
   lib/select.c
+  lib/setenv.c
   lib/sig-handler.c
   lib/sig-handler.h
   lib/sigaction.c
@@ -1329,8 +1365,11 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/sys_utsname.in.h
   lib/tempname.c
   lib/tempname.h
+  lib/time-internal.h
   lib/time.in.h
   lib/time_r.c
+  lib/time_rz.c
+  lib/timegm.c
   lib/times.c
   lib/tmpdir.c
   lib/tmpdir.h
@@ -1403,6 +1442,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/fflush.m4
   m4/filemode.m4
   m4/filenamecat.m4
+  m4/flexmember.m4
   m4/float_h.m4
   m4/floor.m4
   m4/floorf.m4
@@ -1431,6 +1471,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/glibc21.m4
   m4/glob.m4
   m4/gnulib-common.m4
+  m4/hard-locale.m4
   m4/include_next.m4
   m4/intmax_t.m4
   m4/inttypes_h.m4
@@ -1540,6 +1581,8 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/tempname.m4
   m4/time_h.m4
   m4/time_r.m4
+  m4/time_rz.m4
+  m4/timegm.m4
   m4/times.m4
   m4/tm_gmtoff.m4
   m4/tmpdir.m4

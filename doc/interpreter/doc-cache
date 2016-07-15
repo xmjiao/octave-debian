@@ -1,4 +1,4 @@
-# doc-cache created by Octave 4.0.2
+# doc-cache created by Octave 4.0.3
 # name: cache
 # type: cell
 # rows: 3
@@ -5717,12 +5717,22 @@ sortrows
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 389
+# length: 735
  -- Function File: [S, I] = sortrows (A)
  -- Function File: [S, I] = sortrows (A, C)
      Sort the rows of the matrix A according to the order of the columns specified in C.
 
-     If C is omitted, a lexicographical sort is used.  By default ascending order is used however if elements of C are negative then the corresponding column is sorted in descending order.
+     By default (C omitted, or a particular column unspecified in C) an ascending sort order is used.  However, if elements of C are negative then the corresponding column is sorted in descending order.  If the elements of A are strings then a lexicographical sort is used.
+
+     Example: sort by column 2 in descending order, then 3 in ascending order
+
+          x = [ 7, 1, 4;
+                8, 3, 5;
+                9, 3, 6 ];
+          sortrows (x, [-2, 3])
+             => 8  3  5
+                9  3  6
+                7  1  4
 
      See also: sort.
    
@@ -12965,11 +12975,11 @@ orderfields
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1960
- -- Function File: SOUT] = orderfields (S1)
- -- Function File: SOUT] = orderfields (S1, S2)
- -- Function File: SOUT] = orderfields (S1, {CELLSTR})
- -- Function File: SOUT] = orderfields (S1, P)
+# length: 1956
+ -- Function File: SOUT = orderfields (S1)
+ -- Function File: SOUT = orderfields (S1, S2)
+ -- Function File: SOUT = orderfields (S1, {CELLSTR})
+ -- Function File: SOUT = orderfields (S1, P)
  -- Function File: [SOUT, P] = orderfields (...)
      Return a _copy_ of S1 with fields arranged alphabetically, or as specified by the second input.
 
@@ -38785,11 +38795,13 @@ atan2
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 193
+# length: 348
  -- Mapping Function: atan2 (Y, X)
      Compute atan (Y / X) for corresponding elements of Y and X.
 
-     Y and X must match in size and orientation.
+     Y and X must match in size and orientation.  The signs of elements of Y and X are used to determine the quadrats of each resulting value.
+
+     This function is equivalent to 'arg (complex (X, Y))'.
 
      See also: tan, tand, tanh, atanh.
    
@@ -53046,13 +53058,13 @@ exec
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 490
+# length: 491
  -- Built-in Function: [ERR, MSG] = exec (FILE, ARGS)
      Replace current process with a new process.
 
      Calling 'exec' without first calling 'fork' will terminate your current Octave process and replace it with the program named by FILE.  For example,
 
-          exec ("ls" "-l")
+          exec ("ls", "-l")
 
      will run 'ls' and return you to your shell prompt.
 

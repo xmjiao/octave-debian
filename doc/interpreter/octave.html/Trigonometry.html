@@ -257,7 +257,11 @@ do not distinguish -0.
 <dd><p>Compute atan (<var>y</var> / <var>x</var>) for corresponding elements of <var>y</var>
 and <var>x</var>.
 </p>
-<p><var>y</var> and <var>x</var> must match in size and orientation.
+<p><var>y</var> and <var>x</var> must match in size and orientation.  The signs of
+elements of <var>y</var> and <var>x</var> are used to determine the quadrats of each
+resulting value.
+</p>
+<p>This function is equivalent to <code>arg (complex (<var>x</var>, <var>y</var>))</code>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFtan">tan</a>, <a href="#XREFtand">tand</a>, <a href="#XREFtanh">tanh</a>, <a href="#XREFatanh">atanh</a>.
 </p></dd></dl>
