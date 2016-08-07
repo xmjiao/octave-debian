@@ -34,10 +34,12 @@ along with Octave; see the file COPYING.  If not, see
 #include "file-ops.h"
 #include "oct-locbuf.h"
 
+#include "call-stack.h"
 #include "defun.h"
 #include "error.h"
 #include "errwarn.h"
 #include "input.h"
+#include "interpreter.h"
 #include "oct-hdf5.h"
 #include "oct-map.h"
 #include "ov-base.h"
@@ -1691,7 +1693,7 @@ In addition, some function types may return more information in additional
 fields.
 
 @strong{Warning:} @code{functions} is provided for debugging purposes only.
-It's behavior may change in the future and programs should not depend on a
+Its behavior may change in the future and programs should not depend on a
 particular output.
 
 @end deftypefn */)

@@ -628,7 +628,7 @@ AC_DEFUN([OCTAVE_CHECK_HDF5_HAS_VER_16_API], [
 dnl
 dnl Usage:
 dnl OCTAVE_CHECK_LIB(LIBRARY, DOC-NAME, WARN-MSG, HEADER, FUNC,
-dnl                  LANG, DOC-STRING, EXTRA-CHECK)
+dnl                  LANG, DOC-STRING, EXTRA-CHECK, PKG-CONFIG-NAME)
 dnl
 AC_DEFUN([OCTAVE_CHECK_LIB], [
   AC_ARG_WITH([$1-includedir],
@@ -670,14 +670,14 @@ AC_DEFUN([OCTAVE_CHECK_LIB], [
   esac
 
   if test $ac_octave_$1_pkg_check = yes; then
-    PKG_CHECK_EXISTS([$1], [
+    PKG_CHECK_EXISTS(m4_default([$9], [$1]), [
       if test -z "$m4_toupper([$1])_CPPFLAGS"; then
-        m4_toupper([$1])_CPPFLAGS="$($PKG_CONFIG --cflags-only-I $1)"
+        m4_toupper([$1])_CPPFLAGS="$($PKG_CONFIG --cflags-only-I m4_default([$9], [$1]))"
       fi
       if test -z "$m4_toupper([$1])_LDFLAGS"; then
-        m4_toupper([$1])_LDFLAGS="$($PKG_CONFIG --libs-only-L $1)"
+        m4_toupper([$1])_LDFLAGS="$($PKG_CONFIG --libs-only-L m4_default([$9], [$1]))"
       fi
-      m4_toupper([$1])_LIBS="$($PKG_CONFIG --libs-only-l $1)"
+      m4_toupper([$1])_LIBS="$($PKG_CONFIG --libs-only-l m4_default([$9], [$1]))"
     ])
   fi
 
@@ -1015,8 +1015,8 @@ AC_DEFUN([OCTAVE_CHECK_LIB_OPENGL], [
   if test $have_framework_opengl = yes; then
     AC_DEFINE(HAVE_FRAMEWORK_OPENGL, 1,
       [Define to 1 if framework OPENGL is available.])
-    OPENGL_LIBS="-Wl,-framework -Wl,OpenGL"
-    AC_MSG_NOTICE([adding -Wl,-framework -Wl,OpenGL to OPENGL_LIBS])
+    OPENGL_LIBS="-framework OpenGL"
+    AC_MSG_NOTICE([adding -framework OpenGL to OPENGL_LIBS])
     OCTAVE_CHECK_FUNC_GLUTESSCALLBACK_THREEDOTS
   else
     case $canonical_host_type in
@@ -2429,38 +2429,6 @@ AC_DEFUN([OCTAVE_UMFPACK_SEPARATE_SPLIT], [
   if test $octave_cv_umfpack_separate_split = yes; then
     AC_DEFINE(UMFPACK_SEPARATE_SPLIT, 1,
       [Define to 1 if the UMFPACK Complex solver allows matrix and RHS to be split independently.])
-  fi
-])
-dnl
-dnl Check for unordered map headers and whether tr1 namespace is
-dnl required.
-dnl
-AC_DEFUN([OCTAVE_UNORDERED_MAP_HEADERS], [
-  AC_CHECK_HEADERS([unordered_map], [],
-    [AC_CHECK_HEADERS([tr1/unordered_map])])
-  AC_CACHE_CHECK([whether unordered_map requires tr1 namespace],
-    [octave_cv_header_require_tr1_namespace],
-    [AC_LANG_PUSH(C++)
-    octave_cv_header_require_tr1_namespace=no
-    if test $ac_cv_header_unordered_map = yes; then
-      ## Have <unordered_map>, but still have to check whether
-      ## tr1 namespace is required (like MSVC, for instance).
-      AC_COMPILE_IFELSE(
-        [AC_LANG_PROGRAM([[
-          #include <unordered_map>
-          ]], [[
-          std::unordered_map<int,int> m;
-        ]])],
-        octave_cv_header_require_tr1_namespace=no,
-        octave_cv_header_require_tr1_namespace=yes)
-    elif test $ac_cv_header_tr1_unordered_map = yes; then
-      octave_cv_header_require_tr1_namespace=yes
-    fi
-    AC_LANG_POP(C++)
-  ])
-  if test $octave_cv_header_require_tr1_namespace = yes; then
-    AC_DEFINE(USE_UNORDERED_MAP_WITH_TR1, 1,
-      [Define to 1 if unordered_map requires the use of tr1 namespace.])
   fi
 ])
 

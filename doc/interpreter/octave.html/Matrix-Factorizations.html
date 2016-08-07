@@ -374,13 +374,20 @@ factorization from scratch.
 
 
 <a name="XREFqr"></a><dl>
-<dt><a name="index-qr"></a>: <em>[<var>Q</var>, <var>R</var>, <var>P</var>] =</em> <strong>qr</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-qr-1"></a>: <em>[<var>Q</var>, <var>R</var>, <var>P</var>] =</em> <strong>qr</strong> <em>(<var>A</var>, '0')</em></dt>
-<dt><a name="index-qr-2"></a>: <em>[<var>C</var>, <var>R</var>] =</em> <strong>qr</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
-<dt><a name="index-qr-3"></a>: <em>[<var>C</var>, <var>R</var>] =</em> <strong>qr</strong> <em>(<var>A</var>, <var>B</var>, '0')</em></dt>
+<dt><a name="index-qr"></a>: <em>[<var>Q</var>, <var>R</var>] =</em> <strong>qr</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-qr-1"></a>: <em>[<var>Q</var>, <var>R</var>, <var>P</var>] =</em> <strong>qr</strong> <em>(<var>A</var>) # non-sparse A</em></dt>
+<dt><a name="index-qr-2"></a>: <em><var>X</var> =</em> <strong>qr</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-qr-3"></a>: <em><var>R</var> =</em> <strong>qr</strong> <em>(<var>A</var>)  # sparse A</em></dt>
+<dt><a name="index-qr-4"></a>: <em>[<var>C</var>, <var>R</var>] =</em> <strong>qr</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dt><a name="index-qr-5"></a>: <em>[&hellip;] =</em> <strong>qr</strong> <em>(&hellip;, 0)</em></dt>
+<dt><a name="index-qr-6"></a>: <em>[&hellip;] =</em> <strong>qr</strong> <em>(&hellip;, 'vector')</em></dt>
+<dt><a name="index-qr-7"></a>: <em>[&hellip;] =</em> <strong>qr</strong> <em>(&hellip;, 'matrix')</em></dt>
 <dd><a name="index-QR-factorization"></a>
 <p>Compute the QR&nbsp;factorization of <var>A</var>, using standard <small>LAPACK</small>
 subroutines.
+The QR&nbsp;factorization is
+<code><var>Q</var> * <var>R</var> = <var>A</var></code> where <var>Q</var> is an orthogonal matrix and
+<var>R</var> is upper triangular.
 </p>
 <p>For example, given the matrix <code><var>A</var> = [1, 2; 3, 4]</code>,
 </p>
@@ -411,14 +418,15 @@ squares problems
 
 <p>for overdetermined systems of equations (i.e.,
 <var>A</var>
-is a tall, thin matrix).  The QR&nbsp;factorization is
-<code><var>Q</var> * <var>R</var> = <var>A</var></code> where <var>Q</var> is an orthogonal matrix and
-<var>R</var> is upper triangular.
+is a tall, thin matrix).
 </p>
-<p>If given a second argument of <code>'0'</code>, <code>qr</code> returns an
-economy-sized QR&nbsp;factorization, omitting zero rows of <var>R</var> and the
-corresponding columns of <var>Q</var>.
+<p>If only a single return value is requested, then it is either <var>R</var> if
+<var>A</var> is sparse, or <var>X</var> such that <code><var>R</var> = triu (<var>X</var>)</code> if
+<var>A</var> is full.
+(Note: Unlike most commands, the single return value is not
+the first return value when multiple are requested.)
 </p>
+
 <p>If the matrix <var>A</var> is full, the permuted QR&nbsp;factorization
 <code>[<var>Q</var>, <var>R</var>, <var>P</var>] = qr (<var>A</var>)</code> forms the
 QR&nbsp;factorization such that the diagonal entries of <var>R</var> are
@@ -452,17 +460,15 @@ decreasing in magnitude order.  For example, given the matrix
 <code>[<var>Q</var>, <var>R</var>, <var>P</var>] = qr (<var>A</var>)</code> factorization allows the
 construction of an orthogonal basis of <code>span (A)</code>.
 </p>
-<p>If the matrix <var>A</var> is sparse, then compute the sparse
-QR&nbsp;factorization of <var>A</var>, using <small>CSPARSE</small>.  As the matrix <var>Q</var>
-is in general a full matrix, this function returns the <var>Q</var>-less
-factorization <var>R</var> of <var>A</var>, such that
+<p>If the matrix <var>A</var> is sparse, then the sparse QR&nbsp;factorization
+of <var>A</var> is computed using <small>CSPARSE</small>.
+As the matrix <var>Q</var> is in general a full matrix,
+it is recommended to request only one return value,
+which is the <var>Q</var>-less factorization <var>R</var> of <var>A</var>, such that
 <code><var>R</var> = chol (<var>A</var>' * <var>A</var>)</code>.
 </p>
-<p>If the final argument is the scalar <code>0</code> and the number of rows is
-larger than the number of columns, then an economy factorization is
-returned.  That is <var>R</var> will have only <code>size (<var>A</var>,1)</code> rows.
-</p>
-<p>If an additional matrix <var>B</var> is supplied, then <code>qr</code> returns
+<p>If an additional matrix <var>B</var> is supplied and two return values are
+requested, then <code>qr</code> returns
 <var>C</var>, where <code><var>C</var> = <var>Q</var>' * <var>B</var></code>.  This allows the
 least squares approximation of <code><var>A</var> \ <var>B</var></code> to be calculated
 as
@@ -471,6 +477,16 @@ as
 <pre class="example">[<var>C</var>, <var>R</var>] = qr (<var>A</var>, <var>B</var>)
 x = <var>R</var> \ <var>C</var>
 </pre></div>
+
+<p>If the final argument is the scalar 0 and the number of rows is larger
+than the number of columns, then an &rsquo;economy&rsquo; factorization is returned,
+omitting zeroes of <var>R</var> and the corresponding columns of <var>Q</var>.
+That is, <var>R</var> will have only <code>size (<var>A</var>,1)</code> rows.
+In this case, <var>P</var> is a vector rather than a matrix.
+</p>
+<p>If the final argument is the string &rsquo;vector&rsquo; then <var>P</var> is a permutation
+vector instead of a permutation matrix.
+</p>
 
 <p><strong>See also:</strong> <a href="#XREFchol">chol</a>, <a href="#XREFhess">hess</a>, <a href="#XREFlu">lu</a>, <a href="#XREFqz">qz</a>, <a href="#XREFschur">schur</a>, <a href="#XREFsvd">svd</a>, <a href="#XREFqrupdate">qrupdate</a>, <a href="#XREFqrinsert">qrinsert</a>, <a href="#XREFqrdelete">qrdelete</a>, <a href="#XREFqrshift">qrshift</a>.
 </p></dd></dl>
@@ -527,12 +543,12 @@ be either full (Q is square) or economized (R is square).
 <dd><p>Given a QR&nbsp;factorization of a real or complex matrix
 <var>A</var>&nbsp;=&nbsp;<var>Q</var>*<var>R</var><!-- /@w -->, <var>Q</var>&nbsp;unitary and
 <var>R</var>&nbsp;upper trapezoidal, return the QR&nbsp;factorization of
-<span class="nolinebreak">[A(:,1:j-1)</span>&nbsp;A(:,j+1:n)]<!-- /@w -->, i.e., <var>A</var> with one column deleted
-(if <var>orient</var> is <code>&quot;col&quot;</code>), or the QR&nbsp;factorization of
-<span class="nolinebreak">[A(1:j-1,:);A(j+1:n,:)]</span><!-- /@w -->, i.e., <var>A</var> with one row deleted (if
-<var>orient</var> is <code>&quot;row&quot;</code>).
-</p>
-<p>The default value of <var>orient</var> is <code>&quot;col&quot;</code>.
+<span class="nolinebreak">[A(:,1:j-1),</span>&nbsp;U,&nbsp;A(:,j:n)]<!-- /@w -->,
+where <var>u</var> is a column vector to be inserted into <var>A</var>
+(if <var>orient</var> is <code>\&quot;col\&quot;</code>),
+or the QR&nbsp;factorization of <span class="nolinebreak">[A(1:j-1,:);X;A(:,j:n)]</span><!-- /@w -->,
+where <var>x</var> is a row <var>orient</var> is <code>&quot;row&quot;</code>).
+The default value of <var>orient</var> is <code>&quot;col&quot;</code>.
 </p>
 <p>If <var>orient</var> is <code>&quot;col&quot;</code>, <var>j</var> may be an index vector
 resulting in the QR&nbsp;factorization of a matrix <var>B</var> such that

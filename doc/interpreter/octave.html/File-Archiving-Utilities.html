@@ -87,7 +87,11 @@ directory.
 </p>
 <p>If <var>dir</var> is defined the compressed files are placed in this directory,
 rather than the original directory where the uncompressed file resides.
-If <var>dir</var> does not exist it is created.
+Note that this does not replicate a directory tree in <var>dir</var> which may
+lead to files overwritting each other if there are multiple files with the
+same name.
+</p>
+<p>If <var>dir</var> does not exist it is created.
 </p>
 <p>The optional output <var>filelist</var> is a list of the compressed files.
 </p>
@@ -257,12 +261,36 @@ compressed files will be silently overwritten.
 </p>
 <p>If <var>dir</var> is defined the compressed files are placed in this directory,
 rather than the original directory where the uncompressed file resides.
-If <var>dir</var> does not exist it is created.
+Note that this does not replicate a directory tree in <var>dir</var> which may
+lead to files overwritting each other if there are multiple files with the
+same name.
+</p>
+<p>If <var>dir</var> does not exist it is created.
 </p>
 <p>The optional output <var>filelist</var> is a list of the compressed files.
 </p>
 <p><strong>See also:</strong> <a href="#XREFbunzip2">bunzip2</a>, <a href="#XREFunpack">unpack</a>, <a href="#XREFgzip">gzip</a>, <a href="#XREFzip">zip</a>, <a href="#XREFtar">tar</a>.
 </p></dd></dl>
+<p>## Copyright (C) 1993-2015 John W. Eaton
+##
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 3 of the License, or (at
+## your option) any later version.
+##
+## Octave is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with Octave; see the file COPYING.  If not, see
+## &lt;http://www.gnu.org/licenses/&gt;.
+</p>
+<p>## FIXME: the information in this file is currently duplicated in help.cc.
+</p>
 
 
 <hr>

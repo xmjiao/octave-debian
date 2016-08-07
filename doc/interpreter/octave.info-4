@@ -21,6 +21,403 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Axes Properties,  Next: Line Properties,  Prev: Figure Properties,  Up: Graphics Object Properties
+
+15.3.3.3 Axes Properties
+........................
+
+The ‘axes’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘activepositionproperty’: {"outerposition"} | "position"
+
+‘alim’: def. ‘[0 1]’
+     Transparency is not yet implemented for axes objects.  ‘alim’ is
+     unused.
+
+‘alimmode’: {"auto"} | "manual"
+
+‘ambientlightcolor’: def. ‘[1 1 1]’
+     Light is not yet implemented for axes objects.  ‘ambientlightcolor’
+     is unused.
+
+‘beingdeleted’: {"off"} | "on"
+
+‘box’: "off" | {"on"}
+     Control whether the axes has a surrounding box.
+
+‘boxstyle’: {"back"} | "full"
+     ‘boxstyle’ is unused.
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+
+‘cameraposition’: three-element vector, def. ‘[0.50000 0.50000 9.16025]’
+
+‘camerapositionmode’: {"auto"} | "manual"
+
+‘cameratarget’: three-element vector, def. ‘[0.50000 0.50000 0.50000]’
+
+‘cameratargetmode’: {"auto"} | "manual"
+
+‘cameraupvector’: three-element vector, def. ‘[-0 1 0]’
+
+‘cameraupvectormode’: {"auto"} | "manual"
+
+‘cameraviewangle’: scalar, def. ‘6.6086’
+
+‘cameraviewanglemode’: {"auto"} | "manual"
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the axes’s children.
+
+‘clim’: two-element vector, def. ‘[0 1]’
+     Define the limits for the color axis of image children.  Setting
+     ‘clim’ also forces the ‘climmode’ property to be set to "manual".
+     *Note pcolor function: XREFpcolor.
+
+‘climmode’: {"auto"} | "manual"
+
+‘clipping’: "off" | {"on"}
+     ‘clipping’ is unused.
+
+‘clippingstyle’: {"3dbox"} | "rectangle"
+     ‘clippingstyle’ is unused.
+
+‘color’: colorspec, def. ‘[1 1 1]’
+     Color of the axes background.  *Note colorspec: Colors.
+
+‘colororder’: N-by-3 RGB matrix, def. 7-by-3 double
+     RGB values used by plot function for automatic line coloring.
+
+‘colororderindex’: def. ‘1’
+     ‘colororderindex’ is unused.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after axes has been created.
+     Function is set by using default property on root object, e.g.,
+     ‘set (0, "defaultaxescreatefcn", 'disp ("axes created!")')’.
+
+‘currentpoint’: 2-by-3 matrix, def. 2-by-3 double
+     Matrix ‘[xf, yf, zf; xb, yb, zb]’ which holds the coordinates (in
+     axes data units) of the point over which the mouse pointer was when
+     the mouse button was pressed.  If a mouse callback function is
+     defined, ‘currentpoint’ holds the pointer coordinates at the time
+     the mouse button was pressed.  For 3-D plots, the first row of the
+     returned matrix specifies the point nearest to the current camera
+     position and the second row the furthest point.  The two points
+     forms a line which is perpendicular to the screen.
+
+‘dataaspectratio’: three-element vector, def. ‘[1 1 1]’
+     Specify the relative height and width of the data displayed in the
+     axes.  Setting ‘dataaspectratio’ to ‘[1, 2]’ causes the length of
+     one unit as displayed on the x-axis to be the same as the length of
+     2 units on the y-axis.  Setting ‘dataaspectratio’ also forces the
+     ‘dataaspectratiomode’ property to be set to "manual".
+
+‘dataaspectratiomode’: {"auto"} | "manual"
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before axes is deleted.
+
+‘drawmode’: "fast" | {"normal"}
+
+‘fontangle’: "italic" | {"normal"}
+
+‘fontname’: string, def. "*"
+     Name of the font used for axes annotations.
+
+‘fontsize’: scalar, def. ‘10’
+     Size of the font used for axes annotations.  *Note
+     fontunits property: XREFaxesfontunits.
+
+‘fontsmoothing’: "off" | {"on"}
+     ‘fontsmoothing’ is unused.
+
+‘fontunits’: "centimeters" | "inches" | "normalized" | "pixels" | {"points"}
+     Unit used to interpret ‘fontsize’ property.
+
+‘fontweight’: "bold" | {"normal"}
+
+‘gridalpha’: def. ‘0.15000’
+     Transparency is not yet implemented for axes objects.  ‘gridalpha’
+     is unused.
+
+‘gridalphamode’: {"auto"} | "manual"
+     ‘gridalphamode’ is unused.
+
+‘gridcolor’: def. ‘[0.15000 0.15000 0.15000]’
+     ‘gridcolor’ is unused.
+
+‘gridcolormode’: {"auto"} | "manual"
+     ‘gridcolormode’ is unused.
+
+‘gridlinestyle’: {"-"} | "–" | "-." | ":" | "none"
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the axes’s handle is not visible in
+     its parent’s "children" property.
+
+‘hittest’: "off" | {"on"}
+
+‘interruptible’: "off" | {"on"}
+
+‘labelfontsizemultiplier’: def. ‘1.1000’
+     ‘labelfontsizemultiplier’ is unused.
+
+‘layer’: {"bottom"} | "top"
+     Control whether the axes is drawn below child graphics objects
+     (ticks, labels, etc. covered by plotted objects) or above.
+
+‘linestyleorder’: def. "-"
+     ‘linestyleorder’ is unused.
+
+‘linestyleorderindex’: def. ‘1’
+     ‘linestyleorderindex’ is unused.
+
+‘linewidth’: def. ‘0.50000’
+
+‘minorgridalpha’: def. ‘0.25000’
+     Transparency is not yet implemented for axes objects.
+     ‘minorgridalpha’ is unused.
+
+‘minorgridalphamode’: {"auto"} | "manual"
+     ‘minorgridalphamode’ is unused.
+
+‘minorgridcolor’: def. ‘[0.10000 0.10000 0.10000]’
+     ‘minorgridcolor’ is unused.
+
+‘minorgridcolormode’: {"auto"} | "manual"
+     ‘minorgridcolormode’ is unused.
+
+‘minorgridlinestyle’: "-" | "–" | "-." | {":"} | "none"
+
+‘mousewheelzoom’: scalar in the range (0, 1), def. ‘0.50000’
+     Fraction of axes limits to zoom for each wheel movement.
+
+‘nextplot’: "add" | {"replace"} | "replacechildren"
+
+‘outerposition’: four-element vector, def. ‘[0 0 1 1]’
+     Specify the position of the plot including titles, axes, and
+     legend.  The four elements of the vector are the coordinates of the
+     lower left corner and width and height of the plot, in units
+     normalized to the width and height of the plot window.  For
+     example, ‘[0.2, 0.3, 0.4, 0.5]’ sets the lower left corner of the
+     axes at (0.2, 0.3) and the width and height to be 0.4 and 0.5
+     respectively.  *Note position property: XREFaxesposition.
+
+‘parent’: graphics handle
+     Handle of the parent graphics object.
+
+‘pickableparts’: "all" | "none" | {"visible"}
+     ‘pickableparts’ is unused.
+
+‘plotboxaspectratio’: def. ‘[1 1 1]’
+
+‘plotboxaspectratiomode’: {"auto"} | "manual"
+
+‘position’: four-element vector, def. ‘[0.13000 0.11000 0.77500 0.81500]’
+     Specify the position of the plot excluding titles, axes, and
+     legend.  The four elements of the vector are the coordinates of the
+     lower left corner and width and height of the plot, in units
+     normalized to the width and height of the plot window.  For
+     example, ‘[0.2, 0.3, 0.4, 0.5]’ sets the lower left corner of the
+     axes at (0.2, 0.3) and the width and height to be 0.4 and 0.5
+     respectively.  *Note outerposition property: XREFaxesouterposition.
+
+‘projection’: {"orthographic"} | "perspective"
+     ‘projection’ is unused.
+
+‘selected’: {"off"} | "on"
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘sortmethod’: "childorder" | {"depth"}
+     ‘sortmethod’ is unused.
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘tickdir’: {"in"} | "out"
+     Control whether axes tick marks project "in" to the plot box or
+     "out".
+
+‘tickdirmode’: {"auto"} | "manual"
+
+‘ticklabelinterpreter’: "latex" | "none" | {"tex"}
+     Control the way x/y/zticklabel properties are interpreted.  *Note
+     Use of the interpreter property: XREFinterpreterusage.
+
+‘ticklength’: two-element vector, def. ‘[0.010000 0.025000]’
+     Two-element vector ‘[2Dlen 3Dlen]’ specifying the length of the
+     tickmarks relative to the longest visible axis.
+
+‘tightinset’ (read-only): def. ‘[0.042857 0.038106 0.000000 0.023810]’
+
+‘title’: graphics handle
+     Graphics handle of the title text object.
+
+‘titlefontsizemultiplier’: def. ‘1.1000’
+     ‘titlefontsizemultiplier’ is unused.
+
+‘titlefontweight’: {"bold"} | "normal"
+     ‘titlefontweight’ is unused.
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always "axes"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this axes object.
+
+‘units’: "centimeters" | "characters" | "inches" | {"normalized"} | "pixels" | "points"
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘view’: two-element vector, def. ‘[0 90]’
+     Two-element vector ‘[azimuth elevation]’ specifying the viewpoint
+     for three-dimensional plots
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the axes is not rendered on screen.
+
+‘xaxislocation’: {"bottom"} | "top" | "zero"
+
+‘xcolor’: {colorspec} | "none", def. ‘[0 0 0]’
+     Color of the x-axis.  *Note colorspec: Colors.
+
+‘xcolormode’: {"auto"} | "manual"
+     ‘xcolormode’ is unused.
+
+‘xdir’: {"normal"} | "reverse"
+
+‘xgrid’: {"off"} | "on"
+     Control whether major x grid lines are displayed.
+
+‘xlabel’: graphics handle
+     Graphics handle of the x label text object.
+
+‘xlim’: two-element vector, def. ‘[0 1]’
+     Two-element vector ‘[xmin xmax]’ specifying the limits for the
+     x-axis.  Setting ‘xlim’ also forces the ‘xlimmode’ property to be
+     set to "manual".  *Note xlim function: XREFxlim.
+
+‘xlimmode’: {"auto"} | "manual"
+
+‘xminorgrid’: {"off"} | "on"
+     Control whether minor x grid lines are displayed.
+
+‘xminortick’: {"off"} | "on"
+
+‘xscale’: {"linear"} | "log"
+
+‘xtick’: vector
+     Position of x tick marks.  Setting ‘xtick’ also forces the
+     ‘xtickmode’ property to be set to "manual".
+
+‘xticklabel’: string | cell array of strings, def. 1-by-6 cell
+     Labels of x tick marks.  Setting ‘xticklabel’ also forces the
+     ‘xticklabelmode’ property to be set to "manual".
+
+‘xticklabelmode’: {"auto"} | "manual"
+
+‘xticklabelrotation’: def. ‘0’
+     ‘xticklabelrotation’ is unused.
+
+‘xtickmode’: {"auto"} | "manual"
+
+‘yaxislocation’: {"left"} | "right" | "zero"
+
+‘ycolor’: {colorspec} | "none", def. ‘[0 0 0]’
+     Color of the y-axis.  *Note colorspec: Colors.
+
+‘ycolormode’: {"auto"} | "manual"
+     ‘ycolormode’ is unused.
+
+‘ydir’: {"normal"} | "reverse"
+
+‘ygrid’: {"off"} | "on"
+     Control whether major y grid lines are displayed.
+
+‘ylabel’: graphics handle
+     Graphics handle of the y label text object.
+
+‘ylim’: two-element vector, def. ‘[0 1]’
+     Two-element vector ‘[ymin ymax]’ specifying the limits for the
+     y-axis.  Setting ‘ylim’ also forces the ‘ylimmode’ property to be
+     set to "manual".  *Note ylim function: XREFylim.
+
+‘ylimmode’: {"auto"} | "manual"
+
+‘yminorgrid’: {"off"} | "on"
+     Control whether minor y grid lines are displayed.
+
+‘yminortick’: {"off"} | "on"
+
+‘yscale’: {"linear"} | "log"
+
+‘ytick’: vector
+     Position of y tick marks.  Setting ‘ytick’ also forces the
+     ‘ytickmode’ property to be set to "manual".
+
+‘yticklabel’: string | cell array of strings, def. 1-by-6 cell
+     Labels of y tick marks.  Setting ‘yticklabel’ also forces the
+     ‘yticklabelmode’ property to be set to "manual".
+
+‘yticklabelmode’: {"auto"} | "manual"
+
+‘yticklabelrotation’: def. ‘0’
+     ‘yticklabelrotation’ is unused.
+
+‘ytickmode’: {"auto"} | "manual"
+
+‘zcolor’: {colorspec} | "none", def. ‘[0 0 0]’
+     Color of the z-axis.  *Note colorspec: Colors.
+
+‘zcolormode’: {"auto"} | "manual"
+     ‘zcolormode’ is unused.
+
+‘zdir’: {"normal"} | "reverse"
+
+‘zgrid’: {"off"} | "on"
+     Control whether major z grid lines are displayed.
+
+‘zlabel’: graphics handle
+     Graphics handle of the z label text object.
+
+‘zlim’: two-element vector, def. ‘[0 1]’
+     Two-element vector ‘[zmin zmaz]’ specifying the limits for the
+     z-axis.  Setting ‘zlim’ also forces the ‘zlimmode’ property to be
+     set to "manual".  *Note zlim function: XREFzlim.
+
+‘zlimmode’: {"auto"} | "manual"
+
+‘zminorgrid’: {"off"} | "on"
+     Control whether minor z grid lines are displayed.
+
+‘zminortick’: {"off"} | "on"
+
+‘zscale’: {"linear"} | "log"
+
+‘ztick’: vector
+     Position of z tick marks.  Setting ‘ztick’ also forces the
+     ‘ztickmode’ property to be set to "manual".
+
+‘zticklabel’: string | cell array of strings, def. 1-by-6 cell
+     Labels of z tick marks.  Setting ‘zticklabel’ also forces the
+     ‘zticklabelmode’ property to be set to "manual".
+
+‘zticklabelmode’: {"auto"} | "manual"
+
+‘zticklabelrotation’: def. ‘0’
+     ‘zticklabelrotation’ is unused.
+
+‘ztickmode’: {"auto"} | "manual"
+
+
 File: octave.info,  Node: Line Properties,  Next: Text Properties,  Prev: Axes Properties,  Up: Graphics Object Properties
 
 15.3.3.4 Line Properties
@@ -758,7 +1155,7 @@ The ‘light’ properties are:
 ‘style’: {"infinite"} | "local"
      This string defines whether the light emanates from a light source
      at infinite distance ("infinite") or from a local point source
-     ("local").  Only the default value "infinite" is supported.
+     ("local").
 
 ‘tag’: string, def. ""
      A user-defined string to label the graphics object.
@@ -832,7 +1229,7 @@ The ‘uimenu’ properties are:
 ‘parent’: graphics handle
      Handle of the parent graphics object.
 
-‘position’: def. ‘1’
+‘position’: def. ‘0’
 
 ‘selected’: {"off"} | "on"
 
@@ -866,7 +1263,7 @@ The ‘uibuttongroup’ properties are:
 
 ‘__modified__’: "off" | {"on"}
 
-‘backgroundcolor’: def. ‘[0.83137 0.81569 0.78431]’
+‘backgroundcolor’: def. ‘[1 1 1]’
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -932,7 +1329,7 @@ The ‘uibuttongroup’ properties are:
 
 ‘selectionhighlight’: "off" | {"on"}
 
-‘shadowcolor’: def. ‘[0.41569 0.40784 0.39216]’
+‘shadowcolor’: def. ‘[0 0 0]’
 
 ‘sizechangedfcn’: def. ‘[](0x0)’
 
@@ -1039,7 +1436,7 @@ The ‘uipanel’ properties are:
 
 ‘__modified__’: "off" | {"on"}
 
-‘backgroundcolor’: def. ‘[0.83137 0.81569 0.78431]’
+‘backgroundcolor’: def. ‘[1 1 1]’
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -1100,7 +1497,7 @@ The ‘uipanel’ properties are:
 
 ‘selectionhighlight’: "off" | {"on"}
 
-‘shadowcolor’: def. ‘[0.41569 0.40784 0.39216]’
+‘shadowcolor’: def. ‘[0 0 0]’
 
 ‘tag’: string, def. ""
      A user-defined string to label the graphics object.
@@ -1134,7 +1531,7 @@ The ‘uicontrol’ properties are:
 
 ‘__modified__’: "off" | {"on"}
 
-‘backgroundcolor’: def. ‘[0.83137 0.81569 0.78431]’
+‘backgroundcolor’: def. ‘[1 1 1]’
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -6806,7 +7203,8 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
 
  -- : cond (A)
  -- : cond (A, P)
-     Compute the P-norm condition number of a matrix.
+     Compute the P-norm condition number of a matrix with respect to
+     inversion.
 
      ‘cond (A)’ is defined as ‘norm (A, P) * norm (inv (A), P)’.
 
@@ -6824,7 +7222,36 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
      computing are not likely to be accurate.
 
      See also: *note condest: XREFcondest, *note rcond: XREFrcond, *note
-     norm: XREFnorm, *note svd: XREFsvd.
+     condeig: XREFcondeig, *note norm: XREFnorm, *note svd: XREFsvd.
+
+ -- : C = condeig (A)
+ -- : [V, LAMBDA, C] = condeig (A)
+     Compute condition numbers of a matrix with respect to eigenvalues.
+
+     The condition numbers are the reciprocals of the cosines of the
+     angles between the left and right eigenvectors; Large values
+     indicate that the matrix has multiple distinct eigenvalues.
+
+     The input A must be a square numeric matrix.
+
+     The outputs are:
+
+        • C is a vector of condition numbers for the eigenvalues of A.
+
+        • V is the matrix of right eigenvectors of A.  The result is
+          equivalent to calling ‘[V, LAMBDA] = eig (A)’.
+
+        • LAMBDA is the diagonal matrix of eigenvalues of A.  The result
+          is equivalent to calling ‘[V, LAMBDA] = eig (A)’.
+
+     Example
+
+          a = [1, 2; 3, 4];
+          c = condeig (a)
+          ⇒ [1.0150; 1.0150]
+
+     See also: *note eig: XREFeig, *note cond: XREFcond, *note balance:
+     XREFbalance.
 
  -- : det (A)
  -- : [D, RCOND] = det (A)
@@ -7473,12 +7900,17 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      See also: *note lu: XREFlu, *note cholupdate: XREFcholupdate, *note
      qrupdate: XREFqrupdate.
 
- -- : [Q, R, P] = qr (A)
- -- : [Q, R, P] = qr (A, '0')
+ -- : [Q, R] = qr (A)
+ -- : [Q, R, P] = qr (A) # non-sparse A
+ -- : X = qr (A)
+ -- : R = qr (A) # sparse A
  -- : [C, R] = qr (A, B)
- -- : [C, R] = qr (A, B, '0')
+ -- : [...] = qr (..., 0)
+ -- : [...] = qr (..., 'vector')
+ -- : [...] = qr (..., 'matrix')
      Compute the QR factorization of A, using standard LAPACK
-     subroutines.
+     subroutines.  The QR factorization is ‘Q * R = A’ where Q is an
+     orthogonal matrix and R is upper triangular.
 
      For example, given the matrix ‘A = [1, 2; 3, 4]’,
 
@@ -7502,12 +7934,12 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
           min norm(A x - b)
 
      for overdetermined systems of equations (i.e., A is a tall, thin
-     matrix).  The QR factorization is ‘Q * R = A’ where Q is an
-     orthogonal matrix and R is upper triangular.
+     matrix).
 
-     If given a second argument of ’0’, ‘qr’ returns an economy-sized
-     QR factorization, omitting zero rows of R and the corresponding
-     columns of Q.
+     If only a single return value is requested, then it is either R if
+     A is sparse, or X such that ‘R = triu (X)’ if A is full.  (Note:
+     Unlike most commands, the single return value is not the first
+     return value when multiple are requested.)
 
      If the matrix A is full, the permuted QR factorization ‘[Q, R, P] =
      qr (A)’ forms the QR factorization such that the diagonal entries
@@ -7536,21 +7968,26 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      The permuted ‘qr’ factorization ‘[Q, R, P] = qr (A)’ factorization
      allows the construction of an orthogonal basis of ‘span (A)’.
 
-     If the matrix A is sparse, then compute the sparse QR factorization
-     of A, using CSPARSE.  As the matrix Q is in general a full matrix,
-     this function returns the Q-less factorization R of A, such that ‘R
-     = chol (A' * A)’.
+     If the matrix A is sparse, then the sparse QR factorization of A is
+     computed using CSPARSE.  As the matrix Q is in general a full
+     matrix, it is recommended to request only one return value, which
+     is the Q-less factorization R of A, such that ‘R = chol (A' * A)’.
 
-     If the final argument is the scalar ‘0’ and the number of rows is
-     larger than the number of columns, then an economy factorization is
-     returned.  That is R will have only ‘size (A,1)’ rows.
-
-     If an additional matrix B is supplied, then ‘qr’ returns C, where
-     ‘C = Q' * B’.  This allows the least squares approximation of ‘A \
-     B’ to be calculated as
+     If an additional matrix B is supplied and two return values are
+     requested, then ‘qr’ returns C, where ‘C = Q' * B’.  This allows
+     the least squares approximation of ‘A \ B’ to be calculated as
 
           [C, R] = qr (A, B)
           x = R \ C
+
+     If the final argument is the scalar 0 and the number of rows is
+     larger than the number of columns, then an ’economy’ factorization
+     is returned, omitting zeroes of R and the corresponding columns of
+     Q.  That is, R will have only ‘size (A,1)’ rows.  In this case, P
+     is a vector rather than a matrix.
+
+     If the final argument is the string ’vector’ then P is a
+     permutation vector instead of a permutation matrix.
 
      See also: *note chol: XREFchol, *note hess: XREFhess, *note lu:
      XREFlu, *note qz: XREFqz, *note schur: XREFschur, *note svd:
@@ -7599,11 +8036,10 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
  -- : [Q1, R1] = qrdelete (Q, R, J, ORIENT)
      Given a QR factorization of a real or complex matrix A = Q*R,
      Q unitary and R upper trapezoidal, return the QR factorization of
-     [A(:,1:j-1) A(:,j+1:n)], i.e., A with one column deleted (if ORIENT
-     is "col"), or the QR factorization of [A(1:j-1,:);A(j+1:n,:)],
-     i.e., A with one row deleted (if ORIENT is "row").
-
-     The default value of ORIENT is "col".
+     [A(:,1:j-1), U, A(:,j:n)], where U is a column vector to be
+     inserted into A (if ORIENT is \"col\"), or the QR factorization of
+     [A(1:j-1,:);X;A(:,j:n)], where X is a row ORIENT is "row").  The
+     default value of ORIENT is "col".
 
      If ORIENT is "col", J may be an index vector resulting in the
      QR factorization of a matrix B such that A(:,J) = [] gives B.
@@ -8282,664 +8718,4 @@ File: octave.info,  Node: Specialized Solvers,  Prev: Functions of a Matrix,  Up
 
      See also: *note bicg: XREFbicg, *note bicgstab: XREFbicgstab, *note
      cgs: XREFcgs, *note gmres: XREFgmres, *note pcg: XREFpcg.
-
-
-File: octave.info,  Node: Vectorization and Faster Code Execution,  Next: Nonlinear Equations,  Prev: Linear Algebra,  Up: Top
-
-19 Vectorization and Faster Code Execution
-******************************************
-
-Vectorization is a programming technique that uses vector operations
-instead of element-by-element loop-based operations.  Besides frequently
-producing more succinct Octave code, vectorization also allows for
-better optimization in the subsequent implementation.  The optimizations
-may occur either in Octave’s own Fortran, C, or C++ internal
-implementation, or even at a lower level depending on the compiler and
-external numerical libraries used to build Octave.  The ultimate goal is
-to make use of your hardware’s vector instructions if possible or to
-perform other optimizations in software.
-
-   Vectorization is not a concept unique to Octave, but it is
-particularly important because Octave is a matrix-oriented language.
-Vectorized Octave code will see a dramatic speed up (10X–100X) in most
-cases.
-
-   This chapter discusses vectorization and other techniques for writing
-faster code.
-
-* Menu:
-
-* Basic Vectorization::        Basic techniques for code optimization
-* Broadcasting::               Broadcasting operations
-* Function Application::       Applying functions to arrays, cells, and structs
-* Accumulation::               Accumulation functions
-* JIT Compiler::               Just-In-Time Compiler for loops
-* Miscellaneous Techniques::   Other techniques for speeding up code
-* Examples::
-
-
-File: octave.info,  Node: Basic Vectorization,  Next: Broadcasting,  Up: Vectorization and Faster Code Execution
-
-19.1 Basic Vectorization
-========================
-
-To a very good first approximation, the goal in vectorization is to
-write code that avoids loops and uses whole-array operations.  As a
-trivial example, consider
-
-     for i = 1:n
-       for j = 1:m
-         c(i,j) = a(i,j) + b(i,j);
-       endfor
-     endfor
-
-compared to the much simpler
-
-     c = a + b;
-
-This isn’t merely easier to write; it is also internally much easier to
-optimize.  Octave delegates this operation to an underlying
-implementation which, among other optimizations, may use special vector
-hardware instructions or could conceivably even perform the additions in
-parallel.  In general, if the code is vectorized, the underlying
-implementation has more freedom about the assumptions it can make in
-order to achieve faster execution.
-
-   This is especially important for loops with "cheap" bodies.  Often it
-suffices to vectorize just the innermost loop to get acceptable
-performance.  A general rule of thumb is that the "order" of the
-vectorized body should be greater or equal to the "order" of the
-enclosing loop.
-
-   As a less trivial example, instead of
-
-     for i = 1:n-1
-       a(i) = b(i+1) - b(i);
-     endfor
-
-write
-
-     a = b(2:n) - b(1:n-1);
-
-   This shows an important general concept about using arrays for
-indexing instead of looping over an index variable.  *Note Index
-Expressions::.  Also use boolean indexing generously.  If a condition
-needs to be tested, this condition can also be written as a boolean
-index.  For instance, instead of
-
-     for i = 1:n
-       if (a(i) > 5)
-         a(i) -= 20
-       endif
-     endfor
-
-write
-
-     a(a>5) -= 20;
-
-which exploits the fact that ‘a > 5’ produces a boolean index.
-
-   Use elementwise vector operators whenever possible to avoid looping
-(operators like ‘.*’ and ‘.^’).  *Note Arithmetic Ops::.  For simple
-inline functions, the ‘vectorize’ function can do this automatically.
-
- -- : vectorize (FUN)
-     Create a vectorized version of the inline function FUN by replacing
-     all occurrences of ‘*’, ‘/’, etc., with ‘.*’, ‘./’, etc.
-
-     This may be useful, for example, when using inline functions with
-     numerical integration or optimization where a vector-valued
-     function is expected.
-
-          fcn = vectorize (inline ("x^2 - 1"))
-             ⇒ fcn = f(x) = x.^2 - 1
-          quadv (fcn, 0, 3)
-             ⇒ 6
-
-     See also: *note inline: XREFinline, *note formula: XREFformula,
-     *note argnames: XREFargnames.
-
-   Also exploit broadcasting in these elementwise operators both to
-avoid looping and unnecessary intermediate memory allocations.  *Note
-Broadcasting::.
-
-   Use built-in and library functions if possible.  Built-in and
-compiled functions are very fast.  Even with an m-file library function,
-chances are good that it is already optimized, or will be optimized more
-in a future release.
-
-   For instance, even better than
-
-     a = b(2:n) - b(1:n-1);
-
-is
-
-     a = diff (b);
-
-   Most Octave functions are written with vector and array arguments in
-mind.  If you find yourself writing a loop with a very simple operation,
-chances are that such a function already exists.  The following
-functions occur frequently in vectorized code:
-
-   • Index manipulation
-
-        • find
-
-        • sub2ind
-
-        • ind2sub
-
-        • sort
-
-        • unique
-
-        • lookup
-
-        • ifelse / merge
-
-   • Repetition
-
-        • repmat
-
-        • repelems
-
-   • Vectorized arithmetic
-
-        • sum
-
-        • prod
-
-        • cumsum
-
-        • cumprod
-
-        • sumsq
-
-        • diff
-
-        • dot
-
-        • cummax
-
-        • cummin
-
-   • Shape of higher dimensional arrays
-
-        • reshape
-
-        • resize
-
-        • permute
-
-        • squeeze
-
-        • deal
-
-
-File: octave.info,  Node: Broadcasting,  Next: Function Application,  Prev: Basic Vectorization,  Up: Vectorization and Faster Code Execution
-
-19.2 Broadcasting
-=================
-
-Broadcasting refers to how Octave binary operators and functions behave
-when their matrix or array operands or arguments differ in size.  Since
-version 3.6.0, Octave now automatically broadcasts vectors, matrices,
-and arrays when using elementwise binary operators and functions.
-Broadly speaking, smaller arrays are “broadcast” across the larger one,
-until they have a compatible shape.  The rule is that corresponding
-array dimensions must either
-
-  1. be equal, or
-
-  2. one of them must be 1.
-
-In case all dimensions are equal, no broadcasting occurs and ordinary
-element-by-element arithmetic takes place.  For arrays of higher
-dimensions, if the number of dimensions isn’t the same, then missing
-trailing dimensions are treated as 1.  When one of the dimensions is 1,
-the array with that singleton dimension gets copied along that dimension
-until it matches the dimension of the other array.  For example,
-consider
-
-     x = [1 2 3;
-          4 5 6;
-          7 8 9];
-
-     y = [10 20 30];
-
-     x + y
-
-Without broadcasting, ‘x + y’ would be an error because the dimensions
-do not agree.  However, with broadcasting it is as if the following
-operation were performed:
-
-     x = [1 2 3
-          4 5 6
-          7 8 9];
-
-     y = [10 20 30
-          10 20 30
-          10 20 30];
-
-     x + y
-     ⇒    11   22   33
-           14   25   36
-           17   28   39
-
-That is, the smaller array of size ‘[1 3]’ gets copied along the
-singleton dimension (the number of rows) until it is ‘[3 3]’.  No actual
-copying takes place, however.  The internal implementation reuses
-elements along the necessary dimension in order to achieve the desired
-effect without copying in memory.
-
-   Both arrays can be broadcast across each other, for example, all
-pairwise differences of the elements of a vector with itself:
-
-     y - y'
-     ⇒    0   10   20
-         -10    0   10
-         -20  -10    0
-
-Here the vectors of size ‘[1 3]’ and ‘[3 1]’ both get broadcast into
-matrices of size ‘[3 3]’ before ordinary matrix subtraction takes place.
-
-   A special case of broadcasting that may be familiar is when all
-dimensions of the array being broadcast are 1, i.e., the array is a
-scalar.  Thus for example, operations like ‘x - 42’ and ‘max (x, 2)’ are
-basic examples of broadcasting.
-
-   For a higher-dimensional example, suppose ‘img’ is an RGB image of
-size ‘[m n 3]’ and we wish to multiply each color by a different scalar.
-The following code accomplishes this with broadcasting,
-
-     img .*= permute ([0.8, 0.9, 1.2], [1, 3, 2]);
-
-Note the usage of permute to match the dimensions of the ‘[0.8, 0.9,
-1.2]’ vector with ‘img’.
-
-   For functions that are not written with broadcasting semantics,
-‘bsxfun’ can be useful for coercing them to broadcast.
-
- -- : bsxfun (F, A, B)
-     The binary singleton expansion function performs broadcasting, that
-     is, it applies a binary function F element-by-element to two array
-     arguments A and B, and expands as necessary singleton dimensions in
-     either input argument.
-
-     F is a function handle, inline function, or string containing the
-     name of the function to evaluate.  The function F must be capable
-     of accepting two column-vector arguments of equal length, or one
-     column vector argument and a scalar.
-
-     The dimensions of A and B must be equal or singleton.  The
-     singleton dimensions of the arrays will be expanded to the same
-     dimensionality as the other array.
-
-     See also: *note arrayfun: XREFarrayfun, *note cellfun: XREFcellfun.
-
-   Broadcasting is only applied if either of the two broadcasting
-conditions hold.  As usual, however, broadcasting does not apply when
-two dimensions differ and neither is 1:
-
-     x = [1 2 3
-          4 5 6];
-     y = [10 20
-          30 40];
-     x + y
-
-This will produce an error about nonconformant arguments.
-
-   Besides common arithmetic operations, several functions of two
-arguments also broadcast.  The full list of functions and operators that
-broadcast is
-
-           plus      +  .+
-           minus     -  .-
-           times     .*
-           rdivide   ./
-           ldivide   .\
-           power     .^  .**
-           lt        <
-           le        <=
-           eq        ==
-           gt        >
-           ge        >=
-           ne        !=  ~=
-           and       &
-           or        |
-           atan2
-           hypot
-           max
-           min
-           mod
-           rem
-           xor
-
-           +=  -=  .+=  .-=  .*=  ./=  .\=  .^=  .**=  &=  |=
-
-   Beware of resorting to broadcasting if a simpler operation will
-suffice.  For matrices A and B, consider the following:
-
-     C = sum (permute (A, [1, 3, 2]) .* permute (B, [3, 2, 1]), 3);
-
-This operation broadcasts the two matrices with permuted dimensions
-across each other during elementwise multiplication in order to obtain a
-larger 3-D array, and this array is then summed along the third
-dimension.  A moment of thought will prove that this operation is simply
-the much faster ordinary matrix multiplication, ‘C = A*B;’.
-
-   A note on terminology: “broadcasting” is the term popularized by the
-Numpy numerical environment in the Python programming language.  In
-other programming languages and environments, broadcasting may also be
-known as _binary singleton expansion_ (BSX, in MATLAB, and the origin of
-the name of the ‘bsxfun’ function), _recycling_ (R programming
-language), _single-instruction multiple data_ (SIMD), or _replication_.
-
-19.2.1 Broadcasting and Legacy Code
------------------------------------
-
-The new broadcasting semantics almost never affect code that worked in
-previous versions of Octave.  Consequently, all code inherited from
-MATLAB that worked in previous versions of Octave should still work
-without change in Octave.  The only exception is code such as
-
-     try
-       c = a.*b;
-     catch
-       c = a.*a;
-     end_try_catch
-
-that may have relied on matrices of different size producing an error.
-Because such operation is now valid Octave syntax, this will no longer
-produce an error.  Instead, the following code should be used:
-
-     if (isequal (size (a), size (b)))
-       c = a .* b;
-     else
-       c = a .* a;
-     endif
-
-
-File: octave.info,  Node: Function Application,  Next: Accumulation,  Prev: Broadcasting,  Up: Vectorization and Faster Code Execution
-
-19.3 Function Application
-=========================
-
-As a general rule, functions should already be written with matrix
-arguments in mind and should consider whole matrix operations in a
-vectorized manner.  Sometimes, writing functions in this way appears
-difficult or impossible for various reasons.  For those situations,
-Octave provides facilities for applying a function to each element of an
-array, cell, or struct.
-
- -- : arrayfun (FUNC, A)
- -- : X = arrayfun (FUNC, A)
- -- : X = arrayfun (FUNC, A, B, ...)
- -- : [X, Y, ...] = arrayfun (FUNC, A, ...)
- -- : arrayfun (..., "UniformOutput", VAL)
- -- : arrayfun (..., "ErrorHandler", ERRFUNC)
-
-     Execute a function on each element of an array.
-
-     This is useful for functions that do not accept array arguments.
-     If the function does accept array arguments it is better to call
-     the function directly.
-
-     The first input argument FUNC can be a string, a function handle,
-     an inline function, or an anonymous function.  The input argument A
-     can be a logic array, a numeric array, a string array, a structure
-     array, or a cell array.  By a call of the function ‘arrayfun’ all
-     elements of A are passed on to the named function FUNC
-     individually.
-
-     The named function can also take more than two input arguments,
-     with the input arguments given as third input argument B, fourth
-     input argument C, ... If given more than one array input argument
-     then all input arguments must have the same sizes, for example:
-
-          arrayfun (@atan2, [1, 0], [0, 1])
-               ⇒ [ 1.5708   0.0000 ]
-
-     If the parameter VAL after a further string input argument
-     "UniformOutput" is set ‘true’ (the default), then the named
-     function FUNC must return a single element which then will be
-     concatenated into the return value and is of type matrix.
-     Otherwise, if that parameter is set to ‘false’, then the outputs
-     are concatenated in a cell array.  For example:
-
-          arrayfun (@(x,y) x:y, "abc", "def", "UniformOutput", false)
-          ⇒
-             {
-               [1,1] = abcd
-               [1,2] = bcde
-               [1,3] = cdef
-             }
-
-     If more than one output arguments are given then the named function
-     must return the number of return values that also are expected, for
-     example:
-
-          [A, B, C] = arrayfun (@find, [10; 0], "UniformOutput", false)
-          ⇒
-          A =
-          {
-             [1,1] =  1
-             [2,1] = [](0x0)
-          }
-          B =
-          {
-             [1,1] =  1
-             [2,1] = [](0x0)
-          }
-          C =
-          {
-             [1,1] =  10
-             [2,1] = [](0x0)
-          }
-
-     If the parameter ERRFUNC after a further string input argument
-     "ErrorHandler" is another string, a function handle, an inline
-     function, or an anonymous function, then ERRFUNC defines a function
-     to call in the case that FUNC generates an error.  The definition
-     of the function must be of the form
-
-          function [...] = errfunc (S, ...)
-
-     where there is an additional input argument to ERRFUNC relative to
-     FUNC, given by S.  This is a structure with the elements
-     "identifier", "message", and "index" giving, respectively, the
-     error identifier, the error message, and the index of the array
-     elements that caused the error.  The size of the output argument of
-     ERRFUNC must have the same size as the output argument of FUNC,
-     otherwise a real error is thrown.  For example:
-
-          function y = ferr (s, x), y = "MyString"; endfunction
-          arrayfun (@str2num, [1234],
-                    "UniformOutput", false, "ErrorHandler", @ferr)
-          ⇒
-             {
-               [1,1] = MyString
-             }
-
-     See also: *note spfun: XREFspfun, *note cellfun: XREFcellfun, *note
-     structfun: XREFstructfun.
-
- -- : Y = spfun (F, S)
-     Compute ‘f(S)’ for the nonzero values of S.
-
-     This results in a sparse matrix with the same structure as S.  The
-     function F can be passed as a string, a function handle, or an
-     inline function.
-
-     See also: *note arrayfun: XREFarrayfun, *note cellfun: XREFcellfun,
-     *note structfun: XREFstructfun.
-
- -- : cellfun (NAME, C)
- -- : cellfun ("size", C, K)
- -- : cellfun ("isclass", C, CLASS)
- -- : cellfun (FUNC, C)
- -- : cellfun (FUNC, C, D)
- -- : [A, ...] = cellfun (...)
- -- : cellfun (..., "ErrorHandler", ERRFUNC)
- -- : cellfun (..., "UniformOutput", VAL)
-
-     Evaluate the function named NAME on the elements of the cell array
-     C.
-
-     Elements in C are passed on to the named function individually.
-     The function NAME can be one of the functions
-
-     ‘isempty’
-          Return 1 for empty elements.
-
-     ‘islogical’
-          Return 1 for logical elements.
-
-     ‘isnumeric’
-          Return 1 for numeric elements.
-
-     ‘isreal’
-          Return 1 for real elements.
-
-     ‘length’
-          Return a vector of the lengths of cell elements.
-
-     ‘ndims’
-          Return the number of dimensions of each element.
-
-     ‘numel’
-     ‘prodofsize’
-          Return the number of elements contained within each cell
-          element.  The number is the product of the dimensions of the
-          object at each cell element.
-
-     ‘size’
-          Return the size along the K-th dimension.
-
-     ‘isclass’
-          Return 1 for elements of CLASS.
-
-     Additionally, ‘cellfun’ accepts an arbitrary function FUNC in the
-     form of an inline function, function handle, or the name of a
-     function (in a character string).  The function can take one or
-     more arguments, with the inputs arguments given by C, D, etc.
-     Equally the function can return one or more output arguments.  For
-     example:
-
-          cellfun ("atan2", {1, 0}, {0, 1})
-               ⇒ [ 1.57080   0.00000 ]
-
-     The number of output arguments of ‘cellfun’ matches the number of
-     output arguments of the function.  The outputs of the function will
-     be collected into the output arguments of ‘cellfun’ like this:
-
-          function [a, b] = twoouts (x)
-            a = x;
-            b = x*x;
-          endfunction
-          [aa, bb] = cellfun (@twoouts, {1, 2, 3})
-               ⇒
-                  aa =
-                     1 2 3
-                  bb =
-                     1 4 9
-
-     Note that per default the output argument(s) are arrays of the same
-     size as the input arguments.  Input arguments that are singleton
-     (1x1) cells will be automatically expanded to the size of the other
-     arguments.
-
-     If the parameter "UniformOutput" is set to true (the default), then
-     the function must return scalars which will be concatenated into
-     the return array(s).  If "UniformOutput" is false, the outputs are
-     concatenated into a cell array (or cell arrays).  For example:
-
-          cellfun ("tolower", {"Foo", "Bar", "FooBar"},
-                   "UniformOutput", false)
-          ⇒ {"foo", "bar", "foobar"}
-
-     Given the parameter "ErrorHandler", then ERRFUNC defines a function
-     to call in case FUNC generates an error.  The form of the function
-     is
-
-          function [...] = errfunc (S, ...)
-
-     where there is an additional input argument to ERRFUNC relative to
-     FUNC, given by S.  This is a structure with the elements
-     "identifier", "message", and "index" giving respectively the error
-     identifier, the error message, and the index into the input
-     arguments of the element that caused the error.  For example:
-
-          function y = foo (s, x), y = NaN; endfunction
-          cellfun ("factorial", {-1,2}, "ErrorHandler", @foo)
-          ⇒ [NaN 2]
-
-     Use ‘cellfun’ intelligently.  The ‘cellfun’ function is a useful
-     tool for avoiding loops.  It is often used with anonymous function
-     handles; however, calling an anonymous function involves an
-     overhead quite comparable to the overhead of an m-file function.
-     Passing a handle to a built-in function is faster, because the
-     interpreter is not involved in the internal loop.  For example:
-
-          a = {...}
-          v = cellfun (@(x) det (x), a); # compute determinants
-          v = cellfun (@det, a); # faster
-
-     See also: *note arrayfun: XREFarrayfun, *note structfun:
-     XREFstructfun, *note spfun: XREFspfun.
-
- -- : structfun (FUNC, S)
- -- : [A, ...] = structfun (...)
- -- : structfun (..., "ErrorHandler", ERRFUNC)
- -- : structfun (..., "UniformOutput", VAL)
-
-     Evaluate the function named NAME on the fields of the structure S.
-     The fields of S are passed to the function FUNC individually.
-
-     ‘structfun’ accepts an arbitrary function FUNC in the form of an
-     inline function, function handle, or the name of a function (in a
-     character string).  In the case of a character string argument, the
-     function must accept a single argument named X, and it must return
-     a string value.  If the function returns more than one argument,
-     they are returned as separate output variables.
-
-     If the parameter "UniformOutput" is set to true (the default), then
-     the function must return a single element which will be
-     concatenated into the return value.  If "UniformOutput" is false,
-     the outputs are placed into a structure with the same fieldnames as
-     the input structure.
-
-          s.name1 = "John Smith";
-          s.name2 = "Jill Jones";
-          structfun (@(x) regexp (x, '(\w+)$', "matches"){1}, s,
-                     "UniformOutput", false)
-          ⇒
-             {
-               name1 = Smith
-               name2 = Jones
-             }
-
-     Given the parameter "ErrorHandler", ERRFUNC defines a function to
-     call in case FUNC generates an error.  The form of the function is
-
-          function [...] = errfunc (SE, ...)
-
-     where there is an additional input argument to ERRFUNC relative to
-     FUNC, given by SE.  This is a structure with the elements
-     "identifier", "message" and "index", giving respectively the error
-     identifier, the error message, and the index into the input
-     arguments of the element that caused the error.  For an example on
-     how to use an error handler, *note cellfun: XREFcellfun.
-
-     See also: *note cellfun: XREFcellfun, *note arrayfun: XREFarrayfun,
-     *note spfun: XREFspfun.
-
-   Consistent with earlier advice, seek to use Octave built-in functions
-whenever possible for the best performance.  This advice applies
-especially to the four functions above.  For example, when adding two
-arrays together element-by-element one could use a handle to the
-built-in addition function ‘@plus’ or define an anonymous function
-‘@(x,y) x + y’.  But, the anonymous function is 60% slower than the
-first method.  *Note Operator Overloading::, for a list of basic
-functions which might be used in place of anonymous ones.
 

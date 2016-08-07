@@ -1,8 +1,8 @@
-# doc-cache created by Octave 4.1.0+
+# created by mk-doc-cache.pl
 # name: cache
 # type: cell
 # rows: 3
-# columns: 1627
+# columns: 1630
 # name: <cell-element>
 # type: sq_string
 # elements: 1
@@ -925,7 +925,7 @@ functions
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1109
+# length: 1108
  -- : S = functions (FCN_HANDLE)
      Return a structure containing information about the function handle FCN_HANDLE.
 
@@ -957,7 +957,7 @@ functions
 
      In addition, some function types may return more information in additional fields.
 
-     *Warning:* 'functions' is provided for debugging purposes only.  It's behavior may change in the future and programs should not depend on a particular output.
+     *Warning:* 'functions' is provided for debugging purposes only.  Its behavior may change in the future and programs should not depend on a particular output.
 
    
 
@@ -2495,9 +2495,11 @@ end
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 276
+# length: 527
  -- : end
-     The magic index "end" refers to the last valid entry in an indexing operation.
+     Last element of an array or the end of any 'for', 'parfor', 'if', 'do', 'while', 'function', 'switch', 'try', or 'unwind_protect' block.
+
+     As an index of an array, the magic index "end" refers to the last valid entry in an indexing operation.
 
      Example:
 
@@ -2509,14 +2511,16 @@ end
               => 4
           X(end,end)
               => 6
+
+     See also: for, parfor, if, do, while, function, switch, try, unwind_protect.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 78
-The magic index "end" refers to the last valid entry in an indexing operation.
+# length: 136
+Last element of an array or the end of any 'for', 'parfor', 'if', 'do', 'while', 'function', 'switch', 'try', or 'unwind_protect' block.
 
 
 
@@ -12584,6 +12588,83 @@ Compute the inverse of the square matrix A.
 # type: sq_string
 # elements: 1
 # length: 4
+quit
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 523
+ -- : exit
+ -- : exit (STATUS)
+ -- : quit
+ -- : quit (STATUS)
+     Exit the current Octave session.
+
+     If the optional integer value STATUS is supplied, pass that value to the operating system as Octave's exit status.  The default value is zero.
+
+     When exiting, Octave will attempt to run the m-file 'finish.m' if it exists.  User commands to save the workspace or clean up temporary files may be placed in that file.  Alternatively, another m-file may be scheduled to run using 'atexit'.
+
+     See also: atexit.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 32
+Exit the current Octave session.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+atexit
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 952
+ -- : atexit (FCN)
+ -- : atexit (FCN, FLAG)
+     Register a function to be called when Octave exits.
+
+     For example,
+
+          function last_words ()
+            disp ("Bye bye");
+          endfunction
+          atexit ("last_words");
+
+     will print the message "Bye bye" when Octave exits.
+
+     The additional argument FLAG will register or unregister FCN from the list of functions to be called when Octave exits.  If FLAG is true, the function is registered, and if FLAG is false, it is unregistered.  For example, after registering the function 'last_words' above,
+
+          atexit ("last_words", false);
+
+     will remove the function from the list and Octave will not call 'last_words' when it exits.
+
+     Note that 'atexit' only removes the first occurrence of a function from the list, so if a function was placed in the list multiple times with 'atexit', it must also be removed from the list multiple times.
+
+     See also: quit.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 51
+Register a function to be called when Octave exits.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 4
 kron
 
 
@@ -18222,15 +18303,23 @@ sub2ind
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 433
+# length: 821
  -- : IND = sub2ind (DIMS, I, J)
  -- : IND = sub2ind (DIMS, S1, S2, ..., SN)
-     Convert subscripts to a linear index.
+     Convert subscripts to linear indices.
 
-     The following example shows how to convert the two-dimensional index '(2,3)' of a 3-by-3 matrix to a linear index.  The matrix is linearly indexed moving from one column to next, filling up all rows in each column.
+     Assume the following 3-by-3 matrices.  The left matrix contains the subscript tuples for each matrix element.  Those are converted to linear indices shown in the right matrix.  The matrices are linearly indexed moving from one column to next, filling up all rows in each column.
 
-          linear_index = sub2ind ([3, 3], 2, 3)
-          => 8
+          [(1,1), (1,2), (1,3)]     [1, 4, 7]
+          [(2,1), (2,2), (2,3)] ==> [2, 5, 8]
+          [(3,1), (3,2), (3,3)]     [3, 6, 9]
+
+     The following example shows how to convert the two-dimensional indices '(2,1)' and '(2,3)' of a 3-by-3 matrix to a linear index.
+
+          s1 = [2, 2];
+          s2 = [1, 3];
+          ind = sub2ind ([3, 3], s1, s2)
+          => ind =  2   8
 
      See also: ind2sub.
    
@@ -18240,7 +18329,7 @@ sub2ind
 # type: sq_string
 # elements: 1
 # length: 37
-Convert subscripts to a linear index.
+Convert subscripts to linear indices.
 
 
 
@@ -18254,15 +18343,35 @@ ind2sub
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 412
+# length: 1348
  -- : [S1, S2, ..., SN] = ind2sub (DIMS, IND)
-     Convert a linear index to subscripts.
+     Convert linear indices to subscripts.
 
-     The following example shows how to convert the linear index '8' in a 3-by-3 matrix into a subscript.  The matrix is linearly indexed moving from one column to next, filling up all rows in each column.
+     Assume the following 3-by-3 matrices.  The left matrix contains the linear indices IND for each matrix element.  Those are converted to subscript tuples shown in the right matrix.  The matrices are linearly indexed moving from one column to next, filling up all rows in each column.
 
-          [r, c] = ind2sub ([3, 3], 8)
-              => r =  2
-              => c =  3
+          [1, 4, 7]     [(1,1), (1,2), (1,3)]
+          [2, 5, 8] ==> [(2,1), (2,2), (2,3)]
+          [3, 6, 9]     [(3,1), (3,2), (3,3)]
+
+     The following example shows how to convert the linear indices '2' and '8' in a 3-by-3 matrix into a subscripts.
+
+          ind = [2, 8];
+          [r, c] = ind2sub ([3, 3], ind)
+              => r =  2   2
+              => c =  1   3
+
+     If the number of subscripts exceeds the number of dimensions, the exceeded dimensions are treated as '1'.  On the other hand, if less subscripts than dimensions are provided, the exceeding dimensions are merged.  For clarity see the following examples:
+
+          ind = [2, 8];
+          dims = [3, 3];
+          % same as dims = [3, 3, 1]
+          [r, c, s] = ind2sub (dims, ind)
+              => r =  2   2
+              => c =  1   3
+              => s =  1   1
+          % same as dims = 9
+          r = ind2sub (dims, ind)
+              => r =  2   8
 
      See also: sub2ind.
    
@@ -18272,7 +18381,7 @@ ind2sub
 # type: sq_string
 # elements: 1
 # length: 37
-Convert a linear index to subscripts.
+Convert linear indices to subscripts.
 
 
 
@@ -20778,39 +20887,6 @@ Convert the string STR to the time structure TM_STRUCT under the control of the 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 4
-quit
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 523
- -- : exit
- -- : exit (STATUS)
- -- : quit
- -- : quit (STATUS)
-     Exit the current Octave session.
-
-     If the optional integer value STATUS is supplied, pass that value to the operating system as Octave's exit status.  The default value is zero.
-
-     When exiting, Octave will attempt to run the m-file 'finish.m' if it exists.  User commands to save the workspace or clean up temporary files may be placed in that file.  Alternatively, another m-file may be scheduled to run using 'atexit'.
-
-     See also: atexit.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 32
-Exit the current Octave session.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
 # length: 8
 warranty
 
@@ -20877,50 +20953,6 @@ system
 # elements: 1
 # length: 44
 Execute a shell command specified by STRING.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-atexit
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 952
- -- : atexit (FCN)
- -- : atexit (FCN, FLAG)
-     Register a function to be called when Octave exits.
-
-     For example,
-
-          function last_words ()
-            disp ("Bye bye");
-          endfunction
-          atexit ("last_words");
-
-     will print the message "Bye bye" when Octave exits.
-
-     The additional argument FLAG will register or unregister FCN from the list of functions to be called when Octave exits.  If FLAG is true, the function is registered, and if FLAG is false, it is unregistered.  For example, after registering the function 'last_words' above,
-
-          atexit ("last_words", false);
-
-     will remove the function from the list and Octave will not call 'last_words' when it exits.
-
-     Note that 'atexit' only removes the first occurrence of a function from the list, so if a function was placed in the list multiple times with 'atexit', it must also be removed from the list multiple times.
-
-     See also: quit.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 51
-Register a function to be called when Octave exits.
 
 
 
@@ -22699,7 +22731,9 @@ audiodevinfo
 
 # name: <cell-element>
 # type: sq_string
-# elements: 0
+# elements: 1
+# length: 75
+Return a structure describing the available audio input and output devices.
 
 
 
@@ -23494,12 +23528,16 @@ qr
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2222
- -- : [Q, R, P] = qr (A)
- -- : [Q, R, P] = qr (A, '0')
+# length: 2733
+ -- : [Q, R] = qr (A)
+ -- : [Q, R, P] = qr (A) # non-sparse A
+ -- : X = qr (A)
+ -- : R = qr (A) # sparse A
  -- : [C, R] = qr (A, B)
- -- : [C, R] = qr (A, B, '0')
-     Compute the QR factorization of A, using standard LAPACK subroutines.
+ -- : [...] = qr (..., 0)
+ -- : [...] = qr (..., 'vector')
+ -- : [...] = qr (..., 'matrix')
+     Compute the QR factorization of A, using standard LAPACK subroutines.  The QR factorization is 'Q * R = A' where Q is an orthogonal matrix and R is upper triangular.
 
      For example, given the matrix 'A = [1, 2; 3, 4]',
 
@@ -23521,9 +23559,9 @@ qr
 
           min norm(A x - b)
 
-     for overdetermined systems of equations (i.e., A is a tall, thin matrix).  The QR factorization is 'Q * R = A' where Q is an orthogonal matrix and R is upper triangular.
+     for overdetermined systems of equations (i.e., A is a tall, thin matrix).
 
-     If given a second argument of '0', 'qr' returns an economy-sized QR factorization, omitting zero rows of R and the corresponding columns of Q.
+     If only a single return value is requested, then it is either R if A is sparse, or X such that 'R = triu (X)' if A is full.  (Note: Unlike most commands, the single return value is not the first return value when multiple are requested.)
 
      If the matrix A is full, the permuted QR factorization '[Q, R, P] = qr (A)' forms the QR factorization such that the diagonal entries of R are decreasing in magnitude order.  For example, given the matrix 'a = [1, 2; 3, 4]',
 
@@ -23548,14 +23586,16 @@ qr
 
      The permuted 'qr' factorization '[Q, R, P] = qr (A)' factorization allows the construction of an orthogonal basis of 'span (A)'.
 
-     If the matrix A is sparse, then compute the sparse QR factorization of A, using CSPARSE.  As the matrix Q is in general a full matrix, this function returns the Q-less factorization R of A, such that 'R = chol (A' * A)'.
+     If the matrix A is sparse, then the sparse QR factorization of A is computed using CSPARSE.  As the matrix Q is in general a full matrix, it is recommended to request only one return value, which is the Q-less factorization R of A, such that 'R = chol (A' * A)'.
 
-     If the final argument is the scalar '0' and the number of rows is larger than the number of columns, then an economy factorization is returned.  That is R will have only 'size (A,1)' rows.
-
-     If an additional matrix B is supplied, then 'qr' returns C, where 'C = Q' * B'.  This allows the least squares approximation of 'A \ B' to be calculated as
+     If an additional matrix B is supplied and two return values are requested, then 'qr' returns C, where 'C = Q' * B'.  This allows the least squares approximation of 'A \ B' to be calculated as
 
           [C, R] = qr (A, B)
           x = R \ C
+
+     If the final argument is the scalar 0 and the number of rows is larger than the number of columns, then an 'economy' factorization is returned, omitting zeroes of R and the corresponding columns of Q.  That is, R will have only 'size (A,1)' rows.  In this case, P is a vector rather than a matrix.
+
+     If the final argument is the string 'vector' then P is a permutation vector instead of a permutation matrix.
 
      See also: chol, hess, lu, qz, schur, svd, qrupdate, qrinsert, qrdelete, qrshift.
    
@@ -23641,9 +23681,7 @@ qrdelete
 # elements: 1
 # length: 938
  -- : [Q1, R1] = qrdelete (Q, R, J, ORIENT)
-     Given a QR factorization of a real or complex matrix A = Q*R, Q unitary and R upper trapezoidal, return the QR factorization of [A(:,1:j-1) A(:,j+1:n)], i.e., A with one column deleted (if ORIENT is "col"), or the QR factorization of [A(1:j-1,:);A(j+1:n,:)], i.e., A with one row deleted (if ORIENT is "row").
-
-     The default value of ORIENT is "col".
+     Given a QR factorization of a real or complex matrix A = Q*R, Q unitary and R upper trapezoidal, return the QR factorization of [A(:,1:j-1), U, A(:,j:n)], where U is a column vector to be inserted into A (if ORIENT is \"col\"), or the QR factorization of [A(1:j-1,:);X;A(:,j:n)], where X is a row ORIENT is "row").  The default value of ORIENT is "col".
 
      If ORIENT is "col", J may be an index vector resulting in the QR factorization of a matrix B such that A(:,J) = [] gives B.  Notice that the latter case is done as a sequence of k deletions; thus, for k large enough, it will be both faster and more accurate to recompute the factorization from scratch.
 
@@ -23658,8 +23696,8 @@ qrdelete
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 155
-Given a QR factorization of a real or complex matrix A = Q*R, Q unitary and R upper trapezoidal, return the QR factorization of [A(:,1:j-1) A(:,j+1:n)], i.
+# length: 314
+Given a QR factorization of a real or complex matrix A = Q*R, Q unitary and R upper trapezoidal, return the QR factorization of [A(:,1:j-1), U, A(:,j:n)], where U is a column vector to be inserted into A (if ORIENT is \"col\"), or the QR factorization of [A(1:j-1,:);X;A(:,j:n)], where X is a row ORIENT is "row").
 
 
 
@@ -23789,6 +23827,2125 @@ symrcm
 # elements: 1
 # length: 60
 Return the symmetric reverse Cuthill-McKee permutation of S.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 4
+gzip
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1016
+ -- : FILELIST = gzip (FILES)
+ -- : FILELIST = gzip (FILES, DIR)
+     Compress the list of files and directories specified in FILES.
+
+     FILES is a character array or cell array of strings.  Shell wildcards in the filename such as '*' or '?' are accepted and expanded.  Each file is compressed separately and a new file with a '".gz"' extension is created.  The original files are not modified, but existing compressed files will be silently overwritten.  If a directory is specified then 'gzip' recursively compresses all files in the directory.
+
+     If DIR is defined the compressed files are placed in this directory, rather than the original directory where the uncompressed file resides.  Note that this does not replicate a directory tree in DIR which may lead to files overwritting each other if there are multiple files with the same name.
+
+     If DIR does not exist it is created.
+
+     The optional output FILELIST is a list of the compressed files.
+
+     See also: gunzip, unpack, bzip2, zip, tar.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 62
+Compress the list of files and directories specified in FILES.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+bzip2
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1727
+ -- : FILELIST = bzip2 (FILES)
+ -- : FILELIST = bzip2 (FILES, DIR)
+     Compress the list of files specified in FILES.
+
+     FILES is a character array or cell array of strings.  Shell wildcards in the filename such as '*' or '?' are accepted and expanded.  Each file is compressed separately and a new file with a '".bz2"' extension is created.  The original files are not modified, but existing compressed files will be silently overwritten.
+
+     If DIR is defined the compressed files are placed in this directory, rather than the original directory where the uncompressed file resides.  Note that this does not replicate a directory tree in DIR which may lead to files overwritting each other if there are multiple files with the same name.
+
+     If DIR does not exist it is created.
+
+     The optional output FILELIST is a list of the compressed files.
+
+     See also: bunzip2, unpack, gzip, zip, tar.
+   ## Copyright (C) 1993-2015 John W. Eaton ## ## This file is part of Octave.  ## ## Octave is free software; you can redistribute it and/or modify it ## under the terms of the GNU General Public License as published by ## the Free Software Foundation; either version 3 of the License, or (at ## your option) any later version.  ## ## Octave is distributed in the hope that it will be useful, but ## WITHOUT ANY WARRANTY; without even the implied warranty of ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU ## General Public License for more details.  ## ## You should have received a copy of the GNU General Public License ## along with Octave; see the file COPYING. If not, see ## <http://www.gnu.org/licenses/>.
+
+   ## FIXME: the information in this file is currently duplicated in help.cc.
+
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 46
+Compress the list of files specified in FILES.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+!
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 64
+ -- : !
+     Logical 'not' operator.
+
+     See also: ~, not.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 23
+Logical 'not' operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+~
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 64
+ -- : ~
+     Logical 'not' operator.
+
+     See also: !, not.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 23
+Logical 'not' operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+!=
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 72
+ -- : !=
+     Logical 'not equals' operator.
+
+     See also: ~=, ne.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 30
+Logical 'not equals' operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+~=
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 72
+ -- : ~=
+     Logical 'not equals' operator.
+
+     See also: !=, ne.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 30
+Logical 'not equals' operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+"
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 34
+ -- : "
+     String delimiter.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 17
+String delimiter.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+#
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 64
+ -- : #
+     Begin comment character.
+
+     See also: %, #{.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 24
+Begin comment character.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+%
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 64
+ -- : %
+     Begin comment character.
+
+     See also: #, %{.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 24
+Begin comment character.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+#{
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 197
+ -- : #{
+     Begin block comment.  There must be nothing else, other than whitespace, in the line both before and after '#{'.  It is possible to nest block comments.
+
+     See also: %{, #}, #.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 20
+Begin block comment.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+%{
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 197
+ -- : %{
+     Begin block comment.  There must be nothing else, other than whitespace, in the line both before and after '%{'.  It is possible to nest block comments.
+
+     See also: #{, %}, %.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 20
+Begin block comment.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+#}
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 197
+ -- : #}
+     Close block comment.  There must be nothing else, other than whitespace, in the line both before and after '#}'.  It is possible to nest block comments.
+
+     See also: %}, #{, #.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 20
+Close block comment.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+%}
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 197
+ -- : %}
+     Close block comment.  There must be nothing else, other than whitespace, in the line both before and after '%}'.  It is possible to nest block comments.
+
+     See also: #}, %{, %.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 20
+Close block comment.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 3
+...
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 80
+ -- : ...
+     Continuation marker.  Joins current line with following line.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 20
+Continuation marker.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+&
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 84
+ -- : &
+     Element by element logical 'and' operator.
+
+     See also: &&, and.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 42
+Element by element logical 'and' operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+&&
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 97
+ -- : &&
+     Logical 'and' operator (with short-circuit evaluation).
+
+     See also: &, and.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 55
+Logical 'and' operator (with short-circuit evaluation).
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+'
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 304
+ -- : '
+     Matrix transpose operator.  For complex matrices, computes the complex conjugate (Hermitian) transpose.
+
+     The single quote character may also be used to delimit strings, but it is better to use the double quote character, since that is never ambiguous.
+
+     See also: .', transpose.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 26
+Matrix transpose operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+(
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 60
+ -- : (
+     Array index or function argument delimiter.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 43
+Array index or function argument delimiter.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+)
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 60
+ -- : )
+     Array index or function argument delimiter.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 43
+Array index or function argument delimiter.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+*
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 68
+ -- : *
+     Multiplication operator.
+
+     See also: .*, times.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 24
+Multiplication operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+**
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 240
+ -- : **
+     Power operator.  This may return complex results for real inputs.  Use 'realsqrt', 'cbrt', 'nthroot', or 'realroot' to obtain real results when possible.
+
+     See also: power, ^, .**, .^, realpow, realsqrt, cbrt, nthroot.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 15
+Power operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+^
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 240
+ -- : ^
+     Power operator.  This may return complex results for real inputs.  Use 'realsqrt', 'cbrt', 'nthroot', or 'realroot' to obtain real results when possible.
+
+     See also: power, **, .^, .**, realpow, realsqrt, cbrt, nthroot.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 15
+Power operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
++
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 57
+ -- : +
+     Addition operator.
+
+     See also: plus.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 18
+Addition operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+++
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 114
+ -- : ++
+     Increment operator.  As in C, may be applied as a prefix or postfix operator.
+
+     See also: -.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 19
+Increment operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+,
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 70
+ -- : ,
+     Array index, function argument, or command separator.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 53
+Array index, function argument, or command separator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+-
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 79
+ -- : -
+     Subtraction or unary negation operator.
+
+     See also: minus.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 39
+Subtraction or unary negation operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+-
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 115
+ -- : --
+     Decrement operator.  As in C, may be applied as a prefix or postfix operator.
+
+     See also: ++.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 19
+Decrement operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+.'
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 160
+ -- : .'
+     Matrix transpose operator.  For complex matrices, computes the transpose, _not_ the complex conjugate transpose.
+
+     See also: ', transpose.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 26
+Matrix transpose operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+.*
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 87
+ -- : .*
+     Element by element multiplication operator.
+
+     See also: *, times.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 43
+Element by element multiplication operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 3
+.**
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 303
+ -- : .*
+     Element by element power operator.  If several complex results are possible, returns the one with smallest non-negative argument (angle).  Use 'realpow', 'realsqrt', 'cbrt', or 'nthroot' if a real result is preferred.
+
+     See also: **, ^, .^, power, realpow, realsqrt, cbrt, nthroot.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 34
+Element by element power operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+.^
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 304
+ -- : .^
+     Element by element power operator.  If several complex results are possible, returns the one with smallest non-negative argument (angle).  Use 'realpow', 'realsqrt', 'cbrt', or 'nthroot' if a real result is preferred.
+
+     See also: .**, ^, **, power, realpow, realsqrt, cbrt, nthroot.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 34
+Element by element power operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+./
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 102
+ -- : ./
+     Element by element right division operator.
+
+     See also: /, ., rdivide, mrdivide.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 43
+Element by element right division operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+/
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 82
+ -- : /
+     Right division operator.
+
+     See also: ./, , rdivide, mrdivide.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 24
+Right division operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+.\
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 101
+ -- : .\
+     Element by element left division operator.
+
+     See also: , ./, rdivide, mrdivide.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 42
+Element by element left division operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+\
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 81
+ -- : \
+     Left division operator.
+
+     See also: ., /, ldivide, mldivide.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 23
+Left division operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+:
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 59
+ -- : :
+     Select entire rows or columns of matrices.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 42
+Select entire rows or columns of matrices.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+;
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 67
+ -- : ;
+     Array row or command separator.
+
+     See also: ,.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 31
+Array row or command separator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+<
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 58
+ -- : <
+     'Less than' operator.
+
+     See also: lt.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 21
+'Less than' operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+<=
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 71
+ -- : <=
+     'Less than' or 'equals' operator.
+
+     See also: le.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 33
+'Less than' or 'equals' operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+=
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 37
+ -- : =
+     Assignment operator.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 20
+Assignment operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+==
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 61
+ -- : ==
+     Equality test operator.
+
+     See also: eq.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 23
+Equality test operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+>
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 61
+ -- : >
+     'Greater than' operator.
+
+     See also: gt.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 24
+'Greater than' operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+>=
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 74
+ -- : >=
+     'Greater than' or 'equals' operator.
+
+     See also: ge.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 36
+'Greater than' or 'equals' operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+[
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 58
+ -- : [
+     Return list delimiter.
+
+     See also: ].
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 22
+Return list delimiter.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+]
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 58
+ -- : ]
+     Return list delimiter.
+
+     See also: [.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 22
+Return list delimiter.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1
+|
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 82
+ -- : |
+     Element by element logical 'or' operator.
+
+     See also: ||, or.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 41
+Element by element logical 'or' operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+||
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 95
+ -- : ||
+     Logical 'or' (with short-circuit evaluation) operator.
+
+     See also: |, or.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 54
+Logical 'or' (with short-circuit evaluation) operator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+break
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 122
+ -- : break
+     Exit the innermost enclosing do, while or for loop.
+
+     See also: do, while, for, parfor, continue.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 51
+Exit the innermost enclosing do, while or for loop.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 4
+case
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 258
+ -- : case VALUE
+ -- : case {VALUE, ...}
+     A case statement in a switch.  Octave cases are exclusive and do not fall-through as do C-language cases.  A switch statement must have at least one case.  See 'switch' for an example.
+
+     See also: switch.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 29
+A case statement in a switch.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+catch
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 104
+ -- : catch
+ -- : catch VALUE
+     Begin the cleanup part of a try-catch block.
+
+     See also: try.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 44
+Begin the cleanup part of a try-catch block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 8
+continue
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 136
+ -- : continue
+     Jump to the end of the innermost enclosing do, while or for loop.
+
+     See also: do, while, for, parfor, break.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 65
+Jump to the end of the innermost enclosing do, while or for loop.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+do
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 239
+ -- : do
+     Begin a do-until loop.  This differs from a do-while loop in that the body of the loop is executed at least once.
+
+          i = 0;
+          do
+            i++
+          until (i == 10)
+
+     See also: for, until, while.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 22
+Begin a do-until loop.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 4
+else
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 99
+ -- : else
+     Alternate action for an if block.  See 'if' for an example.
+
+     See also: if.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 33
+Alternate action for an if block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+elseif
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 123
+ -- : elseif (CONDITION)
+     Alternate conditional test for an if block.  See 'if' for an example.
+
+     See also: if.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 43
+Alternate conditional test for an if block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 13
+end_try_catch
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 94
+ -- : end_try_catch
+     Mark the end of an 'try-catch' block.
+
+     See also: try, catch.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 37
+Mark the end of an 'try-catch' block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 18
+end_unwind_protect
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 106
+ -- : end_unwind_protect
+     Mark the end of an unwind_protect block.
+
+     See also: unwind_protect.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 40
+Mark the end of an unwind_protect block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+endfor
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 97
+ -- : endfor
+     Mark the end of a for loop.  See 'for' for an example.
+
+     See also: for.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 27
+Mark the end of a for loop.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 11
+endfunction
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 80
+ -- : endfunction
+     Mark the end of a function.
+
+     See also: function.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 27
+Mark the end of a function.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+endif
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 95
+ -- : endif
+     Mark the end of an if block.  See 'if' for an example.
+
+     See also: if.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 28
+Mark the end of an if block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 9
+endparfor
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 109
+ -- : endparfor
+     Mark the end of a parfor loop.  See 'parfor' for an example.
+
+     See also: parfor.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 30
+Mark the end of a parfor loop.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 9
+endswitch
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 110
+ -- : endswitch
+     Mark the end of a switch block.  See 'switch' for an example.
+
+     See also: switch.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 31
+Mark the end of a switch block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 8
+endwhile
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 109
+ -- : endwhile
+     Mark the end of a while loop.  See 'while' for an example.
+
+     See also: do, while.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 29
+Mark the end of a while loop.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 3
+for
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 136
+ -- : for I = RANGE
+     Begin a for loop.
+
+          for i = 1:10
+            i
+          endfor
+
+     See also: do, parfor, while.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 17
+Begin a for loop.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 8
+function
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 222
+ -- : function OUTPUTS = function (INPUT, ...)
+ -- : function function (INPUT, ...)
+ -- : function OUTPUTS = function
+     Begin a function body with OUTPUTS as results and INPUTS as parameters.
+
+     See also: return.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 71
+Begin a function body with OUTPUTS as results and INPUTS as parameters.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+global
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 176
+ -- : global VAR
+     Declare variables to have global scope.
+
+          global X;
+          if (isempty (X))
+            x = 1;
+          endif
+
+     See also: persistent.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 39
+Declare variables to have global scope.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2
+if
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 395
+ -- : if (COND) ... endif
+ -- : if (COND) ... else ... endif
+ -- : if (COND) ... elseif (COND) ... endif
+ -- : if (COND) ... elseif (COND) ... else ... endif
+     Begin an if block.
+
+          x = 1;
+          if (x == 1)
+            disp ("one");
+          elseif (x == 2)
+            disp ("two");
+          else
+            disp ("not one or two");
+          endif
+
+     See also: switch.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 18
+Begin an if block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 9
+otherwise
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 122
+ -- : otherwise
+     The default statement in a switch block (similar to else in an if block).
+
+     See also: switch.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 73
+The default statement in a switch block (similar to else in an if block).
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+parfor
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 205
+ -- : parfor I = RANGE
+ -- : parfor (I = RANGE, MAXPROC)
+     Begin a for loop that may execute in parallel.
+
+          parfor i = 1:10
+            i
+          endparfor
+
+     See also: for, do, while.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 46
+Begin a for loop that may execute in parallel.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 10
+persistent
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 402
+ -- : persistent VAR
+     Declare variables as persistent.  A variable that has been declared persistent within a function will retain its contents in memory between subsequent calls to the same function.  The difference between persistent variables and global variables is that persistent variables are local in scope to a particular function and are not visible elsewhere.
+
+     See also: global.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 32
+Declare variables as persistent.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+return
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 71
+ -- : return
+     Return from a function.
+
+     See also: function.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 23
+Return from a function.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+static
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 110
+ -- : static
+     This statement has been deprecated in favor of 'persistent'.
+
+     See also: persistent.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 60
+This statement has been deprecated in favor of 'persistent'.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+switch
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 357
+ -- : switch STATEMENT
+     Begin a switch block.
+
+          yesno = "yes"
+
+          switch yesno
+            case {"Yes" "yes" "YES" "y" "Y"}
+              value = 1;
+            case {"No" "no" "NO" "n" "N"}
+              value = 0;
+            otherwise
+              error ("invalid value");
+          endswitch
+
+     See also: if, case, otherwise.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 21
+Begin a switch block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 3
+try
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 319
+ -- : try
+     Begin a try-catch block.
+
+     If an error occurs within a try block, then the catch code will be run and execution will proceed after the catch block (though it is often recommended to use the lasterr function to re-throw the error after cleanup is completed).
+
+     See also: catch, unwind_protect.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 24
+Begin a try-catch block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+until
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 94
+ -- : until (COND)
+     End a do-until loop.  See 'do' for an example.
+
+     See also: do.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 20
+End a do-until loop.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 14
+unwind_protect
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 468
+ -- : unwind_protect
+     Begin an unwind_protect block.
+
+     If an error occurs within the first part of an unwind_protect block the commands within the unwind_protect_cleanup block are executed before the error is thrown.  If an error is not thrown, then the unwind_protect_cleanup block is still executed (in other words, the unwind_protect_cleanup will be run with or without an error in the unwind_protect block).
+
+     See also: unwind_protect_cleanup, try.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 30
+Begin an unwind_protect block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 22
+unwind_protect_cleanup
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 123
+ -- : unwind_protect_cleanup
+     Begin the cleanup section of an unwind_protect block.
+
+     See also: unwind_protect.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 53
+Begin the cleanup section of an unwind_protect block.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 8
+varargin
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 143
+ -- : varargin
+     Pass an arbitrary number of arguments into a function.
+
+     See also: varargout, nargin, isargout, nargout, nthargout.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 54
+Pass an arbitrary number of arguments into a function.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 9
+varargout
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 145
+ -- : varargout
+     Pass an arbitrary number of arguments out of a function.
+
+     See also: varargin, nargin, isargout, nargout, nthargout.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 56
+Pass an arbitrary number of arguments out of a function.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+while
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 160
+ -- : while
+     Begin a while loop.
+
+          i = 0;
+          while (i < 10)
+            i++
+          endwhile
+
+     See also: do, endwhile, for, until.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 19
+Begin a while loop.
 
 
 
@@ -23955,30 +26112,6 @@ soundsc
 # elements: 1
 # length: 81
 Scale the audio data Y and play it at sample rate FS to the default audio device.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 31
-@audioplayer/__get_properties__
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 137
- -- : PROPERTIES = __get_properties__ (PLAYER)
-     Return a struct containing all named properties of the audioplayer object PLAYER.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 81
-Return a struct containing all named properties of the audioplayer object PLAYER.
 
 
 
@@ -24300,30 +26433,6 @@ Perform subscripted assignment on the audio player object PLAYER.
 # elements: 1
 # length: 64
 Perform subscripted selection on the audio player object PLAYER.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 33
-@audiorecorder/__get_properties__
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 138
- -- : PROPERTIES = __get_properties__ (RECORDER)
-     Return a struct containing all named properties of the recorder object RECORDER.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 80
-Return a struct containing all named properties of the recorder object RECORDER.
 
 
 
@@ -25297,6 +27406,48 @@ octave_tmp_file_name
 # elements: 1
 # length: 77
 'octave_tmp_file_name' is deprecated and will be removed in Octave version 4.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 10
+onenormest
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1349
+ -- : [EST, V, W, ITER] = onenormest (A, T)
+ -- : [EST, V, W, ITER] = onenormest (APPLY, APPLY_T, N, T)
+
+     'onenormest' is deprecated and will be removed in Octave version 4.4.  Use 'normest1' for the equivalent functionality.
+
+     Apply Higham and Tisseur's randomized block 1-norm estimator to matrix A using T test vectors.
+
+     If T exceeds 5, then only 5 test vectors are used.
+
+     If the matrix is not explicit, e.g., when estimating the norm of 'inv (A)' given an LU factorization, 'onenormest' applies A and its conjugate transpose through a pair of functions APPLY and APPLY_T, respectively, to a dense matrix of size N by T.  The implicit version requires an explicit dimension N.
+
+     Returns the norm estimate EST, two vectors V and W related by norm '(W, 1) = EST * norm (V, 1)', and the number of iterations ITER.  The number of iterations is limited to 10 and is at least 2.
+
+     References:
+
+        * N.J. Higham and F. Tisseur, 'A Block Algorithm for Matrix 1-Norm Estimation, with an Application to 1-Norm Pseudospectra'.  SIMAX vol 21, no 4, pp 1185-1201.  <http://dx.doi.org/10.1137/S0895479899356080>
+
+        * N.J. Higham and F. Tisseur, 'A Block Algorithm for Matrix 1-Norm Estimation, with an Application to 1-Norm Pseudospectra'.  <http://citeseer.ist.psu.edu/223007.html>
+
+     See also: condest, norm, cond.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 67
+'onenormest' is deprecated and will be removed in Octave version 4.
 
 
 
@@ -27159,18 +29310,18 @@ fieldnames
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 621
+# length: 667
  -- : NAMES = fieldnames (STRUCT)
  -- : NAMES = fieldnames (OBJ)
  -- : NAMES = fieldnames (JAVAOBJ)
- -- : NAMES = fieldnames ("JCLASSNAME")
+ -- : NAMES = fieldnames ("JAVACLASSNAME")
      Return a cell array of strings with the names of the fields in the specified input.
 
      When the input is a structure STRUCT, the names are the elements of the structure.
 
      When the input is an Octave object OBJ, the names are the public properties of the object.
 
-     When the input is a Java object JAVAOBJ or Java classname JCLASSNAME the name are the public data elements of the object or class.
+     When the input is a Java object JAVAOBJ or a string containing the name of a Java class JAVACLASSNAME, the names are the public fields (data members) of the object or class.
 
      See also: numfields, isfield, orderfields, struct, methods.
    
@@ -27320,6 +29471,49 @@ flipud
 # elements: 1
 # length: 23
 Flip array upside down.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 8
+grabcode
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 967
+ -- : grabcode (URL)
+ -- : CODE_STR = grabcode (URL)
+
+     Grab by the 'publish' function generated HTML reports from Octave script files.
+
+     The input parameter URL must point to a local or remote HTML file with extension '.htm' or '.html' which was generated by the 'publish' function.  With any other HTML file this will not work!
+
+     If no return value is given, the grabbed code is saved to a temporary file and opened in the default editor.
+
+     NOTE: You have to save the file at another location with arbitrary name, otherwise any grabbed code will be lost!
+
+     With a return value given, the grabbed code will be returned as string CODE_STR.
+
+     An example:
+
+          publish ("my_script.m");
+          grabcode ("html/my_script.html");
+
+     The example above publishes 'my_script.m' by default to 'html/my_script.html'.  Afterwards this published Octave script is grabbed to edit its content in a new temporary file.
+
+     See also: publish.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 79
+Grab by the 'publish' function generated HTML reports from Octave script files.
 
 
 
@@ -28011,14 +30205,15 @@ methods
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 275
+# length: 502
  -- : methods (OBJ)
  -- : methods ("CLASSNAME")
  -- : MTDS = methods (...)
+     List the names of the public methods for the object OBJ or the named class CLASSNAME.
 
-     Return a cell array containing the names of the methods for the object OBJ or the named class CLASSNAME.
+     OBJ may be an Octave class object or a Java object.  CLASSNAME may be the name of an Octave class or a Java class.
 
-     OBJ may be an Octave class object or a Java object.
+     When called with no output arguments, 'methods' prints the list of method names to the screen.  Otherwise, the output argument MTDS contains the list in a cell array of strings.
 
      See also: fieldnames.
    
@@ -28027,8 +30222,8 @@ methods
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 104
-Return a cell array containing the names of the methods for the object OBJ or the named class CLASSNAME.
+# length: 85
+List the names of the public methods for the object OBJ or the named class CLASSNAME.
 
 
 
@@ -28410,6 +30605,124 @@ prepad
 # elements: 1
 # length: 67
 Prepend the scalar value C to the vector X until it is of length L.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 7
+publish
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 4339
+ -- : publish (FILENAME)
+ -- : publish (FILENAME, OUTPUT_FORMAT)
+ -- : publish (FILENAME, OPTION1, VALUE1, ...)
+ -- : publish (FILENAME, OPTIONS)
+ -- : OUTPUT_FILE = publish (FILENAME, ...)
+
+     Generate reports from Octave script files in several output formats.
+
+     The generated reports consider Publishing Markup in comments, which is explained in detail in the GNU Octave manual.  Assume the following example, using some Publishing Markup, to be the content of a script file named 'example.m':
+
+          %% Headline title
+          %
+          % Some *bold*, _italic_, or |monospaced| Text with
+          % a <http://www.octave.org link to *GNU Octave*>.
+          %%
+
+          # "Real" Octave commands to be evaluated
+          sombrero ()
+
+          ## Octave comment style supported as well
+          #
+          # * Bulleted list item 1
+          # * Bulleted list item 2
+          #
+          # # Numbered list item 1
+          # # Numbered list item 2
+
+     To publish this script file, type 'publish ("example.m")'.
+
+     With only FILENAME given, a HTML report is generated in a subdirectory 'html' relative to the current working directory.  The Octave commands are evaluated in a seperate context and any figures created while executing the script file are included in the report.  All formatting syntax of FILENAME is treated according to the specified output format and included in the report.
+
+     Using 'publish (FILENAME, OUTPUT_FORMAT)' is equivalent to the function call using a structure
+
+          OPTIONS.format = OUTPUT_FORMAT;
+          publish (FILENAME, OPTIONS)
+
+     which is described below.  The same holds for using option-value-pairs
+
+          OPTIONS.OPTION1 = VALUE1;
+          publish (FILENAME, OPTIONS)
+
+     The structure OPTIONS can have the following field names.  If a field name is not specified, the default value is considered:
+
+        * 'format' -- Output format of the published script file, one of
+
+          'html' (default), 'doc', 'latex', 'ppt', 'xml', or 'pdf'.
+
+          The output formats 'doc', 'ppt', and 'xml' are currently not supported.  To generate a 'doc' report, open a generated 'html' report with your office suite.
+
+        * 'outputDir' -- Full path string of a directory, where the generated report will be located.  If no directory is given, the report is generated in a subdirectory 'html' relative to the current working directory.
+
+        * 'stylesheet' -- Not supported, only for Matlab compatibility.
+
+        * 'createThumbnail' -- Not supported, only for Matlab compatibility.
+
+        * 'figureSnapMethod' -- Not supported, only for Matlab compatibility.
+
+        * 'imageFormat' -- Desired format for images produced, while evaluating the code.  The allowed image formats depend on the output format:
+
+             * 'html' and 'xml' -- 'png' (default), any other image format supported by Octave
+
+             * 'latex' -- 'epsc2' (default), any other image format supported by Octave
+
+             * 'pdf' -- 'jpg' (default) or 'bmp', note Matlab uses 'bmp' as default
+
+             * 'doc' or 'ppt' -- 'png' (default), 'jpg', 'bmp', or 'tiff'
+
+        * 'maxHeight' and 'maxWidth' -- Maximum height (width) of the produced images in pixels.  An empty value means no restriction.  Both values have to be set, to work properly.
+
+          '[]' (default), integer value >= 0
+
+        * 'useNewFigure' -- Use a new figure window for figures created by the evaluated code.  This avoids side effects with already opened figure windows.
+
+          'true' (default) or 'false'
+
+        * 'evalCode' -- Evaluate code of the Octave source file
+
+          'true' (default) or 'false'
+
+        * 'catchError' -- Catch errors while code evaluation and continue
+
+          'true' (default) or 'false'
+
+        * 'codeToEvaluate' -- Octave commands that should be evaluated prior to publishing the script file.  These Octave commands do not appear in the generated report.
+
+        * 'maxOutputLines' -- Maximum number of shown output lines of the code evaluation
+
+          'Inf' (default) or integer value > 0
+
+        * 'showCode' -- Show the evaluated Octave commands in the generated report
+
+          'true' (default) or 'false'
+
+     The returned OUTPUT_FILE is a string with the path and file name of the generated report.
+
+     See also: grabcode.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 68
+Generate reports from Octave script files in several output formats.
 
 
 
@@ -30369,7 +32682,7 @@ uicontrol
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2488
+# length: 2489
  -- : HUI = uicontrol (PROPERTY, VALUE, ...)
  -- : HUI = uicontrol (PARENT, PROPERTY, VALUE, ...)
  -- : uicontrol (H)
@@ -30397,7 +32710,7 @@ uicontrol
           Create an edit control that allows user input of single or multiple lines of text.
 
      "listbox"
-          Create a listbox control that displays a lit of items and allows user selection of single or multiple items.
+          Create a listbox control that displays a list of items and allows user selection of single or multiple items.
 
      "popupmenu"
           Create a popupmenu control that displays a list of options that can be selected when the user clicks on the control.
@@ -34147,10 +36460,10 @@ cond
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 868
+# length: 903
  -- : cond (A)
  -- : cond (A, P)
-     Compute the P-norm condition number of a matrix.
+     Compute the P-norm condition number of a matrix with respect to inversion.
 
      'cond (A)' is defined as 'norm (A, P) * norm (inv (A), P)'.
 
@@ -34158,15 +36471,15 @@ cond
 
      The condition number of a matrix quantifies the sensitivity of the matrix inversion operation when small changes are made to matrix elements.  Ideally the condition number will be close to 1.  When the number is large this indicates small changes (such as underflow or round-off error) will produce large changes in the resulting output.  In such cases the solution results from numerical computing are not likely to be accurate.
 
-     See also: condest, rcond, norm, svd.
+     See also: condest, rcond, condeig, norm, svd.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 48
-Compute the P-norm condition number of a matrix.
+# length: 74
+Compute the P-norm condition number of a matrix with respect to inversion.
 
 
 
@@ -34180,12 +36493,12 @@ condest
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1536
+# length: 2004
  -- : condest (A)
  -- : condest (A, T)
  -- : [EST, V] = condest (...)
- -- : [EST, V] = condest (A, SOLVE, SOLVE_T, T)
- -- : [EST, V] = condest (APPLY, APPLY_T, SOLVE, SOLVE_T, N, T)
+ -- : [EST, V] = condest (A, SOLVEFUN, T, P1, P2, ...)
+ -- : [EST, V] = condest (AFUN, SOLVEFUN, T, P1, P2, ...)
 
      Estimate the 1-norm condition number of a matrix A using T test vectors using a randomized 1-norm estimator.
 
@@ -34193,21 +36506,20 @@ condest
 
      If the matrix is not explicit, e.g., when estimating the condition number of A given an LU factorization, 'condest' uses the following functions:
 
-     APPLY
-          'A*x' for a matrix 'x' of size N by T.
+        - AFUN which should returns
+             * the dimension N of A, if FLAG is "dim"
+             * true if A is a real operator, if FLAG is "real"
+             * the result 'A * X', if FLAG is "notransp"
+             * the result 'A' * X', if FLAG is "transp"
+        - SOLVEFUN which should returns
+             * the dimension N of A, if FLAG is "dim"
+             * true if A is a real operator, if FLAG is "real"
+             * the result 'A \ X', if FLAG is "notransp"
+             * the result 'A' \ X', if FLAG is "transp"
 
-     APPLY_T
-          'A'*x' for a matrix 'x' of size N by T.
+     The parameters P1, P2, ... are arguments of 'AFUN (FLAG, X, P1, P2, ...)' and 'SOLVEFUN (FLAG, X, P1, P2, ...)'.
 
-     SOLVE
-          'A \ b' for a matrix 'b' of size N by T.
-
-     SOLVE_T
-          'A' \ b' for a matrix 'b' of size N by T.
-
-     The implicit version requires an explicit dimension N.
-
-     'condest' uses a randomized algorithm to approximate the 1-norms.
+     'condest' uses a randomized algorithm to approximate the 1-norms.  Therefore, if consistent results are required, the "state" of the random generator should be fixed before invoking 'normest1'.
 
      'condest' returns the 1-norm condition estimate EST and a vector V satisfying 'norm (A*v, 1) == norm (A, 1) * norm (V, 1) / EST'.  When EST is large, V is an approximate null vector.
 
@@ -34217,7 +36529,7 @@ condest
 
         * N.J. Higham and F. Tisseur, 'A Block Algorithm for Matrix 1-Norm Estimation, with an Application to 1-Norm Pseudospectra'.  <http://citeseer.ist.psu.edu/223007.html>
 
-     See also: cond, norm, onenormest.
+     See also: cond, norm, normest1.
    
 
 
@@ -34226,6 +36538,51 @@ condest
 # elements: 1
 # length: 108
 Estimate the 1-norm condition number of a matrix A using T test vectors using a randomized 1-norm estimator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 7
+condeig
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 845
+ -- : C = condeig (A)
+ -- : [V, LAMBDA, C] = condeig (A)
+     Compute condition numbers of a matrix with respect to eigenvalues.
+
+     The condition numbers are the reciprocals of the cosines of the angles between the left and right eigenvectors; Large values indicate that the matrix has multiple distinct eigenvalues.
+
+     The input A must be a square numeric matrix.
+
+     The outputs are:
+
+        * C is a vector of condition numbers for the eigenvalues of A.
+
+        * V is the matrix of right eigenvectors of A.  The result is equivalent to calling '[V, LAMBDA] = eig (A)'.
+
+        * LAMBDA is the diagonal matrix of eigenvalues of A.  The result is equivalent to calling '[V, LAMBDA] = eig (A)'.
+
+     Example
+
+          a = [1, 2; 3, 4];
+          c = condeig (a)
+          => [1.0150; 1.0150]
+
+     See also: eig, cond, balance.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 66
+Compute condition numbers of a matrix with respect to eigenvalues.
 
 
 
@@ -34747,6 +37104,62 @@ Estimate the 2-norm of the matrix A using a power series analysis.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
+# length: 8
+normest1
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2339
+ -- Function File: C = normest1 (A)
+ -- Function File: C = normest1 (A, T)
+ -- Function File: C = normest1 (A, T, X0)
+ -- Function File: C = normest1 (AFUN, T, X0, P1, P2, ...)
+ -- Function File: [C, V] = normest1 (A, ...)
+ -- Function File: [C, V, W] = normest1 (A, ...)
+ -- Function File: [C, V, W, IT] = normest1 (A, ...)
+     Estimate the 1-norm of the matrix A using a block algorithm.
+
+     For a medium size matrix A, 'norm (A, 1)' should be used instead.  For a large sparse matrix, when only an estimate of the norm is needed, 'normest1 (A)' might be faster.  Moreover, it can be used for the estimate of the 1-norm of a linear operator A when matrix-vector products 'A * X' and 'A' * X' can be cheaply computed.  In this case, instead of the matrix A, a function 'AFUN (FLAG, X)' can be used.  It should return:
+
+        * the dimension N of A, if FLAG is "dim"
+        * true if A is a real operator, if FLAG is "real"
+        * the result 'A * X', if FLAG is "notransp"
+        * the result 'A' * X', if FLAG is "transp"
+
+     A typical case is A defined by 'B ^ M', in which the result 'A * X' can be computed without even forming explicitely 'B ^ M' by:
+
+          Y = X;
+          for I = 1:M
+            Y = B * Y;
+          endfor
+
+     The parameters P1, P2, ... are arguments of 'AFUN (FLAG, X, P1, P2, ...)'.
+
+     The default value for T is 2.  The algorithm requires matrix-matrix products with sizes N x N and N x T.
+
+     The initial matrix X0 should have columns of unit 1-norm.  The default initial matrix X0 has the first column 'ones (N, 1) / N' and, if T > 1, the remaining columns with random elements '-1 / N', '1 / N', divided by N.  Therefore, if consistent results are required, the "state" of the random generator should be fixed before invoking 'normest1'.
+
+     On output, C is the desired estimate, V and W vectors such that 'W = A * V', with 'norm (W, 1)' = 'C * norm (V, 1)'.  IT contains in 'IT(1)' the number of iterations (the maximum number is hardcoded to 5) and in 'IT(2)' the total number of products 'A * X' or 'A' * X' performed by the algorithm.
+
+     Reference: N. J. Higham and F. Tisseur, 'A block algorithm for matrix 1-norm estimation, with and application to 1-norm pseudospectra', SIAM J. Matrix Anal.  Appl., pp.  1185-1201, Vol 21, No.  4, 2000.
+
+     See also: normest, rand.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 60
+Estimate the 1-norm of the matrix A using a block algorithm.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
 # length: 4
 null
 
@@ -34772,46 +37185,6 @@ null
 # elements: 1
 # length: 51
 Return an orthonormal basis of the null space of A.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 10
-onenormest
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1223
- -- : [EST, V, W, ITER] = onenormest (A, T)
- -- : [EST, V, W, ITER] = onenormest (APPLY, APPLY_T, N, T)
-
-     Apply Higham and Tisseur's randomized block 1-norm estimator to matrix A using T test vectors.
-
-     If T exceeds 5, then only 5 test vectors are used.
-
-     If the matrix is not explicit, e.g., when estimating the norm of 'inv (A)' given an LU factorization, 'onenormest' applies A and its conjugate transpose through a pair of functions APPLY and APPLY_T, respectively, to a dense matrix of size N by T.  The implicit version requires an explicit dimension N.
-
-     Returns the norm estimate EST, two vectors V and W related by norm '(W, 1) = EST * norm (V, 1)', and the number of iterations ITER.  The number of iterations is limited to 10 and is at least 2.
-
-     References:
-
-        * N.J. Higham and F. Tisseur, 'A Block Algorithm for Matrix 1-Norm Estimation, with an Application to 1-Norm Pseudospectra'.  SIMAX vol 21, no 4, pp 1185-1201.  <http://dx.doi.org/10.1137/S0895479899356080>
-
-        * N.J. Higham and F. Tisseur, 'A Block Algorithm for Matrix 1-Norm Estimation, with an Application to 1-Norm Pseudospectra'.  <http://citeseer.ist.psu.edu/223007.html>
-
-     See also: condest, norm, cond.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 94
-Apply Higham and Tisseur's randomized block 1-norm estimator to matrix A using T test vectors.
 
 
 
@@ -35118,39 +37491,6 @@ bunzip2
 # elements: 1
 # length: 32
 Unpack the bzip2 archive BZFILE.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-bzip2
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 751
- -- : FILELIST = bzip2 (FILES)
- -- : FILELIST = bzip2 (FILES, DIR)
-     Compress the list of files specified in FILES.
-
-     FILES is a character array or cell array of strings.  Shell wildcards in the filename such as '*' or '?' are accepted and expanded.  Each file is compressed separately and a new file with a '".bz2"' extension is created.  The original files are not modified, but existing compressed files will be silently overwritten.
-
-     If DIR is defined the compressed files are placed in this directory, rather than the original directory where the uncompressed file resides.  If DIR does not exist it is created.
-
-     The optional output FILELIST is a list of the compressed files.
-
-     See also: bunzip2, unpack, gzip, zip, tar.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 46
-Compress the list of files specified in FILES.
 
 
 
@@ -35984,39 +38324,6 @@ gunzip
 # elements: 1
 # length: 31
 Unpack the gzip archive GZFILE.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 4
-gzip
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 856
- -- : FILELIST = gzip (FILES)
- -- : FILELIST = gzip (FILES, DIR)
-     Compress the list of files and directories specified in FILES.
-
-     FILES is a character array or cell array of strings.  Shell wildcards in the filename such as '*' or '?' are accepted and expanded.  Each file is compressed separately and a new file with a '".gz"' extension is created.  The original files are not modified, but existing compressed files will be silently overwritten.  If a directory is specified then 'gzip' recursively compresses all files in the directory.
-
-     If DIR is defined the compressed files are placed in this directory, rather than the original directory where the uncompressed file resides.  If DIR does not exist it is created.
-
-     The optional output FILELIST is a list of the compressed files.
-
-     See also: gunzip, unpack, bzip2, zip, tar.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 62
-Compress the list of files and directories specified in FILES.
 
 
 
@@ -38064,7 +40371,7 @@ fminunc
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2521
+# length: 2518
  -- : fminunc (FCN, X0)
  -- : fminunc (FCN, X0, OPTIONS)
  -- : [X, FVAL, INFO, OUTPUT, GRAD, HESS] = fminunc (FCN, ...)
@@ -38106,7 +40413,7 @@ fminunc
 
      Application Notes: If the objective function is a single nonlinear equation of one variable then using 'fminbnd' is usually a better choice.
 
-     The algorithm used by 'fminsearch' is a gradient search which depends on the objective function being differentiable.  If the function has discontinuities it may be better to use a derivative-free algorithm such as 'fminsearch'.
+     The algorithm used by 'fminunc' is a gradient search which depends on the objective function being differentiable.  If the function has discontinuities it may be better to use a derivative-free algorithm such as 'fminsearch'.
 
      See also: fminbnd, fminsearch, optimset.
    
@@ -39423,18 +41730,19 @@ axis
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2765
+# length: 2907
  -- : axis ()
- -- : axis ([X_lo X_hi])
- -- : axis ([X_lo X_hi Y_lo Y_hi])
- -- : axis ([X_lo X_hi Y_lo Y_hi Z_lo Z_hi])
+ -- : axis ([X_LO X_HI])
+ -- : axis ([X_LO X_HI Y_LO Y_HI])
+ -- : axis ([X_LO X_HI Y_LO Y_HI Z_LO Z_HI])
+ -- : axis ([X_LO X_HI Y_LO Y_HI Z_LO Z_HI C_LO C_HI])
  -- : axis (OPTION)
  -- : axis (..., OPTION)
  -- : axis (HAX, ...)
  -- : LIMITS = axis ()
      Set axis limits and appearance.
 
-     The argument LIMITS should be a 2-, 4-, or 6-element vector.  The first and second elements specify the lower and upper limits for the x-axis.  The third and fourth specify the limits for the y-axis, and the fifth and sixth specify the limits for the z-axis.  The special values -Inf and Inf may be used to indicate that the limit should automatically be computed based on the data in the axis.
+     The argument LIMITS should be a 2-, 4-, 6-, or 8-element vector.  The first and second elements specify the lower and upper limits for the x-axis.  The third and fourth specify the limits for the y-axis, the fifth and sixth specify the limits for the z-axis, and the seventh and eighth specify the limits for the color axis.  The special values -Inf and Inf may be used to indicate that the limit should automatically be computed based on the data in the axis.
 
      Without any arguments, 'axis' turns autoscaling on.
 
@@ -39448,7 +41756,7 @@ axis
 
           axis ("tic", "labely");
 
-     turns tic marks on for all axes and tic mark labels on for the y-axis only.
+     turns tick marks on for all axes and tick mark labels on for the y-axis only.
 
      The following options control the aspect ratio of the axes.
 
@@ -39463,7 +41771,7 @@ axis
 
      The following options control the way axis limits are interpreted.
 
-     "auto"
+     "auto[xyz]"
           Set the specified axes to have nice limits around the data or all if no axes are specified.
 
      "manual"
@@ -39475,24 +41783,24 @@ axis
      "image"
           Equivalent to "tight" and "equal".
 
-     The following options affect the appearance of tic marks.
+     The following options affect the appearance of tick marks.
 
      "on"
-          Turn tic marks and labels on for all axes.
+          Turn tick marks and labels on for all axes.
 
      "off"
-          Turn tic marks off for all axes.
+          Turn tick marks off for all axes.
 
      "tic[xyz]"
-          Turn tic marks on for all axes, or turn them on for the specified axes and off for the remainder.
+          Turn tick marks on for all axes, or turn them on for the specified axes and off for the remainder.
 
      "label[xyz]"
-          Turn tic labels on for all axes, or turn them on for the specified axes and off for the remainder.
+          Turn tick labels on for all axes, or turn them on for the specified axes and off for the remainder.
 
      "nolabel"
-          Turn tic labels off for all axes.
+          Turn tick labels off for all axes.
 
-     Note, if there are no tic marks for an axis, there can be no labels.
+     Note, if there are no tick marks for an axis, there can be no labels.
 
      The following options affect the direction of increasing values on the axes.
 
@@ -39504,7 +41812,7 @@ axis
 
      If the first argument HAX is an axes handle, then operate on this axes rather than the current axes returned by 'gca'.
 
-     See also: xlim, ylim, zlim, daspect, pbaspect, box, grid.
+     See also: xlim, ylim, zlim, daspect, pbaspect, box, grid, caxis.
    
 
 
@@ -39687,18 +41995,18 @@ datetick
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 522
+# length: 551
  -- : datetick ()
- -- : datetick (FORM)
- -- : datetick (AXIS, FORM)
+ -- : datetick (DATE_FORMAT)
+ -- : datetick (AXIS_STR, DATE_FORMAT)
  -- : datetick (..., "keeplimits")
  -- : datetick (..., "keepticks")
  -- : datetick (HAX, ...)
      Add date formatted tick labels to an axis.
 
-     The axis to apply the ticks to is determined by AXIS which can take the values "x", "y", or "z".  The default value is "x".
+     The axis to apply the ticks to is determined by AXIS_STR which can take the values "x", "y", or "z".  The default value is "x".
 
-     The formatting of the labels is determined by the variable FORM, which can either be a string or positive integer that 'datestr' accepts.
+     The formatting of the labels is determined by the variable DATE_FORMAT, which can either be a string or positive integer that 'datestr' accepts.
 
      See also: datenum, datestr.
    
@@ -39950,6 +42258,48 @@ legend
 # elements: 1
 # length: 76
 Display a legend for the current axes using the specified strings as labels.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 8
+lighting
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 739
+ -- : lighting (TYPE)
+ -- : lighting (HAX, TYPE)
+     Set the lighting of patch or surface graphic objects.
+
+     Valid arguments for TYPE are
+
+     "flat"
+          Draw objects with faceted lighting effects.
+
+     "gouraud"
+          Draw objects with linear interpolation of the lighting effects between the vertices.
+
+     "none"
+          Draw objects without light and shadow effects.
+
+     If the first argument HAX is an axes handle, then change the lighting effects of objects in this axis, rather than the current axes returned by 'gca'.
+
+     The lighting effects are only visible if at least one light object is present and visible in the same axes.
+
+     See also: light, fill, mesh, patch, pcolor, surf, surface, shading.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 53
+Set the lighting of patch or surface graphic objects.
 
 
 
@@ -41998,68 +44348,29 @@ isonormals
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 3199
- -- : [N] = isonormals (VAL, V)
- -- : [N] = isonormals (VAL, P)
- -- : [N] = isonormals (X, Y, Z, VAL, V)
- -- : [N] = isonormals (X, Y, Z, VAL, P)
- -- : [N] = isonormals (..., "negate")
- -- : isonormals (..., P)
+# length: 1481
+ -- : [VN] = isonormals (VAL, VERT)
+ -- : [VN] = isonormals (VAL, HP)
+ -- : [VN] = isonormals (X, Y, Z, VAL, VERT)
+ -- : [VN] = isonormals (X, Y, Z, VAL, HP)
+ -- : [VN] = isonormals (..., "negate")
+ -- : isonormals (VAL, HP)
+ -- : isonormals (X, Y, Z, VAL, HP)
+ -- : isonormals (..., "negate")
 
      Calculate normals to an isosurface.
 
-     If called with one output argument and the first input argument VAL is a three-dimensional array that contains the data for an isosurface geometry and the second input argument V keeps the vertices of an isosurface then return the normals N in form of a matrix with the same size than V at computed points '[x, y, z] = meshgrid (1:l, 1:m, 1:n)'.  The output argument N can be taken to manually set VERTEXNORMALS of a patch.
+     The vertex normals VN are calculated from the gradient of the 3-dimensional array VAL (size: lxmxn) with the data for an isosurface geometry.  The normals point towards lower values in VAL.
 
-     If called with further input arguments X, Y and Z which are three-dimensional arrays with the same size than VAL then the volume data is taken at those given points.  Instead of the vertices data V a patch handle P can be passed to this function.
+     If called with one output argument VN and the second input argument VERT holds the vertices of an isosurface, the normals VN are calculated at the vertices VERT on a grid given by '[x, y, z] = meshgrid (1:l, 1:m, 1:n)'.  The output argument VN has the same size as VERT and can be used to set the "VertexNormals" property of the corresponding patch.
 
-     If given the string input argument "negate" as last input argument then compute the reverse vector normals of an isosurface geometry.
+     If called with further input arguments X, Y, and Z which are 3-dimensional arrays with the same size as VAL, the volume data is taken at these points.  Instead of the vertex data VERT, a patch handle HP can be passed to this function.
 
-     If no output argument is given then directly redraw the patch that is given by the patch handle P.
+     If the last input argument is the string "negate", compute the reverse vector normals of an isosurface geometry (i.e., pointed towards higher values in VAL).
 
-     For example:
+     If no output argument is given, the property "VertexNormals" of the patch associated with the patch handle HP is changed directly.
 
-          function isofinish (p)
-            set (gca, "PlotBoxAspectRatioMode", "manual", ...
-                      "PlotBoxAspectRatio", [1 1 1]);
-            set (p, "VertexNormals", -get (p,"VertexNormals")); # Revert normals
-            set (p, "FaceColor", "interp");
-            ## set (p, "FaceLighting", "phong");
-            ## light ("Position", [1 1 5]); # Available with JHandles
-          endfunction
-
-          N = 15;    # Increase number of vertices in each direction
-          iso = .4;  # Change isovalue to .1 to display a sphere
-          lin = linspace (0, 2, N);
-          [x, y, z] = meshgrid (lin, lin, lin);
-          c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-          figure (); # Open another figure window
-
-          subplot (2,2,1); view (-38, 20);
-          [f, v, cdat] = isosurface (x, y, z, c, iso, y);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
-                     "FaceColor", "interp", "EdgeColor", "none");
-          isofinish (p);  # Call user function isofinish
-
-          subplot (2,2,2); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
-                     "FaceColor", "interp", "EdgeColor", "none");
-          isonormals (x, y, z, c, p); # Directly modify patch
-          isofinish (p);
-
-          subplot (2,2,3); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
-                     "FaceColor", "interp", "EdgeColor", "none");
-          n = isonormals (x, y, z, c, v); # Compute normals of isosurface
-          set (p, "VertexNormals", n);    # Manually set vertex normals
-          isofinish (p);
-
-          subplot (2,2,4); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
-                     "FaceColor", "interp", "EdgeColor", "none");
-          isonormals (x, y, z, c, v, "negate"); # Use reverse directly
-          isofinish (p);
-
-     See also: isosurface, isocolors.
+     See also: isosurface, isocolors, smooth3.
    
 
 
@@ -42081,7 +44392,7 @@ isosurface
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 4573
+# length: 4641
  -- : [FV] = isosurface (VAL, ISO)
  -- : [FV] = isosurface (VAL)
  -- : [FV] = isosurface (X, Y, Z, VAL, ISO)
@@ -42107,7 +44418,7 @@ isosurface
 
      If called with two or three output arguments, return the information about the faces F, vertices V and color data C as separate arrays instead of a single structure array.
 
-     If called with no output argument, the isosurface geometry is directly processed with the 'patch' command.
+     If called with no output argument, the isosurface geometry is directly processed with the 'patch' command and a light object is added to the axes if not yet present.
 
      For example,
 
@@ -42162,7 +44473,7 @@ isosurface
           set (p, "FaceLighting", "gouraud");
           light ("Position", [1 1 5]);
 
-     See also: isonormals, isocolors.
+     See also: isonormals, isocolors, smooth3.
    
 
 
@@ -42184,7 +44495,7 @@ light
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1654
+# length: 1615
  -- : light ()
  -- : light (..., PROP, VAL, ...)
  -- : light (HAX, ...)
@@ -42206,13 +44517,13 @@ light
           1x3-vector.  The default direction is [1 0 1].
 
      "Style": This string defines whether the light emanates from a
-          light source at infinite distance ("infinite") or from a local point source ("local").  Only the default value "infinite" is supported.
+          light source at infinite distance ("infinite") or from a local point source ("local").
 
      If 'light' is called with an axes handle HAX, it must be passed as the first argument.
 
      Optionally, the handle to the light object is returned in H.
 
-     See also: get, set, patch, surface.
+     See also: get, set, patch, surface, lighting.
    
 
 
@@ -43691,6 +46002,51 @@ slice
 # elements: 1
 # length: 38
 Plot slices of 3-D data/scalar fields.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 7
+smooth3
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1483
+ -- : SMOOTHED_DATA = smooth3 (DATA)
+ -- : SMOOTHED_DATA = smooth3 (DATA, METHOD)
+ -- : SMOOTHED_DATA = smooth3 (DATA, METHOD, SZ)
+ -- : SMOOTHED_DATA = smooth3 (DATA, METHOD, SZ, STD_DEV)
+     Smooth values of 3-dimensional matrix DATA.
+
+     This function can be used, for example, to reduce the impact of noise in DATA before calculating isosurfaces.
+
+     DATA must be a non-singleton 3-dimensional matrix.  The smoothed data from this matrix is returned in SMOOTHED_DATA which is of the same size as DATA.
+
+     The option input METHOD determines which convolution kernel is used for the smoothing process.  Possible choices:
+
+     "box", "b" (default)
+          to use a convolution kernel with sharp edges.
+
+     "gaussian", "g"
+          to use a convolution kernel that is represented by a non-correlated trivariate normal distribution function.
+
+     SZ is either a vector of 3 elements representing the size of the convolution kernel in x-, y- and z-direction or a scalar, in which case the same size is used in all three dimensions.  The default value is 3.
+
+     When METHOD is "gaussian", STD_DEV defines the standard deviation of the trivariate normal distribution function.  STD_DEV is either a vector of 3 elements representing the standard deviation of the Gaussian convolution kernel in x-, y- and z-directions or a scalar, in which case the same value is used in all three dimensions.  The default value is 0.65.
+
+     See also: isosurface, isonormals, patch.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 43
+Smooth values of 3-dimensional matrix DATA.
 
 
 
@@ -45807,38 +48163,6 @@ Control the interactive panning mode of a figure in the GUI.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 6
-printd
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 382
- -- : printd (OBJ, FILENAME)
- -- : OUT_FILE = printd (...)
-
-     Convert any object acceptable to 'disp' into the format selected by the suffix of FILENAME.
-
-     If the return argument OUT_FILE is given, the name of the created file is returned.
-
-     This function is intended to facilitate manipulation of the output of functions such as 'stemleaf'.
-
-     See also: stemleaf.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 91
-Convert any object acceptable to 'disp' into the format selected by the suffix of FILENAME.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
 # length: 5
 print
 
@@ -46065,6 +48389,67 @@ Print a plot, or save it to a file.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
+# length: 6
+printd
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 382
+ -- : printd (OBJ, FILENAME)
+ -- : OUT_FILE = printd (...)
+
+     Convert any object acceptable to 'disp' into the format selected by the suffix of FILENAME.
+
+     If the return argument OUT_FILE is given, the name of the created file is returned.
+
+     This function is intended to facilitate manipulation of the output of functions such as 'stemleaf'.
+
+     See also: stemleaf.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 91
+Convert any object acceptable to 'disp' into the format selected by the suffix of FILENAME.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 7
+refresh
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 238
+ -- : refresh ()
+ -- : refresh (H)
+     Refresh a figure, forcing it to be redrawn.
+
+     When called without an argument the current figure is redrawn.  Otherwise, the figure with graphic handle H is redrawn.
+
+     See also: drawnow.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 43
+Refresh a figure, forcing it to be redrawn.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
 # length: 11
 refreshdata
 
@@ -46106,35 +48491,6 @@ refreshdata
 # elements: 1
 # length: 117
 Evaluate any 'datasource' properties of the current figure and update the plot if the corresponding data has changed.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 7
-refresh
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 238
- -- : refresh ()
- -- : refresh (H)
-     Refresh a figure, forcing it to be redrawn.
-
-     When called without an argument the current figure is redrawn.  Otherwise, the figure with graphic handle H is redrawn.
-
-     See also: drawnow.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 43
-Refresh a figure, forcing it to be redrawn.
 
 
 
@@ -59224,2089 +61580,6 @@ gnuplot_binary
 # elements: 1
 # length: 111
 Query or set the name of the program invoked by the plot command when the graphics toolkit is set to "gnuplot".
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-break
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 122
- -- : break
-     Exit the innermost enclosing do, while or for loop.
-
-     See also: do, while, for, parfor, continue.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 51
-Exit the innermost enclosing do, while or for loop.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 4
-case
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 258
- -- : case VALUE
- -- : case {VALUE, ...}
-     A case statement in a switch.  Octave cases are exclusive and do not fall-through as do C-language cases.  A switch statement must have at least one case.  See 'switch' for an example.
-
-     See also: switch.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 29
-A case statement in a switch.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-catch
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 104
- -- : catch
- -- : catch VALUE
-     Begin the cleanup part of a try-catch block.
-
-     See also: try.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 44
-Begin the cleanup part of a try-catch block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 8
-continue
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 136
- -- : continue
-     Jump to the end of the innermost enclosing do, while or for loop.
-
-     See also: do, while, for, parfor, break.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 65
-Jump to the end of the innermost enclosing do, while or for loop.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-do
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 239
- -- : do
-     Begin a do-until loop.  This differs from a do-while loop in that the body of the loop is executed at least once.
-
-          i = 0;
-          do
-            i++
-          until (i == 10)
-
-     See also: for, until, while.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 22
-Begin a do-until loop.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 4
-else
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 99
- -- : else
-     Alternate action for an if block.  See 'if' for an example.
-
-     See also: if.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 33
-Alternate action for an if block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-elseif
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 123
- -- : elseif (CONDITION)
-     Alternate conditional test for an if block.  See 'if' for an example.
-
-     See also: if.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 43
-Alternate conditional test for an if block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 3
-end
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 277
- -- : end
-     The magic index "end" refers to the last valid entry in an indexing operation.
-
-     Example:
-
-          X = [ 1 2 3
-                4 5 6 ];
-          X(1,end)
-              => 3
-          X(end,1)
-              => 4
-          X(end,end)
-              => 6
-
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 78
-The magic index "end" refers to the last valid entry in an indexing operation.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 13
-end_try_catch
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 94
- -- : end_try_catch
-     Mark the end of an 'try-catch' block.
-
-     See also: try, catch.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 37
-Mark the end of an 'try-catch' block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 18
-end_unwind_protect
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 106
- -- : end_unwind_protect
-     Mark the end of an unwind_protect block.
-
-     See also: unwind_protect.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 40
-Mark the end of an unwind_protect block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-endfor
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 97
- -- : endfor
-     Mark the end of a for loop.  See 'for' for an example.
-
-     See also: for.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 27
-Mark the end of a for loop.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 11
-endfunction
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 80
- -- : endfunction
-     Mark the end of a function.
-
-     See also: function.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 27
-Mark the end of a function.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-endif
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 95
- -- : endif
-     Mark the end of an if block.  See 'if' for an example.
-
-     See also: if.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 28
-Mark the end of an if block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 9
-endparfor
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 109
- -- : endparfor
-     Mark the end of a parfor loop.  See 'parfor' for an example.
-
-     See also: parfor.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 30
-Mark the end of a parfor loop.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 9
-endswitch
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 110
- -- : endswitch
-     Mark the end of a switch block.  See 'switch' for an example.
-
-     See also: switch.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 31
-Mark the end of a switch block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 8
-endwhile
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 109
- -- : endwhile
-     Mark the end of a while loop.  See 'while' for an example.
-
-     See also: do, while.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 29
-Mark the end of a while loop.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 3
-for
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 136
- -- : for I = RANGE
-     Begin a for loop.
-
-          for i = 1:10
-            i
-          endfor
-
-     See also: do, parfor, while.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 17
-Begin a for loop.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 8
-function
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 222
- -- : function OUTPUTS = function (INPUT, ...)
- -- : function function (INPUT, ...)
- -- : function OUTPUTS = function
-     Begin a function body with OUTPUTS as results and INPUTS as parameters.
-
-     See also: return.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 71
-Begin a function body with OUTPUTS as results and INPUTS as parameters.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-global
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 176
- -- : global VAR
-     Declare variables to have global scope.
-
-          global X;
-          if (isempty (X))
-            x = 1;
-          endif
-
-     See also: persistent.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 39
-Declare variables to have global scope.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-if
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 395
- -- : if (COND) ... endif
- -- : if (COND) ... else ... endif
- -- : if (COND) ... elseif (COND) ... endif
- -- : if (COND) ... elseif (COND) ... else ... endif
-     Begin an if block.
-
-          x = 1;
-          if (x == 1)
-            disp ("one");
-          elseif (x == 2)
-            disp ("two");
-          else
-            disp ("not one or two");
-          endif
-
-     See also: switch.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 18
-Begin an if block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 9
-otherwise
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 122
- -- : otherwise
-     The default statement in a switch block (similar to else in an if block).
-
-     See also: switch.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 73
-The default statement in a switch block (similar to else in an if block).
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-parfor
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 205
- -- : parfor I = RANGE
- -- : parfor (I = RANGE, MAXPROC)
-     Begin a for loop that may execute in parallel.
-
-          parfor i = 1:10
-            i
-          endparfor
-
-     See also: for, do, while.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 46
-Begin a for loop that may execute in parallel.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 10
-persistent
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 402
- -- : persistent VAR
-     Declare variables as persistent.  A variable that has been declared persistent within a function will retain its contents in memory between subsequent calls to the same function.  The difference between persistent variables and global variables is that persistent variables are local in scope to a particular function and are not visible elsewhere.
-
-     See also: global.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 32
-Declare variables as persistent.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-return
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 71
- -- : return
-     Return from a function.
-
-     See also: function.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 23
-Return from a function.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-static
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 110
- -- : static
-     This statement has been deprecated in favor of 'persistent'.
-
-     See also: persistent.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 60
-This statement has been deprecated in favor of 'persistent'.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-switch
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 357
- -- : switch STATEMENT
-     Begin a switch block.
-
-          yesno = "yes"
-
-          switch yesno
-            case {"Yes" "yes" "YES" "y" "Y"}
-              value = 1;
-            case {"No" "no" "NO" "n" "N"}
-              value = 0;
-            otherwise
-              error ("invalid value");
-          endswitch
-
-     See also: if, case, otherwise.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 21
-Begin a switch block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 3
-try
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 319
- -- : try
-     Begin a try-catch block.
-
-     If an error occurs within a try block, then the catch code will be run and execution will proceed after the catch block (though it is often recommended to use the lasterr function to re-throw the error after cleanup is completed).
-
-     See also: catch, unwind_protect.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 24
-Begin a try-catch block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-until
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 94
- -- : until (COND)
-     End a do-until loop.  See 'do' for an example.
-
-     See also: do.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 20
-End a do-until loop.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 14
-unwind_protect
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 468
- -- : unwind_protect
-     Begin an unwind_protect block.
-
-     If an error occurs within the first part of an unwind_protect block the commands within the unwind_protect_cleanup block are executed before the error is thrown.  If an error is not thrown, then the unwind_protect_cleanup block is still executed (in other words, the unwind_protect_cleanup will be run with or without an error in the unwind_protect block).
-
-     See also: unwind_protect_cleanup, try.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 30
-Begin an unwind_protect block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 22
-unwind_protect_cleanup
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 123
- -- : unwind_protect_cleanup
-     Begin the cleanup section of an unwind_protect block.
-
-     See also: unwind_protect.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 53
-Begin the cleanup section of an unwind_protect block.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 8
-varargin
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 143
- -- : varargin
-     Pass an arbitrary number of arguments into a function.
-
-     See also: varargout, nargin, isargout, nargout, nthargout.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 54
-Pass an arbitrary number of arguments into a function.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 9
-varargout
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 145
- -- : varargout
-     Pass an arbitrary number of arguments out of a function.
-
-     See also: varargin, nargin, isargout, nargout, nthargout.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 56
-Pass an arbitrary number of arguments out of a function.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-while
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 160
- -- : while
-     Begin a while loop.
-
-          i = 0;
-          while (i < 10)
-            i++
-          endwhile
-
-     See also: do, endwhile, for, until.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 19
-Begin a while loop.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-!
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 64
- -- : !
-     Logical 'not' operator.
-
-     See also: ~, not.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 23
-Logical 'not' operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-!=
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 72
- -- : !=
-     Logical 'not equals' operator.
-
-     See also: ~=, ne.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 30
-Logical 'not equals' operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-"
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 34
- -- : "
-     String delimiter.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 17
-String delimiter.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-#
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 64
- -- : #
-     Begin comment character.
-
-     See also: %, #{.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 24
-Begin comment character.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-#{
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 197
- -- : #{
-     Begin block comment.  There must be nothing else, other than whitespace, in the line both before and after '#{'.  It is possible to nest block comments.
-
-     See also: %{, #}, #.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 20
-Begin block comment.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-#}
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 197
- -- : #}
-     Close block comment.  There must be nothing else, other than whitespace, in the line both before and after '#}'.  It is possible to nest block comments.
-
-     See also: %}, #{, #.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 20
-Close block comment.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-%
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 64
- -- : %
-     Begin comment character.
-
-     See also: #, %{.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 24
-Begin comment character.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-%{
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 197
- -- : %{
-     Begin block comment.  There must be nothing else, other than whitespace, in the line both before and after '%{'.  It is possible to nest block comments.
-
-     See also: #{, %}, %.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 20
-Begin block comment.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-%}
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 197
- -- : %}
-     Close block comment.  There must be nothing else, other than whitespace, in the line both before and after '%}'.  It is possible to nest block comments.
-
-     See also: #}, %{, %.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 20
-Close block comment.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-&
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 84
- -- : &
-     Element by element logical 'and' operator.
-
-     See also: &&, and.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 42
-Element by element logical 'and' operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-&&
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 97
- -- : &&
-     Logical 'and' operator (with short-circuit evaluation).
-
-     See also: &, and.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 55
-Logical 'and' operator (with short-circuit evaluation).
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-'
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 304
- -- : '
-     Matrix transpose operator.  For complex matrices, computes the complex conjugate (Hermitian) transpose.
-
-     The single quote character may also be used to delimit strings, but it is better to use the double quote character, since that is never ambiguous.
-
-     See also: .', transpose.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 26
-Matrix transpose operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-(
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 60
- -- : (
-     Array index or function argument delimiter.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 43
-Array index or function argument delimiter.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-)
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 60
- -- : )
-     Array index or function argument delimiter.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 43
-Array index or function argument delimiter.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-*
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 68
- -- : *
-     Multiplication operator.
-
-     See also: .*, times.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 24
-Multiplication operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-**
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 240
- -- : **
-     Power operator.  This may return complex results for real inputs.  Use 'realsqrt', 'cbrt', 'nthroot', or 'realroot' to obtain real results when possible.
-
-     See also: power, ^, .**, .^, realpow, realsqrt, cbrt, nthroot.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 15
-Power operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-+
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 57
- -- : +
-     Addition operator.
-
-     See also: plus.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 18
-Addition operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-++
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 114
- -- : ++
-     Increment operator.  As in C, may be applied as a prefix or postfix operator.
-
-     See also: -.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 19
-Increment operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-,
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 70
- -- : ,
-     Array index, function argument, or command separator.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 53
-Array index, function argument, or command separator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
--
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 79
- -- : -
-     Subtraction or unary negation operator.
-
-     See also: minus.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 39
-Subtraction or unary negation operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
--
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 115
- -- : --
-     Decrement operator.  As in C, may be applied as a prefix or postfix operator.
-
-     See also: ++.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 19
-Decrement operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-.'
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 160
- -- : .'
-     Matrix transpose operator.  For complex matrices, computes the transpose, _not_ the complex conjugate transpose.
-
-     See also: ', transpose.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 26
-Matrix transpose operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-.*
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 87
- -- : .*
-     Element by element multiplication operator.
-
-     See also: *, times.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 43
-Element by element multiplication operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 3
-.**
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 303
- -- : .*
-     Element by element power operator.  If several complex results are possible, returns the one with smallest non-negative argument (angle).  Use 'realpow', 'realsqrt', 'cbrt', or 'nthroot' if a real result is preferred.
-
-     See also: **, ^, .^, power, realpow, realsqrt, cbrt, nthroot.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 34
-Element by element power operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 3
-...
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 80
- -- : ...
-     Continuation marker.  Joins current line with following line.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 20
-Continuation marker.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-./
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 102
- -- : ./
-     Element by element right division operator.
-
-     See also: /, ., rdivide, mrdivide.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 43
-Element by element right division operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-.\
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 101
- -- : .\
-     Element by element left division operator.
-
-     See also: , ./, rdivide, mrdivide.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 42
-Element by element left division operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-.^
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 304
- -- : .^
-     Element by element power operator.  If several complex results are possible, returns the one with smallest non-negative argument (angle).  Use 'realpow', 'realsqrt', 'cbrt', or 'nthroot' if a real result is preferred.
-
-     See also: .**, ^, **, power, realpow, realsqrt, cbrt, nthroot.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 34
-Element by element power operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-/
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 82
- -- : /
-     Right division operator.
-
-     See also: ./, , rdivide, mrdivide.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 24
-Right division operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-:
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 59
- -- : :
-     Select entire rows or columns of matrices.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 42
-Select entire rows or columns of matrices.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-;
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 67
- -- : ;
-     Array row or command separator.
-
-     See also: ,.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 31
-Array row or command separator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-<
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 58
- -- : <
-     'Less than' operator.
-
-     See also: lt.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 21
-'Less than' operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-<=
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 71
- -- : <=
-     'Less than' or 'equals' operator.
-
-     See also: le.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 33
-'Less than' or 'equals' operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-=
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 37
- -- : =
-     Assignment operator.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 20
-Assignment operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-==
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 61
- -- : ==
-     Equality test operator.
-
-     See also: eq.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 23
-Equality test operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
->
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 61
- -- : >
-     'Greater than' operator.
-
-     See also: gt.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 24
-'Greater than' operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
->=
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 74
- -- : >=
-     'Greater than' or 'equals' operator.
-
-     See also: ge.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 36
-'Greater than' or 'equals' operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-[
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 58
- -- : [
-     Return list delimiter.
-
-     See also: ].
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 22
-Return list delimiter.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-\
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 81
- -- : \
-     Left division operator.
-
-     See also: ., /, ldivide, mldivide.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 23
-Left division operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-]
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 58
- -- : ]
-     Return list delimiter.
-
-     See also: [.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 22
-Return list delimiter.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-^
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 240
- -- : ^
-     Power operator.  This may return complex results for real inputs.  Use 'realsqrt', 'cbrt', 'nthroot', or 'realroot' to obtain real results when possible.
-
-     See also: power, **, .^, .**, realpow, realsqrt, cbrt, nthroot.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 15
-Power operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-|
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 82
- -- : |
-     Element by element logical 'or' operator.
-
-     See also: ||, or.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 41
-Element by element logical 'or' operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-||
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 95
- -- : ||
-     Logical 'or' (with short-circuit evaluation) operator.
-
-     See also: |, or.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 54
-Logical 'or' (with short-circuit evaluation) operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1
-~
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 64
- -- : ~
-     Logical 'not' operator.
-
-     See also: !, not.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 23
-Logical 'not' operator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 2
-~=
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 72
- -- : ~=
-     Logical 'not equals' operator.
-
-     See also: !=, ne.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 30
-Logical 'not equals' operator.
-
-
 
 
 

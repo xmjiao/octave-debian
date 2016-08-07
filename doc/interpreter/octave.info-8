@@ -21,6 +21,652 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Function Headers,  Next: Documentation Tips,  Prev: Comment Tips,  Up: Tips and Standards
+
+C.3 Conventional Headers for Octave Functions
+=============================================
+
+Octave has conventions for using special comments in function files to
+give information such as who wrote them.  This section explains these
+conventions.
+
+   The top of the file should contain a copyright notice, followed by a
+block of comments that can be used as the help text for the function.
+Here is an example:
+
+     ## Copyright (C) 1996, 1997, 2007 John W. Eaton
+     ##
+     ## This file is part of Octave.
+     ##
+     ## Octave is free software; you can redistribute it and/or
+     ## modify it under the terms of the GNU General Public
+     ## License as published by the Free Software Foundation;
+     ## either version 3 of the License, or (at your option) any
+     ## later version.
+     ##
+     ## Octave is distributed in the hope that it will be useful,
+     ## but WITHOUT ANY WARRANTY; without even the implied
+     ## warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     ## PURPOSE.  See the GNU General Public License for more
+     ## details.
+     ##
+     ## You should have received a copy of the GNU General Public
+     ## License along with Octave; see the file COPYING.  If not,
+     ## see <http://www.gnu.org/licenses/>.
+
+     ## usage: [IN, OUT, PID] = popen2 (COMMAND, ARGS)
+     ##
+     ## Start a subprocess with two-way communication.  COMMAND
+     ## specifies the name of the command to start.  ARGS is an
+     ## array of strings containing options for COMMAND.  IN and
+     ## OUT are the file ids of the input and streams for the
+     ## subprocess, and PID is the process id of the subprocess,
+     ## or -1 if COMMAND could not be executed.
+     ##
+     ## Example:
+     ##
+     ##  [in, out, pid] = popen2 ("sort", "-nr");
+     ##  fputs (in, "these\nare\nsome\nstrings\n");
+     ##  fclose (in);
+     ##  while (ischar (s = fgets (out)))
+     ##    fputs (stdout, s);
+     ##  endwhile
+     ##  fclose (out);
+
+   Octave uses the first block of comments in a function file that do
+not appear to be a copyright notice as the help text for the file.  For
+Octave to recognize the first comment block as a copyright notice, it
+must start with the word ‘Copyright’ after stripping the leading comment
+characters.
+
+   After the copyright notice and help text come several “header
+comment” lines, each beginning with ‘## HEADER-NAME:’.  For example,
+
+     ## Author: jwe
+     ## Keywords: subprocesses input-output
+     ## Maintainer: jwe
+
+   Here is a table of the conventional possibilities for HEADER-NAME:
+
+‘Author’
+     This line states the name and net address of at least the principal
+     author of the library.
+
+          ## Author: John W. Eaton <jwe@octave.org>
+
+‘Maintainer’
+     This line should contain a single name/address as in the Author
+     line, or an address only, or the string ‘jwe’.  If there is no
+     maintainer line, the person(s) in the Author field are presumed to
+     be the maintainers.
+
+     The idea behind the ‘Author’ and ‘Maintainer’ lines is to make
+     possible a function to “send mail to the maintainer” without having
+     to mine the name out by hand.
+
+     Be sure to surround the network address with ‘<...>’ if you include
+     the person’s full name as well as the network address.
+
+‘Created’
+     This optional line gives the original creation date of the file.
+     For historical interest only.
+
+‘Version’
+     If you wish to record version numbers for the individual Octave
+     program, put them in this line.
+
+‘Adapted-By’
+     In this header line, place the name of the person who adapted the
+     library for installation (to make it fit the style conventions, for
+     example).
+
+‘Keywords’
+     This line lists keywords.  Eventually, it will be used by an
+     apropos command to allow people will find your package when they’re
+     looking for things by topic area.  To separate the keywords, you
+     can use spaces, commas, or both.
+
+   Just about every Octave function ought to have the ‘Author’ and
+‘Keywords’ header comment lines.  Use the others if they are
+appropriate.  You can also put in header lines with other header
+names—they have no standard meanings, so they can’t do any harm.
+
+
+File: octave.info,  Node: Documentation Tips,  Prev: Function Headers,  Up: Tips and Standards
+
+C.4 Tips for Documentation Strings
+==================================
+
+As noted above, documentation is typically in a commented header block
+on an Octave function following the copyright statement.  The help
+string shown above is an unformatted string and will be displayed as is
+by Octave.  Here are some tips for the writing of documentation strings.
+
+   • Every command, function, or variable intended for users to know
+     about should have a documentation string.
+
+   • An internal variable or subroutine of an Octave program might as
+     well have a documentation string.
+
+   • The first line of the documentation string should consist of a
+     summary of the function.
+
+     Subsequent lines may expand the general nature of the function.
+
+     After the introduction there should be paragraphs describing the
+     meaning and usage of each input, followed by the meaning and usage
+     of each output.
+
+     Finally, there may be more general information such as notes about
+     the algorithm used, references to scientific papers, notes about
+     any incompatibilities with MATLAB, etc.
+
+   • For consistency, phrase the verb in the first sentence of a
+     documentation string as an infinitive with “to” omitted.  For
+     instance, use “Return the frob of A and B.” in preference to
+     “Returns the frob of A and B.” Usually it looks good to do likewise
+     for the rest of the first paragraph.  Subsequent paragraphs usually
+     look better if they have proper subjects.
+
+   • Write documentation strings in the active voice, not the passive,
+     and in the present tense, not the future.  For instance, use
+     “Return a list containing A and B.” instead of “A list containing A
+     and B will be returned.”
+
+   • Avoid using the word “cause” (or its equivalents) unnecessarily.
+     Instead of, “Cause Octave to display text in boldface,” just write
+     “Display text in boldface.”
+
+   • Use two spaces between the period marking the end of a sentence and
+     the word which opens the next sentence.  This convention has no
+     effect for typeset formats like TeX, but improves the readability
+     of the documentation in fixed-width environments such as the Info
+     reader.
+
+   • Do not start or end a documentation string with whitespace.
+
+   • Format the documentation string so that it fits within an 80-column
+     screen.  It is a good idea for most lines to be no wider than 60
+     characters.
+
+     However, rather than simply filling the entire documentation
+     string, you can make it much more readable by choosing line breaks
+     with care.  Use blank lines between topics if the documentation
+     string is long.
+
+   • *Do not* indent subsequent lines of a documentation string so that
+     the text is lined up in the source code with the text of the first
+     line.  This looks nice in the source code, but looks bizarre when
+     users view the documentation.  Remember that the indentation before
+     the starting double-quote is not part of the string!
+
+   • When choosing variable names try to adhere to the following
+     guidelines.
+
+     vectors :
+          x,y,z,t,w
+
+     matrices :
+          A,B,M
+
+     strings :
+          str,s
+
+     filenames :
+          fname
+
+     cells,cellstrs :
+          c,cstr
+
+   • The documentation string for a variable that is a yes-or-no flag
+     should start with words such as “Nonzero means...”, to make it
+     clear that all nonzero values are equivalent and indicate
+     explicitly what zero and nonzero mean.
+
+   • When a function’s documentation string mentions the value of an
+     argument of the function, use the argument name in capital letters
+     as if it were a name for that value.  Thus, the documentation
+     string of the operator ‘/’ refers to its second argument as
+     ‘DIVISOR’, because the actual argument name is ‘divisor’.
+
+     Also use all caps for meta-syntactic variables, such as when you
+     show the decomposition of a list or vector into subunits, some of
+     which may vary.
+
+   Octave also allows extensive formatting of the help string of
+functions using Texinfo.  The effect on the online documentation is
+relatively small, but makes the help string of functions conform to the
+help of Octave’s own functions.  However, the effect on the appearance
+of printed or online documentation will be greatly improved.
+
+   The fundamental building block of Texinfo documentation strings is
+the Texinfo macro ‘@deftypefn’.  The first argument to the macro is
+always blank.  The second and third arguments are the function’s output
+arguments and the function signature.  A skeletal Texinfo documentation
+string looks like this
+
+     -*- texinfo -*-
+     @deftypefn {} {@var{ret} =} fn (...)
+     @cindex index term
+     Help text in Texinfo format.  Code samples should be marked
+     like @code{sample of code} and variables should be marked
+     as @var{variable}.
+     @seealso{fn2, fn3}
+     @end deftypefn
+
+   This help string must be commented in user functions, or in the help
+string of the ‘DEFUN_DLD’ macro for dynamically loadable functions.  The
+important aspects of the documentation string are
+
+-*- texinfo -*-
+     This string signals Octave that the following text is in Texinfo
+     format, and should be the first part of any help string in Texinfo
+     format.
+
+@deftypefn {} ... @end deftypefn
+     The entire help string should be enclosed within the block defined
+     by deftypefn.
+
+@cindex index term
+     This generates an index entry, and can be useful when the function
+     is included as part of a larger piece of documentation.  It is
+     ignored within Octave’s help viewer.  Only one index term may
+     appear per line but multiple @cindex lines are valid if the
+     function should be filed under different terms.
+
+@var{variable}
+     All variables should be marked with this macro.  The markup of
+     variables is then changed appropriately for display.
+
+@code{sample of code}
+     All samples of code should be marked with this macro for the same
+     reasons as the @var macro.
+
+@qcode{"sample_code"}
+@qcode{’sample_code’}
+     All samples of code which are quoted should use this more
+     specialized macro.  This happens frequently when discussing
+     graphics properties such as "position" or options such as
+     "on"/"off".
+
+@seealso{function2, function3}
+     This is a comma separated list of function names that allows cross
+     referencing from one function documentation string to another.
+
+   Texinfo format has been designed to generate output for online
+viewing with text terminals as well as generating high-quality printed
+output.  To these ends, Texinfo has commands which control the diversion
+of parts of the document into a particular output processor.  Three
+formats are of importance: info, HTML, and TeX.  These are selected with
+
+     @ifinfo
+     Text area for info only
+     @end ifinfo
+
+     @ifhtml
+     Text area for HTML only
+     @end ifhtml
+
+     @tex
+     Text area for TeX only
+     @end tex
+
+   Note that often TeX output can be used in HTML documents and so often
+the ‘@ifhtml’ blocks are unnecessary.  If no specific output processor
+is chosen, by default, the text goes into all output processors.  It is
+usual to have the above blocks in pairs to allow the same information to
+be conveyed in all output formats, but with a different markup.
+Currently, most Octave documentation only makes a distinction between
+TeX and all other formats.  Therefore, the following construct is seen
+repeatedly.
+
+     @tex
+     text for TeX only
+     @end tex
+     @ifnottex
+     text for info, HTML, plaintext
+     @end ifnottex
+
+   Another important feature of Texinfo that is often used in Octave
+help strings is the ‘@example’ environment.  An example of its use is
+
+     @example
+     @group
+     @code{2 * 2}
+     @result{} 4
+     @end group
+     @end example
+
+which produces
+
+     2 * 2
+     ⇒ 4
+
+   The ‘@group’ block prevents the example from being split across a
+page boundary, while the ‘@result{}’ macro produces a right arrow
+signifying the result of a command.  If your example is larger than 20
+lines it is better _NOT_ to use grouping so that a reasonable page
+boundary can be calculated.
+
+   In many cases a function has multiple ways in which it can be called,
+and the ‘@deftypefnx’ macro can be used to give alternatives.  For
+example
+
+     -*- texinfo -*-
+     @deftypefn  {} {@var{a} =} fn (@var{x}, ...)
+     @deftypefnx {} {@var{a} =} fn (@var{y}, ...)
+     Help text in Texinfo format.
+     @end deftypefn
+
+   Many complete examples of Texinfo documentation can be taken from the
+help strings for the Octave functions themselves.  A relatively complete
+example of which is the ‘nchoosek’ function.  The Texinfo documentation
+string for ‘nchoosek’ is
+
+     -*- texinfo -*-
+     @deftypefn  {} {@var{c} =} nchoosek (@var{n}, @var{k})
+     @deftypefnx {} {@var{c} =} nchoosek (@var{set}, @var{k})
+
+     Compute the binomial coefficient of @var{n} or list all possible
+     combinations of a @var{set} of items.
+
+     If @var{n} is a scalar then calculate the binomial coefficient
+     of @var{n} and @var{k} which is defined as
+     @tex
+     $$
+      {n \choose k} = {n (n-1) (n-2) \cdots (n-k+1) \over k!}
+                    = {n! \over k! (n-k)!}
+     $$
+     @end tex
+     @ifnottex
+
+     @example
+     @group
+      /   \
+      | n |    n (n-1) (n-2) @dots{} (n-k+1)       n!
+      |   |  = ------------------------- =  ---------
+      | k |               k!                k! (n-k)!
+      \   /
+     @end group
+     @end example
+
+     @end ifnottex
+     @noindent
+     This is the number of combinations of @var{n} items taken in groups of
+     size @var{k}.
+
+     If the first argument is a vector, @var{set}, then generate all
+     combinations of the elements of @var{set}, taken @var{k} at a time, with
+     one row per combination.  The result @var{c} has @var{k} columns and
+     @w{@code{nchoosek (length (@var{set}), @var{k})}} rows.
+
+     For example:
+
+     How many ways can three items be grouped into pairs?
+
+     @example
+     @group
+     nchoosek (3, 2)
+        @result{} 3
+     @end group
+     @end example
+
+     What are the possible pairs?
+
+     @example
+     @group
+     nchoosek (1:3, 2)
+        @result{}  1   2
+            1   3
+            2   3
+     @end group
+     @end example
+
+     Programming Note: When calculating the binomial coefficient @code{nchoosek}
+     works only for non-negative, integer arguments.  Use @code{bincoeff} for
+     non-integer and negative scalar arguments, or for computing many binomial
+     coefficients at once with vector inputs for @var{n} or @var{k}.
+
+     @seealso{bincoeff, perms}
+     @end deftypefn
+
+which demonstrates most of the concepts discussed above.
+
+
+File: octave.info,  Node: Contributing Guidelines,  Next: Obsolete Functions,  Prev: Tips and Standards,  Up: Top
+
+Appendix D Contributing Guidelines
+**********************************
+
+This chapter is dedicated to those who wish to contribute code to
+Octave.
+
+* Menu:
+
+* How to Contribute::
+* Building the Development Sources::
+* Basics of Generating a Changeset::
+* General Guidelines::
+* Octave Sources (m-files)::
+* C++ Sources::
+* Other Sources::
+
+
+File: octave.info,  Node: How to Contribute,  Next: Building the Development Sources,  Up: Contributing Guidelines
+
+D.1 How to Contribute
+=====================
+
+The mailing list for Octave development discussions is
+<maintainers@octave.org>.  Patches should be submitted to Octave’s patch
+tracker (https://savannah.gnu.org/patch/?func=additem&group=octave).
+This concerns the development of Octave core, i.e., code that goes in to
+Octave directly.  You may consider developing and publishing a package
+instead; a great place for this is the allied Octave-Forge project
+(<http://octave.sourceforge.net>).  Note that the Octave core project is
+inherently more conservative and follows narrower rules.
+
+
+File: octave.info,  Node: Building the Development Sources,  Next: Basics of Generating a Changeset,  Prev: How to Contribute,  Up: Contributing Guidelines
+
+D.2 Building the Development Sources
+====================================
+
+The directions for building from the development sources change from
+time to time, so you should read the resources for developers on the web
+or in the development sources archive.  Start here:
+<http://www.octave.org/get-involved.html>.
+
+
+File: octave.info,  Node: Basics of Generating a Changeset,  Next: General Guidelines,  Prev: Building the Development Sources,  Up: Contributing Guidelines
+
+D.3 Basics of Generating a Changeset
+====================================
+
+The best way to contribute is to create a Mercurial changeset and submit
+it to the bug (http://savannah.gnu.org/bugs/?group=octave) or patch
+(http://savannah.gnu.org/patch/?func=additem&group=octave) trackers(1).
+Mercurial is the source code management system currently used to develop
+Octave.  Other forms of contributions (e.g., simple diff patches) are
+also acceptable, but they slow down the review process.  If you want to
+make more contributions, you should really get familiar with Mercurial.
+A good place to start is
+<http://www.selenic.com/mercurial/wiki/index.cgi/Tutorial>.  There you
+will also find help about how to install Mercurial.
+
+   A simple contribution sequence could look like this:
+
+     hg clone http://www.octave.org/hg/octave
+                                  # make a local copy of the octave
+                                  # source repository
+     cd octave
+     # change some sources...
+     hg commit -m "make Octave the coolest software ever"
+                                  # commit the changeset into your
+                                  # local repository
+     hg export -o ../cool.diff tip
+                                  # export the changeset to a diff
+                                  # file
+     # attach ../cool.diff to your bug report
+
+   You may want to get familiar with Mercurial queues to manage your
+changesets.  To work with queues you must activate the extension mq with
+the following entry in Mercurial’s configuration file ‘.hgrc’ (or
+‘Mercurial.ini’ on Windows):
+
+     [extensions]
+     mq=
+
+   Here is a slightly more complex example using Mercurial queues, where
+work on two unrelated changesets is done in parallel and one of the
+changesets is updated after discussion on the bug tracker:
+
+     hg qnew nasty_bug            # create a new patch
+     # change sources...
+     hg qref                      # save the changes into the patch
+     # change even more...
+     hg qref -m "solution to nasty bug!"
+                                  # save again with commit message
+     hg export -o ../nasty.diff tip
+                                  # export the patch
+     # attach ../nasty.diff to your bug report
+     hg qpop                      # undo the application of the patch
+                                  # and remove the changes from the
+                                  # source tree
+     hg qnew doc_improvements     # create an unrelated patch
+     # change doc sources...
+     hg qref -m "could not find myfav.m in the doc"
+                                  # save the changes into the patch
+     hg export -o ../doc.diff tip
+                                  # export the second patch
+     # attach ../doc.diff to your bug report
+     hg qpop
+     # discussion in the bug tracker ...
+     hg qpush nasty_bug           # apply the patch again
+     # change sources yet again ...
+     hg qref
+     hg export -o ../nasty2.diff tip
+     # attach ../nasty2.diff to your bug report
+
+   Mercurial has a few more useful extensions that really should be
+enabled.  They are not enabled by default due to a number of factors
+(mostly because they don’t work in all terminal types).
+
+   The following entries in the ‘.hgrc’ are recommended
+
+     [extensions]
+     graphlog=
+     color=
+     progress=
+     pager=
+
+   For the color extension, default color and formatting of ‘hg status’
+can be modified by
+
+     [color]
+     status.modified = magenta bold
+     status.added = green bold
+     status.removed = red bold
+     status.deleted = cyan bold
+     status.unknown = black  bold
+     status.ignored = black bold
+
+   Sometimes a few further improvements for the pager extension are
+necessary.  The following options should not be enabled unless paging is
+not working correctly.
+
+     [pager]
+     # Some options for the less pager, see less(1) for their meaning.
+     pager = LESS='FSRX' less
+
+     # Some commands that aren't paged by default; also enable paging
+     # for them
+     attend = tags, help, annotate, cat, diff, export, status, \
+              outgoing, incoming
+
+   Enabling the described extensions should immediately lead to a
+difference when using the command line version of hg.  Of these options,
+the only one that enables a new command is graphlog.  It is recommanded
+that to use the command ‘hg glog’, instead of ‘hg log’, for a better
+feel about what commits are being based on.
+
+   ---------- Footnotes ----------
+
+   (1) Please use the patch tracker only for patches which add new
+features.  If you have a patch to submit that fixes a bug, you should
+use the bug tracker instead.
+
+
+File: octave.info,  Node: General Guidelines,  Next: Octave Sources (m-files),  Prev: Basics of Generating a Changeset,  Up: Contributing Guidelines
+
+D.4 General Guidelines
+======================
+
+All Octave’s sources are distributed under the GNU General Public
+License (GPL). Currently, Octave uses GPL version 3.  For details about
+this license, see <http://www.gnu.org/licenses/gpl.html>.  Therefore,
+whenever you create a new source file, it should have the following
+comment header (use appropriate year, name and comment marks):
+
+     ## Copyright (C) 1996-2015 John W. Eaton <jwe@octave.org>
+     ##
+     ## This file is part of Octave.
+     ##
+     ## Octave is free software; you can redistribute it and/or modify it
+     ## under the terms of the GNU General Public License as published by
+     ## the Free Software Foundation; either version 3 of the License, or
+     ## (at your option) any later version.
+     ##
+     ## Octave is distributed in the hope that it will be useful, but
+     ## WITHOUT ANY WARRANTY; without even the implied warranty of
+     ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     ## GNU General Public License for more details.
+     ##
+     ## You should have received a copy of the GNU General Public License
+     ## along with Octave; see the file COPYING.  If not,
+     ## see <http://www.gnu.org/licenses/>.
+
+   Always include commit messages in changesets.  After making your
+source changes, record and briefly describe the changes in your commit
+message.  You should have previously configured your ‘.hgrc’ (or
+‘Mercurial.ini’ on Windows) with your name and email, which will be
+automatically added to your commit message.  Your commit message should
+have a brief one-line explanation of what the commit does.  If you are
+patching a bug, this one-line explanation should mention the bug number
+at the end.  If your change is small and only touches one file then this
+is typically sufficient.  If you are modifying several files, or several
+parts of one file, you should enumerate your changes roughly following
+the GNU coding standards for changelogs, as in the following example:
+
+     look for methods before constructors
+
+     * symtab.cc (symbol_table::fcn_info::fcn_info_rep::find):
+     Look for class methods before constructors, contrary to MATLAB
+     documentation.
+
+     * test/ctor-vs-method: New directory of test classes.
+     * test/test_ctor_vs_method.m: New file.
+     * test/Makefile.am: Include ctor-vs-method/module.mk.
+     (FCN_FILES): Include test_ctor_vs_method.m in the list.
+
+In this example, the names of the file changed is listed first, and in
+parentheses the name of the function in that file that was modified.
+There is no need to mention the function for m-files that only contain
+one function.  The commit message should describe what was changed, not
+why it was changed.  Any explanation for why a change is needed should
+appear as comments in the code, particularly if there is something that
+might not be obvious to someone reading it later.
+
+   When submitting code which addresses a known bug on the Octave bug
+tracker (<http://bugs.octave.org>), please add ’(bug #XXXXX)’ to the
+first line of the commit messages.  For example:
+
+     Fix zip, gzip, bzip2 to allow names with spaces (bug #47232)
+
+   The preferred comment mark for places that may need further attention
+is ‘FIXME:’.
+
+
 File: octave.info,  Node: Octave Sources (m-files),  Next: C++ Sources,  Prev: General Guidelines,  Up: Contributing Guidelines
 
 D.5 Octave Sources (m-files)
@@ -3506,7 +4152,7 @@ Concept Index
                                                               (line  34)
 * for statement:                         The for Statement.   (line   6)
 * Frobenius norm:                        Basic Matrix Functions.
-                                                              (line 316)
+                                                              (line 346)
 * function application:                  Function Application.
                                                               (line   6)
 * function descriptions:                 A Sample Function Description.
@@ -3522,7 +4168,7 @@ Concept Index
 * funding Octave development:            How You Can Contribute to Octave.
                                                               (line   6)
 * general p-norm:                        Basic Matrix Functions.
-                                                              (line 319)
+                                                              (line 349)
 * global statement:                      Global Variables.    (line   6)
 * global variables:                      Global Variables.    (line   6)
 * grammar rules:                         Grammar and Parser.  (line   6)
@@ -3610,7 +4256,7 @@ Concept Index
 * incorrect results <1>:                 Bug Reporting.       (line  70)
 * increment operator:                    Assignment Ops.      (line 170)
 * infinity norm:                         Basic Matrix Functions.
-                                                              (line 312)
+                                                              (line 342)
 * initialization:                        Startup Files.       (line   6)
 * inline, inline functions:              Function Handles Anonymous Functions Inline Functions.
                                                               (line   6)
@@ -3930,12 +4576,12 @@ Concept Index
 * prompt customization:                  Customizing the Prompt.
                                                               (line   6)
 * pseudoinverse:                         Basic Matrix Functions.
-                                                              (line 395)
+                                                              (line 425)
 * pseudoinverse <1>:                     Expressions Involving Diagonal Matrices.
                                                               (line  27)
 * QP:                                    Optimization.        (line  18)
 * QR factorization:                      Matrix Factorizations.
-                                                              (line 280)
+                                                              (line 284)
 * quadratic programming:                 Optimization.        (line  18)
 * quitting octave:                       Running Octave.      (line  19)
 * quitting octave <1>:                   Quitting Octave.     (line   6)
@@ -4025,7 +4671,7 @@ Concept Index
                                                               (line   6)
 * scatter group:                         Scatter Group.       (line   6)
 * Schur decomposition:                   Matrix Factorizations.
-                                                              (line 531)
+                                                              (line 538)
 * script files:                          Functions and Scripts.
                                                               (line   6)
 * scripts:                               Executable Octave Programs.
@@ -4043,7 +4689,7 @@ Concept Index
 * side effect:                           Assignment Ops.      (line  26)
 * SIMD:                                  Broadcasting.        (line   6)
 * singular value decomposition:          Matrix Factorizations.
-                                                              (line 619)
+                                                              (line 626)
 * site exiting file:                     Quitting Octave.     (line   6)
 * site startup file:                     Startup Files.       (line  11)
 * Spearman’s Rho:                        Correlation and Regression Analysis.
@@ -4063,7 +4709,7 @@ Concept Index
 * strings:                               String Objects.      (line   6)
 * strings <1>:                           Strings.             (line   6)
 * structural rank:                       Sparse Linear Algebra.
-                                                              (line 258)
+                                                              (line 284)
 * structure elements, looping over:      Looping Over Structure Elements.
                                                               (line   6)
 * structures:                            Data Structure Objects.
@@ -4698,9 +5344,9 @@ Function Index
 * all <1>:                               Finding Elements and Checking Conditions.
                                                              (line   32)
 * allchild:                              Graphics Objects.   (line  489)
-* allow_noninteger_range_as_index:       Advanced Indexing.  (line  174)
-* allow_noninteger_range_as_index <1>:   Advanced Indexing.  (line  175)
-* allow_noninteger_range_as_index <2>:   Advanced Indexing.  (line  176)
+* allow_noninteger_range_as_index:       Advanced Indexing.  (line  210)
+* allow_noninteger_range_as_index <1>:   Advanced Indexing.  (line  211)
+* allow_noninteger_range_as_index <2>:   Advanced Indexing.  (line  212)
 * amd:                                   Mathematical Considerations.
                                                              (line  171)
 * amd <1>:                               Mathematical Considerations.
@@ -4845,6 +5491,7 @@ Function Index
 * axis <5>:                              Axis Configuration. (line   15)
 * axis <6>:                              Axis Configuration. (line   16)
 * axis <7>:                              Axis Configuration. (line   17)
+* axis <8>:                              Axis Configuration. (line   18)
 * balance:                               Basic Matrix Functions.
                                                              (line    6)
 * balance <1>:                           Basic Matrix Functions.
@@ -4996,9 +5643,9 @@ Function Index
 * byte_size:                             Matrices and Arrays in Oct-Files.
                                                              (line   92)
 * bzip2:                                 File Archiving Utilities.
-                                                             (line  172)
+                                                             (line  176)
 * bzip2 <1>:                             File Archiving Utilities.
-                                                             (line  173)
+                                                             (line  177)
 * calendar:                              Timing Utilities.   (line  669)
 * calendar <1>:                          Timing Utilities.   (line  670)
 * calendar <2>:                          Timing Utilities.   (line  671)
@@ -5039,11 +5686,11 @@ Function Index
                                                              (line   80)
 * cauchy_rnd <3>:                        Random Number Generation.
                                                              (line   81)
-* caxis:                                 Axis Configuration. (line  114)
-* caxis <1>:                             Axis Configuration. (line  115)
-* caxis <2>:                             Axis Configuration. (line  116)
-* caxis <3>:                             Axis Configuration. (line  117)
-* caxis <4>:                             Axis Configuration. (line  118)
+* caxis:                                 Axis Configuration. (line  115)
+* caxis <1>:                             Axis Configuration. (line  116)
+* caxis <2>:                             Axis Configuration. (line  117)
+* caxis <3>:                             Axis Configuration. (line  118)
+* caxis <4>:                             Axis Configuration. (line  119)
 * cbrt:                                  Exponents and Logarithms.
                                                              (line  104)
 * ccolamd:                               Mathematical Considerations.
@@ -5329,16 +5976,20 @@ Function Index
                                                              (line   58)
 * cond <1>:                              Basic Matrix Functions.
                                                              (line   59)
+* condeig:                               Basic Matrix Functions.
+                                                             (line   81)
+* condeig <1>:                           Basic Matrix Functions.
+                                                             (line   82)
 * condest:                               Sparse Linear Algebra.
-                                                             (line  136)
+                                                             (line  160)
 * condest <1>:                           Sparse Linear Algebra.
-                                                             (line  137)
+                                                             (line  161)
 * condest <2>:                           Sparse Linear Algebra.
-                                                             (line  138)
+                                                             (line  162)
 * condest <3>:                           Sparse Linear Algebra.
-                                                             (line  139)
+                                                             (line  163)
 * condest <4>:                           Sparse Linear Algebra.
-                                                             (line  140)
+                                                             (line  164)
 * confirm_recursive_rmdir:               Filesystem Utilities.
                                                              (line  139)
 * confirm_recursive_rmdir <1>:           Filesystem Utilities.
@@ -5717,9 +6368,9 @@ Function Index
 * desktop:                               GUI Utility Functions.
                                                              (line   10)
 * det:                                   Basic Matrix Functions.
-                                                             (line   80)
+                                                             (line  110)
 * det <1>:                               Basic Matrix Functions.
-                                                             (line   81)
+                                                             (line  111)
 * detrend:                               Signal Processing.  (line  498)
 * diag:                                  Rearranging Matrices.
                                                              (line  576)
@@ -5756,7 +6407,7 @@ Function Index
                                                              (line   87)
 * diffpara:                              Signal Processing.  (line  514)
 * diffuse:                               Three-Dimensional Plots.
-                                                             (line  685)
+                                                             (line  688)
 * dims:                                  Matrices and Arrays in Oct-Files.
                                                              (line   95)
 * dir:                                   FTP Objects.        (line   77)
@@ -5900,53 +6551,53 @@ Function Index
 * edit_history <2>:                      Commands For History.
                                                              (line   92)
 * eig:                                   Basic Matrix Functions.
-                                                             (line   96)
+                                                             (line  126)
 * eig <1>:                               Basic Matrix Functions.
-                                                             (line   97)
+                                                             (line  127)
 * eig <2>:                               Basic Matrix Functions.
-                                                             (line   98)
+                                                             (line  128)
 * eig <3>:                               Basic Matrix Functions.
-                                                             (line   99)
+                                                             (line  129)
 * eigs:                                  Sparse Linear Algebra.
-                                                             (line  373)
+                                                             (line  399)
 * eigs <1>:                              Sparse Linear Algebra.
-                                                             (line  374)
+                                                             (line  400)
 * eigs <2>:                              Sparse Linear Algebra.
-                                                             (line  375)
+                                                             (line  401)
 * eigs <3>:                              Sparse Linear Algebra.
-                                                             (line  376)
+                                                             (line  402)
 * eigs <4>:                              Sparse Linear Algebra.
-                                                             (line  377)
+                                                             (line  403)
 * eigs <5>:                              Sparse Linear Algebra.
-                                                             (line  378)
+                                                             (line  404)
 * eigs <6>:                              Sparse Linear Algebra.
-                                                             (line  379)
+                                                             (line  405)
 * eigs <7>:                              Sparse Linear Algebra.
-                                                             (line  380)
+                                                             (line  406)
 * eigs <8>:                              Sparse Linear Algebra.
-                                                             (line  381)
+                                                             (line  407)
 * eigs <9>:                              Sparse Linear Algebra.
-                                                             (line  382)
+                                                             (line  408)
 * eigs <10>:                             Sparse Linear Algebra.
-                                                             (line  383)
+                                                             (line  409)
 * eigs <11>:                             Sparse Linear Algebra.
-                                                             (line  384)
+                                                             (line  410)
 * eigs <12>:                             Sparse Linear Algebra.
-                                                             (line  385)
+                                                             (line  411)
 * eigs <13>:                             Sparse Linear Algebra.
-                                                             (line  386)
+                                                             (line  412)
 * eigs <14>:                             Sparse Linear Algebra.
-                                                             (line  387)
+                                                             (line  413)
 * eigs <15>:                             Sparse Linear Algebra.
-                                                             (line  388)
+                                                             (line  414)
 * eigs <16>:                             Sparse Linear Algebra.
-                                                             (line  389)
+                                                             (line  415)
 * eigs <17>:                             Sparse Linear Algebra.
-                                                             (line  390)
+                                                             (line  416)
 * eigs <18>:                             Sparse Linear Algebra.
-                                                             (line  391)
+                                                             (line  417)
 * eigs <19>:                             Sparse Linear Algebra.
-                                                             (line  392)
+                                                             (line  418)
 * elem:                                  Matrices and Arrays in Oct-Files.
                                                              (line   77)
 * ellipj:                                Special Functions.  (line  204)
@@ -6737,9 +7388,9 @@ Function Index
 * ginput <1>:                            Interacting with Plots.
                                                              (line   11)
 * givens:                                Basic Matrix Functions.
-                                                             (line  111)
+                                                             (line  141)
 * givens <1>:                            Basic Matrix Functions.
-                                                             (line  112)
+                                                             (line  142)
 * glob:                                  Filesystem Utilities.
                                                              (line  396)
 * glpk:                                  Linear Programming. (line   15)
@@ -6759,6 +7410,10 @@ Function Index
 * gplot:                                 Information.        (line  179)
 * gplot <1>:                             Information.        (line  180)
 * gplot <2>:                             Information.        (line  181)
+* grabcode:                              Publish Octave script files.
+                                                             (line  145)
+* grabcode <1>:                          Publish Octave script files.
+                                                             (line  146)
 * gradient:                              Utility Functions.  (line  223)
 * gradient <1>:                          Utility Functions.  (line  224)
 * gradient <2>:                          Utility Functions.  (line  225)
@@ -6829,9 +7484,9 @@ Function Index
 * guihandles <1>:                        GUI Utility Functions.
                                                              (line   31)
 * gunzip:                                File Archiving Utilities.
-                                                             (line   39)
+                                                             (line   43)
 * gunzip <1>:                            File Archiving Utilities.
-                                                             (line   40)
+                                                             (line   44)
 * gzip:                                  File Archiving Utilities.
                                                              (line   18)
 * gzip <1>:                              File Archiving Utilities.
@@ -6954,7 +7609,7 @@ Function Index
 * hotelling_test:                        Tests.              (line  157)
 * hotelling_test_2:                      Tests.              (line  172)
 * housh:                                 Matrix Factorizations.
-                                                             (line  684)
+                                                             (line  691)
 * hsv:                                   Representing Images.
                                                              (line  307)
 * hsv2rgb:                               Color Conversion.   (line   27)
@@ -7094,7 +7749,7 @@ Function Index
                                                              (line  126)
 * ind2rgb <1>:                           Representing Images.
                                                              (line  127)
-* ind2sub:                               Advanced Indexing.  (line  146)
+* ind2sub:                               Advanced Indexing.  (line  156)
 * index:                                 Manipulating Strings.
                                                              (line   97)
 * index <1>:                             Manipulating Strings.
@@ -7216,9 +7871,9 @@ Function Index
 * intmax:                                Integer Data Types. (line   94)
 * intmin:                                Integer Data Types. (line  128)
 * inv:                                   Basic Matrix Functions.
-                                                             (line  142)
+                                                             (line  172)
 * inv <1>:                               Basic Matrix Functions.
-                                                             (line  143)
+                                                             (line  173)
 * invhilb:                               Famous Matrices.    (line  351)
 * ipermute:                              Rearranging Matrices.
                                                              (line  200)
@@ -7298,8 +7953,8 @@ Function Index
 * ishold <2>:                            Manipulation of Plot Windows.
                                                              (line  143)
 * isieee:                                System Information. (line   89)
-* isindex:                               Advanced Indexing.  (line  159)
-* isindex <1>:                           Advanced Indexing.  (line  160)
+* isindex:                               Advanced Indexing.  (line  195)
+* isindex <1>:                           Advanced Indexing.  (line  196)
 * isinf:                                 Finding Elements and Checking Conditions.
                                                              (line  107)
 * isinteger:                             Integer Data Types. (line   28)
@@ -7319,8 +7974,8 @@ Function Index
 * ismember:                              Set Operations.     (line  106)
 * ismember <1>:                          Set Operations.     (line  107)
 * ismember <2>:                          Set Operations.     (line  108)
-* ismethod:                              Creating a Class.   (line  126)
-* ismethod <1>:                          Creating a Class.   (line  127)
+* ismethod:                              Creating a Class.   (line  130)
+* ismethod <1>:                          Creating a Class.   (line  131)
 * isna:                                  Missing Data.       (line   36)
 * isnan:                                 Finding Elements and Checking Conditions.
                                                              (line  119)
@@ -7329,29 +7984,33 @@ Function Index
                                                              (line   24)
 * isobject:                              Creating a Class.   (line  102)
 * isocolors:                             Three-Dimensional Plots.
-                                                             (line  564)
+                                                             (line  529)
 * isocolors <1>:                         Three-Dimensional Plots.
-                                                             (line  565)
+                                                             (line  530)
 * isocolors <2>:                         Three-Dimensional Plots.
-                                                             (line  566)
+                                                             (line  531)
 * isocolors <3>:                         Three-Dimensional Plots.
-                                                             (line  567)
+                                                             (line  532)
 * isocolors <4>:                         Three-Dimensional Plots.
-                                                             (line  568)
+                                                             (line  533)
 * isocolors <5>:                         Three-Dimensional Plots.
-                                                             (line  569)
+                                                             (line  534)
 * isonormals:                            Three-Dimensional Plots.
-                                                             (line  490)
-* isonormals <1>:                        Three-Dimensional Plots.
                                                              (line  491)
-* isonormals <2>:                        Three-Dimensional Plots.
+* isonormals <1>:                        Three-Dimensional Plots.
                                                              (line  492)
-* isonormals <3>:                        Three-Dimensional Plots.
+* isonormals <2>:                        Three-Dimensional Plots.
                                                              (line  493)
-* isonormals <4>:                        Three-Dimensional Plots.
+* isonormals <3>:                        Three-Dimensional Plots.
                                                              (line  494)
-* isonormals <5>:                        Three-Dimensional Plots.
+* isonormals <4>:                        Three-Dimensional Plots.
                                                              (line  495)
+* isonormals <5>:                        Three-Dimensional Plots.
+                                                             (line  496)
+* isonormals <6>:                        Three-Dimensional Plots.
+                                                             (line  497)
+* isonormals <7>:                        Three-Dimensional Plots.
+                                                             (line  498)
 * isosurface:                            Three-Dimensional Plots.
                                                              (line  382)
 * isosurface <1>:                        Three-Dimensional Plots.
@@ -7532,7 +8191,7 @@ Function Index
                                                              (line   58)
 * kruskal_wallis_test:                   Tests.              (line  247)
 * krylov:                                Matrix Factorizations.
-                                                             (line  710)
+                                                             (line  717)
 * kurtosis:                              Descriptive Statistics.
                                                              (line  241)
 * kurtosis <1>:                          Descriptive Statistics.
@@ -7587,6 +8246,10 @@ Function Index
 * light <1>:                             Graphics Objects.   (line  186)
 * light <2>:                             Graphics Objects.   (line  187)
 * light <3>:                             Graphics Objects.   (line  188)
+* lighting:                              Three-Dimensional Plots.
+                                                             (line  713)
+* lighting <1>:                          Three-Dimensional Plots.
+                                                             (line  714)
 * lin2mu:                                Audio Data Processing.
                                                              (line   27)
 * line:                                  Graphics Objects.   (line   78)
@@ -7610,11 +8273,11 @@ Function Index
 * linkprop:                              Object Groups.      (line  198)
 * linkprop <1>:                          Object Groups.      (line  199)
 * linsolve:                              Basic Matrix Functions.
-                                                             (line  161)
+                                                             (line  191)
 * linsolve <1>:                          Basic Matrix Functions.
-                                                             (line  162)
+                                                             (line  192)
 * linsolve <2>:                          Basic Matrix Functions.
-                                                             (line  163)
+                                                             (line  193)
 * linspace:                              Special Utility Matrices.
                                                              (line  131)
 * linspace <1>:                          Special Utility Matrices.
@@ -7815,17 +8478,17 @@ Function Index
                                                              (line   16)
 * matlabroot:                            System Information. (line  115)
 * matrix_type:                           Basic Matrix Functions.
-                                                             (line  214)
+                                                             (line  244)
 * matrix_type <1>:                       Basic Matrix Functions.
-                                                             (line  215)
+                                                             (line  245)
 * matrix_type <2>:                       Basic Matrix Functions.
-                                                             (line  216)
+                                                             (line  246)
 * matrix_type <3>:                       Basic Matrix Functions.
-                                                             (line  217)
+                                                             (line  247)
 * matrix_type <4>:                       Basic Matrix Functions.
-                                                             (line  218)
+                                                             (line  248)
 * matrix_type <5>:                       Basic Matrix Functions.
-                                                             (line  219)
+                                                             (line  249)
 * max:                                   Utility Functions.  (line   65)
 * max <1>:                               Utility Functions.  (line   66)
 * max <2>:                               Utility Functions.  (line   67)
@@ -7879,13 +8542,13 @@ Function Index
 * meshc <5>:                             Three-Dimensional Plots.
                                                              (line   94)
 * meshgrid:                              Three-Dimensional Plots.
-                                                             (line  710)
+                                                             (line  741)
 * meshgrid <1>:                          Three-Dimensional Plots.
-                                                             (line  711)
+                                                             (line  742)
 * meshgrid <2>:                          Three-Dimensional Plots.
-                                                             (line  712)
+                                                             (line  743)
 * meshgrid <3>:                          Three-Dimensional Plots.
-                                                             (line  713)
+                                                             (line  744)
 * meshz:                                 Three-Dimensional Plots.
                                                              (line  128)
 * meshz <1>:                             Three-Dimensional Plots.
@@ -7912,7 +8575,7 @@ Function Index
 * mget <1>:                              FTP Objects.        (line   41)
 * mget <2>:                              FTP Objects.        (line   42)
 * mgorth:                                Basic Matrix Functions.
-                                                             (line  372)
+                                                             (line  402)
 * min:                                   Utility Functions.  (line  115)
 * min <1>:                               Utility Functions.  (line  116)
 * min <2>:                               Utility Functions.  (line  117)
@@ -8048,9 +8711,9 @@ Function Index
 * nchoosek <1>:                          Basic Statistical Functions.
                                                              (line   82)
 * ndgrid:                                Three-Dimensional Plots.
-                                                             (line  746)
+                                                             (line  777)
 * ndgrid <1>:                            Three-Dimensional Plots.
-                                                             (line  747)
+                                                             (line  778)
 * ndims:                                 Object Sizes.       (line   12)
 * ndims <1>:                             Matrices and Arrays in Oct-Files.
                                                              (line   98)
@@ -8070,11 +8733,11 @@ Function Index
 * nnz:                                   Information.        (line   26)
 * nonzeros:                              Information.        (line   32)
 * norm:                                  Basic Matrix Functions.
-                                                             (line  296)
+                                                             (line  326)
 * norm <1>:                              Basic Matrix Functions.
-                                                             (line  297)
+                                                             (line  327)
 * norm <2>:                              Basic Matrix Functions.
-                                                             (line  298)
+                                                             (line  328)
 * normcdf:                               Distributions.      (line  360)
 * normcdf <1>:                           Distributions.      (line  361)
 * normest:                               Sparse Linear Algebra.
@@ -8083,6 +8746,20 @@ Function Index
                                                              (line   90)
 * normest <2>:                           Sparse Linear Algebra.
                                                              (line   91)
+* normest1:                              Sparse Linear Algebra.
+                                                             (line  104)
+* normest1 <1>:                          Sparse Linear Algebra.
+                                                             (line  105)
+* normest1 <2>:                          Sparse Linear Algebra.
+                                                             (line  106)
+* normest1 <3>:                          Sparse Linear Algebra.
+                                                             (line  107)
+* normest1 <4>:                          Sparse Linear Algebra.
+                                                             (line  108)
+* normest1 <5>:                          Sparse Linear Algebra.
+                                                             (line  109)
+* normest1 <6>:                          Sparse Linear Algebra.
+                                                             (line  110)
 * norminv:                               Distributions.      (line  368)
 * norminv <1>:                           Distributions.      (line  369)
 * normpdf:                               Distributions.      (line  352)
@@ -8113,9 +8790,9 @@ Function Index
 * ntsc2rgb:                              Color Conversion.   (line   75)
 * ntsc2rgb <1>:                          Color Conversion.   (line   76)
 * null:                                  Basic Matrix Functions.
-                                                             (line  348)
+                                                             (line  378)
 * null <1>:                              Basic Matrix Functions.
-                                                             (line  349)
+                                                             (line  379)
 * num2cell:                              Creating Cell Arrays.
                                                              (line   62)
 * num2cell <1>:                          Creating Cell Arrays.
@@ -8196,10 +8873,6 @@ Function Index
                                                              (line   13)
 * onCleanup:                             Recovering From Errors.
                                                              (line   28)
-* onenormest:                            Sparse Linear Algebra.
-                                                             (line  104)
-* onenormest <1>:                        Sparse Linear Algebra.
-                                                             (line  105)
 * ones:                                  Special Utility Matrices.
                                                              (line   45)
 * ones <1>:                              Special Utility Matrices.
@@ -8251,7 +8924,7 @@ Function Index
 * orderfields <4>:                       Manipulating Structures.
                                                              (line  152)
 * ordschur:                              Matrix Factorizations.
-                                                             (line  579)
+                                                             (line  586)
 * orient:                                Printing and Saving Plots.
                                                              (line  367)
 * orient <1>:                            Printing and Saving Plots.
@@ -8261,9 +8934,9 @@ Function Index
 * orient <3>:                            Printing and Saving Plots.
                                                              (line  370)
 * orth:                                  Basic Matrix Functions.
-                                                             (line  360)
+                                                             (line  390)
 * orth <1>:                              Basic Matrix Functions.
-                                                             (line  361)
+                                                             (line  391)
 * ostrsplit:                             Manipulating Strings.
                                                              (line  354)
 * ostrsplit <1>:                         Manipulating Strings.
@@ -8440,9 +9113,9 @@ Function Index
 * pink <1>:                              Representing Images.
                                                              (line  354)
 * pinv:                                  Basic Matrix Functions.
-                                                             (line  383)
+                                                             (line  413)
 * pinv <1>:                              Basic Matrix Functions.
-                                                             (line  384)
+                                                             (line  414)
 * pipe:                                  Controlling Subprocesses.
                                                              (line  270)
 * pkg:                                   Packages.           (line   22)
@@ -8451,7 +9124,7 @@ Function Index
 * pkg <2>:                               Installing and Removing Packages.
                                                              (line   58)
 * planerot:                              Basic Matrix Functions.
-                                                             (line  136)
+                                                             (line  166)
 * play:                                  Playback.           (line    8)
 * play <1>:                              Playback.           (line    9)
 * play <2>:                              Playback.           (line   10)
@@ -8476,19 +9149,19 @@ Function Index
 * plot <6>:                              Two-Dimensional Plots.
                                                              (line   35)
 * plot3:                                 Three-Dimensional Plots.
-                                                             (line  766)
+                                                             (line  797)
 * plot3 <1>:                             Three-Dimensional Plots.
-                                                             (line  767)
+                                                             (line  798)
 * plot3 <2>:                             Three-Dimensional Plots.
-                                                             (line  768)
+                                                             (line  799)
 * plot3 <3>:                             Three-Dimensional Plots.
-                                                             (line  769)
+                                                             (line  800)
 * plot3 <4>:                             Three-Dimensional Plots.
-                                                             (line  770)
+                                                             (line  801)
 * plot3 <5>:                             Three-Dimensional Plots.
-                                                             (line  771)
+                                                             (line  802)
 * plot3 <6>:                             Three-Dimensional Plots.
-                                                             (line  772)
+                                                             (line  803)
 * plotmatrix:                            Two-Dimensional Plots.
                                                              (line  756)
 * plotmatrix <1>:                        Two-Dimensional Plots.
@@ -8720,6 +9393,16 @@ Function Index
                                                              (line  108)
 * psi:                                   Special Functions.  (line  484)
 * psi <1>:                               Special Functions.  (line  485)
+* publish:                               Publish Octave script files.
+                                                             (line   13)
+* publish <1>:                           Publish Octave script files.
+                                                             (line   14)
+* publish <2>:                           Publish Octave script files.
+                                                             (line   15)
+* publish <3>:                           Publish Octave script files.
+                                                             (line   16)
+* publish <4>:                           Publish Octave script files.
+                                                             (line   17)
 * putenv:                                Environment Variables.
                                                              (line   19)
 * puts:                                  Simple Output.      (line   33)
@@ -8766,14 +9449,22 @@ Function Index
                                                              (line  278)
 * qr <3>:                                Matrix Factorizations.
                                                              (line  279)
+* qr <4>:                                Matrix Factorizations.
+                                                             (line  280)
+* qr <5>:                                Matrix Factorizations.
+                                                             (line  281)
+* qr <6>:                                Matrix Factorizations.
+                                                             (line  282)
+* qr <7>:                                Matrix Factorizations.
+                                                             (line  283)
 * qrdelete:                              Matrix Factorizations.
-                                                             (line  403)
+                                                             (line  411)
 * qrinsert:                              Matrix Factorizations.
-                                                             (line  378)
+                                                             (line  386)
 * qrshift:                               Matrix Factorizations.
-                                                             (line  428)
+                                                             (line  435)
 * qrupdate:                              Matrix Factorizations.
-                                                             (line  363)
+                                                             (line  371)
 * quad:                                  Functions of One Variable.
                                                              (line   96)
 * quad <1>:                              Functions of One Variable.
@@ -8870,11 +9561,11 @@ Function Index
 * quiver3 <6>:                           Two-Dimensional Plots.
                                                              (line 1426)
 * qz:                                    Matrix Factorizations.
-                                                             (line  440)
+                                                             (line  447)
 * qz <1>:                                Matrix Factorizations.
-                                                             (line  441)
+                                                             (line  448)
 * qzhess:                                Matrix Factorizations.
-                                                             (line  502)
+                                                             (line  509)
 * rad2deg:                               Trigonometry.       (line   48)
 * rainbow:                               Representing Images.
                                                              (line  375)
@@ -9009,9 +9700,9 @@ Function Index
 * range <1>:                             Descriptive Statistics.
                                                              (line   92)
 * rank:                                  Basic Matrix Functions.
-                                                             (line  395)
+                                                             (line  425)
 * rank <1>:                              Basic Matrix Functions.
-                                                             (line  396)
+                                                             (line  426)
 * ranks:                                 Basic Statistical Functions.
                                                              (line  149)
 * rat:                                   Rational Approximations.
@@ -9021,7 +9712,7 @@ Function Index
 * rats:                                  Rational Approximations.
                                                              (line   23)
 * rcond:                                 Basic Matrix Functions.
-                                                             (line  428)
+                                                             (line  458)
 * rdivide:                               Arithmetic Ops.     (line  209)
 * readdir:                               Filesystem Utilities.
                                                              (line  384)
@@ -9181,15 +9872,15 @@ Function Index
 * rgbplot <2>:                           Representing Images.
                                                              (line  177)
 * ribbon:                                Three-Dimensional Plots.
-                                                             (line  914)
+                                                             (line  945)
 * ribbon <1>:                            Three-Dimensional Plots.
-                                                             (line  915)
+                                                             (line  946)
 * ribbon <2>:                            Three-Dimensional Plots.
-                                                             (line  916)
+                                                             (line  947)
 * ribbon <3>:                            Three-Dimensional Plots.
-                                                             (line  917)
+                                                             (line  948)
 * ribbon <4>:                            Three-Dimensional Plots.
-                                                             (line  918)
+                                                             (line  949)
 * rindex:                                Manipulating Strings.
                                                              (line  114)
 * rmappdata:                             Application-defined Data.
@@ -9255,13 +9946,13 @@ Function Index
 * roundb:                                Utility Functions.  (line   56)
 * rows:                                  Object Sizes.       (line   30)
 * rref:                                  Basic Matrix Functions.
-                                                             (line  448)
+                                                             (line  478)
 * rref <1>:                              Basic Matrix Functions.
-                                                             (line  449)
+                                                             (line  479)
 * rref <2>:                              Basic Matrix Functions.
-                                                             (line  450)
+                                                             (line  480)
 * rsf2csf:                               Matrix Factorizations.
-                                                             (line  566)
+                                                             (line  573)
 * run:                                   Calling a Function by its Name.
                                                              (line   81)
 * run <1>:                               Calling a Function by its Name.
@@ -9334,31 +10025,31 @@ Function Index
 * scatter <7>:                           Two-Dimensional Plots.
                                                              (line  717)
 * scatter3:                              Three-Dimensional Plots.
-                                                             (line  961)
+                                                             (line  992)
 * scatter3 <1>:                          Three-Dimensional Plots.
-                                                             (line  962)
+                                                             (line  993)
 * scatter3 <2>:                          Three-Dimensional Plots.
-                                                             (line  963)
+                                                             (line  994)
 * scatter3 <3>:                          Three-Dimensional Plots.
-                                                             (line  964)
+                                                             (line  995)
 * scatter3 <4>:                          Three-Dimensional Plots.
-                                                             (line  965)
+                                                             (line  996)
 * scatter3 <5>:                          Three-Dimensional Plots.
-                                                             (line  966)
+                                                             (line  997)
 * scatter3 <6>:                          Three-Dimensional Plots.
-                                                             (line  967)
+                                                             (line  998)
 * scatter3 <7>:                          Three-Dimensional Plots.
-                                                             (line  968)
+                                                             (line  999)
 * schur:                                 Matrix Factorizations.
-                                                             (line  526)
+                                                             (line  533)
 * schur <1>:                             Matrix Factorizations.
-                                                             (line  527)
+                                                             (line  534)
 * schur <2>:                             Matrix Factorizations.
-                                                             (line  528)
+                                                             (line  535)
 * schur <3>:                             Matrix Factorizations.
-                                                             (line  529)
+                                                             (line  536)
 * schur <4>:                             Matrix Factorizations.
-                                                             (line  530)
+                                                             (line  537)
 * sec:                                   Trigonometry.       (line   85)
 * secd:                                  Trigonometry.       (line  240)
 * sech:                                  Trigonometry.       (line  151)
@@ -9468,9 +10159,9 @@ Function Index
 * setxor <1>:                            Set Operations.     (line   85)
 * setxor <2>:                            Set Operations.     (line   86)
 * shading:                               Three-Dimensional Plots.
-                                                             (line  938)
+                                                             (line  969)
 * shading <1>:                           Three-Dimensional Plots.
-                                                             (line  939)
+                                                             (line  970)
 * shg:                                   Manipulation of Plot Windows.
                                                              (line  203)
 * shift:                                 Rearranging Matrices.
@@ -9482,15 +10173,15 @@ Function Index
 * shiftdim <1>:                          Rearranging Matrices.
                                                              (line  320)
 * shrinkfaces:                           Three-Dimensional Plots.
-                                                             (line  641)
-* shrinkfaces <1>:                       Three-Dimensional Plots.
-                                                             (line  642)
-* shrinkfaces <2>:                       Three-Dimensional Plots.
-                                                             (line  643)
-* shrinkfaces <3>:                       Three-Dimensional Plots.
                                                              (line  644)
-* shrinkfaces <4>:                       Three-Dimensional Plots.
+* shrinkfaces <1>:                       Three-Dimensional Plots.
                                                              (line  645)
+* shrinkfaces <2>:                       Three-Dimensional Plots.
+                                                             (line  646)
+* shrinkfaces <3>:                       Three-Dimensional Plots.
+                                                             (line  647)
+* shrinkfaces <4>:                       Three-Dimensional Plots.
+                                                             (line  648)
 * SIG:                                   Controlling Subprocesses.
                                                              (line  528)
 * sighup_dumps_octave_core:              Saving Data on Unexpected Exits.
@@ -9531,19 +10222,27 @@ Function Index
 * skewness <2>:                          Descriptive Statistics.
                                                              (line  212)
 * slice:                                 Three-Dimensional Plots.
-                                                             (line  856)
+                                                             (line  887)
 * slice <1>:                             Three-Dimensional Plots.
-                                                             (line  857)
+                                                             (line  888)
 * slice <2>:                             Three-Dimensional Plots.
-                                                             (line  858)
+                                                             (line  889)
 * slice <3>:                             Three-Dimensional Plots.
-                                                             (line  859)
+                                                             (line  890)
 * slice <4>:                             Three-Dimensional Plots.
-                                                             (line  860)
+                                                             (line  891)
 * slice <5>:                             Three-Dimensional Plots.
-                                                             (line  861)
+                                                             (line  892)
 * slice <6>:                             Three-Dimensional Plots.
-                                                             (line  862)
+                                                             (line  893)
+* smooth3:                               Three-Dimensional Plots.
+                                                             (line  606)
+* smooth3 <1>:                           Three-Dimensional Plots.
+                                                             (line  607)
+* smooth3 <2>:                           Three-Dimensional Plots.
+                                                             (line  608)
+* smooth3 <3>:                           Three-Dimensional Plots.
+                                                             (line  609)
 * sombrero:                              Test Plotting Functions.
                                                              (line   10)
 * sombrero <1>:                          Test Plotting Functions.
@@ -9601,7 +10300,7 @@ Function Index
 * sparse_auto_mutate <2>:                Return Types of Operators and Functions.
                                                              (line   54)
 * spaugment:                             Sparse Linear Algebra.
-                                                             (line  329)
+                                                             (line  355)
 * spconvert:                             Creating Sparse Matrices.
                                                              (line  314)
 * spdiags:                               Creating Sparse Matrices.
@@ -9625,9 +10324,9 @@ Function Index
 * spectral_xdf <1>:                      Signal Processing.  (line  722)
 * spectral_xdf <2>:                      Signal Processing.  (line  723)
 * specular:                              Three-Dimensional Plots.
-                                                             (line  695)
+                                                             (line  698)
 * specular <1>:                          Three-Dimensional Plots.
-                                                             (line  696)
+                                                             (line  699)
 * speed:                                 Demonstration Functions.
                                                              (line  115)
 * speed <1>:                             Demonstration Functions.
@@ -9687,21 +10386,21 @@ Function Index
 * spones:                                Creating Sparse Matrices.
                                                              (line   96)
 * spparms:                               Sparse Linear Algebra.
-                                                             (line  185)
+                                                             (line  211)
 * spparms <1>:                           Sparse Linear Algebra.
-                                                             (line  186)
+                                                             (line  212)
 * spparms <2>:                           Sparse Linear Algebra.
-                                                             (line  187)
+                                                             (line  213)
 * spparms <3>:                           Sparse Linear Algebra.
-                                                             (line  188)
+                                                             (line  214)
 * spparms <4>:                           Sparse Linear Algebra.
-                                                             (line  189)
+                                                             (line  215)
 * spparms <5>:                           Sparse Linear Algebra.
-                                                             (line  190)
+                                                             (line  216)
 * spparms <6>:                           Sparse Linear Algebra.
-                                                             (line  191)
+                                                             (line  217)
 * spparms <7>:                           Sparse Linear Algebra.
-                                                             (line  192)
+                                                             (line  218)
 * sprand:                                Creating Sparse Matrices.
                                                              (line  105)
 * sprand <1>:                            Creating Sparse Matrices.
@@ -9719,7 +10418,7 @@ Function Index
 * sprandsym <1>:                         Creating Sparse Matrices.
                                                              (line  146)
 * sprank:                                Sparse Linear Algebra.
-                                                             (line  257)
+                                                             (line  283)
 * spring:                                Representing Images.
                                                              (line  385)
 * spring <1>:                            Representing Images.
@@ -9962,7 +10661,7 @@ Function Index
 * subsindex:                             Defining Indexing And Indexed Assignment.
                                                              (line  171)
 * subspace:                              Matrix Factorizations.
-                                                             (line  612)
+                                                             (line  619)
 * subsref:                               Defining Indexing And Indexed Assignment.
                                                              (line   14)
 * substr:                                Manipulating Strings.
@@ -10045,29 +10744,29 @@ Function Index
 * surfnorm <4>:                          Three-Dimensional Plots.
                                                              (line  338)
 * svd:                                   Matrix Factorizations.
-                                                             (line  616)
+                                                             (line  623)
 * svd <1>:                               Matrix Factorizations.
-                                                             (line  617)
+                                                             (line  624)
 * svd <2>:                               Matrix Factorizations.
-                                                             (line  618)
+                                                             (line  625)
 * svds:                                  Sparse Linear Algebra.
-                                                             (line  530)
+                                                             (line  556)
 * svds <1>:                              Sparse Linear Algebra.
-                                                             (line  531)
+                                                             (line  557)
 * svds <2>:                              Sparse Linear Algebra.
-                                                             (line  532)
+                                                             (line  558)
 * svds <3>:                              Sparse Linear Algebra.
-                                                             (line  533)
+                                                             (line  559)
 * svds <4>:                              Sparse Linear Algebra.
-                                                             (line  534)
+                                                             (line  560)
 * svds <5>:                              Sparse Linear Algebra.
-                                                             (line  535)
+                                                             (line  561)
 * svd_driver:                            Matrix Factorizations.
-                                                             (line  669)
+                                                             (line  676)
 * svd_driver <1>:                        Matrix Factorizations.
-                                                             (line  670)
+                                                             (line  677)
 * svd_driver <2>:                        Matrix Factorizations.
-                                                             (line  671)
+                                                             (line  678)
 * swapbytes:                             Built-in Data Types.
                                                              (line  130)
 * syl:                                   Functions of a Matrix.
@@ -10081,11 +10780,11 @@ Function Index
 * symamd <3>:                            Mathematical Considerations.
                                                              (line  441)
 * symbfact:                              Sparse Linear Algebra.
-                                                             (line  269)
+                                                             (line  295)
 * symbfact <1>:                          Sparse Linear Algebra.
-                                                             (line  270)
+                                                             (line  296)
 * symbfact <2>:                          Sparse Linear Algebra.
-                                                             (line  271)
+                                                             (line  297)
 * symlink:                               Filesystem Utilities.
                                                              (line   83)
 * symlink <1>:                           Filesystem Utilities.
@@ -10124,9 +10823,9 @@ Function Index
 * tand:                                  Trigonometry.       (line  232)
 * tanh:                                  Trigonometry.       (line  145)
 * tar:                                   File Archiving Utilities.
-                                                             (line   55)
+                                                             (line   59)
 * tar <1>:                               File Archiving Utilities.
-                                                             (line   56)
+                                                             (line   60)
 * tcdf:                                  Distributions.      (line  408)
 * tempdir:                               Temporary Files.    (line   68)
 * tempname:                              Temporary Files.    (line   49)
@@ -10193,7 +10892,7 @@ Function Index
 * toupper:                               String Conversions. (line  308)
 * tpdf:                                  Distributions.      (line  403)
 * trace:                                 Basic Matrix Functions.
-                                                             (line  440)
+                                                             (line  470)
 * transpose:                             Arithmetic Ops.     (line  231)
 * trapz:                                 Functions of One Variable.
                                                              (line  466)
@@ -10373,11 +11072,11 @@ Function Index
 * unmkpp:                                Polynomial Interpolation.
                                                              (line  356)
 * unpack:                                File Archiving Utilities.
-                                                             (line  119)
+                                                             (line  123)
 * unpack <1>:                            File Archiving Utilities.
-                                                             (line  120)
+                                                             (line  124)
 * unpack <2>:                            File Archiving Utilities.
-                                                             (line  121)
+                                                             (line  125)
 * unsetenv:                              Environment Variables.
                                                              (line   27)
 * untabify:                              Manipulating Strings.
@@ -10387,16 +11086,16 @@ Function Index
 * untabify <2>:                          Manipulating Strings.
                                                              (line  848)
 * untar:                                 File Archiving Utilities.
-                                                             (line   74)
+                                                             (line   78)
 * untar <1>:                             File Archiving Utilities.
-                                                             (line   75)
+                                                             (line   79)
 * unwrap:                                Signal Processing.  (line  373)
 * unwrap <1>:                            Signal Processing.  (line  374)
 * unwrap <2>:                            Signal Processing.  (line  375)
 * unzip:                                 File Archiving Utilities.
-                                                             (line  106)
+                                                             (line  110)
 * unzip <1>:                             File Archiving Utilities.
-                                                             (line  107)
+                                                             (line  111)
 * uplus:                                 Arithmetic Ops.     (line  243)
 * upper:                                 String Conversions. (line  309)
 * urlread:                               URL Manipulation.   (line    6)
@@ -10455,19 +11154,19 @@ Function Index
 * vertcat:                               Rearranging Matrices.
                                                              (line  166)
 * view:                                  Three-Dimensional Plots.
-                                                             (line  831)
+                                                             (line  862)
 * view <1>:                              Three-Dimensional Plots.
-                                                             (line  832)
+                                                             (line  863)
 * view <2>:                              Three-Dimensional Plots.
-                                                             (line  833)
+                                                             (line  864)
 * view <3>:                              Three-Dimensional Plots.
-                                                             (line  834)
+                                                             (line  865)
 * view <4>:                              Three-Dimensional Plots.
-                                                             (line  835)
+                                                             (line  866)
 * view <5>:                              Three-Dimensional Plots.
-                                                             (line  836)
+                                                             (line  867)
 * view <6>:                              Three-Dimensional Plots.
-                                                             (line  837)
+                                                             (line  868)
 * viridis:                               Representing Images.
                                                              (line  404)
 * viridis <1>:                           Representing Images.
@@ -10515,17 +11214,17 @@ Function Index
 * warning <7>:                           Issuing Warnings.   (line   40)
 * warranty:                              Getting Help.       (line  107)
 * waterfall:                             Three-Dimensional Plots.
-                                                             (line 1004)
+                                                             (line 1035)
 * waterfall <1>:                         Three-Dimensional Plots.
-                                                             (line 1005)
+                                                             (line 1036)
 * waterfall <2>:                         Three-Dimensional Plots.
-                                                             (line 1006)
+                                                             (line 1037)
 * waterfall <3>:                         Three-Dimensional Plots.
-                                                             (line 1007)
+                                                             (line 1038)
 * waterfall <4>:                         Three-Dimensional Plots.
-                                                             (line 1008)
+                                                             (line 1039)
 * waterfall <5>:                         Three-Dimensional Plots.
-                                                             (line 1009)
+                                                             (line 1040)
 * wblcdf:                                Distributions.      (line  475)
 * wblcdf <1>:                            Distributions.      (line  476)
 * wblcdf <2>:                            Distributions.      (line  477)
@@ -10622,18 +11321,18 @@ Function Index
 * xlabel <1>:                            Plot Annotations.   (line  162)
 * xlabel <2>:                            Plot Annotations.   (line  163)
 * xlabel <3>:                            Plot Annotations.   (line  164)
-* xlim:                                  Axis Configuration. (line  143)
-* xlim <1>:                              Axis Configuration. (line  144)
-* xlim <2>:                              Axis Configuration. (line  145)
-* xlim <3>:                              Axis Configuration. (line  146)
-* xlim <4>:                              Axis Configuration. (line  147)
-* xlim <5>:                              Axis Configuration. (line  148)
+* xlim:                                  Axis Configuration. (line  144)
+* xlim <1>:                              Axis Configuration. (line  145)
+* xlim <2>:                              Axis Configuration. (line  146)
+* xlim <3>:                              Axis Configuration. (line  147)
+* xlim <4>:                              Axis Configuration. (line  148)
+* xlim <5>:                              Axis Configuration. (line  149)
 * xor:                                   Finding Elements and Checking Conditions.
                                                              (line   61)
 * xor <1>:                               Finding Elements and Checking Conditions.
                                                              (line   62)
 * yes_or_no:                             Terminal Input.     (line   66)
-* ylim:                                  Axis Configuration. (line  143)
+* ylim:                                  Axis Configuration. (line  144)
 * yulewalker:                            Signal Processing.  (line  787)
 * zeros:                                 Special Utility Matrices.
                                                              (line   70)
@@ -10646,10 +11345,10 @@ Function Index
 * zeros <4>:                             Special Utility Matrices.
                                                              (line   74)
 * zip:                                   File Archiving Utilities.
-                                                             (line   87)
+                                                             (line   91)
 * zip <1>:                               File Archiving Utilities.
-                                                             (line   88)
-* zlim:                                  Axis Configuration. (line  143)
+                                                             (line   92)
+* zlim:                                  Axis Configuration. (line  144)
 * zoom:                                  Manipulation of Plot Objects.
                                                              (line   57)
 * zoom <1>:                              Manipulation of Plot Objects.

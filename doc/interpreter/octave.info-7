@@ -21,6 +21,514 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Progress Bar,  Next: UI Elements,  Prev: I/O Dialogs,  Up: GUI Development
+
+35.2 Progress Bar
+=================
+
+ -- : H = waitbar (FRAC)
+ -- : H = waitbar (FRAC, MSG)
+ -- : H = waitbar (..., "createcancelbtn", FCN, ...)
+ -- : H = waitbar (..., PROP, VAL, ...)
+ -- : waitbar (FRAC)
+ -- : waitbar (FRAC, H)
+ -- : waitbar (FRAC, H, MSG)
+     Return a handle H to a new progress indicator ("waitbar") object.
+
+     The waitbar is filled to fraction FRAC which must be in the range
+     [0, 1].
+
+     The optional message MSG is centered and displayed above the
+     waitbar.
+
+     A cancel button can be added to the bottom of the waitbar using the
+     "createcancelbtn" property of waitbar figures.  The action to be
+     executed when the user presses the button is specified using a
+     string or function handle FCN.
+
+     The appearance of the waitbar figure window can be configured by
+     passing PROP/VAL pairs to the function.
+
+     When called with a single input the current waitbar, if it exists,
+     is updated to the new value FRAC.  If there are multiple
+     outstanding waitbars they can be updated individually by passing
+     the handle H of the specific waitbar to modify.
+
+     See also: *note delete: XREFdelete.
+
+
+File: octave.info,  Node: UI Elements,  Next: GUI Utility Functions,  Prev: Progress Bar,  Up: GUI Development
+
+35.3 UI Elements
+================
+
+The ui* series of functions work best with the ‘qt’ graphics toolkit,
+although some functionality is available with the ‘fltk’ toolkit.  There
+is no support for the ‘gnuplot’ toolkit.
+
+ -- : HUI = uimenu (PROPERTY, VALUE, ...)
+ -- : HUI = uimenu (H, PROPERTY, VALUE, ...)
+     Create a uimenu object and return a handle to it.
+
+     If H is omitted then a top-level menu for the current figure is
+     created.  If H is given then a submenu relative to H is created.
+
+     uimenu objects have the following specific properties:
+
+     "accelerator"
+          A string containing the key combination together with CTRL to
+          execute this menu entry (e.g., "x" for CTRL+x).
+
+     "callback"
+          Is the function called when this menu entry is executed.  It
+          can be either a function string (e.g., "myfun"), a function
+          handle (e.g., @myfun) or a cell array containing the function
+          handle and arguments for the callback function (e.g., {@myfun,
+          arg1, arg2}).
+
+     "checked"
+          Can be set "on" or "off".  Sets a mark at this menu entry.
+
+     "enable"
+          Can be set "on" or "off".  If disabled the menu entry cannot
+          be selected and it is grayed out.
+
+     "foregroundcolor"
+          A color value setting the text color for this menu entry.
+
+     "label"
+          A string containing the label for this menu entry.  A
+          "&"-symbol can be used to mark the "accelerator" character
+          (e.g., "E&xit")
+
+     "position"
+          An scalar value containing the relative menu position.  The
+          entry with the lowest value is at the first position starting
+          from left or top.
+
+     "separator"
+          Can be set "on" or "off".  If enabled it draws a separator
+          line above the current position.  It is ignored for top level
+          entries.
+
+     Examples:
+
+          f = uimenu ("label", "&File", "accelerator", "f");
+          e = uimenu ("label", "&Edit", "accelerator", "e");
+          uimenu (f, "label", "Close", "accelerator", "q", ...
+                     "callback", "close (gcf)");
+          uimenu (e, "label", "Toggle &Grid", "accelerator", "g", ...
+                     "callback", "grid (gca)");
+
+     See also: *note figure: XREFfigure.
+
+ -- : HUI = uibuttongroup (PROPERTY, VALUE, ...)
+ -- : HUI = uibuttongroup (PARENT, PROPERTY, VALUE, ...)
+ -- : uibuttongroup (H)
+
+     Create a uibuttongroup object and return a handle to it.
+
+     uibuttongroups are used to create group uicontrols.
+
+     If PARENT is omitted then a uibuttongroup for the current figure is
+     created.  If no figure is available, a new figure is created first.
+
+     If PARENT is given then a uibuttongroup relative to PARENT is
+     created.
+
+     Any provided property value pairs will override the default values
+     of the created uibuttongroup object.
+
+     Uibuttongroup properties are documented at *note Uibuttongroup
+     Properties::.
+
+     Examples:
+
+          % create figure and panel on it
+          f = figure;
+          % create a button group
+          gp = uibuttongroup (f, "Position", [ 0 0.5 1 1])
+          % create a buttons in the group
+          b1 = uicontrol (gp, "style", "radiobutton", ...
+                          "string", "Choice 1", ...
+                          "Position", [ 10 150 100 50 ]);
+          b2 = uicontrol (gp, "style", "radiobutton", ...
+                          "string", "Choice 2", ...
+                          "Position", [ 10 50 100 30 ]);
+          % create a button not in the group
+          b3 = uicontrol (f, "style", "radiobutton", ...
+                          "string", "Not in the group", ...
+                          "Position", [ 10 50 100 50 ]);
+
+     See also: *note figure: XREFfigure, *note uipanel: XREFuipanel.
+
+ -- : HUI = uicontextmenu (PROPERTY, VALUE, ...)
+ -- : HUI = uicontextmenu (H, PROPERTY, VALUE, ...)
+
+     Create a uicontextmenu object and return a handle to it.
+
+     If H is omitted then a uicontextmenu for the current figure is
+     created.  If no figure is available, a new figure is created first.
+
+     If H is given then a uicontextmenu relative to H is created.
+
+     Any provided property value pairs will override the default values
+     of the created uicontextmenu object.
+
+     Uicontextmenu properties are documented at *note Uicontextmenu
+     Properties::.
+
+     Examples:
+
+          % create figure and uicontextmenu
+          f = figure;
+          c = uicontextmenu (f);
+
+          % create menus in the context menu
+          m1 = uimenu ("parent",c,"label","Menu item 1","callback","disp('menu item 1')");
+          m2 = uimenu ("parent",c,"label","Menu item 2","callback","disp('menu item 2')");
+
+          % set the context menu for the figure
+          set (f, "uicontextmenu", c);
+
+     See also: *note figure: XREFfigure, *note uimenu: XREFuimenu.
+
+ -- : HUI = uicontrol (PROPERTY, VALUE, ...)
+ -- : HUI = uicontrol (PARENT, PROPERTY, VALUE, ...)
+ -- : uicontrol (H)
+
+     Create a uicontrol object and return a handle to it.
+
+     uicontrols are used to create simple interactive controls such as
+     push buttons, checkboxes, edit and list controls.
+
+     If PARENT is omitted then a uicontrol for the current figure is
+     created.  If no figure is available, a new figure is created first.
+
+     If PARENT is given then a uicontrol relative to PARENT is created.
+
+     Any provided property value pairs will override the default values
+     of the created uicontrol object.
+
+     Uicontrol properties are documented at *note Uicontrol
+     Properties::.
+
+     Control of the type of uicontrol created is through the use of the
+     STYLE property.  If no style property is provided, a push button
+     will be created.
+
+     Valid styles for uicontrol are:
+
+     "checkbox"
+          Create a checkbox control that allows user on/off selection.
+
+     "edit"
+          Create an edit control that allows user input of single or
+          multiple lines of text.
+
+     "listbox"
+          Create a listbox control that displays a list of items and
+          allows user selection of single or multiple items.
+
+     "popupmenu"
+          Create a popupmenu control that displays a list of options
+          that can be selected when the user clicks on the control.
+
+     "pushbutton"
+          Create a push button control that allows user to press to
+          cause an action.
+
+     "radiobutton"
+          Create a radio button control intended to be used for mutually
+          exclusive input in a group of radiobutton controls.
+
+     "slider"
+          Create a slider control that allows user selection from a
+          range of values by sliding knob on the control.
+
+     "text"
+          Create a static text control to display single or multiple
+          lines of text.
+
+     "togglebutton"
+          Create a toggle button control that appears like a push button
+          but allows the user to select between two states.
+
+     Examples:
+
+          % create figure and panel on it
+          f = figure;
+          % create a button (default style)
+          b1 = uicontrol (f, "string", "A Button", "position",[10 10 150 40]);
+          % create an edit control
+          e1 = uicontrol (f, "style", "edit", "string", "editable text", "position",[10 60 300 40]);
+          % create a checkbox
+          c1 = uicontrol (f, "style", "checkbox", "string", "a checkbox", "position",[10 120 150 40]);
+
+     See also: *note figure: XREFfigure, *note uipanel: XREFuipanel.
+
+ -- : HUI = uipanel (PROPERTY, VALUE, ...)
+ -- : HUI = uipanel (PARENT, "PROPERTY, VALUE, ...)
+
+     Create a uipanel object and return a handle to it.
+
+     uipanels are used as containers to group other uicontrol objects.
+
+     If PARENT is omitted then a uipanel for the current figure is
+     created.  If no figure is available, a new figure is created first.
+
+     If PARENT is given then a uipanel relative to PARENT is created.
+
+     Any provided property value pairs will override the default values
+     of the created uipanel object.
+
+     Uipanel properties are documented at *note Uipanel Properties::.
+
+     Examples:
+
+          % create figure and panel on it
+          f = figure;
+          p = uipanel ("title", "Panel Title", "position", [.25 .25 .5 .5]);
+
+          % add two buttons to the panel
+          b1 = uicontrol ("parent", p, "string", "A Button", "position",[18 10 150 36]);
+          b2 = uicontrol ("parent", p, "string", "Another Button", "position",[18 60 150 36]);
+
+
+     See also: *note figure: XREFfigure, *note uicontrol: XREFuicontrol.
+
+ -- : HUI = uipushtool (PROPERTY, VALUE, ...)
+ -- : HUI = uipushtool (PARENT, PROPERTY, VALUE, ...)
+
+     Create a uipushtool object and return a handle to it.
+
+     uipushtools are buttons that appear on a figure toolbar.  The
+     button is created with a border that is shown when the user hovers
+     over the button.  An image can be set using the cdata property.
+
+     If PARENT is omitted then a uipushtool for the current figure is
+     created.  If no figure is available, a new figure is created first.
+     If a figure is available, but does not contain a uitoolbar, a
+     uitoolbar will be created.
+
+     If PARENT is given then an uipushtools is created on the PARENT
+     uitoolbar.
+
+     Any provided property value pairs will override the default values
+     of the created uipushtool object.
+
+     Uipushtool properties are documented at *note Uipushtool
+     Properties::.
+
+     Examples:
+
+          % create figure without a default toolbar
+          f = figure ("toolbar", "none");
+          % create empty toolbar
+          t = uitoolbar (f);
+          % create a 19x19x3 black square
+          img=zeros(19,19,3);
+          % add pushtool button to toolbar
+          b = uipushtool (t, "cdata", img);
+
+     See also: *note figure: XREFfigure, *note uitoolbar: XREFuitoolbar,
+     *note uitoggletool: XREFuitoggletool.
+
+ -- : HUI = uitoggletool (PROPERTY, VALUE, ...)
+ -- : HUI = uitoggletool (PARENT, PROPERTY, VALUE, ...)
+
+     Create a uitoggletool object and return a handle to it.
+
+     uitoggletool are togglebuttons that appear on a figure toolbar.
+     The button is created with a border that is shown when the user
+     hovers over the button.  An image can be set using the cdata
+     property.
+
+     If PARENT is omitted then a uitoggletool for the current figure is
+     created.  If no figure is available, a new figure is created first.
+     If a figure is available, but does not contain a uitoolbar, a
+     uitoolbar will be created.
+
+     If PARENT is given then a uitoggletool is created on the PARENT
+     uitoolbar.
+
+     Any provided property value pairs will override the default values
+     of the created uitoggletool object.
+
+     Uitoggletool properties are documented at *note Uitoggletool
+     Properties::.
+
+     Examples:
+
+          % create figure without a default toolbar
+          f = figure ("toolbar", "none");
+          % create empty toolbar
+          t = uitoolbar (f);
+          % create a 19x19x3 black square
+          img=zeros(19,19,3);
+          % add uitoggletool button to toolbar
+          b = uitoggletool (t, "cdata", img);
+
+     See also: *note figure: XREFfigure, *note uitoolbar: XREFuitoolbar,
+     *note uipushtool: XREFuipushtool.
+
+ -- : HUI = uitoolbar (PROPERTY, VALUE, ...)
+ -- : HUI = uitoolbar (PARENT, PROPERTY, VALUE, ...)
+
+     Create a uitoolbar object and return a handle to it.  A uitoolbar
+     displays uitoggletool and uipushtool buttons.
+
+     If PARENT is omitted then a uitoolbar for the current figure is
+     created.  If no figure is available, a new figure is created first.
+
+     If PARENT is given then a uitoolbar relative to PARENT is created.
+
+     Any provided property value pairs will override the default values
+     of the created uitoolbar object.
+
+     Uitoolbar properties are documented at *note Uitoolbar
+     Properties::.
+
+     Examples:
+
+          % create figure without a default toolbar
+          f = figure ("toolbar", "none");
+          % create empty toolbar
+          t = uitoolbar (f);
+
+     See also: *note figure: XREFfigure, *note uitoggletool:
+     XREFuitoggletool, *note uipushtool: XREFuipushtool.
+
+
+File: octave.info,  Node: GUI Utility Functions,  Next: User-Defined Preferences,  Prev: UI Elements,  Up: GUI Development
+
+35.4 GUI Utility Functions
+==========================
+
+These functions do not implement a GUI element but are useful when
+developing programs that do.  The functions ‘uiwait’, ‘uiresume’, and
+‘waitfor’ are only available with the ‘qt’ or ‘fltk’ toolkits.
+
+ -- : USED = desktop ("-inuse")
+     Return true if the desktop (GUI) is currently in use.
+
+     See also: *note isguirunning: XREFisguirunning.
+
+ -- : DATA = guidata (H)
+ -- : guidata (H, DATA)
+     Query or set user-custom GUI data.
+
+     The GUI data is stored in the figure handle H.  If H is not a
+     figure handle then it’s parent figure will be used for storage.
+
+     DATA must be a single object which means it is usually preferable
+     for it to be a data container such as a cell array or struct so
+     that additional data items can be added easily.
+
+     See also: *note getappdata: XREFgetappdata, *note setappdata:
+     XREFsetappdata, *note get: XREFget, *note set: XREFset, *note
+     getpref: XREFgetpref, *note setpref: XREFsetpref.
+
+ -- : HDATA = guihandles (H)
+ -- : HDATA = guihandles
+     Return a structure of object handles for the figure associated with
+     handle H.
+
+     If no handle is specified the current figure returned by ‘gcf’ is
+     used.
+
+     The fieldname for each entry of HDATA is taken from the "tag"
+     property of the graphic object.  If the tag is empty then the
+     handle is not returned.  If there are multiple graphic objects with
+     the same tag then the entry in HDATA will be a vector of handles.
+     ‘guihandles’ includes all possible handles, including those for
+     which "HandleVisibility" is "off".
+
+     See also: *note guidata: XREFguidata, *note findobj: XREFfindobj,
+     *note findall: XREFfindall, *note allchild: XREFallchild.
+
+ -- : have_window_system ()
+     Return true if a window system is available (X11, Windows, or Apple
+     OS X) and false otherwise.
+
+     See also: *note isguirunning: XREFisguirunning.
+
+ -- : isguirunning ()
+     Return true if Octave is running in GUI mode and false otherwise.
+
+     See also: *note have_window_system: XREFhave_window_system.
+
+ -- : uiwait
+ -- : uiwait (H)
+ -- : uiwait (H, TIMEOUT)
+     Suspend program execution until the figure with handle H is deleted
+     or ‘uiresume’ is called.
+
+     When no figure handle is specified this function uses the current
+     figure.  If the figure handle is invalid or there is no current
+     figure, this functions returns immediately.
+
+     When specified, TIMEOUT defines the number of seconds to wait for
+     the figure deletion or the ‘uiresume’ call.  The timeout value must
+     be at least 1.  If a smaller value is specified, a warning is
+     issued and a timeout value of 1 is used instead.  If a non-integer
+     value is specified, it is truncated towards 0.  If TIMEOUT is not
+     specified, the program execution is suspended indefinitely.
+
+     See also: *note uiresume: XREFuiresume, *note waitfor: XREFwaitfor.
+
+ -- : uiresume (H)
+     Resume program execution suspended with ‘uiwait’.
+
+     The handle H must be the same as the on specified in ‘uiwait’.  If
+     the handle is invalid or there is no ‘uiwait’ call pending for the
+     figure with handle H, this function does nothing.
+
+     See also: *note uiwait: XREFuiwait.
+
+ -- : waitfor (H)
+ -- : waitfor (H, PROP)
+ -- : waitfor (H, PROP, VALUE)
+ -- : waitfor (..., "timeout", TIMEOUT)
+     Suspend the execution of the current program until a condition is
+     satisfied on the graphics handle H.
+
+     While the program is suspended graphics events are still processed
+     normally, allowing callbacks to modify the state of graphics
+     objects.  This function is reentrant and can be called from a
+     callback, while another ‘waitfor’ call is pending at the top-level.
+
+     In the first form, program execution is suspended until the
+     graphics object H is destroyed.  If the graphics handle is invalid,
+     the function returns immediately.
+
+     In the second form, execution is suspended until the graphics
+     object is destroyed or the property named PROP is modified.  If the
+     graphics handle is invalid or the property does not exist, the
+     function returns immediately.
+
+     In the third form, execution is suspended until the graphics object
+     is destroyed or the property named PROP is set to VALUE.  The
+     function ‘isequal’ is used to compare property values.  If the
+     graphics handle is invalid, the property does not exist or the
+     property is already set to VALUE, the function returns immediately.
+
+     An optional timeout can be specified using the property ‘timeout’.
+     This timeout value is the number of seconds to wait for the
+     condition to be true.  TIMEOUT must be at least 1.  If a smaller
+     value is specified, a warning is issued and a value of 1 is used
+     instead.  If the timeout value is not an integer, it is truncated
+     towards 0.
+
+     To define a condition on a property named ‘timeout’, use the string
+     ‘\timeout’ instead.
+
+     In all cases, typing CTRL-C stops program execution immediately.
+
+     See also: *note waitforbuttonpress: XREFwaitforbuttonpress, *note
+     isequal: XREFisequal.
+
+
 File: octave.info,  Node: User-Defined Preferences,  Prev: GUI Utility Functions,  Up: GUI Development
 
 35.5 User-Defined Preferences
@@ -879,19 +1387,19 @@ useful.
      *note calendar: XREFcalendar.
 
  -- : datetick ()
- -- : datetick (FORM)
- -- : datetick (AXIS, FORM)
+ -- : datetick (DATE_FORMAT)
+ -- : datetick (AXIS_STR, DATE_FORMAT)
  -- : datetick (..., "keeplimits")
  -- : datetick (..., "keepticks")
  -- : datetick (HAX, ...)
      Add date formatted tick labels to an axis.
 
-     The axis to apply the ticks to is determined by AXIS which can take
-     the values "x", "y", or "z".  The default value is "x".
+     The axis to apply the ticks to is determined by AXIS_STR which can
+     take the values "x", "y", or "z".  The default value is "x".
 
-     The formatting of the labels is determined by the variable FORM,
-     which can either be a string or positive integer that ‘datestr’
-     accepts.
+     The formatting of the labels is determined by the variable
+     DATE_FORMAT, which can either be a string or positive integer that
+     ‘datestr’ accepts.
 
      See also: *note datenum: XREFdatenum, *note datestr: XREFdatestr.
 
@@ -1537,7 +2045,11 @@ File: octave.info,  Node: File Archiving Utilities,  Next: Networking Utilities,
 
      If DIR is defined the compressed files are placed in this
      directory, rather than the original directory where the
-     uncompressed file resides.  If DIR does not exist it is created.
+     uncompressed file resides.  Note that this does not replicate a
+     directory tree in DIR which may lead to files overwritting each
+     other if there are multiple files with the same name.
+
+     If DIR does not exist it is created.
 
      The optional output FILELIST is a list of the compressed files.
 
@@ -1690,12 +2202,30 @@ File: octave.info,  Node: File Archiving Utilities,  Next: Networking Utilities,
 
      If DIR is defined the compressed files are placed in this
      directory, rather than the original directory where the
-     uncompressed file resides.  If DIR does not exist it is created.
+     uncompressed file resides.  Note that this does not replicate a
+     directory tree in DIR which may lead to files overwritting each
+     other if there are multiple files with the same name.
+
+     If DIR does not exist it is created.
 
      The optional output FILELIST is a list of the compressed files.
 
      See also: *note bunzip2: XREFbunzip2, *note unpack: XREFunpack,
      *note gzip: XREFgzip, *note zip: XREFzip, *note tar: XREFtar.
+   ## Copyright (C) 1993-2015 John W. Eaton ## ## This file is part of
+Octave.  ## ## Octave is free software; you can redistribute it and/or
+modify it ## under the terms of the GNU General Public License as
+published by ## the Free Software Foundation; either version 3 of the
+License, or (at ## your option) any later version.  ## ## Octave is
+distributed in the hope that it will be useful, but ## WITHOUT ANY
+WARRANTY; without even the implied warranty of ## MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU ## General Public License
+for more details.  ## ## You should have received a copy of the GNU
+General Public License ## along with Octave; see the file COPYING. If
+not, see ## <http://www.gnu.org/licenses/>.
+
+   ## FIXME: the information in this file is currently duplicated in
+help.cc.
 
 
 File: octave.info,  Node: Networking Utilities,  Next: Controlling Subprocesses,  Prev: File Archiving Utilities,  Up: System Utilities
@@ -5110,7 +5640,7 @@ given in the following example, where the C++ wrapper is
      {
        F77_RET_T
        F77_FUNC (fortransub, FORTSUB)
-         (const int&, double*, F77_CHAR_ARG_DECL F77_CHAR_ARG_LEN_DECL);
+         (const F77_INT&, F77_DBLE*, F77_CHAR_ARG_DECL F77_CHAR_ARG_LEN_DECL);
      }
 
      DEFUN_DLD (fortrandemo, args, , "Fortran Demo")
@@ -7612,650 +8142,4 @@ The indentation commands of the Octave mode in Emacs, such as ‘M-;’
 (‘indent-for-comment’) and ‘TAB’ (‘octave-indent-line’) automatically
 indent comments according to these conventions, depending on the number
 of semicolons.  *Note Manipulating Comments: (emacs)Comments.
-
-
-File: octave.info,  Node: Function Headers,  Next: Documentation Tips,  Prev: Comment Tips,  Up: Tips and Standards
-
-C.3 Conventional Headers for Octave Functions
-=============================================
-
-Octave has conventions for using special comments in function files to
-give information such as who wrote them.  This section explains these
-conventions.
-
-   The top of the file should contain a copyright notice, followed by a
-block of comments that can be used as the help text for the function.
-Here is an example:
-
-     ## Copyright (C) 1996, 1997, 2007 John W. Eaton
-     ##
-     ## This file is part of Octave.
-     ##
-     ## Octave is free software; you can redistribute it and/or
-     ## modify it under the terms of the GNU General Public
-     ## License as published by the Free Software Foundation;
-     ## either version 3 of the License, or (at your option) any
-     ## later version.
-     ##
-     ## Octave is distributed in the hope that it will be useful,
-     ## but WITHOUT ANY WARRANTY; without even the implied
-     ## warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-     ## PURPOSE.  See the GNU General Public License for more
-     ## details.
-     ##
-     ## You should have received a copy of the GNU General Public
-     ## License along with Octave; see the file COPYING.  If not,
-     ## see <http://www.gnu.org/licenses/>.
-
-     ## usage: [IN, OUT, PID] = popen2 (COMMAND, ARGS)
-     ##
-     ## Start a subprocess with two-way communication.  COMMAND
-     ## specifies the name of the command to start.  ARGS is an
-     ## array of strings containing options for COMMAND.  IN and
-     ## OUT are the file ids of the input and streams for the
-     ## subprocess, and PID is the process id of the subprocess,
-     ## or -1 if COMMAND could not be executed.
-     ##
-     ## Example:
-     ##
-     ##  [in, out, pid] = popen2 ("sort", "-nr");
-     ##  fputs (in, "these\nare\nsome\nstrings\n");
-     ##  fclose (in);
-     ##  while (ischar (s = fgets (out)))
-     ##    fputs (stdout, s);
-     ##  endwhile
-     ##  fclose (out);
-
-   Octave uses the first block of comments in a function file that do
-not appear to be a copyright notice as the help text for the file.  For
-Octave to recognize the first comment block as a copyright notice, it
-must start with the word ‘Copyright’ after stripping the leading comment
-characters.
-
-   After the copyright notice and help text come several “header
-comment” lines, each beginning with ‘## HEADER-NAME:’.  For example,
-
-     ## Author: jwe
-     ## Keywords: subprocesses input-output
-     ## Maintainer: jwe
-
-   Here is a table of the conventional possibilities for HEADER-NAME:
-
-‘Author’
-     This line states the name and net address of at least the principal
-     author of the library.
-
-          ## Author: John W. Eaton <jwe@octave.org>
-
-‘Maintainer’
-     This line should contain a single name/address as in the Author
-     line, or an address only, or the string ‘jwe’.  If there is no
-     maintainer line, the person(s) in the Author field are presumed to
-     be the maintainers.
-
-     The idea behind the ‘Author’ and ‘Maintainer’ lines is to make
-     possible a function to “send mail to the maintainer” without having
-     to mine the name out by hand.
-
-     Be sure to surround the network address with ‘<...>’ if you include
-     the person’s full name as well as the network address.
-
-‘Created’
-     This optional line gives the original creation date of the file.
-     For historical interest only.
-
-‘Version’
-     If you wish to record version numbers for the individual Octave
-     program, put them in this line.
-
-‘Adapted-By’
-     In this header line, place the name of the person who adapted the
-     library for installation (to make it fit the style conventions, for
-     example).
-
-‘Keywords’
-     This line lists keywords.  Eventually, it will be used by an
-     apropos command to allow people will find your package when they’re
-     looking for things by topic area.  To separate the keywords, you
-     can use spaces, commas, or both.
-
-   Just about every Octave function ought to have the ‘Author’ and
-‘Keywords’ header comment lines.  Use the others if they are
-appropriate.  You can also put in header lines with other header
-names—they have no standard meanings, so they can’t do any harm.
-
-
-File: octave.info,  Node: Documentation Tips,  Prev: Function Headers,  Up: Tips and Standards
-
-C.4 Tips for Documentation Strings
-==================================
-
-As noted above, documentation is typically in a commented header block
-on an Octave function following the copyright statement.  The help
-string shown above is an unformatted string and will be displayed as is
-by Octave.  Here are some tips for the writing of documentation strings.
-
-   • Every command, function, or variable intended for users to know
-     about should have a documentation string.
-
-   • An internal variable or subroutine of an Octave program might as
-     well have a documentation string.
-
-   • The first line of the documentation string should consist of a
-     summary of the function.
-
-     Subsequent lines may expand the general nature of the function.
-
-     After the introduction there should be paragraphs describing the
-     meaning and usage of each input, followed by the meaning and usage
-     of each output.
-
-     Finally, there may be more general information such as notes about
-     the algorithm used, references to scientific papers, notes about
-     any incompatibilities with MATLAB, etc.
-
-   • For consistency, phrase the verb in the first sentence of a
-     documentation string as an infinitive with “to” omitted.  For
-     instance, use “Return the frob of A and B.” in preference to
-     “Returns the frob of A and B.” Usually it looks good to do likewise
-     for the rest of the first paragraph.  Subsequent paragraphs usually
-     look better if they have proper subjects.
-
-   • Write documentation strings in the active voice, not the passive,
-     and in the present tense, not the future.  For instance, use
-     “Return a list containing A and B.” instead of “A list containing A
-     and B will be returned.”
-
-   • Avoid using the word “cause” (or its equivalents) unnecessarily.
-     Instead of, “Cause Octave to display text in boldface,” just write
-     “Display text in boldface.”
-
-   • Use two spaces between the period marking the end of a sentence and
-     the word which opens the next sentence.  This convention has no
-     effect for typeset formats like TeX, but improves the readability
-     of the documentation in fixed-width environments such as the Info
-     reader.
-
-   • Do not start or end a documentation string with whitespace.
-
-   • Format the documentation string so that it fits within an 80-column
-     screen.  It is a good idea for most lines to be no wider than 60
-     characters.
-
-     However, rather than simply filling the entire documentation
-     string, you can make it much more readable by choosing line breaks
-     with care.  Use blank lines between topics if the documentation
-     string is long.
-
-   • *Do not* indent subsequent lines of a documentation string so that
-     the text is lined up in the source code with the text of the first
-     line.  This looks nice in the source code, but looks bizarre when
-     users view the documentation.  Remember that the indentation before
-     the starting double-quote is not part of the string!
-
-   • When choosing variable names try to adhere to the following
-     guidelines.
-
-     vectors :
-          x,y,z,t,w
-
-     matrices :
-          A,B,M
-
-     strings :
-          str,s
-
-     filenames :
-          fname
-
-     cells,cellstrs :
-          c,cstr
-
-   • The documentation string for a variable that is a yes-or-no flag
-     should start with words such as “Nonzero means...”, to make it
-     clear that all nonzero values are equivalent and indicate
-     explicitly what zero and nonzero mean.
-
-   • When a function’s documentation string mentions the value of an
-     argument of the function, use the argument name in capital letters
-     as if it were a name for that value.  Thus, the documentation
-     string of the operator ‘/’ refers to its second argument as
-     ‘DIVISOR’, because the actual argument name is ‘divisor’.
-
-     Also use all caps for meta-syntactic variables, such as when you
-     show the decomposition of a list or vector into subunits, some of
-     which may vary.
-
-   Octave also allows extensive formatting of the help string of
-functions using Texinfo.  The effect on the online documentation is
-relatively small, but makes the help string of functions conform to the
-help of Octave’s own functions.  However, the effect on the appearance
-of printed or online documentation will be greatly improved.
-
-   The fundamental building block of Texinfo documentation strings is
-the Texinfo macro ‘@deftypefn’.  The first argument to the macro is
-always blank.  The second and third arguments are the function’s output
-arguments and the function signature.  A skeletal Texinfo documentation
-string looks like this
-
-     -*- texinfo -*-
-     @deftypefn {} {@var{ret} =} fn (...)
-     @cindex index term
-     Help text in Texinfo format.  Code samples should be marked
-     like @code{sample of code} and variables should be marked
-     as @var{variable}.
-     @seealso{fn2, fn3}
-     @end deftypefn
-
-   This help string must be commented in user functions, or in the help
-string of the ‘DEFUN_DLD’ macro for dynamically loadable functions.  The
-important aspects of the documentation string are
-
--*- texinfo -*-
-     This string signals Octave that the following text is in Texinfo
-     format, and should be the first part of any help string in Texinfo
-     format.
-
-@deftypefn {} ... @end deftypefn
-     The entire help string should be enclosed within the block defined
-     by deftypefn.
-
-@cindex index term
-     This generates an index entry, and can be useful when the function
-     is included as part of a larger piece of documentation.  It is
-     ignored within Octave’s help viewer.  Only one index term may
-     appear per line but multiple @cindex lines are valid if the
-     function should be filed under different terms.
-
-@var{variable}
-     All variables should be marked with this macro.  The markup of
-     variables is then changed appropriately for display.
-
-@code{sample of code}
-     All samples of code should be marked with this macro for the same
-     reasons as the @var macro.
-
-@qcode{"sample_code"}
-@qcode{’sample_code’}
-     All samples of code which are quoted should use this more
-     specialized macro.  This happens frequently when discussing
-     graphics properties such as "position" or options such as
-     "on"/"off".
-
-@seealso{function2, function3}
-     This is a comma separated list of function names that allows cross
-     referencing from one function documentation string to another.
-
-   Texinfo format has been designed to generate output for online
-viewing with text terminals as well as generating high-quality printed
-output.  To these ends, Texinfo has commands which control the diversion
-of parts of the document into a particular output processor.  Three
-formats are of importance: info, HTML, and TeX.  These are selected with
-
-     @ifinfo
-     Text area for info only
-     @end ifinfo
-
-     @ifhtml
-     Text area for HTML only
-     @end ifhtml
-
-     @tex
-     Text area for TeX only
-     @end tex
-
-   Note that often TeX output can be used in HTML documents and so often
-the ‘@ifhtml’ blocks are unnecessary.  If no specific output processor
-is chosen, by default, the text goes into all output processors.  It is
-usual to have the above blocks in pairs to allow the same information to
-be conveyed in all output formats, but with a different markup.
-Currently, most Octave documentation only makes a distinction between
-TeX and all other formats.  Therefore, the following construct is seen
-repeatedly.
-
-     @tex
-     text for TeX only
-     @end tex
-     @ifnottex
-     text for info, HTML, plaintext
-     @end ifnottex
-
-   Another important feature of Texinfo that is often used in Octave
-help strings is the ‘@example’ environment.  An example of its use is
-
-     @example
-     @group
-     @code{2 * 2}
-     @result{} 4
-     @end group
-     @end example
-
-which produces
-
-     2 * 2
-     ⇒ 4
-
-   The ‘@group’ block prevents the example from being split across a
-page boundary, while the ‘@result{}’ macro produces a right arrow
-signifying the result of a command.  If your example is larger than 20
-lines it is better _NOT_ to use grouping so that a reasonable page
-boundary can be calculated.
-
-   In many cases a function has multiple ways in which it can be called,
-and the ‘@deftypefnx’ macro can be used to give alternatives.  For
-example
-
-     -*- texinfo -*-
-     @deftypefn  {} {@var{a} =} fn (@var{x}, ...)
-     @deftypefnx {} {@var{a} =} fn (@var{y}, ...)
-     Help text in Texinfo format.
-     @end deftypefn
-
-   Many complete examples of Texinfo documentation can be taken from the
-help strings for the Octave functions themselves.  A relatively complete
-example of which is the ‘nchoosek’ function.  The Texinfo documentation
-string for ‘nchoosek’ is
-
-     -*- texinfo -*-
-     @deftypefn  {} {@var{c} =} nchoosek (@var{n}, @var{k})
-     @deftypefnx {} {@var{c} =} nchoosek (@var{set}, @var{k})
-
-     Compute the binomial coefficient of @var{n} or list all possible
-     combinations of a @var{set} of items.
-
-     If @var{n} is a scalar then calculate the binomial coefficient
-     of @var{n} and @var{k} which is defined as
-     @tex
-     $$
-      {n \choose k} = {n (n-1) (n-2) \cdots (n-k+1) \over k!}
-                    = {n! \over k! (n-k)!}
-     $$
-     @end tex
-     @ifnottex
-
-     @example
-     @group
-      /   \
-      | n |    n (n-1) (n-2) @dots{} (n-k+1)       n!
-      |   |  = ------------------------- =  ---------
-      | k |               k!                k! (n-k)!
-      \   /
-     @end group
-     @end example
-
-     @end ifnottex
-     @noindent
-     This is the number of combinations of @var{n} items taken in groups of
-     size @var{k}.
-
-     If the first argument is a vector, @var{set}, then generate all
-     combinations of the elements of @var{set}, taken @var{k} at a time, with
-     one row per combination.  The result @var{c} has @var{k} columns and
-     @w{@code{nchoosek (length (@var{set}), @var{k})}} rows.
-
-     For example:
-
-     How many ways can three items be grouped into pairs?
-
-     @example
-     @group
-     nchoosek (3, 2)
-        @result{} 3
-     @end group
-     @end example
-
-     What are the possible pairs?
-
-     @example
-     @group
-     nchoosek (1:3, 2)
-        @result{}  1   2
-            1   3
-            2   3
-     @end group
-     @end example
-
-     Programming Note: When calculating the binomial coefficient @code{nchoosek}
-     works only for non-negative, integer arguments.  Use @code{bincoeff} for
-     non-integer and negative scalar arguments, or for computing many binomial
-     coefficients at once with vector inputs for @var{n} or @var{k}.
-
-     @seealso{bincoeff, perms}
-     @end deftypefn
-
-which demonstrates most of the concepts discussed above.
-
-
-File: octave.info,  Node: Contributing Guidelines,  Next: Obsolete Functions,  Prev: Tips and Standards,  Up: Top
-
-Appendix D Contributing Guidelines
-**********************************
-
-This chapter is dedicated to those who wish to contribute code to
-Octave.
-
-* Menu:
-
-* How to Contribute::
-* Building the Development Sources::
-* Basics of Generating a Changeset::
-* General Guidelines::
-* Octave Sources (m-files)::
-* C++ Sources::
-* Other Sources::
-
-
-File: octave.info,  Node: How to Contribute,  Next: Building the Development Sources,  Up: Contributing Guidelines
-
-D.1 How to Contribute
-=====================
-
-The mailing list for Octave development discussions is
-<maintainers@octave.org>.  Patches should be submitted to Octave’s patch
-tracker (https://savannah.gnu.org/patch/?func=additem&group=octave).
-This concerns the development of Octave core, i.e., code that goes in to
-Octave directly.  You may consider developing and publishing a package
-instead; a great place for this is the allied Octave-Forge project
-(<http://octave.sourceforge.net>).  Note that the Octave core project is
-inherently more conservative and follows narrower rules.
-
-
-File: octave.info,  Node: Building the Development Sources,  Next: Basics of Generating a Changeset,  Prev: How to Contribute,  Up: Contributing Guidelines
-
-D.2 Building the Development Sources
-====================================
-
-The directions for building from the development sources change from
-time to time, so you should read the resources for developers on the web
-or in the development sources archive.  Start here:
-<http://www.octave.org/get-involved.html>.
-
-
-File: octave.info,  Node: Basics of Generating a Changeset,  Next: General Guidelines,  Prev: Building the Development Sources,  Up: Contributing Guidelines
-
-D.3 Basics of Generating a Changeset
-====================================
-
-The best way to contribute is to create a Mercurial changeset and submit
-it to the bug (http://savannah.gnu.org/bugs/?group=octave) or patch
-(http://savannah.gnu.org/patch/?func=additem&group=octave) trackers(1).
-Mercurial is the source code management system currently used to develop
-Octave.  Other forms of contributions (e.g., simple diff patches) are
-also acceptable, but they slow down the review process.  If you want to
-make more contributions, you should really get familiar with Mercurial.
-A good place to start is
-<http://www.selenic.com/mercurial/wiki/index.cgi/Tutorial>.  There you
-will also find help about how to install Mercurial.
-
-   A simple contribution sequence could look like this:
-
-     hg clone http://www.octave.org/hg/octave
-                                  # make a local copy of the octave
-                                  # source repository
-     cd octave
-     # change some sources...
-     hg commit -m "make Octave the coolest software ever"
-                                  # commit the changeset into your
-                                  # local repository
-     hg export -o ../cool.diff tip
-                                  # export the changeset to a diff
-                                  # file
-     # attach ../cool.diff to your bug report
-
-   You may want to get familiar with Mercurial queues to manage your
-changesets.  To work with queues you must activate the extension mq with
-the following entry in Mercurial’s configuration file ‘.hgrc’ (or
-‘Mercurial.ini’ on Windows):
-
-     [extensions]
-     mq=
-
-   Here is a slightly more complex example using Mercurial queues, where
-work on two unrelated changesets is done in parallel and one of the
-changesets is updated after discussion on the bug tracker:
-
-     hg qnew nasty_bug            # create a new patch
-     # change sources...
-     hg qref                      # save the changes into the patch
-     # change even more...
-     hg qref -m "solution to nasty bug!"
-                                  # save again with commit message
-     hg export -o ../nasty.diff tip
-                                  # export the patch
-     # attach ../nasty.diff to your bug report
-     hg qpop                      # undo the application of the patch
-                                  # and remove the changes from the
-                                  # source tree
-     hg qnew doc_improvements     # create an unrelated patch
-     # change doc sources...
-     hg qref -m "could not find myfav.m in the doc"
-                                  # save the changes into the patch
-     hg export -o ../doc.diff tip
-                                  # export the second patch
-     # attach ../doc.diff to your bug report
-     hg qpop
-     # discussion in the bug tracker ...
-     hg qpush nasty_bug           # apply the patch again
-     # change sources yet again ...
-     hg qref
-     hg export -o ../nasty2.diff tip
-     # attach ../nasty2.diff to your bug report
-
-   Mercurial has a few more useful extensions that really should be
-enabled.  They are not enabled by default due to a number of factors
-(mostly because they don’t work in all terminal types).
-
-   The following entries in the ‘.hgrc’ are recommended
-
-     [extensions]
-     graphlog=
-     color=
-     progress=
-     pager=
-
-   For the color extension, default color and formatting of ‘hg status’
-can be modified by
-
-     [color]
-     status.modified = magenta bold
-     status.added = green bold
-     status.removed = red bold
-     status.deleted = cyan bold
-     status.unknown = black  bold
-     status.ignored = black bold
-
-   Sometimes a few further improvements for the pager extension are
-necessary.  The following options should not be enabled unless paging is
-not working correctly.
-
-     [pager]
-     # Some options for the less pager, see less(1) for their meaning.
-     pager = LESS='FSRX' less
-
-     # Some commands that aren't paged by default; also enable paging
-     # for them
-     attend = tags, help, annotate, cat, diff, export, status, \
-              outgoing, incoming
-
-   Enabling the described extensions should immediately lead to a
-difference when using the command line version of hg.  Of these options,
-the only one that enables a new command is graphlog.  It is recommanded
-that to use the command ‘hg glog’, instead of ‘hg log’, for a better
-feel about what commits are being based on.
-
-   ---------- Footnotes ----------
-
-   (1) Please use the patch tracker only for patches which add new
-features.  If you have a patch to submit that fixes a bug, you should
-use the bug tracker instead.
-
-
-File: octave.info,  Node: General Guidelines,  Next: Octave Sources (m-files),  Prev: Basics of Generating a Changeset,  Up: Contributing Guidelines
-
-D.4 General Guidelines
-======================
-
-All Octave’s sources are distributed under the GNU General Public
-License (GPL). Currently, Octave uses GPL version 3.  For details about
-this license, see <http://www.gnu.org/licenses/gpl.html>.  Therefore,
-whenever you create a new source file, it should have the following
-comment header (use appropriate year, name and comment marks):
-
-     ## Copyright (C) 1996-2015 John W. Eaton <jwe@octave.org>
-     ##
-     ## This file is part of Octave.
-     ##
-     ## Octave is free software; you can redistribute it and/or modify it
-     ## under the terms of the GNU General Public License as published by
-     ## the Free Software Foundation; either version 3 of the License, or
-     ## (at your option) any later version.
-     ##
-     ## Octave is distributed in the hope that it will be useful, but
-     ## WITHOUT ANY WARRANTY; without even the implied warranty of
-     ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     ## GNU General Public License for more details.
-     ##
-     ## You should have received a copy of the GNU General Public License
-     ## along with Octave; see the file COPYING.  If not,
-     ## see <http://www.gnu.org/licenses/>.
-
-   Always include commit messages in changesets.  After making your
-source changes, record and briefly describe the changes in your commit
-message.  You should have previously configured your ‘.hgrc’ (or
-‘Mercurial.ini’ on Windows) with your name and email, which will be
-automatically added to your commit message.  Your commit message should
-have a brief one-line explanation of what the commit does.  If you are
-patching a bug, this one-line explanation should mention the bug number
-at the end.  If your change is small and only touches one file then this
-is typically sufficient.  If you are modifying several files, or several
-parts of one file, you should enumerate your changes roughly following
-the GNU coding standards for changelogs, as in the following example:
-
-     look for methods before constructors
-
-     * symtab.cc (symbol_table::fcn_info::fcn_info_rep::find):
-     Look for class methods before constructors, contrary to MATLAB
-     documentation.
-
-     * test/ctor-vs-method: New directory of test classes.
-     * test/test_ctor_vs_method.m: New file.
-     * test/Makefile.am: Include ctor-vs-method/module.mk.
-     (FCN_FILES): Include test_ctor_vs_method.m in the list.
-
-In this example, the names of the file changed is listed first, and in
-parentheses the name of the function in that file that was modified.
-There is no need to mention the function for m-files that only contain
-one function.  The commit message should describe what was changed, not
-why it was changed.  Any explanation for why a change is needed should
-appear as comments in the code, particularly if there is something that
-might not be obvious to someone reading it later.
-
-   When submitting code which addresses a known bug on the Octave bug
-tracker (<http://bugs.octave.org>), please add ’(bug #XXXXX)’ to the
-first line of the commit messages.  For example:
-
-     Fix zip, gzip, bzip2 to allow names with spaces (bug #47232)
-
-   The preferred comment mark for places that may need further attention
-is ‘FIXME:’.
 

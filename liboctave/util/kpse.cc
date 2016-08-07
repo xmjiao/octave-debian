@@ -58,7 +58,7 @@ along with Octave; see the file COPYING.  If not, see
 // environment variable paths.
 
 #define IS_DEVICE_SEP(ch) octave::sys::file_ops::is_dev_sep (ch)
-#define NAME_BEGINS_WITH_DEVICE(name) \
+#define NAME_BEGINS_WITH_DEVICE(name)                   \
    (name.length () > 0 && IS_DEVICE_SEP ((name)[1]))
 
 #define DIR_SEP_STRING octave::sys::file_ops::dir_sep_str ()
@@ -145,7 +145,7 @@ kpse_truncate_filename (const std::string& name)
           /* At a directory delimiter, reset component length.  */
           c_len = 0;
         }
-      else if (c_len > dir_entry::max_name_length ())
+      else if (c_len > octave::sys::dir_entry::max_name_length ())
         {
           /* If past the max for a component, ignore this character.  */
           continue;

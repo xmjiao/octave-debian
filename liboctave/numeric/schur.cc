@@ -44,12 +44,12 @@ extern "C"
                              F77_CONST_CHAR_ARG_DECL,
                              double_selector,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, double*,
-                             const octave_idx_type&, octave_idx_type&,
-                             double*, double*, double*, const octave_idx_type&,
-                             double&, double&, double*, const octave_idx_type&,
-                             octave_idx_type*, const octave_idx_type&,
-                             octave_idx_type*, octave_idx_type&
+                             const F77_INT&, F77_DBLE*,
+                             const F77_INT&, F77_INT&,
+                             F77_DBLE*, F77_DBLE*, F77_DBLE*, const F77_INT&,
+                             F77_DBLE&, F77_DBLE&, F77_DBLE*, const F77_INT&,
+                             F77_INT*, const F77_INT&,
+                             F77_INT*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
@@ -59,12 +59,12 @@ extern "C"
                              F77_CONST_CHAR_ARG_DECL,
                              float_selector,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, float*,
-                             const octave_idx_type&, octave_idx_type&,
-                             float*, float*, float*, const octave_idx_type&,
-                             float&, float&, float*, const octave_idx_type&,
-                             octave_idx_type*, const octave_idx_type&,
-                             octave_idx_type*, octave_idx_type&
+                             const F77_INT&, F77_REAL*,
+                             const F77_INT&, F77_INT&,
+                             F77_REAL*, F77_REAL*, F77_REAL*, const F77_INT&,
+                             F77_REAL&, F77_REAL&, F77_REAL*, const F77_INT&,
+                             F77_INT*, const F77_INT&,
+                             F77_INT*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
@@ -74,37 +74,37 @@ extern "C"
                              F77_CONST_CHAR_ARG_DECL,
                              complex_selector,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, Complex*,
-                             const octave_idx_type&, octave_idx_type&,
-                             Complex*, Complex*, const octave_idx_type&,
-                             double&, double&, Complex*,
-                             const octave_idx_type&, double*,
-                             octave_idx_type*, octave_idx_type&
+                             const F77_INT&, F77_DBLE_CMPLX*,
+                             const F77_INT&, F77_INT&,
+                             F77_DBLE_CMPLX*, F77_DBLE_CMPLX*, const F77_INT&,
+                             F77_DBLE&, F77_DBLE&, F77_DBLE_CMPLX*,
+                             const F77_INT&, F77_DBLE*,
+                             F77_INT*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (zrsf2csf, ZRSF2CSF) (const octave_idx_type&, Complex *,
-                                 Complex *, double *, double *);
+  F77_FUNC (zrsf2csf, ZRSF2CSF) (const F77_INT&, F77_DBLE_CMPLX *,
+                                 F77_DBLE_CMPLX *, F77_DBLE *, F77_DBLE *);
   F77_RET_T
   F77_FUNC (cgeesx, CGEESX) (F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
                              float_complex_selector,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, octave_idx_type&,
-                             FloatComplex*, FloatComplex*,
-                             const octave_idx_type&, float&, float&,
-                             FloatComplex*, const octave_idx_type&,
-                             float*, octave_idx_type*, octave_idx_type&
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_INT&,
+                             F77_CMPLX*, F77_CMPLX*,
+                             const F77_INT&, F77_REAL&, F77_REAL&,
+                             F77_CMPLX*, const F77_INT&,
+                             F77_REAL*, F77_INT*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (crsf2csf, CRSF2CSF) (const octave_idx_type&, FloatComplex *,
-                                 FloatComplex *, float *, float *);
+  F77_FUNC (crsf2csf, CRSF2CSF) (const F77_INT&, F77_CMPLX *,
+                                 F77_CMPLX *, F77_REAL *, F77_REAL *);
 }
 
 // For real types.
@@ -385,8 +385,8 @@ schur<ComplexMatrix>::init (const ComplexMatrix& a, const std::string& ord,
                              F77_CONST_CHAR_ARG2 (&sort, 1),
                              selector,
                              F77_CONST_CHAR_ARG2 (&sense, 1),
-                             n, s, n, sdim, pw, q, n, rconde, rcondv,
-                             pwork, lwork, prwork, pbwork, info
+                             n, F77_DBLE_CMPLX_ARG (s), n, sdim, F77_DBLE_CMPLX_ARG (pw), F77_DBLE_CMPLX_ARG (q), n, rconde, rcondv,
+                             F77_DBLE_CMPLX_ARG (pwork), lwork, prwork, pbwork, info
                              F77_CHAR_ARG_LEN (1)
                              F77_CHAR_ARG_LEN (1)
                              F77_CHAR_ARG_LEN (1)));
@@ -412,8 +412,8 @@ rsf2csf<ComplexMatrix, Matrix> (const Matrix& s_arg, const Matrix& u_arg)
       OCTAVE_LOCAL_BUFFER (double, c, n-1);
       OCTAVE_LOCAL_BUFFER (double, sx, n-1);
 
-      F77_XFCN (zrsf2csf, ZRSF2CSF, (n, s.fortran_vec (),
-                                     u.fortran_vec (), c, sx));
+      F77_XFCN (zrsf2csf, ZRSF2CSF, (n, F77_DBLE_CMPLX_ARG (s.fortran_vec ()),
+                                     F77_DBLE_CMPLX_ARG (u.fortran_vec ()), c, sx));
     }
 
   return schur<ComplexMatrix> (s, u);
@@ -492,8 +492,8 @@ schur<FloatComplexMatrix>::init (const FloatComplexMatrix& a,
                              F77_CONST_CHAR_ARG2 (&sort, 1),
                              selector,
                              F77_CONST_CHAR_ARG2 (&sense, 1),
-                             n, s, n, sdim, pw, q, n, rconde, rcondv,
-                             pwork, lwork, prwork, pbwork, info
+                             n, F77_CMPLX_ARG (s), n, sdim, F77_CMPLX_ARG (pw), F77_CMPLX_ARG (q), n, rconde, rcondv,
+                             F77_CMPLX_ARG (pwork), lwork, prwork, pbwork, info
                              F77_CHAR_ARG_LEN (1)
                              F77_CHAR_ARG_LEN (1)
                              F77_CHAR_ARG_LEN (1)));
@@ -519,8 +519,8 @@ rsf2csf<FloatComplexMatrix, FloatMatrix> (const FloatMatrix& s_arg, const FloatM
       OCTAVE_LOCAL_BUFFER (float, c, n-1);
       OCTAVE_LOCAL_BUFFER (float, sx, n-1);
 
-      F77_XFCN (crsf2csf, CRSF2CSF, (n, s.fortran_vec (),
-                                     u.fortran_vec (), c, sx));
+      F77_XFCN (crsf2csf, CRSF2CSF, (n, F77_CMPLX_ARG (s.fortran_vec ()),
+                                     F77_CMPLX_ARG (u.fortran_vec ()), c, sx));
     }
 
   return schur<FloatComplexMatrix> (s, u);

@@ -438,7 +438,7 @@ script file @file{finish.m} in the function load path.  Commands to save all
 workspace variables or cleanup temporary files may be placed there.  Additional
 functions to execute on shutdown may be registered with @code{atexit}.
 
-@c quit libinterp/corefcn/toplev.cc
+@c quit libinterp/corefcn/interpreter.cc
 @anchor{XREFquit}
 @deftypefn  {} {} exit
 @deftypefnx {} {} exit (@var{status})
@@ -457,7 +457,7 @@ to run using @code{atexit}.
 @end deftypefn
 
 
-@c atexit libinterp/corefcn/toplev.cc
+@c atexit libinterp/corefcn/interpreter.cc
 @anchor{XREFatexit}
 @deftypefn  {} {} atexit (@var{fcn})
 @deftypefnx {} {} atexit (@var{fcn}, @var{flag})

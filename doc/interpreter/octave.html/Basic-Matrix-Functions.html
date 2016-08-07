@@ -126,7 +126,8 @@ subdiagonals/superdiagonals with nonzero entries.
 <a name="XREFcond"></a><dl>
 <dt><a name="index-cond"></a>: <em></em> <strong>cond</strong> <em>(<var>A</var>)</em></dt>
 <dt><a name="index-cond-1"></a>: <em></em> <strong>cond</strong> <em>(<var>A</var>, <var>p</var>)</em></dt>
-<dd><p>Compute the <var>p</var>-norm condition number of a matrix.
+<dd><p>Compute the <var>p</var>-norm condition number of a matrix with respect to
+inversion.
 </p>
 <p><code>cond (<var>A</var>)</code> is defined as
 <code>norm (<var>A</var>, <var>p</var>) * norm (inv (<var>A</var>), <var>p</var>)</code>.
@@ -143,7 +144,44 @@ indicates small changes (such as underflow or round-off error) will produce
 large changes in the resulting output.  In such cases the solution results
 from numerical computing are not likely to be accurate.
 </p>
-<p><strong>See also:</strong> <a href="Sparse-Linear-Algebra.html#XREFcondest">condest</a>, <a href="#XREFrcond">rcond</a>, <a href="#XREFnorm">norm</a>, <a href="Matrix-Factorizations.html#XREFsvd">svd</a>.
+<p><strong>See also:</strong> <a href="Sparse-Linear-Algebra.html#XREFcondest">condest</a>, <a href="#XREFrcond">rcond</a>, <a href="#XREFcondeig">condeig</a>, <a href="#XREFnorm">norm</a>, <a href="Matrix-Factorizations.html#XREFsvd">svd</a>.
+</p></dd></dl>
+
+
+<a name="XREFcondeig"></a><dl>
+<dt><a name="index-condeig"></a>: <em><var>c</var> =</em> <strong>condeig</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-condeig-1"></a>: <em>[<var>v</var>, <var>lambda</var>, <var>c</var>] =</em> <strong>condeig</strong> <em>(<var>a</var>)</em></dt>
+<dd><p>Compute condition numbers of a matrix with respect to eigenvalues.
+</p>
+<p>The condition numbers are the reciprocals of the cosines of the angles
+between the left and right eigenvectors; Large values indicate that the
+matrix has multiple distinct eigenvalues.
+</p>
+<p>The input <var>a</var> must be a square numeric matrix.
+</p>
+<p>The outputs are:
+</p>
+<ul>
+<li> <var>c</var> is a vector of condition numbers for the eigenvalues of
+<var>a</var>.
+
+</li><li> <var>v</var> is the matrix of right eigenvectors of <var>a</var>.  The result is
+equivalent to calling <code>[<var>v</var>, <var>lambda</var>] = eig (<var>a</var>)</code>.
+
+</li><li> <var>lambda</var> is the diagonal matrix of eigenvalues of <var>a</var>.  The
+result is equivalent to calling
+<code>[<var>v</var>, <var>lambda</var>] = eig (<var>a</var>)</code>.
+</li></ul>
+
+<p>Example
+</p>
+<div class="example">
+<pre class="example">a = [1, 2; 3, 4];
+c = condeig (a)
+&rArr; [1.0150; 1.0150]
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFeig">eig</a>, <a href="#XREFcond">cond</a>, <a href="#XREFbalance">balance</a>.
 </p></dd></dl>
 
 

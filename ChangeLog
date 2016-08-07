@@ -1,3 +1,1934 @@
+2016-08-06  Carnë Draug  <carandraug@octave.org>
+
+	dim-vector: add missing, and remove unecessary, #includes.
+
+	Files: liboctave/array/dim-vector.cc liboctave/array/dim-vector.h
+
+	dim-vector.h (ndims): do not return a reference to the rep.
+
+	* dim-vector.h (ndims): this methods was only made public recently
+	with dcee67d28570 and is not used anywhere else.  It would expose
+	the rep for no gain, so always return the int by copy.
+	* dim-vector.cc: access the ndims on rep directly.
+
+	Files: liboctave/array/dim-vector.cc liboctave/array/dim-vector.h
+
+2015-02-26  Sahil Badyal  <sbadyals@gmail.com>
+
+	use contribute/donate consistently in GUI (bug #44335)
+
+	* main-window.h, main-window.cc (main_window::open_contribute_page):
+	Link to contribute.html instead of donate.html
+	(main_window::open_donate_page): New function.
+
+	Files: libgui/src/main-window.cc libgui/src/main-window.h
+
+2016-08-05  Carnë Draug  <carandraug@octave.org>
+
+	prepad, postpad: do nothing wen input is already of the right size.
+
+	Files: scripts/general/postpad.m scripts/general/prepad.m
+
+	qr.cc: make use of Texinfo macro @dots instead of ... (bug #46912)
+
+	Files: libinterp/dldfcn/qr.cc
+
+2014-02-21  Michael C. Grant  <mcg@cvxr.com>
+
+	improvements to Qt & OpenGL linking on the Mac (bug #41574)
+
+	* configure.ac: Remove -Wl, prefixes from "-framework Carbon".
+	* acinclude.m4: Remove -Wl, prefixes from "-framework OpenGL".
+
+	Files: configure.ac m4/acinclude.m4
+
+2016-07-07  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Reconcile qr docs with behaviour.  Fix qr(A,B,complex(0)). (bug #46912)
+
+	* qr.cc (Fqr): Update docstring.
+	  Change have_b to boolean, so B is always taken from the second position;
+	  previously qr(A,B,complex(0)) would take B=complex(0).
+	  Accept options 'vector' and 'matrix'.
+	  Make diagnostics more informative.
+
+	* qr.cc (Fqrinsert): Change x in docstring block matrices to X and U.
+
+	Files: libinterp/dldfcn/qr.cc
+
+2016-02-18  mfasi  <mogrob.sanit@gmail.com>
+
+	Return C = Q'*B not Q when qr has two arguments (bug #41567, bug #46912)
+
+	* qr.cc (Fqr): For full case, explicitly calculate Q.  Add 8 tests.
+
+	Files: libinterp/dldfcn/qr.cc
+
+2016-07-17  John Donoghue  <john.donoghue@ieee.org>
+
+	provide single function to get OpenGL renderer info
+
+	* scripts/plot/util/__opengl_info__.m: New file.
+
+	* scripts/plot/util/module.mk: Update.
+
+	Files: scripts/plot/util/__opengl_info__.m scripts/plot/util/module.mk
+
+2016-08-04  Carnë Draug  <carandraug@octave.org>
+
+	svd: reduce code duplication with more use of template and macro.
+
+	* liboctave/numeric/svd.cc, liboctave/numeric/svd.h: remove unused
+	constructor with reference for int (info).  This allows to move all
+	of the constructor into a single template, so remove init().  Two
+	new methods, gesvd and gesdd, are fully specialized but the main
+	hunck of code are the long list of arguments.  Scope type and drive
+	enums to the svd class for clarity, and rename member names.  Add
+	a new member for the drive used.
+	* libinterp/corefcn/svd.cc: fix typenames for the svd enums which
+	are now scoped.
+	* CMatrix.cc, dMatrix.cc, fCMatrix.cc, fMatrix.cc: fix typenames
+	for the svd enums which are now scoped.
+
+	Files: libinterp/corefcn/svd.cc liboctave/array/CMatrix.cc
+	liboctave/array/dMatrix.cc liboctave/array/fCMatrix.cc
+	liboctave/array/fMatrix.cc liboctave/numeric/oct-norm.cc
+	liboctave/numeric/svd.cc liboctave/numeric/svd.h
+
+2016-08-03  Mike Miller  <mtmiller@octave.org>
+
+	Add tests for Java numeric type conversion (bug #48013)
+
+	* ov-java.cc: Add %!tests for conversion of specific Java types to Octave
+	numeric types.
+
+	Files: libinterp/octave-value/ov-java.cc
+
+2016-08-03  Ernst Reissner  <rei3ner@arcor.de>
+
+	Only convert specific Java numeric objects to double for Matlab compatibility (bug #48013)
+
+	* ov-java.cc (is_auto_convertible_number): New function to test for numeric
+	object type.  (box): Use it to determine whether to return object's doubleValue.
+	Add doxygen documentation.
+
+	Files: libinterp/octave-value/ov-java.cc
+
+2016-08-03  Mike Miller  <mtmiller@octave.org>
+
+	Doxyfile.in: enable Java conditional code segments for doxygen
+
+	* Doxyfile.in (PREDEFINED): Add HAVE_JAVA to the list.
+
+	Files: doc/doxyhtml/Doxyfile.in
+
+2016-08-03  Carnë Draug  <carandraug@octave.org>
+
+	FCell: avoid repeating default value for a newly created Cell.
+
+	* libinterp/octave-value/ov-cell.cc (FCell): default element values for
+	a new Cell already is an 'octave_value (Matrix ())' so don't repeat that.
+
+	Files: libinterp/octave-value/ov-cell.cc
+
+2016-08-02  John W. Eaton  <jwe@octave.org>
+
+	get help text for operators and keywords from docstrings file
+
+	* help.cc (map_type, pair_type, map_iter): Delete typedefs.
+	(size, names, raw_help_from_map): Delete functions.
+	(operators, keywords): Now simple list of strings.  Store only name,
+	not help text.
+	(operators_map, keywords_map): Delete.
+	(operator_names): New variable.
+	(keyword_names): Simplify definition.
+	(raw_help): Don't call raw_help_from_map to search for help text for
+	operators or keywords.
+	(F__operators__, F__keywords__): Simplify using operator_names and
+	keyword_names.
+
+	Files: libinterp/corefcn/help.cc
+
+	search docstrings file for built-in and dld function help text (bug #48554)
+
+	Load help text as needed from the built-in docstrings file for
+	built-in and dynamically loaded .oct file functions.
+
+	* help.h, help.cc (install_built_in_docstrings): Delete.
+	(raw_help_from_docstrings_file): New static function.
+	(raw_help): Call raw_help_from_docstrings_file if help text is not
+	found or if it is marked as external.
+
+	* mk-builtins.sh: Don't emit call to install_built_in_docstrings.
+
+	Files: build-aux/mk-builtins.sh libinterp/corefcn/help.cc
+	libinterp/corefcn/help.h
+
+2016-08-01  John W. Eaton  <jwe@octave.org>
+
+	refill multi-line macro definitions
+
+	Use the Emacs C++ mode style for line continuation markers in
+	multi-line macro definitions.
+
+	* make_int.cc, __dsearchn__.cc, __magick_read__.cc, besselj.cc,
+	bitfcns.cc, bsxfun.cc, cellfun.cc, data.cc, defun-dld.h, defun-int.h,
+	defun.h, det.cc, error.h, find.cc, gcd.cc, graphics.cc, interpreter.h,
+	jit-ir.h, jit-typeinfo.h, lookup.cc, ls-mat5.cc, max.cc, mexproto.h,
+	mxarray.in.h, oct-stream.cc, ordschur.cc, pr-output.cc, profiler.h,
+	psi.cc, regexp.cc, sparse-xdiv.cc, sparse-xpow.cc, tril.cc, txt-eng.h,
+	utils.cc, variables.cc, variables.h, xdiv.cc, xpow.cc, __glpk__.cc,
+	ov-base.cc, ov-base.h, ov-cell.cc, ov-ch-mat.cc, ov-classdef.cc,
+	ov-complex.cc, ov-cx-mat.cc, ov-cx-sparse.cc, ov-float.cc, ov-float.h,
+	ov-flt-complex.cc, ov-flt-cx-mat.cc, ov-flt-re-mat.cc,
+	ov-int-traits.h, ov-lazy-idx.h, ov-perm.cc, ov-re-mat.cc,
+	ov-re-sparse.cc, ov-scalar.cc, ov-scalar.h, ov-str-mat.cc,
+	ov-type-conv.h, ov.cc, ov.h, op-class.cc, op-int-conv.cc, op-int.h,
+	op-str-str.cc, ops.h, lex.ll, Array.cc, CMatrix.cc, CSparse.cc,
+	MArray.cc, MArray.h, MDiagArray2.cc, MDiagArray2.h, MSparse.h,
+	Sparse.cc, dMatrix.cc, dSparse.cc, fCMatrix.cc, fMatrix.cc,
+	idx-vector.cc, f77-fcn.h, quit.h, bsxfun-decl.h, bsxfun-defs.cc,
+	lo-specfun.cc, oct-convn.cc, oct-convn.h, oct-norm.cc, oct-norm.h,
+	oct-rand.cc, Sparse-op-decls.h, Sparse-op-defs.h, mx-inlines.cc,
+	mx-op-decl.h, mx-op-defs.h, mach-info.cc, oct-group.cc, oct-passwd.cc,
+	oct-syscalls.cc, oct-time.cc, data-conv.cc, kpse.cc, lo-ieee.h,
+	lo-macros.h, oct-cmplx.h, oct-glob.cc, oct-inttypes.cc,
+	oct-inttypes.h, oct-locbuf.h, oct-sparse.h, url-transfer.cc,
+	oct-conf-post.in.h, shared-fcns.h: Refill macro definitions.
+
+	Files: examples/code/make_int.cc libinterp/corefcn/__dsearchn__.cc
+	libinterp/corefcn/__magick_read__.cc libinterp/corefcn/besselj.cc
+	libinterp/corefcn/bitfcns.cc libinterp/corefcn/bsxfun.cc
+	libinterp/corefcn/cellfun.cc libinterp/corefcn/data.cc
+	libinterp/corefcn/defun-dld.h libinterp/corefcn/defun-int.h
+	libinterp/corefcn/defun.h libinterp/corefcn/det.cc
+	libinterp/corefcn/error.h libinterp/corefcn/find.cc
+	libinterp/corefcn/gcd.cc libinterp/corefcn/graphics.cc
+	libinterp/corefcn/interpreter.h libinterp/corefcn/jit-ir.h
+	libinterp/corefcn/jit-typeinfo.h libinterp/corefcn/lookup.cc
+	libinterp/corefcn/ls-mat5.cc libinterp/corefcn/max.cc
+	libinterp/corefcn/mexproto.h libinterp/corefcn/mxarray.in.h
+	libinterp/corefcn/oct-stream.cc libinterp/corefcn/ordschur.cc
+	libinterp/corefcn/pr-output.cc libinterp/corefcn/profiler.h
+	libinterp/corefcn/psi.cc libinterp/corefcn/regexp.cc
+	libinterp/corefcn/sparse-xdiv.cc libinterp/corefcn/sparse-xpow.cc
+	libinterp/corefcn/tril.cc libinterp/corefcn/txt-eng.h
+	libinterp/corefcn/utils.cc libinterp/corefcn/variables.cc
+	libinterp/corefcn/variables.h libinterp/corefcn/xdiv.cc
+	libinterp/corefcn/xpow.cc libinterp/dldfcn/__glpk__.cc libinterp
+	/octave-value/ov-base.cc libinterp/octave-value/ov-base.h libinterp
+	/octave-value/ov-cell.cc libinterp/octave-value/ov-ch-mat.cc
+	libinterp/octave-value/ov-classdef.cc libinterp/octave-value/ov-
+	complex.cc libinterp/octave-value/ov-cx-mat.cc libinterp/octave-
+	value/ov-cx-sparse.cc libinterp/octave-value/ov-float.cc libinterp
+	/octave-value/ov-float.h libinterp/octave-value/ov-flt-complex.cc
+	libinterp/octave-value/ov-flt-cx-mat.cc libinterp/octave-value/ov-
+	flt-re-mat.cc libinterp/octave-value/ov-int-traits.h libinterp
+	/octave-value/ov-lazy-idx.h libinterp/octave-value/ov-perm.cc
+	libinterp/octave-value/ov-re-mat.cc libinterp/octave-value/ov-re-
+	sparse.cc libinterp/octave-value/ov-scalar.cc libinterp/octave-value
+	/ov-scalar.h libinterp/octave-value/ov-str-mat.cc libinterp/octave-
+	value/ov-type-conv.h libinterp/octave-value/ov.cc libinterp/octave-
+	value/ov.h libinterp/operators/op-class.cc libinterp/operators/op-
+	int-conv.cc libinterp/operators/op-int.h libinterp/operators/op-str-
+	str.cc libinterp/operators/ops.h libinterp/parse-tree/lex.ll
+	liboctave/array/Array.cc liboctave/array/CMatrix.cc
+	liboctave/array/CSparse.cc liboctave/array/MArray.cc
+	liboctave/array/MArray.h liboctave/array/MDiagArray2.cc
+	liboctave/array/MDiagArray2.h liboctave/array/MSparse.h
+	liboctave/array/Sparse.cc liboctave/array/dMatrix.cc
+	liboctave/array/dSparse.cc liboctave/array/fCMatrix.cc
+	liboctave/array/fMatrix.cc liboctave/array/idx-vector.cc
+	liboctave/cruft/misc/f77-fcn.h liboctave/cruft/misc/quit.h
+	liboctave/numeric/bsxfun-decl.h liboctave/numeric/bsxfun-defs.cc
+	liboctave/numeric/lo-specfun.cc liboctave/numeric/oct-convn.cc
+	liboctave/numeric/oct-convn.h liboctave/numeric/oct-norm.cc
+	liboctave/numeric/oct-norm.h liboctave/numeric/oct-rand.cc
+	liboctave/operators/Sparse-op-decls.h liboctave/operators/Sparse-op-
+	defs.h liboctave/operators/mx-inlines.cc liboctave/operators/mx-op-
+	decl.h liboctave/operators/mx-op-defs.h liboctave/system/mach-
+	info.cc liboctave/system/oct-group.cc liboctave/system/oct-passwd.cc
+	liboctave/system/oct-syscalls.cc liboctave/system/oct-time.cc
+	liboctave/util/data-conv.cc liboctave/util/kpse.cc liboctave/util
+	/lo-ieee.h liboctave/util/lo-macros.h liboctave/util/oct-cmplx.h
+	liboctave/util/oct-glob.cc liboctave/util/oct-inttypes.cc
+	liboctave/util/oct-inttypes.h liboctave/util/oct-locbuf.h
+	liboctave/util/oct-sparse.h liboctave/util/url-transfer.cc oct-conf-
+	post.in.h src/shared-fcns.h
+
+2016-07-12  John W. Eaton  <jwe@octave.org>
+
+	put parser, lexer, and evaluator in namespace; interpreter now owns evaluator
+
+	* oct-parse.in.yy, parse.h: Move parser classes to octave namespace.
+	* lex.ll, lex.h: Move lexer classes to octave namespace.
+	* pt-eval.h, pt-eval.cc:  Move evaluator class to octave namespace.
+	Don't define global current evaluator pointer here.
+
+	* debug.cc, error.cc, input.cc, input.h, ls-mat-ascii.cc, pt-jit.cc,
+	sighandlers.cc, utils.cc, variables.cc, ov-usr-fcn.cc, pt-assign.cc,
+	pt-exp.h, pt-id.cc: Update for namespaces.
+
+	* interpreter.cc, interpreter.h (current_evaluator): New global var.
+	(interpreter::m_evaluator): New data member.
+	(interpreter::~interpreter): Delete evaluator.
+
+	Files: libinterp/corefcn/debug.cc libinterp/corefcn/error.cc
+	libinterp/corefcn/input.cc libinterp/corefcn/input.h
+	libinterp/corefcn/interpreter.cc libinterp/corefcn/interpreter.h
+	libinterp/corefcn/ls-mat-ascii.cc libinterp/corefcn/pt-jit.cc
+	libinterp/corefcn/sighandlers.cc libinterp/corefcn/utils.cc
+	libinterp/corefcn/variables.cc libinterp/octave-value/ov-usr-fcn.cc
+	libinterp/parse-tree/lex.h libinterp/parse-tree/lex.ll libinterp
+	/parse-tree/oct-parse.in.yy libinterp/parse-tree/parse.h libinterp
+	/parse-tree/pt-assign.cc libinterp/parse-tree/pt-eval.cc libinterp
+	/parse-tree/pt-eval.h libinterp/parse-tree/pt-exp.h libinterp/parse-
+	tree/pt-id.cc
+
+2016-08-01  Mike Miller  <mtmiller@octave.org>
+
+	* condeig.m: fix Texinfo markup typo in condeig doc string (bug #48672)
+
+	Files: scripts/linear-algebra/condeig.m
+
+2016-07-31  Carnë Draug  <carandraug@octave.org>
+
+	xzip.cc: modify tests for readability.
+
+	Files: libinterp/dldfcn/xzip.cc
+
+2016-07-30  Carnë Draug  <carandraug@octave.org>
+
+	normest1: always return a column vector for IT output (patch #8837)
+
+	* normest1.m: special code path returns a row vector for number of iterations
+	while it returns a column vector for all others.  This is Matlab compatible
+	but obviously a bug in Matlab.  Fix to always return a vector of same shape.
+	Add tests.
+
+	Files: scripts/linear-algebra/normest1.m
+
+2016-07-23  Markus Mützel  <markus.muetzel@gmx.de>
+
+	Update to light (patch #8943)
+
+	* gl-render.h, gl-render.cc (get_maxlights): New static function.
+	(opengl_renderer::max_lights): New data member.
+	(opengl_renderer::opengl_renderer): Use get_maxlights to initialize
+	max_lights data member.
+	(opengl_renderer::draw_all_lights): New function.  Support local
+	light sources.
+	(opengl_renderer::draw_axes_children): Call draw_all_lights instead
+	of doing the work here.
+	(opengl_renderer::draw_surface): Remove warning for "phong".
+
+	* scripts/plot/draw/light.m: Update docstring. Add and update demos.
+
+	* doc/interpreter/genpropdoc.m: Update docstring.
+
+	Files: doc/interpreter/genpropdoc.m libinterp/corefcn/gl-render.cc
+	libinterp/corefcn/gl-render.h scripts/plot/draw/light.m
+
+2016-07-28  John W. Eaton  <jwe@octave.org>
+
+	make figures invisible in publish tests (bug #48556)
+
+	* publish.tst: Set default figure visibility off for the duration of
+	each test.
+
+	Files: test/publish/publish.tst
+
+	skip invalid objects in Qt graphics event handlers (bug #46501)
+
+	* Container.cc (Container::resizeEvent): Avoid accessing properties
+	from invalid graphics object.
+	* Panel.cc (Panel::eventFilter): Likewise.
+
+	* graphics.in.h (base_graphics_object:get_properties): Issue warning
+	instead of error.
+
+	Files: libgui/graphics/Container.cc libgui/graphics/Panel.cc
+	libinterp/corefcn/graphics.in.h
+
+2016-07-28  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	dump_demos.m: Change regex for replacement of double quotes, add dummy assert
+
+	Files: scripts/testfun/private/dump_demos.m
+
+2016-07-27  John W. Eaton  <jwe@octave.org>
+
+	style fixes
+
+	* ButtonGroup.cc, marker.h, xzip.cc, randmtzig.cc: Don't comment
+	#else or #endif.  Prefer #if defined.
+
+	Files: libgui/graphics/ButtonGroup.cc libgui/src/m-editor/marker.h
+	libinterp/dldfcn/xzip.cc liboctave/numeric/randmtzig.cc
+
+2016-07-27  Carnë Draug  <carandraug@octave.org>
+
+	xzip.cc: replace throwing exceptions in destructors (bug #48640)
+
+	* xzip.cc: we can't throw exceptions in destructors.  Replace them with
+	a close method that can throw while destructor closes without throwing.
+	If we want to close something cleanly, then we do want to know of any
+	failure and catch failures.  If we are not closing it cleanly, then we
+	either don't care or are already handling another expcetion, and either
+	way we don't want to handle an exception.
+
+	Files: libinterp/dldfcn/xzip.cc
+
+2016-07-27  John W. Eaton  <jwe@octave.org>
+
+	do system dependent and default variable inits early (bug #)
+
+	Some global variables like Voct_locale_dir need to be available before
+	the interpreter is intialized.  System dependent initialization
+	should probably also happen early on in the startup process.
+
+	* octave.cc (application::init): Call sysdep_init and install_defaults
+	here.
+	* interpreter.cc (interpreter::interpreter): Not here.
+
+	Files: libinterp/corefcn/interpreter.cc libinterp/octave.cc
+
+2016-07-26  John W. Eaton  <jwe@octave.org>
+
+	* interpreter.cc (interpreter::interpreter): Fix typo in previous change.
+
+	Files: libinterp/corefcn/interpreter.cc
+
+	don't print startup message for --eval (bug #48620)
+
+	* interpreter.cc (interpreter::interpreter): Don't attempt to modify
+	command line options.
+	(interpreter::execute): Avoid printing startup message if session is
+	not interactive.
+
+	Files: libinterp/corefcn/interpreter.cc
+
+2016-07-25  Marco Caliari  <marco.caliari@univr.it>
+
+	New function normest1 as replacement for onenormest (patch #8837)
+
+	* scripts/linear-algebra/normest1.m: new function to replace onenormest
+	so it's Matlab compatible.  It works as a drop-in replacement when
+	input is a matrix.  Usage with functions as input is no longer supported
+	as it is only a little useful.
+	* scripts/linear-algebra/onenormest.m: moved to deprecated/.
+	* scripts/linear-algebra/module.mk: add normest1, remove onenormest.
+	* scripts/linear-algebra/condest.m: add normest1 syntax. It still accepts
+	onenormest syntax but marked as deprecated.
+	* scripts/deprecated/onenormest.m: moved from linear-algebra/, added
+	deprecation warning.
+	* scripts/deprecated/module.mk: add onenormest.
+	* NEWS: Added normest1 to the list of new functions, made onenormest
+	deprecated.
+	* doc/interpreter/sparse.txi: replace onenormest with normest1.
+
+	Files: NEWS doc/interpreter/sparse.txi scripts/deprecated/module.mk
+	scripts/deprecated/onenormest.m scripts/linear-algebra/condest.m
+	scripts/linear-algebra/module.mk scripts/linear-algebra/normest1.m
+	scripts/linear-algebra/onenormest.m
+
+2016-06-30  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Fix assignment to an property of an element of classdef array (bug #46660)
+
+	* ov-classdef.cc (cdef_object_array::subsasgn):
+	  Pass at least two dimensions to Array<T>::index (Array<idx_vector>&, ...).
+
+	Files: libinterp/octave-value/ov-classdef.cc
+
+2016-07-25  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Force reload of a function after it is saved in the editor (bug #46632)
+
+	* file-editor-tab.h, file-editor-tab.cc (exit_debug_and_clear):
+	New function.
+	Clear function from symbol table.  If currently debugging, prompt
+	whether to dbquit or to cancel the save.
+	(execute_command_in_terminal_signal): New signal.
+	(save_file): Call exit_debug_and_clear.
+	(delete_debugger_pointer): Use marker class instead of removing
+	QSciScintilla marker directly.
+
+	Files: libgui/src/m-editor/file-editor-tab.cc libgui/src/m-editor/file-
+	editor-tab.h
+
+2016-06-30  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Stop bookmarks being hidden by breakpoints / execution point (bug #48292)
+
+	* marker.h (editor_markers): List marker types from biggest to
+	smallest.
+
+	* file-editor-tab.cc (file_Editor_tab::file_editor_tab):
+	Give execution point a different shape from bookmarks.
+
+	Files: libgui/src/m-editor/file-editor-tab.cc libgui/src/m-editor/marker.h
+
+2016-05-28  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Wrap search for "next bookmark" and "prev bookmark" (bug #48044)
+
+	* file-editor-tab.cc (file_editor_tab::next_bookmark,
+	file_editor_tab::previous_bookmark):
+	Retry from start/end if next/previous was -1.
+
+	* file-editor.cc (file_editor::construct):
+	Put "Next Bookmark" before "Previous Bookmark" in the menu.
+
+	Files: libgui/src/m-editor/file-editor-tab.cc libgui/src/m-editor/file-
+	editor.cc
+
+2016-03-14  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Go to right editor line number, even with folding (bug #47414)
+
+	* file-editor-tab.cc (center_current_line, handle_context_menu_edit):
+	Expand current line, if it is folded.  Convert "document" line number
+	to "visible" line number before calling SCI_SETFIRSTVISIBLELINE.
+
+	Files: libgui/src/m-editor/file-editor-tab.cc
+
+2016-07-25  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Save settings in Qt convention, delete all children in destructors (bug #45366)
+
+	* QUnixTerminalImpl.cpp (QUnixTerminalImpl::~QUnixTerminalImpl): Delete
+	dynamic objects pointed to by m_terminal (TerminalModel), m_kpty (KPty) and
+	m_terminalView (TerminalView).  (bug fix)
+
+	* files-dock-widget.cc: (files_dock_widget::~files_dock_widget): Rename to
+	save_settings.  Return if variable 'settings' is not valid object pointer.
+	(files_dock_widget::save_settings): Added.  Similar code as destructor was.
+	Call base class octave_dock_widget::save_settings at end of routine.
+
+	* files-dock-widget.h: (files_dock_widget::~files_dock_widget): Provide empty
+	destructor.
+	(files_dock_widget::save_settings): Added, public slot.
+
+	* find-files-dialog.cc: (find_files_dialog::~find_files_dialog): Moved most
+	of the code, except the statement deleting the directory iterator, to
+	new routine save_settings.
+	(find_files_dialog::save_settings): Added.  Large portion of the code that was
+	in the destructor.  Return immediately if variable 'settings' is not valid
+	object pointer.
+
+	* find-files-dialog.h: (find_files_dialog::save_settings): Added, public slot.
+
+	* history-dock-widget.cc: (history_dock_widget::~history_dock_widget): Rename
+	to save_settings.  Return if variable 'settings' is not valid object pointer.
+	(history_dock_widget::save_settings): Similar code as destructor was.  Call
+	base class octave_dock_widget::save_settings at end of routine.
+
+	* history-dock-widget.h: (history_dock_widget::~history_dock_widget): Provide
+	empty destructor.
+	(history_dock_widget::save_settings): Added, public slot.
+
+	* main-window.cc (main_window::prepare_to_exit): If find_files_dlg is valid,
+	call the object's save_settings routine.
+	(main_window::construct): Connect appropriate slot of all objects that must
+	save_settings information to the qApp aboutToQuit signal.  (Except for
+	find_files_dlg, see above.)  At end of this sequence, connect aboutToQuit to
+	the shortcut_manager and resource_manager function that deletes instance.
+
+	* octave-dock-widget.cc: (octave_dock_widget::~octave_dock_widget): Rename to
+	save_settings.  Return if variable 'settings' is not valid object pointer.
+	(octave_dock_widget::save_settings): Similar code as destructor was.
+
+	* octave-dock-widget.h: (octave_dock_widget::~octave_dock_widget): Provide
+	empty destructor.
+	(octave_dock_widget::save_settings): Added, public slot.
+
+	* octave-qt-link.cc (octave_qt_link::do_prompt_new_edit_file): Check that
+	'settings' pointer is valid before using.
+
+	* resource-manager.cc: Remove "singleton-cleanup.h" header reference.
+	(resource_manager::instance_ok): Do not add cleanup_instance to worker
+	thread's exit cleanup procedure.
+
+	* resource-manager.h (resource_manager::instance) Change variable to public for
+	connecting.
+	(resource_manager::cleanup_instance) Change to a public slot for connecting to
+	qApp aboutToQuit signal.
+	(resource_manager::resource_manager): Remove an unused variation of the
+	constructor.
+	(resource_manager::operator =) Removed.
+
+	* settings-dialog.cc: Add QMessageBox to header file list.
+	(settings_dialog::settings_dialog): If QSettings pointer settings is not valid
+	return immediately.
+	(settings_dialog::show_tab): Condition setting the current index on pointer
+	'settings' being valid.
+	(settings_dialog::write_changed_settings): Remove FIXME comment.  If the
+	settings are not valid, display a dialog about missing file and return.
+
+	* shortcut-manager.cc: Remove "singleton-cleanup.h" header reference.
+	(shortcut_manager::instance_ok): Do not add cleanup_instance to worker
+	thread's exit cleanup procedure.
+
+	* shortcut-manager.h (shortcut_manager::instance) Change variable to public for
+	connecting.
+	(shortcut_manager::cleanup_instance) Change to a public slot for connecting to
+	qApp aboutToQuit signal.
+	(shortcut_manager::shortcut_manager): Remove an unused variation of the
+	constructor.
+	(shortcut_manager::operator =) Removed.
+
+	* terminal-dock-widget.cc (terminal_dock_widget::~terminal_dock_widget): Added.
+	Delete QTerminal terminal.  (bug fix)
+
+	* terminal-dock-widget.h (terminal_dock_widget::~terminal_dock_widget): Added.
+
+	* workspace-view.cc: (workspace_view::workspace_view): Place code hunk using
+	QSettings pointer 'settings' within a conditional block.
+	(workspace_view::~workspace_view): Rename to save_settings.  Return if
+	variable 'settings' is not valid object pointer.
+	(workspace_view::save_settings): Almost same code as destructor was.  Call base
+	class octave_dock_widget::save_settings at end of routine.
+
+	* workspace-view.h: (workspace_view::~workspace_view): Provide empty
+	destructor.
+	(workspace_view::save_settings): Added, public slot.
+
+	Files: libgui/qterminal/libqterminal/unix/QUnixTerminalImpl.cpp libgui/src
+	/files-dock-widget.cc libgui/src/files-dock-widget.h libgui/src
+	/find-files-dialog.cc libgui/src/find-files-dialog.h libgui/src
+	/history-dock-widget.cc libgui/src/history-dock-widget.h libgui/src
+	/main-window.cc libgui/src/octave-dock-widget.cc libgui/src/octave-
+	dock-widget.h libgui/src/octave-qt-link.cc libgui/src/resource-
+	manager.cc libgui/src/resource-manager.h libgui/src/settings-
+	dialog.cc libgui/src/shortcut-manager.cc libgui/src/shortcut-
+	manager.h libgui/src/terminal-dock-widget.cc libgui/src/terminal-
+	dock-widget.h libgui/src/workspace-view.cc libgui/src/workspace-
+	view.h
+
+2016-07-22  Carnë Draug  <carandraug@octave.org>
+
+	mk-doc-cache.pl: some perl best practice changes.
+
+	* doc/interpreter/mk-doc-cache.pl: enable strict and declare scope of all
+	variables. Enclose code in subroutines for simplification.  Use File::Spec
+	for OS without different filesep.  Avoid reading all DOCSTRINGS in memory,
+	print them out to temporary file as they are processed.  Use backticks
+	to run makeinfo and collect output.  Fix issue where @class private methods
+	were not filtered out from doc-cache.  Avoid using $_ in large loops.
+	* doc/interpreter/module.mk: do not pass unnecessary "-" as first argument
+	(historically this was an Octave script and the first argument was the output
+	file but now it's only STDOUT), and "--" (which was used to separate multiple
+	macros file from DOCSTRINGS but now there is only one macros.texi).
+
+	Files: doc/interpreter/mk-doc-cache.pl doc/interpreter/module.mk
+
+2016-07-25  John W. Eaton  <jwe@octave.org>
+
+	* mk-doc-cache.pl: Fix substitutions to escape block comment markers.
+
+	Files: doc/interpreter/mk-doc-cache.pl
+
+2016-07-24  John W. Eaton  <jwe@octave.org>
+
+	fix test for profile (bug #46315)
+
+	* Also check for "TotalTime" in hierarchical info struct.
+	From Robert Jenssen.
+
+	Files: scripts/profiler/profile.m
+
+2016-07-24  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	doc: Fix "doubled words" typos (\b(\w+)\s+\1\b)
+
+	Files: libgui/src/octave-qt-link.cc libinterp/corefcn/ft-text-renderer.cc
+	libinterp/corefcn/interpreter.cc libinterp/corefcn/jit-typeinfo.cc
+	libinterp/corefcn/load-save.cc libinterp/corefcn/pt-jit.cc
+	libinterp/corefcn/quad.cc libinterp/corefcn/symtab.cc
+	libinterp/dldfcn/audiodevinfo.cc libinterp/dldfcn/xzip.cc libinterp
+	/octave-value/ov-usr-fcn.cc liboctave/numeric/oct-rand.cc
+	scripts/geometry/inpolygon.m scripts/plot/util/newplot.m
+	scripts/plot/util/subplot.m scripts/startup/__finish__.m
+
+2016-07-23  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Allow TAB autocompletion of local functions in debug mode (bug #48317)
+
+	* help.cc (local_functions): New function.
+
+	* help.cc (make_name_list): Include local function names in the list.
+
+	Files: libinterp/corefcn/help.cc
+
+2016-06-30  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Allow tab completion of arrays of structures.
+
+	* input.h, input.cc (find_indexed_expression): New function.  Parse a
+	partial command line back, skipping () & {}, until a variable name
+	is found.
+
+	* variables.cc (generate_struct_completions): Call the above if prefix
+	starts with ".".
+
+	* input.cc (generate_completion): Handle manipulation of prefix by
+	generate_struct_completions.
+
+	Files: libinterp/corefcn/input.cc libinterp/corefcn/input.h
+	libinterp/corefcn/variables.cc libinterp/corefcn/variables.h
+	liboctave/util/cmd-edit.cc liboctave/util/cmd-edit.h liboctave/util
+	/oct-rl-edit.c liboctave/util/oct-rl-edit.h
+
+2016-07-23  John W. Eaton  <jwe@octave.org>
+
+	avoid displaying plots in axis tests (bug #48602)
+
+	* axis.m: Make figures genrated by "%!error" tests invisible.
+
+	Files: scripts/plot/appearance/axis.m
+
+2016-03-25  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Enable shortcuts for find next / find previous
+
+	* file-editor-tab.cc (find_next, find_previous): new function/slot
+
+	* file-editor-tab.cc (find): connect signals to the above and add the
+	  actions from the editor to the find dialog
+
+	* file-editor-tab.h: New signals and slots
+
+	* file-editor.cc (constructor): create list of actions for the editor tabs
+
+	* file-editor.cc (request_find_next, request_find_previous):
+	  new funciton/slot
+
+	* file-editor.cc (request_find): emit find signal with action list to tab
+
+	* file-editor.cc (add_file_editor_tab): connect signals to the above
+
+	* file-editor.cc (construct): new actions: find next / find previous
+
+	* file-editor.cc (set_shortcut): shortcuts for the above
+
+	* file-editor.cc (check_actions): enable the above
+
+	* file-editor.h: New slots, signals and members
+
+	* shortcut-manager.cc: shortcuts for find-next and find-previous,
+	  new default for Goto Line, which conflicts with find next in linux
+
+	* find-dialog.cc (constructor): add new actions from the editor
+
+	Files: libgui/src/m-editor/file-editor-tab.cc libgui/src/m-editor/file-
+	editor-tab.h libgui/src/m-editor/file-editor.cc libgui/src/m-editor
+	/file-editor.h libgui/src/m-editor/find-dialog.cc
+	libgui/src/m-editor/find-dialog.h libgui/src/shortcut-manager.cc
+
+2015-03-15  Torsten  <ttl@justmail.de>
+
+	changeset:   19946:59385cda0598
+	tag:         icons
+	tag:         qbase
+	tag:         qtip
+	tag:         tip
+	user:        Torsten <ttl@justmail.de>
+	files:       libgui/src/icons/graphic_logo_DocumentationDockWidget.png libgui/src/icons/graphic_logo_DocumentationDockWidget.svg libgui/src/icons/graphic_logo_FileEditor.png libgui/src/icons/graphic_logo_FileEditor.svg libgui/src/icons/graphic_logo_FilesDockWidget.png libgui/src/icons/graphic_logo_FilesDockWidget.svg libgui/src/icons/graphic_logo_HistoryDockWidget.png libgui/src/icons/graphic_logo_HistoryDockWidget.svg libgui/src/icons/graphic_logo_NewsDockWidget.png libgui/src/icons/graphic_logo_NewsDockWidget.svg libgui/src/icons/graphic_logo_ReleaseWidget.png libgui/src/icons/graphic_logo_ReleaseWidget.svg libgui/src/icons/graphic_logo_TerminalDockWidget.png libgui/src/icons/graphic_logo_TerminalDockWidget.svg libgui/src/icons/graphic_logo_WorkspaceView.png libgui/src/icons/graphic_logo_WorkspaceView.svg libgui/src/icons/icons_license libgui/src/icons/letter_logo_DocumentationDockWidget.png libgui/src/icons/letter_logo_DocumentationDockWidget.svg libgui/src/icons/letter_logo_FileEditor.png libgui/src/icons/letter_logo_FileEditor.svg libgui/src/icons/letter_logo_FilesDockWidget.png libgui/src/icons/letter_logo_FilesDockWidget.svg libgui/src/icons/letter_logo_HistoryDockWidget.png libgui/src/icons/letter_logo_HistoryDockWidget.svg libgui/src/icons/letter_logo_NewsDockWidget.png libgui/src/icons/letter_logo_NewsDockWidget.svg libgui/src/icons/letter_logo_ReleaseWidget.png libgui/src/icons/letter_logo_ReleaseWidget.svg libgui/src/icons/letter_logo_TerminalDockWidget.png libgui/src/icons/letter_logo_TerminalDockWidget.svg libgui/src/icons/letter_logo_WorkspaceView.png libgui/src/icons/letter_logo_WorkspaceView.svg libgui/src/icons/logo.png libgui/src/module.mk
+	description:
+	new window icons in higher resolution
+	* graphic_logo_DocumentationDockWidget.png,
+	  graphic_logo_DocumentationDockWidget.svg,
+	  graphic_logo_FileEditor.png, graphic_logo_FileEditor.svg,
+	  graphic_logo_FilesDockWidget.png, graphic_logo_FilesDockWidget.svg,
+	  graphic_logo_HistoryDockWidget.png, graphic_logo_HistoryDockWidget.svg,
+	  graphic_logo_NewsDockWidget.png, graphic_logo_NewsDockWidget.svg,
+	  graphic_logo_ReleaseWidget.png, graphic_logo_ReleaseWidget.svg,
+	  graphic_logo_TerminalDockWidget.png, graphic_logo_TerminalDockWidget.svg,
+	  graphic_logo_WorkspaceView.png, graphic_logo_WorkspaceView.svg,
+	  letter_logo_DocumentationDockWidget.png,
+	  letter_logo_DocumentationDockWidget.svg,
+	  letter_logo_FileEditor.png, letter_logo_FileEditor.svg,
+	  letter_logo_FilesDockWidget.png, letter_logo_FilesDockWidget.svg,
+	  letter_logo_HistoryDockWidget.png, letter_logo_HistoryDockWidget.svg,
+	  letter_logo_NewsDockWidget.png, letter_logo_NewsDockWidget.svg,
+	  letter_logo_ReleaseWidget.png, letter_logo_ReleaseWidget.svg,
+	  letter_logo_TerminalDockWidget.png, letter_logo_TerminalDockWidget.svg,
+	  letter_logo_WorkspaceView.png, letter_logo_WorkspaceView.svg,
+	  logo.png:
+	  new icons files as svg and png-files
+
+	* module.mk: new svg-files
+
+	Files: libgui/src/icons/graphic_logo_DocumentationDockWidget.png
+	libgui/src/icons/graphic_logo_DocumentationDockWidget.svg
+	libgui/src/icons/graphic_logo_FileEditor.png
+	libgui/src/icons/graphic_logo_FileEditor.svg
+	libgui/src/icons/graphic_logo_FilesDockWidget.png
+	libgui/src/icons/graphic_logo_FilesDockWidget.svg
+	libgui/src/icons/graphic_logo_HistoryDockWidget.png
+	libgui/src/icons/graphic_logo_HistoryDockWidget.svg
+	libgui/src/icons/graphic_logo_NewsDockWidget.png
+	libgui/src/icons/graphic_logo_NewsDockWidget.svg
+	libgui/src/icons/graphic_logo_ReleaseWidget.png
+	libgui/src/icons/graphic_logo_ReleaseWidget.svg
+	libgui/src/icons/graphic_logo_TerminalDockWidget.png
+	libgui/src/icons/graphic_logo_TerminalDockWidget.svg
+	libgui/src/icons/graphic_logo_WorkspaceView.png
+	libgui/src/icons/graphic_logo_WorkspaceView.svg
+	libgui/src/icons/icons_license
+	libgui/src/icons/letter_logo_DocumentationDockWidget.png
+	libgui/src/icons/letter_logo_DocumentationDockWidget.svg
+	libgui/src/icons/letter_logo_FileEditor.png
+	libgui/src/icons/letter_logo_FileEditor.svg
+	libgui/src/icons/letter_logo_FilesDockWidget.png
+	libgui/src/icons/letter_logo_FilesDockWidget.svg
+	libgui/src/icons/letter_logo_HistoryDockWidget.png
+	libgui/src/icons/letter_logo_HistoryDockWidget.svg
+	libgui/src/icons/letter_logo_NewsDockWidget.png
+	libgui/src/icons/letter_logo_NewsDockWidget.svg
+	libgui/src/icons/letter_logo_ReleaseWidget.png
+	libgui/src/icons/letter_logo_ReleaseWidget.svg
+	libgui/src/icons/letter_logo_TerminalDockWidget.png
+	libgui/src/icons/letter_logo_TerminalDockWidget.svg
+	libgui/src/icons/letter_logo_WorkspaceView.png
+	libgui/src/icons/letter_logo_WorkspaceView.svg
+	libgui/src/icons/logo.png libgui/src/module.mk
+
+2016-07-22  Mike Miller  <mtmiller@octave.org>
+
+	doc: Reword methods doc string for clarity
+
+	* methods.m: Reword doc string to differentiate between printing and returning
+	the list of methods.  Mention that only public methods are returned.  Clarify
+	that the name of a Java class may be given.
+
+	Files: scripts/general/methods.m
+
+	doc: Reword and clarify fieldnames doc string for Java classes and objects
+
+	* fieldnames.m: Reword and clarify doc string for Java classes and objects.
+
+	Files: scripts/general/fieldnames.m
+
+2016-07-22  John W. Eaton  <jwe@octave.org>
+
+	move system dependent code to sysdep.cc
+
+	* octave-gui.cc (set_win_app_id): Move to sysdep.cc and rename to
+	set_application_id.
+	* sysdep.h: Provide decl.
+
+	Files: libgui/src/octave-gui.cc libinterp/corefcn/sysdep.cc
+	libinterp/corefcn/sysdep.h
+
+2016-06-30  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Track line numbers when in debug mode (bug #45764)
+
+	* pt-eval.cc (visit_statement): update location if new variable
+	  Vtrack_line_number is true, rather than simply not debugging.
+
+	* input.{h,cc}: Declare and define Vtrack_line_number.
+
+	* input.cc (do_keyboard): set Vtrack_line_number = false, because
+	  commands entered from the keyboard do not have valid line numbers.
+
+	* ov-usr-fcn.cc (octave_user_script::do_multi_index_op,
+	  octave_user_function::do_multi_index_op): Set Vtrack_line_number =
+	  true whenever executing a function or script, since these line
+	  numbers are meaningful.  Unwind/protect so future keyboard commands
+	  do not corrupt the program line number.
+
+	* debug.cc (Fdbcont, Fdbstep): set Vtrack_line_number = true when
+	  resuming running code.
+
+	Files: libinterp/corefcn/debug.cc libinterp/corefcn/input.cc
+	libinterp/corefcn/input.h libinterp/octave-value/ov-usr-fcn.cc
+	libinterp/parse-tree/pt-eval.cc
+
+2016-07-20  Markus Mützel  <markus.muetzel@gmx.de>
+
+	Support setting colormap min max with axis.m (bug #48566).
+
+	* axis.m: Support setting colormap min max. Replace "tic" with "tick" in
+	strings.
+
+	Files: scripts/plot/appearance/axis.m
+
+2016-07-21  Markus Mützel  <markus.muetzel@gmx.de>
+
+	Change default properties of isosurface (bug #48572).
+
+	* isosurface.m: Change default properties of isosurface to match Matlab
+	more closely. Adapt demo and docstring.
+
+	Files: scripts/plot/draw/isosurface.m
+
+2016-07-20  Markus Mützel  <markus.muetzel@gmx.de>
+
+	Visual differences between Octave and Matlab (bug #48572)
+
+	* datetick.m: Use Matlab syntax in demo. Slight changes to docstring.
+	* shrinkfaces.m: Use syntax that works around Matlab bug.
+	* trisurf.m: Remove unnecessary formatting which was not compatible to
+	Matlab.
+
+	Files: scripts/plot/appearance/datetick.m scripts/plot/draw/shrinkfaces.m
+	scripts/plot/draw/trisurf.m
+
+2016-06-26  Carnë Draug  <carandraug@octave.org>
+
+	Rewrite gzip and bzip2 in C++ instead of using its applications (bug #43431)
+
+	* bzip2.m, gzip.m, __xzip__.m: remove old implementation as m files that
+	copy all files into a temporary directory and then call gzip or bzip2
+	application.  Add several new tests and remove duplication of existing
+	tests.
+	* scripts/miscellaneous/module.mk: unlist removed files.
+	* xzip.cc: new implementation of bzip2 and gzip functions making direct
+	use of the libraries in C++. Also add more tests.
+	* libinterp/dldfcn/module-files: list new file and required flags.
+	* configure.ac: add check for bzip2 library.
+
+	Files: configure.ac libinterp/dldfcn/module-files libinterp/dldfcn/xzip.cc
+	scripts/miscellaneous/bzip2.m scripts/miscellaneous/gzip.m
+	scripts/miscellaneous/module.mk
+	scripts/miscellaneous/private/__xzip__.m
+
+2016-07-22  John W. Eaton  <jwe@octave.org>
+
+	convert errors in onCleanup destructor to warnings (bug #48574)
+
+	Files: libinterp/octave-value/ov-oncleanup.cc
+
+	always create doc-cache; install it and macros.texi (bug #48508)
+
+	* module.mk: Move creation of doc-cache and installation of doc-cache
+	and macros.texi outside of AMCOND_BUILD_DOCS conditional.
+
+	Files: doc/interpreter/module.mk
+
+	maint: Strip trailing whitespace from source files.
+
+	Files: libgui/src/octave-gui.cc libinterp/corefcn/interpreter.h
+	liboctave/cruft/misc/f77-fcn.h liboctave/system/file-ops.h
+	liboctave/util/oct-shlib.cc
+	scripts/general/private/__publish_latex_output__.m
+	scripts/general/publish.m scripts/general/validateattributes.m
+	scripts/plot/appearance/lighting.m scripts/plot/draw/smooth3.m
+	scripts/testfun/module.mk
+
+2016-07-21  John W. Eaton  <jwe@octave.org>
+
+	build doc-cache without running Octave (bug #48508)
+
+	* mk_doc_cache.m: Delete.
+	* doc/interpreter/mk-doc-cache.pl: New script, replaces
+	mk_doc_cache.m.
+	* doc/interpreter/module.mk: Update file lists.
+	(doc/interpreter/doc-cache): Use perl script to generate to aid in
+	cross builds.
+	* libinterp/op-kw-docs: New file.
+	* libinterp/module.mk: Update.
+	(libinterp/DOCSTRINGS): Also include info from op-kw-docs.
+	* pt-arg-list.cc (Fend): Include info in docstring about use of end as
+	a language keyword.
+	(install-built-in-docstrings): Depend on libinterp/DOCSTRINGS.
+	Simplify rule now that libinterp/DOCSTRINGS is always generated in the
+	build directory.
+
+	Files: doc/interpreter/mk-doc-cache.pl doc/interpreter/mk_doc_cache.m
+	doc/interpreter/module.mk libinterp/corefcn/help.cc
+	libinterp/module.mk libinterp/op-kw-docs libinterp/parse-tree/pt-
+	arg-list.cc
+
+2016-07-16  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Allow  dir  to accept [ and ] in arguments. (bug #47950)
+
+	* liboctave/util/oct-glob.{cc,h} (windows_glob): New function
+
+	* libinterp/corefcn/dirfns.cc (__wglob__): New wrapper for the above
+
+	* dir.m: Call __wglob__ instead of glob.
+
+	Files: libinterp/corefcn/dirfns.cc liboctave/util/oct-glob.cc
+	liboctave/util/oct-glob.h scripts/miscellaneous/dir.m
+
+2016-07-21  John Donoghue  <John Donoghue>
+
+	include windows.h for set_win_app_id call
+
+	* libgui/src/octave-gui.cc: include <windows.h>
+
+	Files: libgui/src/octave-gui.cc
+
+2016-07-20  John Donoghue  <John Donoghue>
+
+	set AppUserModelId for application in Windows (bug #47527)
+
+	* libgui/src/octave-gui.cc:
+	  (set_win_app_id): new function
+	  (gui_application::start_gui_p): add call to set_win_app_id in windows
+
+	Files: libgui/src/octave-gui.cc
+
+2016-07-20  Mike Miller  <mtmiller@octave.org>
+
+	test: increase tolerance on Matrix tests
+
+	* dMatrix.cc: Increase tolerances on tests of Matrix multiplication with
+	random values that occasionally fail.
+
+	Files: liboctave/array/dMatrix.cc
+
+2016-07-20  Rik  <rik@octave.org>
+
+	Make demos Matlab compatible for comparison with dump_demos script.
+
+	* brighten.m, colorcube.m: Replace 'tic' option to axis with setting properties on gca.
+
+	* axis.m: Use 'origin', rather than 'zero', for xaxislocation, yaxislocation
+	demos.
+
+	* datetick.m: Fix typo '2' -> 'ax'.
+
+	* legend.m: Use labels with call to legend() rather than embedding labels
+	in call to plot.
+
+	* text.m, xlim.m, ylim.m, zlim.m: Remove asserts from demo blocks.
+
+	* isonormals.m: Use Matlab syntax in string definitions.
+
+	* light.m: Use space between function name and opening parenthesis in demos.
+	Add missing semicolon at end of lines.
+
+	* dump_demos.m: Add helper functions sombrero() and rgbplot() to script so that
+	demos will run cleanly in Matlab.
+
+	Files: scripts/image/brighten.m scripts/image/colorcube.m
+	scripts/plot/appearance/axis.m scripts/plot/appearance/datetick.m
+	scripts/plot/appearance/legend.m scripts/plot/appearance/text.m
+	scripts/plot/appearance/xlim.m scripts/plot/appearance/ylim.m
+	scripts/plot/appearance/zlim.m scripts/plot/draw/isonormals.m
+	scripts/plot/draw/light.m scripts/testfun/private/dump_demos.m
+
+2016-07-20  Carnë Draug  <carandraug@octave.org>
+
+	Remove check for std::tr1::unordered_map because we depend on C++11.
+
+	* rand.cc: remove conditional include of unordered_map from std::tr1
+	if it's missing from std.  Octave is already dependent on C++11 so it
+	is no longer needed.
+	* configure.ac: remove call to OCTAVE_UNORDERED_MAP_HEADERS.
+	* m4/acinclude.m4: remove unused OCTAVE_UNORDERED_MAP_HEADERS macro.
+
+	Files: configure.ac libinterp/corefcn/rand.cc m4/acinclude.m4
+
+2016-07-18  Markus Muetzel  <markus.muetzel@gmx.de>
+
+	Point isonormals towards lower values for Matlab compatibility (bug #48552).
+
+	* isonormals.m: Reverse direction of iso-normals. Convert example with
+	minor changes to a demo. Add some tests. Re-phrase docstring. Minor
+	cosmetic changes.
+
+	* light.m: Adapt demo 8 to account for this change.
+
+	* NEWS: Announce change.
+
+	Files: NEWS scripts/plot/draw/isonormals.m scripts/plot/draw/light.m
+
+2016-07-19  Carnë Draug  <carandraug@octave.org>
+
+	string_vector: add constructor that supports any container.
+
+	* str-vec.h: add new templated constructor that will accept any container
+	of std::string with same interface as the STL.
+	* str-vec.cc: remove the two constructors of repeated code which is
+	now needs to be declared the header.
+
+	Files: liboctave/util/str-vec.cc liboctave/util/str-vec.h
+
+2016-07-19  Mike Miller  <mtmiller@octave.org>
+
+	distribute deprecated-config.h source file
+
+	* libinterp/module.mk (libinterp_EXTRA_DIST): Include
+	libinterp/deprecated-config.h in the list.
+
+	Files: libinterp/module.mk
+
+2016-07-19  John W. Eaton  <jwe@octave.org>
+
+	set DLL directory when loading DLLs on Windows systems (bug #48511)
+
+	* file-ops.h (file_ops::dirname): New function.
+
+	* oct-shlib.cc (set_dll_directory): New function.
+	(octave_w32_shlib::octave_w32_shlib): Call file_ops::dirname to get
+	directory part of shared library file, then use set_dll_directory to
+	temporarily alter DLL search path.
+
+	* ov-java.cc (set_dll_directory): Delete.
+	(initialize_jvm): Don't set DLL search path for Windows systems here.
+	That job is now handled by octave::dynamic_library.
+
+	Files: libinterp/octave-value/ov-java.cc liboctave/system/file-ops.h
+	liboctave/util/oct-shlib.cc
+
+	* fCMatrix.cc (xgemm): Fix thinko in cset 407c66ae1e20.
+
+	Files: liboctave/array/fCMatrix.cc
+
+	* mk-octave-config-h.sh: Improve readability of output.
+
+	Files: build-aux/mk-octave-config-h.sh
+
+	allow installed f77-fcn.h to use config info from Octave (bug #48559)
+
+	* mk-octave-config-h.sh: Also extract macros beginning with F77_USES_
+	from config.h.
+
+	* oct-conf-post.in.h (F77_USES_CRAY_CALLING_CONVENTION,
+	F77_USES_VISUAL_FORTRAN_CALLING_CONVENTION): Delete macros.
+
+	Files: build-aux/mk-octave-config-h.sh oct-conf-post.in.h
+
+2016-07-18  Markus Muetzel  <markus.muetzel@gmx.de>
+
+	Add function "smooth3" (patch #8864).
+
+	* scripts/plot/draw/smooth3.m: New function.
+
+	* scripts/plot/draw/module.mk: Add to build system.
+
+	* __unimplemented__.m: Remove "smooth3" from list.
+
+	* plot.txi: Add to documentation.
+
+	* isosurface.m: Add "smooth3" to @seealso list.
+
+	Files: doc/interpreter/plot.txi scripts/help/__unimplemented__.m
+	scripts/plot/draw/isonormals.m scripts/plot/draw/isosurface.m
+	scripts/plot/draw/module.mk scripts/plot/draw/smooth3.m
+
+2016-07-18  Mike Miller  <mtmiller@octave.org>
+
+	kbhit: return an empty string if not running interactively (bug #48541)
+
+	* sysdep.cc (Fkbhit): Return an empty string if not running interactively.
+
+	Files: libinterp/corefcn/sysdep.cc
+
+2016-07-11  Markus Muetzel  <markus.muetzel@gmx.de>
+
+	Add function "lighting" (patch #9040).
+
+	* scripts/plot/appearance/lighting.m: New function.
+
+	* scripts/plot/appearance/module.mk: Add to build system.
+
+	* __unimplemented__.m: Remove "lighting" from list.
+
+	* plot.txi: Add docstring to manual.
+
+	* light.m: Add "lighting" to "see also".
+
+	Files: doc/interpreter/plot.txi scripts/help/__unimplemented__.m
+	scripts/plot/appearance/lighting.m scripts/plot/appearance/module.mk
+	scripts/plot/draw/light.m
+
+2016-07-11  Carnë Draug  <carandraug@octave.org>
+
+	Array: add constructor from std sequence containers (patch 9047)
+
+	* liboctave/array/Array.h: declare and define new template constructor
+	that supports any standard library sequence container.  Heavily based
+	on the reshape constructor code in Array.cc
+	* liboctave/array/Array.cc: just a comment to the source.
+	* libinterp/octave-value/ovl.h: simplify code by making use of the new
+	Array constructor for initializer_list.
+
+	Files: libinterp/octave-value/ovl.h liboctave/array/Array.cc
+	liboctave/array/Array.h
+
+2016-07-18  Rik  <rik@octave.org>
+
+	__unimplemented__.m: Remove condeig from list.
+
+	* __unimplemented__.m: Remove condeig from list.
+
+	Files: scripts/help/__unimplemented__.m
+
+2016-07-18  John W. Eaton  <jwe@octave.org>
+
+	avoid GCC warning about longjmp possibly clobbering variable
+
+	* qz.cc (Fqz): Declare nargin volatile.
+
+	Files: libinterp/corefcn/qz.cc
+
+	declare odepack common blocks consistently (bug #48531)
+
+	* dlsode.f, intdy.f, prepj.f, solsy.f, stode.f: Declare variables
+	consistently in common block /ls0001/.
+	* sintdy.f, slsode.f, sprepj.f, ssolsy.f, sstode.f: Likewise, for
+	common block /sls001/.
+
+	Files: liboctave/cruft/odepack/dlsode.f liboctave/cruft/odepack/intdy.f
+	liboctave/cruft/odepack/prepj.f liboctave/cruft/odepack/sintdy.f
+	liboctave/cruft/odepack/slsode.f liboctave/cruft/odepack/solsy.f
+	liboctave/cruft/odepack/sprepj.f liboctave/cruft/odepack/ssolsy.f
+	liboctave/cruft/odepack/sstode.f liboctave/cruft/odepack/stode.f
+
+	reduce warnings from GCC's link-time optimization feature (bug #48531)
+
+	* f77-fcn.h (F77_DBLE_CMPLX, F77_CMPLX): Use C types instead of
+	typedefs for std::complex<T> types.
+	(F77_CMPLX_ARG, F77_CONST_CMPLX_ARG, F77_DBLE_CMPLX_ARG,
+	F77_CONST_DBLE_CMPLX_ARG): New macros.
+
+	* dot.cc, ordschur.cc, qz.cc, CColVector.cc, CMatrix.cc,
+	CRowVector.cc, CSparse.cc, dSparse.cc, fCColVector.cc, fCMatrix.cc,
+	fCRowVector.cc, f77-fcn.h, EIG.cc, aepbalance.cc, chol.cc,
+	eigs-base.cc, fEIG.cc, gepbalance.cc, hess.cc, lo-specfun.cc, lu.cc,
+	oct-convn.cc, qr.cc, qrp.cc, schur.cc, svd.cc: Use new macros for
+	passing complex arguments to Fortran function.  Always pass pointers
+	to complex arguments.
+
+	Files: libinterp/corefcn/dot.cc libinterp/corefcn/ordschur.cc
+	libinterp/corefcn/qz.cc liboctave/array/CColVector.cc
+	liboctave/array/CMatrix.cc liboctave/array/CRowVector.cc
+	liboctave/array/CSparse.cc liboctave/array/dSparse.cc
+	liboctave/array/fCColVector.cc liboctave/array/fCMatrix.cc
+	liboctave/array/fCRowVector.cc liboctave/cruft/misc/f77-fcn.h
+	liboctave/numeric/EIG.cc liboctave/numeric/aepbalance.cc
+	liboctave/numeric/chol.cc liboctave/numeric/eigs-base.cc
+	liboctave/numeric/fEIG.cc liboctave/numeric/gepbalance.cc
+	liboctave/numeric/hess.cc liboctave/numeric/lo-specfun.cc
+	liboctave/numeric/lu.cc liboctave/numeric/oct-convn.cc
+	liboctave/numeric/qr.cc liboctave/numeric/qrp.cc
+	liboctave/numeric/schur.cc liboctave/numeric/svd.cc
+
+	handle gfortran and f2c calling conventions separately
+
+	* configure.ac: New option --enable-fortran-calling-convention.
+	Explicitly define config.h macros for gfortran, f2c, Cray, and Visual
+	Fortran options.
+
+	* f77-fcn.h: Handle gfortran separately from f2c.
+	(F77_CHAR_ARG_LEN_TYPE, F77_DBLE, F77_REAL, F77_DBLE_CMPLX, F77_CMPLX,
+	F77_INT, F77_INT4, F77_LOGICAL, F77_CMPLX_ARG, F77_CONST_CMPLX_ARG,
+	F77_DBLE_CMPLX_ARG, F77_CONST_DBLE_CMPLX_ARG): New macros.
+
+	* f77-fcn.c (xstopx):  Use F77_CHAR_ARG_LEN_TYPE.
+
+	Files: configure.ac liboctave/cruft/misc/f77-fcn.c
+	liboctave/cruft/misc/f77-fcn.h
+
+2016-07-17  John W. Eaton  <jwe@octave.org>
+
+	new macros for F77 data types
+
+	* f77-fcn.h (F77_DBLE, F77_REAL, F77_DBLE_CMPLX, F77_CMPLX, F77_INT,
+	F77_INT4, F77_LOGICAL): New macros.
+
+	* fortrandemo.cc, __pchip_deriv__.cc, dot.cc, interpreter.cc,
+	ordschur.cc, qz.cc, CColVector.cc, CMatrix.cc, CNDArray.cc,
+	CRowVector.cc, CSparse.cc, dColVector.cc, dMatrix.cc, dNDArray.cc,
+	dRowVector.cc, dSparse.cc, fCColVector.cc, fCMatrix.cc,
+	fCNDArray.cc, fCRowVector.cc, fColVector.cc, fMatrix.cc,
+	fNDArray.cc, fRowVector.cc, DASPK.cc, DASRT.cc, DASSL.cc, EIG.cc,
+	LSODE.cc, Quad.cc, aepbalance.cc, chol.cc, eigs-base.cc, fEIG.cc,
+	gepbalance.cc, hess.cc, lo-specfun.cc, lu.cc, oct-convn.cc,
+	oct-rand.cc, qr.cc, qrp.cc, randpoisson.cc, schur.cc, svd.cc:
+	Use new macros in declarations of Fortran subroutines.
+
+	Files: examples/code/fortrandemo.cc libinterp/corefcn/__pchip_deriv__.cc
+	libinterp/corefcn/dot.cc libinterp/corefcn/interpreter.cc
+	libinterp/corefcn/ordschur.cc libinterp/corefcn/qz.cc
+	liboctave/array/CColVector.cc liboctave/array/CMatrix.cc
+	liboctave/array/CNDArray.cc liboctave/array/CRowVector.cc
+	liboctave/array/CSparse.cc liboctave/array/dColVector.cc
+	liboctave/array/dMatrix.cc liboctave/array/dNDArray.cc
+	liboctave/array/dRowVector.cc liboctave/array/dSparse.cc
+	liboctave/array/fCColVector.cc liboctave/array/fCMatrix.cc
+	liboctave/array/fCNDArray.cc liboctave/array/fCRowVector.cc
+	liboctave/array/fColVector.cc liboctave/array/fMatrix.cc
+	liboctave/array/fNDArray.cc liboctave/array/fRowVector.cc
+	liboctave/cruft/misc/f77-fcn.h liboctave/numeric/DASPK.cc
+	liboctave/numeric/DASRT.cc liboctave/numeric/DASSL.cc
+	liboctave/numeric/EIG.cc liboctave/numeric/LSODE.cc
+	liboctave/numeric/Quad.cc liboctave/numeric/aepbalance.cc
+	liboctave/numeric/chol.cc liboctave/numeric/eigs-base.cc
+	liboctave/numeric/fEIG.cc liboctave/numeric/gepbalance.cc
+	liboctave/numeric/hess.cc liboctave/numeric/lo-specfun.cc
+	liboctave/numeric/lu.cc liboctave/numeric/oct-convn.cc
+	liboctave/numeric/oct-rand.cc liboctave/numeric/qr.cc
+	liboctave/numeric/qrp.cc liboctave/numeric/randpoisson.cc
+	liboctave/numeric/schur.cc liboctave/numeric/svd.cc
+
+	use r1mach for single precision code (partial fix for bug #48531)
+
+	* slsode.f: Use R1MACH, not D1MACH.
+
+	Files: liboctave/cruft/odepack/slsode.f
+
+2016-07-15  John W. Eaton  <jwe@octave.org>
+
+	fix profiler initialization (bug #46315)
+
+	* profile.m: When turning profiler on, just enable it, don't reset it.
+	* profiler.cc
+	(profile_data_accumulator::profile_data_accumulator):
+	Create new call tree on initialization.  Initialize active_fcn to 0.
+	(profile_data_accumulator::~profile_data_accumulator):
+	Always delete call_tree.
+	(profile_data_accumulator::set_acive): Simply set enabled flag.
+	(profile_data_accumulator::enter_function): Don't call
+	add_current_time if active_fcn isn't valid.  If active_fcn isn't set,
+	set it to call_tree.
+	(profile_data_accumulator::exit_function): Don't to anything if there
+	is no active_fcn.
+	(profile_data_accumulator::add_current_time): Likewise.
+	(profile_data_accumulator::reset): Reinitialize call_tree and active_fcn.
+
+	Files: libinterp/corefcn/profiler.cc scripts/profiler/profile.m
+
+2016-07-18  Rik  <rik@octave.org>
+
+	build: export testfun/private dir to tarball (bug #48553).
+
+	* scripts/testfun/module.mk: Add list of functions in private/ dir
+	to build system.
+
+	Files: scripts/testfun/module.mk
+
+	condeig.m: New function imported from Octave-Forge linear-algebra package.
+
+	* scripts/linear-algebra/condeig.m: New function.
+
+	* scripts/linear-algebra/module.mk: Add to build system.
+
+	* linalg.txi: Add to manual.
+
+	* cond.m: Rephrase to state that cond calculates a condition number with
+	respect to inversion.  Mention condeig in the seealso block.
+
+	Files: doc/interpreter/linalg.txi scripts/linear-algebra/cond.m scripts
+	/linear-algebra/condeig.m scripts/linear-algebra/module.mk
+
+2016-07-17  Ben Abbott  <bpabbott@mac.comm>
+
+	mlock gnuplot_binary.m in memory to preserve during "clear all"
+
+	* scripts/plot/util/gnuplot_binary.in.m: Add "mlock ()".
+
+	Files: scripts/plot/util/gnuplot_binary.in.m
+
+2016-07-17  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Disable gnuplot graphics toolkit mesh when linestyle is 'none' (bug #48512)
+
+	* __gnuplot_draw_axes__.m: For "surface" case, check whether 'linestyle'
+	  property is not "none" in addition to the 'edgecolor' property being "none".
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-07-16  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	Improve plot comparison in sripts/testfun
+
+	dump_demos.m: Use ~ instead of ! for matlab compatibility.
+	              Isolate demos in functions.
+	html_compare_plot_demos.m: Wrap html page after 50 demos per
+	  page, add prevoius and next links per page.
+
+	Files: scripts/testfun/private/dump_demos.m
+	scripts/testfun/private/html_compare_plot_demos.m
+	scripts/testfun/private/html_plot_demos_template.html
+
+2016-07-15  Mike Miller  <mtmiller@octave.org>
+
+	Do not install oct-conf-post.h
+
+	* Makefile.am (nodist_octinclude_HEADERS): Remove oct-conf-post.h from the
+	list of header files to install.
+
+	Files: Makefile.am
+
+	config.h: install a stub replacement with a deprecation warning (bug #41027)
+
+	* Makefile.am (nodist_octinclude_HEADERS): Remove autoconf-generated config.h
+	from the list of header files to install.
+	* deprecated-config.h: New file to replace config.h in the public API.  Use a
+	different name to not shadow config.h during the build.
+	* libinterp/module.mk (install-deprecated-config-h,
+	uninstall-deprecated-config-h): New targets to install and uninstall it.
+
+	Files: Makefile.am libinterp/deprecated-config.h libinterp/module.mk
+
+2016-04-21  Juan Pablo Carbajal  <ajuanpi+dev@gmail.com>
+
+	Fix bug when tspan is a column vector (bug #47756).
+
+	* integrate_adaptive.m: Index into t, rather than tspan, so that orientation
+	does not matter.
+
+	Files: scripts/ode/private/integrate_adaptive.m
+
+2016-07-13  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Change Ctrl+PgDown to move the focus rightward, not PgUp (bug #48495).
+
+	* shortcut-manager.cc (shortcut_manager::do_init_data): Swap PageUp with
+	PageDown.
+
+	Files: libgui/src/shortcut-manager.cc
+
+2016-03-27  Lachlan Andrew  <lachlanbis@gmail.com>
+
+	Retain at least "all" in warning list (bug #47543)
+
+	* error.cc (set_warning_option): only remove items that are not "all".
+
+	Files: libinterp/corefcn/error.cc
+
+2016-07-15  John W. Eaton  <jwe@octave.org>
+
+	avoid possible crash in exist function (bug #36067)
+
+	* variables.cc (Fexist): Check for command line functions before other
+	types of functions.  Check for built-in functions last.  Instead of
+	using symbol_table::find, which may load .mex or .oct file or parse
+	functions files, use symbol_table::is_built_in_function name to check
+	for built-in functions and symbol_table::find_cmdline_function to
+	check for built-in functions.
+	(safe_symbol_exist): Delete unused function.
+
+	Files: libinterp/corefcn/variables.cc
+
+	* mex.h: Fix typo in previous change.
+
+	Files: libinterp/corefcn/mex.h
+
+	* oct-conf-post.in.h, mk-octave-config-h.sh: Revert unintended changes from previous changeset.
+
+	Files: build-aux/mk-octave-config-h.sh oct-conf-post.in.h
+
+	define forwarding functions for octave_int<T> xmin and xmax (bug #48139)
+
+	* lo-mappers.h (min, max): Define forwarding functions for
+	octave_int<T> types.
+	* MArray.cc (MArray<T>::idx_min, MArray<T>::idx_max): Use
+	octave::math::min and max as template parameters instead of xmin and
+	xmax.
+
+	Files: build-aux/mk-octave-config-h.sh liboctave/array/MArray.cc
+	liboctave/numeric/lo-mappers.h oct-conf-post.in.h
+
+	skip explicit instantiations of xmin and xmax if they are not defined
+
+	* MArray-i.cc, MArray-s.cc: Only instantiate xmin and xmax if
+	OCTAVE_USE_DEPRECATED_FUNCTIONS is defined.
+
+	Files: liboctave/array/MArray-i.cc liboctave/array/MArray-s.cc
+
+	* kpse.cc (kpse_truncate_filename): Use namespace qualifier for static dir_entry function.
+
+	Files: liboctave/util/kpse.cc
+
+	* syscalls.cc (mk_stat_map): Use namespace qualifier for static file_stat functions.
+
+	Files: libinterp/corefcn/syscalls.cc
+
+2016-07-15  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	New functions publish.m and grabcode.m (patch #9048).
+
+	* scripts/general/module.mk: Add entries for the new funtions.
+	* scripts/general/grabcode.m: New function.
+	* scripts/general/publish.m: New function.
+	* scripts/general/private/__publish_html_output__.m: New function.
+	* scripts/general/private/__publish_latex_output__.m: New function.
+
+	* scripts/help/__unimplemented__.m: Remove entries publish and grabcode.
+
+	* NEWS: Announce new functions.
+	* doc/interpreter/func.txi: Add documentation for the new functions.
+
+	* test/module.mk: New entry for test module publish.
+	* test/publish/module.mk: New entries for publish tests.
+	* test/publish/publish.tst: New test file, to run all test scripts on publish
+	and grabcode.
+	* test/publish/test_script.m: New test script.
+	* test/publish/test_script_code_only.m: New test script.
+	* test/publish/test_script_empty.m: New test script.
+	* test/publish/test_script_example.m: New test script.
+	* test/publish/test_script_head_only.m: New test script.
+
+	Files: NEWS doc/interpreter/func.txi scripts/general/grabcode.m
+	scripts/general/module.mk
+	scripts/general/private/__publish_html_output__.m
+	scripts/general/private/__publish_latex_output__.m
+	scripts/general/publish.m scripts/help/__unimplemented__.m
+	test/module.mk test/publish/module.mk test/publish/publish.tst
+	test/publish/test_script.m test/publish/test_script_code_only.m
+	test/publish/test_script_empty.m test/publish/test_script_example.m
+	test/publish/test_script_head_only.m
+
+2016-07-14  John W. Eaton  <jwe@octave.org>
+
+	mex.h: Fix typo in previous change.
+
+	Files: libinterp/corefcn/mex.h
+
+	allow stdbool.h to be included before mex.h (patch #8526)
+
+	* mex.h: Also skip defining bool if __bool_true_false_are_defined is
+	defined (this macro comes from stdbool.h).  Also conditionally define
+	true and false.  From Sebastian Freundt.
+
+	Files: libinterp/corefcn/mex.h
+
+2016-07-14  Mike Miller  <mtmiller@octave.org>
+
+	build: restore sndfile check for specific features needed to build
+
+	* configure.ac: Restore call to OCTAVE_CHECK_LIB_SNDFILE_OK after basic
+	existence checks done by OCTAVE_CHECK_LIB.
+
+	Files: configure.ac
+
+	build: add 'make coverage' target to build code coverage report
+
+	* test/module.mk (coverage): New target to build coverage report using
+	gcc gcov, lcov, and genhtml.  (COVERAGE_DIR, COVERAGE_INFO): New variables.
+	(test-clean): Delete $(COVERAGE_DIR) on 'make clean'.
+
+	Files: test/module.mk
+
+	build: fix bison generated source files to list correct file name
+
+	* libinterp/module.mk (%.cc %.h : %.yy): Postprocess the temporary bison
+	generated source file with $(SED) to embed the correct file name in #line
+	directives.
+
+	Files: libinterp/module.mk
+
+2016-07-14  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	doc: Use correct function name in deprecation message.
+
+	* liboctave/util/oct-inttypes.h: Message says to use isnan instead of round.
+
+	Files: liboctave/util/oct-inttypes.h
+
+2016-07-14  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	doc: Fix 2 typos: Seperately -> Separately, lit -> list
+
+	Files: doc/interpreter/plot.txi scripts/gui/uicontrol.m
+
+	main: Fix typos "It's" -> "Its" and "it's" -> "its" (Bug #48508)
+
+	Files: libinterp/corefcn/__ichol__.cc libinterp/corefcn/gl-render.cc
+	libinterp/octave-value/ov-fcn-handle.cc scripts/sparse/treelayout.m
+	scripts/sparse/treeplot.m
+
+2016-07-13  Mike Miller  <mtmiller@octave.org>
+
+	build: use simpler and more consistent checks for portaudio and sndfile
+
+	* configure.ac: Use the OCTAVE_CHECK_LIB macro to check for the portaudio and
+	sndfile libraries now that it fully supports pkg-config.
+
+	Files: configure.ac
+
+	build: allow pkg-config name to differ from library name
+
+	* acinclude.m4 (OCTAVE_CHECK_LIB): Add optional argument for pkg-config
+	project name when it differs from the common name used for the library.
+
+	Files: m4/acinclude.m4
+
+	maint: delete unused build rules for legacy doc string files
+
+	* libinterp/corefcn/module.mk (COREFCN_FT2_DF): Delete definition and
+	associated build pattern rule for .df files.
+	* libinterp/octave-value/module.mk (OV_JAVA_DF): Delete definition and
+	associated build pattern rule for .df files.
+	* libinterp/dldfcn/config-module.awk: Don't emit .df targets for .oct files.
+
+	Files: libinterp/corefcn/module.mk libinterp/dldfcn/config-module.awk
+	libinterp/octave-value/module.mk
+
+2016-07-13  John W. Eaton  <jwe@octave.org>
+
+	don't attempt to access intepreter before it is ready (bug #48494)
+
+	* octave.cc (application::interactive): Avoid dereferencing
+	m_interpreter if it is 0.
+
+	Files: libinterp/octave.cc
+
+2016-07-12  Mike Miller  <mtmiller@octave.org>
+
+	mkstemp: ensure file is opened in binary mode on Windows (bug #48326)
+
+	* mkostemp-wrapper.c: Include <fcntl.h> for definition of O_BINARY option.
+	Delete conditional definition of O_BINARY, it is always defined in gnulib's
+	fcntl.h.
+
+	Files: liboctave/wrappers/mkostemp-wrapper.c
+
+2016-07-12  Rik  <rik@octave.org>
+
+	print.m: Fix typo "1" (char) to 1 (integer) as argument to findall -depth (bug #48478).
+
+	print.m: Fix typo "1" (char) to 1 (integer) as argument to findall -depth.
+
+	Files: scripts/plot/util/print.m
+
+2016-07-12  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	style fixes in validateattributes.
+
+	* scripts/general/validateattributes.m: use 'Octave:invalid-type'
+	  instead of 'Octave:invalid-invalid-type' as error ID, fix style
+	  in BIST tests.
+
+	Files: scripts/general/validateattributes.m
+
+2016-07-12  John W. Eaton  <jwe@octave.org>
+
+	include builtin-defun-decls.h as needed
+
+	Oops, that was a side effect of including builtins.h...
+
+	* graphics.cc, sysdep.cc, __init_gnuplot__.cc, ov-usr-fcn.cc:
+	Include builtin-defun-decls.h.
+
+	Files: libinterp/corefcn/graphics.cc libinterp/corefcn/sysdep.cc
+	libinterp/dldfcn/__init_gnuplot__.cc libinterp/octave-value/ov-usr-
+	fcn.cc
+
+	include builtins.h only where needed
+
+	* graphics.cc, sysdep.cc, __init_gnuplot__.cc, ov-usr-fcn.cc: Don't
+	include builtins.h.
+
+	Files: libinterp/corefcn/graphics.cc libinterp/corefcn/sysdep.cc
+	libinterp/dldfcn/__init_gnuplot__.cc libinterp/octave-value/ov-usr-
+	fcn.cc
+
+	move find-defun-files.sh and mkbuiltins to build-aux directory
+
+	* build-aux/mk-builtins.sh: Rename from libinterp/mkbuiltins.  Update
+	option processing.  Exit immediately on any error.
+	* build-aux/find-defun-files.sh: Rename from
+	libinterp/find-defun-files.sh.
+	* Makefile.am (EXTRA_DIST): Add new files to the list.
+	* libinterp/module.mk: Update.
+
+	Files: Makefile.am build-aux/find-defun-files.sh build-aux/mk-builtins.sh
+	libinterp/find-defun-files.sh libinterp/mkbuiltins
+	libinterp/module.mk
+
+2016-07-11  John W. Eaton  <jwe@octave.org>
+
+	move new interpreter class to separate file
+
+	* libinterp/corefcn/interpreter.cc, libinterp/corefcn/interpreter.h:
+	New files.  Move interpreter class and some supporting functions here
+	from octave.h, octave.cc, toplev.h, and toplev.cc.  Move main_loop
+	into the interpreter class.  Handle exiting with a separate exception
+	object from interrupts, passing the exit status with the object.
+	Update other files as needed to remove toplev.h or include
+	interpreter.h instead of toplev.h.
+
+	* libinterp/corefcn/module.mk: Update.
+
+	* toplev.h: Deprecate.
+
+	Files: libgui/graphics/__init_qt__.cc libinterp/corefcn/cellfun.cc
+	libinterp/corefcn/debug.cc libinterp/corefcn/defaults.cc
+	libinterp/corefcn/defun.cc libinterp/corefcn/dirfns.cc
+	libinterp/corefcn/error.cc libinterp/corefcn/graphics.cc
+	libinterp/corefcn/help.cc libinterp/corefcn/input.cc
+	libinterp/corefcn/interpreter.cc libinterp/corefcn/interpreter.h
+	libinterp/corefcn/load-path.cc libinterp/corefcn/ls-mat-ascii.cc
+	libinterp/corefcn/ls-mat5.cc libinterp/corefcn/mex.cc
+	libinterp/corefcn/module.mk libinterp/corefcn/oct-hist.cc
+	libinterp/corefcn/oct-stream.cc libinterp/corefcn/octave-link.cc
+	libinterp/corefcn/sighandlers.cc libinterp/corefcn/sysdep.cc
+	libinterp/corefcn/toplev.cc libinterp/corefcn/toplev.h
+	libinterp/corefcn/utils.cc libinterp/corefcn/variables.cc
+	libinterp/dldfcn/__init_fltk__.cc libinterp/octave-value/ov-base.cc
+	libinterp/octave-value/ov-builtin.cc libinterp/octave-value/ov-
+	class.cc libinterp/octave-value/ov-classdef.cc libinterp/octave-
+	value/ov-fcn-handle.cc libinterp/octave-value/ov-fcn-inline.cc
+	libinterp/octave-value/ov-mex-fcn.cc libinterp/octave-value/ov-
+	oncleanup.cc libinterp/octave-value/ov-usr-fcn.cc
+	libinterp/octave.cc libinterp/octave.h libinterp/parse-tree/lex.ll
+	libinterp/parse-tree/oct-parse.in.yy libinterp/parse-tree/pt-arg-
+	list.cc libinterp/parse-tree/pt-bp.h libinterp/parse-tree/pt-eval.cc
+	liboctave/cruft/misc/cquit.c liboctave/cruft/misc/quit.cc
+	liboctave/cruft/misc/quit.h
+
+2016-07-12  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	Set error ids in validateattributes
+
+	* scripts/general/validateattributes.m : Set correct error IDs
+	  for errors thrown in validateattributes.
+
+	Files: scripts/general/validateattributes.m
+
+2016-07-11  Mike Miller  <mtmiller@octave.org>
+
+	* fminunc.m: Fix incorrect reference to fminunc as fminsearch (bug #48479)
+
+	Files: scripts/optimization/fminunc.m
+
+2016-07-11  John W. Eaton  <jwe@octave.org>
+
+	move call_stack class to a separate file
+
+	* call-stack.h, call-stack.cc: New files.  Move call_stack class here
+	from toplev.h and toplev.cc.  Update include file lists in other files
+	as needed.
+
+	* libinterp/corefcn/module.mk: Update.
+
+	Files: libinterp/corefcn/call-stack.cc libinterp/corefcn/call-stack.h
+	libinterp/corefcn/debug.cc libinterp/corefcn/defun.cc
+	libinterp/corefcn/error.cc libinterp/corefcn/help.cc
+	libinterp/corefcn/input.cc libinterp/corefcn/ls-mat5.cc
+	libinterp/corefcn/mex.cc libinterp/corefcn/module.mk
+	libinterp/corefcn/octave-link.cc libinterp/corefcn/toplev.cc
+	libinterp/corefcn/toplev.h libinterp/corefcn/variables.cc libinterp
+	/octave-value/ov-base.cc libinterp/octave-value/ov-builtin.cc
+	libinterp/octave-value/ov-class.cc libinterp/octave-value/ov-
+	classdef.cc libinterp/octave-value/ov-fcn-handle.cc libinterp
+	/octave-value/ov-fcn-inline.cc libinterp/octave-value/ov-mex-fcn.cc
+	libinterp/octave-value/ov-usr-fcn.cc libinterp/parse-tree/oct-
+	parse.in.yy libinterp/parse-tree/pt-eval.cc libinterp/parse-tree/pt-
+	fcn-handle.cc libinterp/parse-tree/pt-mat.cc
+
+	avoid accessing optarg and optind directly (bug #48454)
+
+	* getopt-wrapper.h, getopt-wrapper.c (octave_optarg_wrapper,
+	octave_optind_wrapper): New functions.
+	* octave.cc (cmdline_args::cmdline_args): Use them instead of optarg
+	and optind.
+
+	Files: libinterp/octave.cc liboctave/wrappers/getopt-wrapper.c
+	liboctave/wrappers/getopt-wrapper.h
+
+2016-07-10  John W. Eaton  <jwe@octave.org>
+
+	use classes for octave application and interpreter
+
+	* main-cli.cc (main): Simplify using class objects.
+	* main-gui.cc (main): Likeiwse.
+
+	* octave.h, octave.cc (octave::cmdline_options, octave::application,
+	octave::cli_application, octave::embedded_application,
+	octave::interpreter): New classes.  Replace ordinary functions and
+	static/global data with objects.  Access global application data
+	through application object.
+
+	* octave-gui.h, octave-gui.cc (octave::gui_application): New class.
+	Replace ordinary functions and static/global data with objects.
+
+	* main-window.cc (main_window::m_app_context): New data member.
+	(main_window::main_window): Pass application object instead of
+	start_gui flag.
+	(main_window::construct_octave_qt_link): Pass m_app_context to
+	octave_qt_link constructor.
+
+	* octave-interpreter.h, octave-interpreter.cc
+	(octave_interpreter::m_app_context,
+	octave_interpreter::m_exit_status): New data members.
+	(octave_interpreter::execute): Use class object to start interpreter.
+	Save exit status.
+
+	* octave-qt-link.h, octave-qt-link.cc (octave_qt_link::m_app_context):
+	New data member.
+	(octave_qt_link::do_set_default_prompts): Make prompt settings
+	conditional on whether the GUI is running.
+
+	* input.h, input.cc (interactive, forced_interactive):
+	Delete global data.
+	* dirfns.cc, error.cc, input.cc, oct-stream.cc, pager.cc,
+	sighandlers.cc, sysdep.cc, toplev.cc, lex.ll: Access interactive and
+	forced_interactive through global application object.
+
+	Files: libgui/src/main-window.cc libgui/src/main-window.h libgui/src
+	/octave-gui.cc libgui/src/octave-gui.h libgui/src/octave-
+	interpreter.cc libgui/src/octave-interpreter.h libgui/src/octave-qt-
+	link.cc libgui/src/octave-qt-link.h libinterp/corefcn/dirfns.cc
+	libinterp/corefcn/error.cc libinterp/corefcn/input.cc
+	libinterp/corefcn/input.h libinterp/corefcn/oct-stream.cc
+	libinterp/corefcn/pager.cc libinterp/corefcn/sighandlers.cc
+	libinterp/corefcn/sysdep.cc libinterp/corefcn/toplev.cc
+	libinterp/octave.cc libinterp/octave.h libinterp/parse-tree/lex.ll
+	src/main-cli.cc src/main-gui.cc
+
+2016-07-11  John W. Eaton  <jwe@octave.org>
+
+	eliminate unused class definition
+
+	* octave-gui.cc (octave_cli_thread): Delete unused class.
+
+	Files: libgui/src/octave-gui.cc
+
+	eliminate unused parameter from octave::sys::popen2
+
+	* oct-syscalls.h, oct-syscalls.cc (popen2): Eliminate interactive
+	parameter.
+	* syscalls.cc (Fpopen2): Don't pass INTERACTIVE to
+	octave::sys::popen2.
+
+	Files: libinterp/corefcn/syscalls.cc liboctave/system/oct-syscalls.cc
+	liboctave/system/oct-syscalls.h
+
+2016-07-11  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	ind2sub: Ensure Matlab compatibility and improve documentation (bug #48092).
+
+	libinterp/corefcn/sub2ind.cc (Fsub2ind): improve documentation.
+
+	libinterp/corefcn/sub2ind.cc (Find2sub): Fix subscripts, if less subscripts
+	are demanded, than dimensions are specified.  Improved documentation.
+	New tests.
+
+	Files: libinterp/corefcn/sub2ind.cc
+
+	Avoid segfault with complex matrices using LAPACK (bug #46330).
+
+	* liboctave/array/CMatrix.cc: code refactoring.
+
+	* liboctave/array/fCMatrix.cc(FloatComplexMatrix::determinant,
+	FloatComplexMatrix::rcond): compare Matrix norm with Nan.
+
+	* liboctave/array/fCMatrix.cc(FloatComplexMatrix::finverse,
+	FloatComplexMatrix::fsolve): compare Matrix norm with Inf and Nan.
+
+	* test/module.mk: Add new test file.
+
+	* test/bug-46330.tst: Add regression test case from bug report.  For Windows
+	this test will be omitted (see bug #39000, Can't override BLAS XERBLA handler).
+
+	Files: liboctave/array/CMatrix.cc liboctave/array/fCMatrix.cc
+	test/bug-46330.tst test/module.mk
+
+2016-07-10  Mike Miller  <mtmiller@octave.org>
+
+	Fix compilation error in fpucw-wrappers.c on non-x86 systems
+
+	* fpucw-wrappers.c (octave_begin_long_double_rounding): Declare the oldcw
+	variable used by BEGIN_LONG_DOUBLE_ROUNDING unconditionally since its value
+	is returned unconditionally.
+
+	Files: liboctave/wrappers/fpucw-wrappers.c
+
+2016-07-10  Carnë Draug  <carandraug@octave.org>
+
+	octave_value_list: template constructor to accept any sequence container.
+
+	* libinterp/octave-value/ovl.h: we support construct from a Array<octave_value>
+	and std::initializer_list<octave_value>.  This expands to other sequence
+	containers such as std::vector and std::list or anything that has a similar
+	interface.  Frendlier to standard library.
+
+	Files: libinterp/octave-value/ovl.h
+
+	ovl: explicit conversion to appease Apple's clang 7.3.0.
+
+	Files: libinterp/octave-value/ovl.h
+
+2016-07-07  Mike Miller  <mtmiller@octave.org>
+
+	Set default floating point unit state when initializing the interpreter (bug #48418)
+
+	* octave.cc (octave_initialize_interpreter): Call octave_set_default_fpucw.
+	Fixes floating point calculation precision errors on Windows 32-bit systems.
+
+	Files: libinterp/octave.cc
+
+2016-07-09  Rik  <rik@octave.org>
+
+	maint: correct indentation of __gnuplot_draw_axes__.m.
+
+	* __gnuplot_draw_axes__.m: Indent 'case "patch"' by one extra space.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-07-03  Mike Miller  <mtmiller@octave.org>
+
+	provide wrapper for frexp and frexpf (bug #48363)
+
+	* bootstrap.conf (gnulib_modules): Add modules frexp and frexpf.
+	* liboctave/wrappers/math-wrappers.c, liboctave/wrappers/math-wrappers.h:
+	New files.
+	* liboctave/wrappers/module.mk: Add math-wrappers.{c,h}.
+
+	* lo-mappers.cc, lo-mappers.h (octave::math::frexp): New functions.
+	(octave::math::log2): Use them instead of std::frexp.
+
+	* data.cc (Feps): Use octave::math::frexp instead of std::frexp.
+	* oct-inttypes.cc (dblesplit): Likewise.
+
+	Files: bootstrap.conf libinterp/corefcn/data.cc liboctave/numeric/lo-
+	mappers.cc liboctave/numeric/lo-mappers.h liboctave/util/oct-
+	inttypes.cc liboctave/wrappers/math-wrappers.c liboctave/wrappers
+	/math-wrappers.h liboctave/wrappers/module.mk
+
+2016-07-08  John W. Eaton  <jwe@octave.org>
+
+	fix dependency for txt-eng.cc
+
+	* libinterp/corefcn/module.mk (libinterp/corefcn/txt-eng.cc):
+	Delete dependency on libinterp/corefcn/oct-tex-symbols.cc.
+
+	* libinterp/module.mk (BUILT_SOURCES): Include
+	libinterp/corefcn/oct-tex-symbols.cc in the list.
+
+	Files: libinterp/corefcn/module.mk libinterp/module.mk
+
+2016-07-08  Mike Miller  <mtmiller@octave.org>
+
+	build: build doc-cache and DOCSTRINGS files in the build dir
+
+	* libinterp/module.mk (libinterp/DOCSTRINGS): Build in the build directory,
+	allow vpath builds to find it in $(srcdir).
+	(install-built-in-docstrings): Use file in $(srcdir) if it doesn't exist in
+	the current directory.
+
+	* scripts/module.mk (scripts/DOCSTRINGS): Build in the build directory,
+	allow vpath builds to find it in $(srcdir).
+
+	* run-octave.in: Use doc-cache and DOCSTRINGS in $(srcdir) if they don't exist
+	in the current directory.
+
+	* doc/interpreter/mk_doc_cache.m: Add an argument for the source directory.
+	Apply it to each of the DOCSTRINGS input files if they don't exist in the
+	current directory.
+
+	* doc/interpreter/munge-texi.pl: Apply $top_srcdir to each of the DOCSTRINGS
+	input files if they don't exist in the current directory.
+
+	* doc/interpreter/module.mk (doc/interpreter/doc-cache): Call mk_doc_cache.m
+	with additional $(srcdir) argument.
+
+	Files: doc/interpreter/mk_doc_cache.m doc/interpreter/module.mk
+	doc/interpreter/munge-texi.pl libinterp/module.mk run-octave.in
+	scripts/module.mk
+
 2016-07-07  Mike Miller  <mtmiller@octave.org>
 
 	build: minor correction to workaround rule to build libgnu.la (bug #45578)

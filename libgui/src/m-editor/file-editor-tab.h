@@ -114,7 +114,9 @@ public slots:
   void zoom_out (const QWidget *ID);
   void zoom_normal (const QWidget *ID);
 
-  void find (const QWidget *ID);
+  void find (const QWidget *ID, QList<QAction *>);
+  void find_next (const QWidget *ID);
+  void find_previous (const QWidget *ID);
   void goto_line (const QWidget *ID, int line = -1);
   void move_match_brace (const QWidget *ID, bool select);
   void show_auto_completion (const QWidget *ID);
@@ -159,6 +161,9 @@ signals:
   void edit_mfile_request (const QString&, const QString&,
                            const QString&, int);
 
+  void request_find_next (void);
+  void request_find_previous (void);
+
   void remove_breakpoint_via_debugger_linenr (int debugger_linenr);
   void request_remove_breakpoint_via_editor_linenr (int editor_linenr);
   void remove_all_breakpoints (void);
@@ -169,6 +174,7 @@ signals:
   void report_marker_linenr (QIntList& lines, QStringList& conditions);
   void remove_position_via_debugger_linenr (int debugger_linenr);
   void remove_all_positions (void);
+  void execute_command_in_terminal_signal (const QString&);
   // FIXME: The following is similar to "process_octave_code" signal.  However,
   // currently that signal is connected to something that simply focuses a
   // window and not actually communicate with Octave.
@@ -224,6 +230,8 @@ private:
   };
 
   bool valid_file_name (const QString& file=QString ());
+  bool exit_debug_and_clear (const QString& full_name,
+                             const QString& base_name);
   void save_file (const QString& saveFileName, bool remove_on_success = false,
                                                bool restore_breakpoints = true);
   void save_file_as (bool remove_on_success = false);
@@ -293,6 +301,7 @@ private:
   int _line;
   int _col;
   bool _lines_changed;
+
 };
 
 #endif

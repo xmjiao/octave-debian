@@ -491,7 +491,8 @@ the faces <var>f</var>, vertices <var>v</var> and color data <var>c</var> as sep
 instead of a single structure array.
 </p>
 <p>If called with no output argument, the isosurface geometry is directly
-processed with the <code>patch</code> command.
+processed with the <code>patch</code> command and a light object is added to
+the axes if not yet present.
 </p>
 <p>For example,
 </p>
@@ -552,87 +553,47 @@ light (&quot;Position&quot;, [1 1 5]);
 </pre></div>
 
 
-<p><strong>See also:</strong> <a href="#XREFisonormals">isonormals</a>, <a href="#XREFisocolors">isocolors</a>.
+<p><strong>See also:</strong> <a href="#XREFisonormals">isonormals</a>, <a href="#XREFisocolors">isocolors</a>, <a href="#XREFsmooth3">smooth3</a>.
 </p></dd></dl>
 
 
 <a name="XREFisonormals"></a><dl>
-<dt><a name="index-isonormals"></a>: <em>[<var>n</var>] =</em> <strong>isonormals</strong> <em>(<var>val</var>, <var>v</var>)</em></dt>
-<dt><a name="index-isonormals-1"></a>: <em>[<var>n</var>] =</em> <strong>isonormals</strong> <em>(<var>val</var>, <var>p</var>)</em></dt>
-<dt><a name="index-isonormals-2"></a>: <em>[<var>n</var>] =</em> <strong>isonormals</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>v</var>)</em></dt>
-<dt><a name="index-isonormals-3"></a>: <em>[<var>n</var>] =</em> <strong>isonormals</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>p</var>)</em></dt>
-<dt><a name="index-isonormals-4"></a>: <em>[<var>n</var>] =</em> <strong>isonormals</strong> <em>(&hellip;, &quot;negate&quot;)</em></dt>
-<dt><a name="index-isonormals-5"></a>: <em></em> <strong>isonormals</strong> <em>(&hellip;, <var>p</var>)</em></dt>
+<dt><a name="index-isonormals"></a>: <em>[<var>vn</var>] =</em> <strong>isonormals</strong> <em>(<var>val</var>, <var>vert</var>)</em></dt>
+<dt><a name="index-isonormals-1"></a>: <em>[<var>vn</var>] =</em> <strong>isonormals</strong> <em>(<var>val</var>, <var>hp</var>)</em></dt>
+<dt><a name="index-isonormals-2"></a>: <em>[<var>vn</var>] =</em> <strong>isonormals</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>vert</var>)</em></dt>
+<dt><a name="index-isonormals-3"></a>: <em>[<var>vn</var>] =</em> <strong>isonormals</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>hp</var>)</em></dt>
+<dt><a name="index-isonormals-4"></a>: <em>[<var>vn</var>] =</em> <strong>isonormals</strong> <em>(&hellip;, &quot;negate&quot;)</em></dt>
+<dt><a name="index-isonormals-5"></a>: <em></em> <strong>isonormals</strong> <em>(<var>val</var>, <var>hp</var>)</em></dt>
+<dt><a name="index-isonormals-6"></a>: <em></em> <strong>isonormals</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>val</var>, <var>hp</var>)</em></dt>
+<dt><a name="index-isonormals-7"></a>: <em></em> <strong>isonormals</strong> <em>(&hellip;, &quot;negate&quot;)</em></dt>
 <dd>
 <p>Calculate normals to an isosurface.
 </p>
-<p>If called with one output argument and the first input argument
-<var>val</var> is a three-dimensional array that contains the data for an
-isosurface geometry and the second input argument <var>v</var> keeps the
-vertices of an isosurface then return the normals <var>n</var> in form of
-a matrix with the same size than <var>v</var> at computed points
+<p>The vertex normals <var>vn</var> are calculated from the gradient of the
+3-dimensional array <var>val</var> (size: lxmxn) with the data for an
+isosurface geometry.  The normals point towards lower values in <var>val</var>.
+</p>
+<p>If called with one output argument <var>vn</var> and the second input argument
+<var>vert</var> holds the vertices of an isosurface, the normals <var>vn</var> are
+calculated at the vertices <var>vert</var> on a grid given by
 <code>[x, y, z] = meshgrid (1:l, 1:m, 1:n)</code>.  The output argument
-<var>n</var> can be taken to manually set <var>VertexNormals</var> of a patch.
+<var>vn</var> has the same size as <var>vert</var> and can be used to set the
+<code>&quot;VertexNormals&quot;</code> property of the corresponding patch.
 </p>
-<p>If called with further input arguments <var>x</var>, <var>y</var> and <var>z</var>
-which are three&ndash;dimensional arrays with the same size than <var>val</var>
-then the volume data is taken at those given points.  Instead of the
-vertices data <var>v</var> a patch handle <var>p</var> can be passed to this
-function.
+<p>If called with further input arguments <var>x</var>, <var>y</var>, and <var>z</var>
+which are 3-dimensional arrays with the same size as <var>val</var>,
+the volume data is taken at these points.  Instead of the vertex data
+<var>vert</var>, a patch handle <var>hp</var> can be passed to this function.
 </p>
-<p>If given the string input argument <code>&quot;negate&quot;</code> as last input argument
-then compute the reverse vector normals of an isosurface geometry.
+<p>If the last input argument is the string <code>&quot;negate&quot;</code>, compute the
+reverse vector normals of an isosurface geometry (i.e., pointed towards
+higher values in <var>val</var>).
 </p>
-<p>If no output argument is given then directly redraw the patch that is
-given by the patch handle <var>p</var>.
+<p>If no output argument is given, the property <code>&quot;VertexNormals&quot;</code> of
+the patch associated with the patch handle <var>hp</var> is changed directly.
 </p>
-<p>For example:
-</p>
-<div class="smallexample">
-<pre class="smallexample">function isofinish (p)
-  set (gca, &quot;PlotBoxAspectRatioMode&quot;, &quot;manual&quot;, ...
-            &quot;PlotBoxAspectRatio&quot;, [1 1 1]);
-  set (p, &quot;VertexNormals&quot;, -get (p,&quot;VertexNormals&quot;)); # Revert normals
-  set (p, &quot;FaceColor&quot;, &quot;interp&quot;);
-  ## set (p, &quot;FaceLighting&quot;, &quot;phong&quot;);
-  ## light (&quot;Position&quot;, [1 1 5]); # Available with JHandles
-endfunction
 
-N = 15;    # Increase number of vertices in each direction
-iso = .4;  # Change isovalue to .1 to display a sphere
-lin = linspace (0, 2, N);
-[x, y, z] = meshgrid (lin, lin, lin);
-c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-figure (); # Open another figure window
-
-subplot (2,2,1); view (-38, 20);
-[f, v, cdat] = isosurface (x, y, z, c, iso, y);
-p = patch (&quot;Faces&quot;, f, &quot;Vertices&quot;, v, &quot;FaceVertexCData&quot;, cdat, ...
-           &quot;FaceColor&quot;, &quot;interp&quot;, &quot;EdgeColor&quot;, &quot;none&quot;);
-isofinish (p);  # Call user function isofinish
-
-subplot (2,2,2); view (-38, 20);
-p = patch (&quot;Faces&quot;, f, &quot;Vertices&quot;, v, &quot;FaceVertexCData&quot;, cdat, ...
-           &quot;FaceColor&quot;, &quot;interp&quot;, &quot;EdgeColor&quot;, &quot;none&quot;);
-isonormals (x, y, z, c, p); # Directly modify patch
-isofinish (p);
-
-subplot (2,2,3); view (-38, 20);
-p = patch (&quot;Faces&quot;, f, &quot;Vertices&quot;, v, &quot;FaceVertexCData&quot;, cdat, ...
-           &quot;FaceColor&quot;, &quot;interp&quot;, &quot;EdgeColor&quot;, &quot;none&quot;);
-n = isonormals (x, y, z, c, v); # Compute normals of isosurface
-set (p, &quot;VertexNormals&quot;, n);    # Manually set vertex normals
-isofinish (p);
-
-subplot (2,2,4); view (-38, 20);
-p = patch (&quot;Faces&quot;, f, &quot;Vertices&quot;, v, &quot;FaceVertexCData&quot;, cdat, ...
-           &quot;FaceColor&quot;, &quot;interp&quot;, &quot;EdgeColor&quot;, &quot;none&quot;);
-isonormals (x, y, z, c, v, &quot;negate&quot;); # Use reverse directly
-isofinish (p);
-</pre></div>
-
-
-<p><strong>See also:</strong> <a href="#XREFisosurface">isosurface</a>, <a href="#XREFisocolors">isocolors</a>.
+<p><strong>See also:</strong> <a href="#XREFisosurface">isosurface</a>, <a href="#XREFisocolors">isocolors</a>, <a href="#XREFsmooth3">smooth3</a>.
 </p></dd></dl>
 
 
@@ -719,6 +680,50 @@ isofinish (p);
 </p></dd></dl>
 
 
+<a name="XREFsmooth3"></a><dl>
+<dt><a name="index-smooth3"></a>: <em><var>smoothed_data</var> =</em> <strong>smooth3</strong> <em>(<var>data</var>)</em></dt>
+<dt><a name="index-smooth3-1"></a>: <em><var>smoothed_data</var> =</em> <strong>smooth3</strong> <em>(<var>data</var>, <var>method</var>)</em></dt>
+<dt><a name="index-smooth3-2"></a>: <em><var>smoothed_data</var> =</em> <strong>smooth3</strong> <em>(<var>data</var>, <var>method</var>, <var>sz</var>)</em></dt>
+<dt><a name="index-smooth3-3"></a>: <em><var>smoothed_data</var> =</em> <strong>smooth3</strong> <em>(<var>data</var>, <var>method</var>, <var>sz</var>, <var>std_dev</var>)</em></dt>
+<dd><p>Smooth values of 3-dimensional matrix <var>data</var>.
+</p>
+<p>This function can be used, for example, to reduce the impact of noise in
+<var>data</var> before calculating isosurfaces.
+</p>
+<p><var>data</var> must be a non-singleton 3-dimensional matrix.  The smoothed data
+from this matrix is returned in <var>smoothed_data</var> which is of the same
+size as <var>data</var>.
+</p>
+<p>The option input <var>method</var> determines which convolution kernel is used
+for the smoothing process.  Possible choices:
+</p>
+<dl compact="compact">
+<dt><code>&quot;box&quot;</code>, <code>&quot;b&quot;</code> (default)</dt>
+<dd><p>to use a convolution kernel with sharp edges.
+</p>
+</dd>
+<dt><code>&quot;gaussian&quot;</code>, <code>&quot;g&quot;</code></dt>
+<dd><p>to use a convolution kernel that is represented by a non-correlated
+trivariate normal distribution function.
+</p></dd>
+</dl>
+
+<p><var>sz</var> is either a vector of 3 elements representing the size of the
+convolution kernel in x-, y- and z-direction or a scalar, in which case
+the same size is used in all three dimensions.  The default value is 3.
+</p>
+<p>When <var>method</var> is <code>&quot;gaussian&quot;</code>, <var>std_dev</var> defines the standard
+deviation of the trivariate normal distribution function.  <var>std_dev</var> is
+either a vector of 3 elements representing the standard deviation of the
+Gaussian convolution kernel in x-, y- and z-directions or a scalar, in which
+case the same value is used in all three dimensions.  The default value is
+0.65.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFisosurface">isosurface</a>, <a href="#XREFisonormals">isonormals</a>, <a href="Graphics-Objects.html#XREFpatch">patch</a>.
+</p></dd></dl>
+
+
 <a name="XREFshrinkfaces"></a><dl>
 <dt><a name="index-shrinkfaces"></a>: <em></em> <strong>shrinkfaces</strong> <em>(<var>p</var>, <var>sf</var>)</em></dt>
 <dt><a name="index-shrinkfaces-1"></a>: <em><var>nfv</var> =</em> <strong>shrinkfaces</strong> <em>(<var>p</var>, <var>sf</var>)</em></dt>
@@ -795,6 +800,40 @@ vectors [x, y, z].
 <var>se</var>.  If not given, <var>se</var> defaults to 10.
 </p>
 <p><strong>See also:</strong> <a href="#XREFdiffuse">diffuse</a>, <a href="#XREFsurfl">surfl</a>.
+</p></dd></dl>
+
+
+<a name="XREFlighting"></a><dl>
+<dt><a name="index-lighting"></a>: <em></em> <strong>lighting</strong> <em>(<var>type</var>)</em></dt>
+<dt><a name="index-lighting-1"></a>: <em></em> <strong>lighting</strong> <em>(<var>hax</var>, <var>type</var>)</em></dt>
+<dd><p>Set the lighting of patch or surface graphic objects.
+</p>
+<p>Valid arguments for <var>type</var> are
+</p>
+<dl compact="compact">
+<dt><code>&quot;flat&quot;</code></dt>
+<dd><p>Draw objects with faceted lighting effects.
+</p>
+</dd>
+<dt><code>&quot;gouraud&quot;</code></dt>
+<dd><p>Draw objects with linear interpolation of the lighting effects between the
+vertices.
+</p>
+</dd>
+<dt><code>&quot;none&quot;</code></dt>
+<dd><p>Draw objects without light and shadow effects.
+</p></dd>
+</dl>
+
+<p>If the first argument <var>hax</var> is an axes handle, then change the lighting
+effects of objects in this axis, rather than the current axes returned by
+<code>gca</code>.
+</p>
+<p>The lighting effects are only visible if at least one light object is
+present and visible in the same axes.
+</p>
+
+<p><strong>See also:</strong> <a href="Graphics-Objects.html#XREFlight">light</a>, <a href="Two_002dDimensional-Plots.html#XREFfill">fill</a>, <a href="#XREFmesh">mesh</a>, <a href="Graphics-Objects.html#XREFpatch">patch</a>, <a href="Two_002dDimensional-Plots.html#XREFpcolor">pcolor</a>, <a href="#XREFsurf">surf</a>, <a href="Graphics-Objects.html#XREFsurface">surface</a>, <a href="#XREFshading">shading</a>.
 </p></dd></dl>
 
 

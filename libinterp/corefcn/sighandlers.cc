@@ -45,14 +45,15 @@ along with Octave; see the file COPYING.  If not, see
 #include "defun.h"
 #include "error.h"
 #include "input.h"
+#include "interpreter.h"
 #include "load-save.h"
+#include "octave.h"
 #include "oct-map.h"
 #include "pager.h"
 #include "pt-bp.h"
 #include "pt-eval.h"
 #include "sighandlers.h"
 #include "sysdep.h"
-#include "toplev.h"
 #include "utils.h"
 #include "variables.h"
 
@@ -489,7 +490,7 @@ namespace octave
           {
             if (! octave_debug_on_interrupt_state)
               {
-                tree_evaluator::debug_mode = true;
+                octave::tree_evaluator::debug_mode = true;
                 octave_debug_on_interrupt_state = true;
 
                 return;
@@ -498,7 +499,7 @@ namespace octave
               {
                 // Clear the flag and do normal interrupt stuff.
 
-                tree_evaluator::debug_mode
+                octave::tree_evaluator::debug_mode
                   = bp_table::have_breakpoints () || Vdebugging;
                 octave_debug_on_interrupt_state = false;
               }
@@ -523,7 +524,8 @@ namespace octave
             octave_signal_caught = 1;
             octave_interrupt_state++;
 
-            if (interactive && ! forced_interactive
+            if (octave::application::interactive ()
+                && ! octave::application::forced_interactive ()
                 && octave_interrupt_state == 2)
               std::cerr << "Press Control-C again to abort." << std::endl;
 

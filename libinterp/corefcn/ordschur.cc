@@ -33,33 +33,33 @@ extern "C"
 {
   F77_RET_T
   F77_FUNC (dtrsen, DTRSEN) (F77_CONST_CHAR_ARG_DECL, F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type*, const octave_idx_type&,
-                             double*, const octave_idx_type&, double*, const octave_idx_type&,
-                             double*, double*, octave_idx_type&, double&, double&, double*,
-                             const octave_idx_type&, octave_idx_type*,
-                             const octave_idx_type&, octave_idx_type&);
+                             const F77_INT*, const F77_INT&,
+                             F77_DBLE*, const F77_INT&, F77_DBLE*, const F77_INT&,
+                             F77_DBLE*, F77_DBLE*, F77_INT&, F77_DBLE&, F77_DBLE&, F77_DBLE*,
+                             const F77_INT&, F77_INT*,
+                             const F77_INT&, F77_INT&);
 
   F77_RET_T
   F77_FUNC (ztrsen, ZTRSEN) (F77_CONST_CHAR_ARG_DECL, F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type*, const octave_idx_type&,
-                             Complex*, const octave_idx_type&, Complex*, const octave_idx_type&,
-                             Complex*, octave_idx_type&, double&, double&, Complex*,
-                             const octave_idx_type&, octave_idx_type &);
+                             const F77_INT*, const F77_INT&,
+                             F77_DBLE_CMPLX*, const F77_INT&, F77_DBLE_CMPLX*, const F77_INT&,
+                             F77_DBLE_CMPLX*, F77_INT&, F77_DBLE&, F77_DBLE&, F77_DBLE_CMPLX*,
+                             const F77_INT&, F77_INT &);
 
   F77_RET_T
   F77_FUNC (strsen, STRSEN) (F77_CONST_CHAR_ARG_DECL, F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type*, const octave_idx_type&,
-                             float*, const octave_idx_type&, float*, const octave_idx_type&,
-                             float*, float*, octave_idx_type&, float&, float&, float*,
-                             const octave_idx_type&, octave_idx_type*,
-                             const octave_idx_type&, octave_idx_type&);
+                             const F77_INT*, const F77_INT&,
+                             F77_REAL*, const F77_INT&, F77_REAL*, const F77_INT&,
+                             F77_REAL*, F77_REAL*, F77_INT&, F77_REAL&, F77_REAL&, F77_REAL*,
+                             const F77_INT&, F77_INT*,
+                             const F77_INT&, F77_INT&);
 
   F77_RET_T
   F77_FUNC (ctrsen, CTRSEN) (F77_CONST_CHAR_ARG_DECL, F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type*, const octave_idx_type&,
-                             FloatComplex*, const octave_idx_type&, FloatComplex*, const octave_idx_type&,
-                             FloatComplex*, octave_idx_type&, float&, float&, FloatComplex*,
-                             const octave_idx_type&, octave_idx_type &);
+                             const F77_INT*, const F77_INT&,
+                             F77_CMPLX*, const F77_INT&, F77_CMPLX*, const F77_INT&,
+                             F77_CMPLX*, F77_INT&, F77_REAL&, F77_REAL&, F77_CMPLX*,
+                             const F77_INT&, F77_INT &);
 }
 
 DEFUN (ordschur, args, ,
@@ -129,20 +129,20 @@ is in the upper left corner, by doing:
   const bool complex_type = args(0).is_complex_type ()
                             || args(1).is_complex_type ();
 
-#define PREPARE_ARGS(TYPE, TYPE_M, TYPE_COND) \
-          TYPE ## Matrix U = args(0).x ## TYPE_M ## _value ("ordschur: U and S must be real or complex floating point matrices"); \
-          TYPE ## Matrix S = args(1).x ## TYPE_M ## _value ("ordschur: U and S must be real or complex floating point matrices"); \
-          TYPE ## Matrix w (dim_vector (n, 1)); \
-          TYPE ## Matrix work (dim_vector (n, 1)); \
-          octave_idx_type m; \
-          octave_idx_type info; \
-          TYPE_COND cond1, cond2;
+#define PREPARE_ARGS(TYPE, TYPE_M, TYPE_COND)                           \
+  TYPE ## Matrix U = args(0).x ## TYPE_M ## _value ("ordschur: U and S must be real or complex floating point matrices"); \
+  TYPE ## Matrix S = args(1).x ## TYPE_M ## _value ("ordschur: U and S must be real or complex floating point matrices"); \
+  TYPE ## Matrix w (dim_vector (n, 1));                                 \
+  TYPE ## Matrix work (dim_vector (n, 1));                              \
+  octave_idx_type m;                                                    \
+  octave_idx_type info;                                                 \
+  TYPE_COND cond1, cond2;
 
-#define PREPARE_OUTPUT()\
-          if (info != 0) \
-            error ("ordschur: trsen failed"); \
- \
-          retval = ovl (U, S);
+#define PREPARE_OUTPUT()                        \
+  if (info != 0)                                \
+    error ("ordschur: trsen failed");           \
+                                                \
+  retval = ovl (U, S);
 
   if (double_type)
     {
@@ -152,8 +152,8 @@ is in the upper left corner, by doing:
 
           F77_XFCN (ztrsen, ztrsen,
                     (F77_CONST_CHAR_ARG ("N"), F77_CONST_CHAR_ARG ("V"),
-                     sel.data (), n, S.fortran_vec (), n, U.fortran_vec (), n,
-                     w.fortran_vec (), m, cond1, cond2, work.fortran_vec (), n,
+                     sel.data (), n, F77_DBLE_CMPLX_ARG (S.fortran_vec ()), n, F77_DBLE_CMPLX_ARG (U.fortran_vec ()), n,
+                     F77_DBLE_CMPLX_ARG (w.fortran_vec ()), m, cond1, cond2, F77_DBLE_CMPLX_ARG (work.fortran_vec ()), n,
                      info));
 
           PREPARE_OUTPUT()
@@ -181,8 +181,8 @@ is in the upper left corner, by doing:
 
           F77_XFCN (ctrsen, ctrsen,
                     (F77_CONST_CHAR_ARG ("N"), F77_CONST_CHAR_ARG ("V"),
-                     sel.data (), n, S.fortran_vec (), n, U.fortran_vec (), n,
-                     w.fortran_vec (), m, cond1, cond2, work.fortran_vec (), n,
+                     sel.data (), n, F77_CMPLX_ARG (S.fortran_vec ()), n, F77_CMPLX_ARG (U.fortran_vec ()), n,
+                     F77_CMPLX_ARG (w.fortran_vec ()), m, cond1, cond2, F77_CMPLX_ARG (work.fortran_vec ()), n,
                      info));
 
           PREPARE_OUTPUT ()

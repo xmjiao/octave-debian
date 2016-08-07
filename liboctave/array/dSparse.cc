@@ -69,82 +69,82 @@ along with Octave; see the file COPYING.  If not, see
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (dgbtrf, DGBTRF) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, const octave_idx_type&,
-                             double*, const octave_idx_type&,
-                             octave_idx_type*, octave_idx_type&);
+  F77_FUNC (dgbtrf, DGBTRF) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, const F77_INT&,
+                             F77_DBLE*, const F77_INT&,
+                             F77_INT*, F77_INT&);
 
   F77_RET_T
   F77_FUNC (dgbtrs, DGBTRS) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const double*, const octave_idx_type&,
-                             const octave_idx_type*, double*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_INT&, const F77_INT&,
+                             const F77_DBLE*, const F77_INT&,
+                             const F77_INT*, F77_DBLE*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (dgbcon, DGBCON) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, double*,
-                             const octave_idx_type&, const octave_idx_type*,
-                             const double&, double&, double*,
-                             octave_idx_type*, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_DBLE*,
+                             const F77_INT&, const F77_INT*,
+                             const F77_DBLE&, F77_DBLE&, F77_DBLE*,
+                             F77_INT*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (dpbtrf, DPBTRF) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             double*, const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             F77_DBLE*, const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (dpbtrs, DPBTRS) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, double*,
-                             const octave_idx_type&, double*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_DBLE*,
+                             const F77_INT&, F77_DBLE*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (dpbcon, DPBCON) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             double*, const octave_idx_type&,
-                             const double&, double&, double*,
-                             octave_idx_type*, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             F77_DBLE*, const F77_INT&,
+                             const F77_DBLE&, F77_DBLE&, F77_DBLE*,
+                             F77_INT*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
   F77_RET_T
-  F77_FUNC (dptsv, DPTSV) (const octave_idx_type&, const octave_idx_type&,
-                           double*, double*, double*, const octave_idx_type&,
-                           octave_idx_type&);
+  F77_FUNC (dptsv, DPTSV) (const F77_INT&, const F77_INT&,
+                           F77_DBLE*, F77_DBLE*, F77_DBLE*, const F77_INT&,
+                           F77_INT&);
 
   F77_RET_T
-  F77_FUNC (dgtsv, DGTSV) (const octave_idx_type&, const octave_idx_type&,
-                           double*, double*, double*, double*,
-                           const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (dgtsv, DGTSV) (const F77_INT&, const F77_INT&,
+                           F77_DBLE*, F77_DBLE*, F77_DBLE*, F77_DBLE*,
+                           const F77_INT&, F77_INT&);
 
   F77_RET_T
-  F77_FUNC (dgttrf, DGTTRF) (const octave_idx_type&, double*, double*,
-                             double*, double*, octave_idx_type*,
-                             octave_idx_type&);
+  F77_FUNC (dgttrf, DGTTRF) (const F77_INT&, F77_DBLE*, F77_DBLE*,
+                             F77_DBLE*, F77_DBLE*, F77_INT*,
+                             F77_INT&);
 
   F77_RET_T
   F77_FUNC (dgttrs, DGTTRS) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const double*, const double*, const double*,
-                             const double*, const octave_idx_type*,
-                             double *, const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_DBLE*, const F77_DBLE*, const F77_DBLE*,
+                             const F77_DBLE*, const F77_INT*,
+                             F77_DBLE *, const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (zptsv, ZPTSV) (const octave_idx_type&, const octave_idx_type&,
-                           double*, Complex*, Complex*, const octave_idx_type&,
-                           octave_idx_type&);
+  F77_FUNC (zptsv, ZPTSV) (const F77_INT&, const F77_INT&,
+                           F77_DBLE*, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*, const F77_INT&,
+                           F77_INT&);
 
   F77_RET_T
-  F77_FUNC (zgtsv, ZGTSV) (const octave_idx_type&, const octave_idx_type&,
-                           Complex*, Complex*, Complex*, Complex*,
-                           const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (zgtsv, ZGTSV) (const F77_INT&, const F77_INT&,
+                           F77_DBLE_CMPLX*, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*,
+                           const F77_INT&, F77_INT&);
 
 }
 
@@ -4146,7 +4146,7 @@ SparseMatrix::trisolve (MatrixType &mattype, const ComplexMatrix& b,
           retval = b;
           Complex *result = retval.fortran_vec ();
 
-          F77_XFCN (zptsv, ZPTSV, (nr, b_nc, D, DL, result,
+          F77_XFCN (zptsv, ZPTSV, (nr, b_nc, D, F77_DBLE_CMPLX_ARG (DL), F77_DBLE_CMPLX_ARG (result),
                                    b_nr, err));
 
           if (err != 0)
@@ -4204,7 +4204,7 @@ SparseMatrix::trisolve (MatrixType &mattype, const ComplexMatrix& b,
           retval = b;
           Complex *result = retval.fortran_vec ();
 
-          F77_XFCN (zgtsv, ZGTSV, (nr, b_nc, DL, D, DU, result,
+          F77_XFCN (zgtsv, ZGTSV, (nr, b_nc, F77_DBLE_CMPLX_ARG (DL), F77_DBLE_CMPLX_ARG (D), F77_DBLE_CMPLX_ARG (DU), F77_DBLE_CMPLX_ARG (result),
                                    b_nr, err));
 
           if (err != 0)
@@ -7477,12 +7477,12 @@ SparseMatrix::sum (int dim) const
 SparseMatrix
 SparseMatrix::sumsq (int dim) const
 {
-#define ROW_EXPR \
-  double d = data (i); \
+#define ROW_EXPR                                \
+  double d = data (i);                          \
   tmp[ridx (i)] += d * d
 
-#define COL_EXPR \
-  double d = data (i); \
+#define COL_EXPR                                \
+  double d = data (i);                          \
   tmp[j] += d * d
 
   SPARSE_BASE_REDUCTION_OP (SparseMatrix, double, ROW_EXPR, COL_EXPR,
@@ -7656,8 +7656,8 @@ operator * (const SparseMatrix& a, const PermMatrix& p)
 
 // FIXME: it would be nice to share code among the min/max functions below.
 
-#define EMPTY_RETURN_CHECK(T) \
-  if (nr == 0 || nc == 0) \
+#define EMPTY_RETURN_CHECK(T)                   \
+  if (nr == 0 || nc == 0)                       \
     return T (nr, nc);
 
 SparseMatrix

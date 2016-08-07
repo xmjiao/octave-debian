@@ -36,119 +36,119 @@ extern "C"
 {
   F77_RET_T
   F77_FUNC (dgebal, DGEBAL) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, double*,
-                             const octave_idx_type&, octave_idx_type&,
-                             octave_idx_type&, double*, octave_idx_type&
+                             const F77_INT&, F77_DBLE*,
+                             const F77_INT&, F77_INT&,
+                             F77_INT&, F77_DBLE*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (dgehrd, DGEHRD) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, double*,
-                             const octave_idx_type&, double*, double*,
-                             const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (dgehrd, DGEHRD) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_DBLE*,
+                             const F77_INT&, F77_DBLE*, F77_DBLE*,
+                             const F77_INT&, F77_INT&);
 
   F77_RET_T
-  F77_FUNC (dorghr, DORGHR) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, double*,
-                             const octave_idx_type&, double*, double*,
-                             const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (dorghr, DORGHR) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_DBLE*,
+                             const F77_INT&, F77_DBLE*, F77_DBLE*,
+                             const F77_INT&, F77_INT&);
 
   F77_RET_T
   F77_FUNC (dgebak, DGEBAK) (F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, double*,
-                             const octave_idx_type&, double*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_DBLE*,
+                             const F77_INT&, F77_DBLE*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (sgebal, SGEBAL) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, float*,
-                             const octave_idx_type&, octave_idx_type&,
-                             octave_idx_type&, float*, octave_idx_type&
+                             const F77_INT&, F77_REAL*,
+                             const F77_INT&, F77_INT&,
+                             F77_INT&, F77_REAL*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (sgehrd, SGEHRD) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, float*,
-                             const octave_idx_type&, float*, float*,
-                             const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (sgehrd, SGEHRD) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_REAL*,
+                             const F77_INT&, F77_REAL*, F77_REAL*,
+                             const F77_INT&, F77_INT&);
 
   F77_RET_T
-  F77_FUNC (sorghr, SORGHR) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, float*,
-                             const octave_idx_type&, float*, float*,
-                             const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (sorghr, SORGHR) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_REAL*,
+                             const F77_INT&, F77_REAL*, F77_REAL*,
+                             const F77_INT&, F77_INT&);
 
   F77_RET_T
   F77_FUNC (sgebak, SGEBAK) (F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, float*,
-                             const octave_idx_type&, float*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_REAL*,
+                             const F77_INT&, F77_REAL*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (zgebal, ZGEBAL) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, Complex*,
-                             const octave_idx_type&, octave_idx_type&,
-                             octave_idx_type&, double*, octave_idx_type&
+                             const F77_INT&, F77_DBLE_CMPLX*,
+                             const F77_INT&, F77_INT&,
+                             F77_INT&, F77_DBLE*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (zgehrd, ZGEHRD) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, Complex*,
-                             const octave_idx_type&, Complex*, Complex*,
-                             const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (zgehrd, ZGEHRD) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_DBLE_CMPLX*,
+                             const F77_INT&, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*,
+                             const F77_INT&, F77_INT&);
 
   F77_RET_T
-  F77_FUNC (zunghr, ZUNGHR) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, Complex*,
-                             const octave_idx_type&, Complex*, Complex*,
-                             const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (zunghr, ZUNGHR) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_DBLE_CMPLX*,
+                             const F77_INT&, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*,
+                             const F77_INT&, F77_INT&);
 
   F77_RET_T
   F77_FUNC (zgebak, ZGEBAK) (F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, double*,
-                             const octave_idx_type&, Complex*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_DBLE*,
+                             const F77_INT&, F77_DBLE_CMPLX*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (cgebal, CGEBAL) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, octave_idx_type&,
-                             octave_idx_type&, float*, octave_idx_type&
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_INT&,
+                             F77_INT&, F77_REAL*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (cgehrd, CGEHRD) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, FloatComplex*,
-                             FloatComplex*, const octave_idx_type&,
-                             octave_idx_type&);
+  F77_FUNC (cgehrd, CGEHRD) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_CMPLX*,
+                             F77_CMPLX*, const F77_INT&,
+                             F77_INT&);
 
   F77_RET_T
-  F77_FUNC (cunghr, CUNGHR) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, FloatComplex*,
-                             FloatComplex*, const octave_idx_type&,
-                             octave_idx_type&);
+  F77_FUNC (cunghr, CUNGHR) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_CMPLX*,
+                             F77_CMPLX*, const F77_INT&,
+                             F77_INT&);
 
   F77_RET_T
   F77_FUNC (cgebak, CGEBAK) (F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, float*,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_REAL*,
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 }
@@ -305,7 +305,7 @@ hess<ComplexMatrix>::init (const ComplexMatrix& a)
   double *pscale = scale.fortran_vec ();
 
   F77_XFCN (zgebal, ZGEBAL, (F77_CONST_CHAR_ARG2 (&job, 1),
-                             n, h, n, ilo, ihi, pscale, info
+                             n, F77_DBLE_CMPLX_ARG (h), n, ilo, ihi, pscale, info
                              F77_CHAR_ARG_LEN (1)));
 
   Array<Complex> tau (dim_vector (n-1, 1));
@@ -314,17 +314,17 @@ hess<ComplexMatrix>::init (const ComplexMatrix& a)
   Array<Complex> work (dim_vector (lwork, 1));
   Complex *pwork = work.fortran_vec ();
 
-  F77_XFCN (zgehrd, ZGEHRD, (n, ilo, ihi, h, n, ptau, pwork, lwork, info));
+  F77_XFCN (zgehrd, ZGEHRD, (n, ilo, ihi, F77_DBLE_CMPLX_ARG (h), n, F77_DBLE_CMPLX_ARG (ptau), F77_DBLE_CMPLX_ARG (pwork), lwork, info));
 
   unitary_hess_mat = hess_mat;
   Complex *z = unitary_hess_mat.fortran_vec ();
 
-  F77_XFCN (zunghr, ZUNGHR, (n, ilo, ihi, z, n, ptau, pwork,
+  F77_XFCN (zunghr, ZUNGHR, (n, ilo, ihi, F77_DBLE_CMPLX_ARG (z), n, F77_DBLE_CMPLX_ARG (ptau), F77_DBLE_CMPLX_ARG (pwork),
                              lwork, info));
 
   F77_XFCN (zgebak, ZGEBAK, (F77_CONST_CHAR_ARG2 (&job, 1),
                              F77_CONST_CHAR_ARG2 (&side, 1),
-                             n, ilo, ihi, pscale, n, z, n, info
+                             n, ilo, ihi, pscale, n, F77_DBLE_CMPLX_ARG (z), n, info
                              F77_CHAR_ARG_LEN (1)
                              F77_CHAR_ARG_LEN (1)));
 
@@ -369,7 +369,7 @@ hess<FloatComplexMatrix>::init (const FloatComplexMatrix& a)
   float *pscale = scale.fortran_vec ();
 
   F77_XFCN (cgebal, CGEBAL, (F77_CONST_CHAR_ARG2 (&job, 1),
-                             n, h, n, ilo, ihi, pscale, info
+                             n, F77_CMPLX_ARG (h), n, ilo, ihi, pscale, info
                              F77_CHAR_ARG_LEN (1)));
 
   Array<FloatComplex> tau (dim_vector (n-1, 1));
@@ -378,17 +378,17 @@ hess<FloatComplexMatrix>::init (const FloatComplexMatrix& a)
   Array<FloatComplex> work (dim_vector (lwork, 1));
   FloatComplex *pwork = work.fortran_vec ();
 
-  F77_XFCN (cgehrd, CGEHRD, (n, ilo, ihi, h, n, ptau, pwork, lwork, info));
+  F77_XFCN (cgehrd, CGEHRD, (n, ilo, ihi, F77_CMPLX_ARG (h), n, F77_CMPLX_ARG (ptau), F77_CMPLX_ARG (pwork), lwork, info));
 
   unitary_hess_mat = hess_mat;
   FloatComplex *z = unitary_hess_mat.fortran_vec ();
 
-  F77_XFCN (cunghr, CUNGHR, (n, ilo, ihi, z, n, ptau, pwork,
+  F77_XFCN (cunghr, CUNGHR, (n, ilo, ihi, F77_CMPLX_ARG (z), n, F77_CMPLX_ARG (ptau), F77_CMPLX_ARG (pwork),
                              lwork, info));
 
   F77_XFCN (cgebak, CGEBAK, (F77_CONST_CHAR_ARG2 (&job, 1),
                              F77_CONST_CHAR_ARG2 (&side, 1),
-                             n, ilo, ihi, pscale, n, z, n, info
+                             n, ilo, ihi, pscale, n, F77_CMPLX_ARG (z), n, info
                              F77_CHAR_ARG_LEN (1)
                              F77_CHAR_ARG_LEN (1)));
 

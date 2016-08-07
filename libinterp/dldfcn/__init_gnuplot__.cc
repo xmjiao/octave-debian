@@ -34,7 +34,7 @@ To initialize:
 #endif
 
 #include "build-env.h"
-#include "builtins.h"
+#include "builtin-defun-decls.h"
 #include "defun-dld.h"
 #include "error.h"
 #include "file-stat.h"

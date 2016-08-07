@@ -214,15 +214,28 @@ result.
 <a name="XREFsub2ind"></a><dl>
 <dt><a name="index-sub2ind"></a>: <em><var>ind</var> =</em> <strong>sub2ind</strong> <em>(<var>dims</var>, <var>i</var>, <var>j</var>)</em></dt>
 <dt><a name="index-sub2ind-1"></a>: <em><var>ind</var> =</em> <strong>sub2ind</strong> <em>(<var>dims</var>, <var>s1</var>, <var>s2</var>, &hellip;, <var>sN</var>)</em></dt>
-<dd><p>Convert subscripts to a linear index.
+<dd><p>Convert subscripts to linear indices.
 </p>
-<p>The following example shows how to convert the two-dimensional index
-<code>(2,3)</code> of a 3-by-3 matrix to a linear index.  The matrix is linearly
-indexed moving from one column to next, filling up all rows in each column.
+<p>Assume the following 3-by-3 matrices.  The left matrix contains the
+subscript tuples for each matrix element.  Those are converted to
+linear indices shown in the right matrix.  The matrices are linearly
+indexed moving from one column to next, filling up all rows in each
+column.
 </p>
 <div class="example">
-<pre class="example">linear_index = sub2ind ([3, 3], 2, 3)
-&rArr; 8
+<pre class="example">[(1,1), (1,2), (1,3)]     [1, 4, 7]
+[(2,1), (2,2), (2,3)] ==&gt; [2, 5, 8]
+[(3,1), (3,2), (3,3)]     [3, 6, 9]
+</pre></div>
+
+<p>The following example shows how to convert the two-dimensional indices
+<code>(2,1)</code> and <code>(2,3)</code> of a 3-by-3 matrix to a linear index.
+</p>
+<div class="example">
+<pre class="example">s1 = [2, 2];
+s2 = [1, 3];
+ind = sub2ind ([3, 3], s1, s2)
+&rArr; ind =  2   8
 </pre></div>
 
 <p><strong>See also:</strong> <a href="#XREFind2sub">ind2sub</a>.
@@ -231,16 +244,46 @@ indexed moving from one column to next, filling up all rows in each column.
 
 <a name="XREFind2sub"></a><dl>
 <dt><a name="index-ind2sub"></a>: <em>[<var>s1</var>, <var>s2</var>, &hellip;, <var>sN</var>] =</em> <strong>ind2sub</strong> <em>(<var>dims</var>, <var>ind</var>)</em></dt>
-<dd><p>Convert a linear index to subscripts.
+<dd><p>Convert linear indices to subscripts.
 </p>
-<p>The following example shows how to convert the linear index <code>8</code>
-in a 3-by-3 matrix into a subscript.  The matrix is linearly indexed
-moving from one column to next, filling up all rows in each column.
+<p>Assume the following 3-by-3 matrices.  The left matrix contains
+the linear indices <var>ind</var> for each matrix element.  Those are
+converted to subscript tuples shown in the right matrix.  The
+matrices are linearly indexed moving from one column to next,
+filling up all rows in each column.
 </p>
 <div class="example">
-<pre class="example">[r, c] = ind2sub ([3, 3], 8)
-    &rArr; r =  2
-    &rArr; c =  3
+<pre class="example">[1, 4, 7]     [(1,1), (1,2), (1,3)]
+[2, 5, 8] ==&gt; [(2,1), (2,2), (2,3)]
+[3, 6, 9]     [(3,1), (3,2), (3,3)]
+</pre></div>
+
+<p>The following example shows how to convert the linear indices
+<code>2</code> and <code>8</code> in a 3-by-3 matrix into a subscripts.
+</p>
+<div class="example">
+<pre class="example">ind = [2, 8];
+[r, c] = ind2sub ([3, 3], ind)
+    &rArr; r =  2   2
+    &rArr; c =  1   3
+</pre></div>
+
+<p>If the number of subscripts exceeds the number of dimensions, the
+exceeded dimensions are treated as <code>1</code>.  On the other hand,
+if less subscripts than dimensions are provided, the exceeding
+dimensions are merged.  For clarity see the following examples:
+</p>
+<div class="example">
+<pre class="example">ind = [2, 8];
+dims = [3, 3];
+% same as dims = [3, 3, 1]
+[r, c, s] = ind2sub (dims, ind)
+    &rArr; r =  2   2
+    &rArr; c =  1   3
+    &rArr; s =  1   1
+% same as dims = 9
+r = ind2sub (dims, ind)
+    &rArr; r =  2   8
 </pre></div>
 
 <p><strong>See also:</strong> <a href="#XREFsub2ind">sub2ind</a>.

@@ -32,10 +32,12 @@ along with Octave; see the file COPYING.  If not, see
 #include <sstream>
 #include <string>
 
+#include "call-stack.h"
 #include "debug.h"
 #include "defun.h"
 #include "error.h"
 #include "input.h"
+#include "octave.h"
 #include "pager.h"
 #include "ovl.h"
 #include "oct-map.h"
@@ -45,7 +47,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "pt-eval.h"
 #include "pt-pr-code.h"
 #include "pt-stmt.h"
-#include "toplev.h"
+#include "interpreter.h"
 #include "unwind-prot.h"
 #include "variables.h"
 
@@ -313,7 +315,8 @@ static void
 maybe_enter_debugger (octave_execution_exception& e,
                       bool show_stack_trace = false)
 {
-  if ((interactive || forced_interactive)
+  if ((octave::application::interactive ()
+       || octave::application::forced_interactive ())
       && ((Vdebug_on_error && bp_table::debug_on_err (last_error_id ()))
           || (Vdebug_on_caught && bp_table::debug_on_caught (last_error_id ())))
       && octave_call_stack::caller_user_code ())
@@ -322,9 +325,9 @@ maybe_enter_debugger (octave_execution_exception& e,
       frame.protect_var (Vdebug_on_error);
       Vdebug_on_error = false;
 
-      tree_evaluator::debug_mode = true;
+      octave::tree_evaluator::debug_mode = true;
 
-      tree_evaluator::current_frame = octave_call_stack::current_frame ();
+      octave::tree_evaluator::current_frame = octave_call_stack::current_frame ();
 
       if (show_stack_trace)
         {
@@ -720,16 +723,17 @@ warning_1 (const char *id, const char *fmt, va_list args)
           && ! discard_warning_messages)
         pr_where (std::cerr, "warning");
 
-      if ((interactive || forced_interactive)
+      if ((octave::application::interactive ()
+           || octave::application::forced_interactive ())
           && Vdebug_on_warning && in_user_code && bp_table::debug_on_warn (id))
         {
           octave::unwind_protect frame;
           frame.protect_var (Vdebug_on_warning);
           Vdebug_on_warning = false;
 
-          tree_evaluator::debug_mode = true;
+          octave::tree_evaluator::debug_mode = true;
 
-          tree_evaluator::current_frame = octave_call_stack::current_frame ();
+          octave::tree_evaluator::current_frame = octave_call_stack::current_frame ();
 
           do_keyboard (octave_value_list ());
         }
@@ -1358,7 +1362,7 @@ set_warning_option (const std::string& state, const std::string& ident)
           // for "all" is same as arg1, we can simply remove the item
           // from the list.
 
-          if (state == all_state)
+          if (state == all_state && ident != "all")
             {
               for (i = i + 1; i < nel; i++)
                 {

@@ -218,7 +218,7 @@ extern int octave_debug;
 
 union OCTAVE_STYPE
 {
-#line 140 "libinterp/parse-tree/oct-parse.yy" /* yacc.c:1909  */
+#line 141 "libinterp/parse-tree/oct-parse.yy" /* yacc.c:1909  */
 
   int dummy_type;
 
@@ -293,9 +293,9 @@ enum { YYPUSH_MORE = 4 };
 
 typedef struct octave_pstate octave_pstate;
 
-int octave_parse (octave_base_parser& parser);
-int octave_push_parse (octave_pstate *ps, int pushed_char, OCTAVE_STYPE const *pushed_val, octave_base_parser& parser);
-int octave_pull_parse (octave_pstate *ps, octave_base_parser& parser);
+int octave_parse (octave::base_parser& parser);
+int octave_push_parse (octave_pstate *ps, int pushed_char, OCTAVE_STYPE const *pushed_val, octave::base_parser& parser);
+int octave_pull_parse (octave_pstate *ps, octave::base_parser& parser);
 octave_pstate * octave_pstate_new (void);
 void octave_pstate_delete (octave_pstate *ps);
 

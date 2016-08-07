@@ -869,19 +869,21 @@ Return the last day of the month @var{m} for the year @var{y}.
 @c datetick scripts/scripts/plot/appearance/datetick.m
 @anchor{XREFdatetick}
 @deftypefn  {} {} datetick ()
-@deftypefnx {} {} datetick (@var{form})
-@deftypefnx {} {} datetick (@var{axis}, @var{form})
+@deftypefnx {} {} datetick (@var{date_format})
+@deftypefnx {} {} datetick (@var{axis_str}, @var{date_format})
 @deftypefnx {} {} datetick (@dots{}, "keeplimits")
 @deftypefnx {} {} datetick (@dots{}, "keepticks")
 @deftypefnx {} {} datetick (@var{hax}, @dots{})
 Add date formatted tick labels to an axis.
 
-The axis to apply the ticks to is determined by @var{axis} which can take
-the values @qcode{"x"}, @qcode{"y"}, or @qcode{"z"}.  The default value is
-@qcode{"x"}.
+The axis to apply the ticks to is determined by @var{axis_str} which can
+take the values @qcode{"x"}, @qcode{"y"}, or @qcode{"z"}.  The default
+value is @qcode{"x"}.
 
-The formatting of the labels is determined by the variable @var{form}, which
-can either be a string or positive integer that @code{datestr} accepts.
+The formatting of the labels is determined by the variable
+@var{date_format}, which can either be a string or positive integer that
+@code{datestr} accepts.
+
 @seealso{@ref{XREFdatenum,,datenum}, @ref{XREFdatestr,,datestr}}
 @end deftypefn
 
@@ -1623,7 +1625,7 @@ The optional output @var{filelist} is a list of the uncompressed files.
 @end deftypefn
 
 
-@c gzip scripts/scripts/miscellaneous/gzip.m
+@c gzip libinterp/dldfcn/xzip.cc
 @anchor{XREFgzip}
 @deftypefn  {} {@var{filelist} =} gzip (@var{files})
 @deftypefnx {} {@var{filelist} =} gzip (@var{files}, @var{dir})
@@ -1639,6 +1641,10 @@ directory.
 
 If @var{dir} is defined the compressed files are placed in this directory,
 rather than the original directory where the uncompressed file resides.
+Note that this does not replicate a directory tree in @var{dir} which may
+lead to files overwritting each other if there are multiple files with the
+same name.
+
 If @var{dir} does not exist it is created.
 
 The optional output @var{filelist} is a list of the compressed files.
@@ -1788,7 +1794,7 @@ The optional return value is a list of @var{files} unpacked.
 @end deftypefn
 
 
-@c bzip2 scripts/scripts/miscellaneous/bzip2.m
+@c bzip2 libinterp/dldfcn/xzip.cc
 @anchor{XREFbzip2}
 @deftypefn  {} {@var{filelist} =} bzip2 (@var{files})
 @deftypefnx {} {@var{filelist} =} bzip2 (@var{files}, @var{dir})
@@ -1802,11 +1808,35 @@ compressed files will be silently overwritten.
 
 If @var{dir} is defined the compressed files are placed in this directory,
 rather than the original directory where the uncompressed file resides.
+Note that this does not replicate a directory tree in @var{dir} which may
+lead to files overwritting each other if there are multiple files with the
+same name.
+
 If @var{dir} does not exist it is created.
 
 The optional output @var{filelist} is a list of the compressed files.
 @seealso{@ref{XREFbunzip2,,bunzip2}, @ref{XREFunpack,,unpack}, @ref{XREFgzip,,gzip}, @ref{XREFzip,,zip}, @ref{XREFtar,,tar}}
 @end deftypefn
+## Copyright (C) 1993-2015 John W. Eaton
+##
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 3 of the License, or (at
+## your option) any later version.
+##
+## Octave is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with Octave; see the file COPYING.  If not, see
+## <http://www.gnu.org/licenses/>.
+
+## FIXME: the information in this file is currently duplicated in help.cc.
+
 
 
 @node Networking Utilities

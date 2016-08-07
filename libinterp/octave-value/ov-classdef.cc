@@ -26,6 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <algorithm>
 
+#include "call-stack.h"
 #include "defun.h"
 #include "load-path.h"
 #include "ov-builtin.h"
@@ -41,7 +42,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "pt-walk.h"
 #include "singleton-cleanup.h"
 #include "symtab.h"
-#include "toplev.h"
+#include "interpreter.h"
 
 // Define to 1 to enable debugging statements.
 #define DEBUG_TRACE 0
@@ -579,27 +580,27 @@ class_getConstant (const octave_value_list& args, int /* nargout */)
   return retval;
 }
 
-#define META_CLASS_CMP(OP, CLSA, CLSB, FUN) \
-static octave_value_list \
-class_ ## OP (const octave_value_list& args, int /* nargout */) \
-{ \
-  octave_value_list retval; \
- \
-  if (args.length () != 2 \
-      || args(0).type_name () != "object" \
-      || args(1).type_name () != "object" \
-      || args(0).class_name () != "meta.class" \
-      || args(1).class_name () != "meta.class") \
-    error (#OP ": invalid arguments"); \
- \
-  cdef_class clsa = to_cdef (args(0)); \
- \
-  cdef_class clsb = to_cdef (args(1)); \
- \
-  retval(0) = FUN (CLSA, CLSB); \
-\
-  return retval; \
-}
+#define META_CLASS_CMP(OP, CLSA, CLSB, FUN)                             \
+  static octave_value_list                                              \
+  class_ ## OP (const octave_value_list& args, int /* nargout */)       \
+  {                                                                     \
+    octave_value_list retval;                                           \
+                                                                        \
+    if (args.length () != 2                                             \
+        || args(0).type_name () != "object"                             \
+        || args(1).type_name () != "object"                             \
+        || args(0).class_name () != "meta.class"                        \
+        || args(1).class_name () != "meta.class")                       \
+      error (#OP ": invalid arguments");                                \
+                                                                        \
+    cdef_class clsa = to_cdef (args(0));                                \
+                                                                        \
+    cdef_class clsb = to_cdef (args(1));                                \
+                                                                        \
+    retval(0) = FUN (CLSA, CLSB);                                       \
+                                                                        \
+    return retval;                                                      \
+  }
 
 META_CLASS_CMP (lt, clsb, clsa, is_strict_superclass)
 META_CLASS_CMP (le, clsb, clsa, is_superclass)
@@ -1651,7 +1652,7 @@ cdef_object_array::subsasgn (const std::string& type,
 
           bool is_scalar = true;
 
-          Array<idx_vector> iv (dim_vector (1, ival.length ()));
+          Array<idx_vector> iv (dim_vector (1, std::max (ival.length (), 2)));
 
           for (int i = 0; i < ival.length (); i++)
             {
@@ -1673,6 +1674,11 @@ cdef_object_array::subsasgn (const std::string& type,
                        ", the index must reference a single object in the "
                        "array.");
             }
+
+          // Fill in trailing singleton dimensions so that
+          // array.index doesn't create a new blank entry (bug #46660).
+          for (int i = ival.length (); i < 2; i++)
+            iv(i) = 1;
 
           Array<cdef_object> a = array.index (iv, true);
 

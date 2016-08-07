@@ -41,7 +41,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "pt-id.h"
 #include "pt-pr-code.h"
 #include "pt-walk.h"
-#include "toplev.h"
+#include "interpreter.h"
 #include "unwind-prot.h"
 
 // Argument lists.
@@ -126,11 +126,16 @@ static const octave_value *indexed_object = 0;
 static int index_position = 0;
 static int num_indices = 0;
 
+// END is documented in op-kw-docs.
 DEFCONSTFUN (end, , ,
              doc: /* -*- texinfo -*-
 @deftypefn {} {} end
-The magic index @qcode{"end"} refers to the last valid entry in an
-indexing operation.
+Last element of an array or the end of any @code{for}, @code{parfor},
+@code{if}, @code{do}, @code{while}, @code{function}, @code{switch},
+@code{try}, or @code{unwind_protect} block.
+
+As an index of an array, the magic index @qcode{"end"} refers to the
+last valid entry in an indexing operation.
 
 Example:
 
@@ -146,6 +151,7 @@ Example:
     @result{} 6
 @end group
 @end example
+@seealso{for, parfor, if, do, while, function, switch, try, unwind_protect}
 @end deftypefn */)
 {
   octave_value retval;

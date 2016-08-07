@@ -28,6 +28,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 #include <string>
 
+#include "call-stack.h"
 #include "defun.h"
 #include "dynamic-ld.h"
 #include "error.h"
@@ -42,7 +43,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-lvalue.h"
 #include "pager.h"
 #include "symtab.h"
-#include "toplev.h"
+#include "interpreter.h"
 #include "variables.h"
 #include "parse.h"
 

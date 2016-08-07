@@ -46,17 +46,18 @@ along with Octave; see the file COPYING.  If not, see
 
 // Own includes
 #include "dialog.h"
+#include "documentation-dock-widget.h"
+#include "files-dock-widget.h"
+#include "find-files-dialog.h"
+#include "history-dock-widget.h"
+#include "octave-cmd.h"
+#include "octave-dock-widget.h"
+#include "octave-gui.h"
+#include "octave-qt-link.h"
 #include "resource-manager.h"
+#include "terminal-dock-widget.h"
 #include "workspace-model.h"
 #include "workspace-view.h"
-#include "history-dock-widget.h"
-#include "files-dock-widget.h"
-#include "terminal-dock-widget.h"
-#include "documentation-dock-widget.h"
-#include "octave-qt-link.h"
-#include "octave-dock-widget.h"
-#include "find-files-dialog.h"
-#include "octave-cmd.h"
 
 class settings_dialog;
 
@@ -74,7 +75,7 @@ public:
   typedef std::pair <std::string, std::string> name_pair;
   typedef std::pair <int, int> int_pair;
 
-  main_window (QWidget *parent = 0, bool start_gui = true);
+  main_window (QWidget *parent, octave::gui_application *app_context);
 
   ~main_window (void);
 
@@ -132,7 +133,7 @@ public slots:
   void open_octave_packages_page (void);
   void open_agora_page (void);
   void open_contribute_page (void);
-  void open_developer_page (void);
+  void open_donate_page (void);
   void process_settings_dialog_request (const QString& desired_tab
                                                          = QString ());
 
@@ -290,6 +291,8 @@ private:
   void queue_command (octave_cmd *cmd);
 
   void configure_shortcuts ();
+
+  octave::gui_application *m_app_context;
 
   workspace_model *_workspace_model;
 

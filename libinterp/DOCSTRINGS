@@ -412,12 +412,6 @@ tolerance is zero, the relative tolerance must be greater than or equal to
 @w{@code{max (50*eps, 0.5e-28)}}.
 @end table
 @end deftypefn
-__version_info__
-@c __version_info__ libinterp/octave.cc
--*- texinfo -*-
-@deftypefn {} {retval =} __version_info__ (@var{name}, @var{version}, @var{release}, @var{date})
-Undocumented internal function.
-@end deftypefn
 isguirunning
 @c isguirunning libinterp/octave.cc
 -*- texinfo -*-
@@ -746,7 +740,7 @@ In addition, some function types may return more information in additional
 fields.
 
 @strong{Warning:} @code{functions} is provided for debugging purposes only.
-It's behavior may change in the future and programs should not depend on a
+Its behavior may change in the future and programs should not depend on a
 particular output.
 
 @end deftypefn
@@ -1611,8 +1605,12 @@ debug information as it processes an expression.
 @c end libinterp/parse-tree/pt-arg-list.cc
 -*- texinfo -*-
 @deftypefn {} {} end
-The magic index @qcode{"end"} refers to the last valid entry in an
-indexing operation.
+Last element of an array or the end of any @code{for}, @code{parfor},
+@code{if}, @code{do}, @code{while}, @code{function}, @code{switch},
+@code{try}, or @code{unwind_protect} block.
+
+As an index of an array, the magic index @qcode{"end"} refers to the
+last valid entry in an indexing operation.
 
 Example:
 
@@ -1628,6 +1626,7 @@ Example:
     @result{} 6
 @end group
 @end example
+@seealso{for, parfor, if, do, while, function, switch, try, unwind_protect}
 @end deftypefn
 do_braindead_shortcircuit_evaluation
 @c do_braindead_shortcircuit_evaluation libinterp/parse-tree/pt-binop.cc
@@ -5631,6 +5630,62 @@ glob ("file[12]")
 @end example
 @seealso{ls, dir, readdir, what}
 @end deftypefn
+__wglob__
+@c __wglob__ libinterp/corefcn/dirfns.cc
+-*- texinfo -*-
+@deftypefn {} {} __wglob__ (@var{pattern})
+Windows-like glob for dir.
+
+Given an array of pattern strings (as a char array or a cell array) in
+@var{pattern}, return a cell array of filenames that match any of
+them, or an empty cell array if no patterns match.
+
+The pattern strings are interpreted as filename globbing patterns
+(roughly as they are used by Windows dir).
+
+Within a pattern
+
+@table @code
+@item *
+matches any string, including the null string,
+
+@item ?
+matches any single character, and
+
+@item *.*
+matches any string, even if no . is present.
+@end table
+
+Tilde expansion is performed on each of the patterns before looking for
+matching filenames.  For example:
+
+@example
+ls
+   @result{}
+      file1  file2  file3  myfile1 myfile1b
+glob ("*file1")
+   @result{}
+      @{
+        [1,1] = file1
+        [2,1] = myfile1
+      @}
+glob ("myfile?")
+   @result{}
+      @{
+        [1,1] = myfile1
+      @}
+glob ("*.*")
+   @result{}
+      @{
+        [1,1] = file1
+        [2,1] = file2
+        [3,1] = file3
+        [4,1] = myfile1
+        [5,1] = myfile1b
+      @}
+@end example
+@seealso{glob, dir}
+@end deftypefn
 __fnmatch__
 @c __fnmatch__ libinterp/corefcn/dirfns.cc
 -*- texinfo -*-
@@ -9036,6 +9091,70 @@ Compute the inverse of the square matrix @var{A}.
 
 This is an alias for @code{inv}.
 @seealso{inv}
+@end deftypefn
+__version_info__
+@c __version_info__ libinterp/corefcn/interpreter.cc
+-*- texinfo -*-
+@deftypefn {} {retval =} __version_info__ (@var{name}, @var{version}, @var{release}, @var{date})
+Undocumented internal function.
+@end deftypefn
+quit
+@c quit libinterp/corefcn/interpreter.cc
+-*- texinfo -*-
+@deftypefn  {} {} exit
+@deftypefnx {} {} exit (@var{status})
+@deftypefnx {} {} quit
+@deftypefnx {} {} quit (@var{status})
+Exit the current Octave session.
+
+If the optional integer value @var{status} is supplied, pass that value to
+the operating system as Octave's exit status.  The default value is zero.
+
+When exiting, Octave will attempt to run the m-file @file{finish.m} if it
+exists.  User commands to save the workspace or clean up temporary files
+may be placed in that file.  Alternatively, another m-file may be scheduled
+to run using @code{atexit}.
+@seealso{atexit}
+@end deftypefn
+atexit
+@c atexit libinterp/corefcn/interpreter.cc
+-*- texinfo -*-
+@deftypefn  {} {} atexit (@var{fcn})
+@deftypefnx {} {} atexit (@var{fcn}, @var{flag})
+Register a function to be called when Octave exits.
+
+For example,
+
+@example
+@group
+function last_words ()
+  disp ("Bye bye");
+endfunction
+atexit ("last_words");
+@end group
+@end example
+
+@noindent
+will print the message @qcode{"Bye bye"} when Octave exits.
+
+The additional argument @var{flag} will register or unregister @var{fcn}
+from the list of functions to be called when Octave exits.  If @var{flag} is
+true, the function is registered, and if @var{flag} is false, it is
+unregistered.  For example, after registering the function @code{last_words}
+above,
+
+@example
+atexit ("last_words", false);
+@end example
+
+@noindent
+will remove the function from the list and Octave will not call
+@code{last_words} when it exits.
+
+Note that @code{atexit} only removes the first occurrence of a function
+from the list, so if a function was placed in the list multiple times with
+@code{atexit}, it must also be removed from the list multiple times.
+@seealso{quit}
 @end deftypefn
 kron
 @c kron libinterp/corefcn/kron.cc
@@ -13284,16 +13403,31 @@ whos ans
 -*- texinfo -*-
 @deftypefn  {} {@var{ind} =} sub2ind (@var{dims}, @var{i}, @var{j})
 @deftypefnx {} {@var{ind} =} sub2ind (@var{dims}, @var{s1}, @var{s2}, @dots{}, @var{sN})
-Convert subscripts to a linear index.
+Convert subscripts to linear indices.
 
-The following example shows how to convert the two-dimensional index
-@code{(2,3)} of a 3-by-3 matrix to a linear index.  The matrix is linearly
-indexed moving from one column to next, filling up all rows in each column.
+Assume the following 3-by-3 matrices.  The left matrix contains the
+subscript tuples for each matrix element.  Those are converted to
+linear indices shown in the right matrix.  The matrices are linearly
+indexed moving from one column to next, filling up all rows in each
+column.
 
 @example
 @group
-linear_index = sub2ind ([3, 3], 2, 3)
-@result{} 8
+[(1,1), (1,2), (1,3)]     [1, 4, 7]
+[(2,1), (2,2), (2,3)] ==> [2, 5, 8]
+[(3,1), (3,2), (3,3)]     [3, 6, 9]
+@end group
+@end example
+
+The following example shows how to convert the two-dimensional indices
+@code{(2,1)} and @code{(2,3)} of a 3-by-3 matrix to a linear index.
+
+@example
+@group
+s1 = [2, 2];
+s2 = [1, 3];
+ind = sub2ind ([3, 3], s1, s2)
+@result{} ind =  2   8
 @end group
 @end example
 @seealso{ind2sub}
@@ -13302,17 +13436,51 @@ linear_index = sub2ind ([3, 3], 2, 3)
 @c ind2sub libinterp/corefcn/sub2ind.cc
 -*- texinfo -*-
 @deftypefn {} {[@var{s1}, @var{s2}, @dots{}, @var{sN}] =} ind2sub (@var{dims}, @var{ind})
-Convert a linear index to subscripts.
+Convert linear indices to subscripts.
 
-The following example shows how to convert the linear index @code{8}
-in a 3-by-3 matrix into a subscript.  The matrix is linearly indexed
-moving from one column to next, filling up all rows in each column.
+Assume the following 3-by-3 matrices.  The left matrix contains
+the linear indices @var{ind} for each matrix element.  Those are
+converted to subscript tuples shown in the right matrix.  The
+matrices are linearly indexed moving from one column to next,
+filling up all rows in each column.
 
 @example
 @group
-[r, c] = ind2sub ([3, 3], 8)
-    @result{} r =  2
-    @result{} c =  3
+[1, 4, 7]     [(1,1), (1,2), (1,3)]
+[2, 5, 8] ==> [(2,1), (2,2), (2,3)]
+[3, 6, 9]     [(3,1), (3,2), (3,3)]
+@end group
+@end example
+
+The following example shows how to convert the linear indices
+@code{2} and @code{8} in a 3-by-3 matrix into a subscripts.
+
+@example
+@group
+ind = [2, 8];
+[r, c] = ind2sub ([3, 3], ind)
+    @result{} r =  2   2
+    @result{} c =  1   3
+@end group
+@end example
+
+If the number of subscripts exceeds the number of dimensions, the
+exceeded dimensions are treated as @code{1}.  On the other hand,
+if less subscripts than dimensions are provided, the exceeding
+dimensions are merged.  For clarity see the following examples:
+
+@example
+@group
+ind = [2, 8];
+dims = [3, 3];
+% same as dims = [3, 3, 1]
+[r, c, s] = ind2sub (dims, ind)
+    @result{} r =  2   2
+    @result{} c =  1   3
+    @result{} s =  1   1
+% same as dims = 9
+r = ind2sub (dims, ind)
+    @result{} r =  2   8
 @end group
 @end example
 @seealso{sub2ind}
@@ -14682,24 +14850,6 @@ position of last matched character plus 1.  Always check for this unless
 you're absolutely sure the date string will be parsed correctly.
 @seealso{strftime, localtime, gmtime, mktime, time, now, date, clock, datenum, datestr, datevec, calendar, weekday}
 @end deftypefn
-quit
-@c quit libinterp/corefcn/toplev.cc
--*- texinfo -*-
-@deftypefn  {} {} exit
-@deftypefnx {} {} exit (@var{status})
-@deftypefnx {} {} quit
-@deftypefnx {} {} quit (@var{status})
-Exit the current Octave session.
-
-If the optional integer value @var{status} is supplied, pass that value to
-the operating system as Octave's exit status.  The default value is zero.
-
-When exiting, Octave will attempt to run the m-file @file{finish.m} if it
-exists.  User commands to save the workspace or clean up temporary files
-may be placed in that file.  Alternatively, another m-file may be scheduled
-to run using @code{atexit}.
-@seealso{atexit}
-@end deftypefn
 warranty
 @c warranty libinterp/corefcn/toplev.cc
 -*- texinfo -*-
@@ -14757,46 +14907,6 @@ variable @code{status} to the integer @samp{2}.
 For commands run asynchronously, @var{status} is the process id of the
 command shell that is started to run the command.
 @seealso{unix, dos}
-@end deftypefn
-atexit
-@c atexit libinterp/corefcn/toplev.cc
--*- texinfo -*-
-@deftypefn  {} {} atexit (@var{fcn})
-@deftypefnx {} {} atexit (@var{fcn}, @var{flag})
-Register a function to be called when Octave exits.
-
-For example,
-
-@example
-@group
-function last_words ()
-  disp ("Bye bye");
-endfunction
-atexit ("last_words");
-@end group
-@end example
-
-@noindent
-will print the message @qcode{"Bye bye"} when Octave exits.
-
-The additional argument @var{flag} will register or unregister @var{fcn}
-from the list of functions to be called when Octave exits.  If @var{flag} is
-true, the function is registered, and if @var{flag} is false, it is
-unregistered.  For example, after registering the function @code{last_words}
-above,
-
-@example
-atexit ("last_words", false);
-@end example
-
-@noindent
-will remove the function from the list and Octave will not call
-@code{last_words} when it exits.
-
-Note that @code{atexit} only removes the first occurrence of a function
-from the list, so if a function was placed in the list multiple times with
-@code{atexit}, it must also be removed from the list multiple times.
-@seealso{quit}
 @end deftypefn
 __octave_config_info__
 @c __octave_config_info__ libinterp/corefcn/toplev.cc
@@ -17228,13 +17338,25 @@ used per default.
 qr
 @c qr libinterp/dldfcn/qr.cc
 -*- texinfo -*-
-@deftypefn  {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A})
-@deftypefnx {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}, '0')
+@deftypefn  {} {[@var{Q}, @var{R}] =} qr (@var{A})
+@deftypefnx {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}) # non-sparse A
+@deftypefnx {} {@var{X} =} qr (@var{A})
+@deftypefnx {} {@var{R} =} qr (@var{A})  # sparse A
 @deftypefnx {} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B})
-@deftypefnx {} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B}, '0')
+@deftypefnx {} {[@dots{}] =} qr (@dots{}, 0)
+@deftypefnx {} {[@dots{}] =} qr (@dots{}, 'vector')
+@deftypefnx {} {[@dots{}] =} qr (@dots{}, 'matrix')
 @cindex QR factorization
 Compute the QR@tie{}factorization of @var{A}, using standard @sc{lapack}
 subroutines.
+The QR@tie{}factorization is
+@tex
+$QR = A$ where $Q$ is an orthogonal matrix and $R$ is upper triangular.
+@end tex
+@ifnottex
+@code{@var{Q} * @var{R} = @var{A}} where @var{Q} is an orthogonal matrix and
+@var{R} is upper triangular.
+@end ifnottex
 
 For example, given the matrix @code{@var{A} = [1, 2; 3, 4]},
 
@@ -17280,18 +17402,14 @@ $A$
 @ifnottex
 @var{A}
 @end ifnottex
-is a tall, thin matrix).  The QR@tie{}factorization is
-@tex
-$QR = A$ where $Q$ is an orthogonal matrix and $R$ is upper triangular.
-@end tex
-@ifnottex
-@code{@var{Q} * @var{R} = @var{A}} where @var{Q} is an orthogonal matrix and
-@var{R} is upper triangular.
-@end ifnottex
+is a tall, thin matrix).
 
-If given a second argument of @qcode{'0'}, @code{qr} returns an
-economy-sized QR@tie{}factorization, omitting zero rows of @var{R} and the
-corresponding columns of @var{Q}.
+If only a single return value is requested, then it is either @var{R} if
+@var{A} is sparse, or @var{X} such that @code{@var{R} = triu (@var{X})} if
+@var{A} is full.
+(Note: Unlike most commands, the single return value is not
+the first return value when multiple are requested.)
+
 
 If the matrix @var{A} is full, the permuted QR@tie{}factorization
 @code{[@var{Q}, @var{R}, @var{P}] = qr (@var{A})} forms the
@@ -17329,17 +17447,15 @@ The permuted @code{qr} factorization
 @code{[@var{Q}, @var{R}, @var{P}] = qr (@var{A})} factorization allows the
 construction of an orthogonal basis of @code{span (A)}.
 
-If the matrix @var{A} is sparse, then compute the sparse
-QR@tie{}factorization of @var{A}, using @sc{CSparse}.  As the matrix @var{Q}
-is in general a full matrix, this function returns the @var{Q}-less
-factorization @var{R} of @var{A}, such that
+If the matrix @var{A} is sparse, then the sparse QR@tie{}factorization
+of @var{A} is computed using @sc{CSparse}.
+As the matrix @var{Q} is in general a full matrix,
+it is recommended to request only one return value,
+which is the @var{Q}-less factorization @var{R} of @var{A}, such that
 @code{@var{R} = chol (@var{A}' * @var{A})}.
 
-If the final argument is the scalar @code{0} and the number of rows is
-larger than the number of columns, then an economy factorization is
-returned.  That is @var{R} will have only @code{size (@var{A},1)} rows.
-
-If an additional matrix @var{B} is supplied, then @code{qr} returns
+If an additional matrix @var{B} is supplied and two return values are
+requested, then @code{qr} returns
 @var{C}, where @code{@var{C} = @var{Q}' * @var{B}}.  This allows the
 least squares approximation of @code{@var{A} \ @var{B}} to be calculated
 as
@@ -17350,6 +17466,16 @@ as
 x = @var{R} \ @var{C}
 @end group
 @end example
+
+If the final argument is the scalar 0 and the number of rows is larger
+than the number of columns, then an 'economy' factorization is returned,
+omitting zeroes of @var{R} and the corresponding columns of @var{Q}.
+That is, @var{R} will have only @code{size (@var{A},1)} rows.
+In this case, @var{P} is a vector rather than a matrix.
+
+If the final argument is the string 'vector' then @var{P} is a permutation
+vector instead of a permutation matrix.
+
 @seealso{chol, hess, lu, qz, schur, svd, qrupdate, qrinsert, qrdelete, qrshift}
 @end deftypefn
 qrupdate
@@ -17403,11 +17529,11 @@ If @var{orient} is @qcode{"row"}, full factorization is needed.
 Given a QR@tie{}factorization of a real or complex matrix
 @w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
 @var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
-@w{[A(:,1:j-1) A(:,j+1:n)]}, i.e., @var{A} with one column deleted
-(if @var{orient} is @qcode{"col"}), or the QR@tie{}factorization of
-@w{[A(1:j-1,:);A(j+1:n,:)]}, i.e., @var{A} with one row deleted (if
-@var{orient} is @qcode{"row"}).
-
+@w{[A(:,1:j-1), U, A(:,j:n)]},
+where @var{u} is a column vector to be inserted into @var{A}
+(if @var{orient} is @qcode{\"col\"}),
+or the QR@tie{}factorization of @w{[A(1:j-1,:);X;A(:,j:n)]},
+where @var{x} is a row @var{orient} is @qcode{"row"}).
 The default value of @var{orient} is @qcode{"col"}.
 
 If @var{orient} is @qcode{"col"}, @var{j} may be an index vector
@@ -17524,4 +17650,731 @@ Positive Definite Systems}, Prentice Hall Series in Computational
 Mathematics, ISBN 0-13-165274-5, 1981.
 
 @seealso{colperm, colamd, symamd}
+@end deftypefn
+gzip
+@c gzip libinterp/dldfcn/xzip.cc
+-*- texinfo -*-
+@deftypefn  {} {@var{filelist} =} gzip (@var{files})
+@deftypefnx {} {@var{filelist} =} gzip (@var{files}, @var{dir})
+Compress the list of files and directories specified in @var{files}.
+
+@var{files} is a character array or cell array of strings.  Shell wildcards
+in the filename such as @samp{*} or @samp{?} are accepted and expanded.
+Each file is compressed separately and a new file with a @file{".gz"}
+extension is created.  The original files are not modified, but existing
+compressed files will be silently overwritten.  If a directory is
+specified then @code{gzip} recursively compresses all files in the
+directory.
+
+If @var{dir} is defined the compressed files are placed in this directory,
+rather than the original directory where the uncompressed file resides.
+Note that this does not replicate a directory tree in @var{dir} which may
+lead to files overwritting each other if there are multiple files with the
+same name.
+
+If @var{dir} does not exist it is created.
+
+The optional output @var{filelist} is a list of the compressed files.
+@seealso{gunzip, unpack, bzip2, zip, tar}
+@end deftypefn
+bzip2
+@c bzip2 libinterp/dldfcn/xzip.cc
+-*- texinfo -*-
+@deftypefn  {} {@var{filelist} =} bzip2 (@var{files})
+@deftypefnx {} {@var{filelist} =} bzip2 (@var{files}, @var{dir})
+Compress the list of files specified in @var{files}.
+
+@var{files} is a character array or cell array of strings.  Shell wildcards
+in the filename such as @samp{*} or @samp{?} are accepted and expanded.
+Each file is compressed separately and a new file with a @file{".bz2"}
+extension is created.  The original files are not modified, but existing
+compressed files will be silently overwritten.
+
+If @var{dir} is defined the compressed files are placed in this directory,
+rather than the original directory where the uncompressed file resides.
+Note that this does not replicate a directory tree in @var{dir} which may
+lead to files overwritting each other if there are multiple files with the
+same name.
+
+If @var{dir} does not exist it is created.
+
+The optional output @var{filelist} is a list of the compressed files.
+@seealso{bunzip2, unpack, gzip, zip, tar}
+@end deftypefn
+## Copyright (C) 1993-2015 John W. Eaton
+##
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 3 of the License, or (at
+## your option) any later version.
+##
+## Octave is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with Octave; see the file COPYING.  If not, see
+## <http://www.gnu.org/licenses/>.
+
+## FIXME: the information in this file is currently duplicated in help.cc.
+
+!
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} !
+Logical 'not' operator.
+@seealso{~, not}
+@end deftypefn
+~
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ~
+Logical 'not' operator.
+@seealso{!, not}
+@end deftypefn
+!=
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} !=
+Logical 'not equals' operator.
+@seealso{~=, ne}
+@end deftypefn
+~=
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ~=
+Logical 'not equals' operator.
+@seealso{!=, ne}
+@end deftypefn
+"
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} "
+String delimiter.
+@end deftypefn
+#
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} #
+Begin comment character.
+@seealso{%, #@\{}
+@end deftypefn
+%
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} %
+Begin comment character.
+@seealso{#, %@\{}
+@end deftypefn
+#{
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} #@{
+Begin block comment.  There must be nothing else, other than
+whitespace, in the line both before and after @code{#@{}.
+It is possible to nest block comments.
+@seealso{%@\{, #@\}, #}
+@end deftypefn
+%{
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} %@{
+Begin block comment.  There must be nothing else, other than
+whitespace, in the line both before and after @code{%@{}.
+It is possible to nest block comments.
+@seealso{#@\{, %@\}, %}
+@end deftypefn
+#}
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} #@}
+Close block comment.  There must be nothing else, other than
+whitespace, in the line both before and after @code{#@}}.
+It is possible to nest block comments.
+@seealso{%@\}, #@\{, #}
+@end deftypefn
+%}
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} %@}
+Close block comment.  There must be nothing else, other than
+whitespace, in the line both before and after @code{%@}}.
+It is possible to nest block comments.
+@seealso{#@\}, %@\{, %}
+@end deftypefn
+...
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ...
+Continuation marker.  Joins current line with following line.
+@end deftypefn
+&
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} &
+Element by element logical 'and' operator.
+@seealso{&&, and}
+@end deftypefn
+&&
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} &&
+Logical 'and' operator (with short-circuit evaluation).
+@seealso{&, and}
+@end deftypefn
+'
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} '
+Matrix transpose operator.  For complex matrices, computes the
+complex conjugate (Hermitian) transpose.
+
+The single quote character may also be used to delimit strings, but
+it is better to use the double quote character, since that is never
+ambiguous.
+@seealso{.', transpose}
+@end deftypefn
+(
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} (
+Array index or function argument delimiter.
+@end deftypefn
+)
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {})
+Array index or function argument delimiter.
+@end deftypefn
+*
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} *
+Multiplication operator.
+@seealso{.*, times}
+@end deftypefn
+**
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} **
+Power operator.  This may return complex results for real inputs.  Use
+@code{realsqrt}, @code{cbrt}, @code{nthroot}, or @code{realroot} to obtain
+real results when possible.
+@seealso{power, ^, .**, .^, realpow, realsqrt, cbrt, nthroot}
+@end deftypefn
+^
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ^
+Power operator.  This may return complex results for real inputs.  Use
+@code{realsqrt}, @code{cbrt}, @code{nthroot}, or @code{realroot} to obtain
+real results when possible.
+@seealso{power, **, .^, .**, realpow, realsqrt, cbrt, nthroot}
+@end deftypefn
++
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} +
+Addition operator.
+@seealso{plus}
+@end deftypefn
+++
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ++
+Increment operator.  As in C, may be applied as a prefix or postfix
+operator.
+@seealso{--}
+@end deftypefn
+,
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ,
+Array index, function argument, or command separator.
+@end deftypefn
+-
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} -
+Subtraction or unary negation operator.
+@seealso{minus}
+@end deftypefn
+--
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} --
+Decrement operator.  As in C, may be applied as a prefix or postfix
+operator.
+@seealso{++}
+@end deftypefn
+.'
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} .'
+Matrix transpose operator.  For complex matrices, computes the
+transpose, @emph{not} the complex conjugate transpose.
+@seealso{', transpose}
+@end deftypefn
+.*
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} .*
+Element by element multiplication operator.
+@seealso{*, times}
+@end deftypefn
+.**
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} .*
+Element by element power operator.  If several complex results are possible,
+returns the one with smallest non-negative argument (angle).  Use
+@code{realpow}, @code{realsqrt}, @code{cbrt}, or @code{nthroot} if a
+real result is preferred.
+@seealso{**, ^, .^, power, realpow, realsqrt, cbrt, nthroot}
+@end deftypefn
+.^
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} .^
+Element by element power operator.  If several complex results are possible,
+returns the one with smallest non-negative argument (angle).  Use
+@code{realpow}, @code{realsqrt}, @code{cbrt}, or @code{nthroot} if a
+real result is preferred.
+@seealso{.**, ^, **, power, realpow, realsqrt, cbrt, nthroot}
+@end deftypefn
+./
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ./
+Element by element right division operator.
+@seealso{/, .\, rdivide, mrdivide}
+@end deftypefn
+/
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} /
+Right division operator.
+@seealso{./, \, rdivide, mrdivide}
+@end deftypefn
+.\
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} .\
+Element by element left division operator.
+@seealso{\, ./, rdivide, mrdivide}
+@end deftypefn
+\
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} \
+Left division operator.
+@seealso{.\, /, ldivide, mldivide}
+@end deftypefn
+:
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} :
+Select entire rows or columns of matrices.
+@end deftypefn
+;
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ;
+Array row or command separator.
+@seealso{,}
+@end deftypefn
+<
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} <
+'Less than' operator.
+@seealso{lt}
+@end deftypefn
+<=
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} <=
+'Less than' or 'equals' operator.
+@seealso{le}
+@end deftypefn
+=
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} =
+Assignment operator.
+@end deftypefn
+==
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ==
+Equality test operator.
+@seealso{eq}
+@end deftypefn
+>
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} >
+'Greater than' operator.
+@seealso{gt}
+@end deftypefn
+>=
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} >=
+'Greater than' or 'equals' operator.
+@seealso{ge}
+@end deftypefn
+[
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} [
+Return list delimiter.
+@seealso{]}
+@end deftypefn
+]
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ]
+Return list delimiter.
+@seealso{[}
+@end deftypefn
+|
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} |
+Element by element logical 'or' operator.
+@seealso{||, or}
+@end deftypefn
+||
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} ||
+Logical 'or' (with short-circuit evaluation) operator.
+@seealso{|, or}
+@end deftypefn
+break
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} break
+Exit the innermost enclosing do, while or for loop.
+@seealso{do, while, for, parfor, continue}
+@end deftypefn
+case
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn  {} {} case @var{value}
+@deftypefnx {} {} case @{@var{value}, @dots{}@}
+A case statement in a switch.  Octave cases are exclusive and do not
+fall-through as do C-language cases.  A switch statement must have at least
+one case.  See @code{switch} for an example.
+@seealso{switch}
+@end deftypefn
+catch
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn  {} {} catch
+@deftypefnx {} {} catch @var{value}
+Begin the cleanup part of a try-catch block.
+@seealso{try}
+@end deftypefn
+continue
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} continue
+Jump to the end of the innermost enclosing do, while or for loop.
+@seealso{do, while, for, parfor, break}
+@end deftypefn
+do
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} do
+Begin a do-until loop.  This differs from a do-while loop in that the
+body of the loop is executed at least once.
+
+@example
+@group
+i = 0;
+do
+  i++
+until (i == 10)
+@end group
+@end example
+@seealso{for, until, while}
+@end deftypefn
+else
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} else
+Alternate action for an if block.  See @code{if} for an example.
+@seealso{if}
+@end deftypefn
+elseif
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} elseif (@var{condition})
+Alternate conditional test for an if block.  See @code{if} for an example.
+@seealso{if}
+@end deftypefn
+end_try_catch
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} end_try_catch
+Mark the end of an @code{try-catch} block.
+@seealso{try, catch}
+@end deftypefn
+end_unwind_protect
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} end_unwind_protect
+Mark the end of an unwind_protect block.
+@seealso{unwind_protect}
+@end deftypefn
+endfor
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} endfor
+Mark the end of a for loop.  See @code{for} for an example.
+@seealso{for}
+@end deftypefn
+endfunction
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} endfunction
+Mark the end of a function.
+@seealso{function}
+@end deftypefn
+endif
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} endif
+Mark the end of an if block.  See @code{if} for an example.
+@seealso{if}
+@end deftypefn
+endparfor
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} endparfor
+Mark the end of a parfor loop.  See @code{parfor} for an example.
+@seealso{parfor}
+@end deftypefn
+endswitch
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} endswitch
+Mark the end of a switch block.  See @code{switch} for an example.
+@seealso{switch}
+@end deftypefn
+endwhile
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} endwhile
+Mark the end of a while loop.  See @code{while} for an example.
+@seealso{do, while}
+@end deftypefn
+for
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} for @var{i} = @var{range}
+Begin a for loop.
+
+@example
+@group
+for i = 1:10
+  i
+endfor
+@end group
+@end example
+@seealso{do, parfor, while}
+@end deftypefn
+function
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn  {} {} function @var{outputs} = function (@var{input}, @dots{})
+@deftypefnx {} {} function {} function (@var{input}, @dots{})
+@deftypefnx {} {} function @var{outputs} = function
+Begin a function body with @var{outputs} as results and @var{inputs} as
+parameters.
+@seealso{return}
+@end deftypefn
+global
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} global @var{var}
+Declare variables to have global scope.
+
+@example
+@group
+global @var{x};
+if (isempty (@var{x}))
+  x = 1;
+endif
+@end group
+@end example
+@seealso{persistent}
+@end deftypefn
+if
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn  {} {} if (@var{cond}) @dots{} endif
+@deftypefnx {} {} if (@var{cond}) @dots{} else @dots{} endif
+@deftypefnx {} {} if (@var{cond}) @dots{} elseif (@var{cond}) @dots{} endif
+@deftypefnx {} {} if (@var{cond}) @dots{} elseif (@var{cond}) @dots{} else @dots{} endif
+Begin an if block.
+
+@example
+@group
+x = 1;
+if (x == 1)
+  disp ("one");
+elseif (x == 2)
+  disp ("two");
+else
+  disp ("not one or two");
+endif
+@end group
+@end example
+@seealso{switch}
+@end deftypefn
+otherwise
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} otherwise
+The default statement in a switch block (similar to else in an if block).
+@seealso{switch}
+@end deftypefn
+parfor
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn  {} {} parfor @var{i} = @var{range}
+@deftypefnx {} {} parfor (@var{i} = @var{range}, @var{maxproc})
+Begin a for loop that may execute in parallel.
+
+@example
+@group
+parfor i = 1:10
+  i
+endparfor
+@end group
+@end example
+@seealso{for, do, while}
+@end deftypefn
+persistent
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} persistent @var{var}
+Declare variables as persistent.  A variable that has been declared
+persistent within a function will retain its contents in memory between
+subsequent calls to the same function.  The difference between persistent
+variables and global variables is that persistent variables are local in
+scope to a particular function and are not visible elsewhere.
+@seealso{global}
+@end deftypefn
+return
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} return
+Return from a function.
+@seealso{function}
+@end deftypefn
+static
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} static
+This statement has been deprecated in favor of @code{persistent}.
+@seealso{persistent}
+@end deftypefn
+switch
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} switch @var{statement}
+Begin a switch block.
+
+@example
+@group
+yesno = "yes"
+
+switch yesno
+  case @{"Yes" "yes" "YES" "y" "Y"@}
+    value = 1;
+  case @{"No" "no" "NO" "n" "N"@}
+    value = 0;
+  otherwise
+    error ("invalid value");
+endswitch
+@end group
+@end example
+@seealso{if, case, otherwise}
+@end deftypefn
+try
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} try
+Begin a try-catch block.
+
+If an error occurs within a try block, then the catch code will be run and
+execution will proceed after the catch block (though it is often
+recommended to use the lasterr function to re-throw the error after cleanup
+is completed).
+@seealso{catch, unwind_protect}
+@end deftypefn
+until
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} until (@var{cond})
+End a do-until loop.  See @code{do} for an example.
+@seealso{do}
+@end deftypefn
+unwind_protect
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} unwind_protect
+Begin an unwind_protect block.
+
+If an error occurs within the first part of an unwind_protect block
+the commands within the unwind_protect_cleanup block are executed before
+the error is thrown.  If an error is not thrown, then the
+unwind_protect_cleanup block is still executed (in other words, the
+unwind_protect_cleanup will be run with or without an error in the
+unwind_protect block).
+@seealso{unwind_protect_cleanup, try}
+@end deftypefn
+unwind_protect_cleanup
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} unwind_protect_cleanup
+Begin the cleanup section of an unwind_protect block.
+@seealso{unwind_protect}
+@end deftypefn
+varargin
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} varargin
+Pass an arbitrary number of arguments into a function.
+@seealso{varargout, nargin, isargout, nargout, nthargout}
+@end deftypefn
+varargout
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} varargout
+Pass an arbitrary number of arguments out of a function.
+@seealso{varargin, nargin, isargout, nargout, nthargout}
+@end deftypefn
+while
+@c libinterp/parse-tree/oct-parse.in.yy
+-*- texinfo -*-
+@deftypefn {} {} while
+Begin a while loop.
+
+@example
+@group
+i = 0;
+while (i < 10)
+  i++
+endwhile
+@end group
+@end example
+@seealso{do, endwhile, for, until}
 @end deftypefn

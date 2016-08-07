@@ -119,7 +119,7 @@ Position of the light source.
 @anchor{XREFlightstyle}
 @cindex light style
 @item @code{style}: @{@qcode{"infinite"}@} | @qcode{"local"}
-This string defines whether the light emanates from a light source at infinite distance (@qcode{"infinite"}) or from a local point source (@qcode{"local"}). Only the default value @qcode{"infinite"} is supported.
+This string defines whether the light emanates from a light source at infinite distance (@qcode{"infinite"}) or from a local point source (@qcode{"local"}).
 
 
 @anchor{XREFlighttag}
