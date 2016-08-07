@@ -21,6 +21,323 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Saving Data on Unexpected Exits,  Up: Simple File I/O
+
+14.1.3.1 Saving Data on Unexpected Exits
+........................................
+
+If Octave for some reason exits unexpectedly it will by default save the
+variables available in the workspace to a file in the current directory.
+By default this file is named ‘octave-workspace’ and can be loaded into
+memory with the ‘load’ command.  While the default behavior most often
+is reasonable it can be changed through the following functions.
+
+ -- : VAL = crash_dumps_octave_core ()
+ -- : OLD_VAL = crash_dumps_octave_core (NEW_VAL)
+ -- : crash_dumps_octave_core (NEW_VAL, "local")
+     Query or set the internal variable that controls whether Octave
+     tries to save all current variables to the file ‘octave-workspace’
+     if it crashes or receives a hangup, terminate or similar signal.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+     See also: *note octave_core_file_limit: XREFoctave_core_file_limit,
+     *note octave_core_file_name: XREFoctave_core_file_name, *note
+     octave_core_file_options: XREFoctave_core_file_options.
+
+ -- : VAL = sighup_dumps_octave_core ()
+ -- : OLD_VAL = sighup_dumps_octave_core (NEW_VAL)
+ -- : sighup_dumps_octave_core (NEW_VAL, "local")
+     Query or set the internal variable that controls whether Octave
+     tries to save all current variables to the file ‘octave-workspace’
+     if it receives a hangup signal.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+ -- : VAL = sigterm_dumps_octave_core ()
+ -- : OLD_VAL = sigterm_dumps_octave_core (NEW_VAL)
+ -- : sigterm_dumps_octave_core (NEW_VAL, "local")
+     Query or set the internal variable that controls whether Octave
+     tries to save all current variables to the file ‘octave-workspace’
+     if it receives a terminate signal.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+ -- : VAL = octave_core_file_options ()
+ -- : OLD_VAL = octave_core_file_options (NEW_VAL)
+ -- : octave_core_file_options (NEW_VAL, "local")
+     Query or set the internal variable that specifies the options used
+     for saving the workspace data if Octave aborts.
+
+     The value of ‘octave_core_file_options’ should follow the same
+     format as the options for the ‘save’ function.  The default value
+     is Octave’s binary format.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+     See also: *note crash_dumps_octave_core:
+     XREFcrash_dumps_octave_core, *note octave_core_file_name:
+     XREFoctave_core_file_name, *note octave_core_file_limit:
+     XREFoctave_core_file_limit.
+
+ -- : VAL = octave_core_file_limit ()
+ -- : OLD_VAL = octave_core_file_limit (NEW_VAL)
+ -- : octave_core_file_limit (NEW_VAL, "local")
+     Query or set the internal variable that specifies the maximum
+     amount of memory (in kilobytes) of the top-level workspace that
+     Octave will attempt to save when writing data to the crash dump
+     file (the name of the file is specified by OCTAVE_CORE_FILE_NAME).
+
+     If OCTAVE_CORE_FILE_OPTIONS flags specify a binary format, then
+     OCTAVE_CORE_FILE_LIMIT will be approximately the maximum size of
+     the file.  If a text file format is used, then the file could be
+     much larger than the limit.  The default value is -1 (unlimited)
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+     See also: *note crash_dumps_octave_core:
+     XREFcrash_dumps_octave_core, *note octave_core_file_name:
+     XREFoctave_core_file_name, *note octave_core_file_options:
+     XREFoctave_core_file_options.
+
+ -- : VAL = octave_core_file_name ()
+ -- : OLD_VAL = octave_core_file_name (NEW_VAL)
+ -- : octave_core_file_name (NEW_VAL, "local")
+     Query or set the internal variable that specifies the name of the
+     file used for saving data from the top-level workspace if Octave
+     aborts.
+
+     The default value is "octave-workspace"
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+     See also: *note crash_dumps_octave_core:
+     XREFcrash_dumps_octave_core, *note octave_core_file_name:
+     XREFoctave_core_file_name, *note octave_core_file_options:
+     XREFoctave_core_file_options.
+
+
+File: octave.info,  Node: C-Style I/O Functions,  Prev: Basic Input and Output,  Up: Input and Output
+
+14.2 C-Style I/O Functions
+==========================
+
+Octave’s C-style input and output functions provide most of the
+functionality of the C programming language’s standard I/O library.  The
+argument lists for some of the input functions are slightly different,
+however, because Octave has no way of passing arguments by reference.
+
+   In the following, FILE refers to a filename and ‘fid’ refers to an
+integer file number, as returned by ‘fopen’.
+
+   There are three files that are always available.  Although these
+files can be accessed using their corresponding numeric file ids, you
+should always use the symbolic names given in the table below, since it
+will make your programs easier to understand.
+
+ -- : stdin ()
+     Return the numeric value corresponding to the standard input
+     stream.
+
+     When Octave is used interactively, stdin is filtered through the
+     command line editing functions.
+
+     See also: *note stdout: XREFstdout, *note stderr: XREFstderr.
+
+ -- : stdout ()
+     Return the numeric value corresponding to the standard output
+     stream.
+
+     Data written to the standard output is normally filtered through
+     the pager.
+
+     See also: *note stdin: XREFstdin, *note stderr: XREFstderr.
+
+ -- : stderr ()
+     Return the numeric value corresponding to the standard error
+     stream.
+
+     Even if paging is turned on, the standard error is not sent to the
+     pager.  It is useful for error messages and prompts.
+
+     See also: *note stdin: XREFstdin, *note stdout: XREFstdout.
+
+* Menu:
+
+* Opening and Closing Files::
+* Simple Output::
+* Line-Oriented Input::
+* Formatted Output::
+* Output Conversion for Matrices::
+* Output Conversion Syntax::
+* Table of Output Conversions::
+* Integer Conversions::
+* Floating-Point Conversions::
+* Other Output Conversions::
+* Formatted Input::
+* Input Conversion Syntax::
+* Table of Input Conversions::
+* Numeric Input Conversions::
+* String Input Conversions::
+* Binary I/O::
+* Temporary Files::
+* EOF and Errors::
+* File Positioning::
+
+
+File: octave.info,  Node: Opening and Closing Files,  Next: Simple Output,  Up: C-Style I/O Functions
+
+14.2.1 Opening and Closing Files
+--------------------------------
+
+When reading data from a file it must be opened for reading first, and
+likewise when writing to a file.  The ‘fopen’ function returns a pointer
+to an open file that is ready to be read or written.  Once all data has
+been read from or written to the opened file it should be closed.  The
+‘fclose’ function does this.  The following code illustrates the basic
+pattern for writing to a file, but a very similar pattern is used when
+reading a file.
+
+     filename = "myfile.txt";
+     fid = fopen (filename, "w");
+     # Do the actual I/O here...
+     fclose (fid);
+
+ -- : FID = fopen (NAME)
+ -- : FID = fopen (NAME, MODE)
+ -- : FID = fopen (NAME, MODE, ARCH)
+ -- : [FID, MSG] = fopen (...)
+ -- : FID_LIST = fopen ("all")
+ -- : [FILE, MODE, ARCH] = fopen (FID)
+     Open a file for low-level I/O or query open files and file
+     descriptors.
+
+     The first form of the ‘fopen’ function opens the named file with
+     the specified mode (read-write, read-only, etc.)  and architecture
+     interpretation (IEEE big endian, IEEE little endian, etc.), and
+     returns an integer value that may be used to refer to the file
+     later.  If an error occurs, FID is set to −1 and MSG contains the
+     corresponding system error message.  The MODE is a one or two
+     character string that specifies whether the file is to be opened
+     for reading, writing, or both.
+
+     The second form of the ‘fopen’ function returns a vector of file
+     ids corresponding to all the currently open files, excluding the
+     ‘stdin’, ‘stdout’, and ‘stderr’ streams.
+
+     The third form of the ‘fopen’ function returns information about
+     the open file given its file id.
+
+     For example,
+
+          myfile = fopen ("splat.dat", "r", "ieee-le");
+
+     opens the file ‘splat.dat’ for reading.  If necessary, binary
+     numeric values will be read assuming they are stored in IEEE format
+     with the least significant bit first, and then converted to the
+     native representation.
+
+     Opening a file that is already open simply opens it again and
+     returns a separate file id.  It is not an error to open a file
+     several times, though writing to the same file through several
+     different file ids may produce unexpected results.
+
+     The possible values ‘mode’ may have are
+
+     ‘r’ (default)
+          Open a file for reading.
+
+     ‘w’
+          Open a file for writing.  The previous contents are discarded.
+
+     ‘a’
+          Open or create a file for writing at the end of the file.
+
+     ‘r+’
+          Open an existing file for reading and writing.
+
+     ‘w+’
+          Open a file for reading or writing.  The previous contents are
+          discarded.
+
+     ‘a+’
+          Open or create a file for reading or writing at the end of the
+          file.
+
+     Append a "t" to the mode string to open the file in text mode or a
+     "b" to open in binary mode.  On Windows and Macintosh systems, text
+     mode reading and writing automatically converts linefeeds to the
+     appropriate line end character for the system (carriage-return
+     linefeed on Windows, carriage-return on Macintosh).  The default
+     when no mode is specified is binary mode.
+
+     Additionally, you may append a "z" to the mode string to open a
+     gzipped file for reading or writing.  For this to be successful,
+     you must also open the file in binary mode.
+
+     The parameter ARCH is a string specifying the default data format
+     for the file.  Valid values for ARCH are:
+
+     "native" or "n" (default)
+          The format of the current machine.
+
+     "ieee-be" or "b"
+          IEEE big endian format.
+
+     "ieee-le" or "l"
+          IEEE little endian format.
+
+     However, conversions are currently only supported for ‘native’,
+     ‘ieee-be’, and ‘ieee-le’ formats.
+
+     When opening a new file that does not yet exist, permissions will
+     be set to ‘0666 - UMASK’.
+
+     See also: *note fclose: XREFfclose, *note fgets: XREFfgets, *note
+     fgetl: XREFfgetl, *note fscanf: XREFfscanf, *note fread: XREFfread,
+     *note fputs: XREFfputs, *note fdisp: XREFfdisp, *note fprintf:
+     XREFfprintf, *note fwrite: XREFfwrite, *note fskipl: XREFfskipl,
+     *note fseek: XREFfseek, *note frewind: XREFfrewind, *note ftell:
+     XREFftell, *note feof: XREFfeof, *note ferror: XREFferror, *note
+     fclear: XREFfclear, *note fflush: XREFfflush, *note freport:
+     XREFfreport, *note umask: XREFumask.
+
+ -- : fclose (FID)
+ -- : fclose ("all")
+ -- : STATUS = fclose ("all")
+     Close the file specified by the file descriptor FID.
+
+     If successful, ‘fclose’ returns 0, otherwise, it returns -1.  The
+     second form of the ‘fclose’ call closes all open files except
+     ‘stdin’, ‘stdout’, ‘stderr’, and any FIDs associated with gnuplot.
+
+     See also: *note fopen: XREFfopen, *note fflush: XREFfflush, *note
+     freport: XREFfreport.
+
+ -- : is_valid_file_id (FID)
+     Return true if FID refers to an open file.
+
+     See also: *note freport: XREFfreport, *note fopen: XREFfopen.
+
+
 File: octave.info,  Node: Simple Output,  Next: Line-Oriented Input,  Prev: Opening and Closing Files,  Up: C-Style I/O Functions
 
 14.2.2 Simple Output
@@ -3034,22 +3351,23 @@ plot and various other axis properties, such as the aspect ratio and the
 appearance of tic marks.
 
  -- : axis ()
- -- : axis ([X_lo X_hi])
- -- : axis ([X_lo X_hi Y_lo Y_hi])
- -- : axis ([X_lo X_hi Y_lo Y_hi Z_lo Z_hi])
+ -- : axis ([X_LO X_HI])
+ -- : axis ([X_LO X_HI Y_LO Y_HI])
+ -- : axis ([X_LO X_HI Y_LO Y_HI Z_LO Z_HI])
+ -- : axis ([X_LO X_HI Y_LO Y_HI Z_LO Z_HI C_LO C_HI])
  -- : axis (OPTION)
  -- : axis (..., OPTION)
  -- : axis (HAX, ...)
  -- : LIMITS = axis ()
      Set axis limits and appearance.
 
-     The argument LIMITS should be a 2-, 4-, or 6-element vector.  The
-     first and second elements specify the lower and upper limits for
-     the x-axis.  The third and fourth specify the limits for the
-     y-axis, and the fifth and sixth specify the limits for the z-axis.
-     The special values -Inf and Inf may be used to indicate that the
-     limit should automatically be computed based on the data in the
-     axis.
+     The argument LIMITS should be a 2-, 4-, 6-, or 8-element vector.
+     The first and second elements specify the lower and upper limits
+     for the x-axis.  The third and fourth specify the limits for the
+     y-axis, the fifth and sixth specify the limits for the z-axis, and
+     the seventh and eighth specify the limits for the color axis.  The
+     special values -Inf and Inf may be used to indicate that the limit
+     should automatically be computed based on the data in the axis.
 
      Without any arguments, ‘axis’ turns autoscaling on.
 
@@ -3066,7 +3384,7 @@ appearance of tic marks.
 
           axis ("tic", "labely");
 
-     turns tic marks on for all axes and tic mark labels on for the
+     turns tick marks on for all axes and tick mark labels on for the
      y-axis only.
 
      The following options control the aspect ratio of the axes.
@@ -3083,7 +3401,7 @@ appearance of tic marks.
 
      The following options control the way axis limits are interpreted.
 
-     "auto"
+     "auto[xyz]"
           Set the specified axes to have nice limits around the data or
           all if no axes are specified.
 
@@ -3096,26 +3414,26 @@ appearance of tic marks.
      "image"
           Equivalent to "tight" and "equal".
 
-     The following options affect the appearance of tic marks.
+     The following options affect the appearance of tick marks.
 
      "on"
-          Turn tic marks and labels on for all axes.
+          Turn tick marks and labels on for all axes.
 
      "off"
-          Turn tic marks off for all axes.
+          Turn tick marks off for all axes.
 
      "tic[xyz]"
-          Turn tic marks on for all axes, or turn them on for the
+          Turn tick marks on for all axes, or turn them on for the
           specified axes and off for the remainder.
 
      "label[xyz]"
-          Turn tic labels on for all axes, or turn them on for the
+          Turn tick labels on for all axes, or turn them on for the
           specified axes and off for the remainder.
 
      "nolabel"
-          Turn tic labels off for all axes.
+          Turn tick labels off for all axes.
 
-     Note, if there are no tic marks for an axis, there can be no
+     Note, if there are no tick marks for an axis, there can be no
      labels.
 
      The following options affect the direction of increasing values on
@@ -3132,7 +3450,7 @@ appearance of tic marks.
 
      See also: *note xlim: XREFxlim, *note ylim: XREFylim, *note zlim:
      XREFzlim, *note daspect: XREFdaspect, *note pbaspect: XREFpbaspect,
-     *note box: XREFbox, *note grid: XREFgrid.
+     *note box: XREFbox, *note grid: XREFgrid, *note caxis: XREFcaxis.
 
    Similarly the axis limits of the colormap can be changed with the
 caxis function.
@@ -3892,7 +4210,8 @@ three-dimensional plots.
      separate arrays instead of a single structure array.
 
      If called with no output argument, the isosurface geometry is
-     directly processed with the ‘patch’ command.
+     directly processed with the ‘patch’ command and a light object is
+     added to the axes if not yet present.
 
      For example,
 
@@ -3950,81 +4269,45 @@ three-dimensional plots.
           light ("Position", [1 1 5]);
 
      See also: *note isonormals: XREFisonormals, *note isocolors:
-     XREFisocolors.
+     XREFisocolors, *note smooth3: XREFsmooth3.
 
- -- : [N] = isonormals (VAL, V)
- -- : [N] = isonormals (VAL, P)
- -- : [N] = isonormals (X, Y, Z, VAL, V)
- -- : [N] = isonormals (X, Y, Z, VAL, P)
- -- : [N] = isonormals (..., "negate")
- -- : isonormals (..., P)
+ -- : [VN] = isonormals (VAL, VERT)
+ -- : [VN] = isonormals (VAL, HP)
+ -- : [VN] = isonormals (X, Y, Z, VAL, VERT)
+ -- : [VN] = isonormals (X, Y, Z, VAL, HP)
+ -- : [VN] = isonormals (..., "negate")
+ -- : isonormals (VAL, HP)
+ -- : isonormals (X, Y, Z, VAL, HP)
+ -- : isonormals (..., "negate")
 
      Calculate normals to an isosurface.
 
-     If called with one output argument and the first input argument VAL
-     is a three-dimensional array that contains the data for an
-     isosurface geometry and the second input argument V keeps the
-     vertices of an isosurface then return the normals N in form of a
-     matrix with the same size than V at computed points ‘[x, y, z] =
-     meshgrid (1:l, 1:m, 1:n)’.  The output argument N can be taken to
-     manually set VERTEXNORMALS of a patch.
+     The vertex normals VN are calculated from the gradient of the
+     3-dimensional array VAL (size: lxmxn) with the data for an
+     isosurface geometry.  The normals point towards lower values in
+     VAL.
 
-     If called with further input arguments X, Y and Z which are
-     three–dimensional arrays with the same size than VAL then the
-     volume data is taken at those given points.  Instead of the
-     vertices data V a patch handle P can be passed to this function.
+     If called with one output argument VN and the second input argument
+     VERT holds the vertices of an isosurface, the normals VN are
+     calculated at the vertices VERT on a grid given by ‘[x, y, z] =
+     meshgrid (1:l, 1:m, 1:n)’.  The output argument VN has the same
+     size as VERT and can be used to set the "VertexNormals" property of
+     the corresponding patch.
 
-     If given the string input argument "negate" as last input argument
-     then compute the reverse vector normals of an isosurface geometry.
+     If called with further input arguments X, Y, and Z which are
+     3-dimensional arrays with the same size as VAL, the volume data is
+     taken at these points.  Instead of the vertex data VERT, a patch
+     handle HP can be passed to this function.
 
-     If no output argument is given then directly redraw the patch that
-     is given by the patch handle P.
+     If the last input argument is the string "negate", compute the
+     reverse vector normals of an isosurface geometry (i.e., pointed
+     towards higher values in VAL).
 
-     For example:
-
-          function isofinish (p)
-            set (gca, "PlotBoxAspectRatioMode", "manual", ...
-                      "PlotBoxAspectRatio", [1 1 1]);
-            set (p, "VertexNormals", -get (p,"VertexNormals")); # Revert normals
-            set (p, "FaceColor", "interp");
-            ## set (p, "FaceLighting", "phong");
-            ## light ("Position", [1 1 5]); # Available with JHandles
-          endfunction
-
-          N = 15;    # Increase number of vertices in each direction
-          iso = .4;  # Change isovalue to .1 to display a sphere
-          lin = linspace (0, 2, N);
-          [x, y, z] = meshgrid (lin, lin, lin);
-          c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-          figure (); # Open another figure window
-
-          subplot (2,2,1); view (-38, 20);
-          [f, v, cdat] = isosurface (x, y, z, c, iso, y);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
-                     "FaceColor", "interp", "EdgeColor", "none");
-          isofinish (p);  # Call user function isofinish
-
-          subplot (2,2,2); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
-                     "FaceColor", "interp", "EdgeColor", "none");
-          isonormals (x, y, z, c, p); # Directly modify patch
-          isofinish (p);
-
-          subplot (2,2,3); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
-                     "FaceColor", "interp", "EdgeColor", "none");
-          n = isonormals (x, y, z, c, v); # Compute normals of isosurface
-          set (p, "VertexNormals", n);    # Manually set vertex normals
-          isofinish (p);
-
-          subplot (2,2,4); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
-                     "FaceColor", "interp", "EdgeColor", "none");
-          isonormals (x, y, z, c, v, "negate"); # Use reverse directly
-          isofinish (p);
+     If no output argument is given, the property "VertexNormals" of the
+     patch associated with the patch handle HP is changed directly.
 
      See also: *note isosurface: XREFisosurface, *note isocolors:
-     XREFisocolors.
+     XREFisocolors, *note smooth3: XREFsmooth3.
 
  -- : [CD] = isocolors (C, V)
  -- : [CD] = isocolors (X, Y, Z, C, V)
@@ -4103,6 +4386,44 @@ three-dimensional plots.
      See also: *note isosurface: XREFisosurface, *note isonormals:
      XREFisonormals.
 
+ -- : SMOOTHED_DATA = smooth3 (DATA)
+ -- : SMOOTHED_DATA = smooth3 (DATA, METHOD)
+ -- : SMOOTHED_DATA = smooth3 (DATA, METHOD, SZ)
+ -- : SMOOTHED_DATA = smooth3 (DATA, METHOD, SZ, STD_DEV)
+     Smooth values of 3-dimensional matrix DATA.
+
+     This function can be used, for example, to reduce the impact of
+     noise in DATA before calculating isosurfaces.
+
+     DATA must be a non-singleton 3-dimensional matrix.  The smoothed
+     data from this matrix is returned in SMOOTHED_DATA which is of the
+     same size as DATA.
+
+     The option input METHOD determines which convolution kernel is used
+     for the smoothing process.  Possible choices:
+
+     "box", "b" (default)
+          to use a convolution kernel with sharp edges.
+
+     "gaussian", "g"
+          to use a convolution kernel that is represented by a
+          non-correlated trivariate normal distribution function.
+
+     SZ is either a vector of 3 elements representing the size of the
+     convolution kernel in x-, y- and z-direction or a scalar, in which
+     case the same size is used in all three dimensions.  The default
+     value is 3.
+
+     When METHOD is "gaussian", STD_DEV defines the standard deviation
+     of the trivariate normal distribution function.  STD_DEV is either
+     a vector of 3 elements representing the standard deviation of the
+     Gaussian convolution kernel in x-, y- and z-directions or a scalar,
+     in which case the same value is used in all three dimensions.  The
+     default value is 0.65.
+
+     See also: *note isosurface: XREFisosurface, *note isonormals:
+     XREFisonormals, *note patch: XREFpatch.
+
  -- : shrinkfaces (P, SF)
  -- : NFV = shrinkfaces (P, SF)
  -- : NFV = shrinkfaces (FV, SF)
@@ -4171,6 +4492,34 @@ three-dimensional plots.
      SE.  If not given, SE defaults to 10.
 
      See also: *note diffuse: XREFdiffuse, *note surfl: XREFsurfl.
+
+ -- : lighting (TYPE)
+ -- : lighting (HAX, TYPE)
+     Set the lighting of patch or surface graphic objects.
+
+     Valid arguments for TYPE are
+
+     "flat"
+          Draw objects with faceted lighting effects.
+
+     "gouraud"
+          Draw objects with linear interpolation of the lighting effects
+          between the vertices.
+
+     "none"
+          Draw objects without light and shadow effects.
+
+     If the first argument HAX is an axes handle, then change the
+     lighting effects of objects in this axis, rather than the current
+     axes returned by ‘gca’.
+
+     The lighting effects are only visible if at least one light object
+     is present and visible in the same axes.
+
+     See also: *note light: XREFlight, *note fill: XREFfill, *note mesh:
+     XREFmesh, *note patch: XREFpatch, *note pcolor: XREFpcolor, *note
+     surf: XREFsurf, *note surface: XREFsurface, *note shading:
+     XREFshading.
 
  -- : [XX, YY] = meshgrid (X, Y)
  -- : [XX, YY, ZZ] = meshgrid (X, Y, Z)
@@ -6683,7 +7032,7 @@ You can create any graphics object primitive by calling the function of
 the same name as the object; In other words, ‘figure’, ‘axes’, ‘line’,
 ‘text’, ‘image’, ‘patch’, ‘surface’, and ‘light’ functions.  These
 fundamental graphic objects automatically become children of the current
-axes object as if ‘hold on’ was in place.  Seperately, axes will
+axes object as if ‘hold on’ was in place.  Separately, axes will
 automatically become children of the current figure object and figures
 will become children of the root object 0.
 
@@ -6853,8 +7202,7 @@ instead of ‘surface’.  Or use ‘fill’ instead of ‘patch’.
 
      "Style": This string defines whether the light emanates from a
           light source at infinite distance ("infinite") or from a local
-          point source ("local").  Only the default value "infinite" is
-          supported.
+          point source ("local").
 
      If ‘light’ is called with an axes handle HAX, it must be passed as
      the first argument.
@@ -6862,7 +7210,8 @@ instead of ‘surface’.  Or use ‘fill’ instead of ‘patch’.
      Optionally, the handle to the light object is returned in H.
 
      See also: *note get: XREFget, *note set: XREFset, *note patch:
-     XREFpatch, *note surface: XREFsurface.
+     XREFpatch, *note surface: XREFsurface, *note lighting:
+     XREFlighting.
 
 15.3.2.2 Handle Functions
 .........................
@@ -7624,401 +7973,4 @@ size is changed.  printdefault = 1
 
      Changing modes of a visible figure may cause the figure to close
      and reopen.
-
-
-File: octave.info,  Node: Axes Properties,  Next: Line Properties,  Prev: Figure Properties,  Up: Graphics Object Properties
-
-15.3.3.3 Axes Properties
-........................
-
-The ‘axes’ properties are:
-
-‘__modified__’: "off" | {"on"}
-
-‘activepositionproperty’: {"outerposition"} | "position"
-
-‘alim’: def. ‘[0 1]’
-     Transparency is not yet implemented for axes objects.  ‘alim’ is
-     unused.
-
-‘alimmode’: {"auto"} | "manual"
-
-‘ambientlightcolor’: def. ‘[1 1 1]’
-     Light is not yet implemented for axes objects.  ‘ambientlightcolor’
-     is unused.
-
-‘beingdeleted’: {"off"} | "on"
-
-‘box’: "off" | {"on"}
-     Control whether the axes has a surrounding box.
-
-‘boxstyle’: {"back"} | "full"
-     ‘boxstyle’ is unused.
-
-‘busyaction’: "cancel" | {"queue"}
-
-‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
-
-‘cameraposition’: three-element vector, def. ‘[0.50000 0.50000 9.16025]’
-
-‘camerapositionmode’: {"auto"} | "manual"
-
-‘cameratarget’: three-element vector, def. ‘[0.50000 0.50000 0.50000]’
-
-‘cameratargetmode’: {"auto"} | "manual"
-
-‘cameraupvector’: three-element vector, def. ‘[-0 1 0]’
-
-‘cameraupvectormode’: {"auto"} | "manual"
-
-‘cameraviewangle’: scalar, def. ‘6.6086’
-
-‘cameraviewanglemode’: {"auto"} | "manual"
-
-‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
-     Graphics handles of the axes’s children.
-
-‘clim’: two-element vector, def. ‘[0 1]’
-     Define the limits for the color axis of image children.  Setting
-     ‘clim’ also forces the ‘climmode’ property to be set to "manual".
-     *Note pcolor function: XREFpcolor.
-
-‘climmode’: {"auto"} | "manual"
-
-‘clipping’: "off" | {"on"}
-     ‘clipping’ is unused.
-
-‘clippingstyle’: {"3dbox"} | "rectangle"
-     ‘clippingstyle’ is unused.
-
-‘color’: colorspec, def. ‘[1 1 1]’
-     Color of the axes background.  *Note colorspec: Colors.
-
-‘colororder’: N-by-3 RGB matrix, def. 7-by-3 double
-     RGB values used by plot function for automatic line coloring.
-
-‘colororderindex’: def. ‘1’
-     ‘colororderindex’ is unused.
-
-‘createfcn’: string | function handle, def. ‘[](0x0)’
-     Callback function executed immediately after axes has been created.
-     Function is set by using default property on root object, e.g.,
-     ‘set (0, "defaultaxescreatefcn", 'disp ("axes created!")')’.
-
-‘currentpoint’: 2-by-3 matrix, def. 2-by-3 double
-     Matrix ‘[xf, yf, zf; xb, yb, zb]’ which holds the coordinates (in
-     axes data units) of the point over which the mouse pointer was when
-     the mouse button was pressed.  If a mouse callback function is
-     defined, ‘currentpoint’ holds the pointer coordinates at the time
-     the mouse button was pressed.  For 3-D plots, the first row of the
-     returned matrix specifies the point nearest to the current camera
-     position and the second row the furthest point.  The two points
-     forms a line which is perpendicular to the screen.
-
-‘dataaspectratio’: three-element vector, def. ‘[1 1 1]’
-     Specify the relative height and width of the data displayed in the
-     axes.  Setting ‘dataaspectratio’ to ‘[1, 2]’ causes the length of
-     one unit as displayed on the x-axis to be the same as the length of
-     2 units on the y-axis.  Setting ‘dataaspectratio’ also forces the
-     ‘dataaspectratiomode’ property to be set to "manual".
-
-‘dataaspectratiomode’: {"auto"} | "manual"
-
-‘deletefcn’: string | function handle, def. ‘[](0x0)’
-     Callback function executed immediately before axes is deleted.
-
-‘drawmode’: "fast" | {"normal"}
-
-‘fontangle’: "italic" | {"normal"}
-
-‘fontname’: string, def. "*"
-     Name of the font used for axes annotations.
-
-‘fontsize’: scalar, def. ‘10’
-     Size of the font used for axes annotations.  *Note
-     fontunits property: XREFaxesfontunits.
-
-‘fontsmoothing’: "off" | {"on"}
-     ‘fontsmoothing’ is unused.
-
-‘fontunits’: "centimeters" | "inches" | "normalized" | "pixels" | {"points"}
-     Unit used to interpret ‘fontsize’ property.
-
-‘fontweight’: "bold" | {"normal"}
-
-‘gridalpha’: def. ‘0.15000’
-     Transparency is not yet implemented for axes objects.  ‘gridalpha’
-     is unused.
-
-‘gridalphamode’: {"auto"} | "manual"
-     ‘gridalphamode’ is unused.
-
-‘gridcolor’: def. ‘[0.15000 0.15000 0.15000]’
-     ‘gridcolor’ is unused.
-
-‘gridcolormode’: {"auto"} | "manual"
-     ‘gridcolormode’ is unused.
-
-‘gridlinestyle’: {"-"} | "–" | "-." | ":" | "none"
-
-‘handlevisibility’: "callback" | "off" | {"on"}
-     If ‘handlevisibility’ is "off", the axes’s handle is not visible in
-     its parent’s "children" property.
-
-‘hittest’: "off" | {"on"}
-
-‘interruptible’: "off" | {"on"}
-
-‘labelfontsizemultiplier’: def. ‘1.1000’
-     ‘labelfontsizemultiplier’ is unused.
-
-‘layer’: {"bottom"} | "top"
-     Control whether the axes is drawn below child graphics objects
-     (ticks, labels, etc. covered by plotted objects) or above.
-
-‘linestyleorder’: def. "-"
-     ‘linestyleorder’ is unused.
-
-‘linestyleorderindex’: def. ‘1’
-     ‘linestyleorderindex’ is unused.
-
-‘linewidth’: def. ‘0.50000’
-
-‘minorgridalpha’: def. ‘0.25000’
-     Transparency is not yet implemented for axes objects.
-     ‘minorgridalpha’ is unused.
-
-‘minorgridalphamode’: {"auto"} | "manual"
-     ‘minorgridalphamode’ is unused.
-
-‘minorgridcolor’: def. ‘[0.10000 0.10000 0.10000]’
-     ‘minorgridcolor’ is unused.
-
-‘minorgridcolormode’: {"auto"} | "manual"
-     ‘minorgridcolormode’ is unused.
-
-‘minorgridlinestyle’: "-" | "–" | "-." | {":"} | "none"
-
-‘mousewheelzoom’: scalar in the range (0, 1), def. ‘0.50000’
-     Fraction of axes limits to zoom for each wheel movement.
-
-‘nextplot’: "add" | {"replace"} | "replacechildren"
-
-‘outerposition’: four-element vector, def. ‘[0 0 1 1]’
-     Specify the position of the plot including titles, axes, and
-     legend.  The four elements of the vector are the coordinates of the
-     lower left corner and width and height of the plot, in units
-     normalized to the width and height of the plot window.  For
-     example, ‘[0.2, 0.3, 0.4, 0.5]’ sets the lower left corner of the
-     axes at (0.2, 0.3) and the width and height to be 0.4 and 0.5
-     respectively.  *Note position property: XREFaxesposition.
-
-‘parent’: graphics handle
-     Handle of the parent graphics object.
-
-‘pickableparts’: "all" | "none" | {"visible"}
-     ‘pickableparts’ is unused.
-
-‘plotboxaspectratio’: def. ‘[1 1 1]’
-
-‘plotboxaspectratiomode’: {"auto"} | "manual"
-
-‘position’: four-element vector, def. ‘[0.13000 0.11000 0.77500 0.81500]’
-     Specify the position of the plot excluding titles, axes, and
-     legend.  The four elements of the vector are the coordinates of the
-     lower left corner and width and height of the plot, in units
-     normalized to the width and height of the plot window.  For
-     example, ‘[0.2, 0.3, 0.4, 0.5]’ sets the lower left corner of the
-     axes at (0.2, 0.3) and the width and height to be 0.4 and 0.5
-     respectively.  *Note outerposition property: XREFaxesouterposition.
-
-‘projection’: {"orthographic"} | "perspective"
-     ‘projection’ is unused.
-
-‘selected’: {"off"} | "on"
-
-‘selectionhighlight’: "off" | {"on"}
-
-‘sortmethod’: "childorder" | {"depth"}
-     ‘sortmethod’ is unused.
-
-‘tag’: string, def. ""
-     A user-defined string to label the graphics object.
-
-‘tickdir’: {"in"} | "out"
-     Control whether axes tick marks project "in" to the plot box or
-     "out".
-
-‘tickdirmode’: {"auto"} | "manual"
-
-‘ticklabelinterpreter’: "latex" | "none" | {"tex"}
-     Control the way x/y/zticklabel properties are interpreted.  *Note
-     Use of the interpreter property: XREFinterpreterusage.
-
-‘ticklength’: two-element vector, def. ‘[0.010000 0.025000]’
-     Two-element vector ‘[2Dlen 3Dlen]’ specifying the length of the
-     tickmarks relative to the longest visible axis.
-
-‘tightinset’ (read-only): def. ‘[0.042857 0.038106 0.000000 0.023810]’
-
-‘title’: graphics handle
-     Graphics handle of the title text object.
-
-‘titlefontsizemultiplier’: def. ‘1.1000’
-     ‘titlefontsizemultiplier’ is unused.
-
-‘titlefontweight’: {"bold"} | "normal"
-     ‘titlefontweight’ is unused.
-
-‘type’ (read-only): string
-     Class name of the graphics object.  ‘type’ is always "axes"
-
-‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
-     Graphics handle of the uicontextmenu object that is currently
-     associated to this axes object.
-
-‘units’: "centimeters" | "characters" | "inches" | {"normalized"} | "pixels" | "points"
-
-‘userdata’: Any Octave data, def. ‘[](0x0)’
-     User-defined data to associate with the graphics object.
-
-‘view’: two-element vector, def. ‘[0 90]’
-     Two-element vector ‘[azimuth elevation]’ specifying the viewpoint
-     for three-dimensional plots
-
-‘visible’: "off" | {"on"}
-     If ‘visible’ is "off", the axes is not rendered on screen.
-
-‘xaxislocation’: {"bottom"} | "top" | "zero"
-
-‘xcolor’: {colorspec} | "none", def. ‘[0 0 0]’
-     Color of the x-axis.  *Note colorspec: Colors.
-
-‘xcolormode’: {"auto"} | "manual"
-     ‘xcolormode’ is unused.
-
-‘xdir’: {"normal"} | "reverse"
-
-‘xgrid’: {"off"} | "on"
-     Control whether major x grid lines are displayed.
-
-‘xlabel’: graphics handle
-     Graphics handle of the x label text object.
-
-‘xlim’: two-element vector, def. ‘[0 1]’
-     Two-element vector ‘[xmin xmax]’ specifying the limits for the
-     x-axis.  Setting ‘xlim’ also forces the ‘xlimmode’ property to be
-     set to "manual".  *Note xlim function: XREFxlim.
-
-‘xlimmode’: {"auto"} | "manual"
-
-‘xminorgrid’: {"off"} | "on"
-     Control whether minor x grid lines are displayed.
-
-‘xminortick’: {"off"} | "on"
-
-‘xscale’: {"linear"} | "log"
-
-‘xtick’: vector
-     Position of x tick marks.  Setting ‘xtick’ also forces the
-     ‘xtickmode’ property to be set to "manual".
-
-‘xticklabel’: string | cell array of strings, def. 1-by-6 cell
-     Labels of x tick marks.  Setting ‘xticklabel’ also forces the
-     ‘xticklabelmode’ property to be set to "manual".
-
-‘xticklabelmode’: {"auto"} | "manual"
-
-‘xticklabelrotation’: def. ‘0’
-     ‘xticklabelrotation’ is unused.
-
-‘xtickmode’: {"auto"} | "manual"
-
-‘yaxislocation’: {"left"} | "right" | "zero"
-
-‘ycolor’: {colorspec} | "none", def. ‘[0 0 0]’
-     Color of the y-axis.  *Note colorspec: Colors.
-
-‘ycolormode’: {"auto"} | "manual"
-     ‘ycolormode’ is unused.
-
-‘ydir’: {"normal"} | "reverse"
-
-‘ygrid’: {"off"} | "on"
-     Control whether major y grid lines are displayed.
-
-‘ylabel’: graphics handle
-     Graphics handle of the y label text object.
-
-‘ylim’: two-element vector, def. ‘[0 1]’
-     Two-element vector ‘[ymin ymax]’ specifying the limits for the
-     y-axis.  Setting ‘ylim’ also forces the ‘ylimmode’ property to be
-     set to "manual".  *Note ylim function: XREFylim.
-
-‘ylimmode’: {"auto"} | "manual"
-
-‘yminorgrid’: {"off"} | "on"
-     Control whether minor y grid lines are displayed.
-
-‘yminortick’: {"off"} | "on"
-
-‘yscale’: {"linear"} | "log"
-
-‘ytick’: vector
-     Position of y tick marks.  Setting ‘ytick’ also forces the
-     ‘ytickmode’ property to be set to "manual".
-
-‘yticklabel’: string | cell array of strings, def. 1-by-6 cell
-     Labels of y tick marks.  Setting ‘yticklabel’ also forces the
-     ‘yticklabelmode’ property to be set to "manual".
-
-‘yticklabelmode’: {"auto"} | "manual"
-
-‘yticklabelrotation’: def. ‘0’
-     ‘yticklabelrotation’ is unused.
-
-‘ytickmode’: {"auto"} | "manual"
-
-‘zcolor’: {colorspec} | "none", def. ‘[0 0 0]’
-     Color of the z-axis.  *Note colorspec: Colors.
-
-‘zcolormode’: {"auto"} | "manual"
-     ‘zcolormode’ is unused.
-
-‘zdir’: {"normal"} | "reverse"
-
-‘zgrid’: {"off"} | "on"
-     Control whether major z grid lines are displayed.
-
-‘zlabel’: graphics handle
-     Graphics handle of the z label text object.
-
-‘zlim’: two-element vector, def. ‘[0 1]’
-     Two-element vector ‘[zmin zmaz]’ specifying the limits for the
-     z-axis.  Setting ‘zlim’ also forces the ‘zlimmode’ property to be
-     set to "manual".  *Note zlim function: XREFzlim.
-
-‘zlimmode’: {"auto"} | "manual"
-
-‘zminorgrid’: {"off"} | "on"
-     Control whether minor z grid lines are displayed.
-
-‘zminortick’: {"off"} | "on"
-
-‘zscale’: {"linear"} | "log"
-
-‘ztick’: vector
-     Position of z tick marks.  Setting ‘ztick’ also forces the
-     ‘ztickmode’ property to be set to "manual".
-
-‘zticklabel’: string | cell array of strings, def. 1-by-6 cell
-     Labels of z tick marks.  Setting ‘zticklabel’ also forces the
-     ‘zticklabelmode’ property to be set to "manual".
-
-‘zticklabelmode’: {"auto"} | "manual"
-
-‘zticklabelrotation’: def. ‘0’
-     ‘zticklabelrotation’ is unused.
-
-‘ztickmode’: {"auto"} | "manual"
 

@@ -348,7 +348,7 @@ archlib_PROGRAMS = $(am__EXEEXT_1)
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/images.awk \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/images.mk \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/macros.texi \
-@AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/mk_doc_cache.m \
+@AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/mk-doc-cache.pl \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/mkcontrib.awk \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/munge-texi.pl \
 @AMCOND_BUILD_DOCS_TRUE@	$(DOC_IMAGES) $(DOC_IMAGES_SRC) \
@@ -362,21 +362,20 @@ archlib_PROGRAMS = $(am__EXEEXT_1)
 @AMCOND_BUILD_DOCS_TRUE@	$(refcard_FORMATTED) \
 @AMCOND_BUILD_DOCS_TRUE@	$(refcard_TEX_SRC) doc/texmf.cnf
 @AMCOND_BUILD_DOCS_TRUE@am__append_54 = \
-@AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/doc-cache \
-@AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/macros.texi
+@AMCOND_BUILD_DOCS_TRUE@  AUTHORS \
+@AMCOND_BUILD_DOCS_TRUE@  $(BUILT_DOC_IMAGES) \
+@AMCOND_BUILD_DOCS_TRUE@  $(BUILT_OCTAVE_TEXI_SRC)
 
-@AMCOND_BUILD_DOCS_TRUE@am__append_55 = AUTHORS $(BUILT_DOC_IMAGES) \
-@AMCOND_BUILD_DOCS_TRUE@	$(BUILT_OCTAVE_TEXI_SRC) \
-@AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/doc-cache \
-@AMCOND_BUILD_DOCS_TRUE@	$(refcard_FORMATTED)
-@AMCOND_BUILD_DOCS_TRUE@am__append_56 =  \
-@AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/$(octave_dirstamp) \
+@AMCOND_BUILD_DOCS_TRUE@am__append_55 =  \
 @AMCOND_BUILD_DOCS_TRUE@	doc/liboctave/$(octave_dirstamp) \
 @AMCOND_BUILD_DOCS_TRUE@	doc/refcard/$(octave_dirstamp)
-@AMCOND_BUILD_DOCS_TRUE@am__append_57 = \
+@AMCOND_BUILD_DOCS_TRUE@am__append_56 = \
 @AMCOND_BUILD_DOCS_TRUE@  doc/refcard/refcard-a4.log \
 @AMCOND_BUILD_DOCS_TRUE@  doc/refcard/refcard-legal.log \
 @AMCOND_BUILD_DOCS_TRUE@  doc/refcard/refcard-letter.log
+
+@AMCOND_BUILD_DOCS_TRUE@am__append_57 = \
+@AMCOND_BUILD_DOCS_TRUE@  $(refcard_FORMATTED)
 
 @AMCOND_BUILD_DOCS_TRUE@am__append_58 =  \
 @AMCOND_BUILD_DOCS_TRUE@	doc/interpreter/geometryimages.m \
@@ -429,10 +428,12 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/fcntl_h.m4 $(top_srcdir)/m4/fdopendir.m4 \
 	$(top_srcdir)/m4/filemode.m4 $(top_srcdir)/m4/filenamecat.m4 \
 	$(top_srcdir)/m4/flexmember.m4 $(top_srcdir)/m4/float_h.m4 \
-	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fseek.m4 \
-	$(top_srcdir)/m4/fseeko.m4 $(top_srcdir)/m4/fstat.m4 \
-	$(top_srcdir)/m4/fstatat.m4 $(top_srcdir)/m4/ftell.m4 \
-	$(top_srcdir)/m4/ftello.m4 $(top_srcdir)/m4/ftruncate.m4 \
+	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fpieee.m4 \
+	$(top_srcdir)/m4/frexp.m4 $(top_srcdir)/m4/frexpf.m4 \
+	$(top_srcdir)/m4/fseek.m4 $(top_srcdir)/m4/fseeko.m4 \
+	$(top_srcdir)/m4/fstat.m4 $(top_srcdir)/m4/fstatat.m4 \
+	$(top_srcdir)/m4/ftell.m4 $(top_srcdir)/m4/ftello.m4 \
+	$(top_srcdir)/m4/ftruncate.m4 \
 	$(top_srcdir)/m4/getcwd-abort-bug.m4 \
 	$(top_srcdir)/m4/getcwd-path-max.m4 $(top_srcdir)/m4/getcwd.m4 \
 	$(top_srcdir)/m4/getdtablesize.m4 \
@@ -445,25 +446,26 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/hard-locale.m4 \
 	$(top_srcdir)/m4/include_next.m4 $(top_srcdir)/m4/intmax_t.m4 \
 	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/isatty.m4 \
-	$(top_srcdir)/m4/largefile.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
-	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/link.m4 \
-	$(top_srcdir)/m4/localcharset.m4 $(top_srcdir)/m4/locale-fr.m4 \
-	$(top_srcdir)/m4/locale-ja.m4 $(top_srcdir)/m4/locale-zh.m4 \
-	$(top_srcdir)/m4/lock.m4 $(top_srcdir)/m4/longlong.m4 \
-	$(top_srcdir)/m4/lseek.m4 $(top_srcdir)/m4/lstat.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/malloc.m4 $(top_srcdir)/m4/malloca.m4 \
-	$(top_srcdir)/m4/mbrtowc.m4 $(top_srcdir)/m4/mbsinit.m4 \
-	$(top_srcdir)/m4/mbsrtowcs.m4 $(top_srcdir)/m4/mbstate_t.m4 \
-	$(top_srcdir)/m4/md4.m4 $(top_srcdir)/m4/md5.m4 \
-	$(top_srcdir)/m4/memchr.m4 $(top_srcdir)/m4/mempcpy.m4 \
-	$(top_srcdir)/m4/memrchr.m4 $(top_srcdir)/m4/minmax.m4 \
-	$(top_srcdir)/m4/mkdir.m4 $(top_srcdir)/m4/mkfifo.m4 \
-	$(top_srcdir)/m4/mkostemp.m4 $(top_srcdir)/m4/mktime.m4 \
-	$(top_srcdir)/m4/mmap-anon.m4 $(top_srcdir)/m4/mode_t.m4 \
-	$(top_srcdir)/m4/msvc-inval.m4 \
+	$(top_srcdir)/m4/isnand.m4 $(top_srcdir)/m4/largefile.m4 \
+	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
+	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/link.m4 $(top_srcdir)/m4/localcharset.m4 \
+	$(top_srcdir)/m4/locale-fr.m4 $(top_srcdir)/m4/locale-ja.m4 \
+	$(top_srcdir)/m4/locale-zh.m4 $(top_srcdir)/m4/lock.m4 \
+	$(top_srcdir)/m4/longlong.m4 $(top_srcdir)/m4/lseek.m4 \
+	$(top_srcdir)/m4/lstat.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/malloc.m4 \
+	$(top_srcdir)/m4/malloca.m4 $(top_srcdir)/m4/math_h.m4 \
+	$(top_srcdir)/m4/mathfunc.m4 $(top_srcdir)/m4/mbrtowc.m4 \
+	$(top_srcdir)/m4/mbsinit.m4 $(top_srcdir)/m4/mbsrtowcs.m4 \
+	$(top_srcdir)/m4/mbstate_t.m4 $(top_srcdir)/m4/md4.m4 \
+	$(top_srcdir)/m4/md5.m4 $(top_srcdir)/m4/memchr.m4 \
+	$(top_srcdir)/m4/mempcpy.m4 $(top_srcdir)/m4/memrchr.m4 \
+	$(top_srcdir)/m4/minmax.m4 $(top_srcdir)/m4/mkdir.m4 \
+	$(top_srcdir)/m4/mkfifo.m4 $(top_srcdir)/m4/mkostemp.m4 \
+	$(top_srcdir)/m4/mktime.m4 $(top_srcdir)/m4/mmap-anon.m4 \
+	$(top_srcdir)/m4/mode_t.m4 $(top_srcdir)/m4/msvc-inval.m4 \
 	$(top_srcdir)/m4/msvc-nothrow.m4 $(top_srcdir)/m4/multiarch.m4 \
 	$(top_srcdir)/m4/nanosleep.m4 $(top_srcdir)/m4/nocrash.m4 \
 	$(top_srcdir)/m4/nproc.m4 $(top_srcdir)/m4/off_t.m4 \
@@ -625,6 +627,7 @@ am__installdirs = "$(DESTDIR)$(octlibdir)" "$(DESTDIR)$(archlibdir)" \
 	"$(DESTDIR)$(scripts_statistics_testsdir)" \
 	"$(DESTDIR)$(scripts_stringsdir)" \
 	"$(DESTDIR)$(scripts_testfundir)" \
+	"$(DESTDIR)$(scripts_testfun_privatedir)" \
 	"$(DESTDIR)$(scripts_timedir)" "$(DESTDIR)$(octincludedir)" \
 	"$(DESTDIR)$(octincludedir)"
 LTLIBRARIES = $(noinst_LTLIBRARIES) $(octlib_LTLIBRARIES)
@@ -922,6 +925,7 @@ am__objects_17 =  \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-bitfcns.lo \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-bsxfun.lo \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-c-file-ptr-stream.lo \
+	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-call-stack.lo \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-cdisplay.lo \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-cellfun.lo \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-colloc.lo \
@@ -970,6 +974,7 @@ am__objects_17 =  \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-hook-fcn.lo \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-input.lo \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-inv.lo \
+	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-interpreter.lo \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-kron.lo \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-load-path.lo \
 	libinterp/corefcn/libinterp_corefcn_libcorefcn_la-load-save.lo \
@@ -1337,6 +1342,20 @@ libinterp_dldfcn_symrcm_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_libinterp_dldfcn_symrcm_la_rpath =
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_libinterp_dldfcn_symrcm_la_rpath =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
+libinterp_dldfcn_xzip_la_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+	liboctave/liboctave.la $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libinterp_dldfcn_xzip_la_OBJECTS =  \
+	libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo
+libinterp_dldfcn_xzip_la_OBJECTS =  \
+	$(am_libinterp_dldfcn_xzip_la_OBJECTS)
+libinterp_dldfcn_xzip_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
+	$(libinterp_dldfcn_xzip_la_CXXFLAGS) $(CXXFLAGS) \
+	$(libinterp_dldfcn_xzip_la_LDFLAGS) $(LDFLAGS) -o $@
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_libinterp_dldfcn_xzip_la_rpath =
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_libinterp_dldfcn_xzip_la_rpath =  \
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
 am__DEPENDENCIES_3 = libinterp/dldfcn/__delaunayn__.la \
 	libinterp/dldfcn/__eigs__.la \
 	libinterp/dldfcn/__fltk_uigetfile__.la \
@@ -1349,7 +1368,7 @@ am__DEPENDENCIES_3 = libinterp/dldfcn/__delaunayn__.la \
 	libinterp/dldfcn/colamd.la libinterp/dldfcn/convhulln.la \
 	libinterp/dldfcn/dmperm.la libinterp/dldfcn/fftw.la \
 	libinterp/dldfcn/qr.la libinterp/dldfcn/symbfact.la \
-	libinterp/dldfcn/symrcm.la
+	libinterp/dldfcn/symrcm.la libinterp/dldfcn/xzip.la
 am__DEPENDENCIES_4 = $(am__DEPENDENCIES_3)
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am__DEPENDENCIES_5 =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(am__DEPENDENCIES_4)
@@ -2774,6 +2793,7 @@ am__objects_37 = liboctave/wrappers/liboctave_wrappers_libwrappers_la-areadlink-
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-getopt-wrapper.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-glob-wrappers.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-hash-wrappers.lo \
+	liboctave/wrappers/liboctave_wrappers_libwrappers_la-math-wrappers.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-mkostemp-wrapper.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-nanosleep-wrapper.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-nproc-wrapper.lo \
@@ -2971,6 +2991,7 @@ SOURCES = $(libgui_graphics_libgui_graphics_la_SOURCES) \
 	$(libinterp_dldfcn_qr_la_SOURCES) \
 	$(libinterp_dldfcn_symbfact_la_SOURCES) \
 	$(libinterp_dldfcn_symrcm_la_SOURCES) \
+	$(libinterp_dldfcn_xzip_la_SOURCES) \
 	$(libinterp_liboctinterp_la_SOURCES) \
 	$(nodist_libinterp_liboctinterp_la_SOURCES) \
 	$(libinterp_octave_value_liboctave_value_la_SOURCES) \
@@ -3019,6 +3040,7 @@ DIST_SOURCES = $(am__libgui_graphics_libgui_graphics_la_SOURCES_DIST) \
 	$(libinterp_dldfcn_qr_la_SOURCES) \
 	$(libinterp_dldfcn_symbfact_la_SOURCES) \
 	$(libinterp_dldfcn_symrcm_la_SOURCES) \
+	$(libinterp_dldfcn_xzip_la_SOURCES) \
 	$(libinterp_liboctinterp_la_SOURCES) \
 	$(libinterp_octave_value_liboctave_value_la_SOURCES) \
 	$(libinterp_parse_tree_libparse_tree_la_SOURCES) \
@@ -3115,7 +3137,8 @@ DATA = $(image_DATA) $(nobase_libinterptests_DATA) \
 	$(scripts_statistics_models_DATA) \
 	$(scripts_statistics_models_private_DATA) \
 	$(scripts_statistics_tests_DATA) $(scripts_strings_DATA) \
-	$(scripts_testfun_DATA) $(scripts_time_DATA)
+	$(scripts_testfun_DATA) $(scripts_testfun_private_DATA) \
+	$(scripts_time_DATA)
 am__noinst_HEADERS_DIST = libinterp/operators/op-dm-template.cc \
 	libinterp/operators/op-dms-template.cc \
 	libinterp/operators/op-int.h \
@@ -3313,6 +3336,7 @@ am__DIST_COMMON = $(dist_man_MANS) $(srcdir)/Makefile.in \
 	$(srcdir)/test/ctor-vs-method/module.mk \
 	$(srcdir)/test/fcn-handle-derived-resolution/module.mk \
 	$(srcdir)/test/module.mk $(srcdir)/test/nest/module.mk \
+	$(srcdir)/test/publish/module.mk \
 	$(top_srcdir)/build-aux/ar-lib \
 	$(top_srcdir)/build-aux/check-subst-vars.in.sh \
 	$(top_srcdir)/build-aux/config.guess \
@@ -3420,6 +3444,9 @@ BUILD_CXX = @BUILD_CXX@
 BUILD_CXXFLAGS = @BUILD_CXXFLAGS@
 BUILD_EXEEXT = @BUILD_EXEEXT@
 BUILD_LDFLAGS = @BUILD_LDFLAGS@
+BZ2_CPPFLAGS = @BZ2_CPPFLAGS@
+BZ2_LDFLAGS = @BZ2_LDFLAGS@
+BZ2_LIBS = @BZ2_LIBS@
 CAMD_CPPFLAGS = @CAMD_CPPFLAGS@
 CAMD_LDFLAGS = @CAMD_LDFLAGS@
 CAMD_LIBS = @CAMD_LIBS@
@@ -3512,6 +3539,8 @@ FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_CPPFLAGS = @FONTCONFIG_CPPFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
 FPICFLAG = @FPICFLAG@
+FREXPF_LIBM = @FREXPF_LIBM@
+FREXP_LIBM = @FREXP_LIBM@
 FT2_CFLAGS = @FT2_CFLAGS@
 FT2_CPPFLAGS = @FT2_CPPFLAGS@
 FT2_LIBS = @FT2_LIBS@
@@ -3527,17 +3556,36 @@ GLPK_LDFLAGS = @GLPK_LDFLAGS@
 GLPK_LIBS = @GLPK_LIBS@
 GNULIB_ACCEPT = @GNULIB_ACCEPT@
 GNULIB_ACCEPT4 = @GNULIB_ACCEPT4@
+GNULIB_ACOSF = @GNULIB_ACOSF@
+GNULIB_ACOSL = @GNULIB_ACOSL@
 GNULIB_ALPHASORT = @GNULIB_ALPHASORT@
+GNULIB_ASINF = @GNULIB_ASINF@
+GNULIB_ASINL = @GNULIB_ASINL@
+GNULIB_ATAN2F = @GNULIB_ATAN2F@
+GNULIB_ATANF = @GNULIB_ATANF@
+GNULIB_ATANL = @GNULIB_ATANL@
 GNULIB_ATOLL = @GNULIB_ATOLL@
 GNULIB_BIND = @GNULIB_BIND@
 GNULIB_BTOWC = @GNULIB_BTOWC@
 GNULIB_CALLOC_POSIX = @GNULIB_CALLOC_POSIX@
 GNULIB_CANONICALIZE_FILE_NAME = @GNULIB_CANONICALIZE_FILE_NAME@
+GNULIB_CBRT = @GNULIB_CBRT@
+GNULIB_CBRTF = @GNULIB_CBRTF@
+GNULIB_CBRTL = @GNULIB_CBRTL@
+GNULIB_CEIL = @GNULIB_CEIL@
+GNULIB_CEILF = @GNULIB_CEILF@
+GNULIB_CEILL = @GNULIB_CEILL@
 GNULIB_CHDIR = @GNULIB_CHDIR@
 GNULIB_CHOWN = @GNULIB_CHOWN@
 GNULIB_CLOSE = @GNULIB_CLOSE@
 GNULIB_CLOSEDIR = @GNULIB_CLOSEDIR@
 GNULIB_CONNECT = @GNULIB_CONNECT@
+GNULIB_COPYSIGN = @GNULIB_COPYSIGN@
+GNULIB_COPYSIGNF = @GNULIB_COPYSIGNF@
+GNULIB_COPYSIGNL = @GNULIB_COPYSIGNL@
+GNULIB_COSF = @GNULIB_COSF@
+GNULIB_COSHF = @GNULIB_COSHF@
+GNULIB_COSL = @GNULIB_COSL@
 GNULIB_DIRFD = @GNULIB_DIRFD@
 GNULIB_DPRINTF = @GNULIB_DPRINTF@
 GNULIB_DUP = @GNULIB_DUP@
@@ -3545,6 +3593,16 @@ GNULIB_DUP2 = @GNULIB_DUP2@
 GNULIB_DUP3 = @GNULIB_DUP3@
 GNULIB_ENVIRON = @GNULIB_ENVIRON@
 GNULIB_EUIDACCESS = @GNULIB_EUIDACCESS@
+GNULIB_EXP2 = @GNULIB_EXP2@
+GNULIB_EXP2F = @GNULIB_EXP2F@
+GNULIB_EXP2L = @GNULIB_EXP2L@
+GNULIB_EXPF = @GNULIB_EXPF@
+GNULIB_EXPL = @GNULIB_EXPL@
+GNULIB_EXPM1 = @GNULIB_EXPM1@
+GNULIB_EXPM1F = @GNULIB_EXPM1F@
+GNULIB_EXPM1L = @GNULIB_EXPM1L@
+GNULIB_FABSF = @GNULIB_FABSF@
+GNULIB_FABSL = @GNULIB_FABSL@
 GNULIB_FACCESSAT = @GNULIB_FACCESSAT@
 GNULIB_FCHDIR = @GNULIB_FCHDIR@
 GNULIB_FCHMODAT = @GNULIB_FCHMODAT@
@@ -3560,6 +3618,15 @@ GNULIB_FFSL = @GNULIB_FFSL@
 GNULIB_FFSLL = @GNULIB_FFSLL@
 GNULIB_FGETC = @GNULIB_FGETC@
 GNULIB_FGETS = @GNULIB_FGETS@
+GNULIB_FLOOR = @GNULIB_FLOOR@
+GNULIB_FLOORF = @GNULIB_FLOORF@
+GNULIB_FLOORL = @GNULIB_FLOORL@
+GNULIB_FMA = @GNULIB_FMA@
+GNULIB_FMAF = @GNULIB_FMAF@
+GNULIB_FMAL = @GNULIB_FMAL@
+GNULIB_FMOD = @GNULIB_FMOD@
+GNULIB_FMODF = @GNULIB_FMODF@
+GNULIB_FMODL = @GNULIB_FMODL@
 GNULIB_FOPEN = @GNULIB_FOPEN@
 GNULIB_FPRINTF = @GNULIB_FPRINTF@
 GNULIB_FPRINTF_POSIX = @GNULIB_FPRINTF_POSIX@
@@ -3568,6 +3635,9 @@ GNULIB_FPUTC = @GNULIB_FPUTC@
 GNULIB_FPUTS = @GNULIB_FPUTS@
 GNULIB_FREAD = @GNULIB_FREAD@
 GNULIB_FREOPEN = @GNULIB_FREOPEN@
+GNULIB_FREXP = @GNULIB_FREXP@
+GNULIB_FREXPF = @GNULIB_FREXPF@
+GNULIB_FREXPL = @GNULIB_FREXPL@
 GNULIB_FSCANF = @GNULIB_FSCANF@
 GNULIB_FSEEK = @GNULIB_FSEEK@
 GNULIB_FSEEKO = @GNULIB_FSEEKO@
@@ -3602,15 +3672,44 @@ GNULIB_GETUSERSHELL = @GNULIB_GETUSERSHELL@
 GNULIB_GL_UNISTD_H_GETOPT = @GNULIB_GL_UNISTD_H_GETOPT@
 GNULIB_GRANTPT = @GNULIB_GRANTPT@
 GNULIB_GROUP_MEMBER = @GNULIB_GROUP_MEMBER@
+GNULIB_HYPOT = @GNULIB_HYPOT@
+GNULIB_HYPOTF = @GNULIB_HYPOTF@
+GNULIB_HYPOTL = @GNULIB_HYPOTL@
+GNULIB_ILOGB = @GNULIB_ILOGB@
+GNULIB_ILOGBF = @GNULIB_ILOGBF@
+GNULIB_ILOGBL = @GNULIB_ILOGBL@
 GNULIB_ISATTY = @GNULIB_ISATTY@
+GNULIB_ISFINITE = @GNULIB_ISFINITE@
+GNULIB_ISINF = @GNULIB_ISINF@
+GNULIB_ISNAN = @GNULIB_ISNAN@
+GNULIB_ISNAND = @GNULIB_ISNAND@
+GNULIB_ISNANF = @GNULIB_ISNANF@
+GNULIB_ISNANL = @GNULIB_ISNANL@
 GNULIB_ISWBLANK = @GNULIB_ISWBLANK@
 GNULIB_ISWCTYPE = @GNULIB_ISWCTYPE@
 GNULIB_LCHMOD = @GNULIB_LCHMOD@
 GNULIB_LCHOWN = @GNULIB_LCHOWN@
+GNULIB_LDEXPF = @GNULIB_LDEXPF@
+GNULIB_LDEXPL = @GNULIB_LDEXPL@
 GNULIB_LINK = @GNULIB_LINK@
 GNULIB_LINKAT = @GNULIB_LINKAT@
 GNULIB_LINK_DEPS = @GNULIB_LINK_DEPS@
 GNULIB_LISTEN = @GNULIB_LISTEN@
+GNULIB_LOG = @GNULIB_LOG@
+GNULIB_LOG10 = @GNULIB_LOG10@
+GNULIB_LOG10F = @GNULIB_LOG10F@
+GNULIB_LOG10L = @GNULIB_LOG10L@
+GNULIB_LOG1P = @GNULIB_LOG1P@
+GNULIB_LOG1PF = @GNULIB_LOG1PF@
+GNULIB_LOG1PL = @GNULIB_LOG1PL@
+GNULIB_LOG2 = @GNULIB_LOG2@
+GNULIB_LOG2F = @GNULIB_LOG2F@
+GNULIB_LOG2L = @GNULIB_LOG2L@
+GNULIB_LOGB = @GNULIB_LOGB@
+GNULIB_LOGBF = @GNULIB_LOGBF@
+GNULIB_LOGBL = @GNULIB_LOGBL@
+GNULIB_LOGF = @GNULIB_LOGF@
+GNULIB_LOGL = @GNULIB_LOGL@
 GNULIB_LSEEK = @GNULIB_LSEEK@
 GNULIB_LSTAT = @GNULIB_LSTAT@
 GNULIB_MALLOC_POSIX = @GNULIB_MALLOC_POSIX@
@@ -3649,6 +3748,9 @@ GNULIB_MKOSTEMPS = @GNULIB_MKOSTEMPS@
 GNULIB_MKSTEMP = @GNULIB_MKSTEMP@
 GNULIB_MKSTEMPS = @GNULIB_MKSTEMPS@
 GNULIB_MKTIME = @GNULIB_MKTIME@
+GNULIB_MODF = @GNULIB_MODF@
+GNULIB_MODFF = @GNULIB_MODFF@
+GNULIB_MODFL = @GNULIB_MODFL@
 GNULIB_NANOSLEEP = @GNULIB_NANOSLEEP@
 GNULIB_NONBLOCKING = @GNULIB_NONBLOCKING@
 GNULIB_OBSTACK_PRINTF = @GNULIB_OBSTACK_PRINTF@
@@ -3662,6 +3764,7 @@ GNULIB_PIPE = @GNULIB_PIPE@
 GNULIB_PIPE2 = @GNULIB_PIPE2@
 GNULIB_POPEN = @GNULIB_POPEN@
 GNULIB_POSIX_OPENPT = @GNULIB_POSIX_OPENPT@
+GNULIB_POWF = @GNULIB_POWF@
 GNULIB_PREAD = @GNULIB_PREAD@
 GNULIB_PRINTF = @GNULIB_PRINTF@
 GNULIB_PRINTF_POSIX = @GNULIB_PRINTF_POSIX@
@@ -3687,11 +3790,20 @@ GNULIB_REALLOC_POSIX = @GNULIB_REALLOC_POSIX@
 GNULIB_REALPATH = @GNULIB_REALPATH@
 GNULIB_RECV = @GNULIB_RECV@
 GNULIB_RECVFROM = @GNULIB_RECVFROM@
+GNULIB_REMAINDER = @GNULIB_REMAINDER@
+GNULIB_REMAINDERF = @GNULIB_REMAINDERF@
+GNULIB_REMAINDERL = @GNULIB_REMAINDERL@
 GNULIB_REMOVE = @GNULIB_REMOVE@
 GNULIB_RENAME = @GNULIB_RENAME@
 GNULIB_RENAMEAT = @GNULIB_RENAMEAT@
 GNULIB_REWINDDIR = @GNULIB_REWINDDIR@
+GNULIB_RINT = @GNULIB_RINT@
+GNULIB_RINTF = @GNULIB_RINTF@
+GNULIB_RINTL = @GNULIB_RINTL@
 GNULIB_RMDIR = @GNULIB_RMDIR@
+GNULIB_ROUND = @GNULIB_ROUND@
+GNULIB_ROUNDF = @GNULIB_ROUNDF@
+GNULIB_ROUNDL = @GNULIB_ROUNDL@
 GNULIB_RPMATCH = @GNULIB_RPMATCH@
 GNULIB_SCANDIR = @GNULIB_SCANDIR@
 GNULIB_SCANF = @GNULIB_SCANF@
@@ -3705,11 +3817,17 @@ GNULIB_SETSOCKOPT = @GNULIB_SETSOCKOPT@
 GNULIB_SHUTDOWN = @GNULIB_SHUTDOWN@
 GNULIB_SIGACTION = @GNULIB_SIGACTION@
 GNULIB_SIGNAL_H_SIGPIPE = @GNULIB_SIGNAL_H_SIGPIPE@
+GNULIB_SIGNBIT = @GNULIB_SIGNBIT@
 GNULIB_SIGPROCMASK = @GNULIB_SIGPROCMASK@
+GNULIB_SINF = @GNULIB_SINF@
+GNULIB_SINHF = @GNULIB_SINHF@
+GNULIB_SINL = @GNULIB_SINL@
 GNULIB_SLEEP = @GNULIB_SLEEP@
 GNULIB_SNPRINTF = @GNULIB_SNPRINTF@
 GNULIB_SOCKET = @GNULIB_SOCKET@
 GNULIB_SPRINTF_POSIX = @GNULIB_SPRINTF_POSIX@
+GNULIB_SQRTF = @GNULIB_SQRTF@
+GNULIB_SQRTL = @GNULIB_SQRTL@
 GNULIB_STAT = @GNULIB_STAT@
 GNULIB_STDIO_H_NONBLOCKING = @GNULIB_STDIO_H_NONBLOCKING@
 GNULIB_STDIO_H_SIGPIPE = @GNULIB_STDIO_H_SIGPIPE@
@@ -3736,12 +3854,18 @@ GNULIB_STRVERSCMP = @GNULIB_STRVERSCMP@
 GNULIB_SYMLINK = @GNULIB_SYMLINK@
 GNULIB_SYMLINKAT = @GNULIB_SYMLINKAT@
 GNULIB_SYSTEM_POSIX = @GNULIB_SYSTEM_POSIX@
+GNULIB_TANF = @GNULIB_TANF@
+GNULIB_TANHF = @GNULIB_TANHF@
+GNULIB_TANL = @GNULIB_TANL@
 GNULIB_TIMEGM = @GNULIB_TIMEGM@
 GNULIB_TIMES = @GNULIB_TIMES@
 GNULIB_TIME_R = @GNULIB_TIME_R@
 GNULIB_TIME_RZ = @GNULIB_TIME_RZ@
 GNULIB_TMPFILE = @GNULIB_TMPFILE@
 GNULIB_TOWCTRANS = @GNULIB_TOWCTRANS@
+GNULIB_TRUNC = @GNULIB_TRUNC@
+GNULIB_TRUNCF = @GNULIB_TRUNCF@
+GNULIB_TRUNCL = @GNULIB_TRUNCL@
 GNULIB_TTYNAME_R = @GNULIB_TTYNAME_R@
 GNULIB_UNAME = @GNULIB_UNAME@
 GNULIB_UNISTD_H_NONBLOCKING = @GNULIB_UNISTD_H_NONBLOCKING@
@@ -3806,18 +3930,50 @@ GPERF = @GPERF@
 GREP = @GREP@
 GXX_VERSION = @GXX_VERSION@
 HAVE_ACCEPT4 = @HAVE_ACCEPT4@
+HAVE_ACOSF = @HAVE_ACOSF@
+HAVE_ACOSL = @HAVE_ACOSL@
 HAVE_ALPHASORT = @HAVE_ALPHASORT@
+HAVE_ASINF = @HAVE_ASINF@
+HAVE_ASINL = @HAVE_ASINL@
+HAVE_ATAN2F = @HAVE_ATAN2F@
+HAVE_ATANF = @HAVE_ATANF@
+HAVE_ATANL = @HAVE_ATANL@
 HAVE_ATOLL = @HAVE_ATOLL@
 HAVE_BTOWC = @HAVE_BTOWC@
 HAVE_CANONICALIZE_FILE_NAME = @HAVE_CANONICALIZE_FILE_NAME@
+HAVE_CBRT = @HAVE_CBRT@
+HAVE_CBRTF = @HAVE_CBRTF@
+HAVE_CBRTL = @HAVE_CBRTL@
 HAVE_CHOWN = @HAVE_CHOWN@
 HAVE_CLOSEDIR = @HAVE_CLOSEDIR@
+HAVE_COPYSIGN = @HAVE_COPYSIGN@
+HAVE_COPYSIGNL = @HAVE_COPYSIGNL@
+HAVE_COSF = @HAVE_COSF@
+HAVE_COSHF = @HAVE_COSHF@
+HAVE_COSL = @HAVE_COSL@
+HAVE_DECL_ACOSL = @HAVE_DECL_ACOSL@
+HAVE_DECL_ASINL = @HAVE_DECL_ASINL@
+HAVE_DECL_ATANL = @HAVE_DECL_ATANL@
+HAVE_DECL_CBRTF = @HAVE_DECL_CBRTF@
+HAVE_DECL_CBRTL = @HAVE_DECL_CBRTL@
+HAVE_DECL_CEILF = @HAVE_DECL_CEILF@
+HAVE_DECL_CEILL = @HAVE_DECL_CEILL@
+HAVE_DECL_COPYSIGNF = @HAVE_DECL_COPYSIGNF@
+HAVE_DECL_COSL = @HAVE_DECL_COSL@
 HAVE_DECL_DIRFD = @HAVE_DECL_DIRFD@
 HAVE_DECL_ENVIRON = @HAVE_DECL_ENVIRON@
+HAVE_DECL_EXP2 = @HAVE_DECL_EXP2@
+HAVE_DECL_EXP2F = @HAVE_DECL_EXP2F@
+HAVE_DECL_EXP2L = @HAVE_DECL_EXP2L@
+HAVE_DECL_EXPL = @HAVE_DECL_EXPL@
+HAVE_DECL_EXPM1L = @HAVE_DECL_EXPM1L@
 HAVE_DECL_FCHDIR = @HAVE_DECL_FCHDIR@
 HAVE_DECL_FDATASYNC = @HAVE_DECL_FDATASYNC@
 HAVE_DECL_FDOPENDIR = @HAVE_DECL_FDOPENDIR@
+HAVE_DECL_FLOORF = @HAVE_DECL_FLOORF@
+HAVE_DECL_FLOORL = @HAVE_DECL_FLOORL@
 HAVE_DECL_FPURGE = @HAVE_DECL_FPURGE@
+HAVE_DECL_FREXPL = @HAVE_DECL_FREXPL@
 HAVE_DECL_FSEEKO = @HAVE_DECL_FSEEKO@
 HAVE_DECL_FTELLO = @HAVE_DECL_FTELLO@
 HAVE_DECL_GETDELIM = @HAVE_DECL_GETDELIM@
@@ -3827,13 +3983,28 @@ HAVE_DECL_GETLOADAVG = @HAVE_DECL_GETLOADAVG@
 HAVE_DECL_GETLOGIN_R = @HAVE_DECL_GETLOGIN_R@
 HAVE_DECL_GETPAGESIZE = @HAVE_DECL_GETPAGESIZE@
 HAVE_DECL_GETUSERSHELL = @HAVE_DECL_GETUSERSHELL@
+HAVE_DECL_LDEXPL = @HAVE_DECL_LDEXPL@
 HAVE_DECL_LOCALTIME_R = @HAVE_DECL_LOCALTIME_R@
+HAVE_DECL_LOG10L = @HAVE_DECL_LOG10L@
+HAVE_DECL_LOG2 = @HAVE_DECL_LOG2@
+HAVE_DECL_LOG2F = @HAVE_DECL_LOG2F@
+HAVE_DECL_LOG2L = @HAVE_DECL_LOG2L@
+HAVE_DECL_LOGB = @HAVE_DECL_LOGB@
+HAVE_DECL_LOGL = @HAVE_DECL_LOGL@
 HAVE_DECL_MEMMEM = @HAVE_DECL_MEMMEM@
 HAVE_DECL_MEMRCHR = @HAVE_DECL_MEMRCHR@
 HAVE_DECL_OBSTACK_PRINTF = @HAVE_DECL_OBSTACK_PRINTF@
+HAVE_DECL_REMAINDER = @HAVE_DECL_REMAINDER@
+HAVE_DECL_REMAINDERL = @HAVE_DECL_REMAINDERL@
+HAVE_DECL_RINTF = @HAVE_DECL_RINTF@
+HAVE_DECL_ROUND = @HAVE_DECL_ROUND@
+HAVE_DECL_ROUNDF = @HAVE_DECL_ROUNDF@
+HAVE_DECL_ROUNDL = @HAVE_DECL_ROUNDL@
 HAVE_DECL_SETENV = @HAVE_DECL_SETENV@
 HAVE_DECL_SETHOSTNAME = @HAVE_DECL_SETHOSTNAME@
+HAVE_DECL_SINL = @HAVE_DECL_SINL@
 HAVE_DECL_SNPRINTF = @HAVE_DECL_SNPRINTF@
+HAVE_DECL_SQRTL = @HAVE_DECL_SQRTL@
 HAVE_DECL_STRDUP = @HAVE_DECL_STRDUP@
 HAVE_DECL_STRERROR_R = @HAVE_DECL_STRERROR_R@
 HAVE_DECL_STRNCASECMP = @HAVE_DECL_STRNCASECMP@
@@ -3841,6 +4012,10 @@ HAVE_DECL_STRNDUP = @HAVE_DECL_STRNDUP@
 HAVE_DECL_STRNLEN = @HAVE_DECL_STRNLEN@
 HAVE_DECL_STRSIGNAL = @HAVE_DECL_STRSIGNAL@
 HAVE_DECL_STRTOK_R = @HAVE_DECL_STRTOK_R@
+HAVE_DECL_TANL = @HAVE_DECL_TANL@
+HAVE_DECL_TRUNC = @HAVE_DECL_TRUNC@
+HAVE_DECL_TRUNCF = @HAVE_DECL_TRUNCF@
+HAVE_DECL_TRUNCL = @HAVE_DECL_TRUNCL@
 HAVE_DECL_TTYNAME_R = @HAVE_DECL_TTYNAME_R@
 HAVE_DECL_UNSETENV = @HAVE_DECL_UNSETENV@
 HAVE_DECL_VSNPRINTF = @HAVE_DECL_VSNPRINTF@
@@ -3851,6 +4026,12 @@ HAVE_DPRINTF = @HAVE_DPRINTF@
 HAVE_DUP2 = @HAVE_DUP2@
 HAVE_DUP3 = @HAVE_DUP3@
 HAVE_EUIDACCESS = @HAVE_EUIDACCESS@
+HAVE_EXPF = @HAVE_EXPF@
+HAVE_EXPL = @HAVE_EXPL@
+HAVE_EXPM1 = @HAVE_EXPM1@
+HAVE_EXPM1F = @HAVE_EXPM1F@
+HAVE_FABSF = @HAVE_FABSF@
+HAVE_FABSL = @HAVE_FABSL@
 HAVE_FACCESSAT = @HAVE_FACCESSAT@
 HAVE_FCHDIR = @HAVE_FCHDIR@
 HAVE_FCHMODAT = @HAVE_FCHMODAT@
@@ -3862,6 +4043,12 @@ HAVE_FEATURES_H = @HAVE_FEATURES_H@
 HAVE_FFS = @HAVE_FFS@
 HAVE_FFSL = @HAVE_FFSL@
 HAVE_FFSLL = @HAVE_FFSLL@
+HAVE_FMA = @HAVE_FMA@
+HAVE_FMAF = @HAVE_FMAF@
+HAVE_FMAL = @HAVE_FMAL@
+HAVE_FMODF = @HAVE_FMODF@
+HAVE_FMODL = @HAVE_FMODL@
+HAVE_FREXPF = @HAVE_FREXPF@
 HAVE_FSEEKO = @HAVE_FSEEKO@
 HAVE_FSTATAT = @HAVE_FSTATAT@
 HAVE_FSYNC = @HAVE_FSYNC@
@@ -3879,13 +4066,31 @@ HAVE_GETSUBOPT = @HAVE_GETSUBOPT@
 HAVE_GETTIMEOFDAY = @HAVE_GETTIMEOFDAY@
 HAVE_GRANTPT = @HAVE_GRANTPT@
 HAVE_GROUP_MEMBER = @HAVE_GROUP_MEMBER@
+HAVE_HYPOTF = @HAVE_HYPOTF@
+HAVE_HYPOTL = @HAVE_HYPOTL@
+HAVE_ILOGB = @HAVE_ILOGB@
+HAVE_ILOGBF = @HAVE_ILOGBF@
+HAVE_ILOGBL = @HAVE_ILOGBL@
 HAVE_INTTYPES_H = @HAVE_INTTYPES_H@
+HAVE_ISNAND = @HAVE_ISNAND@
+HAVE_ISNANF = @HAVE_ISNANF@
+HAVE_ISNANL = @HAVE_ISNANL@
 HAVE_ISWBLANK = @HAVE_ISWBLANK@
 HAVE_ISWCNTRL = @HAVE_ISWCNTRL@
 HAVE_LCHMOD = @HAVE_LCHMOD@
 HAVE_LCHOWN = @HAVE_LCHOWN@
+HAVE_LDEXPF = @HAVE_LDEXPF@
 HAVE_LINK = @HAVE_LINK@
 HAVE_LINKAT = @HAVE_LINKAT@
+HAVE_LOG10F = @HAVE_LOG10F@
+HAVE_LOG10L = @HAVE_LOG10L@
+HAVE_LOG1P = @HAVE_LOG1P@
+HAVE_LOG1PF = @HAVE_LOG1PF@
+HAVE_LOG1PL = @HAVE_LOG1PL@
+HAVE_LOGBF = @HAVE_LOGBF@
+HAVE_LOGBL = @HAVE_LOGBL@
+HAVE_LOGF = @HAVE_LOGF@
+HAVE_LOGL = @HAVE_LOGL@
 HAVE_LONG_LONG_INT = @HAVE_LONG_LONG_INT@
 HAVE_LSTAT = @HAVE_LSTAT@
 HAVE_MAX_ALIGN_T = @HAVE_MAX_ALIGN_T@
@@ -3907,6 +4112,8 @@ HAVE_MKOSTEMP = @HAVE_MKOSTEMP@
 HAVE_MKOSTEMPS = @HAVE_MKOSTEMPS@
 HAVE_MKSTEMP = @HAVE_MKSTEMP@
 HAVE_MKSTEMPS = @HAVE_MKSTEMPS@
+HAVE_MODFF = @HAVE_MODFF@
+HAVE_MODFL = @HAVE_MODFL@
 HAVE_MSVC_INVALID_PARAMETER_HANDLER = @HAVE_MSVC_INVALID_PARAMETER_HANDLER@
 HAVE_NANOSLEEP = @HAVE_NANOSLEEP@
 HAVE_OPENAT = @HAVE_OPENAT@
@@ -3919,6 +4126,7 @@ HAVE_PIPE2 = @HAVE_PIPE2@
 HAVE_POPEN = @HAVE_POPEN@
 HAVE_POSIX_OPENPT = @HAVE_POSIX_OPENPT@
 HAVE_POSIX_SIGNALBLOCKING = @HAVE_POSIX_SIGNALBLOCKING@
+HAVE_POWF = @HAVE_POWF@
 HAVE_PREAD = @HAVE_PREAD@
 HAVE_PSELECT = @HAVE_PSELECT@
 HAVE_PTHREAD_SIGMASK = @HAVE_PTHREAD_SIGMASK@
@@ -3934,8 +4142,12 @@ HAVE_READDIR = @HAVE_READDIR@
 HAVE_READLINK = @HAVE_READLINK@
 HAVE_READLINKAT = @HAVE_READLINKAT@
 HAVE_REALPATH = @HAVE_REALPATH@
+HAVE_REMAINDER = @HAVE_REMAINDER@
+HAVE_REMAINDERF = @HAVE_REMAINDERF@
 HAVE_RENAMEAT = @HAVE_RENAMEAT@
 HAVE_REWINDDIR = @HAVE_REWINDDIR@
+HAVE_RINT = @HAVE_RINT@
+HAVE_RINTL = @HAVE_RINTL@
 HAVE_RPMATCH = @HAVE_RPMATCH@
 HAVE_SA_FAMILY_T = @HAVE_SA_FAMILY_T@
 HAVE_SCANDIR = @HAVE_SCANDIR@
@@ -3949,7 +4161,12 @@ HAVE_SIGNED_SIG_ATOMIC_T = @HAVE_SIGNED_SIG_ATOMIC_T@
 HAVE_SIGNED_WCHAR_T = @HAVE_SIGNED_WCHAR_T@
 HAVE_SIGNED_WINT_T = @HAVE_SIGNED_WINT_T@
 HAVE_SIGSET_T = @HAVE_SIGSET_T@
+HAVE_SINF = @HAVE_SINF@
+HAVE_SINHF = @HAVE_SINHF@
+HAVE_SINL = @HAVE_SINL@
 HAVE_SLEEP = @HAVE_SLEEP@
+HAVE_SQRTF = @HAVE_SQRTF@
+HAVE_SQRTL = @HAVE_SQRTL@
 HAVE_STDINT_H = @HAVE_STDINT_H@
 HAVE_STPCPY = @HAVE_STPCPY@
 HAVE_STPNCPY = @HAVE_STPNCPY@
@@ -3986,6 +4203,9 @@ HAVE_SYS_TIME_H = @HAVE_SYS_TIME_H@
 HAVE_SYS_TYPES_H = @HAVE_SYS_TYPES_H@
 HAVE_SYS_UIO_H = @HAVE_SYS_UIO_H@
 HAVE_SYS_UTSNAME_H = @HAVE_SYS_UTSNAME_H@
+HAVE_TANF = @HAVE_TANF@
+HAVE_TANHF = @HAVE_TANHF@
+HAVE_TANL = @HAVE_TANL@
 HAVE_TIMEGM = @HAVE_TIMEGM@
 HAVE_TIMES = @HAVE_TIMES@
 HAVE_TIMEZONE_T = @HAVE_TIMEZONE_T@
@@ -4128,6 +4348,7 @@ NEXT_AS_FIRST_DIRECTIVE_ERRNO_H = @NEXT_AS_FIRST_DIRECTIVE_ERRNO_H@
 NEXT_AS_FIRST_DIRECTIVE_FCNTL_H = @NEXT_AS_FIRST_DIRECTIVE_FCNTL_H@
 NEXT_AS_FIRST_DIRECTIVE_FLOAT_H = @NEXT_AS_FIRST_DIRECTIVE_FLOAT_H@
 NEXT_AS_FIRST_DIRECTIVE_GETOPT_H = @NEXT_AS_FIRST_DIRECTIVE_GETOPT_H@
+NEXT_AS_FIRST_DIRECTIVE_MATH_H = @NEXT_AS_FIRST_DIRECTIVE_MATH_H@
 NEXT_AS_FIRST_DIRECTIVE_SIGNAL_H = @NEXT_AS_FIRST_DIRECTIVE_SIGNAL_H@
 NEXT_AS_FIRST_DIRECTIVE_STDDEF_H = @NEXT_AS_FIRST_DIRECTIVE_STDDEF_H@
 NEXT_AS_FIRST_DIRECTIVE_STDINT_H = @NEXT_AS_FIRST_DIRECTIVE_STDINT_H@
@@ -4154,6 +4375,7 @@ NEXT_ERRNO_H = @NEXT_ERRNO_H@
 NEXT_FCNTL_H = @NEXT_FCNTL_H@
 NEXT_FLOAT_H = @NEXT_FLOAT_H@
 NEXT_GETOPT_H = @NEXT_GETOPT_H@
+NEXT_MATH_H = @NEXT_MATH_H@
 NEXT_SIGNAL_H = @NEXT_SIGNAL_H@
 NEXT_STDDEF_H = @NEXT_STDDEF_H@
 NEXT_STDINT_H = @NEXT_STDINT_H@
@@ -4245,6 +4467,11 @@ READLINE_LIBS = @READLINE_LIBS@
 REPLACE_BTOWC = @REPLACE_BTOWC@
 REPLACE_CALLOC = @REPLACE_CALLOC@
 REPLACE_CANONICALIZE_FILE_NAME = @REPLACE_CANONICALIZE_FILE_NAME@
+REPLACE_CBRTF = @REPLACE_CBRTF@
+REPLACE_CBRTL = @REPLACE_CBRTL@
+REPLACE_CEIL = @REPLACE_CEIL@
+REPLACE_CEILF = @REPLACE_CEILF@
+REPLACE_CEILL = @REPLACE_CEILL@
 REPLACE_CHOWN = @REPLACE_CHOWN@
 REPLACE_CLOSE = @REPLACE_CLOSE@
 REPLACE_CLOSEDIR = @REPLACE_CLOSEDIR@
@@ -4252,16 +4479,33 @@ REPLACE_DIRFD = @REPLACE_DIRFD@
 REPLACE_DPRINTF = @REPLACE_DPRINTF@
 REPLACE_DUP = @REPLACE_DUP@
 REPLACE_DUP2 = @REPLACE_DUP2@
+REPLACE_EXP2 = @REPLACE_EXP2@
+REPLACE_EXP2L = @REPLACE_EXP2L@
+REPLACE_EXPM1 = @REPLACE_EXPM1@
+REPLACE_EXPM1F = @REPLACE_EXPM1F@
+REPLACE_FABSL = @REPLACE_FABSL@
 REPLACE_FCHOWNAT = @REPLACE_FCHOWNAT@
 REPLACE_FCLOSE = @REPLACE_FCLOSE@
 REPLACE_FCNTL = @REPLACE_FCNTL@
 REPLACE_FDOPEN = @REPLACE_FDOPEN@
 REPLACE_FDOPENDIR = @REPLACE_FDOPENDIR@
 REPLACE_FFLUSH = @REPLACE_FFLUSH@
+REPLACE_FLOOR = @REPLACE_FLOOR@
+REPLACE_FLOORF = @REPLACE_FLOORF@
+REPLACE_FLOORL = @REPLACE_FLOORL@
+REPLACE_FMA = @REPLACE_FMA@
+REPLACE_FMAF = @REPLACE_FMAF@
+REPLACE_FMAL = @REPLACE_FMAL@
+REPLACE_FMOD = @REPLACE_FMOD@
+REPLACE_FMODF = @REPLACE_FMODF@
+REPLACE_FMODL = @REPLACE_FMODL@
 REPLACE_FOPEN = @REPLACE_FOPEN@
 REPLACE_FPRINTF = @REPLACE_FPRINTF@
 REPLACE_FPURGE = @REPLACE_FPURGE@
 REPLACE_FREOPEN = @REPLACE_FREOPEN@
+REPLACE_FREXP = @REPLACE_FREXP@
+REPLACE_FREXPF = @REPLACE_FREXPF@
+REPLACE_FREXPL = @REPLACE_FREXPL@
 REPLACE_FSEEK = @REPLACE_FSEEK@
 REPLACE_FSEEKO = @REPLACE_FSEEKO@
 REPLACE_FSTAT = @REPLACE_FSTAT@
@@ -4280,15 +4524,40 @@ REPLACE_GETLOGIN_R = @REPLACE_GETLOGIN_R@
 REPLACE_GETPAGESIZE = @REPLACE_GETPAGESIZE@
 REPLACE_GETTIMEOFDAY = @REPLACE_GETTIMEOFDAY@
 REPLACE_GMTIME = @REPLACE_GMTIME@
+REPLACE_HUGE_VAL = @REPLACE_HUGE_VAL@
+REPLACE_HYPOT = @REPLACE_HYPOT@
+REPLACE_HYPOTF = @REPLACE_HYPOTF@
+REPLACE_HYPOTL = @REPLACE_HYPOTL@
+REPLACE_ILOGB = @REPLACE_ILOGB@
+REPLACE_ILOGBF = @REPLACE_ILOGBF@
 REPLACE_ISATTY = @REPLACE_ISATTY@
+REPLACE_ISFINITE = @REPLACE_ISFINITE@
+REPLACE_ISINF = @REPLACE_ISINF@
+REPLACE_ISNAN = @REPLACE_ISNAN@
 REPLACE_ISWBLANK = @REPLACE_ISWBLANK@
 REPLACE_ISWCNTRL = @REPLACE_ISWCNTRL@
 REPLACE_ITOLD = @REPLACE_ITOLD@
 REPLACE_LCHOWN = @REPLACE_LCHOWN@
+REPLACE_LDEXPL = @REPLACE_LDEXPL@
 REPLACE_LINK = @REPLACE_LINK@
 REPLACE_LINKAT = @REPLACE_LINKAT@
 REPLACE_LOCALTIME = @REPLACE_LOCALTIME@
 REPLACE_LOCALTIME_R = @REPLACE_LOCALTIME_R@
+REPLACE_LOG = @REPLACE_LOG@
+REPLACE_LOG10 = @REPLACE_LOG10@
+REPLACE_LOG10F = @REPLACE_LOG10F@
+REPLACE_LOG10L = @REPLACE_LOG10L@
+REPLACE_LOG1P = @REPLACE_LOG1P@
+REPLACE_LOG1PF = @REPLACE_LOG1PF@
+REPLACE_LOG1PL = @REPLACE_LOG1PL@
+REPLACE_LOG2 = @REPLACE_LOG2@
+REPLACE_LOG2F = @REPLACE_LOG2F@
+REPLACE_LOG2L = @REPLACE_LOG2L@
+REPLACE_LOGB = @REPLACE_LOGB@
+REPLACE_LOGBF = @REPLACE_LOGBF@
+REPLACE_LOGBL = @REPLACE_LOGBL@
+REPLACE_LOGF = @REPLACE_LOGF@
+REPLACE_LOGL = @REPLACE_LOGL@
 REPLACE_LSEEK = @REPLACE_LSEEK@
 REPLACE_LSTAT = @REPLACE_LSTAT@
 REPLACE_MALLOC = @REPLACE_MALLOC@
@@ -4306,6 +4575,10 @@ REPLACE_MKFIFO = @REPLACE_MKFIFO@
 REPLACE_MKNOD = @REPLACE_MKNOD@
 REPLACE_MKSTEMP = @REPLACE_MKSTEMP@
 REPLACE_MKTIME = @REPLACE_MKTIME@
+REPLACE_MODF = @REPLACE_MODF@
+REPLACE_MODFF = @REPLACE_MODFF@
+REPLACE_MODFL = @REPLACE_MODFL@
+REPLACE_NAN = @REPLACE_NAN@
 REPLACE_NANOSLEEP = @REPLACE_NANOSLEEP@
 REPLACE_NULL = @REPLACE_NULL@
 REPLACE_OBSTACK_PRINTF = @REPLACE_OBSTACK_PRINTF@
@@ -4330,15 +4603,24 @@ REPLACE_READLINK = @REPLACE_READLINK@
 REPLACE_READLINKAT = @REPLACE_READLINKAT@
 REPLACE_REALLOC = @REPLACE_REALLOC@
 REPLACE_REALPATH = @REPLACE_REALPATH@
+REPLACE_REMAINDER = @REPLACE_REMAINDER@
+REPLACE_REMAINDERF = @REPLACE_REMAINDERF@
+REPLACE_REMAINDERL = @REPLACE_REMAINDERL@
 REPLACE_REMOVE = @REPLACE_REMOVE@
 REPLACE_RENAME = @REPLACE_RENAME@
 REPLACE_RENAMEAT = @REPLACE_RENAMEAT@
 REPLACE_RMDIR = @REPLACE_RMDIR@
+REPLACE_ROUND = @REPLACE_ROUND@
+REPLACE_ROUNDF = @REPLACE_ROUNDF@
+REPLACE_ROUNDL = @REPLACE_ROUNDL@
 REPLACE_SELECT = @REPLACE_SELECT@
 REPLACE_SETENV = @REPLACE_SETENV@
+REPLACE_SIGNBIT = @REPLACE_SIGNBIT@
+REPLACE_SIGNBIT_USING_GCC = @REPLACE_SIGNBIT_USING_GCC@
 REPLACE_SLEEP = @REPLACE_SLEEP@
 REPLACE_SNPRINTF = @REPLACE_SNPRINTF@
 REPLACE_SPRINTF = @REPLACE_SPRINTF@
+REPLACE_SQRTL = @REPLACE_SQRTL@
 REPLACE_STAT = @REPLACE_STAT@
 REPLACE_STDIO_READ_FUNCS = @REPLACE_STDIO_READ_FUNCS@
 REPLACE_STDIO_WRITE_FUNCS = @REPLACE_STDIO_WRITE_FUNCS@
@@ -4361,6 +4643,9 @@ REPLACE_SYMLINKAT = @REPLACE_SYMLINKAT@
 REPLACE_TIMEGM = @REPLACE_TIMEGM@
 REPLACE_TMPFILE = @REPLACE_TMPFILE@
 REPLACE_TOWLOWER = @REPLACE_TOWLOWER@
+REPLACE_TRUNC = @REPLACE_TRUNC@
+REPLACE_TRUNCF = @REPLACE_TRUNCF@
+REPLACE_TRUNCL = @REPLACE_TRUNCL@
 REPLACE_TTYNAME_R = @REPLACE_TTYNAME_R@
 REPLACE_UNLINK = @REPLACE_UNLINK@
 REPLACE_UNLINKAT = @REPLACE_UNLINKAT@
@@ -4562,8 +4847,8 @@ null =
 image_DATA = $(SCRIPTS_IMAGES) $(icon_IMAGE_FILES) \
 	etc/icons/octave-logo.ico
 octdata_DATA = $(examples_data_SRC)
-octetc_DATA = $(am__append_28) $(am__append_54) CITATION NEWS \
-	$(am__append_65)
+octetc_DATA = $(am__append_28) doc/interpreter/doc-cache \
+	doc/interpreter/macros.texi CITATION NEWS $(am__append_65)
 octlocale_DATA = $(am__append_29)
 ACLOCAL_AMFLAGS = -I m4
 DOC_TARGETS = $(am__append_52)
@@ -4574,7 +4859,8 @@ BUILT_NODISTFILES = $(LIBOCTAVE_BUILT_NODISTFILES) \
 EXTRA_DIST = CITATION COPYING INSTALL NEWS README \
 	build-aux/OctJavaQry.class build-aux/OctJavaQry.java \
 	build-aux/changelog.tmpl build-aux/check-subst-vars.in.sh \
-	build-aux/find-files-with-tests.sh \
+	build-aux/find-defun-files.sh \
+	build-aux/find-files-with-tests.sh build-aux/mk-builtins.sh \
 	build-aux/mk-default-qt-settings.in.sh \
 	build-aux/mk-f77-def.in.sh build-aux/mk-hg-id.sh \
 	build-aux/mk-mxarray-h.in.sh build-aux/mk-octave-config-h.sh \
@@ -4659,7 +4945,8 @@ DIRSTAMP_FILES = liboctave/cruft/ranlib/$(octave_dirstamp) \
 	scripts/testfun/$(octave_dirstamp) \
 	scripts/time/$(octave_dirstamp) \
 	scripts/@ftp/$(octave_dirstamp) scripts/$(octave_dirstamp) \
-	doc/doxyhtml/$(octave_dirstamp) $(am__append_56) \
+	doc/doxyhtml/$(octave_dirstamp) \
+	doc/interpreter/$(octave_dirstamp) $(am__append_55) \
 	etc/icons/$(octave_dirstamp) test/$(octave_dirstamp)
 octave_dirstamp = $(am__leading_dot)octave-dirstamp
 CLEANFILES = $(liboctave_CLEANFILES) $(libinterp_CLEANFILES) \
@@ -4692,27 +4979,29 @@ BUILT_SOURCES = libgnu/libgnu.la $(BUILT_INCS) \
 	libinterp/corefcn/graphics-props.cc \
 	libinterp/corefcn/graphics.h libinterp/corefcn/mxarray.h \
 	libinterp/corefcn/oct-tex-parser.h \
+	libinterp/corefcn/oct-tex-symbols.cc \
 	libinterp/parse-tree/oct-gperf.h \
 	libinterp/parse-tree/oct-parse.h libinterp/version.h \
 	$(am__append_9) $(am__append_14) $(GENERATED_TEST_FILES) \
 	oct-conf-post.h octave-config.h run-octave $(DIRSTAMP_FILES) \
 	$(am__append_63) $(am__append_64)
 TEST_FILES = test/fntests.m test/args.tst test/bug-31371.tst \
-	test/bug-38565.tst test/bug-38576.tst test/colormaps.tst \
-	test/command.tst test/complex.tst test/diag-perm.tst \
-	test/error.tst test/eval-catch.tst test/for.tst test/func.tst \
-	test/global.tst test/if.tst test/index.tst test/io.tst \
-	test/jit.tst test/line-continue.tst test/logical-index.tst \
-	test/null-assign.tst test/parser.tst test/prefer.tst \
-	test/range.tst test/recursion.tst test/return.tst \
-	test/slice.tst test/struct.tst test/switch.tst test/system.tst \
-	test/transpose.tst test/try.tst test/unwind.tst test/while.tst \
-	$(bug_35448_TEST_FILES) $(bug_36025_TEST_FILES) \
-	$(bug_38236_TEST_FILES) $(bug_38691_TEST_FILES) \
-	$(bug_44940_TEST_FILES) $(class_concat_TEST_FILES) \
-	$(classdef_TEST_FILES) $(classes_TEST_FILES) \
-	$(ctor_vs_method_TEST_FILES) \
-	$(fcn_handle_derived_resolution_TEST_FILES) $(nest_TEST_FILES)
+	test/bug-38565.tst test/bug-38576.tst test/bug-46330.tst \
+	test/colormaps.tst test/command.tst test/complex.tst \
+	test/diag-perm.tst test/error.tst test/eval-catch.tst \
+	test/for.tst test/func.tst test/global.tst test/if.tst \
+	test/index.tst test/io.tst test/jit.tst test/line-continue.tst \
+	test/logical-index.tst test/null-assign.tst test/parser.tst \
+	test/prefer.tst test/range.tst test/recursion.tst \
+	test/return.tst test/slice.tst test/struct.tst test/switch.tst \
+	test/system.tst test/transpose.tst test/try.tst \
+	test/unwind.tst test/while.tst $(bug_35448_TEST_FILES) \
+	$(bug_36025_TEST_FILES) $(bug_38236_TEST_FILES) \
+	$(bug_38691_TEST_FILES) $(bug_44940_TEST_FILES) \
+	$(class_concat_TEST_FILES) $(classdef_TEST_FILES) \
+	$(classes_TEST_FILES) $(ctor_vs_method_TEST_FILES) \
+	$(fcn_handle_derived_resolution_TEST_FILES) $(nest_TEST_FILES) \
+	$(publish_TEST_FILES)
 DOC_IMAGES_SRC = $(am__append_58)
 BUILT_DOC_IMAGES = $(am__append_40)
 BUILT_DOC_IMAGES_EPS = $(am__append_59)
@@ -4787,7 +5076,8 @@ FCN_FILES = $(scripts_audio_FCN_FILES) \
 	$(scripts_statistics_models_PRIVATE_FCN_FILES) \
 	$(scripts_statistics_tests_FCN_FILES) \
 	$(scripts_strings_FCN_FILES) $(scripts_testfun_FCN_FILES) \
-	$(scripts_time_FCN_FILES) $(scripts_@ftp_FCN_FILES)
+	$(scripts_testfun_PRIVATE_FCN_FILES) $(scripts_time_FCN_FILES) \
+	$(scripts_@ftp_FCN_FILES)
 GEN_FCN_FILES = $(scripts_plot_util_GEN_FCN_FILES)
 PKG_ADD_FILES = scripts/audio/PKG_ADD scripts/deprecated/PKG_ADD \
 	scripts/elfun/PKG_ADD scripts/general/PKG_ADD \
@@ -4810,8 +5100,7 @@ PKG_ADD_FILES = scripts/audio/PKG_ADD scripts/deprecated/PKG_ADD \
 	scripts/@ftp/PKG_ADD
 SCRIPTS_IMAGES = scripts/image/default.img
 JAR_FILES = $(am__append_39)
-DOCSTRING_FILES = $(srcdir)/libinterp/DOCSTRINGS \
-	$(srcdir)/scripts/DOCSTRINGS
+DOCSTRING_FILES = libinterp/DOCSTRINGS scripts/DOCSTRINGS
 noinst_HEADERS = $(NOINSTALL_LIBINTERP_OPERATORS_INC) $(am__append_10) \
 	$(am__append_15) $(am__append_19) src/display-available.h \
 	src/shared-fcns.h
@@ -4846,7 +5135,7 @@ nodist_octinclude_HEADERS = $(BUILT_INCS) \
 	libinterp/builtin-defun-decls.h libinterp/corefcn/defaults.h \
 	libinterp/corefcn/graphics-props.cc \
 	libinterp/corefcn/graphics.h libinterp/corefcn/mxarray.h \
-	libinterp/version.h config.h oct-conf-post.h octave-config.h
+	libinterp/version.h octave-config.h
 DIST_SRC = libinterp/octave.cc libinterp/version.cc \
 	$(OCTAVE_VALUE_SRC) $(PARSE_TREE_SRC) $(COREFCN_SRC)
 ALL_LOCAL_TARGETS = $(OCTAVE_CROSS_TOOLS) $(JAR_FILES) test/.gdbinit \
@@ -6246,6 +6535,7 @@ NOINSTALL_WRAPPERS_INC = \
   liboctave/wrappers/getopt-wrapper.h \
   liboctave/wrappers/glob-wrappers.h \
   liboctave/wrappers/hash-wrappers.h \
+  liboctave/wrappers/math-wrappers.h \
   liboctave/wrappers/mkostemp-wrapper.h \
   liboctave/wrappers/nanosleep-wrapper.h \
   liboctave/wrappers/nproc-wrapper.h \
@@ -6279,6 +6569,7 @@ WRAPPERS_SRC = \
   liboctave/wrappers/getopt-wrapper.c \
   liboctave/wrappers/glob-wrappers.c \
   liboctave/wrappers/hash-wrappers.c \
+  liboctave/wrappers/math-wrappers.c \
   liboctave/wrappers/mkostemp-wrapper.c \
   liboctave/wrappers/nanosleep-wrapper.c \
   liboctave/wrappers/nproc-wrapper.c \
@@ -6337,12 +6628,12 @@ LIBOCTAVE_TST_FILES_SRC := $(shell $(SHELL) $(srcdir)/build-aux/find-files-with-
 LIBOCTAVE_TST_FILES := $(addsuffix -tst,$(LIBOCTAVE_TST_FILES_SRC))
 liboctavetestsdir := $(octtestsdir)
 nobase_liboctavetests_DATA = $(LIBOCTAVE_TST_FILES)
-libinterp_EXTRA_DIST = $(srcdir)/libinterp/DOCSTRINGS \
-	libinterp/build-env.in.cc libinterp/build-env-features.sh \
-	libinterp/find-defun-files.sh libinterp/gendoc.pl \
-	libinterp/genprops.awk libinterp/liboctinterp-build-info.in.cc \
-	libinterp/mk-errno-list libinterp/mk-pkg-add \
-	libinterp/mkbuiltins libinterp/mkops libinterp/version.in.h \
+libinterp_EXTRA_DIST = libinterp/DOCSTRINGS libinterp/build-env.in.cc \
+	libinterp/build-env-features.sh libinterp/deprecated-config.h \
+	libinterp/gendoc.pl libinterp/genprops.awk \
+	libinterp/liboctinterp-build-info.in.cc \
+	libinterp/mk-errno-list libinterp/mk-pkg-add libinterp/mkops \
+	libinterp/op-kw-docs libinterp/version.in.h \
 	$(LIBINTERP_BUILT_DISTFILES) \
 	libinterp/parse-tree/oct-parse.in.yy \
 	libinterp/parse-tree/octave.gperf \
@@ -6362,7 +6653,7 @@ libinterp_CLEANFILES = $(DLDFCN_PKG_ADD_FILE) \
 	$(OCT_FILES) libinterp/corefcn/oct-tex-parser.output \
 	libinterp/parse-tree/oct-parse.output
 libinterp_DISTCLEANFILES = 
-libinterp_MAINTAINERCLEANFILES = $(srcdir)/libinterp/DOCSTRINGS \
+libinterp_MAINTAINERCLEANFILES = libinterp/DOCSTRINGS \
 	$(LIBINTERP_BUILT_DISTFILES)
 libinterp_liboctinterp_la_CPPFLAGS = \
   @OCTINTERP_DLL_DEFS@ \
@@ -6617,12 +6908,6 @@ OCTAVE_VALUE_SRC = \
   $(OV_INTTYPE_SRC) \
   $(OV_SPARSE_SRC)
 
-OV_JAVA_DF = \
-  libinterp/octave-value/ov.df \
-  libinterp/octave-value/ov-class.df \
-  libinterp/octave-value/ov-java.df \
-  libinterp/octave-value/ov-typeinfo.df
-
 libinterp_octave_value_liboctave_value_la_SOURCES = $(OCTAVE_VALUE_SRC)
 libinterp_octave_value_liboctave_value_la_CPPFLAGS = \
   $(libinterp_liboctinterp_la_CPPFLAGS) \
@@ -6791,6 +7076,7 @@ COREFCN_INC = \
   libinterp/corefcn/base-text-renderer.h \
   libinterp/corefcn/Cell.h \
   libinterp/corefcn/c-file-ptr-stream.h \
+  libinterp/corefcn/call-stack.h \
   libinterp/corefcn/cdisplay.h \
   libinterp/corefcn/comment-list.h \
   libinterp/corefcn/data.h \
@@ -6812,6 +7098,7 @@ COREFCN_INC = \
   libinterp/corefcn/help.h \
   libinterp/corefcn/hook-fcn.h \
   libinterp/corefcn/input.h \
+  libinterp/corefcn/interpreter.h \
   libinterp/corefcn/load-path.h \
   libinterp/corefcn/load-save.h \
   libinterp/corefcn/ls-ascii-helper.h \
@@ -6891,6 +7178,7 @@ COREFCN_SRC = \
   libinterp/corefcn/bitfcns.cc \
   libinterp/corefcn/bsxfun.cc \
   libinterp/corefcn/c-file-ptr-stream.cc \
+  libinterp/corefcn/call-stack.cc \
   libinterp/corefcn/cdisplay.c \
   libinterp/corefcn/cellfun.cc \
   libinterp/corefcn/colloc.cc \
@@ -6939,6 +7227,7 @@ COREFCN_SRC = \
   libinterp/corefcn/hook-fcn.cc \
   libinterp/corefcn/input.cc \
   libinterp/corefcn/inv.cc \
+  libinterp/corefcn/interpreter.cc \
   libinterp/corefcn/kron.cc \
   libinterp/corefcn/load-path.cc \
   libinterp/corefcn/load-save.cc \
@@ -7019,12 +7308,6 @@ COREFCN_SRC = \
   $(JIT_SRC) \
   $(NOINSTALL_COREFCN_INC)
 
-COREFCN_FT2_DF = \
-  libinterp/corefcn/graphics.df \
-  libinterp/corefcn/gl-render.df \
-  libinterp/corefcn/toplev.df \
-  libinterp/corefcn/txt-eng-ft.df
-
 libinterp_corefcn_libcorefcn_la_SOURCES = $(COREFCN_SRC)
 libinterp_corefcn_libcorefcn_la_CPPFLAGS = \
   $(libinterp_liboctinterp_la_CPPFLAGS) \
@@ -7057,7 +7340,8 @@ DLDFCN_SRC = \
   libinterp/dldfcn/fftw.cc \
   libinterp/dldfcn/qr.cc \
   libinterp/dldfcn/symbfact.cc \
-  libinterp/dldfcn/symrcm.cc
+  libinterp/dldfcn/symrcm.cc \
+  libinterp/dldfcn/xzip.cc
 
 DLDFCN_LIBS = $(DLDFCN_SRC:.cc=.la)
 libinterp_dldfcn___delaunayn___la_SOURCES = libinterp/dldfcn/__delaunayn__.cc
@@ -7180,6 +7464,12 @@ libinterp_dldfcn_symrcm_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(SPARSE
 libinterp_dldfcn_symrcm_la_CXXFLAGS = $(libinterp_liboctinterp_la_CXXFLAGS) $(SPARSE_XCPPFLAGS)
 libinterp_dldfcn_symrcm_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS) $(WARN_LDFLAGS)
 libinterp_dldfcn_symrcm_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
+libinterp_dldfcn_xzip_la_SOURCES = libinterp/dldfcn/xzip.cc
+libinterp_dldfcn_xzip_la_CPPFLAGS = $(libinterp_liboctinterp_la_CPPFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
+libinterp_dldfcn_xzip_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
+libinterp_dldfcn_xzip_la_CXXFLAGS = $(libinterp_liboctinterp_la_CXXFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
+libinterp_dldfcn_xzip_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(Z_LDFLAGS) $(BZ2_LDFLAGS) $(OCT_LINK_OPTS) $(WARN_LDFLAGS)
+libinterp_dldfcn_xzip_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) liboctave/liboctave.la $(Z_LIBS) $(BZ2_LIBS) $(OCT_LINK_DEPS)
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@OCT_FILES = 
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@OCT_FILES = $(DLDFCN_LIBS:.la=.oct)
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@DLD_LIBOCTINTERP_LIBADD = 
@@ -7229,14 +7519,14 @@ libinterp_liboctinterp_la_LDFLAGS = \
 ULT_DIST_SRC := \
   $(filter-out $(GENERATED_PARSER_FILES), $(DIST_SRC)) $(ULT_PARSER_SRC)
 
-FOUND_DEFUN_FILES := \
-  $(shell $(SHELL) $(srcdir)/libinterp/find-defun-files.sh "$(srcdir)" $(ULT_DIST_SRC))
+LIBINTERP_FOUND_DEFUN_FILES := \
+  $(shell $(SHELL) $(srcdir)/build-aux/find-defun-files.sh "$(srcdir)" $(ULT_DIST_SRC))
 
-SRC_DEFUN_FILES = $(OPT_HANDLERS) $(FOUND_DEFUN_FILES)
+BUILT_IN_DEFUN_FILES = $(OPT_HANDLERS) $(LIBINTERP_FOUND_DEFUN_FILES)
 DLDFCN_DEFUN_FILES = $(DLDFCN_SRC)
-@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@DEFUN_FILES = $(SRC_DEFUN_FILES) $(DLDFCN_DEFUN_FILES)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@DEFUN_FILES = $(SRC_DEFUN_FILES)
-ALL_DEFUN_FILES = $(SRC_DEFUN_FILES) $(DLDFCN_DEFUN_FILES)
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@DEFUN_FILES = $(BUILT_IN_DEFUN_FILES) $(DLDFCN_DEFUN_FILES)
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@DEFUN_FILES = $(BUILT_IN_DEFUN_FILES)
+LIBINTERP_DEFUN_FILES = $(BUILT_IN_DEFUN_FILES) $(DLDFCN_DEFUN_FILES)
 DLL_CDEFS = @OCTINTERP_DLL_DEFS@
 DLL_CXXDEFS = @OCTINTERP_DLL_DEFS@
 LIBINTERP_TST_FILES_SRC := $(shell $(SHELL) $(srcdir)/build-aux/find-files-with-tests.sh "$(srcdir)" $(ULT_DIST_SRC) $(DLDFCN_SRC))
@@ -7316,6 +7606,14 @@ nobase_libinterptests_DATA = $(LIBINTERP_TST_FILES)
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_TerminalDockWidget.png \
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_WorkspaceView.png \
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_ReleaseWidget.png \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_DocumentationDockWidget.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_FileEditor.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_FilesDockWidget.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_HistoryDockWidget.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_NewsDockWidget.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_TerminalDockWidget.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_WorkspaceView.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/graphic_logo_ReleaseWidget.svg \
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/icons_license \
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_DocumentationDockWidget.png \
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_FileEditor.png \
@@ -7325,6 +7623,14 @@ nobase_libinterptests_DATA = $(LIBINTERP_TST_FILES)
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_TerminalDockWidget.png \
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_WorkspaceView.png \
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_ReleaseWidget.png \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_DocumentationDockWidget.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_FileEditor.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_FilesDockWidget.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_HistoryDockWidget.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_NewsDockWidget.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_TerminalDockWidget.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_WorkspaceView.svg \
+@AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/letter_logo_ReleaseWidget.svg \
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/logo.png \
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/preferences-system.png \
 @AMCOND_BUILD_QT_GUI_TRUE@  libgui/src/icons/system-run.png \
@@ -7727,12 +8033,12 @@ src_octave_config_CXXFLAGS = \
 scripts_EXTRA_DIST = $(scripts_java_JAR_FILES) \
 	$(scripts_java_JAVA_SRC) $(scripts_profiler_html_DATA) \
 	$(STARTUP_FILE_SRC) scripts/@ftp/module.mk $(SCRIPTS_IMAGES) \
-	$(FCN_FILES) $(GEN_FCN_FILES_IN) $(srcdir)/scripts/DOCSTRINGS \
+	$(FCN_FILES) $(GEN_FCN_FILES_IN) scripts/DOCSTRINGS \
 	scripts/mkdoc.pl scripts/mk-pkg-add
 scripts_CLEANFILES = $(scripts_java_JAR_FILES) \
 	$(scripts_java_JAVA_CLASSES) $(GEN_FCN_FILES) $(PKG_ADD_FILES)
 scripts_DISTCLEANFILES = $(DIRSTAMP_FILES)
-scripts_MAINTAINERCLEANFILES = $(srcdir)/scripts/DOCSTRINGS
+scripts_MAINTAINERCLEANFILES = scripts/DOCSTRINGS
 scripts_audio_FCN_FILES = \
   scripts/audio/lin2mu.m \
   scripts/audio/mu2lin.m \
@@ -7798,6 +8104,7 @@ scripts_deprecated_FCN_FILES = \
   scripts/deprecated/nfields.m \
   scripts/deprecated/octave_config_info.m \
   scripts/deprecated/octave_tmp_file_name.m \
+  scripts/deprecated/onenormest.m \
   scripts/deprecated/playaudio.m \
   scripts/deprecated/saveaudio.m \
   scripts/deprecated/setaudio.m \
@@ -7841,6 +8148,8 @@ scripts_elfundir = $(fcnfiledir)/elfun
 scripts_elfun_DATA = $(scripts_elfun_FCN_FILES)
 scripts_general_PRIVATE_FCN_FILES = \
   scripts/general/private/__isequal__.m \
+  scripts/general/private/__publish_html_output__.m \
+  scripts/general/private/__publish_latex_output__.m \
   scripts/general/private/__splinen__.m
 
 scripts_general_FCN_FILES = \
@@ -7872,6 +8181,7 @@ scripts_general_FCN_FILES = \
   scripts/general/flipdim.m \
   scripts/general/fliplr.m \
   scripts/general/flipud.m \
+  scripts/general/grabcode.m \
   scripts/general/gradient.m \
   scripts/general/idivide.m \
   scripts/general/inputParser.m \
@@ -7897,6 +8207,7 @@ scripts_general_FCN_FILES = \
   scripts/general/polyarea.m \
   scripts/general/postpad.m \
   scripts/general/prepad.m \
+  scripts/general/publish.m \
   scripts/general/quadgk.m \
   scripts/general/quadl.m \
   scripts/general/quadv.m \
@@ -8113,6 +8424,7 @@ scripts_linear_algebra_FCN_FILES = \
   scripts/linear-algebra/commutation_matrix.m \
   scripts/linear-algebra/cond.m \
   scripts/linear-algebra/condest.m \
+  scripts/linear-algebra/condeig.m \
   scripts/linear-algebra/cross.m \
   scripts/linear-algebra/duplication_matrix.m \
   scripts/linear-algebra/expm.m \
@@ -8128,8 +8440,8 @@ scripts_linear_algebra_FCN_FILES = \
   scripts/linear-algebra/linsolve.m \
   scripts/linear-algebra/logm.m \
   scripts/linear-algebra/normest.m \
+  scripts/linear-algebra/normest1.m \
   scripts/linear-algebra/null.m \
-  scripts/linear-algebra/onenormest.m \
   scripts/linear-algebra/orth.m \
   scripts/linear-algebra/planerot.m \
   scripts/linear-algebra/qzhess.m \
@@ -8143,13 +8455,11 @@ scripts_linear_algebradir = $(fcnfiledir)/linear-algebra
 scripts_linear_algebra_DATA = $(scripts_linear_algebra_FCN_FILES)
 scripts_miscellaneous_PRIVATE_FCN_FILES = \
   scripts/miscellaneous/private/display_info_file.m \
-  scripts/miscellaneous/private/__w2mpth__.m \
-  scripts/miscellaneous/private/__xzip__.m
+  scripts/miscellaneous/private/__w2mpth__.m
 
 scripts_miscellaneous_FCN_FILES = \
   scripts/miscellaneous/bug_report.m \
   scripts/miscellaneous/bunzip2.m \
-  scripts/miscellaneous/bzip2.m \
   scripts/miscellaneous/cast.m \
   scripts/miscellaneous/citation.m \
   scripts/miscellaneous/compare_versions.m \
@@ -8169,7 +8479,6 @@ scripts_miscellaneous_FCN_FILES = \
   scripts/miscellaneous/getappdata.m \
   scripts/miscellaneous/getfield.m \
   scripts/miscellaneous/gunzip.m \
-  scripts/miscellaneous/gzip.m \
   scripts/miscellaneous/info.m \
   scripts/miscellaneous/inputname.m \
   scripts/miscellaneous/isappdata.m \
@@ -8325,6 +8634,7 @@ scripts_plot_appearance_FCN_FILES = \
   scripts/plot/appearance/gtext.m \
   scripts/plot/appearance/hidden.m \
   scripts/plot/appearance/legend.m \
+  scripts/plot/appearance/lighting.m \
   scripts/plot/appearance/orient.m \
   scripts/plot/appearance/pbaspect.m \
   scripts/plot/appearance/shading.m \
@@ -8424,6 +8734,7 @@ scripts_plot_draw_FCN_FILES = \
   scripts/plot/draw/semilogy.m \
   scripts/plot/draw/shrinkfaces.m \
   scripts/plot/draw/slice.m \
+  scripts/plot/draw/smooth3.m \
   scripts/plot/draw/sombrero.m \
   scripts/plot/draw/sphere.m \
   scripts/plot/draw/stairs.m \
@@ -8465,6 +8776,13 @@ scripts_plot_util_PRIVATE_FCN_FILES = \
 
 scripts_plot_util_FCN_FILES = \
   scripts/plot/util/__actual_axis_position__.m \
+  scripts/plot/util/__default_plot_options__.m \
+  scripts/plot/util/__gnuplot_drawnow__.m \
+  scripts/plot/util/__next_line_color__.m \
+  scripts/plot/util/__next_line_style__.m \
+  scripts/plot/util/__opengl_info__.m \
+  scripts/plot/util/__plt_get_axis_arg__.m \
+  scripts/plot/util/__pltopt__.m \
   scripts/plot/util/allchild.m \
   scripts/plot/util/ancestor.m \
   scripts/plot/util/axes.m \
@@ -8474,7 +8792,6 @@ scripts_plot_util_FCN_FILES = \
   scripts/plot/util/closereq.m \
   scripts/plot/util/colstyle.m \
   scripts/plot/util/copyobj.m \
-  scripts/plot/util/__default_plot_options__.m \
   scripts/plot/util/figure.m \
   scripts/plot/util/findall.m \
   scripts/plot/util/findfigs.m \
@@ -8486,7 +8803,6 @@ scripts_plot_util_FCN_FILES = \
   scripts/plot/util/gcf.m \
   scripts/plot/util/gco.m \
   scripts/plot/util/ginput.m \
-  scripts/plot/util/__gnuplot_drawnow__.m \
   scripts/plot/util/graphics_toolkit.m \
   scripts/plot/util/hdl2struct.m \
   scripts/plot/util/hggroup.m \
@@ -8504,15 +8820,11 @@ scripts_plot_util_FCN_FILES = \
   scripts/plot/util/meshgrid.m \
   scripts/plot/util/ndgrid.m \
   scripts/plot/util/newplot.m \
-  scripts/plot/util/__next_line_color__.m \
-  scripts/plot/util/__next_line_style__.m \
   scripts/plot/util/pan.m \
-  scripts/plot/util/__plt_get_axis_arg__.m \
-  scripts/plot/util/__pltopt__.m \
-  scripts/plot/util/printd.m \
   scripts/plot/util/print.m \
-  scripts/plot/util/refreshdata.m \
+  scripts/plot/util/printd.m \
   scripts/plot/util/refresh.m \
+  scripts/plot/util/refreshdata.m \
   scripts/plot/util/rotate.m \
   scripts/plot/util/rotate3d.m \
   scripts/plot/util/saveas.m \
@@ -8949,6 +9261,12 @@ scripts_strings_FCN_FILES = \
 
 scripts_stringsdir = $(fcnfiledir)/strings
 scripts_strings_DATA = $(scripts_strings_FCN_FILES)
+scripts_testfun_PRIVATE_FCN_FILES = \
+  scripts/testfun/private/compare_plot_demos.m \
+  scripts/testfun/private/dump_demos.m \
+  scripts/testfun/private/html_compare_plot_demos.m \
+  scripts/testfun/private/html_plot_demos_template.html
+
 scripts_testfun_FCN_FILES = \
   scripts/testfun/__have_feature__.m \
   scripts/testfun/__printf_assert__.m \
@@ -8965,6 +9283,8 @@ scripts_testfun_FCN_FILES = \
 
 scripts_testfundir = $(fcnfiledir)/testfun
 scripts_testfun_DATA = $(scripts_testfun_FCN_FILES)
+scripts_testfun_privatedir = $(fcnfiledir)/testfun/private
+scripts_testfun_private_DATA = $(scripts_testfun_PRIVATE_FCN_FILES)
 scripts_time_FCN_FILES = \
   scripts/time/addtodate.m \
   scripts/time/asctime.m \
@@ -9007,9 +9327,10 @@ TAGS_DEPENDENCIES = $(addprefix $(srcdir)/, $(FCN_FILES)) $(GEN_FCN_FILES)
 TAGS_FILES = $(addprefix $(srcdir)/, $(FCN_FILES)) $(GEN_FCN_FILES)
 doc_EXTRA_DIST = doc/doxyhtml/Doxyfile.in doc/doxyhtml/README \
 	$(am__append_53)
-doc_CLEANFILES = $(am__append_57)
+doc_CLEANFILES = $(am__append_56)
 doc_DISTCLEANFILES = 
-doc_MAINTAINERCLEANFILES = $(am__append_55)
+doc_MAINTAINERCLEANFILES = $(am__append_54) doc/interpreter/doc-cache \
+	$(am__append_57)
 TEXINPUTS := $(PATH_SEPARATOR)$(abs_top_srcdir)/doc/interpreter$(PATH_SEPARATOR)$(PATH_SEPARATOR)$(abs_top_builddir)/doc/interpreter$(PATH_SEPARATOR)$(abs_top_builddir)/doc/.texmf-var//$(PATH_SEPARATOR)$(TEXINPUTS)$(PATH_SEPARATOR)
 TEXMFCNF := $(PATH_SEPARATOR)$(abs_top_srcdir)/doc$(PATH_SEPARATOR)$(abs_top_builddir)/doc$(PATH_SEPARATOR)$(TEXMFCNF)$(PATH_SEPARATOR)
 TEXMFVAR := $(abs_top_builddir)/doc/.texmf-var
@@ -9505,6 +9826,15 @@ nest_TEST_FILES = \
   test/nest/varg_nest.m \
   test/nest/varg_nest2.m
 
+publish_TEST_FILES = \
+  test/publish/test_script_code_only.m \
+  test/publish/test_script_empty.m \
+  test/publish/test_script_example.m \
+  test/publish/test_script_head_only.m \
+  test/publish/test_script.m
+
+COVERAGE_DIR = test/coverage
+COVERAGE_INFO = $(COVERAGE_DIR)/$(PACKAGE).info
 GENERATED_BC_OVERLOADS_DIRS := \
   $(shell $(SHELL) $(srcdir)/test/build-bc-overload-tests.sh test --list-dirs)
 
@@ -9554,7 +9884,7 @@ all: $(BUILT_SOURCES) config.h
 .SUFFIXES: .c .cc .cpp .dvi .f .ll .lo .o .obj .ps .yy
 am--refresh: Makefile
 	@:
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(srcdir)/liboctave/module.mk $(srcdir)/liboctave/array/module.mk $(srcdir)/liboctave/cruft/module.mk $(srcdir)/liboctave/cruft/amos/module.mk $(srcdir)/liboctave/cruft/blas-xtra/module.mk $(srcdir)/liboctave/cruft/daspk/module.mk $(srcdir)/liboctave/cruft/dasrt/module.mk $(srcdir)/liboctave/cruft/dassl/module.mk $(srcdir)/liboctave/cruft/Faddeeva/module.mk $(srcdir)/liboctave/cruft/fftpack/module.mk $(srcdir)/liboctave/cruft/lapack-xtra/module.mk $(srcdir)/liboctave/cruft/misc/module.mk $(srcdir)/liboctave/cruft/odepack/module.mk $(srcdir)/liboctave/cruft/ordered-qz/module.mk $(srcdir)/liboctave/cruft/quadpack/module.mk $(srcdir)/liboctave/cruft/ranlib/module.mk $(srcdir)/liboctave/cruft/slatec-err/module.mk $(srcdir)/liboctave/cruft/slatec-fn/module.mk $(srcdir)/liboctave/numeric/module.mk $(srcdir)/liboctave/operators/module.mk $(srcdir)/liboctave/operators/vx-op-inc.mk $(srcdir)/liboctave/operators/mx-op-inc.mk $(srcdir)/liboctave/operators/smx-op-inc.mk $(srcdir)/liboctave/operators/vx-op-src.mk $(srcdir)/liboctave/operators/mx-op-src.mk $(srcdir)/liboctave/operators/smx-op-src.mk $(srcdir)/liboctave/system/module.mk $(srcdir)/liboctave/util/module.mk $(srcdir)/liboctave/wrappers/module.mk $(srcdir)/libinterp/module.mk $(srcdir)/libinterp/parse-tree/module.mk $(srcdir)/libinterp/octave-value/module.mk $(srcdir)/libinterp/operators/module.mk $(srcdir)/libinterp/template-inst/module.mk $(srcdir)/libinterp/corefcn/module.mk $(srcdir)/libinterp/dldfcn/module.mk $(srcdir)/libgui/module.mk $(srcdir)/libgui/src/module.mk $(srcdir)/libgui/graphics/module.mk $(srcdir)/libgui/qterminal-module.mk $(srcdir)/src/module.mk $(srcdir)/scripts/module.mk $(srcdir)/scripts/audio/module.mk $(srcdir)/scripts/deprecated/module.mk $(srcdir)/scripts/elfun/module.mk $(srcdir)/scripts/general/module.mk $(srcdir)/scripts/geometry/module.mk $(srcdir)/scripts/gui/module.mk $(srcdir)/scripts/help/module.mk $(srcdir)/scripts/image/module.mk $(srcdir)/scripts/io/module.mk $(srcdir)/scripts/java/module.mk $(srcdir)/scripts/linear-algebra/module.mk $(srcdir)/scripts/miscellaneous/module.mk $(srcdir)/scripts/ode/module.mk $(srcdir)/scripts/optimization/module.mk $(srcdir)/scripts/path/module.mk $(srcdir)/scripts/pkg/module.mk $(srcdir)/scripts/plot/appearance/module.mk $(srcdir)/scripts/plot/draw/module.mk $(srcdir)/scripts/plot/util/module.mk $(srcdir)/scripts/polynomial/module.mk $(srcdir)/scripts/prefs/module.mk $(srcdir)/scripts/profiler/module.mk $(srcdir)/scripts/set/module.mk $(srcdir)/scripts/signal/module.mk $(srcdir)/scripts/sparse/module.mk $(srcdir)/scripts/specfun/module.mk $(srcdir)/scripts/special-matrix/module.mk $(srcdir)/scripts/startup/module.mk $(srcdir)/scripts/statistics/base/module.mk $(srcdir)/scripts/statistics/distributions/module.mk $(srcdir)/scripts/statistics/models/module.mk $(srcdir)/scripts/statistics/tests/module.mk $(srcdir)/scripts/strings/module.mk $(srcdir)/scripts/testfun/module.mk $(srcdir)/scripts/time/module.mk $(srcdir)/doc/module.mk $(srcdir)/doc/doxyhtml/module.mk $(srcdir)/doc/interpreter/module.mk $(srcdir)/doc/liboctave/module.mk $(srcdir)/doc/refcard/module.mk $(srcdir)/doc/interpreter/images.mk $(srcdir)/etc/module.mk $(srcdir)/examples/module.mk $(srcdir)/m4/module.mk $(srcdir)/test/module.mk $(srcdir)/test/bug-35448/module.mk $(srcdir)/test/bug-36025/module.mk $(srcdir)/test/bug-38236/module.mk $(srcdir)/test/bug-38691/module.mk $(srcdir)/test/bug-44940/module.mk $(srcdir)/test/class-concat/module.mk $(srcdir)/test/classdef/module.mk $(srcdir)/test/classes/module.mk $(srcdir)/test/ctor-vs-method/module.mk $(srcdir)/test/fcn-handle-derived-resolution/module.mk $(srcdir)/test/nest/module.mk $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(srcdir)/liboctave/module.mk $(srcdir)/liboctave/array/module.mk $(srcdir)/liboctave/cruft/module.mk $(srcdir)/liboctave/cruft/amos/module.mk $(srcdir)/liboctave/cruft/blas-xtra/module.mk $(srcdir)/liboctave/cruft/daspk/module.mk $(srcdir)/liboctave/cruft/dasrt/module.mk $(srcdir)/liboctave/cruft/dassl/module.mk $(srcdir)/liboctave/cruft/Faddeeva/module.mk $(srcdir)/liboctave/cruft/fftpack/module.mk $(srcdir)/liboctave/cruft/lapack-xtra/module.mk $(srcdir)/liboctave/cruft/misc/module.mk $(srcdir)/liboctave/cruft/odepack/module.mk $(srcdir)/liboctave/cruft/ordered-qz/module.mk $(srcdir)/liboctave/cruft/quadpack/module.mk $(srcdir)/liboctave/cruft/ranlib/module.mk $(srcdir)/liboctave/cruft/slatec-err/module.mk $(srcdir)/liboctave/cruft/slatec-fn/module.mk $(srcdir)/liboctave/numeric/module.mk $(srcdir)/liboctave/operators/module.mk $(srcdir)/liboctave/operators/vx-op-inc.mk $(srcdir)/liboctave/operators/mx-op-inc.mk $(srcdir)/liboctave/operators/smx-op-inc.mk $(srcdir)/liboctave/operators/vx-op-src.mk $(srcdir)/liboctave/operators/mx-op-src.mk $(srcdir)/liboctave/operators/smx-op-src.mk $(srcdir)/liboctave/system/module.mk $(srcdir)/liboctave/util/module.mk $(srcdir)/liboctave/wrappers/module.mk $(srcdir)/libinterp/module.mk $(srcdir)/libinterp/parse-tree/module.mk $(srcdir)/libinterp/octave-value/module.mk $(srcdir)/libinterp/operators/module.mk $(srcdir)/libinterp/template-inst/module.mk $(srcdir)/libinterp/corefcn/module.mk $(srcdir)/libinterp/dldfcn/module.mk $(srcdir)/libgui/module.mk $(srcdir)/libgui/src/module.mk $(srcdir)/libgui/graphics/module.mk $(srcdir)/libgui/qterminal-module.mk $(srcdir)/src/module.mk $(srcdir)/scripts/module.mk $(srcdir)/scripts/audio/module.mk $(srcdir)/scripts/deprecated/module.mk $(srcdir)/scripts/elfun/module.mk $(srcdir)/scripts/general/module.mk $(srcdir)/scripts/geometry/module.mk $(srcdir)/scripts/gui/module.mk $(srcdir)/scripts/help/module.mk $(srcdir)/scripts/image/module.mk $(srcdir)/scripts/io/module.mk $(srcdir)/scripts/java/module.mk $(srcdir)/scripts/linear-algebra/module.mk $(srcdir)/scripts/miscellaneous/module.mk $(srcdir)/scripts/ode/module.mk $(srcdir)/scripts/optimization/module.mk $(srcdir)/scripts/path/module.mk $(srcdir)/scripts/pkg/module.mk $(srcdir)/scripts/plot/appearance/module.mk $(srcdir)/scripts/plot/draw/module.mk $(srcdir)/scripts/plot/util/module.mk $(srcdir)/scripts/polynomial/module.mk $(srcdir)/scripts/prefs/module.mk $(srcdir)/scripts/profiler/module.mk $(srcdir)/scripts/set/module.mk $(srcdir)/scripts/signal/module.mk $(srcdir)/scripts/sparse/module.mk $(srcdir)/scripts/specfun/module.mk $(srcdir)/scripts/special-matrix/module.mk $(srcdir)/scripts/startup/module.mk $(srcdir)/scripts/statistics/base/module.mk $(srcdir)/scripts/statistics/distributions/module.mk $(srcdir)/scripts/statistics/models/module.mk $(srcdir)/scripts/statistics/tests/module.mk $(srcdir)/scripts/strings/module.mk $(srcdir)/scripts/testfun/module.mk $(srcdir)/scripts/time/module.mk $(srcdir)/doc/module.mk $(srcdir)/doc/doxyhtml/module.mk $(srcdir)/doc/interpreter/module.mk $(srcdir)/doc/liboctave/module.mk $(srcdir)/doc/refcard/module.mk $(srcdir)/doc/interpreter/images.mk $(srcdir)/etc/module.mk $(srcdir)/examples/module.mk $(srcdir)/m4/module.mk $(srcdir)/test/module.mk $(srcdir)/test/bug-35448/module.mk $(srcdir)/test/bug-36025/module.mk $(srcdir)/test/bug-38236/module.mk $(srcdir)/test/bug-38691/module.mk $(srcdir)/test/bug-44940/module.mk $(srcdir)/test/class-concat/module.mk $(srcdir)/test/classdef/module.mk $(srcdir)/test/classes/module.mk $(srcdir)/test/ctor-vs-method/module.mk $(srcdir)/test/fcn-handle-derived-resolution/module.mk $(srcdir)/test/nest/module.mk $(srcdir)/test/publish/module.mk $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -9576,7 +9906,7 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe)'; \
 	    cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe);; \
 	esac;
-$(srcdir)/liboctave/module.mk $(srcdir)/liboctave/array/module.mk $(srcdir)/liboctave/cruft/module.mk $(srcdir)/liboctave/cruft/amos/module.mk $(srcdir)/liboctave/cruft/blas-xtra/module.mk $(srcdir)/liboctave/cruft/daspk/module.mk $(srcdir)/liboctave/cruft/dasrt/module.mk $(srcdir)/liboctave/cruft/dassl/module.mk $(srcdir)/liboctave/cruft/Faddeeva/module.mk $(srcdir)/liboctave/cruft/fftpack/module.mk $(srcdir)/liboctave/cruft/lapack-xtra/module.mk $(srcdir)/liboctave/cruft/misc/module.mk $(srcdir)/liboctave/cruft/odepack/module.mk $(srcdir)/liboctave/cruft/ordered-qz/module.mk $(srcdir)/liboctave/cruft/quadpack/module.mk $(srcdir)/liboctave/cruft/ranlib/module.mk $(srcdir)/liboctave/cruft/slatec-err/module.mk $(srcdir)/liboctave/cruft/slatec-fn/module.mk $(srcdir)/liboctave/numeric/module.mk $(srcdir)/liboctave/operators/module.mk $(srcdir)/liboctave/operators/vx-op-inc.mk $(srcdir)/liboctave/operators/mx-op-inc.mk $(srcdir)/liboctave/operators/smx-op-inc.mk $(srcdir)/liboctave/operators/vx-op-src.mk $(srcdir)/liboctave/operators/mx-op-src.mk $(srcdir)/liboctave/operators/smx-op-src.mk $(srcdir)/liboctave/system/module.mk $(srcdir)/liboctave/util/module.mk $(srcdir)/liboctave/wrappers/module.mk $(srcdir)/libinterp/module.mk $(srcdir)/libinterp/parse-tree/module.mk $(srcdir)/libinterp/octave-value/module.mk $(srcdir)/libinterp/operators/module.mk $(srcdir)/libinterp/template-inst/module.mk $(srcdir)/libinterp/corefcn/module.mk $(srcdir)/libinterp/dldfcn/module.mk $(srcdir)/libgui/module.mk $(srcdir)/libgui/src/module.mk $(srcdir)/libgui/graphics/module.mk $(srcdir)/libgui/qterminal-module.mk $(srcdir)/src/module.mk $(srcdir)/scripts/module.mk $(srcdir)/scripts/audio/module.mk $(srcdir)/scripts/deprecated/module.mk $(srcdir)/scripts/elfun/module.mk $(srcdir)/scripts/general/module.mk $(srcdir)/scripts/geometry/module.mk $(srcdir)/scripts/gui/module.mk $(srcdir)/scripts/help/module.mk $(srcdir)/scripts/image/module.mk $(srcdir)/scripts/io/module.mk $(srcdir)/scripts/java/module.mk $(srcdir)/scripts/linear-algebra/module.mk $(srcdir)/scripts/miscellaneous/module.mk $(srcdir)/scripts/ode/module.mk $(srcdir)/scripts/optimization/module.mk $(srcdir)/scripts/path/module.mk $(srcdir)/scripts/pkg/module.mk $(srcdir)/scripts/plot/appearance/module.mk $(srcdir)/scripts/plot/draw/module.mk $(srcdir)/scripts/plot/util/module.mk $(srcdir)/scripts/polynomial/module.mk $(srcdir)/scripts/prefs/module.mk $(srcdir)/scripts/profiler/module.mk $(srcdir)/scripts/set/module.mk $(srcdir)/scripts/signal/module.mk $(srcdir)/scripts/sparse/module.mk $(srcdir)/scripts/specfun/module.mk $(srcdir)/scripts/special-matrix/module.mk $(srcdir)/scripts/startup/module.mk $(srcdir)/scripts/statistics/base/module.mk $(srcdir)/scripts/statistics/distributions/module.mk $(srcdir)/scripts/statistics/models/module.mk $(srcdir)/scripts/statistics/tests/module.mk $(srcdir)/scripts/strings/module.mk $(srcdir)/scripts/testfun/module.mk $(srcdir)/scripts/time/module.mk $(srcdir)/doc/module.mk $(srcdir)/doc/doxyhtml/module.mk $(srcdir)/doc/interpreter/module.mk $(srcdir)/doc/liboctave/module.mk $(srcdir)/doc/refcard/module.mk $(srcdir)/doc/interpreter/images.mk $(srcdir)/etc/module.mk $(srcdir)/examples/module.mk $(srcdir)/m4/module.mk $(srcdir)/test/module.mk $(srcdir)/test/bug-35448/module.mk $(srcdir)/test/bug-36025/module.mk $(srcdir)/test/bug-38236/module.mk $(srcdir)/test/bug-38691/module.mk $(srcdir)/test/bug-44940/module.mk $(srcdir)/test/class-concat/module.mk $(srcdir)/test/classdef/module.mk $(srcdir)/test/classes/module.mk $(srcdir)/test/ctor-vs-method/module.mk $(srcdir)/test/fcn-handle-derived-resolution/module.mk $(srcdir)/test/nest/module.mk $(am__empty):
+$(srcdir)/liboctave/module.mk $(srcdir)/liboctave/array/module.mk $(srcdir)/liboctave/cruft/module.mk $(srcdir)/liboctave/cruft/amos/module.mk $(srcdir)/liboctave/cruft/blas-xtra/module.mk $(srcdir)/liboctave/cruft/daspk/module.mk $(srcdir)/liboctave/cruft/dasrt/module.mk $(srcdir)/liboctave/cruft/dassl/module.mk $(srcdir)/liboctave/cruft/Faddeeva/module.mk $(srcdir)/liboctave/cruft/fftpack/module.mk $(srcdir)/liboctave/cruft/lapack-xtra/module.mk $(srcdir)/liboctave/cruft/misc/module.mk $(srcdir)/liboctave/cruft/odepack/module.mk $(srcdir)/liboctave/cruft/ordered-qz/module.mk $(srcdir)/liboctave/cruft/quadpack/module.mk $(srcdir)/liboctave/cruft/ranlib/module.mk $(srcdir)/liboctave/cruft/slatec-err/module.mk $(srcdir)/liboctave/cruft/slatec-fn/module.mk $(srcdir)/liboctave/numeric/module.mk $(srcdir)/liboctave/operators/module.mk $(srcdir)/liboctave/operators/vx-op-inc.mk $(srcdir)/liboctave/operators/mx-op-inc.mk $(srcdir)/liboctave/operators/smx-op-inc.mk $(srcdir)/liboctave/operators/vx-op-src.mk $(srcdir)/liboctave/operators/mx-op-src.mk $(srcdir)/liboctave/operators/smx-op-src.mk $(srcdir)/liboctave/system/module.mk $(srcdir)/liboctave/util/module.mk $(srcdir)/liboctave/wrappers/module.mk $(srcdir)/libinterp/module.mk $(srcdir)/libinterp/parse-tree/module.mk $(srcdir)/libinterp/octave-value/module.mk $(srcdir)/libinterp/operators/module.mk $(srcdir)/libinterp/template-inst/module.mk $(srcdir)/libinterp/corefcn/module.mk $(srcdir)/libinterp/dldfcn/module.mk $(srcdir)/libgui/module.mk $(srcdir)/libgui/src/module.mk $(srcdir)/libgui/graphics/module.mk $(srcdir)/libgui/qterminal-module.mk $(srcdir)/src/module.mk $(srcdir)/scripts/module.mk $(srcdir)/scripts/audio/module.mk $(srcdir)/scripts/deprecated/module.mk $(srcdir)/scripts/elfun/module.mk $(srcdir)/scripts/general/module.mk $(srcdir)/scripts/geometry/module.mk $(srcdir)/scripts/gui/module.mk $(srcdir)/scripts/help/module.mk $(srcdir)/scripts/image/module.mk $(srcdir)/scripts/io/module.mk $(srcdir)/scripts/java/module.mk $(srcdir)/scripts/linear-algebra/module.mk $(srcdir)/scripts/miscellaneous/module.mk $(srcdir)/scripts/ode/module.mk $(srcdir)/scripts/optimization/module.mk $(srcdir)/scripts/path/module.mk $(srcdir)/scripts/pkg/module.mk $(srcdir)/scripts/plot/appearance/module.mk $(srcdir)/scripts/plot/draw/module.mk $(srcdir)/scripts/plot/util/module.mk $(srcdir)/scripts/polynomial/module.mk $(srcdir)/scripts/prefs/module.mk $(srcdir)/scripts/profiler/module.mk $(srcdir)/scripts/set/module.mk $(srcdir)/scripts/signal/module.mk $(srcdir)/scripts/sparse/module.mk $(srcdir)/scripts/specfun/module.mk $(srcdir)/scripts/special-matrix/module.mk $(srcdir)/scripts/startup/module.mk $(srcdir)/scripts/statistics/base/module.mk $(srcdir)/scripts/statistics/distributions/module.mk $(srcdir)/scripts/statistics/models/module.mk $(srcdir)/scripts/statistics/tests/module.mk $(srcdir)/scripts/strings/module.mk $(srcdir)/scripts/testfun/module.mk $(srcdir)/scripts/time/module.mk $(srcdir)/doc/module.mk $(srcdir)/doc/doxyhtml/module.mk $(srcdir)/doc/interpreter/module.mk $(srcdir)/doc/liboctave/module.mk $(srcdir)/doc/refcard/module.mk $(srcdir)/doc/interpreter/images.mk $(srcdir)/etc/module.mk $(srcdir)/examples/module.mk $(srcdir)/m4/module.mk $(srcdir)/test/module.mk $(srcdir)/test/bug-35448/module.mk $(srcdir)/test/bug-36025/module.mk $(srcdir)/test/bug-38236/module.mk $(srcdir)/test/bug-38691/module.mk $(srcdir)/test/bug-44940/module.mk $(srcdir)/test/class-concat/module.mk $(srcdir)/test/classdef/module.mk $(srcdir)/test/classes/module.mk $(srcdir)/test/ctor-vs-method/module.mk $(srcdir)/test/fcn-handle-derived-resolution/module.mk $(srcdir)/test/nest/module.mk $(srcdir)/test/publish/module.mk $(am__empty):
 
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
@@ -10222,6 +10552,9 @@ libinterp/corefcn/libinterp_corefcn_libcorefcn_la-bsxfun.lo:  \
 libinterp/corefcn/libinterp_corefcn_libcorefcn_la-c-file-ptr-stream.lo:  \
 	libinterp/corefcn/$(am__dirstamp) \
 	libinterp/corefcn/$(DEPDIR)/$(am__dirstamp)
+libinterp/corefcn/libinterp_corefcn_libcorefcn_la-call-stack.lo:  \
+	libinterp/corefcn/$(am__dirstamp) \
+	libinterp/corefcn/$(DEPDIR)/$(am__dirstamp)
 libinterp/corefcn/libinterp_corefcn_libcorefcn_la-cdisplay.lo:  \
 	libinterp/corefcn/$(am__dirstamp) \
 	libinterp/corefcn/$(DEPDIR)/$(am__dirstamp)
@@ -10364,6 +10697,9 @@ libinterp/corefcn/libinterp_corefcn_libcorefcn_la-input.lo:  \
 	libinterp/corefcn/$(am__dirstamp) \
 	libinterp/corefcn/$(DEPDIR)/$(am__dirstamp)
 libinterp/corefcn/libinterp_corefcn_libcorefcn_la-inv.lo:  \
+	libinterp/corefcn/$(am__dirstamp) \
+	libinterp/corefcn/$(DEPDIR)/$(am__dirstamp)
+libinterp/corefcn/libinterp_corefcn_libcorefcn_la-interpreter.lo:  \
 	libinterp/corefcn/$(am__dirstamp) \
 	libinterp/corefcn/$(DEPDIR)/$(am__dirstamp)
 libinterp/corefcn/libinterp_corefcn_libcorefcn_la-kron.lo:  \
@@ -10735,6 +11071,12 @@ libinterp/dldfcn/libinterp_dldfcn_symrcm_la-symrcm.lo:  \
 
 libinterp/dldfcn/symrcm.la: $(libinterp_dldfcn_symrcm_la_OBJECTS) $(libinterp_dldfcn_symrcm_la_DEPENDENCIES) $(EXTRA_libinterp_dldfcn_symrcm_la_DEPENDENCIES) libinterp/dldfcn/$(am__dirstamp)
 	$(AM_V_CXXLD)$(libinterp_dldfcn_symrcm_la_LINK) $(am_libinterp_dldfcn_symrcm_la_rpath) $(libinterp_dldfcn_symrcm_la_OBJECTS) $(libinterp_dldfcn_symrcm_la_LIBADD) $(LIBS)
+libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo:  \
+	libinterp/dldfcn/$(am__dirstamp) \
+	libinterp/dldfcn/$(DEPDIR)/$(am__dirstamp)
+
+libinterp/dldfcn/xzip.la: $(libinterp_dldfcn_xzip_la_OBJECTS) $(libinterp_dldfcn_xzip_la_DEPENDENCIES) $(EXTRA_libinterp_dldfcn_xzip_la_DEPENDENCIES) libinterp/dldfcn/$(am__dirstamp)
+	$(AM_V_CXXLD)$(libinterp_dldfcn_xzip_la_LINK) $(am_libinterp_dldfcn_xzip_la_rpath) $(libinterp_dldfcn_xzip_la_OBJECTS) $(libinterp_dldfcn_xzip_la_LIBADD) $(LIBS)
 libinterp/$(am__dirstamp):
 	@$(MKDIR_P) libinterp
 	@: > libinterp/$(am__dirstamp)
@@ -14120,6 +14462,9 @@ liboctave/wrappers/liboctave_wrappers_libwrappers_la-glob-wrappers.lo:  \
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-hash-wrappers.lo:  \
 	liboctave/wrappers/$(am__dirstamp) \
 	liboctave/wrappers/$(DEPDIR)/$(am__dirstamp)
+liboctave/wrappers/liboctave_wrappers_libwrappers_la-math-wrappers.lo:  \
+	liboctave/wrappers/$(am__dirstamp) \
+	liboctave/wrappers/$(DEPDIR)/$(am__dirstamp)
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-mkostemp-wrapper.lo:  \
 	liboctave/wrappers/$(am__dirstamp) \
 	liboctave/wrappers/$(DEPDIR)/$(am__dirstamp)
@@ -14572,6 +14917,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-bitfcns.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-bsxfun.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-c-file-ptr-stream.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-call-stack.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-cdisplay.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-cellfun.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-coct-hdf5-types.Plo@am__quote@
@@ -14619,6 +14965,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-hex2num.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-hook-fcn.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-input.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-interpreter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-inv.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-jit-ir.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-jit-typeinfo.Plo@am__quote@
@@ -14721,6 +15068,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_qr_la-qr.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_symbfact_la-symbfact.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_symrcm_la-symrcm.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_xzip_la-xzip.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/octave-value/$(DEPDIR)/libinterp_octave_value_liboctave_value_la-ov-base.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/octave-value/$(DEPDIR)/libinterp_octave_value_liboctave_value_la-ov-bool-mat.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/octave-value/$(DEPDIR)/libinterp_octave_value_liboctave_value_la-ov-bool-sparse.Plo@am__quote@
@@ -15453,6 +15801,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-getopt-wrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-glob-wrappers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-hash-wrappers.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-math-wrappers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-mkostemp-wrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-nanosleep-wrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-nproc-wrapper.Plo@am__quote@
@@ -15652,6 +16001,13 @@ liboctave/wrappers/liboctave_wrappers_libwrappers_la-hash-wrappers.lo: liboctave
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='liboctave/wrappers/hash-wrappers.c' object='liboctave/wrappers/liboctave_wrappers_libwrappers_la-hash-wrappers.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-hash-wrappers.lo `test -f 'liboctave/wrappers/hash-wrappers.c' || echo '$(srcdir)/'`liboctave/wrappers/hash-wrappers.c
+
+liboctave/wrappers/liboctave_wrappers_libwrappers_la-math-wrappers.lo: liboctave/wrappers/math-wrappers.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -MT liboctave/wrappers/liboctave_wrappers_libwrappers_la-math-wrappers.lo -MD -MP -MF liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-math-wrappers.Tpo -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-math-wrappers.lo `test -f 'liboctave/wrappers/math-wrappers.c' || echo '$(srcdir)/'`liboctave/wrappers/math-wrappers.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-math-wrappers.Tpo liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-math-wrappers.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='liboctave/wrappers/math-wrappers.c' object='liboctave/wrappers/liboctave_wrappers_libwrappers_la-math-wrappers.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-math-wrappers.lo `test -f 'liboctave/wrappers/math-wrappers.c' || echo '$(srcdir)/'`liboctave/wrappers/math-wrappers.c
 
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-mkostemp-wrapper.lo: liboctave/wrappers/mkostemp-wrapper.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -MT liboctave/wrappers/liboctave_wrappers_libwrappers_la-mkostemp-wrapper.lo -MD -MP -MF liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-mkostemp-wrapper.Tpo -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-mkostemp-wrapper.lo `test -f 'liboctave/wrappers/mkostemp-wrapper.c' || echo '$(srcdir)/'`liboctave/wrappers/mkostemp-wrapper.c
@@ -16951,6 +17307,13 @@ libinterp/corefcn/libinterp_corefcn_libcorefcn_la-c-file-ptr-stream.lo: libinter
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/corefcn/libinterp_corefcn_libcorefcn_la-c-file-ptr-stream.lo `test -f 'libinterp/corefcn/c-file-ptr-stream.cc' || echo '$(srcdir)/'`libinterp/corefcn/c-file-ptr-stream.cc
 
+libinterp/corefcn/libinterp_corefcn_libcorefcn_la-call-stack.lo: libinterp/corefcn/call-stack.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/corefcn/libinterp_corefcn_libcorefcn_la-call-stack.lo -MD -MP -MF libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-call-stack.Tpo -c -o libinterp/corefcn/libinterp_corefcn_libcorefcn_la-call-stack.lo `test -f 'libinterp/corefcn/call-stack.cc' || echo '$(srcdir)/'`libinterp/corefcn/call-stack.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-call-stack.Tpo libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-call-stack.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/corefcn/call-stack.cc' object='libinterp/corefcn/libinterp_corefcn_libcorefcn_la-call-stack.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/corefcn/libinterp_corefcn_libcorefcn_la-call-stack.lo `test -f 'libinterp/corefcn/call-stack.cc' || echo '$(srcdir)/'`libinterp/corefcn/call-stack.cc
+
 libinterp/corefcn/libinterp_corefcn_libcorefcn_la-cellfun.lo: libinterp/corefcn/cellfun.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/corefcn/libinterp_corefcn_libcorefcn_la-cellfun.lo -MD -MP -MF libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-cellfun.Tpo -c -o libinterp/corefcn/libinterp_corefcn_libcorefcn_la-cellfun.lo `test -f 'libinterp/corefcn/cellfun.cc' || echo '$(srcdir)/'`libinterp/corefcn/cellfun.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-cellfun.Tpo libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-cellfun.Plo
@@ -17272,6 +17635,13 @@ libinterp/corefcn/libinterp_corefcn_libcorefcn_la-inv.lo: libinterp/corefcn/inv.
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/corefcn/inv.cc' object='libinterp/corefcn/libinterp_corefcn_libcorefcn_la-inv.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/corefcn/libinterp_corefcn_libcorefcn_la-inv.lo `test -f 'libinterp/corefcn/inv.cc' || echo '$(srcdir)/'`libinterp/corefcn/inv.cc
+
+libinterp/corefcn/libinterp_corefcn_libcorefcn_la-interpreter.lo: libinterp/corefcn/interpreter.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/corefcn/libinterp_corefcn_libcorefcn_la-interpreter.lo -MD -MP -MF libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-interpreter.Tpo -c -o libinterp/corefcn/libinterp_corefcn_libcorefcn_la-interpreter.lo `test -f 'libinterp/corefcn/interpreter.cc' || echo '$(srcdir)/'`libinterp/corefcn/interpreter.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-interpreter.Tpo libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-interpreter.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/corefcn/interpreter.cc' object='libinterp/corefcn/libinterp_corefcn_libcorefcn_la-interpreter.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/corefcn/libinterp_corefcn_libcorefcn_la-interpreter.lo `test -f 'libinterp/corefcn/interpreter.cc' || echo '$(srcdir)/'`libinterp/corefcn/interpreter.cc
 
 libinterp/corefcn/libinterp_corefcn_libcorefcn_la-kron.lo: libinterp/corefcn/kron.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/corefcn/libinterp_corefcn_libcorefcn_la-kron.lo -MD -MP -MF libinterp/corefcn/$(DEPDIR)/libinterp_corefcn_libcorefcn_la-kron.Tpo -c -o libinterp/corefcn/libinterp_corefcn_libcorefcn_la-kron.lo `test -f 'libinterp/corefcn/kron.cc' || echo '$(srcdir)/'`libinterp/corefcn/kron.cc
@@ -17972,6 +18342,13 @@ libinterp/dldfcn/libinterp_dldfcn_symrcm_la-symrcm.lo: libinterp/dldfcn/symrcm.c
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/dldfcn/symrcm.cc' object='libinterp/dldfcn/libinterp_dldfcn_symrcm_la-symrcm.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_dldfcn_symrcm_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_dldfcn_symrcm_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/dldfcn/libinterp_dldfcn_symrcm_la-symrcm.lo `test -f 'libinterp/dldfcn/symrcm.cc' || echo '$(srcdir)/'`libinterp/dldfcn/symrcm.cc
+
+libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo: libinterp/dldfcn/xzip.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_dldfcn_xzip_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_dldfcn_xzip_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo -MD -MP -MF libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_xzip_la-xzip.Tpo -c -o libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo `test -f 'libinterp/dldfcn/xzip.cc' || echo '$(srcdir)/'`libinterp/dldfcn/xzip.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_xzip_la-xzip.Tpo libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_xzip_la-xzip.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/dldfcn/xzip.cc' object='libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_dldfcn_xzip_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_dldfcn_xzip_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo `test -f 'libinterp/dldfcn/xzip.cc' || echo '$(srcdir)/'`libinterp/dldfcn/xzip.cc
 
 libinterp/libinterp_liboctinterp_la-octave.lo: libinterp/octave.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/libinterp_liboctinterp_la-octave.lo -MD -MP -MF libinterp/$(DEPDIR)/libinterp_liboctinterp_la-octave.Tpo -c -o libinterp/libinterp_liboctinterp_la-octave.lo `test -f 'libinterp/octave.cc' || echo '$(srcdir)/'`libinterp/octave.cc
@@ -25645,6 +26022,27 @@ uninstall-scripts_testfunDATA:
 	@list='$(scripts_testfun_DATA)'; test -n "$(scripts_testfundir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(scripts_testfundir)'; $(am__uninstall_files_from_dir)
+install-scripts_testfun_privateDATA: $(scripts_testfun_private_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(scripts_testfun_private_DATA)'; test -n "$(scripts_testfun_privatedir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(scripts_testfun_privatedir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(scripts_testfun_privatedir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(scripts_testfun_privatedir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(scripts_testfun_privatedir)" || exit $$?; \
+	done
+
+uninstall-scripts_testfun_privateDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(scripts_testfun_private_DATA)'; test -n "$(scripts_testfun_privatedir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(scripts_testfun_privatedir)'; $(am__uninstall_files_from_dir)
 install-scripts_timeDATA: $(scripts_time_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(scripts_time_DATA)'; test -n "$(scripts_timedir)" || list=; \
@@ -26014,7 +26412,7 @@ all-am: Makefile $(INFO_DEPS) $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) \
 		$(MANS) $(DATA) $(HEADERS) config.h all-local
 installdirs: installdirs-recursive
 installdirs-am: installdirs-local
-	for dir in "$(DESTDIR)$(octlibdir)" "$(DESTDIR)$(archlibdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(infodir)" "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(imagedir)" "$(DESTDIR)$(libinterptestsdir)" "$(DESTDIR)$(liboctavetestsdir)" "$(DESTDIR)$(octdatadir)" "$(DESTDIR)$(octetcdir)" "$(DESTDIR)$(octlocaledir)" "$(DESTDIR)$(scripts_@ftpdir)" "$(DESTDIR)$(scripts_audiodir)" "$(DESTDIR)$(scripts_audio_@audioplayerdir)" "$(DESTDIR)$(scripts_audio_@audiorecorderdir)" "$(DESTDIR)$(scripts_deprecateddir)" "$(DESTDIR)$(scripts_elfundir)" "$(DESTDIR)$(scripts_generaldir)" "$(DESTDIR)$(scripts_general_privatedir)" "$(DESTDIR)$(scripts_geometrydir)" "$(DESTDIR)$(scripts_guidir)" "$(DESTDIR)$(scripts_gui_privatedir)" "$(DESTDIR)$(scripts_helpdir)" "$(DESTDIR)$(scripts_help_privatedir)" "$(DESTDIR)$(scripts_imagedir)" "$(DESTDIR)$(scripts_image_privatedir)" "$(DESTDIR)$(scripts_iodir)" "$(DESTDIR)$(scripts_javadir)" "$(DESTDIR)$(scripts_linear_algebradir)" "$(DESTDIR)$(scripts_miscellaneousdir)" "$(DESTDIR)$(scripts_miscellaneous_privatedir)" "$(DESTDIR)$(scripts_odedir)" "$(DESTDIR)$(scripts_ode_privatedir)" "$(DESTDIR)$(scripts_optimizationdir)" "$(DESTDIR)$(scripts_optimization_privatedir)" "$(DESTDIR)$(scripts_pathdir)" "$(DESTDIR)$(scripts_path_privatedir)" "$(DESTDIR)$(scripts_pkgdir)" "$(DESTDIR)$(scripts_pkg_privatedir)" "$(DESTDIR)$(scripts_plot_appearancedir)" "$(DESTDIR)$(scripts_plot_appearance_privatedir)" "$(DESTDIR)$(scripts_plot_drawdir)" "$(DESTDIR)$(scripts_plot_draw_privatedir)" "$(DESTDIR)$(scripts_plot_utildir)" "$(DESTDIR)$(scripts_plot_util_privatedir)" "$(DESTDIR)$(scripts_polynomialdir)" "$(DESTDIR)$(scripts_polynomial_privatedir)" "$(DESTDIR)$(scripts_prefsdir)" "$(DESTDIR)$(scripts_prefs_privatedir)" "$(DESTDIR)$(scripts_profilerdir)" "$(DESTDIR)$(scripts_profiler_htmldir)" "$(DESTDIR)$(scripts_setdir)" "$(DESTDIR)$(scripts_set_privatedir)" "$(DESTDIR)$(scripts_signaldir)" "$(DESTDIR)$(scripts_signal_privatedir)" "$(DESTDIR)$(scripts_sparsedir)" "$(DESTDIR)$(scripts_sparse_privatedir)" "$(DESTDIR)$(scripts_specfundir)" "$(DESTDIR)$(scripts_special_matrixdir)" "$(DESTDIR)$(scripts_startupdir)" "$(DESTDIR)$(scripts_statistics_basedir)" "$(DESTDIR)$(scripts_statistics_distributionsdir)" "$(DESTDIR)$(scripts_statistics_modelsdir)" "$(DESTDIR)$(scripts_statistics_models_privatedir)" "$(DESTDIR)$(scripts_statistics_testsdir)" "$(DESTDIR)$(scripts_stringsdir)" "$(DESTDIR)$(scripts_testfundir)" "$(DESTDIR)$(scripts_timedir)" "$(DESTDIR)$(octincludedir)" "$(DESTDIR)$(octincludedir)"; do \
+	for dir in "$(DESTDIR)$(octlibdir)" "$(DESTDIR)$(archlibdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(infodir)" "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(imagedir)" "$(DESTDIR)$(libinterptestsdir)" "$(DESTDIR)$(liboctavetestsdir)" "$(DESTDIR)$(octdatadir)" "$(DESTDIR)$(octetcdir)" "$(DESTDIR)$(octlocaledir)" "$(DESTDIR)$(scripts_@ftpdir)" "$(DESTDIR)$(scripts_audiodir)" "$(DESTDIR)$(scripts_audio_@audioplayerdir)" "$(DESTDIR)$(scripts_audio_@audiorecorderdir)" "$(DESTDIR)$(scripts_deprecateddir)" "$(DESTDIR)$(scripts_elfundir)" "$(DESTDIR)$(scripts_generaldir)" "$(DESTDIR)$(scripts_general_privatedir)" "$(DESTDIR)$(scripts_geometrydir)" "$(DESTDIR)$(scripts_guidir)" "$(DESTDIR)$(scripts_gui_privatedir)" "$(DESTDIR)$(scripts_helpdir)" "$(DESTDIR)$(scripts_help_privatedir)" "$(DESTDIR)$(scripts_imagedir)" "$(DESTDIR)$(scripts_image_privatedir)" "$(DESTDIR)$(scripts_iodir)" "$(DESTDIR)$(scripts_javadir)" "$(DESTDIR)$(scripts_linear_algebradir)" "$(DESTDIR)$(scripts_miscellaneousdir)" "$(DESTDIR)$(scripts_miscellaneous_privatedir)" "$(DESTDIR)$(scripts_odedir)" "$(DESTDIR)$(scripts_ode_privatedir)" "$(DESTDIR)$(scripts_optimizationdir)" "$(DESTDIR)$(scripts_optimization_privatedir)" "$(DESTDIR)$(scripts_pathdir)" "$(DESTDIR)$(scripts_path_privatedir)" "$(DESTDIR)$(scripts_pkgdir)" "$(DESTDIR)$(scripts_pkg_privatedir)" "$(DESTDIR)$(scripts_plot_appearancedir)" "$(DESTDIR)$(scripts_plot_appearance_privatedir)" "$(DESTDIR)$(scripts_plot_drawdir)" "$(DESTDIR)$(scripts_plot_draw_privatedir)" "$(DESTDIR)$(scripts_plot_utildir)" "$(DESTDIR)$(scripts_plot_util_privatedir)" "$(DESTDIR)$(scripts_polynomialdir)" "$(DESTDIR)$(scripts_polynomial_privatedir)" "$(DESTDIR)$(scripts_prefsdir)" "$(DESTDIR)$(scripts_prefs_privatedir)" "$(DESTDIR)$(scripts_profilerdir)" "$(DESTDIR)$(scripts_profiler_htmldir)" "$(DESTDIR)$(scripts_setdir)" "$(DESTDIR)$(scripts_set_privatedir)" "$(DESTDIR)$(scripts_signaldir)" "$(DESTDIR)$(scripts_signal_privatedir)" "$(DESTDIR)$(scripts_sparsedir)" "$(DESTDIR)$(scripts_sparse_privatedir)" "$(DESTDIR)$(scripts_specfundir)" "$(DESTDIR)$(scripts_special_matrixdir)" "$(DESTDIR)$(scripts_startupdir)" "$(DESTDIR)$(scripts_statistics_basedir)" "$(DESTDIR)$(scripts_statistics_distributionsdir)" "$(DESTDIR)$(scripts_statistics_modelsdir)" "$(DESTDIR)$(scripts_statistics_models_privatedir)" "$(DESTDIR)$(scripts_statistics_testsdir)" "$(DESTDIR)$(scripts_stringsdir)" "$(DESTDIR)$(scripts_testfundir)" "$(DESTDIR)$(scripts_testfun_privatedir)" "$(DESTDIR)$(scripts_timedir)" "$(DESTDIR)$(octincludedir)" "$(DESTDIR)$(octincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -26207,7 +26605,7 @@ install-data-am: install-archlibPROGRAMS install-data-local \
 	install-scripts_statistics_models_privateDATA \
 	install-scripts_statistics_testsDATA \
 	install-scripts_stringsDATA install-scripts_testfunDATA \
-	install-scripts_timeDATA
+	install-scripts_testfun_privateDATA install-scripts_timeDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 install-dvi: install-dvi-recursive
@@ -26404,6 +26802,7 @@ uninstall-am: uninstall-archlibPROGRAMS uninstall-binPROGRAMS \
 	uninstall-scripts_statistics_models_privateDATA \
 	uninstall-scripts_statistics_testsDATA \
 	uninstall-scripts_stringsDATA uninstall-scripts_testfunDATA \
+	uninstall-scripts_testfun_privateDATA \
 	uninstall-scripts_timeDATA
 
 uninstall-man: uninstall-man1
@@ -26472,9 +26871,10 @@ uninstall-man: uninstall-man1
 	install-scripts_statistics_models_privateDATA \
 	install-scripts_statistics_testsDATA \
 	install-scripts_stringsDATA install-scripts_testfunDATA \
-	install-scripts_timeDATA install-strip installcheck \
-	installcheck-am installdirs installdirs-am installdirs-local \
-	maintainer-clean maintainer-clean-1 maintainer-clean-aminfo \
+	install-scripts_testfun_privateDATA install-scripts_timeDATA \
+	install-strip installcheck installcheck-am installdirs \
+	installdirs-am installdirs-local maintainer-clean \
+	maintainer-clean-1 maintainer-clean-aminfo \
 	maintainer-clean-generic maintainer-clean-local \
 	maintainer-clean-vti mostlyclean mostlyclean-1 \
 	mostlyclean-aminfo mostlyclean-compile mostlyclean-generic \
@@ -26533,6 +26933,7 @@ uninstall-man: uninstall-man1
 	uninstall-scripts_statistics_models_privateDATA \
 	uninstall-scripts_statistics_testsDATA \
 	uninstall-scripts_stringsDATA uninstall-scripts_testfunDATA \
+	uninstall-scripts_testfun_privateDATA \
 	uninstall-scripts_timeDATA
 
 .PRECIOUS: Makefile
@@ -26622,16 +27023,6 @@ libinterp/parse-tree/oct-gperf.h: libinterp/parse-tree/octave.gperf
 libinterp/parse-tree/oct-parse.yy: libinterp/parse-tree/oct-parse.in.yy
 	$(AM_V_GEN)$(call subst-bison-api-decls,octave_)
 
-$(OV_JAVA_DF) : libinterp/octave-value/%.df : libinterp/octave-value/%.cc $(GENERATED_MAKE_BUILTINS_INCS) octave-config.h
-	$(AM_V_GEN)rm -f $@-t $@-t1 $@ && \
-	$(CXXCPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	  $(libinterp_octave_value_liboctave_value_la_CPPFLAGS) $(JAVA_CPPFLAGS) $(CPPFLAGS) \
-	  $(libinterp_octave_value_liboctave_value_la_CXXFLAGS) $(CXXFLAGS) \
-	  -DMAKE_BUILTINS $< > $@-t1 && \
-	$(SHELL) $(srcdir)/libinterp/mkdefs $(srcdir)/libinterp $< < $@-t1 > $@-t && \
-	mv $@-t $@ && \
-	rm -f $@-t1
-
 libinterp/operators/ops.cc: $(LIBINTERP_OPERATORS_SRC) libinterp/mkops
 	$(AM_V_GEN)rm -f $@-t $@ && \
 	$(SHELL) $(srcdir)/libinterp/mkops $(LIBINTERP_OPERATORS_SRC) > $@-t && \
@@ -26643,18 +27034,6 @@ $(OPT_HANDLERS): libinterp/corefcn/%.cc : liboctave/numeric/%.in | libinterp/cor
 	mv $@-t $@
 
 $(OPT_HANDLERS): $(srcdir)/build-aux/mk-opts.pl
-
-#display.df display.lo: CPPFLAGS += $(X11_FLAGS)
-
-$(COREFCN_FT2_DF) : libinterp/corefcn/%.df : libinterp/corefcn/%.cc $(GENERATED_MAKE_BUILTINS_INCS) octave-config.h | libinterp/corefcn/$(octave_dirstamp)
-	$(AM_V_GEN)rm -f $@-t $@-t1 $@ && \
-	$(CXXCPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	  $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) \
-	  $(libinterp_corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) \
-	  -DMAKE_BUILTINS $< > $@-t1 && \
-	$(SHELL) $(srcdir)/libinterp/mkdefs $(srcdir)/libinterp $< < $@-t1 > $@-t && \
-	rm -f $@-t1 && \
-	mv $@-t $@
 
 libinterp/corefcn/defaults.h: libinterp/corefcn/defaults.in.h build-aux/subst-default-vals.sh | libinterp/corefcn/$(octave_dirstamp)
 	$(AM_V_GEN)$(call simple-filter-rule,build-aux/subst-default-vals.sh)
@@ -26693,7 +27072,6 @@ libinterp/corefcn/oct-tex-symbols.cc: libinterp/corefcn/oct-tex-symbols.in | lib
 	$(AWK) 'BEGIN { print "// DO NOT EDIT. AUTOMATICALLY GENERATED FROM oct-tex-symbols.in."; print "static uint32_t symbol_codes[][2] = {"; count = 0; } END { print "};"; printf("static int num_symbol_codes = %d;\n", count); } !/^#/ && (NF == 3) { printf("  { %s, %s },\n", $$2, $$3); count++; }' $< > $@-t && \
 	mv $@-t $@
 
-libinterp/corefcn/txt-eng.cc: libinterp/corefcn/oct-tex-symbols.cc
 libinterp/corefcn/oct-tex-lexer.cc: LEX_OUTPUT_ROOT := lex.octave_tex_
 
 libinterp/corefcn/oct-tex-parser.yy: libinterp/corefcn/oct-tex-parser.in.yy
@@ -26701,26 +27079,6 @@ libinterp/corefcn/oct-tex-parser.yy: libinterp/corefcn/oct-tex-parser.in.yy
 
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@%.oct : %.la
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(AM_V_GEN)$(INSTALL_PROGRAM) libinterp/dldfcn/.libs/$(shell $(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $<) $@
-libinterp/dldfcn/__delaunayn__.df: CPPFLAGS += $(QHULL_CPPFLAGS)
-libinterp/dldfcn/__eigs__.df: CPPFLAGS += $(ARPACK_CPPFLAGS) $(SPARSE_XCPPFLAGS)
-libinterp/dldfcn/__fltk_uigetfile__.df: CPPFLAGS += $(FLTK_CPPFLAGS) $(FT2_CPPFLAGS)
-libinterp/dldfcn/__glpk__.df: CPPFLAGS += $(GLPK_CPPFLAGS)
-libinterp/dldfcn/__init_fltk__.df: CPPFLAGS += $(FLTK_CPPFLAGS) $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
-libinterp/dldfcn/__init_gnuplot__.df: CPPFLAGS += $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
-libinterp/dldfcn/__osmesa_print__.df: CPPFLAGS += $(OSMESA_CPPFLAGS) $(FT2_CPPFLAGS)
-libinterp/dldfcn/__voronoi__.df: CPPFLAGS += $(QHULL_CPPFLAGS)
-libinterp/dldfcn/amd.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
-libinterp/dldfcn/audiodevinfo.df: CPPFLAGS += $(PORTAUDIO_CPPFLAGS)
-libinterp/dldfcn/audioread.df: CPPFLAGS += $(SNDFILE_CPPFLAGS)
-libinterp/dldfcn/ccolamd.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
-libinterp/dldfcn/chol.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
-libinterp/dldfcn/colamd.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
-libinterp/dldfcn/convhulln.df: CPPFLAGS += $(QHULL_CPPFLAGS)
-libinterp/dldfcn/dmperm.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
-libinterp/dldfcn/fftw.df: CPPFLAGS += $(FFTW_XCPPFLAGS)
-libinterp/dldfcn/qr.df: CPPFLAGS += $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
-libinterp/dldfcn/symbfact.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
-libinterp/dldfcn/symrcm.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
 
 $(srcdir)/libinterp/dldfcn/module.mk: $(srcdir)/libinterp/dldfcn/config-module.sh $(srcdir)/libinterp/dldfcn/config-module.awk $(srcdir)/libinterp/dldfcn/module-files
 	$(AM_V_GEN)$(SHELL) $(srcdir)/libinterp/dldfcn/config-module.sh $(srcdir)
@@ -26728,7 +27086,11 @@ $(srcdir)/libinterp/dldfcn/module.mk: $(srcdir)/libinterp/dldfcn/config-module.s
 .yy.cc:
 
 %.cc %.h : %.yy
-	$(AM_V_YACC)$(am__skipyacc) $(SHELL) $(YLWRAP) $< y.tab.c $*.cc-t y.tab.h $*.h y.output $*.output -- $(YACCCOMPILE) && $(call move_if_change_rule,$*.cc-t,$*.cc)
+	$(AM_V_YACC)$(am__skipyacc) rm -f $*.cc-t $*.cc-tt && \
+	$(SHELL) $(YLWRAP) $< y.tab.c $*.cc-t y.tab.h $*.h y.output $*.output -- $(YACCCOMPILE) && \
+	$(SED) 's|"$*\.cc-t"|"$*.cc"|g' $*.cc-t > $*.cc-tt && \
+	mv $*.cc-tt $*.cc-t && \
+	$(call move_if_change_rule,$*.cc-t,$*.cc)
 
 libinterp/build-env.cc: libinterp/build-env.in.cc build-aux/subst-config-vals.sh | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)$(call simple-filter-rule,build-aux/subst-config-vals.sh)
@@ -26748,14 +27110,14 @@ libinterp/liboctinterp-build-info.cc: libinterp/liboctinterp-build-info.in.cc HG
 	  -e "s|%OCTAVE_HG_ID%|$(HG_ID_VAR)|" $< > $@-t && \
 	$(simple_move_if_change_rule)
 
-libinterp/builtins.cc: $(ALL_DEFUN_FILES) libinterp/mkbuiltins | libinterp/$(octave_dirstamp)
+libinterp/builtins.cc: $(LIBINTERP_DEFUN_FILES) build-aux/mk-builtins.sh | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
-	$(SHELL) $(srcdir)/libinterp/mkbuiltins "$(srcdir)" --source $(mkbuiltins_dld_opt) $(ALL_DEFUN_FILES) > $@-t && \
+	$(SHELL) $(srcdir)/build-aux/mk-builtins.sh --source $(mkbuiltins_dld_opt) "$(srcdir)" -- $(LIBINTERP_DEFUN_FILES) > $@-t && \
 	mv $@-t $@
 
-libinterp/builtin-defun-decls.h: $(ALL_DEFUN_FILES) libinterp/mkbuiltins | libinterp/$(octave_dirstamp)
+libinterp/builtin-defun-decls.h: $(LIBINTERP_DEFUN_FILES) build-aux/mk-builtins.sh | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
-	$(SHELL) $(srcdir)/libinterp/mkbuiltins "$(srcdir)" --header $(mkbuiltins_dld_opt) $(ALL_DEFUN_FILES) > $@-t && \
+	$(SHELL) $(srcdir)/build-aux/mk-builtins.sh --header $(mkbuiltins_dld_opt) "$(srcdir)" -- $(LIBINTERP_DEFUN_FILES) > $@-t && \
 	$(simple_move_if_change_rule)
 
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@libinterp/dldfcn/PKG_ADD: $(DLDFCN_DEFUN_FILES) libinterp/mk-pkg-add | libinterp/$(octave_dirstamp)
@@ -26763,14 +27125,14 @@ libinterp/builtin-defun-decls.h: $(ALL_DEFUN_FILES) libinterp/mkbuiltins | libin
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(SHELL) $(srcdir)/libinterp/mk-pkg-add "$(srcdir)" $(DLDFCN_DEFUN_FILES) > $@-t && \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	mv $@-t $@
 
-$(srcdir)/libinterp/DOCSTRINGS: $(ALL_DEFUN_FILES) | libinterp/$(octave_dirstamp)
+libinterp/DOCSTRINGS: $(LIBINTERP_DEFUN_FILES) libinterp/op-kw-docs | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f libinterp/DOCSTRINGS-t && \
-	$(PERL) $(srcdir)/libinterp/gendoc.pl "$(srcdir)" $(ALL_DEFUN_FILES) > libinterp/DOCSTRINGS-t && \
+	( $(PERL) $(srcdir)/libinterp/gendoc.pl "$(srcdir)" $(LIBINTERP_DEFUN_FILES); cat $(srcdir)/libinterp/op-kw-docs ) > libinterp/DOCSTRINGS-t && \
 	$(call move_if_change_rule,libinterp/DOCSTRINGS-t,$@)
 
-install-data-hook: install-oct install-built-in-docstrings
+install-data-hook: install-oct install-built-in-docstrings install-deprecated-config-h
 
-uninstall-local: uninstall-oct uninstall-built-in-docstrings
+uninstall-local: uninstall-oct uninstall-built-in-docstrings uninstall-deprecated-config-h
 
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@install-oct:
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(MKDIR_P) $(DESTDIR)$(octfiledir)
@@ -26800,14 +27162,23 @@ uninstall-local: uninstall-oct uninstall-built-in-docstrings
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(DESTDIR)$(octfiledir)/PKG_ADD
 .PHONY: install-oct uninstall-oct
 
-install-built-in-docstrings:
+install-built-in-docstrings: libinterp/DOCSTRINGS
 	$(MKDIR_P) $(DESTDIR)$(octetcdir)
-	$(INSTALL_DATA) $(srcdir)/libinterp/DOCSTRINGS $(DESTDIR)$(octetcdir)/built-in-docstrings
+	$(INSTALL_DATA) $< $(DESTDIR)$(octetcdir)/built-in-docstrings
 .PHONY: install-built-in-docstrings
 
 uninstall-built-in-docstrings:
 	rm -f $(DESTDIR)$(octetcdir)/built-in-docstrings
 .PHONY: uninstall-built-in-docstrings
+
+install-deprecated-config-h: libinterp/deprecated-config.h
+	$(MKDIR_P) $(DESTDIR)$(octincludedir)
+	$(INSTALL_DATA) $< $(DESTDIR)$(octincludedir)/config.h
+.PHONY: install-deprecated-config-h
+
+uninstall-deprecated-config-h:
+	rm -f $(DESTDIR)$(octincludedir)/config.h
+.PHONY: uninstall-deprecated-config-h
 
 libinterp-clean:
 	rm -f $(libinterp_CLEANFILES)
@@ -27013,7 +27384,7 @@ endef
 
 $(foreach f, $(GEN_FCN_FILES), $(eval $(call GEN_FCN_FILES_TEMPLATE, $(f))))
 
-$(srcdir)/scripts/DOCSTRINGS: $(FCN_FILES) $(GEN_FCN_FILES_IN) | scripts/$(octave_dirstamp)
+scripts/DOCSTRINGS: $(FCN_FILES) $(GEN_FCN_FILES_IN) | scripts/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f scripts/DOCSTRINGS-t && \
 	$(PERL) $(srcdir)/scripts/mkdoc.pl "$(srcdir)" $(FCN_FILES) $(GEN_FCN_FILES_IN) > scripts/DOCSTRINGS-t && \
 	$(call move_if_change_rule,scripts/DOCSTRINGS-t,$@)
@@ -27222,11 +27593,6 @@ doxyhtml-maintainer-clean:
 @AMCOND_BUILD_DOCS_TRUE@	@$(GREP) '#define HAVE_UMFPACK 1' $(top_builddir)/config.h > /dev/null || { echo "Documentation creation requires missing UMFPACK library.  Cannot package distribution!" ; exit 1; }
 @AMCOND_BUILD_DOCS_TRUE@	@$(GREP) '#define HAVE_QHULL 1' $(top_builddir)/config.h > /dev/null || { echo "Documentation creation requires missing QHULL library.  Cannot package distribution!" ; exit 1; }
 
-@AMCOND_BUILD_DOCS_TRUE@doc/interpreter/doc-cache: $(DOCSTRING_FILES) doc/interpreter/mk_doc_cache.m | $(OCTAVE_INTERPRETER_TARGETS) doc/interpreter/$(octave_dirstamp)
-@AMCOND_BUILD_DOCS_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@AMCOND_BUILD_DOCS_TRUE@	$(SHELL) run-octave --norc --silent --no-history $(srcdir)/doc/interpreter/mk_doc_cache.m - $(srcdir)/doc/interpreter/macros.texi $(DOCSTRING_FILES) > $@-t && \
-@AMCOND_BUILD_DOCS_TRUE@	mv $@-t $@
-
 @AMCOND_BUILD_DOCS_TRUE@$(MUNGED_TEXI_SRC): $(DOCSTRING_FILES)
 
 @AMCOND_BUILD_DOCS_TRUE@doc/interpreter/oop.texi: $(examples_code_SRC)
@@ -27265,6 +27631,11 @@ doxyhtml-maintainer-clean:
 @AMCOND_BUILD_DOCS_TRUE@	mv $@-t $@
 
 @AMCOND_BUILD_DOCS_TRUE@doc/interpreter/octave.pdf: doc/interpreter/octave.ps
+
+doc/interpreter/doc-cache: $(DOCSTRING_FILES) doc/interpreter/mk-doc-cache.pl | $(OCTAVE_INTERPRETER_TARGETS) doc/interpreter/$(octave_dirstamp)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(PERL) $(srcdir)/doc/interpreter/mk-doc-cache.pl $(srcdir) $(srcdir)/doc/interpreter/macros.texi $(DOCSTRING_FILES) > $@-t && \
+	mv $@-t $@
 
 doc/interpreter/undocumented_list:
 	rm -f $@-t $@
@@ -27660,6 +28031,21 @@ check-local: $(GENERATED_TEST_FILES) | $(OCTAVE_INTERPRETER_TARGETS) test/$(octa
 @AMCOND_HAVE_LLVM_TRUE@check-jit: $(GENERATED_TEST_FILES) | $(OCTAVE_INTERPRETER_TARGETS) test/$(octave_dirstamp)
 @AMCOND_HAVE_LLVM_TRUE@	cd test && $(SHELL) ../run-octave $(RUN_OCTAVE_OPTIONS) --jit-compiler --norc --silent --no-history $(abs_top_srcdir)/test/fntests.m $(abs_top_srcdir)/test
 
+coverage: all
+	lcov --directory . --zerocounters
+	$(MAKE) $(AM_MAKEFLAGS) check
+	$(MKDIR_P) $(COVERAGE_DIR)
+	lcov --directory . --capture --output-file $(COVERAGE_INFO)
+	genhtml --output-directory $(COVERAGE_DIR) $(COVERAGE_INFO)
+	@echo ""
+	@echo "Code coverage report successfully built.  Open the file"
+	@echo ""
+	@echo "   $(abs_top_builddir)/$(COVERAGE_DIR)/index.html"
+	@echo ""
+	@echo "in a web browser to view the results."
+	@echo ""
+.PHONY: coverage
+
 test/sparse.tst: test/build-sparse-tests.sh | test/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t $@ && \
 	$(SHELL) $(srcdir)/test/build-sparse-tests.sh > $@-t && \
@@ -27697,6 +28083,7 @@ clean-local: test-clean
 test-clean:
 	rm -f $(test_CLEANFILES)
 	rm -rf $(GENERATED_BC_OVERLOADS_DIRS)
+	rm -rf $(COVERAGE_DIR)
 
 test-distclean: test-clean
 	rm -f $(test_DISTCLEANFILES)

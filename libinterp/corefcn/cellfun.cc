@@ -39,11 +39,11 @@ along with Octave; see the file COPYING.  If not, see
 #include "Cell.h"
 #include "oct-map.h"
 #include "defun.h"
+#include "interpreter.h"
 #include "parse.h"
 #include "variables.h"
 #include "unwind-prot.h"
 #include "errwarn.h"
-#include "toplev.h"
 #include "utils.h"
 
 #include "ov-bool.h"
@@ -2139,10 +2139,10 @@ mat2cell (reshape (1:16,4,4), [3,1], [3,1])
       }
       break;
 
-#define BTYP_BRANCH(X, Y) \
-  case btyp_ ## X: \
-    retval = do_mat2cell (a.Y ## _value (), d, nargin - 1); \
-    break
+#define BTYP_BRANCH(X, Y)                                       \
+      case btyp_ ## X:                                          \
+        retval = do_mat2cell (a.Y ## _value (), d, nargin - 1); \
+        break
 
       BTYP_BRANCH (float, float_array);
       BTYP_BRANCH (float_complex, float_complex_array);

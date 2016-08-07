@@ -54,6 +54,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "error.h"
 #include "errwarn.h"
 #include "input.h"
+#include "interpreter.h"
 #include "lex.h"
 #include "load-path.h"
 #include "oct-errno.h"
@@ -63,7 +64,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "pager.h"
 #include "parse.h"
 #include "sysdep.h"
-#include "toplev.h"
 #include "unwind-prot.h"
 #include "utils.h"
 #include "variables.h"
@@ -105,7 +105,7 @@ Return true if @var{name} is a valid variable name.
     {
       std::string varname = args(0).string_value ();
 
-      retval = valid_identifier (varname) && ! is_keyword (varname);
+      retval = valid_identifier (varname) && ! octave::is_keyword (varname);
     }
 
   return retval;
@@ -685,8 +685,7 @@ do_string_escapes (const std::string& s)
                 }
 
               if (k == j+1)
-                warning ("malformed hex escape sequence '\\x' --\
- converting to '\\0'");
+                warning ("malformed hex escape sequence '\\x' -- converting to '\\0'");
 
               retval[i] = tmpi;
               j = k - 1;
@@ -694,8 +693,7 @@ do_string_escapes (const std::string& s)
             }
 
             default:
-              warning ("unrecognized escape sequence '\\%c' --\
- converting to '%c'", s[j], s[j]);
+              warning ("unrecognized escape sequence '\\%c' -- converting to '%c'", s[j], s[j]);
               retval[i] = s[j];
               break;
             }

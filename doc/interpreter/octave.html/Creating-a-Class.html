@@ -178,13 +178,16 @@ function.
 <dt><a name="index-methods"></a>: <em></em> <strong>methods</strong> <em>(<var>obj</var>)</em></dt>
 <dt><a name="index-methods-1"></a>: <em></em> <strong>methods</strong> <em>(&quot;<var>classname</var>&quot;)</em></dt>
 <dt><a name="index-methods-2"></a>: <em><var>mtds</var> =</em> <strong>methods</strong> <em>(&hellip;)</em></dt>
-<dd>
-<p>Return a cell array containing the names of the methods for the
-object <var>obj</var> or the named class <var>classname</var>.
+<dd><p>List the names of the public methods for the object <var>obj</var> or the
+named class <var>classname</var>.
 </p>
 <p><var>obj</var> may be an Octave class object or a Java object.
+<var>classname</var> may be the name of an Octave class or a Java class.
 </p>
-
+<p>When called with no output arguments, <code>methods</code> prints the list of
+method names to the screen.  Otherwise, the output argument <var>mtds</var>
+contains the list in a cell array of strings.
+</p>
 <p><strong>See also:</strong> <a href="Manipulating-Structures.html#XREFfieldnames">fieldnames</a>.
 </p></dd></dl>
 

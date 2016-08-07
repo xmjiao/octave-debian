@@ -1,1862 +1,1716 @@
-%!PS-Adobe-3.0 EPSF-3.0
-%%Title: gl2ps_renderer figure
-%%Creator: GL2PS 1.3.9, (C) 1999-2015 C. Geuzaine
-%%For: Octave
-%%CreationDate: Fri Jul  8 14:44:44 2016
-%%LanguageLevel: 3
-%%DocumentData: Clean7Bit
-%%Pages: 1
-%%BoundingBox: 0 0 576 432
+%!PS-Adobe-2.0 EPSF-2.0
+%%Title: doc/interpreter/splinefit3.eps
+%%Creator: gnuplot 5.0 patchlevel 3
+%%CreationDate: Sat Aug  6 14:34:57 2016
+%%DocumentFonts: (atend)
+%%BoundingBox: 50 50 626 482
 %%EndComments
 %%BeginProlog
-/gl2psdict 64 dict def gl2psdict begin
-0 setlinecap 0 setlinejoin
-/tryPS3shading false def % set to false to force subdivision
-/rThreshold 0.064 def % red component subdivision threshold
-/gThreshold 0.034 def % green component subdivision threshold
-/bThreshold 0.1 def % blue component subdivision threshold
-/BD { bind def } bind def
-/C  { setrgbcolor } BD
-/G  { 0.082 mul exch 0.6094 mul add exch 0.3086 mul add neg 1.0 add setgray } BD
-/W  { setlinewidth } BD
-/FC { findfont exch /SH exch def SH scalefont setfont } BD
-/SW { dup stringwidth pop } BD
-/S  { FC moveto show } BD
-/SBC{ FC moveto SW -2 div 0 rmoveto show } BD
-/SBR{ FC moveto SW neg 0 rmoveto show } BD
-/SCL{ FC moveto 0 SH -2 div rmoveto show } BD
-/SCC{ FC moveto SW -2 div SH -2 div rmoveto show } BD
-/SCR{ FC moveto SW neg SH -2 div rmoveto show } BD
-/STL{ FC moveto 0 SH neg rmoveto show } BD
-/STC{ FC moveto SW -2 div SH neg rmoveto show } BD
-/STR{ FC moveto SW neg SH neg rmoveto show } BD
-/FCT { FC translate 0 0 } BD
-/SR  { gsave FCT moveto rotate show grestore } BD
-/SBCR{ gsave FCT moveto rotate SW -2 div 0 rmoveto show grestore } BD
-/SBRR{ gsave FCT moveto rotate SW neg 0 rmoveto show grestore } BD
-/SCLR{ gsave FCT moveto rotate 0 SH -2 div rmoveto show grestore} BD
-/SCCR{ gsave FCT moveto rotate SW -2 div SH -2 div rmoveto show grestore} BD
-/SCRR{ gsave FCT moveto rotate SW neg SH -2 div rmoveto show grestore} BD
-/STLR{ gsave FCT moveto rotate 0 SH neg rmoveto show grestore } BD
-/STCR{ gsave FCT moveto rotate SW -2 div SH neg rmoveto show grestore } BD
-/STRR{ gsave FCT moveto rotate SW neg SH neg rmoveto show grestore } BD
-/P  { newpath 0.0 360.0 arc closepath fill } BD
-/LS { newpath moveto } BD
-/L  { lineto } BD
-/LE { lineto stroke } BD
-/T  { newpath moveto lineto lineto closepath fill } BD
-/STshfill {
-      /b1 exch def /g1 exch def /r1 exch def /y1 exch def /x1 exch def
-      /b2 exch def /g2 exch def /r2 exch def /y2 exch def /x2 exch def
-      /b3 exch def /g3 exch def /r3 exch def /y3 exch def /x3 exch def
-      gsave << /ShadingType 4 /ColorSpace [/DeviceRGB]
-      /DataSource [ 0 x1 y1 r1 g1 b1 0 x2 y2 r2 g2 b2 0 x3 y3 r3 g3 b3 ] >>
-      shfill grestore } BD
-/Tm { 3 -1 roll 8 -1 roll 13 -1 roll add add 3 div
-      3 -1 roll 7 -1 roll 11 -1 roll add add 3 div
-      3 -1 roll 6 -1 roll 9 -1 roll add add 3 div C T } BD
-/STsplit {
-      4 index 15 index add 0.5 mul
-      4 index 15 index add 0.5 mul
-      4 index 15 index add 0.5 mul
-      4 index 15 index add 0.5 mul
-      4 index 15 index add 0.5 mul
-      5 copy 5 copy 25 15 roll
-      9 index 30 index add 0.5 mul
-      9 index 30 index add 0.5 mul
-      9 index 30 index add 0.5 mul
-      9 index 30 index add 0.5 mul
-      9 index 30 index add 0.5 mul
-      5 copy 5 copy 35 5 roll 25 5 roll 15 5 roll
-      4 index 10 index add 0.5 mul
-      4 index 10 index add 0.5 mul
-      4 index 10 index add 0.5 mul
-      4 index 10 index add 0.5 mul
-      4 index 10 index add 0.5 mul
-      5 copy 5 copy 40 5 roll 25 5 roll 15 5 roll 25 5 roll
-      STnoshfill STnoshfill STnoshfill STnoshfill } BD
-/STnoshfill {
-      2 index 8 index sub abs rThreshold gt
-      { STsplit }
-      { 1 index 7 index sub abs gThreshold gt
-        { STsplit }
-        { dup 6 index sub abs bThreshold gt
-          { STsplit }
-          { 2 index 13 index sub abs rThreshold gt
-            { STsplit }
-            { 1 index 12 index sub abs gThreshold gt
-              { STsplit }
-              { dup 11 index sub abs bThreshold gt
-                { STsplit }
-                { 7 index 13 index sub abs rThreshold gt
-                  { STsplit }
-                  { 6 index 12 index sub abs gThreshold gt
-                    { STsplit }
-                    { 5 index 11 index sub abs bThreshold gt
-                      { STsplit }
-                      { Tm }
-                      ifelse }
-                    ifelse }
-                  ifelse }
-                ifelse }
-              ifelse }
-            ifelse }
-          ifelse }
-        ifelse }
-      ifelse } BD
-tryPS3shading
-{ /shfill where
-  { /ST { STshfill } BD }
-  { /ST { STnoshfill } BD }
-  ifelse }
-{ /ST { STnoshfill } BD }
-ifelse
+/gnudict 256 dict def
+gnudict begin
+%
+% The following true/false flags may be edited by hand if desired.
+% The unit line width and grayscale image gamma correction may also be changed.
+%
+/Color true def
+/Blacktext false def
+/Solid false def
+/Dashlength 2 def
+/Landscape false def
+/Level1 false def
+/Level3 false def
+/Rounded false def
+/ClipToBoundingBox false def
+/SuppressPDFMark false def
+/TransparentPatterns false def
+/gnulinewidth 5.000 def
+/userlinewidth gnulinewidth def
+/Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
+%
+/vshift -66 def
+/dl1 {
+  10.0 Dashlength userlinewidth gnulinewidth div mul mul mul
+  Rounded { currentlinewidth 0.75 mul sub dup 0 le { pop 0.01 } if } if
+} def
+/dl2 {
+  10.0 Dashlength userlinewidth gnulinewidth div mul mul mul
+  Rounded { currentlinewidth 0.75 mul add } if
+} def
+/hpt_ 31.5 def
+/vpt_ 31.5 def
+/hpt hpt_ def
+/vpt vpt_ def
+/doclip {
+  ClipToBoundingBox {
+    newpath 50 50 moveto 626 50 lineto 626 482 lineto 50 482 lineto closepath
+    clip
+  } if
+} def
+%
+% Gnuplot Prolog Version 5.1 (Oct 2015)
+%
+%/SuppressPDFMark true def
+%
+/M {moveto} bind def
+/L {lineto} bind def
+/R {rmoveto} bind def
+/V {rlineto} bind def
+/N {newpath moveto} bind def
+/Z {closepath} bind def
+/C {setrgbcolor} bind def
+/f {rlineto fill} bind def
+/g {setgray} bind def
+/Gshow {show} def   % May be redefined later in the file to support UTF-8
+/vpt2 vpt 2 mul def
+/hpt2 hpt 2 mul def
+/Lshow {currentpoint stroke M 0 vshift R 
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
+/Rshow {currentpoint stroke M dup stringwidth pop neg vshift R
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
+/Cshow {currentpoint stroke M dup stringwidth pop -2 div vshift R 
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
+/UP {dup vpt_ mul /vpt exch def hpt_ mul /hpt exch def
+  /hpt2 hpt 2 mul def /vpt2 vpt 2 mul def} def
+/DL {Color {setrgbcolor Solid {pop []} if 0 setdash}
+ {pop pop pop 0 setgray Solid {pop []} if 0 setdash} ifelse} def
+/BL {stroke userlinewidth 2 mul setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+/AL {stroke userlinewidth 2 div setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+/UL {dup gnulinewidth mul /userlinewidth exch def
+	dup 1 lt {pop 1} if 10 mul /udl exch def} def
+/PL {stroke userlinewidth setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
+% Classic Line colors (version 5.0)
+/LCw {1 1 1} def
+/LCb {0 0 0} def
+/LCa {0 0 0} def
+/LC0 {1 0 0} def
+/LC1 {0 1 0} def
+/LC2 {0 0 1} def
+/LC3 {1 0 1} def
+/LC4 {0 1 1} def
+/LC5 {1 1 0} def
+/LC6 {0 0 0} def
+/LC7 {1 0.3 0} def
+/LC8 {0.5 0.5 0.5} def
+% Default dash patterns (version 5.0)
+/LTB {BL [] LCb DL} def
+/LTw {PL [] 1 setgray} def
+/LTb {PL [] LCb DL} def
+/LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
+/LT0 {PL [] LC0 DL} def
+/LT1 {PL [2 dl1 3 dl2] LC1 DL} def
+/LT2 {PL [1 dl1 1.5 dl2] LC2 DL} def
+/LT3 {PL [6 dl1 2 dl2 1 dl1 2 dl2] LC3 DL} def
+/LT4 {PL [1 dl1 2 dl2 6 dl1 2 dl2 1 dl1 2 dl2] LC4 DL} def
+/LT5 {PL [4 dl1 2 dl2] LC5 DL} def
+/LT6 {PL [1.5 dl1 1.5 dl2 1.5 dl1 1.5 dl2 1.5 dl1 6 dl2] LC6 DL} def
+/LT7 {PL [3 dl1 3 dl2 1 dl1 3 dl2] LC7 DL} def
+/LT8 {PL [2 dl1 2 dl2 2 dl1 6 dl2] LC8 DL} def
+/SL {[] 0 setdash} def
+/Pnt {stroke [] 0 setdash gsave 1 setlinecap M 0 0 V stroke grestore} def
+/Dia {stroke [] 0 setdash 2 copy vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath stroke
+  Pnt} def
+/Pls {stroke [] 0 setdash vpt sub M 0 vpt2 V
+  currentpoint stroke M
+  hpt neg vpt neg R hpt2 0 V stroke
+ } def
+/Box {stroke [] 0 setdash 2 copy exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath stroke
+  Pnt} def
+/Crs {stroke [] 0 setdash exch hpt sub exch vpt add M
+  hpt2 vpt2 neg V currentpoint stroke M
+  hpt2 neg 0 R hpt2 vpt2 V stroke} def
+/TriU {stroke [] 0 setdash 2 copy vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath stroke
+  Pnt} def
+/Star {2 copy Pls Crs} def
+/BoxF {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath fill} def
+/TriUF {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath fill} def
+/TriD {stroke [] 0 setdash 2 copy vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath stroke
+  Pnt} def
+/TriDF {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath fill} def
+/DiaF {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath fill} def
+/Pent {stroke [] 0 setdash 2 copy gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath stroke grestore Pnt} def
+/PentF {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath fill grestore} def
+/Circle {stroke [] 0 setdash 2 copy
+  hpt 0 360 arc stroke Pnt} def
+/CircleF {stroke [] 0 setdash hpt 0 360 arc fill} def
+/C0 {BL [] 0 setdash 2 copy moveto vpt 90 450 arc} bind def
+/C1 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C2 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C3 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C4 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 180 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C5 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc
+	2 copy moveto
+	2 copy vpt 180 270 arc closepath fill
+	vpt 0 360 arc} bind def
+/C6 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C7 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C8 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 270 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C9 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 270 450 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C10 {BL [] 0 setdash 2 copy 2 copy moveto vpt 270 360 arc closepath fill
+	2 copy moveto
+	2 copy vpt 90 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C11 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 180 arc closepath fill
+	2 copy moveto
+	2 copy vpt 270 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C12 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 180 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C13 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc closepath fill
+	2 copy moveto
+	2 copy vpt 180 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C14 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 360 arc closepath fill
+	vpt 0 360 arc} bind def
+/C15 {BL [] 0 setdash 2 copy vpt 0 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/Rec {newpath 4 2 roll moveto 1 index 0 rlineto 0 exch rlineto
+	neg 0 rlineto closepath} bind def
+/Square {dup Rec} bind def
+/Bsquare {vpt sub exch vpt sub exch vpt2 Square} bind def
+/S0 {BL [] 0 setdash 2 copy moveto 0 vpt rlineto BL Bsquare} bind def
+/S1 {BL [] 0 setdash 2 copy vpt Square fill Bsquare} bind def
+/S2 {BL [] 0 setdash 2 copy exch vpt sub exch vpt Square fill Bsquare} bind def
+/S3 {BL [] 0 setdash 2 copy exch vpt sub exch vpt2 vpt Rec fill Bsquare} bind def
+/S4 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt Square fill Bsquare} bind def
+/S5 {BL [] 0 setdash 2 copy 2 copy vpt Square fill
+	exch vpt sub exch vpt sub vpt Square fill Bsquare} bind def
+/S6 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt vpt2 Rec fill Bsquare} bind def
+/S7 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt vpt2 Rec fill
+	2 copy vpt Square fill Bsquare} bind def
+/S8 {BL [] 0 setdash 2 copy vpt sub vpt Square fill Bsquare} bind def
+/S9 {BL [] 0 setdash 2 copy vpt sub vpt vpt2 Rec fill Bsquare} bind def
+/S10 {BL [] 0 setdash 2 copy vpt sub vpt Square fill 2 copy exch vpt sub exch vpt Square fill
+	Bsquare} bind def
+/S11 {BL [] 0 setdash 2 copy vpt sub vpt Square fill 2 copy exch vpt sub exch vpt2 vpt Rec fill
+	Bsquare} bind def
+/S12 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill Bsquare} bind def
+/S13 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill
+	2 copy vpt Square fill Bsquare} bind def
+/S14 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill
+	2 copy exch vpt sub exch vpt Square fill Bsquare} bind def
+/S15 {BL [] 0 setdash 2 copy Bsquare fill Bsquare} bind def
+/D0 {gsave translate 45 rotate 0 0 S0 stroke grestore} bind def
+/D1 {gsave translate 45 rotate 0 0 S1 stroke grestore} bind def
+/D2 {gsave translate 45 rotate 0 0 S2 stroke grestore} bind def
+/D3 {gsave translate 45 rotate 0 0 S3 stroke grestore} bind def
+/D4 {gsave translate 45 rotate 0 0 S4 stroke grestore} bind def
+/D5 {gsave translate 45 rotate 0 0 S5 stroke grestore} bind def
+/D6 {gsave translate 45 rotate 0 0 S6 stroke grestore} bind def
+/D7 {gsave translate 45 rotate 0 0 S7 stroke grestore} bind def
+/D8 {gsave translate 45 rotate 0 0 S8 stroke grestore} bind def
+/D9 {gsave translate 45 rotate 0 0 S9 stroke grestore} bind def
+/D10 {gsave translate 45 rotate 0 0 S10 stroke grestore} bind def
+/D11 {gsave translate 45 rotate 0 0 S11 stroke grestore} bind def
+/D12 {gsave translate 45 rotate 0 0 S12 stroke grestore} bind def
+/D13 {gsave translate 45 rotate 0 0 S13 stroke grestore} bind def
+/D14 {gsave translate 45 rotate 0 0 S14 stroke grestore} bind def
+/D15 {gsave translate 45 rotate 0 0 S15 stroke grestore} bind def
+/DiaE {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath stroke} def
+/BoxE {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath stroke} def
+/TriUE {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath stroke} def
+/TriDE {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath stroke} def
+/PentE {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath stroke grestore} def
+/CircE {stroke [] 0 setdash 
+  hpt 0 360 arc stroke} def
+/Opaque {gsave closepath 1 setgray fill grestore 0 setgray closepath} def
+/DiaW {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V Opaque stroke} def
+/BoxW {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V Opaque stroke} def
+/TriUW {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V Opaque stroke} def
+/TriDW {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V Opaque stroke} def
+/PentW {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  Opaque stroke grestore} def
+/CircW {stroke [] 0 setdash 
+  hpt 0 360 arc Opaque stroke} def
+/BoxFill {gsave Rec 1 setgray fill grestore} def
+/Density {
+  /Fillden exch def
+  currentrgbcolor
+  /ColB exch def /ColG exch def /ColR exch def
+  /ColR ColR Fillden mul Fillden sub 1 add def
+  /ColG ColG Fillden mul Fillden sub 1 add def
+  /ColB ColB Fillden mul Fillden sub 1 add def
+  ColR ColG ColB setrgbcolor} def
+/BoxColFill {gsave Rec PolyFill} def
+/PolyFill {gsave Density fill grestore grestore} def
+/h {rlineto rlineto rlineto gsave closepath fill grestore} bind def
+%
+% PostScript Level 1 Pattern Fill routine for rectangles
+% Usage: x y w h s a XX PatternFill
+%	x,y = lower left corner of box to be filled
+%	w,h = width and height of box
+%	  a = angle in degrees between lines and x-axis
+%	 XX = 0/1 for no/yes cross-hatch
+%
+/PatternFill {gsave /PFa [ 9 2 roll ] def
+  PFa 0 get PFa 2 get 2 div add PFa 1 get PFa 3 get 2 div add translate
+  PFa 2 get -2 div PFa 3 get -2 div PFa 2 get PFa 3 get Rec
+  TransparentPatterns {} {gsave 1 setgray fill grestore} ifelse
+  clip
+  currentlinewidth 0.5 mul setlinewidth
+  /PFs PFa 2 get dup mul PFa 3 get dup mul add sqrt def
+  0 0 M PFa 5 get rotate PFs -2 div dup translate
+  0 1 PFs PFa 4 get div 1 add floor cvi
+	{PFa 4 get mul 0 M 0 PFs V} for
+  0 PFa 6 get ne {
+	0 1 PFs PFa 4 get div 1 add floor cvi
+	{PFa 4 get mul 0 2 1 roll M PFs 0 V} for
+ } if
+  stroke grestore} def
+%
+/languagelevel where
+ {pop languagelevel} {1} ifelse
+dup 2 lt
+	{/InterpretLevel1 true def
+	 /InterpretLevel3 false def}
+	{/InterpretLevel1 Level1 def
+	 2 gt
+	    {/InterpretLevel3 Level3 def}
+	    {/InterpretLevel3 false def}
+	 ifelse }
+ ifelse
+%
+% PostScript level 2 pattern fill definitions
+%
+/Level2PatternFill {
+/Tile8x8 {/PaintType 2 /PatternType 1 /TilingType 1 /BBox [0 0 8 8] /XStep 8 /YStep 8}
+	bind def
+/KeepColor {currentrgbcolor [/Pattern /DeviceRGB] setcolorspace} bind def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 8 8 L 0 8 M 8 0 L stroke} 
+>> matrix makepattern
+/Pat1 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 8 8 L 0 8 M 8 0 L stroke
+	0 4 M 4 8 L 8 4 L 4 0 L 0 4 L stroke}
+>> matrix makepattern
+/Pat2 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 0 8 L
+	8 8 L 8 0 L 0 0 L fill}
+>> matrix makepattern
+/Pat3 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -4 8 M 8 -4 L
+	0 12 M 12 0 L stroke}
+>> matrix makepattern
+/Pat4 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -4 0 M 8 12 L
+	0 -4 M 12 8 L stroke}
+>> matrix makepattern
+/Pat5 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -2 8 M 4 -4 L
+	0 12 M 8 -4 L 4 12 M 10 0 L stroke}
+>> matrix makepattern
+/Pat6 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -2 0 M 4 12 L
+	0 -4 M 8 12 L 4 -4 M 10 8 L stroke}
+>> matrix makepattern
+/Pat7 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 8 -2 M -4 4 L
+	12 0 M -4 8 L 12 4 M 0 10 L stroke}
+>> matrix makepattern
+/Pat8 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 -2 M 12 4 L
+	-4 0 M 12 8 L -4 4 M 8 10 L stroke}
+>> matrix makepattern
+/Pat9 exch def
+/Pattern1 {PatternBgnd KeepColor Pat1 setpattern} bind def
+/Pattern2 {PatternBgnd KeepColor Pat2 setpattern} bind def
+/Pattern3 {PatternBgnd KeepColor Pat3 setpattern} bind def
+/Pattern4 {PatternBgnd KeepColor Landscape {Pat5} {Pat4} ifelse setpattern} bind def
+/Pattern5 {PatternBgnd KeepColor Landscape {Pat4} {Pat5} ifelse setpattern} bind def
+/Pattern6 {PatternBgnd KeepColor Landscape {Pat9} {Pat6} ifelse setpattern} bind def
+/Pattern7 {PatternBgnd KeepColor Landscape {Pat8} {Pat7} ifelse setpattern} bind def
+} def
+%
+%
+%End of PostScript Level 2 code
+%
+/PatternBgnd {
+  TransparentPatterns {} {gsave 1 setgray fill grestore} ifelse
+} def
+%
+% Substitute for Level 2 pattern fill codes with
+% grayscale if Level 2 support is not selected.
+%
+/Level1PatternFill {
+/Pattern1 {0.250 Density} bind def
+/Pattern2 {0.500 Density} bind def
+/Pattern3 {0.750 Density} bind def
+/Pattern4 {0.125 Density} bind def
+/Pattern5 {0.375 Density} bind def
+/Pattern6 {0.625 Density} bind def
+/Pattern7 {0.875 Density} bind def
+} def
+%
+% Now test for support of Level 2 code
+%
+Level1 {Level1PatternFill} {Level2PatternFill} ifelse
+%
+/Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
+dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
+currentdict end definefont pop
+%
+/MFshow {
+   { dup 5 get 3 ge
+     { 5 get 3 eq {gsave} {grestore} ifelse }
+     {dup dup 0 get findfont exch 1 get scalefont setfont
+     [ currentpoint ] exch dup 2 get 0 exch R dup 5 get 2 ne {dup dup 6
+     get exch 4 get {textshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
+     {dup 3 get {2 get neg 0 exch R pop} {pop aload pop M} ifelse} {dup 5
+     get 1 eq {dup 2 get exch dup 3 get exch 6 get stringwidth pop -2 div
+     dup 0 R} {dup 6 get stringwidth pop -2 div 0 R 6 get
+     textshow 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
+     pop aload pop M} ifelse }ifelse }ifelse }
+     ifelse }
+   forall} def
+/Gswidth {dup type /stringtype eq {stringwidth} {pop (n) stringwidth} ifelse} def
+/MFwidth {0 exch { dup 5 get 3 ge { 5 get 3 eq { 0 } { pop } ifelse }
+ {dup 3 get{dup dup 0 get findfont exch 1 get scalefont setfont
+     6 get Gswidth pop add} {pop} ifelse} ifelse} forall} def
+/MLshow { currentpoint stroke M
+  0 exch R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/MRshow { currentpoint stroke M
+  exch dup MFwidth neg 3 -1 roll R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/MCshow { currentpoint stroke M
+  exch dup MFwidth -2 div 3 -1 roll R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/XYsave    { [( ) 1 2 true false 3 ()] } bind def
+/XYrestore { [( ) 1 2 true false 4 ()] } bind def
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (doc/interpreter/splinefit3.eps)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 5.0 patchlevel 3)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Sat Aug  6 14:34:57 2016)
+  /DOCINFO pdfmark
+end
+} ifelse
+%
+% Support for boxed text - Ethan A Merritt May 2005
+%
+/InitTextBox { userdict /TBy2 3 -1 roll put userdict /TBx2 3 -1 roll put
+           userdict /TBy1 3 -1 roll put userdict /TBx1 3 -1 roll put
+	   /Boxing true def } def
+/ExtendTextBox { Boxing
+    { gsave dup false charpath pathbbox
+      dup TBy2 gt {userdict /TBy2 3 -1 roll put} {pop} ifelse
+      dup TBx2 gt {userdict /TBx2 3 -1 roll put} {pop} ifelse
+      dup TBy1 lt {userdict /TBy1 3 -1 roll put} {pop} ifelse
+      dup TBx1 lt {userdict /TBx1 3 -1 roll put} {pop} ifelse
+      grestore } if } def
+/PopTextBox { newpath TBx1 TBxmargin sub TBy1 TBymargin sub M
+               TBx1 TBxmargin sub TBy2 TBymargin add L
+	       TBx2 TBxmargin add TBy2 TBymargin add L
+	       TBx2 TBxmargin add TBy1 TBymargin sub L closepath } def
+/DrawTextBox { PopTextBox stroke /Boxing false def} def
+/FillTextBox { gsave PopTextBox 1 1 1 setrgbcolor fill grestore /Boxing false def} def
+0 0 0 0 InitTextBox
+/TBxmargin 20 def
+/TBymargin 20 def
+/Boxing false def
+/textshow { ExtendTextBox Gshow } def
+%
+% redundant definitions for compatibility with prologue.ps older than 5.0.2
+/LTB {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 end
 %%EndProlog
-%%BeginSetup
-/DeviceRGB setcolorspace
-gl2psdict begin
-%%EndSetup
 %%Page: 1 1
-%%BeginPageSetup
-%%EndPageSetup
-mark
+gnudict begin
 gsave
-1.0 1.0 scale
-0 0 0 C
-newpath 0 0 moveto 576 0 lineto 576 432 lineto 0 432 lineto
-closepath fill
-gsave
-1.0 1.0 scale
-1 1 1 C
-newpath 0 0 moveto 576 0 lineto 576 432 lineto 0 432 lineto
-closepath fill
-newpath 0 0 moveto 576 0 lineto 576 432 lineto 0 432 lineto
-closepath clip
-1 1 1 C
-74.88 399.6 521.28 47.52 74.88 47.52 T
-74.88 399.6 521.28 399.6 521.28 47.52 T
-0.5 W
-[16 0] 0 setdash
-0 0 0 C
-74.88 47.52 LS
-521.28 47.52 LE
-74.88 399.6 LS
-521.28 399.6 LE
-74.88 47.52 LS
-74.88 399.6 LE
-521.28 47.52 LS
-521.28 399.6 LE
-74.88 47.52 LS
-74.88 50.8428 LE
-74.88 399.6 LS
-74.88 396.277 LE
-145.927 47.52 LS
-145.927 50.8428 LE
-145.927 399.6 LS
-145.927 396.277 LE
-216.974 47.52 LS
-216.974 50.8428 LE
-216.974 399.6 LS
-216.974 396.277 LE
-288.02 47.52 LS
-288.02 50.8428 LE
-288.02 399.6 LS
-288.02 396.277 LE
-359.067 47.52 LS
-359.067 50.8428 LE
-359.067 399.6 LS
-359.067 396.277 LE
-430.114 47.52 LS
-430.114 50.8428 LE
-430.114 399.6 LS
-430.114 396.277 LE
-501.161 47.52 LS
-501.161 50.8428 LE
-501.161 399.6 LS
-501.161 396.277 LE
-(0) 74.88 43.7982 10 /Helvetica STC
-(1) 145.927 43.7982 10 /Helvetica STC
-(2) 216.974 43.7982 10 /Helvetica STC
-(3) 288.02 43.7982 10 /Helvetica STC
-(4) 359.067 43.7982 10 /Helvetica STC
-(5) 430.114 43.7982 10 /Helvetica STC
-(6) 501.161 43.7982 10 /Helvetica STC
-74.88 47.52 LS
-79.348 47.52 LE
-521.28 47.52 LS
-516.812 47.52 LE
-74.88 117.936 LS
-79.348 117.936 LE
-521.28 117.936 LS
-516.812 117.936 LE
-74.88 188.352 LS
-79.348 188.352 LE
-521.28 188.352 LS
-516.812 188.352 LE
-74.88 258.768 LS
-79.348 258.768 LE
-521.28 258.768 LS
-516.812 258.768 LE
-74.88 329.184 LS
-79.348 329.184 LE
-521.28 329.184 LS
-516.812 329.184 LE
-74.88 399.6 LS
-79.348 399.6 LE
-521.28 399.6 LS
-516.812 399.6 LE
-(-2) 69.8755 47.52 10 /Helvetica SCR
-(-1) 69.8755 117.936 10 /Helvetica SCR
-(0) 69.8755 188.352 10 /Helvetica SCR
-(1) 69.8755 258.768 10 /Helvetica SCR
-(2) 69.8755 329.184 10 /Helvetica SCR
-(3) 69.8755 399.6 10 /Helvetica SCR
-0 0 1 C
-75.88 111.875 75.189 110.924 75.689 111.287 T
-75.88 111.875 74.571 110.924 75.189 110.924 T
-75.88 111.875 74.071 111.287 74.571 110.924 T
-75.88 111.875 73.88 111.875 74.071 111.287 T
-75.88 111.875 74.071 112.463 73.88 111.875 T
-75.88 111.875 74.571 112.826 74.071 112.463 T
-75.88 111.875 75.189 112.826 74.571 112.826 T
-75.88 111.875 75.689 112.463 75.189 112.826 T
-445.012 190.42 444.321 189.469 444.821 189.832 T
-445.012 190.42 443.703 189.469 444.321 189.469 T
-445.012 190.42 443.203 189.832 443.703 189.469 T
-445.012 190.42 443.012 190.42 443.203 189.832 T
-445.012 190.42 443.203 191.008 443.012 190.42 T
-445.012 190.42 443.703 191.371 443.203 191.008 T
-445.012 190.42 444.321 191.371 443.703 191.371 T
-445.012 190.42 444.821 191.008 444.321 191.371 T
-435.242 191.006 434.551 190.054 435.051 190.418 T
-435.242 191.006 433.933 190.054 434.551 190.054 T
-435.242 191.006 433.433 190.418 433.933 190.054 T
-435.242 191.006 433.242 191.006 433.433 190.418 T
-435.242 191.006 433.433 191.593 433.242 191.006 T
-435.242 191.006 433.933 191.957 433.433 191.593 T
-435.242 191.006 434.551 191.957 433.933 191.957 T
-435.242 191.006 435.051 191.593 434.551 191.957 T
-334.715 126.157 334.024 125.206 334.524 125.569 T
-334.715 126.157 333.406 125.206 334.024 125.206 T
-334.715 126.157 332.906 125.569 333.406 125.206 T
-334.715 126.157 332.715 126.157 332.906 125.569 T
-334.715 126.157 332.906 126.745 332.715 126.157 T
-334.715 126.157 333.406 127.108 332.906 126.745 T
-334.715 126.157 334.024 127.108 333.406 127.108 T
-334.715 126.157 334.524 126.745 334.024 127.108 T
-510.71 132.086 510.019 131.135 510.519 131.498 T
-510.71 132.086 509.401 131.135 510.019 131.135 T
-510.71 132.086 508.901 131.498 509.401 131.135 T
-510.71 132.086 508.71 132.086 508.901 131.498 T
-510.71 132.086 508.901 132.674 508.71 132.086 T
-510.71 132.086 509.401 133.037 508.901 132.674 T
-510.71 132.086 510.019 133.037 509.401 133.037 T
-510.71 132.086 510.519 132.674 510.019 133.037 T
-298.849 103.421 298.158 102.47 298.658 102.833 T
-298.849 103.421 297.54 102.47 298.158 102.47 T
-298.849 103.421 297.04 102.833 297.54 102.47 T
-298.849 103.421 296.849 103.421 297.04 102.833 T
-298.849 103.421 297.04 104.009 296.849 103.421 T
-298.849 103.421 297.54 104.372 297.04 104.009 T
-298.849 103.421 298.158 104.372 297.54 104.372 T
-298.849 103.421 298.658 104.009 298.158 104.372 T
-102.968 153.5 102.277 152.549 102.777 152.912 T
-102.968 153.5 101.659 152.549 102.277 152.549 T
-102.968 153.5 101.159 152.912 101.659 152.549 T
-102.968 153.5 100.968 153.5 101.159 152.912 T
-102.968 153.5 101.159 154.088 100.968 153.5 T
-102.968 153.5 101.659 154.451 101.159 154.088 T
-102.968 153.5 102.277 154.451 101.659 154.451 T
-102.968 153.5 102.777 154.088 102.277 154.451 T
-95.3195 152.143 94.6285 151.192 95.1285 151.555 T
-95.3195 152.143 94.0105 151.192 94.6285 151.192 T
-95.3195 152.143 93.5105 151.555 94.0105 151.192 T
-95.3195 152.143 93.3195 152.143 93.5105 151.555 T
-95.3195 152.143 93.5105 152.731 93.3195 152.143 T
-95.3195 152.143 94.0105 153.094 93.5105 152.731 T
-95.3195 152.143 94.6285 153.094 94.0105 153.094 T
-95.3195 152.143 95.1285 152.731 94.6285 153.094 T
-213.401 322.461 212.71 321.51 213.21 321.873 T
-213.401 322.461 212.092 321.51 212.71 321.51 T
-213.401 322.461 211.592 321.873 212.092 321.51 T
-213.401 322.461 211.401 322.461 211.592 321.873 T
-213.401 322.461 211.592 323.049 211.401 322.461 T
-213.401 322.461 212.092 323.412 211.592 323.049 T
-213.401 322.461 212.71 323.412 212.092 323.412 T
-213.401 322.461 213.21 323.049 212.71 323.412 T
-450.412 173.774 449.721 172.823 450.221 173.186 T
-450.412 173.774 449.103 172.823 449.721 172.823 T
-450.412 173.774 448.603 173.186 449.103 172.823 T
-450.412 173.774 448.412 173.774 448.603 173.186 T
-450.412 173.774 448.603 174.361 448.412 173.774 T
-450.412 173.774 449.103 174.725 448.603 174.361 T
-450.412 173.774 449.721 174.725 449.103 174.725 T
-450.412 173.774 450.221 174.361 449.721 174.725 T
-350.555 125.302 349.864 124.351 350.364 124.714 T
-350.555 125.302 349.246 124.351 349.864 124.351 T
-350.555 125.302 348.746 124.714 349.246 124.351 T
-350.555 125.302 348.555 125.302 348.746 124.714 T
-350.555 125.302 348.746 125.889 348.555 125.302 T
-350.555 125.302 349.246 126.253 348.746 125.889 T
-350.555 125.302 349.864 126.253 349.246 126.253 T
-350.555 125.302 350.364 125.889 349.864 126.253 T
-282.772 155.474 282.081 154.523 282.581 154.886 T
-282.772 155.474 281.463 154.523 282.081 154.523 T
-282.772 155.474 280.963 154.886 281.463 154.523 T
-282.772 155.474 280.772 155.474 280.963 154.886 T
-282.772 155.474 280.963 156.062 280.772 155.474 T
-282.772 155.474 281.463 156.425 280.963 156.062 T
-282.772 155.474 282.081 156.425 281.463 156.425 T
-282.772 155.474 282.581 156.062 282.081 156.425 T
-416.792 183.224 416.101 182.273 416.601 182.636 T
-416.792 183.224 415.483 182.273 416.101 182.273 T
-416.792 183.224 414.983 182.636 415.483 182.273 T
-416.792 183.224 414.792 183.224 414.983 182.636 T
-416.792 183.224 414.983 183.812 414.792 183.224 T
-416.792 183.224 415.483 184.175 414.983 183.812 T
-416.792 183.224 416.101 184.175 415.483 184.175 T
-416.792 183.224 416.601 183.812 416.101 184.175 T
-292.871 114.546 292.18 113.595 292.68 113.958 T
-292.871 114.546 291.562 113.595 292.18 113.595 T
-292.871 114.546 291.062 113.958 291.562 113.595 T
-292.871 114.546 290.871 114.546 291.062 113.958 T
-292.871 114.546 291.062 115.134 290.871 114.546 T
-292.871 114.546 291.562 115.497 291.062 115.134 T
-292.871 114.546 292.18 115.497 291.562 115.497 T
-292.871 114.546 292.68 115.134 292.18 115.497 T
-346.568 116.992 345.877 116.041 346.377 116.404 T
-346.568 116.992 345.259 116.041 345.877 116.041 T
-346.568 116.992 344.759 116.404 345.259 116.041 T
-346.568 116.992 344.568 116.992 344.759 116.404 T
-346.568 116.992 344.759 117.58 344.568 116.992 T
-346.568 116.992 345.259 117.943 344.759 117.58 T
-346.568 116.992 345.877 117.943 345.259 117.943 T
-346.568 116.992 346.377 117.58 345.877 117.943 T
-134.974 262.302 134.283 261.351 134.783 261.714 T
-134.974 262.302 133.665 261.351 134.283 261.351 T
-134.974 262.302 133.165 261.714 133.665 261.351 T
-134.974 262.302 132.974 262.302 133.165 261.714 T
-134.974 262.302 133.165 262.89 132.974 262.302 T
-134.974 262.302 133.665 263.253 133.165 262.89 T
-134.974 262.302 134.283 263.253 133.665 263.253 T
-134.974 262.302 134.783 262.89 134.283 263.253 T
-513.994 118.789 513.303 117.838 513.803 118.201 T
-513.994 118.789 512.685 117.838 513.303 117.838 T
-513.994 118.789 512.185 118.201 512.685 117.838 T
-513.994 118.789 511.994 118.789 512.185 118.201 T
-513.994 118.789 512.185 119.377 511.994 118.789 T
-513.994 118.789 512.685 119.74 512.185 119.377 T
-513.994 118.789 513.303 119.74 512.685 119.74 T
-513.994 118.789 513.803 119.377 513.303 119.74 T
-386.415 188.41 385.724 187.459 386.224 187.822 T
-386.415 188.41 385.106 187.459 385.724 187.459 T
-386.415 188.41 384.606 187.822 385.106 187.459 T
-386.415 188.41 384.415 188.41 384.606 187.822 T
-386.415 188.41 384.606 188.998 384.415 188.41 T
-386.415 188.41 385.106 189.361 384.606 188.998 T
-386.415 188.41 385.724 189.361 385.106 189.361 T
-386.415 188.41 386.224 188.998 385.724 189.361 T
-127.823 238.02 127.132 237.069 127.632 237.432 T
-127.823 238.02 126.514 237.069 127.132 237.069 T
-127.823 238.02 126.014 237.432 126.514 237.069 T
-127.823 238.02 125.823 238.02 126.014 237.432 T
-127.823 238.02 126.014 238.607 125.823 238.02 T
-127.823 238.02 126.514 238.971 126.014 238.607 T
-127.823 238.02 127.132 238.971 126.514 238.971 T
-127.823 238.02 127.632 238.607 127.132 238.971 T
-244.091 221.623 243.4 220.672 243.9 221.035 T
-244.091 221.623 242.782 220.672 243.4 220.672 T
-244.091 221.623 242.282 221.035 242.782 220.672 T
-244.091 221.623 242.091 221.623 242.282 221.035 T
-244.091 221.623 242.282 222.211 242.091 221.623 T
-244.091 221.623 242.782 222.574 242.282 222.211 T
-244.091 221.623 243.4 222.574 242.782 222.574 T
-244.091 221.623 243.9 222.211 243.4 222.574 T
-359.968 151.936 359.277 150.985 359.777 151.348 T
-359.968 151.936 358.659 150.985 359.277 150.985 T
-359.968 151.936 358.159 151.348 358.659 150.985 T
-359.968 151.936 357.968 151.936 358.159 151.348 T
-359.968 151.936 358.159 152.523 357.968 151.936 T
-359.968 151.936 358.659 152.887 358.159 152.523 T
-359.968 151.936 359.277 152.887 358.659 152.887 T
-359.968 151.936 359.777 152.523 359.277 152.887 T
-431.256 178.107 430.565 177.156 431.065 177.519 T
-431.256 178.107 429.947 177.156 430.565 177.156 T
-431.256 178.107 429.447 177.519 429.947 177.156 T
-431.256 178.107 429.256 178.107 429.447 177.519 T
-431.256 178.107 429.447 178.695 429.256 178.107 T
-431.256 178.107 429.947 179.058 429.447 178.695 T
-431.256 178.107 430.565 179.058 429.947 179.058 T
-431.256 178.107 431.065 178.695 430.565 179.058 T
-91.8619 110.284 91.1709 109.332 91.6709 109.696 T
-91.8619 110.284 90.5529 109.332 91.1709 109.332 T
-91.8619 110.284 90.0529 109.696 90.5529 109.332 T
-91.8619 110.284 89.8619 110.284 90.0529 109.696 T
-91.8619 110.284 90.0529 110.871 89.8619 110.284 T
-91.8619 110.284 90.5529 111.235 90.0529 110.871 T
-91.8619 110.284 91.1709 111.235 90.5529 111.235 T
-91.8619 110.284 91.6709 110.871 91.1709 111.235 T
-328.805 131.889 328.114 130.938 328.614 131.301 T
-328.805 131.889 327.496 130.938 328.114 130.938 T
-328.805 131.889 326.996 131.301 327.496 130.938 T
-328.805 131.889 326.805 131.889 326.996 131.301 T
-328.805 131.889 326.996 132.477 326.805 131.889 T
-328.805 131.889 327.496 132.84 326.996 132.477 T
-328.805 131.889 328.114 132.84 327.496 132.84 T
-328.805 131.889 328.614 132.477 328.114 132.84 T
-467.971 120.102 467.28 119.151 467.78 119.514 T
-467.971 120.102 466.662 119.151 467.28 119.151 T
-467.971 120.102 466.162 119.514 466.662 119.151 T
-467.971 120.102 465.971 120.102 466.162 119.514 T
-467.971 120.102 466.162 120.69 465.971 120.102 T
-467.971 120.102 466.662 121.053 466.162 120.69 T
-467.971 120.102 467.28 121.053 466.662 121.053 T
-467.971 120.102 467.78 120.69 467.28 121.053 T
-252.191 212.745 251.5 211.794 252 212.157 T
-252.191 212.745 250.882 211.794 251.5 211.794 T
-252.191 212.745 250.382 212.157 250.882 211.794 T
-252.191 212.745 250.191 212.745 250.382 212.157 T
-252.191 212.745 250.382 213.333 250.191 212.745 T
-252.191 212.745 250.882 213.696 250.382 213.333 T
-252.191 212.745 251.5 213.696 250.882 213.696 T
-252.191 212.745 252 213.333 251.5 213.696 T
-173.292 315.815 172.601 314.864 173.101 315.228 T
-173.292 315.815 171.982 314.864 172.601 314.864 T
-173.292 315.815 171.482 315.228 171.982 314.864 T
-173.292 315.815 171.292 315.815 171.482 315.228 T
-173.292 315.815 171.482 316.403 171.292 315.815 T
-173.292 315.815 171.982 316.767 171.482 316.403 T
-173.292 315.815 172.601 316.767 171.982 316.767 T
-173.292 315.815 173.101 316.403 172.601 316.767 T
-104.72 174.417 104.029 173.466 104.529 173.829 T
-104.72 174.417 103.411 173.466 104.029 173.466 T
-104.72 174.417 102.911 173.829 103.411 173.466 T
-104.72 174.417 102.72 174.417 102.911 173.829 T
-104.72 174.417 102.911 175.005 102.72 174.417 T
-104.72 174.417 103.411 175.368 102.911 175.005 T
-104.72 174.417 104.029 175.368 103.411 175.368 T
-104.72 174.417 104.529 175.005 104.029 175.368 T
-477.899 139.916 477.208 138.965 477.708 139.328 T
-477.899 139.916 476.59 138.965 477.208 138.965 T
-477.899 139.916 476.09 139.328 476.59 138.965 T
-477.899 139.916 475.899 139.916 476.09 139.328 T
-477.899 139.916 476.09 140.504 475.899 139.916 T
-477.899 139.916 476.59 140.867 476.09 140.504 T
-477.899 139.916 477.208 140.867 476.59 140.867 T
-477.899 139.916 477.708 140.504 477.208 140.867 T
-313.069 123.271 312.379 122.32 312.879 122.683 T
-313.069 123.271 311.76 122.32 312.379 122.32 T
-313.069 123.271 311.26 122.683 311.76 122.32 T
-313.069 123.271 311.069 123.271 311.26 122.683 T
-313.069 123.271 311.26 123.859 311.069 123.271 T
-313.069 123.271 311.76 124.222 311.26 123.859 T
-313.069 123.271 312.379 124.222 311.76 124.222 T
-313.069 123.271 312.879 123.859 312.379 124.222 T
-490.251 118.894 489.56 117.943 490.06 118.306 T
-490.251 118.894 488.942 117.943 489.56 117.943 T
-490.251 118.894 488.442 118.306 488.942 117.943 T
-490.251 118.894 488.251 118.894 488.442 118.306 T
-490.251 118.894 488.442 119.482 488.251 118.894 T
-490.251 118.894 488.942 119.845 488.442 119.482 T
-490.251 118.894 489.56 119.845 488.942 119.845 T
-490.251 118.894 490.06 119.482 489.56 119.845 T
-372.291 134.916 371.6 133.965 372.1 134.328 T
-372.291 134.916 370.982 133.965 371.6 133.965 T
-372.291 134.916 370.482 134.328 370.982 133.965 T
-372.291 134.916 370.291 134.916 370.482 134.328 T
-372.291 134.916 370.482 135.504 370.291 134.916 T
-372.291 134.916 370.982 135.867 370.482 135.504 T
-372.291 134.916 371.6 135.867 370.982 135.867 T
-372.291 134.916 372.1 135.504 371.6 135.867 T
-314.555 103.577 313.864 102.626 314.364 102.989 T
-314.555 103.577 313.246 102.626 313.864 102.626 T
-314.555 103.577 312.746 102.989 313.246 102.626 T
-314.555 103.577 312.555 103.577 312.746 102.989 T
-314.555 103.577 312.746 104.165 312.555 103.577 T
-314.555 103.577 313.246 104.528 312.746 104.165 T
-314.555 103.577 313.864 104.528 313.246 104.528 T
-314.555 103.577 314.364 104.165 313.864 104.528 T
-318.716 82.2416 318.025 81.2905 318.525 81.6538 T
-318.716 82.2416 317.407 81.2905 318.025 81.2905 T
-318.716 82.2416 316.907 81.6538 317.407 81.2905 T
-318.716 82.2416 316.716 82.2416 316.907 81.6538 T
-318.716 82.2416 316.907 82.8294 316.716 82.2416 T
-318.716 82.2416 317.407 83.1926 316.907 82.8294 T
-318.716 82.2416 318.025 83.1926 317.407 83.1926 T
-318.716 82.2416 318.525 82.8294 318.025 83.1926 T
-320.11 125.955 319.419 125.004 319.919 125.367 T
-320.11 125.955 318.801 125.004 319.419 125.004 T
-320.11 125.955 318.301 125.367 318.801 125.004 T
-320.11 125.955 318.11 125.955 318.301 125.367 T
-320.11 125.955 318.301 126.543 318.11 125.955 T
-320.11 125.955 318.801 126.906 318.301 126.543 T
-320.11 125.955 319.419 126.906 318.801 126.906 T
-320.11 125.955 319.919 126.543 319.419 126.906 T
-398.929 190.399 398.238 189.448 398.738 189.811 T
-398.929 190.399 397.62 189.448 398.238 189.448 T
-398.929 190.399 397.12 189.811 397.62 189.448 T
-398.929 190.399 396.929 190.399 397.12 189.811 T
-398.929 190.399 397.12 190.987 396.929 190.399 T
-398.929 190.399 397.62 191.35 397.12 190.987 T
-398.929 190.399 398.238 191.35 397.62 191.35 T
-398.929 190.399 398.738 190.987 398.238 191.35 T
-373.117 185.914 372.426 184.963 372.926 185.326 T
-373.117 185.914 371.808 184.963 372.426 184.963 T
-373.117 185.914 371.308 185.326 371.808 184.963 T
-373.117 185.914 371.117 185.914 371.308 185.326 T
-373.117 185.914 371.308 186.502 371.117 185.914 T
-373.117 185.914 371.808 186.865 371.308 186.502 T
-373.117 185.914 372.426 186.865 371.808 186.865 T
-373.117 185.914 372.926 186.502 372.426 186.865 T
-234.56 252.835 233.869 251.884 234.369 252.247 T
-234.56 252.835 233.251 251.884 233.869 251.884 T
-234.56 252.835 232.751 252.247 233.251 251.884 T
-234.56 252.835 232.56 252.835 232.751 252.247 T
-234.56 252.835 232.751 253.423 232.56 252.835 T
-234.56 252.835 233.251 253.786 232.751 253.423 T
-234.56 252.835 233.869 253.786 233.251 253.786 T
-234.56 252.835 234.369 253.423 233.869 253.786 T
-368.888 144.692 368.197 143.741 368.697 144.104 T
-368.888 144.692 367.579 143.741 368.197 143.741 T
-368.888 144.692 367.079 144.104 367.579 143.741 T
-368.888 144.692 366.888 144.692 367.079 144.104 T
-368.888 144.692 367.079 145.28 366.888 144.692 T
-368.888 144.692 367.579 145.643 367.079 145.28 T
-368.888 144.692 368.197 145.643 367.579 145.643 T
-368.888 144.692 368.697 145.28 368.197 145.643 T
-338.142 127.885 337.451 126.934 337.951 127.297 T
-338.142 127.885 336.833 126.934 337.451 126.934 T
-338.142 127.885 336.333 127.297 336.833 126.934 T
-338.142 127.885 336.142 127.885 336.333 127.297 T
-338.142 127.885 336.333 128.473 336.142 127.885 T
-338.142 127.885 336.833 128.836 336.333 128.473 T
-338.142 127.885 337.451 128.836 336.833 128.836 T
-338.142 127.885 337.951 128.473 337.451 128.836 T
-156.358 291.551 155.667 290.6 156.167 290.963 T
-156.358 291.551 155.049 290.6 155.667 290.6 T
-156.358 291.551 154.549 290.963 155.049 290.6 T
-156.358 291.551 154.358 291.551 154.549 290.963 T
-156.358 291.551 154.549 292.138 154.358 291.551 T
-156.358 291.551 155.049 292.502 154.549 292.138 T
-156.358 291.551 155.667 292.502 155.049 292.502 T
-156.358 291.551 156.167 292.138 155.667 292.502 T
-220.148 299.198 219.457 298.247 219.957 298.61 T
-220.148 299.198 218.839 298.247 219.457 298.247 T
-220.148 299.198 218.339 298.61 218.839 298.247 T
-220.148 299.198 218.148 299.198 218.339 298.61 T
-220.148 299.198 218.339 299.786 218.148 299.198 T
-220.148 299.198 218.839 300.149 218.339 299.786 T
-220.148 299.198 219.457 300.149 218.839 300.149 T
-220.148 299.198 219.957 299.786 219.457 300.149 T
-266.285 191.108 265.594 190.157 266.094 190.52 T
-266.285 191.108 264.976 190.157 265.594 190.157 T
-266.285 191.108 264.476 190.52 264.976 190.157 T
-266.285 191.108 264.285 191.108 264.476 190.52 T
-266.285 191.108 264.476 191.696 264.285 191.108 T
-266.285 191.108 264.976 192.059 264.476 191.696 T
-266.285 191.108 265.594 192.059 264.976 192.059 T
-266.285 191.108 266.094 191.696 265.594 192.059 T
-138.316 235.093 137.625 234.142 138.125 234.505 T
-138.316 235.093 137.007 234.142 137.625 234.142 T
-138.316 235.093 136.507 234.505 137.007 234.142 T
-138.316 235.093 136.316 235.093 136.507 234.505 T
-138.316 235.093 136.507 235.68 136.316 235.093 T
-138.316 235.093 137.007 236.044 136.507 235.68 T
-138.316 235.093 137.625 236.044 137.007 236.044 T
-138.316 235.093 138.125 235.68 137.625 236.044 T
-334.071 119.932 333.38 118.981 333.88 119.345 T
-334.071 119.932 332.762 118.981 333.38 118.981 T
-334.071 119.932 332.262 119.345 332.762 118.981 T
-334.071 119.932 332.071 119.932 332.262 119.345 T
-334.071 119.932 332.262 120.52 332.071 119.932 T
-334.071 119.932 332.762 120.883 332.262 120.52 T
-334.071 119.932 333.38 120.883 332.762 120.883 T
-334.071 119.932 333.88 120.52 333.38 120.883 T
-340.115 103.439 339.424 102.488 339.924 102.851 T
-340.115 103.439 338.806 102.488 339.424 102.488 T
-340.115 103.439 338.306 102.851 338.806 102.488 T
-340.115 103.439 338.115 103.439 338.306 102.851 T
-340.115 103.439 338.306 104.026 338.115 103.439 T
-340.115 103.439 338.806 104.39 338.306 104.026 T
-340.115 103.439 339.424 104.39 338.806 104.39 T
-340.115 103.439 339.924 104.026 339.424 104.39 T
-258.551 228.073 257.86 227.122 258.36 227.485 T
-258.551 228.073 257.242 227.122 257.86 227.122 T
-258.551 228.073 256.742 227.485 257.242 227.122 T
-258.551 228.073 256.551 228.073 256.742 227.485 T
-258.551 228.073 256.742 228.661 256.551 228.073 T
-258.551 228.073 257.242 229.024 256.742 228.661 T
-258.551 228.073 257.86 229.024 257.242 229.024 T
-258.551 228.073 258.36 228.661 257.86 229.024 T
-386.247 168.345 384.438 167.757 384.938 167.394 T
-386.247 168.345 384.247 168.345 384.438 167.757 T
-386.247 168.345 384.438 168.932 384.247 168.345 T
-386.247 168.345 384.938 169.296 384.438 168.932 T
-386.247 168.345 385.556 169.296 384.938 169.296 T
-386.247 168.345 386.056 168.932 385.556 169.296 T
-303.201 131.226 302.51 130.275 303.01 130.638 T
-303.201 131.226 301.892 130.275 302.51 130.275 T
-303.201 131.226 301.392 130.638 301.892 130.275 T
-303.201 131.226 301.201 131.226 301.392 130.638 T
-303.201 131.226 301.392 131.813 301.201 131.226 T
-303.201 131.226 301.892 132.177 301.392 131.813 T
-303.201 131.226 302.51 132.177 301.892 132.177 T
-303.201 131.226 303.01 131.813 302.51 132.177 T
-336.625 150.887 335.934 149.936 336.434 150.299 T
-336.625 150.887 335.316 149.936 335.934 149.936 T
-336.625 150.887 334.816 150.299 335.316 149.936 T
-336.625 150.887 334.625 150.887 334.816 150.299 T
-336.625 150.887 334.816 151.475 334.625 150.887 T
-336.625 150.887 335.316 151.838 334.816 151.475 T
-336.625 150.887 335.934 151.838 335.316 151.838 T
-336.625 150.887 336.434 151.475 335.934 151.838 T
-289.306 134.49 288.615 133.539 289.115 133.902 T
-289.306 134.49 287.997 133.539 288.615 133.539 T
-289.306 134.49 287.497 133.902 287.997 133.539 T
-289.306 134.49 287.306 134.49 287.497 133.902 T
-289.306 134.49 287.497 135.078 287.306 134.49 T
-289.306 134.49 287.997 135.441 287.497 135.078 T
-289.306 134.49 288.615 135.441 287.997 135.441 T
-289.306 134.49 289.115 135.078 288.615 135.441 T
-374.374 135.907 373.683 134.956 374.183 135.319 T
-374.374 135.907 373.065 134.956 373.683 134.956 T
-374.374 135.907 372.565 135.319 373.065 134.956 T
-374.374 135.907 372.374 135.907 372.565 135.319 T
-374.374 135.907 372.565 136.495 372.374 135.907 T
-374.374 135.907 373.065 136.858 372.565 136.495 T
-374.374 135.907 373.683 136.858 373.065 136.858 T
-374.374 135.907 374.183 136.495 373.683 136.858 T
-355.294 135.472 354.603 134.521 355.103 134.884 T
-355.294 135.472 353.985 134.521 354.603 134.521 T
-355.294 135.472 353.485 134.884 353.985 134.521 T
-355.294 135.472 353.294 135.472 353.485 134.884 T
-355.294 135.472 353.485 136.059 353.294 135.472 T
-355.294 135.472 353.985 136.423 353.485 136.059 T
-355.294 135.472 354.603 136.423 353.985 136.423 T
-355.294 135.472 355.103 136.059 354.603 136.423 T
-501.876 93.7142 501.185 92.7632 501.685 93.1264 T
-501.876 93.7142 500.567 92.7632 501.185 92.7632 T
-501.876 93.7142 500.067 93.1264 500.567 92.7632 T
-501.876 93.7142 499.876 93.7142 500.067 93.1264 T
-501.876 93.7142 500.067 94.302 499.876 93.7142 T
-501.876 93.7142 500.567 94.6653 500.067 94.302 T
-501.876 93.7142 501.185 94.6653 500.567 94.6653 T
-501.876 93.7142 501.685 94.302 501.185 94.6653 T
-346.46 126.504 345.768 125.553 346.268 125.916 T
-346.46 126.504 345.15 125.553 345.768 125.553 T
-346.46 126.504 344.65 125.916 345.15 125.553 T
-346.46 126.504 344.46 126.504 344.65 125.916 T
-346.46 126.504 344.65 127.092 344.46 126.504 T
-346.46 126.504 345.15 127.455 344.65 127.092 T
-346.46 126.504 345.768 127.455 345.15 127.455 T
-346.46 126.504 346.268 127.092 345.768 127.455 T
-160.037 290.426 159.346 289.475 159.846 289.839 T
-160.037 290.426 158.728 289.475 159.346 289.475 T
-160.037 290.426 158.228 289.839 158.728 289.475 T
-160.037 290.426 158.037 290.426 158.228 289.839 T
-160.037 290.426 158.228 291.014 158.037 290.426 T
-160.037 290.426 158.728 291.377 158.228 291.014 T
-160.037 290.426 159.346 291.377 158.728 291.377 T
-160.037 290.426 159.846 291.014 159.346 291.377 T
-246.873 239.111 246.182 238.16 246.682 238.524 T
-246.873 239.111 245.564 238.16 246.182 238.16 T
-246.873 239.111 245.064 238.524 245.564 238.16 T
-246.873 239.111 244.873 239.111 245.064 238.524 T
-246.873 239.111 245.064 239.699 244.873 239.111 T
-246.873 239.111 245.564 240.063 245.064 239.699 T
-246.873 239.111 246.182 240.063 245.564 240.063 T
-246.873 239.111 246.682 239.699 246.182 240.063 T
-444.135 165.123 443.445 164.172 443.945 164.536 T
-444.135 165.123 442.826 164.172 443.445 164.172 T
-444.135 165.123 442.326 164.536 442.826 164.172 T
-444.135 165.123 442.135 165.123 442.326 164.536 T
-444.135 165.123 442.326 165.711 442.135 165.123 T
-444.135 165.123 442.826 166.074 442.326 165.711 T
-444.135 165.123 443.445 166.074 442.826 166.074 T
-444.135 165.123 443.945 165.711 443.445 166.074 T
-478.919 119.976 478.228 119.025 478.728 119.388 T
-478.919 119.976 477.61 119.025 478.228 119.025 T
-478.919 119.976 477.11 119.388 477.61 119.025 T
-478.919 119.976 476.919 119.976 477.11 119.388 T
-478.919 119.976 477.11 120.563 476.919 119.976 T
-478.919 119.976 477.61 120.927 477.11 120.563 T
-478.919 119.976 478.228 120.927 477.61 120.927 T
-478.919 119.976 478.728 120.563 478.228 120.927 T
-302.557 103.964 301.866 103.012 302.366 103.376 T
-302.557 103.964 301.248 103.012 301.866 103.012 T
-302.557 103.964 300.748 103.376 301.248 103.012 T
-302.557 103.964 300.557 103.964 300.748 103.376 T
-302.557 103.964 300.748 104.551 300.557 103.964 T
-302.557 103.964 301.248 104.915 300.748 104.551 T
-302.557 103.964 301.866 104.915 301.248 104.915 T
-302.557 103.964 302.366 104.551 301.866 104.915 T
-429.276 172.246 428.585 171.295 429.085 171.658 T
-429.276 172.246 427.967 171.295 428.585 171.295 T
-429.276 172.246 427.467 171.658 427.967 171.295 T
-429.276 172.246 427.276 172.246 427.467 171.658 T
-429.276 172.246 427.467 172.834 427.276 172.246 T
-429.276 172.246 427.967 173.197 427.467 172.834 T
-429.276 172.246 428.585 173.197 427.967 173.197 T
-429.276 172.246 429.085 172.834 428.585 173.197 T
-456.7 145.932 456.009 144.981 456.509 145.344 T
-456.7 145.932 455.391 144.981 456.009 144.981 T
-456.7 145.932 454.891 145.344 455.391 144.981 T
-456.7 145.932 454.7 145.932 454.891 145.344 T
-456.7 145.932 454.891 146.519 454.7 145.932 T
-456.7 145.932 455.391 146.883 454.891 146.519 T
-456.7 145.932 456.009 146.883 455.391 146.883 T
-456.7 145.932 456.509 146.519 456.009 146.883 T
-242.184 233.48 241.493 232.529 241.993 232.893 T
-242.184 233.48 240.875 232.529 241.493 232.529 T
-242.184 233.48 240.375 232.893 240.875 232.529 T
-242.184 233.48 240.184 233.48 240.375 232.893 T
-242.184 233.48 240.375 234.068 240.184 233.48 T
-242.184 233.48 240.875 234.431 240.375 234.068 T
-242.184 233.48 241.493 234.431 240.875 234.431 T
-242.184 233.48 241.993 234.068 241.493 234.431 T
-452.218 156.45 451.527 155.499 452.027 155.862 T
-452.218 156.45 450.909 155.499 451.527 155.499 T
-452.218 156.45 450.409 155.862 450.909 155.499 T
-452.218 156.45 450.218 156.45 450.409 155.862 T
-452.218 156.45 450.409 157.037 450.218 156.45 T
-452.218 156.45 450.909 157.401 450.409 157.037 T
-452.218 156.45 451.527 157.401 450.909 157.401 T
-452.218 156.45 452.027 157.037 451.527 157.401 T
-262.701 200.532 262.01 199.581 262.51 199.944 T
-262.701 200.532 261.392 199.581 262.01 199.581 T
-262.701 200.532 260.892 199.944 261.392 199.581 T
-262.701 200.532 260.701 200.532 260.892 199.944 T
-262.701 200.532 260.892 201.12 260.701 200.532 T
-262.701 200.532 261.392 201.483 260.892 201.12 T
-262.701 200.532 262.01 201.483 261.392 201.483 T
-262.701 200.532 262.51 201.12 262.01 201.483 T
-149.46 274.752 148.769 273.801 149.269 274.164 T
-149.46 274.752 148.151 273.801 148.769 273.801 T
-149.46 274.752 147.651 274.164 148.151 273.801 T
-149.46 274.752 147.46 274.752 147.651 274.164 T
-149.46 274.752 147.651 275.34 147.46 274.752 T
-149.46 274.752 148.151 275.703 147.651 275.34 T
-149.46 274.752 148.769 275.703 148.151 275.703 T
-149.46 274.752 149.269 275.34 148.769 275.703 T
-337.212 119.116 336.521 118.165 337.021 118.528 T
-337.212 119.116 335.903 118.165 336.521 118.165 T
-337.212 119.116 335.403 118.528 335.903 118.165 T
-337.212 119.116 335.212 119.116 335.403 118.528 T
-337.212 119.116 335.403 119.704 335.212 119.116 T
-337.212 119.116 335.903 120.067 335.403 119.704 T
-337.212 119.116 336.521 120.067 335.903 120.067 T
-337.212 119.116 337.021 119.704 336.521 120.067 T
-79.294 105.214 78.6031 104.263 79.1031 104.626 T
-79.294 105.214 77.985 104.263 78.6031 104.263 T
-79.294 105.214 77.485 104.626 77.985 104.263 T
-79.294 105.214 77.294 105.214 77.485 104.626 T
-79.294 105.214 77.485 105.802 77.294 105.214 T
-79.294 105.214 77.985 106.165 77.485 105.802 T
-79.294 105.214 78.6031 106.165 77.985 106.165 T
-79.294 105.214 79.1031 105.802 78.6031 106.165 T
-270.933 154.15 270.242 153.199 270.742 153.562 T
-270.933 154.15 269.624 153.199 270.242 153.199 T
-270.933 154.15 269.124 153.562 269.624 153.199 T
-270.933 154.15 268.933 154.15 269.124 153.562 T
-270.933 154.15 269.124 154.737 268.933 154.15 T
-270.933 154.15 269.624 155.101 269.124 154.737 T
-270.933 154.15 270.242 155.101 269.624 155.101 T
-270.933 154.15 270.742 154.737 270.242 155.101 T
-163.946 292.327 163.255 291.376 163.755 291.739 T
-163.946 292.327 162.637 291.376 163.255 291.376 T
-163.946 292.327 162.137 291.739 162.637 291.376 T
-163.946 292.327 161.946 292.327 162.137 291.739 T
-163.946 292.327 162.137 292.914 161.946 292.327 T
-163.946 292.327 162.637 293.278 162.137 292.914 T
-163.946 292.327 163.255 293.278 162.637 293.278 T
-163.946 292.327 163.755 292.914 163.255 293.278 T
-366.418 143.719 365.727 142.768 366.227 143.132 T
-366.418 143.719 365.109 142.768 365.727 142.768 T
-366.418 143.719 364.609 143.132 365.109 142.768 T
-366.418 143.719 364.418 143.719 364.609 143.132 T
-366.418 143.719 364.609 144.307 364.418 143.719 T
-366.418 143.719 365.109 144.67 364.609 144.307 T
-366.418 143.719 365.727 144.67 365.109 144.67 T
-366.418 143.719 366.227 144.307 365.727 144.67 T
-121.239 207.393 120.548 206.442 121.048 206.805 T
-121.239 207.393 119.93 206.442 120.548 206.442 T
-121.239 207.393 119.43 206.805 119.93 206.442 T
-121.239 207.393 119.239 207.393 119.43 206.805 T
-121.239 207.393 119.43 207.981 119.239 207.393 T
-121.239 207.393 119.93 208.344 119.43 207.981 T
-121.239 207.393 120.548 208.344 119.93 208.344 T
-121.239 207.393 121.048 207.981 120.548 208.344 T
-209.133 296.406 208.442 295.455 208.942 295.818 T
-209.133 296.406 207.824 295.455 208.442 295.455 T
-209.133 296.406 207.324 295.818 207.824 295.455 T
-209.133 296.406 207.133 296.406 207.324 295.818 T
-209.133 296.406 207.324 296.994 207.133 296.406 T
-209.133 296.406 207.824 297.357 207.324 296.994 T
-209.133 296.406 208.442 297.357 207.824 297.357 T
-209.133 296.406 208.942 296.994 208.442 297.357 T
-302.348 102.16 301.657 101.209 302.157 101.572 T
-302.348 102.16 301.039 101.209 301.657 101.209 T
-302.348 102.16 300.539 101.572 301.039 101.209 T
-302.348 102.16 300.348 102.16 300.539 101.572 T
-302.348 102.16 300.539 102.747 300.348 102.16 T
-302.348 102.16 301.039 103.111 300.539 102.747 T
-302.348 102.16 301.657 103.111 301.039 103.111 T
-302.348 102.16 302.157 102.747 301.657 103.111 T
-190.424 344.092 189.733 343.141 190.233 343.504 T
-190.424 344.092 189.115 343.141 189.733 343.141 T
-190.424 344.092 188.615 343.504 189.115 343.141 T
-190.424 344.092 188.424 344.092 188.615 343.504 T
-190.424 344.092 188.615 344.68 188.424 344.092 T
-190.424 344.092 189.115 345.043 188.615 344.68 T
-190.424 344.092 189.733 345.043 189.115 345.043 T
-190.424 344.092 190.233 344.68 189.733 345.043 T
-372.287 151.193 371.596 150.242 372.096 150.605 T
-372.287 151.193 370.978 150.242 371.596 150.242 T
-372.287 151.193 370.478 150.605 370.978 150.242 T
-372.287 151.193 370.287 151.193 370.478 150.605 T
-372.287 151.193 370.478 151.781 370.287 151.193 T
-372.287 151.193 370.978 152.144 370.478 151.781 T
-372.287 151.193 371.596 152.144 370.978 152.144 T
-372.287 151.193 372.096 151.781 371.596 152.144 T
-281.073 149.123 280.382 148.172 280.882 148.536 T
-281.073 149.123 279.763 148.172 280.382 148.172 T
-281.073 149.123 279.263 148.536 279.763 148.172 T
-281.073 149.123 279.073 149.123 279.263 148.536 T
-281.073 149.123 279.263 149.711 279.073 149.123 T
-281.073 149.123 279.763 150.074 279.263 149.711 T
-281.073 149.123 280.382 150.074 279.763 150.074 T
-281.073 149.123 280.882 149.711 280.382 150.074 T
-202.867 323.518 202.176 322.567 202.676 322.93 T
-202.867 323.518 201.558 322.567 202.176 322.567 T
-202.867 323.518 201.058 322.93 201.558 322.567 T
-202.867 323.518 200.867 323.518 201.058 322.93 T
-202.867 323.518 201.058 324.106 200.867 323.518 T
-202.867 323.518 201.558 324.469 201.058 324.106 T
-202.867 323.518 202.176 324.469 201.558 324.469 T
-202.867 323.518 202.676 324.106 202.176 324.469 T
-429.478 185.733 428.787 184.782 429.287 185.145 T
-429.478 185.733 428.169 184.782 428.787 184.782 T
-429.478 185.733 427.669 185.145 428.169 184.782 T
-429.478 185.733 427.478 185.733 427.669 185.145 T
-429.478 185.733 427.669 186.321 427.478 185.733 T
-429.478 185.733 428.169 186.684 427.669 186.321 T
-429.478 185.733 428.787 186.684 428.169 186.684 T
-429.478 185.733 429.287 186.321 428.787 186.684 T
-379.64 189.877 378.949 188.926 379.449 189.289 T
-379.64 189.877 378.331 188.926 378.949 188.926 T
-379.64 189.877 377.831 189.289 378.331 188.926 T
-379.64 189.877 377.64 189.877 377.831 189.289 T
-379.64 189.877 377.831 190.465 377.64 189.877 T
-379.64 189.877 378.331 190.828 377.831 190.465 T
-379.64 189.877 378.949 190.828 378.331 190.828 T
-379.64 189.877 379.449 190.465 378.949 190.828 T
-513.132 109.573 512.441 108.621 512.941 108.985 T
-513.132 109.573 511.823 108.621 512.441 108.621 T
-513.132 109.573 511.323 108.985 511.823 108.621 T
-513.132 109.573 511.132 109.573 511.323 108.985 T
-513.132 109.573 511.323 110.16 511.132 109.573 T
-513.132 109.573 511.823 110.524 511.323 110.16 T
-513.132 109.573 512.441 110.524 511.823 110.524 T
-513.132 109.573 512.941 110.16 512.441 110.524 T
-376.102 166.305 375.411 165.354 375.911 165.717 T
-376.102 166.305 374.793 165.354 375.411 165.354 T
-376.102 166.305 374.293 165.717 374.793 165.354 T
-376.102 166.305 374.102 166.305 374.293 165.717 T
-376.102 166.305 374.293 166.893 374.102 166.305 T
-376.102 166.305 374.793 167.256 374.293 166.893 T
-376.102 166.305 375.411 167.256 374.793 167.256 T
-376.102 166.305 375.911 166.893 375.411 167.256 T
-304.706 106.849 304.015 105.898 304.515 106.261 T
-304.706 106.849 303.397 105.898 304.015 105.898 T
-304.706 106.849 302.897 106.261 303.397 105.898 T
-304.706 106.849 302.706 106.849 302.897 106.261 T
-304.706 106.849 302.897 107.437 302.706 106.849 T
-304.706 106.849 303.397 107.8 302.897 107.437 T
-304.706 106.849 304.015 107.8 303.397 107.8 T
-304.706 106.849 304.515 107.437 304.015 107.8 T
-227.202 264.002 226.511 263.051 227.011 263.414 T
-227.202 264.002 225.893 263.051 226.511 263.051 T
-227.202 264.002 225.393 263.414 225.893 263.051 T
-227.202 264.002 225.202 264.002 225.393 263.414 T
-227.202 264.002 225.393 264.59 225.202 264.002 T
-227.202 264.002 225.893 264.953 225.393 264.59 T
-227.202 264.002 226.511 264.953 225.893 264.953 T
-227.202 264.002 227.011 264.59 226.511 264.953 T
-148.641 294.473 147.95 293.522 148.45 293.885 T
-148.641 294.473 147.332 293.522 147.95 293.522 T
-148.641 294.473 146.832 293.885 147.332 293.522 T
-148.641 294.473 146.641 294.473 146.832 293.885 T
-148.641 294.473 146.832 295.061 146.641 294.473 T
-148.641 294.473 147.332 295.424 146.832 295.061 T
-148.641 294.473 147.95 295.424 147.332 295.424 T
-148.641 294.473 148.45 295.061 147.95 295.424 T
-220.308 278.671 219.617 277.72 220.117 278.083 T
-220.308 278.671 218.999 277.72 219.617 277.72 T
-220.308 278.671 218.499 278.083 218.999 277.72 T
-220.308 278.671 218.308 278.671 218.499 278.083 T
-220.308 278.671 218.499 279.259 218.308 278.671 T
-220.308 278.671 218.999 279.622 218.499 279.259 T
-220.308 278.671 219.617 279.622 218.999 279.622 T
-220.308 278.671 220.117 279.259 219.617 279.622 T
-263.198 194.195 262.507 193.244 263.007 193.607 T
-263.198 194.195 261.889 193.244 262.507 193.244 T
-263.198 194.195 261.389 193.607 261.889 193.244 T
-263.198 194.195 261.198 194.195 261.389 193.607 T
-263.198 194.195 261.389 194.782 261.198 194.195 T
-263.198 194.195 261.889 195.146 261.389 194.782 T
-263.198 194.195 262.507 195.146 261.889 195.146 T
-263.198 194.195 263.007 194.782 262.507 195.146 T
-373.596 168.819 372.905 167.868 373.405 168.231 T
-373.596 168.819 372.287 167.868 372.905 167.868 T
-373.596 168.819 371.787 168.231 372.287 167.868 T
-373.596 168.819 371.596 168.819 371.787 168.231 T
-373.596 168.819 371.787 169.407 371.596 168.819 T
-373.596 168.819 372.287 169.77 371.787 169.407 T
-373.596 168.819 372.905 169.77 372.287 169.77 T
-373.596 168.819 373.405 169.407 372.905 169.77 T
-463.47 159.989 462.78 159.038 463.279 159.402 T
-463.47 159.989 462.161 159.038 462.78 159.038 T
-463.47 159.989 461.661 159.402 462.161 159.038 T
-463.47 159.989 461.47 159.989 461.661 159.402 T
-463.47 159.989 461.661 160.577 461.47 159.989 T
-463.47 159.989 462.161 160.941 461.661 160.577 T
-463.47 159.989 462.78 160.941 462.161 160.941 T
-463.47 159.989 463.279 160.577 462.78 160.941 T
-138.938 273.44 138.247 272.489 138.747 272.852 T
-138.938 273.44 137.629 272.489 138.247 272.489 T
-138.938 273.44 137.129 272.852 137.629 272.489 T
-138.938 273.44 136.938 273.44 137.129 272.852 T
-138.938 273.44 137.129 274.027 136.938 273.44 T
-138.938 273.44 137.629 274.391 137.129 274.027 T
-138.938 273.44 138.247 274.391 137.629 274.391 T
-138.938 273.44 138.747 274.027 138.247 274.391 T
-216.156 278.142 215.465 277.191 215.965 277.554 T
-216.156 278.142 214.847 277.191 215.465 277.191 T
-216.156 278.142 214.347 277.554 214.847 277.191 T
-216.156 278.142 214.156 278.142 214.347 277.554 T
-216.156 278.142 214.347 278.73 214.156 278.142 T
-216.156 278.142 214.847 279.093 214.347 278.73 T
-216.156 278.142 215.465 279.093 214.847 279.093 T
-216.156 278.142 215.965 278.73 215.465 279.093 T
-101.943 166.656 101.252 165.705 101.752 166.069 T
-101.943 166.656 100.634 165.705 101.252 165.705 T
-101.943 166.656 100.134 166.069 100.634 165.705 T
-101.943 166.656 99.9435 166.656 100.134 166.069 T
-101.943 166.656 100.134 167.244 99.9435 166.656 T
-101.943 166.656 100.634 167.607 100.134 167.244 T
-101.943 166.656 101.252 167.607 100.634 167.607 T
-101.943 166.656 101.752 167.244 101.252 167.607 T
-410.493 194.035 409.802 193.084 410.302 193.448 T
-410.493 194.035 409.184 193.084 409.802 193.084 T
-410.493 194.035 408.684 193.448 409.184 193.084 T
-410.493 194.035 408.493 194.035 408.684 193.448 T
-410.493 194.035 408.684 194.623 408.493 194.035 T
-410.493 194.035 409.184 194.987 408.684 194.623 T
-410.493 194.035 409.802 194.987 409.184 194.987 T
-410.493 194.035 410.302 194.623 409.802 194.987 T
-388.298 183.939 387.607 182.988 388.107 183.351 T
-388.298 183.939 386.989 182.988 387.607 182.988 T
-388.298 183.939 386.489 183.351 386.989 182.988 T
-388.298 183.939 386.298 183.939 386.489 183.351 T
-388.298 183.939 386.489 184.527 386.298 183.939 T
-388.298 183.939 386.989 184.89 386.489 184.527 T
-388.298 183.939 387.607 184.89 386.989 184.89 T
-388.298 183.939 388.107 184.527 387.607 184.89 T
-343.979 115.14 343.288 114.189 343.788 114.552 T
-343.979 115.14 342.67 114.189 343.288 114.189 T
-343.979 115.14 342.17 114.552 342.67 114.189 T
-343.979 115.14 341.979 115.14 342.17 114.552 T
-343.979 115.14 342.17 115.728 341.979 115.14 T
-343.979 115.14 342.67 116.091 342.17 115.728 T
-343.979 115.14 343.288 116.091 342.67 116.091 T
-343.979 115.14 343.788 115.728 343.288 116.091 T
-87.831 139.886 87.14 138.935 87.64 139.298 T
-87.831 139.886 86.5219 138.935 87.14 138.935 T
-87.831 139.886 86.0219 139.298 86.5219 138.935 T
-87.831 139.886 85.831 139.886 86.0219 139.298 T
-87.831 139.886 86.0219 140.474 85.831 139.886 T
-87.831 139.886 86.5219 140.837 86.0219 140.474 T
-87.831 139.886 87.14 140.837 86.5219 140.837 T
-87.831 139.886 87.64 140.474 87.14 140.837 T
-116.899 188.341 116.208 187.39 116.708 187.753 T
-116.899 188.341 115.59 187.39 116.208 187.39 T
-116.899 188.341 115.09 187.753 115.59 187.39 T
-116.899 188.341 114.899 188.341 115.09 187.753 T
-116.899 188.341 115.09 188.928 114.899 188.341 T
-116.899 188.341 115.59 189.292 115.09 188.928 T
-116.899 188.341 116.208 189.292 115.59 189.292 T
-116.899 188.341 116.708 188.928 116.208 189.292 T
-386.629 167.677 385.938 166.726 386.438 167.089 T
-386.629 167.677 385.32 166.726 385.938 166.726 T
-386.629 167.677 384.82 167.089 385.32 166.726 T
-386.629 167.677 384.629 167.677 384.82 167.089 T
-386.629 167.677 384.82 168.265 384.629 167.677 T
-386.629 167.677 385.32 168.628 384.82 168.265 T
-386.629 167.677 385.938 168.628 385.32 168.628 T
-386.629 167.677 386.438 168.265 385.938 168.628 T
-333.967 104.269 333.276 103.318 333.776 103.681 T
-333.967 104.269 332.658 103.318 333.276 103.318 T
-333.967 104.269 332.158 103.681 332.658 103.318 T
-333.967 104.269 331.967 104.269 332.158 103.681 T
-333.967 104.269 332.158 104.857 331.967 104.269 T
-333.967 104.269 332.658 105.22 332.158 104.857 T
-333.967 104.269 333.276 105.22 332.658 105.22 T
-333.967 104.269 333.776 104.857 333.276 105.22 T
-522.28 103.007 521.589 102.056 522.089 102.419 T
-522.28 103.007 520.971 102.056 521.589 102.056 T
-522.28 103.007 520.471 102.419 520.971 102.056 T
-522.28 103.007 520.28 103.007 520.471 102.419 T
-522.28 103.007 520.471 103.595 520.28 103.007 T
-522.28 103.007 520.971 103.958 520.471 103.595 T
-522.28 103.007 521.589 103.958 520.971 103.958 T
-522.28 103.007 522.089 103.595 521.589 103.958 T
-[] 0 setdash
-0 0.5 0 C
-74.88 109.315 LS
-75.9988 109.656 L
-77.1176 110.266 L
-78.2364 111.127 L
-79.3552 112.22 L
-80.474 113.528 L
-81.5928 115.033 L
-82.7116 116.722 L
-83.8304 118.577 L
-84.9492 120.586 L
-86.068 122.735 L
-87.1868 125.01 L
-88.3056 127.401 L
-89.4243 129.896 L
-90.5432 132.485 L
-91.662 135.157 L
-92.7807 137.903 L
-93.8996 140.715 L
-95.0183 143.585 L
-96.1371 146.504 L
-97.2559 149.467 L
-98.3747 152.467 L
-99.4935 155.498 L
-100.612 158.554 L
-101.731 161.631 L
-102.85 164.723 L
-103.969 167.828 L
-105.088 170.941 L
-106.206 174.058 L
-107.325 177.177 L
-108.444 180.295 L
-109.563 183.409 L
-110.681 186.518 L
-111.8 189.62 L
-112.919 192.712 L
-114.038 195.794 L
-115.157 198.864 L
-116.275 201.921 L
-117.394 204.964 L
-118.513 207.992 L
-119.632 211.006 L
-120.751 214.003 L
-121.869 216.983 L
-122.988 219.946 L
-124.107 222.891 L
-125.226 225.818 L
-126.345 228.726 L
-127.463 231.614 L
-128.582 234.482 L
-129.701 237.329 L
-130.82 240.153 L
-131.939 242.954 L
-133.057 245.731 L
-134.176 248.483 L
-135.295 251.208 L
-136.414 253.906 L
-137.533 256.574 L
-138.651 259.213 L
-139.77 261.82 L
-140.889 264.394 L
-142.008 266.933 L
-143.127 269.437 L
-144.245 271.903 L
-145.364 274.331 L
-146.483 276.718 L
-147.602 279.063 L
-148.721 281.365 L
-149.839 283.622 L
-150.958 285.831 L
-152.077 287.993 L
-153.196 290.105 L
-154.315 292.165 L
-155.433 294.171 L
-156.552 296.124 L
-157.671 298.019 L
-158.79 299.857 L
-159.909 301.635 L
-161.027 303.353 L
-162.146 305.007 L
-163.265 306.598 L
-164.384 308.123 L
-165.503 309.581 L
-166.621 310.971 L
-167.74 312.292 L
-168.859 313.541 L
-169.978 314.718 L
-171.097 315.822 L
-172.215 316.852 L
-173.334 317.805 L
-174.453 318.683 L
-175.572 319.482 L
-176.691 320.203 L
-177.809 320.845 L
-178.928 321.407 L
-180.047 321.888 L
-181.166 322.288 L
-182.284 322.607 L
-183.403 322.843 L
-184.522 322.997 L
-185.641 323.068 L
-186.76 323.056 L
-187.878 322.961 L
-188.997 322.784 L
-190.116 322.524 L
-191.235 322.182 L
-192.354 321.759 L
-193.472 321.254 L
-194.591 320.668 L
-195.71 320.002 L
-196.829 319.256 L
-197.948 318.432 L
-199.066 317.53 L
-200.185 316.552 L
-201.304 315.498 L
-202.423 314.369 L
-203.542 313.166 L
-204.66 311.892 L
-205.779 310.546 L
-206.898 309.131 L
-208.017 307.648 L
-209.136 306.097 L
-210.254 304.482 L
-211.373 302.803 L
-212.492 301.062 L
-213.611 299.26 L
-214.73 297.4 L
-215.848 295.483 L
-216.967 293.51 L
-218.086 291.484 L
-219.205 289.406 L
-220.324 287.278 L
-221.442 285.101 L
-222.561 282.879 L
-223.68 280.613 L
-224.799 278.303 L
-225.918 275.954 L
-227.036 273.566 L
-228.155 271.141 L
-229.274 268.681 L
-230.393 266.188 L
-231.512 263.664 L
-232.63 261.112 L
-233.749 258.532 L
-234.868 255.927 L
-235.987 253.298 L
-237.106 250.648 L
-238.224 247.978 L
-239.343 245.291 L
-240.462 242.587 L
-241.581 239.869 L
-242.7 237.138 L
-243.818 234.396 L
-244.937 231.645 L
-246.056 228.886 L
-247.175 226.122 L
-248.294 223.352 L
-249.412 220.58 L
-250.531 217.806 L
-251.65 215.033 L
-252.769 212.261 L
-253.887 209.492 L
-255.006 206.727 L
-256.125 203.968 L
-257.244 201.216 L
-258.363 198.473 L
-259.481 195.74 L
-260.6 193.019 L
-261.719 190.31 L
-262.838 187.616 L
-263.957 184.937 L
-265.075 182.276 L
-266.194 179.633 L
-267.313 177.01 L
-268.432 174.408 L
-269.551 171.829 L
-270.669 169.275 L
-271.788 166.746 L
-272.907 164.245 L
-274.026 161.773 L
-275.145 159.332 L
-276.263 156.922 L
-277.382 154.547 L
-278.501 152.206 L
-279.62 149.904 L
-280.739 147.64 L
-281.857 145.417 L
-282.976 143.236 L
-284.095 141.1 L
-285.214 139.011 L
-286.333 136.97 L
-287.451 134.979 L
-288.57 133.041 L
-289.689 131.158 L
-290.808 129.332 L
-291.927 127.565 L
-293.045 125.859 L
-294.164 124.217 L
-295.283 122.64 L
-296.402 121.131 L
-297.521 119.692 L
-298.639 118.324 L
-299.758 117.03 L
-300.877 115.811 L
-301.996 114.669 L
-303.115 113.607 L
-304.233 112.624 L
-305.352 111.723 L
-306.471 110.905 L
-307.59 110.171 L
-308.709 109.521 L
-309.827 108.957 L
-310.946 108.479 L
-312.065 108.088 L
-313.184 107.782 L
-314.303 107.563 L
-315.421 107.429 L
-316.54 107.38 L
-317.659 107.416 L
-318.778 107.534 L
-319.897 107.734 L
-321.015 108.013 L
-322.134 108.37 L
-323.253 108.802 L
-324.372 109.307 L
-325.49 109.881 L
-326.609 110.523 L
-327.728 111.228 L
-328.847 111.994 L
-329.966 112.817 L
-331.084 113.694 L
-332.203 114.622 L
-333.322 115.597 L
-334.441 116.615 L
-335.56 117.673 L
-336.678 118.768 L
-337.797 119.896 L
-338.916 121.054 L
-340.035 122.238 L
-341.154 123.446 L
-342.272 124.674 L
-343.391 125.921 L
-344.51 127.183 L
-345.629 128.457 L
-346.748 129.743 L
-347.866 131.038 L
-348.985 132.34 L
-350.104 133.648 L
-351.223 134.961 L
-352.342 136.277 L
-353.46 137.595 L
-354.579 138.915 L
-355.698 140.236 L
-356.817 141.557 L
-357.936 142.877 L
-359.054 144.197 L
-360.173 145.516 L
-361.292 146.832 L
-362.411 148.147 L
-363.53 149.46 L
-364.648 150.77 L
-365.767 152.077 L
-366.886 153.381 L
-368.005 154.682 L
-369.124 155.979 L
-370.242 157.271 L
-371.361 158.559 L
-372.48 159.841 L
-373.599 161.117 L
-374.718 162.386 L
-375.836 163.647 L
-376.955 164.899 L
-378.074 166.141 L
-379.193 167.372 L
-380.312 168.59 L
-381.43 169.794 L
-382.549 170.983 L
-383.668 172.155 L
-384.787 173.309 L
-385.906 174.443 L
-387.024 175.555 L
-388.143 176.644 L
-389.262 177.708 L
-390.381 178.745 L
-391.5 179.753 L
-392.618 180.731 L
-393.737 181.678 L
-394.856 182.59 L
-395.975 183.467 L
-397.094 184.306 L
-398.212 185.107 L
-399.331 185.866 L
-400.45 186.583 L
-401.569 187.256 L
-402.688 187.883 L
-403.806 188.463 L
-404.925 188.994 L
-406.044 189.475 L
-407.163 189.903 L
-408.281 190.279 L
-409.4 190.601 L
-410.519 190.867 L
-411.638 191.077 L
-412.757 191.23 L
-413.875 191.324 L
-414.994 191.359 L
-416.113 191.334 L
-417.232 191.25 L
-418.351 191.104 L
-419.469 190.898 L
-420.588 190.63 L
-421.707 190.3 L
-422.826 189.91 L
-423.945 189.457 L
-425.063 188.944 L
-426.182 188.369 L
-427.301 187.734 L
-428.42 187.039 L
-429.539 186.284 L
-430.657 185.47 L
-431.776 184.598 L
-432.895 183.669 L
-434.014 182.685 L
-435.133 181.645 L
-436.251 180.552 L
-437.37 179.406 L
-438.489 178.21 L
-439.608 176.965 L
-440.727 175.672 L
-441.845 174.334 L
-442.964 172.952 L
-444.083 171.529 L
-445.202 170.066 L
-446.321 168.567 L
-447.439 167.033 L
-448.558 165.467 L
-449.677 163.872 L
-450.796 162.251 L
-451.915 160.606 L
-453.033 158.941 L
-454.152 157.259 L
-455.271 155.562 L
-456.39 153.856 L
-457.508 152.142 L
-458.627 150.425 L
-459.746 148.709 L
-460.865 146.998 L
-461.984 145.295 L
-463.103 143.604 L
-464.221 141.93 L
-465.34 140.276 L
-466.459 138.647 L
-467.578 137.047 L
-468.697 135.478 L
-469.815 133.946 L
-470.934 132.454 L
-472.053 131.006 L
-473.172 129.604 L
-474.29 128.253 L
-475.409 126.955 L
-476.528 125.713 L
-477.647 124.53 L
-478.766 123.409 L
-479.884 122.351 L
-481.003 121.358 L
-482.122 120.432 L
-483.241 119.574 L
-484.36 118.785 L
-485.478 118.066 L
-486.597 117.416 L
-487.716 116.834 L
-488.835 116.321 L
-489.954 115.875 L
-491.072 115.495 L
-492.191 115.177 L
-493.31 114.92 L
-494.429 114.72 L
-495.548 114.573 L
-496.666 114.474 L
-497.785 114.42 L
-498.904 114.403 L
-500.023 114.418 L
-501.142 114.457 L
-502.26 114.513 L
-503.379 114.578 L
-504.498 114.642 L
-505.617 114.696 L
-506.736 114.728 L
-507.854 114.728 L
-508.973 114.682 L
-510.092 114.579 L
-511.211 114.403 L
-512.33 114.141 L
-513.448 113.775 L
-514.567 113.29 L
-515.686 112.668 L
-516.805 111.891 L
-517.924 110.938 L
-519.042 109.789 L
-520.161 108.423 L
-521.28 106.817 LE
-1 0 0 C
-74.88 113.971 LS
-75.9988 115.116 L
-77.1176 116.34 L
-78.2364 117.643 L
-79.3552 119.024 L
-80.474 120.482 L
-81.5928 122.017 L
-82.7116 123.627 L
-83.8304 125.312 L
-84.9492 127.069 L
-86.068 128.898 L
-87.1868 130.798 L
-88.3056 132.767 L
-89.4243 134.803 L
-90.5432 136.905 L
-91.662 139.071 L
-92.7807 141.3 L
-93.8996 143.589 L
-95.0183 145.937 L
-96.1371 148.342 L
-97.2559 150.801 L
-98.3747 153.313 L
-99.4935 155.875 L
-100.612 158.486 L
-101.731 161.143 L
-102.85 163.844 L
-103.969 166.586 L
-105.088 169.367 L
-106.206 172.185 L
-107.325 175.037 L
-108.444 177.921 L
-109.563 180.835 L
-110.681 183.775 L
-111.8 186.74 L
-112.919 189.727 L
-114.038 192.733 L
-115.157 195.756 L
-116.275 198.793 L
-117.394 201.841 L
-118.513 204.899 L
-119.632 207.963 L
-120.751 211.03 L
-121.869 214.1 L
-122.988 217.168 L
-124.107 220.232 L
-125.226 223.29 L
-126.345 226.34 L
-127.463 229.378 L
-128.582 232.402 L
-129.701 235.411 L
-130.82 238.401 L
-131.939 241.371 L
-133.057 244.317 L
-134.176 247.238 L
-135.295 250.132 L
-136.414 252.996 L
-137.533 255.827 L
-138.651 258.625 L
-139.77 261.386 L
-140.889 264.109 L
-142.008 266.792 L
-143.127 269.432 L
-144.245 272.028 L
-145.364 274.578 L
-146.483 277.079 L
-147.602 279.531 L
-148.721 281.931 L
-149.839 284.277 L
-150.958 286.568 L
-152.077 288.802 L
-153.196 290.978 L
-154.315 293.094 L
-155.433 295.148 L
-156.552 297.139 L
-157.671 299.065 L
-158.79 300.926 L
-159.909 302.719 L
-161.027 304.444 L
-162.146 306.1 L
-163.265 307.685 L
-164.384 309.197 L
-165.503 310.637 L
-166.621 312.003 L
-167.74 313.294 L
-168.859 314.509 L
-169.978 315.648 L
-171.097 316.71 L
-172.215 317.693 L
-173.334 318.598 L
-174.453 319.424 L
-175.572 320.17 L
-176.691 320.836 L
-177.809 321.421 L
-178.928 321.926 L
-180.047 322.349 L
-181.166 322.692 L
-182.284 322.953 L
-183.403 323.132 L
-184.522 323.231 L
-185.641 323.248 L
-186.76 323.184 L
-187.878 323.039 L
-188.997 322.814 L
-190.116 322.509 L
-191.235 322.125 L
-192.354 321.661 L
-193.472 321.119 L
-194.591 320.5 L
-195.71 319.803 L
-196.829 319.03 L
-197.948 318.181 L
-199.066 317.258 L
-200.185 316.262 L
-201.304 315.193 L
-202.423 314.053 L
-203.542 312.842 L
-204.66 311.562 L
-205.779 310.214 L
-206.898 308.799 L
-208.017 307.319 L
-209.136 305.774 L
-210.254 304.167 L
-211.373 302.499 L
-212.492 300.77 L
-213.611 298.983 L
-214.73 297.139 L
-215.848 295.24 L
-216.967 293.287 L
-218.086 291.281 L
-219.205 289.225 L
-220.324 287.12 L
-221.442 284.967 L
-222.561 282.768 L
-223.68 280.526 L
-224.799 278.241 L
-225.918 275.915 L
-227.036 273.551 L
-228.155 271.149 L
-229.274 268.712 L
-230.393 266.241 L
-231.512 263.739 L
-232.63 261.206 L
-233.749 258.644 L
-234.868 256.056 L
-235.987 253.443 L
-237.106 250.807 L
-238.224 248.149 L
-239.343 245.472 L
-240.462 242.777 L
-241.581 240.065 L
-242.7 237.339 L
-243.818 234.6 L
-244.937 231.849 L
-246.056 229.089 L
-247.175 226.321 L
-248.294 223.547 L
-249.412 220.768 L
-250.531 217.985 L
-251.65 215.202 L
-252.769 212.418 L
-253.887 209.636 L
-255.006 206.857 L
-256.125 204.082 L
-257.244 201.314 L
-258.363 198.554 L
-259.481 195.804 L
-260.6 193.064 L
-261.719 190.337 L
-262.838 187.624 L
-263.957 184.926 L
-265.075 182.246 L
-266.194 179.585 L
-267.313 176.945 L
-268.432 174.326 L
-269.551 171.731 L
-270.669 169.161 L
-271.788 166.619 L
-272.907 164.104 L
-274.026 161.621 L
-275.145 159.169 L
-276.263 156.751 L
-277.382 154.368 L
-278.501 152.023 L
-279.62 149.717 L
-280.739 147.451 L
-281.857 145.228 L
-282.976 143.05 L
-284.095 140.918 L
-285.214 138.834 L
-286.333 136.801 L
-287.451 134.82 L
-288.57 132.893 L
-289.689 131.022 L
-290.808 129.21 L
-291.927 127.458 L
-293.045 125.769 L
-294.164 124.143 L
-295.283 122.585 L
-296.402 121.094 L
-297.521 119.673 L
-298.639 118.324 L
-299.758 117.049 L
-300.877 115.849 L
-301.996 114.725 L
-303.115 113.68 L
-304.233 112.714 L
-305.352 111.829 L
-306.471 111.025 L
-307.59 110.304 L
-308.709 109.666 L
-309.827 109.111 L
-310.946 108.641 L
-312.065 108.255 L
-313.184 107.954 L
-314.303 107.736 L
-315.421 107.602 L
-316.54 107.551 L
-317.659 107.582 L
-318.778 107.694 L
-319.897 107.885 L
-321.015 108.154 L
-322.134 108.498 L
-323.253 108.916 L
-324.372 109.405 L
-325.49 109.963 L
-326.609 110.587 L
-327.728 111.274 L
-328.847 112.02 L
-329.966 112.824 L
-331.084 113.682 L
-332.203 114.59 L
-333.322 115.546 L
-334.441 116.546 L
-335.56 117.587 L
-336.678 118.665 L
-337.797 119.778 L
-338.916 120.923 L
-340.035 122.095 L
-341.154 123.294 L
-342.272 124.515 L
-343.391 125.756 L
-344.51 127.014 L
-345.629 128.288 L
-346.748 129.575 L
-347.866 130.873 L
-348.985 132.181 L
-350.104 133.497 L
-351.223 134.82 L
-352.342 136.148 L
-353.46 137.48 L
-354.579 138.816 L
-355.698 140.153 L
-356.817 141.492 L
-357.936 142.832 L
-359.054 144.172 L
-360.173 145.511 L
-361.292 146.849 L
-362.411 148.184 L
-363.53 149.518 L
-364.648 150.848 L
-365.767 152.176 L
-366.886 153.499 L
-368.005 154.817 L
-369.124 156.131 L
-370.242 157.438 L
-371.361 158.739 L
-372.48 160.033 L
-373.599 161.318 L
-374.718 162.595 L
-375.836 163.861 L
-376.955 165.115 L
-378.074 166.357 L
-379.193 167.585 L
-380.312 168.798 L
-381.43 169.994 L
-382.549 171.172 L
-383.668 172.33 L
-384.787 173.467 L
-385.906 174.582 L
-387.024 175.672 L
-388.143 176.736 L
-389.262 177.773 L
-390.381 178.78 L
-391.5 179.757 L
-392.618 180.7 L
-393.737 181.61 L
-394.856 182.484 L
-395.975 183.32 L
-397.094 184.118 L
-398.212 184.874 L
-399.331 185.589 L
-400.45 186.26 L
-401.569 186.886 L
-402.688 187.466 L
-403.806 187.998 L
-404.925 188.481 L
-406.044 188.914 L
-407.163 189.296 L
-408.281 189.625 L
-409.4 189.902 L
-410.519 190.124 L
-411.638 190.292 L
-412.757 190.405 L
-413.875 190.462 L
-414.994 190.463 L
-416.113 190.407 L
-417.232 190.295 L
-418.351 190.126 L
-419.469 189.9 L
-420.588 189.617 L
-421.707 189.279 L
-422.826 188.884 L
-423.945 188.433 L
-425.063 187.928 L
-426.182 187.367 L
-427.301 186.753 L
-428.42 186.085 L
-429.539 185.364 L
-430.657 184.592 L
-431.776 183.77 L
-432.895 182.897 L
-434.014 181.976 L
-435.133 181.008 L
-436.251 179.994 L
-437.37 178.934 L
-438.489 177.832 L
-439.608 176.687 L
-440.727 175.502 L
-441.845 174.277 L
-442.964 173.016 L
-444.083 171.719 L
-445.202 170.387 L
-446.321 169.024 L
-447.439 167.63 L
-448.558 166.207 L
-449.677 164.758 L
-450.796 163.285 L
-451.915 161.788 L
-453.033 160.271 L
-454.152 158.735 L
-455.271 157.183 L
-456.39 155.616 L
-457.508 154.037 L
-458.627 152.448 L
-459.746 150.851 L
-460.865 149.249 L
-461.984 147.643 L
-463.103 146.036 L
-464.221 144.43 L
-465.34 142.828 L
-466.459 141.231 L
-467.578 139.643 L
-468.697 138.065 L
-469.815 136.5 L
-470.934 134.95 L
-472.053 133.417 L
-473.172 131.905 L
-474.29 130.414 L
-475.409 128.948 L
-476.528 127.508 L
-477.647 126.097 L
-478.766 124.718 L
-479.884 123.372 L
-481.003 122.061 L
-482.122 120.789 L
-483.241 119.557 L
-484.36 118.366 L
-485.478 117.221 L
-486.597 116.121 L
-487.716 115.07 L
-488.835 114.07 L
-489.954 113.121 L
-491.072 112.227 L
-492.191 111.39 L
-493.31 110.61 L
-494.429 109.89 L
-495.548 109.231 L
-496.666 108.636 L
-497.785 108.105 L
-498.904 107.641 L
-500.023 107.244 L
-501.142 106.916 L
-502.26 106.659 L
-503.379 106.473 L
-504.498 106.361 L
-505.617 106.322 L
-506.736 106.359 L
-507.854 106.471 L
-508.973 106.66 L
-510.092 106.927 L
-511.211 107.273 L
-512.33 107.697 L
-513.448 108.2 L
-514.567 108.784 L
-515.686 109.447 L
-516.805 110.191 L
-517.924 111.016 L
-519.042 111.921 L
-520.161 112.906 L
-521.28 113.971 LE
+doclip
+50 50 translate
+0.050 0.050 scale
+0 setgray
+newpath
+(Helvetica) findfont 200 scalefont setfont
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 11520.00 8640.00 BoxColFill} if
+gsave % colour palette begin
+/maxcolors 64 def
+/HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
+  { /HSVs exch def /HSVv exch def 6.0 mul dup floor dup 3 1 roll sub
+     /HSVf exch def /HSVi exch cvi def /HSVp HSVv 1.0 HSVs sub mul def
+	 /HSVq HSVv 1.0 HSVs HSVf mul sub mul def 
+	 /HSVt HSVv 1.0 HSVs 1.0 HSVf sub mul sub mul def
+	 /HSVi HSVi 6 mod def 0 HSVi eq {HSVv HSVt HSVp}
+	 {1 HSVi eq {HSVq HSVv HSVp}{2 HSVi eq {HSVp HSVv HSVt}
+	 {3 HSVi eq {HSVp HSVq HSVv}{4 HSVi eq {HSVt HSVp HSVv}
+	 {HSVv HSVp HSVq} ifelse} ifelse} ifelse} ifelse} ifelse
+  } ifelse} def
+/Constrain {
+  dup 0 lt {0 exch pop}{dup 1 gt {1 exch pop} if} ifelse} def
+/YIQ2RGB {
+  3 copy -1.702 mul exch -1.105 mul add add Constrain 4 1 roll
+  3 copy -0.647 mul exch -0.272 mul add add Constrain 5 1 roll
+  0.621 mul exch -0.956 mul add add Constrain 3 1 roll } def
+/CMY2RGB {  1 exch sub exch 1 exch sub 3 2 roll 1 exch sub 3 1 roll exch } def
+/XYZ2RGB {  3 copy -0.9017 mul exch -0.1187 mul add exch 0.0585 mul exch add
+  Constrain 4 1 roll 3 copy -0.0279 mul exch 1.999 mul add exch
+  -0.9844 mul add Constrain 5 1 roll -0.2891 mul exch -0.5338 mul add
+  exch 1.91 mul exch add Constrain 3 1 roll} def
+/SelectSpace {ColorSpace (HSV) eq {HSV2RGB}{ColorSpace (XYZ) eq {
+  XYZ2RGB}{ColorSpace (CMY) eq {CMY2RGB}{ColorSpace (YIQ) eq {YIQ2RGB}
+  if} ifelse} ifelse} ifelse} def
+/InterpolatedColor true def
+/grayindex {/gidx 0 def
+  {GrayA gidx get grayv ge {exit} if /gidx gidx 1 add def} loop} def
+/dgdx {grayv GrayA gidx get sub GrayA gidx 1 sub get
+  GrayA gidx get sub div} def 
+/redvalue {RedA gidx get RedA gidx 1 sub get
+  RedA gidx get sub dgdxval mul add} def
+/greenvalue {GreenA gidx get GreenA gidx 1 sub get
+  GreenA gidx get sub dgdxval mul add} def
+/bluevalue {BlueA gidx get BlueA gidx 1 sub get
+  BlueA gidx get sub dgdxval mul add} def
+/interpolate {
+  grayindex grayv GrayA gidx get sub abs 1e-5 le
+    {RedA gidx get GreenA gidx get BlueA gidx get}
+    {/dgdxval dgdx def redvalue greenvalue bluevalue} ifelse} def
+/GrayA [0 .0159 .0317 .0476 .0635 .0794 .0952 .1111 .127 .1429 .1587 .1746 
+  .1905 .2063 .2222 .2381 .254 .2698 .2857 .3016 .3175 .3333 .3492 .3651 
+  .381 .3968 .4127 .4286 .4444 .4603 .4762 .4921 .5079 .5238 .5397 .5556 
+  .5714 .5873 .6032 .619 .6349 .6508 .6667 .6825 .6984 .7143 .7302 .746 
+  .7619 .7778 .7937 .8095 .8254 .8413 .8571 .873 .8889 .9048 .9206 .9365 
+  .9524 .9683 .9841 1 ] def
+/RedA [.267 .2727 .2771 .2804 .2824 .2832 .2828 .2812 .2785 .2747 .27 .2644 
+  .258 .2511 .2437 .2361 .2283 .2204 .2127 .2051 .1977 .1906 .1838 .1773 
+  .171 .1648 .1588 .153 .1471 .1414 .1358 .1306 .1259 .1222 .1199 .1196 .122 
+  .1277 .1368 .1496 .166 .1855 .208 .2331 .2605 .29 .3213 .3544 .3889 .4249 
+  .4622 .5008 .5403 .5809 .6222 .6641 .7064 .7489 .7913 .8333 .8747 .9153 
+  .9548 .9932 ] def
+/GreenA [.0049 .0258 .0509 .0742 .096 .1169 .1374 .1575 .1773 .197 .2163 
+  .2354 .2542 .2726 .2906 .3083 .3256 .3425 .3591 .3754 .3913 .4071 .4226 
+  .4379 .4531 .4681 .4831 .4981 .513 .5279 .5428 .5577 .5726 .5875 .6024 
+  .6173 .6321 .6469 .6616 .6761 .6905 .7047 .7187 .7324 .7458 .7588 .7715 
+  .7837 .7955 .8067 .8173 .8274 .8369 .8457 .8538 .8613 .8682 .8745 .8803 
+  .8858 .8909 .896 .901 .9062 ] def
+/BlueA [.3294 .3534 .3762 .3979 .4183 .4372 .4546 .4704 .4847 .4973 .5083 
+  .5177 .5258 .5325 .5381 .5427 .5463 .5493 .5516 .5535 .555 .5561 .557 
+  .5576 .558 .5581 .5581 .5577 .557 .5559 .5543 .5522 .5494 .546 .5418 .5368 
+  .5308 .5239 .516 .5069 .4968 .4854 .4729 .4591 .4441 .4278 .4103 .3915 
+  .3714 .3501 .3275 .3038 .2789 .253 .2262 .1989 .1715 .145 .1213 .1033 
+  .0954 .1005 .1179 .1439 ] def
+/pm3dround {maxcolors 0 gt {dup 1 ge
+	{pop 1} {maxcolors mul floor maxcolors 1 sub div} ifelse} if} def
+/pm3dGamma 1.0 1.5 Gamma mul div def
+/ColorSpace (RGB) def
+Color InterpolatedColor or { % COLOUR vs. GRAY map
+  InterpolatedColor { %% Interpolation vs. RGB-Formula
+    /g {stroke pm3dround /grayv exch def interpolate
+        SelectSpace setrgbcolor} bind def
+  }{
+  /g {stroke pm3dround dup cF7 Constrain exch dup cF5 Constrain exch cF15 Constrain 
+       SelectSpace setrgbcolor} bind def
+  } ifelse
+}{
+  /g {stroke pm3dround pm3dGamma exp setgray} bind def
+} ifelse
+1.000 UL
+LTb
+1.00 1.00 1.00 C 1.000 0 0 11519 8639 BoxColFill
+1.000 UL
+LTb
+1.00 1.00 1.00 C 1.000 540 400 10618 7998 BoxColFill
+1.000 UL
+LTb
+0.00 0.00 0.00 C 540 400 M
+88 0 V
+10531 0 R
+-88 0 V
+stroke
+0.00 0.00 0.00 C 420 400 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-2)]
+] -66.7 MRshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 540 2000 M
+88 0 V
+10531 0 R
+-88 0 V
+stroke
+0.00 0.00 0.00 C 420 2000 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-1)]
+] -66.7 MRshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 540 3600 M
+88 0 V
+10531 0 R
+-88 0 V
+stroke
+0.00 0.00 0.00 C 420 3600 M
+[ [(Helvetica) 200.0 0.0 true true 0 (0)]
+] -66.7 MRshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 540 5199 M
+88 0 V
+10531 0 R
+-88 0 V
+stroke
+0.00 0.00 0.00 C 420 5199 M
+[ [(Helvetica) 200.0 0.0 true true 0 (1)]
+] -66.7 MRshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 540 6799 M
+88 0 V
+10531 0 R
+-88 0 V
+stroke
+0.00 0.00 0.00 C 420 6799 M
+[ [(Helvetica) 200.0 0.0 true true 0 (2)]
+] -66.7 MRshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 540 8399 M
+88 0 V
+10531 0 R
+-88 0 V
+stroke
+0.00 0.00 0.00 C 420 8399 M
+[ [(Helvetica) 200.0 0.0 true true 0 (3)]
+] -66.7 MRshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 540 400 M
+0 88 V
+0 7911 R
+0 -88 V
+stroke
+0.00 0.00 0.00 C 540 200 M
+[ [(Helvetica) 200.0 0.0 true true 0 (0)]
+] -66.7 MCshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 2230 400 M
+0 88 V
+0 7911 R
+0 -88 V
+stroke
+0.00 0.00 0.00 C 2230 200 M
+[ [(Helvetica) 200.0 0.0 true true 0 (1)]
+] -66.7 MCshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 3920 400 M
+0 88 V
+0 7911 R
+0 -88 V
+stroke
+0.00 0.00 0.00 C 3920 200 M
+[ [(Helvetica) 200.0 0.0 true true 0 (2)]
+] -66.7 MCshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 5610 400 M
+0 88 V
+0 7911 R
+0 -88 V
+stroke
+0.00 0.00 0.00 C 5610 200 M
+[ [(Helvetica) 200.0 0.0 true true 0 (3)]
+] -66.7 MCshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 7300 400 M
+0 88 V
+0 7911 R
+0 -88 V
+stroke
+0.00 0.00 0.00 C 7300 200 M
+[ [(Helvetica) 200.0 0.0 true true 0 (4)]
+] -66.7 MCshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 8990 400 M
+0 88 V
+0 7911 R
+0 -88 V
+stroke
+0.00 0.00 0.00 C 8990 200 M
+[ [(Helvetica) 200.0 0.0 true true 0 (5)]
+] -66.7 MCshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 10680 400 M
+0 88 V
+0 7911 R
+0 -88 V
+stroke
+0.00 0.00 0.00 C 10680 200 M
+[ [(Helvetica) 200.0 0.0 true true 0 (6)]
+] -66.7 MCshow
+1.000 UL
+LTb
+0.00 0.00 0.00 C 1.000 UP
+1.000 UL
+LTb
+0.00 0.00 0.00 C 1.000 UL
+LTb
+LCb setrgbcolor
+8576 6836 N
+0 1500 V
+2463 0 V
+0 -1500 V
+-2463 0 V
+Z stroke
+% Begin plot #1
+0.667 UP
+0.500 UL
+LTb
+0.00 0.00 1.00 C 0.00 0.00 0.00 C 9359 8086 M
+[ [(Helvetica) 200.0 0.0 true true 0 (data)]
+] -66.7 MLshow
+0.667 UP
+0.500 UL
+LTb
+0.00 0.00 1.00 C 540 2462 CircleF
+10918 1392 CircleF
+2382 5989 CircleF
+7345 2400 CircleF
+6183 1869 CircleF
+973 2355 CircleF
+4270 5785 CircleF
+9230 3207 CircleF
+8332 3494 CircleF
+8968 3451 CircleF
+3314 6499 CircleF
+7379 2468 CircleF
+2410 5841 CircleF
+9367 2991 CircleF
+9644 2230 CircleF
+10902 2136 CircleF
+5003 3363 CircleF
+4540 4507 CircleF
+1962 5122 CircleF
+5734 2360 CircleF
+4844 3818 CircleF
+8954 3394 CircleF
+10316 1952 CircleF
+1590 3553 CircleF
+4787 4663 CircleF
+5970 2454 CircleF
+4506 4857 CircleF
+10971 1794 CircleF
+9155 2770 CircleF
+2691 6379 CircleF
+1756 4115 CircleF
+4416 5066 CircleF
+3339 6869 CircleF
+9859 2204 CircleF
+5075 3075 CircleF
+3364 7213 CircleF
+2852 6696 CircleF
+9636 2873 CircleF
+860 2237 CircleF
+4229 5816 CircleF
+9093 3613 CircleF
+4544 4680 CircleF
+5464 2501 CircleF
+7805 3132 CircleF
+10761 2022 CircleF
+6156 1521 CircleF
+1256 3585 CircleF
+5946 2183 CircleF
+1014 2603 CircleF
+8231 3458 CircleF
+1684 4356 CircleF
+6437 1509 CircleF
+1404 3523 CircleF
+5788 1606 CircleF
+1126 2750 CircleF
+1548 3843 CircleF
+4569 5050 CircleF
+4114 5526 CircleF
+8153 3147 CircleF
+10080 2435 CircleF
+8802 3219 CircleF
+8666 3418 CircleF
+6611 2530 CircleF
+598 2302 CircleF
+5057 3187 CircleF
+5574 2008 CircleF
+5832 1674 CircleF
+4682 4381 CircleF
+2251 5982 CircleF
+8769 3462 CircleF
+6193 1604 CircleF
+7401 2881 CircleF
+1420 3500 CircleF
+10694 2188 CircleF
+6474 1994 CircleF
+7549 3456 CircleF
+5814 1727 CircleF
+7210 2406 CircleF
+548 2349 CircleF
+3791 6506 CircleF
+8405 3885 CircleF
+6927 2552 CircleF
+7766 3804 CircleF
+4832 4294 CircleF
+9472 3255 CircleF
+7149 2518 CircleF
+3990 5484 CircleF
+5296 3100 CircleF
+2125 4860 CircleF
+11115 2363 CircleF
+10395 2249 CircleF
+2295 6059 CircleF
+8334 4034 CircleF
+6793 2293 CircleF
+1157 2484 CircleF
+10108 2403 CircleF
+9626 2534 CircleF
+3399 6953 CircleF
+2794 6578 CircleF
+11159 1805 CircleF
+8968 8086 CircleF
+% End plot #1
+% Begin plot #2
+0.500 UL
+LTb
+0.00 0.50 0.00 C 0.00 0.00 0.00 C 9359 7586 M
+[ [(Helvetica) 200.0 0.0 true true 0 (no constraints)]
+] -66.7 MLshow
+0.500 UL
+LTb
+0.00 0.50 0.00 C 8696 7586 M
+543 0 V
+540 2447 M
+27 -108 V
+26 -86 V
+27 -65 V
+26 -47 V
+27 -31 V
+27 -16 V
+26 -3 V
+27 8 V
+27 17 V
+26 27 V
+27 33 V
+26 39 V
+27 45 V
+27 49 V
+26 53 V
+27 55 V
+26 58 V
+27 60 V
+27 61 V
+26 62 V
+27 63 V
+27 63 V
+26 63 V
+27 64 V
+26 63 V
+27 64 V
+27 64 V
+26 63 V
+27 64 V
+26 64 V
+27 64 V
+27 64 V
+26 64 V
+27 65 V
+26 65 V
+27 66 V
+27 66 V
+26 67 V
+27 67 V
+27 68 V
+26 68 V
+27 68 V
+26 69 V
+27 70 V
+27 70 V
+26 70 V
+27 71 V
+26 71 V
+27 71 V
+27 72 V
+26 71 V
+27 72 V
+27 71 V
+26 72 V
+27 71 V
+26 71 V
+27 70 V
+27 70 V
+26 70 V
+27 69 V
+26 68 V
+27 68 V
+27 66 V
+26 66 V
+27 65 V
+27 63 V
+26 63 V
+27 61 V
+26 60 V
+27 58 V
+27 57 V
+26 55 V
+27 54 V
+26 52 V
+27 50 V
+27 48 V
+26 47 V
+27 45 V
+27 43 V
+26 41 V
+27 39 V
+26 37 V
+27 35 V
+27 33 V
+26 31 V
+27 28 V
+26 27 V
+27 25 V
+27 22 V
+26 20 V
+27 19 V
+26 16 V
+27 14 V
+27 12 V
+26 9 V
+27 8 V
+27 6 V
+26 3 V
+27 1 V
+26 0 V
+27 -3 V
+27 -5 V
+stroke 3255 6863 M
+26 -7 V
+27 -8 V
+26 -11 V
+27 -13 V
+27 -14 V
+26 -17 V
+27 -18 V
+27 -20 V
+26 -22 V
+27 -24 V
+26 -25 V
+27 -27 V
+27 -29 V
+26 -30 V
+27 -33 V
+26 -33 V
+27 -35 V
+27 -37 V
+26 -38 V
+27 -40 V
+27 -41 V
+26 -42 V
+27 -44 V
+26 -45 V
+27 -46 V
+27 -47 V
+26 -49 V
+27 -50 V
+26 -51 V
+27 -52 V
+27 -53 V
+26 -55 V
+27 -55 V
+27 -56 V
+26 -58 V
+27 -58 V
+26 -59 V
+27 -60 V
+27 -61 V
+26 -62 V
+27 -62 V
+26 -64 V
+27 -64 V
+27 -65 V
+26 -66 V
+27 -66 V
+26 -67 V
+27 -68 V
+27 -68 V
+26 -69 V
+27 -69 V
+27 -70 V
+26 -70 V
+27 -71 V
+26 -71 V
+27 -71 V
+27 -72 V
+26 -72 V
+27 -72 V
+26 -72 V
+27 -72 V
+27 -72 V
+26 -72 V
+27 -72 V
+27 -71 V
+26 -71 V
+27 -71 V
+26 -70 V
+27 -70 V
+27 -69 V
+26 -68 V
+27 -68 V
+26 -66 V
+27 -66 V
+27 -64 V
+26 -64 V
+27 -62 V
+27 -61 V
+26 -59 V
+27 -59 V
+26 -56 V
+27 -55 V
+27 -53 V
+26 -52 V
+27 -50 V
+26 -47 V
+27 -46 V
+27 -44 V
+26 -42 V
+27 -40 V
+27 -38 V
+26 -36 V
+27 -33 V
+26 -32 V
+27 -29 V
+27 -27 V
+26 -24 V
+27 -23 V
+26 -20 V
+27 -18 V
+27 -16 V
+26 -14 V
+27 -11 V
+26 -10 V
+stroke 6022 1806 M
+27 -7 V
+27 -5 V
+26 -4 V
+27 -1 V
+27 1 V
+26 2 V
+27 4 V
+26 6 V
+27 8 V
+27 9 V
+26 11 V
+27 12 V
+26 13 V
+27 15 V
+27 17 V
+26 17 V
+27 19 V
+27 19 V
+26 21 V
+27 21 V
+26 23 V
+27 23 V
+27 24 V
+26 25 V
+27 25 V
+26 26 V
+27 27 V
+27 27 V
+26 27 V
+27 28 V
+27 28 V
+26 28 V
+27 29 V
+26 29 V
+27 29 V
+27 29 V
+26 29 V
+27 30 V
+26 29 V
+27 30 V
+27 29 V
+26 30 V
+27 29 V
+27 30 V
+26 29 V
+27 29 V
+26 29 V
+27 29 V
+27 29 V
+26 29 V
+27 29 V
+26 28 V
+27 28 V
+27 28 V
+26 28 V
+27 27 V
+26 27 V
+27 27 V
+27 26 V
+26 27 V
+27 25 V
+27 26 V
+26 25 V
+27 25 V
+26 24 V
+27 24 V
+27 23 V
+26 23 V
+27 23 V
+26 22 V
+27 21 V
+27 21 V
+26 20 V
+27 19 V
+27 19 V
+26 18 V
+27 17 V
+26 17 V
+27 15 V
+27 15 V
+26 14 V
+27 13 V
+26 12 V
+27 11 V
+27 9 V
+26 9 V
+27 8 V
+27 6 V
+26 6 V
+27 4 V
+26 3 V
+27 1 V
+27 0 V
+26 -1 V
+27 -2 V
+26 -4 V
+27 -5 V
+27 -6 V
+26 -8 V
+27 -9 V
+27 -11 V
+26 -12 V
+27 -14 V
+26 -15 V
+stroke 8790 3527 M
+27 -16 V
+27 -17 V
+26 -19 V
+27 -20 V
+26 -22 V
+27 -22 V
+27 -24 V
+26 -25 V
+27 -26 V
+26 -27 V
+27 -28 V
+27 -29 V
+26 -30 V
+27 -31 V
+27 -31 V
+26 -31 V
+27 -32 V
+26 -33 V
+27 -33 V
+27 -33 V
+26 -33 V
+27 -33 V
+26 -33 V
+27 -33 V
+27 -33 V
+26 -32 V
+27 -32 V
+27 -31 V
+26 -31 V
+27 -30 V
+26 -30 V
+27 -28 V
+27 -28 V
+26 -27 V
+27 -26 V
+26 -24 V
+27 -24 V
+27 -23 V
+26 -21 V
+27 -21 V
+27 -19 V
+26 -18 V
+27 -18 V
+26 -15 V
+27 -15 V
+27 -14 V
+26 -13 V
+27 -12 V
+26 -12 V
+27 -10 V
+27 -10 V
+26 -10 V
+27 -9 V
+27 -9 V
+26 -9 V
+27 -8 V
+26 -9 V
+27 -10 V
+27 -9 V
+26 -11 V
+27 -10 V
+26 -12 V
+27 -12 V
+27 -13 V
+26 -14 V
+27 -15 V
+26 -16 V
+27 -16 V
+27 -17 V
+26 -18 V
+27 -18 V
+27 -19 V
+26 -18 V
+27 -19 V
+26 -18 V
+27 -17 V
+27 -16 V
+26 -14 V
+27 -12 V
+26 -10 V
+27 -6 V
+27 -2 V
+26 2 V
+27 9 V
+27 14 V
+26 22 V
+27 30 V
+26 40 V
+27 50 V
+% End plot #2
+% Begin plot #3
+stroke
+LTb
+1.00 0.00 0.00 C 0.00 0.00 0.00 C 9359 7086 M
+[ [(Helvetica) 200.0 0.0 true true 0 (periodic)]
+] -66.7 MLshow
+0.500 UL
+LTb
+1.00 0.00 0.00 C 8696 7086 M
+543 0 V
+540 2116 M
+27 18 V
+26 20 V
+27 21 V
+26 22 V
+27 24 V
+27 25 V
+26 26 V
+27 27 V
+27 29 V
+26 30 V
+27 31 V
+26 33 V
+27 34 V
+27 35 V
+26 37 V
+27 38 V
+26 40 V
+27 41 V
+27 43 V
+26 44 V
+27 45 V
+27 47 V
+26 49 V
+27 49 V
+26 52 V
+27 52 V
+27 54 V
+26 56 V
+27 57 V
+26 58 V
+27 60 V
+27 60 V
+26 62 V
+27 64 V
+26 64 V
+27 66 V
+27 66 V
+26 68 V
+27 69 V
+27 69 V
+26 70 V
+27 71 V
+26 72 V
+27 72 V
+27 73 V
+26 74 V
+27 73 V
+26 74 V
+27 74 V
+27 75 V
+26 74 V
+27 74 V
+27 74 V
+26 74 V
+27 74 V
+26 73 V
+27 72 V
+27 73 V
+26 71 V
+27 70 V
+26 70 V
+27 69 V
+27 68 V
+26 67 V
+27 65 V
+27 65 V
+26 63 V
+27 61 V
+26 61 V
+27 58 V
+27 57 V
+26 56 V
+27 54 V
+26 52 V
+27 50 V
+27 49 V
+26 46 V
+27 45 V
+27 43 V
+26 41 V
+27 38 V
+26 37 V
+27 35 V
+27 33 V
+26 30 V
+27 29 V
+26 26 V
+27 25 V
+27 22 V
+26 20 V
+27 18 V
+26 16 V
+27 13 V
+27 12 V
+26 9 V
+27 8 V
+27 5 V
+26 3 V
+27 1 V
+26 -1 V
+27 -3 V
+27 -5 V
+stroke 3255 6869 M
+26 -7 V
+27 -9 V
+26 -11 V
+27 -13 V
+27 -15 V
+26 -16 V
+27 -19 V
+27 -20 V
+26 -23 V
+27 -24 V
+26 -25 V
+27 -28 V
+27 -29 V
+26 -31 V
+27 -32 V
+26 -34 V
+27 -35 V
+27 -37 V
+26 -39 V
+27 -40 V
+27 -41 V
+26 -43 V
+27 -44 V
+26 -45 V
+27 -47 V
+27 -48 V
+26 -49 V
+27 -50 V
+26 -52 V
+27 -52 V
+27 -54 V
+26 -54 V
+27 -56 V
+27 -57 V
+26 -57 V
+27 -59 V
+26 -60 V
+27 -60 V
+27 -61 V
+26 -62 V
+27 -63 V
+26 -64 V
+27 -64 V
+27 -65 V
+26 -66 V
+27 -66 V
+26 -67 V
+27 -67 V
+27 -68 V
+26 -69 V
+27 -69 V
+27 -70 V
+26 -69 V
+27 -71 V
+26 -70 V
+27 -71 V
+27 -71 V
+26 -71 V
+27 -71 V
+26 -71 V
+27 -71 V
+27 -72 V
+26 -70 V
+27 -71 V
+27 -71 V
+26 -70 V
+27 -69 V
+26 -70 V
+27 -68 V
+27 -68 V
+26 -67 V
+27 -67 V
+26 -65 V
+27 -65 V
+27 -64 V
+26 -62 V
+27 -62 V
+27 -60 V
+26 -59 V
+27 -57 V
+26 -56 V
+27 -55 V
+27 -53 V
+26 -51 V
+27 -50 V
+26 -48 V
+27 -46 V
+27 -44 V
+26 -43 V
+27 -40 V
+27 -38 V
+26 -37 V
+27 -34 V
+26 -33 V
+27 -30 V
+27 -28 V
+26 -26 V
+27 -24 V
+26 -22 V
+27 -20 V
+27 -17 V
+26 -16 V
+27 -13 V
+26 -12 V
+stroke 6022 1804 M
+27 -9 V
+27 -7 V
+26 -6 V
+27 -3 V
+27 -1 V
+26 0 V
+27 2 V
+26 4 V
+27 6 V
+27 7 V
+26 10 V
+27 10 V
+26 12 V
+27 14 V
+27 15 V
+26 17 V
+27 17 V
+27 19 V
+26 21 V
+27 21 V
+26 22 V
+27 24 V
+27 24 V
+26 25 V
+27 26 V
+26 27 V
+27 27 V
+27 29 V
+26 28 V
+27 30 V
+27 29 V
+26 31 V
+27 30 V
+26 32 V
+27 31 V
+27 32 V
+26 31 V
+27 32 V
+26 33 V
+27 32 V
+27 32 V
+26 33 V
+27 32 V
+27 32 V
+26 32 V
+27 32 V
+26 32 V
+27 32 V
+27 31 V
+26 31 V
+27 31 V
+26 30 V
+27 30 V
+27 30 V
+26 29 V
+27 29 V
+26 28 V
+27 28 V
+27 27 V
+26 27 V
+27 26 V
+27 25 V
+26 25 V
+27 24 V
+26 24 V
+27 23 V
+27 22 V
+26 21 V
+27 21 V
+26 19 V
+27 19 V
+27 18 V
+26 18 V
+27 16 V
+27 16 V
+26 15 V
+27 13 V
+26 13 V
+27 12 V
+27 11 V
+26 10 V
+27 9 V
+26 8 V
+27 8 V
+27 6 V
+26 5 V
+27 4 V
+27 3 V
+26 2 V
+27 1 V
+26 0 V
+27 -1 V
+27 -2 V
+26 -3 V
+27 -4 V
+26 -5 V
+27 -7 V
+27 -7 V
+26 -8 V
+27 -9 V
+27 -11 V
+26 -11 V
+27 -12 V
+26 -13 V
+stroke 8790 3480 M
+27 -15 V
+27 -15 V
+26 -16 V
+27 -17 V
+26 -17 V
+27 -19 V
+27 -20 V
+26 -20 V
+27 -21 V
+26 -22 V
+27 -23 V
+27 -23 V
+26 -24 V
+27 -25 V
+27 -25 V
+26 -26 V
+27 -26 V
+26 -27 V
+27 -28 V
+27 -27 V
+26 -29 V
+27 -28 V
+26 -29 V
+27 -29 V
+27 -29 V
+26 -30 V
+27 -29 V
+27 -30 V
+26 -30 V
+27 -29 V
+26 -30 V
+27 -29 V
+27 -30 V
+26 -29 V
+27 -29 V
+26 -29 V
+27 -29 V
+27 -28 V
+26 -28 V
+27 -27 V
+27 -27 V
+26 -27 V
+27 -26 V
+26 -25 V
+27 -25 V
+27 -24 V
+26 -24 V
+27 -23 V
+26 -22 V
+27 -21 V
+27 -21 V
+26 -20 V
+27 -19 V
+27 -18 V
+26 -17 V
+27 -17 V
+26 -16 V
+27 -15 V
+27 -13 V
+26 -13 V
+27 -12 V
+26 -11 V
+27 -11 V
+27 -9 V
+26 -8 V
+27 -7 V
+26 -6 V
+27 -5 V
+27 -5 V
+26 -3 V
+27 -2 V
+27 -1 V
+26 0 V
+27 1 V
+26 2 V
+27 3 V
+27 4 V
+26 5 V
+27 6 V
+26 8 V
+27 8 V
+27 10 V
+26 10 V
+27 12 V
+27 13 V
+26 14 V
+27 15 V
+26 16 V
+27 18 V
+% End plot #3
+stroke
+2.000 UL
+LTb
+LCb setrgbcolor
+1.000 UP
+0.500 UL
+LTb
+0.00 0.00 0.00 C 540 400 M
+10619 0 V
+stroke
+LTb
+0.00 0.00 0.00 C 540 8399 M
+10619 0 V
+stroke
+LTb
+0.00 0.00 0.00 C 540 400 M
+0 7999 V
+stroke
+LTb
+0.00 0.00 0.00 C 11159 400 M
+0 7999 V
+stroke
+1.000 UL
+LTb
+0.00 0.00 0.00 C grestore % colour palette end
+stroke
 grestore
-gsave
-1.0 1.0 scale
-newpath 0 0 moveto 576 0 lineto 576 432 lineto 0 432 lineto
-closepath clip
-1 1 1 C
-422.535 396.926 518.607 355.906 422.535 355.906 T
-422.535 396.926 518.607 396.926 518.607 355.906 T
-0.5 W
-[16 0] 0 setdash
-0 0 0 C
-422.535 355.906 LS
-518.607 355.906 LE
-422.535 396.926 LS
-518.607 396.926 LE
-422.535 355.906 LS
-422.535 396.926 LE
-518.607 355.906 LS
-518.607 396.926 LE
-(data) 447.933 390.09 10 /Helvetica SCL
-(no constraints) 447.933 376.416 10 /Helvetica SCL
-(periodic) 447.933 362.743 10 /Helvetica SCL
-0 0 1 C
-436.234 390.09 435.543 389.139 436.043 389.502 T
-436.234 390.09 434.925 389.139 435.543 389.139 T
-436.234 390.09 434.425 389.502 434.925 389.139 T
-436.234 390.09 434.234 390.09 434.425 389.502 T
-436.234 390.09 434.425 390.678 434.234 390.09 T
-436.234 390.09 434.925 391.041 434.425 390.678 T
-436.234 390.09 435.543 391.041 434.925 391.041 T
-436.234 390.09 436.043 390.678 435.543 391.041 T
-[] 0 setdash
-0 0.5 0 C
-425.208 376.416 LS
-445.259 376.416 LE
-1 0 0 C
-425.208 362.743 LS
-445.259 362.743 LE
-grestore
-grestore
-showpage
-cleartomark
-%%PageTrailer
-%%Trailer
 end
-%%EOF
+showpage
+%%Trailer
+%%DocumentFonts: Helvetica

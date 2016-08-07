@@ -103,14 +103,6 @@ typedef unsigned long ino_t;
 #  define OCTAVE_HAVE_SIG_JUMP 1
 #endif
 
-#if defined (_UNICOS)
-#  define F77_USES_CRAY_CALLING_CONVENTION
-#endif
-
-#if 0
-#  define F77_USES_VISUAL_FORTRAN_CALLING_CONVENTION
-#endif
-
 #if defined (OCTAVE_ENABLE_64)
 #  define SIZEOF_OCTAVE_IDX_TYPE SIZEOF_INT64_T
 #else
@@ -122,7 +114,7 @@ typedef unsigned long ino_t;
    FIXME: Maybe substitute this by a more precise check in the future?  */
 #if (SIZEOF_LONG_DOUBLE >= 10) && defined (HAVE_ROUNDL)
 #  define OCTAVE_INT_USE_LONG_DOUBLE
-#  if (SIZEOF_LONG_DOUBLE < 16 \
+#  if (SIZEOF_LONG_DOUBLE < 16                                          \
        && (defined __i386__ || defined __x86_64__) && defined __GNUC__)
 #    define OCTAVE_ENSURE_LONG_DOUBLE_OPERATIONS_ARE_NOT_TRUNCATED 1
 #  endif

@@ -25,7 +25,10 @@ along with Octave; see the file COPYING.  If not, see
 #  include "config.h"
 #endif
 
-#include <iostream>
+#include <sstream>
+#include <limits>
+#include <string>
+#include <new>
 
 #include "dim-vector.h"
 
@@ -63,7 +66,7 @@ dim_vector::chop_all_singletons (void)
   if (j == 1)
     rep[1] = 1;
 
-  ndims () = j > 2 ? j : 2;
+  rep[-1] = j > 2 ? j : 2;
 }
 
 std::string

@@ -26,6 +26,7 @@ COREFCN_INC = \
   libinterp/corefcn/base-text-renderer.h \
   libinterp/corefcn/Cell.h \
   libinterp/corefcn/c-file-ptr-stream.h \
+  libinterp/corefcn/call-stack.h \
   libinterp/corefcn/cdisplay.h \
   libinterp/corefcn/comment-list.h \
   libinterp/corefcn/data.h \
@@ -47,6 +48,7 @@ COREFCN_INC = \
   libinterp/corefcn/help.h \
   libinterp/corefcn/hook-fcn.h \
   libinterp/corefcn/input.h \
+  libinterp/corefcn/interpreter.h \
   libinterp/corefcn/load-path.h \
   libinterp/corefcn/load-save.h \
   libinterp/corefcn/ls-ascii-helper.h \
@@ -129,6 +131,7 @@ COREFCN_SRC = \
   libinterp/corefcn/bitfcns.cc \
   libinterp/corefcn/bsxfun.cc \
   libinterp/corefcn/c-file-ptr-stream.cc \
+  libinterp/corefcn/call-stack.cc \
   libinterp/corefcn/cdisplay.c \
   libinterp/corefcn/cellfun.cc \
   libinterp/corefcn/colloc.cc \
@@ -177,6 +180,7 @@ COREFCN_SRC = \
   libinterp/corefcn/hook-fcn.cc \
   libinterp/corefcn/input.cc \
   libinterp/corefcn/inv.cc \
+  libinterp/corefcn/interpreter.cc \
   libinterp/corefcn/kron.cc \
   libinterp/corefcn/load-path.cc \
   libinterp/corefcn/load-save.cc \
@@ -257,30 +261,6 @@ COREFCN_SRC = \
   $(JIT_SRC) \
   $(NOINSTALL_COREFCN_INC)
 
-COREFCN_FT2_DF = \
-  libinterp/corefcn/graphics.df \
-  libinterp/corefcn/gl-render.df \
-  libinterp/corefcn/toplev.df \
-  libinterp/corefcn/txt-eng-ft.df
-
-## FIXME: Automake does not support per-object rules.
-##        These rules could be emulated by creating a new convenience
-##        library and using per-library rules.  Or we can just live
-##        without the rule since there haven't been any problems. (09/18/2012)
-#display.df display.lo: CPPFLAGS += $(X11_FLAGS)
-
-## Special rules for FreeType .df files so that not all .df files are built
-## with FT2_CPPFLAGS, FONTCONFIG_CPPFLAGS
-$(COREFCN_FT2_DF) : libinterp/corefcn/%.df : libinterp/corefcn/%.cc $(GENERATED_MAKE_BUILTINS_INCS) octave-config.h | libinterp/corefcn/$(octave_dirstamp)
-	$(AM_V_GEN)rm -f $@-t $@-t1 $@ && \
-	$(CXXCPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	  $(libinterp_corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) \
-	  $(libinterp_corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) \
-	  -DMAKE_BUILTINS $< > $@-t1 && \
-	$(SHELL) $(srcdir)/libinterp/mkdefs $(srcdir)/libinterp $< < $@-t1 > $@-t && \
-	rm -f $@-t1 && \
-	mv $@-t $@
-
 ## Special rules for sources which must be built before rest of compilation.
 
 libinterp/corefcn/defaults.h: libinterp/corefcn/defaults.in.h build-aux/subst-default-vals.sh | libinterp/corefcn/$(octave_dirstamp)
@@ -320,7 +300,6 @@ libinterp/corefcn/oct-tex-symbols.cc: libinterp/corefcn/oct-tex-symbols.in | lib
 	$(AWK) 'BEGIN { print "// DO NOT EDIT. AUTOMATICALLY GENERATED FROM oct-tex-symbols.in."; print "static uint32_t symbol_codes[][2] = {"; count = 0; } END { print "};"; printf("static int num_symbol_codes = %d;\n", count); } !/^#/ && (NF == 3) { printf("  { %s, %s },\n", $$2, $$3); count++; }' $< > $@-t && \
 	mv $@-t $@
 
-libinterp/corefcn/txt-eng.cc: libinterp/corefcn/oct-tex-symbols.cc
 libinterp/corefcn/oct-tex-lexer.cc: LEX_OUTPUT_ROOT := lex.octave_tex_
 
 libinterp/corefcn/oct-tex-parser.yy: libinterp/corefcn/oct-tex-parser.in.yy

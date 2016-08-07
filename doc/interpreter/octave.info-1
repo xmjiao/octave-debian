@@ -7742,7 +7742,7 @@ below.
  -- : NAMES = fieldnames (STRUCT)
  -- : NAMES = fieldnames (OBJ)
  -- : NAMES = fieldnames (JAVAOBJ)
- -- : NAMES = fieldnames ("JCLASSNAME")
+ -- : NAMES = fieldnames ("JAVACLASSNAME")
      Return a cell array of strings with the names of the fields in the
      specified input.
 
@@ -7752,9 +7752,9 @@ below.
      When the input is an Octave object OBJ, the names are the public
      properties of the object.
 
-     When the input is a Java object JAVAOBJ or Java classname
-     JCLASSNAME the name are the public data elements of the object or
-     class.
+     When the input is a Java object JAVAOBJ or a string containing the
+     name of a Java class JAVACLASSNAME, the names are the public fields
+     (data members) of the object or class.
 
      See also: *note numfields: XREFnumfields, *note isfield:
      XREFisfield, *note orderfields: XREForderfields, *note struct:

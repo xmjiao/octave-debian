@@ -888,20 +888,22 @@ then <var>s</var> will contain the abbreviated name of the weekday.  If
 
 <a name="XREFdatetick"></a><dl>
 <dt><a name="index-datetick"></a>: <em></em> <strong>datetick</strong> <em>()</em></dt>
-<dt><a name="index-datetick-1"></a>: <em></em> <strong>datetick</strong> <em>(<var>form</var>)</em></dt>
-<dt><a name="index-datetick-2"></a>: <em></em> <strong>datetick</strong> <em>(<var>axis</var>, <var>form</var>)</em></dt>
+<dt><a name="index-datetick-1"></a>: <em></em> <strong>datetick</strong> <em>(<var>date_format</var>)</em></dt>
+<dt><a name="index-datetick-2"></a>: <em></em> <strong>datetick</strong> <em>(<var>axis_str</var>, <var>date_format</var>)</em></dt>
 <dt><a name="index-datetick-3"></a>: <em></em> <strong>datetick</strong> <em>(&hellip;, &quot;keeplimits&quot;)</em></dt>
 <dt><a name="index-datetick-4"></a>: <em></em> <strong>datetick</strong> <em>(&hellip;, &quot;keepticks&quot;)</em></dt>
 <dt><a name="index-datetick-5"></a>: <em></em> <strong>datetick</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dd><p>Add date formatted tick labels to an axis.
 </p>
-<p>The axis to apply the ticks to is determined by <var>axis</var> which can take
-the values <code>&quot;x&quot;</code>, <code>&quot;y&quot;</code>, or <code>&quot;z&quot;</code>.  The default value is
-<code>&quot;x&quot;</code>.
+<p>The axis to apply the ticks to is determined by <var>axis_str</var> which can
+take the values <code>&quot;x&quot;</code>, <code>&quot;y&quot;</code>, or <code>&quot;z&quot;</code>.  The default
+value is <code>&quot;x&quot;</code>.
 </p>
-<p>The formatting of the labels is determined by the variable <var>form</var>, which
-can either be a string or positive integer that <code>datestr</code> accepts.
+<p>The formatting of the labels is determined by the variable
+<var>date_format</var>, which can either be a string or positive integer that
+<code>datestr</code> accepts.
 </p>
+
 <p><strong>See also:</strong> <a href="#XREFdatenum">datenum</a>, <a href="#XREFdatestr">datestr</a>.
 </p></dd></dl>
 

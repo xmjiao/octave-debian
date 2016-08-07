@@ -68,7 +68,8 @@
 ## instead of a single structure array.
 ##
 ## If called with no output argument, the isosurface geometry is directly
-## processed with the @command{patch} command.
+## processed with the @command{patch} command and a light object is added to
+## the axes if not yet present.
 ##
 ## For example,
 ##
@@ -132,12 +133,13 @@
 ## light ("Position", [1 1 5]);
 ## @end smallexample
 ##
-## @seealso{isonormals, isocolors}
+## @seealso{isonormals, isocolors, smooth3}
 ## @end deftypefn
 
 ## Author: Martin Helm <martin@mhelm.de>
 
-## FIXME: Add support for string input argument "verbose" (needs changes to __marching_cube__.m)
+## FIXME: Add support for string input argument "verbose"
+##        (needs changes to __marching_cube__.m)
 
 function varargout = isosurface (varargin)
 
@@ -163,7 +165,6 @@ function varargout = isosurface (varargin)
     [fvc.faces, fvc.vertices, J] = __unite_shared_vertices__ (fvc.faces, fvc.vertices);
 
     if (calc_colors)
-      #fvc.facevertexcdata = fvc.facevertexcdata(vertices_idx);
       fvc.facevertexcdata(J) = []; # share very close vertices
     endif
   endif
@@ -172,15 +173,25 @@ function varargout = isosurface (varargin)
     case 0
       ## plot the calculated surface
       if (calc_colors)
-        pa = patch ("Faces", fvc.faces, "Vertices", fvc.vertices,
-                    "FaceVertexCData", fvc.facevertexcdata,
-                    "FaceColor", "flat", "EdgeColor", "none");
+        fc = fvc.facevertexcdata;
       else
-        pa = patch ("Faces", fvc.faces, "Vertices", fvc.vertices,
-                    "FaceColor", "g", "EdgeColor", "k");
+        fc = iso;
       endif
+      ## FIXME: Matlab uses "EdgeColor", "none". But that would look odd
+      ##        with gnuplot.
+      pa = patch ("Faces", fvc.faces, "Vertices", fvc.vertices,
+                  "FaceVertexCData", fc,
+                  "FaceColor", "flat", "EdgeColor", "k",
+                  "FaceLighting", "gouraud");
+      hax = gca ();
       if (! ishold ())
-        set (gca (), "View", [-37.5, 30], "Box", "off");
+        set (hax, "View", [-37.5, 30], "Box", "off");
+      endif
+      isonormals (x, y, z, val, pa);
+      lights = findobj (hax, "Type", "light");
+      if (isempty (lights))
+        ## FIXME: Matlab seems to use camlight (patch #9014) here
+        light ();
       endif
     case 1
       varargout = {fvc};
@@ -333,9 +344,10 @@ endfunction
 %! clf;
 %! [x,y,z] = meshgrid (-2:0.5:2, -2:0.5:2, -2:0.5:2);
 %! val = x.^2 + y.^2 + z.^2;
-%! isosurface (x, y, z, val, 1);
+%! isosurface (x, y, z, val, 3);
+%! isosurface (x, y, z, val, 5);
 %! axis equal;
-%! title ('isosurface of a sphere');
+%! title ('isosurfaces of two nested spheres');
 
 %!demo
 %! x = 0:2;

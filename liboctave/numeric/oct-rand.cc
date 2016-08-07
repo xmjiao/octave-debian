@@ -46,31 +46,31 @@ along with Octave; see the file COPYING.  If not, see
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (dgennor, DGENNOR) (const double&, const double&, double&);
+  F77_FUNC (dgennor, DGENNOR) (const F77_DBLE&, const F77_DBLE&, F77_DBLE&);
 
   F77_RET_T
-  F77_FUNC (dgenunf, DGENUNF) (const double&, const double&, double&);
+  F77_FUNC (dgenunf, DGENUNF) (const F77_DBLE&, const F77_DBLE&, F77_DBLE&);
 
   F77_RET_T
-  F77_FUNC (dgenexp, DGENEXP) (const double&, double&);
+  F77_FUNC (dgenexp, DGENEXP) (const F77_DBLE&, F77_DBLE&);
 
   F77_RET_T
-  F77_FUNC (dignpoi, DIGNPOI) (const double&, double&);
+  F77_FUNC (dignpoi, DIGNPOI) (const F77_DBLE&, F77_DBLE&);
 
   F77_RET_T
-  F77_FUNC (dgengam, DGENGAM) (const double&, const double&, double&);
+  F77_FUNC (dgengam, DGENGAM) (const F77_DBLE&, const F77_DBLE&, F77_DBLE&);
 
   F77_RET_T
-  F77_FUNC (setall, SETALL) (const int32_t&, const int32_t&);
+  F77_FUNC (setall, SETALL) (const F77_INT4&, const F77_INT4&);
 
   F77_RET_T
-  F77_FUNC (getsd, GETSD) (int32_t&, int32_t&);
+  F77_FUNC (getsd, GETSD) (F77_INT4&, F77_INT4&);
 
   F77_RET_T
-  F77_FUNC (setsd, SETSD) (const int32_t&, const int32_t&);
+  F77_FUNC (setsd, SETSD) (const F77_INT4&, const F77_INT4&);
 
   F77_RET_T
-  F77_FUNC (setcgn, SETCGN) (const int32_t&);
+  F77_FUNC (setcgn, SETCGN) (const F77_INT4&);
 }
 
 octave_rand *octave_rand::instance = 0;
@@ -565,7 +565,7 @@ octave_rand::do_float_nd_array (const dim_vector& dims, float a)
 
 // Make the random number generator give us a different sequence every
 // time we start octave unless we specifically set the seed.  The
-// technique used below will cycle monthly, but it it does seem to
+// technique used below will cycle monthly, but it does seem to
 // work ok to give fairly different seeds each time Octave starts.
 
 void
@@ -710,17 +710,17 @@ octave_rand::switch_to_generator (int dist)
     }
 }
 
-#define MAKE_RAND(len) \
-  do \
-    { \
-      double val; \
-      for (volatile octave_idx_type i = 0; i < len; i++) \
-        { \
-          octave_quit (); \
-          RAND_FUNC (val); \
-          v[i] = val; \
-        } \
-    } \
+#define MAKE_RAND(len)                                          \
+  do                                                            \
+    {                                                           \
+      double val;                                               \
+      for (volatile octave_idx_type i = 0; i < len; i++)        \
+        {                                                       \
+          octave_quit ();                                       \
+          RAND_FUNC (val);                                      \
+          v[i] = val;                                           \
+        }                                                       \
+    }                                                           \
   while (0)
 
 void

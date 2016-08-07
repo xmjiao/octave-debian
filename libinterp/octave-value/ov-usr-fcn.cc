@@ -28,9 +28,10 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "str-vec.h"
 
+#include "builtin-defun-decls.h"
+#include "call-stack.h"
 #include <defaults.h>
 #include "Cell.h"
-#include "builtins.h"
 #include "defun.h"
 #include "error.h"
 #include "errwarn.h"
@@ -47,7 +48,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "pt-stmt.h"
 #include "pt-walk.h"
 #include "symtab.h"
-#include "toplev.h"
+#include "interpreter.h"
 #include "unwind-prot.h"
 #include "utils.h"
 #include "parse.h"
@@ -140,12 +141,16 @@ octave_user_script::do_multi_index_op (int nargout,
 
       frame.add_fcn (octave_call_stack::pop);
 
-      frame.protect_var (tree_evaluator::statement_context);
-      tree_evaluator::statement_context = tree_evaluator::script;
+      // Update line number even if debugging.
+      frame.protect_var (Vtrack_line_num);
+      Vtrack_line_num = true;
+
+      frame.protect_var (octave::tree_evaluator::statement_context);
+      octave::tree_evaluator::statement_context = octave::tree_evaluator::script;
 
       BEGIN_PROFILER_BLOCK (octave_user_script)
 
-        cmd_list->accept (*current_evaluator);
+        cmd_list->accept (*octave::current_evaluator);
 
       END_PROFILER_BLOCK
 
@@ -503,6 +508,9 @@ octave_user_function::do_multi_index_op (int nargout,
   int context = active_context ();
 
   octave_call_stack::push (this, local_scope, context);
+
+  frame.protect_var (Vtrack_line_num);
+  Vtrack_line_num = true;    // update source line numbers, even if debugging
   frame.add_fcn (octave_call_stack::pop);
 
   if (call_depth > 0 && ! is_anonymous_function ())
@@ -576,8 +584,8 @@ octave_user_function::do_multi_index_op (int nargout,
 
   // Evaluate the commands that make up the function.
 
-  frame.protect_var (tree_evaluator::statement_context);
-  tree_evaluator::statement_context = tree_evaluator::function;
+  frame.protect_var (octave::tree_evaluator::statement_context);
+  octave::tree_evaluator::statement_context = octave::tree_evaluator::function;
 
   BEGIN_PROFILER_BLOCK (octave_user_function)
 
@@ -591,7 +599,7 @@ octave_user_function::do_multi_index_op (int nargout,
                   : expr->rvalue (nargout));
     }
   else
-    cmd_list->accept (*current_evaluator);
+    cmd_list->accept (*octave::current_evaluator);
 
   END_PROFILER_BLOCK
 
@@ -838,7 +846,7 @@ Programming Note: @code{nargin} does not work on compiled functions
 
       if (! fcn)
         {
-          // Matlab gives up for histc, so maybe it's ok that that we
+          // Matlab gives up for histc, so maybe it's ok that we
           // give up sometimes too?
 
           std::string type = fcn_val->type_name ();
@@ -957,7 +965,7 @@ returns -1 for all anonymous functions.
 
       if (! fcn)
         {
-          // Matlab gives up for histc, so maybe it's ok that that we
+          // Matlab gives up for histc, so maybe it's ok that we
           // give up sometimes too?
 
           std::string type = fcn_val->type_name ();

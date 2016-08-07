@@ -40,38 +40,52 @@ convolve_2d (const T *a, octave_idx_type ma, octave_idx_type na,
              T *c, bool inner);
 
 // Forward instances to our Fortran implementations.
-#define FORWARD_IMPL(T,R,f,F) \
-extern "C" \
-F77_RET_T \
-F77_FUNC (f##conv2o, F##CONV2O) (const octave_idx_type&, \
-                                 const octave_idx_type&, \
-                                 const T*, const octave_idx_type&, \
-                                 const octave_idx_type&, const R*, T *); \
-\
-extern "C" \
-F77_RET_T \
-F77_FUNC (f##conv2i, F##CONV2I) (const octave_idx_type&, \
-                                 const octave_idx_type&, \
-                                 const T*, const octave_idx_type&, \
-                                 const octave_idx_type&, const R*, T *); \
-\
-template <> void \
-convolve_2d<T, R> (const T *a, octave_idx_type ma, octave_idx_type na, \
-                   const R *b, octave_idx_type mb, octave_idx_type nb, \
-                   T *c, bool inner) \
-{ \
-  if (inner) \
-    F77_XFCN (f##conv2i, F##CONV2I, (ma, na, a, mb, nb, b, c)); \
-  else \
-    F77_XFCN (f##conv2o, F##CONV2O, (ma, na, a, mb, nb, b, c)); \
-}
+#define FORWARD_IMPL(T_CXX, R_CXX, T, R, T_CAST, T_CONST_CAST,          \
+                     R_CONST_CAST, f, F)                                \
+  extern "C"                                                            \
+  F77_RET_T                                                             \
+  F77_FUNC (f##conv2o, F##CONV2O) (const F77_INT&,                      \
+                                   const F77_INT&,                      \
+                                   const T*, const F77_INT&,            \
+                                   const F77_INT&, const R*, T *);      \
+                                                                        \
+  extern "C"                                                            \
+  F77_RET_T                                                             \
+  F77_FUNC (f##conv2i, F##CONV2I) (const F77_INT&,                      \
+                                   const F77_INT&,                      \
+                                   const T*, const F77_INT&,            \
+                                   const F77_INT&, const R*, T *);      \
+                                                                        \
+  template <> void                                                      \
+  convolve_2d<T_CXX, R_CXX> (const T_CXX *a, F77_INT ma, F77_INT na,    \
+                             const R_CXX *b, F77_INT mb, F77_INT nb,    \
+                             T_CXX *c, bool inner)                      \
+  {                                                                     \
+    if (inner)                                                          \
+      F77_XFCN (f##conv2i, F##CONV2I, (ma, na, T_CONST_CAST (a),        \
+                                       mb, nb, R_CONST_CAST (b),        \
+                                       T_CAST (c)));                    \
+    else                                                                \
+      F77_XFCN (f##conv2o, F##CONV2O, (ma, na, T_CONST_CAST (a),        \
+                                       mb, nb, R_CONST_CAST (b),        \
+                                       T_CAST (c)));                    \
+  }
 
-FORWARD_IMPL (double, double, d, D)
-FORWARD_IMPL (float, float, s, S)
-FORWARD_IMPL (Complex, Complex, z, Z)
-FORWARD_IMPL (FloatComplex, FloatComplex, c, C)
-FORWARD_IMPL (Complex, double, zd, ZD)
-FORWARD_IMPL (FloatComplex, float, cs, CS)
+FORWARD_IMPL (double, double, F77_DBLE, F77_DBLE, , , , d, D)
+FORWARD_IMPL (float, float, F77_REAL, F77_REAL, , , , s, S)
+
+FORWARD_IMPL (std::complex<double>, std::complex<double>,
+              F77_DBLE_CMPLX, F77_DBLE_CMPLX, F77_DBLE_CMPLX_ARG,
+              F77_CONST_DBLE_CMPLX_ARG, F77_CONST_DBLE_CMPLX_ARG, z, Z)
+FORWARD_IMPL (std::complex<float>, std::complex<float>,
+              F77_CMPLX, F77_CMPLX, F77_CMPLX_ARG,
+              F77_CONST_CMPLX_ARG, F77_CONST_CMPLX_ARG, c, C)
+
+FORWARD_IMPL (std::complex<double>, double,
+              F77_DBLE_CMPLX, F77_DBLE, F77_DBLE_CMPLX_ARG,
+              F77_CONST_DBLE_CMPLX_ARG, , zd, ZD)
+FORWARD_IMPL (std::complex<float>, float, F77_CMPLX, F77_REAL, F77_CMPLX_ARG,
+              F77_CONST_CMPLX_ARG, , cs, CS)
 
 template <typename T, typename R>
 void convolve_nd (const T *a, const dim_vector& ad, const dim_vector& acd,
@@ -150,23 +164,25 @@ convolve (const MArray<T>& a, const MArray<R>& b,
   return c;
 }
 
-#define CONV_DEFS(TPREF, RPREF) \
-TPREF ## NDArray \
-convn (const TPREF ## NDArray& a, const RPREF ## NDArray& b, convn_type ct) \
-{ \
-  return convolve (a, b, ct); \
-} \
-TPREF ## Matrix \
-convn (const TPREF ## Matrix& a, const RPREF ## Matrix& b, convn_type ct) \
-{ \
-  return convolve (a, b, ct); \
-} \
-TPREF ## Matrix \
-convn (const TPREF ## Matrix& a, const RPREF ## ColumnVector& c, \
-       const RPREF ## RowVector& r, convn_type ct) \
-{ \
-  return convolve (a, c * r, ct); \
-}
+#define CONV_DEFS(TPREF, RPREF)                                         \
+  TPREF ## NDArray                                                      \
+  convn (const TPREF ## NDArray& a, const RPREF ## NDArray& b,          \
+         convn_type ct)                                                 \
+  {                                                                     \
+    return convolve (a, b, ct);                                         \
+  }                                                                     \
+  TPREF ## Matrix                                                       \
+  convn (const TPREF ## Matrix& a, const RPREF ## Matrix& b,            \
+         convn_type ct)                                                 \
+  {                                                                     \
+    return convolve (a, b, ct);                                         \
+  }                                                                     \
+  TPREF ## Matrix                                                       \
+  convn (const TPREF ## Matrix& a, const RPREF ## ColumnVector& c,      \
+         const RPREF ## RowVector& r, convn_type ct)                    \
+  {                                                                     \
+    return convolve (a, c * r, ct);                                     \
+  }
 
 CONV_DEFS ( , )
 CONV_DEFS (Complex, )

@@ -36,6 +36,7 @@ BUILT_SOURCES += \
   libinterp/corefcn/graphics.h \
   libinterp/corefcn/mxarray.h \
   libinterp/corefcn/oct-tex-parser.h \
+  libinterp/corefcn/oct-tex-symbols.cc \
   libinterp/parse-tree/oct-gperf.h \
   libinterp/parse-tree/oct-parse.h \
   libinterp/version.h
@@ -79,17 +80,17 @@ LIBINTERP_BUILT_NODISTFILES = \
   libinterp/builtins.cc
 
 libinterp_EXTRA_DIST += \
-  $(srcdir)/libinterp/DOCSTRINGS \
+  libinterp/DOCSTRINGS \
   libinterp/build-env.in.cc \
   libinterp/build-env-features.sh \
-  libinterp/find-defun-files.sh \
+  libinterp/deprecated-config.h \
   libinterp/gendoc.pl \
   libinterp/genprops.awk \
   libinterp/liboctinterp-build-info.in.cc \
   libinterp/mk-errno-list \
   libinterp/mk-pkg-add \
-  libinterp/mkbuiltins \
   libinterp/mkops \
+  libinterp/op-kw-docs \
   libinterp/version.in.h \
   $(LIBINTERP_BUILT_DISTFILES)
 
@@ -187,20 +188,20 @@ libinterp_liboctinterp_la_LDFLAGS = \
 ULT_DIST_SRC := \
   $(filter-out $(GENERATED_PARSER_FILES), $(DIST_SRC)) $(ULT_PARSER_SRC)
 
-FOUND_DEFUN_FILES := \
-  $(shell $(SHELL) $(srcdir)/libinterp/find-defun-files.sh "$(srcdir)" $(ULT_DIST_SRC))
+LIBINTERP_FOUND_DEFUN_FILES := \
+  $(shell $(SHELL) $(srcdir)/build-aux/find-defun-files.sh "$(srcdir)" $(ULT_DIST_SRC))
 
-SRC_DEFUN_FILES = $(OPT_HANDLERS) $(FOUND_DEFUN_FILES)
+BUILT_IN_DEFUN_FILES = $(OPT_HANDLERS) $(LIBINTERP_FOUND_DEFUN_FILES)
 
 DLDFCN_DEFUN_FILES = $(DLDFCN_SRC)
 
 if AMCOND_ENABLE_DYNAMIC_LINKING
-  DEFUN_FILES = $(SRC_DEFUN_FILES)
+  DEFUN_FILES = $(BUILT_IN_DEFUN_FILES)
 else
-  DEFUN_FILES = $(SRC_DEFUN_FILES) $(DLDFCN_DEFUN_FILES)
+  DEFUN_FILES = $(BUILT_IN_DEFUN_FILES) $(DLDFCN_DEFUN_FILES)
 endif
 
-ALL_DEFUN_FILES = $(SRC_DEFUN_FILES) $(DLDFCN_DEFUN_FILES)
+LIBINTERP_DEFUN_FILES = $(BUILT_IN_DEFUN_FILES) $(DLDFCN_DEFUN_FILES)
 
 ## FIXME: The following two variables are deprecated and should be removed
 ##        in Octave version 3.12.
@@ -221,9 +222,14 @@ nobase_libinterptests_DATA = $(LIBINTERP_TST_FILES)
 .yy.cc:
 
 ## The ylwrap script always updates the parser source file so we use a temporary file
-## name and our own move-if-change rule for that file.
+## name and our own move-if-change rule for that file.  Additionally fix up the file
+## name comments that bison writes into the source file.
 %.cc %.h : %.yy
-	$(AM_V_YACC)$(am__skipyacc) $(SHELL) $(YLWRAP) $< y.tab.c $*.cc-t y.tab.h $*.h y.output $*.output -- $(YACCCOMPILE) && $(call move_if_change_rule,$*.cc-t,$*.cc)
+	$(AM_V_YACC)$(am__skipyacc) rm -f $*.cc-t $*.cc-tt && \
+	$(SHELL) $(YLWRAP) $< y.tab.c $*.cc-t y.tab.h $*.h y.output $*.output -- $(YACCCOMPILE) && \
+	$(SED) 's|"$*\.cc-t"|"$*.cc"|g' $*.cc-t > $*.cc-tt && \
+	mv $*.cc-tt $*.cc-t && \
+	$(call move_if_change_rule,$*.cc-t,$*.cc)
 
 ## Special rules:
 ## Mostly for sources which must be built before rest of compilation.
@@ -252,14 +258,14 @@ else
   mkbuiltins_dld_opt = --disable-dl
 endif
 
-libinterp/builtins.cc: $(ALL_DEFUN_FILES) libinterp/mkbuiltins | libinterp/$(octave_dirstamp)
+libinterp/builtins.cc: $(LIBINTERP_DEFUN_FILES) build-aux/mk-builtins.sh | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
-	$(SHELL) $(srcdir)/libinterp/mkbuiltins "$(srcdir)" --source $(mkbuiltins_dld_opt) $(ALL_DEFUN_FILES) > $@-t && \
+	$(SHELL) $(srcdir)/build-aux/mk-builtins.sh --source $(mkbuiltins_dld_opt) "$(srcdir)" -- $(LIBINTERP_DEFUN_FILES) > $@-t && \
 	mv $@-t $@
 
-libinterp/builtin-defun-decls.h: $(ALL_DEFUN_FILES) libinterp/mkbuiltins | libinterp/$(octave_dirstamp)
+libinterp/builtin-defun-decls.h: $(LIBINTERP_DEFUN_FILES) build-aux/mk-builtins.sh | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t && \
-	$(SHELL) $(srcdir)/libinterp/mkbuiltins "$(srcdir)" --header $(mkbuiltins_dld_opt) $(ALL_DEFUN_FILES) > $@-t && \
+	$(SHELL) $(srcdir)/build-aux/mk-builtins.sh --header $(mkbuiltins_dld_opt) "$(srcdir)" -- $(LIBINTERP_DEFUN_FILES) > $@-t && \
 	$(simple_move_if_change_rule)
 
 if AMCOND_ENABLE_DYNAMIC_LINKING
@@ -271,11 +277,11 @@ libinterp/dldfcn/PKG_ADD: $(DLDFCN_DEFUN_FILES) libinterp/mk-pkg-add | libinterp
 	mv $@-t $@
 endif
 
-DOCSTRING_FILES += $(srcdir)/libinterp/DOCSTRINGS
+DOCSTRING_FILES += libinterp/DOCSTRINGS
 
-$(srcdir)/libinterp/DOCSTRINGS: $(ALL_DEFUN_FILES) | libinterp/$(octave_dirstamp)
+libinterp/DOCSTRINGS: $(LIBINTERP_DEFUN_FILES) libinterp/op-kw-docs | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f libinterp/DOCSTRINGS-t && \
-	$(PERL) $(srcdir)/libinterp/gendoc.pl "$(srcdir)" $(ALL_DEFUN_FILES) > libinterp/DOCSTRINGS-t && \
+	( $(PERL) $(srcdir)/libinterp/gendoc.pl "$(srcdir)" $(LIBINTERP_DEFUN_FILES); cat $(srcdir)/libinterp/op-kw-docs ) > libinterp/DOCSTRINGS-t && \
 	$(call move_if_change_rule,libinterp/DOCSTRINGS-t,$@)
 
 OCTAVE_INTERPRETER_TARGETS += \
@@ -284,9 +290,9 @@ OCTAVE_INTERPRETER_TARGETS += \
 
 DIRSTAMP_FILES += libinterp/$(octave_dirstamp)
 
-install-data-hook: install-oct install-built-in-docstrings
+install-data-hook: install-oct install-built-in-docstrings install-deprecated-config-h
 
-uninstall-local: uninstall-oct uninstall-built-in-docstrings
+uninstall-local: uninstall-oct uninstall-built-in-docstrings uninstall-deprecated-config-h
 
 if AMCOND_ENABLE_DYNAMIC_LINKING
 install-oct:
@@ -318,14 +324,23 @@ uninstall-oct:
 endif
 .PHONY: install-oct uninstall-oct
 
-install-built-in-docstrings:
+install-built-in-docstrings: libinterp/DOCSTRINGS
 	$(MKDIR_P) $(DESTDIR)$(octetcdir)
-	$(INSTALL_DATA) $(srcdir)/libinterp/DOCSTRINGS $(DESTDIR)$(octetcdir)/built-in-docstrings
+	$(INSTALL_DATA) $< $(DESTDIR)$(octetcdir)/built-in-docstrings
 .PHONY: install-built-in-docstrings
 
 uninstall-built-in-docstrings:
 	rm -f $(DESTDIR)$(octetcdir)/built-in-docstrings
 .PHONY: uninstall-built-in-docstrings
+
+install-deprecated-config-h: libinterp/deprecated-config.h
+	$(MKDIR_P) $(DESTDIR)$(octincludedir)
+	$(INSTALL_DATA) $< $(DESTDIR)$(octincludedir)/config.h
+.PHONY: install-deprecated-config-h
+
+uninstall-deprecated-config-h:
+	rm -f $(DESTDIR)$(octincludedir)/config.h
+.PHONY: uninstall-deprecated-config-h
 
 EXTRA_DIST += $(libinterp_EXTRA_DIST)
 
@@ -338,7 +353,7 @@ libinterp_CLEANFILES += \
   libinterp/parse-tree/oct-parse.output
 
 libinterp_MAINTAINERCLEANFILES += \
-  $(srcdir)/libinterp/DOCSTRINGS \
+  libinterp/DOCSTRINGS \
   $(LIBINTERP_BUILT_DISTFILES)
 
 BUILT_DISTFILES += $(LIBINTERP_BUILT_DISTFILES)

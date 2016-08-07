@@ -668,7 +668,6 @@ else
   AC_MSG_ERROR([A Fortran compiler is required])
 fi
 
-## Determine calling conventions for Fortran compiler
 AC_F77_LIBRARY_LDFLAGS
 AC_F77_DUMMY_MAIN
 AC_F77_WRAPPERS
@@ -706,6 +705,34 @@ case $canonical_host_type in
   ;;
 esac
 
+if test $ac_cv_f77_compiler_gnu = yes; then
+  FORTRAN_CALLING_CONVENTION=gfortran
+else
+  FORTRAN_CALLING_CONVENTION=unknown
+fi
+AC_ARG_ENABLE([fortran-calling-convention],
+  [AS_HELP_STRING([--enable-fortran-calling-convention=OPTION],
+    [Select C++ to Fortran calling convention.  "gfortran" should be detected automatically.  Other options are "cray", "visual-fortran", or "f2c".])],
+  [FORTRAN_CALLING_CONVENTION="$enableval"], [])
+
+case "$FORTRAN_CALLING_CONVENTION" in
+  gfortran)
+    AC_DEFINE(F77_USES_GFORTRAN_CALLING_CONVENTION, 1, [Define to 1 if calling Fortran from C++ should use the gfortran calling convention.])
+  ;;
+  cray)
+    AC_DEFINE(F77_USES_CRAY_CALLING_CONVENTION, 1, [Define to 1 if calling Fortran from C++ should use the Cray Fortran calling convention.])
+  ;;
+  visual-fortran)
+    AC_DEFINE(F77_USES_VISUAL_FORTRAN_CALLING_CONVENTION, 1, [Define to 1 if calling Fortran from C++ should use the Visual Fortran calling convention.])
+  ;;
+  f2c)
+    AC_DEFINE(F77_USES_F2C_CALLING_CONVENTION, 1, [Define to 1 if calling Fortran from C++ should use the f2c calling convention.])
+  ;;
+  *)
+    AC_MSG_ERROR([to build Octave, the C++ to Fortran calling convention must be known.])
+  ;;
+esac
+
 if test -n "$FFLAGS"; then
   AC_MSG_NOTICE([defining FFLAGS to be $FFLAGS])
 fi
@@ -715,7 +742,7 @@ AC_SUBST(F77_APPEND_UNDERSCORE)
 AC_SUBST(F77_APPEND_EXTRA_UNDERSCORE)
 
 if test -z "$F77"; then
-  AC_MSG_ERROR([in order to build Octave, you must have a compatible Fortran compiler or wrapper script for f2c that functions as a Fortran compiler installed and in your path.  See the file INSTALL for more information.])
+  AC_MSG_ERROR([to build Octave, you must have a compatible Fortran compiler or wrapper script for f2c that functions as a Fortran compiler installed and in your path.  See the file INSTALL for more information.])
 fi
 
 OCTAVE_CHECK_FUNC_FORTRAN_ISNAN
@@ -756,7 +783,7 @@ if test $octave_cv_sizeof_fortran_integer = no; then
       OCTAVE_CHECK_SIZEOF_FORTRAN_INTEGER
     fi
     if test $octave_cv_sizeof_fortran_integer = no; then
-      AC_MSG_ERROR([in order to build Octave with 64-bit indexing support your Fortran compiler must have an option for setting the default integer size to 8 bytes.  See the file INSTALL for more information.])
+      AC_MSG_ERROR([to build Octave with 64-bit indexing support your Fortran compiler must have an option for setting the default integer size to 8 bytes.  See the file INSTALL for more information.])
     fi
   else
     AC_MSG_ERROR([your Fortran compiler must have an option to make integers the same size as octave_idx_type ($OCTAVE_IDX_TYPE).  See the file INSTALL for more information.])
@@ -837,7 +864,15 @@ if test -z "$warn_z"; then
   AC_DEFINE(HAVE_ZLIB, 1, [Define to 1 if ZLIB is available.])
 fi
 
- ### Check for the LLVM library
+
+### Check for BZIP2 library.
+
+OCTAVE_CHECK_LIB(bz2, BZIP2,
+  [BZIP2 library not found.  Octave will not be able to compress or decompress bzip2 files.],
+  [bzlib.h], [BZ2_bzCompressInit])
+
+
+### Check for the LLVM library
 
 ENABLE_JIT=no
 AC_ARG_ENABLE([jit],
@@ -1071,76 +1106,22 @@ CPPFLAGS="$save_CPPFLAGS"
 
 ### Check for sndfile
 
-warn_sndfile="sndfile library fails tests.  The audioinfo, audioread, and audiowrite functions for reading and writing audio files will not be fully functional."
-
-check_sndfile=no
-AC_ARG_WITH([sndfile],
-  [AS_HELP_STRING([--without-sndfile],
-    [don't use sndfile library, disable audio file I/O])],
-  [if test x"$withval" = xno; then
-     warn_sndfile="--without-sndfile specified.  The audioinfo, audioread, and audiowrite functions for reading and writing audio files will not be fully functional."
-   else
-     check_sndfile=yes
-   fi],
-  [check_sndfile=yes])
-
-if test $check_sndfile = yes; then
-  PKG_CHECK_EXISTS([sndfile], [
-    SNDFILE_CPPFLAGS=`$PKG_CONFIG --cflags-only-I sndfile`
-    SNDFILE_LDFLAGS=`$PKG_CONFIG --libs-only-L sndfile`
-    SNDFILE_LIBS=`$PKG_CONFIG --libs-only-l sndfile`
-    OCTAVE_CHECK_LIB_SNDFILE_OK([warn_sndfile=])
-  ])
-fi
-
-if test -z "$warn_sndfile"; then
-  AC_DEFINE(HAVE_SNDFILE, 1, [Define to 1 if sndfile is available.])
-else
-  OCTAVE_CONFIGURE_WARNING([warn_sndfile])
-  SNDFILE_CPPFLAGS=
-  SNDFILE_LDFLAGS=
-  SNDFILE_LIBS=
-fi
-
-AC_SUBST(SNDFILE_CPPFLAGS)
-AC_SUBST(SNDFILE_LDFLAGS)
-AC_SUBST(SNDFILE_LIBS)
+OCTAVE_CHECK_LIB(sndfile, sndfile,
+  [sndfile library not found.  The audioinfo, audioread, and audiowrite functions will be disabled.],
+  [sndfile.h], [sf_open],
+  [], [don't use sndfile library, disable audio file I/O],
+  [warn_sndfile=
+   OCTAVE_CHECK_LIB_SNDFILE_OK(
+    [AC_DEFINE(HAVE_SNDFILE, 1, [Define to 1 if sndfile is available.])],
+    [warn_sndfile="sndfile library found, but does not seem to work properly; disabling audio file I/O functions"])])
 
 ### Check for PortAudio
 
-warn_portaudio="PortAudio library fails tests.  The audioplayer, audiorecorder classes, and audiodevinfo function for audio playback and recording will not be fully functional."
-
-check_portaudio=no
-AC_ARG_WITH([portaudio],
-  [AS_HELP_STRING([--without-portaudio],
-    [don't use PortAudio library, disable audio playback and recording])],
-  [if test x"$withval" = xno; then
-     warn_portaudio="--without-portaudio specified.  The audioplayer, audiorecorder classes, and audiodevinfo function for audio playback and recording will not be fully functional."
-   else
-     check_portaudio=yes
-   fi],
-  [check_portaudio=yes])
-
-if test $check_portaudio = yes; then
-  PKG_CHECK_EXISTS([portaudio-2.0 >= 19], [
-    PORTAUDIO_CPPFLAGS=`$PKG_CONFIG --cflags-only-I portaudio-2.0`
-    PORTAUDIO_LDFLAGS=`$PKG_CONFIG --libs-only-L portaudio-2.0`
-    PORTAUDIO_LIBS=`$PKG_CONFIG --libs-only-l portaudio-2.0`
-    warn_portaudio=
-  ])
-fi
-
-if test -z "$warn_portaudio"; then
-  AC_DEFINE(HAVE_PORTAUDIO, 1, [Define to 1 if PortAudio is available.])
-else
-  OCTAVE_CONFIGURE_WARNING([warn_portaudio])
-  PORTAUDIO_CPPFLAGS=
-  PORTAUDIO_LDFLAGS=
-  PORTAUDIO_LIBS=
-fi
-AC_SUBST(PORTAUDIO_CPPFLAGS)
-AC_SUBST(PORTAUDIO_LDFLAGS)
-AC_SUBST(PORTAUDIO_LIBS)
+OCTAVE_CHECK_LIB(portaudio, PortAudio,
+  [PortAudio library not found.  The audioplayer, audiorecorder, and audiodevinfo functions will be disabled.],
+  [portaudio.h], [Pa_Initialize],
+  [], [don't use PortAudio library, disable audio playback and recording],
+  [], [portaudio-2.0])
 
 ### Check for either of Graphics/ImageMagick++ libraries
 
@@ -1249,8 +1230,8 @@ OCTAVE_HAVE_FRAMEWORK([Carbon],
 if test $have_framework_carbon = yes; then
   AC_DEFINE(HAVE_FRAMEWORK_CARBON, 1,
     [Define to 1 if framework CARBON is available.])
-  CARBON_LIBS="-Wl,-framework -Wl,Carbon"
-  AC_MSG_NOTICE([adding -Wl,-framework -Wl,Carbon to CARBON_LIBS])
+  CARBON_LIBS="-framework Carbon"
+  AC_MSG_NOTICE([adding -framework Carbon to CARBON_LIBS])
   AC_SUBST(CARBON_LIBS)
 fi
 
@@ -2406,7 +2387,6 @@ AC_CHECK_HEADERS([sys/select.h sys/stropts.h termcap.h])
 AC_LANG_PUSH(C++)
 
 AC_CHECK_HEADERS([sstream])
-OCTAVE_UNORDERED_MAP_HEADERS
 
 AC_LANG_POP(C++)
 
@@ -3395,6 +3375,9 @@ Octave is now configured for $canonical_host_type
   ARPACK LDFLAGS:              $ARPACK_LDFLAGS
   ARPACK libraries:            $ARPACK_LIBS
   BLAS libraries:              $BLAS_LIBS
+  BZ2 CPPFLAGS:                $BZ2_CPPFLAGS
+  BZ2 LDFLAGS:                 $BZ2_LDFLAGS
+  BZ2 libraries:               $BZ2_LIBS
   CAMD CPPFLAGS:               $CAMD_CPPFLAGS
   CAMD LDFLAGS:                $CAMD_LDFLAGS
   CAMD libraries:              $CAMD_LIBS

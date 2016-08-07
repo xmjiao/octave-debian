@@ -26,6 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "oct-shlib.h"
 
+#include "call-stack.h"
 #include <defaults.h>
 #include "dynamic-ld.h"
 #include "error.h"
@@ -34,7 +35,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-mex-fcn.h"
 #include "ov.h"
 #include "profiler.h"
-#include "toplev.h"
+#include "interpreter.h"
 #include "unwind-prot.h"
 
 

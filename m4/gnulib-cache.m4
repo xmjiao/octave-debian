@@ -27,7 +27,7 @@
 
 
 # Specification in the form of a command-line invocation:
-#   gnulib-tool --import --local-dir=gl --lib=libgnu --source-base=libgnu --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=build-aux --no-conditional-dependencies --libtool --macro-prefix=gl areadlink base64 canonicalize chdir close closedir crypto/md2 crypto/md4 crypto/md5 crypto/sha1 crypto/sha256 crypto/sha512 dup2 fcntl filemode fnmatch fpucw fseek ftell ftruncate getcwd gethostname getopt-gnu getrusage gettimeofday glob isatty largefile link lstat malloc-gnu mkdir mkfifo mkostemp mktime nanosleep nproc open opendir pipe-posix progname putenv readdir rmdir select sigaction signal sigprocmask stat std-gnu11 stddef stdio strdup strerror strftime strptime strsignal symlink sys_stat sys_time sys_times sys_wait tempname tmpfile uname unistd unlink unsetenv vasprintf waitpid
+#   gnulib-tool --import --local-dir=gl --lib=libgnu --source-base=libgnu --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=build-aux --no-conditional-dependencies --libtool --macro-prefix=gl areadlink base64 canonicalize chdir close closedir crypto/md2 crypto/md4 crypto/md5 crypto/sha1 crypto/sha256 crypto/sha512 dup2 fcntl filemode fnmatch fpucw frexp frexpf fseek ftell ftruncate getcwd gethostname getopt-gnu getrusage gettimeofday glob isatty largefile link lstat malloc-gnu mkdir mkfifo mkostemp mktime nanosleep nproc open opendir pipe-posix progname putenv readdir rmdir select sigaction signal sigprocmask stat std-gnu11 stddef stdio strdup strerror strftime strptime strsignal symlink sys_stat sys_time sys_times sys_wait tempname tmpfile uname unistd unlink unsetenv vasprintf waitpid
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([gl])
@@ -49,6 +49,8 @@ gl_MODULES([
   filemode
   fnmatch
   fpucw
+  frexp
+  frexpf
   fseek
   ftell
   ftruncate

@@ -35,6 +35,7 @@ Open Source Initiative (www.opensource.org)
 
 #include "oct-locbuf.h"
 
+#include "call-stack.h"
 #include "defun.h"
 #include "error.h"
 #include "errwarn.h"
@@ -46,7 +47,7 @@ Open Source Initiative (www.opensource.org)
 #include "pr-output.h"
 #include "variables.h"
 #include "parse.h"
-#include "toplev.h"
+#include "interpreter.h"
 
 #include "byte-swap.h"
 #include "ls-ascii-helper.h"

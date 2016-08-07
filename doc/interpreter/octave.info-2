@@ -245,28 +245,64 @@ result.
 
  -- : IND = sub2ind (DIMS, I, J)
  -- : IND = sub2ind (DIMS, S1, S2, ..., SN)
-     Convert subscripts to a linear index.
+     Convert subscripts to linear indices.
 
-     The following example shows how to convert the two-dimensional
-     index ‘(2,3)’ of a 3-by-3 matrix to a linear index.  The matrix is
+     Assume the following 3-by-3 matrices.  The left matrix contains the
+     subscript tuples for each matrix element.  Those are converted to
+     linear indices shown in the right matrix.  The matrices are
      linearly indexed moving from one column to next, filling up all
      rows in each column.
 
-          linear_index = sub2ind ([3, 3], 2, 3)
-          ⇒ 8
+          [(1,1), (1,2), (1,3)]     [1, 4, 7]
+          [(2,1), (2,2), (2,3)] ==> [2, 5, 8]
+          [(3,1), (3,2), (3,3)]     [3, 6, 9]
+
+     The following example shows how to convert the two-dimensional
+     indices ‘(2,1)’ and ‘(2,3)’ of a 3-by-3 matrix to a linear index.
+
+          s1 = [2, 2];
+          s2 = [1, 3];
+          ind = sub2ind ([3, 3], s1, s2)
+          ⇒ ind =  2   8
 
      See also: *note ind2sub: XREFind2sub.
 
  -- : [S1, S2, ..., SN] = ind2sub (DIMS, IND)
-     Convert a linear index to subscripts.
+     Convert linear indices to subscripts.
 
-     The following example shows how to convert the linear index ‘8’ in
-     a 3-by-3 matrix into a subscript.  The matrix is linearly indexed
-     moving from one column to next, filling up all rows in each column.
+     Assume the following 3-by-3 matrices.  The left matrix contains the
+     linear indices IND for each matrix element.  Those are converted to
+     subscript tuples shown in the right matrix.  The matrices are
+     linearly indexed moving from one column to next, filling up all
+     rows in each column.
 
-          [r, c] = ind2sub ([3, 3], 8)
-              ⇒ r =  2
-              ⇒ c =  3
+          [1, 4, 7]     [(1,1), (1,2), (1,3)]
+          [2, 5, 8] ==> [(2,1), (2,2), (2,3)]
+          [3, 6, 9]     [(3,1), (3,2), (3,3)]
+
+     The following example shows how to convert the linear indices ‘2’
+     and ‘8’ in a 3-by-3 matrix into a subscripts.
+
+          ind = [2, 8];
+          [r, c] = ind2sub ([3, 3], ind)
+              ⇒ r =  2   2
+              ⇒ c =  1   3
+
+     If the number of subscripts exceeds the number of dimensions, the
+     exceeded dimensions are treated as ‘1’.  On the other hand, if less
+     subscripts than dimensions are provided, the exceeding dimensions
+     are merged.  For clarity see the following examples:
+
+          ind = [2, 8];
+          dims = [3, 3];
+          % same as dims = [3, 3, 1]
+          [r, c, s] = ind2sub (dims, ind)
+              ⇒ r =  2   2
+              ⇒ c =  1   3
+              ⇒ s =  1   1
+          % same as dims = 9
+          r = ind2sub (dims, ind)
+              ⇒ r =  2   8
 
      See also: *note sub2ind: XREFsub2ind.
 
@@ -4277,6 +4313,495 @@ commands from any file.
 
      See also: *note run: XREFrun.
 
+* Menu:
+
+* Publish Octave script files::
+* Publishing Markup::
+
+
+File: octave.info,  Node: Publish Octave script files,  Next: Publishing Markup,  Up: Script Files
+
+11.10.1 Publish Octave script files
+-----------------------------------
+
+The function ‘publish’ provides a dynamic possibility to document your
+script file.  Unlike static documentation, ‘publish’ runs the script
+file, saves any figures and output while running the script, and
+presents them alongside static documentation in a desired output format.
+The static documentation can make use of *note Publishing Markup:: to
+enhance and customize the output.
+
+ -- : publish (FILENAME)
+ -- : publish (FILENAME, OUTPUT_FORMAT)
+ -- : publish (FILENAME, OPTION1, VALUE1, ...)
+ -- : publish (FILENAME, OPTIONS)
+ -- : OUTPUT_FILE = publish (FILENAME, ...)
+
+     Generate reports from Octave script files in several output
+     formats.
+
+     The generated reports consider Publishing Markup in comments, which
+     is explained in detail in the GNU Octave manual.  Assume the
+     following example, using some Publishing Markup, to be the content
+     of a script file named ‘example.m’:
+
+          %% Headline title
+          %
+          % Some *bold*, _italic_, or |monospaced| Text with
+          % a <http://www.octave.org link to *GNU Octave*>.
+          %%
+
+          # "Real" Octave commands to be evaluated
+          sombrero ()
+
+          ## Octave comment style supported as well
+          #
+          # * Bulleted list item 1
+          # * Bulleted list item 2
+          #
+          # # Numbered list item 1
+          # # Numbered list item 2
+
+     To publish this script file, type ‘publish ("example.m")’.
+
+     With only FILENAME given, a HTML report is generated in a
+     subdirectory ‘html’ relative to the current working directory.  The
+     Octave commands are evaluated in a seperate context and any figures
+     created while executing the script file are included in the report.
+     All formatting syntax of FILENAME is treated according to the
+     specified output format and included in the report.
+
+     Using ‘publish (FILENAME, OUTPUT_FORMAT)’ is equivalent to the
+     function call using a structure
+
+          OPTIONS.format = OUTPUT_FORMAT;
+          publish (FILENAME, OPTIONS)
+
+     which is described below.  The same holds for using
+     option-value-pairs
+
+          OPTIONS.OPTION1 = VALUE1;
+          publish (FILENAME, OPTIONS)
+
+     The structure OPTIONS can have the following field names.  If a
+     field name is not specified, the default value is considered:
+
+        • ‘format’ — Output format of the published script file, one of
+
+          ‘html’ (default), ‘doc’, ‘latex’, ‘ppt’, ‘xml’, or ‘pdf’.
+
+          The output formats ‘doc’, ‘ppt’, and ‘xml’ are currently not
+          supported.  To generate a ‘doc’ report, open a generated
+          ‘html’ report with your office suite.
+
+        • ‘outputDir’ — Full path string of a directory, where the
+          generated report will be located.  If no directory is given,
+          the report is generated in a subdirectory ‘html’ relative to
+          the current working directory.
+
+        • ‘stylesheet’ — Not supported, only for Matlab compatibility.
+
+        • ‘createThumbnail’ — Not supported, only for Matlab
+          compatibility.
+
+        • ‘figureSnapMethod’ — Not supported, only for Matlab
+          compatibility.
+
+        • ‘imageFormat’ — Desired format for images produced, while
+          evaluating the code.  The allowed image formats depend on the
+          output format:
+
+             • ‘html’ and ‘xml’ — ‘png’ (default), any other image
+               format supported by Octave
+
+             • ‘latex’ — ‘epsc2’ (default), any other image format
+               supported by Octave
+
+             • ‘pdf’ — ‘jpg’ (default) or ‘bmp’, note Matlab uses ‘bmp’
+               as default
+
+             • ‘doc’ or ‘ppt’ — ‘png’ (default), ‘jpg’, ‘bmp’, or ‘tiff’
+
+        • ‘maxHeight’ and ‘maxWidth’ — Maximum height (width) of the
+          produced images in pixels.  An empty value means no
+          restriction.  Both values have to be set, to work properly.
+
+          ‘[]’ (default), integer value ≥ 0
+
+        • ‘useNewFigure’ — Use a new figure window for figures created
+          by the evaluated code.  This avoids side effects with already
+          opened figure windows.
+
+          ‘true’ (default) or ‘false’
+
+        • ‘evalCode’ — Evaluate code of the Octave source file
+
+          ‘true’ (default) or ‘false’
+
+        • ‘catchError’ — Catch errors while code evaluation and continue
+
+          ‘true’ (default) or ‘false’
+
+        • ‘codeToEvaluate’ — Octave commands that should be evaluated
+          prior to publishing the script file.  These Octave commands do
+          not appear in the generated report.
+
+        • ‘maxOutputLines’ — Maximum number of shown output lines of the
+          code evaluation
+
+          ‘Inf’ (default) or integer value > 0
+
+        • ‘showCode’ — Show the evaluated Octave commands in the
+          generated report
+
+          ‘true’ (default) or ‘false’
+
+     The returned OUTPUT_FILE is a string with the path and file name of
+     the generated report.
+
+     See also: *note grabcode: XREFgrabcode.
+
+   The counterpart to ‘publish’ is ‘grabcode’:
+
+ -- : grabcode (URL)
+ -- : CODE_STR = grabcode (URL)
+
+     Grab by the ‘publish’ function generated HTML reports from Octave
+     script files.
+
+     The input parameter URL must point to a local or remote HTML file
+     with extension ‘.htm’ or ‘.html’ which was generated by the
+     ‘publish’ function.  With any other HTML file this will not work!
+
+     If no return value is given, the grabbed code is saved to a
+     temporary file and opened in the default editor.
+
+     NOTE: You have to save the file at another location with arbitrary
+     name, otherwise any grabbed code will be lost!
+
+     With a return value given, the grabbed code will be returned as
+     string CODE_STR.
+
+     An example:
+
+          publish ("my_script.m");
+          grabcode ("html/my_script.html");
+
+     The example above publishes ‘my_script.m’ by default to
+     ‘html/my_script.html’.  Afterwards this published Octave script is
+     grabbed to edit its content in a new temporary file.
+
+     See also: *note publish: XREFpublish.
+
+
+File: octave.info,  Node: Publishing Markup,  Prev: Publish Octave script files,  Up: Script Files
+
+11.10.2 Publishing Markup
+-------------------------
+
+* Menu:
+
+* Using Publishing Markup in script files::
+* Text formatting::
+* Sections::
+* Preformatted code::
+* Preformatted text::
+* Bulleted lists::
+* Numbered lists::
+* Including file content::
+* Including graphics::
+* Including URLs::
+* Mathematical equations::
+* HTML markup::
+* LaTeX markup::
+
+
+File: octave.info,  Node: Using Publishing Markup in script files,  Next: Text formatting,  Up: Publishing Markup
+
+11.10.2.1 Using Publishing Markup in script files
+.................................................
+
+To use Publishing Markup, start by typing ‘##’ or ‘%%’ at the beginning
+of a new line.  For Matlab compatibility ‘%%’ is treated the same way as
+‘%%’.
+
+   The lines following ‘##’ or ‘%%’ start with only one of either ‘#’ or
+‘%’ followed by at least one space.  These lines are interpreted as
+section.  A section ends with the first line not starting with ‘#’ or
+‘%’ or the end of the document is reached.
+
+   A section starting in the first line of the document, followed by
+another start of a section that might be empty, is interpreted as a
+document title and introduction text.
+
+   See the example below for clarity:
+
+     %% Headline title
+     %
+     % Some *bold*, _italic_, or |monospaced| Text with
+     % a <http://www.octave.org link to GNU Octave>.
+     %%
+
+     # "Real" Octave commands to be evaluated
+     sombrero ()
+
+     ## Octave comment style supported as well
+     #
+     # * Bulleted list item 1
+     # * Bulleted list item 2
+     #
+     # # Numbered list item 1
+     # # Numbered list item 2
+
+
+File: octave.info,  Node: Text formatting,  Next: Sections,  Prev: Using Publishing Markup in script files,  Up: Publishing Markup
+
+11.10.2.2 Text formatting
+.........................
+
+Basic text formatting is supported inside sections, see the example
+given below:
+
+     ##
+     # *bold*, _italic_, or |monospaced| Text
+
+   Additionally two trademark symbols are supported, just embrace the
+letters ‘TM’ or ‘R’.
+
+     ##
+     # (TM) or (R)
+
+
+File: octave.info,  Node: Sections,  Next: Preformatted code,  Prev: Text formatting,  Up: Publishing Markup
+
+11.10.2.3 Sections
+..................
+
+A section is started by typing ‘##’ or ‘%%’ at the beginning of a new
+line.  A section title can be provided by writing it, separated by a
+space, in the first line after ‘##’ or ‘%%’.  Without a section title,
+the section is interpreted as a continuation of the previous section.
+For Matlab compatibility ‘%%’ is treated the same way as ‘%%’.
+
+     some_code ();
+
+     ## Section 1
+     #
+     ## Section 2
+
+     some_code ();
+
+     ##
+     # Still in section 2
+
+     some_code ();
+
+     ### Section 3
+     #
+     #
+
+
+File: octave.info,  Node: Preformatted code,  Next: Preformatted text,  Prev: Sections,  Up: Publishing Markup
+
+11.10.2.4 Preformatted code
+...........................
+
+To write preformatted code inside a section, indent the code by three
+spaces after ‘#’ at the beginning of each line and leave the lines above
+and below the code blank, except for ‘#’ at the beginning of those
+lines.
+
+     ##
+     # This is a syntax highlighted for-loop:
+     #
+     #   for i = 1:5
+     #     disp (i);
+     #   endfor
+     #
+     # And more usual text.
+
+
+File: octave.info,  Node: Preformatted text,  Next: Bulleted lists,  Prev: Preformatted code,  Up: Publishing Markup
+
+11.10.2.5 Preformatted text
+...........................
+
+To write preformatted text inside a section, indent the code by two
+spaces after ‘#’ at the beginning of each line and leave the lines above
+and below the preformatted text blank, except for ‘#’ at the beginning
+of those lines.
+
+     ##
+     # This following text is preformatted:
+     #
+     #  "To be, or not to be: that is the question:
+     #  Whether 'tis nobler in the mind to suffer
+     #  The slings and arrows of outrageous fortune,
+     #  Or to take arms against a sea of troubles,
+     #  And by opposing end them? To die: to sleep;"
+     #
+     #  --"Hamlet" by W. Shakespeare
+
+
+File: octave.info,  Node: Bulleted lists,  Next: Numbered lists,  Prev: Preformatted text,  Up: Publishing Markup
+
+11.10.2.6 Bulleted lists
+........................
+
+To create a bulleted list, type
+
+     ##
+     #
+     # * Bulleted list item 1
+     # * Bulleted list item 2
+     #
+
+   to get output like
+
+   • Bulleted list item 1
+   • Bulleted list item 2
+
+   Notice the blank lines, except for the ‘#’ or ‘%’ before and after
+the bulleted list!
+
+
+File: octave.info,  Node: Numbered lists,  Next: Including file content,  Prev: Bulleted lists,  Up: Publishing Markup
+
+11.10.2.7 Numbered lists
+........................
+
+To create a numbered list, type
+
+     ##
+     #
+     # # Numbered list item 1
+     # # Numbered list item 2
+     #
+
+   to get output like
+
+  1. Numbered list item 1
+  2. Numbered list item 2
+
+   Notice the blank lines, except for the ‘#’ or ‘%’ before and after
+the numbered list!
+
+
+File: octave.info,  Node: Including file content,  Next: Including graphics,  Prev: Numbered lists,  Up: Publishing Markup
+
+11.10.2.8 Including file content
+................................
+
+To include the content of an external file, e.g.  a file called
+‘my_function.m’ at the same location as the published Octave script, use
+the following syntax to include it with Octave syntax highlighting.
+
+   Alternatively, you can write the full or relative path to the file.
+
+     ##
+     #
+     # <include>my_function.m</include>
+     #
+     # <include>/full/path/to/my_function.m</include>
+     #
+     # <include>../relative/path/to/my_function.m</include>
+     #
+
+
+File: octave.info,  Node: Including graphics,  Next: Including URLs,  Prev: Including file content,  Up: Publishing Markup
+
+11.10.2.9 Including graphics
+............................
+
+To include external graphics, e.g.  a graphic called ‘my_graphic.png’ at
+the same location as the published Octave script, use the following
+syntax.
+
+   Alternatively, you can write the full path to the graphic.
+
+     ##
+     #
+     # <<my_graphic.png>>
+     #
+     # <</full/path/to/my_graphic.png>>
+     #
+     # <<../relative/path/to/my_graphic.png>>
+     #
+
+
+File: octave.info,  Node: Including URLs,  Next: Mathematical equations,  Prev: Including graphics,  Up: Publishing Markup
+
+11.10.2.10 Including URLs
+.........................
+
+Basically, a URL is written between an opening ‘<’ and a closing ‘>’
+angle.
+
+     ##
+     # <http://www.octave.org>
+
+   Text that is within these angles and separated by at least one space
+from the URL is a displayed text for the link.
+
+     ##
+     # <http://www.octave.org GNU Octave>
+
+   A link starting with ‘<octave:’ followed by the name of a GNU Octave
+function, optionally with a displayed text, results in a link to the
+online GNU Octave documentations function index.
+
+     ##
+     # <octave:DISP The display function>
+
+
+File: octave.info,  Node: Mathematical equations,  Next: HTML markup,  Prev: Including URLs,  Up: Publishing Markup
+
+11.10.2.11 Mathematical equations
+.................................
+
+One can insert LaTeX inline math, surrounded by single ‘$’ signs, or
+displayed math, surrounded by double ‘$$’ signs, directly inside
+sections.
+
+     ##
+     # Some shorter inline equation $e^{ix} = \cos x + i\sin x$.
+     #
+     # Or more complicated formulas as displayed math:
+     # $$e^x = \lim_{n\rightarrow\infty}\left(1+\dfrac{x}{n}\right)^{n}.$$
+
+
+File: octave.info,  Node: HTML markup,  Next: LaTeX markup,  Prev: Mathematical equations,  Up: Publishing Markup
+
+11.10.2.12 HTML markup
+......................
+
+If the published output is a HTML report, you can insert HTML markup,
+that is only visible in this kind of output.
+
+     ##
+     # <html>
+     # <table style="border:1px solid black;">
+     # <tr><td>1</td><td>2</td></tr>
+     # <tr><td>3</td><td>3</td></tr>
+     # </html>
+
+
+File: octave.info,  Node: LaTeX markup,  Prev: HTML markup,  Up: Publishing Markup
+
+11.10.2.13 LaTeX markup
+.......................
+
+If the published output is a LaTeX or PDF report, you can insert LaTeX
+markup, that is only visible in this kind of output.
+
+     ##
+     # <latex>
+     # Some output only visible in \LaTeX or PDF reports.
+     # \begin{equation}
+     # e^x = \lim\limits_{n\rightarrow\infty}\left(1+\dfrac{x}{n}\right)^{n}
+     # \end{equation}
+     # </latex>
+
 
 File: octave.info,  Node: Function Handles Anonymous Functions Inline Functions,  Next: Commands,  Prev: Script Files,  Up: Functions and Scripts
 
@@ -4372,7 +4897,7 @@ list.  If there are no arguments, you must use an empty argument list
      additional fields.
 
      *Warning:* ‘functions’ is provided for debugging purposes only.
-     It’s behavior may change in the future and programs should not
+     Its behavior may change in the future and programs should not
      depend on a particular output.
 
  -- : func2str (FCN_HANDLE)
@@ -7687,321 +8212,4 @@ of data.
 * Menu:
 
 * Saving Data on Unexpected Exits::
-
-
-File: octave.info,  Node: Saving Data on Unexpected Exits,  Up: Simple File I/O
-
-14.1.3.1 Saving Data on Unexpected Exits
-........................................
-
-If Octave for some reason exits unexpectedly it will by default save the
-variables available in the workspace to a file in the current directory.
-By default this file is named ‘octave-workspace’ and can be loaded into
-memory with the ‘load’ command.  While the default behavior most often
-is reasonable it can be changed through the following functions.
-
- -- : VAL = crash_dumps_octave_core ()
- -- : OLD_VAL = crash_dumps_octave_core (NEW_VAL)
- -- : crash_dumps_octave_core (NEW_VAL, "local")
-     Query or set the internal variable that controls whether Octave
-     tries to save all current variables to the file ‘octave-workspace’
-     if it crashes or receives a hangup, terminate or similar signal.
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note octave_core_file_limit: XREFoctave_core_file_limit,
-     *note octave_core_file_name: XREFoctave_core_file_name, *note
-     octave_core_file_options: XREFoctave_core_file_options.
-
- -- : VAL = sighup_dumps_octave_core ()
- -- : OLD_VAL = sighup_dumps_octave_core (NEW_VAL)
- -- : sighup_dumps_octave_core (NEW_VAL, "local")
-     Query or set the internal variable that controls whether Octave
-     tries to save all current variables to the file ‘octave-workspace’
-     if it receives a hangup signal.
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
- -- : VAL = sigterm_dumps_octave_core ()
- -- : OLD_VAL = sigterm_dumps_octave_core (NEW_VAL)
- -- : sigterm_dumps_octave_core (NEW_VAL, "local")
-     Query or set the internal variable that controls whether Octave
-     tries to save all current variables to the file ‘octave-workspace’
-     if it receives a terminate signal.
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
- -- : VAL = octave_core_file_options ()
- -- : OLD_VAL = octave_core_file_options (NEW_VAL)
- -- : octave_core_file_options (NEW_VAL, "local")
-     Query or set the internal variable that specifies the options used
-     for saving the workspace data if Octave aborts.
-
-     The value of ‘octave_core_file_options’ should follow the same
-     format as the options for the ‘save’ function.  The default value
-     is Octave’s binary format.
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note crash_dumps_octave_core:
-     XREFcrash_dumps_octave_core, *note octave_core_file_name:
-     XREFoctave_core_file_name, *note octave_core_file_limit:
-     XREFoctave_core_file_limit.
-
- -- : VAL = octave_core_file_limit ()
- -- : OLD_VAL = octave_core_file_limit (NEW_VAL)
- -- : octave_core_file_limit (NEW_VAL, "local")
-     Query or set the internal variable that specifies the maximum
-     amount of memory (in kilobytes) of the top-level workspace that
-     Octave will attempt to save when writing data to the crash dump
-     file (the name of the file is specified by OCTAVE_CORE_FILE_NAME).
-
-     If OCTAVE_CORE_FILE_OPTIONS flags specify a binary format, then
-     OCTAVE_CORE_FILE_LIMIT will be approximately the maximum size of
-     the file.  If a text file format is used, then the file could be
-     much larger than the limit.  The default value is -1 (unlimited)
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note crash_dumps_octave_core:
-     XREFcrash_dumps_octave_core, *note octave_core_file_name:
-     XREFoctave_core_file_name, *note octave_core_file_options:
-     XREFoctave_core_file_options.
-
- -- : VAL = octave_core_file_name ()
- -- : OLD_VAL = octave_core_file_name (NEW_VAL)
- -- : octave_core_file_name (NEW_VAL, "local")
-     Query or set the internal variable that specifies the name of the
-     file used for saving data from the top-level workspace if Octave
-     aborts.
-
-     The default value is "octave-workspace"
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note crash_dumps_octave_core:
-     XREFcrash_dumps_octave_core, *note octave_core_file_name:
-     XREFoctave_core_file_name, *note octave_core_file_options:
-     XREFoctave_core_file_options.
-
-
-File: octave.info,  Node: C-Style I/O Functions,  Prev: Basic Input and Output,  Up: Input and Output
-
-14.2 C-Style I/O Functions
-==========================
-
-Octave’s C-style input and output functions provide most of the
-functionality of the C programming language’s standard I/O library.  The
-argument lists for some of the input functions are slightly different,
-however, because Octave has no way of passing arguments by reference.
-
-   In the following, FILE refers to a filename and ‘fid’ refers to an
-integer file number, as returned by ‘fopen’.
-
-   There are three files that are always available.  Although these
-files can be accessed using their corresponding numeric file ids, you
-should always use the symbolic names given in the table below, since it
-will make your programs easier to understand.
-
- -- : stdin ()
-     Return the numeric value corresponding to the standard input
-     stream.
-
-     When Octave is used interactively, stdin is filtered through the
-     command line editing functions.
-
-     See also: *note stdout: XREFstdout, *note stderr: XREFstderr.
-
- -- : stdout ()
-     Return the numeric value corresponding to the standard output
-     stream.
-
-     Data written to the standard output is normally filtered through
-     the pager.
-
-     See also: *note stdin: XREFstdin, *note stderr: XREFstderr.
-
- -- : stderr ()
-     Return the numeric value corresponding to the standard error
-     stream.
-
-     Even if paging is turned on, the standard error is not sent to the
-     pager.  It is useful for error messages and prompts.
-
-     See also: *note stdin: XREFstdin, *note stdout: XREFstdout.
-
-* Menu:
-
-* Opening and Closing Files::
-* Simple Output::
-* Line-Oriented Input::
-* Formatted Output::
-* Output Conversion for Matrices::
-* Output Conversion Syntax::
-* Table of Output Conversions::
-* Integer Conversions::
-* Floating-Point Conversions::
-* Other Output Conversions::
-* Formatted Input::
-* Input Conversion Syntax::
-* Table of Input Conversions::
-* Numeric Input Conversions::
-* String Input Conversions::
-* Binary I/O::
-* Temporary Files::
-* EOF and Errors::
-* File Positioning::
-
-
-File: octave.info,  Node: Opening and Closing Files,  Next: Simple Output,  Up: C-Style I/O Functions
-
-14.2.1 Opening and Closing Files
---------------------------------
-
-When reading data from a file it must be opened for reading first, and
-likewise when writing to a file.  The ‘fopen’ function returns a pointer
-to an open file that is ready to be read or written.  Once all data has
-been read from or written to the opened file it should be closed.  The
-‘fclose’ function does this.  The following code illustrates the basic
-pattern for writing to a file, but a very similar pattern is used when
-reading a file.
-
-     filename = "myfile.txt";
-     fid = fopen (filename, "w");
-     # Do the actual I/O here...
-     fclose (fid);
-
- -- : FID = fopen (NAME)
- -- : FID = fopen (NAME, MODE)
- -- : FID = fopen (NAME, MODE, ARCH)
- -- : [FID, MSG] = fopen (...)
- -- : FID_LIST = fopen ("all")
- -- : [FILE, MODE, ARCH] = fopen (FID)
-     Open a file for low-level I/O or query open files and file
-     descriptors.
-
-     The first form of the ‘fopen’ function opens the named file with
-     the specified mode (read-write, read-only, etc.)  and architecture
-     interpretation (IEEE big endian, IEEE little endian, etc.), and
-     returns an integer value that may be used to refer to the file
-     later.  If an error occurs, FID is set to −1 and MSG contains the
-     corresponding system error message.  The MODE is a one or two
-     character string that specifies whether the file is to be opened
-     for reading, writing, or both.
-
-     The second form of the ‘fopen’ function returns a vector of file
-     ids corresponding to all the currently open files, excluding the
-     ‘stdin’, ‘stdout’, and ‘stderr’ streams.
-
-     The third form of the ‘fopen’ function returns information about
-     the open file given its file id.
-
-     For example,
-
-          myfile = fopen ("splat.dat", "r", "ieee-le");
-
-     opens the file ‘splat.dat’ for reading.  If necessary, binary
-     numeric values will be read assuming they are stored in IEEE format
-     with the least significant bit first, and then converted to the
-     native representation.
-
-     Opening a file that is already open simply opens it again and
-     returns a separate file id.  It is not an error to open a file
-     several times, though writing to the same file through several
-     different file ids may produce unexpected results.
-
-     The possible values ‘mode’ may have are
-
-     ‘r’ (default)
-          Open a file for reading.
-
-     ‘w’
-          Open a file for writing.  The previous contents are discarded.
-
-     ‘a’
-          Open or create a file for writing at the end of the file.
-
-     ‘r+’
-          Open an existing file for reading and writing.
-
-     ‘w+’
-          Open a file for reading or writing.  The previous contents are
-          discarded.
-
-     ‘a+’
-          Open or create a file for reading or writing at the end of the
-          file.
-
-     Append a "t" to the mode string to open the file in text mode or a
-     "b" to open in binary mode.  On Windows and Macintosh systems, text
-     mode reading and writing automatically converts linefeeds to the
-     appropriate line end character for the system (carriage-return
-     linefeed on Windows, carriage-return on Macintosh).  The default
-     when no mode is specified is binary mode.
-
-     Additionally, you may append a "z" to the mode string to open a
-     gzipped file for reading or writing.  For this to be successful,
-     you must also open the file in binary mode.
-
-     The parameter ARCH is a string specifying the default data format
-     for the file.  Valid values for ARCH are:
-
-     "native" or "n" (default)
-          The format of the current machine.
-
-     "ieee-be" or "b"
-          IEEE big endian format.
-
-     "ieee-le" or "l"
-          IEEE little endian format.
-
-     However, conversions are currently only supported for ‘native’,
-     ‘ieee-be’, and ‘ieee-le’ formats.
-
-     When opening a new file that does not yet exist, permissions will
-     be set to ‘0666 - UMASK’.
-
-     See also: *note fclose: XREFfclose, *note fgets: XREFfgets, *note
-     fgetl: XREFfgetl, *note fscanf: XREFfscanf, *note fread: XREFfread,
-     *note fputs: XREFfputs, *note fdisp: XREFfdisp, *note fprintf:
-     XREFfprintf, *note fwrite: XREFfwrite, *note fskipl: XREFfskipl,
-     *note fseek: XREFfseek, *note frewind: XREFfrewind, *note ftell:
-     XREFftell, *note feof: XREFfeof, *note ferror: XREFferror, *note
-     fclear: XREFfclear, *note fflush: XREFfflush, *note freport:
-     XREFfreport, *note umask: XREFumask.
-
- -- : fclose (FID)
- -- : fclose ("all")
- -- : STATUS = fclose ("all")
-     Close the file specified by the file descriptor FID.
-
-     If successful, ‘fclose’ returns 0, otherwise, it returns -1.  The
-     second form of the ‘fclose’ call closes all open files except
-     ‘stdin’, ‘stdout’, ‘stderr’, and any FIDs associated with gnuplot.
-
-     See also: *note fopen: XREFfopen, *note fflush: XREFfflush, *note
-     freport: XREFfreport.
-
- -- : is_valid_file_id (FID)
-     Return true if FID refers to an open file.
-
-     See also: *note freport: XREFfreport, *note fopen: XREFfopen.
 

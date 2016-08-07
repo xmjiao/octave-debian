@@ -71,20 +71,21 @@ along with Octave; see the file COPYING.  If not, see
 #include "unistd-wrappers.h"
 #include "unsetenv-wrapper.h"
 
+#include "builtin-defun-decls.h"
 #include "Cell.h"
-#include "builtins.h"
 #include "defun.h"
 #include "display.h"
 #include "error.h"
 #include "errwarn.h"
 #include "input.h"
-#include "ovl.h"
+#include "octave.h"
 #include "ov.h"
+#include "ovl.h"
 #include "pager.h"
 #include "parse.h"
 #include "sighandlers.h"
 #include "sysdep.h"
-#include "toplev.h"
+#include "interpreter.h"
 #include "utils.h"
 #include "file-stat.h"
 
@@ -172,7 +173,36 @@ static bool
 w32_shell_execute (const std::string& file)
 {
 }
+
 #endif
+
+// Set app id if we have the SetCurrentProcessExplicitAppUserModelID
+// available (>= Win7).  FIXME: Could we check for existence of this
+// function in the configure script instead of dynamically loading
+// shell32.dll?
+
+void
+set_application_id (void)
+{
+#if defined (__MINGW32__) || defined (_MSC_VER)
+
+  typedef HRESULT (WINAPI *SETCURRENTAPPID)(PCWSTR AppID);
+
+  HMODULE hShell = LoadLibrary ("shell32.dll");
+
+  if (hShell != NULL)
+    {
+      SETCURRENTAPPID pfnSetCurrentProcessExplicitAppUserModelID =
+        reinterpret_cast<SETCURRENTAPPID> (GetProcAddress (hShell, "SetCurrentProcessExplicitAppUserModelID"));
+
+      if (pfnSetCurrentProcessExplicitAppUserModelID)
+        pfnSetCurrentProcessExplicitAppUserModelID (L"gnu.octave");
+
+      FreeLibrary (hShell);
+    }
+
+#endif
+}
 
 DEFUN (__open_with_system_app__, args, ,
        doc: /* -*- texinfo -*-
@@ -341,7 +371,8 @@ raw_mode (bool on, bool wait)
   int tty_fd = STDIN_FILENO;
   if (! octave_isatty_wrapper (tty_fd))
     {
-      if (interactive && ! forced_interactive)
+      if (octave::application::interactive ()
+          && ! octave::application::forced_interactive ())
         error ("stdin is not a tty!");
     }
 
@@ -718,11 +749,11 @@ returning the empty string if no key is available.
 @seealso{input, pause}
 @end deftypefn */)
 {
-  octave_value retval;
+  octave_value retval = "";
 
   // FIXME: add timeout and default value args?
 
-  if (interactive)
+  if (octave::application::interactive ())
     {
       Fdrawnow ();
 

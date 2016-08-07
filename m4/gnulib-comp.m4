@@ -96,7 +96,11 @@ AC_DEFUN([gl_EARLY],
   # Code from module flexmember:
   # Code from module float:
   # Code from module fnmatch:
+  # Code from module fpieee:
+  AC_REQUIRE([gl_FP_IEEE])
   # Code from module fpucw:
+  # Code from module frexp:
+  # Code from module frexpf:
   # Code from module fseek:
   # Code from module fseeko:
   AC_REQUIRE([AC_FUNC_FSEEKO])
@@ -125,6 +129,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module include_next:
   # Code from module intprops:
   # Code from module isatty:
+  # Code from module isnand-nolibm:
   # Code from module largefile:
   AC_REQUIRE([AC_SYS_LARGEFILE])
   # Code from module link:
@@ -135,6 +140,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module malloc-gnu:
   # Code from module malloc-posix:
   # Code from module malloca:
+  # Code from module math:
   # Code from module mbrtowc:
   # Code from module mbsinit:
   # Code from module mbsrtowcs:
@@ -367,6 +373,16 @@ AC_SUBST([LTALLOCA])
     AC_LIBOBJ([fnmatch])
     gl_PREREQ_FNMATCH
   fi
+  gl_FUNC_FREXP
+  if test $gl_func_frexp != yes; then
+    AC_LIBOBJ([frexp])
+  fi
+  gl_MATH_MODULE_INDICATOR([frexp])
+  gl_FUNC_FREXPF
+  if test $HAVE_FREXPF = 0 || test $REPLACE_FREXPF = 1; then
+    AC_LIBOBJ([frexpf])
+  fi
+  gl_MATH_MODULE_INDICATOR([frexpf])
   gl_FUNC_FSEEK
   if test $REPLACE_FSEEK = 1; then
     AC_LIBOBJ([fseek])
@@ -480,6 +496,11 @@ AC_SUBST([LTALLOCA])
     gl_PREREQ_ISATTY
   fi
   gl_UNISTD_MODULE_INDICATOR([isatty])
+  gl_FUNC_ISNAND_NO_LIBM
+  if test $gl_func_isnand_no_libm != yes; then
+    AC_LIBOBJ([isnand])
+    gl_PREREQ_ISNAND
+  fi
   AC_REQUIRE([gl_LARGEFILE])
   gl_FUNC_LINK
   if test $HAVE_LINK = 0 || test $REPLACE_LINK = 1; then
@@ -513,6 +534,7 @@ AC_SUBST([LTALLOCA])
   fi
   gl_STDLIB_MODULE_INDICATOR([malloc-posix])
   gl_MALLOCA
+  gl_MATH_H
   gl_FUNC_MBRTOWC
   if test $HAVE_MBRTOWC = 0 || test $REPLACE_MBRTOWC = 1; then
     AC_LIBOBJ([mbrtowc])
@@ -1064,6 +1086,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/fnmatch.in.h
   lib/fnmatch_loop.c
   lib/fpucw.h
+  lib/frexp.c
+  lib/frexpf.c
   lib/fseek.c
   lib/fseeko.c
   lib/fstat.c
@@ -1102,6 +1126,9 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/hash.h
   lib/intprops.h
   lib/isatty.c
+  lib/isnan.c
+  lib/isnand-nolibm.h
+  lib/isnand.c
   lib/itold.c
   lib/link.c
   lib/localcharset.c
@@ -1112,6 +1139,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/malloca.c
   lib/malloca.h
   lib/malloca.valgrind
+  lib/math.c
+  lib/math.in.h
   lib/mbrtowc.c
   lib/mbsinit.c
   lib/mbsrtowcs-impl.h
@@ -1300,6 +1329,9 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/flexmember.m4
   m4/float_h.m4
   m4/fnmatch.m4
+  m4/fpieee.m4
+  m4/frexp.m4
+  m4/frexpf.m4
   m4/fseek.m4
   m4/fseeko.m4
   m4/fstat.m4
@@ -1325,6 +1357,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/intmax_t.m4
   m4/inttypes_h.m4
   m4/isatty.m4
+  m4/isnand.m4
   m4/largefile.m4
   m4/lib-ld.m4
   m4/lib-link.m4
@@ -1341,6 +1374,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/malloc.m4
   m4/malloca.m4
   m4/math_h.m4
+  m4/mathfunc.m4
   m4/mbrtowc.m4
   m4/mbsinit.m4
   m4/mbsrtowcs.m4

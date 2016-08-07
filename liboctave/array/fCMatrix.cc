@@ -68,152 +68,152 @@ along with Octave; see the file COPYING.  If not, see
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (xilaenv, XILAENV) (const octave_idx_type&,
+  F77_FUNC (xilaenv, XILAENV) (const F77_INT&,
                                F77_CONST_CHAR_ARG_DECL,
                                F77_CONST_CHAR_ARG_DECL,
-                               const octave_idx_type&, const octave_idx_type&,
-                               const octave_idx_type&, const octave_idx_type&,
-                               octave_idx_type&
+                               const F77_INT&, const F77_INT&,
+                               const F77_INT&, const F77_INT&,
+                               F77_INT&
                                F77_CHAR_ARG_LEN_DECL
                                F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (cgebal, CGEBAL) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, octave_idx_type&,
-                             octave_idx_type&, float*, octave_idx_type&
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_INT&,
+                             F77_INT&, F77_REAL*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (sgebak, SGEBAK) (F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, float*,
-                             const octave_idx_type&, float*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_REAL*,
+                             const F77_INT&, F77_REAL*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (cgemm, CGEMM) (F77_CONST_CHAR_ARG_DECL,
                            F77_CONST_CHAR_ARG_DECL,
-                           const octave_idx_type&, const octave_idx_type&,
-                           const octave_idx_type&, const FloatComplex&,
-                           const FloatComplex*, const octave_idx_type&,
-                           const FloatComplex*, const octave_idx_type&,
-                           const FloatComplex&, FloatComplex*,
-                           const octave_idx_type&
+                           const F77_INT&, const F77_INT&,
+                           const F77_INT&, const F77_CMPLX&,
+                           const F77_CMPLX*, const F77_INT&,
+                           const F77_CMPLX*, const F77_INT&,
+                           const F77_CMPLX&, F77_CMPLX*,
+                           const F77_INT&
                            F77_CHAR_ARG_LEN_DECL
                            F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (cgemv, CGEMV) (F77_CONST_CHAR_ARG_DECL,
-                           const octave_idx_type&, const octave_idx_type&,
-                           const FloatComplex&, const FloatComplex*,
-                           const octave_idx_type&, const FloatComplex*,
-                           const octave_idx_type&, const FloatComplex&,
-                           FloatComplex*, const octave_idx_type&
+                           const F77_INT&, const F77_INT&,
+                           const F77_CMPLX&, const F77_CMPLX*,
+                           const F77_INT&, const F77_CMPLX*,
+                           const F77_INT&, const F77_CMPLX&,
+                           F77_CMPLX*, const F77_INT&
                            F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (xcdotu, XCDOTU) (const octave_idx_type&, const FloatComplex*,
-                             const octave_idx_type&, const FloatComplex*,
-                             const octave_idx_type&, FloatComplex&);
+  F77_FUNC (xcdotu, XCDOTU) (const F77_INT&, const F77_CMPLX*,
+                             const F77_INT&, const F77_CMPLX*,
+                             const F77_INT&, F77_CMPLX*);
 
   F77_RET_T
-  F77_FUNC (xcdotc, XCDOTC) (const octave_idx_type&, const FloatComplex*,
-                             const octave_idx_type&, const FloatComplex*,
-                             const octave_idx_type&, FloatComplex&);
+  F77_FUNC (xcdotc, XCDOTC) (const F77_INT&, const F77_CMPLX*,
+                             const F77_INT&, const F77_CMPLX*,
+                             const F77_INT&, F77_CMPLX*);
 
   F77_RET_T
   F77_FUNC (csyrk, CSYRK) (F77_CONST_CHAR_ARG_DECL,
                            F77_CONST_CHAR_ARG_DECL,
-                           const octave_idx_type&, const octave_idx_type&,
-                           const FloatComplex&, const FloatComplex*,
-                           const octave_idx_type&, const FloatComplex&,
-                           FloatComplex*, const octave_idx_type&
+                           const F77_INT&, const F77_INT&,
+                           const F77_CMPLX&, const F77_CMPLX*,
+                           const F77_INT&, const F77_CMPLX&,
+                           F77_CMPLX*, const F77_INT&
                            F77_CHAR_ARG_LEN_DECL
                            F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (cherk, CHERK) (F77_CONST_CHAR_ARG_DECL,
                            F77_CONST_CHAR_ARG_DECL,
-                           const octave_idx_type&, const octave_idx_type&,
-                           const float&, const FloatComplex*,
-                           const octave_idx_type&, const float&,
-                           FloatComplex*, const octave_idx_type&
+                           const F77_INT&, const F77_INT&,
+                           const F77_REAL&, const F77_CMPLX*,
+                           const F77_INT&, const F77_REAL&,
+                           F77_CMPLX*, const F77_INT&
                            F77_CHAR_ARG_LEN_DECL
                            F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (cgetrf, CGETRF) (const octave_idx_type&, const octave_idx_type&,
-                             FloatComplex*, const octave_idx_type&,
-                             octave_idx_type*, octave_idx_type&);
+  F77_FUNC (cgetrf, CGETRF) (const F77_INT&, const F77_INT&,
+                             F77_CMPLX*, const F77_INT&,
+                             F77_INT*, F77_INT&);
 
   F77_RET_T
   F77_FUNC (cgetrs, CGETRS) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             FloatComplex*, const octave_idx_type&,
-                             const octave_idx_type*, FloatComplex*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             F77_CMPLX*, const F77_INT&,
+                             const F77_INT*, F77_CMPLX*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (cgetri, CGETRI) (const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, const octave_idx_type*,
-                             FloatComplex*, const octave_idx_type&,
-                             octave_idx_type&);
+  F77_FUNC (cgetri, CGETRI) (const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, const F77_INT*,
+                             F77_CMPLX*, const F77_INT&,
+                             F77_INT&);
 
   F77_RET_T
   F77_FUNC (cgecon, CGECON) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, const float&, float&,
-                             FloatComplex*, float*, octave_idx_type&
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, const F77_REAL&, F77_REAL&,
+                             F77_CMPLX*, F77_REAL*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (cgelsy, CGELSY) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, octave_idx_type*,
-                             float&, octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, float*, octave_idx_type&);
+  F77_FUNC (cgelsy, CGELSY) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_INT*,
+                             F77_REAL&, F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_REAL*, F77_INT&);
 
   F77_RET_T
-  F77_FUNC (cgelsd, CGELSD) (const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, float*, float&,
-                             octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, float*,
-                             octave_idx_type*, octave_idx_type&);
+  F77_FUNC (cgelsd, CGELSD) (const F77_INT&, const F77_INT&,
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_REAL*, F77_REAL&,
+                             F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_REAL*,
+                             F77_INT*, F77_INT&);
 
   F77_RET_T
   F77_FUNC (cpotrf, CPOTRF) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (cpocon, CPOCON) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, const float&, float&,
-                             FloatComplex*, float*, octave_idx_type&
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, const F77_REAL&, F77_REAL&,
+                             F77_CMPLX*, F77_REAL*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (cpotrs, CPOTRS) (F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&,
-                             const octave_idx_type&, const FloatComplex*,
-                             const octave_idx_type&, FloatComplex*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&,
+                             const F77_INT&, const F77_CMPLX*,
+                             const F77_INT&, F77_CMPLX*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (ctrtri, CTRTRI) (F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const FloatComplex*,
-                             const octave_idx_type&, octave_idx_type&
+                             const F77_INT&, const F77_CMPLX*,
+                             const F77_INT&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
@@ -221,9 +221,9 @@ extern "C"
   F77_FUNC (ctrcon, CTRCON) (F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const FloatComplex*,
-                             const octave_idx_type&, float&, FloatComplex*,
-                             float*, octave_idx_type&
+                             const F77_INT&, const F77_CMPLX*,
+                             const F77_INT&, F77_REAL&, F77_CMPLX*,
+                             F77_REAL*, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
@@ -232,34 +232,34 @@ extern "C"
   F77_FUNC (ctrtrs, CTRTRS) (F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const FloatComplex*, const octave_idx_type&,
-                             FloatComplex*, const octave_idx_type&,
-                             octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_CMPLX*, const F77_INT&,
+                             F77_CMPLX*, const F77_INT&,
+                             F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (clartg, CLARTG) (const FloatComplex&, const FloatComplex&,
-                             float&, FloatComplex&, FloatComplex&);
+  F77_FUNC (clartg, CLARTG) (const F77_CMPLX*, const F77_CMPLX*,
+                             F77_REAL&, F77_CMPLX*, F77_CMPLX*);
 
   F77_RET_T
   F77_FUNC (ctrsyl, CTRSYL) (F77_CONST_CHAR_ARG_DECL,
                              F77_CONST_CHAR_ARG_DECL,
-                             const octave_idx_type&, const octave_idx_type&,
-                             const octave_idx_type&, const FloatComplex*,
-                             const octave_idx_type&, const FloatComplex*,
-                             const octave_idx_type&, const FloatComplex*,
-                             const octave_idx_type&, float&, octave_idx_type&
+                             const F77_INT&, const F77_INT&,
+                             const F77_INT&, const F77_CMPLX*,
+                             const F77_INT&, const F77_CMPLX*,
+                             const F77_INT&, const F77_CMPLX*,
+                             const F77_INT&, F77_REAL&, F77_INT&
                              F77_CHAR_ARG_LEN_DECL
                              F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (xclange, XCLANGE) (F77_CONST_CHAR_ARG_DECL,
-                               const octave_idx_type&, const octave_idx_type&,
-                               const FloatComplex*, const octave_idx_type&,
-                               float*, float&
+                               const F77_INT&, const F77_INT&,
+                               const F77_CMPLX*, const F77_INT&,
+                               F77_REAL*, F77_REAL&
                                F77_CHAR_ARG_LEN_DECL);
 }
 
@@ -981,7 +981,7 @@ FloatComplexMatrix::tinverse (MatrixType &mattype, octave_idx_type& info,
 
   F77_XFCN (ctrtri, CTRTRI, (F77_CONST_CHAR_ARG2 (&uplo, 1),
                              F77_CONST_CHAR_ARG2 (&udiag, 1),
-                             nr, tmp_data, nr, info
+                             nr, F77_CMPLX_ARG (tmp_data), nr, info
                              F77_CHAR_ARG_LEN (1)
                              F77_CHAR_ARG_LEN (1)));
 
@@ -1000,8 +1000,8 @@ FloatComplexMatrix::tinverse (MatrixType &mattype, octave_idx_type& info,
       F77_XFCN (ctrcon, CTRCON, (F77_CONST_CHAR_ARG2 (&job, 1),
                                  F77_CONST_CHAR_ARG2 (&uplo, 1),
                                  F77_CONST_CHAR_ARG2 (&udiag, 1),
-                                 nr, tmp_data, nr, rcon,
-                                 cwork, rwork, ztrcon_info
+                                 nr, F77_CMPLX_ARG (tmp_data), nr, rcon,
+                                 F77_CMPLX_ARG (cwork), rwork, ztrcon_info
                                  F77_CHAR_ARG_LEN (1)
                                  F77_CHAR_ARG_LEN (1)
                                  F77_CHAR_ARG_LEN (1)));
@@ -1039,8 +1039,8 @@ FloatComplexMatrix::finverse (MatrixType &mattype, octave_idx_type& info,
 
   // Query the optimum work array size.
 
-  F77_XFCN (cgetri, CGETRI, (nc, tmp_data, nr, pipvt,
-                             z.fortran_vec (), lwork, info));
+  F77_XFCN (cgetri, CGETRI, (nc, F77_CMPLX_ARG (tmp_data), nr, pipvt,
+                             F77_CMPLX_ARG (z.fortran_vec ()), lwork, info));
 
   lwork = static_cast<octave_idx_type> (std::real (z(0)));
   lwork = (lwork <  2 *nc ? 2*nc : lwork);
@@ -1049,13 +1049,16 @@ FloatComplexMatrix::finverse (MatrixType &mattype, octave_idx_type& info,
 
   info = 0;
 
-  // Calculate the norm of the matrix, for later use.
-  float anorm;
-  if (calc_cond)
-    anorm = retval.abs ().sum ().row (static_cast<octave_idx_type>(0))
-            .max ();
+  // Calculate (always, see bug #45577) the norm of the matrix, for later use.
+  float anorm =
+    retval.abs ().sum ().row (static_cast<octave_idx_type>(0)).max ();
 
-  F77_XFCN (cgetrf, CGETRF, (nc, nc, tmp_data, nr, pipvt, info));
+  // Work around bug #45577, LAPACK crashes Octave if norm is NaN
+  // and bug #46330, segfault with matrices containing Inf & NaN
+  if (octave::math::isnan (anorm) || octave::math::isinf (anorm))
+    info = -1;
+  else
+    F77_XFCN (cgetrf, CGETRF, (nc, nc, F77_CMPLX_ARG (tmp_data), nr, pipvt, info));
 
   // Throw-away extra info LAPACK gives so as to not change output.
   rcon = 0.0;
@@ -1069,22 +1072,22 @@ FloatComplexMatrix::finverse (MatrixType &mattype, octave_idx_type& info,
       Array<float> rz (dim_vector (2 * nc, 1));
       float *prz = rz.fortran_vec ();
       F77_XFCN (cgecon, CGECON, (F77_CONST_CHAR_ARG2 (&job, 1),
-                                 nc, tmp_data, nr, anorm,
-                                 rcon, pz, prz, zgecon_info
+                                 nc, F77_CMPLX_ARG (tmp_data), nr, anorm,
+                                 rcon, F77_CMPLX_ARG (pz), prz, zgecon_info
                                  F77_CHAR_ARG_LEN (1)));
 
       if (zgecon_info != 0)
         info = -1;
     }
 
-  if (info == -1 && ! force)
+  if ((info == -1 && ! force) || octave::math::isinf (anorm))
     retval = *this;  // Restore contents.
   else
     {
       octave_idx_type zgetri_info = 0;
 
-      F77_XFCN (cgetri, CGETRI, (nc, tmp_data, nr, pipvt,
-                                 pz, lwork, zgetri_info));
+      F77_XFCN (cgetri, CGETRI, (nc, F77_CMPLX_ARG (tmp_data), nr, pipvt,
+                                 F77_CMPLX_ARG (pz), lwork, zgetri_info));
 
       if (zgetri_info != 0)
         info = -1;
@@ -1141,7 +1144,7 @@ FloatComplexMatrix::pseudo_inverse (float tol) const
 {
   FloatComplexMatrix retval;
 
-  svd<FloatComplexMatrix> result (*this, svd<FloatComplexMatrix>::economy);
+  svd<FloatComplexMatrix> result (*this, svd<FloatComplexMatrix>::Type::economy);
 
   FloatDiagMatrix S = result.singular_values ();
   FloatComplexMatrix U = result.left_singular_matrix ();
@@ -1270,15 +1273,13 @@ FloatComplexMatrix::ifourier2d (void) const
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (cffti, CFFTI) (const octave_idx_type&, FloatComplex*);
+  F77_FUNC (cffti, CFFTI) (const F77_INT&, F77_CMPLX*);
 
   F77_RET_T
-  F77_FUNC (cfftf, CFFTF) (const octave_idx_type&, FloatComplex*,
-                           FloatComplex*);
+  F77_FUNC (cfftf, CFFTF) (const F77_INT&, F77_CMPLX*, F77_CMPLX*);
 
   F77_RET_T
-  F77_FUNC (cfftb, CFFTB) (const octave_idx_type&, FloatComplex*,
-                           FloatComplex*);
+  F77_FUNC (cfftb, CFFTB) (const F77_INT&, F77_CMPLX*, F77_CMPLX*);
 }
 
 FloatComplexMatrix
@@ -1568,7 +1569,7 @@ FloatComplexMatrix::determinant (MatrixType& mattype,
 
       char job = 'L';
       F77_XFCN (cpotrf, CPOTRF, (F77_CONST_CHAR_ARG2 (&job, 1), nr,
-                                 tmp_data, nr, info
+                                 F77_CMPLX_ARG (tmp_data), nr, info
                                  F77_CHAR_ARG_LEN (1)));
 
       if (info != 0)
@@ -1585,8 +1586,8 @@ FloatComplexMatrix::determinant (MatrixType& mattype,
           float *prz = rz.fortran_vec ();
 
           F77_XFCN (cpocon, CPOCON, (F77_CONST_CHAR_ARG2 (&job, 1),
-                                     nr, tmp_data, nr, anorm,
-                                     rcon, pz, prz, info
+                                     nr, F77_CMPLX_ARG (tmp_data), nr, anorm,
+                                     rcon, F77_CMPLX_ARG (pz), prz, info
                                      F77_CHAR_ARG_LEN (1)));
 
           if (info != 0)
@@ -1611,11 +1612,14 @@ FloatComplexMatrix::determinant (MatrixType& mattype,
 
       info = 0;
 
-      // Calculate the norm of the matrix, for later use.
-      float anorm = 0;
-      if (calc_cond) anorm = xnorm (*this, 1);
+      // Calculate (always, see bug #45577) the norm of the matrix, for later use.
+      float anorm = xnorm (*this, 1);
 
-      F77_XFCN (cgetrf, CGETRF, (nr, nr, tmp_data, nr, pipvt, info));
+      // Work around bug #45577, LAPACK crashes Octave if norm is NaN
+      if (octave::math::isnan (anorm))
+        info = -1;
+      else
+        F77_XFCN (cgetrf, CGETRF, (nr, nr, F77_CMPLX_ARG (tmp_data), nr, pipvt, info));
 
       // Throw-away extra info LAPACK gives so as to not change output.
       rcon = 0.0;
@@ -1636,8 +1640,8 @@ FloatComplexMatrix::determinant (MatrixType& mattype,
               float *prz = rz.fortran_vec ();
 
               F77_XFCN (cgecon, CGECON, (F77_CONST_CHAR_ARG2 (&job, 1),
-                                         nc, tmp_data, nr, anorm,
-                                         rcon, pz, prz, info
+                                         nc, F77_CMPLX_ARG (tmp_data), nr, anorm,
+                                         rcon, F77_CMPLX_ARG (pz), prz, info
                                          F77_CHAR_ARG_LEN (1)));
             }
 
@@ -1703,8 +1707,8 @@ FloatComplexMatrix::rcond (MatrixType &mattype) const
           F77_XFCN (ctrcon, CTRCON, (F77_CONST_CHAR_ARG2 (&norm, 1),
                                      F77_CONST_CHAR_ARG2 (&uplo, 1),
                                      F77_CONST_CHAR_ARG2 (&dia, 1),
-                                     nr, tmp_data, nr, rcon,
-                                     pz, prz, info
+                                     nr, F77_CONST_CMPLX_ARG (tmp_data), nr, rcon,
+                                     F77_CMPLX_ARG (pz), prz, info
                                      F77_CHAR_ARG_LEN (1)
                                      F77_CHAR_ARG_LEN (1)
                                      F77_CHAR_ARG_LEN (1)));
@@ -1731,8 +1735,8 @@ FloatComplexMatrix::rcond (MatrixType &mattype) const
           F77_XFCN (ctrcon, CTRCON, (F77_CONST_CHAR_ARG2 (&norm, 1),
                                      F77_CONST_CHAR_ARG2 (&uplo, 1),
                                      F77_CONST_CHAR_ARG2 (&dia, 1),
-                                     nr, tmp_data, nr, rcon,
-                                     pz, prz, info
+                                     nr, F77_CONST_CMPLX_ARG (tmp_data), nr, rcon,
+                                     F77_CMPLX_ARG (pz), prz, info
                                      F77_CHAR_ARG_LEN (1)
                                      F77_CHAR_ARG_LEN (1)
                                      F77_CHAR_ARG_LEN (1)));
@@ -1759,7 +1763,7 @@ FloatComplexMatrix::rcond (MatrixType &mattype) const
                       row(static_cast<octave_idx_type>(0)).max();
 
               F77_XFCN (cpotrf, CPOTRF, (F77_CONST_CHAR_ARG2 (&job, 1), nr,
-                                         tmp_data, nr, info
+                                         F77_CMPLX_ARG (tmp_data), nr, info
                                          F77_CHAR_ARG_LEN (1)));
 
               if (info != 0)
@@ -1777,8 +1781,8 @@ FloatComplexMatrix::rcond (MatrixType &mattype) const
                   float *prz = rz.fortran_vec ();
 
                   F77_XFCN (cpocon, CPOCON, (F77_CONST_CHAR_ARG2 (&job, 1),
-                                             nr, tmp_data, nr, anorm,
-                                             rcon, pz, prz, info
+                                             nr, F77_CMPLX_ARG (tmp_data), nr, anorm,
+                                             rcon, F77_CMPLX_ARG (pz), prz, info
                                              F77_CHAR_ARG_LEN (1)));
 
                   if (info != 0)
@@ -1805,7 +1809,11 @@ FloatComplexMatrix::rcond (MatrixType &mattype) const
               Array<float> rz (dim_vector (2 * nc, 1));
               float *prz = rz.fortran_vec ();
 
-              F77_XFCN (cgetrf, CGETRF, (nr, nr, tmp_data, nr, pipvt, info));
+              // Work around bug #45577, LAPACK crashes Octave if norm is NaN
+              if (octave::math::isnan (anorm))
+                info = -1;
+              else
+                F77_XFCN (cgetrf, CGETRF, (nr, nr, F77_CMPLX_ARG (tmp_data), nr, pipvt, info));
 
               if (info != 0)
                 {
@@ -1816,8 +1824,8 @@ FloatComplexMatrix::rcond (MatrixType &mattype) const
                 {
                   char job = '1';
                   F77_XFCN (cgecon, CGECON, (F77_CONST_CHAR_ARG2 (&job, 1),
-                                             nc, tmp_data, nr, anorm,
-                                             rcon, pz, prz, info
+                                             nc, F77_CMPLX_ARG (tmp_data), nr, anorm,
+                                             rcon, F77_CMPLX_ARG (pz), prz, info
                                              F77_CHAR_ARG_LEN (1)));
 
                   if (info != 0)
@@ -1876,8 +1884,8 @@ FloatComplexMatrix::utsolve (MatrixType &mattype, const FloatComplexMatrix& b,
               F77_XFCN (ctrtrs, CTRTRS, (F77_CONST_CHAR_ARG2 (&uplo, 1),
                                          F77_CONST_CHAR_ARG2 (&trans, 1),
                                          F77_CONST_CHAR_ARG2 (&dia, 1),
-                                         nr, b_nc, tmp_data, nr,
-                                         result, nr, info
+                                         nr, b_nc, F77_CONST_CMPLX_ARG (tmp_data), nr,
+                                         F77_CMPLX_ARG (result), nr, info
                                          F77_CHAR_ARG_LEN (1)
                                          F77_CHAR_ARG_LEN (1)
                                          F77_CHAR_ARG_LEN (1)));
@@ -1896,8 +1904,8 @@ FloatComplexMatrix::utsolve (MatrixType &mattype, const FloatComplexMatrix& b,
                   F77_XFCN (ctrcon, CTRCON, (F77_CONST_CHAR_ARG2 (&norm, 1),
                                              F77_CONST_CHAR_ARG2 (&uplo, 1),
                                              F77_CONST_CHAR_ARG2 (&dia, 1),
-                                             nr, tmp_data, nr, rcon,
-                                             pz, prz, info
+                                             nr, F77_CONST_CMPLX_ARG (tmp_data), nr, rcon,
+                                             F77_CMPLX_ARG (pz), prz, info
                                              F77_CHAR_ARG_LEN (1)
                                              F77_CHAR_ARG_LEN (1)
                                              F77_CHAR_ARG_LEN (1)));
@@ -1970,8 +1978,8 @@ FloatComplexMatrix::ltsolve (MatrixType &mattype, const FloatComplexMatrix& b,
               F77_XFCN (ctrtrs, CTRTRS, (F77_CONST_CHAR_ARG2 (&uplo, 1),
                                          F77_CONST_CHAR_ARG2 (&trans, 1),
                                          F77_CONST_CHAR_ARG2 (&dia, 1),
-                                         nr, b_nc, tmp_data, nr,
-                                         result, nr, info
+                                         nr, b_nc, F77_CONST_CMPLX_ARG (tmp_data), nr,
+                                         F77_CMPLX_ARG (result), nr, info
                                          F77_CHAR_ARG_LEN (1)
                                          F77_CHAR_ARG_LEN (1)
                                          F77_CHAR_ARG_LEN (1)));
@@ -1990,8 +1998,8 @@ FloatComplexMatrix::ltsolve (MatrixType &mattype, const FloatComplexMatrix& b,
                   F77_XFCN (ctrcon, CTRCON, (F77_CONST_CHAR_ARG2 (&norm, 1),
                                              F77_CONST_CHAR_ARG2 (&uplo, 1),
                                              F77_CONST_CHAR_ARG2 (&dia, 1),
-                                             nr, tmp_data, nr, rcon,
-                                             pz, prz, info
+                                             nr, F77_CONST_CMPLX_ARG (tmp_data), nr, rcon,
+                                             F77_CMPLX_ARG (pz), prz, info
                                              F77_CHAR_ARG_LEN (1)
                                              F77_CHAR_ARG_LEN (1)
                                              F77_CHAR_ARG_LEN (1)));
@@ -2055,7 +2063,7 @@ FloatComplexMatrix::fsolve (MatrixType &mattype, const FloatComplexMatrix& b,
           anorm = atmp.abs().sum().row(static_cast<octave_idx_type>(0)).max();
 
           F77_XFCN (cpotrf, CPOTRF, (F77_CONST_CHAR_ARG2 (&job, 1), nr,
-                                     tmp_data, nr, info
+                                     F77_CMPLX_ARG (tmp_data), nr, info
                                      F77_CHAR_ARG_LEN (1)));
 
           // Throw-away extra info LAPACK gives so as to not change output.
@@ -2077,8 +2085,8 @@ FloatComplexMatrix::fsolve (MatrixType &mattype, const FloatComplexMatrix& b,
                   float *prz = rz.fortran_vec ();
 
                   F77_XFCN (cpocon, CPOCON, (F77_CONST_CHAR_ARG2 (&job, 1),
-                                             nr, tmp_data, nr, anorm,
-                                             rcon, pz, prz, info
+                                             nr, F77_CMPLX_ARG (tmp_data), nr, anorm,
+                                             rcon, F77_CMPLX_ARG (pz), prz, info
                                              F77_CHAR_ARG_LEN (1)));
 
                   if (info != 0)
@@ -2105,8 +2113,8 @@ FloatComplexMatrix::fsolve (MatrixType &mattype, const FloatComplexMatrix& b,
                   octave_idx_type b_nc = b.cols ();
 
                   F77_XFCN (cpotrs, CPOTRS, (F77_CONST_CHAR_ARG2 (&job, 1),
-                                             nr, b_nc, tmp_data, nr,
-                                             result, b.rows (), info
+                                             nr, b_nc, F77_CMPLX_ARG (tmp_data), nr,
+                                             F77_CMPLX_ARG (result), b.rows (), info
                                              F77_CHAR_ARG_LEN (1)));
                 }
               else
@@ -2137,7 +2145,12 @@ FloatComplexMatrix::fsolve (MatrixType &mattype, const FloatComplexMatrix& b,
             anorm = atmp.abs ().sum ().row (static_cast<octave_idx_type>(0))
                     .max ();
 
-          F77_XFCN (cgetrf, CGETRF, (nr, nr, tmp_data, nr, pipvt, info));
+          // Work around bug #45577, LAPACK crashes Octave if norm is NaN
+          // and bug #46330, segfault with matrices containing Inf & NaN
+          if (octave::math::isnan (anorm) || octave::math::isinf (anorm))
+            info = -2;
+          else
+            F77_XFCN (cgetrf, CGETRF, (nr, nr, F77_CMPLX_ARG (tmp_data), nr, pipvt, info));
 
           // Throw-away extra info LAPACK gives so as to not change output.
           rcon = 0.0;
@@ -2160,8 +2173,8 @@ FloatComplexMatrix::fsolve (MatrixType &mattype, const FloatComplexMatrix& b,
                   // non-singular matrix.
                   char job = '1';
                   F77_XFCN (cgecon, CGECON, (F77_CONST_CHAR_ARG2 (&job, 1),
-                                             nc, tmp_data, nr, anorm,
-                                             rcon, pz, prz, info
+                                             nc, F77_CMPLX_ARG (tmp_data), nr, anorm,
+                                             rcon, F77_CMPLX_ARG (pz), prz, info
                                              F77_CHAR_ARG_LEN (1)));
 
                   if (info != 0)
@@ -2189,13 +2202,20 @@ FloatComplexMatrix::fsolve (MatrixType &mattype, const FloatComplexMatrix& b,
 
                   char job = 'N';
                   F77_XFCN (cgetrs, CGETRS, (F77_CONST_CHAR_ARG2 (&job, 1),
-                                             nr, b_nc, tmp_data, nr,
-                                             pipvt, result, b.rows (), info
+                                             nr, b_nc, F77_CMPLX_ARG (tmp_data), nr,
+                                             pipvt, F77_CMPLX_ARG (result), b.rows (), info
                                              F77_CHAR_ARG_LEN (1)));
                 }
               else
                 mattype.mark_as_rectangular ();
             }
+        }
+
+      if (octave::math::isinf (anorm))
+        {
+          retval = FloatComplexMatrix (b.rows (), b.cols (),
+                                       FloatComplex (0, 0));
+          mattype.mark_as_full ();
         }
     }
 
@@ -2642,8 +2662,8 @@ FloatComplexMatrix::lssolve (const FloatComplexMatrix& b, octave_idx_type& info,
       Array<octave_idx_type> iwork (dim_vector (liwork, 1));
       octave_idx_type* piwork = iwork.fortran_vec ();
 
-      F77_XFCN (cgelsd, CGELSD, (m, n, nrhs, tmp_data, m, pretval, maxmn,
-                                 ps, rcon, rank, work.fortran_vec (),
+      F77_XFCN (cgelsd, CGELSD, (m, n, nrhs, F77_CMPLX_ARG (tmp_data), m, F77_CMPLX_ARG (pretval), maxmn,
+                                 ps, rcon, rank, F77_CMPLX_ARG (work.fortran_vec ()),
                                  lwork, prwork, piwork, info));
 
       // The workspace query is broken in at least LAPACK 3.0.0
@@ -2679,9 +2699,9 @@ FloatComplexMatrix::lssolve (const FloatComplexMatrix& b, octave_idx_type& info,
       lwork = static_cast<octave_idx_type> (std::real (work(0)));
       work.resize (dim_vector (lwork, 1));
 
-      F77_XFCN (cgelsd, CGELSD, (m, n, nrhs, tmp_data, m, pretval,
+      F77_XFCN (cgelsd, CGELSD, (m, n, nrhs, F77_CMPLX_ARG (tmp_data), m, F77_CMPLX_ARG (pretval),
                                  maxmn, ps, rcon, rank,
-                                 work.fortran_vec (), lwork,
+                                 F77_CMPLX_ARG (work.fortran_vec ()), lwork,
                                  prwork, piwork, info));
 
       if (s.elem (0) == 0.0)
@@ -2833,8 +2853,8 @@ FloatComplexMatrix::lssolve (const FloatComplexColumnVector& b,
       Array<octave_idx_type> iwork (dim_vector (liwork, 1));
       octave_idx_type* piwork = iwork.fortran_vec ();
 
-      F77_XFCN (cgelsd, CGELSD, (m, n, nrhs, tmp_data, m, pretval, maxmn,
-                                 ps, rcon, rank, work.fortran_vec (),
+      F77_XFCN (cgelsd, CGELSD, (m, n, nrhs, F77_CMPLX_ARG (tmp_data), m, F77_CMPLX_ARG (pretval), maxmn,
+                                 ps, rcon, rank, F77_CMPLX_ARG (work.fortran_vec ()),
                                  lwork, prwork, piwork, info));
 
       lwork = static_cast<octave_idx_type> (std::real (work(0)));
@@ -2842,9 +2862,9 @@ FloatComplexMatrix::lssolve (const FloatComplexColumnVector& b,
       rwork.resize (dim_vector (static_cast<octave_idx_type> (rwork(0)), 1));
       iwork.resize (dim_vector (iwork(0), 1));
 
-      F77_XFCN (cgelsd, CGELSD, (m, n, nrhs, tmp_data, m, pretval,
+      F77_XFCN (cgelsd, CGELSD, (m, n, nrhs, F77_CMPLX_ARG (tmp_data), m, F77_CMPLX_ARG (pretval),
                                  maxmn, ps, rcon, rank,
-                                 work.fortran_vec (), lwork,
+                                 F77_CMPLX_ARG (work.fortran_vec ()), lwork,
                                  prwork, piwork, info));
 
       if (rank < minmn)
@@ -2893,8 +2913,8 @@ operator * (const FloatComplexColumnVector& v, const FloatComplexRowVector& a)
 
       F77_XFCN (cgemm, CGEMM, (F77_CONST_CHAR_ARG2 ("N", 1),
                                F77_CONST_CHAR_ARG2 ("N", 1),
-                               len, a_len, 1, 1.0, v.data (), len,
-                               a.data (), 1, 0.0, c, len
+                               len, a_len, 1, 1.0, F77_CONST_CMPLX_ARG (v.data ()), len,
+                               F77_CONST_CMPLX_ARG (a.data ()), 1, 0.0, F77_CMPLX_ARG (c), len
                                F77_CHAR_ARG_LEN (1)
                                F77_CHAR_ARG_LEN (1)));
     }
@@ -3475,7 +3495,7 @@ Givens (const FloatComplex& x, const FloatComplex& y)
   float cc;
   FloatComplex cs, temp_r;
 
-  F77_FUNC (clartg, CLARTG) (x, y, cc, cs, temp_r);
+  F77_FUNC (clartg, CLARTG) (F77_CONST_CMPLX_ARG (&x), F77_CONST_CMPLX_ARG (&y), cc, F77_CMPLX_ARG (&cs), F77_CMPLX_ARG (&temp_r));
 
   FloatComplexMatrix g (2, 2);
 
@@ -3526,8 +3546,8 @@ Sylvester (const FloatComplexMatrix& a, const FloatComplexMatrix& b,
 
   F77_XFCN (ctrsyl, CTRSYL, (F77_CONST_CHAR_ARG2 ("N", 1),
                              F77_CONST_CHAR_ARG2 ("N", 1),
-                             1, a_nr, b_nr, pa, a_nr, pb,
-                             b_nr, px, a_nr, scale, info
+                             1, a_nr, b_nr, F77_CMPLX_ARG (pa), a_nr, F77_CMPLX_ARG (pb),
+                             b_nr, F77_CMPLX_ARG (px), a_nr, scale, info
                              F77_CHAR_ARG_LEN (1)
                              F77_CHAR_ARG_LEN (1)));
 
@@ -3627,7 +3647,7 @@ xgemm (const FloatComplexMatrix& a, const FloatComplexMatrix& b,
           F77_XFCN (cherk, CHERK, (F77_CONST_CHAR_ARG2 ("U", 1),
                                    F77_CONST_CHAR_ARG2 (&ctra, 1),
                                    a_nr, a_nc, 1.0,
-                                   a.data (), lda, 0.0, c, a_nr
+                                   F77_CONST_CMPLX_ARG (a.data ()), lda, 0.0, F77_CMPLX_ARG (c), a_nr
                                    F77_CHAR_ARG_LEN (1)
                                    F77_CHAR_ARG_LEN (1)));
           for (octave_idx_type j = 0; j < a_nr; j++)
@@ -3639,7 +3659,7 @@ xgemm (const FloatComplexMatrix& a, const FloatComplexMatrix& b,
           F77_XFCN (csyrk, CSYRK, (F77_CONST_CHAR_ARG2 ("U", 1),
                                    F77_CONST_CHAR_ARG2 (&ctra, 1),
                                    a_nr, a_nc, 1.0,
-                                   a.data (), lda, 0.0, c, a_nr
+                                   F77_CONST_CMPLX_ARG (a.data ()), lda, 0.0, F77_CMPLX_ARG (c), a_nr
                                    F77_CHAR_ARG_LEN (1)
                                    F77_CHAR_ARG_LEN (1)));
           for (octave_idx_type j = 0; j < a_nr; j++)
@@ -3663,31 +3683,31 @@ xgemm (const FloatComplexMatrix& a, const FloatComplexMatrix& b,
         {
           if (cja == cjb)
             {
-              F77_FUNC (xcdotu, XCDOTU) (a_nc, a.data (), 1, b.data (), 1,
-                                         *c);
+              F77_FUNC (xcdotu, XCDOTU) (a_nc, F77_CONST_CMPLX_ARG (a.data ()), 1, F77_CONST_CMPLX_ARG (b.data ()), 1,
+                                         F77_CMPLX_ARG (c));
               if (cja) *c = std::conj (*c);
             }
           else if (cja)
-            F77_FUNC (xcdotc, XCDOTC) (a_nc, a.data (), 1, b.data (), 1,
-                                       *c);
+            F77_FUNC (xcdotc, XCDOTC) (a_nc, F77_CONST_CMPLX_ARG (a.data ()), 1, F77_CONST_CMPLX_ARG (b.data ()), 1,
+                                       F77_CMPLX_ARG (c));
           else
-            F77_FUNC (xcdotc, XCDOTC) (a_nc, b.data (), 1, a.data (), 1,
-                                       *c);
+            F77_FUNC (xcdotc, XCDOTC) (a_nc, F77_CONST_CMPLX_ARG (b.data ()), 1, F77_CONST_CMPLX_ARG (a.data ()), 1,
+                                       F77_CMPLX_ARG (c));
         }
       else if (b_nc == 1 && ! cjb)
         {
           const char ctra = get_blas_trans_arg (tra, cja);
           F77_XFCN (cgemv, CGEMV, (F77_CONST_CHAR_ARG2 (&ctra, 1),
-                                   lda, tda, 1.0,  a.data (), lda,
-                                   b.data (), 1, 0.0, c, 1
+                                   lda, tda, 1.0,  F77_CONST_CMPLX_ARG (a.data ()), lda,
+                                   F77_CONST_CMPLX_ARG (b.data ()), 1, 0.0, F77_CMPLX_ARG (c), 1
                                    F77_CHAR_ARG_LEN (1)));
         }
       else if (a_nr == 1 && ! cja && ! cjb)
         {
           const char crevtrb = get_blas_trans_arg (! trb, cjb);
           F77_XFCN (cgemv, CGEMV, (F77_CONST_CHAR_ARG2 (&crevtrb, 1),
-                                   ldb, tdb, 1.0,  b.data (), ldb,
-                                   a.data (), 1, 0.0, c, 1
+                                   ldb, tdb, 1.0,  F77_CONST_CMPLX_ARG (b.data ()), ldb,
+                                   F77_CONST_CMPLX_ARG (a.data ()), 1, 0.0, F77_CMPLX_ARG (c), 1
                                    F77_CHAR_ARG_LEN (1)));
         }
       else
@@ -3696,8 +3716,8 @@ xgemm (const FloatComplexMatrix& a, const FloatComplexMatrix& b,
           const char ctrb = get_blas_trans_arg (trb, cjb);
           F77_XFCN (cgemm, CGEMM, (F77_CONST_CHAR_ARG2 (&ctra, 1),
                                    F77_CONST_CHAR_ARG2 (&ctrb, 1),
-                                   a_nr, b_nc, a_nc, 1.0, a.data (),
-                                   lda, b.data (), ldb, 0.0, c, a_nr
+                                   a_nr, b_nc, a_nc, 1.0, F77_CONST_CMPLX_ARG (a.data ()),
+                                   lda, F77_CONST_CMPLX_ARG (b.data ()), ldb, 0.0, F77_CMPLX_ARG (c), a_nr
                                    F77_CHAR_ARG_LEN (1)
                                    F77_CHAR_ARG_LEN (1)));
         }
@@ -3715,8 +3735,8 @@ operator * (const FloatComplexMatrix& a, const FloatComplexMatrix& b)
 // FIXME: it would be nice to share code among the min/max
 // functions below.
 
-#define EMPTY_RETURN_CHECK(T) \
-  if (nr == 0 || nc == 0) \
+#define EMPTY_RETURN_CHECK(T)                   \
+  if (nr == 0 || nc == 0)                       \
     return T (nr, nc);
 
 FloatComplexMatrix
@@ -3742,21 +3762,7 @@ min (const FloatComplex& c, const FloatComplexMatrix& m)
 FloatComplexMatrix
 min (const FloatComplexMatrix& m, const FloatComplex& c)
 {
-  octave_idx_type nr = m.rows ();
-  octave_idx_type nc = m.columns ();
-
-  EMPTY_RETURN_CHECK (FloatComplexMatrix);
-
-  FloatComplexMatrix result (nr, nc);
-
-  for (octave_idx_type j = 0; j < nc; j++)
-    for (octave_idx_type i = 0; i < nr; i++)
-      {
-        octave_quit ();
-        result(i, j) = octave::math::min (m(i, j), c);
-      }
-
-  return result;
+  return min (c, m);
 }
 
 FloatComplexMatrix
@@ -3827,21 +3833,7 @@ max (const FloatComplex& c, const FloatComplexMatrix& m)
 FloatComplexMatrix
 max (const FloatComplexMatrix& m, const FloatComplex& c)
 {
-  octave_idx_type nr = m.rows ();
-  octave_idx_type nc = m.columns ();
-
-  EMPTY_RETURN_CHECK (FloatComplexMatrix);
-
-  FloatComplexMatrix result (nr, nc);
-
-  for (octave_idx_type j = 0; j < nc; j++)
-    for (octave_idx_type i = 0; i < nr; i++)
-      {
-        octave_quit ();
-        result(i, j) = octave::math::max (m(i, j), c);
-      }
-
-  return result;
+  return max (c, m);
 }
 
 FloatComplexMatrix

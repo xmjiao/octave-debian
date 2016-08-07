@@ -330,26 +330,6 @@ get_module_filename (HMODULE hMod)
   return (found ? retval : "");
 }
 
-static void
-set_dll_directory (const std::string& dir = "")
-{
-  typedef BOOL (WINAPI *dllfcn_t) (LPCTSTR path);
-
-  static dllfcn_t dllfcn = 0;
-  static bool first = true;
-
-  if (! dllfcn && first)
-    {
-      HINSTANCE hKernel32 = GetModuleHandle ("kernel32");
-      dllfcn = reinterpret_cast<dllfcn_t> (GetProcAddress (hKernel32,
-                                           "SetDllDirectoryA"));
-      first = false;
-    }
-
-  if (dllfcn)
-    dllfcn (dir.empty () ? 0 : dir.c_str ());
-}
-
 #endif
 
 static std::string
@@ -519,7 +499,6 @@ initialize_jvm (void)
 
   HMODULE hMod = GetModuleHandle ("jvm.dll");
   std::string jvm_lib_path;
-  std::string old_cwd;
 
   if (hMod)
     {
@@ -558,20 +537,6 @@ initialize_jvm (void)
       if (jvm_lib_path.empty ())
         error ("unable to find Java Runtime Environment: %s::%s",
                key.c_str (), value.c_str ());
-
-      std::string jvm_bin_path;
-
-      value = "JavaHome";
-      jvm_bin_path = read_registry_string (key, value);
-      if (! jvm_bin_path.empty ())
-        {
-          jvm_bin_path = (jvm_bin_path + std::string ("\\bin"));
-
-          old_cwd = octave::sys::env::get_current_directory ();
-
-          set_dll_directory (jvm_bin_path);
-          octave::sys::env::chdir (jvm_bin_path);
-        }
     }
 
 #else
@@ -594,15 +559,6 @@ initialize_jvm (void)
   if (! lib)
     error ("unable to load Java Runtime Environment from %s",
            jvm_lib_path.c_str ());
-
-#if defined (OCTAVE_USE_WINDOWS_API)
-
-  set_dll_directory ();
-
-  if (! old_cwd.empty ())
-    octave::sys::env::chdir (old_cwd);
-
-#endif
 
   JNI_CreateJavaVM_t create_vm =
     reinterpret_cast<JNI_CreateJavaVM_t> (lib.search ("JNI_CreateJavaVM"));
@@ -1119,6 +1075,59 @@ convert_to_string (JNIEnv *jni_env, jobject java_object, bool force, char type)
 
 #define TO_JAVA(obj) dynamic_cast<octave_java*> ((obj).internal_rep ())
 
+//! Return whether @c jobj shall be automatically converted to an Octave
+//! numeric value.
+//!
+//! If @c jobj is an instance of any of the numeric wrapper classes @c Byte,
+//! @c Integer, @c Long, @c Short, @c Float, or @c Double, then it will be
+//! converted using the @c java.lang.Number.doubleValue() method.
+//!
+//! @param jobj Java object being returned to Octave
+//! @return @c true if @c jobj shall be converted into a numeric value
+//!         automatically, @c false otherwise
+static bool
+is_auto_convertible_number (JNIEnv *jni_env, jobject jobj)
+{
+  jclass_ref cls (jni_env);
+  cls = jni_env->FindClass ("java/lang/Double");
+  if (jni_env->IsInstanceOf (jobj, cls))
+    return true;
+  cls = jni_env->FindClass ("java/lang/Float");
+  if (jni_env->IsInstanceOf (jobj, cls))
+    return true;
+  cls = jni_env->FindClass ("java/lang/Byte");
+  if (jni_env->IsInstanceOf (jobj, cls))
+    return true;
+  cls = jni_env->FindClass ("java/lang/Short");
+  if (jni_env->IsInstanceOf (jobj, cls))
+    return true;
+  cls = jni_env->FindClass ("java/lang/Integer");
+  if (jni_env->IsInstanceOf (jobj, cls))
+    return true;
+  cls = jni_env->FindClass ("java/lang/Long");
+  if (jni_env->IsInstanceOf (jobj, cls))
+    return true;
+
+  return false;
+}
+
+//! Convert the Java object pointed to by @c jobj_arg with class @c jcls_arg
+//! to an Octave value.
+//!
+//! @param jni_env JNI environment pointer
+//! @param jobj_arg pointer to a Java object
+//! @param jcls_arg optional pointer to the Java class of @c jobj_arg
+//! @return
+//!   @arg numeric value as a @c double if @c jobj_arg is of type @c Byte,
+//!     @c Short, @c Integer, @c Long, @c Float or @c Double
+//!   @arg logical value if @c jobj_arg is of type @c Boolean
+//!   @arg string value if @c jobj_arg is of type @c Character or @c String
+//!   @arg Octave array of numeric, logical, or char type if @c jobj_arg is
+//!     a Java array of primitive types
+//!   @arg Octave matrix if @c jobj_arg is of type @c org.octave.Matrix and
+//!     #Vjava_matrix_autoconversion is enabled
+//!   @arg Octave object if @c jobj_arg is of type @c org.octave.OctaveReference
+//!   @arg @c octave_java object wrapping the Java object otherwise
 static octave_value
 box (JNIEnv *jni_env, void *jobj_arg, void *jcls_arg)
 {
@@ -1134,10 +1143,12 @@ box (JNIEnv *jni_env, void *jobj_arg, void *jcls_arg)
 
   while (retval.is_undefined ())
     {
-      // Convert a scalar of any numeric class (byte, short, integer, long,
-      // float, double) to a double value.  Matlab does the same thing.
+      // Convert a scalar of any numeric class wrapping a primitive class
+      // (byte, short, integer, long, float, double) to a double value.
+      // Test whether java.lang.Number before testing for each type.
       cls = jni_env->FindClass ("java/lang/Number");
-      if (jni_env->IsInstanceOf (jobj, cls))
+      if (jni_env->IsInstanceOf (jobj, cls)
+          && is_auto_convertible_number (jni_env, jobj))
         {
           jmethodID m = jni_env->GetMethodID (cls, "doubleValue", "()D");
           retval = jni_env->CallDoubleMethod (jobj, m);
@@ -3115,6 +3126,17 @@ Return true if @var{x} is a Java object.
 %! assert (class (javaObject ("java.lang.Integer",  int32 (1))), "java.lang.Integer");
 %! assert (class (javaObject ("java.lang.Long",    uint64 (1))), "java.lang.Long");
 %! assert (class (javaObject ("java.lang.Long",     int64 (1))), "java.lang.Long");
+
+## Test for automatic conversion of specific numeric classes (bug #48013)
+%!testif HAVE_JAVA
+%! assert (javaMethod ("valueOf", "java.lang.Byte",     int8 (1)), 1)
+%! assert (javaMethod ("valueOf", "java.lang.Short",   int16 (1)), 1)
+%! assert (javaMethod ("valueOf", "java.lang.Integer", int32 (1)), 1)
+%! assert (javaMethod ("valueOf", "java.lang.Long",    int64 (1)), 1)
+%! assert (javaMethod ("valueOf", "java.lang.Float",  single (1)), 1)
+%! assert (javaMethod ("valueOf", "java.lang.Double", double (1)), 1)
+%! assert (class (javaMethod ("valueOf", "java.math.BigDecimal", double (1))), "java.math.BigDecimal")
+%! assert (class (javaMethod ("valueOf", "java.math.BigInteger",  int64 (1))), "java.math.BigInteger")
 
 ## Automatic conversion from string cell array into String[] (bug #45290)
 %!testif HAVE_JAVA

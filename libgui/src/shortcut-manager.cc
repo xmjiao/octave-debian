@@ -40,7 +40,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "error.h"
 #include "resource-manager.h"
 #include "shortcut-manager.h"
-#include "singleton-cleanup.h"
 
 shortcut_manager *shortcut_manager::instance = 0;
 
@@ -66,12 +65,7 @@ shortcut_manager::instance_ok (void)
   bool retval = true;
 
   if (! instance)
-    {
       instance = new shortcut_manager ();
-
-      if (instance)
-        singleton_cleanup_list::add (cleanup_instance);
-    }
 
   if (! instance)
     {
@@ -205,6 +199,10 @@ shortcut_manager::do_init_data ()
   init (tr ("Cut"), "editor_edit:cut", QKeySequence::Cut);
   init (tr ("Find and Replace"), "editor_edit:find_replace",
         QKeySequence::Find);
+  init (tr ("Find Next"), "editor_edit:find_next",
+        QKeySequence::FindNext);
+  init (tr ("Find Previous"), "editor_edit:find_previous",
+        QKeySequence::FindPrevious);
   init (tr ("Delete to Start of Word"), "editor_edit:delete_start_word",
         QKeySequence::DeleteStartOfWord);
   init (tr ("Delete to End of Word"), "editor_edit:delete_end_word",
@@ -255,7 +253,7 @@ shortcut_manager::do_init_data ()
         QKeySequence ());
 
   init (tr ("Goto Line"), "editor_edit:goto_line",
-        QKeySequence (ctrl + Qt::Key_G));
+        QKeySequence (ctrl + Qt::Key_L));
   init (tr ("Move to Matching Brace"), "editor_edit:move_to_brace",
         QKeySequence (ctrl + Qt::Key_M));
   init (tr ("Select to Matching Brace"), "editor_edit:select_to_brace",
@@ -323,13 +321,13 @@ shortcut_manager::do_init_data ()
 
   // tab navigation
   init (tr ("Switch to Left Tab"), "editor_tabs:switch_left_tab",
-        QKeySequence (ctrl + Qt::Key_PageDown));
-  init (tr ("Switch to Right Tab"), "editor_tabs:switch_right_tab",
         QKeySequence (ctrl + Qt::Key_PageUp));
+  init (tr ("Switch to Right Tab"), "editor_tabs:switch_right_tab",
+        QKeySequence (ctrl + Qt::Key_PageDown));
   init (tr ("Move Tab Left"), "editor_tabs:move_tab_left",
-        QKeySequence (Qt::AltModifier + Qt::Key_PageDown));
-  init (tr ("Move Tab Right"), "editor_tabs:move_tab_right",
         QKeySequence (Qt::AltModifier + Qt::Key_PageUp));
+  init (tr ("Move Tab Right"), "editor_tabs:move_tab_right",
+        QKeySequence (Qt::AltModifier + Qt::Key_PageDown));
 
 }
 

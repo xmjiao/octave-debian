@@ -29,6 +29,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <limits>
 
 #include "oct-cmplx.h"
+#include "oct-inttypes-fwd.h"
 #include "lo-math.h"
 #include "lo-ieee.h"
 
@@ -177,6 +178,9 @@ namespace octave
     {
       return std::complex<T> (roundb (real (x)), roundb (imag (x)));
     }
+
+    extern OCTAVE_API double frexp (double x, int *expptr);
+    extern OCTAVE_API float frexp (float x, int *expptr);
 
     inline bool isnan (bool) { return false; }
     inline bool isnan (char) { return false; }
@@ -404,6 +408,20 @@ namespace octave
     max (const std::complex<float>& x, const std::complex<float>& y)
     {
       return abs (x) >= abs (y) ? x : (isnan (x) ? x : y);
+    }
+
+    template <typename T>
+    inline octave_int<T>
+    min (const octave_int<T>& x, const octave_int<T>& y)
+    {
+      return xmin (x, y);
+    }
+
+    template <typename T>
+    inline octave_int<T>
+    max (const octave_int<T>& x, const octave_int<T>& y)
+    {
+      return xmax (x, y);
     }
 
     // These map reals to Complex.

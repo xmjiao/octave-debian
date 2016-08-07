@@ -49,6 +49,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "defun.h"
 #include "error.h"
 #include "errwarn.h"
+#include "interpreter.h"
 #include "lex.h"
 #include "load-save.h"
 #include "ls-ascii-helper.h"
@@ -59,7 +60,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "pager.h"
 #include "pt-exp.h"
 #include "sysdep.h"
-#include "toplev.h"
 #include "unwind-prot.h"
 #include "utils.h"
 #include "variables.h"
@@ -255,7 +255,7 @@ read_mat_ascii_data (std::istream& is, const std::string& filename,
         varname[i] = '_';
     }
 
-  if (is_keyword (varname) || ! isalpha (varname[0]))
+  if (octave::is_keyword (varname) || ! isalpha (varname[0]))
     varname.insert (0, "X");
 
   if (! valid_identifier (varname))

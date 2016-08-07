@@ -72,7 +72,7 @@ Next: <a href="Processing-Data-in-Structures.html#Processing-Data-in-Structures"
 <dt><a name="index-fieldnames"></a>: <em><var>names</var> =</em> <strong>fieldnames</strong> <em>(<var>struct</var>)</em></dt>
 <dt><a name="index-fieldnames-1"></a>: <em><var>names</var> =</em> <strong>fieldnames</strong> <em>(<var>obj</var>)</em></dt>
 <dt><a name="index-fieldnames-2"></a>: <em><var>names</var> =</em> <strong>fieldnames</strong> <em>(<var>javaobj</var>)</em></dt>
-<dt><a name="index-fieldnames-3"></a>: <em><var>names</var> =</em> <strong>fieldnames</strong> <em>(&quot;<var>jclassname</var>&quot;)</em></dt>
+<dt><a name="index-fieldnames-3"></a>: <em><var>names</var> =</em> <strong>fieldnames</strong> <em>(&quot;<var>javaclassname</var>&quot;)</em></dt>
 <dd><p>Return a cell array of strings with the names of the fields in the
 specified input.
 </p>
@@ -82,9 +82,9 @@ the structure.
 <p>When the input is an Octave object <var>obj</var>, the names are the public
 properties of the object.
 </p>
-<p>When the input is a Java object <var>javaobj</var> or Java classname
-<var>jclassname</var> the name are the public data elements of the object or
-class.
+<p>When the input is a Java object <var>javaobj</var> or a string containing the
+name of a Java class <var>javaclassname</var>, the names are the public fields
+(data members) of the object or class.
 </p>
 <p><strong>See also:</strong> <a href="#XREFnumfields">numfields</a>, <a href="#XREFisfield">isfield</a>, <a href="#XREForderfields">orderfields</a>, <a href="Creating-Structures.html#XREFstruct">struct</a>, <a href="Creating-a-Class.html#XREFmethods">methods</a>.
 </p></dd></dl>

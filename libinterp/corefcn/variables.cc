@@ -39,6 +39,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "lo-regexp.h"
 #include "str-vec.h"
 
+#include "call-stack.h"
 #include <defaults.h>
 #include "Cell.h"
 #include "defun.h"
@@ -47,6 +48,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "errwarn.h"
 #include "help.h"
 #include "input.h"
+#include "interpreter.h"
 #include "lex.h"
 #include "load-path.h"
 #include "octave-link.h"
@@ -59,7 +61,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "pager.h"
 #include "parse.h"
 #include "symtab.h"
-#include "toplev.h"
 #include "unwind-prot.h"
 #include "utils.h"
 #include "variables.h"
@@ -237,6 +238,7 @@ generate_struct_completions (const std::string& text,
   string_vector names;
 
   size_t pos = text.rfind ('.');
+  bool array = false;
 
   if (pos != std::string::npos)
     {
@@ -247,9 +249,15 @@ generate_struct_completions (const std::string& text,
 
       prefix = text.substr (0, pos);
 
+      if (prefix == "")
+        {
+          array = true;
+          prefix = find_indexed_expression (text);
+        }
+
       std::string base_name = prefix;
 
-      pos = base_name.find_first_of ("{(.");
+      pos = base_name.find_first_of ("{(. ");
 
       if (pos != std::string::npos)
         base_name = base_name.substr (0, pos);
@@ -283,16 +291,20 @@ generate_struct_completions (const std::string& text,
         }
     }
 
+  // Undo look-back that found the array expression,
+  // but insert an extra "." to distinguish from the non-struct case.
+  if (array)
+    prefix = ".";
+
   return names;
 }
 
 // FIXME: this will have to be much smarter to work "correctly".
-
 bool
-looks_like_struct (const std::string& text)
+looks_like_struct (const std::string& text, char prev_char)
 {
   bool retval = (! text.empty ()
-                 && text != "."
+                 && (text != "." || prev_char == ')' || prev_char == '}')
                  && text.find_first_of (octave::sys::file_ops::dir_sep_chars ()) == std::string::npos
                  && text.find ("..") == std::string::npos
                  && text.rfind ('.') != std::string::npos);
@@ -365,30 +377,10 @@ isglobal ("x")
 %!error isglobal (1)
 */
 
-static octave_value
-safe_symbol_lookup (const std::string& symbol_name)
-{
-  octave_value retval;
-
-  octave::unwind_protect frame;
-  interpreter_try (frame);
-
-  try
-    {
-      retval = symbol_table::find (symbol_name);
-    }
-  catch (const octave_execution_exception&)
-    {
-      recover_from_exception ();
-    }
-
-  return retval;
-}
-
 int
 symbol_exist (const std::string& name, const std::string& type)
 {
-  if (is_keyword (name))
+  if (octave::is_keyword (name))
     return 0;
 
   bool search_any = type == "any";
@@ -419,21 +411,13 @@ symbol_exist (const std::string& name, const std::string& type)
   // We shouldn't need to look in the global symbol table, since any name
   // that is visible in the current scope will be in the local symbol table.
 
-  octave_value val;
-
-  if (search_any || search_builtin)
+  // Command line function which Matlab does not support
+  if (search_any)
     {
-      // FIXME: safe_symbol_lookup will attempt unsafe load of .oct/.mex file.
-      // This can cause a segfault.  To catch this would require temporarily
-      // diverting the SIGSEGV exception handler and then restoring it.
-      // See bug #36067.
-      val = safe_symbol_lookup (name);
+      octave_value val = symbol_table::find_cmdline_function (name);
 
-      if (val.is_defined () && val.is_builtin_function ())
-        return 5;
-
-      if (search_builtin)
-        return 0;
+      if (val.is_defined ())
+        return 103;
     }
 
   if (search_any || search_file || search_dir)
@@ -487,14 +471,19 @@ symbol_exist (const std::string& name, const std::string& type)
         return 0;
     }
 
-  // Command line function which Matlab does not support
-  if (search_any && val.is_defined () && val.is_user_function ())
-    return 103;
+  if (search_any || search_builtin)
+    {
+      if (symbol_table::is_built_in_function_name (name))
+        return 5;
+
+      if (search_builtin)
+        return 0;
+    }
 
   return 0;
 }
 
-#define GET_IDX(LEN) \
+#define GET_IDX(LEN)                                                    \
   static_cast<int> ((LEN-1) * static_cast<double> (rand ()) / RAND_MAX)
 
 std::string
@@ -2327,12 +2316,12 @@ do_matlab_compatible_clear (const string_vector& argv, int argc, int idx)
     }
 }
 
-#define CLEAR_OPTION_ERROR(cond) \
-  do \
-    { \
-      if (cond) \
-        print_usage (); \
-    } \
+#define CLEAR_OPTION_ERROR(cond)                \
+  do                                            \
+    {                                           \
+      if (cond)                                 \
+        print_usage ();                         \
+    }                                           \
   while (0)
 
 DEFUN (clear, args, ,

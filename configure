@@ -1031,6 +1031,8 @@ GNULIB_MBRTOWC
 GNULIB_MBSINIT
 GNULIB_WCTOB
 GNULIB_BTOWC
+NEXT_AS_FIRST_DIRECTIVE_MATH_H
+NEXT_MATH_H
 LTLIBMULTITHREAD
 LIBMULTITHREAD
 LTLIBTHREAD
@@ -1203,6 +1205,262 @@ GNULIB_FFLUSH
 GNULIB_FDOPEN
 GNULIB_FCLOSE
 GNULIB_DPRINTF
+FREXPF_LIBM
+FREXP_LIBM
+REPLACE_TRUNCL
+REPLACE_TRUNCF
+REPLACE_TRUNC
+REPLACE_SQRTL
+REPLACE_SIGNBIT_USING_GCC
+REPLACE_SIGNBIT
+REPLACE_ROUNDL
+REPLACE_ROUNDF
+REPLACE_ROUND
+REPLACE_REMAINDERL
+REPLACE_REMAINDERF
+REPLACE_REMAINDER
+REPLACE_NAN
+REPLACE_MODFL
+REPLACE_MODFF
+REPLACE_MODF
+REPLACE_LOGBL
+REPLACE_LOGBF
+REPLACE_LOGB
+REPLACE_LOG2L
+REPLACE_LOG2F
+REPLACE_LOG2
+REPLACE_LOG1PL
+REPLACE_LOG1PF
+REPLACE_LOG1P
+REPLACE_LOG10L
+REPLACE_LOG10F
+REPLACE_LOG10
+REPLACE_LOGL
+REPLACE_LOGF
+REPLACE_LOG
+REPLACE_LDEXPL
+REPLACE_ISNAN
+REPLACE_ISINF
+REPLACE_ISFINITE
+REPLACE_ILOGBF
+REPLACE_ILOGB
+REPLACE_HYPOTL
+REPLACE_HYPOTF
+REPLACE_HYPOT
+REPLACE_HUGE_VAL
+REPLACE_FREXPL
+REPLACE_FREXP
+REPLACE_FREXPF
+REPLACE_FMODL
+REPLACE_FMODF
+REPLACE_FMOD
+REPLACE_FMAL
+REPLACE_FMAF
+REPLACE_FMA
+REPLACE_FLOORL
+REPLACE_FLOORF
+REPLACE_FLOOR
+REPLACE_FABSL
+REPLACE_EXP2L
+REPLACE_EXP2
+REPLACE_EXPM1F
+REPLACE_EXPM1
+REPLACE_CEILL
+REPLACE_CEILF
+REPLACE_CEIL
+REPLACE_CBRTL
+REPLACE_CBRTF
+HAVE_DECL_TRUNCL
+HAVE_DECL_TRUNCF
+HAVE_DECL_TRUNC
+HAVE_DECL_TANL
+HAVE_DECL_SQRTL
+HAVE_DECL_SINL
+HAVE_DECL_ROUNDL
+HAVE_DECL_ROUNDF
+HAVE_DECL_ROUND
+HAVE_DECL_RINTF
+HAVE_DECL_REMAINDERL
+HAVE_DECL_REMAINDER
+HAVE_DECL_LOGB
+HAVE_DECL_LOG2L
+HAVE_DECL_LOG2F
+HAVE_DECL_LOG2
+HAVE_DECL_LOG10L
+HAVE_DECL_LOGL
+HAVE_DECL_LDEXPL
+HAVE_DECL_FREXPL
+HAVE_DECL_FLOORL
+HAVE_DECL_FLOORF
+HAVE_DECL_EXPM1L
+HAVE_DECL_EXP2L
+HAVE_DECL_EXP2F
+HAVE_DECL_EXP2
+HAVE_DECL_EXPL
+HAVE_DECL_COSL
+HAVE_DECL_COPYSIGNF
+HAVE_DECL_CEILL
+HAVE_DECL_CEILF
+HAVE_DECL_CBRTL
+HAVE_DECL_CBRTF
+HAVE_DECL_ATANL
+HAVE_DECL_ASINL
+HAVE_DECL_ACOSL
+HAVE_TANHF
+HAVE_TANL
+HAVE_TANF
+HAVE_SQRTL
+HAVE_SQRTF
+HAVE_SINHF
+HAVE_SINL
+HAVE_SINF
+HAVE_RINTL
+HAVE_RINT
+HAVE_REMAINDERF
+HAVE_REMAINDER
+HAVE_POWF
+HAVE_MODFL
+HAVE_MODFF
+HAVE_LOGBL
+HAVE_LOGBF
+HAVE_LOG1PL
+HAVE_LOG1PF
+HAVE_LOG1P
+HAVE_LOG10L
+HAVE_LOG10F
+HAVE_LOGL
+HAVE_LOGF
+HAVE_LDEXPF
+HAVE_ISNANL
+HAVE_ISNAND
+HAVE_ISNANF
+HAVE_ILOGBL
+HAVE_ILOGBF
+HAVE_ILOGB
+HAVE_HYPOTL
+HAVE_HYPOTF
+HAVE_FREXPF
+HAVE_FMODL
+HAVE_FMODF
+HAVE_FMAL
+HAVE_FMAF
+HAVE_FMA
+HAVE_FABSL
+HAVE_FABSF
+HAVE_EXPM1F
+HAVE_EXPM1
+HAVE_EXPL
+HAVE_EXPF
+HAVE_COSHF
+HAVE_COSL
+HAVE_COSF
+HAVE_COPYSIGNL
+HAVE_COPYSIGN
+HAVE_CBRTL
+HAVE_CBRTF
+HAVE_CBRT
+HAVE_ATAN2F
+HAVE_ATANL
+HAVE_ATANF
+HAVE_ASINL
+HAVE_ASINF
+HAVE_ACOSL
+HAVE_ACOSF
+GNULIB_TRUNCL
+GNULIB_TRUNCF
+GNULIB_TRUNC
+GNULIB_TANHF
+GNULIB_TANL
+GNULIB_TANF
+GNULIB_SQRTL
+GNULIB_SQRTF
+GNULIB_SINHF
+GNULIB_SINL
+GNULIB_SINF
+GNULIB_SIGNBIT
+GNULIB_ROUNDL
+GNULIB_ROUNDF
+GNULIB_ROUND
+GNULIB_RINTL
+GNULIB_RINTF
+GNULIB_RINT
+GNULIB_REMAINDERL
+GNULIB_REMAINDERF
+GNULIB_REMAINDER
+GNULIB_POWF
+GNULIB_MODFL
+GNULIB_MODFF
+GNULIB_MODF
+GNULIB_LOGBL
+GNULIB_LOGBF
+GNULIB_LOGB
+GNULIB_LOG2L
+GNULIB_LOG2F
+GNULIB_LOG2
+GNULIB_LOG1PL
+GNULIB_LOG1PF
+GNULIB_LOG1P
+GNULIB_LOG10L
+GNULIB_LOG10F
+GNULIB_LOG10
+GNULIB_LOGL
+GNULIB_LOGF
+GNULIB_LOG
+GNULIB_LDEXPL
+GNULIB_LDEXPF
+GNULIB_ISNANL
+GNULIB_ISNAND
+GNULIB_ISNANF
+GNULIB_ISNAN
+GNULIB_ISINF
+GNULIB_ISFINITE
+GNULIB_ILOGBL
+GNULIB_ILOGBF
+GNULIB_ILOGB
+GNULIB_HYPOTL
+GNULIB_HYPOTF
+GNULIB_HYPOT
+GNULIB_FREXPL
+GNULIB_FREXP
+GNULIB_FREXPF
+GNULIB_FMODL
+GNULIB_FMODF
+GNULIB_FMOD
+GNULIB_FMAL
+GNULIB_FMAF
+GNULIB_FMA
+GNULIB_FLOORL
+GNULIB_FLOORF
+GNULIB_FLOOR
+GNULIB_FABSL
+GNULIB_FABSF
+GNULIB_EXPM1L
+GNULIB_EXPM1F
+GNULIB_EXPM1
+GNULIB_EXP2L
+GNULIB_EXP2F
+GNULIB_EXP2
+GNULIB_EXPL
+GNULIB_EXPF
+GNULIB_COSHF
+GNULIB_COSL
+GNULIB_COSF
+GNULIB_COPYSIGNL
+GNULIB_COPYSIGNF
+GNULIB_COPYSIGN
+GNULIB_CEILL
+GNULIB_CEILF
+GNULIB_CEIL
+GNULIB_CBRTL
+GNULIB_CBRTF
+GNULIB_CBRT
+GNULIB_ATAN2F
+GNULIB_ATANL
+GNULIB_ATANF
+GNULIB_ASINL
+GNULIB_ASINF
+GNULIB_ACOSL
+GNULIB_ACOSF
 GL_GENERATE_FNMATCH_H_FALSE
 GL_GENERATE_FNMATCH_H_TRUE
 FNMATCH_H
@@ -1638,6 +1896,9 @@ LLVM_LDFLAGS
 LLVM_CXXFLAGS
 LLVM_CPPFLAGS
 LLVM_CONFIG
+BZ2_LIBS
+BZ2_LDFLAGS
+BZ2_CPPFLAGS
 Z_LIBS
 Z_LDFLAGS
 Z_CPPFLAGS
@@ -1865,12 +2126,16 @@ enable_largefile
 enable_threads
 enable_openmp
 enable_float_truncate
+enable_fortran_calling_convention
 with_qhull_includedir
 with_qhull_libdir
 with_qhull
 with_z_includedir
 with_z_libdir
 with_z
+with_bz2_includedir
+with_bz2_libdir
+with_bz2
 enable_jit
 with_hdf5_includedir
 with_hdf5_libdir
@@ -1888,7 +2153,11 @@ with_glpk
 with_curl_includedir
 with_curl_libdir
 with_curl
+with_sndfile_includedir
+with_sndfile_libdir
 with_sndfile
+with_portaudio_includedir
+with_portaudio_libdir
 with_portaudio
 with_magick
 with_x
@@ -2650,6 +2919,10 @@ Optional Features:
   --disable-openmp        disable OpenMP SMP multi-threading
   --disable-float-truncate
                           truncate intermediate FP results
+  --enable-fortran-calling-convention=OPTION
+                          Select C++ to Fortran calling convention. "gfortran"
+                          should be detected automatically. Other options are
+                          "cray", "visual-fortran", or "f2c".
   --enable-jit            (EXPERIMENTAL) enable JIT compiler
   --disable-fftw-threads  disable Multi-threaded FFTW
   --enable-static[=PKGS]  build static libraries [default=no]
@@ -2695,6 +2968,10 @@ Optional Packages:
   --with-z-includedir=DIR look for ZLIB include files in DIR
   --with-z-libdir=DIR     look for ZLIB libraries in DIR
   --without-z             don't use ZLIB library
+  --with-bz2-includedir=DIR
+                          look for BZIP2 include files in DIR
+  --with-bz2-libdir=DIR   look for BZIP2 libraries in DIR
+  --without-bz2           don't use BZIP2 library
   --with-hdf5-includedir=DIR
                           look for HDF5 include files in DIR
   --with-hdf5-libdir=DIR  look for HDF5 libraries in DIR
@@ -2716,7 +2993,15 @@ Optional Packages:
                           look for cURL include files in DIR
   --with-curl-libdir=DIR  look for cURL libraries in DIR
   --without-curl          don't use cURL library
+  --with-sndfile-includedir=DIR
+                          look for sndfile include files in DIR
+  --with-sndfile-libdir=DIR
+                          look for sndfile libraries in DIR
   --without-sndfile       don't use sndfile library, disable audio file I/O
+  --with-portaudio-includedir=DIR
+                          look for PortAudio include files in DIR
+  --with-portaudio-libdir=DIR
+                          look for PortAudio libraries in DIR
   --without-portaudio     don't use PortAudio library, disable audio playback
                           and recording
   --with-magick=LIB       select library to use for image I/O (options:
@@ -4654,6 +4939,7 @@ as_fn_append ac_header_list " sys/cdefs.h"
 as_fn_append ac_func_list " getpwnam_r"
 as_fn_append ac_func_list " link"
 as_fn_append ac_func_list " lstat"
+as_fn_append ac_header_list " math.h"
 as_fn_append ac_func_list " mbsinit"
 as_fn_append ac_func_list " mbrtowc"
 as_fn_append ac_header_list " sys/mman.h"
@@ -11214,6 +11500,35 @@ fi
 
 
 
+
+
+
+  # IEEE behaviour is the default on all CPUs except Alpha and SH
+  # (according to the test results of Bruno Haible's ieeefp/fenv_default.m4
+  # and the GCC 4.1.2 manual).
+  case "$host_cpu" in
+    alpha*)
+      # On Alpha systems, a compiler option provides the behaviour.
+      # See the ieee(3) manual page, also available at
+      # <http://h30097.www3.hp.com/docs/base_doc/DOCUMENTATION/V51B_HTML/MAN/MAN3/0600____.HTM>
+      if test -n "$GCC"; then
+        # GCC has the option -mieee.
+        # For full IEEE compliance (rarely needed), use option -mieee-with-inexact.
+        CPPFLAGS="$CPPFLAGS -mieee"
+      else
+        # Compaq (ex-DEC) C has the option -ieee, equivalent to -ieee_with_no_inexact.
+        # For full IEEE compliance (rarely needed), use option -ieee_with_inexact.
+        CPPFLAGS="$CPPFLAGS -ieee"
+      fi
+      ;;
+    sh*)
+      if test -n "$GCC"; then
+        # GCC has the option -mieee.
+        CPPFLAGS="$CPPFLAGS -mieee"
+      fi
+      ;;
+  esac
+
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for _LARGEFILE_SOURCE value needed for large files" >&5
 $as_echo_n "checking for _LARGEFILE_SOURCE value needed for large files... " >&6; }
 if ${ac_cv_sys_largefile_source+:} false; then :
@@ -11592,7 +11907,11 @@ fi
   # Code from module flexmember:
   # Code from module float:
   # Code from module fnmatch:
+  # Code from module fpieee:
+
   # Code from module fpucw:
+  # Code from module frexp:
+  # Code from module frexpf:
   # Code from module fseek:
   # Code from module fseeko:
 
@@ -11621,6 +11940,7 @@ fi
   # Code from module include_next:
   # Code from module intprops:
   # Code from module isatty:
+  # Code from module isnand-nolibm:
   # Code from module largefile:
 
   # Code from module link:
@@ -11631,6 +11951,7 @@ fi
   # Code from module malloc-gnu:
   # Code from module malloc-posix:
   # Code from module malloca:
+  # Code from module math:
   # Code from module mbrtowc:
   # Code from module mbsinit:
   # Code from module mbsrtowcs:
@@ -13715,7 +14036,6 @@ $as_echo "no" >&6; }
   as_fn_error $? "A Fortran compiler is required" "$LINENO" 5
 fi
 
-## Determine calling conventions for Fortran compiler
 
 ac_ext=f
 ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
@@ -14627,6 +14947,43 @@ $as_echo "no" >&6; }
   ;;
 esac
 
+if test $ac_cv_f77_compiler_gnu = yes; then
+  FORTRAN_CALLING_CONVENTION=gfortran
+else
+  FORTRAN_CALLING_CONVENTION=unknown
+fi
+# Check whether --enable-fortran-calling-convention was given.
+if test "${enable_fortran_calling_convention+set}" = set; then :
+  enableval=$enable_fortran_calling_convention; FORTRAN_CALLING_CONVENTION="$enableval"
+fi
+
+
+case "$FORTRAN_CALLING_CONVENTION" in
+  gfortran)
+
+$as_echo "#define F77_USES_GFORTRAN_CALLING_CONVENTION 1" >>confdefs.h
+
+  ;;
+  cray)
+
+$as_echo "#define F77_USES_CRAY_CALLING_CONVENTION 1" >>confdefs.h
+
+  ;;
+  visual-fortran)
+
+$as_echo "#define F77_USES_VISUAL_FORTRAN_CALLING_CONVENTION 1" >>confdefs.h
+
+  ;;
+  f2c)
+
+$as_echo "#define F77_USES_F2C_CALLING_CONVENTION 1" >>confdefs.h
+
+  ;;
+  *)
+    as_fn_error $? "to build Octave, the C++ to Fortran calling convention must be known." "$LINENO" 5
+  ;;
+esac
+
 if test -n "$FFLAGS"; then
   { $as_echo "$as_me:${as_lineno-$LINENO}: defining FFLAGS to be $FFLAGS" >&5
 $as_echo "$as_me: defining FFLAGS to be $FFLAGS" >&6;}
@@ -14637,7 +14994,7 @@ fi
 
 
 if test -z "$F77"; then
-  as_fn_error $? "in order to build Octave, you must have a compatible Fortran compiler or wrapper script for f2c that functions as a Fortran compiler installed and in your path.  See the file INSTALL for more information." "$LINENO" 5
+  as_fn_error $? "to build Octave, you must have a compatible Fortran compiler or wrapper script for f2c that functions as a Fortran compiler installed and in your path.  See the file INSTALL for more information." "$LINENO" 5
 fi
 
 
@@ -14941,7 +15298,7 @@ $as_echo "$octave_cv_sizeof_fortran_integer" >&6; }
 
     fi
     if test $octave_cv_sizeof_fortran_integer = no; then
-      as_fn_error $? "in order to build Octave with 64-bit indexing support your Fortran compiler must have an option for setting the default integer size to 8 bytes.  See the file INSTALL for more information." "$LINENO" 5
+      as_fn_error $? "to build Octave with 64-bit indexing support your Fortran compiler must have an option for setting the default integer size to 8 bytes.  See the file INSTALL for more information." "$LINENO" 5
     fi
   else
     as_fn_error $? "your Fortran compiler must have an option to make integers the same size as octave_idx_type ($OCTAVE_IDX_TYPE).  See the file INSTALL for more information." "$LINENO" 5
@@ -15603,7 +15960,167 @@ $as_echo "#define HAVE_ZLIB 1" >>confdefs.h
 
 fi
 
- ### Check for the LLVM library
+
+### Check for BZIP2 library.
+
+
+
+# Check whether --with-bz2-includedir was given.
+if test "${with_bz2_includedir+set}" = set; then :
+  withval=$with_bz2_includedir; BZ2_CPPFLAGS="-I$withval"
+fi
+
+
+
+
+# Check whether --with-bz2-libdir was given.
+if test "${with_bz2_libdir+set}" = set; then :
+  withval=$with_bz2_libdir; BZ2_LDFLAGS="-L$withval"
+fi
+
+
+
+
+# Check whether --with-bz2 was given.
+if test "${with_bz2+set}" = set; then :
+  withval=$with_bz2; with_bz2=$withval
+else
+  with_bz2=yes
+fi
+
+
+  ac_octave_bz2_pkg_check=no
+  BZ2_LIBS=
+  warn_bz2="BZIP2 library not found.  Octave will not be able to compress or decompress bzip2 files."
+  case $with_bz2 in
+    no)
+      warn_bz2="--without-bz2 specified.  Functions or features that depend on BZIP2 will be disabled."
+      BZ2_LIBS=
+    ;;
+    yes | "")
+      ac_octave_bz2_pkg_check=yes
+      BZ2_LIBS="-lbz2"
+    ;;
+    -* | */* | *.a | *.so | *.so.* | *.o)
+      BZ2_LIBS="$with_bz2"
+    ;;
+    *)
+      BZ2_LIBS="-l$with_bz2"
+    ;;
+  esac
+
+  if test $ac_octave_bz2_pkg_check = yes; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"bz2\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "bz2") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+
+      if test -z "$BZ2_CPPFLAGS"; then
+        BZ2_CPPFLAGS="$($PKG_CONFIG --cflags-only-I bz2)"
+      fi
+      if test -z "$BZ2_LDFLAGS"; then
+        BZ2_LDFLAGS="$($PKG_CONFIG --libs-only-L bz2)"
+      fi
+      BZ2_LIBS="$($PKG_CONFIG --libs-only-l bz2)"
+
+fi
+  fi
+
+  if test -n "$BZ2_LIBS"; then
+    ac_octave_save_CPPFLAGS="$CPPFLAGS"
+    ac_octave_save_LDFLAGS="$LDFLAGS"
+    ac_octave_save_LIBS="$LIBS"
+    CPPFLAGS="$BZ2_CPPFLAGS $CPPFLAGS"
+    LDFLAGS="$BZ2_LDFLAGS $LDFLAGS"
+    LIBS="$BZ2_LIBS $LIBS"
+
+    ac_octave_bz2_check_for_lib=no
+    for ac_header in bzlib.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "bzlib.h" "ac_cv_header_bzlib_h" "$ac_includes_default"
+if test "x$ac_cv_header_bzlib_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_BZLIB_H 1
+_ACEOF
+ ac_octave_bz2_check_for_lib=yes; break
+fi
+
+done
+
+    if test $ac_octave_bz2_check_for_lib = yes; then
+      { $as_echo "$as_me:${as_lineno-$LINENO}: checking for BZ2_bzCompressInit in $BZ2_LIBS" >&5
+$as_echo_n "checking for BZ2_bzCompressInit in $BZ2_LIBS... " >&6; }
+if ${octave_cv_lib_bz2+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char BZ2_bzCompressInit ();
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+return BZ2_bzCompressInit ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  octave_cv_lib_bz2=yes
+else
+  octave_cv_lib_bz2=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $octave_cv_lib_bz2" >&5
+$as_echo "$octave_cv_lib_bz2" >&6; }
+      if test "$octave_cv_lib_bz2" = yes; then
+
+          warn_bz2=
+
+$as_echo "#define HAVE_BZ2 1" >>confdefs.h
+
+      fi
+    fi
+
+    CPPFLAGS="$ac_octave_save_CPPFLAGS"
+    LDFLAGS="$ac_octave_save_LDFLAGS"
+    LIBS="$ac_octave_save_LIBS"
+  else
+    octave_cv_lib_bz2=no
+  fi
+
+
+  if test -n "$warn_bz2"; then
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $warn_bz2" >&5
+$as_echo "$as_me: WARNING: $warn_bz2" >&2;}
+
+
+    BZ2_LIBS=
+  fi
+
+
+
+### Check for the LLVM library
 
 ENABLE_JIT=no
 # Check whether --enable-jit was given.
@@ -17546,33 +18063,137 @@ CPPFLAGS="$save_CPPFLAGS"
 
 ### Check for sndfile
 
-warn_sndfile="sndfile library fails tests.  The audioinfo, audioread, and audiowrite functions for reading and writing audio files will not be fully functional."
 
-check_sndfile=no
 
-# Check whether --with-sndfile was given.
-if test "${with_sndfile+set}" = set; then :
-  withval=$with_sndfile; if test x"$withval" = xno; then
-     warn_sndfile="--without-sndfile specified.  The audioinfo, audioread, and audiowrite functions for reading and writing audio files will not be fully functional."
-   else
-     check_sndfile=yes
-   fi
-else
-  check_sndfile=yes
+# Check whether --with-sndfile-includedir was given.
+if test "${with_sndfile_includedir+set}" = set; then :
+  withval=$with_sndfile_includedir; SNDFILE_CPPFLAGS="-I$withval"
 fi
 
 
-if test $check_sndfile = yes; then
-  if test -n "$PKG_CONFIG" && \
+
+
+# Check whether --with-sndfile-libdir was given.
+if test "${with_sndfile_libdir+set}" = set; then :
+  withval=$with_sndfile_libdir; SNDFILE_LDFLAGS="-L$withval"
+fi
+
+
+
+
+# Check whether --with-sndfile was given.
+if test "${with_sndfile+set}" = set; then :
+  withval=$with_sndfile; with_sndfile=$withval
+else
+  with_sndfile=yes
+fi
+
+
+  ac_octave_sndfile_pkg_check=no
+  SNDFILE_LIBS=
+  warn_sndfile="sndfile library not found.  The audioinfo, audioread, and audiowrite functions will be disabled."
+  case $with_sndfile in
+    no)
+      warn_sndfile="--without-sndfile specified.  Functions or features that depend on sndfile will be disabled."
+      SNDFILE_LIBS=
+    ;;
+    yes | "")
+      ac_octave_sndfile_pkg_check=yes
+      SNDFILE_LIBS="-lsndfile"
+    ;;
+    -* | */* | *.a | *.so | *.so.* | *.o)
+      SNDFILE_LIBS="$with_sndfile"
+    ;;
+    *)
+      SNDFILE_LIBS="-l$with_sndfile"
+    ;;
+  esac
+
+  if test $ac_octave_sndfile_pkg_check = yes; then
+    if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"sndfile\""; } >&5
   ($PKG_CONFIG --exists --print-errors "sndfile") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
 
-    SNDFILE_CPPFLAGS=`$PKG_CONFIG --cflags-only-I sndfile`
-    SNDFILE_LDFLAGS=`$PKG_CONFIG --libs-only-L sndfile`
-    SNDFILE_LIBS=`$PKG_CONFIG --libs-only-l sndfile`
+      if test -z "$SNDFILE_CPPFLAGS"; then
+        SNDFILE_CPPFLAGS="$($PKG_CONFIG --cflags-only-I sndfile)"
+      fi
+      if test -z "$SNDFILE_LDFLAGS"; then
+        SNDFILE_LDFLAGS="$($PKG_CONFIG --libs-only-L sndfile)"
+      fi
+      SNDFILE_LIBS="$($PKG_CONFIG --libs-only-l sndfile)"
+
+fi
+  fi
+
+  if test -n "$SNDFILE_LIBS"; then
+    ac_octave_save_CPPFLAGS="$CPPFLAGS"
+    ac_octave_save_LDFLAGS="$LDFLAGS"
+    ac_octave_save_LIBS="$LIBS"
+    CPPFLAGS="$SNDFILE_CPPFLAGS $CPPFLAGS"
+    LDFLAGS="$SNDFILE_LDFLAGS $LDFLAGS"
+    LIBS="$SNDFILE_LIBS $LIBS"
+
+    ac_octave_sndfile_check_for_lib=no
+    for ac_header in sndfile.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "sndfile.h" "ac_cv_header_sndfile_h" "$ac_includes_default"
+if test "x$ac_cv_header_sndfile_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_SNDFILE_H 1
+_ACEOF
+ ac_octave_sndfile_check_for_lib=yes; break
+fi
+
+done
+
+    if test $ac_octave_sndfile_check_for_lib = yes; then
+      { $as_echo "$as_me:${as_lineno-$LINENO}: checking for sf_open in $SNDFILE_LIBS" >&5
+$as_echo_n "checking for sf_open in $SNDFILE_LIBS... " >&6; }
+if ${octave_cv_lib_sndfile+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char sf_open ();
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+return sf_open ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  octave_cv_lib_sndfile=yes
+else
+  octave_cv_lib_sndfile=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $octave_cv_lib_sndfile" >&5
+$as_echo "$octave_cv_lib_sndfile" >&6; }
+      if test "$octave_cv_lib_sndfile" = yes; then
+        warn_sndfile=
 
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether sndfile library is modern enough" >&5
 $as_echo_n "checking whether sndfile library is modern enough... " >&6; }
@@ -17613,86 +18234,192 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $octave_cv_lib_sndfile_ok" >&5
 $as_echo "$octave_cv_lib_sndfile_ok" >&6; }
   if test $octave_cv_lib_sndfile_ok = yes; then
-    warn_sndfile=
-    :
-  else
-
-    :
-  fi
-
-
-fi
-fi
-
-if test -z "$warn_sndfile"; then
 
 $as_echo "#define HAVE_SNDFILE 1" >>confdefs.h
 
-else
+    :
+  else
+    warn_sndfile="sndfile library found, but does not seem to work properly; disabling audio file I/O functions"
+    :
+  fi
+
+      fi
+    fi
+
+    CPPFLAGS="$ac_octave_save_CPPFLAGS"
+    LDFLAGS="$ac_octave_save_LDFLAGS"
+    LIBS="$ac_octave_save_LIBS"
+  else
+    octave_cv_lib_sndfile=no
+  fi
+
+
+  if test -n "$warn_sndfile"; then
 
   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $warn_sndfile" >&5
 $as_echo "$as_me: WARNING: $warn_sndfile" >&2;}
 
 
-  SNDFILE_CPPFLAGS=
-  SNDFILE_LDFLAGS=
-  SNDFILE_LIBS=
-fi
-
-
-
+    SNDFILE_LIBS=
+  fi
 
 
 ### Check for PortAudio
 
-warn_portaudio="PortAudio library fails tests.  The audioplayer, audiorecorder classes, and audiodevinfo function for audio playback and recording will not be fully functional."
 
-check_portaudio=no
 
-# Check whether --with-portaudio was given.
-if test "${with_portaudio+set}" = set; then :
-  withval=$with_portaudio; if test x"$withval" = xno; then
-     warn_portaudio="--without-portaudio specified.  The audioplayer, audiorecorder classes, and audiodevinfo function for audio playback and recording will not be fully functional."
-   else
-     check_portaudio=yes
-   fi
-else
-  check_portaudio=yes
+# Check whether --with-portaudio-includedir was given.
+if test "${with_portaudio_includedir+set}" = set; then :
+  withval=$with_portaudio_includedir; PORTAUDIO_CPPFLAGS="-I$withval"
 fi
 
 
-if test $check_portaudio = yes; then
-  if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"portaudio-2.0 >= 19\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "portaudio-2.0 >= 19") 2>&5
+
+
+# Check whether --with-portaudio-libdir was given.
+if test "${with_portaudio_libdir+set}" = set; then :
+  withval=$with_portaudio_libdir; PORTAUDIO_LDFLAGS="-L$withval"
+fi
+
+
+
+
+# Check whether --with-portaudio was given.
+if test "${with_portaudio+set}" = set; then :
+  withval=$with_portaudio; with_portaudio=$withval
+else
+  with_portaudio=yes
+fi
+
+
+  ac_octave_portaudio_pkg_check=no
+  PORTAUDIO_LIBS=
+  warn_portaudio="PortAudio library not found.  The audioplayer, audiorecorder, and audiodevinfo functions will be disabled."
+  case $with_portaudio in
+    no)
+      warn_portaudio="--without-portaudio specified.  Functions or features that depend on PortAudio will be disabled."
+      PORTAUDIO_LIBS=
+    ;;
+    yes | "")
+      ac_octave_portaudio_pkg_check=yes
+      PORTAUDIO_LIBS="-lportaudio"
+    ;;
+    -* | */* | *.a | *.so | *.so.* | *.o)
+      PORTAUDIO_LIBS="$with_portaudio"
+    ;;
+    *)
+      PORTAUDIO_LIBS="-l$with_portaudio"
+    ;;
+  esac
+
+  if test $ac_octave_portaudio_pkg_check = yes; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"portaudio-2.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "portaudio-2.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
 
-    PORTAUDIO_CPPFLAGS=`$PKG_CONFIG --cflags-only-I portaudio-2.0`
-    PORTAUDIO_LDFLAGS=`$PKG_CONFIG --libs-only-L portaudio-2.0`
-    PORTAUDIO_LIBS=`$PKG_CONFIG --libs-only-l portaudio-2.0`
-    warn_portaudio=
+      if test -z "$PORTAUDIO_CPPFLAGS"; then
+        PORTAUDIO_CPPFLAGS="$($PKG_CONFIG --cflags-only-I portaudio-2.0)"
+      fi
+      if test -z "$PORTAUDIO_LDFLAGS"; then
+        PORTAUDIO_LDFLAGS="$($PKG_CONFIG --libs-only-L portaudio-2.0)"
+      fi
+      PORTAUDIO_LIBS="$($PKG_CONFIG --libs-only-l portaudio-2.0)"
 
 fi
+  fi
+
+  if test -n "$PORTAUDIO_LIBS"; then
+    ac_octave_save_CPPFLAGS="$CPPFLAGS"
+    ac_octave_save_LDFLAGS="$LDFLAGS"
+    ac_octave_save_LIBS="$LIBS"
+    CPPFLAGS="$PORTAUDIO_CPPFLAGS $CPPFLAGS"
+    LDFLAGS="$PORTAUDIO_LDFLAGS $LDFLAGS"
+    LIBS="$PORTAUDIO_LIBS $LIBS"
+
+    ac_octave_portaudio_check_for_lib=no
+    for ac_header in portaudio.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "portaudio.h" "ac_cv_header_portaudio_h" "$ac_includes_default"
+if test "x$ac_cv_header_portaudio_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_PORTAUDIO_H 1
+_ACEOF
+ ac_octave_portaudio_check_for_lib=yes; break
 fi
 
-if test -z "$warn_portaudio"; then
+done
+
+    if test $ac_octave_portaudio_check_for_lib = yes; then
+      { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Pa_Initialize in $PORTAUDIO_LIBS" >&5
+$as_echo_n "checking for Pa_Initialize in $PORTAUDIO_LIBS... " >&6; }
+if ${octave_cv_lib_portaudio+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char Pa_Initialize ();
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+return Pa_Initialize ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  octave_cv_lib_portaudio=yes
+else
+  octave_cv_lib_portaudio=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $octave_cv_lib_portaudio" >&5
+$as_echo "$octave_cv_lib_portaudio" >&6; }
+      if test "$octave_cv_lib_portaudio" = yes; then
+
+          warn_portaudio=
 
 $as_echo "#define HAVE_PORTAUDIO 1" >>confdefs.h
 
-else
+      fi
+    fi
+
+    CPPFLAGS="$ac_octave_save_CPPFLAGS"
+    LDFLAGS="$ac_octave_save_LDFLAGS"
+    LIBS="$ac_octave_save_LIBS"
+  else
+    octave_cv_lib_portaudio=no
+  fi
+
+
+  if test -n "$warn_portaudio"; then
 
   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $warn_portaudio" >&5
 $as_echo "$as_me: WARNING: $warn_portaudio" >&2;}
 
 
-  PORTAUDIO_CPPFLAGS=
-  PORTAUDIO_LDFLAGS=
-  PORTAUDIO_LIBS=
-fi
-
-
+    PORTAUDIO_LIBS=
+  fi
 
 
 ### Check for either of Graphics/ImageMagick++ libraries
@@ -18232,9 +18959,9 @@ if test $have_framework_carbon = yes; then
 
 $as_echo "#define HAVE_FRAMEWORK_CARBON 1" >>confdefs.h
 
-  CARBON_LIBS="-Wl,-framework -Wl,Carbon"
-  { $as_echo "$as_me:${as_lineno-$LINENO}: adding -Wl,-framework -Wl,Carbon to CARBON_LIBS" >&5
-$as_echo "$as_me: adding -Wl,-framework -Wl,Carbon to CARBON_LIBS" >&6;}
+  CARBON_LIBS="-framework Carbon"
+  { $as_echo "$as_me:${as_lineno-$LINENO}: adding -framework Carbon to CARBON_LIBS" >&5
+$as_echo "$as_me: adding -framework Carbon to CARBON_LIBS" >&6;}
 
 fi
 
@@ -18347,9 +19074,9 @@ $as_echo "no" >&6; }
 
 $as_echo "#define HAVE_FRAMEWORK_OPENGL 1" >>confdefs.h
 
-    OPENGL_LIBS="-Wl,-framework -Wl,OpenGL"
-    { $as_echo "$as_me:${as_lineno-$LINENO}: adding -Wl,-framework -Wl,OpenGL to OPENGL_LIBS" >&5
-$as_echo "$as_me: adding -Wl,-framework -Wl,OpenGL to OPENGL_LIBS" >&6;}
+    OPENGL_LIBS="-framework OpenGL"
+    { $as_echo "$as_me:${as_lineno-$LINENO}: adding -framework OpenGL to OPENGL_LIBS" >&5
+$as_echo "$as_me: adding -framework OpenGL to OPENGL_LIBS" >&6;}
 
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether gluTessCallback is called with \"(...)\"" >&5
 $as_echo_n "checking whether gluTessCallback is called with \"(...)\"... " >&6; }
@@ -43939,95 +44666,6 @@ fi
 done
 
 
-  for ac_header in unordered_map
-do :
-  ac_fn_cxx_check_header_mongrel "$LINENO" "unordered_map" "ac_cv_header_unordered_map" "$ac_includes_default"
-if test "x$ac_cv_header_unordered_map" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_UNORDERED_MAP 1
-_ACEOF
-
-else
-  for ac_header in tr1/unordered_map
-do :
-  ac_fn_cxx_check_header_mongrel "$LINENO" "tr1/unordered_map" "ac_cv_header_tr1_unordered_map" "$ac_includes_default"
-if test "x$ac_cv_header_tr1_unordered_map" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_TR1_UNORDERED_MAP 1
-_ACEOF
-
-fi
-
-done
-
-fi
-
-done
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether unordered_map requires tr1 namespace" >&5
-$as_echo_n "checking whether unordered_map requires tr1 namespace... " >&6; }
-if ${octave_cv_header_require_tr1_namespace+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_ext=cpp
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-    octave_cv_header_require_tr1_namespace=no
-    if test $ac_cv_header_unordered_map = yes; then
-      ## Have <unordered_map>, but still have to check whether
-      ## tr1 namespace is required (like MSVC, for instance).
-      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-          #include <unordered_map>
-
-#ifdef F77_DUMMY_MAIN
-
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-
-#endif
-int
-main ()
-{
-
-          std::unordered_map<int,int> m;
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_cxx_try_compile "$LINENO"; then :
-  octave_cv_header_require_tr1_namespace=no
-else
-  octave_cv_header_require_tr1_namespace=yes
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-    elif test $ac_cv_header_tr1_unordered_map = yes; then
-      octave_cv_header_require_tr1_namespace=yes
-    fi
-    ac_ext=cpp
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $octave_cv_header_require_tr1_namespace" >&5
-$as_echo "$octave_cv_header_require_tr1_namespace" >&6; }
-  if test $octave_cv_header_require_tr1_namespace = yes; then
-
-$as_echo "#define USE_UNORDERED_MAP_WITH_TR1 1" >>confdefs.h
-
-  fi
-
-
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -47144,6 +47782,312 @@ $as_echo "#define mbstate_t int" >>confdefs.h
 
 
 
+  GNULIB_ACOSF=0;
+  GNULIB_ACOSL=0;
+  GNULIB_ASINF=0;
+  GNULIB_ASINL=0;
+  GNULIB_ATANF=0;
+  GNULIB_ATANL=0;
+  GNULIB_ATAN2F=0;
+  GNULIB_CBRT=0;
+  GNULIB_CBRTF=0;
+  GNULIB_CBRTL=0;
+  GNULIB_CEIL=0;
+  GNULIB_CEILF=0;
+  GNULIB_CEILL=0;
+  GNULIB_COPYSIGN=0;
+  GNULIB_COPYSIGNF=0;
+  GNULIB_COPYSIGNL=0;
+  GNULIB_COSF=0;
+  GNULIB_COSL=0;
+  GNULIB_COSHF=0;
+  GNULIB_EXPF=0;
+  GNULIB_EXPL=0;
+  GNULIB_EXP2=0;
+  GNULIB_EXP2F=0;
+  GNULIB_EXP2L=0;
+  GNULIB_EXPM1=0;
+  GNULIB_EXPM1F=0;
+  GNULIB_EXPM1L=0;
+  GNULIB_FABSF=0;
+  GNULIB_FABSL=0;
+  GNULIB_FLOOR=0;
+  GNULIB_FLOORF=0;
+  GNULIB_FLOORL=0;
+  GNULIB_FMA=0;
+  GNULIB_FMAF=0;
+  GNULIB_FMAL=0;
+  GNULIB_FMOD=0;
+  GNULIB_FMODF=0;
+  GNULIB_FMODL=0;
+  GNULIB_FREXPF=0;
+  GNULIB_FREXP=0;
+  GNULIB_FREXPL=0;
+  GNULIB_HYPOT=0;
+  GNULIB_HYPOTF=0;
+  GNULIB_HYPOTL=0;
+  GNULIB_ILOGB=0;
+  GNULIB_ILOGBF=0;
+  GNULIB_ILOGBL=0;
+  GNULIB_ISFINITE=0;
+  GNULIB_ISINF=0;
+  GNULIB_ISNAN=0;
+  GNULIB_ISNANF=0;
+  GNULIB_ISNAND=0;
+  GNULIB_ISNANL=0;
+  GNULIB_LDEXPF=0;
+  GNULIB_LDEXPL=0;
+  GNULIB_LOG=0;
+  GNULIB_LOGF=0;
+  GNULIB_LOGL=0;
+  GNULIB_LOG10=0;
+  GNULIB_LOG10F=0;
+  GNULIB_LOG10L=0;
+  GNULIB_LOG1P=0;
+  GNULIB_LOG1PF=0;
+  GNULIB_LOG1PL=0;
+  GNULIB_LOG2=0;
+  GNULIB_LOG2F=0;
+  GNULIB_LOG2L=0;
+  GNULIB_LOGB=0;
+  GNULIB_LOGBF=0;
+  GNULIB_LOGBL=0;
+  GNULIB_MODF=0;
+  GNULIB_MODFF=0;
+  GNULIB_MODFL=0;
+  GNULIB_POWF=0;
+  GNULIB_REMAINDER=0;
+  GNULIB_REMAINDERF=0;
+  GNULIB_REMAINDERL=0;
+  GNULIB_RINT=0;
+  GNULIB_RINTF=0;
+  GNULIB_RINTL=0;
+  GNULIB_ROUND=0;
+  GNULIB_ROUNDF=0;
+  GNULIB_ROUNDL=0;
+  GNULIB_SIGNBIT=0;
+  GNULIB_SINF=0;
+  GNULIB_SINL=0;
+  GNULIB_SINHF=0;
+  GNULIB_SQRTF=0;
+  GNULIB_SQRTL=0;
+  GNULIB_TANF=0;
+  GNULIB_TANL=0;
+  GNULIB_TANHF=0;
+  GNULIB_TRUNC=0;
+  GNULIB_TRUNCF=0;
+  GNULIB_TRUNCL=0;
+    HAVE_ACOSF=1;
+  HAVE_ACOSL=1;
+  HAVE_ASINF=1;
+  HAVE_ASINL=1;
+  HAVE_ATANF=1;
+  HAVE_ATANL=1;
+  HAVE_ATAN2F=1;
+  HAVE_CBRT=1;
+  HAVE_CBRTF=1;
+  HAVE_CBRTL=1;
+  HAVE_COPYSIGN=1;
+  HAVE_COPYSIGNL=1;
+  HAVE_COSF=1;
+  HAVE_COSL=1;
+  HAVE_COSHF=1;
+  HAVE_EXPF=1;
+  HAVE_EXPL=1;
+  HAVE_EXPM1=1;
+  HAVE_EXPM1F=1;
+  HAVE_FABSF=1;
+  HAVE_FABSL=1;
+  HAVE_FMA=1;
+  HAVE_FMAF=1;
+  HAVE_FMAL=1;
+  HAVE_FMODF=1;
+  HAVE_FMODL=1;
+  HAVE_FREXPF=1;
+  HAVE_HYPOTF=1;
+  HAVE_HYPOTL=1;
+  HAVE_ILOGB=1;
+  HAVE_ILOGBF=1;
+  HAVE_ILOGBL=1;
+  HAVE_ISNANF=1;
+  HAVE_ISNAND=1;
+  HAVE_ISNANL=1;
+  HAVE_LDEXPF=1;
+  HAVE_LOGF=1;
+  HAVE_LOGL=1;
+  HAVE_LOG10F=1;
+  HAVE_LOG10L=1;
+  HAVE_LOG1P=1;
+  HAVE_LOG1PF=1;
+  HAVE_LOG1PL=1;
+  HAVE_LOGBF=1;
+  HAVE_LOGBL=1;
+  HAVE_MODFF=1;
+  HAVE_MODFL=1;
+  HAVE_POWF=1;
+  HAVE_REMAINDER=1;
+  HAVE_REMAINDERF=1;
+  HAVE_RINT=1;
+  HAVE_RINTL=1;
+  HAVE_SINF=1;
+  HAVE_SINL=1;
+  HAVE_SINHF=1;
+  HAVE_SQRTF=1;
+  HAVE_SQRTL=1;
+  HAVE_TANF=1;
+  HAVE_TANL=1;
+  HAVE_TANHF=1;
+  HAVE_DECL_ACOSL=1;
+  HAVE_DECL_ASINL=1;
+  HAVE_DECL_ATANL=1;
+  HAVE_DECL_CBRTF=1;
+  HAVE_DECL_CBRTL=1;
+  HAVE_DECL_CEILF=1;
+  HAVE_DECL_CEILL=1;
+  HAVE_DECL_COPYSIGNF=1;
+  HAVE_DECL_COSL=1;
+  HAVE_DECL_EXPL=1;
+  HAVE_DECL_EXP2=1;
+  HAVE_DECL_EXP2F=1;
+  HAVE_DECL_EXP2L=1;
+  HAVE_DECL_EXPM1L=1;
+  HAVE_DECL_FLOORF=1;
+  HAVE_DECL_FLOORL=1;
+  HAVE_DECL_FREXPL=1;
+  HAVE_DECL_LDEXPL=1;
+  HAVE_DECL_LOGL=1;
+  HAVE_DECL_LOG10L=1;
+  HAVE_DECL_LOG2=1;
+  HAVE_DECL_LOG2F=1;
+  HAVE_DECL_LOG2L=1;
+  HAVE_DECL_LOGB=1;
+  HAVE_DECL_REMAINDER=1;
+  HAVE_DECL_REMAINDERL=1;
+  HAVE_DECL_RINTF=1;
+  HAVE_DECL_ROUND=1;
+  HAVE_DECL_ROUNDF=1;
+  HAVE_DECL_ROUNDL=1;
+  HAVE_DECL_SINL=1;
+  HAVE_DECL_SQRTL=1;
+  HAVE_DECL_TANL=1;
+  HAVE_DECL_TRUNC=1;
+  HAVE_DECL_TRUNCF=1;
+  HAVE_DECL_TRUNCL=1;
+  REPLACE_CBRTF=0;
+  REPLACE_CBRTL=0;
+  REPLACE_CEIL=0;
+  REPLACE_CEILF=0;
+  REPLACE_CEILL=0;
+  REPLACE_EXPM1=0;
+  REPLACE_EXPM1F=0;
+  REPLACE_EXP2=0;
+  REPLACE_EXP2L=0;
+  REPLACE_FABSL=0;
+  REPLACE_FLOOR=0;
+  REPLACE_FLOORF=0;
+  REPLACE_FLOORL=0;
+  REPLACE_FMA=0;
+  REPLACE_FMAF=0;
+  REPLACE_FMAL=0;
+  REPLACE_FMOD=0;
+  REPLACE_FMODF=0;
+  REPLACE_FMODL=0;
+  REPLACE_FREXPF=0;
+  REPLACE_FREXP=0;
+  REPLACE_FREXPL=0;
+  REPLACE_HUGE_VAL=0;
+  REPLACE_HYPOT=0;
+  REPLACE_HYPOTF=0;
+  REPLACE_HYPOTL=0;
+  REPLACE_ILOGB=0;
+  REPLACE_ILOGBF=0;
+  REPLACE_ISFINITE=0;
+  REPLACE_ISINF=0;
+  REPLACE_ISNAN=0;
+  REPLACE_LDEXPL=0;
+  REPLACE_LOG=0;
+  REPLACE_LOGF=0;
+  REPLACE_LOGL=0;
+  REPLACE_LOG10=0;
+  REPLACE_LOG10F=0;
+  REPLACE_LOG10L=0;
+  REPLACE_LOG1P=0;
+  REPLACE_LOG1PF=0;
+  REPLACE_LOG1PL=0;
+  REPLACE_LOG2=0;
+  REPLACE_LOG2F=0;
+  REPLACE_LOG2L=0;
+  REPLACE_LOGB=0;
+  REPLACE_LOGBF=0;
+  REPLACE_LOGBL=0;
+  REPLACE_MODF=0;
+  REPLACE_MODFF=0;
+  REPLACE_MODFL=0;
+  REPLACE_NAN=0;
+  REPLACE_REMAINDER=0;
+  REPLACE_REMAINDERF=0;
+  REPLACE_REMAINDERL=0;
+  REPLACE_ROUND=0;
+  REPLACE_ROUNDF=0;
+  REPLACE_ROUNDL=0;
+  REPLACE_SIGNBIT=0;
+  REPLACE_SIGNBIT_USING_GCC=0;
+  REPLACE_SQRTL=0;
+  REPLACE_TRUNC=0;
+  REPLACE_TRUNCF=0;
+  REPLACE_TRUNCL=0;
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether frexp() can be used without linking with libm" >&5
+$as_echo_n "checking whether frexp() can be used without linking with libm... " >&6; }
+if ${gl_cv_func_frexp_no_libm+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <math.h>
+             double x;
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+int e; return frexp (x, &e) > 0;
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  gl_cv_func_frexp_no_libm=yes
+else
+  gl_cv_func_frexp_no_libm=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_func_frexp_no_libm" >&5
+$as_echo "$gl_cv_func_frexp_no_libm" >&6; }
+
+ac_fn_c_check_decl "$LINENO" "alarm" "ac_cv_have_decl_alarm" "$ac_includes_default"
+if test "x$ac_cv_have_decl_alarm" = xyes; then :
+  ac_have_decl=1
+else
+  ac_have_decl=0
+fi
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_DECL_ALARM $ac_have_decl
+_ACEOF
+
+
   GNULIB_DPRINTF=0;
   GNULIB_FCLOSE=0;
   GNULIB_FDOPEN=0;
@@ -49097,6 +50041,400 @@ fi
 
 
 
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking where to find the exponent in a 'double'" >&5
+$as_echo_n "checking where to find the exponent in a 'double'... " >&6; }
+if ${gl_cv_cc_double_expbit0+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+      if test "$cross_compiling" = yes; then :
+
+                                                                      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#if defined arm || defined __arm || defined __arm__
+  mixed_endianness
+#endif
+
+_ACEOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  $EGREP "mixed_endianness" >/dev/null 2>&1; then :
+  gl_cv_cc_double_expbit0="unknown"
+else
+
+                                                         :
+if ${ac_cv_c_bigendian+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_cv_c_bigendian=unknown
+    # See if we're dealing with a universal compiler.
+    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#ifndef __APPLE_CC__
+	       not a universal capable compiler
+	     #endif
+	     typedef int dummy;
+
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+
+	# Check for potential -arch flags.  It is not universal unless
+	# there are at least two -arch flags with different values.
+	ac_arch=
+	ac_prev=
+	for ac_word in $CC $CFLAGS $CPPFLAGS $LDFLAGS; do
+	 if test -n "$ac_prev"; then
+	   case $ac_word in
+	     i?86 | x86_64 | ppc | ppc64)
+	       if test -z "$ac_arch" || test "$ac_arch" = "$ac_word"; then
+		 ac_arch=$ac_word
+	       else
+		 ac_cv_c_bigendian=universal
+		 break
+	       fi
+	       ;;
+	   esac
+	   ac_prev=
+	 elif test "x$ac_word" = "x-arch"; then
+	   ac_prev=arch
+	 fi
+       done
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+    if test $ac_cv_c_bigendian = unknown; then
+      # See if sys/param.h defines the BYTE_ORDER macro.
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <sys/types.h>
+	     #include <sys/param.h>
+
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+#if ! (defined BYTE_ORDER && defined BIG_ENDIAN \
+		     && defined LITTLE_ENDIAN && BYTE_ORDER && BIG_ENDIAN \
+		     && LITTLE_ENDIAN)
+	      bogus endian macros
+	     #endif
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  # It does; now see whether it defined to BIG_ENDIAN or not.
+	 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <sys/types.h>
+		#include <sys/param.h>
+
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+#if BYTE_ORDER != BIG_ENDIAN
+		 not big endian
+		#endif
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  ac_cv_c_bigendian=yes
+else
+  ac_cv_c_bigendian=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+    fi
+    if test $ac_cv_c_bigendian = unknown; then
+      # See if <limits.h> defines _LITTLE_ENDIAN or _BIG_ENDIAN (e.g., Solaris).
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <limits.h>
+
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+#if ! (defined _LITTLE_ENDIAN || defined _BIG_ENDIAN)
+	      bogus endian macros
+	     #endif
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  # It does; now see whether it defined to _BIG_ENDIAN or not.
+	 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <limits.h>
+
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+#ifndef _BIG_ENDIAN
+		 not big endian
+		#endif
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  ac_cv_c_bigendian=yes
+else
+  ac_cv_c_bigendian=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+    fi
+    if test $ac_cv_c_bigendian = unknown; then
+      # Compile a test program.
+      if test "$cross_compiling" = yes; then :
+  # Try to guess by grepping values from an object file.
+	 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+short int ascii_mm[] =
+		  { 0x4249, 0x4765, 0x6E44, 0x6961, 0x6E53, 0x7953, 0 };
+		short int ascii_ii[] =
+		  { 0x694C, 0x5454, 0x656C, 0x6E45, 0x6944, 0x6E61, 0 };
+		int use_ascii (int i) {
+		  return ascii_mm[i] + ascii_ii[i];
+		}
+		short int ebcdic_ii[] =
+		  { 0x89D3, 0xE3E3, 0x8593, 0x95C5, 0x89C4, 0x9581, 0 };
+		short int ebcdic_mm[] =
+		  { 0xC2C9, 0xC785, 0x95C4, 0x8981, 0x95E2, 0xA8E2, 0 };
+		int use_ebcdic (int i) {
+		  return ebcdic_mm[i] + ebcdic_ii[i];
+		}
+		extern int foo;
+
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+return use_ascii (foo) == use_ebcdic (foo);
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  if grep BIGenDianSyS conftest.$ac_objext >/dev/null; then
+	      ac_cv_c_bigendian=yes
+	    fi
+	    if grep LiTTleEnDian conftest.$ac_objext >/dev/null ; then
+	      if test "$ac_cv_c_bigendian" = unknown; then
+		ac_cv_c_bigendian=no
+	      else
+		# finding both strings is unlikely to happen, but who knows?
+		ac_cv_c_bigendian=unknown
+	      fi
+	    fi
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$ac_includes_default
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+
+	     /* Are we little or big endian?  From Harbison&Steele.  */
+	     union
+	     {
+	       long int l;
+	       char c[sizeof (long int)];
+	     } u;
+	     u.l = 1;
+	     return u.c[sizeof (long int) - 1] == 1;
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_run "$LINENO"; then :
+  ac_cv_c_bigendian=no
+else
+  ac_cv_c_bigendian=yes
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+  conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+
+    fi
+fi
+:
+ case $ac_cv_c_bigendian in #(
+   yes)
+     gl_cv_cc_double_expbit0="word 0 bit 20";; #(
+   no)
+     gl_cv_cc_double_expbit0="word 1 bit 20" ;; #(
+   universal)
+
+$as_echo "#define AC_APPLE_UNIVERSAL_BUILD 1" >>confdefs.h
+
+     ;; #(
+   *)
+     gl_cv_cc_double_expbit0="unknown" ;;
+ esac
+
+
+fi
+rm -f conftest*
+
+
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#include <float.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <string.h>
+#define NWORDS \
+  ((sizeof (double) + sizeof (unsigned int) - 1) / sizeof (unsigned int))
+typedef union { double value; unsigned int word[NWORDS]; } memory_double;
+static unsigned int ored_words[NWORDS];
+static unsigned int anded_words[NWORDS];
+static void add_to_ored_words (double x)
+{
+  memory_double m;
+  size_t i;
+  /* Clear it first, in case sizeof (double) < sizeof (memory_double).  */
+  memset (&m, 0, sizeof (memory_double));
+  m.value = x;
+  for (i = 0; i < NWORDS; i++)
+    {
+      ored_words[i] |= m.word[i];
+      anded_words[i] &= m.word[i];
+    }
+}
+int main ()
+{
+  size_t j;
+  FILE *fp = fopen ("conftest.out", "w");
+  if (fp == NULL)
+    return 1;
+  for (j = 0; j < NWORDS; j++)
+    anded_words[j] = ~ (unsigned int) 0;
+  add_to_ored_words (0.25);
+  add_to_ored_words (0.5);
+  add_to_ored_words (1.0);
+  add_to_ored_words (2.0);
+  add_to_ored_words (4.0);
+  /* Remove bits that are common (e.g. if representation of the first mantissa
+     bit is explicit).  */
+  for (j = 0; j < NWORDS; j++)
+    ored_words[j] &= ~anded_words[j];
+  /* Now find the nonzero word.  */
+  for (j = 0; j < NWORDS; j++)
+    if (ored_words[j] != 0)
+      break;
+  if (j < NWORDS)
+    {
+      size_t i;
+      for (i = j + 1; i < NWORDS; i++)
+        if (ored_words[i] != 0)
+          {
+            fprintf (fp, "unknown");
+            return (fclose (fp) != 0);
+          }
+      for (i = 0; ; i++)
+        if ((ored_words[j] >> i) & 1)
+          {
+            fprintf (fp, "word %d bit %d", (int) j, (int) i);
+            return (fclose (fp) != 0);
+          }
+    }
+  fprintf (fp, "unknown");
+  return (fclose (fp) != 0);
+}
+
+_ACEOF
+if ac_fn_c_try_run "$LINENO"; then :
+  gl_cv_cc_double_expbit0=`cat conftest.out`
+else
+  gl_cv_cc_double_expbit0="unknown"
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+  conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+
+      rm -f conftest.out
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_cc_double_expbit0" >&5
+$as_echo "$gl_cv_cc_double_expbit0" >&6; }
+  case "$gl_cv_cc_double_expbit0" in
+    word*bit*)
+      word=`echo "$gl_cv_cc_double_expbit0" | sed -e 's/word //' -e 's/ bit.*//'`
+      bit=`echo "$gl_cv_cc_double_expbit0" | sed -e 's/word.*bit //'`
+
+cat >>confdefs.h <<_ACEOF
+#define DBL_EXPBIT0_WORD $word
+_ACEOF
+
+
+cat >>confdefs.h <<_ACEOF
+#define DBL_EXPBIT0_BIT $bit
+_ACEOF
+
+      ;;
+  esac
+
+
 
 
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for nl_langinfo and CODESET" >&5
@@ -50656,6 +51994,8 @@ $as_echo "#define HAVE_LONG_LONG_INT 1" >>confdefs.h
   fi
 
 
+
+
   GNULIB_BTOWC=0;
   GNULIB_WCTOB=0;
   GNULIB_MBSINIT=0;
@@ -51698,17 +53038,6 @@ $as_echo "$gl_cv_time_t_is_signed" >&6; }
 $as_echo "#define TIME_T_IS_SIGNED 1" >>confdefs.h
 
   fi
-
-ac_fn_c_check_decl "$LINENO" "alarm" "ac_cv_have_decl_alarm" "$ac_includes_default"
-if test "x$ac_cv_have_decl_alarm" = xyes; then :
-  ac_have_decl=1
-else
-  ac_have_decl=0
-fi
-
-cat >>confdefs.h <<_ACEOF
-#define HAVE_DECL_ALARM $ac_have_decl
-_ACEOF
 
 
 
@@ -55054,400 +56383,6 @@ _ACEOF
   fi
 
 
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking where to find the exponent in a 'double'" >&5
-$as_echo_n "checking where to find the exponent in a 'double'... " >&6; }
-if ${gl_cv_cc_double_expbit0+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-      if test "$cross_compiling" = yes; then :
-
-                                                                      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-#if defined arm || defined __arm || defined __arm__
-  mixed_endianness
-#endif
-
-_ACEOF
-if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
-  $EGREP "mixed_endianness" >/dev/null 2>&1; then :
-  gl_cv_cc_double_expbit0="unknown"
-else
-
-                                                         :
-if ${ac_cv_c_bigendian+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_cv_c_bigendian=unknown
-    # See if we're dealing with a universal compiler.
-    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#ifndef __APPLE_CC__
-	       not a universal capable compiler
-	     #endif
-	     typedef int dummy;
-
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-
-	# Check for potential -arch flags.  It is not universal unless
-	# there are at least two -arch flags with different values.
-	ac_arch=
-	ac_prev=
-	for ac_word in $CC $CFLAGS $CPPFLAGS $LDFLAGS; do
-	 if test -n "$ac_prev"; then
-	   case $ac_word in
-	     i?86 | x86_64 | ppc | ppc64)
-	       if test -z "$ac_arch" || test "$ac_arch" = "$ac_word"; then
-		 ac_arch=$ac_word
-	       else
-		 ac_cv_c_bigendian=universal
-		 break
-	       fi
-	       ;;
-	   esac
-	   ac_prev=
-	 elif test "x$ac_word" = "x-arch"; then
-	   ac_prev=arch
-	 fi
-       done
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-    if test $ac_cv_c_bigendian = unknown; then
-      # See if sys/param.h defines the BYTE_ORDER macro.
-      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <sys/types.h>
-	     #include <sys/param.h>
-
-#ifdef F77_DUMMY_MAIN
-
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-
-#endif
-int
-main ()
-{
-#if ! (defined BYTE_ORDER && defined BIG_ENDIAN \
-		     && defined LITTLE_ENDIAN && BYTE_ORDER && BIG_ENDIAN \
-		     && LITTLE_ENDIAN)
-	      bogus endian macros
-	     #endif
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  # It does; now see whether it defined to BIG_ENDIAN or not.
-	 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <sys/types.h>
-		#include <sys/param.h>
-
-#ifdef F77_DUMMY_MAIN
-
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-
-#endif
-int
-main ()
-{
-#if BYTE_ORDER != BIG_ENDIAN
-		 not big endian
-		#endif
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  ac_cv_c_bigendian=yes
-else
-  ac_cv_c_bigendian=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-    fi
-    if test $ac_cv_c_bigendian = unknown; then
-      # See if <limits.h> defines _LITTLE_ENDIAN or _BIG_ENDIAN (e.g., Solaris).
-      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <limits.h>
-
-#ifdef F77_DUMMY_MAIN
-
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-
-#endif
-int
-main ()
-{
-#if ! (defined _LITTLE_ENDIAN || defined _BIG_ENDIAN)
-	      bogus endian macros
-	     #endif
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  # It does; now see whether it defined to _BIG_ENDIAN or not.
-	 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <limits.h>
-
-#ifdef F77_DUMMY_MAIN
-
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-
-#endif
-int
-main ()
-{
-#ifndef _BIG_ENDIAN
-		 not big endian
-		#endif
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  ac_cv_c_bigendian=yes
-else
-  ac_cv_c_bigendian=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-    fi
-    if test $ac_cv_c_bigendian = unknown; then
-      # Compile a test program.
-      if test "$cross_compiling" = yes; then :
-  # Try to guess by grepping values from an object file.
-	 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-short int ascii_mm[] =
-		  { 0x4249, 0x4765, 0x6E44, 0x6961, 0x6E53, 0x7953, 0 };
-		short int ascii_ii[] =
-		  { 0x694C, 0x5454, 0x656C, 0x6E45, 0x6944, 0x6E61, 0 };
-		int use_ascii (int i) {
-		  return ascii_mm[i] + ascii_ii[i];
-		}
-		short int ebcdic_ii[] =
-		  { 0x89D3, 0xE3E3, 0x8593, 0x95C5, 0x89C4, 0x9581, 0 };
-		short int ebcdic_mm[] =
-		  { 0xC2C9, 0xC785, 0x95C4, 0x8981, 0x95E2, 0xA8E2, 0 };
-		int use_ebcdic (int i) {
-		  return ebcdic_mm[i] + ebcdic_ii[i];
-		}
-		extern int foo;
-
-#ifdef F77_DUMMY_MAIN
-
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-
-#endif
-int
-main ()
-{
-return use_ascii (foo) == use_ebcdic (foo);
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  if grep BIGenDianSyS conftest.$ac_objext >/dev/null; then
-	      ac_cv_c_bigendian=yes
-	    fi
-	    if grep LiTTleEnDian conftest.$ac_objext >/dev/null ; then
-	      if test "$ac_cv_c_bigendian" = unknown; then
-		ac_cv_c_bigendian=no
-	      else
-		# finding both strings is unlikely to happen, but who knows?
-		ac_cv_c_bigendian=unknown
-	      fi
-	    fi
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-else
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-$ac_includes_default
-#ifdef F77_DUMMY_MAIN
-
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-
-#endif
-int
-main ()
-{
-
-	     /* Are we little or big endian?  From Harbison&Steele.  */
-	     union
-	     {
-	       long int l;
-	       char c[sizeof (long int)];
-	     } u;
-	     u.l = 1;
-	     return u.c[sizeof (long int) - 1] == 1;
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_run "$LINENO"; then :
-  ac_cv_c_bigendian=no
-else
-  ac_cv_c_bigendian=yes
-fi
-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
-  conftest.$ac_objext conftest.beam conftest.$ac_ext
-fi
-
-    fi
-fi
-:
- case $ac_cv_c_bigendian in #(
-   yes)
-     gl_cv_cc_double_expbit0="word 0 bit 20";; #(
-   no)
-     gl_cv_cc_double_expbit0="word 1 bit 20" ;; #(
-   universal)
-
-$as_echo "#define AC_APPLE_UNIVERSAL_BUILD 1" >>confdefs.h
-
-     ;; #(
-   *)
-     gl_cv_cc_double_expbit0="unknown" ;;
- esac
-
-
-fi
-rm -f conftest*
-
-
-else
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-#include <float.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#define NWORDS \
-  ((sizeof (double) + sizeof (unsigned int) - 1) / sizeof (unsigned int))
-typedef union { double value; unsigned int word[NWORDS]; } memory_double;
-static unsigned int ored_words[NWORDS];
-static unsigned int anded_words[NWORDS];
-static void add_to_ored_words (double x)
-{
-  memory_double m;
-  size_t i;
-  /* Clear it first, in case sizeof (double) < sizeof (memory_double).  */
-  memset (&m, 0, sizeof (memory_double));
-  m.value = x;
-  for (i = 0; i < NWORDS; i++)
-    {
-      ored_words[i] |= m.word[i];
-      anded_words[i] &= m.word[i];
-    }
-}
-int main ()
-{
-  size_t j;
-  FILE *fp = fopen ("conftest.out", "w");
-  if (fp == NULL)
-    return 1;
-  for (j = 0; j < NWORDS; j++)
-    anded_words[j] = ~ (unsigned int) 0;
-  add_to_ored_words (0.25);
-  add_to_ored_words (0.5);
-  add_to_ored_words (1.0);
-  add_to_ored_words (2.0);
-  add_to_ored_words (4.0);
-  /* Remove bits that are common (e.g. if representation of the first mantissa
-     bit is explicit).  */
-  for (j = 0; j < NWORDS; j++)
-    ored_words[j] &= ~anded_words[j];
-  /* Now find the nonzero word.  */
-  for (j = 0; j < NWORDS; j++)
-    if (ored_words[j] != 0)
-      break;
-  if (j < NWORDS)
-    {
-      size_t i;
-      for (i = j + 1; i < NWORDS; i++)
-        if (ored_words[i] != 0)
-          {
-            fprintf (fp, "unknown");
-            return (fclose (fp) != 0);
-          }
-      for (i = 0; ; i++)
-        if ((ored_words[j] >> i) & 1)
-          {
-            fprintf (fp, "word %d bit %d", (int) j, (int) i);
-            return (fclose (fp) != 0);
-          }
-    }
-  fprintf (fp, "unknown");
-  return (fclose (fp) != 0);
-}
-
-_ACEOF
-if ac_fn_c_try_run "$LINENO"; then :
-  gl_cv_cc_double_expbit0=`cat conftest.out`
-else
-  gl_cv_cc_double_expbit0="unknown"
-fi
-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
-  conftest.$ac_objext conftest.beam conftest.$ac_ext
-fi
-
-      rm -f conftest.out
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_cc_double_expbit0" >&5
-$as_echo "$gl_cv_cc_double_expbit0" >&6; }
-  case "$gl_cv_cc_double_expbit0" in
-    word*bit*)
-      word=`echo "$gl_cv_cc_double_expbit0" | sed -e 's/word //' -e 's/ bit.*//'`
-      bit=`echo "$gl_cv_cc_double_expbit0" | sed -e 's/word.*bit //'`
-
-cat >>confdefs.h <<_ACEOF
-#define DBL_EXPBIT0_WORD $word
-_ACEOF
-
-
-cat >>confdefs.h <<_ACEOF
-#define DBL_EXPBIT0_BIT $bit
-_ACEOF
-
-      ;;
-  esac
-
-
 
 
 
@@ -58245,6 +59180,435 @@ _ACEOF
 
 
 
+  FREXP_LIBM=
+  if test $gl_cv_func_frexp_no_libm = no; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether frexp() can be used with libm" >&5
+$as_echo_n "checking whether frexp() can be used with libm... " >&6; }
+if ${gl_cv_func_frexp_in_libm+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+        save_LIBS="$LIBS"
+        LIBS="$LIBS -lm"
+        cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <math.h>
+               double x;
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+int e; return frexp (x, &e) > 0;
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  gl_cv_func_frexp_in_libm=yes
+else
+  gl_cv_func_frexp_in_libm=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+        LIBS="$save_LIBS"
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_func_frexp_in_libm" >&5
+$as_echo "$gl_cv_func_frexp_in_libm" >&6; }
+    if test $gl_cv_func_frexp_in_libm = yes; then
+      FREXP_LIBM=-lm
+    fi
+  fi
+  if test $gl_cv_func_frexp_no_libm = yes \
+     || test $gl_cv_func_frexp_in_libm = yes; then
+    save_LIBS="$LIBS"
+    LIBS="$LIBS $FREXP_LIBM"
+
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether frexp works" >&5
+$as_echo_n "checking whether frexp works... " >&6; }
+if ${gl_cv_func_frexp_works+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+      if test "$cross_compiling" = yes; then :
+  case "$host_os" in
+           netbsd* | irix* | mingw*) gl_cv_func_frexp_works="guessing no";;
+           *)                        gl_cv_func_frexp_works="guessing yes";;
+         esac
+
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#include <float.h>
+#include <math.h>
+#include <string.h>
+#if HAVE_DECL_ALARM
+# include <signal.h>
+# include <unistd.h>
+#endif
+/* HP cc on HP-UX 10.20 has a bug with the constant expression -0.0.
+   ICC 10.0 has a bug when optimizing the expression -zero.
+   The expression -DBL_MIN * DBL_MIN does not work when cross-compiling
+   to PowerPC on Mac OS X 10.5.  */
+#if defined __hpux || defined __sgi || defined __ICC
+static double
+compute_minus_zero (void)
+{
+  return -DBL_MIN * DBL_MIN;
+}
+# define minus_zero compute_minus_zero ()
+#else
+double minus_zero = -0.0;
+#endif
+int main()
+{
+  int result = 0;
+  int i;
+  volatile double x;
+  double zero = 0.0;
+#if HAVE_DECL_ALARM
+  /* NeXTstep 3.3 frexp() runs into an endless loop when called on an infinite
+     number.  Let the test fail in this case.  */
+  signal (SIGALRM, SIG_DFL);
+  alarm (5);
+#endif
+  /* Test on denormalized numbers.  */
+  for (i = 1, x = 1.0; i >= DBL_MIN_EXP; i--, x *= 0.5)
+    ;
+  if (x > 0.0)
+    {
+      int exp;
+      double y = frexp (x, &exp);
+      /* On machines with IEEE754 arithmetic: x = 1.11254e-308, exp = -1022.
+         On NetBSD: y = 0.75. Correct: y = 0.5.  */
+      if (y != 0.5)
+        result |= 1;
+    }
+  /* Test on infinite numbers.  */
+  x = 1.0 / zero;
+  {
+    int exp;
+    double y = frexp (x, &exp);
+    if (y != x)
+      result |= 2;
+  }
+  /* Test on negative zero.  */
+  x = minus_zero;
+  {
+    int exp;
+    double y = frexp (x, &exp);
+    if (memcmp (&y, &x, sizeof x))
+      result |= 4;
+  }
+  return result;
+}
+_ACEOF
+if ac_fn_c_try_run "$LINENO"; then :
+  gl_cv_func_frexp_works=yes
+else
+  gl_cv_func_frexp_works=no
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+  conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_func_frexp_works" >&5
+$as_echo "$gl_cv_func_frexp_works" >&6; }
+
+    LIBS="$save_LIBS"
+    case "$gl_cv_func_frexp_works" in
+      *yes) gl_func_frexp=yes ;;
+      *)    gl_func_frexp=no; REPLACE_FREXP=1; FREXP_LIBM= ;;
+    esac
+  else
+    gl_func_frexp=no
+  fi
+  if test $gl_func_frexp = yes; then
+
+$as_echo "#define HAVE_FREXP 1" >>confdefs.h
+
+  fi
+
+
+  if test $gl_func_frexp != yes; then
+
+
+
+
+
+
+
+
+  gl_LIBOBJS="$gl_LIBOBJS frexp.$ac_objext"
+
+  fi
+
+
+
+
+
+          GNULIB_FREXP=1
+
+
+
+
+
+$as_echo "#define GNULIB_TEST_FREXP 1" >>confdefs.h
+
+
+
+
+
+
+
+
+
+
+
+
+
+  FREXPF_LIBM=
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether frexpf can be used without linking with libm" >&5
+$as_echo_n "checking whether frexpf can be used without linking with libm... " >&6; }
+if ${gl_cv_func_frexpf_no_libm+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#ifndef __NO_MATH_INLINES
+             # define __NO_MATH_INLINES 1 /* for glibc */
+             #endif
+             #include <math.h>
+
+             float (*funcptr) (float, int *) = frexpf;
+             int i_ret;
+             float f_ret;
+             double d_ret;
+             long double l_ret;
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+float y = funcptr (1.618034f, &i_ret) + frexpf (1.618034f, &i_ret);
+
+             return y < 0.3 || y > 1.7;
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  gl_cv_func_frexpf_no_libm=yes
+else
+  gl_cv_func_frexpf_no_libm=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_func_frexpf_no_libm" >&5
+$as_echo "$gl_cv_func_frexpf_no_libm" >&6; }
+  if test $gl_cv_func_frexpf_no_libm = no; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether frexpf can be used with libm" >&5
+$as_echo_n "checking whether frexpf can be used with libm... " >&6; }
+if ${gl_cv_func_frexpf_in_libm+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+        save_LIBS="$LIBS"
+        LIBS="$LIBS -lm"
+        cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#ifndef __NO_MATH_INLINES
+               # define __NO_MATH_INLINES 1 /* for glibc */
+               #endif
+               #include <math.h>
+
+               float (*funcptr) (float, int *) = frexpf;
+               int i_ret;
+               float f_ret;
+               double d_ret;
+               long double l_ret;
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+float y = funcptr (1.618034f, &i_ret) + frexpf (1.618034f, &i_ret);
+
+               return y < 0.3 || y > 1.7;
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  gl_cv_func_frexpf_in_libm=yes
+else
+  gl_cv_func_frexpf_in_libm=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+        LIBS="$save_LIBS"
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_func_frexpf_in_libm" >&5
+$as_echo "$gl_cv_func_frexpf_in_libm" >&6; }
+    if test $gl_cv_func_frexpf_in_libm = yes; then
+      FREXPF_LIBM=-lm
+    fi
+  fi
+
+
+
+
+
+  if test $gl_cv_func_frexpf_no_libm = yes \
+     || test $gl_cv_func_frexpf_in_libm = yes; then
+    save_LIBS="$LIBS"
+    LIBS="$LIBS $FREXPF_LIBM"
+
+
+     { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether frexpf works" >&5
+$as_echo_n "checking whether frexpf works... " >&6; }
+if ${gl_cv_func_frexpf_works+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+      if test "$cross_compiling" = yes; then :
+  case "$host_os" in
+           irix* | mingw*) gl_cv_func_frexpf_works="guessing no";;
+           *)              gl_cv_func_frexpf_works="guessing yes";;
+         esac
+
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#include <float.h>
+#include <math.h>
+#include <string.h>
+/* HP cc on HP-UX 10.20 has a bug with the constant expression -0.0.
+   ICC 10.0 has a bug when optimizing the expression -zero.
+   The expression -FLT_MIN * FLT_MIN does not work when cross-compiling
+   to PowerPC on Mac OS X 10.5.  */
+#if defined __hpux || defined __sgi || defined __ICC
+static float
+compute_minus_zero (void)
+{
+  return -FLT_MIN * FLT_MIN;
+}
+# define minus_zero compute_minus_zero ()
+#else
+float minus_zero = -0.0f;
+#endif
+int main()
+{
+  int result = 0;
+  volatile float x;
+  float zero = 0.0f;
+  /* Test on infinite numbers.  */
+  x = 1.0f / zero;
+  {
+    int exp;
+    float y = frexpf (x, &exp);
+    if (y != x)
+      result |= 1;
+  }
+  /* Test on negative zero.  */
+  x = minus_zero;
+  {
+    int exp;
+    float y = frexpf (x, &exp);
+    if (memcmp (&y, &x, sizeof x))
+      result |= 2;
+  }
+  return result;
+}
+_ACEOF
+if ac_fn_c_try_run "$LINENO"; then :
+  gl_cv_func_frexpf_works=yes
+else
+  gl_cv_func_frexpf_works=no
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+  conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_func_frexpf_works" >&5
+$as_echo "$gl_cv_func_frexpf_works" >&6; }
+
+    LIBS="$save_LIBS"
+    case "$gl_cv_func_frexpf_works" in
+      *yes) ;;
+      *)    REPLACE_FREXPF=1 ;;
+    esac
+  else
+    HAVE_FREXPF=0
+  fi
+  if test $HAVE_FREXPF = 0 || test $REPLACE_FREXPF = 1; then
+    FREXPF_LIBM="$FREXP_LIBM"
+  fi
+
+
+  if test $HAVE_FREXPF = 0 || test $REPLACE_FREXPF = 1; then
+
+
+
+
+
+
+
+
+  gl_LIBOBJS="$gl_LIBOBJS frexpf.$ac_objext"
+
+  fi
+
+
+
+
+
+          GNULIB_FREXPF=1
+
+
+
+
+
+$as_echo "#define GNULIB_TEST_FREXPF 1" >>confdefs.h
+
+
+
+
+
+
     if test $HAVE_FSEEKO = 0 || test $REPLACE_FSEEKO = 1; then
     REPLACE_FSEEK=1
   fi
@@ -60266,6 +61630,75 @@ $as_echo "#define GNULIB_TEST_ISATTY 1" >>confdefs.h
 
 
 
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether isnan(double) can be used without linking with libm" >&5
+$as_echo_n "checking whether isnan(double) can be used without linking with libm... " >&6; }
+if ${gl_cv_func_isnand_no_libm+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <math.h>
+             #if __GNUC__ >= 4
+             # undef isnand
+             # define isnand(x) __builtin_isnan ((double)(x))
+             #else
+             # undef isnand
+             # define isnand(x) isnan ((double)(x))
+             #endif
+             double x;
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+return isnand (x);
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  gl_cv_func_isnand_no_libm=yes
+else
+  gl_cv_func_isnand_no_libm=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_func_isnand_no_libm" >&5
+$as_echo "$gl_cv_func_isnand_no_libm" >&6; }
+
+  gl_func_isnand_no_libm=$gl_cv_func_isnand_no_libm
+  if test $gl_cv_func_isnand_no_libm = yes; then
+
+$as_echo "#define HAVE_ISNAND_IN_LIBC 1" >>confdefs.h
+
+  fi
+
+  if test $gl_func_isnand_no_libm != yes; then
+
+
+
+
+
+
+
+
+  gl_LIBOBJS="$gl_LIBOBJS isnand.$ac_objext"
+
+
+
+
+  fi
+
+
 
 
   if test $ac_cv_func_link = no; then
@@ -60748,6 +62181,217 @@ $as_echo "#define GNULIB_TEST_MALLOC_POSIX 1" >>confdefs.h
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     if test $gl_cv_have_include_next = yes; then
+       gl_cv_next_math_h='<'math.h'>'
+     else
+       { $as_echo "$as_me:${as_lineno-$LINENO}: checking absolute name of <math.h>" >&5
+$as_echo_n "checking absolute name of <math.h>... " >&6; }
+if ${gl_cv_next_math_h+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+             if test $ac_cv_header_math_h = yes; then
+
+
+
+
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <math.h>
+_ACEOF
+                case "$host_os" in
+    aix*) gl_absname_cpp="$ac_cpp -C" ;;
+    *)    gl_absname_cpp="$ac_cpp" ;;
+  esac
+
+  case "$host_os" in
+    mingw*)
+                                          gl_dirsep_regex='[/\\]'
+      ;;
+    *)
+      gl_dirsep_regex='\/'
+      ;;
+  esac
+      gl_make_literal_regex_sed='s,[]$^\\.*/[],\\&,g'
+  gl_header_literal_regex=`echo 'math.h' \
+                           | sed -e "$gl_make_literal_regex_sed"`
+  gl_absolute_header_sed="/${gl_dirsep_regex}${gl_header_literal_regex}/"'{
+      s/.*"\(.*'"${gl_dirsep_regex}${gl_header_literal_regex}"'\)".*/\1/
+      s|^/[^/]|//&|
+      p
+      q
+    }'
+
+        gl_cv_absolute_math_h=`(eval "$gl_absname_cpp conftest.$ac_ext") 2>&5 |
+  sed -n "$gl_absolute_header_sed"`
+
+           gl_header=$gl_cv_absolute_math_h
+           gl_cv_next_math_h='"'$gl_header'"'
+          else
+               gl_cv_next_math_h='<'math.h'>'
+             fi
+
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_next_math_h" >&5
+$as_echo "$gl_cv_next_math_h" >&6; }
+     fi
+     NEXT_MATH_H=$gl_cv_next_math_h
+
+     if test $gl_cv_have_include_next = yes || test $gl_cv_have_include_next = buggy; then
+       # INCLUDE_NEXT_AS_FIRST_DIRECTIVE='include_next'
+       gl_next_as_first_directive='<'math.h'>'
+     else
+       # INCLUDE_NEXT_AS_FIRST_DIRECTIVE='include'
+       gl_next_as_first_directive=$gl_cv_next_math_h
+     fi
+     NEXT_AS_FIRST_DIRECTIVE_MATH_H=$gl_next_as_first_directive
+
+
+
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether NAN macro works" >&5
+$as_echo_n "checking whether NAN macro works... " >&6; }
+if ${gl_cv_header_math_nan_works+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <math.h>
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+/* Solaris 10 has a broken definition of NAN.  Other platforms
+        fail to provide NAN, or provide it only in C99 mode; this
+        test only needs to fail when NAN is provided but wrong.  */
+         float f = 1.0f;
+#ifdef NAN
+         f = NAN;
+#endif
+         return f == 0;
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  gl_cv_header_math_nan_works=yes
+else
+  gl_cv_header_math_nan_works=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_header_math_nan_works" >&5
+$as_echo "$gl_cv_header_math_nan_works" >&6; }
+  if test $gl_cv_header_math_nan_works = no; then
+    REPLACE_NAN=1
+  fi
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether HUGE_VAL works" >&5
+$as_echo_n "checking whether HUGE_VAL works... " >&6; }
+if ${gl_cv_header_math_huge_val_works+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <math.h>
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+/* Solaris 10 has a broken definition of HUGE_VAL.  */
+         double d = HUGE_VAL;
+         return d == 0;
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  gl_cv_header_math_huge_val_works=yes
+else
+  gl_cv_header_math_huge_val_works=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gl_cv_header_math_huge_val_works" >&5
+$as_echo "$gl_cv_header_math_huge_val_works" >&6; }
+  if test $gl_cv_header_math_huge_val_works = no; then
+    REPLACE_HUGE_VAL=1
+  fi
+
+
+    for gl_func in acosf acosl asinf asinl atanf atanl      cbrt cbrtf cbrtl ceilf ceill copysign copysignf copysignl cosf cosl coshf      expf expl exp2 exp2f exp2l expm1 expm1f expm1l      fabsf fabsl floorf floorl fma fmaf fmal      fmod fmodf fmodl frexpf frexpl hypotf hypotl      ilogb ilogbf ilogbl      ldexpf ldexpl      log logf logl log10 log10f log10l log1p log1pf log1pl log2 log2f log2l      logb logbf logbl      modf modff modfl powf      remainder remainderf remainderl      rint rintf rintl round roundf roundl sinf sinl sinhf sqrtf sqrtl      tanf tanl tanhf trunc truncf truncl; do
+    as_gl_Symbol=`$as_echo "gl_cv_have_raw_decl_$gl_func" | $as_tr_sh`
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $gl_func is declared without a macro" >&5
+$as_echo_n "checking whether $gl_func is declared without a macro... " >&6; }
+if eval \${$as_gl_Symbol+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <math.h>
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+#undef $gl_func
+  (void) $gl_func;
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  eval "$as_gl_Symbol=yes"
+else
+  eval "$as_gl_Symbol=no"
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+eval ac_res=\$$as_gl_Symbol
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+    if eval test \"x\$"$as_gl_Symbol"\" = x"yes"; then :
+  cat >>confdefs.h <<_ACEOF
+#define `$as_echo "HAVE_RAW_DECL_$gl_func" | $as_tr_cpp` 1
+_ACEOF
+
+                     eval ac_cv_have_decl_$gl_func=yes
+fi
+      done
 
 
 
@@ -72361,6 +74005,7 @@ if test -z "${GL_GENERATE_GLOB_H_TRUE}" && test -z "${GL_GENERATE_GLOB_H_FALSE}"
   as_fn_error $? "conditional \"GL_GENERATE_GLOB_H\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
+
 if test -z "${GL_GENERATE_STDALIGN_H_TRUE}" && test -z "${GL_GENERATE_STDALIGN_H_FALSE}"; then
   as_fn_error $? "conditional \"GL_GENERATE_STDALIGN_H\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
@@ -72377,7 +74022,6 @@ if test -z "${GL_GENERATE_STDINT_H_TRUE}" && test -z "${GL_GENERATE_STDINT_H_FAL
   as_fn_error $? "conditional \"GL_GENERATE_STDINT_H\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-
 
     gl_libobjs=
     gl_ltlibobjs=
@@ -75216,6 +76860,9 @@ Octave is now configured for $canonical_host_type
   ARPACK LDFLAGS:              $ARPACK_LDFLAGS
   ARPACK libraries:            $ARPACK_LIBS
   BLAS libraries:              $BLAS_LIBS
+  BZ2 CPPFLAGS:                $BZ2_CPPFLAGS
+  BZ2 LDFLAGS:                 $BZ2_LDFLAGS
+  BZ2 libraries:               $BZ2_LIBS
   CAMD CPPFLAGS:               $CAMD_CPPFLAGS
   CAMD LDFLAGS:                $CAMD_LDFLAGS
   CAMD libraries:              $CAMD_LIBS
@@ -75338,6 +76985,9 @@ Octave is now configured for $canonical_host_type
   ARPACK LDFLAGS:              $ARPACK_LDFLAGS
   ARPACK libraries:            $ARPACK_LIBS
   BLAS libraries:              $BLAS_LIBS
+  BZ2 CPPFLAGS:                $BZ2_CPPFLAGS
+  BZ2 LDFLAGS:                 $BZ2_LDFLAGS
+  BZ2 libraries:               $BZ2_LIBS
   CAMD CPPFLAGS:               $CAMD_CPPFLAGS
   CAMD LDFLAGS:                $CAMD_LDFLAGS
   CAMD libraries:              $CAMD_LIBS
@@ -75542,6 +77192,11 @@ $as_echo "$as_me: WARNING: $warn_qhull" >&2;}
     if test -n "$warn_z"; then
       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $warn_z" >&5
 $as_echo "$as_me: WARNING: $warn_z" >&2;}
+      warn_msg_printed=true
+    fi
+    if test -n "$warn_bz2"; then
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $warn_bz2" >&5
+$as_echo "$as_me: WARNING: $warn_bz2" >&2;}
       warn_msg_printed=true
     fi
     if test -n "$warn_llvm"; then

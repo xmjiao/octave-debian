@@ -40,6 +40,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "quit.h"
 #include "str-vec.h"
 
+#include "call-stack.h"
 #include "debug.h"
 #include "defun.h"
 #include "dirfns.h"
@@ -48,12 +49,14 @@ along with Octave; see the file COPYING.  If not, see
 #include "help.h"
 #include "hook-fcn.h"
 #include "input.h"
+#include "interpreter.h"
 #include "lex.h"
 #include "load-path.h"
+#include "octave.h"
 #include "octave-link.h"
 #include "oct-map.h"
 #include "oct-hist.h"
-#include "toplev.h"
+#include "interpreter.h"
 #include "octave-link.h"
 #include "ovl.h"
 #include "ov-fcn-handle.h"
@@ -66,7 +69,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "sighandlers.h"
 #include "symtab.h"
 #include "sysdep.h"
-#include "toplev.h"
+#include "interpreter.h"
 #include "unwind-prot.h"
 #include "utils.h"
 #include "variables.h"
@@ -95,13 +98,6 @@ octave::sys::time Vlast_prompt_time = 0.0;
 // Character to append after successful command-line completion attempts.
 static char Vcompletion_append_char = ' ';
 
-// TRUE means this is an interactive shell (either forced or not)
-bool interactive = false;
-
-// TRUE means the user forced this shell to be interactive (-i).
-// FALSE means the shell would be interactive, independent of user settings.
-bool forced_interactive = false;
-
 // TRUE after a call to completion_matches.
 bool octave_completion_matches_called = false;
 
@@ -111,6 +107,11 @@ bool Vdrawnow_requested = false;
 
 // TRUE if we are in debugging mode.
 bool Vdebugging = false;
+
+// TRUE if we are recording line numbers in a source file.
+// Always true except when debugging and taking input directly from
+// the terminal.
+bool Vtrack_line_num = true;
 
 // If we are in debugging mode, this is the last command entered, so
 // that we can repeat the previous command if the user just types RET.
@@ -147,9 +148,11 @@ set_default_prompts (void)
 void
 octave_base_reader::do_input_echo (const std::string& input_string) const
 {
+  bool forced_interactive = octave::application::forced_interactive ();
+
   int do_echo = reading_script_file ()
     ? (Vecho_executing_commands & ECHO_SCRIPTS)
-    : (Vecho_executing_commands & ECHO_CMD_LINE) && ! forced_interactive;
+    : ((Vecho_executing_commands & ECHO_CMD_LINE) && ! forced_interactive);
 
   if (do_echo)
     {
@@ -193,7 +196,7 @@ interactive_input (const std::string& s, bool& eof)
 {
   Vlast_prompt_time.stamp ();
 
-  if (Vdrawnow_requested && interactive)
+  if (Vdrawnow_requested && octave::application::interactive ())
     {
       bool eval_error = false;
 
@@ -210,7 +213,7 @@ interactive_input (const std::string& s, bool& eof)
           if (! stack_trace.empty ())
             std::cerr << stack_trace;
 
-          if (interactive)
+          if (octave::application::interactive ())
             recover_from_exception ();
         }
 
@@ -240,7 +243,7 @@ octave_base_reader::octave_gets (bool& eof)
   // Process pre input event hook function prior to flushing output and
   // printing the prompt.
 
-  if (interactive)
+  if (octave::application::interactive ())
     {
       if (! Vdebugging)
         octave_link::exit_debugger_event ();
@@ -306,7 +309,7 @@ octave_base_reader::octave_gets (bool& eof)
   // Process post input event hook function after the internal history
   // list has been updated.
 
-  if (interactive)
+  if (octave::application::interactive ())
     octave_link::post_input_event ();
 
   return retval;
@@ -345,13 +348,16 @@ get_input_from_stdin (void)
 
 static string_vector
 generate_possible_completions (const std::string& text, std::string& prefix,
-                               std::string& hint)
+                               std::string& hint, bool& deemed_struct)
 {
   string_vector names;
 
   prefix = "";
 
-  if (looks_like_struct (text))
+  char prev_char = octave::command_editor::get_prev_char (text.length ());
+  deemed_struct = looks_like_struct (text, prev_char);
+
+  if (deemed_struct)
     names = generate_struct_completions (text, prefix, hint);
   else
     names = make_name_list ();
@@ -416,16 +422,26 @@ generate_completion (const std::string& text, int state)
       // No reason to display symbols while completing a
       // file/directory operation.
 
+      bool deemed_struct = false;
+
       if (is_completing_dirfns ())
         name_list = string_vector ();
       else
-        name_list = generate_possible_completions (text, prefix, hint);
+        name_list = generate_possible_completions (text, prefix, hint,
+                                                   deemed_struct);
 
       name_list_len = name_list.numel ();
 
-      file_name_list = octave::command_editor::generate_filename_completions (text);
+      // If the line was something like "a{1}." then text = "." but
+      // we don't want to expand all the . files.
+      if (! deemed_struct)
+        {
 
-      name_list.append (file_name_list);
+          file_name_list = octave::command_editor::generate_filename_completions (text);
+
+          name_list.append (file_name_list);
+
+        }
 
       name_list_total_len = name_list.numel ();
 
@@ -448,15 +464,16 @@ generate_completion (const std::string& text, int state)
 
           if (hint == name.substr (0, hint_len))
             {
+                    // Special case: array reference forces prefix="."
+                    //               in generate_struct_completions ()
               if (list_index <= name_list_len && ! prefix.empty ())
-                retval = prefix + "." + name;
+                retval = (prefix == "." ? "" : prefix) + "." + name;
               else
                 retval = name;
 
-              // FIXME: looks_like_struct is broken for now,
-              //        so it always returns false.
-
-              if (matches == 1 && looks_like_struct (retval))
+              char prev_char = octave::command_editor::get_prev_char
+                                                       (text.length ());
+              if (matches == 1 && looks_like_struct (retval, prev_char))
                 {
                   // Don't append anything, since we don't know
                   // whether it should be '(' or '.'.
@@ -482,6 +499,53 @@ quoting_filename (const std::string &text, int, char quote)
     return text;
   else
     return (std::string ("'") + text);
+}
+
+// Try to parse a partial command line in reverse, excluding trailing TEXT.
+// If it appears a variable has been indexed by () or {},
+// return that expression,
+// to allow autocomplete of field names of arrays of structures.
+std::string
+find_indexed_expression (const std::string& text)
+{
+  std::string line = octave::command_editor::get_line_buffer ();
+
+  int pos = line.length () - text.length ();
+  int curly_count = 0;
+  int paren_count = 0;
+
+  int last = --pos;
+
+  while (pos >= 0 && (line[pos] == ')' || line[pos] == '}'))
+    {
+      if (line[pos] == ')')
+        paren_count++;
+      else if (line[pos] == '}')
+        curly_count++;
+
+      while (curly_count + paren_count > 0 && --pos >= 0)
+        {
+          if (line[pos] == ')')
+            paren_count++;
+          else if (line[pos] == '(')
+            paren_count--;
+          else if (line[pos] == '}')
+            curly_count++;
+          else if (line[pos] == '{')
+            curly_count--;
+        }
+
+      while (--pos >= 0 && line[pos] == ' ')
+        ;
+    }
+
+  while (pos >= 0 && (isalnum (line[pos]) || line[pos] == '_'))
+    pos--;
+
+  if (++pos >= 0)
+    return (line.substr (pos, last + 1 - pos));
+  else
+    return std::string ();
 }
 
 void
@@ -522,8 +586,8 @@ get_debug_input (const std::string& prompt)
 {
   octave::unwind_protect frame;
 
-  bool silent = tree_evaluator::quiet_breakpoint_flag;
-  tree_evaluator::quiet_breakpoint_flag = false;
+  bool silent = octave::tree_evaluator::quiet_breakpoint_flag;
+  octave::tree_evaluator::quiet_breakpoint_flag = false;
 
   octave_user_code *caller = octave_call_stack::caller_user_code ();
   std::string nm;
@@ -601,20 +665,30 @@ get_debug_input (const std::string& prompt)
   frame.protect_var (VPS1);
   VPS1 = prompt;
 
-  if (! interactive)
+  octave::application *app = octave::application::app ();
+
+  if (! app->interactive ())
     {
-      frame.protect_var (interactive);
-      interactive = true;
-      frame.protect_var (forced_interactive);
-      forced_interactive = true;
+
+      frame.add_method (app, &octave::application::interactive,
+                        app->interactive ());
+
+      frame.add_method (app, &octave::application::forced_interactive,
+                        app->forced_interactive ());
+
+      app->interactive (true);
+
+      app->forced_interactive (true);
     }
 
-  octave_parser curr_parser;
+  octave::parser curr_parser;
 
   while (Vdebugging)
     {
       try
         {
+          Vtrack_line_num = false;
+
           reset_error_handler ();
 
           curr_parser.reset ();
@@ -627,7 +701,7 @@ get_debug_input (const std::string& prompt)
             {
               if (retval == 0 && curr_parser.stmt_list)
                 {
-                  curr_parser.stmt_list->accept (*current_evaluator);
+                  curr_parser.stmt_list->accept (*octave::current_evaluator);
 
                   if (octave_completion_matches_called)
                     octave_completion_matches_called = false;
@@ -879,6 +953,7 @@ do_keyboard (const octave_value_list& args)
   // stmt.accept (tpc);
 
   Vdebugging = true;
+  Vtrack_line_num = false;
 
   std::string prompt = "debug> ";
   if (nargin > 0)
@@ -918,10 +993,10 @@ If @code{keyboard} is invoked without arguments, a default prompt of
   // Skip the frame assigned to the keyboard function.
   octave_call_stack::goto_frame_relative (0);
 
-  tree_evaluator::debug_mode = true;
-  tree_evaluator::quiet_breakpoint_flag = false;
+  octave::tree_evaluator::debug_mode = true;
+  octave::tree_evaluator::quiet_breakpoint_flag = false;
 
-  tree_evaluator::current_frame = octave_call_stack::current_frame ();
+  octave::tree_evaluator::current_frame = octave_call_stack::current_frame ();
 
   do_keyboard (args);
 

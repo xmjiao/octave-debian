@@ -36,16 +36,12 @@ along with Octave; see the file COPYING.  If not, see
 #include "pager.h"
 
 class octave_value;
-class octave_base_lexer;
+namespace octave
+{
+  class base_lexer;
+}
 
 extern OCTINTERP_API FILE *get_input_from_stdin (void);
-
-// TRUE means this is an interactive shell (forced or not)
-extern bool interactive;
-
-// TRUE means the user forced this shell to be interactive (-i).
-// FALSE means the shell would be interactive, independent of user settings.
-extern bool forced_interactive;
 
 // TRUE after a call to completion_matches.
 extern bool octave_completion_matches_called;
@@ -56,6 +52,11 @@ extern OCTINTERP_API bool Vdrawnow_requested;
 
 // TRUE if we are in debugging mode.
 extern OCTINTERP_API bool Vdebugging;
+
+// TRUE if we are not executing a command direct from debug> prompt.
+extern OCTINTERP_API bool Vtrack_line_num;
+
+extern std::string find_indexed_expression (const std::string& text);
 
 extern void initialize_command_input (void);
 
@@ -91,7 +92,7 @@ public:
 
   friend class octave_input_reader;
 
-  octave_base_reader (octave_base_lexer *lxr)
+  octave_base_reader (octave::base_lexer *lxr)
     : count (1), pflag (0), lexer (lxr)
   { }
 
@@ -140,7 +141,7 @@ private:
 
   int pflag;
 
-  octave_base_lexer *lexer;
+  octave::base_lexer *lexer;
 
   void do_input_echo (const std::string&) const;
 
@@ -152,7 +153,7 @@ octave_terminal_reader : public octave_base_reader
 {
 public:
 
-  octave_terminal_reader (octave_base_lexer *lxr = 0)
+  octave_terminal_reader (octave::base_lexer *lxr = 0)
     : octave_base_reader (lxr)
   { }
 
@@ -172,7 +173,7 @@ octave_file_reader : public octave_base_reader
 {
 public:
 
-  octave_file_reader (FILE *f_arg, octave_base_lexer *lxr = 0)
+  octave_file_reader (FILE *f_arg, octave::base_lexer *lxr = 0)
     : octave_base_reader (lxr), file (f_arg) { }
 
   std::string get_input (bool& eof);
@@ -194,7 +195,7 @@ octave_eval_string_reader : public octave_base_reader
 public:
 
   octave_eval_string_reader (const std::string& str,
-                             octave_base_lexer *lxr = 0)
+                             octave::base_lexer *lxr = 0)
     : octave_base_reader (lxr), eval_string (str)
   { }
 
@@ -215,15 +216,15 @@ class
 octave_input_reader
 {
 public:
-  octave_input_reader (octave_base_lexer *lxr = 0)
+  octave_input_reader (octave::base_lexer *lxr = 0)
     : rep (new octave_terminal_reader (lxr))
   { }
 
-  octave_input_reader (FILE *file, octave_base_lexer *lxr = 0)
+  octave_input_reader (FILE *file, octave::base_lexer *lxr = 0)
     : rep (new octave_file_reader (file, lxr))
   { }
 
-  octave_input_reader (const std::string& str, octave_base_lexer *lxr = 0)
+  octave_input_reader (const std::string& str, octave::base_lexer *lxr = 0)
     : rep (new octave_eval_string_reader (str, lxr))
   { }
 

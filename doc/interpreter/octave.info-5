@@ -21,6 +21,666 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Vectorization and Faster Code Execution,  Next: Nonlinear Equations,  Prev: Linear Algebra,  Up: Top
+
+19 Vectorization and Faster Code Execution
+******************************************
+
+Vectorization is a programming technique that uses vector operations
+instead of element-by-element loop-based operations.  Besides frequently
+producing more succinct Octave code, vectorization also allows for
+better optimization in the subsequent implementation.  The optimizations
+may occur either in Octave’s own Fortran, C, or C++ internal
+implementation, or even at a lower level depending on the compiler and
+external numerical libraries used to build Octave.  The ultimate goal is
+to make use of your hardware’s vector instructions if possible or to
+perform other optimizations in software.
+
+   Vectorization is not a concept unique to Octave, but it is
+particularly important because Octave is a matrix-oriented language.
+Vectorized Octave code will see a dramatic speed up (10X–100X) in most
+cases.
+
+   This chapter discusses vectorization and other techniques for writing
+faster code.
+
+* Menu:
+
+* Basic Vectorization::        Basic techniques for code optimization
+* Broadcasting::               Broadcasting operations
+* Function Application::       Applying functions to arrays, cells, and structs
+* Accumulation::               Accumulation functions
+* JIT Compiler::               Just-In-Time Compiler for loops
+* Miscellaneous Techniques::   Other techniques for speeding up code
+* Examples::
+
+
+File: octave.info,  Node: Basic Vectorization,  Next: Broadcasting,  Up: Vectorization and Faster Code Execution
+
+19.1 Basic Vectorization
+========================
+
+To a very good first approximation, the goal in vectorization is to
+write code that avoids loops and uses whole-array operations.  As a
+trivial example, consider
+
+     for i = 1:n
+       for j = 1:m
+         c(i,j) = a(i,j) + b(i,j);
+       endfor
+     endfor
+
+compared to the much simpler
+
+     c = a + b;
+
+This isn’t merely easier to write; it is also internally much easier to
+optimize.  Octave delegates this operation to an underlying
+implementation which, among other optimizations, may use special vector
+hardware instructions or could conceivably even perform the additions in
+parallel.  In general, if the code is vectorized, the underlying
+implementation has more freedom about the assumptions it can make in
+order to achieve faster execution.
+
+   This is especially important for loops with "cheap" bodies.  Often it
+suffices to vectorize just the innermost loop to get acceptable
+performance.  A general rule of thumb is that the "order" of the
+vectorized body should be greater or equal to the "order" of the
+enclosing loop.
+
+   As a less trivial example, instead of
+
+     for i = 1:n-1
+       a(i) = b(i+1) - b(i);
+     endfor
+
+write
+
+     a = b(2:n) - b(1:n-1);
+
+   This shows an important general concept about using arrays for
+indexing instead of looping over an index variable.  *Note Index
+Expressions::.  Also use boolean indexing generously.  If a condition
+needs to be tested, this condition can also be written as a boolean
+index.  For instance, instead of
+
+     for i = 1:n
+       if (a(i) > 5)
+         a(i) -= 20
+       endif
+     endfor
+
+write
+
+     a(a>5) -= 20;
+
+which exploits the fact that ‘a > 5’ produces a boolean index.
+
+   Use elementwise vector operators whenever possible to avoid looping
+(operators like ‘.*’ and ‘.^’).  *Note Arithmetic Ops::.  For simple
+inline functions, the ‘vectorize’ function can do this automatically.
+
+ -- : vectorize (FUN)
+     Create a vectorized version of the inline function FUN by replacing
+     all occurrences of ‘*’, ‘/’, etc., with ‘.*’, ‘./’, etc.
+
+     This may be useful, for example, when using inline functions with
+     numerical integration or optimization where a vector-valued
+     function is expected.
+
+          fcn = vectorize (inline ("x^2 - 1"))
+             ⇒ fcn = f(x) = x.^2 - 1
+          quadv (fcn, 0, 3)
+             ⇒ 6
+
+     See also: *note inline: XREFinline, *note formula: XREFformula,
+     *note argnames: XREFargnames.
+
+   Also exploit broadcasting in these elementwise operators both to
+avoid looping and unnecessary intermediate memory allocations.  *Note
+Broadcasting::.
+
+   Use built-in and library functions if possible.  Built-in and
+compiled functions are very fast.  Even with an m-file library function,
+chances are good that it is already optimized, or will be optimized more
+in a future release.
+
+   For instance, even better than
+
+     a = b(2:n) - b(1:n-1);
+
+is
+
+     a = diff (b);
+
+   Most Octave functions are written with vector and array arguments in
+mind.  If you find yourself writing a loop with a very simple operation,
+chances are that such a function already exists.  The following
+functions occur frequently in vectorized code:
+
+   • Index manipulation
+
+        • find
+
+        • sub2ind
+
+        • ind2sub
+
+        • sort
+
+        • unique
+
+        • lookup
+
+        • ifelse / merge
+
+   • Repetition
+
+        • repmat
+
+        • repelems
+
+   • Vectorized arithmetic
+
+        • sum
+
+        • prod
+
+        • cumsum
+
+        • cumprod
+
+        • sumsq
+
+        • diff
+
+        • dot
+
+        • cummax
+
+        • cummin
+
+   • Shape of higher dimensional arrays
+
+        • reshape
+
+        • resize
+
+        • permute
+
+        • squeeze
+
+        • deal
+
+
+File: octave.info,  Node: Broadcasting,  Next: Function Application,  Prev: Basic Vectorization,  Up: Vectorization and Faster Code Execution
+
+19.2 Broadcasting
+=================
+
+Broadcasting refers to how Octave binary operators and functions behave
+when their matrix or array operands or arguments differ in size.  Since
+version 3.6.0, Octave now automatically broadcasts vectors, matrices,
+and arrays when using elementwise binary operators and functions.
+Broadly speaking, smaller arrays are “broadcast” across the larger one,
+until they have a compatible shape.  The rule is that corresponding
+array dimensions must either
+
+  1. be equal, or
+
+  2. one of them must be 1.
+
+In case all dimensions are equal, no broadcasting occurs and ordinary
+element-by-element arithmetic takes place.  For arrays of higher
+dimensions, if the number of dimensions isn’t the same, then missing
+trailing dimensions are treated as 1.  When one of the dimensions is 1,
+the array with that singleton dimension gets copied along that dimension
+until it matches the dimension of the other array.  For example,
+consider
+
+     x = [1 2 3;
+          4 5 6;
+          7 8 9];
+
+     y = [10 20 30];
+
+     x + y
+
+Without broadcasting, ‘x + y’ would be an error because the dimensions
+do not agree.  However, with broadcasting it is as if the following
+operation were performed:
+
+     x = [1 2 3
+          4 5 6
+          7 8 9];
+
+     y = [10 20 30
+          10 20 30
+          10 20 30];
+
+     x + y
+     ⇒    11   22   33
+           14   25   36
+           17   28   39
+
+That is, the smaller array of size ‘[1 3]’ gets copied along the
+singleton dimension (the number of rows) until it is ‘[3 3]’.  No actual
+copying takes place, however.  The internal implementation reuses
+elements along the necessary dimension in order to achieve the desired
+effect without copying in memory.
+
+   Both arrays can be broadcast across each other, for example, all
+pairwise differences of the elements of a vector with itself:
+
+     y - y'
+     ⇒    0   10   20
+         -10    0   10
+         -20  -10    0
+
+Here the vectors of size ‘[1 3]’ and ‘[3 1]’ both get broadcast into
+matrices of size ‘[3 3]’ before ordinary matrix subtraction takes place.
+
+   A special case of broadcasting that may be familiar is when all
+dimensions of the array being broadcast are 1, i.e., the array is a
+scalar.  Thus for example, operations like ‘x - 42’ and ‘max (x, 2)’ are
+basic examples of broadcasting.
+
+   For a higher-dimensional example, suppose ‘img’ is an RGB image of
+size ‘[m n 3]’ and we wish to multiply each color by a different scalar.
+The following code accomplishes this with broadcasting,
+
+     img .*= permute ([0.8, 0.9, 1.2], [1, 3, 2]);
+
+Note the usage of permute to match the dimensions of the ‘[0.8, 0.9,
+1.2]’ vector with ‘img’.
+
+   For functions that are not written with broadcasting semantics,
+‘bsxfun’ can be useful for coercing them to broadcast.
+
+ -- : bsxfun (F, A, B)
+     The binary singleton expansion function performs broadcasting, that
+     is, it applies a binary function F element-by-element to two array
+     arguments A and B, and expands as necessary singleton dimensions in
+     either input argument.
+
+     F is a function handle, inline function, or string containing the
+     name of the function to evaluate.  The function F must be capable
+     of accepting two column-vector arguments of equal length, or one
+     column vector argument and a scalar.
+
+     The dimensions of A and B must be equal or singleton.  The
+     singleton dimensions of the arrays will be expanded to the same
+     dimensionality as the other array.
+
+     See also: *note arrayfun: XREFarrayfun, *note cellfun: XREFcellfun.
+
+   Broadcasting is only applied if either of the two broadcasting
+conditions hold.  As usual, however, broadcasting does not apply when
+two dimensions differ and neither is 1:
+
+     x = [1 2 3
+          4 5 6];
+     y = [10 20
+          30 40];
+     x + y
+
+This will produce an error about nonconformant arguments.
+
+   Besides common arithmetic operations, several functions of two
+arguments also broadcast.  The full list of functions and operators that
+broadcast is
+
+           plus      +  .+
+           minus     -  .-
+           times     .*
+           rdivide   ./
+           ldivide   .\
+           power     .^  .**
+           lt        <
+           le        <=
+           eq        ==
+           gt        >
+           ge        >=
+           ne        !=  ~=
+           and       &
+           or        |
+           atan2
+           hypot
+           max
+           min
+           mod
+           rem
+           xor
+
+           +=  -=  .+=  .-=  .*=  ./=  .\=  .^=  .**=  &=  |=
+
+   Beware of resorting to broadcasting if a simpler operation will
+suffice.  For matrices A and B, consider the following:
+
+     C = sum (permute (A, [1, 3, 2]) .* permute (B, [3, 2, 1]), 3);
+
+This operation broadcasts the two matrices with permuted dimensions
+across each other during elementwise multiplication in order to obtain a
+larger 3-D array, and this array is then summed along the third
+dimension.  A moment of thought will prove that this operation is simply
+the much faster ordinary matrix multiplication, ‘C = A*B;’.
+
+   A note on terminology: “broadcasting” is the term popularized by the
+Numpy numerical environment in the Python programming language.  In
+other programming languages and environments, broadcasting may also be
+known as _binary singleton expansion_ (BSX, in MATLAB, and the origin of
+the name of the ‘bsxfun’ function), _recycling_ (R programming
+language), _single-instruction multiple data_ (SIMD), or _replication_.
+
+19.2.1 Broadcasting and Legacy Code
+-----------------------------------
+
+The new broadcasting semantics almost never affect code that worked in
+previous versions of Octave.  Consequently, all code inherited from
+MATLAB that worked in previous versions of Octave should still work
+without change in Octave.  The only exception is code such as
+
+     try
+       c = a.*b;
+     catch
+       c = a.*a;
+     end_try_catch
+
+that may have relied on matrices of different size producing an error.
+Because such operation is now valid Octave syntax, this will no longer
+produce an error.  Instead, the following code should be used:
+
+     if (isequal (size (a), size (b)))
+       c = a .* b;
+     else
+       c = a .* a;
+     endif
+
+
+File: octave.info,  Node: Function Application,  Next: Accumulation,  Prev: Broadcasting,  Up: Vectorization and Faster Code Execution
+
+19.3 Function Application
+=========================
+
+As a general rule, functions should already be written with matrix
+arguments in mind and should consider whole matrix operations in a
+vectorized manner.  Sometimes, writing functions in this way appears
+difficult or impossible for various reasons.  For those situations,
+Octave provides facilities for applying a function to each element of an
+array, cell, or struct.
+
+ -- : arrayfun (FUNC, A)
+ -- : X = arrayfun (FUNC, A)
+ -- : X = arrayfun (FUNC, A, B, ...)
+ -- : [X, Y, ...] = arrayfun (FUNC, A, ...)
+ -- : arrayfun (..., "UniformOutput", VAL)
+ -- : arrayfun (..., "ErrorHandler", ERRFUNC)
+
+     Execute a function on each element of an array.
+
+     This is useful for functions that do not accept array arguments.
+     If the function does accept array arguments it is better to call
+     the function directly.
+
+     The first input argument FUNC can be a string, a function handle,
+     an inline function, or an anonymous function.  The input argument A
+     can be a logic array, a numeric array, a string array, a structure
+     array, or a cell array.  By a call of the function ‘arrayfun’ all
+     elements of A are passed on to the named function FUNC
+     individually.
+
+     The named function can also take more than two input arguments,
+     with the input arguments given as third input argument B, fourth
+     input argument C, ... If given more than one array input argument
+     then all input arguments must have the same sizes, for example:
+
+          arrayfun (@atan2, [1, 0], [0, 1])
+               ⇒ [ 1.5708   0.0000 ]
+
+     If the parameter VAL after a further string input argument
+     "UniformOutput" is set ‘true’ (the default), then the named
+     function FUNC must return a single element which then will be
+     concatenated into the return value and is of type matrix.
+     Otherwise, if that parameter is set to ‘false’, then the outputs
+     are concatenated in a cell array.  For example:
+
+          arrayfun (@(x,y) x:y, "abc", "def", "UniformOutput", false)
+          ⇒
+             {
+               [1,1] = abcd
+               [1,2] = bcde
+               [1,3] = cdef
+             }
+
+     If more than one output arguments are given then the named function
+     must return the number of return values that also are expected, for
+     example:
+
+          [A, B, C] = arrayfun (@find, [10; 0], "UniformOutput", false)
+          ⇒
+          A =
+          {
+             [1,1] =  1
+             [2,1] = [](0x0)
+          }
+          B =
+          {
+             [1,1] =  1
+             [2,1] = [](0x0)
+          }
+          C =
+          {
+             [1,1] =  10
+             [2,1] = [](0x0)
+          }
+
+     If the parameter ERRFUNC after a further string input argument
+     "ErrorHandler" is another string, a function handle, an inline
+     function, or an anonymous function, then ERRFUNC defines a function
+     to call in the case that FUNC generates an error.  The definition
+     of the function must be of the form
+
+          function [...] = errfunc (S, ...)
+
+     where there is an additional input argument to ERRFUNC relative to
+     FUNC, given by S.  This is a structure with the elements
+     "identifier", "message", and "index" giving, respectively, the
+     error identifier, the error message, and the index of the array
+     elements that caused the error.  The size of the output argument of
+     ERRFUNC must have the same size as the output argument of FUNC,
+     otherwise a real error is thrown.  For example:
+
+          function y = ferr (s, x), y = "MyString"; endfunction
+          arrayfun (@str2num, [1234],
+                    "UniformOutput", false, "ErrorHandler", @ferr)
+          ⇒
+             {
+               [1,1] = MyString
+             }
+
+     See also: *note spfun: XREFspfun, *note cellfun: XREFcellfun, *note
+     structfun: XREFstructfun.
+
+ -- : Y = spfun (F, S)
+     Compute ‘f(S)’ for the nonzero values of S.
+
+     This results in a sparse matrix with the same structure as S.  The
+     function F can be passed as a string, a function handle, or an
+     inline function.
+
+     See also: *note arrayfun: XREFarrayfun, *note cellfun: XREFcellfun,
+     *note structfun: XREFstructfun.
+
+ -- : cellfun (NAME, C)
+ -- : cellfun ("size", C, K)
+ -- : cellfun ("isclass", C, CLASS)
+ -- : cellfun (FUNC, C)
+ -- : cellfun (FUNC, C, D)
+ -- : [A, ...] = cellfun (...)
+ -- : cellfun (..., "ErrorHandler", ERRFUNC)
+ -- : cellfun (..., "UniformOutput", VAL)
+
+     Evaluate the function named NAME on the elements of the cell array
+     C.
+
+     Elements in C are passed on to the named function individually.
+     The function NAME can be one of the functions
+
+     ‘isempty’
+          Return 1 for empty elements.
+
+     ‘islogical’
+          Return 1 for logical elements.
+
+     ‘isnumeric’
+          Return 1 for numeric elements.
+
+     ‘isreal’
+          Return 1 for real elements.
+
+     ‘length’
+          Return a vector of the lengths of cell elements.
+
+     ‘ndims’
+          Return the number of dimensions of each element.
+
+     ‘numel’
+     ‘prodofsize’
+          Return the number of elements contained within each cell
+          element.  The number is the product of the dimensions of the
+          object at each cell element.
+
+     ‘size’
+          Return the size along the K-th dimension.
+
+     ‘isclass’
+          Return 1 for elements of CLASS.
+
+     Additionally, ‘cellfun’ accepts an arbitrary function FUNC in the
+     form of an inline function, function handle, or the name of a
+     function (in a character string).  The function can take one or
+     more arguments, with the inputs arguments given by C, D, etc.
+     Equally the function can return one or more output arguments.  For
+     example:
+
+          cellfun ("atan2", {1, 0}, {0, 1})
+               ⇒ [ 1.57080   0.00000 ]
+
+     The number of output arguments of ‘cellfun’ matches the number of
+     output arguments of the function.  The outputs of the function will
+     be collected into the output arguments of ‘cellfun’ like this:
+
+          function [a, b] = twoouts (x)
+            a = x;
+            b = x*x;
+          endfunction
+          [aa, bb] = cellfun (@twoouts, {1, 2, 3})
+               ⇒
+                  aa =
+                     1 2 3
+                  bb =
+                     1 4 9
+
+     Note that per default the output argument(s) are arrays of the same
+     size as the input arguments.  Input arguments that are singleton
+     (1x1) cells will be automatically expanded to the size of the other
+     arguments.
+
+     If the parameter "UniformOutput" is set to true (the default), then
+     the function must return scalars which will be concatenated into
+     the return array(s).  If "UniformOutput" is false, the outputs are
+     concatenated into a cell array (or cell arrays).  For example:
+
+          cellfun ("tolower", {"Foo", "Bar", "FooBar"},
+                   "UniformOutput", false)
+          ⇒ {"foo", "bar", "foobar"}
+
+     Given the parameter "ErrorHandler", then ERRFUNC defines a function
+     to call in case FUNC generates an error.  The form of the function
+     is
+
+          function [...] = errfunc (S, ...)
+
+     where there is an additional input argument to ERRFUNC relative to
+     FUNC, given by S.  This is a structure with the elements
+     "identifier", "message", and "index" giving respectively the error
+     identifier, the error message, and the index into the input
+     arguments of the element that caused the error.  For example:
+
+          function y = foo (s, x), y = NaN; endfunction
+          cellfun ("factorial", {-1,2}, "ErrorHandler", @foo)
+          ⇒ [NaN 2]
+
+     Use ‘cellfun’ intelligently.  The ‘cellfun’ function is a useful
+     tool for avoiding loops.  It is often used with anonymous function
+     handles; however, calling an anonymous function involves an
+     overhead quite comparable to the overhead of an m-file function.
+     Passing a handle to a built-in function is faster, because the
+     interpreter is not involved in the internal loop.  For example:
+
+          a = {...}
+          v = cellfun (@(x) det (x), a); # compute determinants
+          v = cellfun (@det, a); # faster
+
+     See also: *note arrayfun: XREFarrayfun, *note structfun:
+     XREFstructfun, *note spfun: XREFspfun.
+
+ -- : structfun (FUNC, S)
+ -- : [A, ...] = structfun (...)
+ -- : structfun (..., "ErrorHandler", ERRFUNC)
+ -- : structfun (..., "UniformOutput", VAL)
+
+     Evaluate the function named NAME on the fields of the structure S.
+     The fields of S are passed to the function FUNC individually.
+
+     ‘structfun’ accepts an arbitrary function FUNC in the form of an
+     inline function, function handle, or the name of a function (in a
+     character string).  In the case of a character string argument, the
+     function must accept a single argument named X, and it must return
+     a string value.  If the function returns more than one argument,
+     they are returned as separate output variables.
+
+     If the parameter "UniformOutput" is set to true (the default), then
+     the function must return a single element which will be
+     concatenated into the return value.  If "UniformOutput" is false,
+     the outputs are placed into a structure with the same fieldnames as
+     the input structure.
+
+          s.name1 = "John Smith";
+          s.name2 = "Jill Jones";
+          structfun (@(x) regexp (x, '(\w+)$', "matches"){1}, s,
+                     "UniformOutput", false)
+          ⇒
+             {
+               name1 = Smith
+               name2 = Jones
+             }
+
+     Given the parameter "ErrorHandler", ERRFUNC defines a function to
+     call in case FUNC generates an error.  The form of the function is
+
+          function [...] = errfunc (SE, ...)
+
+     where there is an additional input argument to ERRFUNC relative to
+     FUNC, given by SE.  This is a structure with the elements
+     "identifier", "message" and "index", giving respectively the error
+     identifier, the error message, and the index into the input
+     arguments of the element that caused the error.  For an example on
+     how to use an error handler, *note cellfun: XREFcellfun.
+
+     See also: *note cellfun: XREFcellfun, *note arrayfun: XREFarrayfun,
+     *note spfun: XREFspfun.
+
+   Consistent with earlier advice, seek to use Octave built-in functions
+whenever possible for the best performance.  This advice applies
+especially to the four functions above.  For example, when adding two
+arrays together element-by-element one could use a handle to the
+built-in addition function ‘@plus’ or define an anonymous function
+‘@(x,y) x + y’.  But, the anonymous function is 60% slower than the
+first method.  *Note Operator Overloading::, for a list of basic
+functions which might be used in place of anonymous ones.
+
+
 File: octave.info,  Node: Accumulation,  Next: JIT Compiler,  Prev: Function Application,  Up: Vectorization and Faster Code Execution
 
 19.4 Accumulation
@@ -745,10 +1405,10 @@ simply inverting the objective function (‘Fto_max = -Fto_min’).
      equation of one variable then using ‘fminbnd’ is usually a better
      choice.
 
-     The algorithm used by ‘fminsearch’ is a gradient search which
-     depends on the objective function being differentiable.  If the
-     function has discontinuities it may be better to use a
-     derivative-free algorithm such as ‘fminsearch’.
+     The algorithm used by ‘fminunc’ is a gradient search which depends
+     on the objective function being differentiable.  If the function
+     has discontinuities it may be better to use a derivative-free
+     algorithm such as ‘fminsearch’.
 
      See also: *note fminbnd: XREFfminbnd, *note fminsearch:
      XREFfminsearch, *note optimset: XREFoptimset.
@@ -2079,8 +2739,8 @@ Sparse matrix reordering:
      “symamd”, “randperm”, “symrcm”
 
 Linear algebra:
-     “condest”, “eigs”, “matrix_type”, “normest”, “sprank”, “spaugment”,
-     “svds”
+     “condest”, “eigs”, “matrix_type”, “normest”, “normest1”, “sprank”,
+     “spaugment”, “svds”
 
 Iterative techniques:
      “ichol”, “ilu”, “pcg”, “pcr”
@@ -2799,43 +3459,67 @@ matrix incorrectly will lead to unpredictable results, and so
      The optional output C returns the number of iterations needed for
      ‘normest’ to converge.
 
- -- : [EST, V, W, ITER] = onenormest (A, T)
- -- : [EST, V, W, ITER] = onenormest (APPLY, APPLY_T, N, T)
+ -- Function File: C = normest1 (A)
+ -- Function File: C = normest1 (A, T)
+ -- Function File: C = normest1 (A, T, X0)
+ -- Function File: C = normest1 (AFUN, T, X0, P1, P2, ...)
+ -- Function File: [C, V] = normest1 (A, ...)
+ -- Function File: [C, V, W] = normest1 (A, ...)
+ -- Function File: [C, V, W, IT] = normest1 (A, ...)
+     Estimate the 1-norm of the matrix A using a block algorithm.
 
-     Apply Higham and Tisseur’s randomized block 1-norm estimator to
-     matrix A using T test vectors.
+     For a medium size matrix A, ‘norm (A, 1)’ should be used instead.
+     For a large sparse matrix, when only an estimate of the norm is
+     needed, ‘normest1 (A)’ might be faster.  Moreover, it can be used
+     for the estimate of the 1-norm of a linear operator A when
+     matrix-vector products ‘A * X’ and ‘A' * X’ can be cheaply
+     computed.  In this case, instead of the matrix A, a function ‘AFUN
+     (FLAG, X)’ can be used.  It should return:
 
-     If T exceeds 5, then only 5 test vectors are used.
+        • the dimension N of A, if FLAG is "dim"
+        • true if A is a real operator, if FLAG is "real"
+        • the result ‘A * X’, if FLAG is "notransp"
+        • the result ‘A' * X’, if FLAG is "transp"
 
-     If the matrix is not explicit, e.g., when estimating the norm of
-     ‘inv (A)’ given an LU factorization, ‘onenormest’ applies A and its
-     conjugate transpose through a pair of functions APPLY and APPLY_T,
-     respectively, to a dense matrix of size N by T.  The implicit
-     version requires an explicit dimension N.
+     A typical case is A defined by ‘B ^ M’, in which the result ‘A * X’
+     can be computed without even forming explicitely ‘B ^ M’ by:
 
-     Returns the norm estimate EST, two vectors V and W related by norm
-     ‘(W, 1) = EST * norm (V, 1)’, and the number of iterations ITER.
-     The number of iterations is limited to 10 and is at least 2.
+          Y = X;
+          for I = 1:M
+            Y = B * Y;
+          endfor
 
-     References:
+     The parameters P1, P2, ... are arguments of ‘AFUN (FLAG, X, P1, P2,
+     ...)’.
 
-        • N.J. Higham and F. Tisseur, ‘A Block Algorithm for Matrix
-          1-Norm Estimation, with an Application to 1-Norm
-          Pseudospectra’.  SIMAX vol 21, no 4, pp 1185-1201.
-          <http://dx.doi.org/10.1137/S0895479899356080>
+     The default value for T is 2.  The algorithm requires matrix-matrix
+     products with sizes N x N and N x T.
 
-        • N.J. Higham and F. Tisseur, ‘A Block Algorithm for Matrix
-          1-Norm Estimation, with an Application to 1-Norm
-          Pseudospectra’.  <http://citeseer.ist.psu.edu/223007.html>
+     The initial matrix X0 should have columns of unit 1-norm.  The
+     default initial matrix X0 has the first column ‘ones (N, 1) / N’
+     and, if T > 1, the remaining columns with random elements ‘-1 / N’,
+     ‘1 / N’, divided by N.  Therefore, if consistent results are
+     required, the "state" of the random generator should be fixed
+     before invoking ‘normest1’.
 
-     See also: *note condest: XREFcondest, *note norm: XREFnorm, *note
-     cond: XREFcond.
+     On output, C is the desired estimate, V and W vectors such that ‘W
+     = A * V’, with ‘norm (W, 1)’ = ‘C * norm (V, 1)’.  IT contains in
+     ‘IT(1)’ the number of iterations (the maximum number is hardcoded
+     to 5) and in ‘IT(2)’ the total number of products ‘A * X’ or ‘A' *
+     X’ performed by the algorithm.
+
+     Reference: N. J. Higham and F. Tisseur, ‘A block algorithm for
+     matrix 1-norm estimation, with and application to 1-norm
+     pseudospectra’, SIAM J. Matrix Anal.  Appl., pp.  1185–1201, Vol
+     21, No.  4, 2000.
+
+     See also: *note normest: XREFnormest, *note rand: XREFrand.
 
  -- : condest (A)
  -- : condest (A, T)
  -- : [EST, V] = condest (...)
- -- : [EST, V] = condest (A, SOLVE, SOLVE_T, T)
- -- : [EST, V] = condest (APPLY, APPLY_T, SOLVE, SOLVE_T, N, T)
+ -- : [EST, V] = condest (A, SOLVEFUN, T, P1, P2, ...)
+ -- : [EST, V] = condest (AFUN, SOLVEFUN, T, P1, P2, ...)
 
      Estimate the 1-norm condition number of a matrix A using T test
      vectors using a randomized 1-norm estimator.
@@ -2846,21 +3530,23 @@ matrix incorrectly will lead to unpredictable results, and so
      number of A given an LU factorization, ‘condest’ uses the following
      functions:
 
-     APPLY
-          ‘A*x’ for a matrix ‘x’ of size N by T.
+        − AFUN which should returns
+             • the dimension N of A, if FLAG is "dim"
+             • true if A is a real operator, if FLAG is "real"
+             • the result ‘A * X’, if FLAG is "notransp"
+             • the result ‘A' * X’, if FLAG is "transp"
+        − SOLVEFUN which should returns
+             • the dimension N of A, if FLAG is "dim"
+             • true if A is a real operator, if FLAG is "real"
+             • the result ‘A \ X’, if FLAG is "notransp"
+             • the result ‘A' \ X’, if FLAG is "transp"
 
-     APPLY_T
-          ‘A'*x’ for a matrix ‘x’ of size N by T.
-
-     SOLVE
-          ‘A \ b’ for a matrix ‘b’ of size N by T.
-
-     SOLVE_T
-          ‘A' \ b’ for a matrix ‘b’ of size N by T.
-
-     The implicit version requires an explicit dimension N.
+     The parameters P1, P2, ... are arguments of ‘AFUN (FLAG, X, P1, P2,
+     ...)’ and ‘SOLVEFUN (FLAG, X, P1, P2, ...)’.
 
      ‘condest’ uses a randomized algorithm to approximate the 1-norms.
+     Therefore, if consistent results are required, the "state" of the
+     random generator should be fixed before invoking ‘normest1’.
 
      ‘condest’ returns the 1-norm condition estimate EST and a vector V
      satisfying ‘norm (A*v, 1) == norm (A, 1) * norm (V, 1) / EST’.
@@ -2878,7 +3564,7 @@ matrix incorrectly will lead to unpredictable results, and so
           Pseudospectra’.  <http://citeseer.ist.psu.edu/223007.html>
 
      See also: *note cond: XREFcond, *note norm: XREFnorm, *note
-     onenormest: XREFonenormest.
+     normest1: XREFnormest1.
 
  -- : spparms ()
  -- : VALS = spparms ()
@@ -7038,919 +7724,4 @@ allowing arbitrary shape measures to be developed.
      See also: *note min: XREFmin, *note max: XREFmax, *note median:
      XREFmedian, *note mean: XREFmean, *note std: XREFstd, *note
      skewness: XREFskewness, *note kurtosis: XREFkurtosis.
-
-
-File: octave.info,  Node: Basic Statistical Functions,  Next: Statistical Plots,  Prev: Descriptive Statistics,  Up: Statistics
-
-26.2 Basic Statistical Functions
-================================
-
-Octave supports various helpful statistical functions.  Many are useful
-as initial steps to prepare a data set for further analysis.  Others
-provide different measures from those of the basic descriptive
-statistics.
-
- -- : center (X)
- -- : center (X, DIM)
-     Center data by subtracting its mean.
-
-     If X is a vector, subtract its mean.
-
-     If X is a matrix, do the above for each column.
-
-     If the optional argument DIM is given, operate along this
-     dimension.
-
-     Programming Note: ‘center’ has obvious application for normalizing
-     statistical data.  It is also useful for improving the precision of
-     general numerical calculations.  Whenever there is a large value
-     that is common to a batch of data, the mean can be subtracted off,
-     the calculation performed, and then the mean added back to obtain
-     the final answer.
-
-     See also: *note zscore: XREFzscore.
-
- -- : Z = zscore (X)
- -- : Z = zscore (X, OPT)
- -- : Z = zscore (X, OPT, DIM)
- -- : [Z, MU, SIGMA] = zscore (...)
-     Compute the Z score of X
-
-     If X is a vector, subtract its mean and divide by its standard
-     deviation.  If the standard deviation is zero, divide by 1 instead.
-
-     The optional parameter OPT determines the normalization to use when
-     computing the standard deviation and has the same definition as the
-     corresponding parameter for ‘std’.
-
-     If X is a matrix, calculate along the first non-singleton
-     dimension.  If the third optional argument DIM is given, operate
-     along this dimension.
-
-     The optional outputs MU and SIGMA contain the mean and standard
-     deviation.
-
-     See also: *note mean: XREFmean, *note std: XREFstd, *note center:
-     XREFcenter.
-
- -- : N = histc (X, EDGES)
- -- : N = histc (X, EDGES, DIM)
- -- : [N, IDX] = histc (...)
-     Compute histogram counts.
-
-     When X is a vector, the function counts the number of elements of X
-     that fall in the histogram bins defined by EDGES.  This must be a
-     vector of monotonically increasing values that define the edges of
-     the histogram bins.  ‘N(k)’ contains the number of elements in X
-     for which ‘EDGES(k) <= X < EDGES(k+1)’.  The final element of N
-     contains the number of elements of X exactly equal to the last
-     element of EDGES.
-
-     When X is an N-dimensional array, the computation is carried out
-     along dimension DIM.  If not specified DIM defaults to the first
-     non-singleton dimension.
-
-     When a second output argument is requested an index matrix is also
-     returned.  The IDX matrix has the same size as X.  Each element of
-     IDX contains the index of the histogram bin in which the
-     corresponding element of X was counted.
-
-     See also: *note hist: XREFhist.
-
-‘unique’ function documented at *note unique: XREFunique. is often
-useful for statistics.
-
- -- : C = nchoosek (N, K)
- -- : C = nchoosek (SET, K)
-
-     Compute the binomial coefficient of N or list all possible
-     combinations of a SET of items.
-
-     If N is a scalar then calculate the binomial coefficient of N and K
-     which is defined as
-
-           /   \
-           | n |    n (n-1) (n-2) ... (n-k+1)       n!
-           |   |  = ------------------------- =  ---------
-           | k |               k!                k! (n-k)!
-           \   /
-
-     This is the number of combinations of N items taken in groups of
-     size K.
-
-     If the first argument is a vector, SET, then generate all
-     combinations of the elements of SET, taken K at a time, with one
-     row per combination.  The result C has K columns and
-     ‘nchoosek (length (SET), K)’ rows.
-
-     For example:
-
-     How many ways can three items be grouped into pairs?
-
-          nchoosek (3, 2)
-             ⇒ 3
-
-     What are the possible pairs?
-
-          nchoosek (1:3, 2)
-             ⇒  1   2
-                 1   3
-                 2   3
-
-     Programming Note: When calculating the binomial coefficient
-     ‘nchoosek’ works only for non-negative, integer arguments.  Use
-     ‘bincoeff’ for non-integer and negative scalar arguments, or for
-     computing many binomial coefficients at once with vector inputs for
-     N or K.
-
-     See also: *note bincoeff: XREFbincoeff, *note perms: XREFperms.
-
- -- : perms (V)
-     Generate all permutations of V with one row per permutation.
-
-     The result has size ‘factorial (N) * N’, where N is the length of
-     V.
-
-     Example
-
-          perms ([1, 2, 3])
-          ⇒
-            1   2   3
-            2   1   3
-            1   3   2
-            2   3   1
-            3   1   2
-            3   2   1
-
-     Programming Note: The maximum length of V should be less than or
-     equal to 10 to limit memory consumption.
-
-     See also: *note permute: XREFpermute, *note randperm: XREFrandperm,
-     *note nchoosek: XREFnchoosek.
-
- -- : ranks (X, DIM)
-     Return the ranks of X along the first non-singleton dimension
-     adjusted for ties.
-
-     If the optional argument DIM is given, operate along this
-     dimension.
-
-     See also: *note spearman: XREFspearman, *note kendall: XREFkendall.
-
- -- : run_count (X, N)
- -- : run_count (X, N, DIM)
-     Count the upward runs along the first non-singleton dimension of X
-     of length 1, 2, ..., N-1 and greater than or equal to N.
-
-     If the optional argument DIM is given then operate along this
-     dimension.
-
-     See also: *note runlength: XREFrunlength.
-
- -- : count = runlength (X)
- -- : [count, value] = runlength (X)
-     Find the lengths of all sequences of common values.
-
-     COUNT is a vector with the lengths of each repeated value.
-
-     The optional output VALUE contains the value that was repeated in
-     the sequence.
-
-          runlength ([2, 2, 0, 4, 4, 4, 0, 1, 1, 1, 1])
-          ⇒  [2, 1, 3, 1, 4]
-
-     See also: *note run_count: XREFrun_count.
-
- -- : probit (P)
-     Return the probit (the quantile of the standard normal
-     distribution) for each element of P.
-
-     See also: *note logit: XREFlogit.
-
- -- : logit (P)
-     Compute the logit for each value of P
-
-     The logit is defined as
-
-          logit (P) = log (P / (1-P))
-
-     See also: *note probit: XREFprobit, *note logistic_cdf:
-     XREFlogistic_cdf.
-
- -- : cloglog (X)
-     Return the complementary log-log function of X.
-
-     The complementary log-log function is defined as
-
-          cloglog (x) = - log (- log (X))
-
- -- : [T, L_X] = table (X)
- -- : [T, L_X, L_Y] = table (X, Y)
-     Create a contingency table T from data vectors.
-
-     The L_X and L_Y vectors are the corresponding levels.
-
-     Currently, only 1- and 2-dimensional tables are supported.
-
-
-File: octave.info,  Node: Statistical Plots,  Next: Correlation and Regression Analysis,  Prev: Basic Statistical Functions,  Up: Statistics
-
-26.3 Statistical Plots
-======================
-
-Octave can create Quantile Plots (QQ-Plots), and Probability Plots
-(PP-Plots).  These are simple graphical tests for determining if a data
-set comes from a certain distribution.
-
-   Note that Octave can also show histograms of data using the ‘hist’
-function as described in *note Two-Dimensional Plots::.
-
- -- : [Q, S] = qqplot (X)
- -- : [Q, S] = qqplot (X, Y)
- -- : [Q, S] = qqplot (X, DIST)
- -- : [Q, S] = qqplot (X, Y, PARAMS)
- -- : qqplot (...)
-     Perform a QQ-plot (quantile plot).
-
-     If F is the CDF of the distribution DIST with parameters PARAMS and
-     G its inverse, and X a sample vector of length N, the QQ-plot
-     graphs ordinate S(I) = I-th largest element of x versus abscissa
-     Q(If) = G((I - 0.5)/N).
-
-     If the sample comes from F, except for a transformation of location
-     and scale, the pairs will approximately follow a straight line.
-
-     If the second argument is a vector Y the empirical CDF of Y is used
-     as DIST.
-
-     The default for DIST is the standard normal distribution.  The
-     optional argument PARAMS contains a list of parameters of DIST.
-     For example, for a quantile plot of the uniform distribution on
-     [2,4] and X, use
-
-          qqplot (x, "unif", 2, 4)
-
-     DIST can be any string for which a function DISTINV or DIST_INV
-     exists that calculates the inverse CDF of distribution DIST.
-
-     If no output arguments are given, the data are plotted directly.
-
- -- : [P, Y] = ppplot (X, DIST, PARAMS)
-     Perform a PP-plot (probability plot).
-
-     If F is the CDF of the distribution DIST with parameters PARAMS and
-     X a sample vector of length N, the PP-plot graphs ordinate Y(I) = F
-     (I-th largest element of X) versus abscissa P(I) = (I - 0.5)/N.  If
-     the sample comes from F, the pairs will approximately follow a
-     straight line.
-
-     The default for DIST is the standard normal distribution.
-
-     The optional argument PARAMS contains a list of parameters of DIST.
-
-     For example, for a probability plot of the uniform distribution on
-     [2,4] and X, use
-
-          ppplot (x, "uniform", 2, 4)
-
-     DIST can be any string for which a function DIST_CDF that
-     calculates the CDF of distribution DIST exists.
-
-     If no output is requested then the data are plotted immediately.
-
-
-File: octave.info,  Node: Correlation and Regression Analysis,  Next: Distributions,  Prev: Statistical Plots,  Up: Statistics
-
-26.4 Correlation and Regression Analysis
-========================================
-
- -- : cov (X)
- -- : cov (X, OPT)
- -- : cov (X, Y)
- -- : cov (X, Y, OPT)
-     Compute the covariance matrix.
-
-     If each row of X and Y is an observation, and each column is a
-     variable, then the (I, J)-th entry of ‘cov (X, Y)’ is the
-     covariance between the I-th variable in X and the J-th variable in
-     Y.
-
-          cov (x) = 1/N-1 * SUM_i (x(i) - mean(x)) * (y(i) - mean(y))
-
-     If called with one argument, compute ‘cov (X, X)’, the covariance
-     between the columns of X.
-
-     The argument OPT determines the type of normalization to use.
-     Valid values are
-
-     0:
-          normalize with N-1, provides the best unbiased estimator of
-          the covariance [default]
-
-     1:
-          normalize with N, this provides the second moment around the
-          mean
-
-     Compatibility Note:: Octave always computes the covariance matrix.
-     For two inputs, however, MATLAB will calculate ‘cov (X(:), Y(:))’
-     whenever the number of elements in X and Y are equal.  This will
-     result in a scalar rather than a matrix output.  Code relying on
-     this odd definition will need to be changed when running in Octave.
-
-     See also: *note corr: XREFcorr.
-
- -- : corr (X)
- -- : corr (X, Y)
-     Compute matrix of correlation coefficients.
-
-     If each row of X and Y is an observation and each column is a
-     variable, then the (I, J)-th entry of ‘corr (X, Y)’ is the
-     correlation between the I-th variable in X and the J-th variable in
-     Y.
-
-          corr (x,y) = cov (x,y) / (std (x) * std (y))
-
-     If called with one argument, compute ‘corr (X, X)’, the correlation
-     between the columns of X.
-
-     See also: *note cov: XREFcov.
-
- -- : spearman (X)
- -- : spearman (X, Y)
-     Compute Spearman’s rank correlation coefficient RHO.
-
-     For two data vectors X and Y, Spearman’s RHO is the correlation
-     coefficient of the ranks of X and Y.
-
-     If X and Y are drawn from independent distributions, RHO has zero
-     mean and variance ‘1 / (n - 1)’, and is asymptotically normally
-     distributed.
-
-     ‘spearman (X)’ is equivalent to ‘spearman (X, X)’.
-
-     See also: *note ranks: XREFranks, *note kendall: XREFkendall.
-
- -- : kendall (X)
- -- : kendall (X, Y)
-     Compute Kendall’s TAU.
-
-     For two data vectors X, Y of common length N, Kendall’s TAU is the
-     correlation of the signs of all rank differences of X and Y; i.e.,
-     if both X and Y have distinct entries, then
-
-                   1
-          tau = -------   SUM sign (q(i) - q(j)) * sign (r(i) - r(j))
-                n (n-1)   i,j
-
-     in which the Q(I) and R(I) are the ranks of X and Y, respectively.
-
-     If X and Y are drawn from independent distributions, Kendall’s TAU
-     is asymptotically normal with mean 0 and variance ‘(2 * (2N+5)) /
-     (9 * N * (N-1))’.
-
-     ‘kendall (X)’ is equivalent to ‘kendall (X, X)’.
-
-     See also: *note ranks: XREFranks, *note spearman: XREFspearman.
-
- -- : [THETA, BETA, DEV, DL, D2L, P] = logistic_regression (Y, X, PRINT,
-          THETA, BETA)
-     Perform ordinal logistic regression.
-
-     Suppose Y takes values in K ordered categories, and let ‘gamma_i
-     (X)’ be the cumulative probability that Y falls in one of the first
-     I categories given the covariate X.  Then
-
-          [theta, beta] = logistic_regression (y, x)
-
-     fits the model
-
-          logit (gamma_i (x)) = theta_i - beta' * x,   i = 1 ... k-1
-
-     The number of ordinal categories, K, is taken to be the number of
-     distinct values of ‘round (Y)’.  If K equals 2, Y is binary and the
-     model is ordinary logistic regression.  The matrix X is assumed to
-     have full column rank.
-
-     Given Y only, ‘theta = logistic_regression (y)’ fits the model with
-     baseline logit odds only.
-
-     The full form is
-
-          [theta, beta, dev, dl, d2l, gamma]
-             = logistic_regression (y, x, print, theta, beta)
-
-     in which all output arguments and all input arguments except Y are
-     optional.
-
-     Setting PRINT to 1 requests summary information about the fitted
-     model to be displayed.  Setting PRINT to 2 requests information
-     about convergence at each iteration.  Other values request no
-     information to be displayed.  The input arguments THETA and BETA
-     give initial estimates for THETA and BETA.
-
-     The returned value DEV holds minus twice the log-likelihood.
-
-     The returned values DL and D2L are the vector of first and the
-     matrix of second derivatives of the log-likelihood with respect to
-     THETA and BETA.
-
-     P holds estimates for the conditional distribution of Y given X.
-
-
-File: octave.info,  Node: Distributions,  Next: Tests,  Prev: Correlation and Regression Analysis,  Up: Statistics
-
-26.5 Distributions
-==================
-
-Octave has functions for computing the Probability Density Function
-(PDF), the Cumulative Distribution function (CDF), and the quantile (the
-inverse of the CDF) for a large number of distributions.
-
-   The following table summarizes the supported distributions (in
-alphabetical order).
-
-Distribution           PDF               CDF               Quantile
------------------------------------------------------------------------------
-Beta Distribution      ‘betapdf’         ‘betacdf’         ‘betainv’
-Binomial               ‘binopdf’         ‘binocdf’         ‘binoinv’
-Distribution
-Cauchy Distribution    ‘cauchy_pdf’      ‘cauchy_cdf’      ‘cauchy_inv’
-Chi-Square             ‘chi2pdf’         ‘chi2cdf’         ‘chi2inv’
-Distribution
-Univariate Discrete    ‘discrete_pdf’    ‘discrete_cdf’    ‘discrete_inv’
-Distribution
-Empirical              ‘empirical_pdf’   ‘empirical_cdf’   ‘empirical_inv’
-Distribution
-Exponential            ‘exppdf’          ‘expcdf’          ‘expinv’
-Distribution
-F Distribution         ‘fpdf’            ‘fcdf’            ‘finv’
-Gamma Distribution     ‘gampdf’          ‘gamcdf’          ‘gaminv’
-Geometric              ‘geopdf’          ‘geocdf’          ‘geoinv’
-Distribution
-Hypergeometric         ‘hygepdf’         ‘hygecdf’         ‘hygeinv’
-Distribution
-Kolmogorov Smirnov     _Not Available_   ‘kolmogorov_smirnov_cdf’_Not Available_
-Distribution
-Laplace Distribution   ‘laplace_pdf’     ‘laplace_cdf’     ‘laplace_inv’
-Logistic               ‘logistic_pdf’    ‘logistic_cdf’    ‘logistic_inv’
-Distribution
-Log-Normal             ‘lognpdf’         ‘logncdf’         ‘logninv’
-Distribution
-Univariate Normal      ‘normpdf’         ‘normcdf’         ‘norminv’
-Distribution
-Pascal Distribution    ‘nbinpdf’         ‘nbincdf’         ‘nbininv’
-Poisson Distribution   ‘poisspdf’        ‘poisscdf’        ‘poissinv’
-Standard Normal        ‘stdnormal_pdf’   ‘stdnormal_cdf’   ‘stdnormal_inv’
-Distribution
-t (Student)            ‘tpdf’            ‘tcdf’            ‘tinv’
-Distribution
-Univariate Discrete    ‘unidpdf’         ‘unidcdf’         ‘unidinv’
-Distribution
-Uniform Distribution   ‘unifpdf’         ‘unifcdf’         ‘unifinv’
-Weibull Distribution   ‘wblpdf’          ‘wblcdf’          ‘wblinv’
-
- -- : betapdf (X, A, B)
-     For each element of X, compute the probability density function
-     (PDF) at X of the Beta distribution with parameters A and B.
-
- -- : betacdf (X, A, B)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the Beta distribution with parameters A and B.
-
- -- : betainv (X, A, B)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the Beta distribution with parameters A and B.
-
- -- : binopdf (X, N, P)
-     For each element of X, compute the probability density function
-     (PDF) at X of the binomial distribution with parameters N and P,
-     where N is the number of trials and P is the probability of
-     success.
-
- -- : binocdf (X, N, P)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the binomial distribution with parameters N and P,
-     where N is the number of trials and P is the probability of
-     success.
-
- -- : binoinv (X, N, P)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the binomial distribution with parameters N and P,
-     where N is the number of trials and P is the probability of
-     success.
-
- -- : cauchy_pdf (X)
- -- : cauchy_pdf (X, LOCATION, SCALE)
-     For each element of X, compute the probability density function
-     (PDF) at X of the Cauchy distribution with location parameter
-     LOCATION and scale parameter SCALE > 0.
-
-     Default values are LOCATION = 0, SCALE = 1.
-
- -- : cauchy_cdf (X)
- -- : cauchy_cdf (X, LOCATION, SCALE)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the Cauchy distribution with location parameter
-     LOCATION and scale parameter SCALE.
-
-     Default values are LOCATION = 0, SCALE = 1.
-
- -- : cauchy_inv (X)
- -- : cauchy_inv (X, LOCATION, SCALE)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the Cauchy distribution with location parameter
-     LOCATION and scale parameter SCALE.
-
-     Default values are LOCATION = 0, SCALE = 1.
-
- -- : chi2pdf (X, N)
-     For each element of X, compute the probability density function
-     (PDF) at X of the chi-square distribution with N degrees of
-     freedom.
-
- -- : chi2cdf (X, N)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the chi-square distribution with N degrees of
-     freedom.
-
- -- : chi2inv (X, N)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the chi-square distribution with N degrees of freedom.
-
- -- : discrete_pdf (X, V, P)
-     For each element of X, compute the probability density function
-     (PDF) at X of a univariate discrete distribution which assumes the
-     values in V with probabilities P.
-
- -- : discrete_cdf (X, V, P)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of a univariate discrete distribution which assumes the
-     values in V with probabilities P.
-
- -- : discrete_inv (X, V, P)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the univariate distribution which assumes the values
-     in V with probabilities P.
-
- -- : empirical_pdf (X, DATA)
-     For each element of X, compute the probability density function
-     (PDF) at X of the empirical distribution obtained from the
-     univariate sample DATA.
-
- -- : empirical_cdf (X, DATA)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the empirical distribution obtained from the
-     univariate sample DATA.
-
- -- : empirical_inv (X, DATA)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the empirical distribution obtained from the
-     univariate sample DATA.
-
- -- : exppdf (X, LAMBDA)
-     For each element of X, compute the probability density function
-     (PDF) at X of the exponential distribution with mean LAMBDA.
-
- -- : expcdf (X, LAMBDA)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the exponential distribution with mean LAMBDA.
-
-     The arguments can be of common size or scalars.
-
- -- : expinv (X, LAMBDA)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the exponential distribution with mean LAMBDA.
-
- -- : fpdf (X, M, N)
-     For each element of X, compute the probability density function
-     (PDF) at X of the F distribution with M and N degrees of freedom.
-
- -- : fcdf (X, M, N)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the F distribution with M and N degrees of freedom.
-
- -- : finv (X, M, N)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the F distribution with M and N degrees of freedom.
-
- -- : gampdf (X, A, B)
-     For each element of X, return the probability density function
-     (PDF) at X of the Gamma distribution with shape parameter A and
-     scale B.
-
- -- : gamcdf (X, A, B)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the Gamma distribution with shape parameter A and
-     scale B.
-
- -- : gaminv (X, A, B)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the Gamma distribution with shape parameter A and
-     scale B.
-
- -- : geopdf (X, P)
-     For each element of X, compute the probability density function
-     (PDF) at X of the geometric distribution with parameter P.
-
-     The geometric distribution models the number of failures (X-1) of a
-     Bernoulli trial with probability P before the first success (X).
-
- -- : geocdf (X, P)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the geometric distribution with parameter P.
-
-     The geometric distribution models the number of failures (X-1) of a
-     Bernoulli trial with probability P before the first success (X).
-
- -- : geoinv (X, P)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the geometric distribution with parameter P.
-
-     The geometric distribution models the number of failures (X-1) of a
-     Bernoulli trial with probability P before the first success (X).
-
- -- : hygepdf (X, T, M, N)
-     Compute the probability density function (PDF) at X of the
-     hypergeometric distribution with parameters T, M, and N.
-
-     This is the probability of obtaining X marked items when randomly
-     drawing a sample of size N without replacement from a population of
-     total size T containing M marked items.
-
-     The parameters T, M, and N must be positive integers with M and N
-     not greater than T.
-
- -- : hygecdf (X, T, M, N)
-     Compute the cumulative distribution function (CDF) at X of the
-     hypergeometric distribution with parameters T, M, and N.
-
-     This is the probability of obtaining not more than X marked items
-     when randomly drawing a sample of size N without replacement from a
-     population of total size T containing M marked items.
-
-     The parameters T, M, and N must be positive integers with M and N
-     not greater than T.
-
- -- : hygeinv (X, T, M, N)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the hypergeometric distribution with parameters T, M,
-     and N.
-
-     This is the probability of obtaining X marked items when randomly
-     drawing a sample of size N without replacement from a population of
-     total size T containing M marked items.
-
-     The parameters T, M, and N must be positive integers with M and N
-     not greater than T.
-
- -- : kolmogorov_smirnov_cdf (X, TOL)
-     Return the cumulative distribution function (CDF) at X of the
-     Kolmogorov-Smirnov distribution.
-
-     This is defined as
-
-                   Inf
-          Q(x) =   SUM    (-1)^k exp (-2 k^2 x^2)
-                 k = -Inf
-
-     for X > 0.
-
-     The optional parameter TOL specifies the precision up to which the
-     series should be evaluated; the default is TOL = ‘eps’.
-
- -- : laplace_pdf (X)
-     For each element of X, compute the probability density function
-     (PDF) at X of the Laplace distribution.
-
- -- : laplace_cdf (X)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the Laplace distribution.
-
- -- : laplace_inv (X)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the Laplace distribution.
-
- -- : logistic_pdf (X)
-     For each element of X, compute the PDF at X of the logistic
-     distribution.
-
- -- : logistic_cdf (X)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the logistic distribution.
-
- -- : logistic_inv (X)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the logistic distribution.
-
- -- : lognpdf (X)
- -- : lognpdf (X, MU, SIGMA)
-     For each element of X, compute the probability density function
-     (PDF) at X of the lognormal distribution with parameters MU and
-     SIGMA.
-
-     If a random variable follows this distribution, its logarithm is
-     normally distributed with mean MU and standard deviation SIGMA.
-
-     Default values are MU = 0, SIGMA = 1.
-
- -- : logncdf (X)
- -- : logncdf (X, MU, SIGMA)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the lognormal distribution with parameters MU and
-     SIGMA.
-
-     If a random variable follows this distribution, its logarithm is
-     normally distributed with mean MU and standard deviation SIGMA.
-
-     Default values are MU = 0, SIGMA = 1.
-
- -- : logninv (X)
- -- : logninv (X, MU, SIGMA)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the lognormal distribution with parameters MU and
-     SIGMA.
-
-     If a random variable follows this distribution, its logarithm is
-     normally distributed with mean MU and standard deviation SIGMA.
-
-     Default values are MU = 0, SIGMA = 1.
-
- -- : nbinpdf (X, N, P)
-     For each element of X, compute the probability density function
-     (PDF) at X of the negative binomial distribution with parameters N
-     and P.
-
-     When N is integer this is the Pascal distribution.  When N is
-     extended to real numbers this is the Polya distribution.
-
-     The number of failures in a Bernoulli experiment with success
-     probability P before the N-th success follows this distribution.
-
- -- : nbincdf (X, N, P)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the negative binomial distribution with parameters N
-     and P.
-
-     When N is integer this is the Pascal distribution.  When N is
-     extended to real numbers this is the Polya distribution.
-
-     The number of failures in a Bernoulli experiment with success
-     probability P before the N-th success follows this distribution.
-
- -- : nbininv (X, N, P)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the negative binomial distribution with parameters N
-     and P.
-
-     When N is integer this is the Pascal distribution.  When N is
-     extended to real numbers this is the Polya distribution.
-
-     The number of failures in a Bernoulli experiment with success
-     probability P before the N-th success follows this distribution.
-
- -- : normpdf (X)
- -- : normpdf (X, MU, SIGMA)
-     For each element of X, compute the probability density function
-     (PDF) at X of the normal distribution with mean MU and standard
-     deviation SIGMA.
-
-     Default values are MU = 0, SIGMA = 1.
-
- -- : normcdf (X)
- -- : normcdf (X, MU, SIGMA)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the normal distribution with mean MU and standard
-     deviation SIGMA.
-
-     Default values are MU = 0, SIGMA = 1.
-
- -- : norminv (X)
- -- : norminv (X, MU, SIGMA)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the normal distribution with mean MU and standard
-     deviation SIGMA.
-
-     Default values are MU = 0, SIGMA = 1.
-
- -- : poisspdf (X, LAMBDA)
-     For each element of X, compute the probability density function
-     (PDF) at X of the Poisson distribution with parameter LAMBDA.
-
- -- : poisscdf (X, LAMBDA)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the Poisson distribution with parameter LAMBDA.
-
- -- : poissinv (X, LAMBDA)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the Poisson distribution with parameter LAMBDA.
-
- -- : stdnormal_pdf (X)
-     For each element of X, compute the probability density function
-     (PDF) at X of the standard normal distribution (mean = 0, standard
-     deviation = 1).
-
- -- : stdnormal_cdf (X)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the standard normal distribution (mean = 0, standard
-     deviation = 1).
-
- -- : stdnormal_inv (X)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the standard normal distribution (mean = 0, standard
-     deviation = 1).
-
- -- : tpdf (X, N)
-     For each element of X, compute the probability density function
-     (PDF) at X of the T (Student) distribution with N degrees of
-     freedom.
-
- -- : tcdf (X, N)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the t (Student) distribution with N degrees of
-     freedom.
-
- -- : tinv (X, N)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the t (Student) distribution with N degrees of
-     freedom.
-
-     This function is analogous to looking in a table for the t-value of
-     a single-tailed distribution.
-
- -- : unidpdf (X, N)
-     For each element of X, compute the probability density function
-     (PDF) at X of a discrete uniform distribution which assumes the
-     integer values 1–N with equal probability.
-
-     Warning: The underlying implementation uses the double class and
-     will only be accurate for N < ‘flintmax’ (2^{53} on IEEE 754
-     compatible systems).
-
- -- : unidcdf (X, N)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of a discrete uniform distribution which assumes the
-     integer values 1–N with equal probability.
-
- -- : unidinv (X, N)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the discrete uniform distribution which assumes the
-     integer values 1–N with equal probability.
-
- -- : unifpdf (X)
- -- : unifpdf (X, A, B)
-     For each element of X, compute the probability density function
-     (PDF) at X of the uniform distribution on the interval [A, B].
-
-     Default values are A = 0, B = 1.
-
- -- : unifcdf (X)
- -- : unifcdf (X, A, B)
-     For each element of X, compute the cumulative distribution function
-     (CDF) at X of the uniform distribution on the interval [A, B].
-
-     Default values are A = 0, B = 1.
-
- -- : unifinv (X)
- -- : unifinv (X, A, B)
-     For each element of X, compute the quantile (the inverse of the
-     CDF) at X of the uniform distribution on the interval [A, B].
-
-     Default values are A = 0, B = 1.
-
- -- : wblpdf (X)
- -- : wblpdf (X, SCALE)
- -- : wblpdf (X, SCALE, SHAPE)
-     Compute the probability density function (PDF) at X of the Weibull
-     distribution with scale parameter SCALE and shape parameter SHAPE.
-
-     This is given by
-
-          shape * scale^(-shape) * x^(shape-1) * exp (-(x/scale)^shape)
-
-     for X ≥ 0.
-
-     Default values are SCALE = 1, SHAPE = 1.
-
- -- : wblcdf (X)
- -- : wblcdf (X, SCALE)
- -- : wblcdf (X, SCALE, SHAPE)
-     Compute the cumulative distribution function (CDF) at X of the
-     Weibull distribution with scale parameter SCALE and shape parameter
-     SHAPE.
-
-     This is defined as
-
-          1 - exp (-(x/scale)^shape)
-
-     for X ≥ 0.
-
-     Default values are SCALE = 1, SHAPE = 1.
-
- -- : wblinv (X)
- -- : wblinv (X, SCALE)
- -- : wblinv (X, SCALE, SHAPE)
-     Compute the quantile (the inverse of the CDF) at X of the Weibull
-     distribution with scale parameter SCALE and shape parameter SHAPE.
-
-     Default values are SCALE = 1, SHAPE = 1.
 

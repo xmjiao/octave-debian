@@ -163,7 +163,8 @@ subdiagonals/superdiagonals with nonzero entries.
 @anchor{XREFcond}
 @deftypefn  {} {} cond (@var{A})
 @deftypefnx {} {} cond (@var{A}, @var{p})
-Compute the @var{p}-norm condition number of a matrix.
+Compute the @var{p}-norm condition number of a matrix with respect to
+inversion.
 
 @code{cond (@var{A})} is defined as
 @tex
@@ -184,7 +185,49 @@ the condition number will be close to 1.  When the number is large this
 indicates small changes (such as underflow or round-off error) will produce
 large changes in the resulting output.  In such cases the solution results
 from numerical computing are not likely to be accurate.
-@seealso{@ref{XREFcondest,,condest}, @ref{XREFrcond,,rcond}, @ref{XREFnorm,,norm}, @ref{XREFsvd,,svd}}
+@seealso{@ref{XREFcondest,,condest}, @ref{XREFrcond,,rcond}, @ref{XREFcondeig,,condeig}, @ref{XREFnorm,,norm}, @ref{XREFsvd,,svd}}
+@end deftypefn
+
+
+@c condeig scripts/scripts/linear-algebra/condeig.m
+@anchor{XREFcondeig}
+@deftypefn  {} {@var{c} =} condeig (@var{a})
+@deftypefnx {} {[@var{v}, @var{lambda}, @var{c}] =} condeig (@var{a})
+Compute condition numbers of a matrix with respect to eigenvalues.
+
+The condition numbers are the reciprocals of the cosines of the angles
+between the left and right eigenvectors; Large values indicate that the
+matrix has multiple distinct eigenvalues.
+
+The input @var{a} must be a square numeric matrix.
+
+The outputs are:
+
+@itemize @bullet
+@item
+@var{c} is a vector of condition numbers for the eigenvalues of
+@var{a}.
+
+@item
+@var{v} is the matrix of right eigenvectors of @var{a}.  The result is
+equivalent to calling @code{[@var{v}, @var{lambda}] = eig (@var{a})}.
+
+@item
+@var{lambda} is the diagonal matrix of eigenvalues of @var{a}.  The
+result is equivalent to calling
+@code{[@var{v}, @var{lambda}] = eig (@var{a})}.
+@end itemize
+
+Example
+
+@example
+@group
+a = [1, 2; 3, 4];
+c = condeig (a)
+@result{} [1.0150; 1.0150]
+@end group
+@end example
+@seealso{@ref{XREFeig,,eig}, @ref{XREFcond,,cond}, @ref{XREFbalance,,balance}}
 @end deftypefn
 
 
@@ -1023,13 +1066,25 @@ factorization from scratch.
 
 @c qr libinterp/dldfcn/qr.cc
 @anchor{XREFqr}
-@deftypefn  {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A})
-@deftypefnx {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}, '0')
+@deftypefn  {} {[@var{Q}, @var{R}] =} qr (@var{A})
+@deftypefnx {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}) # non-sparse A
+@deftypefnx {} {@var{X} =} qr (@var{A})
+@deftypefnx {} {@var{R} =} qr (@var{A})  # sparse A
 @deftypefnx {} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B})
-@deftypefnx {} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B}, '0')
+@deftypefnx {} {[@dots{}] =} qr (@dots{}, 0)
+@deftypefnx {} {[@dots{}] =} qr (@dots{}, 'vector')
+@deftypefnx {} {[@dots{}] =} qr (@dots{}, 'matrix')
 @cindex QR factorization
 Compute the QR@tie{}factorization of @var{A}, using standard @sc{lapack}
 subroutines.
+The QR@tie{}factorization is
+@tex
+$QR = A$ where $Q$ is an orthogonal matrix and $R$ is upper triangular.
+@end tex
+@ifnottex
+@code{@var{Q} * @var{R} = @var{A}} where @var{Q} is an orthogonal matrix and
+@var{R} is upper triangular.
+@end ifnottex
 
 For example, given the matrix @code{@var{A} = [1, 2; 3, 4]},
 
@@ -1075,18 +1130,14 @@ $A$
 @ifnottex
 @var{A}
 @end ifnottex
-is a tall, thin matrix).  The QR@tie{}factorization is
-@tex
-$QR = A$ where $Q$ is an orthogonal matrix and $R$ is upper triangular.
-@end tex
-@ifnottex
-@code{@var{Q} * @var{R} = @var{A}} where @var{Q} is an orthogonal matrix and
-@var{R} is upper triangular.
-@end ifnottex
+is a tall, thin matrix).
 
-If given a second argument of @qcode{'0'}, @code{qr} returns an
-economy-sized QR@tie{}factorization, omitting zero rows of @var{R} and the
-corresponding columns of @var{Q}.
+If only a single return value is requested, then it is either @var{R} if
+@var{A} is sparse, or @var{X} such that @code{@var{R} = triu (@var{X})} if
+@var{A} is full.
+(Note: Unlike most commands, the single return value is not
+the first return value when multiple are requested.)
+
 
 If the matrix @var{A} is full, the permuted QR@tie{}factorization
 @code{[@var{Q}, @var{R}, @var{P}] = qr (@var{A})} forms the
@@ -1124,17 +1175,15 @@ The permuted @code{qr} factorization
 @code{[@var{Q}, @var{R}, @var{P}] = qr (@var{A})} factorization allows the
 construction of an orthogonal basis of @code{span (A)}.
 
-If the matrix @var{A} is sparse, then compute the sparse
-QR@tie{}factorization of @var{A}, using @sc{CSparse}.  As the matrix @var{Q}
-is in general a full matrix, this function returns the @var{Q}-less
-factorization @var{R} of @var{A}, such that
+If the matrix @var{A} is sparse, then the sparse QR@tie{}factorization
+of @var{A} is computed using @sc{CSparse}.
+As the matrix @var{Q} is in general a full matrix,
+it is recommended to request only one return value,
+which is the @var{Q}-less factorization @var{R} of @var{A}, such that
 @code{@var{R} = chol (@var{A}' * @var{A})}.
 
-If the final argument is the scalar @code{0} and the number of rows is
-larger than the number of columns, then an economy factorization is
-returned.  That is @var{R} will have only @code{size (@var{A},1)} rows.
-
-If an additional matrix @var{B} is supplied, then @code{qr} returns
+If an additional matrix @var{B} is supplied and two return values are
+requested, then @code{qr} returns
 @var{C}, where @code{@var{C} = @var{Q}' * @var{B}}.  This allows the
 least squares approximation of @code{@var{A} \ @var{B}} to be calculated
 as
@@ -1145,6 +1194,16 @@ as
 x = @var{R} \ @var{C}
 @end group
 @end example
+
+If the final argument is the scalar 0 and the number of rows is larger
+than the number of columns, then an 'economy' factorization is returned,
+omitting zeroes of @var{R} and the corresponding columns of @var{Q}.
+That is, @var{R} will have only @code{size (@var{A},1)} rows.
+In this case, @var{P} is a vector rather than a matrix.
+
+If the final argument is the string 'vector' then @var{P} is a permutation
+vector instead of a permutation matrix.
+
 @seealso{@ref{XREFchol,,chol}, @ref{XREFhess,,hess}, @ref{XREFlu,,lu}, @ref{XREFqz,,qz}, @ref{XREFschur,,schur}, @ref{XREFsvd,,svd}, @ref{XREFqrupdate,,qrupdate}, @ref{XREFqrinsert,,qrinsert}, @ref{XREFqrdelete,,qrdelete}, @ref{XREFqrshift,,qrshift}}
 @end deftypefn
 
@@ -1201,11 +1260,11 @@ If @var{orient} is @qcode{"row"}, full factorization is needed.
 Given a QR@tie{}factorization of a real or complex matrix
 @w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
 @var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
-@w{[A(:,1:j-1) A(:,j+1:n)]}, i.e., @var{A} with one column deleted
-(if @var{orient} is @qcode{"col"}), or the QR@tie{}factorization of
-@w{[A(1:j-1,:);A(j+1:n,:)]}, i.e., @var{A} with one row deleted (if
-@var{orient} is @qcode{"row"}).
-
+@w{[A(:,1:j-1), U, A(:,j:n)]},
+where @var{u} is a column vector to be inserted into @var{A}
+(if @var{orient} is @qcode{\"col\"}),
+or the QR@tie{}factorization of @w{[A(1:j-1,:);X;A(:,j:n)]},
+where @var{x} is a row @var{orient} is @qcode{"row"}).
 The default value of @var{orient} is @qcode{"col"}.
 
 If @var{orient} is @qcode{"col"}, @var{j} may be an index vector
