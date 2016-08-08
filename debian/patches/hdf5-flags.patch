@@ -9,7 +9,7 @@ Last-Update: 2016-07-03
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/libgui/src/module.mk
 +++ b/libgui/src/module.mk
-@@ -199,6 +199,7 @@ src_libgui_src_la_CPPFLAGS = \
+@@ -215,6 +215,7 @@ src_libgui_src_la_CPPFLAGS = \
    $(FONTCONFIG_CPPFLAGS) \
    @OCTGUI_DLL_DEFS@ \
    @QT_CPPFLAGS@ \
