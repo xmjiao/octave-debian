@@ -1,3 +1,16 @@
+octave (4.0.3-2) unstable; urgency=medium
+
+  [ Rafael Laboissiere ]
+  * d/liboctave3v5.lintian-overrides: Update SOVERSIONs of shared libraries
+
+  [ Mike Miller ]
+  * Fix FTBFS with GCC 6.
+    + d/p/gcc-6-abs-overload.patch: Work around abs overload changes.
+    + d/p/gcc-6-include-math-stdlib.patch: Fix gnulib header file overrides.
+    (Closes: #831120)
+
+ -- Sébastien Villemot <sebastien@debian.org>  Thu, 18 Aug 2016 23:32:15 +0200
+
 octave (4.0.3-1) unstable; urgency=medium
 
   * Imported Upstream version 4.0.3
