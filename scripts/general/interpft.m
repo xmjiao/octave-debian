@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2015 Paul Kienzle
+## Copyright (C) 2001-2016 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -122,8 +122,8 @@ endfunction
 %!assert (interpft (y', n), y', 20*eps)
 %!assert (interpft ([y,y],n), [y,y], 20*eps)
 
-## Test case with complex input from bug #39566
-%!test
+## Test case with complex input
+%!test <39566>
 %! x = (1 + j) * [1:4]';
 %! y = ifft ([15 + 15*j; -6; -1.5 - 1.5*j; 0; -1.5 - 1.5*j; -6*j]);
 %! assert (interpft (x, 6), y, 10*eps);

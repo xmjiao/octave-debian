@@ -1,4 +1,4 @@
-## Copyright (C) 2015 Carlo de Falco
+## Copyright (C) 2016 Carlo de Falco
 ## Copyright (C) 2013 Roberto Porcu' <roberto.porcu@polimi.it>
 ##
 ## This file is part of Octave.
@@ -27,17 +27,6 @@
 ## For the definition of this method see
 ## @url{http://en.wikipedia.org/wiki/Dormand%E2%80%93Prince_method}.
 ##
-## First output argument is the final integration time value.
-##
-## Second output parameter is the higher order computed solution at time
-## @var{t_next} (local extrapolation).
-##
-## Third output parameter is a lower order solution for the estimation of the
-## error.
-##
-## Fourth output parameter is matrix containing the Runge-Kutta evaluations
-## to use in an FSAL scheme or for dense output.
-##
 ## First input argument is the function describing the system of ODEs to be
 ## integrated.
 ##
@@ -53,35 +42,44 @@
 ##
 ## Sixth input parameter is optional and describes the Runge-Kutta evaluations
 ## of the previous step to use in an FSAL scheme.
-## @end deftypefn
 ##
-## @seealso{odepkg}
+## First output argument is the final integration time value.
+##
+## Second output parameter is the higher order computed solution at time
+## @var{t_next} (local extrapolation).
+##
+## Third output parameter is a lower order solution for the estimation of the
+## error.
+##
+## Fourth output parameter is matrix containing the Runge-Kutta evaluations
+## to use in an FSAL scheme or for dense output.
+## @end deftypefn
 
 function [t_next, x_next, x_est, k] = runge_kutta_45_dorpri (f, t, x, dt,
                                                              options = [],
                                                              k_vals = [],
                                                              t_next = t + dt)
 
+  ## Reference: Hairer, Ernst; Nørsett, Syvert Paul; Wanner, Gerhard (2008),
+  ## Solving ordinary differential equations I: Nonstiff problems,
+  ## Berlin, New York: Springer-Verlag, ISBN 978-3-540-56670-0
   persistent a = [0           0          0           0        0          0;
                   1/5         0          0           0        0          0;
                   3/40        9/40       0           0        0          0;
                   44/45      -56/15      32/9        0        0          0;
                   19372/6561 -25360/2187 64448/6561 -212/729  0          0;
                   9017/3168  -355/33     46732/5247  49/176  -5103/18656 0];
-  persistent b = [0 1/5 3/10 4/5 8/9 1 1];
-  persistent c = [(35/384) 0 (500/1113) (125/192) (-2187/6784) (11/84)];
-  persistent c_prime = [(5179/57600) 0 (7571/16695) (393/640), ...
-                        (-92097/339200) (187/2100)  (1/40)];
-  ## According to Shampine 1986:
-  ## persistent c_prime = [(1951/21600) 0 (22642/50085) (451/720), ...
-  ##                       (-12231/42400) (649/6300) (1/60)];
+  persistent b = [0, 1/5, 3/10, 4/5, 8/9, 1, 1];
+  persistent c = [35/384, 0, 500/1113, 125/192, -2187/6784, 11/84];
+  persistent c_prime = [5179/57600, 0, 7571/16695, 393/640, ...
+                        -92097/339200, 187/2100, 1/40];
 
   s = t + dt * b;
   cc = dt * c;
   aa = dt * a;
   k = zeros (rows (x), 7);
 
-  if (! isempty (options))  # extra arguments for function evaluator
+  if (! isempty (options))   # extra arguments for function evaluator
     args = options.funarguments;
   else
     args = {};

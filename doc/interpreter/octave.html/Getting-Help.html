@@ -85,13 +85,13 @@ of Octave.
 <p>Given the single argument <code>.</code>, list all operators available in the
 current session of Octave.
 </p>
-<p>If invoked without any arguments, <code>help</code> display instructions on how to
-access help from the command line.
+<p>If invoked without any arguments, <code>help</code> displays instructions on how
+to access help from the command line.
 </p>
-<p>The help command can provide information about most operators, for example
-<code>help +</code>, but not the comma and semicolon characters which are used
-by the Octave interpreter as command separators.  For help on either of
-these type <kbd>help comma</kbd> or <kbd>help semicolon</kbd>.
+<p>The help command can provide information about most operators, but
+<var>name</var> must be enclosed by single or double quotes to prevent
+the Octave interpreter from acting on <var>name</var>.  For example,
+<code>help &quot;+&quot;</code> displays help on the addition operator.
 </p>
 <p><strong>See also:</strong> <a href="#XREFdoc">doc</a>, <a href="#XREFlookfor">lookfor</a>, <a href="Status-of-Variables.html#XREFwhich">which</a>, <a href="#XREFinfo">info</a>.
 </p></dd></dl>

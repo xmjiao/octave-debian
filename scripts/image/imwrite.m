@@ -1,5 +1,5 @@
-## Copyright (C) 2008-2015 John W. Eaton
-## Copyright (C) 2013-2015 Carnë Draug
+## Copyright (C) 2008-2016 John W. Eaton
+## Copyright (C) 2013-2016 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -229,8 +229,8 @@ endfunction
 %!  end_unwind_protect
 %!endfunction
 
-## BMP images must be saved uncompressed by default (bug #45565)
-%!testif HAVE_MAGICK
+## BMP images must be saved uncompressed by default
+%!testif HAVE_MAGICK <45565>
 %! assert (get_bmp_compression ("", [], "BMP"), 0);
 %! assert (get_bmp_compression ("", [], "bmp"), 0);
 %! assert (get_bmp_compression (".BMP"), 0);

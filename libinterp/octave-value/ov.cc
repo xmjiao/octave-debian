@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -473,76 +473,63 @@ octave_value::binary_op_to_assign_op (binary_op op)
 
 octave_value::octave_value (short int i)
   : rep (new octave_scalar (i))
-{
-}
+{ }
 
 octave_value::octave_value (unsigned short int i)
   : rep (new octave_scalar (i))
-{
-}
+{ }
 
 octave_value::octave_value (int i)
   : rep (new octave_scalar (i))
-{
-}
+{ }
 
 octave_value::octave_value (unsigned int i)
   : rep (new octave_scalar (i))
-{
-}
+{ }
 
 octave_value::octave_value (long int i)
   : rep (new octave_scalar (i))
-{
-}
+{ }
 
 octave_value::octave_value (unsigned long int i)
   : rep (new octave_scalar (i))
-{
-}
+{ }
 
 #if defined (OCTAVE_HAVE_LONG_LONG_INT)
 octave_value::octave_value (long long int i)
   : rep (new octave_scalar (i))
-{
-}
+{ }
 #endif
 
 #if defined (OCTAVE_HAVE_UNSIGNED_LONG_LONG_INT)
 octave_value::octave_value (unsigned long long int i)
   : rep (new octave_scalar (i))
-{
-}
+{ }
 #endif
 
 octave_value::octave_value (octave::sys::time t)
   : rep (new octave_scalar (t.double_value ()))
-{
-}
+{ }
 
 octave_value::octave_value (double d)
   : rep (new octave_scalar (d))
-{
-}
+{ }
 
 octave_value::octave_value (float d)
   : rep (new octave_float_scalar (d))
-{
-}
+{ }
 
 octave_value::octave_value (const Cell& c, bool is_csl)
   : rep (is_csl
          ? dynamic_cast<octave_base_value *> (new octave_cs_list (c))
          : dynamic_cast<octave_base_value *> (new octave_cell (c)))
-{
-}
+{ }
 
 octave_value::octave_value (const Array<octave_value>& a, bool is_csl)
   : rep (is_csl
          ? dynamic_cast<octave_base_value *> (new octave_cs_list (Cell (a)))
          : dynamic_cast<octave_base_value *> (new octave_cell (Cell (a))))
-{
-}
+{ }
 
 octave_value::octave_value (const Matrix& m, const MatrixType& t)
   : rep (new octave_matrix (m, t))
@@ -750,8 +737,7 @@ octave_value::octave_value (const PermMatrix& p)
 
 octave_value::octave_value (bool b)
   : rep (new octave_bool (b))
-{
-}
+{ }
 
 octave_value::octave_value (const boolMatrix& bm, const MatrixType& t)
   : rep (new octave_bool_matrix (bm, t))
@@ -1124,8 +1110,7 @@ octave_value::octave_value (const octave_map& m)
 
 octave_value::octave_value (const octave_scalar_map& m)
   : rep (new octave_scalar_struct (m))
-{
-}
+{ }
 
 octave_value::octave_value (const octave_map& m, const std::string& id,
                             const std::list<std::string>& plist)
@@ -1137,18 +1122,15 @@ octave_value::octave_value (const octave_map& m, const std::string& id,
 octave_value::octave_value (const octave_scalar_map& m, const std::string& id,
                             const std::list<std::string>& plist)
   : rep (new octave_class (m, id, plist))
-{
-}
+{ }
 
 octave_value::octave_value (const octave_value_list& l, bool)
   : rep (new octave_cs_list (l))
-{
-}
+{ }
 
 octave_value::octave_value (octave_value::magic_colon)
   : rep (new octave_magic_colon ())
-{
-}
+{ }
 
 octave_value::octave_value (octave_base_value *new_rep, bool borrow)
   : rep (new_rep)
@@ -1182,6 +1164,267 @@ octave_value::maybe_mutate (void)
       rep = tmp;
     }
 }
+
+DEFUN (double, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} double (@var{x})
+Convert @var{x} to double precision type.
+@seealso{single}
+@end deftypefn */)
+{
+  if (args.length () != 1)
+    print_usage ();
+
+  return ovl (args(0).as_double ());
+}
+
+/*
+%!assert (class (double (single (1))), "double")
+%!assert (class (double (single (1 + i))), "double")
+%!assert (class (double (int8 (1))), "double")
+%!assert (class (double (uint8 (1))), "double")
+%!assert (class (double (int16 (1))), "double")
+%!assert (class (double (uint16 (1))), "double")
+%!assert (class (double (int32 (1))), "double")
+%!assert (class (double (uint32 (1))), "double")
+%!assert (class (double (int64 (1))), "double")
+%!assert (class (double (uint64 (1))), "double")
+%!assert (class (double (true)), "double")
+%!assert (class (double ("A")), "double")
+%!test
+%! x = sparse (logical ([1 0; 0 1]));
+%! y = double (x);
+%! assert (class (x), "logical");
+%! assert (class (y), "double");
+%! assert (issparse (y));
+%!test
+%! x = diag (single ([1 3 2]));
+%! y = double (x);
+%! assert (class (x), "single");
+%! assert (class (y), "double");
+%!test
+%! x = diag (single ([i 3 2]));
+%! y = double (x);
+%! assert (class (x), "single");
+%! assert (class (y), "double");
+*/
+
+DEFUN (single, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} single (@var{x})
+Convert @var{x} to single precision type.
+@seealso{double}
+@end deftypefn */)
+{
+  if (args.length () != 1)
+    print_usage ();
+
+  return args(0).as_single ();
+
+  return ovl ();
+}
+
+/*
+%!assert (class (single (1)), "single")
+%!assert (class (single (1 + i)), "single")
+%!assert (class (single (int8 (1))), "single")
+%!assert (class (single (uint8 (1))), "single")
+%!assert (class (single (int16 (1))), "single")
+%!assert (class (single (uint16 (1))), "single")
+%!assert (class (single (int32 (1))), "single")
+%!assert (class (single (uint32 (1))), "single")
+%!assert (class (single (int64 (1))), "single")
+%!assert (class (single (uint64 (1))), "single")
+%!assert (class (single (true)), "single")
+%!assert (class (single ("A")), "single")
+%!error (single (sparse (1)))
+%!test
+%! x = diag ([1 3 2]);
+%! y = single (x);
+%! assert (class (x), "double");
+%! assert (class (y), "single");
+%!test
+%! x = diag ([i 3 2]);
+%! y = single (x);
+%! assert (class (x), "double");
+%! assert (class (y), "single");
+*/
+
+DEFUN (int8, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} int8 (@var{x})
+Convert @var{x} to 8-bit integer type.
+@seealso{uint8, int16, uint16, int32, uint32, int64, uint64}
+@end deftypefn */)
+{
+  if (args.length () != 1)
+    print_usage ();
+
+  return args(0).as_int8 ();
+}
+
+/*
+%!assert (class (int8 (1)), "int8")
+%!assert (int8 (1.25), int8 (1))
+%!assert (int8 (1.5), int8 (2))
+%!assert (int8 (-1.5), int8 (-2))
+%!assert (int8 (2^9), int8 (2^8-1))
+%!assert (int8 (-2^9), int8 (-2^8))
+*/
+
+DEFUN (int16, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} int16 (@var{x})
+Convert @var{x} to 16-bit integer type.
+@seealso{int8, uint8, uint16, int32, uint32, int64, uint64}
+@end deftypefn */)
+{
+  if (args.length () != 1)
+    print_usage ();
+
+  return args(0).as_int16 ();
+}
+
+/*
+%!assert (class (int16 (1)), "int16")
+%!assert (int16 (1.25), int16 (1))
+%!assert (int16 (1.5), int16 (2))
+%!assert (int16 (-1.5), int16 (-2))
+%!assert (int16 (2^17), int16 (2^16-1))
+%!assert (int16 (-2^17), int16 (-2^16))
+*/
+
+DEFUN (int32, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} int32 (@var{x})
+Convert @var{x} to 32-bit integer type.
+@seealso{int8, uint8, int16, uint16, uint32, int64, uint64}
+@end deftypefn */)
+{
+  if (args.length () != 1)
+    print_usage ();
+
+  return args(0).as_int32 ();
+}
+
+/*
+%!assert (class (int32 (1)), "int32")
+%!assert (int32 (1.25), int32 (1))
+%!assert (int32 (1.5), int32 (2))
+%!assert (int32 (-1.5), int32 (-2))
+%!assert (int32 (2^33), int32 (2^32-1))
+%!assert (int32 (-2^33), int32 (-2^32))
+*/
+
+DEFUN (int64, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} int64 (@var{x})
+Convert @var{x} to 64-bit integer type.
+@seealso{int8, uint8, int16, uint16, int32, uint32, uint64}
+@end deftypefn */)
+{
+  if (args.length () != 1)
+    print_usage ();
+
+  return args(0).as_int64 ();
+}
+
+/*
+%!assert (class (int64 (1)), "int64")
+%!assert (int64 (1.25), int64 (1))
+%!assert (int64 (1.5), int64 (2))
+%!assert (int64 (-1.5), int64 (-2))
+%!assert (int64 (2^65), int64 (2^64-1))
+%!assert (int64 (-2^65), int64 (-2^64))
+*/
+
+DEFUN (uint8, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} uint8 (@var{x})
+Convert @var{x} to unsigned 8-bit integer type.
+@seealso{int8, int16, uint16, int32, uint32, int64, uint64}
+@end deftypefn */)
+{
+  if (args.length () != 1)
+    print_usage ();
+
+  return args(0).as_uint8 ();
+}
+
+/*
+%!assert (class (uint8 (1)), "uint8")
+%!assert (uint8 (1.25), uint8 (1))
+%!assert (uint8 (1.5), uint8 (2))
+%!assert (uint8 (-1.5), uint8 (0))
+%!assert (uint8 (2^9), uint8 (2^8-1))
+%!assert (uint8 (-2^9), uint8 (0))
+*/
+
+DEFUN (uint16, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} uint16 (@var{x})
+Convert @var{x} to unsigned 16-bit integer type.
+@seealso{int8, uint8, int16, int32, uint32, int64, uint64}
+@end deftypefn */)
+{
+  if (args.length () != 1)
+    print_usage ();
+
+  return args(0).as_uint16 ();
+}
+
+/*
+%!assert (class (uint16 (1)), "uint16")
+%!assert (uint16 (1.25), uint16 (1))
+%!assert (uint16 (1.5), uint16 (2))
+%!assert (uint16 (-1.5), uint16 (0))
+%!assert (uint16 (2^17), uint16 (2^16-1))
+%!assert (uint16 (-2^17), uint16 (0))
+*/
+
+DEFUN (uint32, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} uint32 (@var{x})
+Convert @var{x} to unsigned 32-bit integer type.
+@seealso{int8, uint8, int16, uint16, int32, int64, uint64}
+@end deftypefn */)
+{
+  if (args.length () != 1)
+    print_usage ();
+
+  return args(0).as_uint32 ();
+}
+
+/*
+%!assert (class (uint32 (1)), "uint32")
+%!assert (uint32 (1.25), uint32 (1))
+%!assert (uint32 (1.5), uint32 (2))
+%!assert (uint32 (-1.5), uint32 (0))
+%!assert (uint32 (2^33), uint32 (2^32-1))
+%!assert (uint32 (-2^33), uint32 (0))
+*/
+
+DEFUN (uint64, args, ,
+       doc: /* -*- texinfo -*-
+@deftypefn {} {} uint64 (@var{x})
+Convert @var{x} to unsigned 64-bit integer type.
+@seealso{int8, uint8, int16, uint16, int32, uint32, int64}
+@end deftypefn */)
+{
+  if (args.length () != 1)
+    print_usage ();
+
+  return args(0).as_uint64 ();
+}
+
+/*
+%!assert (class (uint64 (1)), "uint64")
+%!assert (uint64 (1.25), uint64 (1))
+%!assert (uint64 (1.5), uint64 (2))
+%!assert (uint64 (-1.5), uint64 (0))
+%!assert (uint64 (2^65), uint64 (2^64-1))
+%!assert (uint64 (-2^65), uint64 (0))
+*/
 
 octave_value
 octave_value::single_subsref (const std::string& type,
@@ -1781,7 +2024,7 @@ octave_value::float_complex_vector_value (bool force_string_conv,
       {                                                 \
         retval = FCN ();                                \
       }                                                 \
-    catch (octave_execution_exception& e)               \
+    catch (octave::execution_exception& e)               \
       {                                                 \
         if (fmt)                                        \
           {                                             \
@@ -2327,7 +2570,7 @@ do_colon_op (const octave_value& base, const octave_value& increment,
         {
           m_base = base.matrix_value (true);
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           error (e, "invalid base value in colon expression");
         }
@@ -2336,7 +2579,7 @@ do_colon_op (const octave_value& base, const octave_value& increment,
         {
           m_limit = limit.matrix_value (true);
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           error (e, "invalid limit value in colon expression");
         }
@@ -2347,7 +2590,7 @@ do_colon_op (const octave_value& base, const octave_value& increment,
                          ? increment.matrix_value (true)
                          : Matrix (1, 1, 1.0));
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           error (e, "invalid increment value in colon expression");
         }
@@ -2901,10 +3144,15 @@ If @var{idx} is an empty structure array with fields @samp{type} and
   else
     {
       octave_value arg0 = args(0);
+      octave_value arg2 = args(2);
 
       arg0.make_unique ();
 
-      return ovl (arg0.subsasgn (type, idx, args(2)));
+      bool arg2_null = arg2.is_zero_by_zero () && arg2.is_double_type ();
+
+      return ovl (arg0.subsasgn (type, idx, (arg2_null
+                                             ? octave_null_matrix::instance
+                                             : arg2)));
     }
 }
 
@@ -2929,6 +3177,10 @@ If @var{idx} is an empty structure array with fields @samp{type} and
 %!      0    0   14    0    0
 %!      0   10   15   20    0];
 %! assert (a, b);
+
+%!test
+%! x = 1:10;
+%! assert (subsasgn (x, substruct ("()", {1}), zeros (0, 0)), 2:10);
 
 %!test
 %! c = num2cell (reshape ([1:25],5,5));

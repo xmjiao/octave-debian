@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2015 John W. Eaton
+## Copyright (C) 2005-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -83,43 +83,21 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
   endif
 
   if (strcmp (axis_obj.activepositionproperty, "position"))
-    if (__gnuplot_has_feature__ ("screen_coordinates_for_{lrtb}margin"))
-      if (nd == 2 || all (mod (axis_obj.view, 90) == 0))
-        x = [1, 1];
-      else
-        ## 3D plots need to be sized down to fit in the window.
-        x = 1.0 ./ sqrt ([2, 2.5]);
-      endif
-      fprintf (plot_stream, "set tmargin screen %.15g;\n",
-               pos(2)+pos(4)/2+x(2)*pos(4)/2);
-      fprintf (plot_stream, "set bmargin screen %.15g;\n",
-               pos(2)+pos(4)/2-x(2)*pos(4)/2);
-      fprintf (plot_stream, "set lmargin screen %.15g;\n",
-               pos(1)+pos(3)/2-x(1)*pos(3)/2);
-      fprintf (plot_stream, "set rmargin screen %.15g;\n",
-               pos(1)+pos(3)/2+x(1)*pos(3)/2);
-      sz_str = "";
+    if (nd == 2 || all (mod (axis_obj.view, 90) == 0))
+      x = [1, 1];
     else
-      fprintf (plot_stream, "set tmargin 0;\n");
-      fprintf (plot_stream, "set bmargin 0;\n");
-      fprintf (plot_stream, "set lmargin 0;\n");
-      fprintf (plot_stream, "set rmargin 0;\n");
-
-      if (nd == 3 && all (axis_obj.view == [0, 90]))
-        ## FIXME: Kludge to allow colorbar to be added to a pcolor() plot
-        pos(3:4) = pos(3:4) * 1.4;
-        pos(1:2) = pos(1:2) - pos(3:4) * 0.125;
-      endif
-
-      fprintf (plot_stream, "set origin %.15g, %.15g;\n", pos(1), pos(2));
-
-      if (strcmp (axis_obj.dataaspectratiomode, "manual"))
-        sz_str = sprintf ("set size ratio %.15g", -dr);
-      else
-        sz_str = "set size noratio";
-      endif
-      sz_str = sprintf ("%s %.15g, %.15g;\n", sz_str, pos(3), pos(4));
+      ## 3D plots need to be sized down to fit in the window.
+      x = 1.0 ./ sqrt ([2, 2.5]);
     endif
+    fprintf (plot_stream, "set tmargin screen %.15g;\n",
+             pos(2)+pos(4)/2+x(2)*pos(4)/2);
+    fprintf (plot_stream, "set bmargin screen %.15g;\n",
+             pos(2)+pos(4)/2-x(2)*pos(4)/2);
+    fprintf (plot_stream, "set lmargin screen %.15g;\n",
+             pos(1)+pos(3)/2-x(1)*pos(3)/2);
+    fprintf (plot_stream, "set rmargin screen %.15g;\n",
+             pos(1)+pos(3)/2+x(1)*pos(3)/2);
+    sz_str = "";
   else ## activepositionproperty == outerposition
     fprintf (plot_stream, "unset tmargin;\n");
     fprintf (plot_stream, "unset bmargin;\n");
@@ -268,7 +246,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
   else
     xaxisloc = "x";
     xaxisloc_using = "x1";
-    if (strcmp (axis_obj.xaxislocation, "zero"))
+    if (any (strcmp (axis_obj.xaxislocation, {"origin", "zero"}))) # FIXME: Remove "zero" in 4.6
       fputs (plot_stream, "set xzeroaxis;\n");
     endif
   endif
@@ -278,7 +256,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
   else
     yaxisloc = "y";
     yaxisloc_using = "y1";
-    if (strcmp (axis_obj.yaxislocation, "zero"))
+    if (any (strcmp (axis_obj.yaxislocation, {"origin", "zero"}))) # FIXME: Remove "zero" in 4.6
       fputs (plot_stream, "set yzeroaxis;\n");
     endif
   endif
@@ -357,10 +335,6 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
     fputs (plot_stream, "set border front;\n");
   else
     fputs (plot_stream, "set grid layerdefault;\n");
-    ## FIXME: The gnuplot help says that "layerdefault" should work
-    ##        for set border too, but it fails for me with gnuplot 4.2.5.
-    ##        So, use "back" instead.
-    fputs (plot_stream, "set border back;\n");
   endif
 
   xlogscale = strcmp (axis_obj.xscale, "log");
@@ -430,8 +404,6 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
   yautoscale = strcmp (axis_obj.ylimmode, "auto");
   zautoscale = strcmp (axis_obj.zlimmode, "auto");
   cautoscale = strcmp (axis_obj.climmode, "auto");
-  cdatadirect = false;
-  truecolor = false;
 
   fputs (plot_stream, "set clip two;\n");
 
@@ -455,9 +427,72 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
   hidden_removal = NaN;
   view_map = false;
 
-  if (! cautoscale && clim(1) == clim(2))
+  if (cautoscale)
+    ## First pass to get cdata limits, maybe general graphics should do this
+    kids1 = kids;
+    clim = [Inf -Inf];
+
+    while (! isempty (kids1))
+      obj = get (kids1(end));
+      kids1 = kids1(1:(end-1));
+
+      switch (obj.type)
+        case {"image", "patch", "surface"}
+          if (isfield (obj, "cdatamapping")
+              && strcmp (obj.cdatamapping, "scaled")
+              && isfield (obj, "cdata")
+              && ! isempty (obj.cdata))
+            clim(1) = min (clim(1), min (obj.cdata(:)));
+            clim(2) = max (clim(2), max (obj.cdata(:)));
+          endif
+
+        case "hggroup"
+          ## Push group children into the kid list.
+          if (isempty (kids1))
+            kids1 = obj.children;
+          elseif (! isempty (obj.children))
+            kids1 = [kids1; obj.children];
+          endif
+      endswitch
+    endwhile
+
+    if (clim(1) == Inf)
+      clim = axis_obj.clim;
+    endif
+
+  elseif (clim(1) == clim(2))
     clim(2)++;
   endif
+
+  if (rows (parent_figure_obj.colormap) != 2)
+    ## Second pass to change color map for binary images (not sure correct)
+    kids1 = kids;
+    while (! isempty (kids1))
+      obj = get (kids1(end));
+      kids1 = kids1(1:(end-1));
+
+      switch (obj.type)
+        case {"image"}
+          if (isfield (obj, "cdata") && islogical (obj.cdata))
+            parent_figure_obj.colormap = [0 0 0; 1 1 1];
+            axis_obj.clim = [0 1];
+            axis_obj.climmode = "manual";
+            break;
+          endif
+
+        case "hggroup"
+          ## Push group children into the kid list.
+          if (isempty (kids1))
+            kids1 = obj.children;
+          elseif (! isempty (obj.children))
+            kids1 = [kids1; obj.children];
+          endif
+      endswitch
+    endwhile
+  endif
+
+  cmap = parent_figure_obj.colormap;
+  cmap_sz = rows (cmap);
   addedcmap = [];
 
   ximg_data = {};
@@ -511,15 +546,10 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
 
     switch (obj.type)
       case "image"
-        img_data = obj.cdata;
+        img_data = mapcdata (obj.cdata, obj.cdatamapping, clim, cmap_sz);
         img_xdata = obj.xdata;
         img_ydata = obj.ydata;
 
-        if (ndims (img_data) == 3)
-          truecolor = true;
-        elseif (strcmp (obj.cdatamapping, "direct"))
-          cdatadirect = true;
-        endif
         data_idx += 1;
         is_image_data(data_idx) = true;
         parametric(data_idx) = false;
@@ -628,18 +658,13 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
 
         [style, sidx] = do_linestyle_command (obj, obj.color, data_idx,
                                               plot_stream, errbars);
-        if (__gnuplot_has_feature__ ("linetype"))
-          scmd = "linetype";
-        else
-          scmd = "linestyle";
-        endif
 
         if isempty (style{1})
           style{1} = "points";
           data{data_idx} = {};
         endif
-        withclause{data_idx} = sprintf ("with %s %s %d",
-                                        style{1}, scmd, sidx(1));
+        withclause{data_idx} = sprintf ("with %s linestyle %d",
+                                        style{1}, sidx(1));
 
         if (length (style) > 1)
           data_idx += 1;
@@ -650,8 +675,8 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
           titlespec{data_idx} = "title \"\"";
           usingclause{data_idx} = usingclause{data_idx - 1};
           data{data_idx} = data{data_idx - 1};
-          withclause{data_idx} = sprintf ("with %s %s %d",
-                                          style{2}, scmd, sidx(2));
+          withclause{data_idx} = sprintf ("with %s linestyle %d",
+                                          style{2}, sidx(2));
         endif
         if (length (style) > 2)
           data_idx += 1;
@@ -662,19 +687,15 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
           titlespec{data_idx} = "title \"\"";
           usingclause{data_idx} = usingclause{data_idx - 1};
           data{data_idx} = data{data_idx - 1};
-          withclause{data_idx} = sprintf ("with %s %s %d",
-                                          style{3}, scmd, sidx(3));
+          withclause{data_idx} = sprintf ("with %s linestyle %d",
+                                          style{3}, sidx(3));
         endif
 
       case "patch"
-        cmap = parent_figure_obj.colormap;
         [nr, nc] = size (obj.xdata);
 
         if (! isempty (obj.cdata))
           cdat = obj.cdata;
-          if (strcmp (obj.cdatamapping, "direct"))
-            cdatadirect = true;
-          endif
         else
           cdat = [];
         endif
@@ -753,40 +774,30 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
                     if (isequal (size (ccol), [1, 3]))
                       ## RGB Triplet
                       color = ccol;
-                    elseif (nd == 3 && numel (xcol) == 3)
-                      ccdat = ccol;
                     else
-                      if (cdatadirect)
-                        r = round (ccol);
+                      ccdat = mapcdata (ccol, obj.cdatamapping, clim, cmap_sz);
+                      if (nd == 3 && numel (xcol) == 3)
+                        color = cmap(ccdat(1), :);
                       else
-                        r = 1 + round ((rows (cmap) - 1)
-                                       * (ccol - clim(1))/(clim(2) - clim(1)));
+                        color = cmap(ccdat, :);
                       endif
-                      r = max (1, min (r, rows (cmap)));
-                      color = cmap(r, :);
                     endif
                   elseif (strcmp (obj.facecolor, "interp"))
                     if (nd == 3 && numel (xcol) == 3)
                       ccdat = ccol;
                       if (! isvector (ccdat))
-                        tmp = rows (cmap) + rows (addedcmap) + ...
+                        tmp = cmap_sz + rows (addedcmap) + ...
                              [1 : rows(ccdat)];
                         addedcmap = [addedcmap; ccdat];
                         ccdat = tmp(:);
                       else
-                        ccdat = ccdat(:);
+                        ccdat = mapcdata (ccdat(:), obj.cdatamapping, clim, cmap_sz);
                       endif
                     else
                       if (sum (diff (ccol)))
                         warning ("\"interp\" not supported, using 1st entry of cdata");
                       endif
-                      if (cdatadirect)
-                        r = round (ccol);
-                      else
-                        r = 1 + round ((rows (cmap) - 1)
-                                       * (ccol - clim(1))/(clim(2) - clim(1)));
-                      endif
-                      r = max (1, min (r, rows (cmap)));
+                      r = mapcdata (ccol, obj.cdatamapping, clim, cmap_sz);
                       color = cmap(r(1),:);
                     endif
                   endif
@@ -801,17 +812,18 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
 
               if (nd == 3 && numel (xcol) == 3)
                 if (isnan (ccdat))
-                  ccdat = (rows (cmap) + rows (addedcmap) + 1) * ones(3, 1);
+                  ccdat = (cmap_sz + rows (addedcmap) + 1) * ones(3, 1);
                   addedcmap = [addedcmap; reshape(color, 1, 3)];
-                elseif (numel (ccdat) <= 1)
+                elseif (numel (ccdat) == 1)
+                  ccdat = ccdat * ones (size (zcol));
+                elseif (numel (ccdat) < 1)
                   ccdat = zcol;
                 endif
                 data{data_3d_idx} = [data{data_3d_idx}, ...
                                      [[xcol; xcol(end)], [ycol; ycol(end)], ...
                                      [zcol; zcol(end)], [ccdat; ccdat(end)]]'];
               else
-                if (__gnuplot_has_feature__ ("transparent_patches")
-                        && isscalar (obj.facealpha))
+                if (isscalar (obj.facealpha))
                   colorspec = sprintf ("lc rgb \"#%02x%02x%02x\" fillstyle transparent solid %f",
                                        round (255*color), obj.facealpha);
                 else
@@ -862,8 +874,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
                 ec = obj.edgecolor;
               endif
 
-              if ((strcmp (ec, "flat")
-                   || strcmp (ec, "interp"))
+              if ((strcmp (ec, "flat") || strcmp (ec, "interp"))
                   && isfield (obj, "cdata"))
                 if (ndims (obj.cdata) == 2
                     && (columns (obj.cdata) == nc
@@ -881,9 +892,12 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
                   ccol = cdat;
                 endif
                 if (strcmp (ec, "flat"))
-                  if (numel (ccol) == 3)
+                  if (isequal (size (ccol), [1, 3]))
                     color = ccol;
                   else
+                    if (columns (ccol) != 3)
+                      ccol = mapcdata (ccol, obj.cdatamapping, clim, cmap_sz);
+                    endif
                     if (isscalar (ccol))
                       ccol = repmat (ccol, numel (xcol), 1);
                     endif
@@ -901,6 +915,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
                     color = "interp";
                     have_cdata(data_idx) = true;
                   endif
+                  ccol = mapcdata (ccol, obj.cdatamapping, clim, cmap_sz);
                 endif
               elseif (isnumeric (ec))
                 color = ec;
@@ -911,7 +926,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
               color = [0, 0, 0];
             endif
 
-            lt = gnuplot_linetype (obj);
+            lt = gnuplot_linestyletype (obj);
 
             if (isfield (obj, "linewidth"))
               lw = sprintf ("linewidth %f", obj.linewidth);
@@ -936,7 +951,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
               endif
             else
               colorspec = sprintf ("lc rgb \"#%02x%02x%02x\"",
-                                   round (255*color));
+                                   uint8 (255*color));
             endif
 
             sidx = 1;
@@ -1146,7 +1161,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
         xdat = obj.xdata;
         ydat = obj.ydata;
         zdat = obj.zdata;
-        cdat = obj.cdata;
+        cdat = mapcdata (obj.cdata, obj.cdatamapping, clim, cmap_sz);
         err = false;
         if (! size_equal (zdat, cdat))
           err = true;
@@ -1188,6 +1203,9 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
               && ylen == rows (xdat) && ylen == rows (ydat))
             len = 4 * xlen;
             zz = zeros (ylen, len);
+            if (! flat_interp_face)
+              addedcmap = [addedcmap; obj.facecolor];
+            endif
             k = 1;
             for kk = 1:4:len
               zz(:,kk)   = xdat(:,k);
@@ -1196,9 +1214,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
               if (flat_interp_face)
                 zz(:,kk+3) = cdat(:,k);
               else
-                ## Convert color to 24-bit RGB
-                zz(:,kk+3) = hex2dec (sprintf ("%02x%02x%02x",
-                                               round (255*obj.facecolor)));
+                zz(:,kk+3) = cmap_sz + rows (addedcmap);
               endif
               k += 1;
             endfor
@@ -1217,12 +1233,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
           fputs (plot_stream, "unset pm3d\n");
           fputs (plot_stream, "set style increment default;\n");
           hidden_removal = true;
-          if (flat_interp_face)
-            color_source = "";
-          else
-            color_source = " linecolor rgb variable";
-          endif
-          withclause{data_idx} = sprintf ("with pm3d%s", color_source);
+          withclause{data_idx} = sprintf ("with pm3d");
 
           if (doing_interp_color)
             ## "depthorder" interferes with interpolation of colors.
@@ -1231,8 +1242,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
             dord = "depthorder";
           endif
 
-          if (__gnuplot_has_feature__ ("transparent_surface")
-              && isscalar (obj.facealpha))
+          if (isscalar (obj.facealpha))
             fprintf (plot_stream,
                      "set style fill transparent solid %f;\n",
                      obj.facealpha);
@@ -1242,23 +1252,15 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
                    interp_str, dord);
         endif
 
-        if (! strcmp (obj.linestyle, "none") && ! strcmp (obj.edgecolor, "none"))
+        draw_surf_line = ! strcmp (obj.linestyle, "none") && ! strcmp (obj.edgecolor, "none");
+        draw_surf_marker = (! strcmp (obj.marker, "none")
+                             && ! (strcmp (obj.markeredgecolor, "none")
+                                   && strcmp (obj.markerfacecolor, "none")));
+        if (draw_surf_line || draw_surf_marker)
           flat_interp_edge = (strcmp (obj.edgecolor, "flat")
                               || strcmp (obj.edgecolor, "interp"));
-          if (flat_interp_edge)
-            scmd = "palette";
-            ccol = ":($4)";
-            N_tup = 4;
-          else
-            if (__gnuplot_has_feature__ ("linetype"))
-              scmd = "linetype";
-            else
-              scmd = "linestyle";
-            endif
-            ccol = "";
-            N_tup = 3;
-          endif
-
+          flat_marker = (strcmp (obj.markeredgecolor, "flat") || strcmp (obj.markerfacecolor, "flat")
+                         || strcmp (obj.markeredgecolor, "auto") || strcmp (obj.markerfacecolor, "auto"));
           [style, sidx] = do_linestyle_command (obj, obj.edgecolor,
                                                 data_idx,
                                                 plot_stream);
@@ -1277,40 +1279,46 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
           endif
 
           for np = 1:num_pass
-            if (np <= num_cols)
-              k = np;
-              yrec = ylen;
-              zz = zeros (ylen, N_tup);
-              zz(:,1) = xdat(:,k);
-              zz(:,2) = ydat(:,k);
-              zz(:,3) = zdat(:,k);
-              if (flat_interp_edge)
-                zz(:,4) = cdat(:,k);
-              endif
-            else
-              j = np - num_cols;
-              yrec = xlen;
-              zz = zeros (xlen, N_tup);
-              zz(:,1) = xdat(j,:)';
-              zz(:,2) = ydat(j,:)';
-              zz(:,3) = zdat(j,:)';
-              if (flat_interp_edge)
-                zz(:,4) = cdat(j,:)';
-              endif
-            endif
-
-            zz = zz.';
-
             for i_stl = 1:length (style)
-              if (flat_interp_edge)
-                sopt = "";
+              has_ccol = ((strncmp (style{i_stl}, "lines", 5) && flat_interp_edge) ||
+                          (strncmp (style{i_stl}, "points", 6) && flat_marker));
+              if (has_ccol)
+                ccol = ":($4)";
+                N_tup = 4;
               else
-                sopt = sprintf ("%d", sidx(i_stl));
+                ccol = "";
+                N_tup = 3;
               endif
+              sopt = sprintf ("ls %d", sidx (i_stl));
+
+              if (np <= num_cols)
+                k = np;
+                yrec = ylen;
+                zz = zeros (ylen, N_tup);
+                zz(:,1) = xdat(:,k);
+                zz(:,2) = ydat(:,k);
+                zz(:,3) = zdat(:,k);
+                if (has_ccol)
+                  zz(:,4) = cdat(:,k);
+                endif
+              else
+                j = np - num_cols;
+                yrec = xlen;
+                zz = zeros (xlen, N_tup);
+                zz(:,1) = xdat(j,:)';
+                zz(:,2) = ydat(j,:)';
+                zz(:,3) = zdat(j,:)';
+                if (has_ccol)
+                  zz(:,4) = cdat(j,:)';
+                endif
+              endif
+
+              zz = zz.';
+
               data_idx += 1;
               is_image_data(data_idx) = false;
               parametric(data_idx) = false;
-              if (flat_interp_edge)
+              if (has_ccol)
                 have_cdata(data_idx) = true;
               else
                 have_cdata(data_idx) = false;
@@ -1325,8 +1333,8 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
               else
                 data{data_idx} = zz;
               endif
-              withclause{data_idx} = sprintf ("with %s %s %s",
-                                              style{i_stl}, scmd, sopt);
+              withclause{data_idx} = sprintf ("with %s %s",
+                                              style{i_stl}, sopt);
             endfor
           endfor
         endif
@@ -1402,24 +1410,12 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
     fprintf (plot_stream, "set zrange [%.15e:%.15e];\n", zlim);
   endif
 
-  cmap = parent_figure_obj.colormap;
-  cmap_sz = rows (cmap);
   if (! any (isinf (clim)))
-    if (truecolor || ! cdatadirect)
-      if (rows (addedcmap) > 0)
-        for i = 1:data_idx
-          if (have_3d_patch(i))
-            data{i}(end,:) = clim(2) * (data{i}(end, :) - 0.5) / cmap_sz;
-           endif
-        endfor
-        fprintf (plot_stream, "set cbrange [%.15e:%.15e];\n",
-                 clim(1), clim(2) * (cmap_sz + rows (addedcmap)) / cmap_sz);
-      else
-        fprintf (plot_stream, "set cbrange [%.15e:%.15e];\n", clim);
-      endif
+    if (rows (addedcmap) > 0)
+      fprintf (plot_stream, "set cbrange [1:%.15e];\n",
+               cmap_sz + rows (addedcmap));
     else
-      fprintf (plot_stream, "set cbrange [1:%d];\n", cmap_sz +
-               rows (addedcmap));
+      fprintf (plot_stream, "set cbrange [1:%.15e];\n", cmap_sz);
     endif
   endif
 
@@ -1445,7 +1441,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
             maybe_do_x2tick_mirror (plot_stream, axis_obj)
           elseif (strcmp (axis_obj.xaxislocation, "bottom"))
             maybe_do_xtick_mirror (plot_stream, axis_obj)
-          else # xaxislocation == zero
+          else # xaxislocation == "origin" or "zero"
             fprintf (plot_stream, "unset x2tics; set xtics %s nomirror\n",
                      axis_obj.tickdir);
           endif
@@ -1456,17 +1452,17 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
             maybe_do_x2tick_mirror (plot_stream, axis_obj)
           elseif (strcmp (axis_obj.xaxislocation, "bottom"))
             maybe_do_xtick_mirror (plot_stream, axis_obj)
-          else # xaxislocation == zero
+          else # xaxislocation == "origin" or "zero"
             maybe_do_xtick_mirror (plot_stream, axis_obj)
           endif
-        else # yaxislocation == zero
+        else # yaxislocation == "origin" or "zero"
           fprintf (plot_stream, "unset y2tics; set ytics %s nomirror\n",
                    axis_obj.tickdir);
           if (strcmp (axis_obj.xaxislocation, "top"))
             maybe_do_x2tick_mirror (plot_stream, axis_obj)
           elseif (strcmp (axis_obj.xaxislocation, "bottom"))
             maybe_do_xtick_mirror (plot_stream, axis_obj)
-          else # xaxislocation == zero
+          else # xaxislocation == "origin" or "zero"
             maybe_do_xtick_mirror (plot_stream, axis_obj)
             fprintf (plot_stream, "unset y2tics; set ytics %s nomirror\n",
                      axis_obj.tickdir);
@@ -1507,13 +1503,8 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
     else
       sidx_minor = 0;
     endif
-    if (__gnuplot_has_feature__ ("linetype"))
-      scmd = "linetype";
-    else
-      scmd = "linestyle";
-    endif
-    fprintf (plot_stream, "set grid %s %d, %s %d;\n",
-             scmd, sidx_major, scmd, sidx_minor);
+    fprintf (plot_stream, "set grid linestyle %d, linestyle %d;\n",
+             sidx_major, sidx_minor);
   endif
 
   if (! isempty (hlgnd) && ! isempty (hlgnd.children)
@@ -1568,13 +1559,9 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
       otherwise
         pos = "";
     endswitch
-    if (__gnuplot_has_feature__ ("key_has_font_properties"))
-      [fontname, fontsize] = get_fontname_and_size (hlgnd);
-      fontspacespec = [create_spacingspec(fontname, fontsize, gnuplot_term),...
-                       ' ', create_fontspec(fontname, fontsize, gnuplot_term)];
-    else
-      fontspacespec = "";
-    endif
+    [fontname, fontsize] = get_fontname_and_size (hlgnd);
+    fontspacespec = [create_spacingspec(fontname, fontsize, gnuplot_term),...
+                     ' ', create_fontspec(fontname, fontsize, gnuplot_term)];
     textcolors = get (findobj (hlgnd.children, "type", "text"), "color");
     if (iscell (textcolors))
       textcolors = cell2mat (textcolors);
@@ -1620,8 +1607,22 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
       plot_cmd = "plot";
     else
       plot_cmd = "splot";
-      rot_x = 90 - axis_obj.view(2);
-      rot_z = axis_obj.view(1);
+      ## Wrap view correctly to match Matlab
+      if (axis_obj.view(2) <= 90)
+        rot_x = 90 - axis_obj.view(2);
+      else
+        rot_x = axis_obj.view(2) - 90;
+      endif
+      rot_x = mod (rot_x, 360);
+      while (rot_x < 0)
+        rot_x += 360;
+      endwhile
+      if (axis_obj.view(2) <= 90)
+        rot_z = axis_obj.view(1);
+      else
+        rot_z = axis_obj.view(1) + 180;
+      endif
+      rot_z = mod (rot_z, 360);
       while (rot_z < 0)
         rot_z += 360;
       endwhile
@@ -1658,7 +1659,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
         if (! is_image_data (i-1))
           fputs (plot_stream, "; ");
           if (bg_is_set)
-            fputs (plot_stream, "unset obj 1; \\\n");
+            fputs (plot_stream, "if (GPVAL_TERM eq \"qt\") unset obj 1;\n");
             bg_is_set = false;
           endif
           if (fg_is_set)
@@ -1681,7 +1682,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
         endif
       elseif (is_image_data (i-1))
         if (bg_is_set)
-          fputs (plot_stream, "unset obj 1; \\\n");
+          fputs (plot_stream, "if (GPVAL_TERM eq \"qt\") unset obj 1;\n");
           bg_is_set = false;
         endif
         if (fg_is_set)
@@ -1729,7 +1730,7 @@ function __gnuplot_draw_axes__ (h, plot_stream, enhanced, bg_is_set,
   endif
 
   if (bg_is_set)
-    fputs (plot_stream, "unset obj 1;\n");
+    fputs (plot_stream, "if (GPVAL_TERM eq \"qt\") unset obj 1;\n");
     bg_is_set = false;
   endif
 
@@ -1791,10 +1792,10 @@ function idx = do_border_2d (obj, plot_stream, idx)
     arrow (4, obj.ycolor, obj.linewidth, [1,0,0], [1,1,0]);
   endif
 
-  if (strcmp (obj.xaxislocation, "zero"))
+  if (any (strcmp (obj.xaxislocation, {"origin", "zero"}))) # FIXME: Remove "zero" in 4.6
     idx = zeroaxis (idx, obj.xcolor, "x");
   endif
-  if (strcmp (obj.yaxislocation, "zero"))
+  if (any (strcmp (obj.yaxislocation, {"origin", "zero"}))) # FIXME: Remove "zero" in 4.6
     idx = zeroaxis (idx, obj.ycolor, "y");
   endif
 
@@ -1854,18 +1855,14 @@ function [style, ltidx] = do_linestyle_command (obj, linecolor, idx,
   style = {};
   ltidx = [];
 
-  if (__gnuplot_has_feature__ ("linetype"))
-    scommand = "linetype";
-  else
-    scommand = "style line";
-  endif
-  fprintf (plot_stream, "set %s %d default;\n", scommand, idx);
-  fprintf (plot_stream, "set %s %d", scommand, idx);
+  fprintf (plot_stream, "set style line %d default;\n", idx);
+  fprintf (plot_stream, "set style line %d", idx);
 
   found_style = false;
   if (isnumeric (linecolor))
     color = linecolor;
-    if (isfield (obj, "alpha"))
+    if (isfield (obj, "alpha")
+        &&  __gnuplot_has_feature__ ("alphablend_linecolor"))
       alphastr = sprintf ("%02x", round (255*(1-obj.alpha)));
     else
       alphastr = "";
@@ -1874,9 +1871,14 @@ function [style, ltidx] = do_linestyle_command (obj, linecolor, idx,
              alphastr, round (255*color));
   else
     color = [0, 0, 0];
+    flat_interp_edge = (strcmp (obj.edgecolor, "flat")
+                        || strcmp (obj.edgecolor, "interp"));
+    if (flat_interp_edge)
+        fprintf (plot_stream, " palette");
+    endif
   endif
 
-  lt = gnuplot_linetype (obj);
+  lt = gnuplot_linestyletype (obj);
   if (! isempty (lt))
     fprintf (plot_stream, " %s", lt);
   endif
@@ -1908,7 +1910,6 @@ function [style, ltidx] = do_linestyle_command (obj, linecolor, idx,
     if (! isequal (pt, pt2) && isfield (obj, "markerfacecolor")
         && ! strcmp (obj.markerfacecolor, "none"))
       if (strcmp (obj.markerfacecolor, "auto")
-          || ! isnumeric (obj.markerfacecolor)
           || (isnumeric (obj.markerfacecolor)
               && isequal (color, obj.markerfacecolor)))
         if (! isempty (pt2))
@@ -1930,11 +1931,13 @@ function [style, ltidx] = do_linestyle_command (obj, linecolor, idx,
         else
           fputs (plot_stream, ";\n");
         endif
-        fprintf (plot_stream, "set %s %d default;\n", scommand, idx);
-        fprintf (plot_stream, "set %s %d", scommand, idx);
+        fprintf (plot_stream, "set style line %d default;\n", idx);
+        fprintf (plot_stream, "set style line %d", idx);
         if (isnumeric (obj.markerfacecolor))
           fprintf (plot_stream, " linecolor rgb \"#%02x%02x%02x\"",
                    round (255*obj.markerfacecolor));
+        else
+          fprintf (plot_stream, " palette");
         endif
         if (! isempty (pt2))
           style{sidx} = "points";
@@ -1950,7 +1953,6 @@ function [style, ltidx] = do_linestyle_command (obj, linecolor, idx,
         && ! strcmp (obj.markeredgecolor, "none"))
       if (facesame && ! isempty (pt)
           && (strcmp (obj.markeredgecolor, "auto")
-              || ! isnumeric (obj.markeredgecolor)
               || (isnumeric (obj.markeredgecolor)
                   && isequal (color, obj.markeredgecolor))))
         if (sidx == 1 && ((length (style{sidx}) == 5
@@ -1974,14 +1976,18 @@ function [style, ltidx] = do_linestyle_command (obj, linecolor, idx,
         else
           fputs (plot_stream, ";\n");
         endif
-        fprintf (plot_stream, "set %s %d default;\n", scommand, idx);
-        fprintf (plot_stream, "set %s %d", scommand, idx);
-        if (strcmp (obj.markeredgecolor, "auto"))
+        fprintf (plot_stream, "set style line %d default;\n", idx);
+        fprintf (plot_stream, "set style line %d", idx);
+        if (isnumeric (obj.markeredgecolor) || strcmp (obj.markeredgecolor, "auto"))
+          if (isnumeric (obj.markeredgecolor))
+            edgecolor = obj.markeredgecolor;
+          else
+            edgecolor = obj.color;
+          end
           fprintf (plot_stream, " linecolor rgb \"#%02x%02x%02x\"",
-                   round (255*color));
-        elseif (isnumeric (obj.markeredgecolor))
-          fprintf (plot_stream, " linecolor rgb \"#%02x%02x%02x\"",
-                   round (255*obj.markeredgecolor));
+                   round (255*edgecolor));
+        else
+          fprintf (plot_stream, " palette");
         endif
         if (! isempty (pt))
           style{sidx} = "points";
@@ -2007,7 +2013,7 @@ function [style, ltidx] = do_linestyle_command (obj, linecolor, idx,
 
 endfunction
 
-function [lt] = gnuplot_linetype (obj)
+function lt = gnuplot_linestyletype (obj)
 
   if (isfield (obj, "linestyle"))
     if (__gnuplot_has_feature__ ("dashtype"))
@@ -2026,7 +2032,7 @@ function [lt] = gnuplot_linetype (obj)
         otherwise
           lt = "";
       endswitch
-    elseif (__gnuplot_has_feature__ ("linetype"))
+    else
       opt = "linetype";
       switch (obj.linestyle)
         case "-"
@@ -2042,8 +2048,6 @@ function [lt] = gnuplot_linetype (obj)
         otherwise
           lt = "";
       endswitch
-    else
-      lt = "";
     endif
     if (! isempty (lt))
       lt = sprintf ("%s %s", opt, lt);
@@ -2171,7 +2175,7 @@ function do_tics (obj, plot_stream, ymirror, gnuplot_term)
                obj.xcolor, "x", plot_stream, true, "border",
                "", "", fontname, fontspec, obj.ticklabelinterpreter,
                obj.xscale, obj.xsgn, gnuplot_term);
-  elseif (strcmp (obj.xaxislocation, "zero"))
+  elseif (any (strcmp (obj.xaxislocation, {"origin", "zero"}))) # FIXME: Remove "zero" in 4.6
     do_tics_1 (obj.xtickmode, obj.xtick, obj.xminortick, obj.xticklabelmode,
                obj.xticklabel, obj.xcolor, "x", plot_stream, true,
                "axis", obj.tickdir, ticklength, fontname, fontspec,
@@ -2199,7 +2203,7 @@ function do_tics (obj, plot_stream, ymirror, gnuplot_term)
                obj.ycolor, "y", plot_stream, ymirror, "border",
                "", "", fontname, fontspec, obj.ticklabelinterpreter,
                obj.yscale, obj.ysgn, gnuplot_term);
-  elseif (strcmp (obj.yaxislocation, "zero"))
+  elseif (any (strcmp (obj.yaxislocation, {"origin", "zero"}))) # FIXME: Remove "zero" in 4.6
     do_tics_1 (obj.ytickmode, obj.ytick, obj.yminortick, obj.yticklabelmode,
                obj.yticklabel, obj.ycolor, "y", plot_stream, ymirror,
                "axis", obj.tickdir, ticklength, fontname, fontspec,
@@ -2326,7 +2330,14 @@ endfunction
 function [f, s, fnt, it, bld] = get_fontname_and_size (t)
 
   if (isempty (t.fontname) || strcmp (t.fontname, "*"))
-    fnt = "";
+    if (ispc ())
+      ## FIXME: Should really test for "windows" terminal which is the
+      ## only terminal to have a problem with a null font specification.
+      ## See Bug #49135.
+      fnt = "Arial";
+    else
+      fnt = "";
+    endif
   else
     fnt = t.fontname;
   endif
@@ -2338,17 +2349,32 @@ function [f, s, fnt, it, bld] = get_fontname_and_size (t)
     if (! isempty (t.fontangle)
         && (strcmp (t.fontangle, "italic")
             || strcmp (t.fontangle, "oblique")))
-      f = [f "-bolditalic"];
+      if (__gnuplot_has_feature__ ("fontspec_5"))
+        f = [f ":Bold:Italic"];
+      else
+        f = [f "-bolditalic"];
+      endif
+
       it = true;
       bld = true;
     else
-      f = [f "-bold"];
+      if (__gnuplot_has_feature__ ("fontspec_5"))
+        f = [f ":Bold"];
+      else
+        f = [f "-bold"];
+      endif
+
       bld = true;
     endif
   elseif (! isempty (t.fontangle)
           && (strcmp (t.fontangle, "italic")
               || strcmp (t.fontangle, "oblique")))
-    f = [f "-italic"];
+    if (__gnuplot_has_feature__ ("fontspec_5"))
+      f = [f ":Italic"];
+    else
+      f = [f "-italic"];
+    endif
+
     it = true;
   endif
 
@@ -2390,7 +2416,7 @@ function [str, f, s] = __maybe_munge_text__ (enhanced, obj, fld)
   endif
 
   if (enhanced)
-    str = regexprep (str, '(?<!\\)@', '\@');
+    str = regexprep (str, '(?<!\\)@', '\\@');
   endif
 
   if (enhanced)
@@ -2443,17 +2469,33 @@ function str = __tex2enhanced__ (str, fnt, it, bld)
         str = [str(1:s(i) - 1) '{/' fnt ' ' str(s(i) + 3:end) '}'];
       elseif (strncmp (f, "it", 2) || strncmp (f, "sl", 2))
         it = true;
-        if (bld)
-          str = [str(1:s(i) - 1) '{/' fnt '-bolditalic ' str(s(i) + 3:end) '}'];
+        if (__gnuplot_has_feature__ ("fontspec_5"))
+          if (bld)
+            str = [str(1:s(i)-1) '{/' fnt ':Bold:Italic ' str(s(i)+3:end) '}'];
+          else
+            str = [str(1:s(i)-1) '{/' fnt ':Italic ' str(s(i)+3:end) '}'];
+          endif
         else
-          str = [str(1:s(i) - 1) '{/' fnt '-italic ' str(s(i) + 3:end) '}'];
+          if (bld)
+            str = [str(1:s(i)-1) '{/' fnt '-bolditalic ' str(s(i)+3:end) '}'];
+          else
+            str = [str(1:s(i)-1) '{/' fnt '-italic ' str(s(i)+3:end) '}'];
+          endif
         endif
       elseif (strncmp (f, "bf", 2))
         bld = true;
-        if (it)
-          str = [str(1:s(i) - 1) '{/' fnt '-bolditalic ' str(s(i) + 3:end) '}'];
+        if (__gnuplot_has_feature__ ("fontspec_5"))
+          if (it)
+            str = [str(1:s(i)-1) '{/' fnt ':Bold:Italic ' str(s(i)+3:end) '}'];
+          else
+            str = [str(1:s(i)-1) '{/' fnt ':Bold ' str(s(i)+3:end) '}'];
+          endif
         else
-          str = [str(1:s(i) - 1) '{/' fnt '-bold ' str(s(i) + 3:end) '}'];
+          if (it)
+            str = [str(1:s(i)-1) '{/' fnt '-bolditalic ' str(s(i)+3:end) '}'];
+          else
+            str = [str(1:s(i)-1) '{/' fnt '-bold ' str(s(i)+3:end) '}'];
+          endif
         endif
       elseif (strcmp (f, "color"))
         ## FIXME: Ignore \color but remove trailing {} block as well
@@ -2807,5 +2849,42 @@ function maybe_do_x2tick_mirror (plot_stream, axis_obj)
                           axis_obj.tickdir);
   endif
 
+endfunction
+
+function retval = mapcdata (cdata, mode, clim, cmap_sz)
+  if (ndims (cdata) == 3)
+    ## True Color, clamp data to 8-bit
+    clim = double (clim);
+    cdata = double (cdata);
+    clim_rng = clim(2) - clim(1);
+    if (clim_rng != 0)
+      cdata = 255 * (cdata - clim(1)) / clim_rng;
+      cdata(cdata < 0) = 0;  cdata(cdata > 255) = 255;
+    else
+      cdata(:) = 255;
+    endif
+    ## Scale using inverse of gnuplot's cbrange mapping
+    retval = 1 + cdata * (cmap_sz-1)/255;
+  else
+    if (islogical (cdata))
+      cdata += 1;
+    elseif (strcmp (mode, "scaled"))
+      clim = double (clim);
+      cdata = double (cdata);
+      clim_rng = clim(2) - clim(1);
+      if (clim_rng != 0)
+        cdata = 1 + fix (cmap_sz * (cdata - clim(1)) / clim_rng);
+      else
+        cdata(:) = cmap_sz;
+      endif
+    else
+      if (isinteger (cdata))
+        cdata += 1;
+      else
+        cdata = fix (cdata);
+      endif
+    endif
+    retval = max (1, min (cdata, cmap_sz));
+  endif
 endfunction
 

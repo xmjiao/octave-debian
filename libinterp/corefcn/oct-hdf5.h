@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2015 John W. Eaton
+Copyright (C) 2009-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -42,3 +42,4 @@ along with Octave; see the file COPYING.  If not, see
 #endif
 
 #endif
+

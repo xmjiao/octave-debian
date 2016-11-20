@@ -1,5 +1,5 @@
-## Copyright (C) 2013-2015 Carnë Draug
-## Copyright (C) 2008-2015 Thomas L. Scofield
+## Copyright (C) 2013-2016 Carnë Draug
+## Copyright (C) 2008-2016 Thomas L. Scofield
 ## Copyright (C) 2008 Kristian Rumberg
 ## Copyright (C) 2006 Thomas Weber
 ## Copyright (C) 2005 Stefan van der Walt
@@ -171,7 +171,7 @@ endfunction
 %! imformats ("update", "jpg", fmt);
 %! unwind_protect
 %!   try
-%!     imread ("I sure hope this file does not exist.jpg");
+%!     imread ("I_sure_hope_this_file_does_not_exist.jpg");
 %!   catch
 %!     error_thrown = true;
 %!   end_try_catch
@@ -204,7 +204,7 @@ endfunction
 %! end_unwind_protect
 
 ## Test for bug #41584 (some GM coders report saturated channels as binary)
-%!testif HAVE_MAGICK
+%!testif HAVE_MAGICK <41584>
 %! im = zeros ([16 16 3], "uint8");
 %! im(:,:,1) = 255;
 %! im(:,:,3) = repmat (0:16:255, [16 1]);

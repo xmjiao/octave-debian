@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2015 VZLU Prague
+Copyright (C) 2010-2016 VZLU Prague
 
 This file is part of Octave.
 
@@ -83,18 +83,18 @@ octave_oncleanup::~octave_oncleanup (void)
       // Run the actual code.
       fcn.do_multi_index_op (0, octave_value_list ());
     }
-  catch (const octave_interrupt_exception&)
+  catch (const octave::interrupt_exception&)
     {
       recover_from_exception ();
 
       warning ("onCleanup: interrupt occurred in cleanup action");
     }
-  catch (const octave_execution_exception&)
+  catch (const octave::execution_exception&)
     {
       std::string msg = last_error_message ();
       warning ("onCleanup: error caught while executing cleanup function:\n%s\n",
                msg.c_str ());
-      
+
     }
   catch (...) // Yes, the black hole.  We're in a d-tor.
     {
@@ -208,3 +208,4 @@ For similar functionality @xref{The unwind_protect Statement}.
 %!   warning (old_wstate);
 %! end_unwind_protect
 */
+

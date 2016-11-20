@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2015 John W. Eaton
+## Copyright (C) 2010-2016 John W. Eaton
 ## Copyright (C) 2010 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -520,7 +520,7 @@ function txt = __unimplemented__ (fcn)
   endif
 
   if (nargout == 0)
-    warning ("Octave:missing-function", "%s", txt);
+    warning ("Octave:missing-function", "%s\n", txt);
   endif
 
 endfunction
@@ -574,7 +574,6 @@ function list = missing_functions ()
   "callSoapService",
   "camdolly",
   "cameratoolbar",
-  "camlight",
   "camlookat",
   "camorbit",
   "campan",
@@ -693,7 +692,6 @@ function list = missing_functions ()
   "isenum",
   "isKey",
   "ismissing",
-  "isocaps",
   "isordinal",
   "isprotected",
   "isstudent",
@@ -719,7 +717,6 @@ function list = missing_functions ()
   "lsqr",
   "makehgtform",
   "mapreduce",
-  "material",
   "matfile",
   "matlabrc",
   "memmapfile",
@@ -734,6 +731,13 @@ function list = missing_functions ()
   "movegui",
   "movie",
   "movie2avi",
+  "movmax",
+  "movmean",
+  "movmedian",
+  "movmin",
+  "movstd"
+  "movsum",
+  "movvar",
   "multibandread",
   "multibandwrite",
   "NaT",
@@ -786,8 +790,6 @@ function list = missing_functions ()
   "RandStream",
   "rbbox",
   "readtable",
-  "reducepatch",
-  "reducevolume",
   "remove",
   "removecats",
   "renamecats",

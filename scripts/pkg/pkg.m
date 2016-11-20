@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2015 Søren Hauberg
+## Copyright (C) 2005-2016 Søren Hauberg
 ## Copyright (C) 2010 VZLU Prague, a.s.
 ## Copyright (C) 2012 Carlo de Falco
 ##
@@ -21,9 +21,11 @@
 ## -*- texinfo -*-
 ## @deftypefn  {} {} pkg @var{command} @var{pkg_name}
 ## @deftypefnx {} {} pkg @var{command} @var{option} @var{pkg_name}
-## Manage packages (groups of add-on functions) for Octave.
+## @deftypefnx {} {[@var{out1}, @dots{}] =} pkg (@var{command}, @dots{} )
+## Manage or query packages (groups of add-on functions) for Octave.
 ##
-## Different actions are available depending on the value of @var{command}.
+## Different actions are available depending on the value of @var{command}
+## and on return arguments.
 ##
 ## Available commands:
 ##

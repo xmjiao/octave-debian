@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2015 John W. Eaton
+Copyright (C) 2009-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -203,3 +203,4 @@ namespace octave
 extern int Vmax_recursion_depth;
 
 #endif
+

@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2015 Carnë Draug
+## Copyright (C) 2014-2016 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -69,11 +69,11 @@ endfunction
 
 
 %!function f = make_rgb_f ()
-%! f = randi ([0 255], 10, 20, 3);
+%!  f = randi ([0 255], 10, 20, 3);
 %!endfunction
 
 %!function f = make_ind_f ()
-%! f = randi ([1 100], 10, 20, 3);
+%!  f = randi ([1 100], 10, 20, 3);
 %!endfunction
 
 %!test

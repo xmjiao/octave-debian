@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2015 John W. Eaton
+Copyright (C) 2007-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -792,7 +792,7 @@ protected:
           {
             nda = val.array_value ();
           }
-        catch (octave_execution_exception& e)
+        catch (octave::execution_exception& e)
           {
             error (e, "set: invalid string property value for \"%s\"",
                    get_name ().c_str ());
@@ -1672,7 +1672,7 @@ protected:
       {
         new_kids = val.matrix_value ();
       }
-    catch (octave_execution_exception& e)
+    catch (octave::execution_exception& e)
       {
         error (e, "set: children must be an array of graphics handles");
       }
@@ -1925,22 +1925,22 @@ public:
 
 #if 0
   const string_property& as_string_property (void) const
-    { return *(dynamic_cast<string_property*> (rep)); }
+  { return *(dynamic_cast<string_property*> (rep)); }
 
   const radio_property& as_radio_property (void) const
-    { return *(dynamic_cast<radio_property*> (rep)); }
+  { return *(dynamic_cast<radio_property*> (rep)); }
 
   const color_property& as_color_property (void) const
-    { return *(dynamic_cast<color_property*> (rep)); }
+  { return *(dynamic_cast<color_property*> (rep)); }
 
   const double_property& as_double_property (void) const
-    { return *(dynamic_cast<double_property*> (rep)); }
+  { return *(dynamic_cast<double_property*> (rep)); }
 
   const bool_property& as_bool_property (void) const
-    { return *(dynamic_cast<bool_property*> (rep)); }
+  { return *(dynamic_cast<bool_property*> (rep)); }
 
   const handle_property& as_handle_property (void) const
-    { return *(dynamic_cast<handle_property*> (rep)); }
+  { return *(dynamic_cast<handle_property*> (rep)); }
 #endif
 
 private:
@@ -3790,7 +3790,7 @@ public:
     bool xySym, xyzSym, zSign, nearhoriz;
 
     // Text renderer, used for calculation of text (tick labels) size
-    text_renderer txt_renderer;
+    octave::text_renderer txt_renderer;
 
     void set_text_child (handle_property& h, const std::string& who,
                          const octave_value& v);
@@ -3812,7 +3812,7 @@ public:
       row_vector_property alim m , default_lim ()
       radio_property alimmode , "{auto}|manual"
       color_property ambientlightcolor , color_values (1, 1, 1)
-      bool_property box , "on"
+      bool_property box , "off"
       radio_property boxstyle , "{back}|full"
       array_property cameraposition m , Matrix (1, 3, 0.0)
       radio_property camerapositionmode , "{auto}|manual"
@@ -3874,8 +3874,9 @@ public:
       // FIXME: uicontextmenu should be moved here.
       radio_property units SU , "{normalized}|inches|centimeters|points|pixels|characters"
       array_property view u , default_axes_view ()
-      radio_property xaxislocation u , "{bottom}|top|zero"
-      color_property xcolor m , color_values (0, 0, 0)
+      // FIXME: Remove "zero" in 4.6
+      radio_property xaxislocation u , "{bottom}|top|origin|zero"
+      color_property xcolor m , color_values (0.15, 0.15, 0.15)
       radio_property xcolormode , "{auto}|manual"
       radio_property xdir u , "{normal}|reverse"
       bool_property xgrid , "off"
@@ -3891,8 +3892,9 @@ public:
       radio_property xticklabelmode u , "{auto}|manual"
       double_property xticklabelrotation , 0.0
       radio_property xtickmode u , "{auto}|manual"
-      radio_property yaxislocation u , "{left}|right|zero"
-      color_property ycolor m , color_values (0, 0, 0)
+      // FIXME: Remove "zero" in 4.6
+      radio_property yaxislocation u , "{left}|right|origin|zero"
+      color_property ycolor m , color_values (0.15, 0.15, 0.15)
       radio_property ycolormode , "{auto}|manual"
       radio_property ydir u , "{normal}|reverse"
       bool_property ygrid , "off"
@@ -3907,7 +3909,7 @@ public:
       radio_property yticklabelmode u , "{auto}|manual"
       double_property yticklabelrotation , 0.0
       radio_property ytickmode u , "{auto}|manual"
-      color_property zcolor m , color_values (0, 0, 0)
+      color_property zcolor m , color_values (0.15, 0.15, 0.15)
       radio_property zcolormode , "{auto}|manual"
       radio_property zdir u , "{normal}|reverse"
       bool_property zgrid , "off"
@@ -3982,12 +3984,22 @@ public:
     void update_layer (void) { update_axes_layout (); }
     void update_yaxislocation (void)
     {
+      // FIXME: Remove warning with "zero" in 4.6
+      if (yaxislocation_is ("zero"))
+        warning_with_id ("Octave:deprecated-property",
+                         "Setting 'yaxislocation' to 'zero' is deprecated, "
+                         "set to 'origin' instead.");
       sync_positions ();
       update_axes_layout ();
       update_ylabel_position ();
     }
     void update_xaxislocation (void)
     {
+      // FIXME: Remove warning with "zero" in 4.6
+      if (xaxislocation_is ("zero"))
+        warning_with_id ("Octave:deprecated-property",
+                         "Setting 'xaxislocation' to 'zero' is deprecated, "
+                         "set to 'origin' instead.");
       sync_positions ();
       update_axes_layout ();
       update_xlabel_position ();
@@ -4508,7 +4520,7 @@ public:
     const uint8NDArray& get_pixels (void) const { return pixels; }
 
     // Text renderer, used for calculation of text size
-    text_renderer txt_renderer;
+    octave::text_renderer txt_renderer;
 
   protected:
     void init (void)
@@ -5505,7 +5517,7 @@ public:
       radio_property style S , "{pushbutton}|togglebutton|radiobutton|checkbox|edit|text|slider|frame|listbox|popupmenu"
       string_property tooltipstring , ""
       radio_property units u , "normalized|inches|centimeters|points|{pixels}|characters"
-      row_vector_property value , Matrix (1, 1, 1.0)
+      row_vector_property value , Matrix (1, 1, 0.0)
       radio_property verticalalignment , "top|{middle}|bottom"
     END_PROPERTIES
 
@@ -6440,3 +6452,4 @@ OCTINTERP_API graphics_handle gca (void);
 OCTINTERP_API void close_all_figures (void);
 
 #endif
+

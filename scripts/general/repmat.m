@@ -1,5 +1,5 @@
-## Copyright (C) 2014-2015 Markus Bergholz
-## Copyright (C) 2000-2015 Paul Kienzle
+## Copyright (C) 2014-2016 Markus Bergholz
+## Copyright (C) 2000-2016 Paul Kienzle
 ## Copyright (C) 2008 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -204,6 +204,9 @@ endfunction
 %!assert (size (repmat (1, [0, 1])), [0, 1])
 %!assert (size (repmat (1, [0, 5])), [0, 5])
 
+%!assert (size (repmat (ones (0, 3), [2 3])), [0 9])
+%!assert (size (repmat (ones (0, 0, 3), [2 3])), [0 0 3])
+
 %!shared x
 %! x = struct ("a", [], "b", []);
 %!assert (size (repmat (x, [1, 0])), [1, 0])
@@ -217,4 +220,3 @@ endfunction
 %!assert (size (repmat ({1}, [0, 5])), [0, 5])
 
 %!error (size (repmat (".", -1, -1)))
-

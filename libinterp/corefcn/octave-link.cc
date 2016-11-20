@@ -1,8 +1,8 @@
 /*
 
-Copyright (C) 2013-2015 John W. Eaton
-Copyright (C) 2011-2015 Jacob Dawid
-Copyright (C) 2011-2015 John P. Swensen
+Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2011-2016 Jacob Dawid
+Copyright (C) 2011-2016 John P. Swensen
 
 This file is part of Octave.
 
@@ -86,8 +86,7 @@ octave_link::connect_link (octave_link* obj)
 
 void
 octave_link::do_generate_events (void)
-{
-}
+{ }
 
 void
 octave_link::do_process_events (void)

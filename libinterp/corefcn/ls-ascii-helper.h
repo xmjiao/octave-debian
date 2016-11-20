@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2015 Benjamin Lindner
+Copyright (C) 2009-2016 Benjamin Lindner
 
 This file is part of Octave.
 
@@ -38,3 +38,4 @@ extern OCTINTERP_API std::string
 read_until_newline (std::istream& is, bool keep_newline = false);
 
 #endif
+

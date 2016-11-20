@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -265,3 +265,4 @@ string_vector::list_in_columns (std::ostream& os, int width,
 
   return os;
 }
+

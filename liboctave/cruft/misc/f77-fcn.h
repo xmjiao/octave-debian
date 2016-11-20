@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -282,7 +282,7 @@ octave_make_cray_const_ftn_ch_dsc (const char *ptr_arg, unsigned long len_arg)
 
 #define F77_RET_T void
 
-#define F77_RETURN(retval) return retval;
+#define F77_RETURN(retval) return;
 #if defined (HAVE_OCTAVE_NORETURN_ATTR)
 #  define F77_NORETURN(retval)
 #else
@@ -368,3 +368,4 @@ F77_FUNC (xstopx, XSTOPX) (F77_CONST_CHAR_ARG_DECL
 #endif
 
 #endif
+

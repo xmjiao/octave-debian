@@ -1,4 +1,4 @@
-## Copyright (C) 1999-2015 Kai Habel
+## Copyright (C) 1999-2016 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -69,6 +69,6 @@ endfunction
 %! ## Show the 'rainbow' colormap profile and as an image
 %! cmap = rainbow (256);
 %! subplot (2, 1, 1);
-%! rgbplot (cmap, "composite");
+%!  rgbplot (cmap, "composite");
 %! subplot (2, 1, 2);
-%! rgbplot (cmap);
+%!  rgbplot (cmap);

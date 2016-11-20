@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 Jaroslav Hajek
+Copyright (C) 2008-2016 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -128,7 +128,7 @@ octave_base_diag<DMT, MT>::do_index_op (const octave_value_list& idx,
                 retval = to_dense ().do_index_op (idx, resize_ok);
             }
         }
-      catch (index_exception& e)
+      catch (octave::index_exception& e)
         {
           // Rethrow to allow more info to be reported later.
           e.set_pos_if_unset (2, k+1);
@@ -192,7 +192,7 @@ octave_base_diag<DMT, MT>::subsasgn (const std::string& type,
                     dense_cache = octave_value ();
                   }
               }
-            catch (index_exception& e)
+            catch (octave::index_exception& e)
               {
                 // Rethrow to allow more info to be reported later.
                 e.set_pos_if_unset (2, k+1);
@@ -220,7 +220,7 @@ octave_base_diag<DMT, MT>::subsasgn (const std::string& type,
                     dense_cache = octave_value ();
                   }
               }
-            catch (index_exception& e)
+            catch (octave::index_exception& e)
               {
                 // Rethrow to allow more info to be reported later.
                 e.set_pos_if_unset (2, k+1);
@@ -300,7 +300,6 @@ template <typename DMT, typename MT>
 double
 octave_base_diag<DMT, MT>::double_value (bool force_conversion) const
 {
-  double retval = lo_ieee_nan_value ();
   typedef typename DMT::element_type el_type;
 
   if (helper_iscomplex (el_type ()) && ! force_conversion)
@@ -313,52 +312,39 @@ octave_base_diag<DMT, MT>::double_value (bool force_conversion) const
   warn_implicit_conversion ("Octave:array-to-scalar",
                             type_name (), "real scalar");
 
-  retval = helper_getreal (el_type (matrix (0, 0)));
-
-  return retval;
+  return helper_getreal (el_type (matrix (0, 0)));
 }
 
 template <typename DMT, typename MT>
 float
 octave_base_diag<DMT, MT>::float_value (bool force_conversion) const
 {
-  float retval = lo_ieee_float_nan_value ();
   typedef typename DMT::element_type el_type;
 
   if (helper_iscomplex (el_type ()) && ! force_conversion)
     warn_implicit_conversion ("Octave:imag-to-real",
                               "complex matrix", "real scalar");
 
-  if (numel () > 0)
-    {
-      warn_implicit_conversion ("Octave:array-to-scalar",
-                                type_name (), "real scalar");
-
-      retval = helper_getreal (el_type (matrix (0, 0)));
-    }
-  else
+  if (! (numel () > 0))
     err_invalid_conversion (type_name (), "real scalar");
 
-  return retval;
+  warn_implicit_conversion ("Octave:array-to-scalar",
+                            type_name (), "real scalar");
+
+  return helper_getreal (el_type (matrix (0, 0)));
 }
 
 template <typename DMT, typename MT>
 Complex
 octave_base_diag<DMT, MT>::complex_value (bool) const
 {
-  double tmp = lo_ieee_nan_value ();
-
-  Complex retval (tmp, tmp);
-
   if (rows () == 0 || columns () == 0)
     err_invalid_conversion (type_name (), "complex scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             type_name (), "complex scalar");
 
-  retval = matrix (0, 0);
-
-  return retval;
+  return matrix(0, 0);
 }
 
 template <typename DMT, typename MT>

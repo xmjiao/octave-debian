@@ -1,7 +1,7 @@
 // Template sparse array class
 /*
 
-Copyright (C) 2004-2015 David Bateman
+Copyright (C) 2004-2016 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 Copyright (C) 2010 VZLU Prague
 
@@ -928,7 +928,7 @@ Sparse<T>::resize1 (octave_idx_type n)
   else if (nc == 1)
     resize (n, 1);
   else
-    err_invalid_resize ();
+    octave::err_invalid_resize ();
 }
 
 template <typename T>
@@ -1158,7 +1158,7 @@ Sparse<T>::delete_elements (const idx_vector& idx)
   const dim_vector idx_dims = idx.orig_dimensions ();
 
   if (idx.extent (nel) > nel)
-    err_del_index_out_of_range (true, idx.extent (nel), nel);
+    octave::err_del_index_out_of_range (true, idx.extent (nel), nel);
 
   if (nc == 1)
     {
@@ -1257,7 +1257,7 @@ Sparse<T>::delete_elements (const idx_vector& idx_i, const idx_vector& idx_j)
       // Deleting columns.
       octave_idx_type lb, ub;
       if (idx_j.extent (nc) > nc)
-        err_del_index_out_of_range (false, idx_j.extent (nc), nc);
+        octave::err_del_index_out_of_range (false, idx_j.extent (nc), nc);
       else if (idx_j.is_cont_range (nc, lb, ub))
         {
           if (lb == 0 && ub == nc)
@@ -1295,7 +1295,7 @@ Sparse<T>::delete_elements (const idx_vector& idx_i, const idx_vector& idx_j)
       // Deleting rows.
       octave_idx_type lb, ub;
       if (idx_i.extent (nr) > nr)
-        err_del_index_out_of_range (false, idx_i.extent (nr), nr);
+        octave::err_del_index_out_of_range (false, idx_i.extent (nr), nr);
       else if (idx_i.is_cont_range (nr, lb, ub))
         {
           if (lb == 0 && ub == nr)
@@ -1414,7 +1414,7 @@ Sparse<T>::index (const idx_vector& idx, bool resize_ok) const
   else if (idx.extent (nel) > nel)
     {
       if (! resize_ok)
-        err_index_out_of_range (1, 1, idx.extent (nel), nel, dims ());
+        octave::err_index_out_of_range (1, 1, idx.extent (nel), nel, dims ());
 
       // resize_ok is completely handled here.
       octave_idx_type ext = idx.extent (nel);
@@ -1602,9 +1602,9 @@ Sparse<T>::index (const idx_vector& idx_i, const idx_vector& idx_j,
           retval = tmp.index (idx_i, idx_j);
         }
       else if (idx_i.extent (nr) > nr)
-        err_index_out_of_range (2, 1, idx_i.extent (nr), nr, dims ());
+        octave::err_index_out_of_range (2, 1, idx_i.extent (nr), nr, dims ());
       else
-        err_index_out_of_range (2, 2, idx_j.extent (nc), nc, dims ());
+        octave::err_index_out_of_range (2, 2, idx_j.extent (nc), nc, dims ());
     }
   else if (nr == 1 && nc == 1)
     {
@@ -1966,7 +1966,7 @@ Sparse<T>::assign (const idx_vector& idx, const Sparse<T>& rhs)
         assign (idx, Sparse<T> (rhl, 1));
     }
   else
-    err_nonconformant ("=", dim_vector(idx.length (n),1), rhs.dims());
+    octave::err_nonconformant ("=", dim_vector(idx.length (n),1), rhs.dims());
 }
 
 template <typename T>
@@ -2201,12 +2201,13 @@ Sparse<T>::assign (const idx_vector& idx_i,
       else
         assign (idx_i, idx_j, Sparse<T> (n, m));
     }
-  else if (idx_i.length (nr) == m && idx_j.length (nc) == n && (n==1 || m==1))
+  else if (idx_i.length (nr) == m && idx_j.length (nc) == n
+           && (n == 1 || m == 1))
     {
       assign (idx_i, idx_j, rhs.transpose ());
     }
   else
-    err_nonconformant  ("=", idx_i.length (nr), idx_j.length (nc), n, m);
+    octave::err_nonconformant  ("=", idx_i.length (nr), idx_j.length (nc), n, m);
 }
 
 // Can't use versions of these in Array.cc due to duplication of the
@@ -2954,13 +2955,10 @@ read_sparse_matrix (std::istream& is, Sparse<T>& a,
 %!test test_sparse_slice ([2 2], 22, 3);
 %!test test_sparse_slice ([2 2], 22, 4);
 
-bug #35570:
+%!assert <35570> (speye (3,1)(3:-1:1), sparse ([0; 0; 1]))
 
-%!assert (speye (3,1)(3:-1:1), sparse ([0; 0; 1]))
-
-## Test removing columns (bug #36656)
-
-%!test
+## Test removing columns
+%!test <36656>
 %! s = sparse (magic (5));
 %! s(:,2:4) = [];
 %! assert (s, sparse (magic (5)(:, [1,5])));
@@ -2971,24 +2969,24 @@ bug #35570:
 %! assert (s, sparse ([], [], [], 0, 1));
 
 ## Test (bug #37321)
-%!test a=sparse (0,0); assert (all (a) == sparse ([1]));
-%!test a=sparse (0,1); assert (all (a) == sparse ([1]));
-%!test a=sparse (1,0); assert (all (a) == sparse ([1]));
-%!test a=sparse (1,0); assert (all (a,2) == sparse ([1]));
-%!test a=sparse (1,0); assert (size (all (a,1)), [1 0]);
-%!test a=sparse (1,1);
+%!test <37321> a=sparse (0,0); assert (all (a) == sparse ([1]));
+%!test <37321> a=sparse (0,1); assert (all (a) == sparse ([1]));
+%!test <37321> a=sparse (1,0); assert (all (a) == sparse ([1]));
+%!test <37321> a=sparse (1,0); assert (all (a,2) == sparse ([1]));
+%!test <37321> a=sparse (1,0); assert (size (all (a,1)), [1 0]);
+%!test <37321> a=sparse (1,1);
 %! assert (all (a) == sparse ([0]));
 %! assert (size (all (a)), [1 1]);
-%!test a=sparse (2,1);
+%!test <37321> a=sparse (2,1);
 %! assert (all (a) == sparse ([0]));
 %! assert (size (all (a)), [1 1]);
-%!test a=sparse (1,2);
+%!test <37321> a=sparse (1,2);
 %! assert (all (a) == sparse ([0]));
 %! assert (size (all (a)), [1 1]);
-%!test a=sparse (2,2); assert (isequal (all (a), sparse ([0 0])));
+%!test <37321> a=sparse (2,2); assert (isequal (all (a), sparse ([0 0])));
 
-## Test assigning row to a column slice (bug #45589)
-%!test
+## Test assigning row to a column slice
+%!test <45589>
 %! a = sparse (magic (3));
 %! b = a;
 %! a(1,:) = 1:3;
@@ -3016,3 +3014,4 @@ Sparse<T>::print_info (std::ostream& os, const std::string& prefix) const
   template std::istream&                                                \
   read_sparse_matrix<T> (std::istream& is, Sparse<T>& a,                \
                          T (*read_fcn) (std::istream&));
+

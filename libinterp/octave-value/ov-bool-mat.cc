@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -27,6 +27,17 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iostream>
 #include <vector>
+
+#include "dNDArray.h"
+#include "fNDArray.h"
+#include "int8NDArray.h"
+#include "int16NDArray.h"
+#include "int32NDArray.h"
+#include "int64NDArray.h"
+#include "uint8NDArray.h"
+#include "uint16NDArray.h"
+#include "uint32NDArray.h"
+#include "uint64NDArray.h"
 
 #include "lo-ieee.h"
 #include "mx-base.h"
@@ -93,51 +104,37 @@ octave_bool_matrix::try_narrowing_conversion (void)
 double
 octave_bool_matrix::double_value (bool) const
 {
-  double retval = lo_ieee_nan_value ();
-
   if (rows () == 0 || columns () == 0)
     err_invalid_conversion ("bool matrix", "real scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "bool matrix", "real scalar");
 
-  retval = matrix(0, 0);
-
-  return retval;
+  return matrix(0, 0);
 }
 
 float
 octave_bool_matrix::float_value (bool) const
 {
-  float retval = lo_ieee_float_nan_value ();
-
   if (rows () == 0 || columns () == 0)
     err_invalid_conversion ("bool matrix", "real scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "bool matrix", "real scalar");
 
-  retval = matrix(0, 0);
-
-  return retval;
+  return matrix(0, 0);
 }
 
 Complex
 octave_bool_matrix::complex_value (bool) const
 {
-  double tmp = lo_ieee_nan_value ();
-
-  Complex retval (tmp, tmp);
-
   if (rows () == 0 || columns () == 0)
     err_invalid_conversion ("bool matrix", "complex scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "bool matrix", "complex scalar");
 
-  retval = matrix(0, 0);
-
-  return retval;
+  return Complex (matrix(0, 0), 0);
 }
 
 FloatComplex
@@ -164,6 +161,66 @@ octave_bool_matrix::convert_to_str_internal (bool pad, bool force,
 {
   octave_value tmp = octave_value (array_value ());
   return tmp.convert_to_str (pad, force, type);
+}
+
+octave_value
+octave_bool_matrix::as_double (void) const
+{
+  return NDArray (matrix);
+}
+
+octave_value
+octave_bool_matrix::as_single (void) const
+{
+  return FloatNDArray (matrix);
+}
+
+octave_value
+octave_bool_matrix::as_int8 (void) const
+{
+  return int8NDArray (matrix);
+}
+
+octave_value
+octave_bool_matrix::as_int16 (void) const
+{
+  return int16NDArray (matrix);
+}
+
+octave_value
+octave_bool_matrix::as_int32 (void) const
+{
+  return int32NDArray (matrix);
+}
+
+octave_value
+octave_bool_matrix::as_int64 (void) const
+{
+  return int64NDArray (matrix);
+}
+
+octave_value
+octave_bool_matrix::as_uint8 (void) const
+{
+  return uint8NDArray (matrix);
+}
+
+octave_value
+octave_bool_matrix::as_uint16 (void) const
+{
+  return uint16NDArray (matrix);
+}
+
+octave_value
+octave_bool_matrix::as_uint32 (void) const
+{
+  return uint32NDArray (matrix);
+}
+
+octave_value
+octave_bool_matrix::as_uint64 (void) const
+{
+  return uint64NDArray (matrix);
 }
 
 void
@@ -480,7 +537,8 @@ octave_bool_matrix::load_hdf5 (octave_hdf5_id loc_id, const char *name)
 
   octave_idx_type nel = dv.numel ();
   OCTAVE_LOCAL_BUFFER (hbool_t, htmp, nel);
-  if (H5Dread (data_hid, H5T_NATIVE_HBOOL, octave_H5S_ALL, octave_H5S_ALL, octave_H5P_DEFAULT, htmp)
+  if (H5Dread (data_hid, H5T_NATIVE_HBOOL, octave_H5S_ALL, octave_H5S_ALL,
+               octave_H5P_DEFAULT, htmp)
       >= 0)
     {
       retval = true;
@@ -569,3 +627,4 @@ Compatibility Note: Octave accepts complex values as input, whereas
 %!   assert (logical (eye (1, c{i})), s);
 %! endfor
 */
+

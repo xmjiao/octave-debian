@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2015 David Bateman
+Copyright (C) 2004-2016 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -44,7 +44,7 @@ along with Octave; see the file COPYING.  If not, see
 static void
 solve_singularity_warning (double rcond)
 {
-  warn_singular_matrix (rcond);
+  octave::warn_singular_matrix (rcond);
 }
 
 template <typename T1, typename T2>
@@ -59,7 +59,7 @@ mx_leftdiv_conform (const T1& a, const T2& b)
       octave_idx_type a_nc = a.cols ();
       octave_idx_type b_nc = b.cols ();
 
-      err_nonconformant ("operator \\", a_nr, a_nc, b_nr, b_nc);
+      octave::err_nonconformant ("operator \\", a_nr, a_nc, b_nr, b_nc);
     }
 
   return true;
@@ -93,7 +93,7 @@ mx_div_conform (const T1& a, const T2& b)
       octave_idx_type a_nr = a.rows ();
       octave_idx_type b_nr = b.rows ();
 
-      err_nonconformant ("operator /", a_nr, a_nc, b_nr, b_nc);
+      octave::err_nonconformant ("operator /", a_nr, a_nc, b_nr, b_nc);
     }
 
   return true;
@@ -397,7 +397,8 @@ x_el_div (double a, const SparseComplexMatrix& b)
   octave_idx_type nr = b.rows ();
   octave_idx_type nc = b.cols ();
 
-  ComplexMatrix result (nr, nc, Complex (octave::numeric_limits<double>::NaN (), octave::numeric_limits<double>::NaN ()));
+  ComplexMatrix result (nr, nc, Complex (octave::numeric_limits<double>::NaN (),
+                                         octave::numeric_limits<double>::NaN ()));
 
   for (octave_idx_type j = 0; j < nc; j++)
     for (octave_idx_type i = b.cidx (j); i < b.cidx (j+1); i++)
@@ -630,3 +631,4 @@ xleftdiv (const ComplexDiagMatrix& d, const SparseComplexMatrix& a,
 {
   return do_leftdiv_dm_sm<SparseComplexMatrix> (d, a);
 }
+

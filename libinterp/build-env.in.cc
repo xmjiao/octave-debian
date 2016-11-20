@@ -1,7 +1,7 @@
 // %NO_EDIT_WARNING%
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -273,6 +273,8 @@ namespace octave
 
     const char *STATIC_LIBS = %OCTAVE_CONF_STATIC_LIBS%;
 
+    const char *SUITESPARSE_CONFIG_LIBS = %OCTAVE_CONF_SUITESPARSE_CONFIG_LIBS%;
+
     const char *TERM_LIBS = %OCTAVE_CONF_TERM_LIBS%;
 
     const char *UMFPACK_CPPFLAGS = %OCTAVE_CONF_UMFPACK_CPPFLAGS%;
@@ -304,5 +306,6 @@ namespace octave
     const char *Z_LIBS = %OCTAVE_CONF_Z_LIBS%;
 
     const char *config_opts = %OCTAVE_CONF_config_opts%;
-  };
-};
+  }
+}
+

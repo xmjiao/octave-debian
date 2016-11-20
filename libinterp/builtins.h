@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -30,3 +30,4 @@ along with Octave; see the file COPYING.  If not, see
 extern OCTINTERP_API void install_builtins (void);
 
 #endif
+

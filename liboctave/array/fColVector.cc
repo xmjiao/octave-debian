@@ -1,7 +1,7 @@
 // ColumnVector manipulations.
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -29,25 +29,12 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 
 #include "Array-util.h"
-#include "f77-fcn.h"
 #include "functor.h"
+#include "lo-blas-proto.h"
 #include "lo-error.h"
 #include "mx-base.h"
 #include "mx-inlines.cc"
 #include "oct-cmplx.h"
-
-// Fortran functions we call.
-
-extern "C"
-{
-  F77_RET_T
-  F77_FUNC (sgemv, SGEMV) (F77_CONST_CHAR_ARG_DECL,
-                           const F77_INT&, const F77_INT&,
-                           const F77_REAL&, const F77_REAL*, const F77_INT&,
-                           const F77_REAL*, const F77_INT&, const F77_REAL&,
-                           F77_REAL*, const F77_INT&
-                           F77_CHAR_ARG_LEN_DECL);
-}
 
 // Column Vector class.
 
@@ -198,7 +185,7 @@ operator * (const FloatMatrix& m, const FloatColumnVector& a)
   octave_idx_type a_len = a.numel ();
 
   if (nc != a_len)
-    err_nonconformant ("operator *", nr, nc, a_len, 1);
+    octave::err_nonconformant ("operator *", nr, nc, a_len, 1);
 
   retval.clear (nr);
 
@@ -233,7 +220,7 @@ operator * (const FloatDiagMatrix& m, const FloatColumnVector& a)
   octave_idx_type a_len = a.numel ();
 
   if (nc != a_len)
-    err_nonconformant ("operator *", nr, nc, a_len, 1);
+    octave::err_nonconformant ("operator *", nr, nc, a_len, 1);
 
   if (nr == 0 || nc == 0)
     retval.resize (nr, 0.0);
@@ -313,3 +300,4 @@ operator >> (std::istream& is, FloatColumnVector& a)
     }
   return is;
 }
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2015 John W. Eaton
+Copyright (C) 2013-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -41,3 +41,4 @@ hook_function::hook_function (const octave_value& f, const octave_value& d)
   else
     error ("invalid hook function");
 }
+

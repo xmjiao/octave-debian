@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2015 Shai Ayal
+Copyright (C) 2009-2016 Shai Ayal
 
 This file is part of Octave.
 
@@ -29,8 +29,23 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "graphics.h"
 
-extern OCTINTERP_API void
+namespace octave
+{
+  extern OCTINTERP_API void
+  gl2ps_print (const graphics_object& fig, const std::string& stream,
+               const std::string& term);
+}
+
+#if defined (OCTAVE_USE_DEPRECATED_FUNCTIONS)
+
+inline void
 gl2ps_print (const graphics_object& fig, const std::string& stream,
-             const std::string& term);
+             const std::string& term)
+{
+  return octave::gl2ps_print (fig, stream, term);
+}
 
 #endif
+
+#endif
+

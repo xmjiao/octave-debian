@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2014-2015 Julien Bect
-Copyright (C) 2012-2015 Daniel Kraft
+Copyright (C) 2014-2016 Julien Bect
+Copyright (C) 2012-2016 Daniel Kraft
 
 This file is part of Octave.
 
@@ -216,3 +216,4 @@ extern OCTINTERP_API profile_data_accumulator profiler;
     }  // end of block => call pe's destructor
 
 #endif
+

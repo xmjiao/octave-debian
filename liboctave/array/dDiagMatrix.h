@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -125,3 +125,4 @@ operator * (const DiagMatrix& a, const DiagMatrix& b);
 MDIAGARRAY2_FORWARD_DEFS (MDiagArray2, DiagMatrix, double)
 
 #endif
+

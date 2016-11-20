@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2015 Michael Goffioul
+Copyright (C) 2011-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -34,37 +34,37 @@ along with Octave; see the file COPYING.  If not, see
 namespace QtHandles
 {
 
-RadioButtonControl*
-RadioButtonControl::create (const graphics_object& go)
-{
-  Object* parent = Object::parentObject (go);
+  RadioButtonControl*
+  RadioButtonControl::create (const graphics_object& go)
+  {
+    Object* parent = Object::parentObject (go);
 
-  if (parent)
-    {
-      Container* container = parent->innerContainer ();
+    if (parent)
+      {
+        Container* container = parent->innerContainer ();
 
-      if (container)
-        return new RadioButtonControl (go, new QRadioButton (container));
-    }
+        if (container)
+          return new RadioButtonControl (go, new QRadioButton (container));
+      }
 
-  return 0;
-}
+    return 0;
+  }
 
-RadioButtonControl::RadioButtonControl (const graphics_object& go,
-                                        QRadioButton* radio)
-  : ButtonControl (go, radio)
-{
-  Object* parent = Object::parentObject (go);
-  ButtonGroup* btnGroup = dynamic_cast<ButtonGroup*>(parent);
-  if (btnGroup)
-    btnGroup->addButton (radio);
+  RadioButtonControl::RadioButtonControl (const graphics_object& go,
+                                          QRadioButton* radio)
+    : ButtonControl (go, radio)
+  {
+    Object* parent = Object::parentObject (go);
+    ButtonGroup* btnGroup = dynamic_cast<ButtonGroup*>(parent);
+    if (btnGroup)
+      btnGroup->addButton (radio);
 
-  radio->setAutoFillBackground (true);
-  radio->setAutoExclusive (false);
-}
+    radio->setAutoFillBackground (true);
+    radio->setAutoExclusive (false);
+  }
 
-RadioButtonControl::~RadioButtonControl (void)
-{
-}
+  RadioButtonControl::~RadioButtonControl (void)
+  { }
 
 };
+

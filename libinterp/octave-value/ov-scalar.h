@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -200,7 +200,7 @@ public:
   bool bool_value (bool warn = false) const
   {
     if (octave::math::isnan (scalar))
-      err_nan_to_logical_conversion ();
+      octave::err_nan_to_logical_conversion ();
     if (warn && scalar != 0 && scalar != 1)
       warn_logical_conversion ();
 
@@ -210,12 +210,25 @@ public:
   boolNDArray bool_array_value (bool warn = false) const
   {
     if (octave::math::isnan (scalar))
-      err_nan_to_logical_conversion ();
+      octave::err_nan_to_logical_conversion ();
     if (warn && scalar != 0 && scalar != 1)
       warn_logical_conversion ();
 
     return boolNDArray (dim_vector (1, 1), scalar);
   }
+
+  octave_value as_double (void) const;
+  octave_value as_single (void) const;
+
+  octave_value as_int8 (void) const;
+  octave_value as_int16 (void) const;
+  octave_value as_int32 (void) const;
+  octave_value as_int64 (void) const;
+
+  octave_value as_uint8 (void) const;
+  octave_value as_uint16 (void) const;
+  octave_value as_uint32 (void) const;
+  octave_value as_uint64 (void) const;
 
   octave_value diag (octave_idx_type m, octave_idx_type n) const;
 
@@ -258,3 +271,4 @@ private:
 };
 
 #endif
+

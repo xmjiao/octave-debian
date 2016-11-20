@@ -1,5 +1,5 @@
-## Copyright (C) 2005-2015 John W. Eaton
-## Copyright (C) 2013-2015 Arun Giridhar
+## Copyright (C) 2005-2016 John W. Eaton
+## Copyright (C) 2013-2016 Arun Giridhar
 ##
 ## This file is part of Octave.
 ##
@@ -408,6 +408,7 @@ function [x, obj, info, iter, nf, lambda] = sqp (x0, objf, cef, cif, lb, ub, max
     g = -ce;
     d = -ci;
 
+    old_lambda = lambda;
     [p, obj_qp, INFO, lambda] = qp (x, B, c, F, g, [], [], d, C,
                                     Inf (size (d)));
 
@@ -425,6 +426,7 @@ function [x, obj, info, iter, nf, lambda] = sqp (x0, objf, cef, cif, lb, ub, max
                  INFO.solveiter);
       case 6
         warning (id, "sqp: QP subproblem is infeasible");
+        lambda = old_lambda;  # The return value was size 0x0 in this case.
     endswitch
 
     ## Choose mu such that p is a descent direction for the chosen

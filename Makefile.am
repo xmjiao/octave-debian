@@ -1,6 +1,6 @@
 # Makefile for Octave
 #
-# Copyright (C) 1993-2015 John W. Eaton
+# Copyright (C) 1993-2016 John W. Eaton
 #
 # This file is part of Octave.
 #
@@ -38,11 +38,11 @@ AM_YFLAGS = -dv
 
 # Fortran compiler flags.
 
-AM_FFLAGS = @FFLAGS@
+AM_FFLAGS = ${FPICFLAG} @FFLAGS@
 
 # C compiler flags.
 
-AM_CFLAGS = ${XTRA_CFLAGS}
+AM_CFLAGS = ${CPICFLAG} ${XTRA_CFLAGS}
 
 # ifeq (${INCLUDE_DEPS},no)
 #   omit_deps = true;
@@ -50,7 +50,7 @@ AM_CFLAGS = ${XTRA_CFLAGS}
 
 # C++ compiler flags.
 
-AM_CXXFLAGS = ${XTRA_CXXFLAGS}
+AM_CXXFLAGS = ${CXXPICFLAG} ${XTRA_CXXFLAGS}
 
 FFTW_XCPPFLAGS = @FFTW_XCPPFLAGS@
 FFTW_XLDFLAGS = @FFTW_XLDFLAGS@

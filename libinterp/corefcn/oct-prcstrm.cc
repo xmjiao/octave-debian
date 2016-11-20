@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -41,8 +41,7 @@ octave_iprocstream::octave_iprocstream (const std::string& n,
                                         octave::mach_info::float_format ff)
   : octave_stdiostream (n, octave_popen (n.c_str (), "r"),
                         arg_md, ff, octave_pclose)
-{
-}
+{ }
 
 octave_iprocstream::~octave_iprocstream (void)
 {
@@ -61,10 +60,10 @@ octave_oprocstream::octave_oprocstream (const std::string& n,
                                         octave::mach_info::float_format ff)
   : octave_stdiostream (n, octave_popen (n.c_str (), "w"),
                         arg_md, ff, octave_pclose)
-{
-}
+{ }
 
 octave_oprocstream::~octave_oprocstream (void)
 {
   do_close ();
 }
+

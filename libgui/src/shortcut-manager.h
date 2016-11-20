@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2014-2015 Torsten <ttl@justmail.de>
+Copyright (C) 2014-2016 Torsten <ttl@justmail.de>
 
 This file is part of Octave.
 
@@ -117,7 +117,7 @@ private:
 
   static bool instance_ok (void);
 
-  void init (QString, QString, QKeySequence);
+  void init (const QString&, const QString&, const QKeySequence&);
   void do_init_data ();
   void do_write_shortcuts (QSettings *settings, bool closing);
   void do_set_shortcut (QAction *action, const QString& key);
@@ -163,8 +163,7 @@ private:
     }
 
     ~shortcut_t (void)
-    {
-    }
+    { }
 
     QTreeWidgetItem *tree_item;
     QString description;
@@ -190,3 +189,4 @@ private:
 };
 
 #endif
+

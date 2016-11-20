@@ -1,5 +1,5 @@
 // DO NOT EDIT!
-// Generated automatically from liboctave/numeric/DASRT-opts.in.
+// Generated automatically from ../liboctave/numeric/DASRT-opts.in.
 
 // This file should not include config.h.  It is only included in other
 // C++ source files that should have included config.h before including
@@ -306,7 +306,7 @@ When called with two arguments, @code{dasrt_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the relative

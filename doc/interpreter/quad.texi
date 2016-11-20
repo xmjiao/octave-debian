@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -219,7 +219,7 @@ When called with two arguments, @code{quad_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance; may be zero for pure relative error test.
 
@@ -240,7 +240,7 @@ tolerance is zero, the relative tolerance must be greater than or equal to
 @end deftypefn
 
 
-@c quadv scripts/scripts/general/quadv.m
+@c quadv scripts/general/quadv.m
 @anchor{XREFquadv}
 @deftypefn  {} {@var{q} =} quadv (@var{f}, @var{a}, @var{b})
 @deftypefnx {} {@var{q} =} quadv (@var{f}, @var{a}, @var{b}, @var{tol})
@@ -285,7 +285,7 @@ used recursively in @code{dblquad} and @code{triplequad}, unlike the
 @end deftypefn
 
 
-@c quadl scripts/scripts/general/quadl.m
+@c quadl scripts/general/quadl.m
 @anchor{XREFquadl}
 @deftypefn  {} {@var{q} =} quadl (@var{f}, @var{a}, @var{b})
 @deftypefnx {} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol})
@@ -328,7 +328,7 @@ Revisited}, BIT Vol. 40, No. 1, March 2000, pp. 84--101.
 @end deftypefn
 
 
-@c quadgk scripts/scripts/general/quadgk.m
+@c quadgk scripts/general/quadgk.m
 @anchor{XREFquadgk}
 @deftypefn  {} {@var{q} =} quadgk (@var{f}, @var{a}, @var{b})
 @deftypefnx {} {@var{q} =} quadgk (@var{f}, @var{a}, @var{b}, @var{abstol})
@@ -553,11 +553,11 @@ trapz (x, y)
 @end example
 
 In general there may be no way of knowing the best distribution of points ahead
-of time.  Or the points may come from an experiment where there is no freedom to
-select the best distribution.  In any case, one must remain aware of this
+of time.  Or the points may come from an experiment where there is no freedom
+to select the best distribution.  In any case, one must remain aware of this
 issue when using @code{trapz}.
 
-@c trapz scripts/scripts/general/trapz.m
+@c trapz scripts/general/trapz.m
 @anchor{XREFtrapz}
 @deftypefn  {} {@var{q} =} trapz (@var{y})
 @deftypefnx {} {@var{q} =} trapz (@var{x}, @var{y})
@@ -598,7 +598,7 @@ trapz (x, y)
 @end deftypefn
 
 
-@c cumtrapz scripts/scripts/general/cumtrapz.m
+@c cumtrapz scripts/general/cumtrapz.m
 @anchor{XREFcumtrapz}
 @deftypefn  {} {@var{q} =} cumtrapz (@var{y})
 @deftypefnx {} {@var{q} =} cumtrapz (@var{x}, @var{y})
@@ -738,7 +738,7 @@ I = dblquad (@@(x, y) sin (pi*x.*y) .* sqrt (x.*y), 0, 1, 0, 1)
 @end group
 @end example
 
-@c dblquad scripts/scripts/general/dblquad.m
+@c dblquad scripts/general/dblquad.m
 @anchor{XREFdblquad}
 @deftypefn  {} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb})
 @deftypefnx {} {} dblquad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{tol})
@@ -769,7 +769,7 @@ matrix ([]).
 @end deftypefn
 
 
-@c triplequad scripts/scripts/general/triplequad.m
+@c triplequad scripts/general/triplequad.m
 @anchor{XREFtriplequad}
 @deftypefn  {} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb})
 @deftypefnx {} {} triplequad (@var{f}, @var{xa}, @var{xb}, @var{ya}, @var{yb}, @var{za}, @var{zb}, @var{tol})

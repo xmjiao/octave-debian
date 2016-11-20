@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2005-2015 Mohamed Kamoun
-Copyright (C) 2006-2015 Bill Denney
+Copyright (C) 2005-2016 Mohamed Kamoun
+Copyright (C) 2006-2016 Bill Denney
 Copyright (C) 2009 Jaroslav Hajek
 Copyright (C) 2010 VZLU Prague
 
@@ -32,9 +32,9 @@ along with Octave; see the file COPYING.  If not, see
 #include <list>
 #include <memory>
 
-#include "caseless-str.h"
 #include "lo-mappers.h"
 #include "oct-locbuf.h"
+#include "oct-string.h"
 
 #include "Cell.h"
 #include "oct-map.h"
@@ -78,7 +78,7 @@ get_output_list (octave_idx_type count, octave_idx_type nargout,
     {
       tmp = func.do_multi_index_op (nargout, inputlist);
     }
-  catch (const octave_execution_exception& e)
+  catch (const octave::execution_exception& e)
     {
       if (error_handler.is_defined ())
         {
@@ -224,13 +224,13 @@ get_mapper_fun_options (const octave_value_list& args, int& nargin,
 {
   while (nargin > 3 && args(nargin-2).is_string ())
     {
-      caseless_str arg = args(nargin-2).string_value ();
+      std::string arg = args(nargin-2).string_value ();
 
       size_t compare_len = std::max (arg.length (), static_cast<size_t> (2));
 
-      if (arg.compare ("uniformoutput", compare_len))
+      if (octave::string::strncmpi (arg, "uniformoutput", compare_len))
         uniform_output = args(nargin-1).bool_value ();
-      else if (arg.compare ("errorhandler", compare_len))
+      else if (octave::string::strncmpi (arg, "errorhandler", compare_len))
         {
           if (args(nargin-1).is_function_handle ()
               || args(nargin-1).is_inline_function ())
@@ -979,11 +979,10 @@ v = cellfun (@@det, a); # faster
 %! assert (b, {"c", "g"});
 %! assert (c, {".d", ".h"});
 
-## Tests for bug #40467
-%!assert (cellfun (@isreal, {1 inf nan []}), [true, true, true, true])
-%!assert (cellfun (@isreal, {1 inf nan []}, "UniformOutput", false), {true, true, true, true})
-%!assert (cellfun (@iscomplex, {1 inf nan []}), [false, false, false, false])
-%!assert (cellfun (@iscomplex, {1 inf nan []}, "UniformOutput", false), {false, false, false, false})
+%!assert <40467> (cellfun (@isreal, {1 inf nan []}), [true, true, true, true])
+%!assert <40467> (cellfun (@isreal, {1 inf nan []}, "UniformOutput", false), {true, true, true, true})
+%!assert <40467> (cellfun (@iscomplex, {1 inf nan []}), [false, false, false, false])
+%!assert <40467> (cellfun (@iscomplex, {1 inf nan []}, "UniformOutput", false), {false, false, false, false})
 
 %!error cellfun (1)
 %!error cellfun ("isclass", 1)
@@ -1016,7 +1015,7 @@ The first input argument @var{func} can be a string, a function
 handle, an inline function, or an anonymous function.  The input
 argument @var{A} can be a logic array, a numeric array, a string
 array, a structure array, or a cell array.  By a call of the function
-@command{arrayfun} all elements of @var{A} are passed on to the named
+@code{arrayfun} all elements of @var{A} are passed on to the named
 function @var{func} individually.
 
 The named function can also take more than two input arguments, with
@@ -1028,7 +1027,7 @@ example:
 @example
 @group
 arrayfun (@@atan2, [1, 0], [0, 1])
-     @result{} [ 1.5708   0.0000 ]
+     @result{} [ 1.57080   0.00000 ]
 @end group
 @end example
 
@@ -2363,10 +2362,14 @@ Given a cell array of matrices @var{x}, this function computes
 @group
 Y = cell (size (X));
 for i = 1:numel (X)
-  Y@{i@} = X@{i@}(varargin@{:@});
+  Y@{i@} = X@{i@}(varargin@{1@}, varargin@{2@}, @dots{}, varargin@{N@});
 endfor
 @end group
 @end example
+
+The indexing arguments may be scalar (@code{2}), arrays (@code{[1, 3]}),
+ranges (@code{1:3}), or the colon operator (@qcode{":"}).  However, the
+indexing keyword @code{end} is not available.
 @seealso{cellslices, cellfun}
 @end deftypefn */)
 {
@@ -2390,3 +2393,4 @@ endfor
 
   return octave_value (y);
 }
+

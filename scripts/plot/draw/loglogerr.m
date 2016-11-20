@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2015 Teemu Ikonen
+## Copyright (C) 2000-2016 Teemu Ikonen
 ##
 ## This file is part of Octave.
 ##
@@ -63,8 +63,8 @@ function h = loglogerr (varargin)
     hax = newplot (hax);
 
     set (hax, "xscale", "log", "yscale", "log");
-    if (! ishold (hax))
-      set (hax, "xminortick", "on", "yminortick", "on");
+    if (! ishold ())
+      set (hax, "xminortick", "on", "yminortick", "on", "box", "on");
     endif
     htmp = __errplot__ ("loglogerr", hax, varargin{:});
 
@@ -87,8 +87,8 @@ endfunction
 %! y = wblpdf (x, 3, 2);
 %! eyu = 2*rand (size (y)) .* y;
 %! eyl = 0.5*rand (size (y)) .* y;
-%! loglogerr (x, y, eyl, eyu, '#~x-');
+%! loglogerr (x, y, eyl, eyu, "#~x-");
 %! xlim (x([1, end]));
-%! title ({'loglogerr(): loglog() plot with errorbars', ...
-%!         'Both axes are logarithmic'});
+%! title ({"loglogerr(): loglog() plot with errorbars", ...
+%!         "Both axes are logarithmic"});
 

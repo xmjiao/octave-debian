@@ -785,9 +785,10 @@ operators, including:
 </dd>
 <dt><code>[&hellip;] [^&hellip;]</code></dt>
 <dd>
-<p>List operators.  The pattern will match any character listed between &quot;[&quot;
-and &quot;]&quot;.  If the first character is &quot;^&quot; then the pattern is inverted and
-any character except those listed between brackets will match.
+<p>List operators.  The pattern will match any character listed between
+<code>&quot;[&quot;</code> and <code>&quot;]&quot;</code>.  If the first character is <code>&quot;^&quot;</code> then the
+pattern is inverted and any character except those listed between brackets
+will match.
 </p>
 <p>Escape sequences defined below can also be used inside list operators.  For
 example, a template for a floating point number might be <code>[-+.\d]+</code>.
@@ -1011,7 +1012,7 @@ set of parentheses in the match string.  For example,
 <pre class="example">regexprep (&quot;Bill Dunn&quot;, '(\w+) (\w+)', '$2, $1')
 </pre></div>
 
-<p>returns &quot;Dunn, Bill&quot;
+<p>returns <code>&quot;Dunn, Bill&quot;</code>
 </p>
 <p>Options in addition to those of <code>regexp</code> are
 </p>

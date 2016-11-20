@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -117,7 +117,7 @@ Note that in conditional contexts (like the test clause of @code{if} and
 @code{while} statements) Octave treats the test as if you had typed
 @code{all (all (condition))}.
 
-@c xor scripts/scripts/miscellaneous/xor.m
+@c xor scripts/miscellaneous/xor.m
 @anchor{XREFxor}
 @deftypefn  {} {@var{z} =} xor (@var{x}, @var{y})
 @deftypefnx {} {@var{z} =} xor (@var{x1}, @var{x2}, @dots{})
@@ -237,9 +237,9 @@ isfinite ([13, Inf, NA, NaN])
 @end deftypefn
 
 
-@c common_size scripts/scripts/general/common_size.m
+@c common_size scripts/general/common_size.m
 @anchor{XREFcommon_size}
-@deftypefn {} {[@var{err}, @var{y1}, @dots{}] =} common_size (@var{x1}, @dots{})
+@deftypefn {} {[@var{err}, @var{yi}, @dots{}] =} common_size (@var{xi}, @dots{})
 Determine if all input arguments are either scalar or of common size.
 
 If true, @var{err} is zero, and @var{yi} is a matrix of the common size
@@ -249,8 +249,8 @@ otherwise.  If the inputs cannot be brought to a common size, @var{err} is
 
 @example
 @group
-[errorcode, a, b] = common_size ([1 2; 3 4], 5)
-     @result{} errorcode = 0
+[err, a, b] = common_size ([1 2; 3 4], 5)
+     @result{} err = 0
      @result{} a = [ 1, 2; 3, 4 ]
      @result{} b = [ 5, 5; 5, 5 ]
 @end group
@@ -259,6 +259,7 @@ otherwise.  If the inputs cannot be brought to a common size, @var{err} is
 @noindent
 This is useful for implementing functions where arguments can either be
 scalars or of common size.
+@seealso{@ref{XREFsize,,size}, @ref{XREFsize_equal,,size_equal}, @ref{XREFnumel,,numel}, @ref{XREFndims,,ndims}}
 @end deftypefn
 
 
@@ -387,7 +388,7 @@ its elements may have, consult @ref{Status of Variables}.
 @node Rearranging Matrices
 @section Rearranging Matrices
 
-@c fliplr scripts/scripts/general/fliplr.m
+@c fliplr scripts/general/fliplr.m
 @anchor{XREFfliplr}
 @deftypefn {} {} fliplr (@var{x})
 Flip array left to right.
@@ -407,7 +408,7 @@ fliplr ([1, 2; 3, 4])
 @end deftypefn
 
 
-@c flipud scripts/scripts/general/flipud.m
+@c flipud scripts/general/flipud.m
 @anchor{XREFflipud}
 @deftypefn {} {} flipud (@var{x})
 Flip array upside down.
@@ -427,7 +428,7 @@ flipud ([1, 2; 3, 4])
 @end deftypefn
 
 
-@c flip scripts/scripts/general/flip.m
+@c flip scripts/general/flip.m
 @anchor{XREFflip}
 @deftypefn  {} {} flip (@var{x})
 @deftypefnx {} {} flip (@var{x}, @var{dim})
@@ -462,7 +463,7 @@ flip ([1 2; 3 4], 2)
 @end deftypefn
 
 
-@c rot90 scripts/scripts/general/rot90.m
+@c rot90 scripts/general/rot90.m
 @anchor{XREFrot90}
 @deftypefn  {} {} rot90 (@var{A})
 @deftypefnx {} {} rot90 (@var{A}, @var{k})
@@ -504,7 +505,7 @@ i.e., rows and columns.  To perform a rotation on any other plane, use
 @end deftypefn
 
 
-@c rotdim scripts/scripts/general/rotdim.m
+@c rotdim scripts/general/rotdim.m
 @anchor{XREFrotdim}
 @deftypefn  {} {} rotdim (@var{x})
 @deftypefnx {} {} rotdim (@var{x}, @var{n})
@@ -756,7 +757,7 @@ Resizing an object to fewer dimensions is not possible.
 @end deftypefn
 
 
-@c circshift scripts/scripts/general/circshift.m
+@c circshift scripts/general/circshift.m
 @anchor{XREFcircshift}
 @deftypefn  {} {@var{y} =} circshift (@var{x}, @var{n})
 @deftypefnx {} {@var{y} =} circshift (@var{x}, @var{n}, @var{dim})
@@ -794,7 +795,7 @@ circshift (x, [0,1])
 @end deftypefn
 
 
-@c shift scripts/scripts/general/shift.m
+@c shift scripts/general/shift.m
 @anchor{XREFshift}
 @deftypefn  {} {} shift (@var{x}, @var{b})
 @deftypefnx {} {} shift (@var{x}, @var{b}, @var{dim})
@@ -807,7 +808,7 @@ If the optional @var{dim} argument is given, operate along this dimension.
 @end deftypefn
 
 
-@c shiftdim scripts/scripts/general/shiftdim.m
+@c shiftdim scripts/general/shiftdim.m
 @anchor{XREFshiftdim}
 @deftypefn  {} {@var{y} =} shiftdim (@var{x}, @var{n})
 @deftypefnx {} {[@var{y}, @var{ns}] =} shiftdim (@var{x})
@@ -912,7 +913,7 @@ ordered lists.
 @end deftypefn
 
 
-@c sortrows scripts/scripts/general/sortrows.m
+@c sortrows scripts/general/sortrows.m
 @anchor{XREFsortrows}
 @deftypefn  {} {[@var{s}, @var{i}] =} sortrows (@var{A})
 @deftypefnx {} {[@var{s}, @var{i}] =} sortrows (@var{A}, @var{c})
@@ -1060,7 +1061,7 @@ with all elements along the last dimension.  This is equivalent to
 @end deftypefn
 
 
-@c vech scripts/scripts/linear-algebra/vech.m
+@c vech scripts/linear-algebra/vech.m
 @anchor{XREFvech}
 @deftypefn {} {} vech (@var{x})
 Return the vector obtained by eliminating all superdiagonal elements of
@@ -1073,7 +1074,7 @@ and it would be pointless to keep values above the main diagonal.
 @end deftypefn
 
 
-@c prepad scripts/scripts/general/prepad.m
+@c prepad scripts/general/prepad.m
 @anchor{XREFprepad}
 @deftypefn  {} {} prepad (@var{x}, @var{l})
 @deftypefnx {} {} prepad (@var{x}, @var{l}, @var{c})
@@ -1094,7 +1095,7 @@ If @var{dim} is larger than the dimensions of @var{x}, the result will have
 @end deftypefn
 
 
-@c postpad scripts/scripts/general/postpad.m
+@c postpad scripts/general/postpad.m
 @anchor{XREFpostpad}
 @deftypefn  {} {} postpad (@var{x}, @var{l})
 @deftypefnx {} {} postpad (@var{x}, @var{l}, @var{c})
@@ -1149,7 +1150,7 @@ Given a matrix argument, instead of a vector, @code{diag} extracts the
 @end deftypefn
 
 
-@c blkdiag scripts/scripts/general/blkdiag.m
+@c blkdiag scripts/general/blkdiag.m
 @anchor{XREFblkdiag}
 @deftypefn {} {} blkdiag (@var{A}, @var{B}, @var{C}, @dots{})
 Build a block diagonal matrix from @var{A}, @var{B}, @var{C}, @dots{}
@@ -1271,7 +1272,7 @@ val = zeros (m,n, "uint8")
 @end deftypefn
 
 
-@c repmat scripts/scripts/general/repmat.m
+@c repmat scripts/general/repmat.m
 @anchor{XREFrepmat}
 @deftypefn  {} {} repmat (@var{A}, @var{m})
 @deftypefnx {} {} repmat (@var{A}, @var{m}, @var{n})
@@ -1347,7 +1348,7 @@ if fewer than two values are requested.
 @end deftypefn
 
 
-@c logspace scripts/scripts/general/logspace.m
+@c logspace scripts/general/logspace.m
 @anchor{XREFlogspace}
 @deftypefn  {} {} logspace (@var{a}, @var{b})
 @deftypefnx {} {} logspace (@var{a}, @var{b}, @var{n})
@@ -1481,7 +1482,7 @@ classes.
 @end deftypefn
 
 
-@c randi scripts/scripts/general/randi.m
+@c randi scripts/general/randi.m
 @anchor{XREFrandi}
 @deftypefn  {} {} randi (@var{imax})
 @deftypefnx {} {} randi (@var{imax}, @var{n})
@@ -1818,7 +1819,7 @@ likely.
 
 The following functions return famous matrix forms.
 
-@c gallery scripts/scripts/special-matrix/gallery.m
+@c gallery scripts/special-matrix/gallery.m
 @anchor{XREFgallery}
 @deftypefn  {} {} gallery (@var{name})
 @deftypefnx {} {} gallery (@var{name}, @var{args})
@@ -2204,7 +2205,7 @@ Create various specific matrices devised/discussed by Wilkinson.
 @end deftypefn
 
 
-@c hadamard scripts/scripts/special-matrix/hadamard.m
+@c hadamard scripts/special-matrix/hadamard.m
 @anchor{XREFhadamard}
 @deftypefn {} {} hadamard (@var{n})
 Construct a Hadamard matrix (@nospell{Hn}) of size @var{n}-by-@var{n}.
@@ -2237,7 +2238,7 @@ matrix.
 @end deftypefn
 
 
-@c hankel scripts/scripts/special-matrix/hankel.m
+@c hankel scripts/special-matrix/hankel.m
 @anchor{XREFhankel}
 @deftypefn  {} {} hankel (@var{c})
 @deftypefnx {} {} hankel (@var{c}, @var{r})
@@ -2270,7 +2271,7 @@ H(i,j) = r(i+j-m),  otherwise
 @end deftypefn
 
 
-@c hilb scripts/scripts/special-matrix/hilb.m
+@c hilb scripts/special-matrix/hilb.m
 @anchor{XREFhilb}
 @deftypefn {} {} hilb (@var{n})
 Return the Hilbert matrix of order @var{n}.
@@ -2307,7 +2308,7 @@ cond (hilb (5))
 @end deftypefn
 
 
-@c invhilb scripts/scripts/special-matrix/invhilb.m
+@c invhilb scripts/special-matrix/invhilb.m
 @anchor{XREFinvhilb}
 @deftypefn {} {} invhilb (@var{n})
 Return the inverse of the Hilbert matrix of order @var{n}.
@@ -2365,7 +2366,7 @@ finite precision of your computer's floating point arithmetic.
 @end deftypefn
 
 
-@c magic scripts/scripts/special-matrix/magic.m
+@c magic scripts/special-matrix/magic.m
 @anchor{XREFmagic}
 @deftypefn {} {} magic (@var{n})
 
@@ -2380,7 +2381,7 @@ degenerate magic squares 1 and [].
 @end deftypefn
 
 
-@c pascal scripts/scripts/special-matrix/pascal.m
+@c pascal scripts/special-matrix/pascal.m
 @anchor{XREFpascal}
 @deftypefn  {} {} pascal (@var{n})
 @deftypefnx {} {} pascal (@var{n}, @var{t})
@@ -2404,7 +2405,7 @@ That is, @code{pascal (@var{n}, 2) ^ 3 == eye (@var{n})}.
 @end deftypefn
 
 
-@c rosser scripts/scripts/special-matrix/rosser.m
+@c rosser scripts/special-matrix/rosser.m
 @anchor{XREFrosser}
 @deftypefn {} {} rosser ()
 Return the Rosser matrix.
@@ -2414,7 +2415,7 @@ This is a difficult test case used to evaluate eigenvalue algorithms.
 @end deftypefn
 
 
-@c toeplitz scripts/scripts/special-matrix/toeplitz.m
+@c toeplitz scripts/special-matrix/toeplitz.m
 @anchor{XREFtoeplitz}
 @deftypefn  {} {} toeplitz (@var{c})
 @deftypefnx {} {} toeplitz (@var{c}, @var{r})
@@ -2454,7 +2455,7 @@ c(n) c(n-1) c(n-2) @dots{}  c(0)
 @end deftypefn
 
 
-@c vander scripts/scripts/special-matrix/vander.m
+@c vander scripts/special-matrix/vander.m
 @anchor{XREFvander}
 @deftypefn  {} {} vander (@var{c})
 @deftypefnx {} {} vander (@var{c}, @var{n})
@@ -2490,7 +2491,7 @@ c(n)^(n-1) @dots{} c(n)^2  c(n)  1
 @end deftypefn
 
 
-@c wilkinson scripts/scripts/special-matrix/wilkinson.m
+@c wilkinson scripts/special-matrix/wilkinson.m
 @anchor{XREFwilkinson}
 @deftypefn {} {} wilkinson (@var{n})
 Return the Wilkinson matrix of order @var{n}.

@@ -1,7 +1,7 @@
 /* DO NOT EDIT. AUTOMATICALLY GENERATED FROM oct-tex-lexer.in.ll and oct-tex-symbols.in. */
 /*
 
-Copyright (C) 2013-2015 Michael Goffioul
+Copyright (C) 2013-2016 Michael Goffioul
 
 This file is part of Octave.
 

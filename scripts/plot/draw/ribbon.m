@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2015 Kai Habel
+## Copyright (C) 2007-2016 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -95,7 +95,7 @@ function h = ribbon (varargin)
     endfor
 
     if (! ishold ())
-      set (hax, "view", [-37.5, 30], "box", "off",
+      set (hax, "view", [-37.5, 30],
                 "xgrid", "on", "ygrid", "on", "zgrid", "on");
     endif
 
@@ -114,10 +114,10 @@ endfunction
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! [x, y, z] = sombrero ();
 %! ribbon (y, z);
-%! title ('ribbon() plot of sombrero()');
+%! title ("ribbon() plot of sombrero()");
 
 %!FIXME: Could have some input validation tests here
 

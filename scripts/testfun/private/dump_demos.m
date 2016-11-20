@@ -1,4 +1,4 @@
-## Copyright (C) 2010 Søren Hauberg
+## Copyright (C) 2010-2016 Søren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -62,6 +62,10 @@ function dump_demos (dirs={"plot/appearance", "plot/draw", "plot/util", "image"}
     error ("dump_demos: DIRS must be a cell array of strings with directory names");
   endif
 
+  if (! isunix ())
+    dirs = strrep (dirs, "/", filesep ());
+  endif
+
   [~, funcname, ext] = fileparts (output);
   if (isempty (ext))
     output = [output ".m"];
@@ -71,6 +75,14 @@ function dump_demos (dirs={"plot/appearance", "plot/draw", "plot/util", "image"}
   fid = fopen (output, "w");
   fprintf (fid, "%% DO NOT EDIT!  Generated automatically by dump_demos.m\n");
   fprintf (fid, "function %s ()\n", funcname);
+  fprintf (fid, "set (0, 'DefaultAxesColorOrder', ...\n");
+  fprintf (fid, "  [ 0.00000   0.00000   1.00000 ;\n");
+  fprintf (fid, "    0.00000   0.50000   0.00000 ;\n");
+  fprintf (fid, "    1.00000   0.00000   0.00000 ;\n");
+  fprintf (fid, "    0.00000   0.75000   0.75000 ;\n");
+  fprintf (fid, "    0.75000   0.00000   0.75000 ;\n");
+  fprintf (fid, "    0.75000   0.75000   0.00000 ;\n");
+  fprintf (fid, "    0.25000   0.25000   0.25000 ]);\n");
   fprintf (fid, "close all\n");
   fprintf (fid, "more off\n");
   fprintf (fid, "diary diary.log\n");
@@ -94,7 +106,7 @@ function dump_demos (dirs={"plot/appearance", "plot/draw", "plot/util", "image"}
   fprintf (fid, "\ndiary off\n");
 
   ## Create script ending
-  fprintf (fid, "end\n\n")
+  fprintf (fid, "end\n\n");
 
   ## Close script
   fclose (fid);
@@ -122,38 +134,39 @@ function dump_all_demos (directory, fid, fmt)
       ## Wrap each demo in a function which create a local scope
       ## to prevent that a previous demo overwrites i or pi, for example
       fprintf (fid, "\nfunction %s ()\n", base_fn);
-      fprintf (fid, "  try\n");
+      fprintf (fid, "    %s\n\n", demos{d});
+      fprintf (fid, "end\n\n");
+
+      fprintf (fid, "try\n");
       ## First check if the file already exists, skip demo if found
-      fprintf (fid, "   if (~ exist ('%s', 'file'))\n", fn);
+      fprintf (fid, "  if (~ exist ('%s', 'file'))\n", fn);
       ## Invoke the ancient, deprecated random seed generators, but there is an
       ## initialization mismatch with the more modern generators reported
       ## here (https://savannah.gnu.org/bugs/?42557).
       fprintf (fid, "    rand ('seed', 1);\n");
       fprintf (fid, "    tic ();\n");
-      fprintf (fid, "    %s\n\n", demos{d});
+      fprintf (fid, "    %s ();\n", base_fn);
       fprintf (fid, "    t_plot = toc ();\n");
       fprintf (fid, "    fig = (get (0, 'currentfigure'));\n");
       fprintf (fid, "    if (~ isempty (fig))\n");
       fprintf (fid, "      figure (fig);\n");
-      fprintf (fid, "        fprintf ('Printing ""%s"" ... ');\n", fn);
-      fprintf (fid, "        tic ();\n");
-      fprintf (fid, "        print ('-d%s', '%s');\n", fmt, fn);
-      fprintf (fid, "        t_print = toc ();\n");
-      fprintf (fid, "        fprintf ('[%%f %%f] done\\n',t_plot, t_print);\n");
+      fprintf (fid, "      fprintf ('Printing ""%s"" ... ');\n", fn);
+      fprintf (fid, "      tic ();\n");
+      fprintf (fid, "      print ('-d%s', '%s');\n", fmt, fn);
+      fprintf (fid, "      t_print = toc ();\n");
+      fprintf (fid, "      fprintf ('[%%f %%f] done\\n',t_plot, t_print);\n");
       fprintf (fid, "    end\n");
       ## Temporary fix for cruft accumulating in figure window.
       fprintf (fid, "    close ('all');\n");
-      fprintf (fid, "   else\n");
-      fprintf (fid, "     fprintf ('File ""%s"" already exists.\\n');\n", fn);
-      fprintf (fid, "   end\n");
-      fprintf (fid, "  catch\n");
-      fprintf (fid, "    fprintf ('ERROR in %s: %%s\\n', lasterr ());\n", base_fn);
-      fprintf (fid, "    err_fid = fopen ('%s.err', 'w');\n", base_fn);
-      fprintf (fid, "    fprintf (err_fid, '%%s', lasterr ());\n");
-      fprintf (fid, "    fclose (err_fid);\n");
+      fprintf (fid, "  else\n");
+      fprintf (fid, "    fprintf ('File ""%s"" already exists.\\n');\n", fn);
       fprintf (fid, "  end\n");
+      fprintf (fid, "catch\n");
+      fprintf (fid, "  fprintf ('ERROR in %s: %%s\\n', lasterr ());\n", base_fn);
+      fprintf (fid, "  err_fid = fopen ('%s.err', 'w');\n", base_fn);
+      fprintf (fid, "  fprintf (err_fid, '%%s', lasterr ());\n");
+      fprintf (fid, "  fclose (err_fid);\n");
       fprintf (fid, "end\n");
-      fprintf (fid, "%s ();\n", base_fn);
     endfor
   endfor
   fprintf (fid, "\nclose all\n");
@@ -175,8 +188,8 @@ endfunction
 function code = oct2mat (code)
 
   ## Simple hacks to make things Matlab compatible
-  code = strrep (code, "%!", "%%");
-  code = strrep (code, "!", "~");
+  code = strrep (code, "%!", "%%");    # system operator !
+  code = strrep (code, "!", "~");      # logical not operator
 
   ## Simply replacing double quotes with single quotes
   ## causes problems with strings like 'hello "world"' or transpose.
@@ -194,21 +207,27 @@ function code = oct2mat (code)
   code = regexprep (code, "[(,;\n][ ]*'[^']*'(*SKIP)(*F)|\"", "'",
                           "lineanchors", "dotexceptnewline");
 
-  code = strrep (code, "#", "%");
-  ## Fix the format specs for the errorbar demos changed by the line above
-  code = strrep (code, "%r", "#r");
-  code = strrep (code, "%~", "#~");
+  ## replace # not inside single quotes
+  code = regexprep (code, "[(,;\n][ ]*'[^']*'(*SKIP)(*F)|#", "%");
+
+  ## Shorten all long forms of endXXX to 'end'
   endkeywords = {"endfor", "endfunction", "endif", "endwhile", "end_try_catch"};
   for k = 1:numel (endkeywords)
     code = strrep (code, endkeywords{k}, "end");
   endfor
+  ## Comment keywords unknown to Matlab
   commentkeywords = {"unwind_protect", "end_unwind_protect"};
   for k = 1:numel (commentkeywords)
     code = strrep (code, commentkeywords{k}, ["%" commentkeywords{k}]);
   endfor
-
-  ## Fix up sombrero which now has default argument in Octave
-  code = strrep (code, "sombrero ()", "sombrero (41)");
+  ## Fix in-place operators
+  code = regexprep (code, '(\S+)(\s*)(.?[+-/*])=', '$1 = $1 $3');
+  ## Fix x = y = z = XXX assignment
+  code = regexprep (code, '^\s*([^=\s]+)\s*=\s*([^=\s]+)\s*=\s*([^=\s]+)\s*=\s*([^=\n]+)$', ...
+                          "$1 = $4\n$2 = $4\n$3 = $4", "lineanchors");
+  ## Fix x = y = XXX assignment
+  code = regexprep (code, '^\s*([^=\s]+)\s*=\s*([^=\s]+)\s*=\s*([^=\n]+)$', ...
+                          "$1 = $3\n$2 = $3", "lineanchors");
 
 endfunction
 
@@ -253,13 +272,16 @@ function dump_helper_fcns (fid)
 "    style = 'profile';                                                       "
 "  end                                                                        "
 "                                                                             "
+"  idx = 1:size (cmap, 1);                                                    "
 "  switch (lower (style))                                                     "
 "    case 'profile'                                                           "
-"      htmp = plot (cmap(:,1),'r', cmap(:,2),'g', cmap(:,3),'b');             "
+"      htmp = plot (idx, cmap(:,1), 'r', ...                                  "
+"                   idx, cmap(:,2), 'g', ...                                  "
+"                   idx, cmap(:,3), 'b');                                     "
 "      set (gca (), 'ytick', 0:0.1:1);                                        "
-"      set (gca (), 'xlim', [0 rows(cmap)]);                                  "
+"      set (gca (), 'xlim', [0 size(cmap,1)]);                                "
 "    case 'composite'                                                         "
-"      htmp = image (1:rows(cmap));                                           "
+"      htmp = image (idx);                                                    "
 "      set (gca, 'ytick', []);                                                "
 "      colormap (cmap);                                                       "
 "  end                                                                        "
@@ -273,12 +295,6 @@ function dump_helper_fcns (fid)
 ]);  # End of rgbplot dump
 
   fprintf (fid, "\n");
-
-  ## Add dummy assert until we've removed all assert from demos
-  fdisp (fid, [
-"function assert (varargin)                                                   "
-"end                                                                          "
-]);  # End of dummy assert
 
   fprintf (fid, "\n%s\n", repmat ("%", [1, 60]));
 

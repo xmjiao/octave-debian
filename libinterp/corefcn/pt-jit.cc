@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2015 Max Brister
+Copyright (C) 2012-2016 Max Brister
 
 This file is part of Octave.
 
@@ -107,7 +107,8 @@ static llvm::LLVMContext& context = llvm::getGlobalContext ();
 // jit_break is thrown whenever a branch we are converting has only breaks or
 // continues.  This is because all code that follows a break or continue
 // is dead.
-class jit_break_exception : public std::exception {};
+class jit_break_exception : public std::exception
+{ };
 
 // -------------------- jit_convert --------------------
 jit_convert::jit_convert (tree &tee, jit_type *for_bounds)
@@ -1218,7 +1219,7 @@ jit_convert::resolve (tree_index_expression& exp, jit_value *extra_arg,
     {
       octave::unwind_protect frame;
       frame.add_method (&end_context,
-                       &std::vector<jit_magic_end::context>::pop_back);
+                        &std::vector<jit_magic_end::context>::pop_back);
 
       jit_magic_end::context ctx (factory, object, idx, narg);
       end_context.push_back (ctx);
@@ -1636,7 +1637,7 @@ jit_convert_llvm::visit (jit_assign& assign)
 
 void
 jit_convert_llvm::visit (jit_argument&)
-{}
+{ }
 
 void
 jit_convert_llvm::visit (jit_magic_end& me)
@@ -2016,11 +2017,10 @@ jit_infer::simplify_phi (jit_phi& phi)
 // -------------------- tree_jit --------------------
 
 tree_jit::tree_jit (void) : module (0), engine (0)
-{
-}
+{ }
 
 tree_jit::~tree_jit (void)
-{}
+{ }
 
 bool
 tree_jit::execute (tree_simple_for_command& cmd, const octave_value& bounds)
@@ -2605,3 +2605,4 @@ The original variable value is restored when exiting the function.
   return ovl ();
 #endif
 }
+

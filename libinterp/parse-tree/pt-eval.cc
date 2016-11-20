@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2015 John W. Eaton
+Copyright (C) 2009-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -68,7 +68,7 @@ namespace octave
   bool tree_evaluator::quiet_breakpoint_flag = false;
 
   tree_evaluator::stmt_list_type tree_evaluator::statement_context
-  = tree_evaluator::other;
+    = tree_evaluator::other;
 
   bool tree_evaluator::in_loop_command = false;
 
@@ -115,8 +115,7 @@ namespace octave
     if (debug_mode)
       do_breakpoint (cmd.is_breakpoint (true));
 
-    if (statement_context == function || statement_context == script
-        || in_loop_command)
+    if (in_loop_command)
       tree_continue_command::continuing = 1;
   }
 
@@ -816,7 +815,8 @@ namespace octave
   {
     bool execution_error = false;
 
-    { // unwind frame before catch block
+    {
+      // unwind frame before catch block
       octave::unwind_protect frame;
 
       frame.protect_var (buffer_error_messages);
@@ -840,7 +840,7 @@ namespace octave
               try_code->accept (*this);
               in_try_catch--;
             }
-          catch (const octave_execution_exception&)
+          catch (const octave::execution_exception&)
             {
               recover_from_exception ();
 
@@ -912,7 +912,7 @@ namespace octave
         if (list)
           list->accept (*this);
       }
-    catch (const octave_execution_exception&)
+    catch (const octave::execution_exception&)
       {
         recover_from_exception ();
 
@@ -972,7 +972,7 @@ namespace octave
           {
             unwind_protect_code->accept (*this);
           }
-        catch (const octave_execution_exception&)
+        catch (const octave::execution_exception&)
           {
             // FIXME: Maybe we should be able to temporarily set the
             // interpreter's exception handling state to something "safe"
@@ -1240,3 +1240,4 @@ The original variable value is restored when exiting the function.
 
 %!error (silent_functions (1, 2))
 */
+

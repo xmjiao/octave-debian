@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2015 John W. Eaton
+Copyright (C) 2003-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -219,3 +219,4 @@ tree_anon_fcn_handle::accept (tree_walker& tw)
 {
   tw.visit_anon_fcn_handle (*this);
 }
+

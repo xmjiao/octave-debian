@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -243,7 +243,7 @@ tree_statement_list::breakpoints_and_conds (void)
   for (int i = 0; i < lines.length (); i++)
     {
       retval.push_back (bp_type (lines(i).double_value (),
-                                conds(i).string_value ()));
+                                 conds(i).string_value ()));
     }
 
   return retval;
@@ -325,3 +325,4 @@ tree_statement_list::accept (tree_walker& tw)
 {
   tw.visit_statement_list (*this);
 }
+

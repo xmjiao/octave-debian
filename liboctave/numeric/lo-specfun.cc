@@ -1,10 +1,10 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2007-2010 D. Martin
 Copyright (C) 2010 Jaroslav Hajek
 Copyright (C) 2010 VZLU Prague
-Copyright (C) 2015 Carnë Draug
+Copyright (C) 2016 Carnë Draug
 
 This file is part of Octave.
 
@@ -42,160 +42,16 @@ along with Octave; see the file COPYING.  If not, see
 #include "fNDArray.h"
 #include "fCNDArray.h"
 #include "f77-fcn.h"
+#include "lo-amos-proto.h"
 #include "lo-error.h"
 #include "lo-ieee.h"
+#include "lo-slatec-proto.h"
 #include "lo-specfun.h"
 #include "mx-inlines.cc"
 #include "lo-mappers.h"
 #include "lo-math.h"
 
 #include "Faddeeva.hh"
-
-extern "C"
-{
-  F77_RET_T
-  F77_FUNC (zbesj, ZBESJ) (const F77_DBLE&, const F77_DBLE&, const F77_DBLE&,
-                           const F77_INT&, const F77_INT&,
-                           F77_DBLE*, F77_DBLE*, F77_INT&,
-                           F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (zbesy, ZBESY) (const F77_DBLE&, const F77_DBLE&, const F77_DBLE&,
-                           const F77_INT&, const F77_INT&,
-                           F77_DBLE*, F77_DBLE*, F77_INT&, F77_DBLE*,
-                           F77_DBLE*, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (zbesi, ZBESI) (const F77_DBLE&, const F77_DBLE&, const F77_DBLE&,
-                           const F77_INT&, const F77_INT&,
-                           F77_DBLE*, F77_DBLE*, F77_INT&,
-                           F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (zbesk, ZBESK) (const F77_DBLE&, const F77_DBLE&, const F77_DBLE&,
-                           const F77_INT&, const F77_INT&,
-                           F77_DBLE*, F77_DBLE*, F77_INT&,
-                           F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (zbesh, ZBESH) (const F77_DBLE&, const F77_DBLE&, const F77_DBLE&,
-                           const F77_INT&, const F77_INT&,
-                           const F77_INT&, F77_DBLE*, F77_DBLE*,
-                           F77_INT&, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (cbesj, cBESJ) (const F77_CMPLX*, const F77_REAL&,
-                           const F77_INT&, const F77_INT&,
-                           F77_CMPLX*, F77_INT&, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (cbesy, CBESY) (const F77_CMPLX*, const F77_REAL&,
-                           const F77_INT&, const F77_INT&,
-                           F77_CMPLX*, F77_INT&,
-                           F77_CMPLX*, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (cbesi, CBESI) (const F77_CMPLX*, const F77_REAL&,
-                           const F77_INT&, const F77_INT&,
-                           F77_CMPLX*, F77_INT&, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (cbesk, CBESK) (const F77_CMPLX*, const F77_REAL&,
-                           const F77_INT&, const F77_INT&,
-                           F77_CMPLX*, F77_INT&, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (cbesh, CBESH) (const F77_CMPLX*, const F77_REAL&,
-                           const F77_INT&, const F77_INT&,
-                           const F77_INT&, F77_CMPLX*,
-                           F77_INT&, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (zairy, ZAIRY) (const F77_DBLE&, const F77_DBLE&,
-                           const F77_INT&, const F77_INT&,
-                           F77_DBLE&, F77_DBLE&, F77_INT&,
-                           F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (cairy, CAIRY) (const F77_CMPLX*, const F77_INT&,
-                           const F77_INT&, F77_CMPLX*,
-                           F77_INT&, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (zbiry, ZBIRY) (const F77_DBLE&, const F77_DBLE&,
-                           const F77_INT&, const F77_INT&,
-                           F77_DBLE&, F77_DBLE&, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (cbiry, CBIRY) (const F77_CMPLX*, const F77_INT&, const F77_INT&,
-                           const F77_CMPLX*, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (xdacosh, XDACOSH) (const F77_DBLE&, F77_DBLE&);
-
-  F77_RET_T
-  F77_FUNC (xacosh, XACOSH) (const F77_REAL&, F77_REAL&);
-
-  F77_RET_T
-  F77_FUNC (xdasinh, XDASINH) (const F77_DBLE&, F77_DBLE&);
-
-  F77_RET_T
-  F77_FUNC (xasinh, XASINH) (const F77_REAL&, F77_REAL&);
-
-  F77_RET_T
-  F77_FUNC (xdatanh, XDATANH) (const F77_DBLE&, F77_DBLE&);
-
-  F77_RET_T
-  F77_FUNC (xatanh, XATANH) (const F77_REAL&, F77_REAL&);
-
-  F77_RET_T
-  F77_FUNC (xderf, XDERF) (const F77_DBLE&, F77_DBLE&);
-
-  F77_RET_T
-  F77_FUNC (xerf, XERF) (const F77_REAL&, F77_REAL&);
-
-  F77_RET_T
-  F77_FUNC (xderfc, XDERFC) (const F77_DBLE&, F77_DBLE&);
-
-  F77_RET_T
-  F77_FUNC (xerfc, XERFC) (const F77_REAL&, F77_REAL&);
-
-  F77_RET_T
-  F77_FUNC (xdbetai, XDBETAI) (const F77_DBLE&, const F77_DBLE&,
-                               const F77_DBLE&, F77_DBLE&);
-
-  F77_RET_T
-  F77_FUNC (xbetai, XBETAI) (const F77_REAL&, const F77_REAL&,
-                             const F77_REAL&, F77_REAL&);
-
-  F77_RET_T
-  F77_FUNC (xdgamma, XDGAMMA) (const F77_DBLE&, F77_DBLE&);
-
-  F77_RET_T
-  F77_FUNC (xgamma, XGAMMA) (const F77_REAL&, F77_REAL&);
-
-  F77_RET_T
-  F77_FUNC (xgammainc, XGAMMAINC) (const F77_DBLE&, const F77_DBLE&, F77_DBLE&);
-
-  F77_RET_T
-  F77_FUNC (xsgammainc, XSGAMMAINC) (const F77_REAL&, const F77_REAL&, F77_REAL&);
-
-  F77_RET_T
-  F77_FUNC (dlgams, DLGAMS) (const F77_DBLE&, F77_DBLE&, F77_DBLE&);
-
-  F77_RET_T
-  F77_FUNC (algams, ALGAMS) (const F77_REAL&, F77_REAL&, F77_REAL&);
-
-  F77_RET_T
-  F77_FUNC (psifn, PSIFN) (const F77_REAL*, const F77_INT&,
-                           const F77_INT&, const F77_INT&,
-                           F77_REAL*, F77_INT*, F77_INT*);
-
-  F77_RET_T
-  F77_FUNC (dpsifn, DPSIFN) (const F77_DBLE*, const F77_INT&,
-                             const F77_INT&, const F77_INT&,
-                             F77_DBLE*, F77_INT*, F77_INT*);
-}
 
 namespace octave
 {
@@ -367,9 +223,9 @@ namespace octave
     FloatComplex
     erf (const FloatComplex& x)
     {
-      Complex xd (real (x), imag (x));
+      Complex xd (x.real (), x.imag ());
       Complex ret = Faddeeva::erf (xd, std::numeric_limits<float>::epsilon ());
-      return FloatComplex (real (ret), imag (ret));
+      return FloatComplex (ret.real (), ret.imag ());
     }
 
     double
@@ -406,9 +262,9 @@ namespace octave
     FloatComplex
     erfc (const FloatComplex& x)
     {
-      Complex xd (real (x), imag (x));
+      Complex xd (x.real (), x.imag ());
       Complex ret = Faddeeva::erfc (xd, std::numeric_limits<float>::epsilon ());
-      return FloatComplex (real (ret), imag (ret));
+      return FloatComplex (ret.real (), ret.imag ());
     }
 
     // Real and complex scaled complementary error function from Faddeeva package
@@ -424,9 +280,9 @@ namespace octave
     FloatComplex
     erfcx (const FloatComplex& x)
     {
-      Complex xd (real (x), imag (x));
+      Complex xd (x.real (), x.imag ());
       Complex ret = Faddeeva::erfcx (xd, std::numeric_limits<float>::epsilon ());
-      return FloatComplex (real (ret), imag (ret));
+      return FloatComplex (ret.real (), ret.imag ());
     }
 
     // Real and complex imaginary error function from Faddeeva package
@@ -442,9 +298,9 @@ namespace octave
     FloatComplex
     erfi (const FloatComplex& x)
     {
-      Complex xd (real (x), imag (x));
+      Complex xd (x.real (), x.imag ());
       Complex ret = Faddeeva::erfi (xd, std::numeric_limits<float>::epsilon ());
-      return FloatComplex (real (ret), imag (ret));
+      return FloatComplex (ret.real (), ret.imag ());
     }
 
     // Real and complex Dawson function (= scaled erfi) from Faddeeva package
@@ -460,9 +316,9 @@ namespace octave
     FloatComplex
     dawson (const FloatComplex& x)
     {
-      Complex xd (real (x), imag (x));
+      Complex xd (x.real (), x.imag ());
       Complex ret = Faddeeva::Dawson (xd, std::numeric_limits<float>::epsilon ());
-      return FloatComplex (real (ret), imag (ret));
+      return FloatComplex (ret.real (), ret.imag ());
     }
 
     double
@@ -1083,7 +939,7 @@ namespace octave
           if (ierr == 0 || ierr == 3)
             {
               Complex tmp2 = (2.0 / M_PI) * sin (M_PI * alpha)
-                * zbesk (z, alpha, kode, ierr);
+                             * zbesk (z, alpha, kode, ierr);
 
               if (kode == 2)
                 {
@@ -1133,8 +989,8 @@ namespace octave
                 {
                   Complex expz = exp (-z);
 
-                  double rexpz = real (expz);
-                  double iexpz = imag (expz);
+                  double rexpz = expz.real ();
+                  double iexpz = expz.imag ();
 
                   double tmp = yr*rexpz - yi*iexpz;
 
@@ -1179,8 +1035,8 @@ namespace octave
             {
               Complex expz = exp (Complex (0.0, 1.0) * z);
 
-              double rexpz = real (expz);
-              double iexpz = imag (expz);
+              double rexpz = expz.real ();
+              double iexpz = expz.imag ();
 
               double tmp = yr*rexpz - yi*iexpz;
 
@@ -1225,8 +1081,8 @@ namespace octave
             {
               Complex expz = exp (-Complex (0.0, 1.0) * z);
 
-              double rexpz = real (expz);
-              double iexpz = imag (expz);
+              double rexpz = expz.real ();
+              double iexpz = expz.imag ();
 
               double tmp = yr*rexpz - yi*iexpz;
 
@@ -1559,15 +1415,16 @@ namespace octave
 
           octave_idx_type nz;
 
-          F77_FUNC (cbesj, CBESJ) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 1, F77_CMPLX_ARG (&y), nz, ierr);
+          F77_FUNC (cbesj, CBESJ) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 1,
+                                   F77_CMPLX_ARG (&y), nz, ierr);
 
           if (kode != 2)
             {
-              float expz = exp (std::abs (imag (z)));
+              float expz = exp (std::abs (z.imag ()));
               y *= expz;
             }
 
-          if (imag (z) == 0.0 && real (z) >= 0.0)
+          if (z.imag () == 0.0 && z.real () >= 0.0)
             y = FloatComplex (y.real (), 0.0);
 
           retval = bessel_return_value (y, ierr);
@@ -1586,12 +1443,12 @@ namespace octave
           alpha = -alpha;
 
           FloatComplex tmp = cosf (static_cast<float> (M_PI) * alpha)
-            * cbesj (z, alpha, kode, ierr);
+                             * cbesj (z, alpha, kode, ierr);
 
           if (ierr == 0 || ierr == 3)
             {
               tmp -= sinf (static_cast<float> (M_PI) * alpha)
-                * cbesy (z, alpha, kode, ierr);
+                     * cbesy (z, alpha, kode, ierr);
 
               retval = bessel_return_value (tmp, ierr);
             }
@@ -1618,21 +1475,22 @@ namespace octave
 
           ierr = 0;
 
-          if (real (z) == 0.0 && imag (z) == 0.0)
+          if (z.real () == 0.0 && z.imag () == 0.0)
             {
               y = FloatComplex (-octave::numeric_limits<float>::Inf (), 0.0);
             }
           else
             {
-              F77_FUNC (cbesy, CBESY) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 1, F77_CMPLX_ARG (&y), nz, F77_CMPLX_ARG (&w), ierr);
+              F77_FUNC (cbesy, CBESY) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 1,
+                                       F77_CMPLX_ARG (&y), nz, F77_CMPLX_ARG (&w), ierr);
 
               if (kode != 2)
                 {
-                  float expz = exp (std::abs (imag (z)));
+                  float expz = exp (std::abs (z.imag ()));
                   y *= expz;
                 }
 
-              if (imag (z) == 0.0 && real (z) >= 0.0)
+              if (z.imag () == 0.0 && z.real () >= 0.0)
                 y = FloatComplex (y.real (), 0.0);
             }
 
@@ -1652,12 +1510,12 @@ namespace octave
           alpha = -alpha;
 
           FloatComplex tmp = cosf (static_cast<float> (M_PI) * alpha)
-            * cbesy (z, alpha, kode, ierr);
+                             * cbesy (z, alpha, kode, ierr);
 
           if (ierr == 0 || ierr == 3)
             {
               tmp += sinf (static_cast<float> (M_PI) * alpha)
-                * cbesj (z, alpha, kode, ierr);
+                     * cbesj (z, alpha, kode, ierr);
 
               retval = bessel_return_value (tmp, ierr);
             }
@@ -1680,15 +1538,16 @@ namespace octave
 
           octave_idx_type nz;
 
-          F77_FUNC (cbesi, CBESI) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 1, F77_CMPLX_ARG (&y), nz, ierr);
+          F77_FUNC (cbesi, CBESI) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 1,
+                                   F77_CMPLX_ARG (&y), nz, ierr);
 
           if (kode != 2)
             {
-              float expz = exp (std::abs (real (z)));
+              float expz = exp (std::abs (z.real ()));
               y *= expz;
             }
 
-          if (imag (z) == 0.0 && real (z) >= 0.0)
+          if (z.imag () == 0.0 && z.real () >= 0.0)
             y = FloatComplex (y.real (), 0.0);
 
           retval = bessel_return_value (y, ierr);
@@ -1702,8 +1561,8 @@ namespace octave
           if (ierr == 0 || ierr == 3)
             {
               FloatComplex tmp2 = static_cast<float> (2.0 / M_PI)
-                * sinf (static_cast<float> (M_PI) * alpha)
-                * cbesk (z, alpha, kode, ierr);
+                                  * sinf (static_cast<float> (M_PI) * alpha)
+                                  * cbesk (z, alpha, kode, ierr);
 
               if (kode == 2)
                 {
@@ -1736,28 +1595,29 @@ namespace octave
 
           ierr = 0;
 
-          if (real (z) == 0.0 && imag (z) == 0.0)
+          if (z.real () == 0.0 && z.imag () == 0.0)
             {
               y = FloatComplex (octave::numeric_limits<float>::Inf (), 0.0);
             }
           else
             {
-              F77_FUNC (cbesk, CBESK) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 1, F77_CMPLX_ARG (&y), nz, ierr);
+              F77_FUNC (cbesk, CBESK) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 1,
+                                       F77_CMPLX_ARG (&y), nz, ierr);
 
               if (kode != 2)
                 {
                   FloatComplex expz = exp (-z);
 
-                  float rexpz = real (expz);
-                  float iexpz = imag (expz);
+                  float rexpz = expz.real ();
+                  float iexpz = expz.imag ();
 
-                  float tmp_r = real (y) * rexpz - imag (y) * iexpz;
-                  float tmp_i = real (y) * iexpz + imag (y) * rexpz;
+                  float tmp_r = y.real () * rexpz - y.imag () * iexpz;
+                  float tmp_i = y.real () * iexpz + y.imag () * rexpz;
 
                   y = FloatComplex (tmp_r, tmp_i);
                 }
 
-              if (imag (z) == 0.0 && real (z) >= 0.0)
+              if (z.imag () == 0.0 && z.real () >= 0.0)
                 y = FloatComplex (y.real (), 0.0);
             }
 
@@ -1784,17 +1644,18 @@ namespace octave
 
           octave_idx_type nz;
 
-          F77_FUNC (cbesh, CBESH) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 1, 1, F77_CMPLX_ARG (&y), nz, ierr);
+          F77_FUNC (cbesh, CBESH) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 1, 1,
+                                   F77_CMPLX_ARG (&y), nz, ierr);
 
           if (kode != 2)
             {
               FloatComplex expz = exp (FloatComplex (0.0, 1.0) * z);
 
-              float rexpz = real (expz);
-              float iexpz = imag (expz);
+              float rexpz = expz.real ();
+              float iexpz = expz.imag ();
 
-              float tmp_r = real (y) * rexpz - imag (y) * iexpz;
-              float tmp_i = real (y) * iexpz + imag (y) * rexpz;
+              float tmp_r = y.real () * rexpz - y.imag () * iexpz;
+              float tmp_i = y.real () * iexpz + y.imag () * rexpz;
 
               y = FloatComplex (tmp_r, tmp_i);
             }
@@ -1808,7 +1669,7 @@ namespace octave
           static const FloatComplex eye = FloatComplex (0.0, 1.0);
 
           FloatComplex tmp = exp (static_cast<float> (M_PI) * alpha * eye)
-            * cbesh1 (z, alpha, kode, ierr);
+                             * cbesh1 (z, alpha, kode, ierr);
 
           retval = bessel_return_value (tmp, ierr);
         }
@@ -1827,17 +1688,18 @@ namespace octave
 
           octave_idx_type nz;
 
-          F77_FUNC (cbesh, CBESH) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 2, 1, F77_CMPLX_ARG (&y), nz, ierr);
+          F77_FUNC (cbesh, CBESH) (F77_CONST_CMPLX_ARG (&z), alpha, 2, 2, 1,
+                                   F77_CMPLX_ARG (&y), nz, ierr);
 
           if (kode != 2)
             {
               FloatComplex expz = exp (-FloatComplex (0.0, 1.0) * z);
 
-              float rexpz = real (expz);
-              float iexpz = imag (expz);
+              float rexpz = expz.real ();
+              float iexpz = expz.imag ();
 
-              float tmp_r = real (y) * rexpz - imag (y) * iexpz;
-              float tmp_i = real (y) * iexpz + imag (y) * rexpz;
+              float tmp_r = y.real () * rexpz - y.imag () * iexpz;
+              float tmp_i = y.real () * iexpz + y.imag () * rexpz;
 
               y = FloatComplex (tmp_r, tmp_i);
             }
@@ -1851,7 +1713,7 @@ namespace octave
           static const FloatComplex eye = FloatComplex (0.0, 1.0);
 
           FloatComplex tmp = exp (-static_cast<float> (M_PI) * alpha * eye)
-            * cbesh2 (z, alpha, kode, ierr);
+                             * cbesh2 (z, alpha, kode, ierr);
 
           retval = bessel_return_value (tmp, ierr);
         }
@@ -2124,8 +1986,8 @@ namespace octave
         {
           Complex expz = exp (- 2.0 / 3.0 * z * sqrt (z));
 
-          double rexpz = real (expz);
-          double iexpz = imag (expz);
+          double rexpz = expz.real ();
+          double iexpz = expz.imag ();
 
           double tmp = ar*rexpz - ai*iexpz;
 
@@ -2154,10 +2016,10 @@ namespace octave
 
       if (! scaled)
         {
-          Complex expz = exp (std::abs (real (2.0 / 3.0 * z * sqrt (z))));
+          Complex expz = exp (std::abs (std::real (2.0 / 3.0 * z * sqrt (z))));
 
-          double rexpz = real (expz);
-          double iexpz = imag (expz);
+          double rexpz = expz.real ();
+          double iexpz = expz.imag ();
 
           double tmp = ar*rexpz - ai*iexpz;
 
@@ -2248,7 +2110,8 @@ namespace octave
 
       octave_idx_type id = deriv ? 1 : 0;
 
-      F77_FUNC (cairy, CAIRY) (F77_CONST_CMPLX_ARG (&z), id, 2, F77_CMPLX_ARG (&a), nz, ierr);
+      F77_FUNC (cairy, CAIRY) (F77_CONST_CMPLX_ARG (&z), id, 2, F77_CMPLX_ARG (&a),
+                               nz, ierr);
 
       float ar = a.real ();
       float ai = a.imag ();
@@ -2257,8 +2120,8 @@ namespace octave
         {
           FloatComplex expz = exp (- 2.0f / 3.0f * z * sqrt (z));
 
-          float rexpz = real (expz);
-          float iexpz = imag (expz);
+          float rexpz = expz.real ();
+          float iexpz = expz.imag ();
 
           float tmp = ar*rexpz - ai*iexpz;
 
@@ -2279,17 +2142,18 @@ namespace octave
 
       octave_idx_type id = deriv ? 1 : 0;
 
-      F77_FUNC (cbiry, CBIRY) (F77_CONST_CMPLX_ARG (&z), id, 2, F77_CMPLX_ARG (&a), ierr);
+      F77_FUNC (cbiry, CBIRY) (F77_CONST_CMPLX_ARG (&z), id, 2, F77_CMPLX_ARG (&a),
+                               ierr);
 
       float ar = a.real ();
       float ai = a.imag ();
 
       if (! scaled)
         {
-          FloatComplex expz = exp (std::abs (real (2.0f / 3.0f * z * sqrt (z))));
+          FloatComplex expz = exp (std::abs (std::real (2.0f / 3.0f * z * sqrt (z))));
 
-          float rexpz = real (expz);
-          float iexpz = imag (expz);
+          float rexpz = expz.real ();
+          float iexpz = expz.imag ();
 
           float tmp = ar*rexpz - ai*iexpz;
 
@@ -2684,7 +2548,7 @@ namespace octave
     {
       if (a < 0.0 || x < 0.0)
         (*current_liboctave_error_handler)
-              ("gammainc: A and X must be non-negative");
+          ("gammainc: A and X must be non-negative");
 
       err = false;
 
@@ -2847,7 +2711,7 @@ namespace octave
     {
       if (a < 0.0 || x < 0.0)
         (*current_liboctave_error_handler)
-              ("gammainc: A and X must be non-negative");
+          ("gammainc: A and X must be non-negative");
 
       err = false;
 
@@ -3653,7 +3517,8 @@ namespace octave
       if (m < 0 || m > 1)
         {
           (*current_liboctave_warning_with_id_handler)
-            ("Octave:ellipj-invalid-m", "ellipj: invalid M value, required value 0 <= M <= 1");
+            ("Octave:ellipj-invalid-m",
+             "ellipj: invalid M value, required value 0 <= M <= 1");
 
           sn = cn = dn = lo_ieee_nan_value ();
 
@@ -3721,8 +3586,8 @@ namespace octave
     {
       double m1 = 1 - m, ss1, cc1, dd1;
 
-      ellipj (imag (u), m1, ss1, cc1, dd1, err);
-      if (real (u) == 0)
+      ellipj (u.imag (), m1, ss1, cc1, dd1, err);
+      if (u.real () == 0)
         {
           // u is pure imag: Jacoby imag. transf.
           sn = Complex (0, ss1/cc1);
@@ -3734,7 +3599,7 @@ namespace octave
           // u is generic complex
           double ss, cc, dd, ddd;
 
-          ellipj (real (u), m, ss, cc, dd, err);
+          ellipj (u.real (), m, ss, cc, dd, err);
           ddd = cc1*cc1 + m*ss*ss*ss1*ss1;
           sn = Complex (ss*dd1/ddd, cc*dd*ss1*cc1/ddd);
           cn = Complex (cc*cc1/ddd, -ss*dd*ss1*dd1/ddd);
@@ -3773,7 +3638,8 @@ namespace octave
       // gammaFunctions psi_coef[k] = - (2k+1) * lg_coef[k] (see melina++
       // gamma functions -1/12, 3/360,-5/1260, 7/1680,-9/1188,
       // 11*691/360360,-13/156, 15*3617/122400, ? , ?
-      static const T dg_coeff[10] = {
+      static const T dg_coeff[10] =
+      {
         -0.83333333333333333e-1, 0.83333333333333333e-2,
         -0.39682539682539683e-2, 0.41666666666666667e-2,
         -0.75757575757575758e-2, 0.21092796092796093e-1,
@@ -3795,7 +3661,8 @@ namespace octave
     T
     xpsi (T z)
     {
-      static const double euler_mascheroni = 0.577215664901532860606512090082402431042;
+      static const double euler_mascheroni =
+        0.577215664901532860606512090082402431042;
 
       const bool is_int = (octave::math::floor (z) == z);
 
@@ -4107,3 +3974,4 @@ Array<double> betaincinv (const Array<double>& x, const Array<double>& a, double
 Array<double> betaincinv (const Array<double>& x, const Array<double>& a, const Array<double>& b) { return octave::math::betaincinv (x, a, b); }
 
 #endif
+

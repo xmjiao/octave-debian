@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2015 Martin Helm
+## Copyright (C) 2012-2016 Martin Helm
 ##
 ## This file is part of Octave.
 ##
@@ -155,18 +155,20 @@ endfunction
 %! clf;
 %! faces = [1 2 3; 1 3 4];
 %! vertices = [0 0; 1 0; 1 1; 0 1];
-%! patch ('Faces', faces, 'Vertices', vertices, 'FaceColor', 'none');
+%! patch ("Faces", faces, "Vertices", vertices, "FaceColor", "none");
 %! fv = shrinkfaces (faces, vertices, 0.25);
 %! patch (fv);
+%! axis auto;   # Kludge required for Octave
 %! axis equal;
 
 %!demo
 %! clf;
 %! faces = [1 2 3 4; 5 6 7 8];
 %! vertices = [0 0; 1 0; 2 1; 1 1; 2 0; 3 0; 4 1; 3.5 1];
-%! patch ('Faces', faces, 'Vertices', vertices, 'FaceColor', 'none');
+%! patch ("Faces", faces, "Vertices", vertices, "FaceColor", "none");
 %! fv = shrinkfaces (faces, vertices, 0.25);
 %! patch (fv);
+%! axis auto;   # Kludge required for Octave
 %! axis equal;
 %! grid on;
 
@@ -174,21 +176,23 @@ endfunction
 %! clf;
 %! faces = [1 2 3 4];
 %! vertices = [-1 2; 0 0; 1 2; 0 1];
-%! patch ('Faces', faces, 'Vertices', vertices, 'FaceColor', 'none');
+%! patch ("Faces", faces, "Vertices", vertices, "FaceColor", "none");
 %! fv = shrinkfaces (faces, vertices, 0.25);
 %! patch (fv);
+%! axis auto;   # Kludge required for Octave
 %! axis equal;
 %! grid on;
-%! title 'faces which are not convex are clearly not allowed'
+%! title "faces which are not convex are clearly not allowed"
 
 %!demo
 %! clf;
 %! [phi r] = meshgrid (linspace (0, 1.5*pi, 16), linspace (1, 2, 4));
 %! tri = delaunay (phi(:), r(:));
 %! v = [r(:).*sin(phi(:)) r(:).*cos(phi(:))];
-%! p = patch ('Faces', tri, 'Vertices', v, 'FaceColor', 'none');
+%! p = patch ("Faces", tri, "Vertices", v, "FaceColor", "none");
 %! fv = shrinkfaces (p);
 %! patch (fv);
+%! axis auto;   # Kludge required for Octave
 %! axis equal;
 %! grid on;
 
@@ -197,10 +201,11 @@ endfunction
 %! N = 10;  % N intervals per axis
 %! [x, y, z] = meshgrid (linspace (-4,4,N+1));
 %! val = x.^3 + y.^3 + z.^3;
-%! fv = isosurface (x, y, z, val, 3, z, 'noshare');
+%! fv = isosurface (x, y, z, val, 3, z, "noshare");
 %!
-%! p = patch ('Faces', fv.faces, 'Vertices', fv.vertices, 'FaceVertexCData', ...
-%!            fv.facevertexcdata, 'FaceColor', 'interp', 'EdgeColor', 'black');
+%! p = patch ("Faces", fv.faces, "Vertices", fv.vertices, "FaceVertexCData", ...
+%!            fv.facevertexcdata, "FaceColor", "interp", "EdgeColor", "black");
+%! axis auto;   # Kludge required for Octave
 %! axis equal;
 %! view (115, 30);
 %! drawnow;

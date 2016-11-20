@@ -1,7 +1,7 @@
 /*
 
 Copyright (C) 2016 John W. Eaton
-Copyright (C) 2006-2015 David Bateman
+Copyright (C) 2006-2016 David Bateman
 
 This file is part of Octave.
 
@@ -31,3 +31,4 @@ RT
 dmsolve (const ST& a, const T& b, octave_idx_type& info);
 
 #endif
+

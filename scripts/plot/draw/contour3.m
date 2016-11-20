@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2015 David BAteman
+## Copyright (C) 2007-2016 David BAteman
 ##
 ## This file is part of Octave.
 ##
@@ -81,7 +81,7 @@ function [c, h] = contour3 (varargin)
   end_unwind_protect
 
   if (! ishold ())
-    set (hax, "view", [-37.5, 30], "box", "off",
+    set (hax, "view", [-37.5, 30],
               "xgrid", "on", "ygrid", "on", "zgrid", "on");
   endif
 
@@ -96,12 +96,12 @@ endfunction
 %!demo
 %! clf;
 %! colormap (cool (64));
-%! surf (peaks (19), 'facecolor', 'none', 'edgecolor', [0.85 0.85 0.85]);
+%! surf (peaks (19), "facecolor", "none", "edgecolor", [0.85 0.85 0.85]);
 %! hold on;
 %! contour3 (peaks (19));
 %! hold off;
 %! axis tight;
 %! zlim auto;
 %! view (315, 17);
-%! title ({'contour3 of peaks() function', 'gray surf() shows peaks function'});
+%! title ({"contour3 of peaks() function", "gray surf() shows peaks function"});
 

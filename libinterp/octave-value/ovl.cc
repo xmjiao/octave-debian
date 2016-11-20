@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -274,3 +274,4 @@ octave_value_list::make_storable_values (void)
         data(i) = tmp;
     }
 }
+

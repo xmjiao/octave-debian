@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -1213,7 +1213,7 @@ read_mat5_binary_element (std::istream& is, const std::string& filename,
 
                             tc = tmp(0);
                           }
-                        catch (const octave_execution_exception&)
+                        catch (const octave::execution_exception&)
                           {
                             goto data_read_error;
                           }
@@ -2015,12 +2015,12 @@ save_mat5_array_length (const Complex* val, octave_idx_type nel,
   OCTAVE_LOCAL_BUFFER (double, tmp, nel);
 
   for (octave_idx_type i = 1; i < nel; i++)
-    tmp[i] = std::real (val[i]);
+    tmp[i] = octave::math::real (val[i]);
 
   ret = save_mat5_array_length (tmp, nel, save_as_floats);
 
   for (octave_idx_type i = 1; i < nel; i++)
-    tmp[i] = std::imag (val[i]);
+    tmp[i] = octave::math::imag (val[i]);
 
   ret += save_mat5_array_length (tmp, nel, save_as_floats);
 
@@ -2036,12 +2036,12 @@ save_mat5_array_length (const FloatComplex* val, octave_idx_type nel,
   OCTAVE_LOCAL_BUFFER (float, tmp, nel);
 
   for (octave_idx_type i = 1; i < nel; i++)
-    tmp[i] = std::real (val[i]);
+    tmp[i] = octave::math::real (val[i]);
 
   ret = save_mat5_array_length (tmp, nel, save_as_floats);
 
   for (octave_idx_type i = 1; i < nel; i++)
-    tmp[i] = std::imag (val[i]);
+    tmp[i] = octave::math::imag (val[i]);
 
   ret += save_mat5_array_length (tmp, nel, save_as_floats);
 
@@ -2458,12 +2458,12 @@ save_mat5_binary_element (std::ostream& os,
           NDArray buf (dim_vector (nnz, 1));
 
           for (octave_idx_type i = 0; i < nnz; i++)
-            buf (i) = std::real (m.data (i));
+            buf (i) = octave::math::real (m.data (i));
 
           write_mat5_array (os, buf, save_as_floats);
 
           for (octave_idx_type i = 0; i < nnz; i++)
-            buf (i) = std::imag (m.data (i));
+            buf (i) = octave::math::imag (m.data (i));
 
           write_mat5_array (os, buf, save_as_floats);
         }
@@ -2610,7 +2610,7 @@ save_mat5_binary_element (std::ostream& os,
 
               m = tmp(0).map_value ();
             }
-          catch (const octave_execution_exception&)
+          catch (const octave::execution_exception&)
             {
               error ("save: error while writing '%s' to MAT file",
                      name.c_str ());

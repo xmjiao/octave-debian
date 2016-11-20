@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2015 David Bateman
+Copyright (C) 2004-2016 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -210,3 +210,4 @@ public:
                         R, dynamic_cast<const B<T>&>, R)
 
 #endif
+

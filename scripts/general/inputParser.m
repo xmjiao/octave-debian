@@ -1,4 +1,4 @@
-## Copyright (C) 2011-2014 Carnë Draug
+## Copyright (C) 2011-2016 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -372,6 +372,9 @@ classdef inputParser < handle
     endfunction
 
     function parse (this, varargin)
+      this.Results = struct ();
+      this.Unmatched = struct ();
+      this.UsingDefaults = cell ();
       if (numel (varargin) < numel (this.Required))
         if (this.FunctionName)
           print_usage (this.FunctionName);
@@ -638,8 +641,8 @@ endclassdef
 %! assert ({r.req1, r.op1, r.op2, r.verbose, r.line},
 %!         {"file", "foo", 80,    true,      "circle"});
 
-## We must not perform validation of default values (bug #45837)
-%!test
+## We must not perform validation of default values
+%!test <45837>
 %! p = inputParser;
 %! p.addParameter ("Dir", [], @ischar);
 %! p.parse ();
@@ -731,3 +734,21 @@ endclassdef
 %! p.addParameter ("line", "tree");
 %! p.parse ("line", "circle");
 %! assert (p.Results, struct ("op1", "val", "line", "circle"));
+
+%!test
+%! p = inputParser;
+%! p.addParameter ("a", []);
+%! p.addParameter ("b", []);
+%! p.parse ("a", 1);
+%! p.parse ("b", 1);
+%! assert (p.Results, struct ("a", [], "b", 1));
+%! assert (p.UsingDefaults, {"a"});
+
+%!test
+%! p = inputParser;
+%! p.addParameter ("b", []);
+%! p.KeepUnmatched = true;
+%! p.parse ("a", 1);
+%! p.parse ("b", 1);
+%! assert (p.Results, struct ("b", 1));
+%! assert (p.Unmatched, struct ());

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2015 John W. Eaton
+Copyright (C) 2012-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,3 +34,4 @@ extern OCTINTERP_API octave_value
 do_class_concat (const octave_value_list& ovl, std::string cattype, int dim);
 
 #endif
+

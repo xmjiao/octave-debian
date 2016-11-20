@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 Jaroslav Hajek
+Copyright (C) 2008-2016 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -227,9 +227,10 @@ operator *(const PermMatrix& a, const PermMatrix& b)
   octave_idx_type n = a.columns ();
 
   if (n != b.rows ())
-    err_nonconformant ("operator *", n, n, b.rows (), b.rows ());
+    octave::err_nonconformant ("operator *", n, n, b.rows (), b.rows ());
 
   r = PermMatrix (ia.index (idx_vector (ib)), true, false);
 
   return r;
 }
+

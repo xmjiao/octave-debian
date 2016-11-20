@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -241,6 +241,19 @@ public:
   virtual octave_value squeeze (void) const;
 
   virtual octave_value full_value (void) const;
+
+  virtual octave_value as_double (void) const;
+  virtual octave_value as_single (void) const;
+
+  virtual octave_value as_int8 (void) const;
+  virtual octave_value as_int16 (void) const;
+  virtual octave_value as_int32 (void) const;
+  virtual octave_value as_int64 (void) const;
+
+  virtual octave_value as_uint8 (void) const;
+  virtual octave_value as_uint16 (void) const;
+  virtual octave_value as_uint32 (void) const;
+  virtual octave_value as_uint64 (void) const;
 
   virtual octave_base_value *try_narrowing_conversion (void) { return 0; }
 
@@ -861,3 +874,4 @@ make_idx_args (const std::string& type,
 extern OCTINTERP_API bool called_from_builtin (void);
 
 #endif
+

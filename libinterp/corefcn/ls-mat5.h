@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2015 John W. Eaton
+Copyright (C) 2003-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -61,3 +61,4 @@ save_mat5_binary_element (std::ostream& os,
                           bool save_as_floats, bool compressing = false);
 
 #endif
+

@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2015 Shai Ayal
+## Copyright (C) 1993-2016 Shai Ayal
 ##
 ## This file is part of Octave.
 ##
@@ -72,6 +72,11 @@ function [c, h] = contour (varargin)
     hax = newplot (hax);
 
     [ctmp, htmp] = __contour__ (hax, "none", varargin{:});
+
+    if (! ishold ())
+      set (hax, "box", "on");
+    endif
+
   unwind_protect_cleanup
     if (! isempty (oldfig))
       set (0, "currentfigure", oldfig);
@@ -88,26 +93,26 @@ endfunction
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! [x, y, z] = peaks ();
 %! contour (x, y, z);
-%! title ({'contour() plot (isolines of constant Z)'; 'Z = peaks()'});
+%! title ({"contour() plot (isolines of constant Z)"; "Z = peaks()"});
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! [theta, r] = meshgrid (linspace (0,2*pi,64), linspace (0,1,64));
 %! [X, Y] = pol2cart (theta, r);
 %! Z = sin (2*theta) .* (1-r);
 %! contour (X, Y, abs (Z), 10);
-%! title ({'contour() plot'; 'polar fcn: Z = sin (2*theta) * (1-r)'});
+%! title ({"contour() plot"; "polar fcn: Z = sin (2*theta) * (1-r)"});
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! z = peaks ();
 %! contour (z, [0 0]);
-%! title ({'contour() plot with single isoline at Z == 0'; 'Z = peaks()'});
+%! title ({"contour() plot with single isoline at Z == 0"; "Z = peaks()"});
 
 %!test
 %! hf = figure ("visible", "off");

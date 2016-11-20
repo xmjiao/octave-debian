@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2015 John W. Eaton
+Copyright (C) 2012-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -108,3 +108,4 @@ tree_funcall::rvalue (int nargout)
 
   return retval;
 }
+

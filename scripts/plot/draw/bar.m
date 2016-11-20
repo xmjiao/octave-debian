@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2015 John W. Eaton
+## Copyright (C) 1993-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -123,19 +123,19 @@ endfunction
 %! clf;
 %! y = rand (11, 1);
 %! h = bar (y);
-%! set (h, 'ydata', sort (rand (11, 1)));
-%! title ('bar() graph');
+%! set (h, "ydata", sort (rand (11, 1)));
+%! title ("bar() graph");
 
 %!demo
 %! clf;
 %! h = bar (rand (5, 3));
-%! set (h(1), 'facecolor', 'r');
-%! set (h(2), 'facecolor', 'g');
-%! set (h(3), 'facecolor', 'b');
-%! title ('bar() graph w/multiple bars');
+%! set (h(1), "facecolor", "r");
+%! set (h(2), "facecolor", "g");
+%! set (h(3), "facecolor", "b");
+%! title ("bar() graph w/multiple bars");
 
 %!demo
 %! clf;
-%! h = bar (rand (5, 3), 'stacked');
-%! title ('bar() graph with stacked style');
+%! h = bar (rand (5, 3), "stacked");
+%! title ("bar() graph with stacked style");
 

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,7 +34,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-flt-re-diag.h"
 #include "ov-flt-cx-diag.h"
 #include "ov-perm.h"
-#include "utils.h"
 
 DEFUN (inv, args, nargout,
        doc: /* -*- texinfo -*-
@@ -63,17 +62,10 @@ sparse matrix if possible.
 
   octave_value arg = args(0);
 
-  octave_idx_type nr = arg.rows ();
-  octave_idx_type nc = arg.columns ();
-
-  int arg_is_empty = empty_arg ("inverse", nr, nc);
-
-  if (arg_is_empty < 0)
-    return ovl ();
-  else if (arg_is_empty > 0)
+  if (arg.is_empty ())
     return ovl (Matrix ());
 
-  if (nr != nc)
+  if (arg.rows () != arg.columns ())
     err_square_matrix_required ("inverse", "A");
 
   octave_value result;
@@ -206,7 +198,7 @@ sparse matrix if possible.
     }
 
   if (nargout < 2 && (info == -1 || rcond_plus_one_eq_one))
-    warn_singular_matrix (isfloat ? frcond : rcond);
+    octave::warn_singular_matrix (isfloat ? frcond : rcond);
 
   return retval;
 }
@@ -246,3 +238,4 @@ This is an alias for @code{inv}.
 {
   return Finv (args, nargout);
 }
+

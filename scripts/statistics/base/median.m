@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2015 John W. Eaton
+## Copyright (C) 1996-2016 John W. Eaton
 ## Copyright (C) 2009-2010 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -42,7 +42,7 @@
 ##
 ## @end ifnottex
 ## If @var{x} is of a discrete type such as integer or logical, then
-## the case of even N rounds up (or toward @qcode{true}).
+## the case of even N rounds up (or toward @code{true}).
 ##
 ## If @var{x} is a matrix, compute the median value for each column and
 ## return them in a row vector.
@@ -111,15 +111,15 @@ endfunction
 %!assert (median ([1,2,NaN;4,5,6;NaN,8,9]), [NaN, 5, NaN])
 %!assert (median ([1,2], 3), [1,2])
 
-## Test multidimensional arrays (bug #35679)
+## Test multidimensional arrays
 %!shared a, b, x, y
 %! rand ("seed", 2);
 %! a = rand (2,3,4,5);
 %! b = rand (3,4,6,5);
 %! x = sort (a, 4);
 %! y = sort (b, 3);
-%!assert (median (a, 4), x(:, :, :, 3))
-%!assert (median (b, 3), (y(:, :, 3, :) + y(:, :, 4, :))/2)
+%!assert <35679> (median (a, 4), x(:, :, :, 3))
+%!assert <35679> (median (b, 3), (y(:, :, 3, :) + y(:, :, 4, :))/2)
 
 ## Test non-floating point types
 %!assert (median ([true, false]), true)

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2015 David Bateman
+Copyright (C) 2003-2016 David Bateman
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2009-2010 VZLU Prague
 
@@ -119,14 +119,12 @@ The Python license is
 template <typename T>
 octave_sort<T>::octave_sort (void) :
   compare (ascending_compare), ms (0)
-{
-}
+{ }
 
 template <typename T>
 octave_sort<T>::octave_sort (compare_fcn_type comp)
   : compare (comp), ms (0)
-{
-}
+{ }
 
 template <typename T>
 octave_sort<T>::~octave_sort ()
@@ -1966,3 +1964,4 @@ octave_sort<T>::descending_compare (typename ref_param<T>::type x,
 {
   return x > y;
 }
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002-2015 John W. Eaton
+Copyright (C) 2002-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -345,3 +345,4 @@ extern OCTINTERP_API int octave_main (int argc, char **argv, int embedded);
 #endif
 
 #endif
+

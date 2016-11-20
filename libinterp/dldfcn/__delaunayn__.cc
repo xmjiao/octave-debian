@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000-2015 Kai Habel
+Copyright (C) 2000-2016 Kai Habel
 
 This file is part of Octave.
 
@@ -241,3 +241,4 @@ Undocumented internal function.
 ## No test needed for internal helper function.
 %!assert (1)
 */
+

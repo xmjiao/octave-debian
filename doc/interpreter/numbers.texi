@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -85,7 +85,7 @@ parse error:
 You may also use @samp{j}, @samp{I}, or @samp{J} in place of the
 @samp{i} above.  All four forms are equivalent.
 
-@c double libinterp/octave-value/ov-re-mat.cc
+@c double libinterp/octave-value/ov.cc
 @anchor{XREFdouble}
 @deftypefn {} {} double (@var{x})
 Convert @var{x} to double precision type.
@@ -552,18 +552,18 @@ For example, the range
 @end example
 
 @noindent
-defines the set of values @samp{[ 1, 2, 3, 4, 5 ]}, and the range
+defines the set of values @code{[ 1, 2, 3, 4, 5 ]}, and the range
 
 @example
 1 : 3 : 5
 @end example
 
 @noindent
-defines the set of values @samp{[ 1, 4 ]}.
+defines the set of values @code{[ 1, 4 ]}.
 
 Although a range constant specifies a row vector, Octave does @emph{not}
 normally convert range constants to vectors unless it is necessary to do so.
-This allows you to write a constant like @samp{1 : 10000} without using
+This allows you to write a constant like @code{1 : 10000} without using
 80,000 bytes of storage on a typical 32-bit workstation.
 
 A common example of when it does become necessary to convert ranges into
@@ -625,16 +625,16 @@ a = 2*(1:1e7) - 1;
 @end example
 
 @noindent
-will produce the same result as @samp{1:2:2e7-1}, but without ever forming a
+will produce the same result as @code{1:2:2e7-1}, but without ever forming a
 vector with ten million elements.
 
-Using zero as an increment in the colon notation, as @samp{1:0:1} is not
+Using zero as an increment in the colon notation, as @code{1:0:1} is not
 allowed, because a division by zero would occur in determining the number of
 range elements.  However, ranges with zero increment (i.e., all elements equal)
 are useful, especially in indexing, and Octave allows them to be constructed
-using the built-in function @dfn{ones}.  Note that because a range must be a row
-vector, @samp{ones (1, 10)} produces a range, while @samp{ones (10, 1)} does
-not.
+using the built-in function @code{ones}.  Note that because a range must be a
+row vector, @code{ones (1, 10)} produces a range, while @code{ones (10, 1)}
+does not.
 
 When Octave parses a range expression, it examines the elements of the
 expression to determine whether they are all constants.  If they are, it
@@ -648,7 +648,7 @@ functions in Octave accept single precision values and return single
 precision answers.  A single precision variable is created with the
 @code{single} function.
 
-@c single libinterp/octave-value/ov-flt-re-mat.cc
+@c single libinterp/octave-value/ov.cc
 @anchor{XREFsingle}
 @deftypefn {} {} single (@var{x})
 Convert @var{x} to single precision type.
@@ -728,7 +728,7 @@ Octave are double precision floating point values.
 @end deftypefn
 
 
-@c int8 libinterp/octave-value/ov-int8.cc
+@c int8 libinterp/octave-value/ov.cc
 @anchor{XREFint8}
 @deftypefn {} {} int8 (@var{x})
 Convert @var{x} to 8-bit integer type.
@@ -736,7 +736,7 @@ Convert @var{x} to 8-bit integer type.
 @end deftypefn
 
 
-@c uint8 libinterp/octave-value/ov-uint8.cc
+@c uint8 libinterp/octave-value/ov.cc
 @anchor{XREFuint8}
 @deftypefn {} {} uint8 (@var{x})
 Convert @var{x} to unsigned 8-bit integer type.
@@ -744,7 +744,7 @@ Convert @var{x} to unsigned 8-bit integer type.
 @end deftypefn
 
 
-@c int16 libinterp/octave-value/ov-int16.cc
+@c int16 libinterp/octave-value/ov.cc
 @anchor{XREFint16}
 @deftypefn {} {} int16 (@var{x})
 Convert @var{x} to 16-bit integer type.
@@ -752,7 +752,7 @@ Convert @var{x} to 16-bit integer type.
 @end deftypefn
 
 
-@c uint16 libinterp/octave-value/ov-uint16.cc
+@c uint16 libinterp/octave-value/ov.cc
 @anchor{XREFuint16}
 @deftypefn {} {} uint16 (@var{x})
 Convert @var{x} to unsigned 16-bit integer type.
@@ -760,7 +760,7 @@ Convert @var{x} to unsigned 16-bit integer type.
 @end deftypefn
 
 
-@c int32 libinterp/octave-value/ov-int32.cc
+@c int32 libinterp/octave-value/ov.cc
 @anchor{XREFint32}
 @deftypefn {} {} int32 (@var{x})
 Convert @var{x} to 32-bit integer type.
@@ -768,7 +768,7 @@ Convert @var{x} to 32-bit integer type.
 @end deftypefn
 
 
-@c uint32 libinterp/octave-value/ov-uint32.cc
+@c uint32 libinterp/octave-value/ov.cc
 @anchor{XREFuint32}
 @deftypefn {} {} uint32 (@var{x})
 Convert @var{x} to unsigned 32-bit integer type.
@@ -776,7 +776,7 @@ Convert @var{x} to unsigned 32-bit integer type.
 @end deftypefn
 
 
-@c int64 libinterp/octave-value/ov-int64.cc
+@c int64 libinterp/octave-value/ov.cc
 @anchor{XREFint64}
 @deftypefn {} {} int64 (@var{x})
 Convert @var{x} to 64-bit integer type.
@@ -784,7 +784,7 @@ Convert @var{x} to 64-bit integer type.
 @end deftypefn
 
 
-@c uint64 libinterp/octave-value/ov-uint64.cc
+@c uint64 libinterp/octave-value/ov.cc
 @anchor{XREFuint64}
 @deftypefn {} {} uint64 (@var{x})
 Convert @var{x} to unsigned 64-bit integer type.
@@ -910,7 +910,7 @@ integer.  This is different from most programming languages, where the
 result is often floored to the nearest integer.  So, the result of
 @code{int32 (5) ./ int32 (8)} is @code{1}.
 
-@c idivide scripts/scripts/general/idivide.m
+@c idivide scripts/general/idivide.m
 @anchor{XREFidivide}
 @deftypefn {} {} idivide (@var{x}, @var{y}, @var{op})
 Integer division with different rounding rules.
@@ -968,7 +968,7 @@ Octave provides a number of functions for the manipulation of numeric
 values on a bit by bit basis.  The basic functions to set and obtain the
 values of individual bits are @code{bitset} and @code{bitget}.
 
-@c bitset scripts/scripts/general/bitset.m
+@c bitset scripts/general/bitset.m
 @anchor{XREFbitset}
 @deftypefn  {} {@var{C} =} bitset (@var{A}, @var{n})
 @deftypefnx {} {@var{C} =} bitset (@var{A}, @var{n}, @var{val})
@@ -988,7 +988,7 @@ dec2bin (bitset (10, 1))
 @end deftypefn
 
 
-@c bitget scripts/scripts/general/bitget.m
+@c bitget scripts/general/bitget.m
 @anchor{XREFbitget}
 @deftypefn {} {@var{c} =} bitget (@var{A}, @var{n})
 Return the status of bit(s) @var{n} of the unsigned integers in @var{A}.
@@ -1071,7 +1071,7 @@ negation of each of the bits of the value.  For this to make sense, the
 mask against which the value is negated must be defined.  Octave's
 bitwise 'not' operator is @code{bitcmp}.
 
-@c bitcmp scripts/scripts/general/bitcmp.m
+@c bitcmp scripts/general/bitcmp.m
 @anchor{XREFbitcmp}
 @deftypefn {} {} bitcmp (@var{A}, @var{k})
 Return the @var{k}-bit complement of integers in @var{A}.
@@ -1438,7 +1438,7 @@ Return true if @var{x} is a square matrix.
 @end deftypefn
 
 
-@c issymmetric scripts/scripts/linear-algebra/issymmetric.m
+@c issymmetric scripts/linear-algebra/issymmetric.m
 @anchor{XREFissymmetric}
 @deftypefn  {} {} issymmetric (@var{A})
 @deftypefnx {} {} issymmetric (@var{A}, @var{tol})
@@ -1453,7 +1453,7 @@ Matrix @var{A} is considered symmetric if
 @end deftypefn
 
 
-@c ishermitian scripts/scripts/linear-algebra/ishermitian.m
+@c ishermitian scripts/linear-algebra/ishermitian.m
 @anchor{XREFishermitian}
 @deftypefn  {} {} ishermitian (@var{A})
 @deftypefnx {} {} ishermitian (@var{A}, @var{tol})
@@ -1468,7 +1468,7 @@ Matrix @var{A} is considered symmetric if
 @end deftypefn
 
 
-@c isdefinite scripts/scripts/linear-algebra/isdefinite.m
+@c isdefinite scripts/linear-algebra/isdefinite.m
 @anchor{XREFisdefinite}
 @deftypefn  {} {} isdefinite (@var{A})
 @deftypefnx {} {} isdefinite (@var{A}, @var{tol})
@@ -1482,7 +1482,7 @@ If @var{tol} is omitted, use a tolerance of
 @end deftypefn
 
 
-@c isbanded scripts/scripts/linear-algebra/isbanded.m
+@c isbanded scripts/linear-algebra/isbanded.m
 @anchor{XREFisbanded}
 @deftypefn {} {} isbanded (@var{A}, @var{lower}, @var{upper})
 Return true if @var{A} is a matrix with entries confined between
@@ -1494,7 +1494,7 @@ above the main diagonal.
 @end deftypefn
 
 
-@c isdiag scripts/scripts/linear-algebra/isdiag.m
+@c isdiag scripts/linear-algebra/isdiag.m
 @anchor{XREFisdiag}
 @deftypefn {} {} isdiag (@var{A})
 Return true if @var{A} is a diagonal matrix.
@@ -1502,7 +1502,7 @@ Return true if @var{A} is a diagonal matrix.
 @end deftypefn
 
 
-@c istril scripts/scripts/linear-algebra/istril.m
+@c istril scripts/linear-algebra/istril.m
 @anchor{XREFistril}
 @deftypefn {} {} istril (@var{A})
 Return true if @var{A} is a lower triangular matrix.
@@ -1513,7 +1513,7 @@ below.
 @end deftypefn
 
 
-@c istriu scripts/scripts/linear-algebra/istriu.m
+@c istriu scripts/linear-algebra/istriu.m
 @anchor{XREFistriu}
 @deftypefn {} {} istriu (@var{A})
 Return true if @var{A} is an upper triangular matrix.
@@ -1524,7 +1524,7 @@ above.
 @end deftypefn
 
 
-@c isprime scripts/scripts/specfun/isprime.m
+@c isprime scripts/specfun/isprime.m
 @anchor{XREFisprime}
 @deftypefn {} {} isprime (@var{x})
 Return a logical array which is true where the elements of @var{x} are prime

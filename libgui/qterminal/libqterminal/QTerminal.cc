@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2012-2015 Michael Goffioul.
-Copyright (C) 2012-2015 Jacob Dawid.
+Copyright (C) 2012-2016 Michael Goffioul.
+Copyright (C) 2012-2016 Jacob Dawid.
 
 This file is part of QTerminal.
 
@@ -83,9 +83,9 @@ QTerminal::set_global_shortcuts (bool focus_out)
     else
       {
         _interrupt_action->setShortcut (
-              QKeySequence (Qt::ControlModifier + Qt::Key_C));
+              QKeySequence (Qt::ControlModifier | Qt::Key_C));
         _nop_action->setShortcut (
-              QKeySequence (Qt::ControlModifier + Qt::Key_D));
+              QKeySequence (Qt::ControlModifier | Qt::Key_D));
       }
   }
 
@@ -194,7 +194,7 @@ QTerminal::notice_settings (const QSettings *settings)
     sc = QKeySequence::Copy; // settings->value () does not work!
 
   //  dis- or enable extra interrupt action
-  bool extra_ir_action = (sc != QKeySequence (Qt::ControlModifier + Qt::Key_C));
+  bool extra_ir_action = (sc != QKeySequence (Qt::ControlModifier | Qt::Key_C));
   _interrupt_action->setEnabled (extra_ir_action);
   has_extra_interrupt (extra_ir_action);
 

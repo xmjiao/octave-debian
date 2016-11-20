@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2015 John W. Eaton
+Copyright (C) 2006-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -193,3 +193,4 @@ oct_float_randg (float a)
   oct_fill_float_randg (a,1,&ret);
   return ret;
 }
+

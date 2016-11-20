@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2015 Paul Kienzle
+## Copyright (C) 2004-2016 Paul Kienzle
 ## Copyright (C) 2010 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -93,8 +93,8 @@ endfunction
 %!assert (nthroot (-Inf, 7), -Inf)
 %!assert (nthroot (-Inf, -7), 0)
 
-## Bug #43492.  This should not generate a division by zero warning
-%!test
+## This should not generate a division by zero warning
+%!test <43492>
 %! warnmsg = lastwarn ();
 %! assert (nthroot (0, 2), 0);
 %! assert (lastwarn (), warnmsg);

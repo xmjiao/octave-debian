@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -169,3 +169,4 @@ install_fm_fs_ops (void)
   INSTALL_ASSIGNOP (op_div_eq, octave_float_matrix, octave_float_scalar,
                     assign_div);
 }
+

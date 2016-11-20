@@ -1,4 +1,4 @@
-## Copyright (C) 1999-2015 Daniel Heiserer
+## Copyright (C) 1999-2016 Daniel Heiserer
 ## Copyright (C) 2001 Laurent Mazet
 ##
 ## This file is part of Octave.
@@ -45,6 +45,13 @@ function opts = __gnuplot_print__ (opts)
   ## The axes-label and tick-label spacing is determined by
   ## the font spec given in "set terminal ..."
   gp_opts = font_spec (opts);
+  bg = get (opts.figure, "color");
+  if (isnumeric (bg))
+    gp_opts = sprintf ("%s background rgb \"#%02x%02x%02x\"",
+                       gp_opts, round (255 * bg));
+  else
+    gp_opts = sprintf ("%s nobackground", gp_opts);
+  endif
 
   pipeline = "";
 
@@ -87,12 +94,7 @@ function opts = __gnuplot_print__ (opts)
                "invalid suffix '%s' for device '%s'.",
                ext, lower (opts.devopt));
       endif
-      if (__gnuplot_has_feature__ ("epslatex_implies_eps_filesuffix"))
-        suffix = "tex";
-      else
-        ## Gnuplot 4.0 wants a ".eps" suffix.
-        suffix = "eps";
-      endif
+      suffix = "tex";
       if (strfind (opts.devopt, "standalone"))
         gp_opts = sprintf ("standalone %s", gp_opts);
         term = strrep (opts.devopt, "standalone", "");
@@ -120,7 +122,8 @@ function opts = __gnuplot_print__ (opts)
       local_drawnow ([opts.devopt " " gp_opts], opts.name, opts);
     case {"cairolatex", "epscairo", "epscairolatex", ...
           "epscairolatexstandalone", "pdfcairo", "pdfcairolatex", ...
-          "pdfcairolatexstandalone", "pngcairo"}
+          "pdfcairolatexstandalone", "pngcairo", ...
+          "pdflatexstandalone", "pdflatex"}
       term = opts.devopt;
       if (strfind (term, "standalone"))
         gp_opts = sprintf ("standalone %s", gp_opts);
@@ -129,9 +132,10 @@ function opts = __gnuplot_print__ (opts)
       if (strfind (term, "epscairolatex"))
         gp_opts = sprintf ("eps %s", gp_opts);
         term = strrep (term, "epscairolatex", "cairolatex");
-      elseif (strfind (term, "pdfcairolatex"))
+      elseif (strfind (term, "pdfcairolatex") || strfind (term, "pdflatex"))
         gp_opts = sprintf ("pdf %s", gp_opts);
         term = strrep (term, "pdfcairolatex", "cairolatex");
+        term = strrep (term, "pdflatex", "cairolatex");
       endif
       if (__gnuplot_has_terminal__ (term))
         local_drawnow ([term " " gp_opts], opts.name, opts);
@@ -278,7 +282,8 @@ function f = font_spec (opts, varargin)
       endif
     case {"cairolatex", "epscairo", "epscairolatex", ...
           "epscairolatexstandalone", "pdfcairo", "pdfcairolatex", ...
-          "pdfcairolatexstandalone", "pngcairo"}
+          "pdfcairolatexstandalone", "pngcairo", ...
+          "pdflatexstandalone", "pdflatex"}
       if (! isempty (opts.font) && ! isempty (opts.fontsize))
         f = sprintf ('font "%s,%d"', opts.font, opts.fontsize);
       elseif (! isempty (opts.font))

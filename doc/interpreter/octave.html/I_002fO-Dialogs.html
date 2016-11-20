@@ -113,6 +113,17 @@ Example: <code>uigetfile ({&quot;*.ext&quot;, &quot;My Description&quot;;&quot;*
 extensions.
 Example: <code>uigetfile ({&quot;*.gif;*.png;*.jpg&quot;, &quot;Supported Picture
 Formats&quot;})</code>
+</p>
+</dd>
+<dt>A directory name or path name</dt>
+<dd><p>If the folder name of path name contains a trailing file separator, the
+contents of that folder will be displayed.  If no trailing file separator
+is present the parent directory is listed.  The substring to the right of
+the rightmost file separator (if any) will be interpreted as a file or
+directory name and if that file or directory exists it will be highlighted.
+If the path name or directory name is wholly or partly nonexistent, the
+current working directory will be displayed.
+No filter will be active.
 </p></dd>
 </dl>
 
@@ -249,6 +260,7 @@ helpdlg (&quot;Some helpful text for the user.&quot;, &quot;Fancy caption&quot;)
 <dt><a name="index-inputdlg-1"></a>: <em><var>cstr</var> =</em> <strong>inputdlg</strong> <em>(<var>prompt</var>, <var>title</var>)</em></dt>
 <dt><a name="index-inputdlg-2"></a>: <em><var>cstr</var> =</em> <strong>inputdlg</strong> <em>(<var>prompt</var>, <var>title</var>, <var>rowscols</var>)</em></dt>
 <dt><a name="index-inputdlg-3"></a>: <em><var>cstr</var> =</em> <strong>inputdlg</strong> <em>(<var>prompt</var>, <var>title</var>, <var>rowscols</var>, <var>defaults</var>)</em></dt>
+<dt><a name="index-inputdlg-4"></a>: <em><var>cstr</var> =</em> <strong>inputdlg</strong> <em>(<var>prompt</var>, <var>title</var>, <var>rowscols</var>, <var>defaults</var>, <var>options</var>)</em></dt>
 <dd><p>Return user input from a multi-textfield dialog box in a cell array of
 strings, or an empty cell array if the dialog is closed by the Cancel
 button.
@@ -280,6 +292,10 @@ button.
 <dt><var>defaults</var></dt>
 <dd><p>A list of default values to place in each text fields.  It must be a cell
 array of strings with the same size as <var>prompt</var>.
+</p>
+</dd>
+<dt><var>options</var></dt>
+<dd><p>Not supported, only for <small>MATLAB</small> compatibility.
 </p></dd>
 </dl>
 
@@ -500,7 +516,8 @@ warndlg (&quot;Some warning text for the user.&quot;, &quot;Fancy caption&quot;)
 <dd>
 <p>Create an empty modal dialog window that other uicontrols can be added to.
 </p>
-<p>The dialog box is a figure object with properties as recommended for a dialog box.
+<p>The dialog box is a figure object with properties as recommended for a
+dialog box.
 </p>
 <p>The default properties differing from a figure are:
 </p>

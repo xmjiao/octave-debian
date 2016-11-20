@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -73,7 +73,7 @@ quad_user_function (double x)
         {
           tmp = quad_fcn->do_multi_index_op (1, args);
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           err_user_supplied_eval (e, "quad");
         }
@@ -109,7 +109,7 @@ quad_float_user_function (float x)
         {
           tmp = quad_fcn->do_multi_index_op (1, args);
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           err_user_supplied_eval (e, "quad");
         }
@@ -446,3 +446,4 @@ variable by routines @code{dblquad} and @code{triplequad}.
 
 %!error quad_options (1, 2, 3)
 */
+

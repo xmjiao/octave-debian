@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -494,7 +494,7 @@ your prompt.
 @end deftypefn
 
 
-@c menu scripts/scripts/miscellaneous/menu.m
+@c menu scripts/miscellaneous/menu.m
 @anchor{XREFmenu}
 @deftypefn  {} {@var{choice} =} menu (@var{title}, @var{opt1}, @dots{})
 @deftypefnx {} {@var{choice} =} menu (@var{title}, @{@var{opt1}, @dots{}@})
@@ -897,7 +897,7 @@ Force Octave to assume the file is in Octave's text format.
 @end deftypefn
 
 
-@c fileread scripts/scripts/io/fileread.m
+@c fileread scripts/io/fileread.m
 @anchor{XREFfileread}
 @deftypefn {} {@var{str} =} fileread (@var{filename})
 Read the contents of @var{filename} and return it as a string.
@@ -956,7 +956,7 @@ Note that the output from @code{fdisp} always ends with a newline.
 Octave can also read and write matrices text files such as comma
 separated lists.
 
-@c dlmwrite scripts/scripts/io/dlmwrite.m
+@c dlmwrite scripts/io/dlmwrite.m
 @anchor{XREFdlmwrite}
 @deftypefn  {} {} dlmwrite (@var{file}, @var{M})
 @deftypefnx {} {} dlmwrite (@var{file}, @var{M}, @var{delim}, @var{r}, @var{c})
@@ -1055,7 +1055,7 @@ such as text, are also replaced by the @qcode{"emptyvalue"}.
 @end deftypefn
 
 
-@c csvwrite scripts/scripts/io/csvwrite.m
+@c csvwrite scripts/io/csvwrite.m
 @anchor{XREFcsvwrite}
 @deftypefn  {} {} csvwrite (@var{filename}, @var{x})
 @deftypefnx {} {} csvwrite (@var{filename}, @var{x}, @var{dlm_opt1}, @dots{})
@@ -1074,7 +1074,7 @@ Any optional arguments are passed directly to @code{dlmwrite}
 @end deftypefn
 
 
-@c csvread scripts/scripts/io/csvread.m
+@c csvread scripts/io/csvread.m
 @anchor{XREFcsvread}
 @deftypefn  {} {@var{x} =} csvread (@var{filename})
 @deftypefnx {} {@var{x} =} csvread (@var{filename}, @var{dlm_opt1}, @dots{})
@@ -1097,7 +1097,7 @@ Any optional arguments are passed directly to @code{dlmread}
 
 Formatted data from can be read from, or written to, text files as well.
 
-@c textread scripts/scripts/io/textread.m
+@c textread scripts/io/textread.m
 @anchor{XREFtextread}
 @deftypefn  {} {[@var{a}, @dots{}] =} textread (@var{filename})
 @deftypefnx {} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format})
@@ -1419,7 +1419,7 @@ string(s) in @var{value} as missing values.
 
 @item @qcode{"ReturnOnError"}
 If set to numerical 1 or true, return normally as soon as an error is
-encountered, such as trying to read a string using @qcode{%f}.
+encountered, such as trying to read a string using @code{%f}.
 If set to 0 or false, return an error and no data.
 
 @item @qcode{"Whitespace"}
@@ -1460,7 +1460,7 @@ from the beginning of the file or string, where processing stopped.
 The @code{importdata} function has the ability to work with a wide
 variety of data.
 
-@c importdata scripts/scripts/io/importdata.m
+@c importdata scripts/io/importdata.m
 @anchor{XREFimportdata}
 @deftypefn  {} {@var{A} =} importdata (@var{fname})
 @deftypefnx {} {@var{A} =} importdata (@var{fname}, @var{delimiter})
@@ -1831,7 +1831,7 @@ with gnuplot.
 @end deftypefn
 
 
-@c is_valid_file_id scripts/scripts/io/is_valid_file_id.m
+@c is_valid_file_id scripts/io/is_valid_file_id.m
 @anchor{XREFis_valid_file_id}
 @deftypefn {} {} is_valid_file_id (@var{fid})
 Return true if @var{fid} refers to an open file.
@@ -2982,7 +2982,7 @@ see @code{tmpfile}.
 @end deftypefn
 
 
-@c tempdir scripts/scripts/miscellaneous/tempdir.m
+@c tempdir scripts/miscellaneous/tempdir.m
 @anchor{XREFtempdir}
 @deftypefn {} {@var{dir} =} tempdir ()
 Return the name of the host system's directory for temporary files.
@@ -3051,7 +3051,7 @@ end-of-file condition.
 @anchor{XREFferror}
 @deftypefn  {} {@var{msg} =} ferror (@var{fid})
 @deftypefnx {} {[@var{msg}, @var{err}] =} ferror (@var{fid})
-@deftypefnx {} {[@var{dots}] =} ferror (@var{fid}, "clear")
+@deftypefnx {} {[@dots{}] =} ferror (@var{fid}, "clear")
 Query the error status of the stream specified by file descriptor @var{fid}
 
 If an error condition exists then return a string @var{msg} describing the

@@ -66,11 +66,12 @@ simpler, but very common, case of a univariate function where the interval
 to search is bounded.  For unbounded minimization of a function with
 potentially many variables use <code>fminunc</code> or <code>fminsearch</code>.  The two
 functions use different internal algorithms and some knowledge of the objective
-function is required.  For functions which can be differentiated, <code>fminunc</code>
-is appropriate.  For functions with discontinuities, or for which a gradient
-search would fail, use <code>fminsearch</code>.  See <a href="Optimization.html#Optimization">Optimization</a>, for
-minimization with the presence of constraint functions.  Note that searches
-can be made for maxima by simply inverting the objective function
+function is required.  For functions which can be differentiated,
+<code>fminunc</code> is appropriate.  For functions with discontinuities, or for
+which a gradient search would fail, use <code>fminsearch</code>.
+See <a href="Optimization.html#Optimization">Optimization</a>, for minimization with the presence of constraint
+functions.  Note that searches can be made for maxima by simply inverting the
+objective function
 (<code>Fto_max = -Fto_min</code>).
 </p>
 <a name="XREFfminbnd"></a><dl>

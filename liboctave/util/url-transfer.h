@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2013-2015 John W. Eaton
-Copyright (C) 2006-2015 Alexander Barth
+Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2006-2016 Alexander Barth
 Copyright (C) 2009 David Bateman
 
 This file is part of Octave.
@@ -54,22 +54,21 @@ namespace octave
 
     base_url_transfer (void)
       : count (1), host_or_url (), valid (false), ftp (false),
-      ascii_mode (false), ok (true), errmsg (),
-      curr_istream (&std::cin), curr_ostream (&std::cout)
-      { }
+        ascii_mode (false), ok (true), errmsg (),
+        curr_istream (&std::cin), curr_ostream (&std::cout) { }
 
     base_url_transfer (const std::string& host,
                        const std::string& /* user_arg */,
                        const std::string& /* passwd */,
                        std::ostream& os)
       : count (1), host_or_url (host), valid (false), ftp (true),
-      ascii_mode (false), ok (true), errmsg (), curr_istream (&std::cin),
-      curr_ostream (&os) { }
+        ascii_mode (false), ok (true), errmsg (), curr_istream (&std::cin),
+        curr_ostream (&os) { }
 
     base_url_transfer (const std::string& url, std::ostream& os)
       : count (1), host_or_url (url), valid (false), ftp (false),
-      ascii_mode (false), ok (true), errmsg (),
-      curr_istream (&std::cin), curr_ostream (&os) { }
+        ascii_mode (false), ok (true), errmsg (),
+        curr_istream (&std::cin), curr_ostream (&os) { }
 
     virtual ~base_url_transfer (void) { }
 
@@ -178,29 +177,29 @@ namespace octave
     url_transfer (const std::string& url, std::ostream& os);
 
     url_transfer (const url_transfer& h) : rep (h.rep)
-      {
-        rep->count++;
-      }
+    {
+      rep->count++;
+    }
 
     ~url_transfer (void)
-      {
-        if (--rep->count == 0)
-          delete rep;
-      }
+    {
+      if (--rep->count == 0)
+        delete rep;
+    }
 
     url_transfer& operator = (const url_transfer& h)
-      {
-        if (this != &h)
-          {
-            if (--rep->count == 0)
-              delete rep;
+    {
+      if (this != &h)
+        {
+          if (--rep->count == 0)
+            delete rep;
 
-            rep = h.rep;
-            rep->count++;
-          }
+          rep = h.rep;
+          rep->count++;
+        }
 
-        return *this;
-      }
+      return *this;
+    }
 
     bool is_valid (void) const { return rep->is_valid (); }
 
@@ -300,3 +299,4 @@ typedef octave::url_transfer url_transfer;
 #endif
 
 #endif
+

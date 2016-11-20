@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -54,3 +54,4 @@ extern OCTINTERP_API std::string Vinfo_program;
 extern OCTINTERP_API std::string do_which (const std::string& name);
 
 #endif
+

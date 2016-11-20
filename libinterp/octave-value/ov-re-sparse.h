@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2015 David Bateman
+Copyright (C) 2004-2016 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -134,6 +134,8 @@ public:
 
   octave_value convert_to_str_internal (bool pad, bool force, char type) const;
 
+  octave_value as_double (void) const;
+
 #if 0
   int write (octave_stream& os, int block_size,
              oct_data_conv::data_type output_type, int skip,
@@ -161,3 +163,4 @@ private:
 };
 
 #endif
+

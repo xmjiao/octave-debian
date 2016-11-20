@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -591,12 +591,20 @@ octave_user_function::do_multi_index_op (int nargout,
 
   if (is_special_expr ())
     {
-      tree_expression *expr = special_expr ();
+      assert (cmd_list->length () == 1);
+
+      tree_statement *stmt = cmd_list->front ();
+
+      tree_expression *expr = stmt->expression ();
 
       if (expr)
-        retval = (lvalue_list
-                  ? expr->rvalue (nargout, lvalue_list)
-                  : expr->rvalue (nargout));
+        {
+          octave_call_stack::set_location (stmt->line (), stmt->column ());
+
+          retval = (lvalue_list
+                    ? expr->rvalue (nargout, lvalue_list)
+                    : expr->rvalue (nargout));
+        }
     }
   else
     cmd_list->accept (*octave::current_evaluator);
@@ -1140,3 +1148,4 @@ element-by-element and a logical array is returned.  At the top level,
 %! [~, y] = c{2}();
 %! assert (y, -2);
 */
+

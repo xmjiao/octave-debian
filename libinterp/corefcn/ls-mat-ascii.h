@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2015 John W. Eaton
+Copyright (C) 2003-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -37,3 +37,4 @@ extern bool looks_like_mat_ascii_file (std::istream& is,
                                        const std::string& filename);
 
 #endif
+

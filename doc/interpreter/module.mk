@@ -115,14 +115,12 @@ MUNGED_TEXI_SRC = \
   doc/interpreter/basics.texi \
   doc/interpreter/bugs.texi \
   doc/interpreter/container.texi \
-  doc/interpreter/contrib.texi \
   doc/interpreter/cp-idx.texi \
   doc/interpreter/data.texi \
   doc/interpreter/debug.texi \
   doc/interpreter/diffeq.texi \
   doc/interpreter/diagperm.texi \
   doc/interpreter/external.texi \
-  doc/interpreter/emacs.texi \
   doc/interpreter/errors.texi \
   doc/interpreter/eval.texi \
   doc/interpreter/expr.texi \
@@ -158,7 +156,6 @@ MUNGED_TEXI_SRC = \
   doc/interpreter/strings.texi \
   doc/interpreter/system.texi \
   doc/interpreter/testfun.texi \
-  doc/interpreter/tips.texi \
   doc/interpreter/var.texi \
   doc/interpreter/vectorize.texi
 

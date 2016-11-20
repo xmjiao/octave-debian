@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -98,7 +98,7 @@ To compute the matrix logarithm, see @ref{Linear Algebra}.
 @end deftypefn
 
 
-@c reallog scripts/scripts/specfun/reallog.m
+@c reallog scripts/specfun/reallog.m
 @anchor{XREFreallog}
 @deftypefn {} {} reallog (@var{x})
 Return the real-valued natural logarithm of each element of @var{x}.
@@ -157,7 +157,7 @@ $x = 0$, $f = e = 0$.
 @end deftypefn
 
 
-@c pow2 scripts/scripts/specfun/pow2.m
+@c pow2 scripts/specfun/pow2.m
 @anchor{XREFpow2}
 @deftypefn  {} {} pow2 (@var{x})
 @deftypefnx {} {} pow2 (@var{f}, @var{e})
@@ -181,7 +181,7 @@ f .* (2 .^ e).
 @end deftypefn
 
 
-@c nextpow2 scripts/scripts/general/nextpow2.m
+@c nextpow2 scripts/general/nextpow2.m
 @anchor{XREFnextpow2}
 @deftypefn {} {} nextpow2 (@var{x})
 Compute the exponent for the smallest power of two larger than the input.
@@ -199,7 +199,7 @@ $2^n \ge |x|$.
 @end deftypefn
 
 
-@c realpow scripts/scripts/specfun/realpow.m
+@c realpow scripts/specfun/realpow.m
 @anchor{XREFrealpow}
 @deftypefn {} {} realpow (@var{x}, @var{y})
 Compute the real-valued, element-by-element power operator.
@@ -222,7 +222,7 @@ To compute the matrix square root, see @ref{Linear Algebra}.
 @end deftypefn
 
 
-@c realsqrt scripts/scripts/specfun/realsqrt.m
+@c realsqrt scripts/specfun/realsqrt.m
 @anchor{XREFrealsqrt}
 @deftypefn {} {} realsqrt (@var{x})
 Return the real-valued square root of each element of @var{x}.
@@ -244,7 +244,7 @@ negative.
 @end deftypefn
 
 
-@c nthroot scripts/scripts/specfun/nthroot.m
+@c nthroot scripts/specfun/nthroot.m
 @anchor{XREFnthroot}
 @deftypefn {} {} nthroot (@var{x}, @var{n})
 
@@ -349,7 +349,7 @@ $\bar{z} = x - iy$.
 @end deftypefn
 
 
-@c cplxpair scripts/scripts/general/cplxpair.m
+@c cplxpair scripts/general/cplxpair.m
 @anchor{XREFcplxpair}
 @deftypefn  {} {} cplxpair (@var{z})
 @deftypefnx {} {} cplxpair (@var{z}, @var{tol})
@@ -434,7 +434,7 @@ $atan2(\pm0, -0)$ returns $\pm \pi$.
 It should be noted that @sc{matlab} uses different definitions which apparently
 do not distinguish -0.
 
-@c deg2rad scripts/scripts/general/deg2rad.m
+@c deg2rad scripts/general/deg2rad.m
 @anchor{XREFdeg2rad}
 @deftypefn {} {@var{rad} =} deg2rad (@var{deg})
 
@@ -458,7 +458,7 @@ deg2rad ([0, 90, 180, 270, 360])
 @seealso{@ref{XREFrad2deg,,rad2deg}}
 @end deftypefn
 
-@c rad2deg scripts/scripts/general/rad2deg.m
+@c rad2deg scripts/general/rad2deg.m
 @anchor{XREFrad2deg}
 @deftypefn {} {@var{deg} =} rad2deg (@var{rad})
 
@@ -504,21 +504,21 @@ Compute the tangent for each element of @var{x} in radians.
 @seealso{@ref{XREFatan,,atan}, @ref{XREFtand,,tand}, @ref{XREFtanh,,tanh}}
 @end deftypefn
 
-@c sec scripts/scripts/elfun/sec.m
+@c sec scripts/elfun/sec.m
 @anchor{XREFsec}
 @deftypefn {} {} sec (@var{x})
 Compute the secant for each element of @var{x} in radians.
 @seealso{@ref{XREFasec,,asec}, @ref{XREFsecd,,secd}, @ref{XREFsech,,sech}}
 @end deftypefn
 
-@c csc scripts/scripts/elfun/csc.m
+@c csc scripts/elfun/csc.m
 @anchor{XREFcsc}
 @deftypefn {} {} csc (@var{x})
 Compute the cosecant for each element of @var{x} in radians.
 @seealso{@ref{XREFacsc,,acsc}, @ref{XREFcscd,,cscd}, @ref{XREFcsch,,csch}}
 @end deftypefn
 
-@c cot scripts/scripts/elfun/cot.m
+@c cot scripts/elfun/cot.m
 @anchor{XREFcot}
 @deftypefn {} {} cot (@var{x})
 Compute the cotangent for each element of @var{x} in radians.
@@ -547,21 +547,21 @@ Compute the inverse tangent in radians for each element of @var{x}.
 @seealso{@ref{XREFtan,,tan}, @ref{XREFatand,,atand}}
 @end deftypefn
 
-@c asec scripts/scripts/elfun/asec.m
+@c asec scripts/elfun/asec.m
 @anchor{XREFasec}
 @deftypefn {} {} asec (@var{x})
 Compute the inverse secant in radians for each element of @var{x}.
 @seealso{@ref{XREFsec,,sec}, @ref{XREFasecd,,asecd}}
 @end deftypefn
 
-@c acsc scripts/scripts/elfun/acsc.m
+@c acsc scripts/elfun/acsc.m
 @anchor{XREFacsc}
 @deftypefn {} {} acsc (@var{x})
 Compute the inverse cosecant in radians for each element of @var{x}.
 @seealso{@ref{XREFcsc,,csc}, @ref{XREFacscd,,acscd}}
 @end deftypefn
 
-@c acot scripts/scripts/elfun/acot.m
+@c acot scripts/elfun/acot.m
 @anchor{XREFacot}
 @deftypefn {} {} acot (@var{x})
 Compute the inverse cotangent in radians for each element of @var{x}.
@@ -590,21 +590,21 @@ Compute hyperbolic tangent for each element of @var{x}.
 @seealso{@ref{XREFatanh,,atanh}, @ref{XREFsinh,,sinh}, @ref{XREFcosh,,cosh}}
 @end deftypefn
 
-@c sech scripts/scripts/elfun/sech.m
+@c sech scripts/elfun/sech.m
 @anchor{XREFsech}
 @deftypefn {} {} sech (@var{x})
 Compute the hyperbolic secant of each element of @var{x}.
 @seealso{@ref{XREFasech,,asech}}
 @end deftypefn
 
-@c csch scripts/scripts/elfun/csch.m
+@c csch scripts/elfun/csch.m
 @anchor{XREFcsch}
 @deftypefn {} {} csch (@var{x})
 Compute the hyperbolic cosecant of each element of @var{x}.
 @seealso{@ref{XREFacsch,,acsch}}
 @end deftypefn
 
-@c coth scripts/scripts/elfun/coth.m
+@c coth scripts/elfun/coth.m
 @anchor{XREFcoth}
 @deftypefn {} {} coth (@var{x})
 Compute the hyperbolic cotangent of each element of @var{x}.
@@ -633,21 +633,21 @@ Compute the inverse hyperbolic tangent for each element of @var{x}.
 @seealso{@ref{XREFtanh,,tanh}}
 @end deftypefn
 
-@c asech scripts/scripts/elfun/asech.m
+@c asech scripts/elfun/asech.m
 @anchor{XREFasech}
 @deftypefn {} {} asech (@var{x})
 Compute the inverse hyperbolic secant of each element of @var{x}.
 @seealso{@ref{XREFsech,,sech}}
 @end deftypefn
 
-@c acsch scripts/scripts/elfun/acsch.m
+@c acsch scripts/elfun/acsch.m
 @anchor{XREFacsch}
 @deftypefn {} {} acsch (@var{x})
 Compute the inverse hyperbolic cosecant of each element of @var{x}.
 @seealso{@ref{XREFcsch,,csch}}
 @end deftypefn
 
-@c acoth scripts/scripts/elfun/acoth.m
+@c acoth scripts/elfun/acoth.m
 @anchor{XREFacoth}
 @deftypefn {} {} acoth (@var{x})
 Compute the inverse hyperbolic cotangent of each element of @var{x}.
@@ -662,7 +662,7 @@ Compute atan (@var{y} / @var{x}) for corresponding elements of @var{y}
 and @var{x}.
 
 @var{y} and @var{x} must match in size and orientation.  The signs of
-elements of @var{y} and @var{x} are used to determine the quadrats of each
+elements of @var{y} and @var{x} are used to determine the quadrants of each
 resulting value.
 
 This function is equivalent to @code{arg (complex (@var{x}, @var{y}))}.
@@ -684,7 +684,7 @@ cos (pi/2)
 @end group
 @end example
 
-@c sind scripts/scripts/elfun/sind.m
+@c sind scripts/elfun/sind.m
 @anchor{XREFsind}
 @deftypefn {} {} sind (@var{x})
 Compute the sine for each element of @var{x} in degrees.
@@ -693,7 +693,7 @@ Returns zero for elements where @code{@var{x}/180} is an integer.
 @seealso{@ref{XREFasind,,asind}, @ref{XREFsin,,sin}}
 @end deftypefn
 
-@c cosd scripts/scripts/elfun/cosd.m
+@c cosd scripts/elfun/cosd.m
 @anchor{XREFcosd}
 @deftypefn {} {} cosd (@var{x})
 Compute the cosine for each element of @var{x} in degrees.
@@ -702,7 +702,7 @@ Returns zero for elements where @code{(@var{x}-90)/180} is an integer.
 @seealso{@ref{XREFacosd,,acosd}, @ref{XREFcos,,cos}}
 @end deftypefn
 
-@c tand scripts/scripts/elfun/tand.m
+@c tand scripts/elfun/tand.m
 @anchor{XREFtand}
 @deftypefn {} {} tand (@var{x})
 Compute the tangent for each element of @var{x} in degrees.
@@ -712,21 +712,21 @@ Returns zero for elements where @code{@var{x}/180} is an integer and
 @seealso{@ref{XREFatand,,atand}, @ref{XREFtan,,tan}}
 @end deftypefn
 
-@c secd scripts/scripts/elfun/secd.m
+@c secd scripts/elfun/secd.m
 @anchor{XREFsecd}
 @deftypefn {} {} secd (@var{x})
 Compute the secant for each element of @var{x} in degrees.
 @seealso{@ref{XREFasecd,,asecd}, @ref{XREFsec,,sec}}
 @end deftypefn
 
-@c cscd scripts/scripts/elfun/cscd.m
+@c cscd scripts/elfun/cscd.m
 @anchor{XREFcscd}
 @deftypefn {} {} cscd (@var{x})
 Compute the cosecant for each element of @var{x} in degrees.
 @seealso{@ref{XREFacscd,,acscd}, @ref{XREFcsc,,csc}}
 @end deftypefn
 
-@c cotd scripts/scripts/elfun/cotd.m
+@c cotd scripts/elfun/cotd.m
 @anchor{XREFcotd}
 @deftypefn {} {} cotd (@var{x})
 Compute the cotangent for each element of @var{x} in degrees.
@@ -734,28 +734,28 @@ Compute the cotangent for each element of @var{x} in degrees.
 @end deftypefn
 
 
-@c asind scripts/scripts/elfun/asind.m
+@c asind scripts/elfun/asind.m
 @anchor{XREFasind}
 @deftypefn {} {} asind (@var{x})
 Compute the inverse sine in degrees for each element of @var{x}.
 @seealso{@ref{XREFsind,,sind}, @ref{XREFasin,,asin}}
 @end deftypefn
 
-@c acosd scripts/scripts/elfun/acosd.m
+@c acosd scripts/elfun/acosd.m
 @anchor{XREFacosd}
 @deftypefn {} {} acosd (@var{x})
 Compute the inverse cosine in degrees for each element of @var{x}.
 @seealso{@ref{XREFcosd,,cosd}, @ref{XREFacos,,acos}}
 @end deftypefn
 
-@c atand scripts/scripts/elfun/atand.m
+@c atand scripts/elfun/atand.m
 @anchor{XREFatand}
 @deftypefn {} {} atand (@var{x})
 Compute the inverse tangent in degrees for each element of @var{x}.
 @seealso{@ref{XREFtand,,tand}, @ref{XREFatan,,atan}}
 @end deftypefn
 
-@c atan2d scripts/scripts/elfun/atan2d.m
+@c atan2d scripts/elfun/atan2d.m
 @anchor{XREFatan2d}
 @deftypefn {} {} atan2d (@var{y}, @var{x})
 Compute atan2 (@var{y} / @var{x}) in degrees for corresponding elements
@@ -763,21 +763,21 @@ from @var{y} and @var{x}.
 @seealso{@ref{XREFtand,,tand}, @ref{XREFatan2,,atan2}}
 @end deftypefn
 
-@c asecd scripts/scripts/elfun/asecd.m
+@c asecd scripts/elfun/asecd.m
 @anchor{XREFasecd}
 @deftypefn {} {} asecd (@var{x})
 Compute the inverse secant in degrees for each element of @var{x}.
 @seealso{@ref{XREFsecd,,secd}, @ref{XREFasec,,asec}}
 @end deftypefn
 
-@c acscd scripts/scripts/elfun/acscd.m
+@c acscd scripts/elfun/acscd.m
 @anchor{XREFacscd}
 @deftypefn {} {} acscd (@var{x})
 Compute the inverse cosecant in degrees for each element of @var{x}.
 @seealso{@ref{XREFcscd,,cscd}, @ref{XREFacsc,,acsc}}
 @end deftypefn
 
-@c acotd scripts/scripts/elfun/acotd.m
+@c acotd scripts/elfun/acotd.m
 @anchor{XREFacotd}
 @deftypefn {} {} acotd (@var{x})
 Compute the inverse cotangent in degrees for each element of @var{x}.
@@ -1241,7 +1241,7 @@ hypot (hypot (hypot (@var{x}, @var{y}), @var{z}), @var{w}), etc.
 @end deftypefn
 
 
-@c gradient scripts/scripts/general/gradient.m
+@c gradient scripts/general/gradient.m
 @anchor{XREFgradient}
 @deftypefn  {} {@var{dx} =} gradient (@var{m})
 @deftypefnx {} {[@var{dx}, @var{dy}, @var{dz}, @dots{}] =} gradient (@var{m})
@@ -1307,7 +1307,7 @@ but avoids forming a temporary array and is faster.  When @var{X} and
 @end deftypefn
 
 
-@c cross scripts/scripts/linear-algebra/cross.m
+@c cross scripts/linear-algebra/cross.m
 @anchor{XREFcross}
 @deftypefn  {} {} cross (@var{x}, @var{y})
 @deftypefnx {} {} cross (@var{x}, @var{y}, @var{dim})
@@ -1333,7 +1333,7 @@ cross ([1,1,0], [0,1,1])
 @end deftypefn
 
 
-@c divergence scripts/scripts/general/divergence.m
+@c divergence scripts/general/divergence.m
 @anchor{XREFdivergence}
 @deftypefn  {} {@var{div} =} divergence (@var{x}, @var{y}, @var{z}, @var{fx}, @var{fy}, @var{fz})
 @deftypefnx {} {@var{div} =} divergence (@var{fx}, @var{fy}, @var{fz})
@@ -1365,7 +1365,7 @@ The coordinates of the vector field can be given by the arguments @var{x},
 @end deftypefn
 
 
-@c curl scripts/scripts/general/curl.m
+@c curl scripts/general/curl.m
 @anchor{XREFcurl}
 @deftypefn  {} {[@var{cx}, @var{cy}, @var{cz}, @var{v}] =} curl (@var{x}, @var{y}, @var{z}, @var{fx}, @var{fy}, @var{fz})
 @deftypefnx {} {[@var{cz}, @var{v}] =} curl (@var{x}, @var{y}, @var{fx}, @var{fy})
@@ -1398,7 +1398,7 @@ at that point.
 @end deftypefn
 
 
-@c del2 scripts/scripts/general/del2.m
+@c del2 scripts/general/del2.m
 @anchor{XREFdel2}
 @deftypefn  {} {@var{d} =} del2 (@var{M})
 @deftypefnx {} {@var{d} =} del2 (@var{M}, @var{h})
@@ -1445,7 +1445,7 @@ calculated from the linear extrapolation of interior points.
 @end deftypefn
 
 
-@c factorial scripts/scripts/specfun/factorial.m
+@c factorial scripts/specfun/factorial.m
 @anchor{XREFfactorial}
 @deftypefn {} {} factorial (@var{n})
 Return the factorial of @var{n} where @var{n} is a real non-negative
@@ -1463,7 +1463,7 @@ such cases consider @code{gammaln}.
 @end deftypefn
 
 
-@c factor scripts/scripts/specfun/factor.m
+@c factor scripts/specfun/factor.m
 @anchor{XREFfactor}
 @deftypefn  {} {@var{pf} =} factor (@var{q})
 @deftypefnx {} {[@var{pf}, @var{n}] =} factor (@var{q})
@@ -1523,7 +1523,7 @@ gcd ([15, 9], [20, 18])
 @end deftypefn
 
 
-@c lcm scripts/scripts/specfun/lcm.m
+@c lcm scripts/specfun/lcm.m
 @anchor{XREFlcm}
 @deftypefn  {} {} lcm (@var{x}, @var{y})
 @deftypefnx {} {} lcm (@var{x}, @var{y}, @dots{})
@@ -1535,7 +1535,7 @@ All elements must be numeric and of the same size or scalar.
 @end deftypefn
 
 
-@c chop scripts/scripts/general/chop.m
+@c chop scripts/general/chop.m
 @anchor{XREFchop}
 @deftypefn {} {} chop (@var{x}, @var{ndigits}, @var{base})
 Truncate elements of @var{x} to a length of @var{ndigits} such that the
@@ -1629,7 +1629,7 @@ negative numbers or when the values are periodic.
 @end deftypefn
 
 
-@c primes scripts/scripts/specfun/primes.m
+@c primes scripts/specfun/primes.m
 @anchor{XREFprimes}
 @deftypefn {} {} primes (@var{n})
 Return all primes up to @var{n}.
@@ -1653,7 +1653,7 @@ See also @code{list_primes} if you need a specific number @var{n} of primes.
 @end deftypefn
 
 
-@c list_primes scripts/scripts/miscellaneous/list_primes.m
+@c list_primes scripts/miscellaneous/list_primes.m
 @anchor{XREFlist_primes}
 @deftypefn  {} {} list_primes ()
 @deftypefnx {} {} list_primes (@var{n})
@@ -1836,7 +1836,7 @@ return @code{NaN}.
 @end deftypefn
 
 
-@c beta scripts/scripts/specfun/beta.m
+@c beta scripts/specfun/beta.m
 @anchor{XREFbeta}
 @deftypefn {} {} beta (@var{a}, @var{b})
 Compute the Beta function for real inputs @var{a} and @var{b}.
@@ -1910,7 +1910,7 @@ The inverse is the value @var{x} such that
 @end deftypefn
 
 
-@c betaln scripts/scripts/specfun/betaln.m
+@c betaln scripts/specfun/betaln.m
 @anchor{XREFbetaln}
 @deftypefn {} {} betaln (@var{a}, @var{b})
 Compute the natural logarithm of the Beta function for real inputs @var{a}
@@ -1937,7 +1937,7 @@ with the logarithm of the output rather than the function directly.
 @end deftypefn
 
 
-@c bincoeff scripts/scripts/general/bincoeff.m
+@c bincoeff scripts/general/bincoeff.m
 @anchor{XREFbincoeff}
 @deftypefn {} {} bincoeff (@var{n}, @var{k})
 Return the binomial coefficient of @var{n} and @var{k}, defined as
@@ -1976,7 +1976,7 @@ big arguments.
 @end deftypefn
 
 
-@c commutation_matrix scripts/scripts/linear-algebra/commutation_matrix.m
+@c commutation_matrix scripts/linear-algebra/commutation_matrix.m
 @anchor{XREFcommutation_matrix}
 @deftypefn {} {} commutation_matrix (@var{m}, @var{n})
 Return the commutation matrix
@@ -2029,7 +2029,7 @@ Calculus with Applications in Statistics and Econometrics.}
 @end deftypefn
 
 
-@c duplication_matrix scripts/scripts/linear-algebra/duplication_matrix.m
+@c duplication_matrix scripts/linear-algebra/duplication_matrix.m
 @anchor{XREFduplication_matrix}
 @deftypefn {} {} duplication_matrix (@var{n})
 Return the duplication matrix
@@ -2136,7 +2136,7 @@ and 16.15), Dover, 1965.
 @end deftypefn
 
 
-@c ellipke scripts/scripts/specfun/ellipke.m
+@c ellipke scripts/specfun/ellipke.m
 @anchor{XREFellipke}
 @deftypefn  {} {@var{k} =} ellipke (@var{m})
 @deftypefnx {} {@var{k} =} ellipke (@var{m}, @var{tol})
@@ -2319,7 +2319,7 @@ erfc (@var{y}) == @var{x}
 @end deftypefn
 
 
-@c expint scripts/scripts/specfun/expint.m
+@c expint scripts/specfun/expint.m
 @anchor{XREFexpint}
 @deftypefn {} {} expint (@var{x})
 Compute the exponential integral:
@@ -2455,11 +2455,11 @@ gammainc (@var{x}, @var{a}) @equiv{} 1 - gammainc (@var{x}, @var{a}, "upper")
 @end deftypefn
 
 
-@c legendre scripts/scripts/specfun/legendre.m
+@c legendre scripts/specfun/legendre.m
 @anchor{XREFlegendre}
 @deftypefn  {} {@var{l} =} legendre (@var{n}, @var{x})
 @deftypefnx {} {@var{l} =} legendre (@var{n}, @var{x}, @var{normalization})
-Compute the Legendre function of degree @var{n} and order
+Compute the associated Legendre function of degree @var{n} and order
 @var{m} = 0 @dots{} @var{n}.
 
 The value @var{n} must be a real non-negative integer.
@@ -2471,11 +2471,11 @@ The optional argument @var{normalization} may be one of @qcode{"unnorm"},
 is @qcode{"unnorm"}.
 
 When the optional argument @var{normalization} is @qcode{"unnorm"}, compute
-the Legendre function of degree @var{n} and order @var{m} and return all
-values for @var{m} = 0 @dots{} @var{n}.  The return value has one dimension
-more than @var{x}.
+the associated Legendre function of degree @var{n} and order @var{m} and
+return all values for @var{m} = 0 @dots{} @var{n}.  The return value has one
+dimension more than @var{x}.
 
-The Legendre Function of degree @var{n} and order @var{m}:
+The associated Legendre function of degree @var{n} and order @var{m}:
 
 @tex
 $$
@@ -2573,8 +2573,8 @@ SP(x) = P(x) * (-1)  * [-------]
 
 When the optional argument @var{normalization} is @qcode{"norm"}, compute
 the fully normalized associated Legendre function.  The fully normalized
-associated Legendre function is related to the unnormalized Legendre
-functions by the following:
+associated Legendre function is related to the unnormalized associated
+Legendre functions by the following:
 
 For Legendre functions of degree @var{n} and order @var{m}
 
@@ -2646,7 +2646,7 @@ can have any value real or complex value.  However, for polygamma functions
 @node Rational Approximations
 @section Rational Approximations
 
-@c rat scripts/scripts/general/rat.m
+@c rat scripts/general/rat.m
 @anchor{XREFrat}
 @deftypefn  {} {@var{s} =} rat (@var{x}, @var{tol})
 @deftypefnx {} {[@var{n}, @var{d}] =} rat (@var{x}, @var{tol})
@@ -2696,7 +2696,7 @@ If the length of the smallest possible rational approximation exceeds
 @node Coordinate Transformations
 @section Coordinate Transformations
 
-@c cart2pol scripts/scripts/general/cart2pol.m
+@c cart2pol scripts/general/cart2pol.m
 @anchor{XREFcart2pol}
 @deftypefn  {} {[@var{theta}, @var{r}] =} cart2pol (@var{x}, @var{y})
 @deftypefnx {} {[@var{theta}, @var{r}, @var{z}] =} cart2pol (@var{x}, @var{y}, @var{z})
@@ -2721,7 +2721,7 @@ where each row represents one polar/(cylindrical) coordinate
 @end deftypefn
 
 
-@c pol2cart scripts/scripts/general/pol2cart.m
+@c pol2cart scripts/general/pol2cart.m
 @anchor{XREFpol2cart}
 @deftypefn  {} {[@var{x}, @var{y}] =} pol2cart (@var{theta}, @var{r})
 @deftypefnx {} {[@var{x}, @var{y}, @var{z}] =} pol2cart (@var{theta}, @var{r}, @var{z})
@@ -2746,7 +2746,7 @@ where each row represents one Cartesian coordinate
 @end deftypefn
 
 
-@c cart2sph scripts/scripts/general/cart2sph.m
+@c cart2sph scripts/general/cart2sph.m
 @anchor{XREFcart2sph}
 @deftypefn  {} {[@var{theta}, @var{phi}, @var{r}] =} cart2sph (@var{x}, @var{y}, @var{z})
 @deftypefnx {} {[@var{theta}, @var{phi}, @var{r}] =} cart2sph (@var{C})
@@ -2770,7 +2770,7 @@ where each row represents one spherical coordinate
 @end deftypefn
 
 
-@c sph2cart scripts/scripts/general/sph2cart.m
+@c sph2cart scripts/general/sph2cart.m
 @anchor{XREFsph2cart}
 @deftypefn  {} {[@var{x}, @var{y}, @var{z}] =} sph2cart (@var{theta}, @var{phi}, @var{r})
 @deftypefnx {} {[@var{x}, @var{y}, @var{z}] =} sph2cart (@var{S})

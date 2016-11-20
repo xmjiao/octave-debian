@@ -195,9 +195,9 @@ handles) to the line objects created.
 <dt><a name="index-patch"></a>: <em></em> <strong>patch</strong> <em>()</em></dt>
 <dt><a name="index-patch-1"></a>: <em></em> <strong>patch</strong> <em>(<var>x</var>, <var>y</var>, <var>c</var>)</em></dt>
 <dt><a name="index-patch-2"></a>: <em></em> <strong>patch</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>c</var>)</em></dt>
-<dt><a name="index-patch-3"></a>: <em></em> <strong>patch</strong> <em>(<var>fv</var>)</em></dt>
-<dt><a name="index-patch-4"></a>: <em></em> <strong>patch</strong> <em>(&quot;Faces&quot;, <var>faces</var>, &quot;Vertices&quot;, <var>verts</var>, &hellip;)</em></dt>
-<dt><a name="index-patch-5"></a>: <em></em> <strong>patch</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-patch-3"></a>: <em></em> <strong>patch</strong> <em>(&quot;Faces&quot;, <var>faces</var>, &quot;Vertices&quot;, <var>verts</var>, &hellip;)</em></dt>
+<dt><a name="index-patch-4"></a>: <em></em> <strong>patch</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-patch-5"></a>: <em></em> <strong>patch</strong> <em>(&hellip;, <var>propstruct</var>, &hellip;)</em></dt>
 <dt><a name="index-patch-6"></a>: <em></em> <strong>patch</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dt><a name="index-patch-7"></a>: <em><var>h</var> =</em> <strong>patch</strong> <em>(&hellip;)</em></dt>
 <dd><p>Create patch object in the current axes with vertices at locations
@@ -230,9 +230,8 @@ can be created by directly passing the property/value pairs
 <code>&quot;Vertices&quot;</code>/<var>verts</var>, <code>&quot;Faces&quot;</code>/<var>faces</var> as
 inputs.
 </p>
-<p>A third input form is to create a structure <var>fv</var> with the fields
-<code>&quot;vertices&quot;</code>, <code>&quot;faces&quot;</code>, and optionally
-<code>&quot;facevertexcdata&quot;</code>.
+<p>Instead of using property/value pairs, any property can be set by passing a
+structure <var>propstruct</var> with the respective field names.
 </p>
 <p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
 rather than the current axes returned by <code>gca</code>.
@@ -292,7 +291,7 @@ surface object.
 <code>surface</code> object are set to a value other than <code>&quot;none&quot;</code>, these
 objects are drawn with light and shadow effects.  Supported values for these
 properties are <code>&quot;none&quot;</code> (no lighting effects), <code>&quot;flat&quot;</code>
-(facetted look of the objects) and <code>&quot;gouraud&quot;</code> (linear interpolation
+(faceted look of the objects) and <code>&quot;gouraud&quot;</code> (linear interpolation
 of the lighting effects between the vertices).
 For <code>patch</code> objects, the normals must be set manually (property
 <code>&quot;VertexNormals&quot;</code>).
@@ -307,7 +306,7 @@ their respective values:
 </p>
 <dl compact="compact">
 <dt><code>&quot;Color&quot;:</code> The color of the light object can be passed as an</dt>
-<dd><p>RGB-vector (e.g. <code>[1 0 0]</code> for red) or as a string (e.g. <code>&quot;r&quot;</code>
+<dd><p>RGB-vector (e.g., <code>[1 0 0]</code> for red) or as a string (e.g., <code>&quot;r&quot;</code>
 for red).  The default color is white (<code>[1 1 1]</code>).
 </p>
 </dd>
@@ -327,7 +326,7 @@ as the first argument.
 <p>Optionally, the handle to the light object is returned in <var>h</var>.
 </p>
 
-<p><strong>See also:</strong> <a href="#XREFget">get</a>, <a href="#XREFset">set</a>, <a href="#XREFpatch">patch</a>, <a href="#XREFsurface">surface</a>, <a href="Three_002dDimensional-Plots.html#XREFlighting">lighting</a>.
+<p><strong>See also:</strong> <a href="#XREFget">get</a>, <a href="#XREFset">set</a>, <a href="#XREFpatch">patch</a>, <a href="#XREFsurface">surface</a>, <a href="Three_002dDimensional-Plots.html#XREFlighting">lighting</a>, <a href="Three_002dDimensional-Plots.html#XREFmaterial">material</a>.
 </p></dd></dl>
 
 

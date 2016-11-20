@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2015 John W. Eaton
+## Copyright (C) 1994-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -105,8 +105,8 @@ endfunction
 %!assert (postpad ([1; 2], 2), [1; 2])
 %!assert (postpad ([1; 2], 2, 3, 2), [1 3; 2 3])
 
-%! ## Test with string concatenation (bug #44162)
-%!assert (postpad ("Octave", 16, "x"), "Octavexxxxxxxxxx")
+%! ## Test with string concatenation
+%!assert <44162> (postpad ("Octave", 16, "x"), "Octavexxxxxxxxxx")
 %!assert (postpad ("Octave", 4), "Octa")
 
 %!error postpad ()

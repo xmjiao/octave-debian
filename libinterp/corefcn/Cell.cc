@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999-2015 John W. Eaton
+Copyright (C) 1999-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -34,8 +34,7 @@ along with Octave; see the file COPYING.  If not, see
 
 Cell::Cell (const octave_value_list& ovl)
   : Array<octave_value> (ovl.cell_value ())
-{
-}
+{ }
 
 Cell::Cell (const string_vector& sv, bool trim)
   : Array<octave_value> ()
@@ -204,7 +203,7 @@ Cell::index (const octave_value_list& idx_arg, bool resize_ok) const
           break;
         }
     }
-  catch (index_exception& e)
+  catch (octave::index_exception& e)
     {
       // Rethrow to allow more info to be reported later.
       e.set_pos_if_unset (n, k+1);
@@ -235,7 +234,7 @@ Cell::assign (const octave_value_list& idx_arg, const Cell& rhs,
         {
           ra_idx(i) = idx_arg(i).index_vector ();
         }
-      catch (index_exception& e)
+      catch (octave::index_exception& e)
         {
           // Rethrow to allow more info to be reported later.
           e.set_pos (len, i+1);
@@ -259,12 +258,12 @@ Cell::delete_elements (const octave_value_list& idx_arg)
       {
         ra_idx.xelem (i) = idx_arg(i).index_vector ();
       }
-    catch (index_exception& e)
-        {
-          // Rethrow to allow more info to be reported later.
-          e.set_pos (len, i+1);
-          throw;
-        }
+    catch (octave::index_exception& e)
+      {
+        // Rethrow to allow more info to be reported later.
+        e.set_pos (len, i+1);
+        throw;
+      }
 
   Array<octave_value>::delete_elements (ra_idx);
 }
@@ -354,3 +353,4 @@ Cell::diag (octave_idx_type m, octave_idx_type n) const
 {
   return Array<octave_value>::diag (m, n);
 }
+

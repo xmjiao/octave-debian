@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -64,7 +64,7 @@ tm_row_const
 private:
 
   class
-  tm_row_const_rep : public octave_base_list<octave_value>
+  tm_row_const_rep : public octave::base_list<octave_value>
   {
   public:
 
@@ -462,7 +462,7 @@ tm_row_const::tm_row_const_rep::cellify (void)
 }
 
 class
-tm_const : public octave_base_list<tm_row_const>
+tm_const : public octave::base_list<tm_row_const>
 {
 public:
 
@@ -1391,3 +1391,4 @@ The original variable value is restored when exiting the function.
 
 %!error (string_fill_char (1, 2))
 */
+

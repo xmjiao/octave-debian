@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,6 +25,8 @@ along with Octave; see the file COPYING.  If not, see
 #endif
 
 #include <iostream>
+
+#include "oct-inttypes.h"
 
 #include "data-conv.h"
 #include "mach-info.h"
@@ -119,6 +121,66 @@ octave_scalar::resize (const dim_vector& dv, bool fill) const
 }
 
 octave_value
+octave_scalar::as_double (void) const
+{
+  return scalar;
+}
+
+octave_value
+octave_scalar::as_single (void) const
+{
+  return static_cast<float> (scalar);
+}
+
+octave_value
+octave_scalar::as_int8 (void) const
+{
+  return octave_int8 (scalar);
+}
+
+octave_value
+octave_scalar::as_int16 (void) const
+{
+  return octave_int16 (scalar);
+}
+
+octave_value
+octave_scalar::as_int32 (void) const
+{
+  return octave_int32 (scalar);
+}
+
+octave_value
+octave_scalar::as_int64 (void) const
+{
+  return octave_int64 (scalar);
+}
+
+octave_value
+octave_scalar::as_uint8 (void) const
+{
+  return octave_uint8 (scalar);
+}
+
+octave_value
+octave_scalar::as_uint16 (void) const
+{
+  return octave_uint16 (scalar);
+}
+
+octave_value
+octave_scalar::as_uint32 (void) const
+{
+  return octave_uint32 (scalar);
+}
+
+octave_value
+octave_scalar::as_uint64 (void) const
+{
+  return octave_uint64 (scalar);
+}
+
+octave_value
 octave_scalar::diag (octave_idx_type m, octave_idx_type n) const
 {
   return DiagMatrix (Array<double> (dim_vector (1, 1), scalar), m, n);
@@ -130,7 +192,7 @@ octave_scalar::convert_to_str_internal (bool, bool, char type) const
   octave_value retval;
 
   if (octave::math::isnan (scalar))
-    err_nan_to_character_conversion ();
+    octave::err_nan_to_character_conversion ();
 
   int ival = octave::math::nint (scalar);
 
@@ -313,53 +375,53 @@ octave_scalar::map (unary_mapper_t umap) const
     case umap_conj:
       return scalar;
 
-#define SCALAR_MAPPER(UMAP, FCN)                \
-      case umap_ ## UMAP:                       \
-        return octave_value (FCN (scalar))
+#define SCALAR_MAPPER(UMAP, FCN)              \
+    case umap_ ## UMAP:                       \
+      return octave_value (FCN (scalar))
 
-      SCALAR_MAPPER (abs, ::fabs);
-      SCALAR_MAPPER (acos, octave::math::rc_acos);
-      SCALAR_MAPPER (acosh, octave::math::rc_acosh);
-      SCALAR_MAPPER (angle, octave::math::arg);
-      SCALAR_MAPPER (arg,octave::math ::arg);
-      SCALAR_MAPPER (asin, octave::math::rc_asin);
-      SCALAR_MAPPER (asinh, octave::math::asinh);
-      SCALAR_MAPPER (atan, ::atan);
-      SCALAR_MAPPER (atanh, octave::math::rc_atanh);
-      SCALAR_MAPPER (erf, octave::math::erf);
-      SCALAR_MAPPER (erfinv, octave::math::erfinv);
-      SCALAR_MAPPER (erfcinv, octave::math::erfcinv);
-      SCALAR_MAPPER (erfc, octave::math::erfc);
-      SCALAR_MAPPER (erfcx, octave::math::erfcx);
-      SCALAR_MAPPER (erfi, octave::math::erfi);
-      SCALAR_MAPPER (dawson, octave::math::dawson);
-      SCALAR_MAPPER (gamma, octave::math::gamma);
-      SCALAR_MAPPER (lgamma, octave::math::rc_lgamma);
-      SCALAR_MAPPER (cbrt, octave::math::cbrt);
-      SCALAR_MAPPER (ceil, ::ceil);
-      SCALAR_MAPPER (cos, ::cos);
-      SCALAR_MAPPER (cosh, ::cosh);
-      SCALAR_MAPPER (exp, ::exp);
-      SCALAR_MAPPER (expm1, octave::math::expm1);
-      SCALAR_MAPPER (fix, octave::math::fix);
-      SCALAR_MAPPER (floor, std::floor);
-      SCALAR_MAPPER (log, octave::math::rc_log);
-      SCALAR_MAPPER (log2, octave::math::rc_log2);
-      SCALAR_MAPPER (log10, octave::math::rc_log10);
-      SCALAR_MAPPER (log1p, octave::math::rc_log1p);
-      SCALAR_MAPPER (round, octave::math::round);
-      SCALAR_MAPPER (roundb, octave::math::roundb);
-      SCALAR_MAPPER (signum, octave::math::signum);
-      SCALAR_MAPPER (sin, ::sin);
-      SCALAR_MAPPER (sinh, ::sinh);
-      SCALAR_MAPPER (sqrt, octave::math::rc_sqrt);
-      SCALAR_MAPPER (tan, ::tan);
-      SCALAR_MAPPER (tanh, ::tanh);
-      SCALAR_MAPPER (isfinite, octave::math::finite);
-      SCALAR_MAPPER (isinf, octave::math::isinf);
-      SCALAR_MAPPER (isna, octave::math::is_NA);
-      SCALAR_MAPPER (isnan, octave::math::isnan);
-      SCALAR_MAPPER (xsignbit, octave::math::signbit);
+    SCALAR_MAPPER (abs, ::fabs);
+    SCALAR_MAPPER (acos, octave::math::rc_acos);
+    SCALAR_MAPPER (acosh, octave::math::rc_acosh);
+    SCALAR_MAPPER (angle, octave::math::arg);
+    SCALAR_MAPPER (arg,octave::math ::arg);
+    SCALAR_MAPPER (asin, octave::math::rc_asin);
+    SCALAR_MAPPER (asinh, octave::math::asinh);
+    SCALAR_MAPPER (atan, ::atan);
+    SCALAR_MAPPER (atanh, octave::math::rc_atanh);
+    SCALAR_MAPPER (erf, octave::math::erf);
+    SCALAR_MAPPER (erfinv, octave::math::erfinv);
+    SCALAR_MAPPER (erfcinv, octave::math::erfcinv);
+    SCALAR_MAPPER (erfc, octave::math::erfc);
+    SCALAR_MAPPER (erfcx, octave::math::erfcx);
+    SCALAR_MAPPER (erfi, octave::math::erfi);
+    SCALAR_MAPPER (dawson, octave::math::dawson);
+    SCALAR_MAPPER (gamma, octave::math::gamma);
+    SCALAR_MAPPER (lgamma, octave::math::rc_lgamma);
+    SCALAR_MAPPER (cbrt, octave::math::cbrt);
+    SCALAR_MAPPER (ceil, ::ceil);
+    SCALAR_MAPPER (cos, ::cos);
+    SCALAR_MAPPER (cosh, ::cosh);
+    SCALAR_MAPPER (exp, ::exp);
+    SCALAR_MAPPER (expm1, octave::math::expm1);
+    SCALAR_MAPPER (fix, octave::math::fix);
+    SCALAR_MAPPER (floor, std::floor);
+    SCALAR_MAPPER (log, octave::math::rc_log);
+    SCALAR_MAPPER (log2, octave::math::rc_log2);
+    SCALAR_MAPPER (log10, octave::math::rc_log10);
+    SCALAR_MAPPER (log1p, octave::math::rc_log1p);
+    SCALAR_MAPPER (round, octave::math::round);
+    SCALAR_MAPPER (roundb, octave::math::roundb);
+    SCALAR_MAPPER (signum, octave::math::signum);
+    SCALAR_MAPPER (sin, ::sin);
+    SCALAR_MAPPER (sinh, ::sinh);
+    SCALAR_MAPPER (sqrt, octave::math::rc_sqrt);
+    SCALAR_MAPPER (tan, ::tan);
+    SCALAR_MAPPER (tanh, ::tanh);
+    SCALAR_MAPPER (isfinite, octave::math::finite);
+    SCALAR_MAPPER (isinf, octave::math::isinf);
+    SCALAR_MAPPER (isna, octave::math::is_NA);
+    SCALAR_MAPPER (isnan, octave::math::isnan);
+    SCALAR_MAPPER (xsignbit, octave::math::signbit);
 
     // Special cases for Matlab compatibility.
     case umap_xtolower:
@@ -407,3 +469,4 @@ octave_scalar::fast_elem_insert_self (void *where, builtin_type_t btyp) const
   else
     return false;
 }
+

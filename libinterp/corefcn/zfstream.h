@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2015 Ludwig Schwardt, Kevin Ruland
+Copyright (C) 2005-2016 Ludwig Schwardt, Kevin Ruland
 
 This file is part of Octave.
 
@@ -505,3 +505,4 @@ setcompression (int l, int s = Z_DEFAULT_STRATEGY)
 #endif
 
 #endif
+

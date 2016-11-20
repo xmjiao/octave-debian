@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,6 +25,8 @@ along with Octave; see the file COPYING.  If not, see
 // this file.
 
 #include <iostream>
+
+#include "oct-inttypes.h"
 
 #include "ovl.h"
 #include "ov-base.h"
@@ -140,7 +142,7 @@ bool
 octave_base_scalar<ST>::is_true (void) const
 {
   if (octave::math::isnan (scalar))
-    err_nan_to_logical_conversion ();
+    octave::err_nan_to_logical_conversion ();
 
   return (scalar != ST ());
 }

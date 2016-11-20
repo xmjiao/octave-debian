@@ -1,4 +1,4 @@
-## Copyright (C) 1997-2015 Vincent Cautaerts
+## Copyright (C) 1997-2016 Vincent Cautaerts
 ##
 ## This file is part of Octave.
 ##
@@ -123,8 +123,8 @@ endfunction
 %! assert (y, "abcdefg");
 %! assert (ifftshift (y), "defgabc");
 
-## Test N-dimensional input (bug #45207)
-%!test
+## Test N-dimensional input
+%!test <45207>
 %! x = [0:3];
 %! x = x + x' + reshape (x, [1 1 4]);
 %! y1 = [4 5 2 3; 5 6 3 4; 2 3 0 1; 3 4 1 2];

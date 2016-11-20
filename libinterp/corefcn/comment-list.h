@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000-2015 John W. Eaton
+Copyright (C) 2000-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -27,7 +27,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <string>
 
-#include <base-list.h>
+#include "base-list.h"
 
 extern std::string get_comment_text (void);
 
@@ -84,14 +84,14 @@ private:
 };
 
 class
-octave_comment_list : public octave_base_list<octave_comment_elt>
+octave_comment_list : public octave::base_list<octave_comment_elt>
 {
 public:
 
   octave_comment_list (void) { }
 
   void append (const octave_comment_elt& elt)
-  { octave_base_list<octave_comment_elt>::append (elt); }
+  { octave::base_list<octave_comment_elt>::append (elt); }
 
   void append (const std::string& s,
                octave_comment_elt::comment_type t = octave_comment_elt::unknown)
@@ -101,3 +101,4 @@ public:
 };
 
 #endif
+

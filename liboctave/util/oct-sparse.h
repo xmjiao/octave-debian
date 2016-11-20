@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2015 David Bateman
+Copyright (C) 2005-2016 David Bateman
 
 This file is part of Octave.
 
@@ -130,3 +130,4 @@ along with Octave; see the file COPYING.  If not, see
 #endif
 
 #endif
+

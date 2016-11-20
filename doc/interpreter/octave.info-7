@@ -21,6 +21,723 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Inheritance and Aggregation,  Prev: Overloading Objects,  Up: Object Oriented Programming
+
+34.5 Inheritance and Aggregation
+================================
+
+Using classes to build new classes is supported by Octave through the
+use of both inheritance and aggregation.
+
+   Class inheritance is provided by Octave using the ‘class’ function in
+the class constructor.  As in the case of the polynomial class, the
+Octave programmer will create a structure that contains the data fields
+required by the class, and then call the ‘class’ function to indicate
+that an object is to be created from the structure.  Creating a child of
+an existing object is done by creating an object of the parent class and
+providing that object as the third argument of the class function.
+
+   This is most easily demonstrated by example.  Suppose the programmer
+needs a FIR filter, i.e., a filter with a numerator polynomial but a
+denominator of 1.  In traditional Octave programming this would be
+performed as follows.
+
+     octave:1> x = [some data vector];
+     octave:2> n = [some coefficient vector];
+     octave:3> y = filter (n, 1, x);
+
+   The equivalent behavior can be implemented as a class @FIRfilter.
+The constructor for this class is the file ‘FIRfilter.m’ in the class
+directory ‘@FIRfilter’.
+
+     ## -*- texinfo -*-
+     ## @deftypefn  {} {} FIRfilter ()
+     ## @deftypefnx {} {} FIRfilter (@var{p})
+     ## Create a FIR filter with polynomial @var{p} as coefficient vector.
+     ## @end deftypefn
+
+     function f = FIRfilter (p)
+
+       if (nargin > 1)
+         print_usage ();
+       endif
+
+       if (nargin == 0)
+         p = @polynomial ([1]);
+       elseif (! isa (p, "polynomial"))
+         error ("@FIRfilter: P must be a polynomial object");
+       endif
+
+       f.polynomial = [];
+       f = class (f, "FIRfilter", p);
+
+     endfunction
+
+   As before, the leading comments provide documentation for the class
+constructor.  This constructor is very similar to the polynomial class
+constructor, except that a polynomial object is passed as the third
+argument to the ‘class’ function, telling Octave that the FIRfilter
+class will be derived from the polynomial class.  The FIR filter class
+itself does not have any data fields, but it must provide a struct to
+the ‘class’ function.  Given that the @polynomial constructor will add
+an element named POLYNOMIAL to the object struct, the @FIRfilter just
+initializes a struct with a dummy field POLYNOMIAL which will later be
+overwritten.
+
+   Note that the sample code always provides for the case in which no
+arguments are supplied.  This is important because Octave will call a
+constructor with no arguments when loading objects from saved files in
+order to determine the inheritance structure.
+
+   A class may be a child of more than one class (*note class:
+XREFclass.), and inheritance may be nested.  There is no limitation to
+the number of parents or the level of nesting other than memory or other
+physical issues.
+
+   As before, a class requires a ‘display’ method.  A simple example
+might be
+
+     function display (f)
+       printf ("%s.polynomial", inputname (1));
+       display (f.polynomial);
+     endfunction
+
+   Note that the FIRfilter’s display method relies on the display method
+from the polynomial class to actually display the filter coefficients.
+
+   Once a constructor and display method exist, it is possible to create
+an instance of the class.  It is also possible to check the class type
+and examine the underlying structure.
+
+     octave:1> f = FIRfilter (polynomial ([1 1 1]/3))
+     f.polynomial = 0.33333 + 0.33333 * X + 0.33333 * X ^ 2
+     octave:2> class (f)
+     ans = FIRfilter
+     octave:3> isa (f, "FIRfilter")
+     ans =  1
+     octave:4> isa (f, "polynomial")
+     ans =  1
+     octave:5> struct (f)
+     ans =
+
+       scalar structure containing the fields:
+
+     polynomial = 0.33333 + 0.33333 * X + 0.33333 * X ^ 2
+
+   The only thing remaining to make this class usable is a method for
+processing data.  But before that, it is usually desirable to also have
+a way of changing the data stored in a class.  Since the fields in the
+underlying struct are private by default, it is necessary to provide a
+mechanism to access the fields.  The ‘subsref’ method may be used for
+both tasks.
+
+     function r = subsref (f, x)
+
+       switch (x.type)
+
+         case "()"
+           n = f.polynomial;
+           r = filter (n.poly, 1, x.subs{1});
+
+         case "."
+           fld = x.subs;
+           if (! strcmp (fld, "polynomial"))
+             error ('@FIRfilter/subsref: invalid property "%s"', fld);
+           endif
+           r = f.polynomial;
+
+         otherwise
+           error ("@FIRfilter/subsref: invalid subscript type for FIR filter");
+
+       endswitch
+
+     endfunction
+
+   The "()" case allows us to filter data using the polynomial provided
+to the constructor.
+
+     octave:2> f = FIRfilter (polynomial ([1 1 1]/3));
+     octave:3> x = ones (5,1);
+     octave:4> y = f(x)
+     y =
+
+        0.33333
+        0.66667
+        1.00000
+        1.00000
+        1.00000
+
+   The "."  case allows us to view the contents of the polynomial field.
+
+     octave:1> f = FIRfilter (polynomial ([1 1 1]/3));
+     octave:2> f.polynomial
+     ans = 0.33333 + 0.33333 * X + 0.33333 * X ^ 2
+
+   In order to change the contents of the object a ‘subsasgn’ method is
+needed.  For example, the following code makes the polynomial field
+publicly writable
+
+     function fout = subsasgn (f, index, val)
+
+       switch (index.type)
+         case "."
+           fld = index.subs;
+           if (! strcmp (fld, "polynomial"))
+             error ('@FIRfilter/subsasgn: invalid property "%s"', fld);
+           endif
+           fout = f;
+           fout.polynomial = val;
+
+         otherwise
+           error ("@FIRfilter/subsasgn: Invalid index type")
+       endswitch
+
+     endfunction
+
+so that
+
+     octave:1> f = FIRfilter ();
+     octave:2> f.polynomial = polynomial ([1 2 3])
+     f.polynomial = 1 + 2 * X + 3 * X ^ 2
+
+   Defining the FIRfilter class as a child of the polynomial class
+implies that a FIRfilter object may be used any place that a polynomial
+object may be used.  This is not a normal use of a filter.  It may be a
+more sensible design approach to use aggregation rather than
+inheritance.  In this case, the polynomial is simply a field in the
+class structure.  A class constructor for the aggregation case might be
+
+     ## -*- texinfo -*-
+     ## @deftypefn  {} {} FIRfilter ()
+     ## @deftypefnx {} {} FIRfilter (@var{p})
+     ## Create a FIR filter with polynomial @var{p} as coefficient vector.
+     ## @end deftypefn
+
+     function f = FIRfilter (p)
+
+       if (nargin > 1)
+         print_usage ();
+       endif
+
+       if (nargin == 0)
+         f.polynomial = @polynomial ([1]);
+       else
+         if (! isa (p, "polynomial"))
+           error ("@FIRfilter: P must be a polynomial object");
+         endif
+
+         f.polynomial = p;
+       endif
+
+       f = class (f, "FIRfilter");
+
+     endfunction
+
+   For this example only the constructor needs changing, and all other
+class methods stay the same.
+
+
+File: octave.info,  Node: GUI Development,  Next: System Utilities,  Prev: Object Oriented Programming,  Up: Top
+
+35 GUI Development
+******************
+
+Octave is principally a batch or command-line language.  However, it
+does offer some features for constructing graphical interfaces that
+interact with users.
+
+   The GUI elements available are I/O dialogs, a progress bar, and UI
+elements for plot windows.  For example, rather than hardcoding a
+filename for output results a script can open a dialog box and allow the
+user to choose a file.  Similarly, if a calculation is expected to take
+a long time a script can display a progress bar.  The various UI
+elements can be used to fully customize the plot window with menubars,
+context menus,
+
+   Several utility functions make it possible to store private data for
+use with a GUI which will not pollute the user’s variable space.
+
+   Finally, a program written in Octave might want to have long term
+storage of preferences or state variables.  This can be done with
+user-defined preferences.
+
+* Menu:
+
+* I/O Dialogs::
+* Progress Bar::
+* UI Elements::
+* GUI Utility Functions::
+* User-Defined Preferences::
+
+
+File: octave.info,  Node: I/O Dialogs,  Next: Progress Bar,  Up: GUI Development
+
+35.1 I/O Dialogs
+================
+
+Simple dialog menus are available for choosing directories or files.
+They return a string variable which can then be used with any command
+requiring a filename.
+
+ -- : DIRNAME = uigetdir ()
+ -- : DIRNAME = uigetdir (INIT_PATH)
+ -- : DIRNAME = uigetdir (INIT_PATH, DIALOG_NAME)
+     Open a GUI dialog for selecting a directory.
+
+     If INIT_PATH is not given the current working directory is used.
+
+     DIALOG_NAME may be used to customize the dialog title.
+
+     See also: *note uigetfile: XREFuigetfile, *note uiputfile:
+     XREFuiputfile.
+
+ -- : [FNAME, FPATH, FLTIDX] = uigetfile ()
+ -- : [...] = uigetfile (FLT)
+ -- : [...] = uigetfile (FLT, DIALOG_NAME)
+ -- : [...] = uigetfile (FLT, DIALOG_NAME, DEFAULT_FILE)
+ -- : [...] = uigetfile (..., "Position", [PX PY])
+ -- : [...] = uigetfile (..., "MultiSelect", MODE)
+
+     Open a GUI dialog for selecting a file and return the filename
+     FNAME, the path to this file FPATH, and the filter index FLTIDX.
+
+     FLT contains a (list of) file filter string(s) in one of the
+     following formats:
+
+     "/path/to/filename.ext"
+          If a filename is given then the file extension is extracted
+          and used as filter.  In addition, the path is selected as
+          current path and the filename is selected as default file.
+          Example: ‘uigetfile ("myfun.m")’
+
+     A single file extension "*.ext"
+          Example: ‘uigetfile ("*.ext")’
+
+     A 2-column cell array
+          containing a file extension in the first column and a brief
+          description in the second column.  Example: ‘uigetfile
+          ({"*.ext", "My Description";"*.xyz", "XYZ-Format"})’
+
+          The filter string can also contain a semicolon separated list
+          of filter extensions.  Example: ‘uigetfile
+          ({"*.gif;*.png;*.jpg", "Supported Picture Formats"})’
+
+     A directory name or path name
+          If the folder name of path name contains a trailing file
+          separator, the contents of that folder will be displayed.  If
+          no trailing file separator is present the parent directory is
+          listed.  The substring to the right of the rightmost file
+          separator (if any) will be interpreted as a file or directory
+          name and if that file or directory exists it will be
+          highlighted.  If the path name or directory name is wholly or
+          partly nonexistent, the current working directory will be
+          displayed.  No filter will be active.
+
+     DIALOG_NAME can be used to customize the dialog title.
+
+     If DEFAULT_FILE is given then it will be selected in the GUI
+     dialog.  If, in addition, a path is given it is also used as
+     current path.
+
+     The screen position of the GUI dialog can be set using the
+     "Position" key and a 2-element vector containing the pixel
+     coordinates.  Two or more files can be selected when setting the
+     "MultiSelect" key to "on".  In that case FNAME is a cell array
+     containing the files.
+
+     See also: *note uiputfile: XREFuiputfile, *note uigetdir:
+     XREFuigetdir.
+
+ -- : [FNAME, FPATH, FLTIDX] = uiputfile ()
+ -- : [FNAME, FPATH, FLTIDX] = uiputfile (FLT)
+ -- : [FNAME, FPATH, FLTIDX] = uiputfile (FLT, DIALOG_NAME)
+ -- : [FNAME, FPATH, FLTIDX] = uiputfile (FLT, DIALOG_NAME,
+          DEFAULT_FILE)
+     Open a GUI dialog for selecting a file.
+
+     FLT contains a (list of) file filter string(s) in one of the
+     following formats:
+
+     "/path/to/filename.ext"
+          If a filename is given the file extension is extracted and
+          used as filter.  In addition the path is selected as current
+          path and the filename is selected as default file.  Example:
+          ‘uiputfile ("myfun.m")’
+
+     "*.ext"
+          A single file extension.  Example: ‘uiputfile ("*.ext")’
+
+     ‘{"*.ext", "My Description"}’
+          A 2-column cell array containing the file extension in the 1st
+          column and a brief description in the 2nd column.  Example:
+          ‘uiputfile ({"*.ext","My Description";"*.xyz", "XYZ-Format"})’
+
+     The filter string can also contain a semicolon separated list of
+     filter extensions.  Example: ‘uiputfile ({"*.gif;*.png;*.jpg",
+     "Supported Picture Formats"})’
+
+     DIALOG_NAME can be used to customize the dialog title.  If
+     DEFAULT_FILE is given it is preselected in the GUI dialog.  If, in
+     addition, a path is given it is also used as current path.
+
+     See also: *note uigetfile: XREFuigetfile, *note uigetdir:
+     XREFuigetdir.
+
+   Additionally, there are dialog boxes for printing further help,
+warnings or errors and to get textual input from the user.
+
+ -- : H = errordlg ()
+ -- : H = errordlg (MSG)
+ -- : H = errordlg (MSG, TITLE)
+ -- : H = errordlg (MSG, TITLE, CREATEMODE)
+     Display an error dialog box with error message MSG and caption
+     TITLE.
+
+     The default error message is "This is the default error string."
+     and the default caption is "Error Dialog".
+
+     The error message may have multiple lines separated by newline
+     characters ("\n"), or it may be a cellstr array with one element
+     for each line.
+
+     The return value H is always 1.
+
+     Compatibility Note: The optional argument CREATEMODE is accepted
+     for MATLAB compatibility, but is not implemented.  See ‘msgbox’ for
+     details.
+
+     Examples:
+
+          errordlg ("Some fancy error occurred.");
+          errordlg ("Some fancy error\nwith two lines.");
+          errordlg ({"Some fancy error", "with two lines."});
+          errordlg ("Some fancy error occurred.", "Fancy caption");
+
+     See also: *note helpdlg: XREFhelpdlg, *note inputdlg: XREFinputdlg,
+     *note listdlg: XREFlistdlg, *note msgbox: XREFmsgbox, *note
+     questdlg: XREFquestdlg, *note warndlg: XREFwarndlg.
+
+ -- : H = helpdlg ()
+ -- : H = helpdlg (MSG)
+ -- : H = helpdlg (MSG, TITLE)
+     Display a help dialog box with help message MSG and caption TITLE.
+
+     The default help message is "This is the default help string."  and
+     the default caption is "Help Dialog".
+
+     The help message may have multiple lines separated by newline
+     characters ("\n"), or it may be a cellstr array with one element
+     for each line.
+
+     The return value H is always 1.
+
+     Examples:
+
+          helpdlg ("Some helpful text for the user.");
+          helpdlg ("Some helpful text\nwith two lines.");
+          helpdlg ({"Some helpful text", "with two lines."});
+          helpdlg ("Some helpful text for the user.", "Fancy caption");
+
+     See also: *note errordlg: XREFerrordlg, *note inputdlg:
+     XREFinputdlg, *note listdlg: XREFlistdlg, *note msgbox: XREFmsgbox,
+     *note questdlg: XREFquestdlg, *note warndlg: XREFwarndlg.
+
+ -- : CSTR = inputdlg (PROMPT)
+ -- : CSTR = inputdlg (PROMPT, TITLE)
+ -- : CSTR = inputdlg (PROMPT, TITLE, ROWSCOLS)
+ -- : CSTR = inputdlg (PROMPT, TITLE, ROWSCOLS, DEFAULTS)
+ -- : CSTR = inputdlg (PROMPT, TITLE, ROWSCOLS, DEFAULTS, OPTIONS)
+     Return user input from a multi-textfield dialog box in a cell array
+     of strings, or an empty cell array if the dialog is closed by the
+     Cancel button.
+
+     Inputs:
+
+     PROMPT
+          A cell array with strings labeling each text field.  This
+          input is required.
+
+     TITLE
+          String to use for the caption of the dialog.  The default is
+          "Input Dialog".
+
+     ROWSCOLS
+          Specifies the size of the text fields and can take three
+          forms:
+
+            1. a scalar value which defines the number of rows used for
+               each text field.
+
+            2. a vector which defines the individual number of rows used
+               for each text field.
+
+            3. a matrix which defines the individual number of rows and
+               columns used for each text field.  In the matrix each row
+               describes a single text field.  The first column
+               specifies the number of input rows to use and the second
+               column specifies the text field width.
+
+     DEFAULTS
+          A list of default values to place in each text fields.  It
+          must be a cell array of strings with the same size as PROMPT.
+
+     OPTIONS
+          Not supported, only for MATLAB compatibility.
+
+     Example:
+
+          prompt = {"Width", "Height", "Depth"};
+          defaults = {"1.10", "2.20", "3.30"};
+          rowscols = [1,10; 2,20; 3,30];
+          dims = inputdlg (prompt, "Enter Box Dimensions", rowscols, defaults);
+
+     See also: *note errordlg: XREFerrordlg, *note helpdlg: XREFhelpdlg,
+     *note listdlg: XREFlistdlg, *note msgbox: XREFmsgbox, *note
+     questdlg: XREFquestdlg, *note warndlg: XREFwarndlg.
+
+ -- : [SEL, OK] = listdlg (KEY, VALUE, ...)
+     Return user inputs from a list dialog box in a vector of selection
+     indices (SEL) and a flag indicating how the user closed the dialog
+     box (OK).
+
+     The indices in SEL are 1-based.
+
+     The value of OK is 1 if the user closed the box with the OK button,
+     otherwise it is 0 and SEL is empty.
+
+     Input arguments are specified in form of KEY, VALUE pairs.  The
+     "ListString" argument pair must be specified.
+
+     Valid KEY and VALUE pairs are:
+
+     "ListString"
+          a cell array of strings with the contents of the list.
+
+     "SelectionMode"
+          can be either "Single" or "Multiple" (default).
+
+     "ListSize"
+          a vector with two elements WIDTH and HEIGHT defining the size
+          of the list field in pixels.  Default is [160 300].
+
+     "InitialValue"
+          a vector containing 1-based indices of preselected elements.
+          Default is 1 (first item).
+
+     "Name"
+          a string to be used as the dialog caption.  Default is "".
+
+     "PromptString"
+          a cell array of strings to be displayed above the list field.
+          Default is {}.
+
+     "OKString"
+          a string used to label the OK button.  Default is "OK".
+
+     "CancelString"
+          a string used to label the Cancel button.  Default is
+          "Cancel".
+
+     Example:
+
+          my_options = {"An item", "another", "yet another"};
+          [sel, ok] = listdlg ("ListString", my_options,
+                               "SelectionMode", "Multiple");
+          if (ok == 1)
+            disp ("You selected:");
+            for i = 1:numel (sel)
+              disp (sprintf ("\t%s", my_options{sel(i)}));
+            endfor
+          else
+            disp ("You cancelled.");
+          endif
+
+     See also: *note menu: XREFmenu, *note errordlg: XREFerrordlg, *note
+     helpdlg: XREFhelpdlg, *note inputdlg: XREFinputdlg, *note msgbox:
+     XREFmsgbox, *note questdlg: XREFquestdlg, *note warndlg:
+     XREFwarndlg.
+
+ -- : H = msgbox (MSG)
+ -- : H = msgbox (MSG, TITLE)
+ -- : H = msgbox (MSG, TITLE, ICON)
+ -- : H = msgbox (..., CREATEMODE)
+     Display MSG using a message dialog box.
+
+     The message may have multiple lines separated by newline characters
+     ("\n"), or it may be a cellstr array with one element for each
+     line.
+
+     The optional input TITLE (character string) can be used to decorate
+     the dialog caption.
+
+     The optional argument ICON selects a dialog icon.  It can be one of
+     "none" (default), "error", "help", or "warn".
+
+     The return value is always 1.
+
+     Compatibility Note: The optional argument CREATEMODE is accepted
+     for MATLAB compatibility, but is not implemented.  A valid
+     CREATEMODE is either one of the character strings "nonmodal",
+     "modal", or "replace", or a structure containing a field
+     "WindowStyle" with one of the three character strings.
+
+     Examples:
+
+          msgbox ("Some message for the user.");
+          msgbox ("Some message\nwith two lines.");
+          msgbox ({"Some message", "with two lines."});
+          msgbox ("Some message for the user.", "Fancy caption");
+
+          % A message dialog box with error icon
+          msgbox ("Some message for the user.", "Fancy caption", "error");
+
+     See also: *note errordlg: XREFerrordlg, *note helpdlg: XREFhelpdlg,
+     *note inputdlg: XREFinputdlg, *note listdlg: XREFlistdlg, *note
+     questdlg: XREFquestdlg, *note warndlg: XREFwarndlg.
+
+ -- : BTN = questdlg (MSG)
+ -- : BTN = questdlg (MSG, TITLE)
+ -- : BTN = questdlg (MSG, TITLE, DEFAULT)
+ -- : BTN = questdlg (MSG, TITLE, BTN1, BTN2, DEFAULT)
+ -- : BTN = questdlg (MSG, TITLE, BTN1, BTN2, BTN3, DEFAULT)
+     Display MSG using a question dialog box and return the caption of
+     the activated button.
+
+     The message may have multiple lines separated by newline characters
+     ("\n"), or it may be a cellstr array with one element for each
+     line.
+
+     The optional TITLE (character string) can be used to specify the
+     dialog caption.  It defaults to "Question Dialog".
+
+     The dialog may contain two or three buttons which will all close
+     the dialog.
+
+     The string DEFAULT identifies the default button, which is
+     activated by pressing the <ENTER> key.  It must match one of the
+     strings given in BTN1, BTN2, or BTN3.
+
+     If only MSG and TITLE are specified, three buttons with the default
+     captions "Yes", "No", and "Cancel" are used.
+
+     If only two button captions, BTN1 and BTN2, are specified the
+     dialog will have only these two buttons.
+
+     Examples:
+
+          btn = questdlg ("Close Octave?", "Some fancy title", "Yes", "No", "No");
+          if (strcmp (btn, "Yes"))
+            exit ();
+          endif
+
+     See also: *note errordlg: XREFerrordlg, *note helpdlg: XREFhelpdlg,
+     *note inputdlg: XREFinputdlg, *note listdlg: XREFlistdlg, *note
+     msgbox: XREFmsgbox, *note warndlg: XREFwarndlg.
+
+ -- : H = warndlg ()
+ -- : H = warndlg (MSG)
+ -- : H = warndlg (MSG, TITLE)
+ -- : H = warndlg (MSG, TITLE, CREATEMODE)
+     Display a warning dialog box with warning message MSG and caption
+     TITLE.
+
+     The default warning message is "This is the default warning
+     string."  and the default caption is "Warning Dialog".
+
+     The warning message may have multiple lines separated by newline
+     characters ("\n"), or it may be a cellstr array with one element
+     for each line.
+
+     The return value H is always 1.
+
+     Compatibility Note: The optional argument CREATEMODE is accepted
+     for MATLAB compatibility, but is not implemented.  See ‘msgbox’ for
+     details.
+
+     Examples:
+
+          warndlg ("Some warning text for the user.");
+          warndlg ("Some warning text\nwith two lines.");
+          warndlg ({"Some warning text", "with two lines."});
+          warndlg ("Some warning text for the user.", "Fancy caption");
+
+     See also: *note errordlg: XREFerrordlg, *note helpdlg: XREFhelpdlg,
+     *note inputdlg: XREFinputdlg, *note listdlg: XREFlistdlg, *note
+     msgbox: XREFmsgbox, *note questdlg: XREFquestdlg.
+
+   For creating new dialog types, there is a dialog function.
+
+ -- : H = dialog (..., "PROPERTY", VALUE, ...)
+
+     Create an empty modal dialog window that other uicontrols can be
+     added to.
+
+     The dialog box is a figure object with properties as recommended
+     for a dialog box.
+
+     The default properties differing from a figure are:
+
+     buttondownfcn
+          ‘if isempty(allchild(gcbf)), close(gcbf), end’
+
+     colormap
+          []
+
+     color
+          defaultuicontrolbackgroundcolor
+
+     dockcontrols
+          off
+
+     handlevisibility
+          callback
+
+     integerhandle
+          off
+
+     inverthardcopy
+          off
+
+     menubar
+          none
+
+     numbertitle
+          off
+
+     paperpositionmode
+          auto
+
+     resize
+          off
+
+     visible
+          on
+
+     windowstyle
+          modal
+
+     Multiple property-value pairs may be specified for the dialog
+     object, but they must appear in pairs.
+
+     The return value H is a graphics handle to the created figure.
+     object.
+
+     Examples:
+
+
+          % create an empty dialog window titled 'Dialog Example'
+          h = dialog ("name", "Dialog Example");
+
+          % create a button (default style)
+          b = uicontrol (h, "string", "OK", "position",[10 10 150 40], "callback","delete(gcf)");
+
+          % wait for dialog to resume or close
+          uiwait (h);
+
+
+     See also: *note figure: XREFfigure, *note uiwait: XREFuiwait.
+
+
 File: octave.info,  Node: Progress Bar,  Next: UI Elements,  Prev: I/O Dialogs,  Up: GUI Development
 
 35.2 Progress Bar
@@ -633,6 +1350,28 @@ File: octave.info,  Node: User-Defined Preferences,  Prev: GUI Utility Functions
 
      See also: *note getpref: XREFgetpref, *note addpref: XREFaddpref,
      *note setpref: XREFsetpref, *note rmpref: XREFrmpref.
+
+ -- : prefdir
+ -- : prefdir (1)
+ -- : DIR = prefdir
+     Return the directory that holds the preferences for Octave.
+
+     Examples:
+
+     Display the preferences directory
+
+          prefdir
+
+     Change to the preferences folder
+
+          cd (prefdir)
+
+     If called with an argument, the preferences directory is created if
+     it doesn’t already exist.
+
+     See also: *note getpref: XREFgetpref, *note setpref: XREFsetpref,
+     *note addpref: XREFaddpref, *note rmpref: XREFrmpref, *note ispref:
+     XREFispref.
 
  -- : preferences
      Display the GUI preferences dialog window for Octave.
@@ -2046,7 +2785,7 @@ File: octave.info,  Node: File Archiving Utilities,  Next: Networking Utilities,
      If DIR is defined the compressed files are placed in this
      directory, rather than the original directory where the
      uncompressed file resides.  Note that this does not replicate a
-     directory tree in DIR which may lead to files overwritting each
+     directory tree in DIR which may lead to files overwriting each
      other if there are multiple files with the same name.
 
      If DIR does not exist it is created.
@@ -2203,7 +2942,7 @@ File: octave.info,  Node: File Archiving Utilities,  Next: Networking Utilities,
      If DIR is defined the compressed files are placed in this
      directory, rather than the original directory where the
      uncompressed file resides.  Note that this does not replicate a
-     directory tree in DIR which may lead to files overwritting each
+     directory tree in DIR which may lead to files overwriting each
      other if there are multiple files with the same name.
 
      If DIR does not exist it is created.
@@ -2212,20 +2951,6 @@ File: octave.info,  Node: File Archiving Utilities,  Next: Networking Utilities,
 
      See also: *note bunzip2: XREFbunzip2, *note unpack: XREFunpack,
      *note gzip: XREFgzip, *note zip: XREFzip, *note tar: XREFtar.
-   ## Copyright (C) 1993-2015 John W. Eaton ## ## This file is part of
-Octave.  ## ## Octave is free software; you can redistribute it and/or
-modify it ## under the terms of the GNU General Public License as
-published by ## the Free Software Foundation; either version 3 of the
-License, or (at ## your option) any later version.  ## ## Octave is
-distributed in the hope that it will be useful, but ## WITHOUT ANY
-WARRANTY; without even the implied warranty of ## MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU ## General Public License
-for more details.  ## ## You should have received a copy of the GNU
-General Public License ## along with Octave; see the file COPYING. If
-not, see ## <http://www.gnu.org/licenses/>.
-
-   ## FIXME: the information in this file is currently duplicated in
-help.cc.
 
 
 File: octave.info,  Node: Networking Utilities,  Next: Controlling Subprocesses,  Prev: File Archiving Utilities,  Up: System Utilities
@@ -2600,11 +3325,11 @@ higher-level functions.
      The name of the command to run is given by COMMAND.  The argument
      MODE may be
 
-     ‘"r"’
+     "r"
           The pipe will be connected to the standard output of the
           process, and open for reading.
 
-     ‘"w"’
+     "w"
           The pipe will be connected to the standard input of the
           process, and open for writing.
 
@@ -2635,7 +3360,7 @@ higher-level functions.
      Start a subprocess with two-way communication.
 
      The name of the process is given by COMMAND, and ARGS is an array
-     of strings containing options for the command.
+     or cell array of strings containing options for the command.
 
      The file identifiers for the input and output streams of the
      subprocess are returned in IN and OUT.  If execution of the command
@@ -3820,9 +4545,11 @@ disable dependency checking.
 
  -- : pkg COMMAND PKG_NAME
  -- : pkg COMMAND OPTION PKG_NAME
-     Manage packages (groups of add-on functions) for Octave.
+ -- : [OUT1, ...] = pkg (COMMAND, ... )
+     Manage or query packages (groups of add-on functions) for Octave.
 
-     Different actions are available depending on the value of COMMAND.
+     Different actions are available depending on the value of COMMAND
+     and on return arguments.
 
      Available commands:
 
@@ -5194,8 +5921,8 @@ example is ‘speye (1e6)’ which will create a matrix with a million rows
 and columns, but only a million nonzero elements.  Therefore the number
 of rows by the number of columns in this case is more than two hundred
 times the maximum value that can be represented by an unsigned int.  The
-use of ‘numel’ should therefore be avoided useless it is known it won’t
-overflow.
+use of ‘numel’ should therefore be avoided unless it is known that it
+will not overflow.
 
    Extreme care must be take with the elem method and the "()" operator,
 which perform basically the same function.  The reason is that if a
@@ -5893,9 +6620,8 @@ A.1.13 Documentation and Test of Oct-Files
 
 The documentation of an oct-file is the fourth string parameter of the
 ‘DEFUN_DLD’ macro.  This string can be formatted in the same manner as
-the help strings for user functions (*note Documentation Tips::),
-however there are some issue that are particular to the formatting of
-help strings within oct-files.
+the help strings for user functions, however there are some issue that
+are particular to the formatting of help strings within oct-files.
 
    The major issue is that the help string will typically be longer than
 a single line of text, and so the formatting of long help strings needs
@@ -6669,7 +7395,7 @@ do this can then be seen in the code
      #include <octave/oct.h>
      #include <octave/octave.h>
      #include <octave/parse.h>
-     #include <octave/toplev.h>
+     #include <octave/interpreter.h>
 
      int
      main (void)
@@ -6777,12 +7503,12 @@ Java, try a library like ‘javaOctave’
 * Menu:
 
 * Java Interface Functions::
-* Making Java classes available::
-* Creating an instance of a Java class::
-* Handling Java memory limitations::
+* Making Java Classes Available::
+* Creating an Instance of a Java Class::
+* Handling Java Memory Limitations::
 
 
-File: octave.info,  Node: Java Interface Functions,  Next: Making Java classes available,  Up: Java Interface
+File: octave.info,  Node: Java Interface Functions,  Next: Making Java Classes Available,  Up: Java Interface
 
 A.4.1 Java Interface Functions
 ------------------------------
@@ -7178,9 +7904,9 @@ interface between Octave and the Java Virtual Machine.
      XREFjava_unsigned_autoconversion.
 
 
-File: octave.info,  Node: Making Java classes available,  Next: Creating an instance of a Java class,  Prev: Java Interface Functions,  Up: Java Interface
+File: octave.info,  Node: Making Java Classes Available,  Next: Creating an Instance of a Java Class,  Prev: Java Interface Functions,  Up: Java Interface
 
-A.4.2 Making Java classes available
+A.4.2 Making Java Classes Available
 -----------------------------------
 
 Java finds classes by searching a CLASSPATH.  This is a list of Java
@@ -7270,9 +7996,9 @@ directory ‘octave’ to Octave’s search path and the archive
      javaaddpath ("~/octave/myclasses.jar");
 
 
-File: octave.info,  Node: Creating an instance of a Java class,  Next: Handling Java memory limitations,  Prev: Making Java classes available,  Up: Java Interface
+File: octave.info,  Node: Creating an Instance of a Java Class,  Next: Handling Java Memory Limitations,  Prev: Making Java Classes Available,  Up: Java Interface
 
-A.4.3 Creating an instance of a Java class
+A.4.3 Creating an Instance of a Java Class
 ------------------------------------------
 
 The function ‘javaObject’ can be used to create Java objects.
@@ -7282,9 +8008,9 @@ The function ‘javaObject’ can be used to create Java objects.
      Passenger = javaObject ("package.FirstClass", row, seat);
 
 
-File: octave.info,  Node: Handling Java memory limitations,  Prev: Creating an instance of a Java class,  Up: Java Interface
+File: octave.info,  Node: Handling Java Memory Limitations,  Prev: Creating an Instance of a Java Class,  Up: Java Interface
 
-A.4.4 Handling Java memory limitations
+A.4.4 Handling Java Memory Limitations
 --------------------------------------
 
 In order to execute Java code Octave creates a Java Virtual Machine
@@ -7348,7 +8074,7 @@ Java object or in Octave:
 See also: javamem.
 
 
-File: octave.info,  Node: Test and Demo Functions,  Next: Tips and Standards,  Prev: External Code Interface,  Up: Top
+File: octave.info,  Node: Test and Demo Functions,  Next: Obsolete Functions,  Prev: External Code Interface,  Up: Top
 
 Appendix B Test and Demo Functions
 **********************************
@@ -7674,40 +8400,63 @@ Block type summary:
 ...................
 
 ‘%!test’
-     check that entire block is correct
+‘%!test <MESSAGE>’
+     Check that entire block is correct.  If ‘<MESSAGE>’ is present, the
+     test block is interpreted as for ‘xtest’.
 
 ‘%!testif HAVE_XXX’
-     check block only if Octave was compiled with feature HAVE_XXX.
+‘%!testif HAVE_XXX, HAVE_YYY, ...’
+‘%!testif ... <MESSAGE>’
+     Check block only if Octave was compiled with feature HAVE_XXX. If
+     ‘<MESSAGE>’ is present, the test block is interpreted as for
+     ‘xtest’.
 
 ‘%!xtest’
-     check block, report a test failure but do not abort testing.
+‘%!xtest <MESSAGE>’
+     Check block, report a test failure but do not abort testing.  If
+     ‘<MESSAGE>’ is present, then the text of the message is displayed
+     if the test fails, like this:
+
+          !!!!! Known bug:  MESSAGE
+
+     If the message is an integer, it is interpreted as a bug ID for the
+     Octave bug tracker and reported as
+
+          !!!!! Known bug: http://octave.org/testfailure/?BUG-ID
+
+     in which BUG-ID is the integer bug number.  The intent is to allow
+     clearer documentation of known problems.
 
 ‘%!error’
-     check for correct error message
-
+‘%!error <MESSAGE>’
 ‘%!warning’
-     check for correct warning message
+‘%!warning <MESSAGE>’
+     Check for correct error or warning message.  If ‘<MESSAGE>’ is
+     supplied it is interpreted as a regular expression pattern that is
+     expected to match the error or warning message.
 
 ‘%!demo’
-     demo only executes in interactive mode
+     Demo only executes in interactive mode.
 
 ‘%!#’
-     comment: ignore everything within the block
+     Comment.  Ignore everything within the block
 
 ‘%!shared x,y,z’
-     declare variables for use in multiple tests
+     Declare variables for use in multiple tests.
 
 ‘%!function’
-     define a function for use in multiple tests
+     Define a function for use in multiple tests.
 
 ‘%!endfunction’
-     close a function definition
+     Close a function definition.
 
 ‘%!assert (x, y, tol)’
-     shorthand for ‘%!test assert (x, y, tol)’
-
+‘%!assert <MESSAGE> (x, y, tol)’
 ‘%!fail (CODE, PATTERN)’
-     shorthand for ‘%!test fail (CODE, PATTERN)’
+‘%!fail <MESSAGE> (CODE, PATTERN)’
+     Shorthand for ‘%!test assert (x, y, tol)’ or ‘%!test fail (CODE,
+     PATTERN)’.  If ‘<MESSAGE>’ is present, the test block is
+     interpreted as for ‘xtest’.
 
    When coding tests the Octave convention is that lines that begin with
 a block type do not have a semicolon at the end.  Any code that is
@@ -7821,325 +8570,4 @@ path and the user will have to remember to type ‘test ("funcname.cc")’.
      if executing the code produces no warning.
 
      See also: *note assert: XREFassert, *note error: XREFerror.
-
-
-File: octave.info,  Node: Demonstration Functions,  Prev: Test Functions,  Up: Test and Demo Functions
-
-B.2 Demonstration Functions
-===========================
-
- -- : demo NAME
- -- : demo NAME N
- -- : demo ("NAME")
- -- : demo ("NAME", N)
-
-     Run example code block N associated with the function NAME.
-
-     If N is not specified, all examples are run.
-
-     The preferred location for example code blocks is embedded within
-     the script m-file immediately following the code that it exercises.
-     Alternatively, the examples may be stored in a file with the same
-     name but no extension located on Octave’s load path.  To separate
-     examples from regular script code all lines are prefixed by ‘%!’.
-     Each example must also be introduced by the keyword "demo" flush
-     left to the prefix with no intervening spaces.  The remainder of
-     the example can contain arbitrary Octave code.  For example:
-
-          %!demo
-          %! t = 0:0.01:2*pi;
-          %! x = sin (t);
-          %! plot (t, x);
-          %! title ("one cycle of a sine wave");
-          %! #-------------------------------------------------
-          %! # the figure window shows one cycle of a sine wave
-
-     Note that the code is displayed before it is executed so that a
-     simple comment at the end suffices for labeling what is being
-     shown.  For plots, labeling can also be done with ‘title’ or
-     ‘text’.  It is generally *not* necessary to use ‘disp’ or ‘printf’
-     within the demo.
-
-     Demos are run in a stand-alone function environment with no access
-     to external variables.  This means that every demo must have
-     separate initialization code.  Alternatively, all demos can be
-     combined into a single large demo with the code
-
-          %! input ("Press <enter> to continue: ", "s");
-
-     between the sections, but this usage is discouraged.  Other
-     techniques to avoid multiple initialization blocks include using
-     multiple plots with a new ‘figure’ command between each plot, or
-     using ‘subplot’ to put multiple plots in the same window.
-
-     Finally, because ‘demo’ evaluates within a function context it is
-     not possible to define new functions within the code.  Anonymous
-     functions make a good substitute in most instances.  If function
-     blocks *must* be used then the code ‘eval (example ("function",
-     n))’ will allow Octave to see them.  This has its own problems,
-     however, as ‘eval’ only evaluates one line or statement at a time.
-     In this case the function declaration must be wrapped with "if 1
-     <demo stuff> endif" where "if" is on the same line as "demo".  For
-     example:
-
-          %!demo if 1
-          %!  function y = f(x)
-          %!    y = x;
-          %!  endfunction
-          %!  f(3)
-          %! endif
-
-     See also: *note rundemos: XREFrundemos, *note example: XREFexample,
-     *note test: XREFtest.
-
- -- : example NAME
- -- : example NAME N
- -- : example ("NAME")
- -- : example ("NAME", N)
- -- : [S, IDX] = example (...)
-
-     Display the code for example N associated with the function NAME,
-     but do not run it.
-
-     If N is not specified, all examples are displayed.
-
-     When called with output arguments, the examples are returned in the
-     form of a string S, with IDX indicating the ending position of the
-     various examples.
-
-     See ‘demo’ for a complete explanation.
-
-     See also: *note demo: XREFdemo, *note test: XREFtest.
-
- -- : rundemos ()
- -- : rundemos (DIRECTORY)
-     Execute built-in demos for all m-files in the specified DIRECTORY.
-
-     Demo blocks in any C++ source files (‘*.cc’) will also be executed
-     for use with dynamically linked oct-file functions.
-
-     If no directory is specified, operate on all directories in
-     Octave’s search path for functions.
-
-     See also: *note demo: XREFdemo, *note runtests: XREFruntests, *note
-     path: XREFpath.
-
- -- : runtests ()
- -- : runtests (DIRECTORY)
-     Execute built-in tests for all m-files in the specified DIRECTORY.
-
-     Test blocks in any C++ source files (‘*.cc’) will also be executed
-     for use with dynamically linked oct-file functions.
-
-     If no directory is specified, operate on all directories in
-     Octave’s search path for functions.
-
-     See also: *note rundemos: XREFrundemos, *note test: XREFtest, *note
-     path: XREFpath.
-
- -- : speed (F, INIT, MAX_N, F2, TOL)
- -- : [ORDER, N, T_F, T_F2] = speed (...)
-
-     Determine the execution time of an expression (F) for various input
-     values (N).
-
-     The N are log-spaced from 1 to MAX_N.  For each N, an
-     initialization expression (INIT) is computed to create any data
-     needed for the test.  If a second expression (F2) is given then the
-     execution times of the two expressions are compared.  When called
-     without output arguments the results are printed to stdout and
-     displayed graphically.
-
-     ‘F’
-          The code expression to evaluate.
-
-     ‘MAX_N’
-          The maximum test length to run.  The default value is 100.
-          Alternatively, use ‘[min_n, max_n]’ or specify the N exactly
-          with ‘[n1, n2, ..., nk]’.
-
-     ‘INIT’
-          Initialization expression for function argument values.  Use K
-          for the test number and N for the size of the test.  This
-          should compute values for all variables used by F.  Note that
-          INIT will be evaluated first for k = 0, so things which are
-          constant throughout the test series can be computed once.  The
-          default value is ‘X = randn (N, 1)’.
-
-     ‘F2’
-          An alternative expression to evaluate, so that the speed of
-          two expressions can be directly compared.  The default is
-          ‘[]’.
-
-     ‘TOL’
-          Tolerance used to compare the results of expression F and
-          expression F2.  If TOL is positive, the tolerance is an
-          absolute one.  If TOL is negative, the tolerance is a relative
-          one.  The default is ‘eps’.  If TOL is ‘Inf’, then no
-          comparison will be made.
-
-     ‘ORDER’
-          The time complexity of the expression O(a*n^p).  This is a
-          structure with fields ‘a’ and ‘p’.
-
-     ‘N’
-          The values N for which the expression was calculated *AND* the
-          execution time was greater than zero.
-
-     ‘T_F’
-          The nonzero execution times recorded for the expression F in
-          seconds.
-
-     ‘T_F2’
-          The nonzero execution times recorded for the expression F2 in
-          seconds.  If required, the mean time ratio is simply ‘mean
-          (T_f ./ T_f2)’.
-
-     The slope of the execution time graph shows the approximate power
-     of the asymptotic running time O(n^p).  This power is plotted for
-     the region over which it is approximated (the latter half of the
-     graph).  The estimated power is not very accurate, but should be
-     sufficient to determine the general order of an algorithm.  It
-     should indicate if, for example, the implementation is unexpectedly
-     O(n^2) rather than O(n) because it extends a vector each time
-     through the loop rather than pre-allocating storage.  In the
-     current version of Octave, the following is not the expected O(n).
-
-          speed ("for i = 1:n, y{i} = x(i); endfor", "", [1000, 10000])
-
-     But it is if you preallocate the cell array ‘y’:
-
-          speed ("for i = 1:n, y{i} = x(i); endfor", ...
-                 "x = rand (n, 1); y = cell (size (x));", [1000, 10000])
-
-     An attempt is made to approximate the cost of individual
-     operations, but it is wildly inaccurate.  You can improve the
-     stability somewhat by doing more work for each ‘n’.  For example:
-
-          speed ("airy(x)", "x = rand (n, 10)", [10000, 100000])
-
-     When comparing two different expressions (F, F2), the slope of the
-     line on the speedup ratio graph should be larger than 1 if the new
-     expression is faster.  Better algorithms have a shallow slope.
-     Generally, vectorizing an algorithm will not change the slope of
-     the execution time graph, but will shift it relative to the
-     original.  For example:
-
-          speed ("sum (x)", "", [10000, 100000], ...
-                 "v = 0; for i = 1:length (x), v += x(i); endfor")
-
-     The following is a more complex example.  If there was an original
-     version of ‘xcorr’ using for loops and a second version using an
-     FFT, then one could compare the run speed for various lags as
-     follows, or for a fixed lag with varying vector lengths as follows:
-
-          speed ("xcorr (x, n)", "x = rand (128, 1);", 100,
-                 "xcorr_orig (x, n)", -100*eps)
-          speed ("xcorr (x, 15)", "x = rand (20+n, 1);", 100,
-                 "xcorr_orig (x, n)", -100*eps)
-
-     Assuming one of the two versions is in xcorr_orig, this would
-     compare their speed and their output values.  Note that the FFT
-     version is not exact, so one must specify an acceptable tolerance
-     on the comparison ‘100*eps’.  In this case, the comparison should
-     be computed relatively, as ‘abs ((X - Y) ./ Y)’ rather than
-     absolutely as ‘abs (X - Y)’.
-
-     Type ‘example ("speed")’ to see some real examples or ‘demo
-     ("speed")’ to run them.
-
-
-File: octave.info,  Node: Tips and Standards,  Next: Contributing Guidelines,  Prev: Test and Demo Functions,  Up: Top
-
-Appendix C Tips and Standards
-*****************************
-
-This chapter describes no additional features of Octave.  Instead it
-gives advice on making effective use of the features described in the
-previous chapters.
-
-* Menu:
-
-* Style Tips::                  Writing clean and robust programs.
-* Comment Tips::                Conventions for writing comments.
-* Function Headers::            Standard headers for functions.
-* Documentation Tips::          Writing readable documentation strings.
-
-
-File: octave.info,  Node: Style Tips,  Next: Comment Tips,  Up: Tips and Standards
-
-C.1 Writing Clean Octave Programs
-=================================
-
-Here are some tips for avoiding common errors in writing Octave code
-intended for widespread use:
-
-   • Since all global variables share the same name space, and all
-     functions share another name space, you should choose a short word
-     to distinguish your program from other Octave programs.  Then take
-     care to begin the names of all global variables, constants, and
-     functions with the chosen prefix.  This helps avoid name conflicts.
-
-     If you write a function that you think ought to be added to Octave
-     under a certain name, such as ‘fiddle_matrix’, don’t call it by
-     that name in your program.  Call it ‘mylib_fiddle_matrix’ in your
-     program, and send mail to <maintainers@octave.org> suggesting that
-     it be added to Octave.  If and when it is, the name can be changed
-     easily enough.
-
-     If one prefix is insufficient, your package may use two or three
-     alternative common prefixes, so long as they make sense.
-
-     Separate the prefix from the rest of the symbol name with an
-     underscore ‘_’.  This will be consistent with Octave itself and
-     with most Octave programs.
-
-   • When you encounter an error condition, call the function ‘error’
-     (or ‘print_usage’).  The ‘error’ and ‘print_usage’ functions do not
-     return.  *Note Errors::.  It is customary to prefix the error
-     message with the name of the function that generated it.  For
-     example,
-
-          error ("my_cool_function: input A must be a matrix");
-
-   • Please put a copyright notice on the file if you give copies to
-     anyone.  Use the same lines that appear at the top of the function
-     files distributed with Octave.  If you have not signed papers to
-     assign the copyright to anyone else, then place your name in the
-     copyright notice.
-
-
-File: octave.info,  Node: Comment Tips,  Next: Function Headers,  Prev: Style Tips,  Up: Tips and Standards
-
-C.2 Tips on Writing Comments
-============================
-
-Here are the conventions to follow when writing comments.
-
-‘#’
-     Comments that start with a single sharp-sign, ‘#’, are used to
-     explain the code on the same line as the comment itself.  These
-     comments should all be aligned to the same column to the right of
-     the source code.  In the Emacs mode for Octave, the ‘M-;’
-     (‘indent-for-comment’) command automatically inserts such a ‘#’ in
-     the right place, or aligns such a comment if it is already present.
-     Example:
-
-          C = 2 * pi * r;    # formula for circumference of a circle
-
-‘##’
-     Comments that start with a double sharp-sign, ‘##’, are stand-alone
-     comments that occupy an entire line.  These comments should be
-     aligned to the same level of indentation as the code.  Such
-     comments usually describe the purpose of the following lines or the
-     state of the program at that point.  Example:
-
-          ## Calculate area and volume of a sphere
-          A = 4 * pi * r^2;
-          V = 4/3 * pi * r^3;
-
-The indentation commands of the Octave mode in Emacs, such as ‘M-;’
-(‘indent-for-comment’) and ‘TAB’ (‘octave-indent-line’) automatically
-indent comments according to these conventions, depending on the number
-of semicolons.  *Note Manipulating Comments: (emacs)Comments.
 

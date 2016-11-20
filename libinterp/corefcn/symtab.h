@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -2055,7 +2055,7 @@ public:
   {
     std::list<symbol_record> retval;
 
-    ::regexp pat (pattern);
+    octave::regexp pat (pattern);
 
     for (global_table_const_iterator p = global_table.begin ();
          p != global_table.end (); p++)
@@ -2795,7 +2795,7 @@ private:
 
   void do_clear_variable_regexp (const std::string& pat)
   {
-    ::regexp pattern (pat);
+    octave::regexp pattern (pat);
 
     for (table_iterator p = table.begin (); p != table.end (); p++)
       {
@@ -2872,7 +2872,7 @@ private:
   {
     std::list<symbol_record> retval;
 
-    ::regexp pat (pattern);
+    octave::regexp pat (pattern);
 
     for (table_const_iterator p = table.begin (); p != table.end (); p++)
       {
@@ -2957,3 +2957,4 @@ extern OCTINTERP_API std::string
 get_dispatch_type (const octave_value_list& args, builtin_type_t& builtin_type);
 
 #endif
+

@@ -130,7 +130,7 @@ numel (<var>a</var>, 2, &quot;:&quot;)
 <p>This method is also called when an object appears as lvalue with cs-list
 indexing, i.e., <code>object{&hellip;}</code> or <code>object(&hellip;).field</code>.
 </p>
-<p><strong>See also:</strong> <a href="#XREFsize">size</a>.
+<p><strong>See also:</strong> <a href="#XREFsize">size</a>, <a href="#XREFlength">length</a>, <a href="#XREFndims">ndims</a>.
 </p></dd></dl>
 
 
@@ -148,35 +148,55 @@ of elements along the largest dimension
 
 
 <a name="XREFsize"></a><dl>
-<dt><a name="index-size"></a>: <em></em> <strong>size</strong> <em>(<var>a</var>)</em></dt>
-<dt><a name="index-size-1"></a>: <em></em> <strong>size</strong> <em>(<var>a</var>, <var>dim</var>)</em></dt>
-<dd><p>Return the number of rows and columns of <var>a</var>.
+<dt><a name="index-size"></a>: <em><var>sz</var> =</em> <strong>size</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-size-1"></a>: <em><var>dim_sz</var> =</em> <strong>size</strong> <em>(<var>a</var>, <var>dim</var>)</em></dt>
+<dt><a name="index-size-2"></a>: <em>[<var>rows</var>, <var>cols</var>, &hellip;, <var>dim_N_sz</var>] =</em> <strong>size</strong> <em>(&hellip;)</em></dt>
+<dd><p>Return a row vector with the size (number of elements) of each dimension for
+the object <var>a</var>.
 </p>
-<p>With one input argument and one output argument, the result is returned
-in a row vector.  If there are multiple output arguments, the number of
-rows is assigned to the first, and the number of columns to the second,
-etc.  For example:
+<p>When given a second argument, <var>dim</var>, return the size of the corresponding
+dimension.
+</p>
+<p>With a single output argument, <code>size</code> returns a row vector.  When called
+with multiple output arguments, <code>size</code> returns the size of dimension N
+in the Nth argument.  The number of rows, dimension 1, is returned in the
+first argument, the number of columns, dimension 2, is returned in the
+second argument, etc.  If there are more dimensions in <var>a</var> then there are
+output arguments, <code>size</code> returns the total number of elements in the
+remaining dimensions in the final output argument.
+</p>
+<p>Example 1: single row vector output
 </p>
 <div class="example">
 <pre class="example">size ([1, 2; 3, 4; 5, 6])
    &rArr; [ 3, 2 ]
-
-[nr, nc] = size ([1, 2; 3, 4; 5, 6])
-    &rArr; nr = 3
-    &rArr; nc = 2
 </pre></div>
 
-<p>If given a second argument, <code>size</code> will return the size of the
-corresponding dimension.  For example,
+<p>Example 2: number of elements in 2nd dimension (columns)
 </p>
 <div class="example">
 <pre class="example">size ([1, 2; 3, 4; 5, 6], 2)
     &rArr; 2
 </pre></div>
 
-<p>returns the number of columns in the given matrix.
+<p>Example 3: number of output arguments == number of dimensions
 </p>
-<p><strong>See also:</strong> <a href="#XREFnumel">numel</a>, <a href="#XREFndims">ndims</a>, <a href="#XREFlength">length</a>, <a href="#XREFrows">rows</a>, <a href="#XREFcolumns">columns</a>.
+<div class="example">
+<pre class="example">[nr, nc] = size ([1, 2; 3, 4; 5, 6])
+    &rArr; nr = 3
+    &rArr; nc = 2
+</pre></div>
+
+<p>Example 4: number of output arguments != number of dimensions
+</p>
+<div class="example">
+<pre class="example">[nr, remainder] = size (ones (2, 3, 4, 5)
+    &rArr; nr = 2
+    &rArr; remainder = 60
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFnumel">numel</a>, <a href="#XREFndims">ndims</a>, <a href="#XREFlength">length</a>, <a href="#XREFrows">rows</a>, <a href="#XREFcolumns">columns</a>, <a href="#XREFsize_005fequal">size_equal</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFcommon_005fsize">common_size</a>.
 </p></dd></dl>
 
 
@@ -225,10 +245,10 @@ distinguish the cases:
 <dt><a name="index-size_005fequal"></a>: <em></em> <strong>size_equal</strong> <em>(<var>a</var>, <var>b</var>, &hellip;)</em></dt>
 <dd><p>Return true if the dimensions of all arguments agree.
 </p>
-<p>Trailing singleton dimensions are ignored.
-When called with a single or no argument <code>size_equal</code> returns true.
+<p>Trailing singleton dimensions are ignored.  When called with a single argument,
+or no argument, <code>size_equal</code> returns true.
 </p>
-<p><strong>See also:</strong> <a href="#XREFsize">size</a>, <a href="#XREFnumel">numel</a>, <a href="#XREFndims">ndims</a>.
+<p><strong>See also:</strong> <a href="#XREFsize">size</a>, <a href="#XREFnumel">numel</a>, <a href="#XREFndims">ndims</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFcommon_005fsize">common_size</a>.
 </p></dd></dl>
 
 

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -28,6 +28,17 @@ along with Octave; see the file COPYING.  If not, see
 #include <cctype>
 #include <iostream>
 
+#include "dNDArray.h"
+#include "fNDArray.h"
+#include "int8NDArray.h"
+#include "int16NDArray.h"
+#include "int32NDArray.h"
+#include "int64NDArray.h"
+#include "uint8NDArray.h"
+#include "uint16NDArray.h"
+#include "uint32NDArray.h"
+#include "uint64NDArray.h"
+
 #include "lo-ieee.h"
 #include "mx-base.h"
 
@@ -54,33 +65,25 @@ octave_char_matrix::index_vector (bool /* require_integers */) const
 double
 octave_char_matrix::double_value (bool) const
 {
-  double retval = lo_ieee_nan_value ();
-
   if (rows () == 0 || columns () == 0)
     err_invalid_conversion ("character matrix", "real scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "character matrix", "real scalar");
 
-  retval = static_cast<unsigned char> (matrix(0, 0));
-
-  return retval;
+  return static_cast<unsigned char> (matrix(0, 0));
 }
 
 float
 octave_char_matrix::float_value (bool) const
 {
-  float retval = lo_ieee_float_nan_value ();
-
   if (rows () == 0 && columns () == 0)
     err_invalid_conversion ("character matrix", "real scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "character matrix", "real scalar");
 
-  retval = static_cast<unsigned char> (matrix(0, 0));
-
-  return retval;
+  return static_cast<unsigned char> (matrix(0, 0));
 }
 
 octave_int64
@@ -118,19 +121,13 @@ octave_char_matrix::uint64_scalar_value () const
 Complex
 octave_char_matrix::complex_value (bool) const
 {
-  double tmp = lo_ieee_nan_value ();
-
-  Complex retval (tmp, tmp);
-
   if (rows () == 0 && columns () == 0)
     err_invalid_conversion ("character matrix", "complex scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "character matrix", "complex scalar");
 
-  retval = static_cast<unsigned char> (matrix(0, 0));
-
-  return retval;
+  return Complex (static_cast<unsigned char> (matrix(0, 0)), 0);
 }
 
 FloatComplex
@@ -149,6 +146,66 @@ octave_char_matrix::float_complex_value (bool) const
   retval = static_cast<unsigned char> (matrix(0, 0));
 
   return retval;
+}
+
+octave_value
+octave_char_matrix::as_double (void) const
+{
+  return NDArray (matrix);
+}
+
+octave_value
+octave_char_matrix::as_single (void) const
+{
+  return FloatNDArray (matrix);
+}
+
+octave_value
+octave_char_matrix::as_int8 (void) const
+{
+  return int8NDArray (matrix);
+}
+
+octave_value
+octave_char_matrix::as_int16 (void) const
+{
+  return int16NDArray (matrix);
+}
+
+octave_value
+octave_char_matrix::as_int32 (void) const
+{
+  return int32NDArray (matrix);
+}
+
+octave_value
+octave_char_matrix::as_int64 (void) const
+{
+  return int64NDArray (matrix);
+}
+
+octave_value
+octave_char_matrix::as_uint8 (void) const
+{
+  return uint8NDArray (matrix);
+}
+
+octave_value
+octave_char_matrix::as_uint16 (void) const
+{
+  return uint16NDArray (matrix);
+}
+
+octave_value
+octave_char_matrix::as_uint32 (void) const
+{
+  return uint32NDArray (matrix);
+}
+
+octave_value
+octave_char_matrix::as_uint64 (void) const
+{
+  return uint64NDArray (matrix);
 }
 
 void
@@ -206,9 +263,9 @@ octave_char_matrix::map (unary_mapper_t umap) const
 
   switch (umap)
     {
-#define STRING_MAPPER(UMAP,FCN,TYPE)                                    \
-      case umap_ ## UMAP:                                               \
-        return octave_value (matrix.map<TYPE, int (&) (int)> (FCN))
+#define STRING_MAPPER(UMAP,FCN,TYPE)                                  \
+    case umap_ ## UMAP:                                               \
+      return octave_value (matrix.map<TYPE, int (&) (int)> (FCN))
 
     STRING_MAPPER (xisalnum, std::isalnum, bool);
     STRING_MAPPER (xisalpha, std::isalpha, bool);
@@ -249,3 +306,4 @@ octave_char_matrix::map (unary_mapper_t umap) const
 
   return retval;
 }
+

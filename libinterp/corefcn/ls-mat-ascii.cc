@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -358,7 +358,7 @@ save_mat_ascii_data (std::ostream& os, const octave_value& val,
     {
       m = val.matrix_value (true);
     }
-  catch (const octave_execution_exception& e)
+  catch (const octave::execution_exception& e)
     {
       recover_from_exception ();
 
@@ -410,3 +410,4 @@ looks_like_mat_ascii_file (std::istream& is, const std::string& filename)
 
   return retval;
 }
+

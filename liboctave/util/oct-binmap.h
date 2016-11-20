@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2015 VZLU Prague
+Copyright (C) 2010-2016 VZLU Prague
 
 This file is part of Octave.
 
@@ -177,7 +177,7 @@ binmap (const Array<T>& xa, const Array<R>& ya, F fcn, const char *name)
   else if (xad != yad)
     {
       if (! is_valid_bsxfun (name, xad, yad))
-        err_nonconformant (name, xad, yad);
+        octave::err_nonconformant (name, xad, yad);
 
       bsxfun_wrapper<U, T, R, F>::set_f(fcn);
       return do_bsxfun_op (xa, ya,
@@ -285,7 +285,7 @@ binmap (const Sparse<T>& xs, const Sparse<R>& ys, F fcn, const char *name)
   else if (ys.rows () == 1 && ys.cols () == 1)
     return binmap<U, T, R, F> (xs, ys(0,0), fcn);
   else if (xs.dims () != ys.dims ())
-    err_nonconformant (name, xs.dims (), ys.dims ());
+    octave::err_nonconformant (name, xs.dims (), ys.dims ());
 
   T xzero = T ();
   R yzero = R ();
@@ -490,3 +490,4 @@ binmap (const Sparse<T>& xa, const R& y, U (*fcn) (T, const R&))
 { return binmap<U, T, R, U (*) (T, const R&)> (xa, y, fcn); }
 
 #endif
+

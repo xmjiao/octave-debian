@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 Jaroslav Hajek
+Copyright (C) 2008-2016 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -43,7 +43,8 @@ DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_complex_diag_matrix,
 static octave_base_value *
 default_numeric_conversion_function (const octave_base_value& a)
 {
-  const octave_complex_diag_matrix& v = dynamic_cast<const octave_complex_diag_matrix&> (a);
+  const octave_complex_diag_matrix& v =
+    dynamic_cast<const octave_complex_diag_matrix&> (a);
 
   return new octave_complex_matrix (v.complex_matrix_value ());
 }
@@ -59,7 +60,8 @@ octave_complex_diag_matrix::numeric_conversion_function (void) const
 static octave_base_value *
 default_numeric_demotion_function (const octave_base_value& a)
 {
-  const octave_complex_diag_matrix& v = dynamic_cast<const octave_complex_diag_matrix&> (a);
+  const octave_complex_diag_matrix& v =
+    dynamic_cast<const octave_complex_diag_matrix&> (a);
 
   return new octave_float_complex_diag_matrix
                (v.float_complex_diag_matrix_value ());
@@ -132,6 +134,18 @@ octave_complex_diag_matrix::complex_diag_matrix_value (bool) const
 
 FloatComplexDiagMatrix
 octave_complex_diag_matrix::float_complex_diag_matrix_value (bool) const
+{
+  return FloatComplexDiagMatrix (matrix);
+}
+
+octave_value
+octave_complex_diag_matrix::as_double (void) const
+{
+  return matrix;
+}
+
+octave_value
+octave_complex_diag_matrix::as_single (void) const
 {
   return FloatComplexDiagMatrix (matrix);
 }
@@ -238,8 +252,5 @@ octave_complex_diag_matrix::chk_valid_scalar (const octave_value& val,
 }
 
 /*
-
-%% bug #36368
-%!assert (diag ([1+i, 1-i])^2 , diag ([2i, -2i]), 4*eps)
-
+%!assert <36368> (diag ([1+i, 1-i])^2 , diag ([2i, -2i]), 4*eps)
 */

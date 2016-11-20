@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2007-2015 Søren Hauberg
+@c Copyright (C) 2007-2016 Søren Hauberg
 @c
 @c This file is part of Octave.
 @c
@@ -109,13 +109,15 @@ Since the installed package expects its dependencies to be installed
 it may not function correctly.  Because of this it is not recommended
 to disable dependency checking.
 
-@c pkg scripts/scripts/pkg/pkg.m
+@c pkg scripts/pkg/pkg.m
 @anchor{XREFpkg}
 @deftypefn  {} {} pkg @var{command} @var{pkg_name}
 @deftypefnx {} {} pkg @var{command} @var{option} @var{pkg_name}
-Manage packages (groups of add-on functions) for Octave.
+@deftypefnx {} {[@var{out1}, @dots{}] =} pkg (@var{command}, @dots{} )
+Manage or query packages (groups of add-on functions) for Octave.
 
-Different actions are available depending on the value of @var{command}.
+Different actions are available depending on the value of @var{command}
+and on return arguments.
 
 Available commands:
 

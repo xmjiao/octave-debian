@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2015 David Bateman
+## Copyright (C) 2005-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -84,8 +84,10 @@ function [pass, fail, xfail, skip] = __run_test_suite__ (fcndirs, fixedtestdirs)
       printf ("See the file %s for additional details.\n", logfile);
       if (dxf > 0)
         puts ("\n");
-        puts ("Expected failures (listed as XFAIL above) are known bugs.\n");
-        puts ("Please help improve Octave by contributing fixes for them.\n");
+        puts ("Items listed as XFAIL above are known bugs.\n");
+        puts ("Bug report numbers for them may be found in the log file:\n");
+        puts (logfile);
+        puts ("\nPlease help improve Octave by contributing fixes for them.\n");
       endif
       if (dsk > 0)
         puts ("\n");

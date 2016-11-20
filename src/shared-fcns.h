@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 Michael Goffioul
+Copyright (C) 2008-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -145,3 +145,4 @@ subst_octave_home (const std::string& s)
 }
 
 #endif
+

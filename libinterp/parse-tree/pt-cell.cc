@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999-2015 John W. Eaton
+Copyright (C) 1999-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -112,3 +112,4 @@ tree_cell::accept (tree_walker& tw)
 {
   tw.visit_cell (*this);
 }
+

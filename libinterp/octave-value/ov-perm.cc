@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 Jaroslav Hajek
+Copyright (C) 2008-2016 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -81,7 +81,7 @@ octave_perm_matrix::do_index_op (const octave_value_list& idx,
           k = 1;
           idx1 = idx(1).index_vector ();
         }
-      catch (index_exception& e)
+      catch (octave::index_exception& e)
         {
           // Rethrow to allow more info to be reported later.
           e.set_pos_if_unset (2, k+1);
@@ -148,51 +148,37 @@ octave_perm_matrix::is_true (void) const
 double
 octave_perm_matrix::double_value (bool) const
 {
-  double retval = lo_ieee_nan_value ();
-
   if (is_empty ())
     err_invalid_conversion (type_name (), "real scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             type_name (), "real scalar");
 
-  retval = matrix(0, 0);
-
-  return retval;
+  return matrix(0, 0);
 }
 
 float
 octave_perm_matrix::float_value (bool) const
 {
-  float retval = lo_ieee_float_nan_value ();
-
   if (is_empty ())
     err_invalid_conversion (type_name (), "real scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             type_name (), "real scalar");
 
-  retval = matrix(0, 0);
-
-  return retval;
+  return matrix(0, 0);
 }
 
 Complex
 octave_perm_matrix::complex_value (bool) const
 {
-  double tmp = lo_ieee_nan_value ();
-
-  Complex retval (tmp, tmp);
-
   if (rows () == 0 || columns () == 0)
     err_invalid_conversion (type_name (), "complex scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             type_name (), "complex scalar");
 
-  retval = matrix(0, 0);
-
-  return retval;
+  return Complex (matrix(0, 0), 0);
 }
 
 FloatComplex
@@ -262,6 +248,66 @@ octave_perm_matrix::convert_to_str_internal (bool pad, bool force,
                                              char type) const
 {
   return to_dense ().convert_to_str_internal (pad, force, type);
+}
+
+octave_value
+octave_perm_matrix::as_double (void) const
+{
+  return matrix;
+}
+
+octave_value
+octave_perm_matrix::as_single (void) const
+{
+  return float_array_value ();
+}
+
+octave_value
+octave_perm_matrix::as_int8 (void) const
+{
+  return int8_array_value  ();
+}
+
+octave_value
+octave_perm_matrix::as_int16 (void) const
+{
+  return int16_array_value ();
+}
+
+octave_value
+octave_perm_matrix::as_int32 (void) const
+{
+  return int32_array_value ();
+}
+
+octave_value
+octave_perm_matrix::as_int64 (void) const
+{
+  return int64_array_value ();
+}
+
+octave_value
+octave_perm_matrix::as_uint8 (void) const
+{
+  return uint8_array_value ();
+}
+
+octave_value
+octave_perm_matrix::as_uint16 (void) const
+{
+  return uint16_array_value ();
+}
+
+octave_value
+octave_perm_matrix::as_uint32 (void) const
+{
+  return uint32_array_value ();
+}
+
+octave_value
+octave_perm_matrix::as_uint64 (void) const
+{
+  return uint64_array_value ();
 }
 
 bool
@@ -457,3 +503,4 @@ octave_perm_matrix::fast_elem_extract (octave_idx_type n) const
   else
     return octave_value ();
 }
+

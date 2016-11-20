@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -128,7 +128,7 @@ private:
 // A list of statements to evaluate.
 
 class
-tree_statement_list : public octave_base_list<tree_statement *>
+tree_statement_list : public octave::base_list<tree_statement *>
 {
 public:
 
@@ -200,3 +200,4 @@ private:
 };
 
 #endif
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -321,11 +321,10 @@ do_minmax_body (const octave_value_list& args,
           retval = do_minmax_red_op<charNDArray> (arg, nargout, dim, ismin);
           break;
 
-#define MAKE_INT_BRANCH(X)                                              \
-          case btyp_ ## X:                                              \
-            retval = do_minmax_red_op<X ## NDArray> (arg, nargout, dim, \
-                                                     ismin);            \
-            break;
+#define MAKE_INT_BRANCH(X)                                                    \
+        case btyp_ ## X:                                                      \
+          retval = do_minmax_red_op<X ## NDArray> (arg, nargout, dim, ismin); \
+          break;
 
         MAKE_INT_BRANCH (int8);
         MAKE_INT_BRANCH (int16);
@@ -398,10 +397,10 @@ do_minmax_body (const octave_value_list& args,
           retval = do_minmax_bin_op<charNDArray> (argx, argy, ismin);
           break;
 
-#define MAKE_INT_BRANCH(X)                                              \
-          case btyp_ ## X:                                              \
-            retval = do_minmax_bin_op<X ## NDArray> (argx, argy, ismin); \
-            break;
+#define MAKE_INT_BRANCH(X)                                             \
+        case btyp_ ## X:                                               \
+          retval = do_minmax_bin_op<X ## NDArray> (argx, argy, ismin); \
+          break;
 
         MAKE_INT_BRANCH (int8);
         MAKE_INT_BRANCH (int16);
@@ -866,8 +865,9 @@ the first index of the maximum value(s).  Thus,
 %! assert (max (x, 2.1i), sparse ([2.1i 2.1i 3 4]));
 
 ## Test for bug #40743
-%!assert (max (zeros (1,0), ones (1,1)), zeros (1,0))
-%!assert (max (sparse (zeros (1,0)), sparse (ones (1,1))), sparse (zeros (1,0)))
+%!assert <40743> (max (zeros (1,0), ones (1,1)), zeros (1,0))
+%!assert <40743> (max (sparse (zeros (1,0)), sparse (ones (1,1))),
+                  sparse (zeros (1,0)))
 
 %!error max ()
 %!error max (1, 2, 3, 4)
@@ -951,11 +951,10 @@ do_cumminmax_body (const octave_value_list& args,
                                                          ismin);
       break;
 
-#define MAKE_INT_BRANCH(X)                                              \
-      case btyp_ ## X:                                                  \
-        retval = do_cumminmax_red_op<X ## NDArray> (arg, nargout, dim,  \
-                                                    ismin);             \
-        break;
+#define MAKE_INT_BRANCH(X)                                                   \
+    case btyp_ ## X:                                                         \
+      retval = do_cumminmax_red_op<X ## NDArray> (arg, nargout, dim, ismin); \
+      break;
 
       MAKE_INT_BRANCH (int8);
       MAKE_INT_BRANCH (int16);

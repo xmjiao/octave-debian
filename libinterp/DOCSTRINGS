@@ -21,7 +21,7 @@ When called with two arguments, @code{daspk_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the relative
@@ -195,7 +195,7 @@ When called with two arguments, @code{dasrt_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the relative
@@ -252,7 +252,7 @@ When called with two arguments, @code{dassl_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the relative
@@ -321,7 +321,7 @@ When called with two arguments, @code{lsode_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector.
@@ -393,7 +393,7 @@ When called with two arguments, @code{quad_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance; may be zero for pure relative error test.
 
@@ -676,7 +676,7 @@ may @emph{only} be called from a class constructor.
 __meta_get_package__
 @c __meta_get_package__ libinterp/octave-value/ov-classdef.cc
 -*- texinfo -*-
-@deftypefn  {} {} __meta_get_package__ ()
+@deftypefn {} {} __meta_get_package__ ()
 Undocumented internal function.
 @end deftypefn
 __superclass_reference__
@@ -835,13 +835,6 @@ quadv (fcn, 0, 3)
 @end group
 @end example
 @seealso{inline, formula, argnames}
-@end deftypefn
-single
-@c single libinterp/octave-value/ov-flt-re-mat.cc
--*- texinfo -*-
-@deftypefn {} {} single (@var{x})
-Convert @var{x} to single precision type.
-@seealso{double}
 @end deftypefn
 __java_init__
 @c __java_init__ libinterp/octave-value/ov-java.cc
@@ -1062,13 +1055,6 @@ When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @end deftypefn
-double
-@c double libinterp/octave-value/ov-re-mat.cc
--*- texinfo -*-
-@deftypefn {} {} double (@var{x})
-Convert @var{x} to double precision type.
-@seealso{single}
-@end deftypefn
 struct
 @c struct libinterp/octave-value/ov-struct.cc
 -*- texinfo -*-
@@ -1247,6 +1233,12 @@ If @var{expr} is omitted, return a cell array of strings containing all the
 currently installed data types.
 @seealso{class, isa}
 @end deftypefn
+__dump_typeinfo__
+@c __dump_typeinfo__ libinterp/octave-value/ov-typeinfo.cc
+-*- texinfo -*-
+@deftypefn {} {} __dump_typeinfo__ ()
+Undocumented internal function.
+@end deftypefn
 nargin
 @c nargin libinterp/octave-value/ov-usr-fcn.cc
 -*- texinfo -*-
@@ -1369,6 +1361,76 @@ false.  @var{k} can also be an array, in which case the function works
 element-by-element and a logical array is returned.  At the top level,
 @code{isargout} returns an error.
 @seealso{nargout, varargout, nthargout}
+@end deftypefn
+double
+@c double libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn {} {} double (@var{x})
+Convert @var{x} to double precision type.
+@seealso{single}
+@end deftypefn
+single
+@c single libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn {} {} single (@var{x})
+Convert @var{x} to single precision type.
+@seealso{double}
+@end deftypefn
+int8
+@c int8 libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn {} {} int8 (@var{x})
+Convert @var{x} to 8-bit integer type.
+@seealso{uint8, int16, uint16, int32, uint32, int64, uint64}
+@end deftypefn
+int16
+@c int16 libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn {} {} int16 (@var{x})
+Convert @var{x} to 16-bit integer type.
+@seealso{int8, uint8, uint16, int32, uint32, int64, uint64}
+@end deftypefn
+int32
+@c int32 libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn {} {} int32 (@var{x})
+Convert @var{x} to 32-bit integer type.
+@seealso{int8, uint8, int16, uint16, uint32, int64, uint64}
+@end deftypefn
+int64
+@c int64 libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn {} {} int64 (@var{x})
+Convert @var{x} to 64-bit integer type.
+@seealso{int8, uint8, int16, uint16, int32, uint32, uint64}
+@end deftypefn
+uint8
+@c uint8 libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn {} {} uint8 (@var{x})
+Convert @var{x} to unsigned 8-bit integer type.
+@seealso{int8, int16, uint16, int32, uint32, int64, uint64}
+@end deftypefn
+uint16
+@c uint16 libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn {} {} uint16 (@var{x})
+Convert @var{x} to unsigned 16-bit integer type.
+@seealso{int8, uint8, int16, int32, uint32, int64, uint64}
+@end deftypefn
+uint32
+@c uint32 libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn {} {} uint32 (@var{x})
+Convert @var{x} to unsigned 32-bit integer type.
+@seealso{int8, uint8, int16, uint16, int32, int64, uint64}
+@end deftypefn
+uint64
+@c uint64 libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn {} {} uint64 (@var{x})
+Convert @var{x} to unsigned 64-bit integer type.
+@seealso{int8, uint8, int16, uint16, int32, uint32, int64}
 @end deftypefn
 sizeof
 @c sizeof libinterp/octave-value/ov.cc
@@ -1510,62 +1572,6 @@ When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{disable_diagonal_matrix, disable_permutation_matrix}
-@end deftypefn
-int16
-@c int16 libinterp/octave-value/ov-int16.cc
--*- texinfo -*-
-@deftypefn {} {} int16 (@var{x})
-Convert @var{x} to 16-bit integer type.
-@seealso{int8, uint8, uint16, int32, uint32, int64, uint64}
-@end deftypefn
-int32
-@c int32 libinterp/octave-value/ov-int32.cc
--*- texinfo -*-
-@deftypefn {} {} int32 (@var{x})
-Convert @var{x} to 32-bit integer type.
-@seealso{int8, uint8, int16, uint16, uint32, int64, uint64}
-@end deftypefn
-int64
-@c int64 libinterp/octave-value/ov-int64.cc
--*- texinfo -*-
-@deftypefn {} {} int64 (@var{x})
-Convert @var{x} to 64-bit integer type.
-@seealso{int8, uint8, int16, uint16, int32, uint32, uint64}
-@end deftypefn
-int8
-@c int8 libinterp/octave-value/ov-int8.cc
--*- texinfo -*-
-@deftypefn {} {} int8 (@var{x})
-Convert @var{x} to 8-bit integer type.
-@seealso{uint8, int16, uint16, int32, uint32, int64, uint64}
-@end deftypefn
-uint16
-@c uint16 libinterp/octave-value/ov-uint16.cc
--*- texinfo -*-
-@deftypefn {} {} uint16 (@var{x})
-Convert @var{x} to unsigned 16-bit integer type.
-@seealso{int8, uint8, int16, int32, uint32, int64, uint64}
-@end deftypefn
-uint32
-@c uint32 libinterp/octave-value/ov-uint32.cc
--*- texinfo -*-
-@deftypefn {} {} uint32 (@var{x})
-Convert @var{x} to unsigned 32-bit integer type.
-@seealso{int8, uint8, int16, uint16, int32, int64, uint64}
-@end deftypefn
-uint64
-@c uint64 libinterp/octave-value/ov-uint64.cc
--*- texinfo -*-
-@deftypefn {} {} uint64 (@var{x})
-Convert @var{x} to unsigned 64-bit integer type.
-@seealso{int8, uint8, int16, uint16, int32, uint32, int64}
-@end deftypefn
-uint8
-@c uint8 libinterp/octave-value/ov-uint8.cc
--*- texinfo -*-
-@deftypefn {} {} uint8 (@var{x})
-Convert @var{x} to unsigned 8-bit integer type.
-@seealso{int8, int16, uint16, int32, uint32, int64, uint64}
 @end deftypefn
 iskeyword
 @c iskeyword libinterp/parse-tree/lex.ll
@@ -1716,7 +1722,7 @@ Undocumented internal function.
 __dispatch__
 @c __dispatch__ libinterp/corefcn/__dispatch__.cc
 -*- texinfo -*-
-@deftypefn  {} {} __dispatch__ ()
+@deftypefn {} {} __dispatch__ ()
 Undocumented internal function.
 @end deftypefn
 __dsearchn__
@@ -2415,7 +2421,7 @@ The first input argument @var{func} can be a string, a function
 handle, an inline function, or an anonymous function.  The input
 argument @var{A} can be a logic array, a numeric array, a string
 array, a structure array, or a cell array.  By a call of the function
-@command{arrayfun} all elements of @var{A} are passed on to the named
+@code{arrayfun} all elements of @var{A} are passed on to the named
 function @var{func} individually.
 
 The named function can also take more than two input arguments, with
@@ -2427,7 +2433,7 @@ example:
 @example
 @group
 arrayfun (@@atan2, [1, 0], [0, 1])
-     @result{} [ 1.5708   0.0000 ]
+     @result{} [ 1.57080   0.00000 ]
 @end group
 @end example
 
@@ -2627,10 +2633,14 @@ Given a cell array of matrices @var{x}, this function computes
 @group
 Y = cell (size (X));
 for i = 1:numel (X)
-  Y@{i@} = X@{i@}(varargin@{:@});
+  Y@{i@} = X@{i@}(varargin@{1@}, varargin@{2@}, @dots{}, varargin@{N@});
 endfor
 @end group
 @end example
+
+The indexing arguments may be scalar (@code{2}), arrays (@code{[1, 3]}),
+ranges (@code{1:3}), or the colon operator (@qcode{":"}).  However, the
+indexing keyword @code{end} is not available.
 @seealso{cellslices, cellfun}
 @end deftypefn
 colloc
@@ -3103,7 +3113,7 @@ Compute atan (@var{y} / @var{x}) for corresponding elements of @var{y}
 and @var{x}.
 
 @var{y} and @var{x} must match in size and orientation.  The signs of
-elements of @var{y} and @var{x} are used to determine the quadrats of each
+elements of @var{y} and @var{x} are used to determine the quadrants of each
 resulting value.
 
 This function is equivalent to @code{arg (complex (@var{x}, @var{y}))}.
@@ -3530,33 +3540,38 @@ will return 3 as the second row has three column entries.
 
 This method is also called when an object appears as lvalue with cs-list
 indexing, i.e., @code{object@{@dots{}@}} or @code{object(@dots{}).field}.
-@seealso{size}
+@seealso{size, length, ndims}
 @end deftypefn
 size
 @c size libinterp/corefcn/data.cc
 -*- texinfo -*-
-@deftypefn  {} {} size (@var{a})
-@deftypefnx {} {} size (@var{a}, @var{dim})
-Return the number of rows and columns of @var{a}.
+@deftypefn  {} {@var{sz} =} size (@var{a})
+@deftypefnx {} {@var{dim_sz} =} size (@var{a}, @var{dim})
+@deftypefnx {} {[@var{rows}, @var{cols}, @dots{}, @var{dim_N_sz}] =} size (@dots{})
+Return a row vector with the size (number of elements) of each dimension for
+the object @var{a}.
 
-With one input argument and one output argument, the result is returned
-in a row vector.  If there are multiple output arguments, the number of
-rows is assigned to the first, and the number of columns to the second,
-etc.  For example:
+When given a second argument, @var{dim}, return the size of the corresponding
+dimension.
+
+With a single output argument, @code{size} returns a row vector.  When called
+with multiple output arguments, @code{size} returns the size of dimension N
+in the Nth argument.  The number of rows, dimension 1, is returned in the
+first argument, the number of columns, dimension 2, is returned in the
+second argument, etc.  If there are more dimensions in @var{a} then there are
+output arguments, @code{size} returns the total number of elements in the
+remaining dimensions in the final output argument.
+
+Example 1: single row vector output
 
 @example
 @group
 size ([1, 2; 3, 4; 5, 6])
    @result{} [ 3, 2 ]
-
-[nr, nc] = size ([1, 2; 3, 4; 5, 6])
-    @result{} nr = 3
-    @result{} nc = 2
 @end group
 @end example
 
-If given a second argument, @code{size} will return the size of the
-corresponding dimension.  For example,
+Example 2: number of elements in 2nd dimension (columns)
 
 @example
 @group
@@ -3565,9 +3580,27 @@ size ([1, 2; 3, 4; 5, 6], 2)
 @end group
 @end example
 
-@noindent
-returns the number of columns in the given matrix.
-@seealso{numel, ndims, length, rows, columns}
+Example 3: number of output arguments == number of dimensions
+
+@example
+@group
+[nr, nc] = size ([1, 2; 3, 4; 5, 6])
+    @result{} nr = 3
+    @result{} nc = 2
+@end group
+@end example
+
+Example 4: number of output arguments != number of dimensions
+
+@example
+@group
+[nr, remainder] = size (ones (2, 3, 4, 5)
+    @result{} nr = 2
+    @result{} remainder = 60
+@end group
+@end example
+
+@seealso{numel, ndims, length, rows, columns, size_equal, common_size}
 @end deftypefn
 size_equal
 @c size_equal libinterp/corefcn/data.cc
@@ -3575,9 +3608,9 @@ returns the number of columns in the given matrix.
 @deftypefn {} {} size_equal (@var{a}, @var{b}, @dots{})
 Return true if the dimensions of all arguments agree.
 
-Trailing singleton dimensions are ignored.
-When called with a single or no argument @code{size_equal} returns true.
-@seealso{size, numel, ndims}
+Trailing singleton dimensions are ignored.  When called with a single argument,
+or no argument, @code{size_equal} returns true.
+@seealso{size, numel, ndims, common_size}
 @end deftypefn
 nnz
 @c nnz libinterp/corefcn/data.cc
@@ -5818,12 +5851,59 @@ endfor
 @deftypefnx {} {@var{lambda} =} eig (@var{A}, @var{B})
 @deftypefnx {} {[@var{V}, @var{lambda}] =} eig (@var{A})
 @deftypefnx {} {[@var{V}, @var{lambda}] =} eig (@var{A}, @var{B})
-Compute the eigenvalues (and optionally the eigenvectors) of a matrix
-or a pair of matrices
+@deftypefnx {} {[@var{V}, @var{lambda}, @var{W}] =} eig (@var{A})
+@deftypefnx {} {[@var{V}, @var{lambda}, @var{W}] =} eig (@var{A}, @var{B})
+@deftypefnx {} {[@dots{}] =} eig (@var{A}, @var{balanceOption})
+@deftypefnx {} {[@dots{}] =} eig (@var{A}, @var{B}, @var{algorithm})
+@deftypefnx {} {[@dots{}] =} eig (@dots{}, @var{eigvalOption})
+Compute the right eigenvalues(V) and optionally the eigenvectors(lambda) and
+the left eigenvalues(W) of a matrix or a pair of matrices.
 
-The algorithm used depends on whether there are one or two input
-matrices, if they are real or complex, and if they are symmetric
-(Hermitian if complex) or non-symmetric.
+The flag @var{balanceOption} can be one of:
+
+@table @asis
+@item @qcode{"balance"}
+Preliminary balancing is on. (default)
+
+@item @qcode{"nobalance"}
+Disables preliminary balancing.
+@end table
+
+The flag @var{eigvalOption} can be one of:
+
+@table @asis
+@item @qcode{"matrix"}
+Return the eigenvalues in a diagonal matrix. (default if 2 or 3 outputs
+are specified)
+
+@item @qcode{"vector"}
+Return the eigenvalues in a column vector. (default if 1 output is
+specified, e.g. @var{lambda} = eig (@var{A}))
+@end table
+
+The flag @var{algorithm} can be one of:
+
+@table @asis
+@item @qcode{"chol"}
+Uses the Cholesky factorization of B. (default if A is symmetric (Hermitian)
+and B is symmetric (Hermitian) positive definite)
+
+@item @qcode{"qz"}
+Uses the QZ algorithm. (When A or B are not symmetric always the
+QZ algorithm will be used)
+@end table
+
+@multitable @columnfractions .31 .23 .23 .23
+@headitem @tab no flag @tab chol @tab qz
+@item both are symmetric
+@tab @qcode{"chol"}
+@tab @qcode{"chol"}
+@tab @qcode{"qz"}
+@item at least one is not symmetric
+@tab @qcode{"qz"}
+@tab @qcode{"qz"}
+@tab @qcode{"qz"}
+@end multitable
 
 The eigenvalues returned by @code{eig} are not ordered.
 @seealso{eigs, svd}
@@ -6940,7 +7020,7 @@ string(s) in @var{value} as missing values.
 
 @item @qcode{"ReturnOnError"}
 If set to numerical 1 or true, return normally as soon as an error is
-encountered, such as trying to read a string using @qcode{%f}.
+encountered, such as trying to read a string using @code{%f}.
 If set to 0 or false, return an error and no data.
 
 @item @qcode{"Whitespace"}
@@ -7193,7 +7273,7 @@ end-of-file condition.
 -*- texinfo -*-
 @deftypefn  {} {@var{msg} =} ferror (@var{fid})
 @deftypefnx {} {[@var{msg}, @var{err}] =} ferror (@var{fid})
-@deftypefnx {} {[@var{dots}] =} ferror (@var{fid}, "clear")
+@deftypefnx {} {[@dots{}] =} ferror (@var{fid}, "clear")
 Query the error status of the stream specified by file descriptor @var{fid}
 
 If an error condition exists then return a string @var{msg} describing the
@@ -7218,7 +7298,7 @@ Start a process and create a pipe.
 The name of the command to run is given by @var{command}.  The argument
 @var{mode} may be
 
-@table @code
+@table @asis
 @item @qcode{"r"}
 The pipe will be connected to the standard output of the process, and
 open for reading.
@@ -8499,7 +8579,11 @@ Undocumented internal function.
 -*- texinfo -*-
 @deftypefn  {} {@var{retval} =} __list_functions__ ()
 @deftypefnx {} {@var{retval} =} __list_functions__ (@var{directory})
-Undocumented internal function.
+Return a list of all functions (.m and .oct functions) in the load path.
+
+If the optional argument @var{directory} is given then list only the functions
+in that directory.
+@seealso{path}
 @end deftypefn
 doc_cache_file
 @c doc_cache_file libinterp/corefcn/help.cc
@@ -9267,6 +9351,11 @@ directory names separated by @code{pathsep} are also accepted.  For example:
 @example
 addpath ("dir1:/dir2:~/dir3")
 @end example
+
+For each directory that is added, and that was not already in the path,
+@code{addpath} checks for the existence of a file named @file{PKG_ADD}
+(note lack of .m extension) and runs it if it exists.
+
 @seealso{path, rmpath, genpath, pathdef, savepath, pathsep}
 @end deftypefn
 rmpath
@@ -9281,12 +9370,17 @@ directory names separated by @code{pathsep} are also accepted.  For example:
 @example
 rmpath ("dir1:/dir2:~/dir3")
 @end example
+
+For each directory that is removed, @code{rmpath} checks for the
+existence of a file named @file{PKG_DEL} (note lack of .m extension)
+and runs it if it exists.
+
 @seealso{path, addpath, genpath, pathdef, savepath, pathsep}
 @end deftypefn
 __dump_load_path__
 @c __dump_load_path__ libinterp/corefcn/load-path.cc
 -*- texinfo -*-
-@deftypefn  {} {} __dump_load_path__ ()
+@deftypefn {} {} __dump_load_path__ ()
 Undocumented internal function.
 @end deftypefn
 load
@@ -12517,9 +12611,10 @@ Match between @var{m} and @var{n} times
 
 @item [@dots{}] [^@dots{}]
 
-List operators.  The pattern will match any character listed between "["
-and "]".  If the first character is "^" then the pattern is inverted and
-any character except those listed between brackets will match.
+List operators.  The pattern will match any character listed between
+@qcode{"["} and @qcode{"]"}.  If the first character is @qcode{"^"} then the
+pattern is inverted and any character except those listed between brackets
+will match.
 
 Escape sequences defined below can also be used inside list operators.  For
 example, a template for a floating point number might be @code{[-+.\d]+}.
@@ -12712,7 +12807,7 @@ regexprep ("Bill Dunn", '(\w+) (\w+)', '$2, $1')
 @end example
 
 @noindent
-returns "Dunn, Bill"
+returns @qcode{"Dunn, Bill"}
 
 Options in addition to those of @code{regexp} are
 
@@ -13589,7 +13684,7 @@ The original variable value is restored when exiting the function.
 sylvester
 @c sylvester libinterp/corefcn/sylvester.cc
 -*- texinfo -*-
-@deftypefn {} {@var{X} =} syl (@var{A}, @var{B}, @var{C})
+@deftypefn {} {@var{X} =} sylvester (@var{A}, @var{B}, @var{C})
 Solve the Sylvester equation
 @tex
 $$
@@ -13695,7 +13790,7 @@ error message.
 Start a subprocess with two-way communication.
 
 The name of the process is given by @var{command}, and @var{args} is an
-array of strings containing options for the command.
+array or cell array of strings containing options for the command.
 
 The file identifiers for the input and output streams of the subprocess are
 returned in @var{in} and @var{out}.  If execution of the command is
@@ -16247,7 +16342,7 @@ Undocumented internal function.
 __init_gnuplot__
 @c __init_gnuplot__ libinterp/dldfcn/__init_gnuplot__.cc
 -*- texinfo -*-
-@deftypefn  {} {} __init_gnuplot__ ()
+@deftypefn {} {} __init_gnuplot__ ()
 Undocumented internal function.
 @end deftypefn
 __have_gnuplot__
@@ -16267,7 +16362,7 @@ This is a private internal function.
 
 The first method calls gl2ps with the appropriate @var{term} and writes
 the output of gl2ps to @var{file}.  If the first character of @var{file}
-is @qcode{|}, then a process is started and the output of gl2ps is piped
+is @code{|}, then a process is started and the output of gl2ps is piped
 to it.
 
 Valid options for @var{term}, which can be concatenated in one string, are:
@@ -16276,11 +16371,11 @@ Valid options for @var{term}, which can be concatenated in one string, are:
 @item @qcode{eps}, @qcode{pdf}, @qcode{ps}, @qcode{svg}, @qcode{pgf}, @qcode{tex}
 Select output format.
 
-@item @qcode{is2D}
+@item @code{is2D}
 Use GL2PS_SIMPLE_SORT instead of GL2PS_BSP_SORT as Z-depth sorting
 algorithm.
 
-@item @qcode{notext}
+@item @code{notext}
 Don't render text.
 @end table
 
@@ -17335,13 +17430,63 @@ used per default.
 
 @seealso{fft, ifft, fft2, ifft2, fftn, ifftn}
 @end deftypefn
+gzip
+@c gzip libinterp/dldfcn/gzip.cc
+-*- texinfo -*-
+@deftypefn  {} {@var{filelist} =} gzip (@var{files})
+@deftypefnx {} {@var{filelist} =} gzip (@var{files}, @var{dir})
+Compress the list of files and directories specified in @var{files}.
+
+@var{files} is a character array or cell array of strings.  Shell wildcards
+in the filename such as @samp{*} or @samp{?} are accepted and expanded.
+Each file is compressed separately and a new file with a @file{".gz"}
+extension is created.  The original files are not modified, but existing
+compressed files will be silently overwritten.  If a directory is
+specified then @code{gzip} recursively compresses all files in the
+directory.
+
+If @var{dir} is defined the compressed files are placed in this directory,
+rather than the original directory where the uncompressed file resides.
+Note that this does not replicate a directory tree in @var{dir} which may
+lead to files overwriting each other if there are multiple files with the
+same name.
+
+If @var{dir} does not exist it is created.
+
+The optional output @var{filelist} is a list of the compressed files.
+@seealso{gunzip, unpack, bzip2, zip, tar}
+@end deftypefn
+bzip2
+@c bzip2 libinterp/dldfcn/gzip.cc
+-*- texinfo -*-
+@deftypefn  {} {@var{filelist} =} bzip2 (@var{files})
+@deftypefnx {} {@var{filelist} =} bzip2 (@var{files}, @var{dir})
+Compress the list of files specified in @var{files}.
+
+@var{files} is a character array or cell array of strings.  Shell wildcards
+in the filename such as @samp{*} or @samp{?} are accepted and expanded.
+Each file is compressed separately and a new file with a @file{".bz2"}
+extension is created.  The original files are not modified, but existing
+compressed files will be silently overwritten.
+
+If @var{dir} is defined the compressed files are placed in this directory,
+rather than the original directory where the uncompressed file resides.
+Note that this does not replicate a directory tree in @var{dir} which may
+lead to files overwriting each other if there are multiple files with the
+same name.
+
+If @var{dir} does not exist it is created.
+
+The optional output @var{filelist} is a list of the compressed files.
+@seealso{bunzip2, unpack, gzip, zip, tar}
+@end deftypefn
 qr
 @c qr libinterp/dldfcn/qr.cc
 -*- texinfo -*-
 @deftypefn  {} {[@var{Q}, @var{R}] =} qr (@var{A})
 @deftypefnx {} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}) # non-sparse A
 @deftypefnx {} {@var{X} =} qr (@var{A})
-@deftypefnx {} {@var{R} =} qr (@var{A})  # sparse A
+@deftypefnx {} {@var{R} =} qr (@var{A}) # sparse A
 @deftypefnx {} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B})
 @deftypefnx {} {[@dots{}] =} qr (@dots{}, 0)
 @deftypefnx {} {[@dots{}] =} qr (@dots{}, 'vector')
@@ -17468,13 +17613,13 @@ x = @var{R} \ @var{C}
 @end example
 
 If the final argument is the scalar 0 and the number of rows is larger
-than the number of columns, then an 'economy' factorization is returned,
-omitting zeroes of @var{R} and the corresponding columns of @var{Q}.
-That is, @var{R} will have only @code{size (@var{A},1)} rows.
-In this case, @var{P} is a vector rather than a matrix.
+than the number of columns, then an @qcode{"economy"} factorization is
+returned, omitting zeroes of @var{R} and the corresponding columns of @var{Q}.
+That is, @var{R} will have only @code{size (@var{A},1)} rows.  In this case,
+@var{P} is a vector rather than a matrix.
 
-If the final argument is the string 'vector' then @var{P} is a permutation
-vector instead of a permutation matrix.
+If the final argument is the string @qcode{"vector"} then @var{P} is a
+permutation vector instead of a permutation matrix.
 
 @seealso{chol, hess, lu, qz, schur, svd, qrupdate, qrinsert, qrdelete, qrshift}
 @end deftypefn
@@ -17531,7 +17676,7 @@ Given a QR@tie{}factorization of a real or complex matrix
 @var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
 @w{[A(:,1:j-1), U, A(:,j:n)]},
 where @var{u} is a column vector to be inserted into @var{A}
-(if @var{orient} is @qcode{\"col\"}),
+(if @var{orient} is @qcode{"col"}),
 or the QR@tie{}factorization of @w{[A(1:j-1,:);X;A(:,j:n)]},
 where @var{x} is a row @var{orient} is @qcode{"row"}).
 The default value of @var{orient} is @qcode{"col"}.
@@ -17651,76 +17796,6 @@ Mathematics, ISBN 0-13-165274-5, 1981.
 
 @seealso{colperm, colamd, symamd}
 @end deftypefn
-gzip
-@c gzip libinterp/dldfcn/xzip.cc
--*- texinfo -*-
-@deftypefn  {} {@var{filelist} =} gzip (@var{files})
-@deftypefnx {} {@var{filelist} =} gzip (@var{files}, @var{dir})
-Compress the list of files and directories specified in @var{files}.
-
-@var{files} is a character array or cell array of strings.  Shell wildcards
-in the filename such as @samp{*} or @samp{?} are accepted and expanded.
-Each file is compressed separately and a new file with a @file{".gz"}
-extension is created.  The original files are not modified, but existing
-compressed files will be silently overwritten.  If a directory is
-specified then @code{gzip} recursively compresses all files in the
-directory.
-
-If @var{dir} is defined the compressed files are placed in this directory,
-rather than the original directory where the uncompressed file resides.
-Note that this does not replicate a directory tree in @var{dir} which may
-lead to files overwritting each other if there are multiple files with the
-same name.
-
-If @var{dir} does not exist it is created.
-
-The optional output @var{filelist} is a list of the compressed files.
-@seealso{gunzip, unpack, bzip2, zip, tar}
-@end deftypefn
-bzip2
-@c bzip2 libinterp/dldfcn/xzip.cc
--*- texinfo -*-
-@deftypefn  {} {@var{filelist} =} bzip2 (@var{files})
-@deftypefnx {} {@var{filelist} =} bzip2 (@var{files}, @var{dir})
-Compress the list of files specified in @var{files}.
-
-@var{files} is a character array or cell array of strings.  Shell wildcards
-in the filename such as @samp{*} or @samp{?} are accepted and expanded.
-Each file is compressed separately and a new file with a @file{".bz2"}
-extension is created.  The original files are not modified, but existing
-compressed files will be silently overwritten.
-
-If @var{dir} is defined the compressed files are placed in this directory,
-rather than the original directory where the uncompressed file resides.
-Note that this does not replicate a directory tree in @var{dir} which may
-lead to files overwritting each other if there are multiple files with the
-same name.
-
-If @var{dir} does not exist it is created.
-
-The optional output @var{filelist} is a list of the compressed files.
-@seealso{bunzip2, unpack, gzip, zip, tar}
-@end deftypefn
-## Copyright (C) 1993-2015 John W. Eaton
-##
-## This file is part of Octave.
-##
-## Octave is free software; you can redistribute it and/or modify it
-## under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 3 of the License, or (at
-## your option) any later version.
-##
-## Octave is distributed in the hope that it will be useful, but
-## WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-## General Public License for more details.
-##
-## You should have received a copy of the GNU General Public License
-## along with Octave; see the file COPYING.  If not, see
-## <http://www.gnu.org/licenses/>.
-
-## FIXME: the information in this file is currently duplicated in help.cc.
-
 !
 @c libinterp/parse-tree/oct-parse.in.yy
 -*- texinfo -*-
@@ -17928,7 +18003,7 @@ Element by element multiplication operator.
 .**
 @c libinterp/parse-tree/oct-parse.in.yy
 -*- texinfo -*-
-@deftypefn {} {} .*
+@deftypefn {} {} .**
 Element by element power operator.  If several complex results are possible,
 returns the one with smallest non-negative argument (angle).  Use
 @code{realpow}, @code{realsqrt}, @code{cbrt}, or @code{nthroot} if a
@@ -17950,28 +18025,28 @@ real result is preferred.
 -*- texinfo -*-
 @deftypefn {} {} ./
 Element by element right division operator.
-@seealso{/, .\, rdivide, mrdivide}
+@seealso{/, .\\, rdivide, mrdivide}
 @end deftypefn
 /
 @c libinterp/parse-tree/oct-parse.in.yy
 -*- texinfo -*-
 @deftypefn {} {} /
 Right division operator.
-@seealso{./, \, rdivide, mrdivide}
+@seealso{./, \\, rdivide, mrdivide}
 @end deftypefn
 .\
 @c libinterp/parse-tree/oct-parse.in.yy
 -*- texinfo -*-
 @deftypefn {} {} .\
 Element by element left division operator.
-@seealso{\, ./, rdivide, mrdivide}
+@seealso{\\, ./, rdivide, mrdivide}
 @end deftypefn
 \
 @c libinterp/parse-tree/oct-parse.in.yy
 -*- texinfo -*-
 @deftypefn {} {} \
 Left division operator.
-@seealso{.\, /, ldivide, mldivide}
+@seealso{.\\, /, ldivide, mldivide}
 @end deftypefn
 :
 @c libinterp/parse-tree/oct-parse.in.yy

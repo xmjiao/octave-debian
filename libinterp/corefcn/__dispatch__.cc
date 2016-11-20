@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001-2015 John W. Eaton and Paul Kienzle
+Copyright (C) 2001-2016 John W. Eaton and Paul Kienzle
 
 This file is part of Octave.
 
@@ -41,7 +41,7 @@ along with Octave; see the file COPYING.  If not, see
 
 DEFUN (__dispatch__, args, nargout,
        doc: /* -*- texinfo -*-
-@deftypefn  {} {} __dispatch__ ()
+@deftypefn {} {} __dispatch__ ()
 Undocumented internal function.
 @end deftypefn */)
 {
@@ -110,3 +110,4 @@ Undocumented internal function.
 ## No test needed for internal helper function.
 %!assert (1)
 */
+

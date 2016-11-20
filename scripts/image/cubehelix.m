@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2015 Carnë Draug
+## Copyright (C) 2014-2016 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -81,7 +81,7 @@ endfunction
 %! ## Show the 'cubehelix' colormap profile and as an image
 %! cmap = cubehelix (256);
 %! subplot (2, 1, 1);
-%! rgbplot (cmap, "composite");
+%!  rgbplot (cmap, "composite");
 %! subplot (2, 1, 2);
-%! rgbplot (cmap);
+%!  rgbplot (cmap);
 

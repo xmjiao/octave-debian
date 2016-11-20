@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2015 Max Brister
+Copyright (C) 2012-2016 Max Brister
 
 This file is part of Octave.
 
@@ -213,24 +213,24 @@ octave_jit_cast_any_complex (Complex c)
 }
 
 extern "C" void
-octave_jit_err_nan_to_logical_conversion (void)
+octave_jit_octave::err_nan_to_logical_conversion (void)
 {
-  err_nan_to_logical_conversion ();
+  octave::err_nan_to_logical_conversion ();
 }
 
 extern "C" void
 octave_jit_ginvalid_index (void)
 {
-  // FIXME: 0-argument form of err_invalid_index removed in cset dd6345fd8a97
+  // FIXME: 0-argument form of octave::err_invalid_index removed in cset dd6345fd8a97
   //        Report -1 as the bad index for all occurrences.
-  err_invalid_index (static_cast<octave_idx_type> (-1));
+  octave::err_invalid_index (static_cast<octave_idx_type> (-1));
 }
 
 extern "C" void
 octave_jit_gindex_range (int nd, int dim, octave_idx_type iext,
                          octave_idx_type ext)
 {
-  err_index_out_of_range (nd, dim, iext, ext);
+  octave::err_index_out_of_range (nd, dim, iext, ext);
 }
 
 extern "C" jit_matrix
@@ -526,7 +526,7 @@ jit_type::to_llvm_arg (void) const
 jit_function::jit_function () : module (0), llvm_function (0), mresult (0),
                                 call_conv (jit_convention::length),
                                 mcan_error (false)
-{}
+{ }
 
 jit_function::jit_function (llvm::Module *amodule,
                             jit_convention::type acall_conv,
@@ -590,13 +590,12 @@ jit_function::jit_function (const jit_function& fn, jit_type *aresult,
                             const std::vector<jit_type *>& aargs)
   : module (fn.module), llvm_function (fn.llvm_function), mresult (aresult),
     args (aargs), call_conv (fn.call_conv), mcan_error (fn.mcan_error)
-{
-}
+{ }
 
 jit_function::jit_function (const jit_function& fn)
   : module (fn.module), llvm_function (fn.llvm_function), mresult (fn.mresult),
     args (fn.args), call_conv (fn.call_conv), mcan_error (fn.mcan_error)
-{}
+{ }
 
 void
 jit_function::erase (void)
@@ -886,8 +885,8 @@ jit_operation::generate (const signature_vec&) const
 }
 
 bool
-jit_operation::signature_cmp
-::operator() (const signature_vec *lhs, const signature_vec *rhs) const
+jit_operation::signature_cmp::operator () (const signature_vec *lhs,
+                                           const signature_vec *rhs) const
 {
   const signature_vec& l = *lhs;
   const signature_vec& r = *rhs;
@@ -1506,7 +1505,7 @@ jit_typeinfo::jit_typeinfo (llvm::Module *m, llvm::ExecutionEngine *e)
   logically_true_fn.stash_name ("logically_true");
 
   jit_function gripe_nantl
-    = create_external (JIT_FN (octave_jit_err_nan_to_logical_conversion), 0);
+    = create_external (JIT_FN (octave_jit_octave::err_nan_to_logical_conversion), 0);
   gripe_nantl.mark_can_error ();
 
   fn = create_internal ("octave_jit_logically_true_scalar", boolean, scalar);
@@ -2242,3 +2241,4 @@ jit_typeinfo::do_type_of (const octave_value &ov) const
 }
 
 #endif
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -1453,7 +1453,7 @@ string(s) in @var{value} as missing values.
 
 @item @qcode{"ReturnOnError"}
 If set to numerical 1 or true, return normally as soon as an error is
-encountered, such as trying to read a string using @qcode{%f}.
+encountered, such as trying to read a string using @code{%f}.
 If set to 0 or false, return an error and no data.
 
 @item @qcode{"Whitespace"}
@@ -1746,14 +1746,13 @@ as the name of the function when reporting errors.
 #%! assert (R{1}, int32 (1));
 #%! assert (isempty (R{2}), true);
 
-## bug #37023
-%!test
+%!test <37023>
 %! data = textscan ("   1. 1 \n 2 3\n", '%f %f');
 %! assert (data{1}, [1; 2], 1e-15);
 %! assert (data{2}, [1; 3], 1e-15);
 
-## Whitespace test (bug #37333) using delimiter ";"
-%!test
+## Whitespace test using delimiter ";"
+%!test <37333>
 %! tc{1, 1} = "C:/code;";
 %! tc{1, end+1} = "C:/code/meas;";
 %! tc{1, end+1} = " C:/code/sim;";
@@ -1768,8 +1767,8 @@ as the name of the function when reporting errors.
 %!   assert (strcmp (lh, rh));
 %! endfor
 
-## Whitespace test (bug #37333), adding multipleDelimsAsOne true arg
-%!test
+## Whitespace test, adding multipleDelimsAsOne true arg
+%!test <37333>
 %! tc{1, 1} = "C:/code;";
 %! tc{1, end+1} = " C:/code/meas;";
 %! tc{1, end+1} = "C:/code/sim;;";
@@ -1785,7 +1784,7 @@ as the name of the function when reporting errors.
 %! endfor
 
 ## Whitespace test (bug #37333), adding multipleDelimsAsOne false arg
-%!test
+%!test <37333>
 %! tc{1, 1} = "C:/code;";
 %! tc{1, end+1} = " C:/code/meas;";
 %! tc{1, end+1} = "C:/code/sim;;";
@@ -1802,7 +1801,7 @@ as the name of the function when reporting errors.
 %! endfor
 
 ## Whitespace test (bug #37333) whitespace "" arg
-%!test
+%!test <37333>
 %! tc{1, 1} = "C:/code;";
 %! tc{1, end+1} = " C:/code/meas;";
 %! tc{1, end+1} = "C:/code/sim;";
@@ -1817,7 +1816,7 @@ as the name of the function when reporting errors.
 %! endfor
 
 ## Whitespace test (bug #37333), whitespace " " arg
-%!test
+%!test <37333>
 %! tc{1, 1} = "C:/code;";
 %! tc{1, end+1} = " C:/code/meas;";
 %! tc{1, end+1} = "C:/code/sim;";
@@ -1935,21 +1934,19 @@ as the name of the function when reporting errors.
 %! unlink (f);
 %! assert (msg1, lasterr);
 
-## Bug #41824
-%!assert (textscan ("123", "", "whitespace", " "){:}, 123);
+%!assert <41824> (textscan ("123", "", "whitespace", " "){:}, 123);
 
-## Bug #42343-1, just test supplied emptyvalue
-%!assert (textscan (",NaN", "", "delimiter", "," ,"emptyValue" ,Inf),
-%!        {Inf, NaN})
+## just test supplied emptyvalue
+%!assert <42343> (textscan (",NaN", "", "delimiter", "," ,"emptyValue" ,Inf),
+%!                {Inf, NaN})
 
-## Bug #42343-2, test padding with supplied emptyvalue
-%!test
+## test padding with supplied emptyvalue
+%!test <42343>
 %! c = textscan (",1,,4\nInf,  ,NaN\n", "", "delimiter", ",",
 %!               "emptyvalue", -10);
 %! assert (cell2mat (c), [-10, 1, -10, 4; Inf, -10, NaN, -10]);
 
-## Bug #42528
-%!test
+%!test <42528>
 %! assert (textscan ("1i", ""){1},  0+1i);
 %! C = textscan ("3, 2-4i, NaN\n -i, 1, 23.4+2.2i\n 1+1 1+1j", "",
 %!               "delimiter", ",");
@@ -1980,8 +1977,7 @@ as the name of the function when reporting errors.
 %! assert (c{2}', [12, 22]);
 %! assert (c{3}', [13, 23]);
 
-## Bug #44750
-%!test
+%!test <44750>
 %! c = textscan ("/home/foo/", "%s", "delimiter", "/",
 %!               "MultipleDelimsAsOne", 1);
 %! assert (c{1}, {"home"; "foo"});
@@ -2001,8 +1997,8 @@ as the name of the function when reporting errors.
 %!               "Total: %f %% (of cm values)");
 %! assert (c{1}, 32.5, 1e-5);
 
-## Test various forms of string format specifiers (bug #45712)
-%!test
+## Test various forms of string format specifiers
+%!test <45712>
 %! str = "14 :1 z:2 z:3 z:5 z:11";
 %! C = textscan (str, "%f %s %*s %3s %*3s %f", "delimiter", ":");
 %! assert (C, {14, {"1 z"}, {"3 z"}, 11});
@@ -2091,8 +2087,7 @@ as the name of the function when reporting errors.
 %! assert (C{1}, {"ab cd efg"; "a ce g"; "   "});
 %! assert (C{2}, {"1Any"; "2Trailing"; "3Junk"});
 
-## Bug #36464
-%!assert (textscan ("1 2 3 4 5 6", "%*n%n%*[^\n]"){1}, 2);
+%!assert <36464> (textscan ("1 2 3 4 5 6", "%*n%n%*[^\n]"){1}, 2);
 
 ## test %[]] and %[^]]
 %!test
@@ -2258,7 +2253,7 @@ do_fread (octave_stream& os, const octave_value& size_arg,
       oct_data_conv::string_to_data_type (prec, block_size,
                                           input_type, output_type);
     }
-  catch (octave_execution_exception& e)
+  catch (octave::execution_exception& e)
     {
       error (e, "fread: invalid PRECISION specified");
     }
@@ -2269,7 +2264,7 @@ do_fread (octave_stream& os, const octave_value& size_arg,
     {
       skip = skip_arg.int_value (true);
     }
-  catch (octave_execution_exception& e)
+  catch (octave::execution_exception& e)
     {
       error (e, "fread: SKIP must be an integer");
     }
@@ -2506,7 +2501,7 @@ do_fwrite (octave_stream& os, const octave_value& data,
     {
       oct_data_conv::string_to_data_type (prec, block_size, output_type);
     }
-  catch (octave_execution_exception& e)
+  catch (octave::execution_exception& e)
     {
       error (e, "fwrite: invalid PRECISION specified");
     }
@@ -2517,7 +2512,7 @@ do_fwrite (octave_stream& os, const octave_value& data,
     {
       skip = skip_arg.int_value (true);
     }
-  catch (octave_execution_exception& e)
+  catch (octave::execution_exception& e)
     {
       error (e, "fwrite: SKIP must be an integer");
     }
@@ -2608,7 +2603,7 @@ DEFUNX ("ferror", Fferror, args, ,
         doc: /* -*- texinfo -*-
 @deftypefn  {} {@var{msg} =} ferror (@var{fid})
 @deftypefnx {} {[@var{msg}, @var{err}] =} ferror (@var{fid})
-@deftypefnx {} {[@var{dots}] =} ferror (@var{fid}, "clear")
+@deftypefnx {} {[@dots{}] =} ferror (@var{fid}, "clear")
 Query the error status of the stream specified by file descriptor @var{fid}
 
 If an error condition exists then return a string @var{msg} describing the
@@ -2656,7 +2651,7 @@ Start a process and create a pipe.
 The name of the command to run is given by @var{command}.  The argument
 @var{mode} may be
 
-@table @code
+@table @asis
 @item @qcode{"r"}
 The pipe will be connected to the standard output of the process, and
 open for reading.
@@ -2756,6 +2751,8 @@ see @code{tmpfile}.
 
   if (nargin > 0)
     dir = args(0).xstring_value ("tempname: DIR must be a string");
+  else
+    dir = octave::sys::env::getenv ("TMPDIR");
 
   std::string pfx ("oct-");
 
@@ -3125,3 +3122,4 @@ It is useful for error messages and prompts.
 {
   return const_value ("stderr", args, stderr_file);
 }
+

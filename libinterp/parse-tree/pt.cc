@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -82,14 +82,14 @@ tree::meets_bp_condition () const
             {
               if (! val(0).is_scalar_type ())
                 warning ("Breakpoint condition must be a scalar, not size %s",
-                  val(0).dims ().str ('x').c_str ());
+                         val(0).dims ().str ('x').c_str ());
               else
                 retval = val(0).bool_value ();
             }
           else
             warning ("Error parsing breakpoint condition");
         }
-      catch (const octave_execution_exception& e)
+      catch (const octave::execution_exception& e)
         {
           warning ("Error evaluating breakpoint condition:\n    %s",
                    last_error_message ().c_str ());
@@ -97,3 +97,4 @@ tree::meets_bp_condition () const
     }
   return retval;
 }
+

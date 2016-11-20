@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -128,7 +128,7 @@ Compute the inverse cosine in radians for each element of @var{x}.
 ## Test large magnitude arguments (bug #45507)
 ## FIXME: Test fails with older versions of libm. Try to detect and work
 ##        around this, or wait until working version of libm is widespread?
-%!xtest
+%!xtest <45507>
 %! x = [1, -1, i, -i] .* 1e150;
 %! v = [0, pi, pi/2, pi/2];
 %! assert (real (acos (x)), v);
@@ -156,7 +156,12 @@ Compute the inverse hyperbolic cosine for each element of @var{x}.
 %! v = [0, pi/2*i, pi*i, pi/2*i];
 %! assert (acosh (x), v, sqrt (eps));
 
-%!test
+## FIXME: std::acosh on Windows platforms, returns a result that differs
+## by 1 in the last significant digit.  This is ~30*eps which is quite large.
+## The decision now (9/15/2016) is to mark the test with a bug number so
+## it is understood why it is failing, and wait for MinGw to improve their
+## std library.
+%!test <49091>
 %! re = 2.99822295029797;
 %! im = pi/2;
 %! assert (acosh (-10i), re - i*im);
@@ -166,7 +171,7 @@ Compute the inverse hyperbolic cosine for each element of @var{x}.
 %! v = single ([0, pi/2*i, pi*i, pi/2*i]);
 %! assert (acosh (x), v, sqrt (eps ("single")));
 
-%!test
+%!test <49091>
 %! re = single (2.99822295029797);
 %! im = single (pi/2);
 %! assert (acosh (single (10i)), re + i*im, 5*eps ("single"));
@@ -175,7 +180,7 @@ Compute the inverse hyperbolic cosine for each element of @var{x}.
 ## Test large magnitude arguments (bug #45507)
 ## FIXME: Test fails with older versions of libm. Try to detect and work
 ##        around this, or wait until working version of libm is widespread?
-%!xtest
+%!xtest <45507>
 %! x = [1, -1, i, -i] .* 1e150;
 %! v = [0, pi, pi/2, -pi/2];
 %! assert (imag (acosh (x)), v);
@@ -296,7 +301,7 @@ Compute the inverse sine in radians for each element of @var{x}.
 ## Test large magnitude arguments (bug #45507)
 ## FIXME: Test fails with older versions of libm. Try to detect and work
 ##        around this, or wait until working version of libm is widespread?
-%!xtest
+%!xtest <45507>
 %! x = [1, -1, i, -i] .* 1e150;
 %! v = [pi/2, -pi/2, 0, -0];
 %! assert (real (asin (x)), v);
@@ -332,7 +337,7 @@ Compute the inverse hyperbolic sine for each element of @var{x}.
 ## Test large magnitude arguments (bug #45507)
 ## FIXME: Test fails with older versions of libm. Try to detect and work
 ##        around this, or wait until working version of libm is widespread?
-%!xtest
+%!xtest <45507>
 %! x = [1, -1, i, -i] .* 1e150;
 %! v = [0, 0, pi/2, -pi/2];
 %! assert (imag (asinh (x)), v);
@@ -370,7 +375,7 @@ Compute the inverse tangent in radians for each element of @var{x}.
 %! assert (atan (x), v, sqrt (eps ("single")));
 
 ## Test large magnitude arguments (bug #44310, bug #45507)
-%!test
+%!test <44310>
 %! x = [1, -1, i, -i] .* 1e150;
 %! v = [pi/2, -pi/2, pi/2, -pi/2];
 %! assert (real (atan (x)), v);
@@ -405,7 +410,7 @@ Compute the inverse hyperbolic tangent for each element of @var{x}.
 %! assert (atanh (x), v, sqrt (eps ("single")));
 
 ## Test large magnitude arguments (bug #44310, bug #45507)
-%!test
+%!test <44310>
 %! x = [1, -1, i, -i] .* 1e150;
 %! v = [pi/2, pi/2, pi/2, -pi/2];
 %! assert (imag (atanh (x)), v);

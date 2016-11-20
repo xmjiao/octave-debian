@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 Jaroslav Hajek
+Copyright (C) 2008-2016 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -90,3 +90,4 @@ typedef base_det<Complex> ComplexDET;
 typedef base_det<FloatComplex> FloatComplexDET;
 
 #endif
+

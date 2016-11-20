@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2015 Max Brister
+Copyright (C) 2012-2016 Max Brister
 
 This file is part of Octave.
 
@@ -372,7 +372,7 @@ private:
 
   struct signature_cmp
   {
-    bool operator() (const signature_vec *lhs, const signature_vec *rhs) const;
+    bool operator () (const signature_vec *lhs, const signature_vec *rhs) const;
   };
 
   typedef std::map<const signature_vec *, jit_function *, signature_cmp>
@@ -849,3 +849,4 @@ private:
 
 #endif
 #endif
+

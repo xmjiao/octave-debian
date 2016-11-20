@@ -172,7 +172,7 @@ libinterp_liboctinterp_la_LIBADD = \
   $(LIBOCTINTERP_LINK_DEPS)
 
 # Increment these as needed and according to the rules in the libtool manual:
-libinterp_liboctinterp_current = 3
+libinterp_liboctinterp_current = 4
 libinterp_liboctinterp_revision = 0
 libinterp_liboctinterp_age = 0
 
@@ -281,12 +281,13 @@ DOCSTRING_FILES += libinterp/DOCSTRINGS
 
 libinterp/DOCSTRINGS: $(LIBINTERP_DEFUN_FILES) libinterp/op-kw-docs | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f libinterp/DOCSTRINGS-t && \
-	( $(PERL) $(srcdir)/libinterp/gendoc.pl "$(srcdir)" $(LIBINTERP_DEFUN_FILES); cat $(srcdir)/libinterp/op-kw-docs ) > libinterp/DOCSTRINGS-t && \
+	( $(PERL) $(srcdir)/libinterp/gendoc.pl "$(srcdir)" $(LIBINTERP_DEFUN_FILES); $(SED) -ne '/^\x1d/,$$p' $(srcdir)/libinterp/op-kw-docs ) > libinterp/DOCSTRINGS-t && \
 	$(call move_if_change_rule,libinterp/DOCSTRINGS-t,$@)
 
 OCTAVE_INTERPRETER_TARGETS += \
   $(OCT_FILES) \
-  $(DLDFCN_PKG_ADD_FILE)
+  $(DLDFCN_PKG_ADD_FILE) \
+  $(LIBINTERP_TST_FILES)
 
 DIRSTAMP_FILES += libinterp/$(octave_dirstamp)
 

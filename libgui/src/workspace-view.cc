@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2013-2015 John W. Eaton
-Copyright (C) 2011-2015 Jacob Dawid
+Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2011-2016 Jacob Dawid
 
 This file is part of Octave.
 
@@ -108,9 +108,15 @@ workspace_view::workspace_view (QWidget *p)
       view->setSortingEnabled (true);
       // Initialize column order and width of the workspace
       view->horizontalHeader ()->restoreState (settings->value ("workspaceview/column_state").toByteArray ());
+
       // Set header properties for sorting
+#if defined (HAVE_QT4)
       view->horizontalHeader ()->setClickable (true);
       view->horizontalHeader ()->setMovable (true);
+#else
+      view->horizontalHeader ()->setSectionsClickable (true);
+      view->horizontalHeader ()->setSectionsMovable (true);
+#endif
       view->horizontalHeader ()->setSortIndicator (settings->value ("workspaceview/sort_by_column",0).toInt (),
                                                    static_cast<Qt::SortOrder>
                                                    (settings->value ("workspaceview/sort_order", Qt::AscendingOrder).toUInt ()));
@@ -462,7 +468,7 @@ workspace_view::notice_settings (const QSettings *settings)
 
   for (i = 0; i < _columns_shown_keys.size (); i++)
     {
-      view->setColumnHidden ( i + 1,
+      view->setColumnHidden (i + 1,
             ! settings->value (_columns_shown_keys.at (i),true).toBool ());
     }
 

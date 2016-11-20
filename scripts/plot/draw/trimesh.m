@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2015 David Bateman
+## Copyright (C) 2007-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -82,9 +82,10 @@ function h = trimesh (tri, x, y, z, varargin)
     ## Tag object as "trimesh" so that hidden() can find it.
     htmp = patch ("Vertices", [x(:), y(:), z(:)], "Faces", tri,
                   "FaceVertexCdata", c, "EdgeColor", "flat", "FaceColor", "w",
+                  "FaceLighting", "none", "EdgeLighting", "flat",
                   "Tag", "trimesh", varargin{:});
     if (! ishold ())
-      set (hax, "view", [-37.5, 30], "box", "off",
+      set (hax, "view", [-37.5, 30],
                 "xgrid", "on", "ygrid", "on", "zgrid", "on");
     endif
   endif
@@ -98,10 +99,10 @@ endfunction
 
 %!demo
 %! clf;
-%! colormap ('default');
-%! old_state = rand ('state');
-%! restore_state = onCleanup (@() rand ('state', old_state));
-%! rand ('state', 10);
+%! colormap ("default");
+%! old_state = rand ("state");
+%! restore_state = onCleanup (@() rand ("state", old_state));
+%! rand ("state", 10);
 %! N = 10;
 %! x = 3 - 6 * rand (N, N);
 %! y = 3 - 6 * rand (N, N);

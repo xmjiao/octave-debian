@@ -1,7 +1,7 @@
 // RowVector manipulations.
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,30 +28,12 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 
 #include "Array-util.h"
-#include "f77-fcn.h"
 #include "functor.h"
+#include "lo-blas-proto.h"
 #include "lo-error.h"
 #include "mx-base.h"
 #include "mx-inlines.cc"
 #include "oct-cmplx.h"
-
-// Fortran functions we call.
-
-extern "C"
-{
-  F77_RET_T
-  F77_FUNC (sgemv, SGEMV) (F77_CONST_CHAR_ARG_DECL,
-                           const F77_INT&, const F77_INT&,
-                           const F77_REAL&, const F77_REAL*,
-                           const F77_INT&, const F77_REAL*,
-                           const F77_INT&, const F77_REAL&,
-                           F77_REAL*, const F77_INT&
-                           F77_CHAR_ARG_LEN_DECL);
-  F77_RET_T
-  F77_FUNC (xsdot, XSDOT) (const F77_INT&, const F77_REAL*,
-                           const F77_INT&, const F77_REAL*,
-                           const F77_INT&, F77_REAL&);
-}
 
 // Row Vector class.
 
@@ -194,7 +176,7 @@ operator * (const FloatRowVector& v, const FloatMatrix& a)
   octave_idx_type a_nc = a.cols ();
 
   if (a_nr != len)
-    err_nonconformant ("operator *", 1, len, a_nr, a_nc);
+    octave::err_nonconformant ("operator *", 1, len, a_nr, a_nc);
 
   if (len == 0)
     retval.resize (a_nc, 0.0);
@@ -315,7 +297,7 @@ operator * (const FloatRowVector& v, const FloatColumnVector& a)
   octave_idx_type a_len = a.numel ();
 
   if (len != a_len)
-    err_nonconformant ("operator *", len, a_len);
+    octave::err_nonconformant ("operator *", len, a_len);
 
   if (len != 0)
     F77_FUNC (xsdot, XSDOT) (len, v.data (), 1, a.data (), 1, retval);
@@ -329,3 +311,4 @@ operator * (const FloatRowVector& v, const FloatComplexColumnVector& a)
   FloatComplexRowVector tmp (v);
   return tmp * a;
 }
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -297,14 +297,14 @@ pr_where (std::ostream& os, const char *who)
     }
 }
 
-static octave_execution_exception
+static octave::execution_exception
 make_execution_exception (const char *who)
 {
   std::ostringstream buf;
 
   pr_where (buf, who);
 
-  octave_execution_exception retval;
+  octave::execution_exception retval;
 
   retval.set_stack_trace (buf.str ());
 
@@ -312,7 +312,7 @@ make_execution_exception (const char *who)
 }
 
 static void
-maybe_enter_debugger (octave_execution_exception& e,
+maybe_enter_debugger (octave::execution_exception& e,
                       bool show_stack_trace = false)
 {
   if ((octave::application::interactive ()
@@ -415,7 +415,7 @@ message_with_id (const char *name, const char *id, const char *fmt, ...)
 
 OCTAVE_NORETURN static
 void
-usage_1 (octave_execution_exception& e, const char *id,
+usage_1 (octave::execution_exception& e, const char *id,
          const char *fmt, va_list args)
 {
   verror (true, std::cerr, "usage", id, fmt, args);
@@ -429,7 +429,7 @@ OCTAVE_NORETURN static
 void
 usage_1 (const char *id, const char *fmt, va_list args)
 {
-  octave_execution_exception e = make_execution_exception ("usage");
+  octave::execution_exception e = make_execution_exception ("usage");
 
   usage_1 (e, id, fmt, args);
 }
@@ -466,7 +466,7 @@ usage_with_id (const char *id, const char *fmt, ...)
 
 OCTAVE_NORETURN static
 void
-error_1 (octave_execution_exception& e, std::ostream& os,
+error_1 (octave::execution_exception& e, std::ostream& os,
          const char *name, const char *id, const char *fmt,
          va_list args, bool with_cfn = false)
 {
@@ -517,7 +517,7 @@ void
 error_1 (std::ostream& os, const char *name, const char *id,
          const char *fmt, va_list args, bool with_cfn = false)
 {
-  octave_execution_exception e = make_execution_exception ("error");
+  octave::execution_exception e = make_execution_exception ("error");
 
   error_1 (e, os, name, id, fmt, args, with_cfn);
 }
@@ -538,13 +538,13 @@ error (const char *fmt, ...)
 }
 
 void
-verror (octave_execution_exception& e, const char *fmt, va_list args)
+verror (octave::execution_exception& e, const char *fmt, va_list args)
 {
   error_1 (e, std::cerr, "error", "", fmt, args);
 }
 
 void
-error (octave_execution_exception& e, const char *fmt, ...)
+error (octave::execution_exception& e, const char *fmt, ...)
 {
   va_list args;
   va_start (args, fmt);
@@ -1077,7 +1077,8 @@ maybe_extract_message_id (const std::string& caller,
             }
           else
             nargs(0) = "call to " + caller
-              + " with message identifier '" + arg1 + "' requires message";
+                       + " with message identifier '" + arg1
+                       + "' requires message";
         }
     }
 
@@ -1549,8 +1550,8 @@ disable escape sequence expansion use a second backslash before the sequence
               m.contents ("identifier") = ids;
               m.contents ("state") = states;
 
-              symbol_table::assign
-                (".saved_warning_states.", m, scope, context);
+              symbol_table::assign (".saved_warning_states.",
+                                    m, scope, context);
 
               // Now ignore the "local" argument and continue to
               // handle the current setting.
@@ -1562,45 +1563,26 @@ disable escape sequence expansion use a second backslash before the sequence
               // If "all" is explicitly given as ID.
 
               octave_map tmp;
+              int is_error = (arg1 == "error");
 
-              Cell id (1, 1);
-              Cell st (1, 1);
+              Cell id (1, 1 + 2*is_error);
+              Cell st (1, 1 + 2*is_error);
 
               id(0) = arg2;
               st(0) = arg1;
 
               // Since internal Octave functions are not compatible,
-              // turning all warnings into errors should leave the state of
-              // Octave:language-extension alone.
+              // and "all"=="error" causes any "on" to throw an error,
+              // turning all warnings into errors should disable
+              // Octave:language-extension.
 
-              if (arg1 == "error" && warning_options.contains ("identifier"))
+              if (is_error)
                 {
-                  octave_idx_type n = 1;
+                  id(1) = "Octave:language-extension";
+                  st(1) = "off";
 
-                  Cell tid = warning_options.contents ("identifier");
-                  Cell tst = warning_options.contents ("state");
-
-                  for (octave_idx_type i = 0; i < tid.numel (); i++)
-                    {
-                      octave_value vid = tid(i);
-
-                      if (vid.is_string ())
-                        {
-                          std::string key = vid.string_value ();
-
-                          if (key == "Octave:language-extension"
-                              || key == "Octave:single-quote-string")
-                            {
-                              id.resize (dim_vector (1, n+1));
-                              st.resize (dim_vector (1, n+1));
-
-                              id(n) = tid(i);
-                              st(n) = tst(i);
-
-                              n++;
-                            }
-                        }
-                    }
+                  id(2) = "Octave:single-quote-string";
+                  st(2) = "off";
                 }
 
               tmp.assign ("identifier", id);
@@ -1747,9 +1729,7 @@ disable escape sequence expansion use a second backslash before the sequence
 }
 
 /*
-## Test for (bug #45753)
-
-%!test
+%!test <45753>
 %! warning ("error");
 %! assert (! isempty (help ("warning")));
 */

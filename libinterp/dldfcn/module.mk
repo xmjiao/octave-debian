@@ -24,10 +24,10 @@ DLDFCN_SRC = \
   libinterp/dldfcn/convhulln.cc \
   libinterp/dldfcn/dmperm.cc \
   libinterp/dldfcn/fftw.cc \
+  libinterp/dldfcn/gzip.cc \
   libinterp/dldfcn/qr.cc \
   libinterp/dldfcn/symbfact.cc \
-  libinterp/dldfcn/symrcm.cc \
-  libinterp/dldfcn/xzip.cc
+  libinterp/dldfcn/symrcm.cc
 
 DLDFCN_LIBS = $(DLDFCN_SRC:.cc=.la)
 
@@ -166,6 +166,13 @@ libinterp_dldfcn_fftw_la_CXXFLAGS = $(libinterp_liboctinterp_la_CXXFLAGS) $(FFTW
 libinterp_dldfcn_fftw_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(FFTW_XLDFLAGS) $(OCT_LINK_OPTS) $(WARN_LDFLAGS)
 libinterp_dldfcn_fftw_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) liboctave/liboctave.la $(FFTW_XLIBS) $(OCT_LINK_DEPS)
 
+libinterp_dldfcn_gzip_la_SOURCES = libinterp/dldfcn/gzip.cc
+libinterp_dldfcn_gzip_la_CPPFLAGS = $(libinterp_liboctinterp_la_CPPFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
+libinterp_dldfcn_gzip_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
+libinterp_dldfcn_gzip_la_CXXFLAGS = $(libinterp_liboctinterp_la_CXXFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
+libinterp_dldfcn_gzip_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(Z_LDFLAGS) $(BZ2_LDFLAGS) $(OCT_LINK_OPTS) $(WARN_LDFLAGS)
+libinterp_dldfcn_gzip_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) liboctave/liboctave.la $(Z_LIBS) $(BZ2_LIBS) $(OCT_LINK_DEPS)
+
 libinterp_dldfcn_qr_la_SOURCES = libinterp/dldfcn/qr.cc
 libinterp_dldfcn_qr_la_CPPFLAGS = $(libinterp_liboctinterp_la_CPPFLAGS) $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 libinterp_dldfcn_qr_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
@@ -186,10 +193,3 @@ libinterp_dldfcn_symrcm_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(SPARSE
 libinterp_dldfcn_symrcm_la_CXXFLAGS = $(libinterp_liboctinterp_la_CXXFLAGS) $(SPARSE_XCPPFLAGS)
 libinterp_dldfcn_symrcm_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS) $(WARN_LDFLAGS)
 libinterp_dldfcn_symrcm_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
-
-libinterp_dldfcn_xzip_la_SOURCES = libinterp/dldfcn/xzip.cc
-libinterp_dldfcn_xzip_la_CPPFLAGS = $(libinterp_liboctinterp_la_CPPFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
-libinterp_dldfcn_xzip_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
-libinterp_dldfcn_xzip_la_CXXFLAGS = $(libinterp_liboctinterp_la_CXXFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
-libinterp_dldfcn_xzip_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(Z_LDFLAGS) $(BZ2_LDFLAGS) $(OCT_LINK_OPTS) $(WARN_LDFLAGS)
-libinterp_dldfcn_xzip_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) liboctave/liboctave.la $(Z_LIBS) $(BZ2_LIBS) $(OCT_LINK_DEPS)

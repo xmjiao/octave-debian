@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by genpropdoc.m.
 
-@c Copyright (C) 2014-2015 Pantxo Diribarne
+@c Copyright (C) 2014-2016 Pantxo Diribarne
 @c
 @c This file is part of Octave.
 @c

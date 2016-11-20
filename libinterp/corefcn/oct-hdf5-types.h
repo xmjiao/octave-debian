@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2015 John W. Eaton
+Copyright (C) 2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -51,3 +51,4 @@ extern const octave_hdf5_id octave_H5S_ALL;
 #endif
 
 #endif
+

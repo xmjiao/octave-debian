@@ -1,7 +1,7 @@
 // Template array classes
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2010 VZLU Prague
 
@@ -43,7 +43,85 @@ along with Octave; see the file COPYING.  If not, see
 #include "quit.h"
 #include "oct-refcount.h"
 
-//! Handles the reference counting for all the derived classes.
+//! N Dimensional Array with copy-on-write semantics.
+/*!
+    The Array class is at the root of Octave.  It provides a container
+    with an arbitrary number of dimensions.  The operator () provides
+    access to individual elements via subscript and linear indexing.
+    Indexing starts at 0.  Arrays are column-major order as in Fortran.
+
+    @code{.cc}
+    // 3 D Array with 10 rows, 20 columns, and 5 pages, filled with 7.0
+    Array<double> A Array<double (dim_vector (10, 20, 5), 7.0);
+
+    // set value for row 0, column 10, and page 3
+    A(0, 10, 3) = 2.5;
+
+    // get value for row 1, column 2, and page 0
+    double v = A(1, 2, 0);
+
+    // get value for 25th element (row 4, column 3, page 1)
+    double v = A(24);
+    @endcode
+
+    ## Notes on STL compatibility
+
+    ### size() and length()
+
+    To access the total number of elements in an Array, use numel()
+    which is short for number of elements and is equivalent to the
+    Octave function with same name.
+
+    @code{.cc}
+    Array<int> A (dim_vector (10, 20, 4), 1);
+
+    octave_idx_type n = A.numel (); // returns 800 (10x20x4)
+
+    octave_idx_type nr = A.size (0); // returns 10 (number of rows/dimension 0)
+    octave_idx_type nc = A.size (1); // returns 20 (number of columns)
+    octave_idx_type nc = A.size (2); // returns 4 (size of dimension 3)
+    octave_idx_type l6 = A.size (6); // returns 1 (implicit singleton dimension)
+
+    // Alternatively, get a dim_vector which represents the dimensions.
+    dim_vector dims = A.dims ();
+    @endcode
+
+    The methods size() and length() as they exist in the STL cause
+    confusion in the context of a N dimensional array.
+
+    The size() of an array is the length of all dimensions.  In Octave,
+    the size() function returns a row vector with the length of each
+    dimension, or the size of a specific dimension.  Only the latter is
+    present in liboctave.
+
+    Since there is more than 1 dimension, length() would not make sense
+    without expliciting which dimension.  If the function existed, which
+    length should it return?  Octave length() function returns the length
+    of the longest dimension which is an odd definition, only useful for
+    vectors and square matrices.  The alternatives numel(), rows(),
+    columns(), and size(d) are more explict and recommended.
+
+    ### size_type
+
+    Array::size_type is `octave_idx_type` which is a typedef for `int`
+    or `long int`, depending whether Octave was configured for 64-bit
+    indexing.
+
+    This is a signed integer which may cause problems when mixed with
+    STL containers.  The reason is that Octave interacts with Fortran
+    routines, providing an interface many Fortran numeric libraries.
+
+    ## Subclasses
+
+    The following subclasses specializations, will be of most use:
+      - Matrix: Array<double> with only 2 dimensions
+      - ComplexMatrix: Array<std::complex<double>> with only 2 dimensions
+      - boolNDArray: N dimensional Array<bool>
+      - ColumnVector: Array<double> with 1 column
+      - string_vector: Array<std::string> with 1 column
+      - Cell: Array<octave_value>, equivalent to an Octave cell.
+
+*/
 template <typename T>
 class
 Array
@@ -119,6 +197,12 @@ public:
   }
 
   typedef T element_type;
+
+  typedef T value_type;
+
+  //! Used for operator(), and returned by numel() and size()
+  //! (beware: signed integer)
+  typedef octave_idx_type size_type;
 
   typedef typename ref_param<T>::type crefT;
 
@@ -333,6 +417,20 @@ public:
   octave_idx_type dim3 (void) const { return dimensions(2); }
   octave_idx_type pages (void) const { return dim3 (); }
   //@}
+
+  //! Size of the specified dimension.
+  /*!
+      Dimensions beyond the Array number of dimensions return 1 as
+      those are implicit singleton dimensions.
+
+      Equivalent to Octave's `size (A, DIM)`
+  */
+  size_type size (const size_type d) const
+  {
+    // Should we throw for negative values?
+    // Should >= ndims () be handled by dim_vector operator() instead ?
+    return d >= ndims () ? 1 : dimensions(d);
+  }
 
   size_t byte_size (void) const
   { return static_cast<size_t> (numel ()) * sizeof (T); }
@@ -818,3 +916,4 @@ std::ostream&
 operator << (std::ostream& os, const Array<T>& a);
 
 #endif
+

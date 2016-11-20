@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2007-2015 Shai Ayal
-Copyright (C) 2014-2015 Andreas Weber
+Copyright (C) 2007-2016 Shai Ayal
+Copyright (C) 2014-2016 Andreas Weber
 
 This file is part of Octave.
 
@@ -119,7 +119,7 @@ public:
     // Ask for double buffering and a depth buffer.
     mode (FL_DEPTH | FL_DOUBLE | FL_MULTISAMPLE);
 #else
-  err_disabled_feature ("OpenGL_fltk", "OpenGL");
+    err_disabled_feature ("OpenGL_fltk", "OpenGL");
 #endif
   }
 
@@ -149,10 +149,10 @@ public:
     Fl_Gl_Window::resize (xx, yy, ww, hh);
 
 #else
-  // This shouldn't happen because construction of Opengl_fltk
-  // objects is supposed to be impossible if OpenGL is not available.
+    // This shouldn't happen because construction of Opengl_fltk
+    // objects is supposed to be impossible if OpenGL is not available.
 
-  panic_impossible ();
+    panic_impossible ();
 #endif
   }
 
@@ -171,7 +171,7 @@ public:
 
 private:
   double number;
-  opengl_renderer renderer;
+  octave::opengl_renderer renderer;
   bool in_zoom;
   // (x1,y1,x2,y2)
   Matrix zoom_box;
@@ -193,10 +193,10 @@ private:
       overlay ();
 
 #else
-  // This shouldn't happen because construction of Opengl_fltk
-  // objects is supposed to be impossible if OpenGL is not available.
+    // This shouldn't happen because construction of Opengl_fltk
+    // objects is supposed to be impossible if OpenGL is not available.
 
-  panic_impossible ();
+    panic_impossible ();
 #endif
   }
 
@@ -211,10 +211,10 @@ private:
     glVertex2d (zoom_box(0), h () - zoom_box(1));
 
 #else
-  // This shouldn't happen because construction of Opengl_fltk
-  // objects is supposed to be impossible if OpenGL is not available.
+    // This shouldn't happen because construction of Opengl_fltk
+    // objects is supposed to be impossible if OpenGL is not available.
 
-  panic_impossible ();
+    panic_impossible ();
 #endif
   }
 
@@ -249,10 +249,10 @@ private:
     glPopMatrix ();
 
 #else
-  // This shouldn't happen because construction of Opengl_fltk
-  // objects is supposed to be impossible if OpenGL is not available.
+    // This shouldn't happen because construction of Opengl_fltk
+    // objects is supposed to be impossible if OpenGL is not available.
 
-  panic_impossible ();
+    panic_impossible ();
 #endif
   }
 
@@ -274,10 +274,10 @@ private:
     return Fl_Gl_Window::handle (event);
 
 #else
-  // This shouldn't happen because construction of Opengl_fltk
-  // objects is supposed to be impossible if OpenGL is not available.
+    // This shouldn't happen because construction of Opengl_fltk
+    // objects is supposed to be impossible if OpenGL is not available.
 
-  panic_impossible ();
+    panic_impossible ();
 #endif
   }
 };
@@ -556,7 +556,8 @@ public:
 
   void update_position (uimenu::properties& uimenup, int pos)
   {
-    uimenup.get_property ("position").set (octave_value (static_cast<double> (pos)), true, false);
+    uimenup.get_property ("position").set (octave_value (static_cast<double> (pos)),
+                                           true, false);
   }
 
   void add_entry (uimenu::properties& uimenup)
@@ -638,9 +639,9 @@ public:
             if (pos <= 0)
               delayed_menus.push_back ((len - (ii + 1)));
             else
-             {
-               add_to_menu (kprop);
-             }
+              {
+                add_to_menu (kprop);
+              }
           }
       }
 
@@ -680,10 +681,10 @@ public:
             if (pos <= 0)
               delayed_menus.push_back ((len - (ii + 1)));
             else
-             {
-               add_to_menu (kprop);
-               update_position (kprop, ++count);
-             }
+              {
+                add_to_menu (kprop);
+                update_position (kprop, ++count);
+              }
           }
       }
 
@@ -766,8 +767,8 @@ public:
     callback (window_close, static_cast<void*> (this));
 
     // The size of the resize_dummy box also determines the minimum window size
-    resize_dummy = new Fl_Box (5 * status_h + 1, menu_h + 1,
-                               ww - 5 * status_h - 1, hh);
+    resize_dummy = new Fl_Box (5 * status_h, menu_h,
+                               ww - 5 * status_h, hh);
     // See http://fltk.org/articles.php?L415+I0+T+M1000+P1
     // for how resizable works
     resizable (resize_dummy);
@@ -788,8 +789,8 @@ public:
     // Only "status" should be resized.
 
     int toolbar_y = menu_h + hh + 1;
-    status = new Fl_Output (5 * status_h + 1, toolbar_y,
-                            ww - 5 * status_h - 1, status_h, "");
+    status = new Fl_Output (5 * status_h, toolbar_y,
+                            ww - 5 * status_h, status_h, "");
 
     status->textcolor (FL_BLACK);
     status->color (FL_GRAY);
@@ -985,9 +986,8 @@ public:
     panzoom->position (2 * status_h, toolbar_y);
     rotate->position (3 * status_h, toolbar_y);
     help->position (4 * status_h, toolbar_y);
-    status->resize (5 * status_h + 1, toolbar_y,
-                    w () - 5 * status_h - 1, status_h);
-
+    status->resize (5 * status_h, toolbar_y,
+                    w () - 5 * status_h, status_h);
     init_sizes ();
     redraw ();
   }
@@ -1499,7 +1499,7 @@ private:
                           ax_obj = gh_manager::get_object (gh);
                           set_axes_currentpoint (ax_obj, pos_x, pos_y);
                         }
-                     }
+                    }
 
                   fp.execute_keypressfcn (evt);
                 }
@@ -1660,11 +1660,11 @@ private:
                                      x1, y1);
 
                           if (pan_enabled ())
-                          {
-                            std::string mode = pan_mode ();
+                            {
+                              std::string mode = pan_mode ();
 
-                            ap.translate_view (mode, x0, x1, y0, y1);
-                          }
+                              ap.translate_view (mode, x0, x1, y0, y1);
+                            }
                           else if (rotate_enabled ())
                             {
                               double daz, del;
@@ -2443,3 +2443,4 @@ Undocumented internal function.
 ## No test needed for internal helper function.
 %!assert (1)
 */
+

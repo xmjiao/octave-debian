@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -199,7 +199,7 @@ octave_base_matrix<MT>::do_index_op (const octave_value_list& idx,
           break;
         }
     }
-  catch (index_exception& e)
+  catch (octave::index_exception& e)
     {
       // Rethrow to allow more info to be reported later.
       e.set_pos_if_unset (n_idx, k+1);
@@ -225,44 +225,44 @@ octave_base_matrix<MT>::assign (const octave_value_list& idx, const MT& rhs)
     {
       switch (n_idx)
         {
-          case 0:
-            panic_impossible ();
-            break;
+        case 0:
+          panic_impossible ();
+          break;
 
-          case 1:
-            {
-              idx_vector i = idx (0).index_vector ();
+        case 1:
+          {
+            idx_vector i = idx (0).index_vector ();
 
-              matrix.assign (i, rhs);
-            }
-            break;
+            matrix.assign (i, rhs);
+          }
+          break;
 
-          case 2:
-            {
-              idx_vector i = idx (0).index_vector ();
+        case 2:
+          {
+            idx_vector i = idx (0).index_vector ();
 
-              k = 1;
-              idx_vector j = idx (1).index_vector ();
+            k = 1;
+            idx_vector j = idx (1).index_vector ();
 
-              matrix.assign (i, j, rhs);
-            }
-            break;
+            matrix.assign (i, j, rhs);
+          }
+          break;
 
-          default:
-            {
-              Array<idx_vector> idx_vec (dim_vector (n_idx, 1));
+        default:
+          {
+            Array<idx_vector> idx_vec (dim_vector (n_idx, 1));
 
-              for (k = 0; k < n_idx; k++)
-                idx_vec(k) = idx(k).index_vector ();
+            for (k = 0; k < n_idx; k++)
+              idx_vec(k) = idx(k).index_vector ();
 
-              matrix.assign (idx_vec, rhs);
-            }
-            break;
+            matrix.assign (idx_vec, rhs);
+          }
+          break;
         }
     }
-  catch (const index_exception& e)
+  catch (const octave::index_exception& e)
     {
-      err_invalid_index (e.idx (), n_idx, k+1);
+      octave::err_invalid_index (e.idx (), n_idx, k+1);
     }
 
   // Clear cache.
@@ -364,9 +364,9 @@ octave_base_matrix<MT>::assign (const octave_value_list& idx,
           break;
         }
     }
-  catch (const index_exception& e)
+  catch (const octave::index_exception& e)
     {
-      err_invalid_index (e.idx (), n_idx, k+1);
+      octave::err_invalid_index (e.idx (), n_idx, k+1);
     }
 
   // Clear cache.
@@ -416,7 +416,7 @@ octave_base_matrix<MT>::is_true (void) const
       MT t1 (matrix.reshape (dim_vector (nel, 1)));
 
       if (t1.any_element_is_nan ())
-        err_nan_to_logical_conversion ();
+        octave::err_nan_to_logical_conversion ();
 
       if (nel > 1)
         warn_array_as_logical (dv);

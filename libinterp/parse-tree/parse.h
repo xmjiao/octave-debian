@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -131,7 +131,7 @@ extern OCTINTERP_API octave_value_list
 feval (const octave_value_list& args, int nargout = 0);
 
 extern OCTINTERP_API octave_value_list
-eval_string (const std::string&, bool silent, int& parse_status, int hargout);
+eval_string (const std::string&, bool silent, int& parse_status, int nargout);
 
 extern OCTINTERP_API octave_value
 eval_string (const std::string&, bool silent, int& parse_status);
@@ -528,3 +528,4 @@ namespace octave
 }
 
 #endif
+

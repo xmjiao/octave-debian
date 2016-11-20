@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# Copyright (C) 2006-2015 David Bateman
+# Copyright (C) 2006-2016 David Bateman
 #
 # This file is part of Octave.
 #
@@ -931,7 +931,7 @@ gen_save_tests() {
 %! load (savefile, "as_save");
 %! unlink (savefile);
 %! assert (as_save, sparse (af));
-## FIXME: We should skip (or mark as an expected failure) the test for
+## FIXME: We should skip (or mark as a known bug) the test for
 ## saving sparse matrices to MAT files when using 64-bit indexing since
 ## that is not implemented yet.
 %!test # save matlab

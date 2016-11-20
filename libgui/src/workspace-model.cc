@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2013-2015 John W. Eaton
-Copyright (C) 2011-2015 Jacob Dawid
+Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2011-2016 Jacob Dawid
 
 This file is part of Octave.
 
@@ -131,7 +131,7 @@ workspace_model::data (const QModelIndex& idx, int role) const
         {
           QString class_chars = resource_manager::storage_class_chars ();
           int actual_class
-            = class_chars.indexOf (_scopes[idx.row ()].toAscii ());
+            = class_chars.indexOf (_scopes[idx.row ()].toLatin1 ());
           if (actual_class >= 0)
             return QVariant (_storage_class_colors.at (actual_class));
           else
@@ -171,7 +171,7 @@ workspace_model::data (const QModelIndex& idx, int role) const
                 QString class_chars = resource_manager::storage_class_chars ();
 
                 int actual_class
-                  = class_chars.indexOf (_scopes[idx.row ()].toAscii ());
+                  = class_chars.indexOf (_scopes[idx.row ()].toLatin1 ());
 
                 if (actual_class >= 0)
                   {
@@ -292,3 +292,4 @@ workspace_model::notice_settings (const QSettings *settings)
       _storage_class_colors.replace (i,setting_color);
     }
 }
+

@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2008-2015 David Bateman
+@c Copyright (C) 2008-2016 David Bateman
 @c Copyright (C) 2009 VZLU Prague
 @c
 @c This file is part of Octave.
@@ -182,7 +182,7 @@ Return true if @var{x} is a class object.
 The available methods of a class can be displayed with the @code{methods}
 function.
 
-@c methods scripts/scripts/general/methods.m
+@c methods scripts/general/methods.m
 @anchor{XREFmethods}
 @deftypefn  {} {} methods (@var{obj})
 @deftypefnx {} {} methods ("@var{classname}")
@@ -236,7 +236,7 @@ result of an Octave expression that doesn't end with a semicolon.  If this
 method is not defined, then Octave won't print anything when displaying the
 contents of a class which can be confusing.
 
-@c display scripts/scripts/general/display.m
+@c display scripts/general/display.m
 @anchor{XREFdisplay}
 @deftypefn {} {} display (@var{obj})
 Display the contents of the object @var{obj}.
@@ -411,7 +411,7 @@ In certain circumstances a user class might contain a field that it doesn't
 make sense to save, or a field that needs to be initialized before it is saved.
 This can be done with the @code{saveobj} method of the class.
 
-@c saveobj scripts/scripts/general/saveobj.m
+@c saveobj scripts/general/saveobj.m
 @anchor{XREFsaveobj}
 @deftypefn {} {@var{b} =} saveobj (@var{a})
 Method of a class to manipulate an object prior to saving it to a file.
@@ -443,7 +443,7 @@ the @code{loadobj} method is called just after a class is loaded from a file,
 and can be used to ensure that any removed fields are reinserted into the user
 object.
 
-@c loadobj scripts/scripts/general/loadobj.m
+@c loadobj scripts/general/loadobj.m
 @anchor{XREFloadobj}
 @deftypefn {} {@var{b} =} loadobj (@var{a})
 Method of a class to manipulate an object after loading it from a file.
@@ -673,7 +673,7 @@ p@{end-1@}
 Objects can also be used themselves as the index in a subscripted expression
 and this is controlled by the @code{subsindex} function.
 
-@c subsindex scripts/scripts/general/subsindex.m
+@c subsindex scripts/general/subsindex.m
 @anchor{XREFsubsindex}
 @deftypefn {} {@var{idx} =} subsindex (@var{obj})
 Convert an object to an index vector.

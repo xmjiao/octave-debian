@@ -1401,7 +1401,7 @@
 /* Define to 1 if qrupdate supports LU updates. */
 #undef HAVE_QRUPDATE_LUU
 
-/* Define to 1 if the QScintilla library and header files are available */
+/* Define to 1 if the QScintilla library and header files are available. */
 #undef HAVE_QSCINTILLA
 
 /* Define to 1 if Qsci has the QsciScintilla::findFirstInSelection function.
@@ -1414,12 +1414,19 @@
 /* Define to 1 if you have the <Qsci/qscilexeroctave.h> header file. */
 #undef HAVE_QSCI_QSCILEXEROCTAVE_H
 
-/* Define to 1 if Qscintilla is of Version 2.6.0 or later. */
+/* Define to 1 if QScintilla is of Version 2.6.0 or later. */
 #undef HAVE_QSCI_VERSION_2_6_0
 
-/* Define to 1 if Qt is available (libraries, developer header files, utility
-   programs (moc, uic, rcc, and lrelease)) */
+/* Define to 1 if Qt is available, with all required functions, libraries,
+   developer header files, and utility programs (moc, uic, rcc, and lrelease).
+   */
 #undef HAVE_QT
+
+/* Define if you are using Qt version 4. */
+#undef HAVE_QT4
+
+/* Define if you are using Qt version 5. */
+#undef HAVE_QT5
 
 /* Define to 1 if Qt has the QTabWidget::setMovable function. */
 #undef HAVE_QTABWIDGET_SETMOVABLE

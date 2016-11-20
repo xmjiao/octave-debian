@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -79,7 +79,7 @@ daspk_user_function (const ColumnVector& x, const ColumnVector& xdot,
         {
           tmp = daspk_fcn->do_multi_index_op (1, args);
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           err_user_supplied_eval (e, "daspk");
         }
@@ -129,7 +129,7 @@ daspk_user_jacobian (const ColumnVector& x, const ColumnVector& xdot,
         {
           tmp = daspk_jac->do_multi_index_op (1, args);
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           err_user_supplied_eval (e, "daspk");
         }
@@ -293,8 +293,8 @@ parameters for @code{daspk}.
               fname = "function y = ";
               fname.append (fcn_name);
               fname.append (" (x, xdot, t) y = ");
-              daspk_fcn = extract_function
-                (c(0), "daspk", fcn_name, fname, "; endfunction");
+              daspk_fcn = extract_function (c(0), "daspk", fcn_name,
+                                            fname, "; endfunction");
             }
 
           if (daspk_fcn)
@@ -361,9 +361,8 @@ parameters for @code{daspk}.
                     jname = "function jac = ";
                     jname.append (jac_name);
                     jname.append (" (x, xdot, t, cj) jac = ");
-                    daspk_jac = extract_function (tmp(1), "daspk",
-                                                  jac_name, jname,
-                                                  "; endfunction");
+                    daspk_jac = extract_function (tmp(1), "daspk", jac_name,
+                                                  jname, "; endfunction");
 
                     if (! daspk_jac)
                       {
@@ -441,3 +440,4 @@ parameters for @code{daspk}.
 
   return retval;
 }
+

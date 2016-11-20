@@ -2,7 +2,7 @@
 # name: cache
 # type: cell
 # rows: 3
-# columns: 1630
+# columns: 1635
 # name: <cell-element>
 # type: sq_string
 # elements: 1
@@ -13,7 +13,7 @@ daspk_options
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 5762
+# length: 5736
  -- : daspk_options ()
  -- : val = daspk_options (OPT)
  -- : daspk_options (OPT, VAL)
@@ -27,10 +27,10 @@ daspk_options
 
      Options include
 
-     '"absolute tolerance"'
+     "absolute tolerance"
           Absolute tolerance.  May be either vector or scalar.  If a vector, it must match the dimension of the state vector, and the relative tolerance must also be a vector of the same length.
 
-     '"relative tolerance"'
+     "relative tolerance"
           Relative tolerance.  May be either vector or scalar.  If a vector, it must match the dimension of the state vector, and the absolute tolerance must also be a vector of the same length.
 
           The local error test applied at each integration step is
@@ -38,7 +38,7 @@ daspk_options
                  abs (local error in x(i))
                       <= rtol(i) * abs (Y(i)) + atol(i)
 
-     '"compute consistent initial condition"'
+     "compute consistent initial condition"
           Denoting the differential variables in the state vector by 'Y_d' and the algebraic variables by 'Y_a', 'ddaspk' can solve one of two initialization problems:
 
             1. Given Y_d, calculate Y_a and Y'_d
@@ -49,10 +49,10 @@ daspk_options
 
           If this option is set to a nonzero value, you must also set the "algebraic variables" option to declare which variables in the problem are algebraic.
 
-     '"use initial condition heuristics"'
+     "use initial condition heuristics"
           Set to a nonzero value to use the initial condition heuristics options described below.
 
-     '"initial condition heuristics"'
+     "initial condition heuristics"
           A vector of the following parameters that can be used to control the initial condition calculation.
 
           'MXNIT'
@@ -75,18 +75,18 @@ daspk_options
           'EPINIT'
                Swing factor in the Newton iteration convergence test.  The test is applied to the residual vector, premultiplied by the approximate Jacobian.  For convergence, the weighted RMS norm of this vector (scaled by the error weights) must be less than 'EPINIT*EPCON', where 'EPCON' = 0.33 is the analogous test constant used in the time steps.  The default is 'EPINIT' = 0.01.
 
-     '"print initial condition info"'
+     "print initial condition info"
           Set this option to a nonzero value to display detailed information about the initial condition calculation (default is 0).
 
-     '"exclude algebraic variables from error test"'
+     "exclude algebraic variables from error test"
           Set to a nonzero value to exclude algebraic variables from the error test.  You must also set the "algebraic variables" option to declare which variables in the problem are algebraic (default is 0).
 
-     '"algebraic variables"'
+     "algebraic variables"
           A vector of the same length as the state vector.  A nonzero element indicates that the corresponding element of the state vector is an algebraic variable (i.e., its derivative does not appear explicitly in the equation set).
 
           This option is required by the "compute consistent initial condition" and "exclude algebraic variables from error test" options.
 
-     '"enforce inequality constraints"'
+     "enforce inequality constraints"
           Set to one of the following values to enforce the inequality constraints specified by the "inequality constraint types" option (default is 0).
 
             1. To have constraint checking only in the initial condition calculation.
@@ -95,7 +95,7 @@ daspk_options
 
             3. To enforce both options 1 and 2.
 
-     '"inequality constraint types"'
+     "inequality constraint types"
           A vector of the same length as the state specifying the type of inequality constraint.  Each element of the vector corresponds to an element of the state and should be assigned one of the following codes
 
           -2
@@ -115,13 +115,13 @@ daspk_options
 
           This option only has an effect if the "enforce inequality constraints" option is nonzero.
 
-     '"initial step size"'
+     "initial step size"
           Differential-algebraic problems may occasionally suffer from severe scaling difficulties on the first step.  If you know a great deal about the scaling of your problem, you can help to alleviate this problem by specifying an initial stepsize (default is computed automatically).
 
-     '"maximum order"'
+     "maximum order"
           Restrict the maximum order of the solution method.  This option must be between 1 and 5, inclusive (default is 5).
 
-     '"maximum step size"'
+     "maximum step size"
           Setting the maximum stepsize will avoid passing over very large regions (default is not specified).
    
 
@@ -144,7 +144,7 @@ dasrt_options
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1697
+# length: 1685
  -- : dasrt_options ()
  -- : val = dasrt_options (OPT)
  -- : dasrt_options (OPT, VAL)
@@ -158,10 +158,10 @@ dasrt_options
 
      Options include
 
-     '"absolute tolerance"'
+     "absolute tolerance"
           Absolute tolerance.  May be either vector or scalar.  If a vector, it must match the dimension of the state vector, and the relative tolerance must also be a vector of the same length.
 
-     '"relative tolerance"'
+     "relative tolerance"
           Relative tolerance.  May be either vector or scalar.  If a vector, it must match the dimension of the state vector, and the absolute tolerance must also be a vector of the same length.
 
           The local error test applied at each integration step is
@@ -169,16 +169,16 @@ dasrt_options
                  abs (local error in x(i)) <= ...
                      rtol(i) * abs (Y(i)) + atol(i)
 
-     '"initial step size"'
+     "initial step size"
           Differential-algebraic problems may occasionally suffer from severe scaling difficulties on the first step.  If you know a great deal about the scaling of your problem, you can help to alleviate this problem by specifying an initial stepsize.
 
-     '"maximum order"'
+     "maximum order"
           Restrict the maximum order of the solution method.  This option must be between 1 and 5, inclusive.
 
-     '"maximum step size"'
+     "maximum step size"
           Setting the maximum stepsize will avoid passing over very large regions.
 
-     '"step limit"'
+     "step limit"
           Maximum number of integration steps to attempt on a single call to the underlying Fortran code.
    
 
@@ -201,7 +201,7 @@ dassl_options
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2305
+# length: 2289
  -- : dassl_options ()
  -- : val = dassl_options (OPT)
  -- : dassl_options (OPT, VAL)
@@ -215,10 +215,10 @@ dassl_options
 
      Options include
 
-     '"absolute tolerance"'
+     "absolute tolerance"
           Absolute tolerance.  May be either vector or scalar.  If a vector, it must match the dimension of the state vector, and the relative tolerance must also be a vector of the same length.
 
-     '"relative tolerance"'
+     "relative tolerance"
           Relative tolerance.  May be either vector or scalar.  If a vector, it must match the dimension of the state vector, and the absolute tolerance must also be a vector of the same length.
 
           The local error test applied at each integration step is
@@ -226,22 +226,22 @@ dassl_options
                  abs (local error in x(i))
                       <= rtol(i) * abs (Y(i)) + atol(i)
 
-     '"compute consistent initial condition"'
+     "compute consistent initial condition"
           If nonzero, 'dassl' will attempt to compute a consistent set of initial conditions.  This is generally not reliable, so it is best to provide a consistent set and leave this option set to zero.
 
-     '"enforce nonnegativity constraints"'
+     "enforce nonnegativity constraints"
           If you know that the solutions to your equations will always be non-negative, it may help to set this parameter to a nonzero value.  However, it is probably best to try leaving this option set to zero first, and only setting it to a nonzero value if that doesn't work very well.
 
-     '"initial step size"'
+     "initial step size"
           Differential-algebraic problems may occasionally suffer from severe scaling difficulties on the first step.  If you know a great deal about the scaling of your problem, you can help to alleviate this problem by specifying an initial stepsize.
 
-     '"maximum order"'
+     "maximum order"
           Restrict the maximum order of the solution method.  This option must be between 1 and 5, inclusive.
 
-     '"maximum step size"'
+     "maximum step size"
           Setting the maximum stepsize will avoid passing over very large regions (default is not specified).
 
-     '"step limit"'
+     "step limit"
           Maximum number of integration steps to attempt on a single call to the underlying Fortran code.
    
 
@@ -264,7 +264,7 @@ lsode_options
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2005
+# length: 1989
  -- : lsode_options ()
  -- : val = lsode_options (OPT)
  -- : lsode_options (OPT, VAL)
@@ -278,10 +278,10 @@ lsode_options
 
      Options include
 
-     '"absolute tolerance"'
+     "absolute tolerance"
           Absolute tolerance.  May be either vector or scalar.  If a vector, it must match the dimension of the state vector.
 
-     '"relative tolerance"'
+     "relative tolerance"
           Relative tolerance parameter.  Unlike the absolute tolerance, this parameter may only be a scalar.
 
           The local error test applied at each integration step is
@@ -289,7 +289,7 @@ lsode_options
                  abs (local error in x(i)) <= ...
                      rtol * abs (y(i)) + atol(i)
 
-     '"integration method"'
+     "integration method"
           A string specifying the method of integration to use to solve the ODE system.  Valid values are
 
           "adams"
@@ -300,19 +300,19 @@ lsode_options
           "stiff"
                Use stiff backward differentiation formula (BDF) method.  If a function to compute the Jacobian is not supplied, 'lsode' will compute a finite difference approximation of the Jacobian matrix.
 
-     '"initial step size"'
+     "initial step size"
           The step size to be attempted on the first step (default is determined automatically).
 
-     '"maximum order"'
+     "maximum order"
           Restrict the maximum order of the solution method.  If using the Adams method, this option must be between 1 and 12.  Otherwise, it must be between 1 and 5, inclusive.
 
-     '"maximum step size"'
+     "maximum step size"
           Setting the maximum stepsize will avoid passing over very large regions (default is not specified).
 
-     '"minimum step size"'
+     "minimum step size"
           The minimum absolute step size allowed (default is 0).
 
-     '"step limit"'
+     "step limit"
           Maximum number of steps allowed (default is 100000).
    
 
@@ -335,7 +335,7 @@ quad_options
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1076
+# length: 1068
  -- : quad_options ()
  -- : val = quad_options (OPT)
  -- : quad_options (OPT, VAL)
@@ -349,16 +349,16 @@ quad_options
 
      Options include
 
-     '"absolute tolerance"'
+     "absolute tolerance"
           Absolute tolerance; may be zero for pure relative error test.
 
-     '"relative tolerance"'
+     "relative tolerance"
           Non-negative relative tolerance.  If the absolute tolerance is zero, the relative tolerance must be greater than or equal to 'max (50*eps, 0.5e-28)'.
 
-     '"single precision absolute tolerance"'
+     "single precision absolute tolerance"
           Absolute tolerance for single precision; may be zero for pure relative error test.
 
-     '"single precision relative tolerance"'
+     "single precision relative tolerance"
           Non-negative relative tolerance for single precision.  If the absolute tolerance is zero, the relative tolerance must be greater than or equal to 'max (50*eps, 0.5e-28)'.
    
 
@@ -1177,32 +1177,6 @@ Create a vectorized version of the inline function FUN by replacing all occurren
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 6
-single
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 85
- -- : single (X)
-     Convert X to single precision type.
-
-     See also: double.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 35
-Convert X to single precision type.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
 # length: 10
 javaObject
 
@@ -1499,32 +1473,6 @@ allow_noninteger_range_as_index
 # elements: 1
 # length: 99
 Query or set the internal variable that controls whether non-integer ranges are allowed as indices.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-double
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 85
- -- : double (X)
-     Convert X to double precision type.
-
-     See also: single.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 35
-Convert X to double precision type.
 
 
 
@@ -1991,6 +1939,266 @@ Within a function, return a logical value indicating whether the argument K will
 # type: sq_string
 # elements: 1
 # length: 6
+double
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 85
+ -- : double (X)
+     Convert X to double precision type.
+
+     See also: single.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 35
+Convert X to double precision type.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+single
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 85
+ -- : single (X)
+     Convert X to single precision type.
+
+     See also: double.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 35
+Convert X to single precision type.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 4
+int8
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 124
+ -- : int8 (X)
+     Convert X to 8-bit integer type.
+
+     See also: uint8, int16, uint16, int32, uint32, int64, uint64.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 32
+Convert X to 8-bit integer type.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+int16
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 125
+ -- : int16 (X)
+     Convert X to 16-bit integer type.
+
+     See also: int8, uint8, uint16, int32, uint32, int64, uint64.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 33
+Convert X to 16-bit integer type.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+int32
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 125
+ -- : int32 (X)
+     Convert X to 32-bit integer type.
+
+     See also: int8, uint8, int16, uint16, uint32, int64, uint64.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 33
+Convert X to 32-bit integer type.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+int64
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 125
+ -- : int64 (X)
+     Convert X to 64-bit integer type.
+
+     See also: int8, uint8, int16, uint16, int32, uint32, uint64.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 33
+Convert X to 64-bit integer type.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+uint8
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 133
+ -- : uint8 (X)
+     Convert X to unsigned 8-bit integer type.
+
+     See also: int8, int16, uint16, int32, uint32, int64, uint64.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 41
+Convert X to unsigned 8-bit integer type.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+uint16
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 134
+ -- : uint16 (X)
+     Convert X to unsigned 16-bit integer type.
+
+     See also: int8, uint8, int16, int32, uint32, int64, uint64.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 42
+Convert X to unsigned 16-bit integer type.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+uint32
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 134
+ -- : uint32 (X)
+     Convert X to unsigned 32-bit integer type.
+
+     See also: int8, uint8, int16, uint16, int32, int64, uint64.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 42
+Convert X to unsigned 32-bit integer type.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
+uint64
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 134
+ -- : uint64 (X)
+     Convert X to unsigned 64-bit integer type.
+
+     See also: int8, uint8, int16, uint16, int32, uint32, int64.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 42
+Convert X to unsigned 64-bit integer type.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6
 sizeof
 
 
@@ -2245,214 +2453,6 @@ disable_range
 # elements: 1
 # length: 111
 Query or set the internal variable that controls whether ranges are stored in a special space-efficient format.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-int16
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 125
- -- : int16 (X)
-     Convert X to 16-bit integer type.
-
-     See also: int8, uint8, uint16, int32, uint32, int64, uint64.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 33
-Convert X to 16-bit integer type.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-int32
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 125
- -- : int32 (X)
-     Convert X to 32-bit integer type.
-
-     See also: int8, uint8, int16, uint16, uint32, int64, uint64.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 33
-Convert X to 32-bit integer type.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-int64
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 125
- -- : int64 (X)
-     Convert X to 64-bit integer type.
-
-     See also: int8, uint8, int16, uint16, int32, uint32, uint64.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 33
-Convert X to 64-bit integer type.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 4
-int8
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 124
- -- : int8 (X)
-     Convert X to 8-bit integer type.
-
-     See also: uint8, int16, uint16, int32, uint32, int64, uint64.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 32
-Convert X to 8-bit integer type.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-uint16
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 134
- -- : uint16 (X)
-     Convert X to unsigned 16-bit integer type.
-
-     See also: int8, uint8, int16, int32, uint32, int64, uint64.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 42
-Convert X to unsigned 16-bit integer type.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-uint32
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 134
- -- : uint32 (X)
-     Convert X to unsigned 32-bit integer type.
-
-     See also: int8, uint8, int16, uint16, int32, int64, uint64.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 42
-Convert X to unsigned 32-bit integer type.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 6
-uint64
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 134
- -- : uint64 (X)
-     Convert X to unsigned 64-bit integer type.
-
-     See also: int8, uint8, int16, uint16, int32, uint32, int64.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 42
-Convert X to unsigned 64-bit integer type.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-uint8
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 133
- -- : uint8 (X)
-     Convert X to unsigned 8-bit integer type.
-
-     See also: int8, int16, uint16, int32, uint32, int64, uint64.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 41
-Convert X to unsigned 8-bit integer type.
 
 
 
@@ -3405,7 +3405,7 @@ arrayfun
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 3271
+# length: 3273
  -- : arrayfun (FUNC, A)
  -- : X = arrayfun (FUNC, A)
  -- : X = arrayfun (FUNC, A, B, ...)
@@ -3422,7 +3422,7 @@ arrayfun
      The named function can also take more than two input arguments, with the input arguments given as third input argument B, fourth input argument C, ... If given more than one array input argument then all input arguments must have the same sizes, for example:
 
           arrayfun (@atan2, [1, 0], [0, 1])
-               => [ 1.5708   0.0000 ]
+               => [ 1.57080   0.00000 ]
 
      If the parameter VAL after a further string input argument "UniformOutput" is set 'true' (the default), then the named function FUNC must return a single element which then will be concatenated into the return value and is of type matrix.  Otherwise, if that parameter is set to 'false', then the outputs are concatenated in a cell array.  For example:
 
@@ -3630,7 +3630,7 @@ cellindexmat
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 308
+# length: 508
  -- : Y = cellindexmat (X, VARARGIN)
      Perform indexing of matrices in a cell array.
 
@@ -3638,8 +3638,10 @@ cellindexmat
 
           Y = cell (size (X));
           for i = 1:numel (X)
-            Y{i} = X{i}(varargin{:});
+            Y{i} = X{i}(varargin{1}, varargin{2}, ..., varargin{N});
           endfor
+
+     The indexing arguments may be scalar ('2'), arrays ('[1, 3]'), ranges ('1:3'), or the colon operator (":").  However, the indexing keyword 'end' is not available.
 
      See also: cellslices, cellfun.
    
@@ -4050,11 +4052,11 @@ atan2
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 332
+# length: 333
  -- : atan2 (Y, X)
      Compute atan (Y / X) for corresponding elements of Y and X.
 
-     Y and X must match in size and orientation.  The signs of elements of Y and X are used to determine the quadrats of each resulting value.
+     Y and X must match in size and orientation.  The signs of elements of Y and X are used to determine the quadrants of each resulting value.
 
      This function is equivalent to 'arg (complex (X, Y))'.
 
@@ -4623,7 +4625,7 @@ numel
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 835
+# length: 850
  -- : numel (A)
  -- : numel (A, IDX1, IDX2, ...)
      Return the number of elements in the object A.
@@ -4647,7 +4649,7 @@ numel
 
      This method is also called when an object appears as lvalue with cs-list indexing, i.e., 'object{...}' or 'object(...).field'.
 
-     See also: size.
+     See also: size, length, ndims.
    
 
 
@@ -4669,36 +4671,47 @@ size
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 763
- -- : size (A)
- -- : size (A, DIM)
-     Return the number of rows and columns of A.
+# length: 1416
+ -- : SZ = size (A)
+ -- : DIM_SZ = size (A, DIM)
+ -- : [ROWS, COLS, ..., DIM_N_SZ] = size (...)
+     Return a row vector with the size (number of elements) of each dimension for the object A.
 
-     With one input argument and one output argument, the result is returned in a row vector.  If there are multiple output arguments, the number of rows is assigned to the first, and the number of columns to the second, etc.  For example:
+     When given a second argument, DIM, return the size of the corresponding dimension.
+
+     With a single output argument, 'size' returns a row vector.  When called with multiple output arguments, 'size' returns the size of dimension N in the Nth argument.  The number of rows, dimension 1, is returned in the first argument, the number of columns, dimension 2, is returned in the second argument, etc.  If there are more dimensions in A then there are output arguments, 'size' returns the total number of elements in the remaining dimensions in the final output argument.
+
+     Example 1: single row vector output
 
           size ([1, 2; 3, 4; 5, 6])
              => [ 3, 2 ]
+
+     Example 2: number of elements in 2nd dimension (columns)
+
+          size ([1, 2; 3, 4; 5, 6], 2)
+              => 2
+
+     Example 3: number of output arguments == number of dimensions
 
           [nr, nc] = size ([1, 2; 3, 4; 5, 6])
               => nr = 3
               => nc = 2
 
-     If given a second argument, 'size' will return the size of the corresponding dimension.  For example,
+     Example 4: number of output arguments != number of dimensions
 
-          size ([1, 2; 3, 4; 5, 6], 2)
-              => 2
+          [nr, remainder] = size (ones (2, 3, 4, 5)
+              => nr = 2
+              => remainder = 60
 
-     returns the number of columns in the given matrix.
-
-     See also: numel, ndims, length, rows, columns.
+     See also: numel, ndims, length, rows, columns, size_equal, common_size.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 43
-Return the number of rows and columns of A.
+# length: 90
+Return a row vector with the size (number of elements) of each dimension for the object A.
 
 
 
@@ -4712,13 +4725,13 @@ size_equal
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 245
+# length: 269
  -- : size_equal (A, B, ...)
      Return true if the dimensions of all arguments agree.
 
-     Trailing singleton dimensions are ignored.  When called with a single or no argument 'size_equal' returns true.
+     Trailing singleton dimensions are ignored.  When called with a single argument, or no argument, 'size_equal' returns true.
 
-     See also: size, numel, ndims.
+     See also: size, numel, ndims, common_size.
    
 
 
@@ -8404,14 +8417,46 @@ eig
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 469
+# length: 4710
  -- : LAMBDA = eig (A)
  -- : LAMBDA = eig (A, B)
  -- : [V, LAMBDA] = eig (A)
  -- : [V, LAMBDA] = eig (A, B)
-     Compute the eigenvalues (and optionally the eigenvectors) of a matrix or a pair of matrices
+ -- : [V, LAMBDA, W] = eig (A)
+ -- : [V, LAMBDA, W] = eig (A, B)
+ -- : [...] = eig (A, BALANCEOPTION)
+ -- : [...] = eig (A, B, ALGORITHM)
+ -- : [...] = eig (..., EIGVALOPTION)
+     Compute the right eigenvalues(V) and optionally the eigenvectors(lambda) and the left eigenvalues(W) of a matrix or a pair of matrices.
 
-     The algorithm used depends on whether there are one or two input matrices, if they are real or complex, and if they are symmetric (Hermitian if complex) or non-symmetric.
+     The flag BALANCEOPTION can be one of:
+
+     "balance"
+          Preliminary balancing is on.  (default)
+
+     "nobalance"
+          Disables preliminary balancing.
+
+     The flag EIGVALOPTION can be one of:
+
+     "matrix"
+          Return the eigenvalues in a diagonal matrix.  (default if 2 or 3 outputs are specified)
+
+     "vector"
+          Return the eigenvalues in a column vector.  (default if 1 output is specified, e.g.  LAMBDA = eig (A))
+
+     The flag ALGORITHM can be one of:
+
+     "chol"
+          Uses the Cholesky factorization of B. (default if A is symmetric (Hermitian) and B is symmetric (Hermitian) positive definite)
+
+     "qz"
+          Uses the QZ algorithm.  (When A or B are not symmetric always the QZ algorithm will be used)
+
+                                                                                                                                                                                                                                                                                                                                   no flag                                                                                                                                                                                                                                      chol                                                                                                                                                                                                                                         qz
+     ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     both are symmetric                                                                                                                                                                                                                                                                                                            "chol"                                                                                                                                                                                                                                       "chol"                                                                                                                                                                                                                                       "qz"
+     at least one is not symmetric                                                                                                                                                                                                                                                                                                 "qz"                                                                                                                                                                                                                                         "qz"                                                                                                                                                                                                                                         "qz"
 
      The eigenvalues returned by 'eig' are not ordered.
 
@@ -8422,8 +8467,8 @@ eig
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 92
-Compute the eigenvalues (and optionally the eigenvectors) of a matrix or a pair of matrices 
+# length: 135
+Compute the right eigenvalues(V) and optionally the eigenvectors(lambda) and the left eigenvalues(W) of a matrix or a pair of matrices.
 
 
 
@@ -9687,7 +9732,7 @@ textscan
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 9817
+# length: 9819
  -- : C = textscan (FID, FORMAT)
  -- : C = textscan (FID, FORMAT, REPEAT)
  -- : C = textscan (FID, FORMAT, PARAM, VALUE, ...)
@@ -9805,7 +9850,7 @@ textscan
           Treat single occurrences (surrounded by delimiters or whitespace) of the string(s) in VALUE as missing values.
 
      "ReturnOnError"
-          If set to numerical 1 or true, return normally as soon as an error is encountered, such as trying to read a string using %f.  If set to 0 or false, return an error and no data.
+          If set to numerical 1 or true, return normally as soon as an error is encountered, such as trying to read a string using '%f'.  If set to 0 or false, return an error and no data.
 
      "Whitespace"
           Any character in VALUE will be interpreted as whitespace and trimmed; The default value for whitespace is " \b\r\n\t" (note the space).  Unless whitespace is set to "" (empty) AND at least one "%s" format conversion specifier is supplied, a space is always part of whitespace.
@@ -10061,10 +10106,10 @@ ferror
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 712
+# length: 711
  -- : MSG = ferror (FID)
  -- : [MSG, ERR] = ferror (FID)
- -- : [DOTS] = ferror (FID, "clear")
+ -- : [...] = ferror (FID, "clear")
      Query the error status of the stream specified by file descriptor FID
 
      If an error condition exists then return a string MSG describing the error.  Otherwise, return an empty string "".
@@ -10097,16 +10142,16 @@ popen
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 870
+# length: 866
  -- : FID = popen (COMMAND, MODE)
      Start a process and create a pipe.
 
      The name of the command to run is given by COMMAND.  The argument MODE may be
 
-     '"r"'
+     "r"
           The pipe will be connected to the standard output of the process, and open for reading.
 
-     '"w"'
+     "w"
           The pipe will be connected to the standard input of the process, and open for writing.
 
      The file identifier corresponding to the input or output stream of the process is returned in FID.
@@ -12852,7 +12897,7 @@ addpath
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 584
+# length: 777
  -- : addpath (DIR1, ...)
  -- : addpath (DIR1, ..., OPTION)
      Add named directories to the function search path.
@@ -12862,6 +12907,8 @@ addpath
      In addition to accepting individual directory arguments, lists of directory names separated by 'pathsep' are also accepted.  For example:
 
           addpath ("dir1:/dir2:~/dir3")
+
+     For each directory that is added, and that was not already in the path, 'addpath' checks for the existence of a file named 'PKG_ADD' (note lack of .m extension) and runs it if it exists.
 
      See also: path, rmpath, genpath, pathdef, savepath, pathsep.
    
@@ -12885,13 +12932,15 @@ rmpath
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 341
+# length: 497
  -- : rmpath (DIR1, ...)
      Remove DIR1, ... from the current function search path.
 
      In addition to accepting individual directory arguments, lists of directory names separated by 'pathsep' are also accepted.  For example:
 
           rmpath ("dir1:/dir2:~/dir3")
+
+     For each directory that is removed, 'rmpath' checks for the existence of a file named 'PKG_DEL' (note lack of .m extension) and runs it if it exists.
 
      See also: path, addpath, genpath, pathdef, savepath, pathsep.
    
@@ -18495,8 +18544,8 @@ sylvester
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 268
- -- : X = syl (A, B, C)
+# length: 274
+ -- : X = sylvester (A, B, C)
      Solve the Sylvester equation
 
           A X + X B = C
@@ -18619,11 +18668,11 @@ popen2
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1273
+# length: 1287
  -- : [IN, OUT, PID] = popen2 (COMMAND, ARGS)
      Start a subprocess with two-way communication.
 
-     The name of the process is given by COMMAND, and ARGS is an array of strings containing options for the command.
+     The name of the process is given by COMMAND, and ARGS is an array or cell array of strings containing options for the command.
 
      The file identifiers for the input and output streams of the subprocess are returned in IN and OUT.  If execution of the command is successful, PID contains the process ID of the subprocess.  Otherwise, PID is -1.
 
@@ -23521,6 +23570,76 @@ Manage FFTW wisdom data.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
+# length: 4
+gzip
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1015
+ -- : FILELIST = gzip (FILES)
+ -- : FILELIST = gzip (FILES, DIR)
+     Compress the list of files and directories specified in FILES.
+
+     FILES is a character array or cell array of strings.  Shell wildcards in the filename such as '*' or '?' are accepted and expanded.  Each file is compressed separately and a new file with a '".gz"' extension is created.  The original files are not modified, but existing compressed files will be silently overwritten.  If a directory is specified then 'gzip' recursively compresses all files in the directory.
+
+     If DIR is defined the compressed files are placed in this directory, rather than the original directory where the uncompressed file resides.  Note that this does not replicate a directory tree in DIR which may lead to files overwriting each other if there are multiple files with the same name.
+
+     If DIR does not exist it is created.
+
+     The optional output FILELIST is a list of the compressed files.
+
+     See also: gunzip, unpack, bzip2, zip, tar.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 62
+Compress the list of files and directories specified in FILES.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 5
+bzip2
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 910
+ -- : FILELIST = bzip2 (FILES)
+ -- : FILELIST = bzip2 (FILES, DIR)
+     Compress the list of files specified in FILES.
+
+     FILES is a character array or cell array of strings.  Shell wildcards in the filename such as '*' or '?' are accepted and expanded.  Each file is compressed separately and a new file with a '".bz2"' extension is created.  The original files are not modified, but existing compressed files will be silently overwritten.
+
+     If DIR is defined the compressed files are placed in this directory, rather than the original directory where the uncompressed file resides.  Note that this does not replicate a directory tree in DIR which may lead to files overwriting each other if there are multiple files with the same name.
+
+     If DIR does not exist it is created.
+
+     The optional output FILELIST is a list of the compressed files.
+
+     See also: bunzip2, unpack, gzip, zip, tar.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 46
+Compress the list of files specified in FILES.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
 # length: 2
 qr
 
@@ -23593,9 +23712,9 @@ qr
           [C, R] = qr (A, B)
           x = R \ C
 
-     If the final argument is the scalar 0 and the number of rows is larger than the number of columns, then an 'economy' factorization is returned, omitting zeroes of R and the corresponding columns of Q.  That is, R will have only 'size (A,1)' rows.  In this case, P is a vector rather than a matrix.
+     If the final argument is the scalar 0 and the number of rows is larger than the number of columns, then an "economy" factorization is returned, omitting zeroes of R and the corresponding columns of Q.  That is, R will have only 'size (A,1)' rows.  In this case, P is a vector rather than a matrix.
 
-     If the final argument is the string 'vector' then P is a permutation vector instead of a permutation matrix.
+     If the final argument is the string "vector" then P is a permutation vector instead of a permutation matrix.
 
      See also: chol, hess, lu, qz, schur, svd, qrupdate, qrinsert, qrdelete, qrshift.
    
@@ -23679,9 +23798,9 @@ qrdelete
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 938
+# length: 936
  -- : [Q1, R1] = qrdelete (Q, R, J, ORIENT)
-     Given a QR factorization of a real or complex matrix A = Q*R, Q unitary and R upper trapezoidal, return the QR factorization of [A(:,1:j-1), U, A(:,j:n)], where U is a column vector to be inserted into A (if ORIENT is \"col\"), or the QR factorization of [A(1:j-1,:);X;A(:,j:n)], where X is a row ORIENT is "row").  The default value of ORIENT is "col".
+     Given a QR factorization of a real or complex matrix A = Q*R, Q unitary and R upper trapezoidal, return the QR factorization of [A(:,1:j-1), U, A(:,j:n)], where U is a column vector to be inserted into A (if ORIENT is "col"), or the QR factorization of [A(1:j-1,:);X;A(:,j:n)], where X is a row ORIENT is "row").  The default value of ORIENT is "col".
 
      If ORIENT is "col", J may be an index vector resulting in the QR factorization of a matrix B such that A(:,J) = [] gives B.  Notice that the latter case is done as a sequence of k deletions; thus, for k large enough, it will be both faster and more accurate to recompute the factorization from scratch.
 
@@ -23696,8 +23815,8 @@ qrdelete
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 314
-Given a QR factorization of a real or complex matrix A = Q*R, Q unitary and R upper trapezoidal, return the QR factorization of [A(:,1:j-1), U, A(:,j:n)], where U is a column vector to be inserted into A (if ORIENT is \"col\"), or the QR factorization of [A(1:j-1,:);X;A(:,j:n)], where X is a row ORIENT is "row").
+# length: 312
+Given a QR factorization of a real or complex matrix A = Q*R, Q unitary and R upper trapezoidal, return the QR factorization of [A(:,1:j-1), U, A(:,j:n)], where U is a column vector to be inserted into A (if ORIENT is "col"), or the QR factorization of [A(1:j-1,:);X;A(:,j:n)], where X is a row ORIENT is "row").
 
 
 
@@ -23827,80 +23946,6 @@ symrcm
 # elements: 1
 # length: 60
 Return the symmetric reverse Cuthill-McKee permutation of S.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 4
-gzip
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1016
- -- : FILELIST = gzip (FILES)
- -- : FILELIST = gzip (FILES, DIR)
-     Compress the list of files and directories specified in FILES.
-
-     FILES is a character array or cell array of strings.  Shell wildcards in the filename such as '*' or '?' are accepted and expanded.  Each file is compressed separately and a new file with a '".gz"' extension is created.  The original files are not modified, but existing compressed files will be silently overwritten.  If a directory is specified then 'gzip' recursively compresses all files in the directory.
-
-     If DIR is defined the compressed files are placed in this directory, rather than the original directory where the uncompressed file resides.  Note that this does not replicate a directory tree in DIR which may lead to files overwritting each other if there are multiple files with the same name.
-
-     If DIR does not exist it is created.
-
-     The optional output FILELIST is a list of the compressed files.
-
-     See also: gunzip, unpack, bzip2, zip, tar.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 62
-Compress the list of files and directories specified in FILES.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 5
-bzip2
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 1727
- -- : FILELIST = bzip2 (FILES)
- -- : FILELIST = bzip2 (FILES, DIR)
-     Compress the list of files specified in FILES.
-
-     FILES is a character array or cell array of strings.  Shell wildcards in the filename such as '*' or '?' are accepted and expanded.  Each file is compressed separately and a new file with a '".bz2"' extension is created.  The original files are not modified, but existing compressed files will be silently overwritten.
-
-     If DIR is defined the compressed files are placed in this directory, rather than the original directory where the uncompressed file resides.  Note that this does not replicate a directory tree in DIR which may lead to files overwritting each other if there are multiple files with the same name.
-
-     If DIR does not exist it is created.
-
-     The optional output FILELIST is a list of the compressed files.
-
-     See also: bunzip2, unpack, gzip, zip, tar.
-   ## Copyright (C) 1993-2015 John W. Eaton ## ## This file is part of Octave.  ## ## Octave is free software; you can redistribute it and/or modify it ## under the terms of the GNU General Public License as published by ## the Free Software Foundation; either version 3 of the License, or (at ## your option) any later version.  ## ## Octave is distributed in the hope that it will be useful, but ## WITHOUT ANY WARRANTY; without even the implied warranty of ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU ## General Public License for more details.  ## ## You should have received a copy of the GNU General Public License ## along with Octave; see the file COPYING. If not, see ## <http://www.gnu.org/licenses/>.
-
-   ## FIXME: the information in this file is currently duplicated in help.cc.
-
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 46
-Compress the list of files specified in FILES.
 
 
 
@@ -24608,8 +24653,8 @@ Element by element multiplication operator.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 303
- -- : .*
+# length: 304
+ -- : .**
      Element by element power operator.  If several complex results are possible, returns the one with smallest non-negative argument (angle).  Use 'realpow', 'realsqrt', 'cbrt', or 'nthroot' if a real result is preferred.
 
      See also: **, ^, .^, power, realpow, realsqrt, cbrt, nthroot.
@@ -24660,11 +24705,11 @@ Element by element power operator.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 102
+# length: 103
  -- : ./
      Element by element right division operator.
 
-     See also: /, ., rdivide, mrdivide.
+     See also: /, .\, rdivide, mrdivide.
    
 
 
@@ -24686,11 +24731,11 @@ Element by element right division operator.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 82
+# length: 83
  -- : /
      Right division operator.
 
-     See also: ./, , rdivide, mrdivide.
+     See also: ./, \, rdivide, mrdivide.
    
 
 
@@ -24712,11 +24757,11 @@ Right division operator.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 101
+# length: 102
  -- : .\
      Element by element left division operator.
 
-     See also: , ./, rdivide, mrdivide.
+     See also: \, ./, rdivide, mrdivide.
    
 
 
@@ -24738,11 +24783,11 @@ Element by element left division operator.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 81
+# length: 82
  -- : \
      Left division operator.
 
-     See also: ., /, ldivide, mldivide.
+     See also: .\, /, ldivide, mldivide.
    
 
 
@@ -26125,7 +26170,7 @@ Scale the audio data Y and play it at sample rate FS to the default audio device
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 857
+# length: 858
  -- : PLAYER = audioplayer (Y, FS)
  -- : PLAYER = audioplayer (Y, FS, NBITS)
  -- : PLAYER = audioplayer (Y, FS, NBITS, ID)
@@ -26139,7 +26184,7 @@ Scale the audio data Y and play it at sample rate FS to the default audio device
 
      The following example will create an audioplayer object that will play back one second of white noise at 44100 sample rate using 8 bits per sample.
 
-          y = randn (2, 44100) - 0.5;
+          y = 0.25 * randn (2, 44100);
           player = audioplayer (y, 44100, 8);
           play (player);
    
@@ -26890,6 +26935,32 @@ bitmax
 # name: <cell-element>
 # type: sq_string
 # elements: 1
+# length: 5
+comma
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 97
+ -- : ,
+     Array index, function argument, or command separator.
+
+     See also: semicolon.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 53
+Array index, function argument, or command separator.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
 # length: 9
 delaunay3
 
@@ -27178,7 +27249,7 @@ luinc
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2354
+# length: 2352
  -- : [L, U, P, Q] = luinc (A, '0')
  -- : [L, U, P, Q] = luinc (A, DROPTOL)
  -- : [L, U, P, Q] = luinc (A, OPTS)
@@ -27209,7 +27280,7 @@ luinc
 
      All other fields in OPTS are ignored.  The outputs from 'luinc' are the same as for 'lu'.
 
-     Given the string argument \"vector\", 'luinc' returns the values of P Q as vector values.
+     Given the string argument "vector", 'luinc' returns the values of P Q as vector values.
 
      See also: ilu, ichol, lu, sparse.
    
@@ -27354,9 +27425,9 @@ octave_config_info
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 471
- -- Built-in Function: octave_config_info ()
- -- Built-in Function: octave_config_info (OPTION)
+# length: 437
+ -- : octave_config_info ()
+ -- : octave_config_info (OPTION)
 
      'octave_config_info' is deprecated and will be removed in Octave version 4.6.  Use '__have_feature__ (OPTION)' or '__octave_config_info__' as a replacement.
 
@@ -27454,6 +27525,31 @@ onenormest
 # name: <cell-element>
 # type: sq_string
 # elements: 1
+# length: 5
+paren
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 68
+ -- : (
+ -- : )
+     Array index or function argument delimeter.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 43
+Array index or function argument delimeter.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
 # length: 9
 playaudio
 
@@ -27507,6 +27603,32 @@ saveaudio
 # elements: 1
 # length: 66
 'saveaudio' is deprecated and will be removed in Octave version 4.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 9
+semicolon
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 71
+ -- : ;
+     Array row or command separator.
+
+     See also: comma.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 31
+Array row or command separator.
 
 
 
@@ -28923,18 +29045,20 @@ common_size
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 614
- -- : [ERR, Y1, ...] = common_size (X1, ...)
+# length: 650
+ -- : [ERR, YI, ...] = common_size (XI, ...)
      Determine if all input arguments are either scalar or of common size.
 
      If true, ERR is zero, and YI is a matrix of the common size with all entries equal to XI if this is a scalar or XI otherwise.  If the inputs cannot be brought to a common size, ERR is 1, and YI is XI.  For example:
 
-          [errorcode, a, b] = common_size ([1 2; 3 4], 5)
-               => errorcode = 0
+          [err, a, b] = common_size ([1 2; 3 4], 5)
+               => err = 0
                => a = [ 1, 2; 3, 4 ]
                => b = [ 5, 5; 5, 5 ]
 
      This is useful for implementing functions where arguments can either be scalars or of common size.
+
+     See also: size, size_equal, numel, ndims.
    
 
 
@@ -29103,7 +29227,7 @@ deal
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 928
+# length: 927
  -- : [R1, R2, ..., RN] = deal (A)
  -- : [R1, R2, ..., RN] = deal (A1, A2, ..., AN)
 
@@ -29132,7 +29256,7 @@ deal
      Programming Note: 'deal' is often used with comma separated lists derived from cell arrays or structures.  This is unnecessary as the interpreter can perform the same action without the overhead of a function call.  For example:
 
           c = {[1 2], "Three", 4};
-          [x, y, z ] = c{:}
+          [x, y, z] = c{:}
           =>
              x =
 
@@ -30648,7 +30772,7 @@ publish
 
      To publish this script file, type 'publish ("example.m")'.
 
-     With only FILENAME given, a HTML report is generated in a subdirectory 'html' relative to the current working directory.  The Octave commands are evaluated in a seperate context and any figures created while executing the script file are included in the report.  All formatting syntax of FILENAME is treated according to the specified output format and included in the report.
+     With only FILENAME given, a HTML report is generated in a subdirectory 'html' relative to the current working directory.  The Octave commands are evaluated in a separate context and any figures created while executing the script file are included in the report.  All formatting syntax of FILENAME is treated according to the specified output format and included in the report.
 
      Using 'publish (FILENAME, OUTPUT_FORMAT)' is equivalent to the function call using a structure
 
@@ -30670,11 +30794,11 @@ publish
 
         * 'outputDir' -- Full path string of a directory, where the generated report will be located.  If no directory is given, the report is generated in a subdirectory 'html' relative to the current working directory.
 
-        * 'stylesheet' -- Not supported, only for Matlab compatibility.
+        * 'stylesheet' -- Not supported, only for MATLAB compatibility.
 
-        * 'createThumbnail' -- Not supported, only for Matlab compatibility.
+        * 'createThumbnail' -- Not supported, only for MATLAB compatibility.
 
-        * 'figureSnapMethod' -- Not supported, only for Matlab compatibility.
+        * 'figureSnapMethod' -- Not supported, only for MATLAB compatibility.
 
         * 'imageFormat' -- Desired format for images produced, while evaluating the code.  The allowed image formats depend on the output format:
 
@@ -30682,7 +30806,7 @@ publish
 
              * 'latex' -- 'epsc2' (default), any other image format supported by Octave
 
-             * 'pdf' -- 'jpg' (default) or 'bmp', note Matlab uses 'bmp' as default
+             * 'pdf' -- 'jpg' (default) or 'bmp', note MATLAB uses 'bmp' as default
 
              * 'doc' or 'ppt' -- 'png' (default), 'jpg', 'bmp', or 'tiff'
 
@@ -32350,11 +32474,12 @@ inputdlg
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1545
+# length: 1682
  -- : CSTR = inputdlg (PROMPT)
  -- : CSTR = inputdlg (PROMPT, TITLE)
  -- : CSTR = inputdlg (PROMPT, TITLE, ROWSCOLS)
  -- : CSTR = inputdlg (PROMPT, TITLE, ROWSCOLS, DEFAULTS)
+ -- : CSTR = inputdlg (PROMPT, TITLE, ROWSCOLS, DEFAULTS, OPTIONS)
      Return user input from a multi-textfield dialog box in a cell array of strings, or an empty cell array if the dialog is closed by the Cancel button.
 
      Inputs:
@@ -32376,6 +32501,9 @@ inputdlg
 
      DEFAULTS
           A list of default values to place in each text fields.  It must be a cell array of strings with the same size as PROMPT.
+
+     OPTIONS
+          Not supported, only for MATLAB compatibility.
 
      Example:
 
@@ -32795,7 +32923,7 @@ uigetfile
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1719
+# length: 2277
  -- : [FNAME, FPATH, FLTIDX] = uigetfile ()
  -- : [...] = uigetfile (FLT)
  -- : [...] = uigetfile (FLT, DIALOG_NAME)
@@ -32817,6 +32945,9 @@ uigetfile
           containing a file extension in the first column and a brief description in the second column.  Example: 'uigetfile ({"*.ext", "My Description";"*.xyz", "XYZ-Format"})'
 
           The filter string can also contain a semicolon separated list of filter extensions.  Example: 'uigetfile ({"*.gif;*.png;*.jpg", "Supported Picture Formats"})'
+
+     A directory name or path name
+          If the folder name of path name contains a trailing file separator, the contents of that folder will be displayed.  If no trailing file separator is present the parent directory is listed.  The substring to the right of the rightmost file separator (if any) will be interpreted as a file or directory name and if that file or directory exists it will be highlighted.  If the path name or directory name is wholly or partly nonexistent, the current working directory will be displayed.  No filter will be active.
 
      DIALOG_NAME can be used to customize the dialog title.
 
@@ -33342,32 +33473,6 @@ The most recently computed result that was not explicitly assigned to a variable
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 5
-comma
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 97
- -- : ,
-     Array index, function argument, or command separator.
-
-     See also: semicolon.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 53
-Array index, function argument, or command separator.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
 # length: 3
 doc
 
@@ -33517,7 +33622,7 @@ help
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 880
+# length: 857
  -- : help NAME
  -- : help '--list'
  -- : help '.'
@@ -33530,9 +33635,9 @@ help
 
      Given the single argument '.', list all operators available in the current session of Octave.
 
-     If invoked without any arguments, 'help' display instructions on how to access help from the command line.
+     If invoked without any arguments, 'help' displays instructions on how to access help from the command line.
 
-     The help command can provide information about most operators, for example 'help +', but not the comma and semicolon characters which are used by the Octave interpreter as command separators.  For help on either of these type 'help comma' or 'help semicolon'.
+     The help command can provide information about most operators, but NAME must be enclosed by single or double quotes to prevent the Octave interpreter from acting on NAME.  For example, 'help "+"' displays help on the addition operator.
 
      See also: doc, lookfor, which, info.
    
@@ -33586,31 +33691,6 @@ Search for the string STR in the documentation of all functions in the current f
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 5
-paren
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 68
- -- : (
- -- : )
-     Array index or function argument delimeter.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 43
-Array index or function argument delimeter.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
 # length: 11
 print_usage
 
@@ -33634,32 +33714,6 @@ print_usage
 # elements: 1
 # length: 46
 Print the usage message for the function NAME.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 9
-semicolon
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 71
- -- : ;
-     Array row or command separator.
-
-     See also: comma.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 31
-Array row or command separator.
 
 
 
@@ -34126,7 +34180,7 @@ colormap
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1047
+# length: 7666
  -- : CMAP = colormap ()
  -- : CMAP = colormap (MAP)
  -- : CMAP = colormap ("default")
@@ -34147,7 +34201,37 @@ colormap
 
      For convenience, it is also possible to use this function with the command form, 'colormap MAP_NAME'.
 
-     See also: viridis.
+     The list of built-in colormaps is:
+
+     Map                                                                                                                                                        Description
+     ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     viridis                                                                                                                                                    default
+     jet                                                                                                                                                        colormap traversing blue, cyan, green, yellow, red.
+     cubehelix                                                                                                                                                  colormap traversing black, blue, green, red, white with increasing intensity.
+     hsv                                                                                                                                                        cyclic colormap traversing Hue, Saturation, Value space.
+     rainbow                                                                                                                                                    colormap traversing red, yellow, blue, green, violet.
+     ---------                                                                                                                                                  --------------------------------------------------------------
+     hot                                                                                                                                                        colormap traversing black, red, orange, yellow, white.
+     cool                                                                                                                                                       colormap traversing cyan, purple, magenta.
+     spring                                                                                                                                                     colormap traversing magenta to yellow.
+     summer                                                                                                                                                     colormap traversing green to yellow.
+     autumn                                                                                                                                                     colormap traversing red, orange, yellow.
+     winter                                                                                                                                                     colormap traversing blue to green.
+     ---------                                                                                                                                                  --------------------------------------------------------------
+     gray                                                                                                                                                       colormap traversing black to white in shades of gray.
+     bone                                                                                                                                                       colormap traversing black, gray-blue, white.
+     copper                                                                                                                                                     colormap traversing black to light copper.
+     pink                                                                                                                                                       colormap traversing black, gray-pink, white.
+     ocean                                                                                                                                                      colormap traversing black, dark-blue, white.
+     ---------                                                                                                                                                  --------------------------------------------------------------
+     colorcube                                                                                                                                                  equally spaced colors in RGB color space.
+     flag                                                                                                                                                       cyclic 4-color map of red, white, blue, black.
+     lines                                                                                                                                                      cyclic colormap with colors from axes "ColorOrder" property.
+     prism                                                                                                                                                      cyclic 6-color map of red, orange, yellow, green, blue, violet.
+     ---------                                                                                                                                                  --------------------------------------------------------------
+     white                                                                                                                                                      all white colormap (no colors).
+
+     See also: viridis, jet, cubehelix, hsv, rainbow, hot, cool, spring, summer, autumn, winter, gray, bone, copper, pink, ocean, colorcube, flag, lines, prism, white.
    
 
 
@@ -34557,7 +34641,7 @@ image
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1822
+# length: 1755
  -- : image (IMG)
  -- : image (X, Y, IMG)
  -- : image (..., "PROP", VAL, ...)
@@ -34567,7 +34651,7 @@ image
 
      The elements of IMG are indices into the current colormap.
 
-     X and Y are optional 2-element vectors, '[min, max]', which specify the range for the axis labels.  If a range is specified as '[max, min]' then the image will be reversed along that axis.  For convenience, X and Y may be specified as N-element vectors matching the length of the data in IMG.  However, only the first and last elements will be used to determine the axis limits.  *Warning:* X and Y are ignored when using gnuplot 4.0 or earlier.
+     X and Y are optional 2-element vectors, '[min, max]', which specify the range for the axis labels.  If a range is specified as '[max, min]' then the image will be reversed along that axis.  For convenience, X and Y may be specified as N-element vectors matching the length of the data in IMG.  However, only the first and last elements will be used to determine the axis limits.
 
      Multiple property/value pairs may be specified for the image object, but they must appear in pairs.
 
@@ -35087,10 +35171,10 @@ lines
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 364
+# length: 379
  -- : MAP = lines ()
  -- : MAP = lines (N)
-     Create color colormap.  This colormap is composed of the list of colors in the current axes "ColorOrder" property.  The default is blue, green, red, cyan, pink, yellow, and gray.
+     Create color colormap.  This colormap is composed of the list of colors in the current axes "ColorOrder" property.  The default is blue, orange, yellow, purple, green, light blue, and dark red.
 
      The argument N must be a scalar.  If unspecified, the length of the current colormap, or 64, is used.
 
@@ -35368,7 +35452,7 @@ rgbplot
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 760
+# length: 757
  -- : rgbplot (CMAP)
  -- : rgbplot (CMAP, STYLE)
  -- : H = rgbplot (...)
@@ -35377,7 +35461,7 @@ rgbplot
      Two different STYLEs are available for displaying the CMAP:
 
      profile (default)
-          Plot the RGB line profile of the colormap for each of the channels (red, green and blue) with the plot lines colored appropriately.  Each line represents the intensity of each RGB components across the colormap.
+          Plot the RGB line profile of the colormap for each of the channels (red, green and blue) with the plot lines colored appropriately.  Each line represents the intensity of an RGB component across the colormap.
 
      composite
           Draw the colormap across the X-axis so that the actual index colors are visible rather than the individual color components.
@@ -36493,7 +36577,7 @@ condest
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2004
+# length: 2013
  -- : condest (A)
  -- : condest (A, T)
  -- : [EST, V] = condest (...)
@@ -36507,14 +36591,23 @@ condest
      If the matrix is not explicit, e.g., when estimating the condition number of A given an LU factorization, 'condest' uses the following functions:
 
         - AFUN which should returns
+
              * the dimension N of A, if FLAG is "dim"
+
              * true if A is a real operator, if FLAG is "real"
+
              * the result 'A * X', if FLAG is "notransp"
+
              * the result 'A' * X', if FLAG is "transp"
+
         - SOLVEFUN which should returns
+
              * the dimension N of A, if FLAG is "dim"
+
              * true if A is a real operator, if FLAG is "real"
+
              * the result 'A \ X', if FLAG is "notransp"
+
              * the result 'A' \ X', if FLAG is "transp"
 
      The parameters P1, P2, ... are arguments of 'AFUN (FLAG, X, P1, P2, ...)' and 'SOLVEFUN (FLAG, X, P1, P2, ...)'.
@@ -37111,24 +37204,27 @@ normest1
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2339
- -- Function File: C = normest1 (A)
- -- Function File: C = normest1 (A, T)
- -- Function File: C = normest1 (A, T, X0)
- -- Function File: C = normest1 (AFUN, T, X0, P1, P2, ...)
- -- Function File: [C, V] = normest1 (A, ...)
- -- Function File: [C, V, W] = normest1 (A, ...)
- -- Function File: [C, V, W, IT] = normest1 (A, ...)
+# length: 2250
+ -- : C = normest1 (A)
+ -- : C = normest1 (A, T)
+ -- : C = normest1 (A, T, X0)
+ -- : C = normest1 (AFUN, T, X0, P1, P2, ...)
+ -- : [C, V] = normest1 (A, ...)
+ -- : [C, V, W] = normest1 (A, ...)
+ -- : [C, V, W, IT] = normest1 (A, ...)
      Estimate the 1-norm of the matrix A using a block algorithm.
 
      For a medium size matrix A, 'norm (A, 1)' should be used instead.  For a large sparse matrix, when only an estimate of the norm is needed, 'normest1 (A)' might be faster.  Moreover, it can be used for the estimate of the 1-norm of a linear operator A when matrix-vector products 'A * X' and 'A' * X' can be cheaply computed.  In this case, instead of the matrix A, a function 'AFUN (FLAG, X)' can be used.  It should return:
 
         * the dimension N of A, if FLAG is "dim"
+
         * true if A is a real operator, if FLAG is "real"
+
         * the result 'A * X', if FLAG is "notransp"
+
         * the result 'A' * X', if FLAG is "transp"
 
-     A typical case is A defined by 'B ^ M', in which the result 'A * X' can be computed without even forming explicitely 'B ^ M' by:
+     A typical case is A defined by 'B ^ M', in which the result 'A * X' can be computed without even forming explicitly 'B ^ M' by:
 
           Y = X;
           for I = 1:M
@@ -40070,10 +40166,9 @@ ode23
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 3253
+# length: 2958
  -- : [T, Y] = ode23 (FUN, TRANGE, INIT)
  -- : [T, Y] = ode23 (FUN, TRANGE, INIT, ODE_OPT)
- -- : [T, Y] = ode23 (..., PAR1, PAR2, ...)
  -- : [T, Y, TE, YE, IE] = ode23 (...)
  -- : SOLUTION = ode23 (...)
 
@@ -40081,9 +40176,9 @@ ode23
 
      FUN is a function handle, inline function, or string containing the name of the function that defines the ODE: 'y' = f(t,y)'.  The function must accept two inputs where the first is time T and the second is a column vector of unknowns Y.
 
-     TRANGE specifies the time interval over which the ODE will be evaluated.  Typically, it is a two-element vector specifying the initial and final times ('[tinit, tfinal]').  If there are more than two elements then the solution will also be evaluated at these intermediate time instances unless the integrate function specified is 'integrate_n_steps'.
+     TRANGE specifies the time interval over which the ODE will be evaluated.  Typically, it is a two-element vector specifying the initial and final times ('[tinit, tfinal]').  If there are more than two elements then the solution will also be evaluated at these intermediate time instances.
 
-     By default, 'ode23' uses an adaptive timestep with the 'integrate_adaptive' algorithm.  The tolerance for the timestep computation may be changed by using the option "Tau", that has a default value of 1e-6.  If the ODE option "TimeStepSize" is not empty, then the stepper called will be 'integrate_const'.  If, in addition, the option "TimeStepNumber" is also specified then the integrate function 'integrate_n_steps' will be used.
+     By default, 'ode23' uses an adaptive timestep with the 'integrate_adaptive' algorithm.  The tolerance for the timestep computation may be changed by using the options "RelTol" and "AbsTol".
 
      INIT contains the initial value for the unknowns.  If it is a row vector then the solution Y will be a matrix in which each column is the solution for the corresponding initial value in INIT.
 
@@ -40091,7 +40186,7 @@ ode23
 
      The function typically returns two outputs.  Variable T is a column vector and contains the times where the solution was found.  The output Y is a matrix in which each column refers to a different unknown of the problem and each row corresponds to a time in T.
 
-     The output can also be returned as a structure SOLUTION which has field X containing the time where the solution was evaluated and field Y containing the solution matrix for the times in X.  Use 'fieldnames (SOLUTION)' to see the other fields and additional information returned.
+     The output can also be returned as a structure SOLUTION which has a field X containing a row vector of times where the solution was evaluated and a field Y containing the solution matrix such that each column corresponds to a time in X.  Use 'fieldnames (SOLUTION)' to see the other fields and additional information returned.
 
      If using the "Events" option then three additional outputs may be returned.  TE holds the time when an Event function returned a zero.  YE holds the value of the solution at time TE.  IE contains an index indicating which Event function was triggered in the case of multiple Event functions.
 
@@ -40102,7 +40197,7 @@ ode23
           fvdp = @(T,Y) [Y(2); (1 - Y(1)^2) * Y(2) - Y(1)];
           [T,Y] = ode23 (fvdp, [0, 20], [2, 0]);
 
-     See also: odeset, odeget.
+     See also: odeset, odeget, ode45.
    
 
 
@@ -40124,10 +40219,9 @@ ode45
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2759
+# length: 2464
  -- : [T, Y] = ode45 (FUN, TRANGE, INIT)
  -- : [T, Y] = ode45 (FUN, TRANGE, INIT, ODE_OPT)
- -- : [T, Y] = ode45 (..., PAR1, PAR2, ...)
  -- : [T, Y, TE, YE, IE] = ode45 (...)
  -- : SOLUTION = ode45 (...)
 
@@ -40135,9 +40229,9 @@ ode45
 
      FUN is a function handle, inline function, or string containing the name of the function that defines the ODE: 'y' = f(t,y)'.  The function must accept two inputs where the first is time T and the second is a column vector of unknowns Y.
 
-     TRANGE specifies the time interval over which the ODE will be evaluated.  Typically, it is a two-element vector specifying the initial and final times ('[tinit, tfinal]').  If there are more than two elements then the solution will also be evaluated at these intermediate time instances unless the integrate function specified is 'integrate_n_steps'.
+     TRANGE specifies the time interval over which the ODE will be evaluated.  Typically, it is a two-element vector specifying the initial and final times ('[tinit, tfinal]').  If there are more than two elements then the solution will also be evaluated at these intermediate time instances.
 
-     By default, 'ode45' uses an adaptive timestep with the 'integrate_adaptive' algorithm.  The tolerance for the timestep computation may be changed by using the option "Tau", that has a default value of 1e-6.  If the ODE option "TimeStepSize" is not empty, then the stepper called will be 'integrate_const'.  If, in addition, the option "TimeStepNumber" is also specified then the integrate function 'integrate_n_steps' will be used.
+     By default, 'ode45' uses an adaptive timestep with the 'integrate_adaptive' algorithm.  The tolerance for the timestep computation may be changed by using the options "RelTol" and "AbsTol".
 
      INIT contains the initial value for the unknowns.  If it is a row vector then the solution Y will be a matrix in which each column is the solution for the corresponding initial value in INIT.
 
@@ -40145,7 +40239,7 @@ ode45
 
      The function typically returns two outputs.  Variable T is a column vector and contains the times where the solution was found.  The output Y is a matrix in which each column refers to a different unknown of the problem and each row corresponds to a time in T.
 
-     The output can also be returned as a structure SOLUTION which has field X containing the time where the solution was evaluated and field Y containing the solution matrix for the times in X.  Use 'fieldnames (SOLUTION)' to see the other fields and additional information returned.
+     The output can also be returned as a structure SOLUTION which has a field X containing a row vector of times where the solution was evaluated and a field Y containing the solution matrix such that each column corresponds to a time in X.  Use 'fieldnames (SOLUTION)' to see the other fields and additional information returned.
 
      If using the "Events" option then three additional outputs may be returned.  TE holds the time when an Event function returned a zero.  YE holds the value of the solution at time TE.  IE contains an index indicating which Event function was triggered in the case of multiple Event functions.
 
@@ -40154,7 +40248,7 @@ ode45
           fvdp = @(T,Y) [Y(2); (1 - Y(1)^2) * Y(2) - Y(1)];
           [T,Y] = ode45 (fvdp, [0, 20], [2, 0]);
 
-     See also: odeset, odeget.
+     See also: odeset, odeget, ode23.
    
 
 
@@ -40176,21 +40270,92 @@ odeset
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1133
- -- : odeset ()
+# length: 3928
+ -- : ODESTRUCT = odeset ()
  -- : ODESTRUCT = odeset ("FIELD1", VALUE1, "FIELD2", VALUE2, ...)
  -- : ODESTRUCT = odeset (OLDSTRUCT, "FIELD1", VALUE1, "FIELD2", VALUE2, ...)
  -- : ODESTRUCT = odeset (OLDSTRUCT, NEWSTRUCT)
+ -- : odeset ()
 
      Create or modify an ODE options structure.
 
-     When called without an input argument, return a new ODE options structure that contains all possible fields initialized to their default values.
+     When called with no input argument and one output argument, return a new ODE options structure that contains all possible fields initialized to their default values.  If no output argument is requested, display a list of the common ODE solver options along with their default value.
 
-     If called with string input arguments "FIELD1", "FIELD2", ... identifying valid ODE options then return a new ODE options structure with all possible fields initialized *and* set the values of the fields "FIELD1", "FIELD2", ... to the values VALUE1, VALUE2, ...
+     If called with name-value input argument pairs "FIELD1", "VALUE1", "FIELD2", "VALUE2", ... return a new ODE options structure with all the most common option fields initialized, *and* set the values of the fields "FIELD1", "FIELD2", ... to the values VALUE1, VALUE2, ....
 
      If called with an input structure OLDSTRUCT then overwrite the values of the options "FIELD1", "FIELD2", ... with new values VALUE1, VALUE2, ... and return the modified structure.
 
      When called with two input ODE options structures OLDSTRUCT and NEWSTRUCT overwrite all values from the structure OLDSTRUCT with new values from the structure NEWSTRUCT.  Empty values in NEWSTRUCT will not overwrite values in OLDSTRUCT.
+
+     The most commonly used ODE options, which are always assigned a value by odeset, are the following:
+
+     AbsTol
+          Absolute error tolerance.
+
+     BDF
+          Use BDF formulas in implicit multistep methods.  *Note:* This option is not yet implemented.
+
+     Events
+          Event function.  An event function must have the form '[value, isterminal, direction] = my_events_f (t, y)'
+
+     InitialSlope
+          Consistent initial slope vector for DAE solvers.
+
+     InitialStep
+          Initial time step size.
+
+     Jacobian
+          Jacobian matrix, specified as a constant matrix or a function of time and state.
+
+     JConstant
+          Specify whether the Jacobian is a constant matrix or depends on the state.
+
+     JPattern
+          If the Jacobian matrix is sparse and non-constant but maintains a constant sparsity pattern, specify the sparsity pattern.
+
+     Mass
+          Mass matrix, specified as a constant matrix or a function of time and state.
+
+     MassSingular
+          Specify whether the mass matrix is singular.  Accepted values include "yes", "no", "maybe".
+
+     MaxOrder
+          Maximum order of formula.
+
+     MaxStep
+          Maximum time step value.
+
+     MStateDependence
+          Specify whether the mass matrix depends on the state or only on time.
+
+     MvPattern
+          If the mass matrix is sparse and non-constant but maintains a constant sparsity pattern, specify the sparsity pattern.  *Note:* This option is not yet implemented.
+
+     NonNegative
+          Specify elements of the state vector that are expected to remain nonnegative during the simulation.
+
+     NormControl
+          Control error relative to the 2-norm of the solution, rather than its absolute value.
+
+     OutputFcn
+          Function to monitor the state during the simulation.  For the form of the function to use see odeplot.
+
+     OutputSel
+          Indices of elements of the state vector to be passed to the output monitoring function.
+
+     Refine
+          Specify whether output should be returned only at the end of each time step or also at intermediate time instances.  The value should be a scalar indicating the number of equally spaced time points to use within each timestep at which to return output.  *Note:* This option is not yet implemented.
+
+     RelTol
+          Relative error tolerance.
+
+     Stats
+          Print solver statistics after simulation.
+
+     Vectorized
+          Specify whether odefun can be passed multiple values of the state at once.
+
+     Field names that are not in the above list are also accepted and added to the result structure.
 
      See also: odeget.
    
@@ -40246,37 +40411,42 @@ odeplot
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1428
- -- : [RET] = odeplot (T, Y, FLAG)
+# length: 1741
+ -- : STOP_SOLVE = odeplot (T, Y, FLAG)
 
-     Open a new figure window and plot the results from the variable Y of type column vector over time while solving.  The types and the values of the input parameter T and the output parameter RET depend on the input value FLAG that is of type string.  If FLAG is
+     Open a new figure window and plot the solution of an ode problem at each time step during the integration.
+
+     The types and values of the input parameters T and Y depend on the input FLAG that is of type string.  Valid values of FLAG are:
 
      '"init"'
-          then T must be a double column vector of length 2 with the first and the last time step and nothing is returned from this function,
+          The input T must be a column vector of length 2 with the first and last time step ('[TFIRST TLAST]'.  The input Y contains the initial conditions for the ode problem (Y0).
 
      '""'
-          then T must be a double scalar specifying the actual time step and the return value is false (resp.  value 0) for "not stop solving",
+          The input T must be a scalar double specifying the time for which the solution in input Y was calculated.
 
      '"done"'
-          then T must be a double scalar specifying the last time step and nothing is returned from this function.
+          The inputs should be empty, but are ignored if they are present.
 
-     This function is called by an ode solver function if it was specified in an options structure with the 'odeset'.  This function is an internal helper function therefore it should never be necessary that this function is called directly by a user.  There is only little error detection implemented in this function file to achieve the highest performance.
+     'odeplot' always returns false, i.e., don't stop the ode solver.
 
-     For example, solve an anonymous implementation of the "Van der Pol" equation and display the results while solving
+     Example: solve an anonymous implementation of the "Van der Pol" equation and display the results while solving.
 
-          fvdb = @(t,y) [y(2); (1 - y(1)^2) * y(2) - y(1)];
+          fvdp = @(t,y) [y(2); (1 - y(1)^2) * y(2) - y(1)];
 
           opt = odeset ("OutputFcn", @odeplot, "RelTol", 1e-6);
-          sol = ode45 (fvdb, [0 20], [2 0], opt);
+          sol = ode45 (fvdp, [0 20], [2 0], opt);
 
-See also: odeset, odeget. 
+     Background Information: This function is called by an ode solver function if it was specified in the "OutputFcn" property of an options structure created with 'odeset'.  The ode solver will initially call the function with the syntax 'odeplot ([TFIRST, TLAST], Y0, "init")'.  The function initializes internal variables, creates a new figure window, and sets the x limits of the plot.  Subsequently, at each time step during the integration the ode solver calls 'odeplot (T, Y, [])'.  At the end of the solution the ode solver calls 'odeplot ([], [], "done")' so that odeplot can perform any clean-up actions required.
+
+     See also: odeset, odeget, ode23, ode45.
+   
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 112
-Open a new figure window and plot the results from the variable Y of type column vector over time while solving.
+# length: 106
+Open a new figure window and plot the solution of an ode problem at each time step during the integration.
 
 
 
@@ -41475,12 +41645,13 @@ pkg
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 6674
+# length: 6747
  -- : pkg COMMAND PKG_NAME
  -- : pkg COMMAND OPTION PKG_NAME
-     Manage packages (groups of add-on functions) for Octave.
+ -- : [OUT1, ...] = pkg (COMMAND, ... )
+     Manage or query packages (groups of add-on functions) for Octave.
 
-     Different actions are available depending on the value of COMMAND.
+     Different actions are available depending on the value of COMMAND and on return arguments.
 
      Available commands:
 
@@ -41622,8 +41793,8 @@ pkg
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 56
-Manage packages (groups of add-on functions) for Octave.
+# length: 65
+Manage or query packages (groups of add-on functions) for Octave.
 
 
 
@@ -42306,6 +42477,58 @@ Set the lighting of patch or surface graphic objects.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
+# length: 8
+material
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 6962
+ -- : material shiny
+ -- : material dull
+ -- : material metal
+ -- : material default
+ -- : material ([AS, DS, SS])
+ -- : material ([AS, DS, SS, SE])
+ -- : material ([AS, DS, SS, SE, SCR])
+ -- : material (HLIST, ...)
+ -- : MTYPES = material ()
+ -- : REFL_PROPS = material (MTYPE_STRING)
+     Set reflectance properties for the lighting of surfaces and patches.
+
+     This function changes the ambient, diffuse, and specular strengths, as well as the specular exponent and specular color reflectance, of all 'patch' and 'surface' objects in the current axes.  This can be used to simulate, to some extent, the reflectance properties of certain materials when used with 'light'.
+
+     When called with a string, the aforementioned properties are set according to the values in the following table:
+
+      MTYPE                                                                                                                                                                                                         ambient- strength                                                                                                                                          diffuse- strength                                                                                                                                          specular- strength                                                                                                                                         specular- exponent                                                                                                                                         specular- color- reflectance
+     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      "shiny"                                                                                                                                                                                                       0.3                                                                                                                                                        0.6                                                                                                                                                        0.9                                                                                                                                                        20                                                                                                                                                         1.0
+      "dull"                                                                                                                                                                                                        0.3                                                                                                                                                        0.8                                                                                                                                                        0.0                                                                                                                                                        10                                                                                                                                                         1.0
+      "metal"                                                                                                                                                                                                       0.3                                                                                                                                                        0.3                                                                                                                                                        1.0                                                                                                                                                        25                                                                                                                                                         0.5
+      "default"                                                                                                                                                                                                     "default"                                                                                                                                                  "default"                                                                                                                                                  "default"                                                                                                                                                  "default"                                                                                                                                                  "default"
+
+     When called with a vector of three elements, the ambient, diffuse, and specular strengths of all 'patch' and 'surface' objects in the current axes are updated.  An optional fourth vector element updates the specular exponent, and an optional fifth vector element updates the specular color reflectance.
+
+     A list of graphic handles can also be passed as the first argument.  In this case, the properties of these handles and all child 'patch' and 'surface' objects will be updated.
+
+     Additionally, 'material' can be called with a single output argument.  If called without input arguments, a column cell vector MTYPES with the strings for all available materials is returned.  If the one input argument MTYPE_STRING is the name of a material, a 1x5 cell vector REFL_PROPS with the reflectance properties of that material is returned.  In both cases, no graphic properties are changed.
+
+     See also: light, fill, mesh, patch, pcolor, surf, surface.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 68
+Set reflectance properties for the lighting of surfaces and patches.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
 # length: 6
 orient
 
@@ -42399,7 +42622,7 @@ shading
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 577
+# length: 586
  -- : shading (TYPE)
  -- : shading (HAX, TYPE)
      Set the shading of patch or surface graphic objects.
@@ -42410,14 +42633,14 @@ shading
           Single colored patches with invisible edges.
 
      "faceted"
-          Single colored patches with visible edges.
+          Single colored patches with black edges.
 
      "interp"
-          Color between patch vertices are interpolated and the patch edges are invisible.
+          Colors between patch vertices are interpolated and the patch edges are invisible.
 
      If the first argument HAX is an axes handle, then plot into this axis, rather than the current axes returned by 'gca'.
 
-     See also: fill, mesh, patch, pcolor, surf, surface, hidden.
+     See also: fill, mesh, patch, pcolor, surf, surface, hidden, lighting.
    
 
 
@@ -43013,6 +43236,69 @@ bar
 # elements: 1
 # length: 49
 Produce a bar graph from two vectors of X-Y data.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 8
+camlight
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1771
+ -- : camlight
+ -- : camlight right
+ -- : camlight left
+ -- : camlight headlight
+ -- : camlight (AZ, EL)
+ -- : camlight (..., STYLE)
+ -- : camlight (HL, ...)
+ -- : H = camlight (...)
+     Add a light object to a figure using a simple interface.
+
+     When called with no arguments, a light object is added to the current plot and is placed slightly above and to the right of the camera's current position: this is equivalent to 'camlight right'.  The commands 'camlight left' and 'camlight headlight' behave similarly with the placement being either left of the camera position or centered on the camera position.
+
+     For more control, the light position can be specified by an azimuthal rotation AZ and an elevation angle EL, both in degrees, relative to the current properties of the camera.
+
+     The optional string STYLE specifies whether the light is a local point source ("local", the default) or placed at infinite distance ("infinite").
+
+     If the first argument HL is a handle to a light object, then act on this light object rather than creating a new object.
+
+     The optional return value H is a graphics handle to the light object.  This can be used to move or further change properties of the light object.
+
+     Examples:
+
+     Add a light object to a plot
+
+          sphere (36);
+          camlight
+
+     Position the light source exactly
+
+          camlight (45, 30);
+
+     Here the light is first pitched upwards from the camera position by 30 degrees.  It is then yawed by 45 degrees to the right.  Both rotations are centered around the camera target.
+
+     Return a handle to further manipulate the light object
+
+          clf
+          sphere (36);
+          hl = camlight ("left");
+          set (hl, "color", "r");
+
+     See also: light.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 56
+Add a light object to a figure using a simple interface.
 
 
 
@@ -43804,10 +44090,11 @@ ezplot3
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 928
+# length: 1062
  -- : ezplot3 (FX, FY, FZ)
  -- : ezplot3 (..., DOM)
  -- : ezplot3 (..., N)
+ -- : ezplot3 (..., "animate")
  -- : ezplot3 (HAX, ...)
  -- : H = ezplot3 (...)
 
@@ -43819,6 +44106,8 @@ ezplot3
 
      N is a scalar defining the number of points to use in plotting the function.
 
+     If the "animate" option is given then the plotting is animated in the style of 'comet3'.
+
      If the first argument HAX is an axes handle, then plot into this axis, rather than the current axes returned by 'gca'.
 
      The optional return value H is a graphics handle to the created plot.
@@ -43828,7 +44117,7 @@ ezplot3
           fz = @(t) t;
           ezplot3 (fx, fy, fz, [0, 10*pi], 100);
 
-     See also: plot3, ezplot, ezmesh, ezsurf.
+     See also: plot3, comet3, ezplot, ezmesh, ezsurf.
    
 
 
@@ -44259,6 +44548,88 @@ Produce histogram counts or plots.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
+# length: 7
+isocaps
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2754
+ -- : FVC = isocaps (V, ISOVAL)
+ -- : FVC = isocaps (V)
+ -- : FVC = isocaps (X, Y, Z, V, ISOVAL)
+ -- : FVC = isocaps (X, Y, Z, V)
+ -- : FVC = isocaps (..., WHICH_CAPS)
+ -- : FVC = isocaps (..., WHICH_PLANE)
+ -- : FVC = isocaps (..., "verbose")
+ -- : [FACES, VERTICES, FVCDATA] = isocaps (...)
+ -- : isocaps (...)
+
+     Create end-caps for isosurfaces of 3-D data.
+
+     This function places caps at the open ends of isosurfaces.
+
+     The input argument V is a three-dimensional array that contains data sampled over a volume.
+
+     The input ISOVAL is a scalar that specifies the value for the isosurface.  If ISOVAL is omitted or empty, a "good" value for an isosurface is determined from V.
+
+     When called with a single output argument, 'isocaps' returns a structure array FVC with the fields: 'faces', 'vertices', and 'facevertexcdata'.  The results are computed at the points '[X, Y, Z] = meshgrid (1:l, 1:m, 1:n)' where '[l, m, n] = size (V)'.  The output FVC can be used directly as input to the 'patch' function.
+
+     If called with additional input arguments X, Y, and Z that are three-dimensional arrays with the same size as V or vectors with lengths corresponding to the dimensions of V, then the volume data is taken at the specified points.  If X, Y, or Z are empty, the grid corresponds to the indices ('1:n') in the respective direction (*note meshgrid: XREFmeshgrid.).
+
+     The optional parameter WHICH_CAPS can have one of the following string values which defines how the data will be enclosed:
+
+     "above", "a" (default)
+          for end-caps that enclose the data above ISOVAL.
+
+     "below", "b"
+          for end-caps that enclose the data below ISOVAL.
+
+     The optional parameter WHICH_PLANE can have one of the following string values to define which end-cap should be drawn:
+
+     "all" (default)
+          for all of the end-caps.
+
+     "xmin"
+          for end-caps at the lower x-plane of the data.
+
+     "xmax"
+          for end-caps at the upper x-plane of the data.
+
+     "ymin"
+          for end-caps at the lower y-plane of the data.
+
+     "ymax"
+          for end-caps at the upper y-plane of the data.
+
+     "zmin"
+          for end-caps at the lower z-plane of the data.
+
+     "zmax"
+          for end-caps at the upper z-plane of the data.
+
+     The string input argument "verbose" is supported for MATLAB compatibility, but has no effect.
+
+     If called with two or three output arguments, the data for faces FACES, vertices VERTICES, and the color data FACEVERTEXCDATA are returned in separate arrays instead of a single structure.
+
+     If called with no output argument, the end-caps are drawn directly in the current figure with the 'patch' command.
+
+     See also: isosurface, isonormals, patch.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 44
+Create end-caps for isosurfaces of 3-D data.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
 # length: 9
 isocolors
 
@@ -44392,96 +44763,100 @@ isosurface
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 4641
- -- : [FV] = isosurface (VAL, ISO)
- -- : [FV] = isosurface (VAL)
- -- : [FV] = isosurface (X, Y, Z, VAL, ISO)
- -- : [FV] = isosurface (X, Y, Z, VAL)
- -- : [FVC] = isosurface (..., COL)
- -- : [FV] = isosurface (..., "noshare")
- -- : [FV] = isosurface (..., "verbose")
+# length: 4511
+ -- : FV = isosurface (V, ISOVAL)
+ -- : FV = isosurface (V)
+ -- : FV = isosurface (X, Y, Z, V, ISOVAL)
+ -- : FV = isosurface (X, Y, Z, V)
+ -- : FVC = isosurface (..., COL)
+ -- : FV = isosurface (..., "noshare")
+ -- : FV = isosurface (..., "verbose")
  -- : [F, V] = isosurface (...)
  -- : [F, V, C] = isosurface (...)
  -- : isosurface (...)
 
-     Calculate isosurface of 3-D data.
+     Calculate isosurface of 3-D volume data.
 
-     If called with one output argument and the first input argument VAL is a three-dimensional array that contains the data of an isosurface geometry and the second input argument ISO keeps the isovalue as a scalar value then return a structure array FV that contains the fields FACES and VERTICES at computed points '[x, y, z] = meshgrid (1:l, 1:m, 1:n)'.  The output argument FV can directly be taken as an input argument for the 'patch' function.
+     An isosurface connects points with the same value and is analogous to a contour plot, but in three dimensions.
 
-     If ISO is omitted or empty, a "good" value for an isosurface is determined from VAL.
+     The input argument V is a three-dimensional array that contains data sampled over a volume.
 
-     If called with further input arguments X, Y and Z which are three-dimensional arrays with the same size as VAL or vectors with lengths corresponding to the dimensions of VAL, then the volume data is taken at those given points.  If X, Y or Z are empty, the grid corresponds to the indices in the respective direction (see 'meshgrid').
+     The input ISOVAL is a scalar that specifies the value for the isosurface.  If ISOVAL is omitted or empty, a "good" value for an isosurface is determined from V.
 
-     If called with the input argument COL which is a three-dimensional array of the same size as VAL, take those values for the interpolation of coloring the isosurface geometry.  In this case, the structure array FV has the additional field FACEVERTEXCDATA.
+     When called with a single output argument 'isosurface' returns a structure array FV that contains the fields FACES and VERTICES computed at the points '[X, Y, Z] = meshgrid (1:l, 1:m, 1:n)' where '[l, m, n] = size (V)'.  The output FV can be used directly as input to the 'patch' function.
 
-     If given the string input argument "noshare", vertices might be returned multiple times for different faces.  The default behavior is to search vertices shared by adjacent faces with 'unique' which might be time consuming.  The string input argument "verbose" is only for compatibility and has no effect.  The string input arguments must be passed after the other arguments.
+     If called with additional input arguments X, Y, and Z that are three-dimensional arrays with the same size as V or vectors with lengths corresponding to the dimensions of V, then the volume data is taken at the specified points.  If X, Y, or Z are empty, the grid corresponds to the indices ('1:n') in the respective direction (*note meshgrid: XREFmeshgrid.).
 
-     If called with two or three output arguments, return the information about the faces F, vertices V and color data C as separate arrays instead of a single structure array.
+     The optional input argument COL, which is a three-dimensional array of the same size as V, specifies coloring of the isosurface.  The color data is interpolated, as necessary, to match ISOVAL.  The output structure array, in this case, has the additional field FACEVERTEXCDATA.
 
-     If called with no output argument, the isosurface geometry is directly processed with the 'patch' command and a light object is added to the axes if not yet present.
+     If given the string input argument "noshare", vertices may be returned multiple times for different faces.  The default behavior is to eliminate vertices shared by adjacent faces with 'unique' which may be time consuming.
+
+     The string input argument "verbose" is supported for MATLAB compatibility, but has no effect.
+
+     Any string arguments must be passed after the other arguments.
+
+     If called with two or three output arguments, return the information about the faces F, vertices V, and color data C as separate arrays instead of a single structure array.
+
+     If called with no output argument, the isosurface geometry is directly plotted with the 'patch' command and a light object is added to the axes if not yet present.
 
      For example,
 
           [x, y, z] = meshgrid (1:5, 1:5, 1:5);
-          val = rand (5, 5, 5);
-          isosurface (x, y, z, val, .5);
+          v = rand (5, 5, 5);
+          isosurface (x, y, z, v, .5);
 
      will directly draw a random isosurface geometry in a graphics window.
 
-     Another example for an isosurface geometry with different additional coloring
+     An example of an isosurface geometry with different additional coloring:
 
           N = 15;    # Increase number of vertices in each direction
           iso = .4;  # Change isovalue to .1 to display a sphere
           lin = linspace (0, 2, N);
           [x, y, z] = meshgrid (lin, lin, lin);
-          val = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-          figure (); # Open another figure window
+          v = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
+          figure ();
 
           subplot (2,2,1); view (-38, 20);
-          [f, v] = isosurface (x, y, z, val, iso);
-          p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-          set (gca, "PlotBoxAspectRatioMode", "manual", ...
-                    "PlotBoxAspectRatio", [1 1 1]);
-          isonormals (x, y, z, val, p)
+          [f, vert] = isosurface (x, y, z, v, iso);
+          p = patch ("Faces", f, "Vertices", vert, "EdgeColor", "none");
+          pbaspect ([1 1 1]);
+          isonormals (x, y, z, v, p)
           set (p, "FaceColor", "green", "FaceLighting", "gouraud");
           light ("Position", [1 1 5]);
 
           subplot (2,2,2); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "EdgeColor", "blue");
-          set (gca, "PlotBoxAspectRatioMode", "manual", ...
-                    "PlotBoxAspectRatio", [1 1 1]);
-          isonormals (x, y, z, val, p)
+          p = patch ("Faces", f, "Vertices", vert, "EdgeColor", "blue");
+          pbaspect ([1 1 1]);
+          isonormals (x, y, z, v, p)
           set (p, "FaceColor", "none", "EdgeLighting", "gouraud");
           light ("Position", [1 1 5]);
 
           subplot (2,2,3); view (-38, 20);
-          [f, v, c] = isosurface (x, y, z, val, iso, y);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
+          [f, vert, c] = isosurface (x, y, z, v, iso, y);
+          p = patch ("Faces", f, "Vertices", vert, "FaceVertexCData", c, ...
                      "FaceColor", "interp", "EdgeColor", "none");
-          set (gca, "PlotBoxAspectRatioMode", "manual", ...
-                    "PlotBoxAspectRatio", [1 1 1]);
-          isonormals (x, y, z, val, p)
+          pbaspect ([1 1 1]);
+          isonormals (x, y, z, v, p)
           set (p, "FaceLighting", "gouraud");
           light ("Position", [1 1 5]);
 
           subplot (2,2,4); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
+          p = patch ("Faces", f, "Vertices", vert, "FaceVertexCData", c, ...
                      "FaceColor", "interp", "EdgeColor", "blue");
-          set (gca, "PlotBoxAspectRatioMode", "manual", ...
-                    "PlotBoxAspectRatio", [1 1 1]);
-          isonormals (x, y, z, val, p)
+          pbaspect ([1 1 1]);
+          isonormals (x, y, z, v, p)
           set (p, "FaceLighting", "gouraud");
           light ("Position", [1 1 5]);
 
-     See also: isonormals, isocolors, smooth3.
+     See also: isonormals, isocolors, isocaps, smooth3, reducevolume, reducepatch, patch.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 33
-Calculate isosurface of 3-D data.
+# length: 40
+Calculate isosurface of 3-D volume data.
 
 
 
@@ -44495,14 +44870,14 @@ light
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1615
+# length: 1630
  -- : light ()
  -- : light (..., PROP, VAL, ...)
  -- : light (HAX, ...)
  -- : H = light (...)
      Create light object in the current axes or for axes HAX.
 
-     When a light object is present in an axes object and the properties "EdgeLighting" or "FaceLighting" of a 'patch' or 'surface' object are set to a value other than "none", these objects are drawn with light and shadow effects.  Supported values for these properties are "none" (no lighting effects), "flat" (facetted look of the objects) and "gouraud" (linear interpolation of the lighting effects between the vertices).  For 'patch' objects, the normals must be set manually (property "VertexNormals").
+     When a light object is present in an axes object and the properties "EdgeLighting" or "FaceLighting" of a 'patch' or 'surface' object are set to a value other than "none", these objects are drawn with light and shadow effects.  Supported values for these properties are "none" (no lighting effects), "flat" (faceted look of the objects) and "gouraud" (linear interpolation of the lighting effects between the vertices).  For 'patch' objects, the normals must be set manually (property "VertexNormals").
 
      Up to eight light objects are supported per axes.
 
@@ -44511,10 +44886,10 @@ light
      The following properties specific to the light object can be passed with their respective values:
 
      "Color": The color of the light object can be passed as an
-          RGB-vector (e.g.  [1 0 0] for red) or as a string (e.g.  "r" for red).  The default color is white ([1 1 1]).
+          RGB-vector (e.g., '[1 0 0]' for red) or as a string (e.g., "r" for red).  The default color is white ('[1 1 1]').
 
      "Position": The direction from which the light emanates as an
-          1x3-vector.  The default direction is [1 0 1].
+          1x3-vector.  The default direction is '[1 0 1]'.
 
      "Style": This string defines whether the light emanates from a
           light source at infinite distance ("infinite") or from a local point source ("local").
@@ -44523,7 +44898,7 @@ light
 
      Optionally, the handle to the light object is returned in H.
 
-     See also: get, set, patch, surface, lighting.
+     See also: get, set, patch, surface, lighting, material.
    
 
 
@@ -44839,13 +45214,13 @@ patch
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2271
+# length: 2301
  -- : patch ()
  -- : patch (X, Y, C)
  -- : patch (X, Y, Z, C)
- -- : patch (FV)
  -- : patch ("Faces", FACES, "Vertices", VERTS, ...)
  -- : patch (..., PROP, VAL, ...)
+ -- : patch (..., PROPSTRUCT, ...)
  -- : patch (HAX, ...)
  -- : H = patch (...)
      Create patch object in the current axes with vertices at locations (X, Y) and of color C.
@@ -44858,7 +45233,7 @@ patch
 
      Instead of specifying polygons by matrices X and Y, it is possible to present a unique list of vertices and then a list of polygon faces created from those vertices.  In this case the "Vertices" matrix will be an Nx2 (2-D patch) or Nx3 (3-D patch).  The MxN "Faces" matrix describes M polygons having N vertices--each row describes a single polygon and each column entry is an index into the "Vertices" matrix to identify a vertex.  The patch object can be created by directly passing the property/value pairs "Vertices"/VERTS, "Faces"/FACES as inputs.
 
-     A third input form is to create a structure FV with the fields "vertices", "faces", and optionally "facevertexcdata".
+     Instead of using property/value pairs, any property can be set by passing a structure PROPSTRUCT with the respective field names.
 
      If the first argument HAX is an axes handle, then plot into this axis, rather than the current axes returned by 'gca'.
 
@@ -45129,7 +45504,7 @@ plot
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 6190
+# length: 6269
  -- : plot (Y)
  -- : plot (X, Y)
  -- : plot (X, Y, FMT)
@@ -45208,6 +45583,7 @@ plot
           'r'                                                           Red
           'g'                                                           Green
           'b'                                                           Blue
+          'y'                                                           Yellow
           'm'                                                           Magenta
           'c'                                                           Cyan
           'w'                                                           White
@@ -45544,6 +45920,112 @@ Draw a rectangular patch defined by POS and CURV.
 # name: <cell-element>
 # type: sq_string
 # elements: 1
+# length: 11
+reducepatch
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 2660
+ -- : REDUCED_FV = reducepatch (FV)
+ -- : REDUCED_FV = reducepatch (FACES, VERTICES)
+ -- : REDUCED_FV = reducepatch (PATCH_HANDLE)
+ -- : reducepatch (PATCH_HANDLE)
+ -- : REDUCED_FV = reducepatch (..., REDUCTION_FACTOR)
+ -- : REDUCED_FV = reducepatch (..., "fast")
+ -- : REDUCED_FV = reducepatch (..., "verbose")
+ -- : [REDUCED_FACES, REDUCES_VERTICES] = reducepatch (...)
+
+     Reduce the number of faces and vertices in a patch object while retaining the overall shape of the patch.
+
+     The input patch can be represented by a structure FV with the fields 'faces' and 'vertices', by two matrices FACES and VERTICES (see, e.g., the result of 'isosurface'), or by a handle to a patch object PATCH_HANDLE (*note patch: XREFpatch.).
+
+     The number of faces and vertices in the patch is reduced by iteratively collapsing the shortest edge of the patch to its midpoint (as discussed, e.g., here: <http://libigl.github.io/libigl/tutorial/tutorial.html#meshdecimation>).
+
+     Currently, only patches consisting of triangles are supported.  The resulting patch also consists only of triangles.
+
+     If 'reducepatch' is called with a handle to a valid patch PATCH_HANDLE, and without any output arguments, then the given patch is updated immediately.
+
+     If the REDUCTION_FACTOR is omitted, the resulting structure REDUCED_FV includes approximately 50% of the faces of the original patch.  If REDUCTION_FACTOR is a fraction between 0 (excluded) and 1 (excluded), a patch with approximately the corresponding fraction of faces is determined.  If REDUCTION_FACTOR is an integer greater than or equal to 1, the resulting patch has approximately REDUCTION_FACTOR faces.  Depending on the geometry of the patch, the resulting number of faces can differ from the given value of REDUCTION_FACTOR.  This is especially true when many shared vertices are detected.
+
+     For the reduction, it is necessary that vertices of touching faces are shared.  Shared vertices are detected automatically.  This detection can be skipped by passing the optional string argument "fast".
+
+     With the optional string arguments "verbose", additional status messages are printed to the command window.
+
+     Any string input arguments must be passed after all other arguments.
+
+     If called with one output argument, the reduced faces and vertices are returned in a structure REDUCED_FV with the fields 'faces' and 'vertices' (see the one output option of 'isosurface').
+
+     If called with two output arguments, the reduced faces and vertices are returned in two separate matrices REDUCED_FACES and REDUCED_VERTICES.
+
+     See also: isosurface, isonormals, reducevolume, patch.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 105
+Reduce the number of faces and vertices in a patch object while retaining the overall shape of the patch.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 12
+reducevolume
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1437
+ -- : [NX, NY, NZ, NV] = reducevolume (V, R)
+ -- : [NX, NY, NZ, NV] = reducevolume (X, Y, Z, V, R)
+ -- : NV = reducevolume (...)
+
+     Reduce the volume of the dataset in V according to the values in R.
+
+     V is a matrix that is non-singleton in the first 3 dimensions.
+
+     R can either be a vector of 3 elements representing the reduction factors in the x-, y-, and z-directions or a scalar, in which case the same reduction factor is used in all three dimensions.
+
+     'reducevolume' reduces the number of elements of V by taking only every R-th element in the respective dimension.
+
+     Optionally, X, Y, and Z can be supplied to represent the set of coordinates of V.  They can either be matrices of the same size as V or vectors with sizes according to the dimensions of V, in which case they are expanded to matrices (*note meshgrid: XREFmeshgrid.).
+
+     If 'reducevolume' is called with two arguments then X, Y, and Z are assumed to match the respective indices of V.
+
+     The reduced matrix is returned in NV.
+
+     Optionally, the reduced set of coordinates are returned in NX, NY, and NZ, respectively.
+
+     Examples:
+
+          V = reshape (1:6*8*4, [6 8 4]);
+          NV = reducevolume (V, [4 3 2]);
+
+          V = reshape (1:6*8*4, [6 8 4]);
+          X = 1:3:24;  Y = -14:5:11;  Z = linspace (16, 18, 4);
+          [NX, NY, NZ, NV] = reducevolume (X, Y, Z, V, [4 3 2]);
+
+     See also: isosurface, isonormals.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 67
+Reduce the volume of the dataset in V according to the values in R.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
 # length: 6
 ribbon
 
@@ -45589,7 +46071,7 @@ rose
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1061
+# length: 1472
  -- : rose (TH)
  -- : rose (TH, NBINS)
  -- : rose (TH, BINS)
@@ -45600,7 +46082,7 @@ rose
 
      With one vector argument, TH, plot the histogram with 20 angular bins.  If TH is a matrix then each column of TH produces a separate histogram.
 
-     If NBINS is given and is a scalar, then the histogram is produced with NBIN bins.  If BINS is a vector, then the center of each bin is defined by the values of BINS and the number of bins is given by the number of elements in BINS.
+     If NBINS is given and is a scalar, then the histogram is produced with NBIN bins.  If BINS is a vector, then the center of each bin is defined by the values in BINS and the number of bins is given by the number of elements in BINS.
 
      If the first argument HAX is an axes handle, then plot into this axis, rather than the current axes returned by 'gca'.
 
@@ -45608,8 +46090,12 @@ rose
 
      If two output arguments are requested then no plot is made and the polar vectors necessary to plot the histogram are returned instead.
 
+     Example
+
           [th, r] = rose ([2*randn(1e5,1), pi + 2*randn(1e5,1)]);
           polar (th, r);
+
+     Programming Note: When specifying bin centers with the BINS input, the edges for bins 2 to N-1 are spaced so that 'BINS(i)' is centered between the edges.  The final edge is drawn halfway between bin N and bin 1.  This guarantees that all input TH will be placed into one of the bins, but also means that for some combinations bin 1 and bin N may not be centered on the user's given values.
 
      See also: hist, polar.
    
@@ -45683,7 +46169,7 @@ scatter
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1593
+# length: 1640
  -- : scatter (X, Y)
  -- : scatter (X, Y, S)
  -- : scatter (X, Y, S, C)
@@ -45696,17 +46182,17 @@ scatter
 
      A marker is plotted at each point defined by the coordinates in the vectors X and Y.
 
-     The size of the markers is determined by S, which can be a scalar or a vector of the same length as X and Y.  If S is not given, or is an empty matrix, then a default value of 8 points is used.
+     The size of the markers is determined by S, which can be a scalar or a vector of the same length as X and Y.  If S is not given, or is an empty matrix, then a default value of 36 square points is used (The marker size itself is 'sqrt (s)').
 
      The color of the markers is determined by C, which can be a string defining a fixed color; a 3-element vector giving the red, green, and blue components of the color; a vector of the same length as X that gives a scaled index into the current colormap; or an Nx3 matrix defining the RGB color of each marker individually.
 
-     The marker to use can be changed with the STYLE argument, that is a string defining a marker in the same manner as the 'plot' command.  If no marker is specified it defaults to "o" or circles.  If the argument "filled" is given then the markers are filled.
+     The marker to use can be changed with the STYLE argument; it is a string defining a marker in the same manner as the 'plot' command.  If no marker is specified it defaults to "o" or circles.  If the argument "filled" is given then the markers are filled.
 
      Additional property/value pairs are passed directly to the underlying patch object.
 
      If the first argument HAX is an axes handle, then plot into this axis, rather than the current axes returned by 'gca'.
 
-     The optional return value H is a graphics handle to the created patch object.
+     The optional return value H is a graphics handle to the created scatter object.
 
      Example:
 
@@ -48170,7 +48656,7 @@ print
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 8847
+# length: 8858
  -- : print ()
  -- : print (OPTIONS)
  -- : print (FILENAME, OPTIONS)
@@ -48212,7 +48698,7 @@ print
 
      '-TextAlphaBits=N'
      '-GraphicsAlphaBits=N'
-          Octave is able to produce output for various printers, bitmaps, and vector formats by using Ghostscript.  For bitmap and printer output anti-aliasing is applied using Ghostscript's TextAlphaBits and GraphicsAlphaBits options.  The default number of bits for each is 4.  Allowed values for N are 1, 2, or 4.
+          Octave is able to produce output for various printers, bitmaps, and vector formats by using Ghostscript.  For bitmap and printer output anti-aliasing is applied using Ghostscript's TextAlphaBits and GraphicsAlphaBits options.  The default number of bits are 4 and 1 respectively.  Allowed values for N are 1, 2, or 4.
 
      '-dDEVICE'
           The available output format is specified by the option DEVICE, and is one of:
@@ -50891,16 +51377,16 @@ fftshift
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 683
+# length: 689
  -- : fftshift (X)
  -- : fftshift (X, DIM)
-     Perform a shift of the vector X, for use with the 'fft' and 'ifft' functions, in order the move the frequency 0 to the center of the vector or matrix.
+     Perform a shift of the vector X, for use with the 'fft' and 'ifft' functions, in order to move the frequency 0 to the center of the vector or matrix.
 
      If X is a vector of N elements corresponding to N time samples spaced by dt, then 'fftshift (fft (X))' corresponds to frequencies
 
-          f = [ -(ceil((N-1)/2):-1:1)*df 0 (1:floor((N-1)/2))*df ]
+          f = [ -(ceil((N-1)/2):-1:1), 0, (1:floor((N-1)/2)) ] * df
 
-     where df = 1 / dt.
+     where df = 1 / (N * dt).
 
      If X is a matrix, the same holds for rows and columns.  If X is an array, then the same holds along each dimension.
 
@@ -50913,8 +51399,8 @@ fftshift
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 150
-Perform a shift of the vector X, for use with the 'fft' and 'ifft' functions, in order the move the frequency 0 to the center of the vector or matrix.
+# length: 149
+Perform a shift of the vector X, for use with the 'fft' and 'ifft' functions, in order to move the frequency 0 to the center of the vector or matrix.
 
 
 
@@ -53399,10 +53885,10 @@ legendre
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2280
+# length: 2324
  -- : L = legendre (N, X)
  -- : L = legendre (N, X, NORMALIZATION)
-     Compute the Legendre function of degree N and order M = 0 ... N.
+     Compute the associated Legendre function of degree N and order M = 0 ... N.
 
      The value N must be a real non-negative integer.
 
@@ -53410,9 +53896,9 @@ legendre
 
      The optional argument NORMALIZATION may be one of "unnorm", "sch", or "norm".  The default if no normalization is given is "unnorm".
 
-     When the optional argument NORMALIZATION is "unnorm", compute the Legendre function of degree N and order M and return all values for M = 0 ... N.  The return value has one dimension more than X.
+     When the optional argument NORMALIZATION is "unnorm", compute the associated Legendre function of degree N and order M and return all values for M = 0 ... N.  The return value has one dimension more than X.
 
-     The Legendre Function of degree N and order M:
+     The associated Legendre function of degree N and order M:
 
            m         m      2  m/2   d^m
           P(x) = (-1) * (1-x  )    * ----  P(x)
@@ -53447,7 +53933,7 @@ legendre
           SP(x) = P(x) * (-1)  * [-------]
             n      n              (n+m)!
 
-     When the optional argument NORMALIZATION is "norm", compute the fully normalized associated Legendre function.  The fully normalized associated Legendre function is related to the unnormalized Legendre functions by the following:
+     When the optional argument NORMALIZATION is "norm", compute the fully normalized associated Legendre function.  The fully normalized associated Legendre function is related to the unnormalized associated Legendre functions by the following:
 
      For Legendre functions of degree N and order M
 
@@ -53461,8 +53947,8 @@ legendre
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 59
-Compute the Legendre function of degree N and order M = 0 .
+# length: 70
+Compute the associated Legendre function of degree N and order M = 0 .
 
 
 
@@ -54475,7 +54961,7 @@ cov
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1112
+# length: 1194
  -- : cov (X)
  -- : cov (X, OPT)
  -- : cov (X, Y)
@@ -54496,7 +54982,7 @@ cov
      1:
           normalize with N, this provides the second moment around the mean
 
-     Compatibility Note:: Octave always computes the covariance matrix.  For two inputs, however, MATLAB will calculate 'cov (X(:), Y(:))' whenever the number of elements in X and Y are equal.  This will result in a scalar rather than a matrix output.  Code relying on this odd definition will need to be changed when running in Octave.
+     Compatibility Note:: Octave always treats rows of X and Y as multivariate random variables.  For two inputs, however, MATLAB treats X and Y as two univariate distributions regardless of their shapes, and will calculate 'cov ([X(:), Y(:)])' whenever the number of elements in X and Y are equal.  This will result in a 2x2 matrix.  Code relying on MATLAB's definition will need to be changed when running in Octave.
 
      See also: corr.
    
@@ -54866,7 +55352,7 @@ median
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 620
+# length: 622
  -- : median (X)
  -- : median (X, DIM)
      Compute the median value of the elements of the vector X.
@@ -54877,7 +55363,7 @@ median
           median (x) =
                        (x(N/2) + x((N/2)+1))/2   N even
 
-     If X is of a discrete type such as integer or logical, then the case of even N rounds up (or toward true).
+     If X is of a discrete type such as integer or logical, then the case of even N rounds up (or toward 'true').
 
      If X is a matrix, compute the median value for each column and return them in a row vector.
 

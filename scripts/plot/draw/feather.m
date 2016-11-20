@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2015 David Bateman
+## Copyright (C) 2007-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -125,7 +125,7 @@ endfunction
 %! phi = [0 : 15 : 360] * pi/180;
 %! feather (sin (phi), cos (phi));
 %! axis tight;
-%! title ('feather plot');
+%! title ("feather plot");
 
 ## Test input validation
 %!error feather ()

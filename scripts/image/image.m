@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2015 John W. Eaton
+## Copyright (C) 1994-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -32,8 +32,6 @@
 ## convenience, @var{x} and @var{y} may be specified as N-element vectors
 ## matching the length of the data in @var{img}.  However, only the first and
 ## last elements will be used to determine the axis limits.
-## @strong{Warning:} @var{x} and @var{y} are ignored when using gnuplot 4.0
-## or earlier.
 ##
 ## Multiple property/value pairs may be specified for the image object, but
 ## they must appear in pairs.
@@ -133,8 +131,7 @@ endfunction
 ## Generic image creation.
 ##
 ## The axis values corresponding to the matrix elements are specified in
-## @var{x} and @var{y}.  If you're not using gnuplot 4.2 or later, these
-## variables are ignored.
+## @var{x} and @var{y}.
 
 ## Author: Tony Richardson <arichard@stark.cc.oh.us>
 ## Created: July 1994
@@ -194,7 +191,7 @@ function h = __img__ (hax, do_new, x, y, img, varargin)
 
     endif  # ! isempty (img)
 
-    set (hax, "view", [0, 90], "ydir", "reverse", "layer", "top");
+    set (hax, "view", [0, 90], "ydir", "reverse", "layer", "top", "box", "on");
 
   endif  # do_new
 
@@ -230,8 +227,8 @@ endfunction
 %!  h = image (-x, -y, img);
 %!  title ("image (-x, -y, img)");
 
-%!test
-%! ## test hidden properties x/ydatamode (bug #42121)
+## test hidden properties x/ydatamode
+%!test <42121>
 %! hf = figure ("visible", "off");
 %! unwind_protect
 %!   nx = 64; ny = 64;

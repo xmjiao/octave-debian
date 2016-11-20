@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2015 Michael Goffioul
+Copyright (C) 2011-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -30,15 +30,16 @@ class QRadioButton;
 namespace QtHandles
 {
 
-class RadioButtonControl : public ButtonControl
-{
-public:
-  RadioButtonControl (const graphics_object& go, QRadioButton* box);
-  ~RadioButtonControl (void);
+  class RadioButtonControl : public ButtonControl
+  {
+  public:
+    RadioButtonControl (const graphics_object& go, QRadioButton* box);
+    ~RadioButtonControl (void);
 
-  static RadioButtonControl* create (const graphics_object& go);
-};
+    static RadioButtonControl* create (const graphics_object& go);
+  };
 
-}; // namespace QtHandles
+}
 
 #endif
+

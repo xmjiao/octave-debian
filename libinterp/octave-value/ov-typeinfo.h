@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -29,6 +29,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "Array.h"
 
+#include "oct-map.h"
 #include "ov.h"
 
 class string_vector;
@@ -95,9 +96,6 @@ public:
                                      assignany_op_fcn);
 
   static bool register_pref_assign_conv (int, int, int);
-
-  static bool
-  register_type_conv_op (int, int, octave_base_value::type_conv_fcn);
 
   static bool
   register_widening_op (int, int, octave_base_value::type_conv_fcn);
@@ -175,12 +173,6 @@ public:
   }
 
   static octave_base_value::type_conv_fcn
-  lookup_type_conv_op (int t, int t_result)
-  {
-    return instance->do_lookup_type_conv_op (t, t_result);
-  }
-
-  static octave_base_value::type_conv_fcn
   lookup_widening_op (int t, int t_result)
   {
     return instance->do_lookup_widening_op (t, t_result);
@@ -189,6 +181,11 @@ public:
   static string_vector installed_type_names (void)
   {
     return instance->do_installed_type_names ();
+  }
+
+  static octave_scalar_map installed_type_info (void)
+  {
+    return instance->do_installed_type_info ();
   }
 
 protected:
@@ -207,7 +204,6 @@ protected:
       assign_ops (dim_vector (octave_value::num_assign_ops, init_tab_sz, init_tab_sz), 0),
       assignany_ops (dim_vector (octave_value::num_assign_ops, init_tab_sz), 0),
       pref_assign_conv (dim_vector (init_tab_sz, init_tab_sz), -1),
-      type_conv_ops (dim_vector (init_tab_sz, init_tab_sz), 0),
       widening_ops (dim_vector (init_tab_sz, init_tab_sz), 0)  { }
 
   ~octave_value_typeinfo (void) { }
@@ -248,8 +244,6 @@ private:
 
   Array<int> pref_assign_conv;
 
-  Array<void *> type_conv_ops;
-
   Array<void *> widening_ops;
 
   int do_register_type (const std::string&, const std::string&,
@@ -284,8 +278,6 @@ private:
 
   bool do_register_pref_assign_conv (int, int, int);
 
-  bool do_register_type_conv_op (int, int, octave_base_value::type_conv_fcn);
-
   bool do_register_widening_op (int, int, octave_base_value::type_conv_fcn);
 
   octave_value do_lookup_type (const std::string& nm);
@@ -314,11 +306,18 @@ private:
 
   int do_lookup_pref_assign_conv (int, int);
 
-  octave_base_value::type_conv_fcn do_lookup_type_conv_op (int, int);
-
   octave_base_value::type_conv_fcn do_lookup_widening_op (int, int);
 
-  string_vector do_installed_type_names (void);
+  string_vector do_installed_type_names (void) const;
+
+  octave_scalar_map do_installed_type_info (void) const;
+
+  octave_scalar_map unary_ops_map (void) const;
+  octave_scalar_map non_const_unary_ops_map (void) const;
+  octave_scalar_map binary_ops_map (void) const;
+  octave_scalar_map compound_binary_ops_map (void) const;
+  octave_scalar_map assign_ops_map (void) const;
+  octave_scalar_map assignany_ops_map (void) const;
 
   // No copying!
 
@@ -328,3 +327,4 @@ private:
 };
 
 #endif
+

@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2015 John W. Eaton
+## Copyright (C) 1996-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -27,8 +27,7 @@ function varargout = __bar__ (vertical, func, varargin)
 
   [hax, varargin, nargin] = __plt_get_axis_arg__ (func, varargin{:});
 
-  ## Slightly smaller than 0.8 to avoid clipping issue in gnuplot 4.0
-  width = 0.8 - 10 * eps;
+  width = 0.8;
   group = true;
   histc = NA;
   bv = 0;  # BaseValue
@@ -195,7 +194,7 @@ function varargout = __bar__ (vertical, func, varargin)
       htmp = bars (hax, vertical, x, y, xb, yb, gwidth, group,
                    have_line_spec, bv, newargs{:});
 
-      if (! ishold (hax))
+      if (! ishold ())
         if (all (x(:,1) == fix (x(:,1))))
           if (vertical)
             set (hax, "xtick", x(:,1));
@@ -209,6 +208,7 @@ function varargout = __bar__ (vertical, func, varargin)
         else
           set (hax, "clim", [0 1], "ylimmode", "manual");
         endif
+        set (hax, "box", "on");
       endif
     unwind_protect_cleanup
       if (! isempty (oldfig))

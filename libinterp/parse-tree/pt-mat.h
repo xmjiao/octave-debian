@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -90,3 +90,4 @@ extern void
 maybe_warn_string_concat (bool all_dq_strings_p, bool all_sq_strings_p);
 
 #endif
+

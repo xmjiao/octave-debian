@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -27,59 +27,66 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iosfwd>
 
-template <typename T>
-class
-hess
+namespace octave
 {
-public:
-
-  hess (void)
-    : hess_mat (), unitary_hess_mat ()
-  { }
-
-  hess (const T& a)
-    : hess_mat (), unitary_hess_mat ()
+  namespace math
   {
-    init (a);
-  }
+    template <typename T>
+    class
+    hess
+    {
+    public:
 
-  hess (const T& a, octave_idx_type& info)
-    : hess_mat (), unitary_hess_mat ()
-  {
-    info = init (a);
-  }
+      hess (void)
+        : hess_mat (), unitary_hess_mat ()
+      { }
 
-  hess (const hess& a)
-    : hess_mat (a.hess_mat), unitary_hess_mat (a.unitary_hess_mat)
-  { }
-
-  hess& operator = (const hess& a)
-  {
-    if (this != &a)
+      hess (const T& a)
+        : hess_mat (), unitary_hess_mat ()
       {
-        hess_mat = a.hess_mat;
-        unitary_hess_mat = a.unitary_hess_mat;
+        init (a);
       }
 
-    return *this;
+      hess (const T& a, octave_idx_type& info)
+        : hess_mat (), unitary_hess_mat ()
+      {
+        info = init (a);
+      }
+
+      hess (const hess& a)
+        : hess_mat (a.hess_mat), unitary_hess_mat (a.unitary_hess_mat)
+      { }
+
+      hess& operator = (const hess& a)
+      {
+        if (this != &a)
+          {
+            hess_mat = a.hess_mat;
+            unitary_hess_mat = a.unitary_hess_mat;
+          }
+
+        return *this;
+      }
+
+      ~hess (void) { }
+
+      T hess_matrix (void) const { return hess_mat; }
+
+      T unitary_hess_matrix (void) const { return unitary_hess_mat; }
+
+    private:
+
+      T hess_mat;
+      T unitary_hess_mat;
+
+      octave_idx_type init (const T& a);
+    };
+
+    template <typename T>
+    extern std::ostream&
+    operator << (std::ostream& os, const hess<T>& a);
   }
-
-  ~hess (void) { }
-
-  T hess_matrix (void) const { return hess_mat; }
-
-  T unitary_hess_matrix (void) const { return unitary_hess_mat; }
-
-private:
-
-  T hess_mat;
-  T unitary_hess_mat;
-
-  octave_idx_type init (const T& a);
-};
-
-template <typename T>
-extern std::ostream&
-operator << (std::ostream& os, const hess<T>& a);
+}
 
 #endif
+

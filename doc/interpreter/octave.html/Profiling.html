@@ -164,6 +164,29 @@ for all other function types.
 </p></dd></dl>
 
 
+<a name="XREFprofexport"></a><dl>
+<dt><a name="index-profexport"></a>: <em></em> <strong>profexport</strong> <em>(<var>dir</var>)</em></dt>
+<dt><a name="index-profexport-1"></a>: <em></em> <strong>profexport</strong> <em>(<var>dir</var>, <var>data</var>)</em></dt>
+<dt><a name="index-profexport-2"></a>: <em></em> <strong>profexport</strong> <em>(<var>dir</var>, <var>name</var>)</em></dt>
+<dt><a name="index-profexport-3"></a>: <em></em> <strong>profexport</strong> <em>(<var>dir</var>, <var>name</var>, <var>data</var>)</em></dt>
+<dd>
+<p>Export profiler data as HTML.
+</p>
+<p>Export the profiling data in <var>data</var> into a series of HTML files in
+the folder <var>dir</var>.  The initial file will be
+<samp><var>data</var>/index.html</samp>.
+</p>
+<p>If <var>name</var> is specified, it must be a string that contains a &ldquo;name&rdquo;
+for the profile being exported.  This name is included in the HTML.
+</p>
+<p>The input <var>data</var> is the structure returned by <code>profile (&quot;info&quot;)</code>.
+If unspecified, <code>profexport</code> will use the current profile dataset.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFprofshow">profshow</a>, <a href="#XREFprofexplore">profexplore</a>, <a href="#XREFprofile">profile</a>.
+</p></dd></dl>
+
+
 <a name="XREFprofexplore"></a><dl>
 <dt><a name="index-profexplore"></a>: <em></em> <strong>profexplore</strong> <em>()</em></dt>
 <dt><a name="index-profexplore-1"></a>: <em></em> <strong>profexplore</strong> <em>(<var>data</var>)</em></dt>

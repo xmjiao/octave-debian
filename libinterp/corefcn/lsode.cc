@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -76,7 +76,7 @@ lsode_user_function (const ColumnVector& x, double t)
         {
           tmp = lsode_fcn->do_multi_index_op (1, args);
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           err_user_supplied_eval (e, "lsode");
         }
@@ -116,7 +116,7 @@ lsode_user_jacobian (const ColumnVector& x, double t)
         {
           tmp = lsode_jac->do_multi_index_op (1, args);
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           err_user_supplied_eval (e, "lsode");
         }
@@ -509,3 +509,4 @@ parameters for @code{lsode}.
 
 %!error lsode_options ("foo", 1, 2)
 */
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -154,6 +154,7 @@ namespace octave
     extern const char *SH_LD;
     extern const char *SH_LDFLAGS;
     extern const char *STATIC_LIBS;
+    extern const char *SUITESPARSE_CONFIG_LIBS;
     extern const char *TERM_LIBS;
     extern const char *UMFPACK_CPPFLAGS;
     extern const char *UMFPACK_LDFLAGS;
@@ -170,7 +171,8 @@ namespace octave
     extern const char *Z_LDFLAGS;
     extern const char *Z_LIBS;
     extern const char *config_opts;
-  };
-};
+  }
+}
 
 #endif
+

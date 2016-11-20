@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002-2015 John W. Eaton
+Copyright (C) 2002-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -647,3 +647,4 @@ DASRT::error_message (void) const
 
   return retval;
 }
+

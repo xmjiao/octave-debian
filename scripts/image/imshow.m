@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2015 John W. Eaton
+## Copyright (C) 1994-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -240,19 +240,23 @@ endfunction
 %!demo
 %! clf;
 %! imshow (rand (100, 100));
-
-%!demo
-%! clf;
-%! imshow (rand (100, 100, 3));
-
-%!demo
-%! clf;
-%! imshow (100*rand (100, 100, 3));
+%! title ({"imshow with random 100x100 matrix", "black and white"});
 
 %!demo
 %! clf;
 %! imshow (rand (100, 100));
 %! colormap (jet (64));
+%! title ({"imshow with random 100x100 matrix", "colormap() makes color image"});
+
+%!demo
+%! clf;
+%! imshow (rand (100, 100, 3));
+%! title ({"imshow with random 100x100x3 matrix", "RGB color"});
+
+%!demo
+%! clf;
+%! imshow (100*rand (100, 100, 3));
+%! title ({"imshow with random 100x100x3 matrix", "RGB values > 1 are clipped"});
 
 ## Test input validation
 %!error imshow ()

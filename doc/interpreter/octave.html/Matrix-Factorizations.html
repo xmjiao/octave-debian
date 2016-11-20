@@ -377,7 +377,7 @@ factorization from scratch.
 <dt><a name="index-qr"></a>: <em>[<var>Q</var>, <var>R</var>] =</em> <strong>qr</strong> <em>(<var>A</var>)</em></dt>
 <dt><a name="index-qr-1"></a>: <em>[<var>Q</var>, <var>R</var>, <var>P</var>] =</em> <strong>qr</strong> <em>(<var>A</var>) # non-sparse A</em></dt>
 <dt><a name="index-qr-2"></a>: <em><var>X</var> =</em> <strong>qr</strong> <em>(<var>A</var>)</em></dt>
-<dt><a name="index-qr-3"></a>: <em><var>R</var> =</em> <strong>qr</strong> <em>(<var>A</var>)  # sparse A</em></dt>
+<dt><a name="index-qr-3"></a>: <em><var>R</var> =</em> <strong>qr</strong> <em>(<var>A</var>) # sparse A</em></dt>
 <dt><a name="index-qr-4"></a>: <em>[<var>C</var>, <var>R</var>] =</em> <strong>qr</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
 <dt><a name="index-qr-5"></a>: <em>[&hellip;] =</em> <strong>qr</strong> <em>(&hellip;, 0)</em></dt>
 <dt><a name="index-qr-6"></a>: <em>[&hellip;] =</em> <strong>qr</strong> <em>(&hellip;, 'vector')</em></dt>
@@ -479,13 +479,13 @@ x = <var>R</var> \ <var>C</var>
 </pre></div>
 
 <p>If the final argument is the scalar 0 and the number of rows is larger
-than the number of columns, then an &rsquo;economy&rsquo; factorization is returned,
-omitting zeroes of <var>R</var> and the corresponding columns of <var>Q</var>.
-That is, <var>R</var> will have only <code>size (<var>A</var>,1)</code> rows.
-In this case, <var>P</var> is a vector rather than a matrix.
+than the number of columns, then an <code>&quot;economy&quot;</code> factorization is
+returned, omitting zeroes of <var>R</var> and the corresponding columns of <var>Q</var>.
+That is, <var>R</var> will have only <code>size (<var>A</var>,1)</code> rows.  In this case,
+<var>P</var> is a vector rather than a matrix.
 </p>
-<p>If the final argument is the string &rsquo;vector&rsquo; then <var>P</var> is a permutation
-vector instead of a permutation matrix.
+<p>If the final argument is the string <code>&quot;vector&quot;</code> then <var>P</var> is a
+permutation vector instead of a permutation matrix.
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFchol">chol</a>, <a href="#XREFhess">hess</a>, <a href="#XREFlu">lu</a>, <a href="#XREFqz">qz</a>, <a href="#XREFschur">schur</a>, <a href="#XREFsvd">svd</a>, <a href="#XREFqrupdate">qrupdate</a>, <a href="#XREFqrinsert">qrinsert</a>, <a href="#XREFqrdelete">qrdelete</a>, <a href="#XREFqrshift">qrshift</a>.
@@ -545,7 +545,7 @@ be either full (Q is square) or economized (R is square).
 <var>R</var>&nbsp;upper trapezoidal, return the QR&nbsp;factorization of
 <span class="nolinebreak">[A(:,1:j-1),</span>&nbsp;U,&nbsp;A(:,j:n)]<!-- /@w -->,
 where <var>u</var> is a column vector to be inserted into <var>A</var>
-(if <var>orient</var> is <code>\&quot;col\&quot;</code>),
+(if <var>orient</var> is <code>&quot;col&quot;</code>),
 or the QR&nbsp;factorization of <span class="nolinebreak">[A(1:j-1,:);X;A(:,j:n)]</span><!-- /@w -->,
 where <var>x</var> is a row <var>orient</var> is <code>&quot;row&quot;</code>).
 The default value of <var>orient</var> is <code>&quot;col&quot;</code>.

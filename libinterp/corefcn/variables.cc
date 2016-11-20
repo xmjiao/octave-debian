@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -135,7 +135,8 @@ is_valid_function (const octave_value& arg,
     }
   else if (warn)
     // FIXME: Should this be "err" and "error_for", rather than warn?
-    error ("%s: argument must be a string containing function name", warn_for.c_str ());
+    error ("%s: argument must be a string containing function name",
+           warn_for.c_str ());
 
   return ans;
 }
@@ -284,7 +285,7 @@ generate_struct_completions (const std::string& text,
                   && (tmp.is_map () || tmp.is_java () || tmp.is_classdef_object ()))
                 names = tmp.map_keys ();
             }
-          catch (const octave_execution_exception&)
+          catch (const octave::execution_exception&)
             {
               recover_from_exception ();
             }
@@ -1672,7 +1673,7 @@ do_who (int argc, const string_vector& argv, bool return_list,
           feval ("load", octave_value (nm), 0);
 
           std::string newmsg = std::string ("Variables in the file ")
-            + nm + ":\n\n";
+                               + nm + ":\n\n";
 
           retval = do_who (i, argv, return_list, verbose, newmsg);
 
@@ -2119,7 +2120,7 @@ name_matches_any_pattern (const std::string& nm, const string_vector& argv,
         {
           if (have_regexp)
             {
-              if (is_regexp_match (patstr, nm))
+              if (octave::regexp::is_match (patstr, nm))
                 {
                   retval = true;
                   break;
@@ -2690,3 +2691,4 @@ should return an error message to be displayed.
 {
   return SET_INTERNAL_VARIABLE (missing_component_hook);
 }
+

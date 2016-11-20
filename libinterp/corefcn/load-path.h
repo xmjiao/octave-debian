@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2015 John W. Eaton
+Copyright (C) 2006-2016 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -29,6 +29,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <iosfwd>
 #include <list>
 #include <map>
+#include <set>
 #include <string>
 
 #include "pathsearch.h"
@@ -739,3 +740,4 @@ extern std::string
 genpath (const std::string& dir, const string_vector& skip = "private");
 
 #endif
+

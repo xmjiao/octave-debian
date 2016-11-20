@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2015 John W. Eaton
+Copyright (C) 2007-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -198,9 +198,8 @@ have_gnuplot_binary (void)
           retval = fs.exists ();
         }
     }
-  catch (octave_execution_exception&)
-    {
-    }
+  catch (octave::execution_exception&)
+    { }
 
   return retval;
 }
@@ -209,7 +208,7 @@ have_gnuplot_binary (void)
 
 DEFUN_DLD (__init_gnuplot__, , ,
            doc: /* -*- texinfo -*-
-@deftypefn  {} {} __init_gnuplot__ ()
+@deftypefn {} {} __init_gnuplot__ ()
 Undocumented internal function.
 @end deftypefn */)
 {
@@ -247,3 +246,4 @@ Undocumented internal function.
 ## No test needed for internal helper function.
 %!assert (1)
 */
+

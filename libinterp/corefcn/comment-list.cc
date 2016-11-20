@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000-2015 John W. Eaton
+Copyright (C) 2000-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -43,3 +43,4 @@ octave_comment_list::dup (void) const
 
   return new_cl;
 }
+

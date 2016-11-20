@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -604,7 +604,7 @@ start or stop the profiler and also to query collected data afterwards.
 The data is returned in an Octave data structure which can then be
 examined or further processed by other routines or tools.
 
-@c profile scripts/scripts/profiler/profile.m
+@c profile scripts/profiler/profile.m
 @anchor{XREFprofile}
 @deftypefn  {} {} profile on
 @deftypefnx {} {} profile off
@@ -668,7 +668,7 @@ This shows that most of the run time was spent executing the function
 operators.  Furthermore, it is shown how often the function was called
 and the profiler also records that it is recursive.
 
-@c profshow scripts/scripts/profiler/profshow.m
+@c profshow scripts/profiler/profshow.m
 @anchor{XREFprofshow}
 @deftypefn  {} {} profshow (@var{data})
 @deftypefnx {} {} profshow (@var{data}, @var{n})
@@ -690,7 +690,30 @@ for all other function types.
 @end deftypefn
 
 
-@c profexplore scripts/scripts/profiler/profexplore.m
+@c profexport scripts/profiler/profexport.m
+@anchor{XREFprofexport}
+@deftypefn  {} {} profexport (@var{dir})
+@deftypefnx {} {} profexport (@var{dir}, @var{data})
+@deftypefnx {} {} profexport (@var{dir}, @var{name})
+@deftypefnx {} {} profexport (@var{dir}, @var{name}, @var{data})
+
+Export profiler data as HTML.
+
+Export the profiling data in @var{data} into a series of HTML files in
+the folder @var{dir}.  The initial file will be
+@file{@var{data}/index.html}.
+
+If @var{name} is specified, it must be a string that contains a ``name''
+for the profile being exported.  This name is included in the HTML.
+
+The input @var{data} is the structure returned by @code{profile ("info")}.
+If unspecified, @code{profexport} will use the current profile dataset.
+
+@seealso{@ref{XREFprofshow,,profshow}, @ref{XREFprofexplore,,profexplore}, @ref{XREFprofile,,profile}}
+@end deftypefn
+
+
+@c profexplore scripts/profiler/profexplore.m
 @anchor{XREFprofexplore}
 @deftypefn  {} {} profexplore ()
 @deftypefnx {} {} profexplore (@var{data})

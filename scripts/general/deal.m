@@ -1,4 +1,4 @@
-## Copyright (C) 1998-2015 Ariel Tankus
+## Copyright (C) 1998-2016 Ariel Tankus
 ##
 ## This file is part of Octave.
 ##
@@ -64,7 +64,7 @@
 ## @example
 ## @group
 ## c = @{[1 2], "Three", 4@};
-## [x, y, z ] = c@{:@}
+## [x, y, z] = c@{:@}
 ## @result{}
 ##    x =
 ##

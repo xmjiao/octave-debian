@@ -1,4 +1,4 @@
-## Copyright (C) 2015 Carlo de Falco
+## Copyright (C) 2016 Carlo de Falco
 ## Copyright (C) 2013 Roberto Porcu' <roberto.porcu@polimi.it>
 ##
 ## This file is part of Octave.
@@ -21,10 +21,10 @@
 ## @deftypefn {} {@var{solution} =} integrate_adaptive (@var{@@stepper}, @var{order}, @var{@@func}, @var{tspan}, @var{x0}, @var{options})
 ##
 ## This function file can be called by an ODE solver function in order to
-## integrate the set of ODEs on the interval @var{[t0, t1]} with an
-## adaptive timestep.
+## integrate the set of ODEs on the interval @var{[t0, t1]} with an adaptive
+## timestep.
 ##
-## The function returns a structure @var{solution} with two fieldss: @var{t}
+## The function returns a structure @var{solution} with two fields: @var{t}
 ## and @var{y}.  @var{t} is a column vector and contains the time stamps.
 ## @var{y} is a matrix in which each column refers to a different unknown
 ## of the problem and the row number is the same as the @var{t} row number.
@@ -42,9 +42,11 @@
 ## defines the ODE:
 ##
 ## @ifhtml
+##
 ## @example
 ## @math{y' = f(t,y)}
 ## @end example
+##
 ## @end ifhtml
 ## @ifnothtml
 ## @math{y' = f(t,y)}.
@@ -59,8 +61,6 @@
 ## stepper.
 ##
 ## @end deftypefn
-##
-## @seealso{integrate_const, integrate_n_steps}
 
 function solution = integrate_adaptive (stepper, order, func, tspan, x0,
                                         options)
@@ -71,13 +71,15 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
   x_new = x_old = x = x0(:);
 
   ## Get first initial timestep
-  dt = odeget (options, "InitialStep", [], "fast");
+  dt = options.InitialStep;
   if (isempty (dt))
-    dt = starting_stepsize (order, func, t, x, options.AbsTol, options.RelTol,
-                            options.normcontrol);
+    dt = starting_stepsize (order, func, t, x,
+                            options.AbsTol, options.RelTol,
+                            strcmp (options.NormControl, "on"),
+                            options.funarguments);
   endif
 
-  dir = odeget (options, "direction", [], "fast");
+  dir = options.direction;
   dt = dir * min (abs (dt), options.MaxStep);
 
   options.comp = 0.0;
@@ -89,19 +91,19 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
 
   ## Initialize the OutputFcn
   if (options.haveoutputfunction)
-    if (options.haveoutputselection)
+    if (! isempty (options.OutputSel))
       solution.retout = x(options.OutputSel,end);
     else
       solution.retout = x;
     endif
-    feval (options.OutputFcn, tspan, solution.retout,
-           "init", options.funarguments{:});
+    feval (options.OutputFcn, tspan, solution.retout, "init",
+           options.funarguments{:});
   endif
 
   ## Initialize the EventFcn
-  if (options.haveeventfunction)
+  if (! isempty (options.Events))
     ode_event_handler (options.Events, tspan(end), x,
-                         "init", options.funarguments{:});
+                       "init", options.funarguments{:});
   endif
 
   if (options.havenonnegative)
@@ -114,8 +116,10 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
   solution.unhandledtermination = true;
   ireject = 0;
 
+  NormControl = strcmp (options.NormControl, "on");
   k_vals = [];
   iout = istep = 1;
+
   while (dir * t_old < dir * tspan(end))
 
     ## Compute integration step from t_old to t_new = t_old + dt
@@ -130,8 +134,8 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
       x_est(nn, end) = abs (x_est(nn, end));
     endif
 
-    err = AbsRel_Norm (x_new, x_old, options.AbsTol, options.RelTol,
-                       options.normcontrol, x_est);
+    err = AbsRel_norm (x_new, x_old, options.AbsTol, options.RelTol,
+                       NormControl, x_est);
 
     ## Accept solution only if err <= 1.0
     if (err <= 1)
@@ -158,14 +162,14 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
 
           ## Call Events function only if a valid result has been found.
           ## Stop integration if eventbreak is true.
-          if (options.haveeventfunction)
+          if (! isempty (options.Events))
             break_loop = false;
             for idenseout = 1:numel (t_caught)
               id = t_caught(idenseout);
               td = t(id);
               solution.event = ...
                 ode_event_handler (options.Events, t(id), x(:, id), [],
-                                     options.funarguments{:});
+                                   options.funarguments{:});
               if (! isempty (solution.event{1}) && solution.event{1} == 1)
                 t(id) = solution.event{3}(end);
                 t = t(1:id);
@@ -182,22 +186,29 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
           endif
 
           ## Call OutputFcn only if a valid result has been found.
-          ## Stop integration if function returns false.
+          ## Stop integration if function returns true.
           if (options.haveoutputfunction)
             cnt = options.Refine + 1;
             approxtime = linspace (t_old, t_new, cnt);
             approxvals = interp1 ([t_old, t(t_caught), t_new],
                                   [x_old, x(:, t_caught), x_new] .',
-                                  approxtime, 'linear') .';
-            if (options.haveoutputselection)
+                                  approxtime, "linear") .';
+            if (isvector (approxvals) && ! isscalar (approxtime))
+              approxvals = approxvals.';
+            endif
+            if (! isempty (options.OutputSel))
               approxvals = approxvals(options.OutputSel, :);
             endif
+            stop_solve = false;
             for ii = 1:numel (approxtime)
-              pltret = feval (options.OutputFcn, approxtime(ii),
-                              approxvals(:, ii), [],
-                              options.funarguments{:});
+              stop_solve = feval (options.OutputFcn,
+                                  approxtime(ii), approxvals(:, ii), [],
+                                  options.funarguments{:});
+              if (stop_solve)
+                break;  # break from inner loop
+              endif
             endfor
-            if (pltret)  # Leave main loop
+            if (stop_solve)  # Leave main loop
               solution.unhandledtermination = false;
               break;
             endif
@@ -205,7 +216,7 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
 
         endif
 
-      else
+      else   # not fixed times
 
         t(++istep)  = t_new;
         x(:, istep) = x_new;
@@ -213,10 +224,10 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
 
         ## Call Events function only if a valid result has been found.
         ## Stop integration if eventbreak is true.
-        if (options.haveeventfunction)
+        if (! isempty (options.Events))
           solution.event = ...
             ode_event_handler (options.Events, t(istep), x(:, istep), [],
-                                 options.funarguments{:});
+                               options.funarguments{:});
           if (! isempty (solution.event{1}) && solution.event{1} == 1)
             t(istep) = solution.event{3}(end);
             x(:, istep) = solution.event{4}(end, :).';
@@ -226,21 +237,29 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
         endif
 
         ## Call OutputFcn only if a valid result has been found.
-        ## Stop integration if function returns false.
+        ## Stop integration if function returns true.
         if (options.haveoutputfunction)
           cnt = options.Refine + 1;
           approxtime = linspace (t_old, t_new, cnt);
           approxvals = interp1 ([t_old, t_new],
                                 [x_old, x_new] .',
-                                approxtime, 'linear') .';
-          if (options.haveoutputselection)
+                                approxtime, "linear") .';
+          if (isvector (approxvals) && ! isscalar (approxtime))
+            approxvals = approxvals.';
+          endif
+          if (! isempty (options.OutputSel))
             approxvals = approxvals(options.OutputSel, :);
           endif
+          stop_solve = false;
           for ii = 1:numel (approxtime)
-            pltret = feval (options.OutputFcn, approxtime(ii),
-                            approxvals(:, ii), [], options.funarguments{:});
+            stop_solve = feval (options.OutputFcn,
+                                approxtime(ii), approxvals(:, ii), [],
+                                options.funarguments{:});
+            if (stop_solve)
+              break;  # break from inner loop
+            endif
           endfor
-          if (pltret)  # Leave main loop
+          if (stop_solve)  # Leave main loop
             solution.unhandledtermination = false;
             break;
           endif
@@ -253,12 +272,12 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
       x_old = x_new;
       k_vals = new_k_vals;
 
-    else
+    else  # error condition
 
       ireject += 1;
 
-      ## Stop solving because, in the last 5,000 steps, no successful valid
-      ## value has been found
+      ## Stop solving if, in the last 5,000 steps, no successful valid
+      ## value has been found.
       if (ireject >= 5_000)
         error (["integrate_adaptive: Solving was not successful. ", ...
                 " The iterative integration loop exited at time", ...
@@ -276,8 +295,11 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
     err += eps;  # avoid divisions by zero
     dt *= min (facmax, max (facmin, fac * (1 / err)^(1 / (order + 1))));
     dt = dir * min (abs (dt), options.MaxStep);
+    if (! (abs (dt) > eps (t(end))))
+      break;
+    endif
 
-    ## make sure we don't go past tpan(end)
+    ## Make sure we don't go past tpan(end)
     dt = dir * min (abs (dt), abs (tspan(end) - t_old));
 
   endwhile
@@ -285,14 +307,14 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
   ## Check if integration of the ode has been successful
   if (dir * t(end) < dir * tspan(end))
     if (solution.unhandledtermination == true)
-      error ("integrate_adaptive:unexpected_termination",
-             [" Solving was not successful. ", ...
-              " The iterative integration loop exited at time", ...
-              " t = %f before the endpoint at tend = %f was reached. ", ...
-              " This may happen if the stepsize becomes too small. ", ...
-              " Try to reduce the value of 'InitialStep'", ...
-              " and/or 'MaxStep' with the command 'odeset'."],
-             t(end), tspan(end));
+      warning ("integrate_adaptive:unexpected_termination",
+               [" Solving was not successful. ", ...
+                " The iterative integration loop exited at time", ...
+                " t = %f before the endpoint at tend = %f was reached. ", ...
+                " This may happen if the stepsize becomes too small. ", ...
+                " Try to reduce the value of 'InitialStep'", ...
+                " and/or 'MaxStep' with the command 'odeset'."],
+               t(end), tspan(end));
     else
       warning ("integrate_adaptive:unexpected_termination",
                ["Solver was stopped by a call of 'break'", ...

@@ -1,4 +1,4 @@
-## Copyright (C) 1997-2015 Vincent Cautaerts
+## Copyright (C) 1997-2016 Vincent Cautaerts
 ##
 ## This file is part of Octave.
 ##
@@ -20,7 +20,7 @@
 ## @deftypefn  {} {} fftshift (@var{x})
 ## @deftypefnx {} {} fftshift (@var{x}, @var{dim})
 ## Perform a shift of the vector @var{x}, for use with the @code{fft} and
-## @code{ifft} functions, in order the move the frequency 0 to the center of
+## @code{ifft} functions, in order to move the frequency 0 to the center of
 ## the vector or matrix.
 ##
 ## If @var{x} is a vector of @math{N} elements corresponding to @math{N} time
@@ -28,11 +28,11 @@
 ## @code{fftshift (fft (@var{x}))} corresponds to frequencies
 ##
 ## @example
-## f = [ -(ceil((N-1)/2):-1:1)*df 0 (1:floor((N-1)/2))*df ]
+## f = [ -(ceil((N-1)/2):-1:1), 0, (1:floor((N-1)/2)) ] * df
 ## @end example
 ##
 ## @noindent
-## where @nospell{@math{df} = 1 / @math{dt}}.
+## where @nospell{@math{df = 1 / (N * dt)}}.
 ##
 ## If @var{x} is a matrix, the same holds for rows and columns.  If @var{x}
 ## is an array, then the same holds along each dimension.
@@ -138,8 +138,8 @@ endfunction
 %! assert (y, "efgabcd");
 %! assert (fftshift (y), "bcdefga");
 
-## Test N-dimensional input (bug #45207)
-%!test
+## Test N-dimensional input
+%!test <45207>
 %! x = [0:3];
 %! x = x + x' + reshape (x, [1 1 4]);
 %! y1 = [4 5 2 3; 5 6 3 4; 2 3 0 1; 3 4 1 2];

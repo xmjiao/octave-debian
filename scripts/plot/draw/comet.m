@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2015 Ben Abbott
+## Copyright (C) 2008-2016 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -95,7 +95,7 @@ endfunction
 
 %!demo
 %! clf;
-%! title ('comet() animation');
+%! title ("comet() animation");
 %! hold on;
 %! t = 0:.1:2*pi;
 %! x = cos (2*t) .* (cos (t).^2);

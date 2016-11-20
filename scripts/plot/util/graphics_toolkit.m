@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2015 Michael Goffioul
+## Copyright (C) 2008-2016 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -82,8 +82,6 @@ function retval = graphics_toolkit (name, hlist = [])
   endif
 
   if (! any (strcmp (loaded_graphics_toolkits (), name)))
-    ## FIXME: Special gnuplot handling for versions < 4.2.5 (bug #44978).
-    ## This can probably be deleted in the future once RHEL upgrades gnuplot.
     if (strcmp (name, "gnuplot"))
       valid_version = __gnuplot_has_feature__ ("minimum_version");
       if (valid_version != 1)
@@ -106,6 +104,9 @@ endfunction
 
 
 %!testif HAVE_OPENGL, HAVE_FLTK
+%! if (! have_window_system)
+%!  return;
+%! endif
 %! unwind_protect
 %!   hf = figure ("visible", "off");
 %!   toolkit = graphics_toolkit ();
@@ -117,6 +118,9 @@ endfunction
 %! end_unwind_protect
 
 %!testif HAVE_OPENGL, HAVE_FLTK
+%! if (! have_window_system)
+%!  return;
+%! endif
 %! old_toolkit = graphics_toolkit ();
 %! switch (old_toolkit)
 %!   case {"gnuplot"}

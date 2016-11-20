@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2015 David Bateman
+## Copyright (C) 2007-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -180,17 +180,19 @@ endfunction
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! surfnorm (peaks (19));
 %! shading faceted;
-%! title ({'surfnorm() shows surface and normals at each vertex', ...
-%!         'peaks() function with 19 faces'});
+%! title ({"surfnorm() shows surface and normals at each vertex", ...
+%!         "peaks() function with 19 faces"});
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! [x, y, z] = sombrero (10);
 %! surfnorm (x, y, z);
+%! title ({"surfnorm() shows surface and normals at each vertex", ...
+%!         "sombrero() function with 10 faces"});
 
 ## Test input validation
 %!error surfnorm ()

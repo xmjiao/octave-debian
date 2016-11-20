@@ -1,7 +1,7 @@
 /*
 
 Copyright (C) 2016 John W. Eaton
-Copyright (C) 2009-2015 Michael Goffioul
+Copyright (C) 2009-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -35,47 +35,51 @@ along with Octave; see the file COPYING.  If not, see
 #include "text-renderer.h"
 #include "txt-eng.h"
 
-class
-base_text_renderer : public text_processor
+namespace octave
 {
-public:
+  class
+  base_text_renderer : public text_processor
+  {
+  public:
 
-  base_text_renderer (void) : text_processor () { }
+    base_text_renderer (void) : text_processor () { }
 
-  virtual ~base_text_renderer (void) { }
+    virtual ~base_text_renderer (void) { }
 
-  virtual Matrix
-  get_extent (text_element *elt, double rotation) = 0;
+    virtual Matrix
+    get_extent (text_element *elt, double rotation) = 0;
 
-  virtual Matrix
-  get_extent (const std::string& txt, double rotation,
-              const caseless_str& interpreter) = 0;
+    virtual Matrix
+    get_extent (const std::string& txt, double rotation,
+                const caseless_str& interpreter) = 0;
 
-  virtual void
-  set_font (const std::string& name, const std::string& weight,
-            const std::string& angle, double size) = 0;
+    virtual void
+    set_font (const std::string& name, const std::string& weight,
+              const std::string& angle, double size) = 0;
 
-  virtual void set_color (const Matrix& c) = 0;
+    virtual void set_color (const Matrix& c) = 0;
 
-  virtual void
-  text_to_pixels (const std::string& txt, uint8NDArray& pxls,
-                  Matrix& bbox, int halign, int valign, double rotation,
-                  const caseless_str& interpreter,
-                  bool handle_rotation) = 0;
+    virtual void
+    text_to_pixels (const std::string& txt, uint8NDArray& pxls,
+                    Matrix& bbox, int halign, int valign, double rotation,
+                    const caseless_str& interpreter,
+                    bool handle_rotation) = 0;
 
-  virtual void
-  text_to_strlist (const std::string& txt,
-                   std::list<text_renderer::string>& lst,
-                   Matrix& box, int halign, int valign, double rotation,
-                   const caseless_str& interpreter = "tex") = 0;
+    virtual void
+    text_to_strlist (const std::string& txt,
+                     std::list<text_renderer::string>& lst,
+                     Matrix& box, int halign, int valign, double rotation,
+                     const caseless_str& interpreter = "tex") = 0;
 
-private:
+  private:
 
-  // No copying!
+    // No copying!
 
-  base_text_renderer (const base_text_renderer&);
+    base_text_renderer (const base_text_renderer&);
 
-  base_text_renderer& operator = (const base_text_renderer&);
-};
+    base_text_renderer& operator = (const base_text_renderer&);
+  };
+}
 
 #endif
+

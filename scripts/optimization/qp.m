@@ -1,5 +1,5 @@
-## Copyright (C) 2013-2015 Julien Bect
-## Copyright (C) 2000-2015 Gabriele Pannocchia.
+## Copyright (C) 2013-2016 Julien Bect
+## Copyright (C) 2000-2016 Gabriele Pannocchia.
 ##
 ## This file is part of Octave.
 ##
@@ -373,8 +373,8 @@ function [x, obj, INFO, lambda] = qp (x0, H, varargin)
             Atmp = [Ain, gamma];
             btmp = bin;
           endif
-          ctmp = [zeros(n-n_eq, 1); ones(n_in, 1)];
-          lb = [-Inf(n-n_eq,1); zeros(n_in,1)];
+          ctmp = [zeros(n, 1); ones(n_in, 1)];
+          lb = [-Inf(n,1); zeros(n_in,1)];
           ub = [];
           ctype = repmat ("L", n_in, 1);
           [P, dummy, status] = glpk (ctmp, Atmp, btmp, lb, ub, ctype);
@@ -420,8 +420,8 @@ function [x, obj, INFO, lambda] = qp (x0, H, varargin)
 endfunction
 
 
-## Test infeasible initial guess (bug #40536)
-%!testif HAVE_GLPK
+## Test infeasible initial guess
+%!testif HAVE_GLPK <40536>
 %!
 %! H = 1;  q = 0;                # objective: x -> 0.5 x^2
 %! A = 1;  lb = 1;  ub = +inf;   # constraint: x >= 1

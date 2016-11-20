@@ -93,12 +93,14 @@ covariance [default]
 </p></dd>
 </dl>
 
-<p>Compatibility Note:: Octave always computes the covariance matrix.
-For two inputs, however, <small>MATLAB</small> will calculate
-<code>cov (<var>x</var>(:), <var>y</var>(:))</code> whenever the number of elements in
-<var>x</var> and <var>y</var> are equal.  This will result in a scalar rather than
-a matrix output.  Code relying on this odd definition will need to be
-changed when running in Octave.
+<p>Compatibility Note:: Octave always treats rows of <var>x</var> and <var>y</var>
+as multivariate random variables.
+For two inputs, however, <small>MATLAB</small> treats <var>x</var> and <var>y</var> as two
+univariate distributions regardless of their shapes, and will calculate
+<code>cov ([<var>x</var>(:), <var>y</var>(:)])</code> whenever the number of elements in
+<var>x</var> and <var>y</var> are equal.  This will result in a 2x2 matrix.
+Code relying on <small>MATLAB</small>&rsquo;s definition will need to be changed when
+running in Octave.
 </p>
 <p><strong>See also:</strong> <a href="#XREFcorr">corr</a>.
 </p></dd></dl>

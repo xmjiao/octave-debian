@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000-2015 Gabriele Pannocchia
+Copyright (C) 2000-2016 Gabriele Pannocchia
 
 This file is part of Octave.
 
@@ -47,7 +47,7 @@ null (const Matrix& A, octave_idx_type& rank)
 
   if (! A.is_empty ())
     {
-      svd<Matrix> A_svd (A);
+      octave::math::svd<Matrix> A_svd (A);
 
       DiagMatrix S = A_svd.singular_values ();
 
@@ -142,13 +142,13 @@ qp (const Matrix& H, const ColumnVector& q,
     {
       eigH = EIG (H);
     }
-  catch (octave_execution_exception& e)
+  catch (octave::execution_exception& e)
     {
       error (e, "qp: failed to compute eigenvalues of H");
     }
 
   ColumnVector eigenvalH = real (eigH.eigenvalues ());
-  Matrix eigenvecH = real (eigH.eigenvectors ());
+  Matrix eigenvecH = real (eigH.right_eigenvectors ());
   double minReal = eigenvalH.min ();
   octave_idx_type indminR = 0;
   for (octave_idx_type i = 0; i < n; i++)
@@ -191,11 +191,11 @@ qp (const Matrix& H, const ColumnVector& q,
               // factorization since the Hessian is positive
               // definite.
 
-              chol<Matrix> cholH (H);
+              octave::math::chol<Matrix> cholH (H);
 
               R = cholH.chol_matrix ();
 
-              Matrix Hinv = chol2inv (R);
+              Matrix Hinv = octave::math::chol2inv (R);
 
               // Computing the unconstrained step.
               // p = -Hinv * g;
@@ -250,7 +250,7 @@ qp (const Matrix& H, const ColumnVector& q,
               // Computing the Cholesky factorization (pR = 0 means
               // that the reduced Hessian was positive definite).
 
-              chol<Matrix> cholrH (rH, pR);
+              octave::math::chol<Matrix> cholrH (rH, pR);
               Matrix tR = cholrH.chol_matrix ();
               if (pR == 0)
                 R = tR;
@@ -265,7 +265,7 @@ qp (const Matrix& H, const ColumnVector& q,
                 {
                   // Using the Cholesky factorization to invert rH
 
-                  Matrix rHinv = chol2inv (R);
+                  Matrix rHinv = octave::math::chol2inv (R);
 
                   ColumnVector pz = -rHinv * Zt * g;
 
@@ -290,13 +290,13 @@ qp (const Matrix& H, const ColumnVector& q,
                 {
                   eigrH = EIG (rH);
                 }
-              catch (octave_execution_exception& e)
+              catch (octave::execution_exception& e)
                 {
                   error (e, "qp: failed to compute eigenvalues of rH");
                 }
 
               ColumnVector eigenvalrH = real (eigrH.eigenvalues ());
-              Matrix eigenvecrH = real (eigrH.eigenvectors ());
+              Matrix eigenvecrH = real (eigrH.right_eigenvectors ());
               double mRrH = eigenvalrH.min ();
               indminR = 0;
               for (octave_idx_type i = 0; i < n; i++)
@@ -520,3 +520,4 @@ Undocumented internal function.
 ## No test needed for internal helper function.
 %!assert (1)
 */
+

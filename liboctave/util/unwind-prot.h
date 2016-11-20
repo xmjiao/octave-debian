@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -127,19 +127,19 @@ namespace octave
     unwind_protect_safe (void) : unwind_protect () { }
 
     ~unwind_protect_safe (void)
-      {
-        while (! empty ())
-          {
-            try
-              {
-                run_first ();
-              }
-            catch (...) // Yes, the black hole.  Remember we're in a destructor.
-              {
-                warn_unhandled_exception ();
-              }
-          }
-      }
+    {
+      while (! empty ())
+        {
+          try
+            {
+              run_first ();
+            }
+          catch (...) // Yes, the black hole.  Remember we're in a destructor.
+            {
+              warn_unhandled_exception ();
+            }
+        }
+    }
 
   private:
 
@@ -162,3 +162,4 @@ typedef octave::unwind_protect_safe unwind_protect_safe;
 #endif
 
 #endif
+

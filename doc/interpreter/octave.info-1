@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 4.1.0+.
+corresponds to GNU Octave version 4.2.0.
 
 * Menu:
 
@@ -72,12 +72,9 @@ corresponds to GNU Octave version 4.1.0+.
 * Packages::
 * External Code Interface::
 * Test and Demo Functions::
-* Tips and Standards::
-* Contributing Guidelines::
 * Obsolete Functions::
 * Trouble::                     If you have trouble installing Octave.
 * Installation::                How to configure, compile and install Octave.
-* Emacs Octave Support::
 * Grammar and Parser::
 * Copying::                     The GNU General Public License.
 * Concept Index::               An item for each concept.
@@ -131,9 +128,9 @@ Command Line Editing
 
 * Cursor Motion::
 * Killing and Yanking::
-* Commands For Text::
-* Commands For Completion::
-* Commands For History::
+* Commands for Text::
+* Commands for Completion::
+* Commands for History::
 * Customizing readline::
 * Customizing the Prompt::
 * Diary and Echo Commands::
@@ -302,6 +299,27 @@ Function Files
 * Function Locking::
 * Function Precedence::
 
+Script Files
+
+* Publish Octave Script Files::
+* Publishing Markup::
+
+Publishing Markup
+
+* Using Publishing Markup in Script Files::
+* Text Formatting::
+* Sections::
+* Preformatted Code::
+* Preformatted Text::
+* Bulleted Lists::
+* Numbered Lists::
+* Including File Content::
+* Including Graphics::
+* Including URLs::
+* Mathematical Equations::
+* HTML Markup::
+* LaTeX Markup::
+
 Function Handles Anonymous Functions Inline Functions
 
 * Function Handles::
@@ -426,7 +444,9 @@ Graphics Object Properties
 * Image Properties::
 * Patch Properties::
 * Surface Properties::
+* Light Properties::
 * Uimenu Properties::
+* Uibuttongroup Properties::
 * Uicontextmenu Properties::
 * Uipanel Properties::
 * Uicontrol Properties::
@@ -741,38 +761,21 @@ Mex-Files
 Java Interface
 
 * Java Interface Functions::
-* Making Java classes available::
-* Creating an instance of a Java class::
-* Handling Java memory limitations::
+* Making Java Classes Available::
+* Creating an Instance of a Java Class::
+* Handling Java Memory Limitations::
 
 Test and Demo Functions
 
 * Test Functions::
 * Demonstration Functions::
 
-Tips and Standards
-
-* Style Tips::                  Writing clean and robust programs.
-* Comment Tips::                Conventions for writing comments.
-* Function Headers::            Standard headers for functions.
-* Documentation Tips::          Writing readable documentation strings.
-
-Contributing Guidelines
-
-* How to Contribute::
-* Building the Development Sources::
-* Basics of Generating a Changeset::
-* General Guidelines::
-* Octave Sources (m-files)::
-* C++ Sources::
-* Other Sources::
-
 Trouble
 
 * Actual Bugs::                 Bugs we will fix later.
 * Reporting Bugs::
 * How To Get Help with Octave::
-* How to distinguish between Octave and Matlab::
+* How to Distinguish Between Octave and Matlab::
 
 Reporting Bugs
 
@@ -793,13 +796,6 @@ Build Dependencies
 * Obtaining the Dependencies Automatically::
 * Build Tools::
 * External Packages::
-
-Emacs Octave Support
-
-* Installing EOS::
-* Using Octave Mode::
-* Running Octave from Within Emacs::
-* Using the Emacs Info Reader for Octave::
 
 Grammar and Parser
 
@@ -869,14 +865,15 @@ people have helped code parts of Octave or aided in various other ways
 (listed alphabetically).
 
 Ben Abbott               Drew Abbot               Andy Adler
-Adam H. Aitkenhead       Giles Anderson           Joel Andersson
-Lachlan Andrew           Pedro Angelo             Muthiah Annamalai
-Markus Appel             Branden Archer           Willem Atsma
-Marco Atzeri             Ander Aurrekoetxea       Shai Ayal
-Roger Banks              Ben Barrowes             Alexander Barth
-David Bateman            Heinz Bauschke           Julien Bect
-Stefan Beller            Roman Belov              Markus Bergholz
-Karl Berry               Ethan Biery              David Billinghurst
+Adam H. Aitkenhead       Joakim Andén             Giles Anderson
+Joel Andersson           Lachlan Andrew           Pedro Angelo
+Damjan Angelovski        Muthiah Annamalai        Markus Appel
+Branden Archer           Willem Atsma             Marco Atzeri
+Ander Aurrekoetxea       Shai Ayal                Roger Banks
+Ben Barrowes             Alexander Barth          David Bateman
+Heinz Bauschke           Julien Bect              Stefan Beller
+Roman Belov              Markus Bergholz          Karl Berry
+Atri Bhattacharya        Ethan Biery              David Billinghurst
 Don Bindner              Jakub Bogusz             Moritz Borgmann
 Paul Boven               Richard Bovey            John Bradshaw
 Marcus Brinkmann         Max Brister              Remy Bruno
@@ -885,21 +882,22 @@ Daniel Calvelo           John C. Campbell         Juan Pablo Carbajal
 Jean-Francois Cardoso    Joao Cardoso             Larrie Carr
 David Castelow           Vincent Cautaerts        Clinton Chee
 Albert Chin-A-Young      Carsten Clark            Catalin Codreanu
-J. D. Cole               Martin Costabel          Michael Creel
-Richard Crozier          Jeff Cunningham          Martin Dalecki
-Jacob Dawid              Jorge Barros de Abreu    Carlo de Falco
-Thomas D. Dean           Philippe Defert          Bill Denney
-Fabian Deutsch           Christos Dimitrakakis    Pantxo Diribarne
-Vivek Dogra              John Donoghue            David M. Doolin
-Carnë Draug              Pascal A. Dupuis         John W. Eaton
-Dirk Eddelbuettel        Pieter Eendebak          Paul Eggert
-Stephen Eglen            Peter Ekberg             Edmund Grimley Evans
-Rolf Fabian              Gunnar Farnebäck         Massimiliano Fasi
-Stephen Fegan            Ramon Garcia Fernandez   Torsten Finke
-Colin Foster             Jose Daniel Munoz        Brad Froehle
-                         Frias
-Castor Fu                Eduardo Gallestey        Walter Gautschi
-Klaus Gebhardt           Driss Ghaddab            Eugenio Gianniti
+J. D. Cole               Jacopo Corno             Martin Costabel
+Michael Creel            Richard Crozier          Jeff Cunningham
+Martin Dalecki           Jacob Dawid              Jorge Barros de Abreu
+Carlo de Falco           Thomas D. Dean           Philippe Defert
+Bill Denney              Fabian Deutsch           Christos Dimitrakakis
+Pantxo Diribarne         Vivek Dogra              John Donoghue
+David M. Doolin          Carnë Draug              Pascal A. Dupuis
+John W. Eaton            Dirk Eddelbuettel        Pieter Eendebak
+Paul Eggert              Stephen Eglen            Peter Ekberg
+Garrett Euler            Edmund Grimley Evans     Rolf Fabian
+Gunnar Farnebäck         Massimiliano Fasi        Stephen Fegan
+Ramon Garcia Fernandez   Torsten Finke            Colin Foster
+Jose Daniel Munoz        Brad Froehle             Castor Fu
+Frias
+Eduardo Gallestey        Walter Gautschi          Klaus Gebhardt
+Driss Ghaddab            Eugenio Gianniti         Hartmut Gimpel
 Nicolo Giorgetti         Arun Giridhar            Michael D. Godfrey
 Michael Goffioul         Glenn Golden             Tomislav Goles
 Keith Goodman            Brian Gough              Michael C. Grant
@@ -908,16 +906,17 @@ Kyle Guinn               Vaibhav Gupta            Peter Gustafson
 Kai Habel                Patrick Häcker           William P. Y.
                                                   Hadisoeseno
 Jaroslav Hajek           Benjamin Hall            Kim Hansen
-Søren Hauberg            Dave Hawthorne           Daniel Heiserer
-Martin Helm              Stefan Hepp              Martin Hepperle
-Jordi Gutiérrez          Yozo Hida                Ryan Hinton
-Hermoso
-Roman Hodek              A. Scottedward Hodel     Richard Allan Holcombe
-Tom Holroyd              David Hoover             Kurt Hornik
-Christopher Hulbert      Cyril Humbert            John Hunt
-Teemu Ikonen             Alan W. Irwin            Allan Jacobs
-Geoff Jacobsen           Vytautas Jančauskas      Nick Jankowski
-Mats Jansson             Cai Jianming             Steven G. Johnson
+Søren Hauberg            Dave Hawthorne           Oliver Heimlich
+Daniel Heiserer          Piotr Held               Martin Helm
+Stefan Hepp              Martin Hepperle          Jordi Gutiérrez
+                                                  Hermoso
+Yozo Hida                Ryan Hinton              Roman Hodek
+A. Scottedward Hodel     Richard Allan Holcombe   Tom Holroyd
+David Hoover             Kurt Hornik              Christopher Hulbert
+Cyril Humbert            John Hunt                Teemu Ikonen
+Alan W. Irwin            Allan Jacobs             Geoff Jacobsen
+Vytautas Jančauskas      Nicholas R. Jankowski    Mats Jansson
+Robert Jenssen           Cai Jianming             Steven G. Johnson
 Heikki Junes             Matthias Jüschke         Atsushi Kajita
 Jarkko Kaleva            Avinoam Kalma            Mohamed Kamoun
 Lute Kamstra             Fotios Kasolis           Thomas Kasper
@@ -934,39 +933,41 @@ Kai Labusch              Claude Lacoursiere       Walter Landry
 Bill Lash                Dirk Laurie              Maurice LeBrun
 Friedrich Leisch         Johannes Leuschner       Thorsten Liebig
 Jyh-miin Lin             Timo Lindfors            Benjamin Lindner
-Ross Lippert             David Livings            Sebastien Loisel
-Erik de Castro Lopo      Massimo Lorenzin         Emil Lucretiu
-Yi-Hong Lyu              Hoxide Ma                Colin Macdonald
-James Macnicol           Jens-Uwe Mager           Stefan Mahr
-Rob Mahurin              Alexander Mamonov        Ricardo Marranita
-Orestes Mas              Axel Mathéi              Makoto Matsumoto
-Tatsuro Matsuoka         Christoph Mayer          Laurent Mazet
-G. D. McBain             Ronald van der Meer      Júlio Hoffimann Mendes
-Ed Meyer                 Thorsten Meyer           Stefan Miereis
-Petr Mikulik             Mike Miller              Serviscope Minor
-Stefan Monnier           Antoine Moreau           Kai P. Mueller
+Ross Lippert             Yu Liu                   David Livings
+Barbara Locsi            Sebastien Loisel         Erik de Castro Lopo
+Massimo Lorenzin         Emil Lucretiu            Yi-Hong Lyu
+Hoxide Ma                Colin Macdonald          James Macnicol
+Jens-Uwe Mager           Stefan Mahr              Rob Mahurin
+Alexander Mamonov        Ricardo Marranita        Orestes Mas
+Axel Mathéi              Makoto Matsumoto         Tatsuro Matsuoka
+Christoph Mayer          Laurent Mazet            G. D. McBain
+Ronald van der Meer      Júlio Hoffimann Mendes   Ed Meyer
+Thorsten Meyer           Stefan Miereis           Petr Mikulik
+Mike Miller              Serviscope Minor         Stefan Monnier
+Rafael Monteiro          Antoine Moreau           Kai P. Mueller
 Armin Müller             Hannes Müller            Victor Munoz
 PrasannaKumar            Iain Murray              Markus Mützel
 Muralidharan
 Carmen Navarrete         Todd Neal                Philip Nienhuis
 Al Niessner              Felipe G. Nievinski      Rick Niles
-Takuji Nishimura         Kai Noda                 Patrick Noffke
-Eric Norum               Krzesimir Nowak          Michael O’Brien
-Peter O’Gorman           Thorsten Ohl             Kai T. Ohlhus
-Arno Onken               Valentin                 Luis F. Ortiz
-                         Ortega-Clavero
-Carl Osterwisch          Janne Olavi Paanajärvi   Scott Pakin
-José Luis García         Jason Alan Palmer        Gabriele Pannocchia
-Pallero
-Sylvain Pelissier        Rolando Pereira          Per Persson
-Primozz Peterlin         Jim Peterson             Danilo Piazzalunga
-Nicholas Piper           Elias Pipping            Robert Platt
-Hans Ekkehard Plesser    Sergey Plotnikov         Tom Poage
-Nathan Podlich           Orion Poplawski          Ondrej Popp
-Jef Poskanzer            Francesco Potortì        Konstantinos Poulios
-Jarno Rajahalme          Eduardo Ramos            Pooja Rao
-James B. Rawlings        Eric S. Raymond          Balint Reczey
-Joshua Redstone          Lukas Reichlin           Michael Reifenberger
+Takuji Nishimura         Akira Noda               Kai Noda
+Patrick Noffke           Eric Norum               Krzesimir Nowak
+Michael O’Brien          Cillian O’Driscoll       Peter O’Gorman
+Thorsten Ohl             Kai T. Ohlhus            Arno Onken
+Valentin                 Luis F. Ortiz            Carl Osterwisch
+Ortega-Clavero
+Janne Olavi Paanajärvi   Scott Pakin              José Luis García
+                                                  Pallero
+Jason Alan Palmer        Gabriele Pannocchia      Sylvain Pelissier
+Rolando Pereira          Per Persson              Primozz Peterlin
+Jim Peterson             Danilo Piazzalunga       Nicholas Piper
+Elias Pipping            Robert Platt             Hans Ekkehard Plesser
+Sergey Plotnikov         Tom Poage                Nathan Podlich
+Orion Poplawski          Ondrej Popp              Jef Poskanzer
+Francesco Potortì        Konstantinos Poulios     Jarno Rajahalme
+Eduardo Ramos            Pooja Rao                James B. Rawlings
+Eric S. Raymond          Balint Reczey            Joshua Redstone
+Lukas Reichlin           Michael Reifenberger     Ernst Reissner
 Jens Restemeier          Anthony Richardson       Jason Riedy
 E. Joshua Rigler         Sander van Rijn          Petter Risholm
 Matthew W. Roberts       Dmitry Roshchin          Peter Rosin
@@ -976,7 +977,7 @@ Kristian Rumberg         Ryan Rusaw               Olli Saarela
 Toni Saarela             Juhani Saastamoinen      Radek Salac
 Mike Sander              Ben Sapp                 Aleksej Saushev
 Alois Schlögl            Michel D. Schmid         Julian Schnidder
-Sebastian Schoeps        Nicol N. Schraudolph     Sebastian Schubert
+Sebastian Schöps         Nicol N. Schraudolph     Sebastian Schubert
 Lasse Schuirmann         Ludwig Schwardt          Thomas L. Scofield
 Daniel J. Sebald         Dmitri A. Sergatskov     Vanya Sergeev
 Marko Seric              Ahsan Ali Shahid         Baylis Shanks
@@ -986,20 +987,21 @@ Peter L. Sondergaard     Joerg Specht             Quentin H. Spencer
 Christoph Spiel          David Spies              Richard Stallman
 Russell Standish         Brett Stewart            Doug Stewart
 Jonathan Stickel         Judd Storrs              Thomas Stuart
-Ivan Sutoris             John Swensen             Daisuke Takago
-Ariel Tankus             Falk Tannhäuser          Duncan Temple Lang
-Matthew Tenny            Kris Thielemans          Georg Thimm
-Corey Thomasson          Olaf Till                Christophe Tournery
-Thomas Treichl           Karsten Trulsen          David Turner
-Frederick Umminger       Utkarsh Upadhyay         Stefan van der Walt
-Peter Van Wieren         James R. Van Zandt       Risto Vanhanen
-Gregory Vanuxem          Mihas Varantsou          Ivana Varekova
-Sébastien Villemot       Marco Vitetta            Daniel Wagenaar
-Thomas Walter            Andreas Weber            Olaf Weber
-Thomas Weber             Rik Wehbring             Bob Weigel
-Andreas Weingessel       Martin Weiser            Michael Weitzel
-David Wells              Joachim Wiesemann        Fook Fah Yap
-Sean Young               Johannes Zarl            Michael Zeising
+Bernardo Sulzbach        Ivan Sutoris             John Swensen
+Daisuke Takago           Ariel Tankus             Falk Tannhäuser
+Duncan Temple Lang       Matthew Tenny            Kris Thielemans
+Georg Thimm              Corey Thomasson          Andrew Thornton
+Olaf Till                Christophe Tournery      Thomas Treichl
+Karsten Trulsen          David Turner             Frederick Umminger
+Utkarsh Upadhyay         Stefan van der Walt      Peter Van Wieren
+James R. Van Zandt       Risto Vanhanen           Gregory Vanuxem
+Mihas Varantsou          Ivana Varekova           Sébastien Villemot
+Marco Vitetta            Daniel Wagenaar          Thomas Walter
+Andreas Weber            Olaf Weber               Thomas Weber
+Rik Wehbring             Bob Weigel               Andreas Weingessel
+Martin Weiser            Michael Weitzel          David Wells
+Joachim Wiesemann        Fook Fah Yap             Sean Young
+Michele Zaffalon         Johannes Zarl            Michael Zeising
 Federico Zenith          Alex Zvoleff
 
    Special thanks to the following people and organizations for
@@ -1091,8 +1093,8 @@ How You Can Contribute to Octave
 There are a number of ways that you can contribute to help make Octave a
 better system.  Perhaps the most important way to contribute is to write
 high-quality code for solving new problems, and to make your code freely
-available for others to use.  *Note Contributing Guidelines::, for
-detailed information on contributing new code.
+available for others to use.  See
+<http://www.octave.org/get-involved.html> for detailed information.
 
    If you find Octave useful, consider providing additional funding to
 continue its development.  Even a modest amount of additional funding
@@ -1162,7 +1164,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 4.1.0+.
+   This document corresponds to Octave version 4.2.0.
 
 * Menu:
 
@@ -1783,9 +1785,7 @@ Here is a complete list of the command line options that Octave accepts.
 ‘--interactive’
 ‘-i’
      Force interactive behavior.  This can be useful for running Octave
-     via a remote shell command or inside an Emacs shell buffer.  For
-     another way to run Octave within Emacs, *note Emacs Octave
-     Support::.
+     via a remote shell command or inside an Emacs shell buffer.
 
 ‘--jit-compiler’
      Enable the JIT compiler used for accelerating loops.
@@ -2086,13 +2086,13 @@ document the functions you write.
      Given the single argument ‘.’, list all operators available in the
      current session of Octave.
 
-     If invoked without any arguments, ‘help’ display instructions on
+     If invoked without any arguments, ‘help’ displays instructions on
      how to access help from the command line.
 
-     The help command can provide information about most operators, for
-     example ‘help +’, but not the comma and semicolon characters which
-     are used by the Octave interpreter as command separators.  For help
-     on either of these type ‘help comma’ or ‘help semicolon’.
+     The help command can provide information about most operators, but
+     NAME must be enclosed by single or double quotes to prevent the
+     Octave interpreter from acting on NAME.  For example, ‘help "+"’
+     displays help on the addition operator.
 
      See also: *note doc: XREFdoc, *note lookfor: XREFlookfor, *note
      which: XREFwhich, *note info: XREFinfo.
@@ -2404,9 +2404,9 @@ sections, Meta characters such as ‘Meta-u’ are written as ‘M-u’.
 
 * Cursor Motion::
 * Killing and Yanking::
-* Commands For Text::
-* Commands For Completion::
-* Commands For History::
+* Commands for Text::
+* Commands for Completion::
+* Commands for History::
 * Customizing readline::
 * Customizing the Prompt::
 * Diary and Echo Commands::
@@ -2476,7 +2476,7 @@ Octave programs.
      corner.
 
 
-File: octave.info,  Node: Killing and Yanking,  Next: Commands For Text,  Prev: Cursor Motion,  Up: Command Line Editing
+File: octave.info,  Node: Killing and Yanking,  Next: Commands for Text,  Prev: Cursor Motion,  Up: Command Line Editing
 
 2.4.2 Killing and Yanking
 -------------------------
@@ -2524,9 +2524,9 @@ typed line is available to be yanked back later, when you are typing
 another line.
 
 
-File: octave.info,  Node: Commands For Text,  Next: Commands For Completion,  Prev: Killing and Yanking,  Up: Command Line Editing
+File: octave.info,  Node: Commands for Text,  Next: Commands for Completion,  Prev: Killing and Yanking,  Up: Command Line Editing
 
-2.4.3 Commands For Changing Text
+2.4.3 Commands for Changing Text
 --------------------------------
 
 The following commands can be used for entering characters that would
@@ -2566,9 +2566,9 @@ quickly correcting typing mistakes.
      the end of the word.
 
 
-File: octave.info,  Node: Commands For Completion,  Next: Commands For History,  Prev: Commands For Text,  Up: Command Line Editing
+File: octave.info,  Node: Commands for Completion,  Next: Commands for History,  Prev: Commands for Text,  Up: Command Line Editing
 
-2.4.4 Letting Readline Type For You
+2.4.4 Letting Readline Type for You
 -----------------------------------
 
 The following commands allow Octave to complete command and variable
@@ -2603,9 +2603,9 @@ names for you.
      called.  This is a feature, not a bug.
 
 
-File: octave.info,  Node: Commands For History,  Next: Customizing readline,  Prev: Commands For Completion,  Up: Command Line Editing
+File: octave.info,  Node: Commands for History,  Next: Customizing readline,  Prev: Commands for Completion,  Up: Command Line Editing
 
-2.4.5 Commands For Manipulating The History
+2.4.5 Commands for Manipulating the History
 -------------------------------------------
 
 Octave normally keeps track of the commands you type so that you can
@@ -2871,7 +2871,7 @@ history is saved.
      XREFedit_history.
 
 
-File: octave.info,  Node: Customizing readline,  Next: Customizing the Prompt,  Prev: Commands For History,  Up: Command Line Editing
+File: octave.info,  Node: Customizing readline,  Next: Customizing the Prompt,  Prev: Commands for History,  Up: Command Line Editing
 
 2.4.6 Customizing ‘readline’
 ----------------------------
@@ -3798,7 +3798,8 @@ functions return −1 for structure arguments.
      This method is also called when an object appears as lvalue with
      cs-list indexing, i.e., ‘object{...}’ or ‘object(...).field’.
 
-     See also: *note size: XREFsize.
+     See also: *note size: XREFsize, *note length: XREFlength, *note
+     ndims: XREFndims.
 
  -- : length (A)
      Return the length of the object A.
@@ -3810,33 +3811,50 @@ functions return −1 for structure arguments.
 
      See also: *note numel: XREFnumel, *note size: XREFsize.
 
- -- : size (A)
- -- : size (A, DIM)
-     Return the number of rows and columns of A.
+ -- : SZ = size (A)
+ -- : DIM_SZ = size (A, DIM)
+ -- : [ROWS, COLS, ..., DIM_N_SZ] = size (...)
+     Return a row vector with the size (number of elements) of each
+     dimension for the object A.
 
-     With one input argument and one output argument, the result is
-     returned in a row vector.  If there are multiple output arguments,
-     the number of rows is assigned to the first, and the number of
-     columns to the second, etc.  For example:
+     When given a second argument, DIM, return the size of the
+     corresponding dimension.
+
+     With a single output argument, ‘size’ returns a row vector.  When
+     called with multiple output arguments, ‘size’ returns the size of
+     dimension N in the Nth argument.  The number of rows, dimension 1,
+     is returned in the first argument, the number of columns, dimension
+     2, is returned in the second argument, etc.  If there are more
+     dimensions in A then there are output arguments, ‘size’ returns the
+     total number of elements in the remaining dimensions in the final
+     output argument.
+
+     Example 1: single row vector output
 
           size ([1, 2; 3, 4; 5, 6])
              ⇒ [ 3, 2 ]
+
+     Example 2: number of elements in 2nd dimension (columns)
+
+          size ([1, 2; 3, 4; 5, 6], 2)
+              ⇒ 2
+
+     Example 3: number of output arguments == number of dimensions
 
           [nr, nc] = size ([1, 2; 3, 4; 5, 6])
               ⇒ nr = 3
               ⇒ nc = 2
 
-     If given a second argument, ‘size’ will return the size of the
-     corresponding dimension.  For example,
+     Example 4: number of output arguments != number of dimensions
 
-          size ([1, 2; 3, 4; 5, 6], 2)
-              ⇒ 2
-
-     returns the number of columns in the given matrix.
+          [nr, remainder] = size (ones (2, 3, 4, 5)
+              ⇒ nr = 2
+              ⇒ remainder = 60
 
      See also: *note numel: XREFnumel, *note ndims: XREFndims, *note
      length: XREFlength, *note rows: XREFrows, *note columns:
-     XREFcolumns.
+     XREFcolumns, *note size_equal: XREFsize_equal, *note common_size:
+     XREFcommon_size.
 
  -- : isempty (A)
      Return true if A is an empty matrix (any one of its dimensions is
@@ -3870,10 +3888,10 @@ functions return −1 for structure arguments.
      Return true if the dimensions of all arguments agree.
 
      Trailing singleton dimensions are ignored.  When called with a
-     single or no argument ‘size_equal’ returns true.
+     single argument, or no argument, ‘size_equal’ returns true.
 
      See also: *note size: XREFsize, *note numel: XREFnumel, *note
-     ndims: XREFndims.
+     ndims: XREFndims, *note common_size: XREFcommon_size.
 
  -- : squeeze (X)
      Remove singleton dimensions from X and return the result.
@@ -4351,7 +4369,7 @@ vector with ten million elements.
 allowed, because a division by zero would occur in determining the
 number of range elements.  However, ranges with zero increment (i.e.,
 all elements equal) are useful, especially in indexing, and Octave
-allows them to be constructed using the built-in function “ones”.  Note
+allows them to be constructed using the built-in function ‘ones’.  Note
 that because a range must be a row vector, ‘ones (1, 10)’ produces a
 range, while ‘ones (10, 1)’ does not.
 
@@ -8300,14 +8318,14 @@ and third column of a cell array can be set to ‘0’ with the following
 command:
 
      c(:, [1, 3]) = {0}
-          ⇒  =
+          ⇒ =
              {
                [1,1] = 0
                [2,1] = 0
                [3,1] = 0
                [1,2] = 2
-               [2,2] =  10
-               [3,2] =  20
+               [2,2] = y
+               [3,2] = 5
                [1,3] = 0
                [2,3] = 0
                [3,3] = 0
@@ -8389,8 +8407,12 @@ the requested values.
 
           Y = cell (size (X));
           for i = 1:numel (X)
-            Y{i} = X{i}(varargin{:});
+            Y{i} = X{i}(varargin{1}, varargin{2}, ..., varargin{N});
           endfor
+
+     The indexing arguments may be scalar (‘2’), arrays (‘[1, 3]’),
+     ranges (‘1:3’), or the colon operator (":").  However, the indexing
+     keyword ‘end’ is not available.
 
      See also: *note cellslices: XREFcellslices, *note cellfun:
      XREFcellfun.

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -54,3 +54,4 @@ const auto octave_chdir = octave::sys::chdir;
 #endif
 
 #endif
+

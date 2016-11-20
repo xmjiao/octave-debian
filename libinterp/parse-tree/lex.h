@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -95,12 +95,12 @@ namespace octave
     private:
 
       enum bracket_type
-        {
-          BRACKET = 1,
-          BRACE = 2,
-          PAREN = 3,
-          ANON_FCN_BODY = 4
-        };
+      {
+        BRACKET = 1,
+        BRACE = 2,
+        PAREN = 3,
+        ANON_FCN_BODY = 4
+      };
 
     public:
 
@@ -725,7 +725,7 @@ namespace octave
     { }
 
     lexer (const std::string& eval_string,
-                  interpreter *interp_context = 0)
+           interpreter *interp_context = 0)
       : base_lexer (interp_context), input_reader (eval_string, this)
     { }
 
@@ -789,7 +789,7 @@ namespace octave
     }
 
     push_lexer (const std::string& input,
-                       interpreter *interp_context = 0)
+                interpreter *interp_context = 0)
       : base_lexer (interp_context), pflag (1)
     {
       append_input (input, false);
@@ -802,7 +802,7 @@ namespace octave
     }
 
     push_lexer (const std::string& input, bool eof,
-                       interpreter *interp_context = 0)
+                interpreter *interp_context = 0)
       : base_lexer (interp_context), pflag (1)
     {
       append_input (input, eof);
@@ -852,3 +852,4 @@ namespace octave
 }
 
 #endif
+

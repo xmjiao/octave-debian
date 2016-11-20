@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 VZLU Prague, a.s.
+Copyright (C) 2008-2016 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -66,3 +66,4 @@ DECLARE_COLROW_NORM_FUNCS(Sparse, , double)
 DECLARE_COLROW_NORM_FUNCS(SparseComplex, , double)
 
 #endif
+

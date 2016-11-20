@@ -1,7 +1,7 @@
 /*
 
 Copyright (C) 2009 P. L. Lucas
-Copyright (C) 2012-2015 Jacob Dawid
+Copyright (C) 2012-2016 Jacob Dawid
 
 This file is part of Octave.
 
@@ -62,7 +62,8 @@ parser::set_info_path (const QString& infoPath)
     {
       if (info_file_exists)
         break;
-      info_file_exists = QFileInfo (info.absoluteFilePath () + "." + it.key ()).exists ();
+      info_file_exists = QFileInfo (info.absoluteFilePath () + "." +
+                                    it.key ()).exists ();
     }
 
   if (info_file_exists)
@@ -96,7 +97,8 @@ parser::open_file (QFileInfo & file_info)
   QIODevice *iodevice = 0;
   if (_compressors_map.contains (file_info.suffix ()))
     {
-      QString command = _compressors_map.value (file_info.suffix ()).arg (file_info.absoluteFilePath ());
+      QString command = _compressors_map.value (file_info.suffix ()).arg (
+                          file_info.absoluteFilePath ());
       iprocstream ips (command.toStdString ());
 
       if (ips.bad ())
@@ -238,7 +240,7 @@ parser::get_next_node (QIODevice *io)
         }
       else
         {
-          text.append (line);
+          text.append (QString::fromUtf8 (line));
         }
     }
   return text;
@@ -343,7 +345,6 @@ replace_links (QString& text)
       url_link.replace (QRegExp ("  +")," ");
       url_link.replace ("<b>","");
       url_link.replace ("</b>","");
-      url_link = QUrl::toPercentEncoding (url_link, "", "'");
 
       href += "<font style=\"color:DarkGray; font-weight:bold;\">&raquo;</font>";
       href +=  "&nbsp;<a href='" + url_link + "'>" + note + "</a>" + term;
@@ -424,13 +425,7 @@ parser::node_text_to_html (const QString& text_arg, int anchorPos,
         "<b>Next Section:</b> <a href='%4'>%5</a><br>"
         "<b>Up:</b> <a href='%6'>%7</a><br>\n"
         )
-      .arg (nodeName)
-      .arg (QString (QUrl::toPercentEncoding (nodePrev, "", "'")))
-      .arg (nodePrev)
-      .arg (QString (QUrl::toPercentEncoding (nodeNext, "", "'")))
-      .arg (nodeNext)
-      .arg (QString (QUrl::toPercentEncoding (nodeUp, "", "'")))
-      .arg (nodeUp);
+    .arg (nodeName, nodePrev, nodePrev, nodeNext, nodeNext, nodeUp, nodeUp);
 
   text.prepend ("<hr>\n<pre style=\"font-family:monospace\">");
   text.append ("</pre>\n<hr><hr>\n");
@@ -646,7 +641,7 @@ parser::global_search (const QString& text, int max_founds)
                 {
                   results.append(
                     "<br>\n<font style=\"color:DarkGray; font-weight:bold;\">&raquo;</font> <a href='"
-                    + QString(QUrl::toPercentEncoding(node,"","'")) +
+                    + node +
                     "'>");
                   results.append (node);
                   results.append ("</a><br>\n");

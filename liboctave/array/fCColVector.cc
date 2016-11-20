@@ -1,7 +1,7 @@
 // ColumnVector manipulations.
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -29,33 +29,18 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 
 #include "Array-util.h"
-#include "f77-fcn.h"
 #include "functor.h"
+#include "lo-blas-proto.h"
 #include "lo-error.h"
 #include "mx-base.h"
 #include "mx-inlines.cc"
 #include "oct-cmplx.h"
 
-// Fortran functions we call.
-
-extern "C"
-{
-  F77_RET_T
-  F77_FUNC (cgemv, CGEMV) (F77_CONST_CHAR_ARG_DECL,
-                           const F77_INT&, const F77_INT&,
-                           const F77_CMPLX&, const F77_CMPLX*,
-                           const F77_INT&, const F77_CMPLX*,
-                           const F77_INT&, const F77_CMPLX&,
-                           F77_CMPLX*, const F77_INT&
-                           F77_CHAR_ARG_LEN_DECL);
-}
-
 // FloatComplex Column Vector class
 
 FloatComplexColumnVector::FloatComplexColumnVector (const FloatColumnVector& a)
   : MArray<FloatComplex> (a)
-{
-}
+{ }
 
 bool
 FloatComplexColumnVector::operator == (const FloatComplexColumnVector& a) const
@@ -274,7 +259,7 @@ FloatComplexColumnVector::operator += (const FloatColumnVector& a)
   octave_idx_type a_len = a.numel ();
 
   if (len != a_len)
-    err_nonconformant ("operator +=", len, a_len);
+    octave::err_nonconformant ("operator +=", len, a_len);
 
   if (len == 0)
     return *this;
@@ -293,7 +278,7 @@ FloatComplexColumnVector::operator -= (const FloatColumnVector& a)
   octave_idx_type a_len = a.numel ();
 
   if (len != a_len)
-    err_nonconformant ("operator -=", len, a_len);
+    octave::err_nonconformant ("operator -=", len, a_len);
 
   if (len == 0)
     return *this;
@@ -324,7 +309,7 @@ operator * (const FloatComplexMatrix& m, const FloatComplexColumnVector& a)
   octave_idx_type a_len = a.numel ();
 
   if (nc != a_len)
-    err_nonconformant ("operator *", nr, nc, a_len, 1);
+    octave::err_nonconformant ("operator *", nr, nc, a_len, 1);
 
   retval.clear (nr);
 
@@ -366,7 +351,7 @@ operator * (const FloatDiagMatrix& m, const FloatComplexColumnVector& a)
   octave_idx_type a_len = a.numel ();
 
   if (nc != a_len)
-    err_nonconformant ("operator *", nr, nc, a_len, 1);
+    octave::err_nonconformant ("operator *", nr, nc, a_len, 1);
 
   if (nc == 0 || nr == 0)
     return FloatComplexColumnVector (0);
@@ -391,7 +376,7 @@ operator * (const FloatComplexDiagMatrix& m, const FloatColumnVector& a)
   octave_idx_type a_len = a.numel ();
 
   if (nc != a_len)
-    err_nonconformant ("operator *", nr, nc, a_len, 1);
+    octave::err_nonconformant ("operator *", nr, nc, a_len, 1);
 
   if (nc == 0 || nr == 0)
     return FloatComplexColumnVector (0);
@@ -416,7 +401,7 @@ operator * (const FloatComplexDiagMatrix& m, const FloatComplexColumnVector& a)
   octave_idx_type a_len = a.numel ();
 
   if (nc != a_len)
-    err_nonconformant ("operator *", nr, nc, a_len, 1);
+    octave::err_nonconformant ("operator *", nr, nc, a_len, 1);
 
   if (nc == 0 || nr == 0)
     return FloatComplexColumnVector (0);
@@ -504,3 +489,4 @@ operator >> (std::istream& is, FloatComplexColumnVector& a)
     }
   return is;
 }
+

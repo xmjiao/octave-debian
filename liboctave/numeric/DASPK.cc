@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -331,7 +331,7 @@ DASPK::do_integrate (double tout)
                 return retval;
               }
           }
-          // Fall through...
+        // Fall through...
 
         case 0:
         case 2:
@@ -788,3 +788,4 @@ DASPK::error_message (void) const
 
   return retval;
 }
+

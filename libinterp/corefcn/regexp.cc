@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2015 David Bateman
+Copyright (C) 2005-2016 David Bateman
 Copyright (C) 2002-2005 Paul Kienzle
 
 This file is part of Octave.
@@ -50,7 +50,7 @@ along with Octave; see the file COPYING.  If not, see
 // is different from those used in the *printf functions.
 
 static std::string
-do_regexp_ptn_string_escapes (const std::string& s)
+do_regexp_ptn_string_escapes (const std::string& s, bool is_sq_str)
 {
   std::string retval;
 
@@ -67,7 +67,14 @@ do_regexp_ptn_string_escapes (const std::string& s)
           switch (s[++j])
             {
             case 'b': // backspace
-              retval[i] = '\b';
+              if (is_sq_str)
+                retval[i] = '\b';
+              else
+                {
+                  // Pass escape sequence through
+                  retval[i] = '\\';
+                  retval[++i] = 'b';
+                }
               break;
 
             // Translate \< and \> to PCRE word boundary
@@ -274,7 +281,7 @@ do_regexp_rep_string_escapes (const std::string& s)
 }
 
 static void
-parse_options (regexp::opts& options, const octave_value_list& args,
+parse_options (octave::regexp::opts& options, const octave_value_list& args,
                const std::string& who, int skip, bool& extra_args)
 {
   extra_args = false;
@@ -335,16 +342,16 @@ octregexp (const octave_value_list &args, int nargout,
 
   std::string pattern = args(1).string_value ();
 
-  // Matlab compatibility.
-  if (args(1).is_sq_string ())
-    pattern = do_regexp_ptn_string_escapes (pattern);
+  // Rewrite pattern for PCRE
+  pattern = do_regexp_ptn_string_escapes (pattern, args(1).is_sq_string ());
 
-  regexp::opts options;
+  octave::regexp::opts options;
   options.case_insensitive (case_insensitive);
   bool extra_options = false;
   parse_options (options, args, who, 2, extra_options);
 
-  regexp::match_data rx_lst = regexp_match (pattern, buffer, options, who);
+  octave::regexp::match_data rx_lst
+    = octave::regexp::match (pattern, buffer, options, who);
 
   string_vector named_pats = rx_lst.named_patterns ();
 
@@ -373,7 +380,7 @@ octregexp (const octave_value_list &args, int nargout,
           Cell tmp (dim_vector (1, sz));
 
           i = 0;
-          for (regexp::match_data::const_iterator p = rx_lst.begin ();
+          for (octave::regexp::match_data::const_iterator p = rx_lst.begin ();
                p != rx_lst.end (); p++)
             {
               string_vector named_tokens = p->named_tokens ();
@@ -389,7 +396,7 @@ octregexp (const octave_value_list &args, int nargout,
 
   if (options.once ())
     {
-      regexp::match_data::const_iterator p = rx_lst.begin ();
+      octave::regexp::match_data::const_iterator p = rx_lst.begin ();
 
       retval(4) = sz ? p->tokens () : Cell ();
       retval(3) = sz ? p->match_string () : "";
@@ -426,7 +433,7 @@ octregexp (const octave_value_list &args, int nargout,
       size_t sp_start = 0;
 
       i = 0;
-      for (regexp::match_data::const_iterator p = rx_lst.begin ();
+      for (octave::regexp::match_data::const_iterator p = rx_lst.begin ();
            p != rx_lst.end (); p++)
         {
           double s = p->start ();
@@ -682,9 +689,10 @@ Match between @var{m} and @var{n} times
 
 @item [@dots{}] [^@dots{}]
 
-List operators.  The pattern will match any character listed between "["
-and "]".  If the first character is "^" then the pattern is inverted and
-any character except those listed between brackets will match.
+List operators.  The pattern will match any character listed between
+@qcode{"["} and @qcode{"]"}.  If the first character is @qcode{"^"} then the
+pattern is inverted and any character except those listed between brackets
+will match.
 
 Escape sequences defined below can also be used inside list operators.  For
 example, a template for a floating point number might be @code{[-+.\d]+}.
@@ -985,8 +993,8 @@ are zero or more @qcode{'b'} characters at positions 1 and end-of-string.
 %! ## Parenthesis in named token (ie (int)) causes a problem
 %! assert (regexp ('qwe int asd', ['(?<typestr>(int))'], 'names'), struct ('typestr', 'int'));
 
-%!test
-%! ## Mix of named and unnamed tokens can cause segfault (bug #35683)
+%!test <35683>
+%! ## Mix of named and unnamed tokens can cause segfault
 %! str = "abcde";
 %! ptn = '(?<T1>a)(\w+)(?<T2>d\w+)';
 %! tokens = regexp (str, ptn, "names");
@@ -1121,7 +1129,8 @@ are zero or more @qcode{'b'} characters at positions 1 and end-of-string.
 %!assert (regexp ("\n", '\n'), 1)
 %!assert (regexp ("\n", "\n"), 1)
 
-%!test  # Bug #45407, escape sequences are silently converted
+# Test escape sequences are silently converted
+%!test <45407>
 %! assert (regexprep ('s', 's', 'x\.y'), 'x.y');
 %! assert (regexprep ('s', '(s)', 'x\$1y'), 'x$1y');
 %! assert (regexprep ('s', '(s)', 'x\\$1y'), 'x\sy');
@@ -1294,9 +1303,8 @@ octregexprep (const octave_value_list &args, const std::string &who)
 
   std::string pattern = args(1).string_value ();
 
-  // Matlab compatibility.
-  if (args(1).is_sq_string ())
-    pattern = do_regexp_ptn_string_escapes (pattern);
+  // Rewrite pattern for PCRE
+  pattern = do_regexp_ptn_string_escapes (pattern, args(1).is_sq_string ());
 
   std::string replacement = args(2).string_value ();
 
@@ -1321,11 +1329,11 @@ octregexprep (const octave_value_list &args, const std::string &who)
     }
   regexpargs.resize (len);
 
-  regexp::opts options;
+  octave::regexp::opts options;
   bool extra_args = false;
   parse_options (options, regexpargs, who, 0, extra_args);
 
-  return regexp_replace (pattern, buffer, replacement, options, who);
+  return octave::regexp::replace (pattern, buffer, replacement, options, who);
 }
 
 DEFUN (regexprep, args, ,
@@ -1345,7 +1353,7 @@ regexprep ("Bill Dunn", '(\w+) (\w+)', '$2, $1')
 @end example
 
 @noindent
-returns "Dunn, Bill"
+returns @qcode{"Dunn, Bill"}
 
 Options in addition to those of @code{regexp} are
 
@@ -1499,3 +1507,4 @@ function.
 %!assert (regexprep ("\n", '\n', "X"), "X")
 %!assert (regexprep ("\n", "\n", "X"), "X")
 */
+

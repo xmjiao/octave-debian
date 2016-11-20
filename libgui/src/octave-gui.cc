@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2015 Jacob Dawid
+Copyright (C) 2011-2016 Jacob Dawid
 
 This file is part of Octave.
 
@@ -28,6 +28,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <QTextCodec>
 #include <QThread>
 #include <QTranslator>
+#include <QtGlobal>
+#include <QStyleFactory>
 
 #include <cstdio>
 
@@ -60,9 +62,12 @@ along with Octave; see the file COPYING.  If not, see
 // Disable all Qt messages by default.
 
 static void
+#if defined (HAVE_QT4)
 message_handler (QtMsgType, const char *)
-{
-}
+#else
+message_handler (QtMsgType, const QMessageLogContext &, const QString &)
+#endif
+{ }
 
 namespace octave
 {
@@ -123,12 +128,19 @@ namespace octave
 
     set_application_id ();
 
-    std::string show_gui_msgs = octave::sys::env::getenv ("OCTAVE_SHOW_GUI_MESSAGES");
+    std::string show_gui_msgs =
+      octave::sys::env::getenv ("OCTAVE_SHOW_GUI_MESSAGES");
 
     // Installing our handler suppresses the messages.
 
     if (show_gui_msgs.empty ())
-      qInstallMsgHandler (message_handler);
+      {
+#if defined (HAVE_QT4)
+        qInstallMsgHandler (message_handler);
+#else
+        qInstallMessageHandler (message_handler);
+#endif
+      }
 
 #if defined (HAVE_QT_GRAPHICS)
     install___init_qt___functions ();
@@ -144,7 +156,16 @@ namespace octave
 
     // Set the codec for all strings (before wizard or any GUI object)
 #if ! defined (Q_OS_WIN32)
+    QTextCodec::setCodecForLocale (QTextCodec::codecForName ("UTF-8"));
+#endif
+
+#if defined (HAVE_QT4)
     QTextCodec::setCodecForCStrings (QTextCodec::codecForName ("UTF-8"));
+#endif
+
+    // set windows style for windows
+#if defined (Q_OS_WIN32)
+    qt_app.setStyle(QStyleFactory::create("Windows"));
 #endif
 
     bool start_gui = start_gui_p ();
@@ -227,3 +248,4 @@ namespace octave
     return qt_app.exec ();
   }
 }
+

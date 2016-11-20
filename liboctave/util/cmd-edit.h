@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -304,7 +304,7 @@ namespace octave
     { return 0; }
 
     virtual string_vector
-      do_generate_filename_completions (const std::string& text) = 0;
+    do_generate_filename_completions (const std::string& text) = 0;
 
     virtual std::string do_get_line_buffer (void) const = 0;
 
@@ -375,3 +375,4 @@ typedef octave::command_editor command_editor;
 #endif
 
 #endif
+

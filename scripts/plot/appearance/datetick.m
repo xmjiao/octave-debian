@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2015 David Bateman
+## Copyright (C) 2008-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -69,22 +69,24 @@ endfunction
 %! pop = [76.094, 92.407, 106.461, 123.077 131.954, 151.868, 179.979, ...
 %!        203.984, 227.225, 249.623, 282.224];
 %! plot (datenum (yr, 1, 1), pop);
-%! title ('US population (millions)');
-%! xlabel ('Year');
-%! datetick ('x', 'YYYY');
+%! xlabel ("Year");
+%! ylabel ("US population (millions)");
+%! title ("datetick() with 4-digit year format");
+%! datetick ("x", "YYYY");
 
 %!demo
 %! clf;
 %! yr = 1988:2:2002;
 %! yr = datenum (yr,1,1);
 %! pr = [12.1 13.3 12.6 13.1 13.3 14.1 14.4 15.2];
-%! plot (yr, pr, '-o');
-%! xlabel ('year');
-%! ylabel ('average price');
+%! plot (yr, pr, "-o");
+%! xlabel ("year");
+%! ylabel ("average price");
+%! title ("datetick() with MM/DD/YY format");
 %! ax = gca;
-%! set (ax, 'xtick', datenum (1990:5:2005,1,1));
-%! datetick ('x', 2, 'keepticks');
-%! set (ax, 'ytick', 12:16);
+%! set (ax, "xtick", datenum (1990:5:2005,1,1));
+%! datetick ("x", 2, "keepticks");
+%! set (ax, "ytick", 12:16);
 
 ## Remove from test statistics.  No real tests possible.
 %!assert (1)
@@ -186,6 +188,7 @@ function __datetick__ (varargin)
       nticks = (xmax - xmin) / sep + 1;
       xmin *= scl;
       xmax *= scl;
+      ticks = xmin + [0 : nticks - 1] / (nticks - 1) * (xmax - xmin);
     else
       [ymin, mmin, dmin] = datevec (xmin);
       [ymax, mmax, dmax] = datevec (xmax);
@@ -199,19 +202,25 @@ function __datetick__ (varargin)
         xmin = sep * floor (xmin / sep);
         xmax = sep * ceil (xmax / sep);
         nticks = (xmax - xmin) / sep + 1;
+        ticks = xmin + [0 : nticks - 1] / (nticks - 1) * (xmax - xmin);
       elseif (maxyear - minyear < N)
-        sep = __calc_tick_sep__ (minmonth , maxmonth);
-        xmin = datenum (ymin, sep * floor (minmonth / sep), 1);
-        xmax = datenum (ymax, sep * ceil (maxmonth / sep), 1);
-        nticks = ceil (maxmonth / sep) - floor (minmonth / sep) + 1;
+        sep = __calc_tick_sep__ (minmonth, maxmonth);
+        minyear = floor (minyear);
+        minmonth = sep * floor (minmonth / sep);
+        minmonth = ifelse (minmonth == 0, 1, minmonth);
+        maxmonth = sep * ceil (maxmonth / sep);
+        rangemonth = (minmonth:sep:maxmonth)';
+        ticks = datenum ([repmat(minyear, size(rangemonth)), ...
+                          rangemonth, ...
+                          ones(size (rangemonth))]);
       else
-        sep = __calc_tick_sep__ (minyear , maxyear);
-        xmin = datenum (sep * floor (minyear / sep), 1, 1);
-        xmax = datenum (sep * ceil (maxyear / sep), 1, 1);
-        nticks = ceil (maxyear / sep) - floor (minyear / sep) + 1;
+        sep = __calc_tick_sep__ (minyear, maxyear);
+        minyear = sep * floor (minyear / sep);
+        maxyear = sep * ceil (maxyear / sep);
+        rangeyear = (minyear:sep:maxyear)';
+        ticks = datenum ([rangeyear, ones(rows(rangeyear),2)]);
       endif
     endif
-    ticks = xmin + [0 : nticks - 1] / (nticks - 1) * (xmax - xmin);
   endif
 
   if (isempty (form))

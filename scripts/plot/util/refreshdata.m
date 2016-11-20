@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2015 David Bateman
+## Copyright (C) 2008-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -109,12 +109,12 @@ endfunction
 %! clf;
 %! x = 0:0.1:10;
 %! y = sin (x);
-%! plot (x, y, 'ydatasource', 'y');
-%! title ('refreshdata() showing moving sine curve');
+%! plot (x, y, "ydatasource", "y");
+%! title ("refreshdata() showing moving sine curve");
 %! axis manual;
 %! for i = 1 : 100
 %!   pause (0);
 %!   y = sin (x + 0.1 * i);
-%!   refreshdata (gcf, 'caller');
-%! end
+%!   refreshdata (gcf, "caller");
+%! endfor
 

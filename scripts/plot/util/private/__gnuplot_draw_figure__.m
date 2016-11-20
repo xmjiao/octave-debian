@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2015 John W. Eaton
+## Copyright (C) 2005-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -38,7 +38,7 @@ function __gnuplot_draw_figure__ (h, plot_stream, enhanced)
       fputs (plot_stream, "set size 1, 1\n");
       bg = get (h, "color");
       if (isnumeric (bg))
-        fprintf (plot_stream, "set obj 1 rectangle from screen 0,0 to screen 1,1 behind fc rgb \"#%02x%02x%02x\" fs solid noborder\n", round (255 * bg));
+        fprintf (plot_stream, "if (GPVAL_TERM eq \"qt\") set obj 1 rectangle from screen 0,0 to screen 1,1 behind fc rgb \"#%02x%02x%02x\" fs solid noborder;\n", round (255 * bg));
         bg_is_set = true;
       else
         bg_is_set = false;

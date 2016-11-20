@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2015 Martin Helm
+## Copyright (C) 2009-2016 Martin Helm
 ##
 ## This file is part of Octave.
 ##
@@ -60,7 +60,7 @@
 ## @end group
 ## @end example
 ##
-## Instead of the @command{trimesh} function the @command{patch}
+## Instead of the @code{trimesh} function the @code{patch}
 ## function can be used to visualize the geometry.  For example:
 ##
 ## @example

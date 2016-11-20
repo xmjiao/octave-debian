@@ -1,5 +1,5 @@
-## Copyright (C) 2012-2015 Rik Wehbring
-## Parts Copyright (C) 2012-2015 Philip Nienhuis
+## Copyright (C) 2012-2016 Rik Wehbring
+## Parts Copyright (C) 2012-2016 Philip Nienhuis
 ##
 ## This file is part of Octave.
 ##
@@ -86,6 +86,9 @@ endfunction
 %!assert (usejava ("desktop"), false)
 
 %!testif HAVE_JAVA
+%! if (! usejava ("jvm"))
+%!   return;
+%! endif
 %! assert (usejava ("jvm"), true);
 
 ## Test input validation

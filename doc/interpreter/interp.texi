@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2007-2015 John W. Eaton
+@c Copyright (C) 2007-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -33,7 +33,7 @@ Octave supports several methods for one-dimensional interpolation, most
 of which are described in this section.  @ref{Polynomial Interpolation}
 and @ref{Interpolation on Scattered Data} describe additional methods.
 
-@c interp1 scripts/scripts/general/interp1.m
+@c interp1 scripts/general/interp1.m
 @anchor{XREFinterp1}
 @deftypefn  {} {@var{yi} =} interp1 (@var{x}, @var{y}, @var{xi})
 @deftypefnx {} {@var{yi} =} interp1 (@var{y}, @var{xi})
@@ -181,7 +181,7 @@ Fourier interpolation, is a resampling technique where a signal is
 converted to the frequency domain, padded with zeros and then
 reconverted to the time domain.
 
-@c interpft scripts/scripts/general/interpft.m
+@c interpft scripts/general/interpft.m
 @anchor{XREFinterpft}
 @deftypefn  {} {} interpft (@var{x}, @var{n})
 @deftypefnx {} {} interpft (@var{x}, @var{n}, @var{dim})
@@ -238,7 +238,7 @@ functions, as can be seen in @ref{fig:interpft}.
 In addition, the support functions @code{spline} and @code{lookup} that
 underlie the @code{interp1} function can be called directly.
 
-@c spline scripts/scripts/polynomial/spline.m
+@c spline scripts/polynomial/spline.m
 @anchor{XREFspline}
 @deftypefn  {} {@var{pp} =} spline (@var{x}, @var{y})
 @deftypefnx {} {@var{yi} =} spline (@var{x}, @var{y}, @var{xi})
@@ -299,7 +299,7 @@ There are three multi-dimensional interpolation functions in Octave, with
 similar capabilities.  Methods using Delaunay tessellation are described
 in @ref{Interpolation on Scattered Data}.
 
-@c interp2 scripts/scripts/general/interp2.m
+@c interp2 scripts/general/interp2.m
 @anchor{XREFinterp2}
 @deftypefn  {} {@var{zi} =} interp2 (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi})
 @deftypefnx {} {@var{zi} =} interp2 (@var{z}, @var{xi}, @var{yi})
@@ -363,7 +363,7 @@ is @qcode{"NA"}.
 @end deftypefn
 
 
-@c interp3 scripts/scripts/general/interp3.m
+@c interp3 scripts/general/interp3.m
 @anchor{XREFinterp3}
 @deftypefn  {} {@var{vi} =} interp3 (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi})
 @deftypefnx {} {@var{vi} =} interp3 (@var{v}, @var{xi}, @var{yi}, @var{zi})
@@ -427,7 +427,7 @@ any other @var{method} is @qcode{"NA"}.
 @end deftypefn
 
 
-@c interpn scripts/scripts/general/interpn.m
+@c interpn scripts/general/interpn.m
 @anchor{XREFinterpn}
 @deftypefn  {} {@var{vi} =} interpn (@var{x1}, @var{x2}, @dots{}, @var{v}, @var{y1}, @var{y2}, @dots{})
 @deftypefnx {} {@var{vi} =} interpn (@var{v}, @var{y1}, @var{y2}, @dots{})

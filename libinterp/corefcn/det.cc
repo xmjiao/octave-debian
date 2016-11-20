@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -30,7 +30,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "error.h"
 #include "errwarn.h"
 #include "ovl.h"
-#include "utils.h"
 #include "ops.h"
 
 #include "ov-re-mat.h"
@@ -70,19 +69,10 @@ For that, use any of the condition number functions: @code{cond},
 
   octave_value arg = args(0);
 
-  octave_idx_type nr = arg.rows ();
-  octave_idx_type nc = arg.columns ();
-
-  if (nr == 0 && nc == 0)
+  if (arg.is_empty ())
     return ovl (1.0);
 
-  int arg_is_empty = empty_arg ("det", nr, nc);
-  if (arg_is_empty < 0)
-    return ovl ();
-  if (arg_is_empty > 0)
-    return ovl (1.0);
-
-  if (nr != nc)
+  if (arg.rows () != arg.columns ())
     err_square_matrix_required ("det", "A");
 
   octave_value_list retval (2);
@@ -191,7 +181,7 @@ For that, use any of the condition number functions: @code{cond},
 
               MAYBE_CAST (rep, octave_matrix);
               MatrixType mtype = rep ? rep -> matrix_type ()
-                : MatrixType ();
+                                     : MatrixType ();
               DET det = m.determinant (mtype, info, rcond);
               retval(0) = info == -1 ? 0.0 : det.value ();
               retval(1) = rcond;
@@ -218,7 +208,7 @@ For that, use any of the condition number functions: @code{cond},
 
               MAYBE_CAST (rep, octave_complex_matrix);
               MatrixType mtype = rep ? rep -> matrix_type ()
-                : MatrixType ();
+                                     : MatrixType ();
               ComplexDET det = m.determinant (mtype, info, rcond);
               retval(0) = info == -1 ? Complex (0.0) : det.value ();
               retval(1) = rcond;
@@ -240,3 +230,4 @@ For that, use any of the condition number functions: @code{cond},
 %!error det (1, 2)
 %!error <must be a square matrix> det ([1, 2; 3, 4; 5, 6])
 */
+

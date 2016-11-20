@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2015 Shai Ayal
+## Copyright (C) 2010-2016 Shai Ayal
 ##
 ## This file is part of Octave.
 ##
@@ -50,7 +50,7 @@ function arg_st = __print_parse_opts__ (varargin)
   arg_st.ghostscript.resolution = 150;
   arg_st.ghostscript.antialiasing = false;
   arg_st.ghostscript.antialiasing_textalphabits = 4;
-  arg_st.ghostscript.antialiasing_graphicsalphabits = 4;
+  arg_st.ghostscript.antialiasing_graphicsalphabits = 1;
   arg_st.loose = false;
   arg_st.lpr_binary = __quote_path__ (__find_binary__ ("lpr"));
   arg_st.name = "";
@@ -228,7 +228,9 @@ function arg_st = __print_parse_opts__ (varargin)
               "pstex", "tiff", "tiffn" "tikz", "pcxmono", ...
               "pcx24b", "pcx256", "pcx16", "pgm", "pgmraw", ...
               "ppm", "ppmraw", "pdflatex", "texdraw", ...
-              "pdfcairo", "pngcairo", "pstricks", ...
+              "epscairo", "pdfcairo", "pngcairo", "cairolatex", ...
+              "pdfcairolatex", "pdfcairolatexstandalone", ...
+              "epscairolatex", "epscairolatexstandalone", "pstricks", ...
               "epswrite", "eps2write", "pswrite", "ps2write", "pdfwrite"};
 
   suffixes = {"ai", "cdr", "fig", "png", "jpg", ...
@@ -240,7 +242,9 @@ function arg_st = __print_parse_opts__ (varargin)
               "ps", "tiff", "tiff", "tikz", "pcx", ...
               "pcx", "pcx", "pcx", "pgm", "pgm", ...
               "ppm", "ppm", "tex", "tex", ...
-              "pdf", "png", "tex", ...
+              "eps", "pdf", "png", "tex", ...
+              "tex", "tex", ...
+              "tex", "tex", "tex", ...
               "eps", "eps", "ps", "ps", "pdf"};
 
   if (isfigure (arg_st.figure))
@@ -250,8 +254,7 @@ function arg_st = __print_parse_opts__ (varargin)
     __graphics_toolkit__ = get (0, "defaultfigure__graphics_toolkit__");
   endif
 
-  if (strcmp (__graphics_toolkit__, "gnuplot")
-      && __gnuplot_has_feature__ ("epslatex_implies_eps_filesuffix"))
+  if (strcmp (__graphics_toolkit__, "gnuplot"))
     suffixes(strncmp (dev_list, "epslatex", 8)) = {"eps"};
   endif
 
@@ -588,7 +591,6 @@ function [papersize, paperposition] = gs_papersize (hfig, paperorientation)
   if ((papersize(1) > papersize(2) && strcmpi (paperorientation, "portrait"))
       || (papersize(1) < papersize(2) && strcmpi (paperorientation, "landscape")))
     papersize = papersize([2,1]);
-    paperposition = paperposition([2,1,4,3]);
   endif
 
   if (! strcmp (papertype, "<custom>")

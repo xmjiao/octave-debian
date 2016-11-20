@@ -723,7 +723,7 @@ the algorithm are performed.
 <dt><a name="index-fftshift"></a>: <em></em> <strong>fftshift</strong> <em>(<var>x</var>)</em></dt>
 <dt><a name="index-fftshift-1"></a>: <em></em> <strong>fftshift</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
 <dd><p>Perform a shift of the vector <var>x</var>, for use with the <code>fft</code> and
-<code>ifft</code> functions, in order the move the frequency 0 to the center of
+<code>ifft</code> functions, in order to move the frequency 0 to the center of
 the vector or matrix.
 </p>
 <p>If <var>x</var> is a vector of <em>N</em> elements corresponding to <em>N</em> time
@@ -731,10 +731,10 @@ samples spaced by <em>dt</em>, then
 <code>fftshift (fft (<var>x</var>))</code> corresponds to frequencies
 </p>
 <div class="example">
-<pre class="example">f = [ -(ceil((N-1)/2):-1:1)*df 0 (1:floor((N-1)/2))*df ]
+<pre class="example">f = [ -(ceil((N-1)/2):-1:1), 0, (1:floor((N-1)/2)) ] * df
 </pre></div>
 
-<p>where <em>df</em> = 1 / <em>dt</em>.
+<p>where <em>df = 1 / (N * dt)</em>.
 </p>
 <p>If <var>x</var> is a matrix, the same holds for rows and columns.  If <var>x</var>
 is an array, then the same holds along each dimension.

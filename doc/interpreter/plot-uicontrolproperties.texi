@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by genpropdoc.m.
 
-@c Copyright (C) 2014-2015 Pantxo Diribarne
+@c Copyright (C) 2014-2016 Pantxo Diribarne
 @c
 @c This file is part of Octave.
 @c
@@ -28,7 +28,7 @@
 
 @anchor{XREFuicontrolbackgroundcolor}
 @cindex uicontrol backgroundcolor
-@item @code{backgroundcolor}: def. @code{[1   1   1]}
+@item @code{backgroundcolor}: def. @code{[0.90980   0.90980   0.90588]}
 
 
 
@@ -130,7 +130,7 @@ Callback function executed immediately before uicontrol is deleted.
 
 @anchor{XREFuicontrolforegroundcolor}
 @cindex uicontrol foregroundcolor
-@item @code{foregroundcolor}: def. @code{[0   0   0]}
+@item @code{foregroundcolor}: def. @code{[0.18039   0.20392   0.21176]}
 
 
 
@@ -262,7 +262,7 @@ User-defined data to associate with the graphics object.
 
 @anchor{XREFuicontrolvalue}
 @cindex uicontrol value
-@item @code{value}: def. @code{1}
+@item @code{value}: def. @code{0}
 
 
 

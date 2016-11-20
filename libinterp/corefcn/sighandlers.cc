@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -142,21 +142,22 @@ namespace octave
         jump_to_enclosing_context_sync ();
       else
         {
-          // 64-bit Windows does not appear to have threadContext.Eip.
-          // Something else must be done here to allow interrupts to
-          // properly work across threads.
-
-#if ! (defined (__MINGW64__) || defined (_WIN64))
 
           CONTEXT threadContext;
 
           SuspendThread (thread);
           threadContext.ContextFlags = CONTEXT_CONTROL;
           GetThreadContext (thread, &threadContext);
+
+#if (defined (__MINGW64__) || defined (_WIN64))
+          threadContext.Rip = (DWORD64) jump_to_enclosing_context_sync;
+#else
           threadContext.Eip = (DWORD) jump_to_enclosing_context_sync;
-          SetThreadContext (thread, &threadContext);
-          ResumeThread (thread);
 #endif
+
+          SetThreadContext (thread, &threadContext);
+
+          ResumeThread (thread);
         }
     }
 
@@ -409,7 +410,7 @@ namespace octave
 
   sig_handler *
   set_signal_handler (const char *signame, sig_handler *handler,
-                             bool restart_syscalls)
+                      bool restart_syscalls)
   {
     return octave_set_signal_handler_by_name (signame, handler,
                                               restart_syscalls);
@@ -842,3 +843,4 @@ The original variable value is restored when exiting the function.
 
 %!error (sigterm_dumps_octave_core (1, 2))
 */
+

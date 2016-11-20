@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 Jaroslav Hajek
+Copyright (C) 2008-2016 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -119,7 +119,7 @@ octave_diag_matrix::do_index_op (const octave_value_list& idx,
                 }
             }
         }
-      catch (index_exception& e)
+      catch (octave::index_exception& e)
         {
           // Rethrow to allow more info to be reported later.
           e.set_pos_if_unset (2, k+1);
@@ -155,6 +155,66 @@ FloatComplexDiagMatrix
 octave_diag_matrix::float_complex_diag_matrix_value (bool) const
 {
   return FloatComplexDiagMatrix (matrix);
+}
+
+octave_value
+octave_diag_matrix::as_double (void) const
+{
+  return matrix;
+}
+
+octave_value
+octave_diag_matrix::as_single (void) const
+{
+  return FloatDiagMatrix (matrix);
+}
+
+octave_value
+octave_diag_matrix::as_int8 (void) const
+{
+  return int8_array_value ();
+}
+
+octave_value
+octave_diag_matrix::as_int16 (void) const
+{
+  return int16_array_value ();
+}
+
+octave_value
+octave_diag_matrix::as_int32 (void) const
+{
+  return int32_array_value ();
+}
+
+octave_value
+octave_diag_matrix::as_int64 (void) const
+{
+  return int64_array_value ();
+}
+
+octave_value
+octave_diag_matrix::as_uint8 (void) const
+{
+  return uint8_array_value ();
+}
+
+octave_value
+octave_diag_matrix::as_uint16 (void) const
+{
+  return uint16_array_value ();
+}
+
+octave_value
+octave_diag_matrix::as_uint32 (void) const
+{
+  return uint32_array_value ();
+}
+
+octave_value
+octave_diag_matrix::as_uint64 (void) const
+{
+  return uint64_array_value ();
 }
 
 octave_value
@@ -253,3 +313,4 @@ octave_diag_matrix::chk_valid_scalar (const octave_value& val,
     x = val.double_value ();
   return retval;
 }
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -30,7 +30,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "error.h"
 #include "errwarn.h"
 #include "ovl.h"
-#include "utils.h"
 
 DEFUN (hess, args, nargout,
        doc: /* -*- texinfo -*-
@@ -66,17 +65,10 @@ IEEE Transactions on Automatic Control, 1979).
 
   octave_value arg = args(0);
 
-  octave_idx_type nr = arg.rows ();
-  octave_idx_type nc = arg.columns ();
-
-  int arg_is_empty = empty_arg ("hess", nr, nc);
-
-  if (arg_is_empty < 0)
-    return ovl ();
-  else if (arg_is_empty > 0)
+  if (arg.is_empty ())
     return octave_value_list (2, Matrix ());
 
-  if (nr != nc)
+  if (arg.rows () != arg.columns ())
     err_square_matrix_required ("hess", "A");
 
   octave_value_list retval;
@@ -87,7 +79,7 @@ IEEE Transactions on Automatic Control, 1979).
         {
           FloatMatrix tmp = arg.float_matrix_value ();
 
-          hess<FloatMatrix> result (tmp);
+          octave::math::hess<FloatMatrix> result (tmp);
 
           if (nargout <= 1)
             retval = ovl (result.hess_matrix ());
@@ -99,7 +91,7 @@ IEEE Transactions on Automatic Control, 1979).
         {
           FloatComplexMatrix ctmp = arg.float_complex_matrix_value ();
 
-          hess<FloatComplexMatrix> result (ctmp);
+          octave::math::hess<FloatComplexMatrix> result (ctmp);
 
           if (nargout <= 1)
             retval = ovl (result.hess_matrix ());
@@ -114,7 +106,7 @@ IEEE Transactions on Automatic Control, 1979).
         {
           Matrix tmp = arg.matrix_value ();
 
-          hess<Matrix> result (tmp);
+          octave::math::hess<Matrix> result (tmp);
 
           if (nargout <= 1)
             retval = ovl (result.hess_matrix ());
@@ -126,7 +118,7 @@ IEEE Transactions on Automatic Control, 1979).
         {
           ComplexMatrix ctmp = arg.complex_matrix_value ();
 
-          hess<ComplexMatrix> result (ctmp);
+          octave::math::hess<ComplexMatrix> result (ctmp);
 
           if (nargout <= 1)
             retval = ovl (result.hess_matrix ());
@@ -156,3 +148,4 @@ IEEE Transactions on Automatic Control, 1979).
 %!error hess ([1, 2; 3, 4], 2)
 %!error <must be a square matrix> hess ([1, 2; 3, 4; 5, 6])
 */
+

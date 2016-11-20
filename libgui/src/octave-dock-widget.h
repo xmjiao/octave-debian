@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2015 Richard Crozier
+Copyright (C) 2012-2016 Richard Crozier
 
 This file is part of Octave.
 
@@ -76,8 +76,7 @@ public slots:
   }
 
   virtual void notice_settings (const QSettings*)
-  {
-  }
+  { }
   void handle_settings (const QSettings*);
 
   void handle_active_dock_changed (octave_dock_widget*, octave_dock_widget*);
@@ -138,3 +137,4 @@ private:
 };
 
 #endif
+

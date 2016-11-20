@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2015 Ben Abbott and Jaroslav Hajek
+## Copyright (C) 2008-2016 Ben Abbott and Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -321,8 +321,7 @@ endfunction
 %! yexp = median (x, dim);
 %! assert (yobs, yexp);
 
-## Bug #45455
-%!assert (quantile ([1 3 2], 0.5, 1), [1 3 2])
+%!assert <45455> (quantile ([1 3 2], 0.5, 1), [1 3 2])
 
 ## Test input validation
 %!error quantile ()

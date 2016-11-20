@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2015 David Bateman
+Copyright (C) 2004-2016 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -127,6 +127,8 @@ public:
 
   SparseBoolMatrix sparse_bool_matrix_value (bool warn = false) const;
 
+  octave_value as_double (void) const;
+
 #if 0
   int write (octave_stream& os, int block_size,
              oct_data_conv::data_type output_type, int skip,
@@ -157,3 +159,4 @@ private:
 };
 
 #endif
+

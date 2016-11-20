@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
@@ -1333,7 +1333,8 @@ symbol_table::find_submethod (const std::string& name,
 {
   octave_value fcn;
 
-  std::string full_name = "@" + dispatch_type + octave::sys::file_ops::dir_sep_str () + name;
+  std::string full_name = "@" + dispatch_type +
+                          octave::sys::file_ops::dir_sep_str () + name;
   size_t pos = full_name.find_first_of (Vfilemarker);
 
   if (pos != std::string::npos)
@@ -1914,7 +1915,7 @@ This test relies on bar being a core function that is implemented in an m-file.
 If the first assert fails, this is no longer the case and the tests need to be
 updated to use some other function.
 
-%!assert (! strcmp (which ("bar"), ""))
+%!assert <34497> (! strcmp (which ("bar"), ""))
 
 %!function x = bar ()
 %!  x = 5;
@@ -1934,3 +1935,4 @@ updated to use some other function.
 %! clear bar;
 %! assert (! strcmp (which ("bar"), ""));
 */
+

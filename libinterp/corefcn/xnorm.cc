@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 VZLU Prague, a.s.
+Copyright (C) 2008-2016 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -204,3 +204,4 @@ octave_value xfrobnorm (const octave_value& x)
 
   return retval;
 }
+

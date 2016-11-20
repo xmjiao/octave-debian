@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -107,3 +107,4 @@ install_chm_ops (void)
   INSTALL_CATOP (octave_scalar, octave_char_matrix, s_chm);
   INSTALL_CATOP (octave_matrix, octave_char_matrix, m_chm);
 }
+

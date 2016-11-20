@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -386,6 +386,21 @@ public:
   octave_value full_value (void) const
   { return rep->full_value (); }
 
+  // Type conversions.
+
+  octave_value as_double (void) const { return rep->as_double (); }
+  octave_value as_single (void) const { return rep->as_single (); }
+
+  octave_value as_int8 (void) const { return rep->as_int8 (); }
+  octave_value as_int16 (void) const { return rep->as_int16 (); }
+  octave_value as_int32 (void) const { return rep->as_int32 (); }
+  octave_value as_int64 (void) const { return rep->as_int64 (); }
+
+  octave_value as_uint8 (void) const { return rep->as_uint8 (); }
+  octave_value as_uint16 (void) const { return rep->as_uint16 (); }
+  octave_value as_uint32 (void) const { return rep->as_uint32 (); }
+  octave_value as_uint64 (void) const { return rep->as_uint64 (); }
+
   octave_base_value *try_narrowing_conversion (void)
   { return rep->try_narrowing_conversion (); }
 
@@ -679,7 +694,7 @@ public:
   // Are the dimensions of this constant zero by zero?
 
   bool is_zero_by_zero (void) const
-  { return (rows () == 0 && columns () == 0); }
+  { return (ndims () == 2 && rows () == 0 && columns () == 0); }
 
   bool is_constant (void) const
   { return rep->is_constant (); }
@@ -1617,3 +1632,4 @@ DEF_DUMMY_VALUE_EXTRACTOR (octave_value, octave_value ())
 #undef DEF_DUMMY_VALUE_EXTRACTOR
 
 #endif
+

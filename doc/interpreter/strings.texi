@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -41,8 +41,8 @@ represent the string whose contents are @samp{parrot}.  Strings in
 Octave can be of any length.
 
 Since the single-quote mark is also used for the transpose operator
-(@pxref{Arithmetic Ops}) but double-quote marks have no other purpose in Octave,
-it is best to use double-quote marks to denote strings.
+(@pxref{Arithmetic Ops}) but double-quote marks have no other purpose in
+Octave, it is best to use double-quote marks to denote strings.
 
 Strings can be concatenated using the notation for defining matrices.  For
 example, the expression
@@ -260,7 +260,7 @@ possible to create a string without actually writing a text.  The
 function @code{blanks} creates a string of a given length consisting
 only of blank characters (ASCII code 32).
 
-@c blanks scripts/scripts/strings/blanks.m
+@c blanks scripts/strings/blanks.m
 @anchor{XREFblanks}
 @deftypefn {} {} blanks (@var{n})
 Return a string of @var{n} blanks.
@@ -485,7 +485,7 @@ strvcat ([97, 98, 99], "", @{"98", "99", 100@}, "str1", ["ha", "lf"])
 @end deftypefn
 
 
-@c strcat scripts/scripts/strings/strcat.m
+@c strcat scripts/strings/strcat.m
 @anchor{XREFstrcat}
 @deftypefn {} {} strcat (@var{s1}, @var{s2}, @dots{})
 Return a string containing all the arguments concatenated
@@ -547,7 +547,7 @@ strcat (s, s, s)
 @end deftypefn
 
 
-@c cstrcat scripts/scripts/strings/cstrcat.m
+@c cstrcat scripts/strings/cstrcat.m
 @anchor{XREFcstrcat}
 @deftypefn {} {} cstrcat (@var{s1}, @var{s2}, @dots{})
 Return a string containing all the arguments concatenated horizontally
@@ -585,7 +585,7 @@ round fractional values to integer.  A more flexible way to format numerical
 data as strings is the @code{sprintf} function (@pxref{Formatted Output},
 @ref{XREFsprintf,,sprintf}).
 
-@c mat2str scripts/scripts/strings/mat2str.m
+@c mat2str scripts/strings/mat2str.m
 @anchor{XREFmat2str}
 @deftypefn  {} {@var{s} =} mat2str (@var{x}, @var{n})
 @deftypefnx {} {@var{s} =} mat2str (@var{x}, @var{n}, "class")
@@ -627,7 +627,7 @@ isequal (x, eval (mat2str (x)))
 @end deftypefn
 
 
-@c num2str scripts/scripts/general/num2str.m
+@c num2str scripts/general/num2str.m
 @anchor{XREFnum2str}
 @deftypefn  {} {} num2str (@var{x})
 @deftypefnx {} {} num2str (@var{x}, @var{precision})
@@ -685,7 +685,7 @@ modification.  This is in contrast to @sc{matlab} which tampers with the
 @end deftypefn
 
 
-@c int2str scripts/scripts/general/int2str.m
+@c int2str scripts/general/int2str.m
 @anchor{XREFint2str}
 @deftypefn {} {} int2str (@var{n})
 Convert an integer (or array of integers) to a string (or a character
@@ -857,7 +857,7 @@ quote( quote == " " ) = "_"
 For more complex manipulations, such as searching, replacing, and
 general regular expressions, the following functions come with Octave.
 
-@c deblank scripts/scripts/strings/deblank.m
+@c deblank scripts/strings/deblank.m
 @anchor{XREFdeblank}
 @deftypefn {} {} deblank (@var{s})
 Remove trailing whitespace and nulls from @var{s}.
@@ -881,7 +881,7 @@ deblank ([" abc   "; "   def   "])
 @end deftypefn
 
 
-@c strtrim scripts/scripts/strings/strtrim.m
+@c strtrim scripts/strings/strtrim.m
 @anchor{XREFstrtrim}
 @deftypefn {} {} strtrim (@var{s})
 Remove leading and trailing whitespace from @var{s}.
@@ -905,7 +905,7 @@ strtrim ([" abc   "; "   def   "])
 @end deftypefn
 
 
-@c strtrunc scripts/scripts/strings/strtrunc.m
+@c strtrunc scripts/strings/strtrunc.m
 @anchor{XREFstrtrunc}
 @deftypefn {} {} strtrunc (@var{s}, @var{n})
 Truncate the character string @var{s} to length @var{n}.
@@ -917,7 +917,7 @@ on each cell element and the new cell array is returned.
 @end deftypefn
 
 
-@c findstr scripts/scripts/strings/findstr.m
+@c findstr scripts/strings/findstr.m
 @anchor{XREFfindstr}
 @deftypefn  {} {} findstr (@var{s}, @var{t})
 @deftypefnx {} {} findstr (@var{s}, @var{t}, @var{overlap})
@@ -942,7 +942,7 @@ findstr ("abababa", "aba", 0)
 @end deftypefn
 
 
-@c strchr scripts/scripts/strings/strchr.m
+@c strchr scripts/strings/strchr.m
 @anchor{XREFstrchr}
 @deftypefn  {} {@var{idx} =} strchr (@var{str}, @var{chars})
 @deftypefnx {} {@var{idx} =} strchr (@var{str}, @var{chars}, @var{n})
@@ -960,7 +960,7 @@ This will be faster than using regexp in most cases.
 @end deftypefn
 
 
-@c index scripts/scripts/strings/index.m
+@c index scripts/strings/index.m
 @anchor{XREFindex}
 @deftypefn  {} {} index (@var{s}, @var{t})
 @deftypefnx {} {} index (@var{s}, @var{t}, @var{direction})
@@ -985,7 +985,7 @@ If @var{direction} is @qcode{"last"}, return the last element found.
 @end deftypefn
 
 
-@c rindex scripts/scripts/strings/rindex.m
+@c rindex scripts/strings/rindex.m
 @anchor{XREFrindex}
 @deftypefn {} {} rindex (@var{s}, @var{t})
 Return the position of the last occurrence of the character string
@@ -1055,7 +1055,7 @@ strfind (@{"abababa", "bebebe", "ab"@}, "aba")
 @end deftypefn
 
 
-@c strjoin scripts/scripts/strings/strjoin.m
+@c strjoin scripts/strings/strjoin.m
 @anchor{XREFstrjoin}
 @deftypefn  {} {@var{str} =} strjoin (@var{cstr})
 @deftypefnx {} {@var{str} =} strjoin (@var{cstr}, @var{delimiter})
@@ -1083,7 +1083,7 @@ strjoin (@{'Octave','Scilab','Lush','Yorick'@}, '*')
 @end deftypefn
 
 
-@c strmatch scripts/scripts/strings/strmatch.m
+@c strmatch scripts/strings/strmatch.m
 @anchor{XREFstrmatch}
 @deftypefn  {} {} strmatch (@var{s}, @var{A})
 @deftypefnx {} {} strmatch (@var{s}, @var{A}, "exact")
@@ -1118,7 +1118,7 @@ strmatch ("apple", ["apple  "; "apple juice"; "an apple"], "exact")
 @end deftypefn
 
 
-@c strtok scripts/scripts/strings/strtok.m
+@c strtok scripts/strings/strtok.m
 @anchor{XREFstrtok}
 @deftypefn  {} {[@var{tok}, @var{rem}] =} strtok (@var{str})
 @deftypefnx {} {[@var{tok}, @var{rem}] =} strtok (@var{str}, @var{delim})
@@ -1153,7 +1153,7 @@ strtok ("this is the life")
 @end deftypefn
 
 
-@c strsplit scripts/scripts/strings/strsplit.m
+@c strsplit scripts/strings/strsplit.m
 @anchor{XREFstrsplit}
 @deftypefn  {} {[@var{cstr}] =} strsplit (@var{str})
 @deftypefnx {} {[@var{cstr}] =} strsplit (@var{str}, @var{del})
@@ -1267,7 +1267,7 @@ strsplit ("a,\t,b, c", @{',', ' ', '\t'@}, "collapsedelimiters", false)
 @end deftypefn
 
 
-@c ostrsplit scripts/scripts/strings/ostrsplit.m
+@c ostrsplit scripts/strings/ostrsplit.m
 @anchor{XREFostrsplit}
 @deftypefn  {} {[@var{cstr}] =} ostrsplit (@var{s}, @var{sep})
 @deftypefnx {} {[@var{cstr}] =} ostrsplit (@var{s}, @var{sep}, @var{strip_empty})
@@ -1306,7 +1306,7 @@ ostrsplit (["a,b" ; "cde"], ",")
 @end deftypefn
 
 
-@c strread scripts/scripts/io/strread.m
+@c strread scripts/io/strread.m
 @anchor{XREFstrread}
 @deftypefn  {} {[@var{a}, @dots{}] =} strread (@var{str})
 @deftypefnx {} {[@var{a}, @dots{}] =} strread (@var{str}, @var{format})
@@ -1504,7 +1504,7 @@ strrep ("This is a test string", "is", "&%$")
 @end deftypefn
 
 
-@c substr scripts/scripts/strings/substr.m
+@c substr scripts/strings/substr.m
 @anchor{XREFsubstr}
 @deftypefn  {} {} substr (@var{s}, @var{offset})
 @deftypefnx {} {} substr (@var{s}, @var{offset}, @var{len})
@@ -1576,9 +1576,10 @@ Match between @var{m} and @var{n} times
 
 @item [@dots{}] [^@dots{}]
 
-List operators.  The pattern will match any character listed between "["
-and "]".  If the first character is "^" then the pattern is inverted and
-any character except those listed between brackets will match.
+List operators.  The pattern will match any character listed between
+@qcode{"["} and @qcode{"]"}.  If the first character is @qcode{"^"} then the
+pattern is inverted and any character except those listed between brackets
+will match.
 
 Escape sequences defined below can also be used inside list operators.  For
 example, a template for a floating point number might be @code{[-+.\d]+}.
@@ -1773,7 +1774,7 @@ regexprep ("Bill Dunn", '(\w+) (\w+)', '$2, $1')
 @end example
 
 @noindent
-returns "Dunn, Bill"
+returns @qcode{"Dunn, Bill"}
 
 Options in addition to those of @code{regexp} are
 
@@ -1797,7 +1798,7 @@ function.
 @end deftypefn
 
 
-@c regexptranslate scripts/scripts/strings/regexptranslate.m
+@c regexptranslate scripts/strings/regexptranslate.m
 @anchor{XREFregexptranslate}
 @deftypefn {} {} regexptranslate (@var{op}, @var{s})
 Translate a string for use in a regular expression.
@@ -1835,7 +1836,7 @@ regexptranslate ("escape", "12.5")
 @end deftypefn
 
 
-@c untabify scripts/scripts/strings/untabify.m
+@c untabify scripts/strings/untabify.m
 @anchor{XREFuntabify}
 @deftypefn  {} {} untabify (@var{t})
 @deftypefnx {} {} untabify (@var{t}, @var{tw})
@@ -1883,7 +1884,7 @@ hex2dec ("FF")
 @end group
 @end example
 
-@c bin2dec scripts/scripts/strings/bin2dec.m
+@c bin2dec scripts/strings/bin2dec.m
 @anchor{XREFbin2dec}
 @deftypefn {} {} bin2dec (@var{s})
 Return the decimal number corresponding to the binary number represented
@@ -1917,7 +1918,7 @@ converted number per cell element in @var{s}.
 @end deftypefn
 
 
-@c dec2bin scripts/scripts/strings/dec2bin.m
+@c dec2bin scripts/strings/dec2bin.m
 @anchor{XREFdec2bin}
 @deftypefn {} {} dec2bin (@var{d}, @var{len})
 Return a binary number corresponding to the non-negative integer @var{d},
@@ -1942,7 +1943,7 @@ digits in the result.
 @end deftypefn
 
 
-@c dec2hex scripts/scripts/strings/dec2hex.m
+@c dec2hex scripts/strings/dec2hex.m
 @anchor{XREFdec2hex}
 @deftypefn {} {} dec2hex (@var{d}, @var{len})
 Return the hexadecimal string corresponding to the non-negative integer
@@ -1967,7 +1968,7 @@ digits in the result.
 @end deftypefn
 
 
-@c hex2dec scripts/scripts/strings/hex2dec.m
+@c hex2dec scripts/strings/hex2dec.m
 @anchor{XREFhex2dec}
 @deftypefn {} {} hex2dec (@var{s})
 Return the integer corresponding to the hexadecimal number represented by
@@ -1994,7 +1995,7 @@ converted number per cell element in @var{s}.
 @end deftypefn
 
 
-@c dec2base scripts/scripts/strings/dec2base.m
+@c dec2base scripts/strings/dec2base.m
 @anchor{XREFdec2base}
 @deftypefn  {} {} dec2base (@var{d}, @var{base})
 @deftypefnx {} {} dec2base (@var{d}, @var{base}, @var{len})
@@ -2029,7 +2030,7 @@ digits in the result.
 @end deftypefn
 
 
-@c base2dec scripts/scripts/strings/base2dec.m
+@c base2dec scripts/strings/base2dec.m
 @anchor{XREFbase2dec}
 @deftypefn {} {} base2dec (@var{s}, @var{base})
 Convert @var{s} from a string of digits in base @var{base} to a decimal
@@ -2178,7 +2179,7 @@ risk of using @code{eval} on unknown data.
 @end deftypefn
 
 
-@c strjust scripts/scripts/strings/strjust.m
+@c strjust scripts/strings/strjust.m
 @anchor{XREFstrjust}
 @deftypefn  {} {} strjust (@var{s})
 @deftypefnx {} {} strjust (@var{s}, @var{pos})
@@ -2206,7 +2207,7 @@ strjust (["a"; "ab"; "abc"; "abcd"])
 @end deftypefn
 
 
-@c str2num scripts/scripts/strings/str2num.m
+@c str2num scripts/strings/str2num.m
 @anchor{XREFstr2num}
 @deftypefn  {} {@var{x} =} str2num (@var{s})
 @deftypefnx {} {[@var{x}, @var{state}] =} str2num (@var{s})
@@ -2378,7 +2379,7 @@ This is equivalent to (@code{islower (@var{s}) | isupper (@var{s})}).
 @end deftypefn
 
 
-@c isletter scripts/scripts/strings/isletter.m
+@c isletter scripts/strings/isletter.m
 @anchor{XREFisletter}
 @deftypefn {} {} isletter (@var{s})
 Return a logical array which is true where the elements of @var{s}
@@ -2482,7 +2483,7 @@ not.
 @end deftypefn
 
 
-@c isstrprop scripts/scripts/strings/isstrprop.m
+@c isstrprop scripts/strings/isstrprop.m
 @anchor{XREFisstrprop}
 @deftypefn {} {} isstrprop (@var{str}, @var{prop})
 Test character string properties.

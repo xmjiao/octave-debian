@@ -1,7 +1,7 @@
 // N-D Array manipulations.
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
@@ -229,22 +229,7 @@ NDArray::ifourierNd (void) const
 
 #else
 
-extern "C"
-{
-  // Note that the original complex fft routines were not written for
-  // double complex arguments.  They have been modified by adding an
-  // implicit double precision (a-h,o-z) statement at the beginning of
-  // each subroutine.
-
-  F77_RET_T
-  F77_FUNC (zffti, ZFFTI) (const F77_INT&, F77_DBLE_CMPLX*);
-
-  F77_RET_T
-  F77_FUNC (zfftf, ZFFTF) (const F77_INT&, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*);
-
-  F77_RET_T
-  F77_FUNC (zfftb, ZFFTB) (const F77_INT&, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*);
-}
+#include "lo-fftpack-proto.h"
 
 ComplexNDArray
 NDArray::fourier (int dim) const
@@ -272,7 +257,7 @@ NDArray::fourier (int dim) const
   octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
   octave_idx_type dist = (stride == 1 ? npts : 1);
 
-  F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+  F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
   for (octave_idx_type k = 0; k < nloop; k++)
     {
@@ -283,7 +268,8 @@ NDArray::fourier (int dim) const
           for (octave_idx_type i = 0; i < npts; i++)
             tmp[i] = elem ((i + k*npts)*stride + j*dist);
 
-          F77_FUNC (zfftf, ZFFTF) (npts, tmp, pwsave);
+          F77_FUNC (zfftf, ZFFTF) (npts, F77_DBLE_CMPLX_ARG (tmp),
+                                   F77_DBLE_CMPLX_ARG (pwsave));
 
           for (octave_idx_type i = 0; i < npts; i++)
             retval((i + k*npts)*stride + j*dist) = tmp[i];
@@ -319,7 +305,7 @@ NDArray::ifourier (int dim) const
   octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
   octave_idx_type dist = (stride == 1 ? npts : 1);
 
-  F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+  F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
   for (octave_idx_type k = 0; k < nloop; k++)
     {
@@ -330,7 +316,8 @@ NDArray::ifourier (int dim) const
           for (octave_idx_type i = 0; i < npts; i++)
             tmp[i] = elem ((i + k*npts)*stride + j*dist);
 
-          F77_FUNC (zfftb, ZFFTB) (npts, tmp, pwsave);
+          F77_FUNC (zfftb, ZFFTB) (npts, F77_DBLE_CMPLX_ARG (tmp),
+                                   F77_DBLE_CMPLX_ARG (pwsave));
 
           for (octave_idx_type i = 0; i < npts; i++)
             retval((i + k*npts)*stride + j*dist) = tmp[i] /
@@ -365,7 +352,7 @@ NDArray::fourier2d (void) const
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
-      F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+      F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
       for (octave_idx_type k = 0; k < nloop; k++)
         {
@@ -376,7 +363,8 @@ NDArray::fourier2d (void) const
               for (octave_idx_type l = 0; l < npts; l++)
                 prow[l] = retval((l + k*npts)*stride + j*dist);
 
-              F77_FUNC (zfftf, ZFFTF) (npts, prow, pwsave);
+              F77_FUNC (zfftf, ZFFTF) (npts, F77_DBLE_CMPLX_ARG (prow),
+                                       F77_DBLE_CMPLX_ARG (pwsave));
 
               for (octave_idx_type l = 0; l < npts; l++)
                 retval((l + k*npts)*stride + j*dist) = prow[l];
@@ -413,7 +401,7 @@ NDArray::ifourier2d (void) const
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
-      F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+      F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
       for (octave_idx_type k = 0; k < nloop; k++)
         {
@@ -424,7 +412,8 @@ NDArray::ifourier2d (void) const
               for (octave_idx_type l = 0; l < npts; l++)
                 prow[l] = retval((l + k*npts)*stride + j*dist);
 
-              F77_FUNC (zfftb, ZFFTB) (npts, prow, pwsave);
+              F77_FUNC (zfftb, ZFFTB) (npts, F77_DBLE_CMPLX_ARG (prow),
+                                       F77_DBLE_CMPLX_ARG (pwsave));
 
               for (octave_idx_type l = 0; l < npts; l++)
                 retval((l + k*npts)*stride + j*dist) =
@@ -461,7 +450,7 @@ NDArray::fourierNd (void) const
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
-      F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+      F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
       for (octave_idx_type k = 0; k < nloop; k++)
         {
@@ -472,7 +461,8 @@ NDArray::fourierNd (void) const
               for (octave_idx_type l = 0; l < npts; l++)
                 prow[l] = retval((l + k*npts)*stride + j*dist);
 
-              F77_FUNC (zfftf, ZFFTF) (npts, prow, pwsave);
+              F77_FUNC (zfftf, ZFFTF) (npts, F77_DBLE_CMPLX_ARG (prow),
+                                       F77_DBLE_CMPLX_ARG (pwsave));
 
               for (octave_idx_type l = 0; l < npts; l++)
                 retval((l + k*npts)*stride + j*dist) = prow[l];
@@ -508,7 +498,7 @@ NDArray::ifourierNd (void) const
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
-      F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+      F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
       for (octave_idx_type k = 0; k < nloop; k++)
         {
@@ -519,7 +509,8 @@ NDArray::ifourierNd (void) const
               for (octave_idx_type l = 0; l < npts; l++)
                 prow[l] = retval((l + k*npts)*stride + j*dist);
 
-              F77_FUNC (zfftb, ZFFTB) (npts, prow, pwsave);
+              F77_FUNC (zfftb, ZFFTB) (npts, F77_DBLE_CMPLX_ARG (prow),
+                                       F77_DBLE_CMPLX_ARG (pwsave));
 
               for (octave_idx_type l = 0; l < npts; l++)
                 retval((l + k*npts)*stride + j*dist) =
@@ -541,7 +532,7 @@ boolNDArray
 NDArray::operator ! (void) const
 {
   if (any_element_is_nan ())
-    err_nan_to_logical_conversion ();
+    octave::err_nan_to_logical_conversion ();
 
   return do_mx_unary_op<bool, double> (*this, mx_inline_not);
 }
@@ -918,3 +909,4 @@ BSXFUN_OP2_DEF_MXLOOP (pow, ComplexNDArray, ComplexNDArray,
                        NDArray, mx_inline_pow)
 BSXFUN_OP2_DEF_MXLOOP (pow, ComplexNDArray, NDArray,
                        ComplexNDArray, mx_inline_pow)
+

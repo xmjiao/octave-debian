@@ -254,8 +254,38 @@ the parent figure of <var>hax</var> is queried or set.
 <p>For convenience, it is also possible to use this function with the
 command form, <code>colormap <var>map_name</var></code>.
 </p>
+<p>The list of built-in colormaps is:
+</p>
+<table>
+<thead><tr><th width="15%">Map</th><th width="85%">Description</th></tr></thead>
+<tr><td width="15%">viridis</td><td width="85%">default</td></tr>
+<tr><td width="15%">jet</td><td width="85%">colormap traversing blue, cyan, green, yellow, red.</td></tr>
+<tr><td width="15%">cubehelix</td><td width="85%">colormap traversing black, blue, green, red, white with increasing intensity.</td></tr>
+<tr><td width="15%">hsv</td><td width="85%">cyclic colormap traversing Hue, Saturation, Value space.</td></tr>
+<tr><td width="15%">rainbow</td><td width="85%">colormap traversing red, yellow, blue, green, violet.</td></tr>
+<tr><td width="15%">&mdash;&mdash;&mdash;&mdash;-</td><td width="85%">&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</td></tr>
+<tr><td width="15%">hot</td><td width="85%">colormap traversing black, red, orange, yellow, white.</td></tr>
+<tr><td width="15%">cool</td><td width="85%">colormap traversing cyan, purple, magenta.</td></tr>
+<tr><td width="15%">spring</td><td width="85%">colormap traversing magenta to yellow.</td></tr>
+<tr><td width="15%">summer</td><td width="85%">colormap traversing green to yellow.</td></tr>
+<tr><td width="15%">autumn</td><td width="85%">colormap traversing red, orange, yellow.</td></tr>
+<tr><td width="15%">winter</td><td width="85%">colormap traversing blue to green.</td></tr>
+<tr><td width="15%">&mdash;&mdash;&mdash;&mdash;-</td><td width="85%">&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</td></tr>
+<tr><td width="15%">gray</td><td width="85%">colormap traversing black to white in shades of gray.</td></tr>
+<tr><td width="15%">bone</td><td width="85%">colormap traversing black, gray-blue, white.</td></tr>
+<tr><td width="15%">copper</td><td width="85%">colormap traversing black to light copper.</td></tr>
+<tr><td width="15%">pink</td><td width="85%">colormap traversing black, gray-pink, white.</td></tr>
+<tr><td width="15%">ocean</td><td width="85%">colormap traversing black, dark-blue, white.</td></tr>
+<tr><td width="15%">&mdash;&mdash;&mdash;&mdash;-</td><td width="85%">&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</td></tr>
+<tr><td width="15%">colorcube</td><td width="85%">equally spaced colors in RGB color space.</td></tr>
+<tr><td width="15%">flag</td><td width="85%">cyclic 4-color map of red, white, blue, black.</td></tr>
+<tr><td width="15%">lines</td><td width="85%">cyclic colormap with colors from axes <code>&quot;ColorOrder&quot;</code> property.</td></tr>
+<tr><td width="15%">prism</td><td width="85%">cyclic 6-color map of red, orange, yellow, green, blue, violet.</td></tr>
+<tr><td width="15%">&mdash;&mdash;&mdash;&mdash;-</td><td width="85%">&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</td></tr>
+<tr><td width="15%">white</td><td width="85%">all white colormap (no colors).</td></tr>
+</table>
 
-<p><strong>See also:</strong> <a href="#XREFviridis">viridis</a>.
+<p><strong>See also:</strong> <a href="#XREFviridis">viridis</a>, <a href="#XREFjet">jet</a>, <a href="#XREFcubehelix">cubehelix</a>, <a href="#XREFhsv">hsv</a>, <a href="#XREFrainbow">rainbow</a>, <a href="#XREFhot">hot</a>, <a href="#XREFcool">cool</a>, <a href="#XREFspring">spring</a>, <a href="#XREFsummer">summer</a>, <a href="#XREFautumn">autumn</a>, <a href="#XREFwinter">winter</a>, <a href="#XREFgray">gray</a>, <a href="#XREFbone">bone</a>, <a href="#XREFcopper">copper</a>, <a href="#XREFpink">pink</a>, <a href="#XREFocean">ocean</a>, <a href="#XREFcolorcube">colorcube</a>, <a href="#XREFflag">flag</a>, <a href="#XREFlines">lines</a>, <a href="#XREFprism">prism</a>, <a href="#XREFwhite">white</a>.
 </p></dd></dl>
 
 
@@ -271,7 +301,7 @@ command form, <code>colormap <var>map_name</var></code>.
 <dt>profile (default)</dt>
 <dd><p>Plot the RGB line profile of the colormap for each of the channels (red,
 green and blue) with the plot lines colored appropriately.  Each line
-represents the intensity of each RGB components across the colormap.
+represents the intensity of an RGB component across the colormap.
 </p>
 </dd>
 <dt>composite</dt>
@@ -459,7 +489,7 @@ If unspecified, the length of the current colormap, or 64, is used.
 <dt><a name="index-lines-1"></a>: <em><var>map</var> =</em> <strong>lines</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Create color colormap.  This colormap is composed of the list of colors
 in the current axes <code>&quot;ColorOrder&quot;</code> property.  The default is blue,
-green, red, cyan, pink, yellow, and gray.
+orange, yellow, purple, green, light blue, and dark red.
 </p>
 <p>The argument <var>n</var> must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.

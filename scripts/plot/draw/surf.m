@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2015 Kai Habel
+## Copyright (C) 2007-2016 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -71,7 +71,7 @@ function retval = surf (varargin)
 
     htmp = surface (varargin{:});
 
-    if (! ishold (hax))
+    if (! ishold ())
       set (hax, "view", [-37.5, 30],
                 "xgrid", "on", "ygrid", "on", "zgrid", "on");
     endif
@@ -91,28 +91,28 @@ endfunction
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! Z = peaks ();
 %! surf (Z);
-%! title ({'surf() plot of peaks() function'; 'color determined by height Z'});
+%! title ({"surf() plot of peaks() function"; "color determined by height Z"});
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! Z = sombrero ();
 %! [Fx,Fy] = gradient (Z);
 %! surf (Z, Fx+Fy);
 %! shading interp;
-%! title ({'surf() plot of peaks() function'; ...
-%!         'facecolor is interpolated, color determined by gradient of Z'});
+%! title ({"surf() plot of peaks() function"; ...
+%!         "facecolor is interpolated, color determined by gradient of Z"});
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! [X,Y,Z] = sombrero ();
 %! [~,Fy] = gradient (Z);
 %! surf (X, Y, Z, Fy);
 %! shading interp;
-%! title ({'surf() plot of peaks() function'; ...
-%!         'facecolor is interpolated, color determined by Y-gradient of Z'});
+%! title ({"surf() plot of peaks() function"; ...
+%!         "facecolor is interpolated, color determined by Y-gradient of Z"});
 

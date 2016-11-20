@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2015 Kai Habel
+## Copyright (C) 2009-2016 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -144,7 +144,7 @@ function h = surfl (varargin)
     hax = newplot (hax);
 
     htmp = surface (varargin{:});
-    if (! ishold (hax))
+    if (! ishold ())
       set (hax, "view", [-37.5, 30],
                 "xgrid", "on", "ygrid", "on", "zgrid", "on", "clim", [0 1]);
     endif
@@ -199,7 +199,7 @@ endfunction
 %! colormap (copper (64));
 %! surfl (X,Y,Z);
 %! shading interp;
-%! title ('surfl() with defaults');
+%! title ("surfl() with defaults");
 
 %!demo
 %! clf;
@@ -207,5 +207,5 @@ endfunction
 %! colormap (copper (64));
 %! surfl (X,Y,Z, [62.50,30], [0.2 0.6 0.4 25]);
 %! shading interp;
-%! title ('surfl() with lighting vector and material properties');
+%! title ("surfl() with lighting vector and material properties");
 

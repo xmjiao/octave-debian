@@ -16,7 +16,7 @@
 
 # Makefile for Octave
 #
-# Copyright (C) 1993-2015 John W. Eaton
+# Copyright (C) 1993-2016 John W. Eaton
 #
 # This file is part of Octave.
 #
@@ -1301,6 +1301,20 @@ libinterp_dldfcn_fftw_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_libinterp_dldfcn_fftw_la_rpath =
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_libinterp_dldfcn_fftw_la_rpath =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
+libinterp_dldfcn_gzip_la_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+	liboctave/liboctave.la $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libinterp_dldfcn_gzip_la_OBJECTS =  \
+	libinterp/dldfcn/libinterp_dldfcn_gzip_la-gzip.lo
+libinterp_dldfcn_gzip_la_OBJECTS =  \
+	$(am_libinterp_dldfcn_gzip_la_OBJECTS)
+libinterp_dldfcn_gzip_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
+	$(libinterp_dldfcn_gzip_la_CXXFLAGS) $(CXXFLAGS) \
+	$(libinterp_dldfcn_gzip_la_LDFLAGS) $(LDFLAGS) -o $@
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_libinterp_dldfcn_gzip_la_rpath =
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_libinterp_dldfcn_gzip_la_rpath =  \
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
 libinterp_dldfcn_qr_la_DEPENDENCIES = $(am__DEPENDENCIES_2) \
 	liboctave/liboctave.la $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -1342,20 +1356,6 @@ libinterp_dldfcn_symrcm_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_libinterp_dldfcn_symrcm_la_rpath =
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_libinterp_dldfcn_symrcm_la_rpath =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
-libinterp_dldfcn_xzip_la_DEPENDENCIES = $(am__DEPENDENCIES_2) \
-	liboctave/liboctave.la $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libinterp_dldfcn_xzip_la_OBJECTS =  \
-	libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo
-libinterp_dldfcn_xzip_la_OBJECTS =  \
-	$(am_libinterp_dldfcn_xzip_la_OBJECTS)
-libinterp_dldfcn_xzip_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
-	$(libinterp_dldfcn_xzip_la_CXXFLAGS) $(CXXFLAGS) \
-	$(libinterp_dldfcn_xzip_la_LDFLAGS) $(LDFLAGS) -o $@
-@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_libinterp_dldfcn_xzip_la_rpath =
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_libinterp_dldfcn_xzip_la_rpath =  \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
 am__DEPENDENCIES_3 = libinterp/dldfcn/__delaunayn__.la \
 	libinterp/dldfcn/__eigs__.la \
 	libinterp/dldfcn/__fltk_uigetfile__.la \
@@ -1367,8 +1367,8 @@ am__DEPENDENCIES_3 = libinterp/dldfcn/__delaunayn__.la \
 	libinterp/dldfcn/ccolamd.la libinterp/dldfcn/chol.la \
 	libinterp/dldfcn/colamd.la libinterp/dldfcn/convhulln.la \
 	libinterp/dldfcn/dmperm.la libinterp/dldfcn/fftw.la \
-	libinterp/dldfcn/qr.la libinterp/dldfcn/symbfact.la \
-	libinterp/dldfcn/symrcm.la libinterp/dldfcn/xzip.la
+	libinterp/dldfcn/gzip.la libinterp/dldfcn/qr.la \
+	libinterp/dldfcn/symbfact.la libinterp/dldfcn/symrcm.la
 am__DEPENDENCIES_4 = $(am__DEPENDENCIES_3)
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am__DEPENDENCIES_5 =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(am__DEPENDENCIES_4)
@@ -1416,7 +1416,6 @@ am__objects_18 =  \
 	libinterp/operators/libinterp_liboctinterp_la-op-dm-s.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-dm-scm.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-dm-sm.lo \
-	libinterp/operators/libinterp_liboctinterp_la-op-double-conv.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-fcdm-fcdm.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-fcdm-fcm.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-fcdm-fcs.lo \
@@ -1441,7 +1440,6 @@ am__objects_18 =  \
 	libinterp/operators/libinterp_liboctinterp_la-op-fdm-fdm.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-fdm-fm.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-fdm-fs.lo \
-	libinterp/operators/libinterp_liboctinterp_la-op-float-conv.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-fm-fcdm.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-fm-fcm.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-fm-fcs.lo \
@@ -1458,7 +1456,6 @@ am__objects_18 =  \
 	libinterp/operators/libinterp_liboctinterp_la-op-i64-i64.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-i8-i8.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-int-concat.lo \
-	libinterp/operators/libinterp_liboctinterp_la-op-int-conv.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-m-cdm.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-m-cm.lo \
 	libinterp/operators/libinterp_liboctinterp_la-op-m-cs.lo \
@@ -2764,6 +2761,7 @@ am__objects_36 = liboctave/util/liboctave_util_libutil_la-cmd-edit.lo \
 	liboctave/util/liboctave_util_libutil_la-oct-inttypes.lo \
 	liboctave/util/liboctave_util_libutil_la-oct-locbuf.lo \
 	liboctave/util/liboctave_util_libutil_la-oct-mutex.lo \
+	liboctave/util/liboctave_util_libutil_la-oct-string.lo \
 	liboctave/util/liboctave_util_libutil_la-oct-shlib.lo \
 	liboctave/util/liboctave_util_libutil_la-pathsearch.lo \
 	liboctave/util/liboctave_util_libutil_la-lo-regexp.lo \
@@ -2783,6 +2781,7 @@ liboctave_util_libutil_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 liboctave_wrappers_libwrappers_la_LIBADD =
 am__objects_37 = liboctave/wrappers/liboctave_wrappers_libwrappers_la-areadlink-wrapper.lo \
+	liboctave/wrappers/liboctave_wrappers_libwrappers_la-async-system-wrapper.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-base64-wrappers.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-canonicalize-file-name-wrapper.lo \
 	liboctave/wrappers/liboctave_wrappers_libwrappers_la-dirent-wrappers.lo \
@@ -2988,10 +2987,10 @@ SOURCES = $(libgui_graphics_libgui_graphics_la_SOURCES) \
 	$(libinterp_dldfcn_convhulln_la_SOURCES) \
 	$(libinterp_dldfcn_dmperm_la_SOURCES) \
 	$(libinterp_dldfcn_fftw_la_SOURCES) \
+	$(libinterp_dldfcn_gzip_la_SOURCES) \
 	$(libinterp_dldfcn_qr_la_SOURCES) \
 	$(libinterp_dldfcn_symbfact_la_SOURCES) \
 	$(libinterp_dldfcn_symrcm_la_SOURCES) \
-	$(libinterp_dldfcn_xzip_la_SOURCES) \
 	$(libinterp_liboctinterp_la_SOURCES) \
 	$(nodist_libinterp_liboctinterp_la_SOURCES) \
 	$(libinterp_octave_value_liboctave_value_la_SOURCES) \
@@ -3037,10 +3036,10 @@ DIST_SOURCES = $(am__libgui_graphics_libgui_graphics_la_SOURCES_DIST) \
 	$(libinterp_dldfcn_convhulln_la_SOURCES) \
 	$(libinterp_dldfcn_dmperm_la_SOURCES) \
 	$(libinterp_dldfcn_fftw_la_SOURCES) \
+	$(libinterp_dldfcn_gzip_la_SOURCES) \
 	$(libinterp_dldfcn_qr_la_SOURCES) \
 	$(libinterp_dldfcn_symbfact_la_SOURCES) \
 	$(libinterp_dldfcn_symrcm_la_SOURCES) \
-	$(libinterp_dldfcn_xzip_la_SOURCES) \
 	$(libinterp_liboctinterp_la_SOURCES) \
 	$(libinterp_octave_value_liboctave_value_la_SOURCES) \
 	$(libinterp_parse_tree_libparse_tree_la_SOURCES) \
@@ -3401,9 +3400,9 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
-DIST_ARCHIVES = $(distdir).tar.gz
+DIST_ARCHIVES = $(distdir).tar.gz $(distdir).tar.lz
 GZIP_ENV = --best
-DIST_TARGETS = dist-gzip
+DIST_TARGETS = dist-lzip dist-gzip
 distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
@@ -4320,6 +4319,7 @@ LOCALE_FR_UTF8 = @LOCALE_FR_UTF8@
 LOCALE_JA = @LOCALE_JA@
 LOCALE_ZH_CN = @LOCALE_ZH_CN@
 LRELEASE = @LRELEASE@
+LRELEASEFLAGS = @LRELEASEFLAGS@
 LTALLOCA = @LTALLOCA@
 LTLIBINTL = @LTLIBINTL@
 LTLIBMULTITHREAD = @LTLIBMULTITHREAD@
@@ -4343,6 +4343,7 @@ MKOCTFILE_F77 = @MKOCTFILE_F77@
 MKOCTFILE_LD_CXX = @MKOCTFILE_LD_CXX@
 MKOCTFILE_RANLIB = @MKOCTFILE_RANLIB@
 MOC = @MOC@
+MOCFLAGS = @MOCFLAGS@
 NEXT_AS_FIRST_DIRECTIVE_DIRENT_H = @NEXT_AS_FIRST_DIRECTIVE_DIRENT_H@
 NEXT_AS_FIRST_DIRECTIVE_ERRNO_H = @NEXT_AS_FIRST_DIRECTIVE_ERRNO_H@
 NEXT_AS_FIRST_DIRECTIVE_FCNTL_H = @NEXT_AS_FIRST_DIRECTIVE_FCNTL_H@
@@ -4456,12 +4457,14 @@ QHULL_LIBS = @QHULL_LIBS@
 QRUPDATE_CPPFLAGS = @QRUPDATE_CPPFLAGS@
 QRUPDATE_LDFLAGS = @QRUPDATE_LDFLAGS@
 QRUPDATE_LIBS = @QRUPDATE_LIBS@
+QTCHOOSER = @QTCHOOSER@
 QT_CFLAGS = @QT_CFLAGS@
 QT_CPPFLAGS = @QT_CPPFLAGS@
 QT_LDFLAGS = @QT_LDFLAGS@
 QT_LIBS = @QT_LIBS@
 RANLIB = @RANLIB@
 RCC = @RCC@
+RCCFLAGS = @RCCFLAGS@
 RDYNAMIC_FLAG = @RDYNAMIC_FLAG@
 READLINE_LIBS = @READLINE_LIBS@
 REPLACE_BTOWC = @REPLACE_BTOWC@
@@ -4687,6 +4690,7 @@ STDBOOL_H = @STDBOOL_H@
 STDDEF_H = @STDDEF_H@
 STDINT_H = @STDINT_H@
 STRIP = @STRIP@
+SUITESPARSE_CONFIG_LIBS = @SUITESPARSE_CONFIG_LIBS@
 SYS_TIME_H_DEFINES_STRUCT_TIMESPEC = @SYS_TIME_H_DEFINES_STRUCT_TIMESPEC@
 TEMPLATE_AR = @TEMPLATE_AR@
 TEMPLATE_ARFLAGS = @TEMPLATE_ARFLAGS@
@@ -4695,6 +4699,7 @@ TEXI2DVI = @TEXI2DVI@
 TEXI2PDF = @TEXI2PDF@
 TIME_H_DEFINES_STRUCT_TIMESPEC = @TIME_H_DEFINES_STRUCT_TIMESPEC@
 UIC = @UIC@
+UICFLAGS = @UICFLAGS@
 UMFPACK_CPPFLAGS = @UMFPACK_CPPFLAGS@
 UMFPACK_LDFLAGS = @UMFPACK_LDFLAGS@
 UMFPACK_LIBS = @UMFPACK_LIBS@
@@ -4736,6 +4741,7 @@ ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 ac_ct_F77 = @ac_ct_F77@
 ac_ct_LRELEASE = @ac_ct_LRELEASE@
 ac_ct_MOC = @ac_ct_MOC@
+ac_ct_QTCHOOSER = @ac_ct_QTCHOOSER@
 ac_ct_RCC = @ac_ct_RCC@
 ac_ct_UIC = @ac_ct_UIC@
 am__include = @am__include@
@@ -4828,17 +4834,17 @@ AM_LFLAGS = @LFLAGS@
 AM_YFLAGS = -dv
 
 # Fortran compiler flags.
-AM_FFLAGS = @FFLAGS@
+AM_FFLAGS = ${FPICFLAG} @FFLAGS@
 
 # C compiler flags.
-AM_CFLAGS = ${XTRA_CFLAGS}
+AM_CFLAGS = ${CPICFLAG} ${XTRA_CFLAGS}
 
 # ifeq (${INCLUDE_DEPS},no)
 #   omit_deps = true;
 # endif
 
 # C++ compiler flags.
-AM_CXXFLAGS = ${XTRA_CXXFLAGS}
+AM_CXXFLAGS = ${CXXPICFLAG} ${XTRA_CXXFLAGS}
 
 # The arguments passed to configure.
 CONFIG_SUBDIRS = @subdirs@
@@ -5108,9 +5114,10 @@ nodist_noinst_HEADERS =
 OCTAVE_VERSION_LINKS = src/octave-cli-$(version)$(EXEEXT) \
 	$(am__append_36)
 OCTAVE_CROSS_TOOLS = $(am__append_38)
-OCTAVE_INTERPRETER_TARGETS = $(OCT_FILES) $(DLDFCN_PKG_ADD_FILE) \
-	$(bin_PROGRAMS) $(OCTAVE_VERSION_LINKS) $(am__append_37) \
-	$(GEN_FCN_FILES) $(PKG_ADD_FILES)
+OCTAVE_INTERPRETER_TARGETS = $(LIBOCTAVE_TST_FILES) $(OCT_FILES) \
+	$(DLDFCN_PKG_ADD_FILE) $(LIBINTERP_TST_FILES) $(bin_PROGRAMS) \
+	$(OCTAVE_VERSION_LINKS) $(am__append_37) $(GEN_FCN_FILES) \
+	$(PKG_ADD_FILES)
 octlib_LTLIBRARIES = liboctave/liboctave.la libinterp/liboctinterp.la \
 	$(am__append_3) $(am__append_5)
 noinst_LTLIBRARIES = liboctave/array/libarray.la \
@@ -5657,7 +5664,15 @@ NUMERIC_INC = \
   liboctave/numeric/fEIG.h \
   liboctave/numeric/gepbalance.h \
   liboctave/numeric/hess.h \
+  liboctave/numeric/lo-amos-proto.h \
+  liboctave/numeric/lo-arpack-proto.h \
+  liboctave/numeric/lo-blas-proto.h \
+  liboctave/numeric/lo-fftpack-proto.h \
+  liboctave/numeric/lo-lapack-proto.h \
   liboctave/numeric/lo-mappers.h \
+  liboctave/numeric/lo-qrupdate-proto.h \
+  liboctave/numeric/lo-ranlib-proto.h \
+  liboctave/numeric/lo-slatec-proto.h \
   liboctave/numeric/lo-specfun.h \
   liboctave/numeric/lu.h \
   liboctave/numeric/oct-convn.h \
@@ -6464,6 +6479,7 @@ UTIL_INC = \
   liboctave/util/oct-refcount.h \
   liboctave/util/oct-rl-edit.h \
   liboctave/util/oct-rl-hist.h \
+  liboctave/util/oct-string.h \
   liboctave/util/oct-shlib.h \
   liboctave/util/oct-sort.h \
   liboctave/util/pathsearch.h \
@@ -6502,6 +6518,7 @@ UTIL_SRC = \
   liboctave/util/oct-inttypes.cc \
   liboctave/util/oct-locbuf.cc \
   liboctave/util/oct-mutex.cc \
+  liboctave/util/oct-string.cc \
   liboctave/util/oct-shlib.cc \
   liboctave/util/pathsearch.cc \
   liboctave/util/lo-regexp.cc \
@@ -6525,6 +6542,7 @@ liboctave_util_libutil_la_CFLAGS = $(liboctave_liboctave_la_CFLAGS)
 liboctave_util_libutil_la_CXXFLAGS = $(liboctave_liboctave_la_CXXFLAGS)
 NOINSTALL_WRAPPERS_INC = \
   liboctave/wrappers/areadlink-wrapper.h \
+  liboctave/wrappers/async-system-wrapper.h \
   liboctave/wrappers/base64-wrappers.h \
   liboctave/wrappers/canonicalize-file-name-wrapper.h \
   liboctave/wrappers/dirent-wrappers.h \
@@ -6559,6 +6577,7 @@ NOINSTALL_WRAPPERS_INC = \
 
 WRAPPERS_SRC = \
   liboctave/wrappers/areadlink-wrapper.c \
+  liboctave/wrappers/async-system-wrapper.c \
   liboctave/wrappers/base64-wrappers.c \
   liboctave/wrappers/canonicalize-file-name-wrapper.c \
   liboctave/wrappers/dirent-wrappers.c \
@@ -6605,7 +6624,7 @@ nodist_liboctave_liboctave_la_SOURCES = \
 EXTRA_liboctave_liboctave_la_SOURCES = liboctave/.dummy_force_cxx_link.cc
 
 # Increment these as needed and according to the rules in the libtool manual:
-liboctave_liboctave_current = 3
+liboctave_liboctave_current = 4
 liboctave_liboctave_revision = 0
 liboctave_liboctave_age = 0
 liboctave_liboctave_version_info = $(liboctave_liboctave_current):$(liboctave_liboctave_revision):$(liboctave_age)
@@ -6842,7 +6861,6 @@ OCTAVE_VALUE_INC = \
   libinterp/octave-value/ov-scalar.h \
   libinterp/octave-value/ov-str-mat.h \
   libinterp/octave-value/ov-struct.h \
-  libinterp/octave-value/ov-type-conv.h \
   libinterp/octave-value/ov-typeinfo.h \
   libinterp/octave-value/ov-usr-fcn.h \
   libinterp/octave-value/ov.h \
@@ -6956,7 +6974,6 @@ LIBINTERP_OPERATORS_SRC = \
   libinterp/operators/op-dm-s.cc \
   libinterp/operators/op-dm-scm.cc \
   libinterp/operators/op-dm-sm.cc \
-  libinterp/operators/op-double-conv.cc \
   libinterp/operators/op-fcdm-fcdm.cc \
   libinterp/operators/op-fcdm-fcm.cc \
   libinterp/operators/op-fcdm-fcs.cc \
@@ -6981,7 +6998,6 @@ LIBINTERP_OPERATORS_SRC = \
   libinterp/operators/op-fdm-fdm.cc \
   libinterp/operators/op-fdm-fm.cc \
   libinterp/operators/op-fdm-fs.cc \
-  libinterp/operators/op-float-conv.cc \
   libinterp/operators/op-fm-fcdm.cc \
   libinterp/operators/op-fm-fcm.cc \
   libinterp/operators/op-fm-fcs.cc \
@@ -6998,7 +7014,6 @@ LIBINTERP_OPERATORS_SRC = \
   libinterp/operators/op-i64-i64.cc \
   libinterp/operators/op-i8-i8.cc \
   libinterp/operators/op-int-concat.cc \
-  libinterp/operators/op-int-conv.cc \
   libinterp/operators/op-m-cdm.cc \
   libinterp/operators/op-m-cm.cc \
   libinterp/operators/op-m-cs.cc \
@@ -7338,10 +7353,10 @@ DLDFCN_SRC = \
   libinterp/dldfcn/convhulln.cc \
   libinterp/dldfcn/dmperm.cc \
   libinterp/dldfcn/fftw.cc \
+  libinterp/dldfcn/gzip.cc \
   libinterp/dldfcn/qr.cc \
   libinterp/dldfcn/symbfact.cc \
-  libinterp/dldfcn/symrcm.cc \
-  libinterp/dldfcn/xzip.cc
+  libinterp/dldfcn/symrcm.cc
 
 DLDFCN_LIBS = $(DLDFCN_SRC:.cc=.la)
 libinterp_dldfcn___delaunayn___la_SOURCES = libinterp/dldfcn/__delaunayn__.cc
@@ -7446,6 +7461,12 @@ libinterp_dldfcn_fftw_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(FFTW_XCP
 libinterp_dldfcn_fftw_la_CXXFLAGS = $(libinterp_liboctinterp_la_CXXFLAGS) $(FFTW_XCPPFLAGS)
 libinterp_dldfcn_fftw_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(FFTW_XLDFLAGS) $(OCT_LINK_OPTS) $(WARN_LDFLAGS)
 libinterp_dldfcn_fftw_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) liboctave/liboctave.la $(FFTW_XLIBS) $(OCT_LINK_DEPS)
+libinterp_dldfcn_gzip_la_SOURCES = libinterp/dldfcn/gzip.cc
+libinterp_dldfcn_gzip_la_CPPFLAGS = $(libinterp_liboctinterp_la_CPPFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
+libinterp_dldfcn_gzip_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
+libinterp_dldfcn_gzip_la_CXXFLAGS = $(libinterp_liboctinterp_la_CXXFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
+libinterp_dldfcn_gzip_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(Z_LDFLAGS) $(BZ2_LDFLAGS) $(OCT_LINK_OPTS) $(WARN_LDFLAGS)
+libinterp_dldfcn_gzip_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) liboctave/liboctave.la $(Z_LIBS) $(BZ2_LIBS) $(OCT_LINK_DEPS)
 libinterp_dldfcn_qr_la_SOURCES = libinterp/dldfcn/qr.cc
 libinterp_dldfcn_qr_la_CPPFLAGS = $(libinterp_liboctinterp_la_CPPFLAGS) $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 libinterp_dldfcn_qr_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
@@ -7464,12 +7485,6 @@ libinterp_dldfcn_symrcm_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(SPARSE
 libinterp_dldfcn_symrcm_la_CXXFLAGS = $(libinterp_liboctinterp_la_CXXFLAGS) $(SPARSE_XCPPFLAGS)
 libinterp_dldfcn_symrcm_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS) $(WARN_LDFLAGS)
 libinterp_dldfcn_symrcm_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
-libinterp_dldfcn_xzip_la_SOURCES = libinterp/dldfcn/xzip.cc
-libinterp_dldfcn_xzip_la_CPPFLAGS = $(libinterp_liboctinterp_la_CPPFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
-libinterp_dldfcn_xzip_la_CFLAGS = $(libinterp_liboctinterp_la_CFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
-libinterp_dldfcn_xzip_la_CXXFLAGS = $(libinterp_liboctinterp_la_CXXFLAGS) $(Z_CPPFLAGS) $(BZ2_CPPFLAGS)
-libinterp_dldfcn_xzip_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(Z_LDFLAGS) $(BZ2_LDFLAGS) $(OCT_LINK_OPTS) $(WARN_LDFLAGS)
-libinterp_dldfcn_xzip_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) liboctave/liboctave.la $(Z_LIBS) $(BZ2_LIBS) $(OCT_LINK_DEPS)
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@OCT_FILES = 
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@OCT_FILES = $(DLDFCN_LIBS:.la=.oct)
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@DLD_LIBOCTINTERP_LIBADD = 
@@ -7505,7 +7520,7 @@ libinterp_liboctinterp_la_LIBADD = \
 
 
 # Increment these as needed and according to the rules in the libtool manual:
-libinterp_liboctinterp_current = 3
+libinterp_liboctinterp_current = 4
 libinterp_liboctinterp_revision = 0
 libinterp_liboctinterp_age = 0
 libinterp_liboctinterp_version_info = $(libinterp_liboctinterp_current):$(libinterp_liboctinterp_revision):$(libinterp_liboctinterp_age)
@@ -7900,7 +7915,7 @@ nobase_libinterptests_DATA = $(LIBINTERP_TST_FILES)
 
 
 # Increment these as needed and according to the rules in the libtool manual:
-@AMCOND_BUILD_QT_GUI_TRUE@libgui_liboctgui_current = 1
+@AMCOND_BUILD_QT_GUI_TRUE@libgui_liboctgui_current = 2
 @AMCOND_BUILD_QT_GUI_TRUE@libgui_liboctgui_revision = 0
 @AMCOND_BUILD_QT_GUI_TRUE@libgui_liboctgui_age = 0
 @AMCOND_BUILD_QT_GUI_TRUE@libgui_liboctgui_version_info = $(libgui_liboctgui_current):$(libgui_liboctgui_revision):$(libgui_liboctgui_age)
@@ -8088,6 +8103,7 @@ scripts_audio_@audiorecorder_DATA = $(scripts_audio_@audiorecorder_FCN_FILES)
 scripts_deprecated_FCN_FILES = \
   scripts/deprecated/bicubic.m \
   scripts/deprecated/bitmax.m \
+  scripts/deprecated/comma.m \
   scripts/deprecated/delaunay3.m \
   scripts/deprecated/dump_prefs.m \
   scripts/deprecated/find_dir_in_path.m \
@@ -8105,8 +8121,10 @@ scripts_deprecated_FCN_FILES = \
   scripts/deprecated/octave_config_info.m \
   scripts/deprecated/octave_tmp_file_name.m \
   scripts/deprecated/onenormest.m \
+  scripts/deprecated/paren.m \
   scripts/deprecated/playaudio.m \
   scripts/deprecated/saveaudio.m \
+  scripts/deprecated/semicolon.m \
   scripts/deprecated/setaudio.m \
   scripts/deprecated/sleep.m \
   scripts/deprecated/syl.m \
@@ -8299,16 +8317,13 @@ scripts_help_FCN_FILES = \
   scripts/help/__makeinfo__.m \
   scripts/help/__unimplemented__.m \
   scripts/help/ans.m \
-  scripts/help/comma.m \
   scripts/help/doc.m \
   scripts/help/doc_cache_create.m \
   scripts/help/get_first_help_sentence.m \
   scripts/help/error_ids.m \
   scripts/help/help.m \
   scripts/help/lookfor.m \
-  scripts/help/paren.m \
   scripts/help/print_usage.m \
-  scripts/help/semicolon.m \
   scripts/help/type.m \
   scripts/help/warning_ids.m \
   scripts/help/which.m
@@ -8530,14 +8545,12 @@ scripts_miscellaneous_DATA = $(scripts_miscellaneous_FCN_FILES)
 scripts_miscellaneous_privatedir = $(fcnfiledir)/miscellaneous/private
 scripts_miscellaneous_private_DATA = $(scripts_miscellaneous_PRIVATE_FCN_FILES)
 scripts_ode_PRIVATE_FCN_FILES = \
-  scripts/ode/private/AbsRel_Norm.m \
+  scripts/ode/private/AbsRel_norm.m \
   scripts/ode/private/integrate_adaptive.m \
-  scripts/ode/private/integrate_const.m \
-  scripts/ode/private/integrate_n_steps.m \
   scripts/ode/private/kahan.m \
-  scripts/ode/private/known_option_names.m \
+  scripts/ode/private/odedefaults.m \
+  scripts/ode/private/odemergeopts.m \
   scripts/ode/private/ode_event_handler.m \
-  scripts/ode/private/ode_struct_value_check.m \
   scripts/ode/private/runge_kutta_23.m \
   scripts/ode/private/runge_kutta_45_dorpri.m \
   scripts/ode/private/runge_kutta_interpolate.m \
@@ -8635,6 +8648,7 @@ scripts_plot_appearance_FCN_FILES = \
   scripts/plot/appearance/hidden.m \
   scripts/plot/appearance/legend.m \
   scripts/plot/appearance/lighting.m \
+  scripts/plot/appearance/material.m \
   scripts/plot/appearance/orient.m \
   scripts/plot/appearance/pbaspect.m \
   scripts/plot/appearance/shading.m \
@@ -8668,6 +8682,7 @@ scripts_plot_draw_PRIVATE_FCN_FILES = \
   scripts/plot/draw/private/__pie__.m \
   scripts/plot/draw/private/__plt__.m \
   scripts/plot/draw/private/__quiver__.m \
+  scripts/plot/draw/private/__rotate_around_axis__.m \
   scripts/plot/draw/private/__scatter__.m \
   scripts/plot/draw/private/__stem__.m \
   scripts/plot/draw/private/__unite_shared_vertices__.m
@@ -8676,6 +8691,7 @@ scripts_plot_draw_FCN_FILES = \
   scripts/plot/draw/area.m \
   scripts/plot/draw/barh.m \
   scripts/plot/draw/bar.m \
+  scripts/plot/draw/camlight.m \
   scripts/plot/draw/colorbar.m \
   scripts/plot/draw/comet3.m \
   scripts/plot/draw/comet.m \
@@ -8700,6 +8716,7 @@ scripts_plot_draw_FCN_FILES = \
   scripts/plot/draw/fill.m \
   scripts/plot/draw/fplot.m \
   scripts/plot/draw/hist.m \
+  scripts/plot/draw/isocaps.m \
   scripts/plot/draw/isocolors.m \
   scripts/plot/draw/isonormals.m \
   scripts/plot/draw/isosurface.m \
@@ -8724,6 +8741,8 @@ scripts_plot_draw_FCN_FILES = \
   scripts/plot/draw/quiver3.m \
   scripts/plot/draw/quiver.m \
   scripts/plot/draw/rectangle.m \
+  scripts/plot/draw/reducepatch.m \
+  scripts/plot/draw/reducevolume.m \
   scripts/plot/draw/ribbon.m \
   scripts/plot/draw/rose.m \
   scripts/plot/draw/scatter3.m \
@@ -9386,14 +9405,12 @@ HTMLS = $(am__append_51)
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/basics.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/bugs.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/container.texi \
-@AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/contrib.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/cp-idx.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/data.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/debug.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/diffeq.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/diagperm.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/external.texi \
-@AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/emacs.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/errors.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/eval.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/expr.texi \
@@ -9429,7 +9446,6 @@ HTMLS = $(am__append_51)
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/strings.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/system.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/testfun.texi \
-@AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/tips.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/var.texi \
 @AMCOND_BUILD_DOCS_TRUE@  doc/interpreter/vectorize.texi
 
@@ -9613,7 +9629,7 @@ examples_code_SRC = \
   examples/code/structdemo.cc \
   examples/code/unwinddemo.cc
 
-test_EXTRA_DIST = test/build-sparse-tests.sh \
+test_EXTRA_DIST = test/build-conv-tests.sh test/build-sparse-tests.sh \
 	test/build-bc-overload-tests.sh test/bc-overloads-expected \
 	test/build_bc_overloads_expected.m $(TEST_FILES)
 test_CLEANFILES = $(GENERATED_BC_OVERLOADS_FILES) \
@@ -9827,11 +9843,12 @@ nest_TEST_FILES = \
   test/nest/varg_nest2.m
 
 publish_TEST_FILES = \
+  test/publish/publish.tst \
+  test/publish/test_script.m \
   test/publish/test_script_code_only.m \
   test/publish/test_script_empty.m \
   test/publish/test_script_example.m \
-  test/publish/test_script_head_only.m \
-  test/publish/test_script.m
+  test/publish/test_script_head_only.m
 
 COVERAGE_DIR = test/coverage
 COVERAGE_INFO = $(COVERAGE_DIR)/$(PACKAGE).info
@@ -9842,11 +9859,13 @@ GENERATED_BC_OVERLOADS_FILES := \
   $(shell $(SHELL) $(srcdir)/test/build-bc-overload-tests.sh test --list-files)
 
 GENERATED_TEST_FILES = \
+  test/conv.tst \
   test/sparse.tst \
   test/.bc-overload-tests-stamp
 
 fixedtestsdir := $(octtestsdir)/fixed
 TEST_INST_FILES = \
+  test/conv.tst \
   test/sparse.tst \
   $(GENERATED_BC_OVERLOADS_FILES) \
   $(filter-out test/fntests.m, $(TEST_FILES))
@@ -11053,6 +11072,12 @@ libinterp/dldfcn/libinterp_dldfcn_fftw_la-fftw.lo:  \
 
 libinterp/dldfcn/fftw.la: $(libinterp_dldfcn_fftw_la_OBJECTS) $(libinterp_dldfcn_fftw_la_DEPENDENCIES) $(EXTRA_libinterp_dldfcn_fftw_la_DEPENDENCIES) libinterp/dldfcn/$(am__dirstamp)
 	$(AM_V_CXXLD)$(libinterp_dldfcn_fftw_la_LINK) $(am_libinterp_dldfcn_fftw_la_rpath) $(libinterp_dldfcn_fftw_la_OBJECTS) $(libinterp_dldfcn_fftw_la_LIBADD) $(LIBS)
+libinterp/dldfcn/libinterp_dldfcn_gzip_la-gzip.lo:  \
+	libinterp/dldfcn/$(am__dirstamp) \
+	libinterp/dldfcn/$(DEPDIR)/$(am__dirstamp)
+
+libinterp/dldfcn/gzip.la: $(libinterp_dldfcn_gzip_la_OBJECTS) $(libinterp_dldfcn_gzip_la_DEPENDENCIES) $(EXTRA_libinterp_dldfcn_gzip_la_DEPENDENCIES) libinterp/dldfcn/$(am__dirstamp)
+	$(AM_V_CXXLD)$(libinterp_dldfcn_gzip_la_LINK) $(am_libinterp_dldfcn_gzip_la_rpath) $(libinterp_dldfcn_gzip_la_OBJECTS) $(libinterp_dldfcn_gzip_la_LIBADD) $(LIBS)
 libinterp/dldfcn/libinterp_dldfcn_qr_la-qr.lo:  \
 	libinterp/dldfcn/$(am__dirstamp) \
 	libinterp/dldfcn/$(DEPDIR)/$(am__dirstamp)
@@ -11071,12 +11096,6 @@ libinterp/dldfcn/libinterp_dldfcn_symrcm_la-symrcm.lo:  \
 
 libinterp/dldfcn/symrcm.la: $(libinterp_dldfcn_symrcm_la_OBJECTS) $(libinterp_dldfcn_symrcm_la_DEPENDENCIES) $(EXTRA_libinterp_dldfcn_symrcm_la_DEPENDENCIES) libinterp/dldfcn/$(am__dirstamp)
 	$(AM_V_CXXLD)$(libinterp_dldfcn_symrcm_la_LINK) $(am_libinterp_dldfcn_symrcm_la_rpath) $(libinterp_dldfcn_symrcm_la_OBJECTS) $(libinterp_dldfcn_symrcm_la_LIBADD) $(LIBS)
-libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo:  \
-	libinterp/dldfcn/$(am__dirstamp) \
-	libinterp/dldfcn/$(DEPDIR)/$(am__dirstamp)
-
-libinterp/dldfcn/xzip.la: $(libinterp_dldfcn_xzip_la_OBJECTS) $(libinterp_dldfcn_xzip_la_DEPENDENCIES) $(EXTRA_libinterp_dldfcn_xzip_la_DEPENDENCIES) libinterp/dldfcn/$(am__dirstamp)
-	$(AM_V_CXXLD)$(libinterp_dldfcn_xzip_la_LINK) $(am_libinterp_dldfcn_xzip_la_rpath) $(libinterp_dldfcn_xzip_la_OBJECTS) $(libinterp_dldfcn_xzip_la_LIBADD) $(LIBS)
 libinterp/$(am__dirstamp):
 	@$(MKDIR_P) libinterp
 	@: > libinterp/$(am__dirstamp)
@@ -11207,9 +11226,6 @@ libinterp/operators/libinterp_liboctinterp_la-op-dm-scm.lo:  \
 libinterp/operators/libinterp_liboctinterp_la-op-dm-sm.lo:  \
 	libinterp/operators/$(am__dirstamp) \
 	libinterp/operators/$(DEPDIR)/$(am__dirstamp)
-libinterp/operators/libinterp_liboctinterp_la-op-double-conv.lo:  \
-	libinterp/operators/$(am__dirstamp) \
-	libinterp/operators/$(DEPDIR)/$(am__dirstamp)
 libinterp/operators/libinterp_liboctinterp_la-op-fcdm-fcdm.lo:  \
 	libinterp/operators/$(am__dirstamp) \
 	libinterp/operators/$(DEPDIR)/$(am__dirstamp)
@@ -11282,9 +11298,6 @@ libinterp/operators/libinterp_liboctinterp_la-op-fdm-fm.lo:  \
 libinterp/operators/libinterp_liboctinterp_la-op-fdm-fs.lo:  \
 	libinterp/operators/$(am__dirstamp) \
 	libinterp/operators/$(DEPDIR)/$(am__dirstamp)
-libinterp/operators/libinterp_liboctinterp_la-op-float-conv.lo:  \
-	libinterp/operators/$(am__dirstamp) \
-	libinterp/operators/$(DEPDIR)/$(am__dirstamp)
 libinterp/operators/libinterp_liboctinterp_la-op-fm-fcdm.lo:  \
 	libinterp/operators/$(am__dirstamp) \
 	libinterp/operators/$(DEPDIR)/$(am__dirstamp)
@@ -11331,9 +11344,6 @@ libinterp/operators/libinterp_liboctinterp_la-op-i8-i8.lo:  \
 	libinterp/operators/$(am__dirstamp) \
 	libinterp/operators/$(DEPDIR)/$(am__dirstamp)
 libinterp/operators/libinterp_liboctinterp_la-op-int-concat.lo:  \
-	libinterp/operators/$(am__dirstamp) \
-	libinterp/operators/$(DEPDIR)/$(am__dirstamp)
-libinterp/operators/libinterp_liboctinterp_la-op-int-conv.lo:  \
 	libinterp/operators/$(am__dirstamp) \
 	libinterp/operators/$(DEPDIR)/$(am__dirstamp)
 libinterp/operators/libinterp_liboctinterp_la-op-m-cdm.lo:  \
@@ -14381,6 +14391,9 @@ liboctave/util/liboctave_util_libutil_la-oct-locbuf.lo:  \
 liboctave/util/liboctave_util_libutil_la-oct-mutex.lo:  \
 	liboctave/util/$(am__dirstamp) \
 	liboctave/util/$(DEPDIR)/$(am__dirstamp)
+liboctave/util/liboctave_util_libutil_la-oct-string.lo:  \
+	liboctave/util/$(am__dirstamp) \
+	liboctave/util/$(DEPDIR)/$(am__dirstamp)
 liboctave/util/liboctave_util_libutil_la-oct-shlib.lo:  \
 	liboctave/util/$(am__dirstamp) \
 	liboctave/util/$(DEPDIR)/$(am__dirstamp)
@@ -14430,6 +14443,9 @@ liboctave/wrappers/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) liboctave/wrappers/$(DEPDIR)
 	@: > liboctave/wrappers/$(DEPDIR)/$(am__dirstamp)
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-areadlink-wrapper.lo:  \
+	liboctave/wrappers/$(am__dirstamp) \
+	liboctave/wrappers/$(DEPDIR)/$(am__dirstamp)
+liboctave/wrappers/liboctave_wrappers_libwrappers_la-async-system-wrapper.lo:  \
 	liboctave/wrappers/$(am__dirstamp) \
 	liboctave/wrappers/$(DEPDIR)/$(am__dirstamp)
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-base64-wrappers.lo:  \
@@ -15065,10 +15081,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_convhulln_la-convhulln.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_dmperm_la-dmperm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_fftw_la-fftw.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_gzip_la-gzip.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_qr_la-qr.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_symbfact_la-symbfact.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_symrcm_la-symrcm.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_xzip_la-xzip.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/octave-value/$(DEPDIR)/libinterp_octave_value_liboctave_value_la-ov-base.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/octave-value/$(DEPDIR)/libinterp_octave_value_liboctave_value_la-ov-bool-mat.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/octave-value/$(DEPDIR)/libinterp_octave_value_liboctave_value_la-ov-bool-sparse.Plo@am__quote@
@@ -15157,7 +15173,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-dm-s.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-dm-scm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-dm-sm.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-double-conv.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fcdm-fcdm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fcdm-fcm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fcdm-fcs.Plo@am__quote@
@@ -15182,7 +15197,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fdm-fdm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fdm-fm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fdm-fs.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-float-conv.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fm-fcdm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fm-fcm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fm-fcs.Plo@am__quote@
@@ -15199,7 +15213,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-i64-i64.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-i8-i8.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-int-concat.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-int-conv.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-m-cdm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-m-cm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-m-cs.Plo@am__quote@
@@ -15783,6 +15796,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-oct-rl-edit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-oct-rl-hist.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-oct-shlib.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-oct-string.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-pathsearch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-singleton-cleanup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-sparse-sort.Plo@am__quote@
@@ -15791,6 +15805,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-unwind-prot.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-url-transfer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-areadlink-wrapper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-async-system-wrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-base64-wrappers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-canonicalize-file-name-wrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-dirent-wrappers.Plo@am__quote@
@@ -15931,6 +15946,13 @@ liboctave/wrappers/liboctave_wrappers_libwrappers_la-areadlink-wrapper.lo: liboc
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='liboctave/wrappers/areadlink-wrapper.c' object='liboctave/wrappers/liboctave_wrappers_libwrappers_la-areadlink-wrapper.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-areadlink-wrapper.lo `test -f 'liboctave/wrappers/areadlink-wrapper.c' || echo '$(srcdir)/'`liboctave/wrappers/areadlink-wrapper.c
+
+liboctave/wrappers/liboctave_wrappers_libwrappers_la-async-system-wrapper.lo: liboctave/wrappers/async-system-wrapper.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -MT liboctave/wrappers/liboctave_wrappers_libwrappers_la-async-system-wrapper.lo -MD -MP -MF liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-async-system-wrapper.Tpo -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-async-system-wrapper.lo `test -f 'liboctave/wrappers/async-system-wrapper.c' || echo '$(srcdir)/'`liboctave/wrappers/async-system-wrapper.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-async-system-wrapper.Tpo liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-async-system-wrapper.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='liboctave/wrappers/async-system-wrapper.c' object='liboctave/wrappers/liboctave_wrappers_libwrappers_la-async-system-wrapper.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-async-system-wrapper.lo `test -f 'liboctave/wrappers/async-system-wrapper.c' || echo '$(srcdir)/'`liboctave/wrappers/async-system-wrapper.c
 
 liboctave/wrappers/liboctave_wrappers_libwrappers_la-base64-wrappers.lo: liboctave/wrappers/base64-wrappers.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_wrappers_libwrappers_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_wrappers_libwrappers_la_CFLAGS) $(CFLAGS) -MT liboctave/wrappers/liboctave_wrappers_libwrappers_la-base64-wrappers.lo -MD -MP -MF liboctave/wrappers/$(DEPDIR)/liboctave_wrappers_libwrappers_la-base64-wrappers.Tpo -c -o liboctave/wrappers/liboctave_wrappers_libwrappers_la-base64-wrappers.lo `test -f 'liboctave/wrappers/base64-wrappers.c' || echo '$(srcdir)/'`liboctave/wrappers/base64-wrappers.c
@@ -18322,6 +18344,13 @@ libinterp/dldfcn/libinterp_dldfcn_fftw_la-fftw.lo: libinterp/dldfcn/fftw.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_dldfcn_fftw_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_dldfcn_fftw_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/dldfcn/libinterp_dldfcn_fftw_la-fftw.lo `test -f 'libinterp/dldfcn/fftw.cc' || echo '$(srcdir)/'`libinterp/dldfcn/fftw.cc
 
+libinterp/dldfcn/libinterp_dldfcn_gzip_la-gzip.lo: libinterp/dldfcn/gzip.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_dldfcn_gzip_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_dldfcn_gzip_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/dldfcn/libinterp_dldfcn_gzip_la-gzip.lo -MD -MP -MF libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_gzip_la-gzip.Tpo -c -o libinterp/dldfcn/libinterp_dldfcn_gzip_la-gzip.lo `test -f 'libinterp/dldfcn/gzip.cc' || echo '$(srcdir)/'`libinterp/dldfcn/gzip.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_gzip_la-gzip.Tpo libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_gzip_la-gzip.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/dldfcn/gzip.cc' object='libinterp/dldfcn/libinterp_dldfcn_gzip_la-gzip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_dldfcn_gzip_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_dldfcn_gzip_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/dldfcn/libinterp_dldfcn_gzip_la-gzip.lo `test -f 'libinterp/dldfcn/gzip.cc' || echo '$(srcdir)/'`libinterp/dldfcn/gzip.cc
+
 libinterp/dldfcn/libinterp_dldfcn_qr_la-qr.lo: libinterp/dldfcn/qr.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_dldfcn_qr_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_dldfcn_qr_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/dldfcn/libinterp_dldfcn_qr_la-qr.lo -MD -MP -MF libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_qr_la-qr.Tpo -c -o libinterp/dldfcn/libinterp_dldfcn_qr_la-qr.lo `test -f 'libinterp/dldfcn/qr.cc' || echo '$(srcdir)/'`libinterp/dldfcn/qr.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_qr_la-qr.Tpo libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_qr_la-qr.Plo
@@ -18342,13 +18371,6 @@ libinterp/dldfcn/libinterp_dldfcn_symrcm_la-symrcm.lo: libinterp/dldfcn/symrcm.c
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/dldfcn/symrcm.cc' object='libinterp/dldfcn/libinterp_dldfcn_symrcm_la-symrcm.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_dldfcn_symrcm_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_dldfcn_symrcm_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/dldfcn/libinterp_dldfcn_symrcm_la-symrcm.lo `test -f 'libinterp/dldfcn/symrcm.cc' || echo '$(srcdir)/'`libinterp/dldfcn/symrcm.cc
-
-libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo: libinterp/dldfcn/xzip.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_dldfcn_xzip_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_dldfcn_xzip_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo -MD -MP -MF libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_xzip_la-xzip.Tpo -c -o libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo `test -f 'libinterp/dldfcn/xzip.cc' || echo '$(srcdir)/'`libinterp/dldfcn/xzip.cc
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_xzip_la-xzip.Tpo libinterp/dldfcn/$(DEPDIR)/libinterp_dldfcn_xzip_la-xzip.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/dldfcn/xzip.cc' object='libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_dldfcn_xzip_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_dldfcn_xzip_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/dldfcn/libinterp_dldfcn_xzip_la-xzip.lo `test -f 'libinterp/dldfcn/xzip.cc' || echo '$(srcdir)/'`libinterp/dldfcn/xzip.cc
 
 libinterp/libinterp_liboctinterp_la-octave.lo: libinterp/octave.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/libinterp_liboctinterp_la-octave.lo -MD -MP -MF libinterp/$(DEPDIR)/libinterp_liboctinterp_la-octave.Tpo -c -o libinterp/libinterp_liboctinterp_la-octave.lo `test -f 'libinterp/octave.cc' || echo '$(srcdir)/'`libinterp/octave.cc
@@ -18630,13 +18652,6 @@ libinterp/operators/libinterp_liboctinterp_la-op-dm-sm.lo: libinterp/operators/o
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/operators/libinterp_liboctinterp_la-op-dm-sm.lo `test -f 'libinterp/operators/op-dm-sm.cc' || echo '$(srcdir)/'`libinterp/operators/op-dm-sm.cc
 
-libinterp/operators/libinterp_liboctinterp_la-op-double-conv.lo: libinterp/operators/op-double-conv.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/operators/libinterp_liboctinterp_la-op-double-conv.lo -MD -MP -MF libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-double-conv.Tpo -c -o libinterp/operators/libinterp_liboctinterp_la-op-double-conv.lo `test -f 'libinterp/operators/op-double-conv.cc' || echo '$(srcdir)/'`libinterp/operators/op-double-conv.cc
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-double-conv.Tpo libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-double-conv.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/operators/op-double-conv.cc' object='libinterp/operators/libinterp_liboctinterp_la-op-double-conv.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/operators/libinterp_liboctinterp_la-op-double-conv.lo `test -f 'libinterp/operators/op-double-conv.cc' || echo '$(srcdir)/'`libinterp/operators/op-double-conv.cc
-
 libinterp/operators/libinterp_liboctinterp_la-op-fcdm-fcdm.lo: libinterp/operators/op-fcdm-fcdm.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/operators/libinterp_liboctinterp_la-op-fcdm-fcdm.lo -MD -MP -MF libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fcdm-fcdm.Tpo -c -o libinterp/operators/libinterp_liboctinterp_la-op-fcdm-fcdm.lo `test -f 'libinterp/operators/op-fcdm-fcdm.cc' || echo '$(srcdir)/'`libinterp/operators/op-fcdm-fcdm.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fcdm-fcdm.Tpo libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fcdm-fcdm.Plo
@@ -18805,13 +18820,6 @@ libinterp/operators/libinterp_liboctinterp_la-op-fdm-fs.lo: libinterp/operators/
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/operators/libinterp_liboctinterp_la-op-fdm-fs.lo `test -f 'libinterp/operators/op-fdm-fs.cc' || echo '$(srcdir)/'`libinterp/operators/op-fdm-fs.cc
 
-libinterp/operators/libinterp_liboctinterp_la-op-float-conv.lo: libinterp/operators/op-float-conv.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/operators/libinterp_liboctinterp_la-op-float-conv.lo -MD -MP -MF libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-float-conv.Tpo -c -o libinterp/operators/libinterp_liboctinterp_la-op-float-conv.lo `test -f 'libinterp/operators/op-float-conv.cc' || echo '$(srcdir)/'`libinterp/operators/op-float-conv.cc
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-float-conv.Tpo libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-float-conv.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/operators/op-float-conv.cc' object='libinterp/operators/libinterp_liboctinterp_la-op-float-conv.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/operators/libinterp_liboctinterp_la-op-float-conv.lo `test -f 'libinterp/operators/op-float-conv.cc' || echo '$(srcdir)/'`libinterp/operators/op-float-conv.cc
-
 libinterp/operators/libinterp_liboctinterp_la-op-fm-fcdm.lo: libinterp/operators/op-fm-fcdm.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/operators/libinterp_liboctinterp_la-op-fm-fcdm.lo -MD -MP -MF libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fm-fcdm.Tpo -c -o libinterp/operators/libinterp_liboctinterp_la-op-fm-fcdm.lo `test -f 'libinterp/operators/op-fm-fcdm.cc' || echo '$(srcdir)/'`libinterp/operators/op-fm-fcdm.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fm-fcdm.Tpo libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-fm-fcdm.Plo
@@ -18923,13 +18931,6 @@ libinterp/operators/libinterp_liboctinterp_la-op-int-concat.lo: libinterp/operat
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/operators/op-int-concat.cc' object='libinterp/operators/libinterp_liboctinterp_la-op-int-concat.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/operators/libinterp_liboctinterp_la-op-int-concat.lo `test -f 'libinterp/operators/op-int-concat.cc' || echo '$(srcdir)/'`libinterp/operators/op-int-concat.cc
-
-libinterp/operators/libinterp_liboctinterp_la-op-int-conv.lo: libinterp/operators/op-int-conv.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/operators/libinterp_liboctinterp_la-op-int-conv.lo -MD -MP -MF libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-int-conv.Tpo -c -o libinterp/operators/libinterp_liboctinterp_la-op-int-conv.lo `test -f 'libinterp/operators/op-int-conv.cc' || echo '$(srcdir)/'`libinterp/operators/op-int-conv.cc
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-int-conv.Tpo libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-int-conv.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='libinterp/operators/op-int-conv.cc' object='libinterp/operators/libinterp_liboctinterp_la-op-int-conv.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -c -o libinterp/operators/libinterp_liboctinterp_la-op-int-conv.lo `test -f 'libinterp/operators/op-int-conv.cc' || echo '$(srcdir)/'`libinterp/operators/op-int-conv.cc
 
 libinterp/operators/libinterp_liboctinterp_la-op-m-cdm.lo: libinterp/operators/op-m-cdm.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libinterp_liboctinterp_la_CPPFLAGS) $(CPPFLAGS) $(libinterp_liboctinterp_la_CXXFLAGS) $(CXXFLAGS) -MT libinterp/operators/libinterp_liboctinterp_la-op-m-cdm.lo -MD -MP -MF libinterp/operators/$(DEPDIR)/libinterp_liboctinterp_la-op-m-cdm.Tpo -c -o libinterp/operators/libinterp_liboctinterp_la-op-m-cdm.lo `test -f 'libinterp/operators/op-m-cdm.cc' || echo '$(srcdir)/'`libinterp/operators/op-m-cdm.cc
@@ -23327,6 +23328,13 @@ liboctave/util/liboctave_util_libutil_la-oct-mutex.lo: liboctave/util/oct-mutex.
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_util_libutil_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_util_libutil_la_CXXFLAGS) $(CXXFLAGS) -c -o liboctave/util/liboctave_util_libutil_la-oct-mutex.lo `test -f 'liboctave/util/oct-mutex.cc' || echo '$(srcdir)/'`liboctave/util/oct-mutex.cc
 
+liboctave/util/liboctave_util_libutil_la-oct-string.lo: liboctave/util/oct-string.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_util_libutil_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_util_libutil_la_CXXFLAGS) $(CXXFLAGS) -MT liboctave/util/liboctave_util_libutil_la-oct-string.lo -MD -MP -MF liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-oct-string.Tpo -c -o liboctave/util/liboctave_util_libutil_la-oct-string.lo `test -f 'liboctave/util/oct-string.cc' || echo '$(srcdir)/'`liboctave/util/oct-string.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-oct-string.Tpo liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-oct-string.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='liboctave/util/oct-string.cc' object='liboctave/util/liboctave_util_libutil_la-oct-string.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_util_libutil_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_util_libutil_la_CXXFLAGS) $(CXXFLAGS) -c -o liboctave/util/liboctave_util_libutil_la-oct-string.lo `test -f 'liboctave/util/oct-string.cc' || echo '$(srcdir)/'`liboctave/util/oct-string.cc
+
 liboctave/util/liboctave_util_libutil_la-oct-shlib.lo: liboctave/util/oct-shlib.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liboctave_util_libutil_la_CPPFLAGS) $(CPPFLAGS) $(liboctave_util_libutil_la_CXXFLAGS) $(CXXFLAGS) -MT liboctave/util/liboctave_util_libutil_la-oct-shlib.lo -MD -MP -MF liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-oct-shlib.Tpo -c -o liboctave/util/liboctave_util_libutil_la-oct-shlib.lo `test -f 'liboctave/util/oct-shlib.cc' || echo '$(srcdir)/'`liboctave/util/oct-shlib.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-oct-shlib.Tpo liboctave/util/$(DEPDIR)/liboctave_util_libutil_la-oct-shlib.Plo
@@ -26287,7 +26295,6 @@ dist-gzip: distdir
 dist-bzip2: distdir
 	tardir=$(distdir) && $(am__tar) | BZIP2=$${BZIP2--9} bzip2 -c >$(distdir).tar.bz2
 	$(am__post_remove_distdir)
-
 dist-lzip: distdir
 	tardir=$(distdir) && $(am__tar) | lzip -c $${LZIP_OPT--9} >$(distdir).tar.lz
 	$(am__post_remove_distdir)
@@ -27127,7 +27134,7 @@ libinterp/builtin-defun-decls.h: $(LIBINTERP_DEFUN_FILES) build-aux/mk-builtins.
 
 libinterp/DOCSTRINGS: $(LIBINTERP_DEFUN_FILES) libinterp/op-kw-docs | libinterp/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f libinterp/DOCSTRINGS-t && \
-	( $(PERL) $(srcdir)/libinterp/gendoc.pl "$(srcdir)" $(LIBINTERP_DEFUN_FILES); cat $(srcdir)/libinterp/op-kw-docs ) > libinterp/DOCSTRINGS-t && \
+	( $(PERL) $(srcdir)/libinterp/gendoc.pl "$(srcdir)" $(LIBINTERP_DEFUN_FILES); $(SED) -ne '/^\x1d/,$$p' $(srcdir)/libinterp/op-kw-docs ) > libinterp/DOCSTRINGS-t && \
 	$(call move_if_change_rule,libinterp/DOCSTRINGS-t,$@)
 
 install-data-hook: install-oct install-built-in-docstrings install-deprecated-config-h
@@ -27222,7 +27229,7 @@ libinterp-maintainer-clean: libinterp-distclean
 @AMCOND_BUILD_QT_GUI_TRUE@  ( echo "#if defined (HAVE_CONFIG_H)"; \
 @AMCOND_BUILD_QT_GUI_TRUE@    echo '#  include "config.h"'; \
 @AMCOND_BUILD_QT_GUI_TRUE@    echo "#endif"; \
-@AMCOND_BUILD_QT_GUI_TRUE@    $(MOC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(MOC_OCTAVE_CPPFLAGS) $(MOC_CPPFLAGS) $(libgui_liboctgui_la_CPPFLAGS) $< ) > $@-t && \
+@AMCOND_BUILD_QT_GUI_TRUE@    $(MOC) $(MOCFLAGS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(MOC_OCTAVE_CPPFLAGS) $(MOC_CPPFLAGS) $(libgui_liboctgui_la_CPPFLAGS) $< ) > $@-t && \
 @AMCOND_BUILD_QT_GUI_TRUE@  mv $@-t $@
 @AMCOND_BUILD_QT_GUI_TRUE@endef
 
@@ -27235,7 +27242,7 @@ libinterp-maintainer-clean: libinterp-distclean
 @AMCOND_BUILD_QT_GUI_TRUE@    echo "#if defined (HAVE_PRAGMA_GCC_DIAGNOSTIC)"; \
 @AMCOND_BUILD_QT_GUI_TRUE@    echo "#pragma GCC diagnostic ignored \"-Wunused-variable\""; \
 @AMCOND_BUILD_QT_GUI_TRUE@    echo "#endif"; \
-@AMCOND_BUILD_QT_GUI_TRUE@    $(RCC) -name $(@D) $< ) > $@-t && \
+@AMCOND_BUILD_QT_GUI_TRUE@    $(RCC) $(RCCFLAGS) -name $(@D) $< ) > $@-t && \
 @AMCOND_BUILD_QT_GUI_TRUE@  mv $@-t $@
 @AMCOND_BUILD_QT_GUI_TRUE@endef
 
@@ -27243,13 +27250,13 @@ libinterp-maintainer-clean: libinterp-distclean
 @AMCOND_BUILD_QT_GUI_TRUE@	$(AM_V_GEN)$(moc-command)
 
 @AMCOND_BUILD_QT_GUI_TRUE@ui-%.h: %.ui
-@AMCOND_BUILD_QT_GUI_TRUE@	$(AM_V_GEN)$(UIC) -o $@ $<
+@AMCOND_BUILD_QT_GUI_TRUE@	$(AM_V_GEN)$(UIC) $(UICFLAGS) -o $@ $<
 
 @AMCOND_BUILD_QT_GUI_TRUE@qrc-%.cc: %.qrc
 @AMCOND_BUILD_QT_GUI_TRUE@	$(AM_V_GEN)$(rcc-command)
 
 @AMCOND_BUILD_QT_GUI_TRUE@%.qm: %.ts | libgui/languages/$(octave_dirstamp)
-@AMCOND_BUILD_QT_GUI_TRUE@	$(AM_V_GEN)$(LRELEASE) $(AM_V_lrelease) -qm $@ $<
+@AMCOND_BUILD_QT_GUI_TRUE@	$(AM_V_GEN)$(LRELEASE) $(LRELEASEFLAGS) $(AM_V_lrelease) -qm $@ $<
 
 @AMCOND_BUILD_QT_GUI_TRUE@libgui-clean:
 @AMCOND_BUILD_QT_GUI_TRUE@	rm -f $(libgui_CLEANFILES)
@@ -28049,6 +28056,11 @@ coverage: all
 test/sparse.tst: test/build-sparse-tests.sh | test/$(octave_dirstamp)
 	$(AM_V_GEN)rm -f $@-t $@ && \
 	$(SHELL) $(srcdir)/test/build-sparse-tests.sh > $@-t && \
+	mv $@-t $@
+
+test/conv.tst: test/build-conv-tests.sh | test/$(octave_dirstamp)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(SHELL) $(srcdir)/test/build-conv-tests.sh > $@-t && \
 	mv $@-t $@
 
 $(GENERATED_BC_OVERLOADS_FILES): test/.bc-overload-tests-stamp

@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2015 John W. Eaton
+## Copyright (C) 2005-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -189,25 +189,20 @@ function enhanced = gnuplot_set_term (plot_stream, new_stream, h, term, file)
           gnuplot_size = gnuplot_size / 72;
         endif
         if (all (gnuplot_size > 0))
-          terminals_with_size = {"canvas", "cairolatex", "eepic", "emf", ...
+          terminals_with_size = {"cairolatex", "canvas", "eepic", "emf", ...
                                  "epscairo", "epslatex", "fig", "gif", ...
                                  "jpeg", "latex", "pbm", "pdf", "pdfcairo", ...
-                                 "postscript", "png", "pngcairo", "pstex", ...
-                                 "pslatex", "svg", "tikz"};
-          if (__gnuplot_has_feature__ ("windows_figure_position"))
-            terminals_with_size{end+1} = "windows";
-          endif
-          if (__gnuplot_has_feature__ ("x11_figure_position"))
-            terminals_with_size{end+1} = "x11";
-          endif
-          if (__gnuplot_has_feature__ ("wxt_figure_size"))
-            terminals_with_size{end+1} = "wxt";
+                                 "png", "pngcairo", "postscript", ...
+                                 "pslatex","pstex", "svg", "tikz", ...
+                                 "windows", "wxt", "x11"};
+          if (__gnuplot_has_feature__ ("qt_terminal"))
+            terminals_with_size{end+1} = "qt";
           endif
           switch (term)
             case terminals_with_size
               size_str = sprintf ("size %.12g,%.12g", gnuplot_size);
-            case "tikz"
-              size_str = sprintf ("size %gin,%gin", gnuplot_size);
+            case {"aqua", "fig", "corel"}
+              size_str = sprintf ("size %g %g", gnuplot_size);
             case "dumb"
               new_stream = 1;
               if (! isempty (getenv ("COLUMNS"))
@@ -221,18 +216,19 @@ function enhanced = gnuplot_set_term (plot_stream, new_stream, h, term, file)
                 ## Use the gnuplot default.
                 size_str = "";
               endif
-            case {"aqua", "fig", "corel"}
-              size_str = sprintf ("size %g %g", gnuplot_size);
             case "dxf"
-              size_str = "";
+              size_str = "";  # dxf supposedly supports "set size" in 5.0
+            case "tikz"
+              size_str = sprintf ("size %gin,%gin", gnuplot_size);
             otherwise
               size_str = "";
           endswitch
-          if ((strcmp (term, "x11")
-               && __gnuplot_has_feature__ ("x11_figure_position"))
-              || (strcmpi (term, "windows")
-                  && __gnuplot_has_feature__ ("windows_figure_position")))
-            ## X11/Windows allows the window to be positioned as well.
+          if (strcmp (term, "x11") || strcmp (term, "windows")
+              || (strcmp (term, "wxt")
+                  && __gnuplot_has_feature__ ("wxt_figure_position"))
+              || (strcmp (term, "qt")
+                  && __gnuplot_has_feature__ ("qt_figure_position")))
+            ## X11/Windows/qt/wxt (=> ver 5) allows the window to be positioned.
             units = get (0, "units");
             unwind_protect
               set (0, "units", "pixels");
@@ -300,16 +296,6 @@ function enhanced = gnuplot_set_term (plot_stream, new_stream, h, term, file)
         term_str = [term_str " " size_str];
       endif
     endif
-    if (! __gnuplot_has_feature__ ("has_termoption_dashed"))
-      ## If "set termoption dashed" isn't available add "dashed" option
-      ## to the "set terminal ..." command, if it is supported.
-      if (any (strcmp (term, {"aqua", "cgm", "eepic", "emf", "epslatex", ...
-                              "fig", "pcl5", "mp", "next", "openstep", ...
-                              "pdf", "pdfcairo", "pngcairo", "postscript", ...
-                              "pslatex", "pstext", "svg", "tgif", "x11"})))
-        term_str = [term_str " dashed"];
-      endif
-    endif
     if (any (strcmp (term, {"aqua", "wxt"})))
       term_str = [term_str, " ", "dashlength 1"];
     elseif (any (strcmp (term, {"epslatex", "postscript", "pslatex"})))
@@ -339,7 +325,7 @@ function enhanced = gnuplot_set_term (plot_stream, new_stream, h, term, file)
         endif
       endif
     endif
-    if (__gnuplot_has_feature__ ("has_termoption_dashed"))
+    if (! __gnuplot_has_feature__ ("dashtype"))
       fprintf (plot_stream, "set termoption dashed\n");
     endif
   else
@@ -395,7 +381,7 @@ function have_enhanced = gnuplot_is_enhanced_term (plot_stream, term)
 endfunction
 
 function ret = output_to_screen (term)
-  ret = any (strcmpi (term,
+  ret = any (strcmp (term,
                      {"aqua", "dumb", "pm", "qt", "windows", "wxt", "x11"}));
 endfunction
 

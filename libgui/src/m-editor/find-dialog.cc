@@ -2,7 +2,7 @@
 
 Find dialog derived from an example from Qt Toolkit (license below (**))
 
-Copyright (C) 2012-2015 Torsten <ttl@justmail.de>
+Copyright (C) 2012-2016 Torsten <ttl@justmail.de>
 Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
  All rights reserved.
  Contact: Nokia Corporation (qt-info@nokia.com)
@@ -65,8 +65,17 @@ along with Octave; see the file COPYING.  If not, see
 
 #if defined (HAVE_QSCINTILLA)
 
-#include <QtGui>
+#include <QCheckBox>
+#include <QCheckBox>
+#include <QDialogButtonBox>
+#include <QGridLayout>
 #include <QIcon>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QVBoxLayout>
+
 #include "find-dialog.h"
 
 find_dialog::find_dialog (QsciScintilla* edit_area,
@@ -311,17 +320,17 @@ find_dialog::find (bool forward)
         }
       else if (! do_forward)
         {
-           // search from position before search characters text length
-           // if search backward on existing results,
-           _edit_area->getCursorPosition (&line,&col);
-           if (_find_result_available && _edit_area->hasSelectedText ())
-             {
-               int currpos = _edit_area->positionFromLineIndex(line,col);
-               currpos -= (_search_line_edit->text ().length ());
-               if (currpos < 0)
-                 currpos = 0;
-               _edit_area->lineIndexFromPosition(currpos, &line,&col);
-             }
+          // search from position before search characters text length
+          // if search backward on existing results,
+          _edit_area->getCursorPosition (&line,&col);
+          if (_find_result_available && _edit_area->hasSelectedText ())
+            {
+              int currpos = _edit_area->positionFromLineIndex(line,col);
+              currpos -= (_search_line_edit->text ().length ());
+              if (currpos < 0)
+                currpos = 0;
+              _edit_area->lineIndexFromPosition(currpos, &line,&col);
+            }
         }
     }
 
@@ -331,9 +340,9 @@ find_dialog::find (bool forward)
           && _search_selection_check_box->isChecked ())
         {
 #if defined (HAVE_QSCI_FINDSELECTION)
-           if (_find_result_available)
-             _find_result_available = _edit_area->findNext ();
-           else
+          if (_find_result_available)
+            _find_result_available = _edit_area->findNext ();
+          else
             _find_result_available
               = _edit_area->findFirstInSelection (
                                       _search_line_edit->text (),
@@ -352,15 +361,15 @@ find_dialog::find (bool forward)
         {
           _find_result_available
             = _edit_area->findFirst (_search_line_edit->text (),
-                                    _regex_check_box->isChecked (),
-                                    _case_check_box->isChecked (),
-                                    _whole_words_check_box->isChecked (),
-                                    do_wrap,
-                                    do_forward,
-                                    line,col,
-                                    true
+                                     _regex_check_box->isChecked (),
+                                     _case_check_box->isChecked (),
+                                     _whole_words_check_box->isChecked (),
+                                     do_wrap,
+                                     do_forward,
+                                     line,col,
+                                     true
 #if defined (HAVE_QSCI_VERSION_2_6_0)
-                                    , true
+                                     , true
 #endif
                                     );
         }
@@ -440,3 +449,4 @@ find_dialog::no_matches_message ()
 }
 
 #endif
+

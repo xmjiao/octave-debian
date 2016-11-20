@@ -1,7 +1,7 @@
 // Matrix manipulations.
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague, a.s.
 
@@ -49,10 +49,11 @@ along with Octave; see the file COPYING.  If not, see
 #include "schur.h"
 #include "svd.h"
 #include "DET.h"
-#include "f77-fcn.h"
 #include "functor.h"
+#include "lo-blas-proto.h"
 #include "lo-error.h"
 #include "lo-ieee.h"
+#include "lo-lapack-proto.h"
 #include "lo-mappers.h"
 #include "lo-utils.h"
 #include "mx-cm-dm.h"
@@ -65,204 +66,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-locbuf.h"
 #include "oct-norm.h"
 
-// Fortran functions we call.
-
-extern "C"
-{
-  F77_RET_T
-  F77_FUNC (xilaenv, XILAENV) (const F77_INT&,
-                               F77_CONST_CHAR_ARG_DECL,
-                               F77_CONST_CHAR_ARG_DECL,
-                               const F77_INT&, const F77_INT&,
-                               const F77_INT&, const F77_INT&,
-                               F77_INT&
-                               F77_CHAR_ARG_LEN_DECL
-                               F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zgebal, ZGEBAL) (F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_INT&,
-                             F77_INT&, F77_DBLE*, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (dgebak, DGEBAK) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_INT&,
-                             const F77_INT&, F77_DBLE*,
-                             const F77_INT&, F77_DBLE*,
-                             const F77_INT&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zgemm, ZGEMM) (F77_CONST_CHAR_ARG_DECL,
-                           F77_CONST_CHAR_ARG_DECL,
-                           const F77_INT&, const F77_INT&,
-                           const F77_INT&, const F77_DBLE_CMPLX&,
-                           const F77_DBLE_CMPLX*, const F77_INT&,
-                           const F77_DBLE_CMPLX*, const F77_INT&,
-                           const F77_DBLE_CMPLX&, F77_DBLE_CMPLX*, const F77_INT&
-                           F77_CHAR_ARG_LEN_DECL
-                           F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zgemv, ZGEMV) (F77_CONST_CHAR_ARG_DECL,
-                           const F77_INT&, const F77_INT&,
-                           const F77_DBLE_CMPLX&, const F77_DBLE_CMPLX*,
-                           const F77_INT&, const F77_DBLE_CMPLX*,
-                           const F77_INT&, const F77_DBLE_CMPLX&,
-                           F77_DBLE_CMPLX*, const F77_INT&
-                           F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (xzdotu, XZDOTU) (const F77_INT&, const F77_DBLE_CMPLX*,
-                             const F77_INT&, const F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE_CMPLX*);
-
-  F77_RET_T
-  F77_FUNC (xzdotc, XZDOTC) (const F77_INT&, const F77_DBLE_CMPLX*,
-                             const F77_INT&, const F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE_CMPLX*);
-
-  F77_RET_T
-  F77_FUNC (zsyrk, ZSYRK) (F77_CONST_CHAR_ARG_DECL,
-                           F77_CONST_CHAR_ARG_DECL,
-                           const F77_INT&, const F77_INT&,
-                           const F77_DBLE_CMPLX&, const F77_DBLE_CMPLX*,
-                           const F77_INT&, const F77_DBLE_CMPLX&,
-                           F77_DBLE_CMPLX*, const F77_INT&
-                           F77_CHAR_ARG_LEN_DECL
-                           F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zherk, ZHERK) (F77_CONST_CHAR_ARG_DECL,
-                           F77_CONST_CHAR_ARG_DECL,
-                           const F77_INT&, const F77_INT&,
-                           const F77_DBLE&, const F77_DBLE_CMPLX*,
-                           const F77_INT&, const F77_DBLE&, F77_DBLE_CMPLX*,
-                           const F77_INT&
-                           F77_CHAR_ARG_LEN_DECL
-                           F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zgetrf, ZGETRF) (const F77_INT&, const F77_INT&,
-                             F77_DBLE_CMPLX*, const F77_INT&,
-                             F77_INT*, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (zgetrs, ZGETRS) (F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_INT&,
-                             F77_DBLE_CMPLX*, const F77_INT&,
-                             const F77_INT*, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zgetri, ZGETRI) (const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, const F77_INT*,
-                             F77_DBLE_CMPLX*, const F77_INT&,
-                             F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (zgecon, ZGECON) (F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, const F77_DBLE&, F77_DBLE&,
-                             F77_DBLE_CMPLX*, F77_DBLE*, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zgelsy, ZGELSY) (const F77_INT&, const F77_INT&,
-                             const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_INT*,
-                             F77_DBLE&, F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE*,
-                             F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (zgelsd, ZGELSD) (const F77_INT&, const F77_INT&,
-                             const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE*, F77_DBLE&,
-                             F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE*,
-                             F77_INT*, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (zpotrf, ZPOTRF) (F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zpocon, ZPOCON) (F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, const F77_DBLE&,
-                             F77_DBLE&, F77_DBLE_CMPLX*, F77_DBLE*, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zpotrs, ZPOTRS) (F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_INT&,
-                             const F77_DBLE_CMPLX*, const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (ztrtri, ZTRTRI) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (ztrcon, ZTRCON) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE&,
-                             F77_DBLE_CMPLX*, F77_DBLE*, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (ztrtrs, ZTRTRS) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_INT&,
-                             const F77_DBLE_CMPLX*, const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zlartg, ZLARTG) (const F77_DBLE_CMPLX*, const F77_DBLE_CMPLX*, F77_DBLE&,
-                             F77_DBLE_CMPLX*, F77_DBLE_CMPLX*);
-
-  F77_RET_T
-  F77_FUNC (ztrsyl, ZTRSYL) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_INT&,
-                             const F77_INT&, const F77_DBLE_CMPLX*,
-                             const F77_INT&, const F77_DBLE_CMPLX*,
-                             const F77_INT&, const F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (xzlange, XZLANGE) (F77_CONST_CHAR_ARG_DECL,
-                               const F77_INT&, const F77_INT&,
-                               const F77_DBLE_CMPLX*, const F77_INT&,
-                               F77_DBLE*, F77_DBLE&
-                               F77_CHAR_ARG_LEN_DECL);
-}
-
 static const Complex Complex_NaN_result (octave::numeric_limits<double>::NaN (),
                                          octave::numeric_limits<double>::NaN ());
 
@@ -270,18 +73,15 @@ static const Complex Complex_NaN_result (octave::numeric_limits<double>::NaN (),
 
 ComplexMatrix::ComplexMatrix (const Matrix& a)
   : ComplexNDArray (a)
-{
-}
+{ }
 
 ComplexMatrix::ComplexMatrix (const RowVector& rv)
   : ComplexNDArray (rv)
-{
-}
+{ }
 
 ComplexMatrix::ComplexMatrix (const ColumnVector& cv)
   : ComplexNDArray (cv)
-{
-}
+{ }
 
 ComplexMatrix::ComplexMatrix (const DiagMatrix& a)
   : ComplexNDArray (a.dims (), 0.0)
@@ -306,13 +106,11 @@ ComplexMatrix::ComplexMatrix (const DiagArray2<double>& a)
 
 ComplexMatrix::ComplexMatrix (const ComplexRowVector& rv)
   : ComplexNDArray (rv)
-{
-}
+{ }
 
 ComplexMatrix::ComplexMatrix (const ComplexColumnVector& cv)
   : ComplexNDArray (cv)
-{
-}
+{ }
 
 ComplexMatrix::ComplexMatrix (const ComplexDiagMatrix& a)
   : ComplexNDArray (a.dims (), 0.0)
@@ -339,8 +137,7 @@ ComplexMatrix::ComplexMatrix (const DiagArray2<Complex>& a)
 
 ComplexMatrix::ComplexMatrix (const boolMatrix& a)
   : ComplexNDArray (a)
-{
-}
+{ }
 
 ComplexMatrix::ComplexMatrix (const charMatrix& a)
   : ComplexNDArray (a.dims (), 0.0)
@@ -1037,7 +834,7 @@ ComplexMatrix::finverse (MatrixType &mattype, octave_idx_type& info,
   F77_XFCN (zgetri, ZGETRI, (nc, F77_DBLE_CMPLX_ARG (tmp_data), nr, pipvt,
                              F77_DBLE_CMPLX_ARG (z.fortran_vec ()), lwork, info));
 
-  lwork = static_cast<octave_idx_type> (std::real (z(0)));
+  lwork = static_cast<octave_idx_type> (octave::math::real (z(0)));
   lwork = (lwork <  2 *nc ? 2*nc : lwork);
   z.resize (dim_vector (lwork, 1));
   Complex *pz = z.fortran_vec ();
@@ -1053,7 +850,8 @@ ComplexMatrix::finverse (MatrixType &mattype, octave_idx_type& info,
   if (octave::math::isnan (anorm) || octave::math::isinf (anorm))
     info = -1;
   else
-    F77_XFCN (zgetrf, ZGETRF, (nc, nc, F77_DBLE_CMPLX_ARG (tmp_data), nr, pipvt, info));
+    F77_XFCN (zgetrf, ZGETRF, (nc, nc, F77_DBLE_CMPLX_ARG (tmp_data), nr, pipvt,
+                               info));
 
   // Throw-away extra info LAPACK gives so as to not change output.
   rcon = 0.0;
@@ -1110,7 +908,7 @@ ComplexMatrix::inverse (MatrixType &mattype, octave_idx_type& info,
     {
       if (mattype.is_hermitian ())
         {
-          chol<ComplexMatrix> chol (*this, info, true, calc_cond);
+          octave::math::chol<ComplexMatrix> chol (*this, info, true, calc_cond);
           if (info == 0)
             {
               if (calc_cond)
@@ -1139,7 +937,8 @@ ComplexMatrix::pseudo_inverse (double tol) const
 {
   ComplexMatrix retval;
 
-  svd<ComplexMatrix> result (*this, svd<ComplexMatrix>::Type::economy);
+  octave::math::svd<ComplexMatrix> result (*this,
+      octave::math::svd<ComplexMatrix>::Type::economy);
 
   DiagMatrix S = result.singular_values ();
   ComplexMatrix U = result.left_singular_matrix ();
@@ -1265,22 +1064,7 @@ ComplexMatrix::ifourier2d (void) const
 
 #else
 
-extern "C"
-{
-  // Note that the original complex fft routines were not written for
-  // double complex arguments.  They have been modified by adding an
-  // implicit double precision (a-h,o-z) statement at the beginning of
-  // each subroutine.
-
-  F77_RET_T
-  F77_FUNC (zffti, ZFFTI) (const F77_INT&, F77_DBLE_CMPLX*);
-
-  F77_RET_T
-  F77_FUNC (zfftf, ZFFTF) (const F77_INT&, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*);
-
-  F77_RET_T
-  F77_FUNC (zfftb, ZFFTB) (const F77_INT&, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*);
-}
+#include "lo-fftpack-proto.h"
 
 ComplexMatrix
 ComplexMatrix::fourier (void) const
@@ -1311,13 +1095,14 @@ ComplexMatrix::fourier (void) const
   retval = *this;
   Complex *tmp_data = retval.fortran_vec ();
 
-  F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+  F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
   for (octave_idx_type j = 0; j < nsamples; j++)
     {
       octave_quit ();
 
-      F77_FUNC (zfftf, ZFFTF) (npts, &tmp_data[npts*j], pwsave);
+      F77_FUNC (zfftf, ZFFTF) (npts, F77_DBLE_CMPLX_ARG (&tmp_data[npts*j]),
+                               F77_DBLE_CMPLX_ARG (pwsave));
     }
 
   return retval;
@@ -1352,13 +1137,14 @@ ComplexMatrix::ifourier (void) const
   retval = *this;
   Complex *tmp_data = retval.fortran_vec ();
 
-  F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+  F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
   for (octave_idx_type j = 0; j < nsamples; j++)
     {
       octave_quit ();
 
-      F77_FUNC (zfftb, ZFFTB) (npts, &tmp_data[npts*j], pwsave);
+      F77_FUNC (zfftb, ZFFTB) (npts, F77_DBLE_CMPLX_ARG (&tmp_data[npts*j]),
+                               F77_DBLE_CMPLX_ARG (pwsave));
     }
 
   for (octave_idx_type j = 0; j < npts*nsamples; j++)
@@ -1396,13 +1182,14 @@ ComplexMatrix::fourier2d (void) const
   retval = *this;
   Complex *tmp_data = retval.fortran_vec ();
 
-  F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+  F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
   for (octave_idx_type j = 0; j < nsamples; j++)
     {
       octave_quit ();
 
-      F77_FUNC (zfftf, ZFFTF) (npts, &tmp_data[npts*j], pwsave);
+      F77_FUNC (zfftf, ZFFTF) (npts, F77_DBLE_CMPLX_ARG (&tmp_data[npts*j]),
+                               F77_DBLE_CMPLX_ARG (pwsave));
     }
 
   npts = nc;
@@ -1415,7 +1202,7 @@ ComplexMatrix::fourier2d (void) const
   Array<Complex> tmp (dim_vector (npts, 1));
   Complex *prow = tmp.fortran_vec ();
 
-  F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+  F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
   for (octave_idx_type j = 0; j < nsamples; j++)
     {
@@ -1424,7 +1211,8 @@ ComplexMatrix::fourier2d (void) const
       for (octave_idx_type i = 0; i < npts; i++)
         prow[i] = tmp_data[i*nr + j];
 
-      F77_FUNC (zfftf, ZFFTF) (npts, prow, pwsave);
+      F77_FUNC (zfftf, ZFFTF) (npts, F77_DBLE_CMPLX_ARG (prow),
+                               F77_DBLE_CMPLX_ARG (pwsave));
 
       for (octave_idx_type i = 0; i < npts; i++)
         tmp_data[i*nr + j] = prow[i];
@@ -1462,13 +1250,14 @@ ComplexMatrix::ifourier2d (void) const
   retval = *this;
   Complex *tmp_data = retval.fortran_vec ();
 
-  F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+  F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
   for (octave_idx_type j = 0; j < nsamples; j++)
     {
       octave_quit ();
 
-      F77_FUNC (zfftb, ZFFTB) (npts, &tmp_data[npts*j], pwsave);
+      F77_FUNC (zfftb, ZFFTB) (npts, F77_DBLE_CMPLX_ARG (&tmp_data[npts*j]),
+                               F77_DBLE_CMPLX_ARG (pwsave));
     }
 
   for (octave_idx_type j = 0; j < npts*nsamples; j++)
@@ -1484,7 +1273,7 @@ ComplexMatrix::ifourier2d (void) const
   Array<Complex> tmp (dim_vector (npts, 1));
   Complex *prow = tmp.fortran_vec ();
 
-  F77_FUNC (zffti, ZFFTI) (npts, pwsave);
+  F77_FUNC (zffti, ZFFTI) (npts, F77_DBLE_CMPLX_ARG (pwsave));
 
   for (octave_idx_type j = 0; j < nsamples; j++)
     {
@@ -1493,7 +1282,8 @@ ComplexMatrix::ifourier2d (void) const
       for (octave_idx_type i = 0; i < npts; i++)
         prow[i] = tmp_data[i*nr + j];
 
-      F77_FUNC (zfftb, ZFFTB) (npts, prow, pwsave);
+      F77_FUNC (zfftb, ZFFTB) (npts, F77_DBLE_CMPLX_ARG (prow),
+                               F77_DBLE_CMPLX_ARG (pwsave));
 
       for (octave_idx_type i = 0; i < npts; i++)
         tmp_data[i*nr + j] = prow[i] / static_cast<double> (npts);
@@ -1619,7 +1409,8 @@ ComplexMatrix::determinant (MatrixType& mattype,
       if (octave::math::isnan (anorm))
         info = -1;
       else
-        F77_XFCN (zgetrf, ZGETRF, (nr, nr, F77_DBLE_CMPLX_ARG (tmp_data), nr, pipvt, info));
+        F77_XFCN (zgetrf, ZGETRF, (nr, nr, F77_DBLE_CMPLX_ARG (tmp_data), nr, pipvt,
+                                   info));
 
       // Throw-away extra info LAPACK gives so as to not change output.
       rcon = 0.0;
@@ -1813,7 +1604,8 @@ ComplexMatrix::rcond (MatrixType &mattype) const
               if (octave::math::isnan (anorm))
                 info = -1;
               else
-                F77_XFCN (zgetrf, ZGETRF, (nr, nr, F77_DBLE_CMPLX_ARG (tmp_data), nr, pipvt, info));
+                F77_XFCN (zgetrf, ZGETRF, (nr, nr, F77_DBLE_CMPLX_ARG (tmp_data), nr, pipvt,
+                                           info));
 
               if (info != 0)
                 {
@@ -1922,7 +1714,7 @@ ComplexMatrix::utsolve (MatrixType &mattype, const ComplexMatrix& b,
               if (sing_handler)
                 sing_handler (rcon);
               else
-                warn_singular_matrix (rcon);
+                octave::warn_singular_matrix (rcon);
             }
         }
     }
@@ -2012,7 +1804,7 @@ ComplexMatrix::ltsolve (MatrixType &mattype, const ComplexMatrix& b,
               if (sing_handler)
                 sing_handler (rcon);
               else
-                warn_singular_matrix (rcon);
+                octave::warn_singular_matrix (rcon);
             }
         }
     }
@@ -2093,7 +1885,7 @@ ComplexMatrix::fsolve (MatrixType &mattype, const ComplexMatrix& b,
                       if (sing_handler)
                         sing_handler (rcon);
                       else
-                        warn_singular_matrix (rcon);
+                        octave::warn_singular_matrix (rcon);
                     }
                 }
 
@@ -2142,7 +1934,8 @@ ComplexMatrix::fsolve (MatrixType &mattype, const ComplexMatrix& b,
           if (octave::math::isnan (anorm) || octave::math::isinf (anorm))
             info = -2;
           else
-            F77_XFCN (zgetrf, ZGETRF, (nr, nr, F77_DBLE_CMPLX_ARG (tmp_data), nr, pipvt, info));
+            F77_XFCN (zgetrf, ZGETRF, (nr, nr, F77_DBLE_CMPLX_ARG (tmp_data), nr, pipvt,
+                                       info));
 
           // Throw-away extra info LAPACK gives so as to not change output.
           rcon = 0.0;
@@ -2153,7 +1946,7 @@ ComplexMatrix::fsolve (MatrixType &mattype, const ComplexMatrix& b,
               if (sing_handler)
                 sing_handler (rcon);
               else
-                warn_singular_matrix ();
+                octave::warn_singular_matrix ();
 
               mattype.mark_as_rectangular ();
             }
@@ -2181,7 +1974,7 @@ ComplexMatrix::fsolve (MatrixType &mattype, const ComplexMatrix& b,
                       if (sing_handler)
                         sing_handler (rcon);
                       else
-                        warn_singular_matrix (rcon);
+                        octave::warn_singular_matrix (rcon);
                     }
                 }
 
@@ -2571,7 +2364,7 @@ ComplexMatrix::lssolve (const ComplexMatrix& b, octave_idx_type& info,
     (*current_liboctave_error_handler)
       ("matrix dimension mismatch solution of linear equations");
 
-  if (m== 0 || n == 0 || b.cols () == 0)
+  if (m == 0 || n == 0 || b.cols () == 0)
     retval = ComplexMatrix (n, b.cols (), Complex (0.0, 0.0));
   else
     {
@@ -2622,6 +2415,7 @@ ComplexMatrix::lssolve (const ComplexMatrix& b, octave_idx_type& info,
       double dminmn = static_cast<double> (minmn);
       double dsmlsizp1 = static_cast<double> (smlsiz+1);
       double tmp = octave::math::log2 (dminmn / dsmlsizp1);
+      double anorm = 0.0;
 
       octave_idx_type nlvl = static_cast<octave_idx_type> (tmp) + 1;
       if (nlvl < 0)
@@ -2642,7 +2436,8 @@ ComplexMatrix::lssolve (const ComplexMatrix& b, octave_idx_type& info,
       Array<octave_idx_type> iwork (dim_vector (liwork, 1));
       octave_idx_type* piwork = iwork.fortran_vec ();
 
-      F77_XFCN (zgelsd, ZGELSD, (m, n, nrhs, F77_DBLE_CMPLX_ARG (tmp_data), m, F77_DBLE_CMPLX_ARG (pretval), maxmn,
+      F77_XFCN (zgelsd, ZGELSD, (m, n, nrhs, F77_DBLE_CMPLX_ARG (tmp_data), m,
+                                 F77_DBLE_CMPLX_ARG (pretval), maxmn,
                                  ps, rcon, rank, F77_DBLE_CMPLX_ARG (work.fortran_vec ()),
                                  lwork, prwork, piwork, info));
 
@@ -2665,31 +2460,43 @@ ComplexMatrix::lssolve (const ComplexMatrix& b, octave_idx_type& info,
 
           const octave_idx_type lworkaround = 4*m + m*m + addend;
 
-          if (std::real (work(0)) < lworkaround)
+          if (octave::math::real (work(0)) < lworkaround)
             work(0) = lworkaround;
         }
       else if (m >= n)
         {
           octave_idx_type lworkaround = 2*m + m*nrhs;
 
-          if (std::real (work(0)) < lworkaround)
+          if (octave::math::real (work(0)) < lworkaround)
             work(0) = lworkaround;
         }
 
-      lwork = static_cast<octave_idx_type> (std::real (work(0)));
+      lwork = static_cast<octave_idx_type> (octave::math::real (work(0)));
       work.resize (dim_vector (lwork, 1));
 
-      F77_XFCN (zgelsd, ZGELSD, (m, n, nrhs, F77_DBLE_CMPLX_ARG (tmp_data), m, F77_DBLE_CMPLX_ARG (pretval),
-                                 maxmn, ps, rcon, rank,
-                                 F77_DBLE_CMPLX_ARG (work.fortran_vec ()), lwork,
-                                 prwork, piwork, info));
+      anorm = xnorm (*this, 1);
 
-      if (s.elem (0) == 0.0)
-        rcon = 0.0;
+      if (octave::math::isinf (anorm) || octave::math::isnan (anorm))
+        {
+          rcon = 0.0;
+          octave::warn_singular_matrix ();
+          retval = Matrix (n, m, 0.0);
+        }
       else
-        rcon = s.elem (minmn - 1) / s.elem (0);
+        {
+          F77_XFCN (zgelsd, ZGELSD, (m, n, nrhs, F77_DBLE_CMPLX_ARG (tmp_data),
+                                     m, F77_DBLE_CMPLX_ARG (pretval),
+                                     maxmn, ps, rcon, rank,
+                                     F77_DBLE_CMPLX_ARG (work.fortran_vec ()),
+                                     lwork, prwork, piwork, info));
 
-      retval.resize (n, nrhs);
+          if (s.elem (0) == 0.0)
+            rcon = 0.0;
+          else
+            rcon = s.elem (minmn - 1) / s.elem (0);
+
+          retval.resize (n, nrhs);
+        }
     }
 
   return retval;
@@ -2830,16 +2637,18 @@ ComplexMatrix::lssolve (const ComplexColumnVector& b, octave_idx_type& info,
       Array<octave_idx_type> iwork (dim_vector (liwork, 1));
       octave_idx_type* piwork = iwork.fortran_vec ();
 
-      F77_XFCN (zgelsd, ZGELSD, (m, n, nrhs, F77_DBLE_CMPLX_ARG (tmp_data), m, F77_DBLE_CMPLX_ARG (pretval), maxmn,
+      F77_XFCN (zgelsd, ZGELSD, (m, n, nrhs, F77_DBLE_CMPLX_ARG (tmp_data), m,
+                                 F77_DBLE_CMPLX_ARG (pretval), maxmn,
                                  ps, rcon, rank, F77_DBLE_CMPLX_ARG (work.fortran_vec ()),
                                  lwork, prwork, piwork, info));
 
-      lwork = static_cast<octave_idx_type> (std::real (work(0)));
+      lwork = static_cast<octave_idx_type> (octave::math::real (work(0)));
       work.resize (dim_vector (lwork, 1));
       rwork.resize (dim_vector (static_cast<octave_idx_type> (rwork(0)), 1));
       iwork.resize (dim_vector (iwork(0), 1));
 
-      F77_XFCN (zgelsd, ZGELSD, (m, n, nrhs, F77_DBLE_CMPLX_ARG (tmp_data), m, F77_DBLE_CMPLX_ARG (pretval),
+      F77_XFCN (zgelsd, ZGELSD, (m, n, nrhs, F77_DBLE_CMPLX_ARG (tmp_data), m,
+                                 F77_DBLE_CMPLX_ARG (pretval),
                                  maxmn, ps, rcon, rank,
                                  F77_DBLE_CMPLX_ARG (work.fortran_vec ()), lwork,
                                  prwork, piwork, info));
@@ -2911,7 +2720,7 @@ ComplexMatrix::operator += (const DiagMatrix& a)
   octave_idx_type a_nc = cols ();
 
   if (nr != a_nr || nc != a_nc)
-    err_nonconformant ("operator +=", nr, nc, a_nr, a_nc);
+    octave::err_nonconformant ("operator +=", nr, nc, a_nr, a_nc);
 
   for (octave_idx_type i = 0; i < a.length (); i++)
     elem (i, i) += a.elem (i, i);
@@ -2929,7 +2738,7 @@ ComplexMatrix::operator -= (const DiagMatrix& a)
   octave_idx_type a_nc = cols ();
 
   if (nr != a_nr || nc != a_nc)
-    err_nonconformant ("operator -=", nr, nc, a_nr, a_nc);
+    octave::err_nonconformant ("operator -=", nr, nc, a_nr, a_nc);
 
   for (octave_idx_type i = 0; i < a.length (); i++)
     elem (i, i) -= a.elem (i, i);
@@ -2947,7 +2756,7 @@ ComplexMatrix::operator += (const ComplexDiagMatrix& a)
   octave_idx_type a_nc = cols ();
 
   if (nr != a_nr || nc != a_nc)
-    err_nonconformant ("operator +=", nr, nc, a_nr, a_nc);
+    octave::err_nonconformant ("operator +=", nr, nc, a_nr, a_nc);
 
   for (octave_idx_type i = 0; i < a.length (); i++)
     elem (i, i) += a.elem (i, i);
@@ -2965,7 +2774,7 @@ ComplexMatrix::operator -= (const ComplexDiagMatrix& a)
   octave_idx_type a_nc = cols ();
 
   if (nr != a_nr || nc != a_nc)
-    err_nonconformant ("operator -=", nr, nc, a_nr, a_nc);
+    octave::err_nonconformant ("operator -=", nr, nc, a_nr, a_nc);
 
   for (octave_idx_type i = 0; i < a.length (); i++)
     elem (i, i) -= a.elem (i, i);
@@ -2985,7 +2794,7 @@ ComplexMatrix::operator += (const Matrix& a)
   octave_idx_type a_nc = a.cols ();
 
   if (nr != a_nr || nc != a_nc)
-    err_nonconformant ("operator +=", nr, nc, a_nr, a_nc);
+    octave::err_nonconformant ("operator +=", nr, nc, a_nr, a_nc);
 
   if (nr == 0 || nc == 0)
     return *this;
@@ -3006,7 +2815,7 @@ ComplexMatrix::operator -= (const Matrix& a)
   octave_idx_type a_nc = a.cols ();
 
   if (nr != a_nr || nc != a_nc)
-    err_nonconformant ("operator -=", nr, nc, a_nr, a_nc);
+    octave::err_nonconformant ("operator -=", nr, nc, a_nr, a_nc);
 
   if (nr == 0 || nc == 0)
     return *this;
@@ -3094,7 +2903,7 @@ ComplexMatrix::row_is_real_only (octave_idx_type i) const
 
   for (octave_idx_type j = 0; j < nc; j++)
     {
-      if (std::imag (elem (i, j)) != 0.0)
+      if (octave::math::imag (elem (i, j)) != 0.0)
         {
           retval = false;
           break;
@@ -3113,7 +2922,7 @@ ComplexMatrix::column_is_real_only (octave_idx_type j) const
 
   for (octave_idx_type i = 0; i < nr; i++)
     {
-      if (std::imag (elem (i, j)) != 0.0)
+      if (octave::math::imag (elem (i, j)) != 0.0)
         {
           retval = false;
           break;
@@ -3159,7 +2968,7 @@ ComplexMatrix::row_min (Array<octave_idx_type>& idx_arg) const
 
               if (! octave::math::isnan (tmp_min))
                 {
-                  abs_min = real_only ? std::real (tmp_min)
+                  abs_min = real_only ? tmp_min.real ()
                                       : std::abs (tmp_min);
                   break;
                 }
@@ -3172,7 +2981,7 @@ ComplexMatrix::row_min (Array<octave_idx_type>& idx_arg) const
               if (octave::math::isnan (tmp))
                 continue;
 
-              double abs_tmp = real_only ? std::real (tmp) : std::abs (tmp);
+              double abs_tmp = real_only ? tmp.real () : std::abs (tmp);
 
               if (abs_tmp < abs_min)
                 {
@@ -3234,7 +3043,7 @@ ComplexMatrix::row_max (Array<octave_idx_type>& idx_arg) const
 
               if (! octave::math::isnan (tmp_max))
                 {
-                  abs_max = real_only ? std::real (tmp_max)
+                  abs_max = real_only ? tmp_max.real ()
                                       : std::abs (tmp_max);
                   break;
                 }
@@ -3247,7 +3056,7 @@ ComplexMatrix::row_max (Array<octave_idx_type>& idx_arg) const
               if (octave::math::isnan (tmp))
                 continue;
 
-              double abs_tmp = real_only ? std::real (tmp) : std::abs (tmp);
+              double abs_tmp = real_only ? tmp.real () : std::abs (tmp);
 
               if (abs_tmp > abs_max)
                 {
@@ -3309,7 +3118,7 @@ ComplexMatrix::column_min (Array<octave_idx_type>& idx_arg) const
 
               if (! octave::math::isnan (tmp_min))
                 {
-                  abs_min = real_only ? std::real (tmp_min)
+                  abs_min = real_only ? tmp_min.real ()
                                       : std::abs (tmp_min);
                   break;
                 }
@@ -3322,7 +3131,7 @@ ComplexMatrix::column_min (Array<octave_idx_type>& idx_arg) const
               if (octave::math::isnan (tmp))
                 continue;
 
-              double abs_tmp = real_only ? std::real (tmp) : std::abs (tmp);
+              double abs_tmp = real_only ? tmp.real () : std::abs (tmp);
 
               if (abs_tmp < abs_min)
                 {
@@ -3384,7 +3193,7 @@ ComplexMatrix::column_max (Array<octave_idx_type>& idx_arg) const
 
               if (! octave::math::isnan (tmp_max))
                 {
-                  abs_max = real_only ? std::real (tmp_max)
+                  abs_max = real_only ? tmp_max.real ()
                                       : std::abs (tmp_max);
                   break;
                 }
@@ -3397,7 +3206,7 @@ ComplexMatrix::column_max (Array<octave_idx_type>& idx_arg) const
               if (octave::math::isnan (tmp))
                 continue;
 
-              double abs_tmp = real_only ? std::real (tmp) : std::abs (tmp);
+              double abs_tmp = real_only ? tmp.real () : std::abs (tmp);
 
               if (abs_tmp > abs_max)
                 {
@@ -3469,7 +3278,11 @@ Givens (const Complex& x, const Complex& y)
   double cc;
   Complex cs, temp_r;
 
-  F77_FUNC (zlartg, ZLARTG) (F77_CONST_DBLE_CMPLX_ARG (&x), F77_CONST_DBLE_CMPLX_ARG (&y), cc, F77_DBLE_CMPLX_ARG (&cs), F77_DBLE_CMPLX_ARG (&temp_r));
+  F77_FUNC (zlartg, ZLARTG) (F77_CONST_DBLE_CMPLX_ARG (&x),
+                             F77_CONST_DBLE_CMPLX_ARG (&y),
+                             cc,
+                             F77_DBLE_CMPLX_ARG (&cs),
+                             F77_DBLE_CMPLX_ARG (&temp_r));
 
   ComplexMatrix g (2, 2);
 
@@ -3491,8 +3304,8 @@ Sylvester (const ComplexMatrix& a, const ComplexMatrix& b,
 
   // Compute Schur decompositions
 
-  schur<ComplexMatrix> as (a, "U");
-  schur<ComplexMatrix> bs (b, "U");
+  octave::math::schur<ComplexMatrix> as (a, "U");
+  octave::math::schur<ComplexMatrix> bs (b, "U");
 
   // Transform c to new coordinates.
 
@@ -3597,7 +3410,7 @@ xgemm (const ComplexMatrix& a, const ComplexMatrix& b,
   octave_idx_type b_nc = trb ? b.rows () : b.cols ();
 
   if (a_nc != b_nr)
-    err_nonconformant ("operator *", a_nr, a_nc, b_nr, b_nc);
+    octave::err_nonconformant ("operator *", a_nr, a_nc, b_nr, b_nc);
 
   if (a_nr == 0 || a_nc == 0 || b_nc == 0)
     retval = ComplexMatrix (a_nr, b_nc, 0.0);
@@ -3624,7 +3437,7 @@ xgemm (const ComplexMatrix& a, const ComplexMatrix& b,
                                    F77_CHAR_ARG_LEN (1)));
           for (octave_idx_type j = 0; j < a_nr; j++)
             for (octave_idx_type i = 0; i < j; i++)
-              retval.xelem (j,i) = std::conj (retval.xelem (i,j));
+              retval.xelem (j,i) = octave::math::conj (retval.xelem (i,j));
         }
       else
         {
@@ -3655,15 +3468,18 @@ xgemm (const ComplexMatrix& a, const ComplexMatrix& b,
         {
           if (cja == cjb)
             {
-              F77_FUNC (xzdotu, XZDOTU) (a_nc, F77_CONST_DBLE_CMPLX_ARG (a.data ()), 1, F77_CONST_DBLE_CMPLX_ARG (b.data ()), 1,
+              F77_FUNC (xzdotu, XZDOTU) (a_nc, F77_CONST_DBLE_CMPLX_ARG (a.data ()), 1,
+                                         F77_CONST_DBLE_CMPLX_ARG (b.data ()), 1,
                                          F77_DBLE_CMPLX_ARG (c));
-              if (cja) *c = std::conj (*c);
+              if (cja) *c = octave::math::conj (*c);
             }
           else if (cja)
-            F77_FUNC (xzdotc, XZDOTC) (a_nc, F77_CONST_DBLE_CMPLX_ARG (a.data ()), 1, F77_CONST_DBLE_CMPLX_ARG (b.data ()), 1,
+            F77_FUNC (xzdotc, XZDOTC) (a_nc, F77_CONST_DBLE_CMPLX_ARG (a.data ()), 1,
+                                       F77_CONST_DBLE_CMPLX_ARG (b.data ()), 1,
                                        F77_DBLE_CMPLX_ARG (c));
           else
-            F77_FUNC (xzdotc, XZDOTC) (a_nc, F77_CONST_DBLE_CMPLX_ARG (b.data ()), 1, F77_CONST_DBLE_CMPLX_ARG (a.data ()), 1,
+            F77_FUNC (xzdotc, XZDOTC) (a_nc, F77_CONST_DBLE_CMPLX_ARG (b.data ()), 1,
+                                       F77_CONST_DBLE_CMPLX_ARG (a.data ()), 1,
                                        F77_DBLE_CMPLX_ARG (c));
         }
       else if (b_nc == 1 && ! cjb)
@@ -3689,7 +3505,8 @@ xgemm (const ComplexMatrix& a, const ComplexMatrix& b,
           F77_XFCN (zgemm, ZGEMM, (F77_CONST_CHAR_ARG2 (&ctra, 1),
                                    F77_CONST_CHAR_ARG2 (&ctrb, 1),
                                    a_nr, b_nc, a_nc, 1.0, F77_CONST_DBLE_CMPLX_ARG (a.data ()),
-                                   lda, F77_CONST_DBLE_CMPLX_ARG (b.data ()), ldb, 0.0, F77_DBLE_CMPLX_ARG (c), a_nr
+                                   lda, F77_CONST_DBLE_CMPLX_ARG (b.data ()), ldb, 0.0, F77_DBLE_CMPLX_ARG (c),
+                                   a_nr
                                    F77_CHAR_ARG_LEN (1)
                                    F77_CHAR_ARG_LEN (1)));
         }
@@ -3756,7 +3573,7 @@ min (const ComplexMatrix& a, const ComplexMatrix& b)
       for (octave_idx_type i = 0; i < nr; i++)
         {
           octave_quit ();
-          if (std::imag (a(i, j)) != 0.0 || std::imag (b(i, j)) != 0.0)
+          if (octave::math::imag (a(i, j)) != 0.0 || octave::math::imag (b(i, j)) != 0.0)
             {
               columns_are_real_only = false;
               break;
@@ -3766,7 +3583,8 @@ min (const ComplexMatrix& a, const ComplexMatrix& b)
       if (columns_are_real_only)
         {
           for (octave_idx_type i = 0; i < nr; i++)
-            result(i, j) = octave::math::min (std::real (a(i, j)), std::real (b(i, j)));
+            result(i, j) = octave::math::min (octave::math::real (a(i, j)),
+                                              octave::math::real (b(i, j)));
         }
       else
         {
@@ -3827,7 +3645,7 @@ max (const ComplexMatrix& a, const ComplexMatrix& b)
       for (octave_idx_type i = 0; i < nr; i++)
         {
           octave_quit ();
-          if (std::imag (a(i, j)) != 0.0 || std::imag (b(i, j)) != 0.0)
+          if (octave::math::imag (a(i, j)) != 0.0 || octave::math::imag (b(i, j)) != 0.0)
             {
               columns_are_real_only = false;
               break;
@@ -3840,7 +3658,8 @@ max (const ComplexMatrix& a, const ComplexMatrix& b)
           for (octave_idx_type i = 0; i < nr; i++)
             {
               octave_quit ();
-              result(i, j) = octave::math::max (std::real (a(i, j)), std::real (b(i, j)));
+              result(i, j) = octave::math::max (octave::math::real (a(i, j)),
+                                                octave::math::real (b(i, j)));
             }
         }
       else
@@ -3901,3 +3720,4 @@ SM_BOOL_OPS (Complex, ComplexMatrix)
 
 MM_CMP_OPS (ComplexMatrix, ComplexMatrix)
 MM_BOOL_OPS (ComplexMatrix, ComplexMatrix)
+

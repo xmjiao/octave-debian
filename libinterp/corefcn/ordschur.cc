@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2015 Sébastien Villemot <sebastien@debian.org>
+Copyright (C) 2016 Sébastien Villemot <sebastien@debian.org>
 
 This file is part of Octave.
 
@@ -26,41 +26,8 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "defun.h"
 #include "error.h"
+#include "lo-lapack-proto.h"
 #include "ovl.h"
-#include "f77-fcn.h"
-
-extern "C"
-{
-  F77_RET_T
-  F77_FUNC (dtrsen, DTRSEN) (F77_CONST_CHAR_ARG_DECL, F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT*, const F77_INT&,
-                             F77_DBLE*, const F77_INT&, F77_DBLE*, const F77_INT&,
-                             F77_DBLE*, F77_DBLE*, F77_INT&, F77_DBLE&, F77_DBLE&, F77_DBLE*,
-                             const F77_INT&, F77_INT*,
-                             const F77_INT&, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (ztrsen, ZTRSEN) (F77_CONST_CHAR_ARG_DECL, F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT*, const F77_INT&,
-                             F77_DBLE_CMPLX*, const F77_INT&, F77_DBLE_CMPLX*, const F77_INT&,
-                             F77_DBLE_CMPLX*, F77_INT&, F77_DBLE&, F77_DBLE&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_INT &);
-
-  F77_RET_T
-  F77_FUNC (strsen, STRSEN) (F77_CONST_CHAR_ARG_DECL, F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT*, const F77_INT&,
-                             F77_REAL*, const F77_INT&, F77_REAL*, const F77_INT&,
-                             F77_REAL*, F77_REAL*, F77_INT&, F77_REAL&, F77_REAL&, F77_REAL*,
-                             const F77_INT&, F77_INT*,
-                             const F77_INT&, F77_INT&);
-
-  F77_RET_T
-  F77_FUNC (ctrsen, CTRSEN) (F77_CONST_CHAR_ARG_DECL, F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT*, const F77_INT&,
-                             F77_CMPLX*, const F77_INT&, F77_CMPLX*, const F77_INT&,
-                             F77_CMPLX*, F77_INT&, F77_REAL&, F77_REAL&, F77_CMPLX*,
-                             const F77_INT&, F77_INT &);
-}
 
 DEFUN (ordschur, args, ,
        doc: /* -*- texinfo -*-
@@ -152,8 +119,10 @@ is in the upper left corner, by doing:
 
           F77_XFCN (ztrsen, ztrsen,
                     (F77_CONST_CHAR_ARG ("N"), F77_CONST_CHAR_ARG ("V"),
-                     sel.data (), n, F77_DBLE_CMPLX_ARG (S.fortran_vec ()), n, F77_DBLE_CMPLX_ARG (U.fortran_vec ()), n,
-                     F77_DBLE_CMPLX_ARG (w.fortran_vec ()), m, cond1, cond2, F77_DBLE_CMPLX_ARG (work.fortran_vec ()), n,
+                     sel.data (), n, F77_DBLE_CMPLX_ARG (S.fortran_vec ()), n,
+                     F77_DBLE_CMPLX_ARG (U.fortran_vec ()), n,
+                     F77_DBLE_CMPLX_ARG (w.fortran_vec ()), m, cond1, cond2,
+                     F77_DBLE_CMPLX_ARG (work.fortran_vec ()), n,
                      info));
 
           PREPARE_OUTPUT()
@@ -181,8 +150,10 @@ is in the upper left corner, by doing:
 
           F77_XFCN (ctrsen, ctrsen,
                     (F77_CONST_CHAR_ARG ("N"), F77_CONST_CHAR_ARG ("V"),
-                     sel.data (), n, F77_CMPLX_ARG (S.fortran_vec ()), n, F77_CMPLX_ARG (U.fortran_vec ()), n,
-                     F77_CMPLX_ARG (w.fortran_vec ()), m, cond1, cond2, F77_CMPLX_ARG (work.fortran_vec ()), n,
+                     sel.data (), n, F77_CMPLX_ARG (S.fortran_vec ()), n,
+                     F77_CMPLX_ARG (U.fortran_vec ()), n,
+                     F77_CMPLX_ARG (w.fortran_vec ()), m, cond1, cond2,
+                     F77_CMPLX_ARG (work.fortran_vec ()), n,
                      info));
 
           PREPARE_OUTPUT ()
@@ -240,3 +211,4 @@ is in the upper left corner, by doing:
 %! assert (diag (T)(3:4), diag (TS)(1:2), sqrt (eps ("single")));
 
 */
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -52,9 +52,11 @@ public:
             const std::string& file_name = "",
             bool relative = false);
 
-  static bool remove_oct (const std::string& fcn_name, octave::dynamic_library& shl);
+  static bool remove_oct (const std::string& fcn_name,
+                          octave::dynamic_library& shl);
 
-  static bool remove_mex (const std::string& fcn_name, octave::dynamic_library& shl);
+  static bool remove_mex (const std::string& fcn_name,
+                          octave::dynamic_library& shl);
 
 private:
 
@@ -100,3 +102,4 @@ protected:
 };
 
 #endif
+

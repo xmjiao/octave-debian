@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2015 Bill Denney
+## Copyright (C) 2006-2016 Bill Denney
 ##
 ## This file is part of Octave.
 ##
@@ -304,7 +304,7 @@ function files = __parse_bzip2__ (output)
 endfunction
 
 
-%!test
+%!testif HAVE_ZLIB
 %! ## Create temporary directory and file for packing and unpacking
 %! dirname = tempname ();
 %! assert (mkdir (dirname));
@@ -318,7 +318,7 @@ endfunction
 %!   copyfile (filename, [filename ".orig"]);
 %!   gzip (filename, dirname);
 %!   [~, f] = fileparts (filename);
-%!   filelist = unpack (fullfile (dirname, [f ".gz"]), P_tmpdir);
+%!   filelist = unpack (fullfile (dirname, [f ".gz"]), tempdir);
 %!   assert (filelist{1}, filename);
 %!   fid = fopen ([filename ".orig"], "rb");
 %!   assert (fid >= 0);
@@ -334,7 +334,8 @@ endfunction
 %! unwind_protect_cleanup
 %!   unlink (filename);
 %!   unlink ([filename ".orig"]);
-%!   rmdir (dirname);
+%!   confirm_recursive_rmdir (false, "local");
+%!   rmdir (dirname, "s");
 %! end_unwind_protect
 
 ## Test input validation

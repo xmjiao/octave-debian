@@ -1,7 +1,7 @@
 
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -185,7 +185,7 @@ do_rand (const octave_value_list& args, int nargin, const char *fcn,
               {
                 iv = tmp.int_vector_value (true);
               }
-            catch (octave_execution_exception& e)
+            catch (octave::execution_exception& e)
               {
                 error (e, "%s: dimensions must be a scalar or array of integers", fcn);
               }
@@ -1124,11 +1124,9 @@ likely.
       // entries in the map
       for (octave_idx_type i = 0; i < m; i++)
         {
-          octave_idx_type k = i +
-            std::floor (rvec[i] * (n - i));
+          octave_idx_type k = i + std::floor (rvec[i] * (n - i));
 
-          // For shuffling first m entries, no need to use extra
-          // storage
+          // For shuffling first m entries, no need to use extra storage
           if (k < m)
             {
               std::swap (ivec[i], ivec[k]);
@@ -1147,8 +1145,7 @@ likely.
       // Perform the Knuth shuffle of the first m entries
       for (octave_idx_type i = 0; i < m; i++)
         {
-          octave_idx_type k = i +
-            std::floor (rvec[i] * (n - i));
+          octave_idx_type k = i + std::floor (rvec[i] * (n - i));
           std::swap (ivec[i], ivec[k]);
         }
     }
@@ -1168,8 +1165,8 @@ likely.
 %!assert (sort (randperm (20)), 1:20)
 %!assert (length (randperm (20,10)), 10)
 
-## Test biggish N (bug #39378)
-%!assert (length (randperm (30000^2, 100000)), 100000)
+## Test biggish N
+%!assert <39378> (length (randperm (30000^2, 100000)), 100000)
 
 %!test
 %! rand ("seed", 0);
@@ -1178,3 +1175,4 @@ likely.
 %!   assert (length (unique (p)), 30);
 %! endfor
 */
+

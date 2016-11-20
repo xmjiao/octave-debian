@@ -1,8 +1,8 @@
 /*
 
-Copyright (C) 2013-2015 John W. Eaton
-Copyright (C) 2011-2015 Jacob Dawid
-Copyright (C) 2011-2015 John P. Swensen
+Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2011-2016 Jacob Dawid
+Copyright (C) 2011-2016 John P. Swensen
 
 This file is part of Octave.
 
@@ -142,7 +142,7 @@ octave_qt_link::do_prompt_new_edit_file (const std::string& file)
     tr ("File\n%1\ndoes not exist. Do you want to create it?").
     arg (QDir::currentPath () + QDir::separator ()
          + QString::fromStdString (file)),
-    tr ("Octave Editor"), "quest", btn, tr ("Create"), role );
+    tr ("Octave Editor"), "quest", btn, tr ("Create"), role);
 
   // Wait while the user is responding to message box.
   uiwidget_creator.waitcondition.wait (&uiwidget_creator.mutex);
@@ -413,7 +413,7 @@ octave_qt_link::do_debug_cd_or_addpath_error (const std::string& file,
     {
       btn << addpath_txt;
       role << "AcceptRole";
-     }
+    }
   btn << cancel_txt;
   role << "RejectRole";
 
@@ -432,7 +432,7 @@ octave_qt_link::do_debug_cd_or_addpath_error (const std::string& file,
   uiwidget_creator.mutex.unlock ();
 
   if (result == cd_txt)
-     retval = 1;
+    retval = 1;
   else if (result == addpath_txt)
     retval = 2;
 
@@ -449,7 +449,7 @@ octave_qt_link::do_change_directory (const std::string& dir)
 void
 octave_qt_link::update_directory ()
 {
-   emit change_directory_signal (_current_directory);
+  emit change_directory_signal (_current_directory);
   _new_dir = false;
 }
 
@@ -522,13 +522,11 @@ octave_qt_link::do_clear_history (void)
 
 void
 octave_qt_link::do_pre_input_event (void)
-{
-}
+{ }
 
 void
 octave_qt_link::do_post_input_event (void)
-{
-}
+{ }
 
 void
 octave_qt_link::do_enter_debugger_event (const std::string& file, int line)
@@ -670,3 +668,4 @@ octave_qt_link::terminal_interrupt (void)
 {
   command_interpreter->interrupt ();
 }
+

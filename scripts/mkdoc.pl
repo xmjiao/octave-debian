@@ -1,7 +1,7 @@
 #! /usr/bin/perl
 use utf8;
 
-# Copyright (C) 2012-2015 Rik Wehbring
+# Copyright (C) 2012-2016 Rik Wehbring
 #
 # This file is part of Octave.
 #
@@ -57,7 +57,7 @@ MFILE: foreach my $m_fname (@ARGV)
   next MFILE unless @help_txt;
 
   print "\x{1d}$fcn\n";
-  print "\@c $fcn ", File::Spec->catfile ("scripts", $m_fname), "\n";
+  print "\@c $fcn $m_fname\n";
 
   foreach $_ (@help_txt)
     {

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -123,3 +123,4 @@ OCTAVE_API FloatRowVector linspace (float x1, float x2, octave_idx_type n);
 MARRAY_FORWARD_DEFS (MArray, FloatRowVector, float)
 
 #endif
+

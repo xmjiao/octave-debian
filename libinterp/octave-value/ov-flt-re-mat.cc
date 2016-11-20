@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -28,6 +28,17 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 #include <limits>
 #include <vector>
+
+#include "dNDArray.h"
+#include "fNDArray.h"
+#include "int8NDArray.h"
+#include "int16NDArray.h"
+#include "int32NDArray.h"
+#include "int64NDArray.h"
+#include "uint8NDArray.h"
+#include "uint16NDArray.h"
+#include "uint32NDArray.h"
+#include "uint64NDArray.h"
 
 #include "data-conv.h"
 #include "lo-ieee.h"
@@ -59,7 +70,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-re-sparse.h"
 #include "ov-flt-re-diag.h"
 #include "ov-flt-cx-diag.h"
-#include "ov-type-conv.h"
 #include "pr-output.h"
 #include "variables.h"
 #include "ops.h"
@@ -89,33 +99,25 @@ octave_float_matrix::try_narrowing_conversion (void)
 double
 octave_float_matrix::double_value (bool) const
 {
-  double retval = lo_ieee_nan_value ();
-
   if (is_empty ())
     err_invalid_conversion ("real matrix", "real scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "real matrix", "real scalar");
 
-  retval = matrix(0, 0);
-
-  return retval;
+  return matrix(0, 0);
 }
 
 float
 octave_float_matrix::float_value (bool) const
 {
-  float retval = lo_ieee_float_nan_value ();
-
   if (is_empty ())
     err_invalid_conversion ("real matrix", "real scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "real matrix", "real scalar");
 
-  retval = matrix(0, 0);
-
-  return retval;
+  return matrix(0, 0);
 }
 
 // FIXME
@@ -135,19 +137,13 @@ octave_float_matrix::float_matrix_value (bool) const
 Complex
 octave_float_matrix::complex_value (bool) const
 {
-  double tmp = lo_ieee_nan_value ();
-
-  Complex retval (tmp, tmp);
-
   if (rows () == 0 || columns () == 0)
     err_invalid_conversion ("real matrix", "complex scalar");
 
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "real matrix", "complex scalar");
 
-  retval = matrix(0, 0);
-
-  return retval;
+  return Complex (matrix(0, 0), 0);
 }
 
 FloatComplex
@@ -204,7 +200,7 @@ boolNDArray
 octave_float_matrix::bool_array_value (bool warn) const
 {
   if (matrix.any_element_is_nan ())
-    err_nan_to_logical_conversion ();
+    octave::err_nan_to_logical_conversion ();
   if (warn && matrix.any_element_not_one_or_zero ())
     warn_logical_conversion ();
 
@@ -237,6 +233,66 @@ octave_float_matrix::sparse_complex_matrix_value (bool) const
   // this function more efficient.  Then this should become
   // return SparseComplexMatrix (matrix.matrix_value ());
   return SparseComplexMatrix (sparse_matrix_value ());
+}
+
+octave_value
+octave_float_matrix::as_double (void) const
+{
+  return NDArray (matrix);
+}
+
+octave_value
+octave_float_matrix::as_single (void) const
+{
+  return FloatNDArray (matrix);
+}
+
+octave_value
+octave_float_matrix::as_int8 (void) const
+{
+  return int8NDArray (matrix);
+}
+
+octave_value
+octave_float_matrix::as_int16 (void) const
+{
+  return int16NDArray (matrix);
+}
+
+octave_value
+octave_float_matrix::as_int32 (void) const
+{
+  return int32NDArray (matrix);
+}
+
+octave_value
+octave_float_matrix::as_int64 (void) const
+{
+  return int64NDArray (matrix);
+}
+
+octave_value
+octave_float_matrix::as_uint8 (void) const
+{
+  return uint8NDArray (matrix);
+}
+
+octave_value
+octave_float_matrix::as_uint16 (void) const
+{
+  return uint16NDArray (matrix);
+}
+
+octave_value
+octave_float_matrix::as_uint32 (void) const
+{
+  return uint32NDArray (matrix);
+}
+
+octave_value
+octave_float_matrix::as_uint64 (void) const
+{
+  return uint64NDArray (matrix);
 }
 
 octave_value
@@ -282,7 +338,7 @@ octave_float_matrix::convert_to_str_internal (bool, bool, char type) const
       float d = matrix(i);
 
       if (octave::math::isnan (d))
-        err_nan_to_character_conversion ();
+        octave::err_nan_to_character_conversion ();
 
       int ival = octave::math::nint (d);
 
@@ -726,62 +782,62 @@ octave_float_matrix::map (unary_mapper_t umap) const
       return matrix;
 
     // Mappers handled specially.
-#define ARRAY_METHOD_MAPPER(UMAP, FCN)          \
-      case umap_ ## UMAP:                       \
-        return octave_value (matrix.FCN ())
+#define ARRAY_METHOD_MAPPER(UMAP, FCN)        \
+    case umap_ ## UMAP:                       \
+      return octave_value (matrix.FCN ())
 
-      ARRAY_METHOD_MAPPER (abs, abs);
-      ARRAY_METHOD_MAPPER (isnan, isnan);
-      ARRAY_METHOD_MAPPER (isinf, isinf);
-      ARRAY_METHOD_MAPPER (isfinite, isfinite);
+    ARRAY_METHOD_MAPPER (abs, abs);
+    ARRAY_METHOD_MAPPER (isnan, isnan);
+    ARRAY_METHOD_MAPPER (isinf, isinf);
+    ARRAY_METHOD_MAPPER (isfinite, isfinite);
 
-#define ARRAY_MAPPER(UMAP, TYPE, FCN)                   \
-      case umap_ ## UMAP:                               \
-        return octave_value (matrix.map<TYPE> (FCN))
+#define ARRAY_MAPPER(UMAP, TYPE, FCN)                 \
+    case umap_ ## UMAP:                               \
+      return octave_value (matrix.map<TYPE> (FCN))
 
-#define RC_ARRAY_MAPPER(UMAP, TYPE, FCN)        \
-      case umap_ ## UMAP:                       \
-        return do_rc_map (matrix, FCN)
+#define RC_ARRAY_MAPPER(UMAP, TYPE, FCN)      \
+    case umap_ ## UMAP:                       \
+      return do_rc_map (matrix, FCN)
 
-      RC_ARRAY_MAPPER (acos, FloatComplex, octave::math::rc_acos);
-      RC_ARRAY_MAPPER (acosh, FloatComplex, octave::math::rc_acosh);
-      ARRAY_MAPPER (angle, float, octave::math::arg);
-      ARRAY_MAPPER (arg, float,octave::math ::arg);
-      RC_ARRAY_MAPPER (asin, FloatComplex, octave::math::rc_asin);
-      ARRAY_MAPPER (asinh, float, octave::math::asinh);
-      ARRAY_MAPPER (atan, float, ::atanf);
-      RC_ARRAY_MAPPER (atanh, FloatComplex, octave::math::rc_atanh);
-      ARRAY_MAPPER (erf, float, octave::math::erf);
-      ARRAY_MAPPER (erfinv, float, octave::math::erfinv);
-      ARRAY_MAPPER (erfcinv, float, octave::math::erfcinv);
-      ARRAY_MAPPER (erfc, float, octave::math::erfc);
-      ARRAY_MAPPER (erfcx, float, octave::math::erfcx);
-      ARRAY_MAPPER (erfi, float, octave::math::erfi);
-      ARRAY_MAPPER (dawson, float, octave::math::dawson);
-      ARRAY_MAPPER (gamma, float, octave::math::gamma);
-      RC_ARRAY_MAPPER (lgamma, FloatComplex, octave::math::rc_lgamma);
-      ARRAY_MAPPER (cbrt, float, octave::math::cbrt);
-      ARRAY_MAPPER (ceil, float, ::ceilf);
-      ARRAY_MAPPER (cos, float, ::cosf);
-      ARRAY_MAPPER (cosh, float, ::coshf);
-      ARRAY_MAPPER (exp, float, ::expf);
-      ARRAY_MAPPER (expm1, float, octave::math::expm1);
-      ARRAY_MAPPER (fix, float, octave::math::fix);
-      ARRAY_MAPPER (floor, float, ::floorf);
-      RC_ARRAY_MAPPER (log, FloatComplex, octave::math::rc_log);
-      RC_ARRAY_MAPPER (log2, FloatComplex, octave::math::rc_log2);
-      RC_ARRAY_MAPPER (log10, FloatComplex, octave::math::rc_log10);
-      RC_ARRAY_MAPPER (log1p, FloatComplex, octave::math::rc_log1p);
-      ARRAY_MAPPER (round, float, octave::math::round);
-      ARRAY_MAPPER (roundb, float, octave::math::roundb);
-      ARRAY_MAPPER (signum, float, octave::math::signum);
-      ARRAY_MAPPER (sin, float, ::sinf);
-      ARRAY_MAPPER (sinh, float, ::sinhf);
-      RC_ARRAY_MAPPER (sqrt, FloatComplex, octave::math::rc_sqrt);
-      ARRAY_MAPPER (tan, float, ::tanf);
-      ARRAY_MAPPER (tanh, float, ::tanhf);
-      ARRAY_MAPPER (isna, bool, octave::math::is_NA);
-      ARRAY_MAPPER (xsignbit, float, octave::math::signbit);
+    RC_ARRAY_MAPPER (acos, FloatComplex, octave::math::rc_acos);
+    RC_ARRAY_MAPPER (acosh, FloatComplex, octave::math::rc_acosh);
+    ARRAY_MAPPER (angle, float, octave::math::arg);
+    ARRAY_MAPPER (arg, float,octave::math ::arg);
+    RC_ARRAY_MAPPER (asin, FloatComplex, octave::math::rc_asin);
+    ARRAY_MAPPER (asinh, float, octave::math::asinh);
+    ARRAY_MAPPER (atan, float, ::atanf);
+    RC_ARRAY_MAPPER (atanh, FloatComplex, octave::math::rc_atanh);
+    ARRAY_MAPPER (erf, float, octave::math::erf);
+    ARRAY_MAPPER (erfinv, float, octave::math::erfinv);
+    ARRAY_MAPPER (erfcinv, float, octave::math::erfcinv);
+    ARRAY_MAPPER (erfc, float, octave::math::erfc);
+    ARRAY_MAPPER (erfcx, float, octave::math::erfcx);
+    ARRAY_MAPPER (erfi, float, octave::math::erfi);
+    ARRAY_MAPPER (dawson, float, octave::math::dawson);
+    ARRAY_MAPPER (gamma, float, octave::math::gamma);
+    RC_ARRAY_MAPPER (lgamma, FloatComplex, octave::math::rc_lgamma);
+    ARRAY_MAPPER (cbrt, float, octave::math::cbrt);
+    ARRAY_MAPPER (ceil, float, ::ceilf);
+    ARRAY_MAPPER (cos, float, ::cosf);
+    ARRAY_MAPPER (cosh, float, ::coshf);
+    ARRAY_MAPPER (exp, float, ::expf);
+    ARRAY_MAPPER (expm1, float, octave::math::expm1);
+    ARRAY_MAPPER (fix, float, octave::math::fix);
+    ARRAY_MAPPER (floor, float, ::floorf);
+    RC_ARRAY_MAPPER (log, FloatComplex, octave::math::rc_log);
+    RC_ARRAY_MAPPER (log2, FloatComplex, octave::math::rc_log2);
+    RC_ARRAY_MAPPER (log10, FloatComplex, octave::math::rc_log10);
+    RC_ARRAY_MAPPER (log1p, FloatComplex, octave::math::rc_log1p);
+    ARRAY_MAPPER (round, float, octave::math::round);
+    ARRAY_MAPPER (roundb, float, octave::math::roundb);
+    ARRAY_MAPPER (signum, float, octave::math::signum);
+    ARRAY_MAPPER (sin, float, ::sinf);
+    ARRAY_MAPPER (sinh, float, ::sinhf);
+    RC_ARRAY_MAPPER (sqrt, FloatComplex, octave::math::rc_sqrt);
+    ARRAY_MAPPER (tan, float, ::tanf);
+    ARRAY_MAPPER (tanh, float, ::tanhf);
+    ARRAY_MAPPER (isna, bool, octave::math::is_NA);
+    ARRAY_MAPPER (xsignbit, float, octave::math::signbit);
 
     // Special cases for Matlab compatibility.
     case umap_xtolower:
@@ -810,74 +866,3 @@ octave_float_matrix::map (unary_mapper_t umap) const
       return octave_base_value::map (umap);
     }
 }
-
-DEFUN (single, args, ,
-       doc: /* -*- texinfo -*-
-@deftypefn {} {} single (@var{x})
-Convert @var{x} to single precision type.
-@seealso{double}
-@end deftypefn */)
-{
-  // The OCTAVE_TYPE_CONV_BODY3 macro declares retval, so they go
-  // inside their own scopes, and we don't declare retval here to
-  // avoid a shadowed declaration warning.
-
-  if (args.length () != 1)
-    print_usage ();
-
-  if (args(0).is_diag_matrix ())
-    {
-      if (args(0).is_complex_type ())
-        {
-          OCTAVE_TYPE_CONV_BODY3 (single, octave_float_complex_diag_matrix,
-                                  octave_float_complex);
-        }
-      else
-        {
-          OCTAVE_TYPE_CONV_BODY3 (single, octave_float_diag_matrix,
-                                  octave_float_scalar);
-        }
-    }
-  else if (args(0).is_sparse_type ())
-    {
-      error ("single: sparse type does not support single precision");
-    }
-  else if (args(0).is_complex_type ())
-    {
-      OCTAVE_TYPE_CONV_BODY3 (single, octave_float_complex_matrix,
-                              octave_float_complex);
-    }
-  else
-    {
-      OCTAVE_TYPE_CONV_BODY3 (single, octave_float_matrix,
-                              octave_float_scalar);
-    }
-
-  return ovl ();
-}
-
-/*
-%!assert (class (single (1)), "single")
-%!assert (class (single (1 + i)), "single")
-%!assert (class (single (int8 (1))), "single")
-%!assert (class (single (uint8 (1))), "single")
-%!assert (class (single (int16 (1))), "single")
-%!assert (class (single (uint16 (1))), "single")
-%!assert (class (single (int32 (1))), "single")
-%!assert (class (single (uint32 (1))), "single")
-%!assert (class (single (int64 (1))), "single")
-%!assert (class (single (uint64 (1))), "single")
-%!assert (class (single (true)), "single")
-%!assert (class (single ("A")), "single")
-%!error (single (sparse (1)))
-%!test
-%! x = diag ([1 3 2]);
-%! y = single (x);
-%! assert (class (x), "double");
-%! assert (class (y), "single");
-%!test
-%! x = diag ([i 3 2]);
-%! y = single (x);
-%! assert (class (x), "double");
-%! assert (class (y), "single");
-*/

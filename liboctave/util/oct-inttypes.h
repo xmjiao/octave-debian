@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2015 John W. Eaton
+Copyright (C) 2004-2016 John W. Eaton
 Copyright (C) 2008-2009 Jaroslav Hajek
 
 This file is part of Octave.
@@ -839,7 +839,7 @@ octave_int_arith_base<int64_t, true>::mul_internal (int64_t, int64_t);
 // This class simply selects the proper arithmetics.
 template <typename T>
 class octave_int_arith
- : public octave_int_arith_base<T, std::numeric_limits<T>::is_signed>
+: public octave_int_arith_base<T, std::numeric_limits<T>::is_signed>
 { };
 
 template <typename T>
@@ -901,12 +901,6 @@ public:
   float float_value (void) const { return static_cast<float> (value ()); }
 
   operator T (void) const { return value (); }
-
-  // char and bool operators intentionally omitted.
-
-  operator double (void) const { return double_value (); }
-
-  operator float (void) const { return float_value (); }
 
   octave_int<T>
   operator + () const
@@ -1361,3 +1355,4 @@ xmin (const octave_int<T>& x, const octave_int<T>& y)
 }
 
 #endif
+

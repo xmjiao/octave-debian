@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -582,7 +582,8 @@ namespace octave
     if (looks_like_filename (l, ' ') || looks_like_filename (l, '\'')
         || looks_like_filename (l, '"'))
       {
-        ::octave_rl_set_completer_quote_characters (completer_quote_characters.c_str ());
+        ::octave_rl_set_completer_quote_characters (
+          completer_quote_characters.c_str ());
 
         return dir_sep;
       }
@@ -1797,7 +1798,7 @@ namespace octave
                     {
                       tmpstr = octave::sys::env::get_current_directory ();
                     }
-                  catch (const octave_execution_exception&)
+                  catch (const octave::execution_exception&)
                     {
                       tmpstr = "";
                     }
@@ -1940,3 +1941,4 @@ namespace octave
     (*current_liboctave_error_handler) ("%s", s.c_str ());
   }
 }
+

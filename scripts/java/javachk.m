@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2015 Philip Nienhuis
+## Copyright (C) 2014-2016 Philip Nienhuis
 ##
 ## This file is part of Octave.
 ##
@@ -142,6 +142,9 @@ endfunction
 %! assert (msg.identifier, "Java DESKTOP");
 
 %!testif HAVE_JAVA
+%! if (! usejava ("jvm"))
+%!   return;
+%! endif
 %! assert (javachk ("jvm"), "");
 
 ## Test input validation

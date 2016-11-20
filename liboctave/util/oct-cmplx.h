@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1995-2015 John W. Eaton
+Copyright (C) 1995-2016 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
@@ -103,3 +103,4 @@ DEF_COMPLEXR_COMP (<=, <)
 DEF_COMPLEXR_COMP (>=, >)
 
 #endif
+

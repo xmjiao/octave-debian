@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2015 Teemu Ikonen
+## Copyright (C) 2000-2016 Teemu Ikonen
 ##
 ## This file is part of Octave.
 ##
@@ -65,7 +65,7 @@ function h = semilogyerr (varargin)
     hax = newplot (hax);
 
     set (hax, "yscale", "log");
-    if (! ishold (hax))
+    if (! ishold ())
       set (hax, "yminortick", "on");
     endif
 
@@ -90,8 +90,8 @@ endfunction
 %! y = wblpdf (x, 4, 2);
 %! eyu = rand (size (y));
 %! eyl = 1.0 - 1./(1+eyu);
-%! semilogyerr (x, y, eyl.*y, eyu.*y, '~-d');
+%! semilogyerr (x, y, eyl.*y, eyu.*y, "~-d");
 %! xlim ([0 10]);
-%! title ({'semilogyerr(): semilogy() plot with errorbars', ...
-%!         'Y-axis is logarithmic'});
+%! title ({"semilogyerr(): semilogy() plot with errorbars", ...
+%!         "Y-axis is logarithmic"});
 

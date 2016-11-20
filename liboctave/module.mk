@@ -79,7 +79,7 @@ liboctave_liboctave_la_LIBADD += \
   $(LIBOCTAVE_LINK_DEPS)
 
 # Increment these as needed and according to the rules in the libtool manual:
-liboctave_liboctave_current = 3
+liboctave_liboctave_current = 4
 liboctave_liboctave_revision = 0
 liboctave_liboctave_age = 0
 
@@ -116,6 +116,9 @@ liboctave/liboctave-build-info.cc: liboctave/liboctave-build-info.in.cc HG-ID | 
 	  -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically by Makefile|" \
 	  -e "s|%OCTAVE_HG_ID%|$(HG_ID_VAR)|" $< > $@-t && \
 	$(simple_move_if_change_rule)
+
+OCTAVE_INTERPRETER_TARGETS += \
+  $(LIBOCTAVE_TST_FILES)
 
 DIRSTAMP_FILES += liboctave/$(octave_dirstamp)
 

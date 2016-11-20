@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2015 Rik Wehbring
+## Copyright (C) 2012-2016 Rik Wehbring
 ##
 ## This file is part of Octave.
 ##
@@ -21,7 +21,7 @@
 ## @deftypefnx {} {@var{map} =} lines (@var{n})
 ## Create color colormap.  This colormap is composed of the list of colors
 ## in the current axes @qcode{"ColorOrder"} property.  The default is blue,
-## green, red, cyan, pink, yellow, and gray.
+## orange, yellow, purple, green, light blue, and dark red.
 ##
 ## The argument @var{n} must be a scalar.
 ## If unspecified, the length of the current colormap, or 64, is used.
@@ -53,6 +53,6 @@ endfunction
 %! ## Show the 'lines' colormap profile and as an image
 %! cmap = lines (21); # default has 7 colors, therefore cycle 3 times
 %! subplot (2, 1, 1);
-%! rgbplot (cmap, "composite");
+%!  rgbplot (cmap, "composite");
 %! subplot (2, 1, 2);
-%! rgbplot (cmap);
+%!  rgbplot (cmap);

@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2015 John W. Eaton
+## Copyright (C) 2009-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -37,7 +37,7 @@ function varargout = which (varargin)
   ## functions in name resolution.
   for i = 1:nargin
     m(i).is_variable = evalin ("caller",
-                               ["exist (\"" m(i).name "\", \"var\")"], false);
+                               ['exist ("' undo_string_escapes(m(i).name) '", "var")'], false);
     if (m(i).is_variable)
       m(i).file = "variable";
     endif

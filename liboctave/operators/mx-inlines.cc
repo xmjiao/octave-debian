@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 Copyright (C) 2009 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague
 
@@ -476,7 +476,7 @@ do_mm_binary_op (const Array<X>& x, const Array<Y>& y,
       return do_bsxfun_op (x, y, op, op1, op2);
     }
   else
-    err_nonconformant (opname, dx, dy);
+    octave::err_nonconformant (opname, dx, dy);
 }
 
 template <typename R, typename X, typename Y>
@@ -513,7 +513,7 @@ do_mm_inplace_op (Array<R>& r, const Array<X>& x,
   else if (is_valid_inplace_bsxfun (opname, dr, dx))
     do_inplace_bsxfun_op (r, x, op, op1);
   else
-    err_nonconformant (opname, dr, dx);
+    octave::err_nonconformant (opname, dr, dx);
 
   return r;
 }
@@ -549,7 +549,8 @@ do_mx_check (const Array<T>& a,
 // magic to avoid underflows, which we don't need here.
 template <typename T>
 inline T cabsq (const std::complex<T>& c)
-{ return c.real () * c.real () + c.imag () * c.imag ();
+{
+  return c.real () * c.real () + c.imag () * c.imag ();
 }
 
 // default.  works for integers and bool.
@@ -1698,3 +1699,4 @@ mx_inline_xsum (const T *v, T *r,
 OP_RED_FCNN (mx_inline_xsum, T, T)
 
 #endif
+

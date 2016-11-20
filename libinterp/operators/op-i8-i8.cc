@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -156,3 +156,4 @@ install_i8_i8_ops (void)
   OCTAVE_INSTALL_MIXED_INT_CMP_OPS (int8, int64);
   OCTAVE_INSTALL_MIXED_INT_CMP_OPS (int8, uint64);
 }
+

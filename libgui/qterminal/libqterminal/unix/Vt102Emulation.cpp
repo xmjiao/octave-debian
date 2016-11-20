@@ -979,6 +979,14 @@ void Vt102Emulation::sendKeyEvent( QKeyEvent* event )
         {
             textToSend += _codec->fromUnicode(entry.text(true,modifiers));
         }
+        else if (event->key() == Qt::Key_PageUp)
+        {
+            textToSend += "\033[5~";
+        }
+        else if (event->key() == Qt::Key_PageDown)
+        {
+            textToSend += "\033[6~";
+        }
         else
             textToSend += _codec->fromUnicode(event->text());
 
@@ -994,7 +1002,7 @@ void Vt102Emulation::sendKeyEvent( QKeyEvent* event )
                                          "is missing.");
 
         reset();
-        receiveData( translatorError.toAscii().constData() , translatorError.count() );
+        receiveData( translatorError.toLatin1().constData() , translatorError.count() );
     }
 }
 

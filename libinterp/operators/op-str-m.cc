@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2015 John W. Eaton
+Copyright (C) 2003-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -63,3 +63,4 @@ install_str_m_ops (void)
   INSTALL_CATOP (octave_matrix, octave_char_matrix_str, m_str);
   INSTALL_CATOP (octave_matrix, octave_char_matrix_sq_str, m_str);
 }
+

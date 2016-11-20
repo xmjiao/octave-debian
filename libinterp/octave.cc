@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -552,3 +552,4 @@ Return the last component of the value returned by
 %!assert (ischar (program_name ()))
 %!error program_name (1)
 */
+

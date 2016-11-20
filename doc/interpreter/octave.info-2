@@ -3350,7 +3350,7 @@ handled the same as any other parameter name.
      function call.  For example:
 
           c = {[1 2], "Three", 4};
-          [x, y, z ] = c{:}
+          [x, y, z] = c{:}
           ⇒
              x =
 
@@ -3674,6 +3674,10 @@ After this the directory ‘~/Octave’ will be searched for functions.
 
           addpath ("dir1:/dir2:~/dir3")
 
+     For each directory that is added, and that was not already in the
+     path, ‘addpath’ checks for the existence of a file named ‘PKG_ADD’
+     (note lack of .m extension) and runs it if it exists.
+
      See also: *note path: XREFpath, *note rmpath: XREFrmpath, *note
      genpath: XREFgenpath, *note pathdef: XREFpathdef, *note savepath:
      XREFsavepath, *note pathsep: XREFpathsep.
@@ -3693,6 +3697,10 @@ After this the directory ‘~/Octave’ will be searched for functions.
      example:
 
           rmpath ("dir1:/dir2:~/dir3")
+
+     For each directory that is removed, ‘rmpath’ checks for the
+     existence of a file named ‘PKG_DEL’ (note lack of .m extension) and
+     runs it if it exists.
 
      See also: *note path: XREFpath, *note addpath: XREFaddpath, *note
      genpath: XREFgenpath, *note pathdef: XREFpathdef, *note savepath:
@@ -4315,13 +4323,13 @@ commands from any file.
 
 * Menu:
 
-* Publish Octave script files::
+* Publish Octave Script Files::
 * Publishing Markup::
 
 
-File: octave.info,  Node: Publish Octave script files,  Next: Publishing Markup,  Up: Script Files
+File: octave.info,  Node: Publish Octave Script Files,  Next: Publishing Markup,  Up: Script Files
 
-11.10.1 Publish Octave script files
+11.10.1 Publish Octave Script Files
 -----------------------------------
 
 The function ‘publish’ provides a dynamic possibility to document your
@@ -4366,7 +4374,7 @@ enhance and customize the output.
 
      With only FILENAME given, a HTML report is generated in a
      subdirectory ‘html’ relative to the current working directory.  The
-     Octave commands are evaluated in a seperate context and any figures
+     Octave commands are evaluated in a separate context and any figures
      created while executing the script file are included in the report.
      All formatting syntax of FILENAME is treated according to the
      specified output format and included in the report.
@@ -4399,12 +4407,12 @@ enhance and customize the output.
           the report is generated in a subdirectory ‘html’ relative to
           the current working directory.
 
-        • ‘stylesheet’ — Not supported, only for Matlab compatibility.
+        • ‘stylesheet’ — Not supported, only for MATLAB compatibility.
 
-        • ‘createThumbnail’ — Not supported, only for Matlab
+        • ‘createThumbnail’ — Not supported, only for MATLAB
           compatibility.
 
-        • ‘figureSnapMethod’ — Not supported, only for Matlab
+        • ‘figureSnapMethod’ — Not supported, only for MATLAB
           compatibility.
 
         • ‘imageFormat’ — Desired format for images produced, while
@@ -4417,7 +4425,7 @@ enhance and customize the output.
              • ‘latex’ — ‘epsc2’ (default), any other image format
                supported by Octave
 
-             • ‘pdf’ — ‘jpg’ (default) or ‘bmp’, note Matlab uses ‘bmp’
+             • ‘pdf’ — ‘jpg’ (default) or ‘bmp’, note MATLAB uses ‘bmp’
                as default
 
              • ‘doc’ or ‘ppt’ — ‘png’ (default), ‘jpg’, ‘bmp’, or ‘tiff’
@@ -4494,41 +4502,41 @@ enhance and customize the output.
      See also: *note publish: XREFpublish.
 
 
-File: octave.info,  Node: Publishing Markup,  Prev: Publish Octave script files,  Up: Script Files
+File: octave.info,  Node: Publishing Markup,  Prev: Publish Octave Script Files,  Up: Script Files
 
 11.10.2 Publishing Markup
 -------------------------
 
 * Menu:
 
-* Using Publishing Markup in script files::
-* Text formatting::
+* Using Publishing Markup in Script Files::
+* Text Formatting::
 * Sections::
-* Preformatted code::
-* Preformatted text::
-* Bulleted lists::
-* Numbered lists::
-* Including file content::
-* Including graphics::
+* Preformatted Code::
+* Preformatted Text::
+* Bulleted Lists::
+* Numbered Lists::
+* Including File Content::
+* Including Graphics::
 * Including URLs::
-* Mathematical equations::
-* HTML markup::
-* LaTeX markup::
+* Mathematical Equations::
+* HTML Markup::
+* LaTeX Markup::
 
 
-File: octave.info,  Node: Using Publishing Markup in script files,  Next: Text formatting,  Up: Publishing Markup
+File: octave.info,  Node: Using Publishing Markup in Script Files,  Next: Text Formatting,  Up: Publishing Markup
 
-11.10.2.1 Using Publishing Markup in script files
+11.10.2.1 Using Publishing Markup in Script Files
 .................................................
 
 To use Publishing Markup, start by typing ‘##’ or ‘%%’ at the beginning
-of a new line.  For Matlab compatibility ‘%%’ is treated the same way as
-‘%%’.
+of a new line.  For MATLAB compatibility ‘%%’ is treated the same way as
+‘##’.
 
-   The lines following ‘##’ or ‘%%’ start with only one of either ‘#’ or
-‘%’ followed by at least one space.  These lines are interpreted as
-section.  A section ends with the first line not starting with ‘#’ or
-‘%’ or the end of the document is reached.
+   The lines following ‘##’ or ‘%%’ start with one of either ‘#’ or ‘%’
+followed by at least one space.  These lines are interpreted as section.
+A section ends at the first line not starting with ‘#’ or ‘%’, or when
+the end of the document is reached.
 
    A section starting in the first line of the document, followed by
 another start of a section that might be empty, is interpreted as a
@@ -4554,9 +4562,9 @@ document title and introduction text.
      # # Numbered list item 2
 
 
-File: octave.info,  Node: Text formatting,  Next: Sections,  Prev: Using Publishing Markup in script files,  Up: Publishing Markup
+File: octave.info,  Node: Text Formatting,  Next: Sections,  Prev: Using Publishing Markup in Script Files,  Up: Publishing Markup
 
-11.10.2.2 Text formatting
+11.10.2.2 Text Formatting
 .........................
 
 Basic text formatting is supported inside sections, see the example
@@ -4572,7 +4580,7 @@ letters ‘TM’ or ‘R’.
      # (TM) or (R)
 
 
-File: octave.info,  Node: Sections,  Next: Preformatted code,  Prev: Text formatting,  Up: Publishing Markup
+File: octave.info,  Node: Sections,  Next: Preformatted Code,  Prev: Text Formatting,  Up: Publishing Markup
 
 11.10.2.3 Sections
 ..................
@@ -4581,7 +4589,7 @@ A section is started by typing ‘##’ or ‘%%’ at the beginning of a new
 line.  A section title can be provided by writing it, separated by a
 space, in the first line after ‘##’ or ‘%%’.  Without a section title,
 the section is interpreted as a continuation of the previous section.
-For Matlab compatibility ‘%%’ is treated the same way as ‘%%’.
+For MATLAB compatibility ‘%%’ is treated the same way as ‘%%’.
 
      some_code ();
 
@@ -4601,9 +4609,9 @@ For Matlab compatibility ‘%%’ is treated the same way as ‘%%’.
      #
 
 
-File: octave.info,  Node: Preformatted code,  Next: Preformatted text,  Prev: Sections,  Up: Publishing Markup
+File: octave.info,  Node: Preformatted Code,  Next: Preformatted Text,  Prev: Sections,  Up: Publishing Markup
 
-11.10.2.4 Preformatted code
+11.10.2.4 Preformatted Code
 ...........................
 
 To write preformatted code inside a section, indent the code by three
@@ -4621,9 +4629,9 @@ lines.
      # And more usual text.
 
 
-File: octave.info,  Node: Preformatted text,  Next: Bulleted lists,  Prev: Preformatted code,  Up: Publishing Markup
+File: octave.info,  Node: Preformatted Text,  Next: Bulleted Lists,  Prev: Preformatted Code,  Up: Publishing Markup
 
-11.10.2.5 Preformatted text
+11.10.2.5 Preformatted Text
 ...........................
 
 To write preformatted text inside a section, indent the code by two
@@ -4638,14 +4646,14 @@ of those lines.
      #  Whether 'tis nobler in the mind to suffer
      #  The slings and arrows of outrageous fortune,
      #  Or to take arms against a sea of troubles,
-     #  And by opposing end them? To die: to sleep;"
+     #  And by opposing end them?  To die: to sleep;"
      #
      #  --"Hamlet" by W. Shakespeare
 
 
-File: octave.info,  Node: Bulleted lists,  Next: Numbered lists,  Prev: Preformatted text,  Up: Publishing Markup
+File: octave.info,  Node: Bulleted Lists,  Next: Numbered Lists,  Prev: Preformatted Text,  Up: Publishing Markup
 
-11.10.2.6 Bulleted lists
+11.10.2.6 Bulleted Lists
 ........................
 
 To create a bulleted list, type
@@ -4656,18 +4664,19 @@ To create a bulleted list, type
      # * Bulleted list item 2
      #
 
-   to get output like
+to get output like
 
    • Bulleted list item 1
+
    • Bulleted list item 2
 
    Notice the blank lines, except for the ‘#’ or ‘%’ before and after
 the bulleted list!
 
 
-File: octave.info,  Node: Numbered lists,  Next: Including file content,  Prev: Bulleted lists,  Up: Publishing Markup
+File: octave.info,  Node: Numbered Lists,  Next: Including File Content,  Prev: Bulleted Lists,  Up: Publishing Markup
 
-11.10.2.7 Numbered lists
+11.10.2.7 Numbered Lists
 ........................
 
 To create a numbered list, type
@@ -4678,21 +4687,22 @@ To create a numbered list, type
      # # Numbered list item 2
      #
 
-   to get output like
+to get output like
 
   1. Numbered list item 1
+
   2. Numbered list item 2
 
    Notice the blank lines, except for the ‘#’ or ‘%’ before and after
 the numbered list!
 
 
-File: octave.info,  Node: Including file content,  Next: Including graphics,  Prev: Numbered lists,  Up: Publishing Markup
+File: octave.info,  Node: Including File Content,  Next: Including Graphics,  Prev: Numbered Lists,  Up: Publishing Markup
 
-11.10.2.8 Including file content
+11.10.2.8 Including File Content
 ................................
 
-To include the content of an external file, e.g.  a file called
+To include the content of an external file, e.g., a file called
 ‘my_function.m’ at the same location as the published Octave script, use
 the following syntax to include it with Octave syntax highlighting.
 
@@ -4708,12 +4718,12 @@ the following syntax to include it with Octave syntax highlighting.
      #
 
 
-File: octave.info,  Node: Including graphics,  Next: Including URLs,  Prev: Including file content,  Up: Publishing Markup
+File: octave.info,  Node: Including Graphics,  Next: Including URLs,  Prev: Including File Content,  Up: Publishing Markup
 
-11.10.2.9 Including graphics
+11.10.2.9 Including Graphics
 ............................
 
-To include external graphics, e.g.  a graphic called ‘my_graphic.png’ at
+To include external graphics, e.g., a graphic called ‘my_graphic.png’ at
 the same location as the published Octave script, use the following
 syntax.
 
@@ -4729,7 +4739,7 @@ syntax.
      #
 
 
-File: octave.info,  Node: Including URLs,  Next: Mathematical equations,  Prev: Including graphics,  Up: Publishing Markup
+File: octave.info,  Node: Including URLs,  Next: Mathematical Equations,  Prev: Including Graphics,  Up: Publishing Markup
 
 11.10.2.10 Including URLs
 .........................
@@ -4754,9 +4764,9 @@ online GNU Octave documentations function index.
      # <octave:DISP The display function>
 
 
-File: octave.info,  Node: Mathematical equations,  Next: HTML markup,  Prev: Including URLs,  Up: Publishing Markup
+File: octave.info,  Node: Mathematical Equations,  Next: HTML Markup,  Prev: Including URLs,  Up: Publishing Markup
 
-11.10.2.11 Mathematical equations
+11.10.2.11 Mathematical Equations
 .................................
 
 One can insert LaTeX inline math, surrounded by single ‘$’ signs, or
@@ -4770,9 +4780,9 @@ sections.
      # $$e^x = \lim_{n\rightarrow\infty}\left(1+\dfrac{x}{n}\right)^{n}.$$
 
 
-File: octave.info,  Node: HTML markup,  Next: LaTeX markup,  Prev: Mathematical equations,  Up: Publishing Markup
+File: octave.info,  Node: HTML Markup,  Next: LaTeX Markup,  Prev: Mathematical Equations,  Up: Publishing Markup
 
-11.10.2.12 HTML markup
+11.10.2.12 HTML Markup
 ......................
 
 If the published output is a HTML report, you can insert HTML markup,
@@ -4786,9 +4796,9 @@ that is only visible in this kind of output.
      # </html>
 
 
-File: octave.info,  Node: LaTeX markup,  Prev: HTML markup,  Up: Publishing Markup
+File: octave.info,  Node: LaTeX Markup,  Prev: HTML Markup,  Up: Publishing Markup
 
-11.10.2.13 LaTeX markup
+11.10.2.13 LaTeX Markup
 .......................
 
 If the published output is a LaTeX or PDF report, you can insert LaTeX
@@ -4796,7 +4806,7 @@ markup, that is only visible in this kind of output.
 
      ##
      # <latex>
-     # Some output only visible in \LaTeX or PDF reports.
+     # Some output only visible in LaTeX or PDF reports.
      # \begin{equation}
      # e^x = \lim\limits_{n\rightarrow\infty}\left(1+\dfrac{x}{n}\right)^{n}
      # \end{equation}
@@ -6708,6 +6718,25 @@ and the profiler also records that it is recursive.
      See also: *note profexplore: XREFprofexplore, *note profile:
      XREFprofile.
 
+ -- : profexport (DIR)
+ -- : profexport (DIR, DATA)
+ -- : profexport (DIR, NAME)
+ -- : profexport (DIR, NAME, DATA)
+
+     Export profiler data as HTML.
+
+     Export the profiling data in DATA into a series of HTML files in
+     the folder DIR.  The initial file will be ‘DATA/index.html’.
+
+     If NAME is specified, it must be a string that contains a “name”
+     for the profile being exported.  This name is included in the HTML.
+
+     The input DATA is the structure returned by ‘profile ("info")’.  If
+     unspecified, ‘profexport’ will use the current profile dataset.
+
+     See also: *note profshow: XREFprofshow, *note profexplore:
+     XREFprofexplore, *note profile: XREFprofile.
+
  -- : profexplore ()
  -- : profexplore (DATA)
      Interactively explore hierarchical profiler output.
@@ -8141,7 +8170,7 @@ well.
      "ReturnOnError"
           If set to numerical 1 or true, return normally as soon as an
           error is encountered, such as trying to read a string using
-          %f.  If set to 0 or false, return an error and no data.
+          ‘%f’.  If set to 0 or false, return an error and no data.
 
      "Whitespace"
           Any character in VALUE will be interpreted as whitespace and

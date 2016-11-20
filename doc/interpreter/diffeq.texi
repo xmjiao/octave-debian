@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -196,7 +196,7 @@ When called with two arguments, @code{lsode_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector.
@@ -343,11 +343,10 @@ Currently implemented solvers are:
 @end itemize
 
 
-@c ode45 scripts/scripts/ode/ode45.m
+@c ode45 scripts/ode/ode45.m
 @anchor{XREFode45}
 @deftypefn  {} {[@var{t}, @var{y}] =} ode45 (@var{fun}, @var{trange}, @var{init})
 @deftypefnx {} {[@var{t}, @var{y}] =} ode45 (@var{fun}, @var{trange}, @var{init}, @var{ode_opt})
-@deftypefnx {} {[@var{t}, @var{y}] =} ode45 (@dots{}, @var{par1}, @var{par2}, @dots{})
 @deftypefnx {} {[@var{t}, @var{y}, @var{te}, @var{ye}, @var{ie}] =} ode45 (@dots{})
 @deftypefnx {} {@var{solution} =} ode45 (@dots{})
 
@@ -363,16 +362,12 @@ column vector of unknowns @var{y}.
 evaluated.  Typically, it is a two-element vector specifying the initial and
 final times (@code{[tinit, tfinal]}).  If there are more than two elements
 then the solution will also be evaluated at these intermediate time
-instances unless the integrate function specified is
-@command{integrate_n_steps}.
+instances.
 
 By default, @code{ode45} uses an adaptive timestep with the
 @code{integrate_adaptive} algorithm.  The tolerance for the timestep
-computation may be changed by using the option @qcode{"Tau"}, that has a
-default value of @math{1e-6}.  If the ODE option @qcode{"TimeStepSize"} is
-not empty, then the stepper called will be @code{integrate_const}.  If, in
-addition, the option @qcode{"TimeStepNumber"} is also specified then the
-integrate function @code{integrate_n_steps} will be used.
+computation may be changed by using the options @qcode{"RelTol"}
+and @qcode{"AbsTol"}.
 
 @var{init} contains the initial value for the unknowns.  If it is a row
 vector then the solution @var{y} will be a matrix in which each column is
@@ -387,8 +382,9 @@ output @var{y} is a matrix in which each column refers to a different
 unknown of the problem and each row corresponds to a time in @var{t}.
 
 The output can also be returned as a structure @var{solution} which
-has field @var{x} containing the time where the solution was evaluated and
-field @var{y} containing the solution matrix for the times in @var{x}.
+has a field @var{x} containing a row vector of times where the solution
+was evaluated and a field @var{y} containing the solution matrix such
+that each column corresponds to a time in @var{x}.
 Use @code{fieldnames (@var{solution})} to see the other fields and
 additional information returned.
 
@@ -406,15 +402,14 @@ fvdp = @@(@var{t},@var{y}) [@var{y}(2); (1 - @var{y}(1)^2) * @var{y}(2) - @var{y
 [@var{t},@var{y}] = ode45 (fvdp, [0, 20], [2, 0]);
 @end group
 @end example
-@seealso{@ref{XREFodeset,,odeset}, @ref{XREFodeget,,odeget}}
+@seealso{@ref{XREFodeset,,odeset}, @ref{XREFodeget,,odeget}, @ref{XREFode23,,ode23}}
 @end deftypefn
 
 
-@c ode23 scripts/scripts/ode/ode23.m
+@c ode23 scripts/ode/ode23.m
 @anchor{XREFode23}
 @deftypefn  {} {[@var{t}, @var{y}] =} ode23 (@var{fun}, @var{trange}, @var{init})
 @deftypefnx {} {[@var{t}, @var{y}] =} ode23 (@var{fun}, @var{trange}, @var{init}, @var{ode_opt})
-@deftypefnx {} {[@var{t}, @var{y}] =} ode23 (@dots{}, @var{par1}, @var{par2}, @dots{})
 @deftypefnx {} {[@var{t}, @var{y}, @var{te}, @var{ye}, @var{ie}] =} ode23 (@dots{})
 @deftypefnx {} {@var{solution} =} ode23 (@dots{})
 
@@ -432,16 +427,12 @@ column vector of unknowns @var{y}.
 evaluated.  Typically, it is a two-element vector specifying the initial and
 final times (@code{[tinit, tfinal]}).  If there are more than two elements
 then the solution will also be evaluated at these intermediate time
-instances unless the integrate function specified is
-@command{integrate_n_steps}.
+instances.
 
 By default, @code{ode23} uses an adaptive timestep with the
 @code{integrate_adaptive} algorithm.  The tolerance for the timestep
-computation may be changed by using the option @qcode{"Tau"}, that has a
-default value of @math{1e-6}.  If the ODE option @qcode{"TimeStepSize"} is
-not empty, then the stepper called will be @code{integrate_const}.  If, in
-addition, the option @qcode{"TimeStepNumber"} is also specified then the
-integrate function @code{integrate_n_steps} will be used.
+computation may be changed by using the options @qcode{"RelTol"}
+and @qcode{"AbsTol"}.
 
 @var{init} contains the initial value for the unknowns.  If it is a row
 vector then the solution @var{y} will be a matrix in which each column is
@@ -456,8 +447,9 @@ output @var{y} is a matrix in which each column refers to a different
 unknown of the problem and each row corresponds to a time in @var{t}.
 
 The output can also be returned as a structure @var{solution} which
-has field @var{x} containing the time where the solution was evaluated and
-field @var{y} containing the solution matrix for the times in @var{x}.
+has a field @var{x} containing a row vector of times where the solution
+was evaluated and a field @var{y} containing the solution matrix such
+that each column corresponds to a time in @var{x}.
 Use @code{fieldnames (@var{solution})} to see the other fields and
 additional information returned.
 
@@ -482,41 +474,141 @@ fvdp = @@(@var{t},@var{y}) [@var{y}(2); (1 - @var{y}(1)^2) * @var{y}(2) - @var{y
 [@var{t},@var{y}] = ode23 (fvdp, [0, 20], [2, 0]);
 @end group
 @end example
-@seealso{@ref{XREFodeset,,odeset}, @ref{XREFodeget,,odeget}}
+@seealso{@ref{XREFodeset,,odeset}, @ref{XREFodeget,,odeget}, @ref{XREFode45,,ode45}}
 @end deftypefn
 
 
-@c odeset scripts/scripts/ode/odeset.m
+@c odeset scripts/ode/odeset.m
 @anchor{XREFodeset}
-@deftypefn  {} {} odeset ()
+@deftypefn  {} {@var{odestruct} =} odeset ()
 @deftypefnx {} {@var{odestruct} =} odeset (@var{"field1"}, @var{value1}, @var{"field2"}, @var{value2}, @dots{})
 @deftypefnx {} {@var{odestruct} =} odeset (@var{oldstruct}, @var{"field1"}, @var{value1}, @var{"field2"}, @var{value2}, @dots{})
 @deftypefnx {} {@var{odestruct} =} odeset (@var{oldstruct}, @var{newstruct})
+@deftypefnx {} {} odeset ()
 
 Create or modify an ODE options structure.
 
-When called without an input argument, return a new ODE options structure
-that contains all possible fields initialized to their default values.
+When called with no input argument and one output argument, return a new ODE
+options structure that contains all possible fields initialized to their
+default values.  If no output argument is requested, display a list of
+the common ODE solver options along with their default value.
 
-If called with string input arguments @var{"field1"}, @var{"field2"},
-@dots{} identifying valid ODE options then return a new ODE options
-structure with all possible fields initialized @strong{and} set the values
-of the fields @var{"field1"}, @var{"field2"}, @dots{} to the values
-@var{value1}, @var{value2}, @dots{}
+If called with name-value input argument pairs @var{"field1"},
+@var{"value1"}, @var{"field2"}, @var{"value2"}, @dots{} return a new
+ODE options structure with all the most common option fields
+initialized, @strong{and} set the values of the fields @var{"field1"},
+@var{"field2"}, @dots{} to the values @var{value1}, @var{value2},
+@dots{}.
 
-If called with an input structure @var{oldstruct} then overwrite the values
-of the options @var{"field1"}, @var{"field2"}, @dots{} with new values
-@var{value1}, @var{value2}, @dots{} and return the modified structure.
+If called with an input structure @var{oldstruct} then overwrite the
+values of the options @var{"field1"}, @var{"field2"}, @dots{} with
+new values @var{value1}, @var{value2}, @dots{} and return the
+modified structure.
 
 When called with two input ODE options structures @var{oldstruct} and
-@var{newstruct} overwrite all values from the structure @var{oldstruct} with
-new values from the structure @var{newstruct}.  Empty values in
-@var{newstruct} will not overwrite values in @var{oldstruct}.
+@var{newstruct} overwrite all values from the structure
+@var{oldstruct} with new values from the structure @var{newstruct}.
+Empty values in @var{newstruct} will not overwrite values in
+@var{oldstruct}.
+
+The most commonly used ODE options, which are always assigned a value
+by @qcode{odeset}, are the following:
+
+@table @asis
+@item AbsTol
+Absolute error tolerance.
+
+@item BDF
+Use BDF formulas in implicit multistep methods.
+@strong{Note:} This option is not yet implemented.
+
+@item Events
+Event function. An event function must have the form
+@code{[value, isterminal, direction] = my_events_f (t, y)}
+
+@item InitialSlope
+Consistent initial slope vector for DAE solvers.
+
+@item InitialStep
+Initial time step size.
+
+@item Jacobian
+Jacobian matrix, specified as a constant matrix or a function of
+time and state.
+
+@item JConstant
+Specify whether the Jacobian is a constant matrix or depends on the
+state.
+
+@item JPattern
+If the Jacobian matrix is sparse and non-constant but maintains a
+constant sparsity pattern, specify the sparsity pattern.
+
+@item Mass
+Mass matrix, specified as a constant matrix or a function of
+time and state.
+
+@item MassSingular
+Specify whether the mass matrix is singular. Accepted values include
+@qcode{"yes"}, @qcode{"no"}, @qcode{"maybe"}.
+
+@item MaxOrder
+Maximum order of formula.
+
+@item MaxStep
+Maximum time step value.
+
+@item MStateDependence
+Specify whether the mass matrix depends on the state or only on time.
+
+@item MvPattern
+If the mass matrix is sparse and non-constant but maintains a
+constant sparsity pattern, specify the sparsity pattern.
+@strong{Note:} This option is not yet implemented.
+
+@item NonNegative
+Specify elements of the state vector that are expected to remain
+nonnegative during the simulation.
+
+@item NormControl
+Control error relative to the 2-norm of the solution, rather than its
+absolute value.
+
+@item OutputFcn
+Function to monitor the state during the simulation. For the form of
+the function to use see @qcode{odeplot}.
+
+@item OutputSel
+Indices of elements of the state vector to be passed to the output
+monitoring function.
+
+@item Refine
+Specify whether output should be returned only at the end of each
+time step or also at intermediate time instances. The value should be
+a scalar indicating the number of equally spaced time points to use
+within each timestep at which to return output.
+@strong{Note:} This option is not yet implemented.
+
+@item RelTol
+Relative error tolerance.
+
+@item Stats
+Print solver statistics after simulation.
+
+@item Vectorized
+Specify whether @qcode{odefun} can be passed multiple values of the
+state at once.
+
+@end table
+
+Field names that are not in the above list are also accepted and
+added to the result structure.
+
 @seealso{@ref{XREFodeget,,odeget}}
 @end deftypefn
 
 
-@c odeget scripts/scripts/ode/odeget.m
+@c odeget scripts/ode/odeget.m
 @anchor{XREFodeget}
 @deftypefn  {} {@var{val} =} odeget (@var{ode_opt}, @var{field})
 @deftypefnx {} {@var{val} =} odeget (@var{ode_opt}, @var{field}, @var{default})
@@ -536,51 +628,59 @@ not set in the structure @var{ode_opt}, then return the default value
 @end deftypefn
 
 
-@c odeplot scripts/scripts/ode/odeplot.m
+@c odeplot scripts/ode/odeplot.m
 @anchor{XREFodeplot}
-@deftypefn {} {[@var{ret}] =} odeplot (@var{t}, @var{y}, @var{flag})
+@deftypefn {} {@var{stop_solve} =} odeplot (@var{t}, @var{y}, @var{flag})
 
-Open a new figure window and plot the results from the variable @var{y} of
-type column vector over time while solving.  The types and the values of
-the input parameter @var{t} and the output parameter @var{ret} depend on
-the input value @var{flag} that is of type string.  If @var{flag} is
+Open a new figure window and plot the solution of an ode problem at each
+time step during the integration.
+
+The types and values of the input parameters @var{t} and @var{y} depend on
+the input @var{flag} that is of type string.  Valid values of @var{flag}
+are:
 
 @table @option
-@item  @qcode{"init"}
-then @var{t} must be a double column vector of length 2 with the first and
-the last time step and nothing is returned from this function,
+@item @qcode{"init"}
+The input @var{t} must be a column vector of length 2 with the first and
+last time step (@code{[@var{tfirst} @var{tlast}]}.  The input @var{y}
+contains the initial conditions for the ode problem (@var{y0}).
 
-@item  @qcode{""}
-then @var{t} must be a double scalar specifying the actual time step and
-the return value is false (resp. value 0) for @qcode{"not stop solving"},
+@item @qcode{""}
+The input @var{t} must be a scalar double specifying the time for which
+the solution in input @var{y} was calculated.
 
-@item  @qcode{"done"}
-then @var{t} must be a double scalar specifying the last time step and
-nothing is returned from this function.
+@item @qcode{"done"}
+The inputs should be empty, but are ignored if they are present.
 @end table
 
-This function is called by an ode solver function if it was specified in
-an options structure with the @command{odeset}.  This function is an
-internal helper function therefore it should never be necessary that this
-function is called directly by a user.  There is only little error
-detection implemented in this function file to achieve the highest
-performance.
+@code{odeplot} always returns false, i.e., don't stop the ode solver.
 
-For example, solve an anonymous implementation of the
+Example: solve an anonymous implementation of the
 @nospell{@qcode{"Van der Pol"}} equation and display the results while
-solving
+solving.
 
 @example
 @group
-fvdb = @@(t,y) [y(2); (1 - y(1)^2) * y(2) - y(1)];
+fvdp = @@(t,y) [y(2); (1 - y(1)^2) * y(2) - y(1)];
 
 opt = odeset ("OutputFcn", @@odeplot, "RelTol", 1e-6);
-sol = ode45 (fvdb, [0 20], [2 0], opt);
+sol = ode45 (fvdp, [0 20], [2 0], opt);
 @end group
 @end example
-@end deftypefn
 
-@seealso{@ref{XREFodeset,,odeset}, @ref{XREFodeget,,odeget}}
+Background Information:
+This function is called by an ode solver function if it was specified in
+the @qcode{"OutputFcn"} property of an options structure created with
+@code{odeset}.  The ode solver will initially call the function with the
+syntax @code{odeplot ([@var{tfirst}, @var{tlast}], @var{y0}, "init")}.  The
+function initializes internal variables, creates a new figure window, and
+sets the x limits of the plot.  Subsequently, at each time step during the
+integration the ode solver calls @code{odeplot (@var{t}, @var{y}, [])}.
+At the end of the solution the ode solver calls
+@code{odeplot ([], [], "done")} so that odeplot can perform any clean-up
+actions required.
+@seealso{@ref{XREFodeset,,odeset}, @ref{XREFodeget,,odeget}, @ref{XREFode23,,ode23}, @ref{XREFode45,,ode45}}
+@end deftypefn
 
 
 @node Differential-Algebraic Equations
@@ -730,7 +830,7 @@ When called with two arguments, @code{daspk_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the relative
@@ -1012,7 +1112,7 @@ When called with two arguments, @code{dassl_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the relative
@@ -1224,7 +1324,7 @@ When called with two arguments, @code{dasrt_options} sets the option
 
 Options include
 
-@table @code
+@table @asis
 @item @qcode{"absolute tolerance"}
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the relative

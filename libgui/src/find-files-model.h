@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2015 John Donoghue
+Copyright (C) 2013-2016 John Donoghue
 
 This file is part of Octave.
 
@@ -61,3 +61,4 @@ private:
 };
 
 #endif
+

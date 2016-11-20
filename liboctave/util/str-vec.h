@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -27,7 +27,6 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iosfwd>
 #include <list>
-#include <set>
 #include <string>
 
 #include "Array.h"
@@ -57,8 +56,8 @@ public:
     first parameter, and begin, end, and size methods, i.e., a class with
     similar interface as the STL containers.
   */
-  template<template <typename...> class String_Container>
-  string_vector (const String_Container<std::string>& lst);
+  template<template <typename...> class String_Container, typename... Other>
+  string_vector (const String_Container<std::string, Other...>& lst);
 
   string_vector (const Array<std::string>& s)
     : Array<std::string> (s.as_column ()) { }
@@ -128,8 +127,9 @@ public:
 };
 
 
-template<template <typename...> class String_Container>
-string_vector::string_vector (const String_Container<std::string>& lst)
+template<template <typename...> class String_Container, typename... Other>
+string_vector::string_vector (const String_Container<std::string, Other...>&
+                              lst)
   : Array<std::string> ()
 {
   resize (lst.size ());
@@ -140,3 +140,4 @@ string_vector::string_vector (const String_Container<std::string>& lst)
 }
 
 #endif
+

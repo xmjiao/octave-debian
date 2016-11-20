@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -257,7 +257,7 @@ used per default.
 @end deftypefn
 
 
-@c fftconv scripts/scripts/signal/fftconv.m
+@c fftconv scripts/signal/fftconv.m
 @anchor{XREFfftconv}
 @deftypefn  {} {} fftconv (@var{x}, @var{y})
 @deftypefnx {} {} fftconv (@var{x}, @var{y}, @var{n})
@@ -274,7 +274,7 @@ the optional argument @var{n} is specified, an N-point FFT is used.
 @end deftypefn
 
 
-@c fftfilt scripts/scripts/signal/fftfilt.m
+@c fftfilt scripts/signal/fftfilt.m
 @anchor{XREFfftfilt}
 @deftypefn  {} {} fftfilt (@var{b}, @var{x})
 @deftypefnx {} {} fftfilt (@var{b}, @var{x}, @var{n})
@@ -396,7 +396,7 @@ H(z) = ---------------------
 @end deftypefn
 
 
-@c filter2 scripts/scripts/signal/filter2.m
+@c filter2 scripts/signal/filter2.m
 @anchor{XREFfilter2}
 @deftypefn  {} {@var{y} =} filter2 (@var{b}, @var{x})
 @deftypefnx {} {@var{y} =} filter2 (@var{b}, @var{x}, @var{shape})
@@ -422,7 +422,7 @@ and @var{b} rotated 180 degrees.
 @end deftypefn
 
 
-@c freqz scripts/scripts/signal/freqz.m
+@c freqz scripts/signal/freqz.m
 @anchor{XREFfreqz}
 @deftypefn  {} {[@var{h}, @var{w}] =} freqz (@var{b}, @var{a}, @var{n}, "whole")
 @deftypefnx {} {[@var{h}, @var{w}] =} freqz (@var{b})
@@ -481,7 +481,7 @@ Plot the magnitude and phase response of @var{h} rather than returning them.
 @end deftypefn
 
 
-@c freqz_plot scripts/scripts/signal/freqz_plot.m
+@c freqz_plot scripts/signal/freqz_plot.m
 @anchor{XREFfreqz_plot}
 @deftypefn  {} {} freqz_plot (@var{w}, @var{h})
 @deftypefnx {} {} freqz_plot (@var{w}, @var{h}, @var{freq_norm})
@@ -494,7 +494,7 @@ not given, then @var{w} is measured in Hertz.
 @end deftypefn
 
 
-@c sinc scripts/scripts/signal/sinc.m
+@c sinc scripts/signal/sinc.m
 @anchor{XREFsinc}
 @deftypefn {} {} sinc (@var{x})
 Compute the sinc function.
@@ -509,7 +509,7 @@ sin (pi*x) / (pi*x).
 @end deftypefn
 
 
-@c unwrap scripts/scripts/signal/unwrap.m
+@c unwrap scripts/signal/unwrap.m
 @anchor{XREFunwrap}
 @deftypefn  {} {@var{b} =} unwrap (@var{x})
 @deftypefnx {} {@var{b} =} unwrap (@var{x}, @var{tol})
@@ -527,7 +527,7 @@ is unspecified it defaults to the first non-singleton dimension.
 
 @c FIXME: someone needs to organize these ...
 
-@c arch_fit scripts/scripts/signal/arch_fit.m
+@c arch_fit scripts/signal/arch_fit.m
 @anchor{XREFarch_fit}
 @deftypefn {} {[@var{a}, @var{b}] =} arch_fit (@var{y}, @var{x}, @var{p}, @var{iter}, @var{gamma}, @var{a0}, @var{b0})
 Fit an ARCH regression model to the time series @var{y} using the scoring
@@ -562,7 +562,7 @@ for the scoring algorithm.
 @end deftypefn
 
 
-@c arch_rnd scripts/scripts/signal/arch_rnd.m
+@c arch_rnd scripts/signal/arch_rnd.m
 @anchor{XREFarch_rnd}
 @deftypefn {} {} arch_rnd (@var{a}, @var{b}, @var{t})
 Simulate an ARCH sequence of length @var{t} with AR coefficients @var{b} and
@@ -586,7 +586,7 @@ h(t) = a(1) + a(2) * e(t-1)^2 + @dots{} + a(la) * e(t-la+1)^2
 @end deftypefn
 
 
-@c arch_test scripts/scripts/signal/arch_test.m
+@c arch_test scripts/signal/arch_test.m
 @anchor{XREFarch_test}
 @deftypefn {} {[@var{pval}, @var{lm}] =} arch_test (@var{y}, @var{x}, @var{p})
 For a linear regression model
@@ -634,7 +634,7 @@ If no output argument is given, the @math{p}-value is displayed.
 @end deftypefn
 
 
-@c arma_rnd scripts/scripts/signal/arma_rnd.m
+@c arma_rnd scripts/signal/arma_rnd.m
 @anchor{XREFarma_rnd}
 @deftypefn {} {} arma_rnd (@var{a}, @var{b}, @var{v}, @var{t}, @var{n})
 Return a simulation of the ARMA model.
@@ -660,7 +660,7 @@ is omitted, @var{n} = 100 is used.
 @end deftypefn
 
 
-@c autoreg_matrix scripts/scripts/signal/autoreg_matrix.m
+@c autoreg_matrix scripts/signal/autoreg_matrix.m
 @anchor{XREFautoreg_matrix}
 @deftypefn {} {} autoreg_matrix (@var{y}, @var{k})
 Given a time series (vector) @var{y}, return a matrix with ones in the first
@@ -674,7 +674,7 @@ The resulting matrix may be used as a regressor matrix in autoregressions.
 @end deftypefn
 
 
-@c bartlett scripts/scripts/signal/bartlett.m
+@c bartlett scripts/signal/bartlett.m
 @anchor{XREFbartlett}
 @deftypefn {} {} bartlett (@var{m})
 Return the filter coefficients of a Bartlett (triangular) window of length
@@ -686,7 +686,7 @@ For a definition of the Bartlett window see, e.g.,
 @end deftypefn
 
 
-@c blackman scripts/scripts/signal/blackman.m
+@c blackman scripts/signal/blackman.m
 @anchor{XREFblackman}
 @deftypefn  {} {} blackman (@var{m})
 @deftypefnx {} {} blackman (@var{m}, "periodic")
@@ -704,7 +704,7 @@ For a definition of the Blackman window, see, e.g.,
 @end deftypefn
 
 
-@c detrend scripts/scripts/signal/detrend.m
+@c detrend scripts/signal/detrend.m
 @anchor{XREFdetrend}
 @deftypefn {} {} detrend (@var{x}, @var{p})
 If @var{x} is a vector, @code{detrend (@var{x}, @var{p})} removes the
@@ -723,7 +723,7 @@ or @qcode{"linear"} (corresponds to @code{@var{p}=1}).
 @end deftypefn
 
 
-@c diffpara scripts/scripts/signal/diffpara.m
+@c diffpara scripts/signal/diffpara.m
 @anchor{XREFdiffpara}
 @deftypefn {} {[@var{d}, @var{dd}] =} diffpara (@var{x}, @var{a}, @var{b})
 Return the estimator @var{d} for the differencing parameter of an
@@ -746,7 +746,7 @@ Theory and Methods}. @nospell{Springer} 1987.
 @end deftypefn
 
 
-@c durbinlevinson scripts/scripts/signal/durbinlevinson.m
+@c durbinlevinson scripts/signal/durbinlevinson.m
 @anchor{XREFdurbinlevinson}
 @deftypefn {} {} durbinlevinson (@var{c}, @var{oldphi}, @var{oldv})
 Perform one step of the @nospell{Durbin-Levinson} algorithm.
@@ -761,12 +761,12 @@ the algorithm are performed.
 @end deftypefn
 
 
-@c fftshift scripts/scripts/signal/fftshift.m
+@c fftshift scripts/signal/fftshift.m
 @anchor{XREFfftshift}
 @deftypefn  {} {} fftshift (@var{x})
 @deftypefnx {} {} fftshift (@var{x}, @var{dim})
 Perform a shift of the vector @var{x}, for use with the @code{fft} and
-@code{ifft} functions, in order the move the frequency 0 to the center of
+@code{ifft} functions, in order to move the frequency 0 to the center of
 the vector or matrix.
 
 If @var{x} is a vector of @math{N} elements corresponding to @math{N} time
@@ -774,11 +774,11 @@ samples spaced by @nospell{@math{dt}}, then
 @code{fftshift (fft (@var{x}))} corresponds to frequencies
 
 @example
-f = [ -(ceil((N-1)/2):-1:1)*df 0 (1:floor((N-1)/2))*df ]
+f = [ -(ceil((N-1)/2):-1:1), 0, (1:floor((N-1)/2)) ] * df
 @end example
 
 @noindent
-where @nospell{@math{df} = 1 / @math{dt}}.
+where @nospell{@math{df = 1 / (N * dt)}}.
 
 If @var{x} is a matrix, the same holds for rows and columns.  If @var{x}
 is an array, then the same holds along each dimension.
@@ -789,7 +789,7 @@ which the permutation occurs.
 @end deftypefn
 
 
-@c ifftshift scripts/scripts/signal/ifftshift.m
+@c ifftshift scripts/signal/ifftshift.m
 @anchor{XREFifftshift}
 @deftypefn  {} {} ifftshift (@var{x})
 @deftypefnx {} {} ifftshift (@var{x}, @var{dim})
@@ -801,7 +801,7 @@ differ slightly.
 @end deftypefn
 
 
-@c fractdiff scripts/scripts/signal/fractdiff.m
+@c fractdiff scripts/signal/fractdiff.m
 @anchor{XREFfractdiff}
 @deftypefn {} {} fractdiff (@var{x}, @var{d})
 Compute the fractional differences @math{(1-L)^d x} where @math{L}
@@ -809,7 +809,7 @@ denotes the lag-operator and @math{d} is greater than -1.
 @end deftypefn
 
 
-@c hamming scripts/scripts/signal/hamming.m
+@c hamming scripts/signal/hamming.m
 @anchor{XREFhamming}
 @deftypefn  {} {} hamming (@var{m})
 @deftypefnx {} {} hamming (@var{m}, "periodic")
@@ -827,7 +827,7 @@ For a definition of the Hamming window see, e.g.,
 @end deftypefn
 
 
-@c hanning scripts/scripts/signal/hanning.m
+@c hanning scripts/signal/hanning.m
 @anchor{XREFhanning}
 @deftypefn  {} {} hanning (@var{m})
 @deftypefnx {} {} hanning (@var{m}, "periodic")
@@ -845,7 +845,7 @@ For a definition of the Hanning window see, e.g.,
 @end deftypefn
 
 
-@c hurst scripts/scripts/signal/hurst.m
+@c hurst scripts/signal/hurst.m
 @anchor{XREFhurst}
 @deftypefn {} {} hurst (@var{x})
 Estimate the Hurst parameter of sample @var{x} via the rescaled range
@@ -855,7 +855,7 @@ If @var{x} is a matrix, the parameter is estimated for every column.
 @end deftypefn
 
 
-@c pchip scripts/scripts/polynomial/pchip.m
+@c pchip scripts/polynomial/pchip.m
 @anchor{XREFpchip}
 @deftypefn  {} {@var{pp} =} pchip (@var{x}, @var{y})
 @deftypefnx {} {@var{yi} =} pchip (@var{x}, @var{y}, @var{xi})
@@ -898,7 +898,7 @@ compatibility.
 @end deftypefn
 
 
-@c periodogram scripts/scripts/signal/periodogram.m
+@c periodogram scripts/signal/periodogram.m
 @anchor{XREFperiodogram}
 @deftypefn  {} {[@var{Pxx}, @var{w}] =} periodogram (@var{x})
 @deftypefnx {} {[@var{Pxx}, @var{w}] =} periodogram (@var{x}, @var{win})
@@ -956,7 +956,7 @@ current figure window.
 @end deftypefn
 
 
-@c sinetone scripts/scripts/signal/sinetone.m
+@c sinetone scripts/signal/sinetone.m
 @anchor{XREFsinetone}
 @deftypefn {} {} sinetone (@var{freq}, @var{rate}, @var{sec}, @var{ampl})
 Return a sinetone of frequency @var{freq} with a length of @var{sec}
@@ -969,7 +969,7 @@ The defaults are @var{rate} = 8000, @var{sec} = 1, and @var{ampl} = 64.
 @end deftypefn
 
 
-@c sinewave scripts/scripts/signal/sinewave.m
+@c sinewave scripts/signal/sinewave.m
 @anchor{XREFsinewave}
 @deftypefn {} {} sinewave (@var{m}, @var{n}, @var{d})
 Return an @var{m}-element vector with @var{i}-th element given by
@@ -981,7 +981,7 @@ The default value for @var{d} is 0 and the default value for @var{n} is
 @end deftypefn
 
 
-@c spectral_adf scripts/scripts/signal/spectral_adf.m
+@c spectral_adf scripts/signal/spectral_adf.m
 @anchor{XREFspectral_adf}
 @deftypefn  {} {} spectral_adf (@var{c})
 @deftypefnx {} {} spectral_adf (@var{c}, @var{win})
@@ -999,7 +999,7 @@ If @var{b} is omitted, @code{1 / sqrt (length (@var{x}))} is used.
 @end deftypefn
 
 
-@c spectral_xdf scripts/scripts/signal/spectral_xdf.m
+@c spectral_xdf scripts/signal/spectral_xdf.m
 @anchor{XREFspectral_xdf}
 @deftypefn  {} {} spectral_xdf (@var{x})
 @deftypefnx {} {} spectral_xdf (@var{x}, @var{win})
@@ -1017,7 +1017,7 @@ If @var{b} is omitted, @code{1 / sqrt (length (@var{x}))} is used.
 @end deftypefn
 
 
-@c spencer scripts/scripts/signal/spencer.m
+@c spencer scripts/signal/spencer.m
 @anchor{XREFspencer}
 @deftypefn {} {} spencer (@var{x})
 Return @nospell{Spencer's} 15 point moving average of each column of
@@ -1025,7 +1025,7 @@ Return @nospell{Spencer's} 15 point moving average of each column of
 @end deftypefn
 
 
-@c stft scripts/scripts/signal/stft.m
+@c stft scripts/signal/stft.m
 @anchor{XREFstft}
 @deftypefn  {} {@var{y} =} stft (@var{x})
 @deftypefnx {} {@var{y} =} stft (@var{x}, @var{win_size})
@@ -1068,7 +1068,7 @@ function.
 @end deftypefn
 
 
-@c synthesis scripts/scripts/signal/synthesis.m
+@c synthesis scripts/signal/synthesis.m
 @anchor{XREFsynthesis}
 @deftypefn {} {@var{x} =} synthesis (@var{y}, @var{c})
 Compute a signal from its short-time Fourier transform @var{y} and a
@@ -1083,7 +1083,7 @@ The values @var{y} and @var{c} can be derived by
 @end deftypefn
 
 
-@c yulewalker scripts/scripts/signal/yulewalker.m
+@c yulewalker scripts/signal/yulewalker.m
 @anchor{XREFyulewalker}
 @deftypefn {} {[@var{a}, @var{v}] =} yulewalker (@var{c})
 Fit an AR (p)-model with Yule-Walker estimates given a vector @var{c} of

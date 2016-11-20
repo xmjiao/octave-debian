@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -121,7 +121,7 @@ tree_simple_assignment::rvalue1 (int)
                                        lhs->name ());
             }
         }
-      catch (index_exception& e)
+      catch (octave::index_exception& e)
         {
           e.set_var (lhs->name ());
           std::string msg = e.message ();
@@ -379,3 +379,4 @@ tree_multi_assignment::accept (tree_walker& tw)
 {
   tw.visit_multi_assignment (*this);
 }
+

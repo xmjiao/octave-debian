@@ -1,7 +1,7 @@
 // N-D Array manipulations.
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
@@ -187,24 +187,7 @@ FloatNDArray::ifourierNd (void) const
 
 #else
 
-extern "C"
-{
-  // Note that the original complex fft routines were not written for
-  // float complex arguments.  They have been modified by adding an
-  // implicit float precision (a-h,o-z) statement at the beginning of
-  // each subroutine.
-
-  F77_RET_T
-  F77_FUNC (cffti, CFFTI) (const F77_INT&, F77_CMPLX*);
-
-  F77_RET_T
-  F77_FUNC (cfftf, CFFTF) (const F77_INT&, F77_CMPLX*,
-                           F77_CMPLX*);
-
-  F77_RET_T
-  F77_FUNC (cfftb, CFFTB) (const F77_INT&, F77_CMPLX*,
-                           F77_CMPLX*);
-}
+#include "lo-fftpack-proto.h"
 
 FloatComplexNDArray
 FloatNDArray::fourier (int dim) const
@@ -232,7 +215,7 @@ FloatNDArray::fourier (int dim) const
   octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
   octave_idx_type dist = (stride == 1 ? npts : 1);
 
-  F77_FUNC (cffti, CFFTI) (npts, pwsave);
+  F77_FUNC (cffti, CFFTI) (npts, F77_CMPLX_ARG (pwsave));
 
   for (octave_idx_type k = 0; k < nloop; k++)
     {
@@ -243,7 +226,7 @@ FloatNDArray::fourier (int dim) const
           for (octave_idx_type i = 0; i < npts; i++)
             tmp[i] = elem ((i + k*npts)*stride + j*dist);
 
-          F77_FUNC (cfftf, CFFTF) (npts, tmp, pwsave);
+          F77_FUNC (cfftf, CFFTF) (npts, F77_CMPLX_ARG (tmp), F77_CMPLX_ARG (pwsave));
 
           for (octave_idx_type i = 0; i < npts; i++)
             retval((i + k*npts)*stride + j*dist) = tmp[i];
@@ -279,7 +262,7 @@ FloatNDArray::ifourier (int dim) const
   octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
   octave_idx_type dist = (stride == 1 ? npts : 1);
 
-  F77_FUNC (cffti, CFFTI) (npts, pwsave);
+  F77_FUNC (cffti, CFFTI) (npts, F77_CMPLX_ARG (pwsave));
 
   for (octave_idx_type k = 0; k < nloop; k++)
     {
@@ -290,7 +273,7 @@ FloatNDArray::ifourier (int dim) const
           for (octave_idx_type i = 0; i < npts; i++)
             tmp[i] = elem ((i + k*npts)*stride + j*dist);
 
-          F77_FUNC (cfftb, CFFTB) (npts, tmp, pwsave);
+          F77_FUNC (cfftb, CFFTB) (npts, F77_CMPLX_ARG (tmp), F77_CMPLX_ARG (pwsave));
 
           for (octave_idx_type i = 0; i < npts; i++)
             retval((i + k*npts)*stride + j*dist) = tmp[i] /
@@ -325,7 +308,7 @@ FloatNDArray::fourier2d (void) const
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
-      F77_FUNC (cffti, CFFTI) (npts, pwsave);
+      F77_FUNC (cffti, CFFTI) (npts, F77_CMPLX_ARG (pwsave));
 
       for (octave_idx_type k = 0; k < nloop; k++)
         {
@@ -336,7 +319,7 @@ FloatNDArray::fourier2d (void) const
               for (octave_idx_type l = 0; l < npts; l++)
                 prow[l] = retval((l + k*npts)*stride + j*dist);
 
-              F77_FUNC (cfftf, CFFTF) (npts, prow, pwsave);
+              F77_FUNC (cfftf, CFFTF) (npts, F77_CMPLX_ARG (prow), F77_CMPLX_ARG (pwsave));
 
               for (octave_idx_type l = 0; l < npts; l++)
                 retval((l + k*npts)*stride + j*dist) = prow[l];
@@ -373,7 +356,7 @@ FloatNDArray::ifourier2d (void) const
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
-      F77_FUNC (cffti, CFFTI) (npts, pwsave);
+      F77_FUNC (cffti, CFFTI) (npts, F77_CMPLX_ARG (pwsave));
 
       for (octave_idx_type k = 0; k < nloop; k++)
         {
@@ -384,7 +367,7 @@ FloatNDArray::ifourier2d (void) const
               for (octave_idx_type l = 0; l < npts; l++)
                 prow[l] = retval((l + k*npts)*stride + j*dist);
 
-              F77_FUNC (cfftb, CFFTB) (npts, prow, pwsave);
+              F77_FUNC (cfftb, CFFTB) (npts, F77_CMPLX_ARG (prow), F77_CMPLX_ARG (pwsave));
 
               for (octave_idx_type l = 0; l < npts; l++)
                 retval((l + k*npts)*stride + j*dist) =
@@ -421,7 +404,7 @@ FloatNDArray::fourierNd (void) const
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
-      F77_FUNC (cffti, CFFTI) (npts, pwsave);
+      F77_FUNC (cffti, CFFTI) (npts, F77_CMPLX_ARG (pwsave));
 
       for (octave_idx_type k = 0; k < nloop; k++)
         {
@@ -432,7 +415,7 @@ FloatNDArray::fourierNd (void) const
               for (octave_idx_type l = 0; l < npts; l++)
                 prow[l] = retval((l + k*npts)*stride + j*dist);
 
-              F77_FUNC (cfftf, CFFTF) (npts, prow, pwsave);
+              F77_FUNC (cfftf, CFFTF) (npts, F77_CMPLX_ARG (prow), F77_CMPLX_ARG (pwsave));
 
               for (octave_idx_type l = 0; l < npts; l++)
                 retval((l + k*npts)*stride + j*dist) = prow[l];
@@ -468,7 +451,7 @@ FloatNDArray::ifourierNd (void) const
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
-      F77_FUNC (cffti, CFFTI) (npts, pwsave);
+      F77_FUNC (cffti, CFFTI) (npts, F77_CMPLX_ARG (pwsave));
 
       for (octave_idx_type k = 0; k < nloop; k++)
         {
@@ -479,7 +462,7 @@ FloatNDArray::ifourierNd (void) const
               for (octave_idx_type l = 0; l < npts; l++)
                 prow[l] = retval((l + k*npts)*stride + j*dist);
 
-              F77_FUNC (cfftb, CFFTB) (npts, prow, pwsave);
+              F77_FUNC (cfftb, CFFTB) (npts, F77_CMPLX_ARG (prow), F77_CMPLX_ARG (pwsave));
 
               for (octave_idx_type l = 0; l < npts; l++)
                 retval((l + k*npts)*stride + j*dist) =
@@ -501,7 +484,7 @@ boolNDArray
 FloatNDArray::operator ! (void) const
 {
   if (any_element_is_nan ())
-    err_nan_to_logical_conversion ();
+    octave::err_nan_to_logical_conversion ();
 
   return do_mx_unary_op<bool, float> (*this, mx_inline_not);
 }
@@ -889,3 +872,4 @@ BSXFUN_OP2_DEF_MXLOOP (pow, FloatComplexNDArray, FloatComplexNDArray,
                        FloatNDArray, mx_inline_pow)
 BSXFUN_OP2_DEF_MXLOOP (pow, FloatComplexNDArray, FloatNDArray,
                        FloatComplexNDArray, mx_inline_pow)
+

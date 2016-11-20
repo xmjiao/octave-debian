@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -55,9 +55,9 @@ variable's current value.  Variables are given new values with
 
 There is one built-in variable with a special meaning.  The @code{ans} variable
 always contains the result of the last computation, where the output wasn't
-assigned to any variable.  The code @code{a = cos (pi)} will assign the value -1
-to the variable @code{a}, but will not change the value of @code{ans}.  However,
-the code @code{cos (pi)} will set the value of @code{ans} to -1.
+assigned to any variable.  The code @code{a = cos (pi)} will assign the value
+-1 to the variable @code{a}, but will not change the value of @code{ans}.
+However, the code @code{cos (pi)} will set the value of @code{ans} to -1.
 
 Variables in Octave do not have fixed types, so it is possible to first
 store a numeric value in a variable and then to later use the same name
@@ -65,7 +65,7 @@ to hold a string value in the same program.  Variables may not be used
 before they have been given a value.  Doing so results in an error.
 
 @cindex @code{ans}
-@c ans scripts/scripts/help/ans.m
+@c ans scripts/help/ans.m
 @anchor{XREFans}
 @defvr {Automatic Variable} ans
 The most recently computed result that was not explicitly assigned to a
@@ -90,7 +90,7 @@ Return true if @var{name} is a valid variable name.
 @end deftypefn
 
 
-@c genvarname scripts/scripts/miscellaneous/genvarname.m
+@c genvarname scripts/miscellaneous/genvarname.m
 @anchor{XREFgenvarname}
 @deftypefn  {} {@var{varname} =} genvarname (@var{str})
 @deftypefnx {} {@var{varname} =} genvarname (@var{str}, @var{exclusions})
@@ -169,7 +169,7 @@ function names such as @qcode{"sin"}.  Such names should be included in
 @end deftypefn
 
 
-@c namelengthmax scripts/scripts/miscellaneous/namelengthmax.m
+@c namelengthmax scripts/miscellaneous/namelengthmax.m
 @anchor{XREFnamelengthmax}
 @deftypefn {} {} namelengthmax ()
 Return the @sc{matlab} compatible maximum variable name length.
@@ -799,7 +799,7 @@ without the dash as well.
 @end deftypefn
 
 
-@c pack scripts/scripts/miscellaneous/pack.m
+@c pack scripts/miscellaneous/pack.m
 @anchor{XREFpack}
 @deftypefn {} {} pack ()
 Consolidate workspace memory in @sc{matlab}.
@@ -813,7 +813,7 @@ Information about a function or variable such as its location in the
 file system can also be acquired from within Octave.  This is usually
 only useful during development of programs, and not within a program.
 
-@c type scripts/scripts/help/type.m
+@c type scripts/help/type.m
 @anchor{XREFtype}
 @deftypefn  {} {} type @var{name} @dots{}
 @deftypefnx {} {} type -q @var{name} @dots{}
@@ -831,7 +831,7 @@ corresponds to the contents of each requested function.
 @end deftypefn
 
 
-@c which scripts/scripts/help/which.m
+@c which scripts/help/which.m
 @anchor{XREFwhich}
 @deftypefn {} {} which name @dots{}
 Display the type of each @var{name}.
@@ -842,7 +842,7 @@ also displayed.
 @end deftypefn
 
 
-@c what scripts/scripts/miscellaneous/what.m
+@c what scripts/miscellaneous/what.m
 @anchor{XREFwhat}
 @deftypefn  {} {} what
 @deftypefnx {} {} what @var{dir}

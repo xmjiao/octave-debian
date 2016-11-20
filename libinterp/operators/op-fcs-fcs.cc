@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -43,7 +43,7 @@ DEFUNOP (not, float_complex)
   const octave_float_complex& v = dynamic_cast<const octave_float_complex&> (a);
   FloatComplex x = v.float_complex_value ();
   if (octave::math::isnan (x))
-    err_nan_to_logical_conversion ();
+    octave::err_nan_to_logical_conversion ();
 
   return octave_value (x == 0.0f);
 }
@@ -160,15 +160,6 @@ DEFNDCATOP_FN (cs_fcs, complex, float_complex, float_complex_array,
 DEFNDCATOP_FN (fcs_cs, float_complex, complex, float_complex_array,
                float_complex_array, concat)
 
-CONVDECL (float_complex_to_complex)
-{
-  const octave_float_complex& v = dynamic_cast<const octave_float_complex&> (a);
-
-  return new octave_complex_matrix
-               (ComplexMatrix (1, 1,
-                               static_cast<Complex>(v.float_complex_value ())));
-}
-
 void
 install_fcs_fcs_ops (void)
 {
@@ -217,7 +208,5 @@ install_fcs_fcs_ops (void)
                       octave_float_complex_matrix);
   INSTALL_ASSIGNCONV (octave_float_complex, octave_null_sq_str,
                       octave_float_complex_matrix);
-
-  INSTALL_CONVOP (octave_float_complex, octave_complex_matrix,
-                  float_complex_to_complex);
 }
+

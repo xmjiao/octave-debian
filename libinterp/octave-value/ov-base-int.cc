@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2015 John W. Eaton
+Copyright (C) 2004-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -27,6 +27,17 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 #include <limits>
 #include <vector>
+
+#include "dNDArray.h"
+#include "fNDArray.h"
+#include "int8NDArray.h"
+#include "int16NDArray.h"
+#include "int32NDArray.h"
+#include "int64NDArray.h"
+#include "uint8NDArray.h"
+#include "uint16NDArray.h"
+#include "uint32NDArray.h"
+#include "uint64NDArray.h"
 
 #include "lo-ieee.h"
 #include "lo-utils.h"
@@ -183,6 +194,76 @@ octave_base_int_matrix<T>::convert_to_str_internal (bool, bool, char type) const
   return retval;
 }
 
+template <typename MT>
+octave_value
+octave_base_int_matrix<MT>::as_double (void) const
+{
+  return NDArray (this->matrix);
+}
+
+template <typename MT>
+octave_value
+octave_base_int_matrix<MT>::as_single (void) const
+{
+  return FloatNDArray (this->matrix);
+}
+
+template <typename MT>
+octave_value
+octave_base_int_matrix<MT>::as_int8 (void) const
+{
+  return int8NDArray (this->matrix);
+}
+
+template <typename MT>
+octave_value
+octave_base_int_matrix<MT>::as_int16 (void) const
+{
+  return int16NDArray (this->matrix);
+}
+
+template <typename MT>
+octave_value
+octave_base_int_matrix<MT>::as_int32 (void) const
+{
+  return int32NDArray (this->matrix);
+}
+
+template <typename MT>
+octave_value
+octave_base_int_matrix<MT>::as_int64 (void) const
+{
+  return int64NDArray (this->matrix);
+}
+
+template <typename MT>
+octave_value
+octave_base_int_matrix<MT>::as_uint8 (void) const
+{
+  return uint8NDArray (this->matrix);
+}
+
+template <typename MT>
+octave_value
+octave_base_int_matrix<MT>::as_uint16 (void) const
+{
+  return uint16NDArray (this->matrix);
+}
+
+template <typename MT>
+octave_value
+octave_base_int_matrix<MT>::as_uint32 (void) const
+{
+  return uint32NDArray (this->matrix);
+}
+
+template <typename MT>
+octave_value
+octave_base_int_matrix<MT>::as_uint64 (void) const
+{
+  return uint64NDArray (this->matrix);
+}
+
 template <typename T>
 bool
 octave_base_int_matrix<T>::save_ascii (std::ostream& os)
@@ -324,7 +405,8 @@ octave_base_int_matrix<T>::load_binary (std::istream& is, bool swap,
 
 template <typename T>
 bool
-octave_base_int_matrix<T>::save_hdf5 (octave_hdf5_id loc_id, const char *name, bool)
+octave_base_int_matrix<T>::save_hdf5 (octave_hdf5_id loc_id, const char *name,
+                                      bool)
 {
   bool retval = false;
 
@@ -490,6 +572,76 @@ octave_base_int_scalar<T>::convert_to_str_internal (bool, bool, char type) const
 }
 
 template <typename T>
+octave_value
+octave_base_int_scalar<T>::as_double (void) const
+{
+  return static_cast<double> (this->scalar);
+}
+
+template <typename T>
+octave_value
+octave_base_int_scalar<T>::as_single (void) const
+{
+  return static_cast<float> (this->scalar);
+}
+
+template <typename T>
+octave_value
+octave_base_int_scalar<T>::as_int8 (void) const
+{
+  return octave_int8 (this->scalar);
+}
+
+template <typename T>
+octave_value
+octave_base_int_scalar<T>::as_int16 (void) const
+{
+  return octave_int16 (this->scalar);
+}
+
+template <typename T>
+octave_value
+octave_base_int_scalar<T>::as_int32 (void) const
+{
+  return octave_int32 (this->scalar);
+}
+
+template <typename T>
+octave_value
+octave_base_int_scalar<T>::as_int64 (void) const
+{
+  return octave_int64 (this->scalar);
+}
+
+template <typename T>
+octave_value
+octave_base_int_scalar<T>::as_uint8 (void) const
+{
+  return octave_uint8 (this->scalar);
+}
+
+template <typename T>
+octave_value
+octave_base_int_scalar<T>::as_uint16 (void) const
+{
+  return octave_uint16 (this->scalar);
+}
+
+template <typename T>
+octave_value
+octave_base_int_scalar<T>::as_uint32 (void) const
+{
+  return octave_uint32 (this->scalar);
+}
+
+template <typename T>
+octave_value
+octave_base_int_scalar<T>::as_uint64 (void) const
+{
+  return octave_uint64 (this->scalar);
+}
+
+template <typename T>
 bool
 octave_base_int_scalar<T>::save_ascii (std::ostream& os)
 {
@@ -547,7 +699,8 @@ octave_base_int_scalar<T>::load_binary (std::istream& is, bool swap,
 
 template <typename T>
 bool
-octave_base_int_scalar<T>::save_hdf5 (octave_hdf5_id loc_id, const char *name, bool)
+octave_base_int_scalar<T>::save_hdf5 (octave_hdf5_id loc_id, const char *name,
+                                      bool)
 {
   bool retval = false;
 

@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2012-2015 Jordi Gutiérrez Hermoso
+@c Copyright (C) 2012-2016 Jordi Gutiérrez Hermoso
 @c
 @c This file is part of Octave.
 @c
@@ -540,7 +540,7 @@ The first input argument @var{func} can be a string, a function
 handle, an inline function, or an anonymous function.  The input
 argument @var{A} can be a logic array, a numeric array, a string
 array, a structure array, or a cell array.  By a call of the function
-@command{arrayfun} all elements of @var{A} are passed on to the named
+@code{arrayfun} all elements of @var{A} are passed on to the named
 function @var{func} individually.
 
 The named function can also take more than two input arguments, with
@@ -552,7 +552,7 @@ example:
 @example
 @group
 arrayfun (@@atan2, [1, 0], [0, 1])
-     @result{} [ 1.5708   0.0000 ]
+     @result{} [ 1.57080   0.00000 ]
 @end group
 @end example
 
@@ -637,7 +637,7 @@ arrayfun (@@str2num, [1234],
 @end deftypefn
 
 
-@c spfun scripts/scripts/sparse/spfun.m
+@c spfun scripts/sparse/spfun.m
 @anchor{XREFspfun}
 @deftypefn {} {@var{y} =} spfun (@var{f}, @var{S})
 Compute @code{f(@var{S})} for the nonzero values of @var{S}.
@@ -788,7 +788,7 @@ v = cellfun (@@det, a); # faster
 @end deftypefn
 
 
-@c structfun scripts/scripts/general/structfun.m
+@c structfun scripts/general/structfun.m
 @anchor{XREFstructfun}
 @deftypefn  {} {} structfun (@var{func}, @var{S})
 @deftypefnx {} {[@var{A}, @dots{}] =} structfun (@dots{})
@@ -860,7 +860,7 @@ Whenever it's possible to categorize according to indices the elements
 of an array when performing a computation, accumulation functions can be
 useful.
 
-@c accumarray scripts/scripts/general/accumarray.m
+@c accumarray scripts/general/accumarray.m
 @anchor{XREFaccumarray}
 @deftypefn  {} {} accumarray (@var{subs}, @var{vals}, @var{sz}, @var{func}, @var{fillval}, @var{issparse})
 @deftypefnx {} {} accumarray (@var{subs}, @var{vals}, @dots{})
@@ -971,7 +971,7 @@ accumarray calls and compute the results in a vectorized manner.
 @end deftypefn
 
 
-@c accumdim scripts/scripts/general/accumdim.m
+@c accumdim scripts/general/accumdim.m
 @anchor{XREFaccumdim}
 @deftypefn {} {} accumdim (@var{subs}, @var{vals}, @var{dim}, @var{n}, @var{func}, @var{fillval})
 Create an array by accumulating the slices of an array into the
@@ -1239,8 +1239,8 @@ statement instead.  @xref{The try Statement}.
 @item Use @code{ignore_function_time_stamp} when appropriate.
 If you are calling lots of functions, and none of them will need to change
 during your run, set the variable @code{ignore_function_time_stamp} to
-@qcode{"all"}.  This will stop Octave from checking the time stamp of a function
-file to see if it has been updated while the program is being run.
+@qcode{"all"}.  This will stop Octave from checking the time stamp of a
+function file to see if it has been updated while the program is being run.
 @end itemize
 
 @node Examples

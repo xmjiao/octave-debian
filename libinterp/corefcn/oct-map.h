@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -473,3 +473,4 @@ inline octave_map octave_value_extract<octave_map> (const octave_value& v)
 { return v.map_value (); }
 
 #endif
+

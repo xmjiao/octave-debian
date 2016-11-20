@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -81,8 +81,8 @@ as will be described in the next section.  To assign an ID to an error,
 simply call @code{error} with two string arguments, where the first
 is the identification string, and the second is the actual error.  Note
 that error IDs are in the format @qcode{"NAMESPACE:ERROR-NAME"}.  The namespace
-@qcode{"Octave"} is used for Octave's own errors.  Any other string is available
-as a namespace for user's own errors.
+@qcode{"Octave"} is used for Octave's own errors.  Any other string is
+available as a namespace for user's own errors.
 
 @c error libinterp/corefcn/error.cc
 @anchor{XREFerror}
@@ -223,7 +223,7 @@ f ()
 @end group
 @end example
 
-@c print_usage scripts/scripts/help/print_usage.m
+@c print_usage scripts/help/print_usage.m
 @anchor{XREFprint_usage}
 @deftypefn  {} {} print_usage ()
 @deftypefnx {} {} print_usage (@var{name})
@@ -235,7 +235,7 @@ the usage message of the currently executing function.
 @end deftypefn
 
 
-@c beep scripts/scripts/io/beep.m
+@c beep scripts/io/beep.m
 @anchor{XREFbeep}
 @deftypefn {} {} beep ()
 Produce a beep from the speaker (or visual bell).
@@ -408,7 +408,7 @@ endfor
 The functions distributed with Octave can issue one of the following
 errors.
 
-@c error_ids scripts/scripts/help/error_ids.m
+@c error_ids scripts/help/error_ids.m
 @anchor{XREFerror_ids}
 @cindex error ids
 
@@ -687,7 +687,7 @@ With two arguments, also set the last message identifier.
 The functions distributed with Octave can issue one of the following
 warnings.
 
-@c warning_ids scripts/scripts/help/warning_ids.m
+@c warning_ids scripts/help/warning_ids.m
 @anchor{XREFwarning_ids}
 @cindex warning ids
 

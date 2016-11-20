@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2015 Sylvain Pelissier
+## Copyright (C) 2007-2016 Sylvain Pelissier
 ##
 ## This file is part of Octave.
 ##
@@ -95,5 +95,5 @@ endfunction
 %!demo
 %! clf;
 %! ellipsoid (0, 0, 1, 2, 3, 4, 20);
-%! title ('ellipsoid()');
+%! title ("ellipsoid()");
 

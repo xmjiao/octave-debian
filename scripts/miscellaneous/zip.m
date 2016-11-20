@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2015 Sylvain Pelissier
+## Copyright (C) 2006-2016 Sylvain Pelissier
 ##
 ## This file is part of Octave.
 ##
@@ -120,6 +120,8 @@ endfunction
 %! unwind_protect_cleanup
 %!   unlink (filename);
 %!   unlink ([dirname, filesep, basename, ext]);
+%!   unlink (zipfile);
+%!   unlink ([zipfile ".zip"]);
 %!   rmdir (dirname);
 %! end_unwind_protect
 

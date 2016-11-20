@@ -48,9 +48,9 @@ makes it easy to perform common mathematical tasks.  Giving that up means
 shifting the focus from solving the real problem to solving a computer
 programming problem.  It means returning to low-level constructs such as
 pointers, memory management, mathematical overflow/underflow, etc.  Because
-of the low level nature, and the fact that the compiled code is executed outside
-of Octave, there is the very real possibility of crashing the interpreter and
-losing work.
+of the low level nature, and the fact that the compiled code is executed
+outside of Octave, there is the very real possibility of crashing the
+interpreter and losing work.
 
 Before going further, you should first determine if you really need to bother
 writing code outside of Octave.
@@ -148,7 +148,7 @@ paths for header files, etc.@: is a difficult task.  Octave automates this by
 providing the @code{mkoctfile} command with which to build oct-files.  The
 command is available from within Octave or at the shell command line.
 
-@c mkoctfile scripts/scripts/miscellaneous/mkoctfile.m
+@c mkoctfile scripts/miscellaneous/mkoctfile.m
 @anchor{XREFmkoctfile}
 @deftypefn  {} {} mkoctfile [-options] file @dots{}
 @deftypefnx {} {[@var{output}, @var{status}] =} mkoctfile (@dots{})
@@ -851,8 +851,8 @@ An example is @code{speye (1e6)} which will create a matrix with a million
 rows and columns, but only a million nonzero elements.  Therefore the
 number of rows by the number of columns in this case is more than two
 hundred times the maximum value that can be represented by an unsigned int.
-The use of @code{numel} should therefore be avoided useless it is known
-it won't overflow.
+The use of @code{numel} should therefore be avoided unless it is known
+that it will not overflow.
 
 Extreme care must be take with the elem method and the @qcode{"()"} operator,
 which perform basically the same function.  The reason is that if a
@@ -1623,7 +1623,7 @@ The warning for division by zero (and in fact all warnings) are disabled in the
 
 The documentation of an oct-file is the fourth string parameter of the
 @w{@code{DEFUN_DLD}} macro.  This string can be formatted in the same manner
-as the help strings for user functions (@pxref{Documentation Tips}),
+as the help strings for user functions,
 however there are some issue that are particular to the formatting of
 help strings within oct-files.
 
@@ -1715,7 +1715,7 @@ the command line.  However, to avoid issues with @sc{matlab}'s own @code{mex}
 command, the use of the command @code{mex} is limited to within Octave.
 Compiled mex-files have the extension @file{.mex}.
 
-@c mex scripts/scripts/miscellaneous/mex.m
+@c mex scripts/miscellaneous/mex.m
 @anchor{XREFmex}
 @deftypefn {} {} mex [options] file @dots{}
 Compile source code written in C, C++, or Fortran, to a MEX file.
@@ -1725,7 +1725,7 @@ This is equivalent to @code{mkoctfile --mex [options] file}.
 @end deftypefn
 
 
-@c mexext scripts/scripts/miscellaneous/mexext.m
+@c mexext scripts/miscellaneous/mexext.m
 @anchor{XREFmexext}
 @deftypefn {} {} mexext ()
 Return the filename extension used for MEX files.
@@ -1755,9 +1755,9 @@ mexFunction (int nlhs, mxArray *plhs[],
 The first line @code{#include "mex.h"} makes available all of the definitions
 necessary for a mex-file.  One important difference between Octave and
 @sc{matlab} is that the header file @qcode{"matrix.h"} is implicitly included
-through the inclusion of @qcode{"mex.h"}.  This is necessary to avoid a conflict
-with the Octave file @qcode{"Matrix.h"} for operating systems and compilers that
-don't distinguish between filenames in upper and lower case.
+through the inclusion of @qcode{"mex.h"}.  This is necessary to avoid a
+conflict with the Octave file @qcode{"Matrix.h"} for operating systems and
+compilers that don't distinguish between filenames in upper and lower case.
 
 The entry point into the mex-file is defined by @code{mexFunction}.  The
 function takes four arguments:
@@ -2521,7 +2521,7 @@ seen in the code
 #include <octave/oct.h>
 #include <octave/octave.h>
 #include <octave/parse.h>
-#include <octave/toplev.h>
+#include <octave/interpreter.h>
 
 int
 main (void)
@@ -2648,9 +2648,9 @@ a library like
 
 @menu
 * Java Interface Functions::
-* Making Java classes available::
-* Creating an instance of a Java class::
-* Handling Java memory limitations::
+* Making Java Classes Available::
+* Creating an Instance of a Java Class::
+* Handling Java Memory Limitations::
 @end menu
 
 @node Java Interface Functions
@@ -2683,7 +2683,7 @@ x = javaObject ("java.lang.StringBuffer", "Initial string")
 
 
 @cindex array, creating a Java array
-@c javaArray scripts/scripts/java/javaArray.m
+@c javaArray scripts/java/javaArray.m
 @anchor{XREFjavaArray}
 @deftypefn  {} {@var{jary} =} javaArray (@var{classname}, @var{sz})
 @deftypefnx {} {@var{jary} =} javaArray (@var{classname}, @var{m}, @var{n}, @dots{})
@@ -2766,7 +2766,7 @@ java_get ("java.lang.Float", "MAX_VALUE")
 @end group
 @end example
 
-@c java_get scripts/scripts/java/java_get.m
+@c java_get scripts/java/java_get.m
 @anchor{XREFjava_get}
 @deftypefn {} {@var{val} =} java_get (@var{obj}, @var{name})
 Get the value of the field @var{name} of the Java object @var{obj}.
@@ -2790,7 +2790,7 @@ equivalent
 
 
 @cindex field, setting value of Java object field
-@c java_set scripts/scripts/java/java_set.m
+@c java_set scripts/java/java_set.m
 @anchor{XREFjava_set}
 @deftypefn {} {@var{obj} =} java_set (@var{obj}, @var{name}, @var{val})
 Set the value of the field @var{name} of the Java object @var{obj} to
@@ -2883,7 +2883,7 @@ code to execute.
 @cindex dynamic classpath
 @cindex classpath, static
 @cindex static classpath
-@c javaclasspath scripts/scripts/java/javaclasspath.m
+@c javaclasspath scripts/java/javaclasspath.m
 @anchor{XREFjavaclasspath}
 @deftypefn  {} {} javaclasspath ()
 @deftypefnx {} {@var{dpath} =} javaclasspath ()
@@ -2927,7 +2927,7 @@ Return both the static and dynamic classpath in a single cellstr.
 @cindex path, adding to classpath
 @cindex classpath, dynamic
 @cindex dynamic classpath, adding new path
-@c javaaddpath scripts/scripts/java/javaaddpath.m
+@c javaaddpath scripts/java/javaaddpath.m
 @anchor{XREFjavaaddpath}
 @deftypefn  {} {} javaaddpath (@var{clspath})
 @deftypefnx {} {} javaaddpath (@var{clspath1}, @dots{})
@@ -2942,7 +2942,7 @@ be added at once by specifying additional arguments.
 
 @cindex classpath, removing path
 @cindex path, removing from classpath
-@c javarmpath scripts/scripts/java/javarmpath.m
+@c javarmpath scripts/java/javarmpath.m
 @anchor{XREFjavarmpath}
 @deftypefn  {} {} javarmpath (@var{clspath})
 @deftypefnx {} {} javarmpath (@var{clspath1}, @dots{})
@@ -2959,7 +2959,7 @@ removed at once by specifying additional arguments.
 The following functions provide information and control over the interface
 between Octave and the Java Virtual Machine.
 
-@c javachk scripts/scripts/java/javachk.m
+@c javachk scripts/java/javachk.m
 @anchor{XREFjavachk}
 @deftypefn  {} {} javachk (@var{feature})
 @deftypefnx {} {} javachk (@var{feature}, @var{component})
@@ -3027,7 +3027,7 @@ Interface and Java is installed.
 @end deftypefn
 
 
-@c usejava scripts/scripts/java/usejava.m
+@c usejava scripts/java/usejava.m
 @anchor{XREFusejava}
 @deftypefn {} {} usejava (@var{feature})
 Return true if the Java element @var{feature} is available.
@@ -3059,7 +3059,7 @@ Java Interface and Java is installed.
 
 
 @cindex memory, displaying Java memory status
-@c javamem scripts/scripts/java/javamem.m
+@c javamem scripts/java/javamem.m
 @anchor{XREFjavamem}
 @deftypefn  {} {} javamem ()
 @deftypefnx {} {@var{jmem} =} javamem ()
@@ -3152,8 +3152,8 @@ The original variable value is restored when exiting the function.
 @end deftypefn
 
 
-@node Making Java classes available
-@subsection Making Java classes available
+@node Making Java Classes Available
+@subsection Making Java Classes Available
 
 @c - index -
 @cindex classpath, setting
@@ -3200,7 +3200,7 @@ was started from).  If such a file is found, it is read and defines the initial
 @item Next, Octave searches in the user's home directory.  If a file
 @file{javaclasspath.txt} exists here, its contents are appended to the static
 classpath (if any).  Thus, it is possible to build an initial static classpath
-on a 'per user' basis.
+on a @nospell{'per user'} basis.
 
 @item Finally, Octave looks for a next occurrence of file
 @file{javaclasspath.txt} in the m-files directory where Octave Java functions
@@ -3264,8 +3264,8 @@ javaaddpath ("~/octave/myclasses.jar");
 @end example
 
 @c ------------------------------------------------------------------------
-@node Creating an instance of a Java class
-@subsection Creating an instance of a Java class
+@node Creating an Instance of a Java Class
+@subsection Creating an Instance of a Java Class
 @c - index -
 @cindex object, how to create
 @cindex instance, how to create
@@ -3279,8 +3279,8 @@ Example:
 Passenger = javaObject ("package.FirstClass", row, seat);
 @end example
 
-@node Handling Java memory limitations
-@subsection Handling Java memory limitations
+@node Handling Java Memory Limitations
+@subsection Handling Java Memory Limitations
 @cindex memory, limitations
 
 In order to execute Java code Octave creates a Java Virtual Machine (JVM).

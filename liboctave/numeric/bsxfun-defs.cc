@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2015 Jaroslav Hajek
+Copyright (C) 2009-2016 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -258,3 +258,4 @@ do_inplace_bsxfun_op (Array<R>& r, const Array<X>& x,
   BSXFUN_OP2_DEF_MXLOOP (pow, INT_TYPE, FloatNDArray, INT_TYPE, mx_inline_pow)
 
 #endif
+

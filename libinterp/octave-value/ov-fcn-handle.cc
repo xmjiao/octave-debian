@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2015 John W. Eaton
+Copyright (C) 2003-2016 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 Copyright (C) 2010 Jaroslav Hajek
 
@@ -699,7 +699,8 @@ octave_fcn_handle::save_hdf5 (octave_hdf5_id loc_id, const char *name,
 
   hid_t group_hid = -1;
 #if defined (HAVE_HDF5_18)
-  group_hid = H5Gcreate (loc_id, name, octave_H5P_DEFAULT, octave_H5P_DEFAULT, octave_H5P_DEFAULT);
+  group_hid = H5Gcreate (loc_id, name, octave_H5P_DEFAULT, octave_H5P_DEFAULT,
+                         octave_H5P_DEFAULT);
 #else
   group_hid = H5Gcreate (loc_id, name, 0);
 #endif
@@ -730,12 +731,15 @@ octave_fcn_handle::save_hdf5 (octave_hdf5_id loc_id, const char *name,
     }
 #if defined (HAVE_HDF5_18)
   data_hid = H5Dcreate (group_hid, "nm",  type_hid, space_hid,
-                        octave_H5P_DEFAULT, octave_H5P_DEFAULT, octave_H5P_DEFAULT);
+                        octave_H5P_DEFAULT, octave_H5P_DEFAULT,
+                        octave_H5P_DEFAULT);
 #else
-  data_hid = H5Dcreate (group_hid, "nm",  type_hid, space_hid, octave_H5P_DEFAULT);
+  data_hid = H5Dcreate (group_hid, "nm",  type_hid, space_hid,
+                        octave_H5P_DEFAULT);
 #endif
-  if (data_hid < 0 || H5Dwrite (data_hid, type_hid, octave_H5S_ALL, octave_H5S_ALL,
-                                octave_H5P_DEFAULT, nm.c_str ()) < 0)
+  if (data_hid < 0
+      || H5Dwrite (data_hid, type_hid, octave_H5S_ALL, octave_H5S_ALL,
+                   octave_H5P_DEFAULT, nm.c_str ()) < 0)
     {
       H5Sclose (space_hid);
       H5Tclose (type_hid);
@@ -761,13 +765,15 @@ octave_fcn_handle::save_hdf5 (octave_hdf5_id loc_id, const char *name,
 
 #if defined (HAVE_HDF5_18)
       data_hid = H5Dcreate (group_hid, "fcn",  type_hid, space_hid,
-                            octave_H5P_DEFAULT, octave_H5P_DEFAULT, octave_H5P_DEFAULT);
+                            octave_H5P_DEFAULT, octave_H5P_DEFAULT,
+                            octave_H5P_DEFAULT);
 #else
       data_hid = H5Dcreate (group_hid, "fcn",  type_hid, space_hid,
                             octave_H5P_DEFAULT);
 #endif
-      if (data_hid < 0 || H5Dwrite (data_hid, type_hid, octave_H5S_ALL, octave_H5S_ALL,
-                                    octave_H5P_DEFAULT, stmp.c_str ()) < 0)
+      if (data_hid < 0
+          || H5Dwrite (data_hid, type_hid, octave_H5S_ALL, octave_H5S_ALL,
+                       octave_H5P_DEFAULT, stmp.c_str ()) < 0)
         {
           H5Sclose (space_hid);
           H5Tclose (type_hid);
@@ -999,7 +1005,9 @@ octave_fcn_handle::load_hdf5 (octave_hdf5_id loc_id, const char *name)
   st_id = H5Tcopy (H5T_C_S1);
   H5Tset_size (st_id, slen);
 
-  if (H5Dread (data_hid, st_id, octave_H5S_ALL, octave_H5S_ALL, octave_H5P_DEFAULT, nm_tmp) < 0)
+  if (H5Dread (data_hid, st_id, octave_H5S_ALL, octave_H5S_ALL,
+               octave_H5P_DEFAULT, nm_tmp)
+      < 0)
     {
       H5Tclose (st_id);
       H5Sclose (space_hid);
@@ -1070,7 +1078,9 @@ octave_fcn_handle::load_hdf5 (octave_hdf5_id loc_id, const char *name)
       st_id = H5Tcopy (H5T_C_S1);
       H5Tset_size (st_id, slen);
 
-      if (H5Dread (data_hid, st_id, octave_H5S_ALL, octave_H5S_ALL, octave_H5P_DEFAULT, fcn_tmp) < 0)
+      if (H5Dread (data_hid, st_id, octave_H5S_ALL, octave_H5S_ALL,
+                   octave_H5P_DEFAULT, fcn_tmp)
+          < 0)
         {
           H5Tclose (st_id);
           H5Sclose (space_hid);
@@ -1291,7 +1301,7 @@ octave_fcn_handle::load_hdf5 (octave_hdf5_id loc_id, const char *name)
 }
 
 /*
-%!test
+%!test <33857>
 %! a = 2;
 %! f = @(x) a + x;
 %! g = @(x) 2 * x;
@@ -1312,7 +1322,7 @@ octave_fcn_handle::load_hdf5 (octave_hdf5_id loc_id, const char *name)
 %!   mode = modes{i};
 %!   nm = tempname ();
 %!   unwind_protect
-%!     f2 (1); # bug #33857
+%!     f2 (1);
 %!     save (mode, nm, "f2", "g2", "hm2", "hdld2", "hbi2");
 %!     clear f2 g2 hm2 hdld2 hbi2
 %!     load (nm);
@@ -1343,8 +1353,7 @@ octave_fcn_handle::load_hdf5 (octave_hdf5_id loc_id, const char *name)
 %!  endif
 %!endfunction
 
-Test for bug #35876
-%!test
+%!test <35876>
 %! a = 2;
 %! f = @(x) a + x;
 %! g = @(x) 2 * x;
@@ -1757,7 +1766,7 @@ particular output.
         {
           octave_scalar_map ws;
           for (std::list<symbol_table::symbol_record>::const_iterator
-                 p = vars.begin (); p != vars.end (); p++)
+               p = vars.begin (); p != vars.end (); p++)
             {
               ws.assign (p->name (), p->varval (0));
             }
@@ -1909,8 +1918,7 @@ octave_fcn_binder::octave_fcn_binder (const octave_value& f,
                                       int exp_nargin)
   : octave_fcn_handle (f), root_handle (root), arg_template (templ),
     arg_mask (mask), expected_nargin (exp_nargin)
-{
-}
+{ }
 
 octave_fcn_handle *
 octave_fcn_binder::maybe_binder (const octave_value& f)
@@ -2047,7 +2055,7 @@ octave_fcn_binder::maybe_binder (const octave_value& f)
                                 {
                                   root_val = make_fcn_handle (head_name);
                                 }
-                              catch (const octave_execution_exception&)
+                              catch (const octave::execution_exception&)
                                 {
                                   recover_from_exception ();
 
@@ -2126,3 +2134,4 @@ octave_fcn_binder::do_multi_index_op (int nargout,
 %! x = [1,2;3,4];
 %! assert (__f (@(i) x(:,i), 1), [1;3]);
 */
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -731,7 +731,7 @@ along with Octave; see the file COPYING.  If not, see
     if (a_dims != b_dims)                                       \
       {                                                         \
         if (! is_valid_bsxfun ("operator .^", a_dims, b_dims))  \
-          err_nonconformant ("operator .^", a_dims, b_dims);    \
+          octave::err_nonconformant ("operator .^", a_dims, b_dims);    \
                                                                 \
         return bsxfun_pow (a, b);                               \
       }                                                         \
@@ -752,7 +752,7 @@ along with Octave; see the file COPYING.  If not, see
     if (a_dims != b_dims)                                       \
       {                                                         \
         if (! is_valid_bsxfun ("operator .^", a_dims, b_dims))  \
-          err_nonconformant ("operator .^", a_dims, b_dims);    \
+          octave::err_nonconformant ("operator .^", a_dims, b_dims);    \
                                                                 \
         return bsxfun_pow (a, b);                               \
       }                                                         \
@@ -773,7 +773,7 @@ along with Octave; see the file COPYING.  If not, see
     if (a_dims != b_dims)                                       \
       {                                                         \
         if (! is_valid_bsxfun ("operator .^", a_dims, b_dims))  \
-          err_nonconformant ("operator .^", a_dims, b_dims);    \
+          octave::err_nonconformant ("operator .^", a_dims, b_dims);    \
                                                                 \
         return bsxfun_pow (a, b);                               \
       }                                                         \
@@ -794,7 +794,7 @@ along with Octave; see the file COPYING.  If not, see
     if (a_dims != b_dims)                                       \
       {                                                         \
         if (! is_valid_bsxfun ("operator .^", a_dims, b_dims))  \
-          err_nonconformant ("operator .^", a_dims, b_dims);    \
+          octave::err_nonconformant ("operator .^", a_dims, b_dims);    \
                                                                 \
         return bsxfun_pow (a, b);                               \
       }                                                         \
@@ -815,7 +815,7 @@ along with Octave; see the file COPYING.  If not, see
     if (a_dims != b_dims)                                       \
       {                                                         \
         if (! is_valid_bsxfun ("operator .^", a_dims, b_dims))  \
-          err_nonconformant ("operator .^", a_dims, b_dims);    \
+          octave::err_nonconformant ("operator .^", a_dims, b_dims);    \
                                                                 \
         return bsxfun_pow (a, b);                               \
       }                                                         \
@@ -1194,3 +1194,4 @@ along with Octave; see the file COPYING.  If not, see
   OCTAVE_INSTALL_MM_INT_CMP_OPS (T1 ## _ ## T2 ## _mm, T1 ## _, T2 ## _)
 
 #endif
+

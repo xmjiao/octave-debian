@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2015 VZLU Prague
+Copyright (C) 2010-2016 VZLU Prague
 
 This file is part of Octave.
 
@@ -54,3 +54,4 @@ install_fcn_ops (void)
   INSTALL_BINOP (op_eq, octave_fcn_handle, octave_fcn_handle, eq);
   INSTALL_BINOP (op_ne, octave_fcn_handle, octave_fcn_handle, ne);
 }
+

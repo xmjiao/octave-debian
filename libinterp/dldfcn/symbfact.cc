@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2015 David Bateman
+Copyright (C) 2005-2016 David Bateman
 Copyright (C) 1998-2005 Andy Adler
 
 This file is part of Octave.
@@ -401,8 +401,8 @@ cleanup:
 %! [~, ~, ~, ~, l] = symbfact (A, "sym", "lower");
 %! assert (l, sparse (tril (true (3))));
 
-%!testif HAVE_CHOLMOD
-%! ## Bug #42587, singular matrix
+%!testif HAVE_CHOLMOD <42587>
+%! ## singular matrix
 %! A = sparse ([1 0 8;0 1 8;8 8 1]);
 %! [count, h, parent, post, r] = symbfact (A);
 
@@ -418,3 +418,4 @@ cleanup:
 %! fail ("symbfact (sparse ([1, 2; 3, 4; 5, 6]))", "S must be a square matrix");
 
 */
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999-2015 Andy Adler
+Copyright (C) 1999-2016 Andy Adler
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -255,10 +255,14 @@ When the third argument is a matrix, return the convolution of the matrix
 %!shared
 
 %% Test cases from Bug #34893
-%!assert (conv2 ([1:5;1:5], [1:2], "same"), [4 7 10 13 10; 4 7 10 13 10])
-%!assert (conv2 ([1:5;1:5]', [1:2]', "same"), [4 7 10 13 10; 4 7 10 13 10]')
-%!assert (conv2 ([1:5;1:5], [1:2], "valid"), [4 7 10 13; 4 7 10 13])
-%!assert (conv2 ([1:5;1:5]', [1:2]', "valid"), [4 7 10 13; 4 7 10 13]')
+%!assert <34893> (conv2 ([1:5;1:5], [1:2], "same"),
+%!                [4 7 10 13 10; 4 7 10 13 10])
+%!assert <34893> (conv2 ([1:5;1:5]', [1:2]', "same"),
+%!                [4 7 10 13 10; 4 7 10 13 10]')
+%!assert <34893> (conv2 ([1:5;1:5], [1:2], "valid"),
+%!                [4 7 10 13; 4 7 10 13])
+%!assert <34893> (conv2 ([1:5;1:5]', [1:2]', "valid"),
+%!                [4 7 10 13; 4 7 10 13]')
 
 %!test
 %! rand ("seed", 42);
@@ -377,8 +381,7 @@ The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 }
 
 /*
-## Check for bug #39314
-%!test
+%!test <39314>
 %! v = reshape ([1 2], [1 1 2]);
 %! assert (convn (v, v), reshape ([1 4 4], [1 1 3]));
 %! assert (convn (v, v, "same"), reshape ([4 4], [1 1 2]));
@@ -393,14 +396,14 @@ The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 ##        The terms in the convolution added in reverse order compared
 ##        to the "full" option.  This produces differences on the order
 ##        of tens of eps.  This should be fixed, but in the meantime
-##        the tests will be marked as xtests.
+##        the tests will be marked as known failures.
 %!shared a, b, c
 %! ## test 3D by 3D
 %! a = rand (10, 10, 10);
 %! b = rand (3, 3, 3);
 %! c = convn (a, b, "full");
 %!assert (convn (a, b, "same"), c(2:11,2:11,2:11))
-%!xtest
+%!test <39314>
 %! assert (convn (a, b, "valid"), c(3:10,3:10,3:10));
 %!
 %!test
@@ -409,7 +412,7 @@ The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 %! b = rand (3, 3);
 %! c = convn (a, b, "full");
 %!assert (convn (a, b, "same"), c(2:11,2:11,:))
-%!xtest
+%!test <39314>
 %! assert (convn (a, b, "valid"), c(3:10,3:10,:));
 %!
 %!test
@@ -426,7 +429,7 @@ The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 %! b = rand (4, 3, 2, 3);
 %! c = convn (a, b, "full");
 %!assert (convn (a, b, "same"), c(3:12,2:16,2:8,2:9,:))
-%!xtest
+%!test <39314>
 %! assert (convn (a, b, "valid"), c(4:10,3:15,2:7,3:8,:));
 
 %!test
@@ -547,3 +550,4 @@ The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 %!error <SHAPE type not valid> convn (1,2, "NOT_A_SHAPE")
 %!error convn (rand (3), 1, 1)
 */
+

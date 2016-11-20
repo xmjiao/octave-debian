@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2015 John W. Eaton
+Copyright (C) 2004-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -50,3 +50,4 @@ BSXFUN_MIXED_INT_DECLS(uint64NDArray, OCTAVE_API)
 BSXFUN_STDREL_DECLS (uint64NDArray, OCTAVE_API)
 
 #endif
+

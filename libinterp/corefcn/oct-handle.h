@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2015 John W. Eaton
+Copyright (C) 2007-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -48,7 +48,7 @@ public:
           {
             val = a.double_value ();
           }
-        catch (octave_execution_exception& e)
+        catch (octave::execution_exception& e)
           {
             error (e, "invalid handle");
           }
@@ -149,3 +149,4 @@ operator > (const octave_handle& a, const octave_handle& b)
 }
 
 #endif
+

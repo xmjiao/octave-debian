@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -131,3 +131,4 @@ static auto& Vdebug_on_interrupt = octave::Vdebug_on_interrupt;
 #endif
 
 #endif
+

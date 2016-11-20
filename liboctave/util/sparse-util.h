@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2015 David Bateman
+Copyright (C) 2005-2016 David Bateman
 Copyright (C) 1998-2005 Andy Adler
 
 This file is part of Octave.
@@ -44,3 +44,4 @@ sparse_indices_ok (octave_idx_type *r, octave_idx_type *c,
                    octave_idx_type nnz);
 
 #endif
+

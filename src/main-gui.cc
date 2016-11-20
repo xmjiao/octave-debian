@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2015 John W. Eaton
+Copyright (C) 2012-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -103,3 +103,4 @@ main (int argc, char **argv)
 
   return app.execute ();
 }
+

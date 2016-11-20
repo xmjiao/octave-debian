@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -46,7 +46,7 @@ DEFUNOP (not, scalar)
   const octave_scalar& v = dynamic_cast<const octave_scalar&> (a);
   double x = v.scalar_value ();
   if (octave::math::isnan (x))
-    err_nan_to_logical_conversion ();
+    octave::err_nan_to_logical_conversion ();
 
   return octave_value (x == 0.0);
 }
@@ -175,3 +175,4 @@ install_s_s_ops (void)
   INSTALL_ASSIGNCONV (octave_scalar, octave_null_str, octave_matrix);
   INSTALL_ASSIGNCONV (octave_scalar, octave_null_sq_str, octave_matrix);
 }
+

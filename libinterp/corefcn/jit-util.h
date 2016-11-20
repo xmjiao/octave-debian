@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2015 Max Brister
+Copyright (C) 2012-2016 Max Brister
 
 This file is part of Octave.
 
@@ -45,7 +45,8 @@ namespace llvm
   class Value;
   class Module;
 #if defined (LEGACY_PASSMANAGER)
-  namespace legacy {
+  namespace legacy
+  {
     class FunctionPassManager;
     class PassManager;
   }
@@ -216,3 +217,4 @@ bool isa (U *value)
 
 #endif
 #endif
+

@@ -1,7 +1,7 @@
 // %NO_EDIT_WARNING%
 /*
 
-Copyright (C) 2008-2015 Michael Goffioul
+Copyright (C) 2008-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -312,6 +312,9 @@ static std::string help_msg =
 "\n"
 "  -s, --strip             Strip output file.\n"
 "\n"
+"  -n, --just-print, --dry-run\n"
+"                          Print commands, but do not execute them.\n"
+"\n"
 "  -v, --verbose           Echo commands as they are executed.\n"
 "\n"
 "  FILE                    Compile or link FILE.  Recognized file types are:\n"
@@ -372,8 +375,14 @@ ends_with (const std::string& s, const std::string& suffix)
 }
 
 static int
-run_command (const std::string& cmd)
+run_command (const std::string& cmd, bool printonly = false)
 {
+  if (printonly)
+    {
+      std::cout << cmd << std::endl;
+      return 0;
+    }
+
   if (debug)
     std::cout << cmd << std::endl;
 
@@ -414,6 +423,7 @@ main (int argc, char **argv)
   bool link_stand_alone = false;
   std::string output_ext = ".oct";
   bool depend = false;
+  bool printonly = false;
 
   if (argc == 1)
     {
@@ -498,6 +508,10 @@ main (int argc, char **argv)
         {
           defs += (" " + arg);
         }
+      else if (arg == "-largeArrayDims" || arg == "-compatibleArrayDims")
+        {
+          std::cout << "warning: -largeArrayDims and -compatibleArrayDims are accepted for compatibility, but ignored" << std::endl;
+        }
       else if (starts_with (arg, "-Wl,") || starts_with (arg, "-l")
                || starts_with (arg, "-L") || starts_with (arg, "-R"))
         {
@@ -522,6 +536,10 @@ main (int argc, char **argv)
             }
           else
             std::cerr << "mkoctfile: output filename missing" << std::endl;
+        }
+      else if (arg == "-n" || arg == "--dry-run" || arg == "--just-print")
+        {
+          printonly = true;
         }
       else if (arg == "-p" || arg == "-print" || arg == "--print")
         {
@@ -583,6 +601,12 @@ main (int argc, char **argv)
         octfile = file;
     }
 
+  if (output_ext ==  ".mex"
+      && vars["ALL_CFLAGS"].find ("-g") != std::string::npos)
+    {
+      defs += " -DMEX_DEBUG";
+    }
+
   if (link_stand_alone)
     {
       if (! outputfile.empty ())
@@ -628,8 +652,8 @@ main (int argc, char **argv)
                   size_t spos = line.rfind ('/', pos);
                   std::string ofile =
                     (spos == std::string::npos
-                      ? line.substr (0, pos+2)
-                      : line.substr (spos+1, pos-spos+1));
+                     ? line.substr (0, pos+2)
+                     : line.substr (spos+1, pos-spos+1));
                   fo << "pic/" << ofile << " " << ofile << " "
                      << dfile << line.substr (pos) << std::endl;
                 }
@@ -662,8 +686,8 @@ main (int argc, char **argv)
                   size_t spos = line.rfind ('/', pos);
                   std::string ofile =
                     (spos == std::string::npos
-                      ? line.substr (0, pos+2)
-                      : line.substr (spos+1, pos-spos+1));
+                     ? line.substr (0, pos+2)
+                     : line.substr (spos+1, pos-spos+1));
                   fo << "pic/" << ofile << " " << ofile << " "
                      << dfile << line.substr (pos+2) << std::endl;
                 }
@@ -698,7 +722,7 @@ main (int argc, char **argv)
                             + vars["ALL_FFLAGS"] + " "
                             + incflags + " " + defs + " " + pass_on_options
                             + " " + f + " -o " + o;
-          result = run_command (cmd);
+          result = run_command (cmd, printonly);
         }
       else
         {
@@ -730,7 +754,7 @@ main (int argc, char **argv)
                             + pass_on_options + " "
                             + incflags + " " + defs + " "
                             + quote_path (f) + " -o " + quote_path (o);
-          result = run_command (cmd);
+          result = run_command (cmd, printonly);
         }
       else
         {
@@ -763,7 +787,7 @@ main (int argc, char **argv)
                             + pass_on_options + " "
                             + incflags + " " + defs + " "
                             + quote_path (f) + " -o " + quote_path (o);
-          result = run_command (cmd);
+          result = run_command (cmd, printonly);
         }
       else
         {
@@ -790,7 +814,7 @@ main (int argc, char **argv)
                                 + " -loctinterp -loctave "
                                 + " " + vars["OCTAVE_LINK_OPTS"]
                                 + " " + vars["OCTAVE_LINK_DEPS"];
-              result = run_command (cmd);
+              result = run_command (cmd, printonly);
             }
           else
             {
@@ -812,15 +836,16 @@ main (int argc, char **argv)
                             + vars["LFLAGS"] + " -loctinterp -loctave "
                             + vars["OCT_LINK_OPTS"] + " "
                             + vars["OCT_LINK_DEPS"];
-          result = run_command (cmd);
+          result = run_command (cmd, printonly);
         }
 
       if (strip)
         {
           std::string cmd = "strip " + octfile;
-          result = run_command (cmd);
+          result = run_command (cmd, printonly);
         }
     }
 
   return result;
 }
+

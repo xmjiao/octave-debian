@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2015 John W. Eaton
+Copyright (C) 2006-2016 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -57,7 +57,12 @@ load_path::dir_info::update (void)
 {
   octave::sys::file_stat fs (dir_name);
 
-  if (fs)
+  if (! fs)
+    {
+      std::string msg = fs.error ();
+      warning ("load_path: %s: %s", dir_name.c_str (), msg.c_str ());
+    }
+  else
     {
       if (is_relative)
         {
@@ -69,43 +74,46 @@ load_path::dir_info::update (void)
 
               if (p != abs_dir_cache.end ())
                 {
-                  // The directory is in the cache of all directories
-                  // we have visited (indexed by its absolute name).
-                  // If it is out of date, initialize it.  Otherwise,
-                  // copy the info from the cache.  By doing that, we
-                  // avoid unnecessary calls to stat that can slow
-                  // things down tremendously for large directories.
-
+                  // The directory is in the cache of all directories we have
+                  // visited (indexed by absolute name).  If it is out of date,
+                  // initialize it.  Otherwise, copy the info from the cache.
+                  // By doing that, we avoid unnecessary calls to stat that can
+                  // slow things down tremendously for large directories.
                   const dir_info& di = p->second;
 
                   if (fs.mtime () + fs.time_resolution ()
                       > di.dir_time_last_checked)
                     initialize ();
                   else
-                    *this = di;
+                    {
+                      // Copy over info from cache, but leave dir_name and
+                      // is_relative unmodified.
+                      this->abs_dir_name = di.abs_dir_name;
+                      this->dir_mtime = di.dir_mtime;
+                      this->dir_time_last_checked = di.dir_time_last_checked;
+                      this->all_files = di.all_files;
+                      this->fcn_files = di.fcn_files;
+                      this->private_file_map = di.private_file_map;
+                      this->method_file_map = di.method_file_map;
+                      this->package_dir_map = di.package_dir_map;
+                    }
                 }
               else
                 {
                   // We haven't seen this directory before.
-
                   initialize ();
                 }
             }
-          catch (const octave_execution_exception&)
+          catch (const octave::execution_exception&)
             {
-              // Skip updating if we don't know where we are but
-              // don't treat it as an error.
-
+              // Skip updating if we don't know where we are,
+              // but don't treat it as an error.
               recover_from_exception ();
             }
         }
+      // Absolute path, check timestamp to see whether it requires re-caching
       else if (fs.mtime () + fs.time_resolution () > dir_time_last_checked)
         initialize ();
-    }
-  else
-    {
-      std::string msg = fs.error ();
-      warning ("load_path: %s: %s", dir_name.c_str (), msg.c_str ());
     }
 }
 
@@ -159,7 +167,7 @@ load_path::dir_info::initialize (void)
 
           abs_dir_cache[abs_name] = *this;
         }
-      catch (const octave_execution_exception&)
+      catch (const octave::execution_exception&)
         {
           // Skip updating if we don't know where we are but don't treat
           // it as an error.
@@ -853,7 +861,8 @@ load_path::loader::remove_method_map (const std::string& dir)
 
       fcn_map_type& fm = i->second;
 
-      std::string full_dir_name = octave::sys::file_ops::concat (dir, "@" + class_name);
+      std::string full_dir_name
+        = octave::sys::file_ops::concat (dir, "@" + class_name);
 
       for (fcn_map_iterator q = fm.begin (); q != fm.end (); q++)
         {
@@ -1340,7 +1349,8 @@ load_path::do_find_file (const std::string& file) const
         return tfile;
     }
 
-  if (file.find_first_of (octave::sys::file_ops::dir_sep_chars ()) != std::string::npos)
+  if (file.find_first_of (octave::sys::file_ops::dir_sep_chars ())
+      != std::string::npos)
     {
       // Given name has a directory separator, so append it to each
       // element of the load path in turn.
@@ -1491,7 +1501,8 @@ load_path::do_find_first_of (const string_vector& flist) const
     {
       std::string file = flist[i];
 
-      if (file.find_first_of (octave::sys::file_ops::dir_sep_chars ()) != std::string::npos)
+      if (file.find_first_of (octave::sys::file_ops::dir_sep_chars ())
+          != std::string::npos)
         {
           if (octave::sys::env::absolute_pathname (file)
               || octave::sys::env::rooted_relative_pathname (file))
@@ -1570,7 +1581,8 @@ load_path::do_find_all_first_of (const string_vector& flist) const
     {
       std::string file = flist[i];
 
-      if (file.find_first_of (octave::sys::file_ops::dir_sep_chars ()) != std::string::npos)
+      if (file.find_first_of (octave::sys::file_ops::dir_sep_chars ())
+          != std::string::npos)
         {
           if (octave::sys::env::absolute_pathname (file)
               || octave::sys::env::rooted_relative_pathname (file))
@@ -2399,6 +2411,11 @@ directory names separated by @code{pathsep} are also accepted.  For example:
 @example
 addpath ("dir1:/dir2:~/dir3")
 @end example
+
+For each directory that is added, and that was not already in the path,
+@code{addpath} checks for the existence of a file named @file{PKG_ADD}
+(note lack of .m extension) and runs it if it exists.
+
 @seealso{path, rmpath, genpath, pathdef, savepath, pathsep}
 @end deftypefn */)
 {
@@ -2500,6 +2517,11 @@ directory names separated by @code{pathsep} are also accepted.  For example:
 @example
 rmpath ("dir1:/dir2:~/dir3")
 @end example
+
+For each directory that is removed, @code{rmpath} checks for the
+existence of a file named @file{PKG_DEL} (note lack of .m extension)
+and runs it if it exists.
+
 @seealso{path, addpath, genpath, pathdef, savepath, pathsep}
 @end deftypefn */)
 {
@@ -2547,7 +2569,7 @@ rmpath ("dir1:/dir2:~/dir3")
 
 DEFUN (__dump_load_path__, , ,
        doc: /* -*- texinfo -*-
-@deftypefn  {} {} __dump_load_path__ ()
+@deftypefn {} {} __dump_load_path__ ()
 Undocumented internal function.
 @end deftypefn */)
 {
@@ -2555,3 +2577,4 @@ Undocumented internal function.
 
   return ovl ();
 }
+

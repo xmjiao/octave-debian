@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 Jaroslav Hajek
+Copyright (C) 2008-2016 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -41,7 +41,8 @@ DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_float_diag_matrix,
 static octave_base_value *
 default_numeric_conversion_function (const octave_base_value& a)
 {
-  const octave_float_diag_matrix& v = dynamic_cast<const octave_float_diag_matrix&> (a);
+  const octave_float_diag_matrix& v =
+    dynamic_cast<const octave_float_diag_matrix&> (a);
 
   return new octave_float_matrix (v.float_matrix_value ());
 }
@@ -86,6 +87,66 @@ FloatComplexDiagMatrix
 octave_float_diag_matrix::float_complex_diag_matrix_value (bool) const
 {
   return FloatComplexDiagMatrix (matrix);
+}
+
+octave_value
+octave_float_diag_matrix::as_double (void) const
+{
+  return DiagMatrix (matrix);
+}
+
+octave_value
+octave_float_diag_matrix::as_single (void) const
+{
+  return matrix;
+}
+
+octave_value
+octave_float_diag_matrix::as_int8 (void) const
+{
+  return int8_array_value ();
+}
+
+octave_value
+octave_float_diag_matrix::as_int16 (void) const
+{
+  return int16_array_value ();
+}
+
+octave_value
+octave_float_diag_matrix::as_int32 (void) const
+{
+  return int32_array_value ();
+}
+
+octave_value
+octave_float_diag_matrix::as_int64 (void) const
+{
+  return int64_array_value ();
+}
+
+octave_value
+octave_float_diag_matrix::as_uint8 (void) const
+{
+  return uint8_array_value ();
+}
+
+octave_value
+octave_float_diag_matrix::as_uint16 (void) const
+{
+  return uint16_array_value ();
+}
+
+octave_value
+octave_float_diag_matrix::as_uint32 (void) const
+{
+  return uint32_array_value ();
+}
+
+octave_value
+octave_float_diag_matrix::as_uint64 (void) const
+{
+  return uint64_array_value ();
 }
 
 octave_value
@@ -176,3 +237,4 @@ octave_float_diag_matrix::chk_valid_scalar (const octave_value& val,
     x = val.float_value ();
   return retval;
 }
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -419,9 +419,18 @@ raw_help_from_docstrings_file (const std::string& nm, std::string& h,
 
           // Skip help text.
           file.ignore (std::numeric_limits<std::streamsize>::max(), 0x1d);
- 
+
           // Position of end of help text.
-          std::streamoff len = file.tellg () - beg - 1;
+          std::streamoff len;
+
+          if (! file.eof ())
+            len = file.tellg () - beg - 1;
+          else
+            {
+              file.seekg (0, file.end);
+              len = file.tellg () - beg - 1;
+              file.setstate (file.eofbit);  // reset eof flag
+            }
 
           help_txt_map[name] = txt_limits_type (beg, len);
         }
@@ -864,26 +873,31 @@ DEFUN (__list_functions__, args, ,
        doc: /* -*- texinfo -*-
 @deftypefn  {} {@var{retval} =} __list_functions__ ()
 @deftypefnx {} {@var{retval} =} __list_functions__ (@var{directory})
-Undocumented internal function.
+Return a list of all functions (.m and .oct functions) in the load path.
+
+If the optional argument @var{directory} is given then list only the functions
+in that directory.
+@seealso{path}
 @end deftypefn */)
 {
   octave_value retval;
 
-  // Get list of functions
-  string_vector ffl = load_path::fcn_names ();
-  string_vector afl = autoloaded_functions ();
-
   if (args.length () == 0)
-    retval = Cell (ffl.append (afl));
+    {
+      // Get list of all functions
+      string_vector ffl = load_path::fcn_names ();
+      string_vector afl = autoloaded_functions ();
+
+      retval = Cell (ffl.append (afl));
+    }
   else
     {
       std::string dir = args(0).xstring_value ("__list_functions__: DIRECTORY argument must be a string");
 
       string_vector fl = load_path::files (dir, true);
 
-      // Return a sorted list with unique entries (in case of
-      // .m and .oct versions of the same function in a given
-      // directory, for example).
+      // Return a sorted list with unique entries (in case of .m and .oct
+      // versions of the same function in a given directory, for example).
       fl.sort (true);
 
       retval = Cell (fl);
@@ -1031,3 +1045,4 @@ The original variable value is restored when exiting the function.
 {
   return SET_INTERNAL_VARIABLE (suppress_verbose_help_message);
 }
+

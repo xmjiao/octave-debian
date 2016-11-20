@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2014-2015 Torsten <ttl@justmail.de>
+Copyright (C) 2014-2016 Torsten <ttl@justmail.de>
 
 This file is part of Octave.
 
@@ -30,6 +30,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
+#include <QKeySequence>
 #include <QPushButton>
 #include <QLineEdit>
 #include <QCheckBox>
@@ -56,8 +57,7 @@ shortcut_manager::shortcut_manager ()
 }
 
 shortcut_manager::~shortcut_manager ()
-{
-}
+{ }
 
 bool
 shortcut_manager::instance_ok (void)
@@ -65,7 +65,7 @@ shortcut_manager::instance_ok (void)
   bool retval = true;
 
   if (! instance)
-      instance = new shortcut_manager ();
+    instance = new shortcut_manager ();
 
   if (! instance)
     {
@@ -80,7 +80,7 @@ shortcut_manager::instance_ok (void)
 void
 shortcut_manager::do_init_data ()
 {
-  QKeySequence ctrl;
+  Qt::KeyboardModifier ctrl;
   int prefix;
 #if defined (Q_OS_MAC)
   // Use CMD key as an equivalent of Ctrl key on other platforms
@@ -94,8 +94,8 @@ shortcut_manager::do_init_data ()
   prefix = Qt::NoModifier;
 #endif
 
-  QKeySequence ctrl_shift = ctrl + Qt::ShiftModifier;
-  QKeySequence ctrl_alt = ctrl + Qt::AltModifier;
+  Qt::KeyboardModifiers ctrl_shift = ctrl | Qt::ShiftModifier;
+  Qt::KeyboardModifiers ctrl_alt = ctrl | Qt::AltModifier;
 
   // actions of the main window
 
@@ -172,7 +172,6 @@ shortcut_manager::do_init_data ()
         QKeySequence ());
   init (tr ("Report Bug"), "main_help:report_bug", QKeySequence ());
   init (tr ("Octave Packages"), "main_help:packages", QKeySequence ());
-  init (tr ("Share Code"), "main_help:agora", QKeySequence ());
   init (tr ("Contribute to Octave"), "main_help:contribute", QKeySequence ());
   init (tr ("Octave Developer Resources"), "main_help:developer",
         QKeySequence ());
@@ -309,9 +308,9 @@ shortcut_manager::do_init_data ()
 
   // run
   init (tr ("Run File"), "editor_run:run_file",
-        QKeySequence (prefix + Qt::Key_F5) );
+        QKeySequence (prefix + Qt::Key_F5));
   init (tr ("Run Selection"), "editor_run:run_selection",
-        QKeySequence (prefix + Qt::Key_F9) );
+        QKeySequence (prefix + Qt::Key_F9));
 
   // help
   init (tr ("Help on Keyword"), "editor_help:help_keyword",
@@ -332,7 +331,8 @@ shortcut_manager::do_init_data ()
 }
 
 void
-shortcut_manager::init (QString description, QString key, QKeySequence def_sc)
+shortcut_manager::init (const QString& description, const QString& key,
+                        const QKeySequence& def_sc)
 {
   QKeySequence actual
     = QKeySequence (_settings->value ("shortcuts/"+key, def_sc).toString ());
@@ -362,7 +362,11 @@ shortcut_manager::do_fill_treewidget (QTreeWidget *tree_view)
   _dialog = 0;
   _level_hash.clear ();
 
+#if defined (HAVE_QT4)
   tree_view->header ()->setResizeMode (QHeaderView::ResizeToContents);
+#else
+  tree_view->header ()->setSectionResizeMode (QHeaderView::ResizeToContents);
+#endif
 
   QTreeWidgetItem *main = new QTreeWidgetItem (tree_view);
   main->setText (0, tr ("Global"));
@@ -430,8 +434,8 @@ shortcut_manager::do_fill_treewidget (QTreeWidget *tree_view)
 
       // write the shortcuts
       tree_item->setText (0, sc.description);
-      tree_item->setText (1, sc.default_sc);
-      tree_item->setText (2, sc.actual_sc);
+      tree_item->setText (1, sc.default_sc.toString ());
+      tree_item->setText (2, sc.actual_sc.toString ());
 
       _item_index_hash[tree_item] = i + 1; // index+1 to avoid 0
       _index_item_hash[i] = tree_item;
@@ -448,15 +452,15 @@ shortcut_manager::do_write_shortcuts (QSettings* settings,
 
   for (int i = 0; i < _sc.count (); i++)  // loop over all shortcuts
     {
-      settings->setValue("shortcuts/"+_sc.at (i).settings_key,
-                             _sc.at (i).actual_sc.toString ());
+      settings->setValue ("shortcuts/"+_sc.at (i).settings_key,
+                          _sc.at (i).actual_sc.toString ());
       // special: check main-window for Ctrl-D (Terminal)
       if (_sc.at (i).settings_key.startsWith ("main_")
           && _sc.at (i).actual_sc == QKeySequence (Qt::ControlModifier+Qt::Key_D))
         sc_ctrld = true;
     }
 
-    settings->setValue ("shortcuts/main_ctrld",sc_ctrld);
+  settings->setValue ("shortcuts/main_ctrld",sc_ctrld);
 
   if (closing)
     {
@@ -555,8 +559,8 @@ shortcut_manager::shortcut_dialog (int index)
 
     }
 
-  _edit_actual->setText (_sc.at (index).actual_sc);
-  _label_default->setText (_sc.at (index).default_sc);
+  _edit_actual->setText (_sc.at (index).actual_sc.toString ());
+  _label_default->setText (_sc.at (index).default_sc.toString ());
   _handled_index = index;
 
   _edit_actual->setFocus ();
@@ -589,7 +593,7 @@ shortcut_manager::shortcut_dialog_finished (int result)
           shortcut_t double_shortcut = _sc.at (double_index);
           double_shortcut.actual_sc = QKeySequence ();
           _sc.replace (double_index, double_shortcut);
-          _index_item_hash[double_index]->setText (2, QKeySequence ());
+          _index_item_hash[double_index]->setText (2, QString ());
         }
       else
         return;
@@ -601,7 +605,7 @@ shortcut_manager::shortcut_dialog_finished (int result)
   shortcut.actual_sc = _edit_actual->text();
   _sc.replace (_handled_index, shortcut);
 
-  _index_item_hash[_handled_index]->setText (2, shortcut.actual_sc);
+  _index_item_hash[_handled_index]->setText (2, shortcut.actual_sc.toString ());
 
   if (! shortcut.actual_sc.isEmpty ())
     _shortcut_hash[shortcut.actual_sc.toString ()] = _handled_index + 1;
@@ -634,7 +638,7 @@ shortcut_manager::import_shortcuts (QSettings *settings)
 
       // update the tree view
       QTreeWidgetItem* tree_item = _index_item_hash[i]; // get related tree item
-      tree_item->setText (2, sc.actual_sc); // display new shortcut
+      tree_item->setText (2, sc.actual_sc.toString ()); // display new shortcut
     }
 }
 
@@ -690,15 +694,15 @@ shortcut_manager::do_import_export (int action)
         file = QFileDialog::getOpenFileName (this,
                     tr ("Import shortcuts from file ..."), QString (),
                     tr ("Octave Shortcut Files (*.osc);;All Files (*)"),
-                    0,QFileDialog::DontUseNativeDialog);
+                    0, QFileDialog::DontUseNativeDialog);
       else if (action == OSC_EXPORT)
         file = QFileDialog::getSaveFileName (this,
                     tr ("Export shortcuts into file ..."), QString (),
                     tr ("Octave Shortcut Files (*.osc);;All Files (*)"),
-                    0,QFileDialog::DontUseNativeDialog);
+                    0, QFileDialog::DontUseNativeDialog);
 
       if (file.isEmpty ())
-          return false;
+        return false;
 
       QSettings *osc_settings = new QSettings (file, QSettings::IniFormat);
 
@@ -732,8 +736,7 @@ enter_shortcut::enter_shortcut (QWidget *p) : QLineEdit (p)
 }
 
 enter_shortcut::~enter_shortcut ()
-{
-}
+{ }
 
 // slot for checkbox whether the shortcut is directly entered or not
 void
@@ -773,6 +776,6 @@ enter_shortcut::keyPressEvent (QKeyEvent *e)
       if (modifiers & Qt::MetaModifier)
         key += Qt::META;
 
-      setText (QKeySequence(key));
+      setText (QKeySequence(key).toString ());
     }
 }

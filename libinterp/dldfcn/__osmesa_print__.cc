@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2015 Andreas Weber <andy.weber.aw@gmail.com>
+Copyright (C) 2016 Andreas Weber <andy.weber.aw@gmail.com>
 
 This file is part of Octave.
 
@@ -63,7 +63,7 @@ This is a private internal function.
 
 The first method calls gl2ps with the appropriate @var{term} and writes
 the output of gl2ps to @var{file}.  If the first character of @var{file}
-is @qcode{|}, then a process is started and the output of gl2ps is piped
+is @code{|}, then a process is started and the output of gl2ps is piped
 to it.
 
 Valid options for @var{term}, which can be concatenated in one string, are:
@@ -72,11 +72,11 @@ Valid options for @var{term}, which can be concatenated in one string, are:
 @item @qcode{eps}, @qcode{pdf}, @qcode{ps}, @qcode{svg}, @qcode{pgf}, @qcode{tex}
 Select output format.
 
-@item @qcode{is2D}
+@item @code{is2D}
 Use GL2PS_SIMPLE_SORT instead of GL2PS_BSP_SORT as Z-depth sorting
 algorithm.
 
-@item @qcode{notext}
+@item @code{notext}
 Don't render text.
 @end table
 
@@ -159,7 +159,7 @@ instead.
   else
     {
       // return RGB image
-      opengl_renderer rend;
+      octave::opengl_renderer rend;
 
       // Draw and finish () or there may primitives missing in the
       // output.
@@ -211,31 +211,40 @@ instead.
 ##        For the moment, disable these tests on PC's and Macs.
 %!testif HAVE_OPENGL, HAVE_OSMESA, HAVE_GL2PS_H
 %! if (isunix ())
-%!   h = figure ("visible", "off");
+%!   hf = figure ("visible", "off");
 %!   fn = tempname ();
-%!   sombrero ();
-%!   __osmesa_print__ (h, fn, "svg");
-%!   assert (stat (fn).size, 2692270, -0.1);
-%!   unlink (fn);
-%!   img = __osmesa_print__ (h);
-%!   assert (size (img), [get(h, "position")([4, 3]), 3]);
-%!   ## Use pixel sum per RGB channel as fingerprint
-%!   img_fp = squeeze (sum (sum (img), 2));
-%!   assert (img_fp, [52942515; 54167797; 56158178], -0.05);
+%!   unwind_protect
+%!     sombrero ();
+%!     __osmesa_print__ (hf, fn, "svg");
+%!     assert (stat (fn).size, 2579392, -0.1);
+%!     img = __osmesa_print__ (hf);
+%!     assert (size (img), [get(hf, "position")([4, 3]), 3]);
+%!     ## Use pixel sum per RGB channel as fingerprint
+%!     img_fp = squeeze (sum (sum (img), 2));
+%!     assert (img_fp, [52942515; 54167797; 56158178], -0.05);
+%!   unwind_protect_cleanup
+%!     close (hf);
+%!     unlink (fn);
+%!   end_unwind_protect
 %! endif
 
 %!testif HAVE_OPENGL, HAVE_OSMESA, HAVE_GL2PS_H
 %! if (isunix ())
-%!   h = figure ("visible", "off");
+%!   hf = figure ("visible", "off");
 %!   fn = tempname ();
-%!   plot (sin (0:0.1:2*pi));
-%!   __osmesa_print__ (h, fn, "svgis2d");
-%!   assert (stat (fn).size, 7438, -0.1);
-%!   unlink (fn);
-%!   img = __osmesa_print__ (h);
-%!   assert (size (img), [get(h, "position")([4, 3]), 3]);
-%!   ## Use pixel sum per RGB channel as fingerprint
-%!   img_fp = squeeze (sum (sum (img), 2));
-%!   assert (img_fp, [59281711; 59281711; 59482179], -0.05);
+%!   unwind_protect
+%!     plot (sin (0:0.1:2*pi));
+%!     __osmesa_print__ (hf, fn, "svgis2d");
+%!     assert (stat (fn).size, 6276, -0.1);
+%!     img = __osmesa_print__ (hf);
+%!     assert (size (img), [get(hf, "position")([4, 3]), 3]);
+%!     ## Use pixel sum per RGB channel as fingerprint
+%!     img_fp = squeeze (sum (sum (img), 2));
+%!     assert (img_fp, [59281711; 59281711; 59482179], -0.05);
+%!   unwind_protect_cleanup
+%!     close (hf);
+%!     unlink (fn);
+%!   end_unwind_protect
 %! endif
 */
+

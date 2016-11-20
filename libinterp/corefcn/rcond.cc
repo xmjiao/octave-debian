@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 David Bateman
+Copyright (C) 2008-2016 David Bateman
 
 This file is part of Octave.
 
@@ -103,3 +103,4 @@ instead.
 %!assert (rcond (sx*i) < eps ('single'))
 
 */
+

@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -155,8 +155,7 @@ commands in the system or user startup files that use the
 @cindex @code{--interactive}
 @cindex @code{-i}
 Force interactive behavior.  This can be useful for running Octave via a
-remote shell command or inside an Emacs shell buffer.  For another way
-to run Octave within Emacs, @pxref{Emacs Octave Support}.
+remote shell command or inside an Emacs shell buffer.
 
 @item --jit-compiler
 @cindex @code{--jit-compiler}
@@ -511,7 +510,7 @@ reading the manual and the documentation strings for user-supplied
 functions and variables.  @xref{Function Files}, for more information
 about how to document the functions you write.
 
-@c help scripts/scripts/help/help.m
+@c help scripts/help/help.m
 @anchor{XREFhelp}
 @deftypefn  {} {} help @var{name}
 @deftypefnx {} {} help @code{--list}
@@ -529,18 +528,18 @@ of Octave.
 Given the single argument @code{.}, list all operators available in the
 current session of Octave.
 
-If invoked without any arguments, @code{help} display instructions on how to
-access help from the command line.
+If invoked without any arguments, @code{help} displays instructions on how
+to access help from the command line.
 
-The help command can provide information about most operators, for example
-@code{help +}, but not the comma and semicolon characters which are used
-by the Octave interpreter as command separators.  For help on either of
-these type @kbd{help comma} or @kbd{help semicolon}.
+The help command can provide information about most operators, but
+@var{name} must be enclosed by single or double quotes to prevent
+the Octave interpreter from acting on @var{name}.  For example,
+@code{help "+"} displays help on the addition operator.
 @seealso{@ref{XREFdoc,,doc}, @ref{XREFlookfor,,lookfor}, @ref{XREFwhich,,which}, @ref{XREFinfo,,info}}
 @end deftypefn
 
 
-@c doc scripts/scripts/help/doc.m
+@c doc scripts/help/doc.m
 @anchor{XREFdoc}
 @deftypefn  {} {} doc @var{function_name}
 @deftypefnx {} {} doc
@@ -558,7 +557,7 @@ the command @kbd{C-h}.
 @end deftypefn
 
 
-@c lookfor scripts/scripts/help/lookfor.m
+@c lookfor scripts/help/lookfor.m
 @anchor{XREFlookfor}
 @deftypefn  {} {} lookfor @var{str}
 @deftypefnx {} {} lookfor -all @var{str}
@@ -593,7 +592,7 @@ file.  See @code{doc_cache_create} for more information.
 To see what is new in the current release of Octave, use the @code{news}
 function.
 
-@c news scripts/scripts/miscellaneous/news.m
+@c news scripts/miscellaneous/news.m
 @anchor{XREFnews}
 @deftypefn  {} {} news
 @deftypefnx {} {} news @var{package}
@@ -607,7 +606,7 @@ that package.
 @end deftypefn
 
 
-@c info scripts/scripts/miscellaneous/info.m
+@c info scripts/miscellaneous/info.m
 @anchor{XREFinfo}
 @deftypefn {} {} info ()
 Display contact information for the GNU Octave community.
@@ -778,7 +777,7 @@ The following functions are principally used internally by Octave for
 generating the documentation.  They are documented here for completeness
 and because they may occasionally be useful for users.
 
-@c doc_cache_create scripts/scripts/help/doc_cache_create.m
+@c doc_cache_create scripts/help/doc_cache_create.m
 @anchor{XREFdoc_cache_create}
 @deftypefn  {} {} doc_cache_create (@var{out_file}, @var{directory})
 @deftypefnx {} {} doc_cache_create (@var{out_file})
@@ -823,7 +822,7 @@ The format is a string which is one of @qcode{"texinfo"},
 @end deftypefn
 
 
-@c get_first_help_sentence scripts/scripts/help/get_first_help_sentence.m
+@c get_first_help_sentence scripts/help/get_first_help_sentence.m
 @anchor{XREFget_first_help_sentence}
 @deftypefn  {} {@var{text} =} get_first_help_sentence (@var{name})
 @deftypefnx {} {@var{text} =} get_first_help_sentence (@var{name}, @var{max_len})
@@ -887,9 +886,9 @@ characters such as @kbd{Meta-u} are written as @kbd{M-u}.
 @menu
 * Cursor Motion::
 * Killing and Yanking::
-* Commands For Text::
-* Commands For Completion::
-* Commands For History::
+* Commands for Text::
+* Commands for Completion::
+* Commands for History::
 * Customizing readline::
 * Customizing the Prompt::
 * Diary and Echo Commands::
@@ -1009,8 +1008,8 @@ ring is not line specific; the text that you killed on a previously
 typed line is available to be yanked back later, when you are typing
 another line.
 
-@node Commands For Text
-@subsection Commands For Changing Text
+@node Commands for Text
+@subsection Commands for Changing Text
 
 The following commands can be used for entering characters that would
 otherwise have a special meaning (e.g., @key{TAB}, @kbd{C-q}, etc.), or
@@ -1048,8 +1047,8 @@ next word if the cursor is between words), moving the cursor to the end
 of the word.
 @end table
 
-@node Commands For Completion
-@subsection Letting Readline Type For You
+@node Commands for Completion
+@subsection Letting Readline Type for You
 @cindex command completion
 
 The following commands allow Octave to complete command and variable
@@ -1092,8 +1091,8 @@ a feature, not a bug.
 @end deftypefn
 
 
-@node Commands For History
-@subsection Commands For Manipulating The History
+@node Commands for History
+@subsection Commands for Manipulating the History
 @cindex command history
 @cindex input history
 @cindex history of commands

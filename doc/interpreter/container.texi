@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -610,7 +610,7 @@ Return the number of fields of the structure @var{s}.
 @end deftypefn
 
 
-@c fieldnames scripts/scripts/general/fieldnames.m
+@c fieldnames scripts/general/fieldnames.m
 @anchor{XREFfieldnames}
 @deftypefn  {} {@var{names} =} fieldnames (@var{struct})
 @deftypefnx {} {@var{names} =} fieldnames (@var{obj})
@@ -645,7 +645,7 @@ dimension is returned.
 @end deftypefn
 
 
-@c setfield scripts/scripts/miscellaneous/setfield.m
+@c setfield scripts/miscellaneous/setfield.m
 @anchor{XREFsetfield}
 @deftypefn  {} {@var{sout} =} setfield (@var{s}, @var{field}, @var{val})
 @deftypefnx {} {@var{sout} =} setfield (@var{s}, @var{sidx1}, @var{field1}, @var{fidx1}, @var{sidx2}, @var{field2}, @var{fidx2}, @dots{}, @var{val})
@@ -739,7 +739,7 @@ Note that the same result as in the above example could be achieved by:
 @end deftypefn
 
 
-@c getfield scripts/scripts/miscellaneous/getfield.m
+@c getfield scripts/miscellaneous/getfield.m
 @anchor{XREFgetfield}
 @deftypefn  {} {@var{val} =} getfield (@var{s}, @var{field})
 @deftypefnx {} {@var{val} =} getfield (@var{s}, @var{sidx1}, @var{field1}, @var{fidx1}, @dots{})
@@ -769,7 +769,7 @@ the named fields.
 @end deftypefn
 
 
-@c orderfields scripts/scripts/miscellaneous/orderfields.m
+@c orderfields scripts/miscellaneous/orderfields.m
 @anchor{XREForderfields}
 @deftypefn  {} {@var{sout} =} orderfields (@var{s1})
 @deftypefnx {} {@var{sout} =} orderfields (@var{s1}, @var{s2})
@@ -854,7 +854,7 @@ t3 = orderfields (s, [3, 2, 4, 1])
 @end deftypefn
 
 
-@c substruct scripts/scripts/miscellaneous/substruct.m
+@c substruct scripts/miscellaneous/substruct.m
 @anchor{XREFsubstruct}
 @deftypefn {} {} substruct (@var{type}, @var{subs}, @dots{})
 Create a subscript structure for use with @code{subsref} or @code{subsasgn}.
@@ -1017,7 +1017,7 @@ previous example.  In some circumstances it makes sense to reference
 them by their index, and this can be performed by the @code{celldisp}
 function.
 
-@c celldisp scripts/scripts/general/celldisp.m
+@c celldisp scripts/general/celldisp.m
 @anchor{XREFcelldisp}
 @deftypefn  {} {} celldisp (@var{c})
 @deftypefnx {} {} celldisp (@var{c}, @var{name})
@@ -1282,14 +1282,14 @@ with the following command:
 @example
 @group
 c(:, [1, 3]) = @{0@}
-     @result{}  =
+     @result{} =
         @{
           [1,1] = 0
           [2,1] = 0
           [3,1] = 0
           [1,2] = 2
-          [2,2] =  10
-          [3,2] =  20
+          [2,2] = y
+          [3,2] = 5
           [1,3] = 0
           [2,3] = 0
           [3,3] = 0
@@ -1380,8 +1380,9 @@ x(1, :) = @{[]@}
 @end example
 
 The indexing operations operate on the cell array and not on the objects
-within the cell array.  By contrast, @code{cellindexmat} applies matrix indexing
-to the objects within each cell array entry and returns the requested values.
+within the cell array.  By contrast, @code{cellindexmat} applies matrix
+indexing to the objects within each cell array entry and returns the requested
+values.
 
 @c cellindexmat libinterp/corefcn/cellfun.cc
 @anchor{XREFcellindexmat}
@@ -1394,10 +1395,14 @@ Given a cell array of matrices @var{x}, this function computes
 @group
 Y = cell (size (X));
 for i = 1:numel (X)
-  Y@{i@} = X@{i@}(varargin@{:@});
+  Y@{i@} = X@{i@}(varargin@{1@}, varargin@{2@}, @dots{}, varargin@{N@});
 endfor
 @end group
 @end example
+
+The indexing arguments may be scalar (@code{2}), arrays (@code{[1, 3]}),
+ranges (@code{1:3}), or the colon operator (@qcode{":"}).  However, the
+indexing keyword @code{end} is not available.
 @seealso{@ref{XREFcellslices,,cellslices}, @ref{XREFcellfun,,cellfun}}
 @end deftypefn
 
@@ -1496,7 +1501,7 @@ An alternative is to convert the data to a different container, such as
 a matrix or a data structure.  Depending on the data this is possible
 using the @code{cell2mat} and @code{cell2struct} functions.
 
-@c cell2mat scripts/scripts/general/cell2mat.m
+@c cell2mat scripts/general/cell2mat.m
 @anchor{XREFcell2mat}
 @deftypefn {} {@var{m} =} cell2mat (@var{c})
 Convert the cell array @var{c} into a matrix by concatenating all

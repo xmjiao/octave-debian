@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2008-2009 VZLU Prague
 
@@ -26,6 +26,8 @@ along with Octave; see the file COPYING.  If not, see
 #  include "config.h"
 #endif
 
+#include <string>
+
 #include "chol.h"
 #include "sparse-chol.h"
 #include "oct-spparms.h"
@@ -37,7 +39,8 @@ along with Octave; see the file COPYING.  If not, see
 #include "error.h"
 #include "errwarn.h"
 #include "ovl.h"
-#include "utils.h"
+
+#include "oct-string.h"
 
 template <typename CHOLT>
 static octave_value
@@ -162,11 +165,11 @@ sparse matrices.
     {
       std::string tmp = args(n++).xstring_value ("chol: optional arguments must be strings");
 
-      if (tmp == "vector")
+      if (octave::string::strcmpi (tmp, "vector"))
         vecout = true;
-      else if (tmp == "lower")
+      else if (octave::string::strcmpi (tmp, "lower"))
         LLt = true;
-      else if (tmp == "upper")
+      else if (octave::string::strcmpi (tmp, "upper"))
         LLt = false;
       else
         error ("chol: optional argument must be one of \"vector\", \"lower\", or \"upper\"");
@@ -175,14 +178,7 @@ sparse matrices.
   octave_value_list retval;
   octave_value arg = args(0);
 
-  octave_idx_type nr = arg.rows ();
-  octave_idx_type nc = arg.columns ();
-
-  int arg_is_empty = empty_arg ("chol", nr, nc);
-
-  if (arg_is_empty < 0)
-    return ovl ();
-  if (arg_is_empty > 0)
+  if (arg.is_empty ())
     return ovl (Matrix ());
 
   if (arg.is_sparse_type ())
@@ -195,7 +191,7 @@ sparse matrices.
         {
           SparseMatrix m = arg.sparse_matrix_value ();
 
-          sparse_chol<SparseMatrix> fact (m, info, natural, force);
+          octave::math::sparse_chol<SparseMatrix> fact (m, info, natural, force);
 
           if (nargout == 3)
             {
@@ -220,7 +216,7 @@ sparse matrices.
         {
           SparseComplexMatrix m = arg.sparse_complex_matrix_value ();
 
-          sparse_chol<SparseComplexMatrix> fact (m, info, natural, force);
+          octave::math::sparse_chol<SparseComplexMatrix> fact (m, info, natural, force);
 
           if (nargout == 3)
             {
@@ -246,13 +242,15 @@ sparse matrices.
     }
   else if (arg.is_single_type ())
     {
+      if (vecout)
+        error ("chol: A must be sparse for the \"vector\" option");
       if (arg.is_real_type ())
         {
           FloatMatrix m = arg.float_matrix_value ();
 
           octave_idx_type info;
 
-          chol<FloatMatrix> fact (m, info, LLt != true);
+          octave::math::chol<FloatMatrix> fact (m, info, LLt != true);
 
           if (nargout == 2 || info == 0)
             retval = ovl (get_chol (fact), info);
@@ -265,7 +263,7 @@ sparse matrices.
 
           octave_idx_type info;
 
-          chol<FloatComplexMatrix> fact (m, info, LLt != true);
+          octave::math::chol<FloatComplexMatrix> fact (m, info, LLt != true);
 
           if (nargout == 2 || info == 0)
             retval = ovl (get_chol (fact), info);
@@ -277,13 +275,15 @@ sparse matrices.
     }
   else
     {
+      if (vecout)
+        error ("chol: A must be sparse for the \"vector\" option");
       if (arg.is_real_type ())
         {
           Matrix m = arg.matrix_value ();
 
           octave_idx_type info;
 
-          chol<Matrix> fact (m, info, LLt != true);
+          octave::math::chol<Matrix> fact (m, info, LLt != true);
 
           if (nargout == 2 || info == 0)
             retval = ovl (get_chol (fact), info);
@@ -296,7 +296,7 @@ sparse matrices.
 
           octave_idx_type info;
 
-          chol<ComplexMatrix> fact (m, info, LLt != true);
+          octave::math::chol<ComplexMatrix> fact (m, info, LLt != true);
 
           if (nargout == 2 || info == 0)
             retval = ovl (get_chol (fact), info);
@@ -313,8 +313,35 @@ sparse matrices.
 /*
 %!assert (chol ([2, 1; 1, 1]), [sqrt(2), 1/sqrt(2); 0, 1/sqrt(2)], sqrt (eps))
 %!assert (chol (single ([2, 1; 1, 1])), single ([sqrt(2), 1/sqrt(2); 0, 1/sqrt(2)]), sqrt (eps ("single")))
+
+%!assert (chol ([2, 1; 1, 1], "upper"), [sqrt(2), 1/sqrt(2); 0, 1/sqrt(2)],
+%!        sqrt (eps))
+%!assert (chol ([2, 1; 1, 1], "lower"), [sqrt(2), 0; 1/sqrt(2), 1/sqrt(2)],
+%!        sqrt (eps))
+
+%!assert (chol ([2, 1; 1, 1], "lower"), chol ([2, 1; 1, 1], "LoweR"))
+%!assert (chol ([2, 1; 1, 1], "upper"), chol ([2, 1; 1, 1], "Upper"))
+
+## Check the "vector" option which only affects the 3rd argument and
+## is only valid for sparse input.
 %!testif HAVE_CHOLMOD
-%! ## Bug #42587
+%! a = sparse ([2 1; 1 1]);
+%! r = sparse ([sqrt(2), 1/sqrt(2); 0, 1/sqrt(2)]);
+%! [rd, pd, qd] = chol (a);
+%! [rv, pv, qv] = chol (a, "vector");
+%! assert (r, rd, eps)
+%! assert (r, rv, eps)
+%! assert (pd, 0)
+%! assert (pd, pv)
+%! assert (qd, sparse (eye (2)))
+%! assert (qv, [1 2])
+%!
+%! [rv, pv, qv] = chol (a, "Vector"); # check case sensitivity
+%! assert (r, rv, eps)
+%! assert (pd, pv)
+%! assert (qv, [1 2])
+
+%!testif HAVE_CHOLMOD <42587>
 %! A = sparse ([1 0 8;0 1 8;8 8 1]);
 %! [Q, p] = chol (A);
 %! assert (p != 0);
@@ -325,6 +352,7 @@ sparse matrices.
 %!error <optional arguments must be strings> chol (1, 2)
 %!error <optional argument must be one of "vector", "lower"> chol (1, "foobar")
 %!error <matrix A must be sparse> [L,p,Q] = chol ([1, 2; 3, 4])
+%!error <A must be sparse> [L, p] = chol ([1, 2; 3, 4], "vector")
 */
 
 DEFUN_DLD (cholinv, args, ,
@@ -356,7 +384,7 @@ the Cholesky@tie{}factorization.
             {
               SparseMatrix m = arg.sparse_matrix_value ();
 
-              sparse_chol<SparseMatrix> chol (m, info);
+              octave::math::sparse_chol<SparseMatrix> chol (m, info);
 
               if (info == 0)
                 retval = chol.inverse ();
@@ -367,7 +395,7 @@ the Cholesky@tie{}factorization.
             {
               SparseComplexMatrix m = arg.sparse_complex_matrix_value ();
 
-              sparse_chol<SparseComplexMatrix> chol (m, info);
+              octave::math::sparse_chol<SparseComplexMatrix> chol (m, info);
 
               if (info == 0)
                 retval = chol.inverse ();
@@ -384,7 +412,7 @@ the Cholesky@tie{}factorization.
               FloatMatrix m = arg.float_matrix_value ();
 
               octave_idx_type info;
-              chol<FloatMatrix> chol (m, info);
+              octave::math::chol<FloatMatrix> chol (m, info);
               if (info == 0)
                 retval = chol.inverse ();
               else
@@ -395,7 +423,7 @@ the Cholesky@tie{}factorization.
               FloatComplexMatrix m = arg.float_complex_matrix_value ();
 
               octave_idx_type info;
-              chol<FloatComplexMatrix> chol (m, info);
+              octave::math::chol<FloatComplexMatrix> chol (m, info);
               if (info == 0)
                 retval = chol.inverse ();
               else
@@ -411,7 +439,7 @@ the Cholesky@tie{}factorization.
               Matrix m = arg.matrix_value ();
 
               octave_idx_type info;
-              chol<Matrix> chol (m, info);
+              octave::math::chol<Matrix> chol (m, info);
               if (info == 0)
                 retval = chol.inverse ();
               else
@@ -422,7 +450,7 @@ the Cholesky@tie{}factorization.
               ComplexMatrix m = arg.complex_matrix_value ();
 
               octave_idx_type info;
-              chol<ComplexMatrix> chol (m, info);
+              octave::math::chol<ComplexMatrix> chol (m, info);
               if (info == 0)
                 retval = chol.inverse ();
               else
@@ -483,13 +511,13 @@ diagonal elements.  @code{chol2inv (@var{U})} provides
             {
               SparseMatrix r = arg.sparse_matrix_value ();
 
-              retval = chol2inv (r);
+              retval = octave::math::chol2inv (r);
             }
           else if (arg.is_complex_type ())
             {
               SparseComplexMatrix r = arg.sparse_complex_matrix_value ();
 
-              retval = chol2inv (r);
+              retval = octave::math::chol2inv (r);
             }
           else
             err_wrong_type_arg ("chol2inv", arg);
@@ -500,13 +528,13 @@ diagonal elements.  @code{chol2inv (@var{U})} provides
             {
               FloatMatrix r = arg.float_matrix_value ();
 
-              retval = chol2inv (r);
+              retval = octave::math::chol2inv (r);
             }
           else if (arg.is_complex_type ())
             {
               FloatComplexMatrix r = arg.float_complex_matrix_value ();
 
-              retval = chol2inv (r);
+              retval = octave::math::chol2inv (r);
             }
           else
             err_wrong_type_arg ("chol2inv", arg);
@@ -518,13 +546,13 @@ diagonal elements.  @code{chol2inv (@var{U})} provides
             {
               Matrix r = arg.matrix_value ();
 
-              retval = chol2inv (r);
+              retval = octave::math::chol2inv (r);
             }
           else if (arg.is_complex_type ())
             {
               ComplexMatrix r = arg.complex_matrix_value ();
 
-              retval = chol2inv (r);
+              retval = octave::math::chol2inv (r);
             }
           else
             err_wrong_type_arg ("chol2inv", arg);
@@ -533,6 +561,35 @@ diagonal elements.  @code{chol2inv (@var{U})} provides
 
   return retval;
 }
+
+/*
+
+## Test for bug #36437
+%!function sparse_chol2inv (T, tol)
+%!  iT = inv (T);
+%!  ciT = chol2inv (chol (T));
+%!  assert (ciT, iT, tol);
+%!  assert (chol2inv (chol ( full (T))), ciT, tol*2);
+%!endfunction
+
+%!testif HAVE_CHOLMOD
+%! A = gallery ("poisson", 3);
+%! sparse_chol2inv (A, eps);
+
+%!testif HAVE_CHOLMOD
+%! n = 10;
+%! B = spdiags (ones (n, 1) * [1 2 1], [-1 0 1], n, n);
+%! sparse_chol2inv (B, eps*100);
+
+%!testif HAVE_CHOLMOD
+%! C = gallery("tridiag", 5);
+%! sparse_chol2inv (C, eps*10);
+
+%!testif HAVE_CHOLMOD
+%! D = gallery("wathen", 1, 1);
+%! sparse_chol2inv (D, eps*10^4);
+
+*/
 
 DEFUN_DLD (cholupdate, args, nargout,
            doc: /* -*- texinfo -*-
@@ -601,7 +658,7 @@ If @var{info} is not present, an error message is printed in cases 1 and 2.
           FloatMatrix R = argr.float_matrix_value ();
           FloatColumnVector u = argu.float_column_vector_value ();
 
-          chol<FloatMatrix> fact;
+          octave::math::chol<FloatMatrix> fact;
           fact.set (R);
 
           if (down)
@@ -618,7 +675,7 @@ If @var{info} is not present, an error message is printed in cases 1 and 2.
           FloatComplexColumnVector u =
             argu.float_complex_column_vector_value ();
 
-          chol<FloatComplexMatrix> fact;
+          octave::math::chol<FloatComplexMatrix> fact;
           fact.set (R);
 
           if (down)
@@ -637,7 +694,7 @@ If @var{info} is not present, an error message is printed in cases 1 and 2.
           Matrix R = argr.matrix_value ();
           ColumnVector u = argu.column_vector_value ();
 
-          chol<Matrix> fact;
+          octave::math::chol<Matrix> fact;
           fact.set (R);
 
           if (down)
@@ -653,7 +710,7 @@ If @var{info} is not present, an error message is printed in cases 1 and 2.
           ComplexMatrix R = argr.complex_matrix_value ();
           ComplexColumnVector u = argu.complex_column_vector_value ();
 
-          chol<ComplexMatrix> fact;
+          octave::math::chol<ComplexMatrix> fact;
           fact.set (R);
 
           if (down)
@@ -792,7 +849,7 @@ If @var{info} is not present, an error message is printed in cases 1 and 2.
           FloatMatrix R = argr.float_matrix_value ();
           FloatColumnVector u = argu.float_column_vector_value ();
 
-          chol<FloatMatrix> fact;
+          octave::math::chol<FloatMatrix> fact;
           fact.set (R);
           err = fact.insert_sym (u, j-1);
 
@@ -805,7 +862,7 @@ If @var{info} is not present, an error message is printed in cases 1 and 2.
           FloatComplexColumnVector u =
             argu.float_complex_column_vector_value ();
 
-          chol<FloatComplexMatrix> fact;
+          octave::math::chol<FloatComplexMatrix> fact;
           fact.set (R);
           err = fact.insert_sym (u, j-1);
 
@@ -820,7 +877,7 @@ If @var{info} is not present, an error message is printed in cases 1 and 2.
           Matrix R = argr.matrix_value ();
           ColumnVector u = argu.column_vector_value ();
 
-          chol<Matrix> fact;
+          octave::math::chol<Matrix> fact;
           fact.set (R);
           err = fact.insert_sym (u, j-1);
 
@@ -833,7 +890,7 @@ If @var{info} is not present, an error message is printed in cases 1 and 2.
           ComplexColumnVector u =
             argu.complex_column_vector_value ();
 
-          chol<ComplexMatrix> fact;
+          octave::math::chol<ComplexMatrix> fact;
           fact.set (R);
           err = fact.insert_sym (u, j-1);
 
@@ -1027,7 +1084,7 @@ triangular, return the Cholesky@tie{}factorization of @w{A(p,p)}, where
           // real case
           FloatMatrix R = argr.float_matrix_value ();
 
-          chol<FloatMatrix> fact;
+          octave::math::chol<FloatMatrix> fact;
           fact.set (R);
           fact.delete_sym (j-1);
 
@@ -1038,7 +1095,7 @@ triangular, return the Cholesky@tie{}factorization of @w{A(p,p)}, where
           // complex case
           FloatComplexMatrix R = argr.float_complex_matrix_value ();
 
-          chol<FloatComplexMatrix> fact;
+          octave::math::chol<FloatComplexMatrix> fact;
           fact.set (R);
           fact.delete_sym (j-1);
 
@@ -1052,7 +1109,7 @@ triangular, return the Cholesky@tie{}factorization of @w{A(p,p)}, where
           // real case
           Matrix R = argr.matrix_value ();
 
-          chol<Matrix> fact;
+          octave::math::chol<Matrix> fact;
           fact.set (R);
           fact.delete_sym (j-1);
 
@@ -1063,7 +1120,7 @@ triangular, return the Cholesky@tie{}factorization of @w{A(p,p)}, where
           // complex case
           ComplexMatrix R = argr.complex_matrix_value ();
 
-          chol<ComplexMatrix> fact;
+          octave::math::chol<ComplexMatrix> fact;
           fact.set (R);
           fact.delete_sym (j-1);
 
@@ -1157,7 +1214,7 @@ triangular, return the Cholesky@tie{}factorization of
           // real case
           FloatMatrix R = argr.float_matrix_value ();
 
-          chol<FloatMatrix> fact;
+          octave::math::chol<FloatMatrix> fact;
           fact.set (R);
           fact.shift_sym (i-1, j-1);
 
@@ -1168,7 +1225,7 @@ triangular, return the Cholesky@tie{}factorization of
           // complex case
           FloatComplexMatrix R = argr.float_complex_matrix_value ();
 
-          chol<FloatComplexMatrix> fact;
+          octave::math::chol<FloatComplexMatrix> fact;
           fact.set (R);
           fact.shift_sym (i-1, j-1);
 
@@ -1182,7 +1239,7 @@ triangular, return the Cholesky@tie{}factorization of
           // real case
           Matrix R = argr.matrix_value ();
 
-          chol<Matrix> fact;
+          octave::math::chol<Matrix> fact;
           fact.set (R);
           fact.shift_sym (i-1, j-1);
 
@@ -1193,7 +1250,7 @@ triangular, return the Cholesky@tie{}factorization of
           // complex case
           ComplexMatrix R = argr.complex_matrix_value ();
 
-          chol<ComplexMatrix> fact;
+          octave::math::chol<ComplexMatrix> fact;
           fact.set (R);
           fact.shift_sym (i-1, j-1);
 
@@ -1265,3 +1322,4 @@ triangular, return the Cholesky@tie{}factorization of
 %! assert (norm (triu (R1)-R1, Inf), 0);
 %! assert (norm (R1'*R1 - single (Ac(p,p)), Inf) < 1e1*eps ("single"));
 */
+

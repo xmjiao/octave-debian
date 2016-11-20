@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2015 John W. Eaton
+Copyright (C) 2007-2016 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -382,11 +382,10 @@ octave_class::subsref (const std::string& type,
                 Cell t = tmp.index (idx.front ());
 
                 retval(0) = (t.numel () == 1) ? t(0)
-                  : octave_value (t, true);
+                                              : octave_value (t, true);
 
                 // We handled two index elements, so tell
                 // next_subsref to skip both of them.
-
                 skip++;
               }
             else
@@ -1092,7 +1091,7 @@ octave_class::reconstruct_exemplar (void)
             {
               result = ctor.do_multi_index_op (1, octave_value_list ());
             }
-          catch (const octave_execution_exception&)
+          catch (const octave::execution_exception&)
             {
               recover_from_exception ();
 
@@ -1391,7 +1390,8 @@ octave_class::load_binary (std::istream& is, bool swap,
 }
 
 bool
-octave_class::save_hdf5 (octave_hdf5_id loc_id, const char *name, bool save_as_floats)
+octave_class::save_hdf5 (octave_hdf5_id loc_id, const char *name,
+                         bool save_as_floats)
 {
 #if defined (HAVE_HDF5)
 
@@ -1405,7 +1405,8 @@ octave_class::save_hdf5 (octave_hdf5_id loc_id, const char *name, bool save_as_f
   octave_map::iterator i;
 
 #if defined (HAVE_HDF5_18)
-  group_hid = H5Gcreate (loc_id, name, octave_H5P_DEFAULT, octave_H5P_DEFAULT, octave_H5P_DEFAULT);
+  group_hid = H5Gcreate (loc_id, name, octave_H5P_DEFAULT, octave_H5P_DEFAULT,
+                         octave_H5P_DEFAULT);
 #else
   group_hid = H5Gcreate (loc_id, name, 0);
 #endif
@@ -1423,18 +1424,20 @@ octave_class::save_hdf5 (octave_hdf5_id loc_id, const char *name, bool save_as_f
     goto error_cleanup;
 #if defined (HAVE_HDF5_18)
   class_hid = H5Dcreate (group_hid, "classname",  type_hid, space_hid,
-                         octave_H5P_DEFAULT, octave_H5P_DEFAULT, octave_H5P_DEFAULT);
+                         octave_H5P_DEFAULT, octave_H5P_DEFAULT,
+                         octave_H5P_DEFAULT);
 #else
   class_hid = H5Dcreate (group_hid, "classname",  type_hid, space_hid,
                          octave_H5P_DEFAULT);
 #endif
-  if (class_hid < 0 || H5Dwrite (class_hid, type_hid, octave_H5S_ALL, octave_H5S_ALL,
-                                 octave_H5P_DEFAULT, c_name.c_str ()) < 0)
+  if (class_hid < 0 || H5Dwrite (class_hid, type_hid, octave_H5S_ALL,
+                                 octave_H5S_ALL, octave_H5P_DEFAULT,
+                                 c_name.c_str ()) < 0)
     goto error_cleanup;
 
 #if defined (HAVE_HDF5_18)
-  data_hid = H5Gcreate (group_hid, "value", octave_H5P_DEFAULT, octave_H5P_DEFAULT,
-                        octave_H5P_DEFAULT);
+  data_hid = H5Gcreate (group_hid, "value", octave_H5P_DEFAULT,
+                        octave_H5P_DEFAULT, octave_H5P_DEFAULT);
 #else
   data_hid = H5Gcreate (group_hid, "value", 0);
 #endif
@@ -1563,8 +1566,9 @@ octave_class::load_hdf5 (octave_hdf5_id loc_id, const char *name)
       st_id = H5Tcopy (H5T_C_S1);
       H5Tset_size (st_id, slen);
 
-      if (H5Dread (data_hid, st_id, octave_H5S_ALL, octave_H5S_ALL, octave_H5P_DEFAULT,
-                   classname) < 0)
+      if (H5Dread (data_hid, st_id, octave_H5S_ALL, octave_H5S_ALL,
+                   octave_H5P_DEFAULT, classname)
+          < 0)
         {
           H5Tclose (st_id);
           H5Dclose (data_hid);
@@ -1775,6 +1779,9 @@ is derived.
 %!assert (class (single (1.1)), "single")
 %!assert (class (uint8 (1)), "uint8")
 %!testif HAVE_JAVA
+%! if (! usejava ("jvm"))
+%!   return;
+%! endif
 %! jobj = javaObject ("java.lang.StringBuffer");
 %! assert (class (jobj), "java.lang.StringBuffer");
 
@@ -1878,6 +1885,9 @@ belongs to.
 %!assert (isa ({1, 2}, {"numeric", "integer", "cell"}), [false false true])
 
 %!testif HAVE_JAVA
+%! if (! usejava ("jvm"))
+%!   return;
+%! endif
 %! ## The first and last assert() are equal on purpose.  The assert() in
 %! ## the middle with an invalid class name will cause the java code to
 %! ## throw exceptions which we then must clear properly (or all other calls
@@ -2068,3 +2078,4 @@ may @emph{only} be called from a class constructor.
 
   return octave_value();
 }
+

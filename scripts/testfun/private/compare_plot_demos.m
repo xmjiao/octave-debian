@@ -1,4 +1,4 @@
-## Copyright (C) 2012 Ben Abbott  <bpabbott@mac.com>
+## Copyright (C) 2016 Ben Abbott  <bpabbott@mac.com>
 ##
 ## This file is part of Octave.
 ##
@@ -46,7 +46,8 @@
 function compare_plot_demos (varargin)
 
   arg.toolkits = available_graphics_toolkits ();
-  arg.directories = {"plot/appearance", "plot/draw", "plot/util", "image"};
+  arg.directories = fullfile ("plot", {"appearance", "draw", "util"});
+  arg.directories(end + 1) = "image";
   arg.fmt = "png";
   arg.fcn_file = "dump_plot_demos.m";
   arg.replace_images = false;

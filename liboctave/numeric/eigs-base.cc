@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2015 David Bateman
+Copyright (C) 2005-2016 David Bateman
 
 This file is part of Octave.
 
@@ -36,6 +36,8 @@ along with Octave; see the file COPYING.  If not, see
 #include "dSparse.h"
 #include "eigs-base.h"
 #include "f77-fcn.h"
+#include "lo-arpack-proto.h"
+#include "lo-blas-proto.h"
 #include "mx-ops.h"
 #include "oct-locbuf.h"
 #include "oct-rand.h"
@@ -44,120 +46,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "sparse-lu.h"
 
 #if defined (HAVE_ARPACK)
-
-// Arpack and blas fortran functions we call.
-extern "C"
-{
-  F77_RET_T
-  F77_FUNC (dsaupd, DSAUPD) (F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_DBLE&,
-                             F77_DBLE*, const F77_INT&, F77_DBLE*,
-                             const F77_INT&, F77_INT*,
-                             F77_INT*, F77_DBLE*, F77_DBLE*,
-                             const F77_INT&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (dseupd, DSEUPD) (const F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_INT*, F77_DBLE*, F77_DBLE*,
-                             const F77_INT&, const F77_DBLE&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_DBLE&, F77_DBLE*,
-                             const F77_INT&, F77_DBLE*,
-                             const F77_INT&, F77_INT*,
-                             F77_INT*, F77_DBLE*, F77_DBLE*,
-                             const F77_INT&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (dnaupd, DNAUPD) (F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_INT&, const F77_DBLE&,
-                             F77_DBLE*, const F77_INT&, F77_DBLE*,
-                             const F77_INT&, F77_INT*,
-                             F77_INT*, F77_DBLE*, F77_DBLE*,
-                             const F77_INT&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (dneupd, DNEUPD) (const F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_INT*, F77_DBLE*, F77_DBLE*,
-                             F77_DBLE*, const F77_INT&, const F77_DBLE&,
-                             const F77_DBLE&, F77_DBLE*,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_INT&, const F77_DBLE&, F77_DBLE*,
-                             const F77_INT&, F77_DBLE*,
-                             const F77_INT&, F77_INT*,
-                             F77_INT*, F77_DBLE*, F77_DBLE*,
-                             const F77_INT&, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (znaupd, ZNAUPD) (F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_DBLE&,
-                             F77_DBLE_CMPLX*, const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_INT*,
-                             F77_INT*, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE *, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zneupd, ZNEUPD) (const F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_INT*, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*,
-                             const F77_INT&, const F77_DBLE_CMPLX*, F77_DBLE_CMPLX*,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT&, const F77_DBLE&,
-                             F77_DBLE_CMPLX*, const F77_INT&, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_INT*,
-                             F77_INT*, F77_DBLE_CMPLX*, F77_DBLE_CMPLX*,
-                             const F77_INT&, F77_DBLE *, F77_INT&
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (dgemv, DGEMV) (F77_CONST_CHAR_ARG_DECL,
-                           const F77_INT&, const F77_INT&,
-                           const F77_DBLE&, const F77_DBLE*,
-                           const F77_INT&, const F77_DBLE*,
-                           const F77_INT&, const F77_DBLE&, F77_DBLE*,
-                           const F77_INT&
-                           F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zgemv, ZGEMV) (F77_CONST_CHAR_ARG_DECL,
-                           const F77_INT&, const F77_INT&,
-                           const F77_DBLE_CMPLX&, const F77_DBLE_CMPLX*,
-                           const F77_INT&, const F77_DBLE_CMPLX*,
-                           const F77_INT&, const F77_DBLE_CMPLX&, F77_DBLE_CMPLX*,
-                           const F77_INT&
-                           F77_CHAR_ARG_LEN_DECL);
-
-}
 
 static void
 warn_convergence (void)
@@ -288,8 +176,10 @@ vector_product (const ComplexMatrix& m, const Complex *x, Complex *y)
   octave_idx_type nc = m.cols ();
 
   F77_XFCN (zgemv, ZGEMV, (F77_CONST_CHAR_ARG2 ("N", 1),
-                           nr, nc, 1.0,  F77_CONST_DBLE_CMPLX_ARG (m.data ()), nr,
-                           F77_CONST_DBLE_CMPLX_ARG (x), 1, 0.0, F77_DBLE_CMPLX_ARG (y), 1
+                           nr, nc, 1.0, F77_CONST_DBLE_CMPLX_ARG (m.data ()),
+                           nr,
+                           F77_CONST_DBLE_CMPLX_ARG (x), 1, 0.0,
+                           F77_DBLE_CMPLX_ARG (y), 1
                            F77_CHAR_ARG_LEN (1)));
 
   if (f77_exception_encountered)
@@ -302,7 +192,7 @@ static bool
 make_cholb (Matrix& b, Matrix& bt, ColumnVector& permB)
 {
   octave_idx_type info;
-  chol<Matrix> fact (b, info);
+  octave::math::chol<Matrix> fact (b, info);
   octave_idx_type n = b.cols ();
 
   if (info != 0)
@@ -322,7 +212,7 @@ static bool
 make_cholb (SparseMatrix& b, SparseMatrix& bt, ColumnVector& permB)
 {
   octave_idx_type info;
-  sparse_chol<SparseMatrix> fact (b, info, false);
+  octave::math::sparse_chol<SparseMatrix> fact (b, info, false);
 
   if (fact.P () != 0)
     return false;
@@ -339,7 +229,7 @@ static bool
 make_cholb (ComplexMatrix& b, ComplexMatrix& bt, ColumnVector& permB)
 {
   octave_idx_type info;
-  chol<ComplexMatrix> fact (b, info);
+  octave::math::chol<ComplexMatrix> fact (b, info);
   octave_idx_type n = b.cols ();
 
   if (info != 0)
@@ -360,7 +250,7 @@ make_cholb (SparseComplexMatrix& b, SparseComplexMatrix& bt,
             ColumnVector& permB)
 {
   octave_idx_type info;
-  sparse_chol<SparseComplexMatrix> fact (b, info, false);
+  octave::math::sparse_chol<SparseComplexMatrix> fact (b, info, false);
 
   if (fact.P () != 0)
     return false;
@@ -426,7 +316,7 @@ LuAminusSigmaB (const SparseMatrix &m, const SparseMatrix &b,
       AminusSigmaB -= sigmat;
     }
 
-  sparse_lu<SparseMatrix> fact (AminusSigmaB);
+  octave::math::sparse_lu<SparseMatrix> fact (AminusSigmaB);
 
   L = fact.L ();
   U = fact.U ();
@@ -508,7 +398,7 @@ LuAminusSigmaB (const Matrix &m, const Matrix &b,
         p[i*(n+1)] -= sigma;
     }
 
-  lu<Matrix> fact (AminusSigmaB);
+  octave::math::lu<Matrix> fact (AminusSigmaB);
 
   L = fact.P ().transpose () * fact.L ();
   U = fact.U ();
@@ -590,7 +480,7 @@ LuAminusSigmaB (const SparseComplexMatrix &m, const SparseComplexMatrix &b,
       AminusSigmaB -= sigmat;
     }
 
-  sparse_lu<SparseComplexMatrix> fact (AminusSigmaB);
+  octave::math::sparse_lu<SparseComplexMatrix> fact (AminusSigmaB);
 
   L = fact.L ();
   U = fact.U ();
@@ -672,7 +562,7 @@ LuAminusSigmaB (const ComplexMatrix &m, const ComplexMatrix &b,
         p[i*(n+1)] -= sigma;
     }
 
-  lu<ComplexMatrix> fact (AminusSigmaB);
+  octave::math::lu<ComplexMatrix> fact (AminusSigmaB);
 
   L = fact.P ().transpose () * fact.L ();
   U = fact.U ();
@@ -750,7 +640,8 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
 
   if (k < 1 || k > n - 2)
     (*current_liboctave_error_handler)
-      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1-1).\n"
+      ("eigs: Invalid number of eigenvalues to extract"
+       " (must be 0 < k < n-1-1).\n"
        "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
@@ -768,7 +659,8 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
         {
           octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
 
-          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+          if (checked(bidx) || bidx < 0 || bidx >= n
+              || octave::math::x_nint (bidx) != bidx)
             (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
@@ -880,7 +772,7 @@ EigsRealSymmetricMatrix (const M& m, const std::string typ,
                 workd[i+iptr(1)-1] = mtmp(i,0);
             }
           else if (! vector_product (m, workd + iptr(0) - 1,
-                                    workd + iptr(1) - 1))
+                                     workd + iptr(1) - 1))
             break;
         }
       else
@@ -1012,7 +904,8 @@ EigsRealSymmetricMatrixShift (const M& m, double sigma,
 
   if (k <= 0 || k >= n - 1)
     (*current_liboctave_error_handler)
-      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1-1).\n"
+      ("eigs: Invalid number of eigenvalues to extract"
+       " (must be 0 < k < n-1-1).\n"
        "      Use 'eig (full (A))' instead");
 
   if (p < 0)
@@ -1041,7 +934,8 @@ EigsRealSymmetricMatrixShift (const M& m, double sigma,
         {
           octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
 
-          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+          if (checked(bidx) || bidx < 0 || bidx >= n
+              || octave::math::x_nint (bidx) != bidx)
             (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
@@ -1298,7 +1192,8 @@ EigsRealSymmetricFunc (EigsFunc fun, octave_idx_type n,
 
   if (k <= 0 || k >= n - 1)
     (*current_liboctave_error_handler)
-      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+      ("eigs: Invalid number of eigenvalues to extract"
+       " (must be 0 < k < n-1).\n"
        "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
@@ -1544,7 +1439,8 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
 
   if (k <= 0 || k >= n - 1)
     (*current_liboctave_error_handler)
-      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+      ("eigs: Invalid number of eigenvalues to extract"
+       " (must be 0 < k < n-1).\n"
        "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
@@ -1562,7 +1458,8 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
         {
           octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
 
-          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+          if (checked(bidx) || bidx < 0 || bidx >= n
+              || octave::math::x_nint (bidx) != bidx)
             (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
@@ -1674,7 +1571,7 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
                 workd[i+iptr(1)-1] = mtmp(i,0);
             }
           else if (! vector_product (m, workd + iptr(0) - 1,
-                                    workd + iptr(1) - 1))
+                                     workd + iptr(1) - 1))
             break;
         }
       else
@@ -1781,7 +1678,7 @@ EigsRealNonSymmetricMatrix (const M& m, const std::string typ,
             {
               octave_idx_type off1 = i * n;
               octave_idx_type off2 = (i+1) * n;
-              if (std::imag (eig_val(i)) == 0)
+              if (octave::math::imag (eig_val(i)) == 0)
                 {
                   for (octave_idx_type j = 0; j < n; j++)
                     eig_vec(j,i) =
@@ -1866,7 +1763,8 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
 
   if (k <= 0 || k >= n - 1)
     (*current_liboctave_error_handler)
-      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+      ("eigs: Invalid number of eigenvalues to extract"
+       " (must be 0 < k < n-1).\n"
        "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
@@ -1884,7 +1782,8 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
         {
           octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
 
-          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+          if (checked(bidx) || bidx < 0 || bidx >= n
+              || octave::math::x_nint (bidx) != bidx)
             (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
@@ -2127,7 +2026,7 @@ EigsRealNonSymmetricMatrixShift (const M& m, double sigmar,
             {
               octave_idx_type off1 = i * n;
               octave_idx_type off2 = (i+1) * n;
-              if (std::imag (eig_val(i)) == 0)
+              if (octave::math::imag (eig_val(i)) == 0)
                 {
                   for (octave_idx_type j = 0; j < n; j++)
                     eig_vec(j,i) =
@@ -2195,7 +2094,8 @@ EigsRealNonSymmetricFunc (EigsFunc fun, octave_idx_type n,
 
   if (k <= 0 || k >= n - 1)
     (*current_liboctave_error_handler)
-      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+      ("eigs: Invalid number of eigenvalues to extract"
+       " (must be 0 < k < n-1).\n"
        "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
@@ -2410,7 +2310,7 @@ EigsRealNonSymmetricFunc (EigsFunc fun, octave_idx_type n,
             {
               octave_idx_type off1 = i * n;
               octave_idx_type off2 = (i+1) * n;
-              if (std::imag (eig_val(i)) == 0)
+              if (octave::math::imag (eig_val(i)) == 0)
                 {
                   for (octave_idx_type j = 0; j < n; j++)
                     eig_vec(j,i) =
@@ -2492,7 +2392,8 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
 
   if (k <= 0 || k >= n - 1)
     (*current_liboctave_error_handler)
-      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+      ("eigs: Invalid number of eigenvalues to extract"
+       " (must be 0 < k < n-1).\n"
        "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
@@ -2510,7 +2411,8 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
         {
           octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
 
-          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+          if (checked(bidx) || bidx < 0 || bidx >= n
+              || octave::math::x_nint (bidx) != bidx)
             (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
@@ -2580,9 +2482,11 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
     {
       F77_FUNC (znaupd, ZNAUPD)
         (ido, F77_CONST_CHAR_ARG2 (&bmat, 1), n,
-         F77_CONST_CHAR_ARG2 ((typ.c_str ()), 2),
-         k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n, iparam,
-         ipntr, F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork, info
+         F77_CONST_CHAR_ARG2 (typ.c_str (), 2),
+         k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n,
+         iparam, ipntr,
+         F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork,
+         info
          F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
@@ -2622,7 +2526,7 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
 
             }
           else if (! vector_product (m, workd + iptr(0) - 1,
-                                    workd + iptr(1) - 1))
+                                     workd + iptr(1) - 1))
             break;
         }
       else
@@ -2657,11 +2561,15 @@ EigsComplexNonSymmetricMatrix (const M& m, const std::string typ,
   OCTAVE_LOCAL_BUFFER (Complex, workev, 2 * p);
 
   F77_FUNC (zneupd, ZNEUPD)
-    (rvec, F77_CONST_CHAR_ARG2 ("A", 1), sel, F77_DBLE_CMPLX_ARG (d), F77_DBLE_CMPLX_ARG (z), n, F77_CONST_DBLE_CMPLX_ARG (&sigma), F77_DBLE_CMPLX_ARG (workev),
+    (rvec, F77_CONST_CHAR_ARG2 ("A", 1), sel, F77_DBLE_CMPLX_ARG (d),
+     F77_DBLE_CMPLX_ARG (z), n, F77_CONST_DBLE_CMPLX_ARG (&sigma),
+     F77_DBLE_CMPLX_ARG (workev),
      F77_CONST_CHAR_ARG2 (&bmat, 1), n,
      F77_CONST_CHAR_ARG2 ((typ.c_str ()), 2),
-     k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n, iparam, ipntr, F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork, info2
-     F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
+     k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n,
+     iparam, ipntr,
+     F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork,
+     info2 F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
     (*current_liboctave_error_handler)
@@ -2768,7 +2676,8 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
 
   if (k <= 0 || k >= n - 1)
     (*current_liboctave_error_handler)
-      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+      ("eigs: Invalid number of eigenvalues to extract"
+       " (must be 0 < k < n-1).\n"
        "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
@@ -2786,7 +2695,8 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
         {
           octave_idx_type bidx = static_cast<octave_idx_type> (permB(i));
 
-          if (checked(bidx) || bidx < 0 || bidx >= n || octave::math::x_nint (bidx) != bidx)
+          if (checked(bidx) || bidx < 0 || bidx >= n
+              || octave::math::x_nint (bidx) != bidx)
             (*current_liboctave_error_handler) ("eigs: permB vector invalid");
         }
     }
@@ -2837,9 +2747,10 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
       F77_FUNC (znaupd, ZNAUPD)
         (ido, F77_CONST_CHAR_ARG2 (&bmat, 1), n,
          F77_CONST_CHAR_ARG2 ((typ.c_str ()), 2),
-         k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n, iparam,
-         ipntr, F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork, info
-         F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
+         k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n,
+         iparam, ipntr,
+         F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork,
+         info F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
         (*current_liboctave_error_handler)
@@ -2959,11 +2870,15 @@ EigsComplexNonSymmetricMatrixShift (const M& m, Complex sigma,
   OCTAVE_LOCAL_BUFFER (Complex, workev, 2 * p);
 
   F77_FUNC (zneupd, ZNEUPD)
-    (rvec, F77_CONST_CHAR_ARG2 ("A", 1), sel, F77_DBLE_CMPLX_ARG (d), F77_DBLE_CMPLX_ARG (z), n, F77_CONST_DBLE_CMPLX_ARG (&sigma), F77_DBLE_CMPLX_ARG (workev),
+    (rvec, F77_CONST_CHAR_ARG2 ("A", 1), sel, F77_DBLE_CMPLX_ARG (d),
+     F77_DBLE_CMPLX_ARG (z), n, F77_CONST_DBLE_CMPLX_ARG (&sigma),
+     F77_DBLE_CMPLX_ARG (workev),
      F77_CONST_CHAR_ARG2 (&bmat, 1), n,
      F77_CONST_CHAR_ARG2 ((typ.c_str ()), 2),
-     k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n, iparam, ipntr, F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork, info2
-     F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
+     k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n,
+     iparam, ipntr,
+     F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork,
+     info2 F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
     (*current_liboctave_error_handler)
@@ -3055,7 +2970,8 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
 
   if (k <= 0 || k >= n - 1)
     (*current_liboctave_error_handler)
-      ("eigs: Invalid number of eigenvalues to extract (must be 0 < k < n-1).\n"
+      ("eigs: Invalid number of eigenvalues to extract"
+       " (must be 0 < k < n-1).\n"
        "      Use 'eig (full (A))' instead");
 
   if (p <= k || p >= n)
@@ -3122,9 +3038,10 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
       F77_FUNC (znaupd, ZNAUPD)
         (ido, F77_CONST_CHAR_ARG2 (&bmat, 1), n,
          F77_CONST_CHAR_ARG2 ((typ.c_str ()), 2),
-         k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n, iparam,
-         ipntr, F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork, info
-         F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
+         k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n,
+         iparam, ipntr,
+         F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork,
+         info F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
       if (f77_exception_encountered)
         (*current_liboctave_error_handler)
@@ -3199,11 +3116,15 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
   OCTAVE_LOCAL_BUFFER (Complex, workev, 2 * p);
 
   F77_FUNC (zneupd, ZNEUPD)
-    (rvec, F77_CONST_CHAR_ARG2 ("A", 1), sel, F77_DBLE_CMPLX_ARG (d), F77_DBLE_CMPLX_ARG (z), n, F77_DBLE_CMPLX_ARG (&sigma), F77_DBLE_CMPLX_ARG (workev),
+    (rvec, F77_CONST_CHAR_ARG2 ("A", 1), sel, F77_DBLE_CMPLX_ARG (d),
+     F77_DBLE_CMPLX_ARG (z), n, F77_DBLE_CMPLX_ARG (&sigma),
+     F77_DBLE_CMPLX_ARG (workev),
      F77_CONST_CHAR_ARG2 (&bmat, 1), n,
      F77_CONST_CHAR_ARG2 ((typ.c_str ()), 2),
-     k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n, iparam, ipntr, F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork, info2
-     F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
+     k, tol, F77_DBLE_CMPLX_ARG (presid), p, F77_DBLE_CMPLX_ARG (v), n,
+     iparam, ipntr,
+     F77_DBLE_CMPLX_ARG (workd), F77_DBLE_CMPLX_ARG (workl), lwork, rwork,
+     info2 F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(1) F77_CHAR_ARG_LEN(2));
 
   if (f77_exception_encountered)
     (*current_liboctave_error_handler)
@@ -3368,3 +3289,4 @@ EigsComplexNonSymmetricMatrixShift<SparseComplexMatrix>
    double tol, bool rvec, bool cholB, int disp, int maxit);
 
 #endif
+

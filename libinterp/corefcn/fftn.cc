@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2015 David Bateman
+Copyright (C) 2004-2016 David Bateman
 
 This file is part of Octave.
 
@@ -162,3 +162,4 @@ resized and padded with zeros.
 {
   return do_fftn (args, "ifftn", 1);
 }
+

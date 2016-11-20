@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2015 John W. Eaton
+## Copyright (C) 1993-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -15,8 +15,6 @@
 ## You should have received a copy of the GNU General Public License
 ## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
-
-## FIXME: the information in this file is currently duplicated in help.cc.
 
 !
 @c libinterp/parse-tree/oct-parse.in.yy
@@ -225,7 +223,7 @@ Element by element multiplication operator.
 .**
 @c libinterp/parse-tree/oct-parse.in.yy
 -*- texinfo -*-
-@deftypefn {} {} .*
+@deftypefn {} {} .**
 Element by element power operator.  If several complex results are possible,
 returns the one with smallest non-negative argument (angle).  Use
 @code{realpow}, @code{realsqrt}, @code{cbrt}, or @code{nthroot} if a
@@ -247,28 +245,28 @@ real result is preferred.
 -*- texinfo -*-
 @deftypefn {} {} ./
 Element by element right division operator.
-@seealso{/, .\, rdivide, mrdivide}
+@seealso{/, .\\, rdivide, mrdivide}
 @end deftypefn
 /
 @c libinterp/parse-tree/oct-parse.in.yy
 -*- texinfo -*-
 @deftypefn {} {} /
 Right division operator.
-@seealso{./, \, rdivide, mrdivide}
+@seealso{./, \\, rdivide, mrdivide}
 @end deftypefn
 .\
 @c libinterp/parse-tree/oct-parse.in.yy
 -*- texinfo -*-
 @deftypefn {} {} .\
 Element by element left division operator.
-@seealso{\, ./, rdivide, mrdivide}
+@seealso{\\, ./, rdivide, mrdivide}
 @end deftypefn
 \
 @c libinterp/parse-tree/oct-parse.in.yy
 -*- texinfo -*-
 @deftypefn {} {} \
 Left division operator.
-@seealso{.\, /, ldivide, mldivide}
+@seealso{.\\, /, ldivide, mldivide}
 @end deftypefn
 :
 @c libinterp/parse-tree/oct-parse.in.yy

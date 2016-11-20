@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -418,3 +418,4 @@ template <typename T>
 void read_int (std::istream& is, bool swap_bytes, T& val);
 
 #endif
+

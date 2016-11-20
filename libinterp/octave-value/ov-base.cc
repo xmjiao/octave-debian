@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -137,6 +137,66 @@ octave_base_value::full_value (void) const
   err_wrong_type_arg ("full: invalid operation for %s type", type_name ());
 }
 
+octave_value
+octave_base_value::as_double (void) const
+{
+  err_invalid_conversion (type_name (), "double");
+}
+
+octave_value
+octave_base_value::as_single (void) const
+{
+  err_invalid_conversion (type_name (), "single");
+}
+
+octave_value
+octave_base_value::as_int8 (void) const
+{
+  err_invalid_conversion (type_name (), "int8");
+}
+
+octave_value
+octave_base_value::as_int16 (void) const
+{
+  err_invalid_conversion (type_name (), "int16");
+}
+
+octave_value
+octave_base_value::as_int32 (void) const
+{
+  err_invalid_conversion (type_name (), "int32");
+}
+
+octave_value
+octave_base_value::as_int64 (void) const
+{
+  err_invalid_conversion (type_name (), "int64");
+}
+
+octave_value
+octave_base_value::as_uint8 (void) const
+{
+  err_invalid_conversion (type_name (), "uint8");
+}
+
+octave_value
+octave_base_value::as_uint16 (void) const
+{
+  err_invalid_conversion (type_name (), "uint16");
+}
+
+octave_value
+octave_base_value::as_uint32 (void) const
+{
+  err_invalid_conversion (type_name (), "uint32");
+}
+
+octave_value
+octave_base_value::as_uint64 (void) const
+{
+  err_invalid_conversion (type_name (), "uint64");
+}
+
 Matrix
 octave_base_value::size (void)
 {
@@ -214,7 +274,7 @@ idx_vector
 octave_base_value::index_vector (bool /* require_integers */) const
 {
   std::string nm = "<" + type_name () + ">";
-  err_invalid_index (nm.c_str ());
+  octave::err_invalid_index (nm.c_str ());
 }
 
 octave_value
@@ -447,7 +507,7 @@ octave_base_value::print_info (std::ostream& os,
       {                                                                 \
         d = double_value (frc_str_conv);                                \
       }                                                                 \
-    catch (octave_execution_exception& e)                               \
+    catch (octave::execution_exception& e)                               \
       {                                                                 \
         err_wrong_type_arg (e, "octave_base_value::" #F "_value ()", type_name ()); \
       }                                                                 \
@@ -485,7 +545,7 @@ octave_base_value::nint_value (bool frc_str_conv) const
     {
       d = double_value (frc_str_conv);
     }
-  catch (octave_execution_exception& e)
+  catch (octave::execution_exception& e)
     {
       err_wrong_type_arg (e, "octave_base_value::nint_value ()", type_name ());
     }
@@ -1352,22 +1412,26 @@ octave_base_value::fast_elem_insert_self (void *, builtin_type_t) const
   return false;
 }
 
-CONVDECLX (matrix_conv)
+static octave_base_value *
+oct_conv_matrix_conv (const octave_base_value&)
 {
   return new octave_matrix ();
 }
 
-CONVDECLX (complex_matrix_conv)
+static octave_base_value *
+oct_conv_complex_matrix_conv (const octave_base_value&)
 {
   return new octave_complex_matrix ();
 }
 
-CONVDECLX (string_conv)
+static octave_base_value *
+oct_conv_string_conv (const octave_base_value&)
 {
   return new octave_char_matrix_str ();
 }
 
-CONVDECLX (cell_conv)
+static octave_base_value *
+oct_conv_cell_conv (const octave_base_value&)
 {
   return new octave_cell ();
 }
@@ -1526,3 +1590,4 @@ The original variable value is restored when exiting the function.
 %! assert (typeinfo (s), "matrix");
 %! sparse_auto_mutate (false);
 */
+

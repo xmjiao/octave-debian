@@ -1,7 +1,7 @@
 /*
 
 Copyright (C) 2016 John W. Eaton
-Copyright (C) 2009-2015 Michael Goffioul
+Copyright (C) 2009-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -30,111 +30,115 @@ along with Octave; see the file COPYING.  If not, see
 #include "ft-text-renderer.h"
 #include "text-renderer.h"
 
-static base_text_renderer *
+static octave::base_text_renderer *
 make_text_renderer (void)
 {
   // Allow the possibility of choosing different text rendering
   // implementations.
 
-  return make_ft_text_renderer ();
+  return octave::make_ft_text_renderer ();
 }
 
-text_renderer::text_renderer (void)
-  : rep (make_text_renderer ())
-{ }
-
-text_renderer::~text_renderer (void)
+namespace octave
 {
-  delete rep;
+  text_renderer::text_renderer (void)
+    : rep (make_text_renderer ())
+  { }
+
+  text_renderer::~text_renderer (void)
+  {
+    delete rep;
+  }
+
+  bool
+  text_renderer::ok (void) const
+  {
+    static bool warned = false;
+
+    if (! rep)
+      {
+        if (! warned)
+          {
+            warn_disabled_feature ("opengl_renderer::render_text",
+                                   "rendering text (FreeType)");
+
+            warned = true;
+          }
+      }
+
+    return rep != 0;
+  }
+
+  Matrix
+  text_renderer::get_extent (text_element *elt, double rotation)
+  {
+    static Matrix empty_extent (1, 4, 0.0);
+
+    return ok () ? rep->get_extent (elt, rotation) : empty_extent;
+  }
+
+  Matrix
+  text_renderer::get_extent (const std::string& txt, double rotation,
+                             const caseless_str& interpreter)
+  {
+    static Matrix empty_extent (1, 4, 0.0);
+
+    return ok () ? rep->get_extent (txt, rotation, interpreter) : empty_extent;
+  }
+
+  void
+  text_renderer::set_font (const std::string& name, const std::string& weight,
+                           const std::string& angle, double size)
+  {
+    if (ok ())
+      rep->set_font (name, weight, angle, size);
+  }
+
+  void
+  text_renderer::set_color (const Matrix& c)
+  {
+    if (ok ())
+      rep->set_color (c);
+  }
+
+  void
+  text_renderer::text_to_pixels (const std::string& txt,
+                                 uint8NDArray& pxls, Matrix& bbox,
+                                 int halign, int valign, double rotation,
+                                 const caseless_str& interpreter,
+                                 bool handle_rotation)
+  {
+    static Matrix empty_bbox (1, 4, 0.0);
+    static uint8NDArray empty_pxls;
+
+    if (ok ())
+      rep->text_to_pixels (txt, pxls, bbox, halign, valign, rotation,
+                           interpreter, handle_rotation);
+    else
+      {
+        bbox = empty_bbox;
+        pxls = empty_pxls;
+      }
+  }
+
+  void
+  text_renderer::text_to_strlist (const std::string& txt,
+                                  std::list<text_renderer::string>& lst,
+                                  Matrix& bbox, int halign, int valign,
+                                  double rotation,
+                                  const caseless_str& interpreter)
+  {
+    static Matrix empty_bbox (1, 4, 0.0);
+    static std::list<text_renderer::string> empty_lst;
+
+    if (ok ())
+      rep->text_to_strlist (txt, lst, bbox, halign, valign, rotation,
+                            interpreter);
+    else
+      {
+        bbox = empty_bbox;
+        lst = empty_lst;
+      }
+  }
 }
 
-bool
-text_renderer::ok (void) const
-{
-  static bool warned = false;
-
-  if (! rep)
-    {
-      if (! warned)
-        {
-          warn_disabled_feature ("opengl_renderer::render_text",
-                                 "rendering text (FreeType)");
-
-          warned = true;
-        }
-    }
-
-  return rep != 0;
-}
-
-Matrix
-text_renderer::get_extent (text_element *elt, double rotation)
-{
-  static Matrix empty_extent (1, 4, 0.0);
-
-  return ok () ? rep->get_extent (elt, rotation) : empty_extent;
-}
-
-Matrix
-text_renderer::get_extent (const std::string& txt, double rotation,
-                           const caseless_str& interpreter)
-{
-  static Matrix empty_extent (1, 4, 0.0);
-
-  return ok () ? rep->get_extent (txt, rotation, interpreter) : empty_extent;
-}
-
-void
-text_renderer::set_font (const std::string& name, const std::string& weight,
-                         const std::string& angle, double size)
-{
-  if (ok ())
-    rep->set_font (name, weight, angle, size);
-}
-
-void
-text_renderer::set_color (const Matrix& c)
-{
-  if (ok ())
-    rep->set_color (c);
-}
-
-void
-text_renderer::text_to_pixels (const std::string& txt,
-                               uint8NDArray& pxls, Matrix& bbox,
-                               int halign, int valign, double rotation,
-                               const caseless_str& interpreter,
-                               bool handle_rotation)
-{
-  static Matrix empty_bbox (1, 4, 0.0);
-  static uint8NDArray empty_pxls;
-
-  if (ok ())
-    rep->text_to_pixels (txt, pxls, bbox, halign, valign, rotation,
-                         interpreter, handle_rotation);
-  else
-    {
-      bbox = empty_bbox;
-      pxls = empty_pxls;
-    }
-}
-
-void
-text_renderer::text_to_strlist (const std::string& txt,
-                                std::list<text_renderer::string>& lst,
-                                Matrix& bbox, int halign, int valign,
-                                double rotation,
-                                const caseless_str& interpreter)
-{
-  static Matrix empty_bbox (1, 4, 0.0);
-  static std::list<text_renderer::string> empty_lst;
-
-  if (ok ())
-    rep->text_to_strlist (txt, lst, bbox, halign, valign, rotation,
-                          interpreter);
-  else
-    {
-      bbox = empty_bbox;
-      lst = empty_lst;
-    }
-}

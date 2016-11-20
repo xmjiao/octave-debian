@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -64,10 +64,10 @@ octave_float_complex::try_narrowing_conversion (void)
 {
   octave_base_value *retval = 0;
 
-  float im = std::imag (scalar);
+  float im = scalar.imag ();
 
   if (im == 0.0)
-    retval = new octave_float_scalar (std::real (scalar));
+    retval = new octave_float_scalar (scalar.real ());
 
   return retval;
 }
@@ -94,29 +94,21 @@ octave_float_complex::do_index_op (const octave_value_list& idx, bool resize_ok)
 double
 octave_float_complex::double_value (bool force_conversion) const
 {
-  double retval;
-
   if (! force_conversion)
     warn_implicit_conversion ("Octave:imag-to-real",
                               "complex scalar", "real scalar");
 
-  retval = std::real (scalar);
-
-  return retval;
+  return scalar.real ();
 }
 
 float
 octave_float_complex::float_value (bool force_conversion) const
 {
-  float retval;
-
   if (! force_conversion)
     warn_implicit_conversion ("Octave:imag-to-real",
                               "complex scalar", "real scalar");
 
-  retval = std::real (scalar);
-
-  return retval;
+  return scalar.real ();
 }
 
 Matrix
@@ -128,7 +120,7 @@ octave_float_complex::matrix_value (bool force_conversion) const
     warn_implicit_conversion ("Octave:imag-to-real",
                               "complex scalar", "real matrix");
 
-  retval = Matrix (1, 1, std::real (scalar));
+  retval = Matrix (1, 1, scalar.real ());
 
   return retval;
 }
@@ -142,7 +134,7 @@ octave_float_complex::float_matrix_value (bool force_conversion) const
     warn_implicit_conversion ("Octave:imag-to-real",
                               "complex scalar", "real matrix");
 
-  retval = FloatMatrix (1, 1, std::real (scalar));
+  retval = FloatMatrix (1, 1, scalar.real ());
 
   return retval;
 }
@@ -156,7 +148,7 @@ octave_float_complex::array_value (bool force_conversion) const
     warn_implicit_conversion ("Octave:imag-to-real",
                               "complex scalar", "real matrix");
 
-  retval = NDArray (dim_vector (1, 1), std::real (scalar));
+  retval = NDArray (dim_vector (1, 1), scalar.real ());
 
   return retval;
 }
@@ -170,7 +162,7 @@ octave_float_complex::float_array_value (bool force_conversion) const
     warn_implicit_conversion ("Octave:imag-to-real",
                               "complex scalar", "real matrix");
 
-  retval = FloatNDArray (dim_vector (1, 1), std::real (scalar));
+  retval = FloatNDArray (dim_vector (1, 1), scalar.real ());
 
   return retval;
 }
@@ -232,6 +224,18 @@ octave_float_complex::resize (const dim_vector& dv, bool fill) const
 
       return retval;
     }
+}
+
+octave_value
+octave_float_complex::as_double (void) const
+{
+  return Complex (scalar);
+}
+
+octave_value
+octave_float_complex::as_single (void) const
+{
+  return scalar;
 }
 
 octave_value
@@ -331,8 +335,8 @@ octave_float_complex::save_hdf5 (octave_hdf5_id loc_id, const char *name,
     }
 
   FloatComplex tmp = float_complex_value ();
-  retval = H5Dwrite (data_hid, type_hid, octave_H5S_ALL, octave_H5S_ALL, octave_H5P_DEFAULT,
-                     &tmp) >= 0;
+  retval = H5Dwrite (data_hid, type_hid, octave_H5S_ALL, octave_H5S_ALL,
+                     octave_H5P_DEFAULT, &tmp) >= 0;
 
   H5Dclose (data_hid);
   H5Tclose (type_hid);
@@ -384,8 +388,9 @@ octave_float_complex::load_hdf5 (octave_hdf5_id loc_id, const char *name)
 
   // complex scalar:
   FloatComplex ctmp;
-  if (H5Dread (data_hid, complex_type, octave_H5S_ALL, octave_H5S_ALL, octave_H5P_DEFAULT,
-               &ctmp) >= 0)
+  if (H5Dread (data_hid, complex_type, octave_H5S_ALL, octave_H5S_ALL,
+               octave_H5P_DEFAULT, &ctmp)
+      >= 0)
     {
       retval = true;
       scalar = ctmp;
@@ -413,8 +418,8 @@ octave_float_complex::as_mxArray (void) const
   float *pr = static_cast<float *> (retval->get_data ());
   float *pi = static_cast<float *> (retval->get_imag_data ());
 
-  pr[0] = std::real (scalar);
-  pi[0] = std::imag (scalar);
+  pr[0] = scalar.real ();
+  pi[0] = scalar.imag ();
 
   return retval;
 }
@@ -424,52 +429,53 @@ octave_float_complex::map (unary_mapper_t umap) const
 {
   switch (umap)
     {
-#define SCALAR_MAPPER(UMAP, FCN)                \
-      case umap_ ## UMAP:                       \
-        return octave_value (FCN (scalar))
+#define SCALAR_MAPPER(UMAP, FCN)              \
+    case umap_ ## UMAP:                       \
+      return octave_value (FCN (scalar))
 
-      SCALAR_MAPPER (abs, std::abs);
-      SCALAR_MAPPER (acos, octave::math::acos);
-      SCALAR_MAPPER (acosh, octave::math::acosh);
-      SCALAR_MAPPER (angle, std::arg);
-      SCALAR_MAPPER (arg, std::arg);
-      SCALAR_MAPPER (asin, octave::math::asin);
-      SCALAR_MAPPER (asinh, octave::math::asinh);
-      SCALAR_MAPPER (atan, octave::math::atan);
-      SCALAR_MAPPER (atanh, octave::math::atanh);
-      SCALAR_MAPPER (erf, octave::math::erf);
-      SCALAR_MAPPER (erfc, octave::math::erfc);
-      SCALAR_MAPPER (erfcx, octave::math::erfcx);
-      SCALAR_MAPPER (erfi, octave::math::erfi);
-      SCALAR_MAPPER (dawson, octave::math::dawson);
-      SCALAR_MAPPER (ceil, octave::math::ceil);
-      SCALAR_MAPPER (conj, std::conj);
-      SCALAR_MAPPER (cos, std::cos);
-      SCALAR_MAPPER (cosh, std::cosh);
-      SCALAR_MAPPER (exp, std::exp);
-      SCALAR_MAPPER (expm1, octave::math::expm1);
-      SCALAR_MAPPER (fix, octave::math::fix);
-      SCALAR_MAPPER (floor, octave::math::floor);
-      SCALAR_MAPPER (imag, std::imag);
-      SCALAR_MAPPER (log, std::log);
-      SCALAR_MAPPER (log2, octave::math::log2);
-      SCALAR_MAPPER (log10, std::log10);
-      SCALAR_MAPPER (log1p, octave::math::log1p);
-      SCALAR_MAPPER (real, std::real);
-      SCALAR_MAPPER (round, octave::math::round);
-      SCALAR_MAPPER (roundb, octave::math::roundb);
-      SCALAR_MAPPER (signum, octave::math::signum);
-      SCALAR_MAPPER (sin, std::sin);
-      SCALAR_MAPPER (sinh, std::sinh);
-      SCALAR_MAPPER (sqrt, std::sqrt);
-      SCALAR_MAPPER (tan, std::tan);
-      SCALAR_MAPPER (tanh, std::tanh);
-      SCALAR_MAPPER (isfinite, octave::math::finite);
-      SCALAR_MAPPER (isinf, octave::math::isinf);
-      SCALAR_MAPPER (isna, octave::math::is_NA);
-      SCALAR_MAPPER (isnan, octave::math::isnan);
+    SCALAR_MAPPER (abs, std::abs);
+    SCALAR_MAPPER (acos, octave::math::acos);
+    SCALAR_MAPPER (acosh, octave::math::acosh);
+    SCALAR_MAPPER (angle, std::arg);
+    SCALAR_MAPPER (arg, std::arg);
+    SCALAR_MAPPER (asin, octave::math::asin);
+    SCALAR_MAPPER (asinh, octave::math::asinh);
+    SCALAR_MAPPER (atan, octave::math::atan);
+    SCALAR_MAPPER (atanh, octave::math::atanh);
+    SCALAR_MAPPER (erf, octave::math::erf);
+    SCALAR_MAPPER (erfc, octave::math::erfc);
+    SCALAR_MAPPER (erfcx, octave::math::erfcx);
+    SCALAR_MAPPER (erfi, octave::math::erfi);
+    SCALAR_MAPPER (dawson, octave::math::dawson);
+    SCALAR_MAPPER (ceil, octave::math::ceil);
+    SCALAR_MAPPER (conj, std::conj);
+    SCALAR_MAPPER (cos, std::cos);
+    SCALAR_MAPPER (cosh, std::cosh);
+    SCALAR_MAPPER (exp, std::exp);
+    SCALAR_MAPPER (expm1, octave::math::expm1);
+    SCALAR_MAPPER (fix, octave::math::fix);
+    SCALAR_MAPPER (floor, octave::math::floor);
+    SCALAR_MAPPER (imag, std::imag);
+    SCALAR_MAPPER (log, std::log);
+    SCALAR_MAPPER (log2, octave::math::log2);
+    SCALAR_MAPPER (log10, std::log10);
+    SCALAR_MAPPER (log1p, octave::math::log1p);
+    SCALAR_MAPPER (real, std::real);
+    SCALAR_MAPPER (round, octave::math::round);
+    SCALAR_MAPPER (roundb, octave::math::roundb);
+    SCALAR_MAPPER (signum, octave::math::signum);
+    SCALAR_MAPPER (sin, std::sin);
+    SCALAR_MAPPER (sinh, std::sinh);
+    SCALAR_MAPPER (sqrt, std::sqrt);
+    SCALAR_MAPPER (tan, std::tan);
+    SCALAR_MAPPER (tanh, std::tanh);
+    SCALAR_MAPPER (isfinite, octave::math::finite);
+    SCALAR_MAPPER (isinf, octave::math::isinf);
+    SCALAR_MAPPER (isna, octave::math::is_NA);
+    SCALAR_MAPPER (isnan, octave::math::isnan);
 
     default:
       return octave_base_value::map (umap);
     }
 }
+

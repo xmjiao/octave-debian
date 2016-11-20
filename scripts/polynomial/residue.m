@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2015 John W. Eaton
+## Copyright (C) 1994-2016 John W. Eaton
 ## Copyright (C) 2007 Ben Abbott
 ##
 ## This file is part of Octave.
@@ -415,8 +415,8 @@ endfunction
 %! assert (br, b, 1e-12);
 %! assert (ar, a, 1e-12);
 
-## The following test is due to Bernard Grung (bug #34266)
-%!xtest
+## The following test is due to Bernard Grung
+%!test <34266>
 %! z1 =  7.0372976777e6;
 %! p1 = -3.1415926536e9;
 %! p2 = -4.9964813512e8;

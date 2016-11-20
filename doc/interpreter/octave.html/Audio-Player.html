@@ -85,7 +85,7 @@ back one second of white noise at 44100 sample rate using 8 bits per
 sample.
 </p>
 <div class="example">
-<pre class="example">y = randn (2, 44100) - 0.5;
+<pre class="example">y = 0.25 * randn (2, 44100);
 player = audioplayer (y, 44100, 8);
 play (player);
 </pre></div>

@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2015 Erik Kjellson
+## Copyright (C) 2012-2016 Erik Kjellson
 ##
 ## This file is part of Octave.
 ##
@@ -519,8 +519,8 @@ endfunction
 %! assert (d, "\t");
 %! assert (h, 0);
 
-%!test
-%! ## Distinguish double from complex when no delimiter is supplied (bug #43393)
+%!test <43393>
+%! ## Distinguish double from complex when no delimiter is supplied
 %! fn  = tmpnam ();
 %! fid = fopen (fn, "w");
 %! fputs (fid, "2.0000e+02   4.0000e-04");

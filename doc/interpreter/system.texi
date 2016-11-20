@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -105,7 +105,7 @@ returned by @code{time} was 856163706.
 @end deftypefn
 
 
-@c now scripts/scripts/time/now.m
+@c now scripts/time/now.m
 @anchor{XREFnow}
 @deftypefn {} {t =} now ()
 Return the current local date/time as a serial day number
@@ -119,7 +119,7 @@ The fractional part, @code{rem (now, 1)} corresponds to the current time.
 @end deftypefn
 
 
-@c ctime scripts/scripts/time/ctime.m
+@c ctime scripts/time/ctime.m
 @anchor{XREFctime}
 @deftypefn {} {} ctime (@var{t})
 Convert a value returned from @code{time} (or any other non-negative
@@ -217,7 +217,7 @@ mktime (localtime (time ()))
 @end deftypefn
 
 
-@c asctime scripts/scripts/time/asctime.m
+@c asctime scripts/time/asctime.m
 @anchor{XREFasctime}
 @deftypefn {} {} asctime (@var{tm_struct})
 Convert a time structure to a string using the following
@@ -414,7 +414,7 @@ patterned after the standard C library.  Some are available for
 compatibility with @sc{matlab} and others are provided because they are
 useful.
 
-@c clock scripts/scripts/time/clock.m
+@c clock scripts/time/clock.m
 @anchor{XREFclock}
 @deftypefn {} {} clock ()
 Return the current local date and time as a date vector.
@@ -438,7 +438,7 @@ function.
 @end deftypefn
 
 
-@c date scripts/scripts/time/date.m
+@c date scripts/time/date.m
 @anchor{XREFdate}
 @deftypefn {} {} date ()
 Return the current date as a character string in the form DD-MMM-YYYY@.
@@ -455,7 +455,7 @@ date ()
 @end deftypefn
 
 
-@c etime scripts/scripts/time/etime.m
+@c etime scripts/time/etime.m
 @anchor{XREFetime}
 @deftypefn {} {} etime (@var{t2}, @var{t1})
 Return the difference in seconds between two time values returned from
@@ -498,7 +498,7 @@ CPU time used is nonzero.
 @end deftypefn
 
 
-@c is_leap_year scripts/scripts/time/is_leap_year.m
+@c is_leap_year scripts/time/is_leap_year.m
 @anchor{XREFis_leap_year}
 @deftypefn  {} {} is_leap_year ()
 @deftypefnx {} {} is_leap_year (@var{year})
@@ -600,7 +600,7 @@ clc;
 @end deftypefn
 
 
-@c datenum scripts/scripts/time/datenum.m
+@c datenum scripts/time/datenum.m
 @anchor{XREFdatenum}
 @deftypefn  {} {@var{days} =} datenum (@var{datevec})
 @deftypefnx {} {@var{days} =} datenum (@var{year}, @var{month}, @var{day})
@@ -672,7 +672,7 @@ available on the Wikipedia entry for leap seconds.
 @end deftypefn
 
 
-@c datestr scripts/scripts/time/datestr.m
+@c datestr scripts/time/datestr.m
 @anchor{XREFdatestr}
 @deftypefn  {} {@var{str} =} datestr (@var{date})
 @deftypefnx {} {@var{str} =} datestr (@var{date}, @var{f})
@@ -765,7 +765,7 @@ is returned.
 @end deftypefn
 
 
-@c datevec scripts/scripts/time/datevec.m
+@c datevec scripts/time/datevec.m
 @anchor{XREFdatevec}
 @deftypefn  {} {@var{v} =} datevec (@var{date})
 @deftypefnx {} {@var{v} =} datevec (@var{date}, @var{f})
@@ -793,7 +793,7 @@ will be referenced.  If not specified, it defaults to the current year minus
 @end deftypefn
 
 
-@c addtodate scripts/scripts/time/addtodate.m
+@c addtodate scripts/time/addtodate.m
 @anchor{XREFaddtodate}
 @deftypefn {} {@var{d} =} addtodate (@var{d}, @var{q}, @var{f})
 Add @var{q} amount of time (with units @var{f}) to the serial datenum,
@@ -806,7 +806,7 @@ Add @var{q} amount of time (with units @var{f}) to the serial datenum,
 @end deftypefn
 
 
-@c calendar scripts/scripts/time/calendar.m
+@c calendar scripts/time/calendar.m
 @anchor{XREFcalendar}
 @deftypefn  {} {@var{c} =} calendar ()
 @deftypefnx {} {@var{c} =} calendar (@var{d})
@@ -826,7 +826,7 @@ instead of returning a matrix.
 @end deftypefn
 
 
-@c weekday scripts/scripts/time/weekday.m
+@c weekday scripts/time/weekday.m
 @anchor{XREFweekday}
 @deftypefn  {} {[@var{n}, @var{s}] =} weekday (@var{d})
 @deftypefnx {} {[@var{n}, @var{s}] =} weekday (@var{d}, @var{format})
@@ -858,7 +858,7 @@ Table of return values based on @var{format}:
 @end deftypefn
 
 
-@c eomday scripts/scripts/time/eomday.m
+@c eomday scripts/time/eomday.m
 @anchor{XREFeomday}
 @deftypefn {} {@var{e} =} eomday (@var{y}, @var{m})
 Return the last day of the month @var{m} for the year @var{y}.
@@ -866,7 +866,7 @@ Return the last day of the month @var{m} for the year @var{y}.
 @end deftypefn
 
 
-@c datetick scripts/scripts/plot/appearance/datetick.m
+@c datetick scripts/plot/appearance/datetick.m
 @anchor{XREFdatetick}
 @deftypefn  {} {} datetick ()
 @deftypefnx {} {} datetick (@var{date_format})
@@ -895,7 +895,7 @@ Octave includes many utility functions for copying, moving, renaming, and
 deleting files; for creating, reading, and deleting directories; for retrieving
 status information on files; and for manipulating file and path names.
 
-@c movefile scripts/scripts/miscellaneous/movefile.m
+@c movefile scripts/miscellaneous/movefile.m
 @anchor{XREFmovefile}
 @deftypefn  {} {} movefile (@var{f1})
 @deftypefnx {} {} movefile (@var{f1}, @var{f2})
@@ -933,7 +933,7 @@ error message.
 @end deftypefn
 
 
-@c copyfile scripts/scripts/miscellaneous/copyfile.m
+@c copyfile scripts/miscellaneous/copyfile.m
 @anchor{XREFcopyfile}
 @deftypefn  {} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2})
 @deftypefnx {} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2}, 'f')
@@ -1006,11 +1006,11 @@ error message.
 @end deftypefn
 
 
-@c mkdir scripts/scripts/miscellaneous/mkdir.m
+@c mkdir scripts/miscellaneous/mkdir.m
 @anchor{XREFmkdir}
 @deftypefn  {} {} mkdir @var{dir}
 @deftypefnx {} {} mkdir (@var{parent}, @var{dir})
-@deftypefnx {} {[@var{status}, @var{msg}, @var{msgid}] =} mkdir (...)
+@deftypefnx {} {[@var{status}, @var{msg}, @var{msgid}] =} mkdir (@dots{})
 Create a directory named @var{dir} in the directory @var{parent},
 creating any intermediate directories if necessary.
 
@@ -1272,7 +1272,7 @@ The value of @var{mode} is assumed to be returned from a call to
 @end deftypefn
 
 
-@c fileattrib scripts/scripts/miscellaneous/fileattrib.m
+@c fileattrib scripts/miscellaneous/fileattrib.m
 @anchor{XREFfileattrib}
 @deftypefn  {} {} fileattrib (@var{file})
 @deftypefnx {} {} fileattrib ()
@@ -1328,7 +1328,7 @@ the matching files.
 @end deftypefn
 
 
-@c isdir scripts/scripts/general/isdir.m
+@c isdir scripts/general/isdir.m
 @anchor{XREFisdir}
 @deftypefn {} {} isdir (@var{f})
 Return true if @var{f} is a directory.
@@ -1481,7 +1481,7 @@ The original variable value is restored when exiting the function.
 @end deftypefn
 
 
-@c fileparts scripts/scripts/miscellaneous/fileparts.m
+@c fileparts scripts/miscellaneous/fileparts.m
 @anchor{XREFfileparts}
 @deftypefn {} {[@var{dir}, @var{name}, @var{ext}] =} fileparts (@var{filename})
 Return the directory, name, and extension components of @var{filename}.
@@ -1492,7 +1492,7 @@ to check whether the filename or directory specified actually exists.
 @end deftypefn
 
 
-@c fullfile scripts/scripts/miscellaneous/fullfile.m
+@c fullfile scripts/miscellaneous/fullfile.m
 @anchor{XREFfullfile}
 @deftypefn  {} {@var{filename} =} fullfile (@var{dir1}, @var{dir2}, @dots{}, @var{file})
 @deftypefnx {} {@var{filenames} =} fullfile (@dots{}, @var{files})
@@ -1591,7 +1591,7 @@ Return true if @var{file} is a rooted-relative filename.
 @end deftypefn
 
 
-@c recycle scripts/scripts/miscellaneous/recycle.m
+@c recycle scripts/miscellaneous/recycle.m
 @anchor{XREFrecycle}
 @deftypefn  {} {@var{current_state} =} recycle ()
 @deftypefnx {} {@var{old_state} =} recycle (@var{new_state})
@@ -1611,7 +1611,7 @@ loss an error will be raised if an attempt is made to enable file recycling.
 @node File Archiving Utilities
 @section File Archiving Utilities
 
-@c bunzip2 scripts/scripts/miscellaneous/bunzip2.m
+@c bunzip2 scripts/miscellaneous/bunzip2.m
 @anchor{XREFbunzip2}
 @deftypefn  {} {@var{filelist} =} bunzip2 (@var{bzfile})
 @deftypefnx {} {@var{filelist} =} bunzip2 (@var{bzfile}, @var{dir})
@@ -1625,7 +1625,7 @@ The optional output @var{filelist} is a list of the uncompressed files.
 @end deftypefn
 
 
-@c gzip libinterp/dldfcn/xzip.cc
+@c gzip libinterp/dldfcn/gzip.cc
 @anchor{XREFgzip}
 @deftypefn  {} {@var{filelist} =} gzip (@var{files})
 @deftypefnx {} {@var{filelist} =} gzip (@var{files}, @var{dir})
@@ -1642,7 +1642,7 @@ directory.
 If @var{dir} is defined the compressed files are placed in this directory,
 rather than the original directory where the uncompressed file resides.
 Note that this does not replicate a directory tree in @var{dir} which may
-lead to files overwritting each other if there are multiple files with the
+lead to files overwriting each other if there are multiple files with the
 same name.
 
 If @var{dir} does not exist it is created.
@@ -1652,7 +1652,7 @@ The optional output @var{filelist} is a list of the compressed files.
 @end deftypefn
 
 
-@c gunzip scripts/scripts/miscellaneous/gunzip.m
+@c gunzip scripts/miscellaneous/gunzip.m
 @anchor{XREFgunzip}
 @deftypefn  {} {@var{filelist} =} gunzip (@var{gzfile})
 @deftypefnx {} {@var{filelist} =} gunzip (@var{gzfile}, @var{dir})
@@ -1669,7 +1669,7 @@ The optional output @var{filelist} is a list of the uncompressed files.
 @end deftypefn
 
 
-@c tar scripts/scripts/miscellaneous/tar.m
+@c tar scripts/miscellaneous/tar.m
 @anchor{XREFtar}
 @deftypefn  {} {@var{filelist} =} tar (@var{tarfile}, @var{files})
 @deftypefnx {} {@var{filelist} =} tar (@var{tarfile}, @var{files}, @var{rootdir})
@@ -1690,7 +1690,7 @@ in the archive.
 @end deftypefn
 
 
-@c untar scripts/scripts/miscellaneous/untar.m
+@c untar scripts/miscellaneous/untar.m
 @anchor{XREFuntar}
 @deftypefn  {} {} untar (@var{tarfile})
 @deftypefnx {} {} untar (@var{tarfile}, @var{dir})
@@ -1704,7 +1704,7 @@ The optional output @var{filelist} is a list of the uncompressed files.
 @end deftypefn
 
 
-@c zip scripts/scripts/miscellaneous/zip.m
+@c zip scripts/miscellaneous/zip.m
 @anchor{XREFzip}
 @deftypefn  {} {@var{filelist} =} zip (@var{zipfile}, @var{files})
 @deftypefnx {} {@var{filelist} =} zip (@var{zipfile}, @var{files}, @var{rootdir})
@@ -1725,7 +1725,7 @@ in the archive.
 @end deftypefn
 
 
-@c unzip scripts/scripts/miscellaneous/unzip.m
+@c unzip scripts/miscellaneous/unzip.m
 @anchor{XREFunzip}
 @deftypefn  {} {@var{filelist} =} unzip (@var{zipfile})
 @deftypefnx {} {@var{filelist} =} unzip (@var{zipfile}, @var{dir})
@@ -1739,7 +1739,7 @@ The optional output @var{filelist} is a list of the uncompressed files.
 @end deftypefn
 
 
-@c unpack scripts/scripts/miscellaneous/unpack.m
+@c unpack scripts/miscellaneous/unpack.m
 @anchor{XREFunpack}
 @deftypefn  {} {@var{files} =} unpack (@var{file})
 @deftypefnx {} {@var{files} =} unpack (@var{file}, @var{dir})
@@ -1794,7 +1794,7 @@ The optional return value is a list of @var{files} unpacked.
 @end deftypefn
 
 
-@c bzip2 libinterp/dldfcn/xzip.cc
+@c bzip2 libinterp/dldfcn/gzip.cc
 @anchor{XREFbzip2}
 @deftypefn  {} {@var{filelist} =} bzip2 (@var{files})
 @deftypefnx {} {@var{filelist} =} bzip2 (@var{files}, @var{dir})
@@ -1809,7 +1809,7 @@ compressed files will be silently overwritten.
 If @var{dir} is defined the compressed files are placed in this directory,
 rather than the original directory where the uncompressed file resides.
 Note that this does not replicate a directory tree in @var{dir} which may
-lead to files overwritting each other if there are multiple files with the
+lead to files overwriting each other if there are multiple files with the
 same name.
 
 If @var{dir} does not exist it is created.
@@ -1817,26 +1817,6 @@ If @var{dir} does not exist it is created.
 The optional output @var{filelist} is a list of the compressed files.
 @seealso{@ref{XREFbunzip2,,bunzip2}, @ref{XREFunpack,,unpack}, @ref{XREFgzip,,gzip}, @ref{XREFzip,,zip}, @ref{XREFtar,,tar}}
 @end deftypefn
-## Copyright (C) 1993-2015 John W. Eaton
-##
-## This file is part of Octave.
-##
-## Octave is free software; you can redistribute it and/or modify it
-## under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 3 of the License, or (at
-## your option) any later version.
-##
-## Octave is distributed in the hope that it will be useful, but
-## WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-## General Public License for more details.
-##
-## You should have received a copy of the GNU General Public License
-## along with Octave; see the file COPYING.  If not, see
-## <http://www.gnu.org/licenses/>.
-
-## FIXME: the information in this file is currently duplicated in help.cc.
-
 
 
 @node Networking Utilities
@@ -1862,7 +1842,7 @@ Octave supports the FTP protocol through an object-oriented interface.
 Use the function @code{ftp} to create an FTP object which represents the
 connection.  All FTP functions take an FTP object as the first argument.
 
-@c @ftp/ftp scripts/scripts/@ftp/ftp.m
+@c @ftp/ftp scripts/@ftp/ftp.m
 @anchor{XREF@@ftp/ftp}
 @deftypefn  {} {@var{f} =} ftp (@var{host})
 @deftypefnx {} {@var{f} =} ftp (@var{host}, @var{username}, @var{password})
@@ -1893,7 +1873,7 @@ require an FTP object as the first argument.
 @end deftypefn
 
 
-@c @ftp/close scripts/scripts/@ftp/close.m
+@c @ftp/close scripts/@ftp/close.m
 @anchor{XREF@@ftp/close}
 @deftypefn {} {} close (@var{f})
 Close the FTP connection represented by the FTP object @var{f}.
@@ -1902,7 +1882,7 @@ Close the FTP connection represented by the FTP object @var{f}.
 @end deftypefn
 
 
-@c @ftp/mget scripts/scripts/@ftp/mget.m
+@c @ftp/mget scripts/@ftp/mget.m
 @anchor{XREF@@ftp/mget}
 @deftypefn  {} {} mget (@var{f}, @var{file})
 @deftypefnx {} {} mget (@var{f}, @var{dir})
@@ -1921,7 +1901,7 @@ relative or absolute path.
 @end deftypefn
 
 
-@c @ftp/mput scripts/scripts/@ftp/mput.m
+@c @ftp/mput scripts/@ftp/mput.m
 @anchor{XREF@@ftp/mput}
 @deftypefn {} {} mput (@var{f}, @var{file})
 Upload the local file @var{file} into the current remote directory on the
@@ -1934,7 +1914,7 @@ files that match the wildcards in @var{file} will be uploaded.
 @end deftypefn
 
 
-@c @ftp/cd scripts/scripts/@ftp/cd.m
+@c @ftp/cd scripts/@ftp/cd.m
 @anchor{XREF@@ftp/cd}
 @deftypefn  {} {} cd (@var{f})
 @deftypefnx {} {} cd (@var{f}, @var{path})
@@ -1951,7 +1931,7 @@ working directory is not changed.
 @end deftypefn
 
 
-@c @ftp/dir scripts/scripts/@ftp/dir.m
+@c @ftp/dir scripts/@ftp/dir.m
 @anchor{XREF@@ftp/dir}
 @deftypefn {} {@var{lst} =} dir (@var{f})
 List the current directory in verbose form for the FTP connection @var{f}.
@@ -1960,7 +1940,7 @@ List the current directory in verbose form for the FTP connection @var{f}.
 @end deftypefn
 
 
-@c @ftp/ascii scripts/scripts/@ftp/ascii.m
+@c @ftp/ascii scripts/@ftp/ascii.m
 @anchor{XREF@@ftp/ascii}
 @deftypefn {} {} ascii (@var{f})
 Set the FTP connection @var{f} to use ASCII mode for transfers.
@@ -1973,7 +1953,7 @@ representation.
 @end deftypefn
 
 
-@c @ftp/binary scripts/scripts/@ftp/binary.m
+@c @ftp/binary scripts/@ftp/binary.m
 @anchor{XREF@@ftp/binary}
 @deftypefn {} {} binary (@var{f})
 Set the FTP connection @var{f} to use binary mode for transfers.
@@ -1985,7 +1965,7 @@ representation to the local representation.
 @end deftypefn
 
 
-@c @ftp/delete scripts/scripts/@ftp/delete.m
+@c @ftp/delete scripts/@ftp/delete.m
 @anchor{XREF@@ftp/delete}
 @deftypefn {} {} delete (@var{f}, @var{file})
 Delete the remote file @var{file} over the FTP connection @var{f}.
@@ -1994,7 +1974,7 @@ Delete the remote file @var{file} over the FTP connection @var{f}.
 @end deftypefn
 
 
-@c @ftp/rename scripts/scripts/@ftp/rename.m
+@c @ftp/rename scripts/@ftp/rename.m
 @anchor{XREF@@ftp/rename}
 @deftypefn {} {} rename (@var{f}, @var{oldname}, @var{newname})
 Rename or move the remote file or directory @var{oldname} to @var{newname},
@@ -2004,7 +1984,7 @@ over the FTP connection @var{f}.
 @end deftypefn
 
 
-@c @ftp/mkdir scripts/scripts/@ftp/mkdir.m
+@c @ftp/mkdir scripts/@ftp/mkdir.m
 @anchor{XREF@@ftp/mkdir}
 @deftypefn {} {} mkdir (@var{f}, @var{path})
 Create the remote directory @var{path}, over the FTP connection @var{f}.
@@ -2013,7 +1993,7 @@ Create the remote directory @var{path}, over the FTP connection @var{f}.
 @end deftypefn
 
 
-@c @ftp/rmdir scripts/scripts/@ftp/rmdir.m
+@c @ftp/rmdir scripts/@ftp/rmdir.m
 @anchor{XREF@@ftp/rmdir}
 @deftypefn {} {} rmdir (@var{f}, @var{path})
 Remove the remote directory @var{path}, over the FTP connection @var{f}.
@@ -2218,7 +2198,7 @@ command shell that is started to run the command.
 @end deftypefn
 
 
-@c unix scripts/scripts/miscellaneous/unix.m
+@c unix scripts/miscellaneous/unix.m
 @anchor{XREFunix}
 @deftypefn  {} {} unix ("@var{command}")
 @deftypefnx {} {@var{status} =} unix ("@var{command}")
@@ -2236,7 +2216,7 @@ given, then @var{text} is also sent to standard output.
 @end deftypefn
 
 
-@c dos scripts/scripts/miscellaneous/dos.m
+@c dos scripts/miscellaneous/dos.m
 @anchor{XREFdos}
 @deftypefn  {} {} dos ("@var{command}")
 @deftypefnx {} {@var{status} =} dos ("@var{command}")
@@ -2254,7 +2234,7 @@ given, then @var{text} is also sent to standard output.
 @end deftypefn
 
 
-@c open scripts/scripts/miscellaneous/open.m
+@c open scripts/miscellaneous/open.m
 @anchor{XREFopen}
 @deftypefn  {} {@var{output} =} open @var{file}
 @deftypefnx {} {@var{output} =} open (@var{file})
@@ -2278,7 +2258,7 @@ Other file types are opened in the appropriate external application.
 @end deftypefn
 
 
-@c perl scripts/scripts/miscellaneous/perl.m
+@c perl scripts/miscellaneous/perl.m
 @anchor{XREFperl}
 @deftypefn  {} {@var{output} =} perl (@var{scriptfile})
 @deftypefnx {} {@var{output} =} perl (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
@@ -2293,7 +2273,7 @@ current directory and then in the Octave loadpath.
 @end deftypefn
 
 
-@c python scripts/scripts/miscellaneous/python.m
+@c python scripts/miscellaneous/python.m
 @anchor{XREFpython}
 @deftypefn  {} {@var{output} =} python (@var{scriptfile})
 @deftypefnx {} {@var{output} =} python (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
@@ -2316,7 +2296,7 @@ Start a process and create a pipe.
 The name of the command to run is given by @var{command}.  The argument
 @var{mode} may be
 
-@table @code
+@table @asis
 @item @qcode{"r"}
 The pipe will be connected to the standard output of the process, and
 open for reading.
@@ -2363,7 +2343,7 @@ The function @code{fclose} may also be used for the same purpose.
 Start a subprocess with two-way communication.
 
 The name of the process is given by @var{command}, and @var{args} is an
-array of strings containing options for the command.
+array or cell array of strings containing options for the command.
 
 The file identifiers for the input and output streams of the subprocess are
 returned in @var{in} and @var{out}.  If execution of the command is
@@ -2903,7 +2883,7 @@ present working directory rather than changing to the user's home directory.
 @end deftypefn
 
 
-@c ls scripts/scripts/miscellaneous/ls.m
+@c ls scripts/miscellaneous/ls.m
 @anchor{XREFls}
 @deftypefn  {} {} ls
 @deftypefnx {} {} ls @var{filenames}
@@ -2940,7 +2920,7 @@ ls -l
 @end deftypefn
 
 
-@c ls_command scripts/scripts/miscellaneous/ls_command.m
+@c ls_command scripts/miscellaneous/ls_command.m
 @anchor{XREFls_command}
 @deftypefn  {} {@var{val} =} ls_command ()
 @deftypefnx {} {@var{old_val} =} ls_command (@var{new_val})
@@ -2949,7 +2929,7 @@ Query or set the shell command used by Octave's @code{ls} command.
 @end deftypefn
 
 
-@c dir scripts/scripts/miscellaneous/dir.m
+@c dir scripts/miscellaneous/dir.m
 @anchor{XREFdir}
 @deftypefn  {} {} dir
 @deftypefnx {} {} dir (@var{directory})
@@ -3161,7 +3141,7 @@ Close the group database.
 @node System Information
 @section System Information
 
-@c computer scripts/scripts/miscellaneous/computer.m
+@c computer scripts/miscellaneous/computer.m
 @anchor{XREFcomputer}
 @deftypefn  {} {} computer ()
 @deftypefnx {} {@var{c} =} computer ()
@@ -3247,7 +3227,7 @@ same as @code{current}, but overridable through the
 @end deftypefn
 
 
-@c ispc scripts/scripts/miscellaneous/ispc.m
+@c ispc scripts/miscellaneous/ispc.m
 @anchor{XREFispc}
 @deftypefn {} {} ispc ()
 Return true if Octave is running on a Windows system and false otherwise.
@@ -3255,7 +3235,7 @@ Return true if Octave is running on a Windows system and false otherwise.
 @end deftypefn
 
 
-@c isunix scripts/scripts/miscellaneous/isunix.m
+@c isunix scripts/miscellaneous/isunix.m
 @anchor{XREFisunix}
 @deftypefn {} {} isunix ()
 Return true if Octave is running on a Unix-like system and false otherwise.
@@ -3263,7 +3243,7 @@ Return true if Octave is running on a Unix-like system and false otherwise.
 @end deftypefn
 
 
-@c ismac scripts/scripts/miscellaneous/ismac.m
+@c ismac scripts/miscellaneous/ismac.m
 @anchor{XREFismac}
 @deftypefn {} {} ismac ()
 Return true if Octave is running on a Mac OS X system and false otherwise.
@@ -3281,7 +3261,7 @@ No actual tests are performed.
 @end deftypefn
 
 
-@c isdeployed scripts/scripts/miscellaneous/isdeployed.m
+@c isdeployed scripts/miscellaneous/isdeployed.m
 @anchor{XREFisdeployed}
 @deftypefn {} {} isdeployed ()
 Return true if the current program has been compiled and is running
@@ -3310,7 +3290,7 @@ Return the name of the top-level Octave installation directory.
 @end deftypefn
 
 
-@c matlabroot scripts/scripts/path/matlabroot.m
+@c matlabroot scripts/path/matlabroot.m
 @anchor{XREFmatlabroot}
 @deftypefn {} {} matlabroot ()
 Return the name of the top-level Octave installation directory.
@@ -3329,7 +3309,7 @@ Return the version number of Octave as a string.
 @end deftypefn
 
 
-@c version scripts/scripts/miscellaneous/version.m
+@c version scripts/miscellaneous/version.m
 @anchor{XREFversion}
 @deftypefn  {} {@var{v} =} version ()
 @deftypefnx {} {[@var{v}, @var{d}] =} version ()
@@ -3353,7 +3333,7 @@ for a description of the release (always an empty string),
 for the name of the running build,
 
 @item @qcode{"-java"}
-for version information of the Java VM,
+for version information of the Java @nospell{VM},
 
 @item @qcode{"-fftw"}
 for version information for the linked @sc{fftw},
@@ -3371,7 +3351,7 @@ The variant with no input and output argument is an alias for the function
 @end deftypefn
 
 
-@c ver scripts/scripts/miscellaneous/ver.m
+@c ver scripts/miscellaneous/ver.m
 @anchor{XREFver}
 @deftypefn  {} {} ver
 @deftypefnx {} {} ver Octave
@@ -3407,7 +3387,7 @@ Date of the version/revision.
 @end deftypefn
 
 
-@c compare_versions scripts/scripts/miscellaneous/compare_versions.m
+@c compare_versions scripts/miscellaneous/compare_versions.m
 @anchor{XREFcompare_versions}
 @deftypefn {} {} compare_versions (@var{v1}, @var{v2}, @var{operator})
 Compare two version strings using the given @var{operator}.
@@ -3462,7 +3442,7 @@ starts with a numeric part even though @code{double ("a")} is greater than
 @end deftypefn
 
 
-@c license scripts/scripts/miscellaneous/license.m
+@c license scripts/miscellaneous/license.m
 @anchor{XREFlicense}
 @deftypefn  {} {} license
 @deftypefnx {} {} license inuse

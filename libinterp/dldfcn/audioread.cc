@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2015 Vytautas Jančauskas
+Copyright (C) 2013-2016 Vytautas Jančauskas
 Copyright (C) 2016 Damjan Angelovski
 
 This file is part of Octave.
@@ -110,7 +110,8 @@ is stored in the audio file.
       double dend = octave::math::isinf (range(1)) ? info.frames : range(1);
 
       if (dstart < 1 || dstart > dend || dend > info.frames
-          || octave::math::x_nint (dstart) != dstart || octave::math::x_nint (dend) != dend)
+          || octave::math::x_nint (dstart) != dstart
+          || octave::math::x_nint (dend) != dend)
         error ("audioread: invalid specification for range of frames");
 
       start = dstart - 1;
@@ -593,9 +594,14 @@ with names that start with @var{format}.
     }
 
 #else
+
+  octave_unused_parameter (args);
+
   err_disabled_feature ("audioformats",
                         "getting sound formats through libsndfile");
+
 #endif
 
   return octave_value ();
 }
+

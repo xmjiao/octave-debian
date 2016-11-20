@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2015 John W. Eaton
+## Copyright (C) 1996-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -71,7 +71,8 @@ function h = meshc (varargin)
     ## FIXME: gnuplot does not support a filled surface and a
     ##        non-filled contour.  3D filled patches are also not supported.
     ##        Thus, the facecolor will be transparent for the gnuplot backend.
-    mesh_props = {"facecolor", "w", "edgecolor", "flat"};
+    mesh_props = {"facecolor", "w", "edgecolor", "flat", ...
+                  "facelighting", "none", "edgelighting", "flat"};
     chararg = find (cellfun ("isclass", varargin, "char"), 1);
     if (isempty (chararg))
       htmp = surface (varargin{:}, mesh_props{:});
@@ -108,9 +109,9 @@ endfunction
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! [X, Y] = meshgrid (linspace (-3, 3, 40));
 %! Z = sqrt (abs (X .* Y)) ./ (1 + X.^2 + Y.^2);
 %! meshc (X, Y, Z);
-%! title ('meshc() combines mesh/contour plots');
+%! title ("meshc() combines mesh/contour plots");
 

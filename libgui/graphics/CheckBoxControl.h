@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2015 Michael Goffioul
+Copyright (C) 2011-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -30,15 +30,16 @@ class QCheckBox;
 namespace QtHandles
 {
 
-class CheckBoxControl : public ButtonControl
-{
-public:
-  CheckBoxControl (const graphics_object& go, QCheckBox* box);
-  ~CheckBoxControl (void);
+  class CheckBoxControl : public ButtonControl
+  {
+  public:
+    CheckBoxControl (const graphics_object& go, QCheckBox* box);
+    ~CheckBoxControl (void);
 
-  static CheckBoxControl* create (const graphics_object& go);
-};
+    static CheckBoxControl* create (const graphics_object& go);
+  };
 
-}; // namespace QtHandles
+}
 
 #endif
+

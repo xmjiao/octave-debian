@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2015 David Bateman
+Copyright (C) 2004-2016 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -42,19 +42,22 @@ DEFUNOP_OP (not, sparse_bool_matrix, !)
 
 DEFUNOP (uplus, sparse_bool_matrix)
 {
-  const octave_sparse_bool_matrix& v = dynamic_cast<const octave_sparse_bool_matrix&> (a);
+  const octave_sparse_bool_matrix& v
+    = dynamic_cast<const octave_sparse_bool_matrix&> (a);
   return octave_value (v.sparse_matrix_value ());
 }
 
 DEFUNOP (uminus, sparse_bool_matrix)
 {
-  const octave_sparse_bool_matrix& v = dynamic_cast<const octave_sparse_bool_matrix&> (a);
+  const octave_sparse_bool_matrix& v
+    = dynamic_cast<const octave_sparse_bool_matrix&> (a);
   return octave_value (- v.sparse_matrix_value ());
 }
 
 DEFUNOP (transpose, sparse_bool_matrix)
 {
-  const octave_sparse_bool_matrix& v = dynamic_cast<const octave_sparse_bool_matrix&> (a);
+  const octave_sparse_bool_matrix& v
+    = dynamic_cast<const octave_sparse_bool_matrix&> (a);
   return octave_value (v.sparse_bool_matrix_value ().transpose ());
 }
 
@@ -74,14 +77,6 @@ DEFNDCATOP_FN (sm_sbm, sparse_matrix, sparse_bool_matrix, sparse_matrix,
 
 DEFASSIGNOP_FN (assign, sparse_bool_matrix, sparse_bool_matrix,
                 assign)
-
-CONVDECL (bool_matrix_to_double_matrix)
-{
-  const octave_sparse_bool_matrix& v = dynamic_cast<const octave_sparse_bool_matrix&> (a);
-
-  return new octave_sparse_matrix (SparseMatrix
-                                    (v.sparse_bool_matrix_value ()));
-}
 
 void
 install_sbm_sbm_ops (void)
@@ -109,7 +104,5 @@ install_sbm_sbm_ops (void)
 
   INSTALL_ASSIGNOP (op_asn_eq, octave_sparse_bool_matrix,
                     octave_sparse_bool_matrix, assign);
-
-  INSTALL_CONVOP (octave_sparse_bool_matrix, octave_sparse_matrix,
-                  bool_matrix_to_double_matrix);
 }
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -54,6 +54,7 @@ keyword_almost_match (const char * const *std, int *min_len,
                       const std::string& s, int min_toks_to_match,
                       int max_toks);
 
+OCTAVE_DEPRECATED ("use 'octave_value::is_empty' instead")
 extern OCTINTERP_API int empty_arg (const char *name, octave_idx_type nr,
                                     octave_idx_type nc);
 
@@ -137,3 +138,4 @@ do_simple_cellfun (octave_value_list (*fun) (const octave_value_list&, int),
                    const char *fun_name, const octave_value_list& args);
 
 #endif
+

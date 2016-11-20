@@ -208,13 +208,60 @@ For that, use any of the condition number functions: <code>cond</code>,
 <dt><a name="index-eig-1"></a>: <em><var>lambda</var> =</em> <strong>eig</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
 <dt><a name="index-eig-2"></a>: <em>[<var>V</var>, <var>lambda</var>] =</em> <strong>eig</strong> <em>(<var>A</var>)</em></dt>
 <dt><a name="index-eig-3"></a>: <em>[<var>V</var>, <var>lambda</var>] =</em> <strong>eig</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
-<dd><p>Compute the eigenvalues (and optionally the eigenvectors) of a matrix
-or a pair of matrices
+<dt><a name="index-eig-4"></a>: <em>[<var>V</var>, <var>lambda</var>, <var>W</var>] =</em> <strong>eig</strong> <em>(<var>A</var>)</em></dt>
+<dt><a name="index-eig-5"></a>: <em>[<var>V</var>, <var>lambda</var>, <var>W</var>] =</em> <strong>eig</strong> <em>(<var>A</var>, <var>B</var>)</em></dt>
+<dt><a name="index-eig-6"></a>: <em>[&hellip;] =</em> <strong>eig</strong> <em>(<var>A</var>, <var>balanceOption</var>)</em></dt>
+<dt><a name="index-eig-7"></a>: <em>[&hellip;] =</em> <strong>eig</strong> <em>(<var>A</var>, <var>B</var>, <var>algorithm</var>)</em></dt>
+<dt><a name="index-eig-8"></a>: <em>[&hellip;] =</em> <strong>eig</strong> <em>(&hellip;, <var>eigvalOption</var>)</em></dt>
+<dd><p>Compute the right eigenvalues(V) and optionally the eigenvectors(lambda) and
+the left eigenvalues(W) of a matrix or a pair of matrices.
 </p>
-<p>The algorithm used depends on whether there are one or two input
-matrices, if they are real or complex, and if they are symmetric
-(Hermitian if complex) or non-symmetric.
+<p>The flag <var>balanceOption</var> can be one of:
 </p>
+<dl compact="compact">
+<dt><code>&quot;balance&quot;</code></dt>
+<dd><p>Preliminary balancing is on. (default)
+</p>
+</dd>
+<dt><code>&quot;nobalance&quot;</code></dt>
+<dd><p>Disables preliminary balancing.
+</p></dd>
+</dl>
+
+<p>The flag <var>eigvalOption</var> can be one of:
+</p>
+<dl compact="compact">
+<dt><code>&quot;matrix&quot;</code></dt>
+<dd><p>Return the eigenvalues in a diagonal matrix. (default if 2 or 3 outputs
+are specified)
+</p>
+</dd>
+<dt><code>&quot;vector&quot;</code></dt>
+<dd><p>Return the eigenvalues in a column vector. (default if 1 output is
+specified, e.g. <var>lambda</var> = eig (<var>A</var>))
+</p></dd>
+</dl>
+
+<p>The flag <var>algorithm</var> can be one of:
+</p>
+<dl compact="compact">
+<dt><code>&quot;chol&quot;</code></dt>
+<dd><p>Uses the Cholesky factorization of B. (default if A is symmetric (Hermitian)
+and B is symmetric (Hermitian) positive definite)
+</p>
+</dd>
+<dt><code>&quot;qz&quot;</code></dt>
+<dd><p>Uses the QZ algorithm. (When A or B are not symmetric always the
+QZ algorithm will be used)
+</p></dd>
+</dl>
+
+<table>
+<thead><tr><th width="31%"></th><th width="23%">no flag</th><th width="23%">chol</th><th width="23%">qz</th></tr></thead>
+<tr><td width="31%">both are symmetric</td><td width="23%"><code>&quot;chol&quot;</code></td><td width="23%"><code>&quot;chol&quot;</code></td><td width="23%"><code>&quot;qz&quot;</code></td></tr>
+<tr><td width="31%">at least one is not symmetric</td><td width="23%"><code>&quot;qz&quot;</code></td><td width="23%"><code>&quot;qz&quot;</code></td><td width="23%"><code>&quot;qz&quot;</code></td></tr>
+</table>
+
 <p>The eigenvalues returned by <code>eig</code> are not ordered.
 </p>
 <p><strong>See also:</strong> <a href="Sparse-Linear-Algebra.html#XREFeigs">eigs</a>, <a href="Matrix-Factorizations.html#XREFsvd">svd</a>.

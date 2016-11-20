@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2014-2015 Torsten
+Copyright (C) 2014-2016 Torsten
 
 This file is part of Octave.
 
@@ -54,3 +54,4 @@ octave_txt_lexer::lexer () const
 }
 
 #endif
+

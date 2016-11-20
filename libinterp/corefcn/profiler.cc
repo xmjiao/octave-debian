@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2014-2015 Julien Bect
-Copyright (C) 2012-2015 Daniel Kraft
+Copyright (C) 2014-2016 Julien Bect
+Copyright (C) 2012-2016 Daniel Kraft
 
 This file is part of Octave.
 
@@ -36,7 +36,7 @@ along with Octave; see the file COPYING.  If not, see
 profile_data_accumulator::stats::stats ()
   : time (0.0), calls (0), recursive (false),
     parents (), children ()
-{}
+{ }
 
 octave_value
 profile_data_accumulator::stats::function_set_value (const function_set& list)
@@ -57,7 +57,7 @@ profile_data_accumulator::stats::function_set_value (const function_set& list)
 
 profile_data_accumulator::tree_node::tree_node (tree_node* p, octave_idx_type f)
   : parent (p), fcn_id (f), children (), time (0.0), calls (0)
-{}
+{ }
 
 profile_data_accumulator::tree_node::~tree_node ()
 {

@@ -1,7 +1,7 @@
 /*
 
 Copyright (C) 2009 P. L. Lucas
-Copyright (C) 2012-2015 Jacob Dawid
+Copyright (C) 2012-2016 Jacob Dawid
 
 This file is part of Octave.
 
@@ -98,7 +98,8 @@ webinfo::webinfo (QWidget *p)
   resize (500, 300);
 
   if (! set_info_path (QString::fromStdString (Vinfo_file)))
-    { // Info file does not exist
+    {
+      // Info file does not exist
       _search_check_box->setEnabled (false);
       _search_line_edit->setEnabled (false);
 

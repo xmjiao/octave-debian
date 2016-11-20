@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -512,13 +512,13 @@ save_mat_binary_data (std::ostream& os, const octave_value& tc,
           os.write (reinterpret_cast<const char *> (&ds), 8);
 
           for (octave_idx_type i = 0; i < len; i++)
-            dtmp[i] = std::real (m.data (i));
+            dtmp[i] = octave::math::real (m.data (i));
           os.write (reinterpret_cast<const char *> (dtmp), n_bytes);
           ds = 0.;
           os.write (reinterpret_cast<const char *> (&ds), 8);
 
           for (octave_idx_type i = 0; i < len; i++)
-            dtmp[i] = std::imag (m.data (i));
+            dtmp[i] = octave::math::imag (m.data (i));
           os.write (reinterpret_cast<const char *> (dtmp), n_bytes);
           os.write (reinterpret_cast<const char *> (&ds), 8);
         }
@@ -572,3 +572,4 @@ save_mat_binary_data (std::ostream& os, const octave_value& tc,
 
   return ! os.fail ();
 }
+

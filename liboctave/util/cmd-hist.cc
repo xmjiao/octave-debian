@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -773,11 +773,7 @@ namespace octave
 
   void
   command_history::do_process_histcontrol (const std::string&)
-  {
-    (*current_liboctave_warning_with_id_handler)
-      ("Octave:history-control",
-       "readline is not linked, so history control is not available");
-  }
+  { }
 
   void
   command_history::do_initialize (bool read_history_file,
@@ -844,13 +840,11 @@ namespace octave
 
   void
   command_history::do_remove (int)
-  {
-  }
+  { }
 
   void
   command_history::do_clear (void)
-  {
-  }
+  { }
 
   int
   command_history::do_where (void) const
@@ -884,8 +878,7 @@ namespace octave
 
   void
   command_history::do_stifle (int)
-  {
-  }
+  { }
 
   int
   command_history::do_unstifle (void)
@@ -901,8 +894,7 @@ namespace octave
 
   void
   command_history::do_set_mark (int)
-  {
-  }
+  { }
 
   int
   command_history::do_goto_mark (void)
@@ -991,8 +983,7 @@ namespace octave
 
   void
   command_history::do_replace_entry (int, const std::string&)
-  {
-  }
+  { }
 
   void
   command_history::do_clean_up_and_save (const std::string& f_arg, int)
@@ -1025,3 +1016,4 @@ namespace octave
     (*current_liboctave_error_handler) ("%s", s.c_str ());
   }
 }
+

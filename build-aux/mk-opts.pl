@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 #
-# Copyright (C) 2002-2015 John W. Eaton
+# Copyright (C) 2002-2016 John W. Eaton
 #
 # This file is part of Octave.
 #
@@ -913,7 +913,7 @@ $DOC_STRING
 
 Options include
 
-\@table \@code
+\@table \@asis
 _END_EMIT_OPTIONS_FUNCTION_HDR_
 # FIXME: Add extra newline above
 

@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -51,7 +51,7 @@ subroutine @code{hybrd}.  This is an iterative technique so a starting
 point must be provided.  This also has the consequence that
 convergence is not guaranteed even if a solution exists.
 
-@c fsolve scripts/scripts/optimization/fsolve.m
+@c fsolve scripts/optimization/fsolve.m
 @anchor{XREFfsolve}
 @deftypefn  {} {} fsolve (@var{fcn}, @var{x0}, @var{options})
 @deftypefnx {} {[@var{x}, @var{fvec}, @var{info}, @var{output}, @var{fjac}] =} fsolve (@var{fcn}, @dots{})
@@ -276,7 +276,7 @@ The Jacobian can then be used with the following call to @code{fsolve}:
 @noindent
 which gives the same solution as before.
 
-@c fzero scripts/scripts/optimization/fzero.m
+@c fzero scripts/optimization/fzero.m
 @anchor{XREFfzero}
 @deftypefn  {} {} fzero (@var{fun}, @var{x0})
 @deftypefnx {} {} fzero (@var{fun}, @var{x0}, @var{options})
@@ -357,11 +357,12 @@ simpler, but very common, case of a univariate function where the interval
 to search is bounded.  For unbounded minimization of a function with
 potentially many variables use @code{fminunc} or @code{fminsearch}.  The two
 functions use different internal algorithms and some knowledge of the objective
-function is required.  For functions which can be differentiated, @code{fminunc}
-is appropriate.  For functions with discontinuities, or for which a gradient
-search would fail, use @code{fminsearch}.  @xref{Optimization}, for
-minimization with the presence of constraint functions.  Note that searches
-can be made for maxima by simply inverting the objective function
+function is required.  For functions which can be differentiated,
+@code{fminunc} is appropriate.  For functions with discontinuities, or for
+which a gradient search would fail, use @code{fminsearch}.
+@xref{Optimization}, for minimization with the presence of constraint
+functions.  Note that searches can be made for maxima by simply inverting the
+objective function
 @tex
 ($F_{max} = -F_{min}$).
 @end tex
@@ -369,7 +370,7 @@ can be made for maxima by simply inverting the objective function
 (@code{Fto_max = -Fto_min}).
 @end ifnottex
 
-@c fminbnd scripts/scripts/optimization/fminbnd.m
+@c fminbnd scripts/optimization/fminbnd.m
 @anchor{XREFfminbnd}
 @deftypefn {} {[@var{x}, @var{fval}, @var{info}, @var{output}] =} fminbnd (@var{fun}, @var{a}, @var{b}, @var{options})
 Find a minimum point of a univariate function.
@@ -406,7 +407,7 @@ Golden Section search strategy.
 @end deftypefn
 
 
-@c fminunc scripts/scripts/optimization/fminunc.m
+@c fminunc scripts/optimization/fminunc.m
 @anchor{XREFfminunc}
 @deftypefn  {} {} fminunc (@var{fcn}, @var{x0})
 @deftypefnx {} {} fminunc (@var{fcn}, @var{x0}, @var{options})
@@ -481,7 +482,7 @@ discontinuities it may be better to use a derivative-free algorithm such as
 @end deftypefn
 
 
-@c fminsearch scripts/scripts/optimization/fminsearch.m
+@c fminsearch scripts/optimization/fminsearch.m
 @anchor{XREFfminsearch}
 @deftypefn  {} {@var{x} =} fminsearch (@var{fun}, @var{x0})
 @deftypefnx {} {@var{x} =} fminsearch (@var{fun}, @var{x0}, @var{options})

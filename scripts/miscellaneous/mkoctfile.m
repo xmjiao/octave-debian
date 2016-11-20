@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2015 Keith Goodman
+## Copyright (C) 2006-2016 Keith Goodman
 ##
 ## This file is part of Octave.
 ##
@@ -168,7 +168,7 @@ function [output, status] = mkoctfile (varargin)
   endif
 
   if (sys != 0)
-    warning ("mkoctfile: building exited with failure status");
+    warning ("mkoctfile: building exited with failure status\n");
   endif
 
 endfunction

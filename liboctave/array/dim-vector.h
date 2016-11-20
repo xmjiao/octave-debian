@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2015 John W. Eaton
+Copyright (C) 2003-2016 John W. Eaton
 Copyirght (C) 2009, 2010 VZLU Prague
 
 This file is part of Octave.
@@ -28,6 +28,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <cassert>
 
+#include <initializer_list>
 #include <string>
 
 #include "lo-error.h"
@@ -111,10 +112,7 @@ private:
   {
     int l = ndims ();
 
-    octave_idx_type *r = new octave_idx_type [l + 2];
-
-    *r++ = 1;
-    *r++ = l;
+    octave_idx_type* r = newrep (l);
 
     for (int i = 0; i < l; i++)
       r[i] = rep[i];
@@ -131,16 +129,13 @@ private:
     if (n < 2)
       n = 2;
 
-    octave_idx_type *r = new octave_idx_type [n + 2];
-
-    *r++ = 1;
-    *r++ = n;
+    octave_idx_type* r = newrep (n);
 
     if (l > n)
       l = n;
 
-    int j;
-    for (j = 0; j < l; j++)
+    int j = 0;
+    for (; j < l; j++)
       r[j] = rep[j];
     for (; j < n; j++)
       r[j] = fill_value;
@@ -162,7 +157,7 @@ private:
       {
         octave_idx_type *new_rep = clonerep ();
 
-        if (OCTREFCOUNT_ATOMIC_DECREMENT(&(count())) == 0)
+        if (OCTAVE_ATOMIC_DECREMENT (&(count ())) == 0)
           freerep ();
 
         rep = new_rep;
@@ -202,17 +197,19 @@ public:
       - a column vector, i.e., assume @f$[N, 1]@f$;
       - a square matrix, i.e., as is common in Octave interpreter;
       - support for a 1 dimensional Array (does not exist);
+
+    Using r, c, and lengths... as arguments, allow us to check at compile
+    time that there's at least 2 dimensions specified, while maintaining
+    type safety.
   */
   template <typename... Ints>
   dim_vector (const octave_idx_type r, const octave_idx_type c,
               Ints... lengths) : rep (newrep (2 + sizeof... (Ints)))
   {
-    // Using r, c, and lengths, makes sure that there's always a min of
-    // 2 dimensions specified, and that lengths are ints (since otherwise
-    // they can't form a list.
-    for (const auto l: {r, c, lengths...})
+    std::initializer_list<octave_idx_type> all_lengths = {r, c, lengths...};
+    for (const octave_idx_type l: all_lengths)
       *rep++ = l;
-    rep -= (2 + sizeof... (Ints));
+    rep -= all_lengths.size ();
   }
 
   octave_idx_type& elem (int i)
@@ -262,10 +259,10 @@ public:
   static octave_idx_type dim_max (void);
 
   explicit dim_vector (void) : rep (nil_rep ())
-  { OCTREFCOUNT_ATOMIC_INCREMENT (&(count())); }
+  { OCTAVE_ATOMIC_INCREMENT (&(count ())); }
 
   dim_vector (const dim_vector& dv) : rep (dv.rep)
-  { OCTREFCOUNT_ATOMIC_INCREMENT (&(count())); }
+  { OCTAVE_ATOMIC_INCREMENT (&(count ())); }
 
   // FIXME: Should be private, but required by array constructor for jit
   explicit dim_vector (octave_idx_type *r) : rep (r) { }
@@ -279,11 +276,11 @@ public:
   {
     if (&dv != this)
       {
-        if (OCTREFCOUNT_ATOMIC_DECREMENT (&(count())) == 0)
+        if (OCTAVE_ATOMIC_DECREMENT (&(count ())) == 0)
           freerep ();
 
         rep = dv.rep;
-        OCTREFCOUNT_ATOMIC_INCREMENT (&(count()));
+        OCTAVE_ATOMIC_INCREMENT (&(count ()));
       }
 
     return *this;
@@ -291,7 +288,7 @@ public:
 
   ~dim_vector (void)
   {
-    if (OCTREFCOUNT_ATOMIC_DECREMENT (&(count())) == 0)
+    if (OCTAVE_ATOMIC_DECREMENT (&(count ())) == 0)
       freerep ();
   }
 
@@ -324,7 +321,7 @@ public:
       {
         octave_idx_type *r = resizerep (n, fill_value);
 
-        if (OCTREFCOUNT_ATOMIC_DECREMENT (&(count())) == 0)
+        if (OCTAVE_ATOMIC_DECREMENT (&(count ())) == 0)
           freerep ();
 
         rep = r;
@@ -474,19 +471,11 @@ public:
     return def;
   }
 
-  //! Compute a linear index from an index tuple.
+  //! Linear index from an index tuple.
+  octave_idx_type compute_index (const octave_idx_type* idx) const
+  { return compute_index (idx, ndims ()); }
 
-  octave_idx_type compute_index (const octave_idx_type *idx) const
-  {
-    octave_idx_type k = 0;
-    for (int i = ndims () - 1; i >= 0; i--)
-      k = rep[i] * k + idx[i];
-
-    return k;
-  }
-
-  //! Ditto, but the tuple may be incomplete (nidx < length ()).
-
+  //! Linear index from an incomplete index tuple (nidx < length ()).
   octave_idx_type compute_index (const octave_idx_type *idx, int nidx) const
   {
     octave_idx_type k = 0;
@@ -581,3 +570,4 @@ operator != (const dim_vector& a, const dim_vector& b)
 }
 
 #endif
+

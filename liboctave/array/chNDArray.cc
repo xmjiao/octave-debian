@@ -1,7 +1,7 @@
 // N-D Array manipulations.
 /*
 
-Copyright (C) 2003-2015 John W. Eaton
+Copyright (C) 2003-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -257,3 +257,4 @@ NDND_CMP_OPS (charNDArray, charNDArray)
 NDND_BOOL_OPS (charNDArray, charNDArray)
 
 BSXFUN_STDREL_DEFS_MXLOOP (charNDArray)
+

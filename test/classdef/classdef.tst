@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2015 Ben Abbott
+## Copyright (C) 2013-2016 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -50,7 +50,7 @@
 %!assert (amount (p), amt, eps ())
 %!xtest
 %! assert (properties (p), {'rate'; 'term'; 'principle'});
-%!xtest
+%!test <42510>
 %! assert (methods (p), {'amount'; 'foo_value_class'});
 %!assert (isempty (foo_value_class().rate))
 %!error <property `rate' is not constant> foo_value_class.rate

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1998-2015 A. S. Hodel
+Copyright (C) 1998-2016 A. S. Hodel
 
 This file is part of Octave.
 
@@ -38,6 +38,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <iomanip>
 
 #include "f77-fcn.h"
+#include "lo-lapack-proto.h"
 #include "lo-math.h"
 #include "qr.h"
 #include "quit.h"
@@ -63,119 +64,6 @@ typedef octave_idx_type (*sort_function) (const octave_idx_type& LSIZE,
 
 extern "C"
 {
-  F77_RET_T
-  F77_FUNC (dggbal, DGGBAL) (F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT& N, F77_DBLE* A,
-                             const F77_INT& LDA, F77_DBLE* B,
-                             const F77_INT& LDB, F77_INT& ILO,
-                             F77_INT& IHI, F77_DBLE* LSCALE,
-                             F77_DBLE* RSCALE, F77_DBLE* WORK,
-                             F77_INT& INFO
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zggbal, ZGGBAL) (F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT& N, F77_DBLE_CMPLX* A,
-                             const F77_INT& LDA, F77_DBLE_CMPLX* B,
-                             const F77_INT& LDB, F77_INT& ILO,
-                             F77_INT& IHI, F77_DBLE* LSCALE,
-                             F77_DBLE* RSCALE, F77_DBLE* WORK,
-                             F77_INT& INFO
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (dggbak, DGGBAK) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT& N,
-                             const F77_INT& ILO,
-                             const F77_INT& IHI,
-                             const F77_DBLE* LSCALE, const F77_DBLE* RSCALE,
-                             F77_INT& M, F77_DBLE* V,
-                             const F77_INT& LDV, F77_INT& INFO
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zggbak, ZGGBAK) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT& N,
-                             const F77_INT& ILO,
-                             const F77_INT& IHI,
-                             const F77_DBLE* LSCALE, const F77_DBLE* RSCALE,
-                             F77_INT& M, F77_DBLE_CMPLX* V,
-                             const F77_INT& LDV, F77_INT& INFO
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (dgghrd, DGGHRD) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT& N,
-                             const F77_INT& ILO,
-                             const F77_INT& IHI, F77_DBLE* A,
-                             const F77_INT& LDA, F77_DBLE* B,
-                             const F77_INT& LDB, F77_DBLE* Q,
-                             const F77_INT& LDQ, F77_DBLE* Z,
-                             const F77_INT& LDZ, F77_INT& INFO
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zgghrd, ZGGHRD) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT& N,
-                             const F77_INT& ILO,
-                             const F77_INT& IHI, F77_DBLE_CMPLX* A,
-                             const F77_INT& LDA, F77_DBLE_CMPLX* B,
-                             const F77_INT& LDB, F77_DBLE_CMPLX* Q,
-                             const F77_INT& LDQ, F77_DBLE_CMPLX* Z,
-                             const F77_INT& LDZ, F77_INT& INFO
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (dhgeqz, DHGEQZ) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT& N,
-                             const F77_INT& ILO,
-                             const F77_INT& IHI,
-                             F77_DBLE* A, const F77_INT& LDA, F77_DBLE* B,
-                             const F77_INT& LDB, F77_DBLE* ALPHAR,
-                             F77_DBLE* ALPHAI, F77_DBLE* BETA, F77_DBLE* Q,
-                             const F77_INT& LDQ, F77_DBLE* Z,
-                             const F77_INT& LDZ, F77_DBLE* WORK,
-                             const F77_INT& LWORK,
-                             F77_INT& INFO
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (zhgeqz, ZHGEQZ) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             const F77_INT& N,
-                             const F77_INT& ILO,
-                             const F77_INT& IHI,
-                             F77_DBLE_CMPLX* A, const F77_INT& LDA,
-                             F77_DBLE_CMPLX* B, const F77_INT& LDB,
-                             F77_DBLE_CMPLX* ALPHA, F77_DBLE_CMPLX* BETA, F77_DBLE_CMPLX* CQ,
-                             const F77_INT& LDQ,
-                             F77_DBLE_CMPLX* CZ, const F77_INT& LDZ,
-                             F77_DBLE_CMPLX* WORK, const F77_INT& LWORK,
-                             F77_DBLE* RWORK, F77_INT& INFO
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (dlag2, DLAG2) (const F77_DBLE* A, const F77_INT& LDA,
-                           const F77_DBLE* B, const F77_INT& LDB,
-                           const F77_DBLE& SAFMIN, F77_DBLE& SCALE1,
-                           F77_DBLE& SCALE2, F77_DBLE& WR1, F77_DBLE& WR2,
-                           F77_DBLE& WI);
-
   // Van Dooren's code (netlib.org: toms/590) for reordering
   // GEP.  Only processes Z, not Q.
   F77_RET_T
@@ -184,50 +72,6 @@ extern "C"
                              F77_DBLE* B, F77_DBLE* Z, sort_function,
                              const F77_DBLE& EPS, F77_INT& NDIM,
                              F77_INT& FAIL, F77_INT* IND);
-
-  // Documentation for DTGEVC incorrectly states that VR, VL are
-  // complex*16; they are declared in DTGEVC as double precision
-  // (probably a cut and paste problem fro ZTGEVC).
-  F77_RET_T
-  F77_FUNC (dtgevc, DTGEVC) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_INT* SELECT,
-                             const F77_INT& N, F77_DBLE* A,
-                             const F77_INT& LDA, F77_DBLE* B,
-                             const F77_INT& LDB, F77_DBLE* VL,
-                             const F77_INT& LDVL, F77_DBLE* VR,
-                             const F77_INT& LDVR,
-                             const F77_INT& MM, F77_INT& M,
-                             F77_DBLE* WORK, F77_INT& INFO
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (ztgevc, ZTGEVC) (F77_CONST_CHAR_ARG_DECL,
-                             F77_CONST_CHAR_ARG_DECL,
-                             F77_INT* SELECT,
-                             const F77_INT& N, const F77_DBLE_CMPLX* A,
-                             const F77_INT& LDA,const F77_DBLE_CMPLX* B,
-                             const F77_INT& LDB, F77_DBLE_CMPLX* xVL,
-                             const F77_INT& LDVL, F77_DBLE_CMPLX* xVR,
-                             const F77_INT& LDVR,
-                             const F77_INT& MM, F77_INT& M,
-                             F77_DBLE_CMPLX* CWORK, F77_DBLE* RWORK,
-                             F77_INT& INFO
-                             F77_CHAR_ARG_LEN_DECL
-                             F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (xdlamch, XDLAMCH) (F77_CONST_CHAR_ARG_DECL,
-                               F77_DBLE& retval
-                               F77_CHAR_ARG_LEN_DECL);
-
-  F77_RET_T
-  F77_FUNC (xdlange, XDLANGE) (F77_CONST_CHAR_ARG_DECL,
-                               const F77_INT&,
-                               const F77_INT&, const F77_DBLE*,
-                               const F77_INT&, F77_DBLE*, F77_DBLE&
-                               F77_CHAR_ARG_LEN_DECL);
 }
 
 // fcrhp, fin, fout, folhp:
@@ -453,14 +297,7 @@ compatibility with @sc{matlab}.
 
   octave_value_list retval;
 
-  int arg_is_empty = empty_arg ("qz", nn, args(0).columns ());
-
-  if (arg_is_empty < 0)
-    {
-      warn_empty_arg ("qz: parameter 1");
-      return retval;
-    }
-  else if (arg_is_empty > 0)
+  if (args(0).is_empty ())
     {
       warn_empty_arg ("qz: parameter 1; continuing");
       return octave_value_list (2, Matrix ());
@@ -546,7 +383,8 @@ compatibility with @sc{matlab}.
 
       F77_XFCN (zggbal, ZGGBAL,
                 (F77_CONST_CHAR_ARG2 (&bal_job, 1),
-                 nn, F77_DBLE_CMPLX_ARG (caa.fortran_vec ()), nn, F77_DBLE_CMPLX_ARG (cbb.fortran_vec ()),
+                 nn, F77_DBLE_CMPLX_ARG (caa.fortran_vec ()), nn,
+                 F77_DBLE_CMPLX_ARG (cbb.fortran_vec ()),
                  nn, ilo, ihi, lscale.fortran_vec (),
                  rscale.fortran_vec (), work.fortran_vec (), info
                  F77_CHAR_ARG_LEN (1)));
@@ -613,7 +451,7 @@ compatibility with @sc{matlab}.
       // Complex case.
 
       // The QR decomposition of cbb.
-      qr<ComplexMatrix> cbqr (cbb);
+      octave::math::qr<ComplexMatrix> cbqr (cbb);
       // The R matrix of QR decomposition for cbb.
       cbb = cbqr.R ();
       // (Q*)caa for following work.
@@ -624,7 +462,8 @@ compatibility with @sc{matlab}.
                 (F77_CONST_CHAR_ARG2 (&compq, 1),
                  F77_CONST_CHAR_ARG2 (&compz, 1),
                  nn, ilo, ihi, F77_DBLE_CMPLX_ARG (caa.fortran_vec ()),
-                 nn, F77_DBLE_CMPLX_ARG (cbb.fortran_vec ()), nn, F77_DBLE_CMPLX_ARG (CQ.fortran_vec ()), nn,
+                 nn, F77_DBLE_CMPLX_ARG (cbb.fortran_vec ()), nn,
+                 F77_DBLE_CMPLX_ARG (CQ.fortran_vec ()), nn,
                  F77_DBLE_CMPLX_ARG (CZ.fortran_vec ()), nn, info
                  F77_CHAR_ARG_LEN (1)
                  F77_CHAR_ARG_LEN (1)));
@@ -679,7 +518,7 @@ compatibility with @sc{matlab}.
 #endif
 
       // Compute the QR factorization of bb.
-      qr<Matrix> bqr (bb);
+      octave::math::qr<Matrix> bqr (bb);
 
 #if defined (DEBUG)
       std::cout << "qz: qr (bb) done; now peforming qz decomposition"
@@ -1053,8 +892,10 @@ compatibility with @sc{matlab}.
           F77_XFCN (ztgevc, ZTGEVC,
                     (F77_CONST_CHAR_ARG2 (&side, 1),
                      F77_CONST_CHAR_ARG2 (&howmny, 1),
-                     select, nn, F77_DBLE_CMPLX_ARG (caa.fortran_vec ()), nn, F77_DBLE_CMPLX_ARG (cbb.fortran_vec ()),
-                     nn, F77_DBLE_CMPLX_ARG (CVL.fortran_vec ()), nn, F77_DBLE_CMPLX_ARG (CVR.fortran_vec ()), nn, nn,
+                     select, nn, F77_DBLE_CMPLX_ARG (caa.fortran_vec ()), nn,
+                     F77_DBLE_CMPLX_ARG (cbb.fortran_vec ()),
+                     nn, F77_DBLE_CMPLX_ARG (CVL.fortran_vec ()), nn,
+                     F77_DBLE_CMPLX_ARG (CVR.fortran_vec ()), nn, nn,
                      m, F77_DBLE_CMPLX_ARG (cwork2.fortran_vec ()), rwork2.fortran_vec (), info
                      F77_CHAR_ARG_LEN (1)
                      F77_CHAR_ARG_LEN (1)));
@@ -1256,3 +1097,4 @@ compatibility with @sc{matlab}.
 %! [AA, BB, Z2] = qz (A, B, '-');
 %! assert (Z1, Z2);
 */
+

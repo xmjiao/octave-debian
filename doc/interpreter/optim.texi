@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -70,7 +70,7 @@ $Ax = b$ where $x \geq 0$.
 @noindent
 The @code{glpk} function also supports variations of this problem.
 
-@c glpk scripts/scripts/optimization/glpk.m
+@c glpk scripts/optimization/glpk.m
 @anchor{XREFglpk}
 @deftypefn {} {[@var{xopt}, @var{fmin}, @var{errnum}, @var{extra}] =} glpk (@var{c}, @var{A}, @var{b}, @var{lb}, @var{ub}, @var{ctype}, @var{vartype}, @var{sense}, @var{param})
 Solve a linear program using the GNU @sc{glpk} library.
@@ -565,7 +565,7 @@ $$
 
 @end ifnottex
 
-@c qp scripts/scripts/optimization/qp.m
+@c qp scripts/optimization/qp.m
 @anchor{XREFqp}
 @deftypefn  {} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H})
 @deftypefnx {} {[@var{x}, @var{obj}, @var{info}, @var{lambda}] =} qp (@var{x0}, @var{H}, @var{q})
@@ -661,7 +661,7 @@ The problem is infeasible.
 @end deftypefn
 
 
-@c pqpnonneg scripts/scripts/optimization/pqpnonneg.m
+@c pqpnonneg scripts/optimization/pqpnonneg.m
 @anchor{XREFpqpnonneg}
 @deftypefn  {} {@var{x} =} pqpnonneg (@var{c}, @var{d})
 @deftypefnx {} {@var{x} =} pqpnonneg (@var{c}, @var{d}, @var{x0})
@@ -714,7 +714,7 @@ Not implemented.
 Octave can also perform general nonlinear minimization using a
 successive quadratic programming solver.
 
-@c sqp scripts/scripts/optimization/sqp.m
+@c sqp scripts/optimization/sqp.m
 @anchor{XREFsqp}
 @deftypefn  {} {[@var{x}, @var{obj}, @var{info}, @var{iter}, @var{nf}, @var{lambda}] =} sqp (@var{x0}, @var{phi})
 @deftypefnx {} {[@dots{}] =} sqp (@var{x0}, @var{phi}, @var{g})
@@ -903,7 +903,7 @@ can be solved using the @samp{\} or @samp{/} operators, or the @code{ols}
 function.  In the general case where the noise is assumed to be anisotropic
 the @code{gls} is needed.
 
-@c ols scripts/scripts/statistics/base/ols.m
+@c ols scripts/statistics/base/ols.m
 @anchor{XREFols}
 @deftypefn {} {[@var{beta}, @var{sigma}, @var{r}] =} ols (@var{y}, @var{x})
 Ordinary least squares estimation.
@@ -967,7 +967,7 @@ The matrix of OLS residuals, @code{@var{r} = @var{y} - @var{x}*@var{beta}}.
 @end deftypefn
 
 
-@c gls scripts/scripts/statistics/base/gls.m
+@c gls scripts/statistics/base/gls.m
 @anchor{XREFgls}
 @deftypefn {} {[@var{beta}, @var{v}, @var{r}] =} gls (@var{y}, @var{x}, @var{o})
 Generalized least squares model.
@@ -1013,7 +1013,7 @@ The matrix of GLS residuals, @math{r = y - x*beta}.
 @end deftypefn
 
 
-@c lsqnonneg scripts/scripts/optimization/lsqnonneg.m
+@c lsqnonneg scripts/optimization/lsqnonneg.m
 @anchor{XREFlsqnonneg}
 @deftypefn  {} {@var{x} =} lsqnonneg (@var{c}, @var{d})
 @deftypefnx {} {@var{x} =} lsqnonneg (@var{c}, @var{d}, @var{x0})
@@ -1070,7 +1070,7 @@ Not implemented.
 @end deftypefn
 
 
-@c lscov scripts/scripts/statistics/base/lscov.m
+@c lscov scripts/statistics/base/lscov.m
 @anchor{XREFlscov}
 @deftypefn  {} {@var{x} =} lscov (@var{A}, @var{b})
 @deftypefnx {} {@var{x} =} lscov (@var{A}, @var{b}, @var{V})
@@ -1107,7 +1107,7 @@ Reference: @nospell{Golub and Van Loan} (1996),
 @end deftypefn
 
 
-@c optimset scripts/scripts/optimization/optimset.m
+@c optimset scripts/optimization/optimset.m
 @anchor{XREFoptimset}
 @deftypefn  {} {} optimset ()
 @deftypefnx {} {@var{options} =} optimset ()
@@ -1205,7 +1205,7 @@ less than @code{TolX} the optimization stops.  Must be a positive scalar.
 @end deftypefn
 
 
-@c optimget scripts/scripts/optimization/optimget.m
+@c optimget scripts/optimization/optimget.m
 @anchor{XREFoptimget}
 @deftypefn  {} {} optimget (@var{options}, @var{parname})
 @deftypefnx {} {} optimget (@var{options}, @var{parname}, @var{default})

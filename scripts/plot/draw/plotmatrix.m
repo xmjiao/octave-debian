@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2015 David Bateman
+## Copyright (C) 2008-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -110,7 +110,7 @@ endfunction
 
 %!demo
 %! clf;
-%! plotmatrix (randn (100, 3), 'g+');
+%! plotmatrix (randn (100, 3), "g+");
 
 
 function plotmatrixdelete (h, d, ax)

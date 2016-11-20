@@ -418,55 +418,81 @@ PASSES 3 out of 4 tests (1 expected failure)
 
 <dl compact="compact">
 <dt><code>%!test</code></dt>
-<dd><p>check that entire block is correct
+<dt><code>%!test &lt;MESSAGE&gt;</code></dt>
+<dd><p>Check that entire block is correct.  If <code>&lt;MESSAGE&gt;</code> is present, the
+test block is interpreted as for <code>xtest</code>.
 </p>
 </dd>
 <dt><code>%!testif HAVE_XXX</code></dt>
-<dd><p>check block only if Octave was compiled with feature HAVE_XXX.
+<dt><code>%!testif HAVE_XXX, HAVE_YYY, &hellip;</code></dt>
+<dt><code>%!testif &hellip; &lt;MESSAGE&gt;</code></dt>
+<dd><p>Check block only if Octave was compiled with feature HAVE_XXX.  If
+<code>&lt;MESSAGE&gt;</code> is present, the test block is interpreted as for
+<code>xtest</code>.
 </p>
 </dd>
 <dt><code>%!xtest</code></dt>
-<dd><p>check block, report a test failure but do not abort testing.
+<dt><code>%!xtest &lt;MESSAGE&gt;</code></dt>
+<dd><p>Check block, report a test failure but do not abort testing.  If
+<code>&lt;MESSAGE&gt;</code> is present, then the text of the message is displayed
+if the test fails, like this:
+</p>
+<div class="example">
+<pre class="example">!!!!! Known bug:  MESSAGE
+</pre></div>
+
+<p>If the message is an integer, it is interpreted as a bug ID for the
+Octave bug tracker and reported as
+</p>
+<div class="example">
+<pre class="example">!!!!! Known bug: http://octave.org/testfailure/?BUG-ID
+</pre></div>
+
+<p>in which BUG-ID is the integer bug number.  The intent is to allow
+clearer documentation of known problems.
 </p>
 </dd>
 <dt><code>%!error</code></dt>
-<dd><p>check for correct error message
-</p>
-</dd>
+<dt><code>%!error &lt;MESSAGE&gt;</code></dt>
 <dt><code>%!warning</code></dt>
-<dd><p>check for correct warning message
+<dt><code>%!warning &lt;MESSAGE&gt;</code></dt>
+<dd><p>Check for correct error or warning message.  If <code>&lt;MESSAGE&gt;</code> is
+supplied it is interpreted as a regular expression pattern that is
+expected to match the error or warning message.
 </p>
 </dd>
 <dt><code>%!demo</code></dt>
-<dd><p>demo only executes in interactive mode
+<dd><p>Demo only executes in interactive mode.
 </p>
 </dd>
 <dt><code>%!#</code></dt>
-<dd><p>comment: ignore everything within the block
+<dd><p>Comment.  Ignore everything within the block
 </p>
 </dd>
 <dt><code>%!shared x,y,z</code></dt>
-<dd><p>declare variables for use in multiple tests
+<dd><p>Declare variables for use in multiple tests.
 </p>
 </dd>
 <dt><code>%!function</code></dt>
-<dd><p>define a function for use in multiple tests
+<dd><p>Define a function for use in multiple tests.
 </p>
 </dd>
 <dt><code>%!endfunction</code></dt>
-<dd><p>close a function definition
+<dd><p>Close a function definition.
 </p>
 </dd>
 <dt><code>%!assert (x, y, tol)</code></dt>
-<dd><p>shorthand for <code>%!test assert (x, y, tol)</code>
-</p>
-</dd>
+<dt><code>%!assert &lt;MESSAGE&gt; (x, y, tol)</code></dt>
 <dt><code>%!fail (CODE, PATTERN)</code></dt>
-<dd><p>shorthand for <code>%!test fail (CODE, PATTERN)</code>
+<dt><code>%!fail &lt;MESSAGE&gt; (CODE, PATTERN)</code></dt>
+<dd><p>Shorthand for <code>%!test assert (x, y, tol)</code> or
+<code>%!test fail (CODE, PATTERN)</code>.  If <code>&lt;MESSAGE&gt;</code> is present, the
+test block is interpreted as for <code>xtest</code>.
 </p>
 </dd>
 </dl>
 
+<a name="test_002dmessage_002danchor"></a>
 <p>When coding tests the Octave convention is that lines that begin with a block
 type do not have a semicolon at the end.  Any code that is within a block,
 however, is normal Octave code and usually will have a trailing semicolon.

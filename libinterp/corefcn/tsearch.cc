@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002-2015 Andreas Stahel
+Copyright (C) 2002-2016 Andreas Stahel
 
 This file is part of Octave.
 
@@ -172,3 +172,4 @@ convex hull, @var{idx} is NaN.
 
 %!error tsearch ()
 */
+

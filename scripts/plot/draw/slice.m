@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2015 Kai Habel, David Bateman
+## Copyright (C) 2007-2016 Kai Habel, David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -184,7 +184,7 @@ function h = slice (varargin)
     endif
 
     if (! ishold ())
-      set (hax, "view", [-37.5, 30.0], "box", "off",
+      set (hax, "view", [-37.5, 30.0],
                 "xgrid", "on", "ygrid", "on", "zgrid", "on");
     endif
 
@@ -203,14 +203,14 @@ endfunction
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! [x, y, z] = meshgrid (linspace (-8, 8, 32));
 %! v = sin (sqrt (x.^2 + y.^2 + z.^2)) ./ (sqrt (x.^2 + y.^2 + z.^2));
 %! slice (x, y, z, v, [], 0, []);
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! [x, y, z] = meshgrid (linspace (-8, 8, 32));
 %! v = sin (sqrt (x.^2 + y.^2 + z.^2)) ./ (sqrt (x.^2 + y.^2 + z.^2));
 %! [xi, yi] = meshgrid (linspace (-7, 7));

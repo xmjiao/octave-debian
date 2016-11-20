@@ -18,7 +18,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {} {} publish (@var{filename})
+## @deftypefn  {} {} publish (@var{filename})
 ## @deftypefnx {} {} publish (@var{filename}, @var{output_format})
 ## @deftypefnx {} {} publish (@var{filename}, @var{option1}, @var{value1}, @dots{})
 ## @deftypefnx {} {} publish (@var{filename}, @var{options})
@@ -56,7 +56,7 @@
 ##
 ## With only @var{filename} given, a HTML report is generated in a
 ## subdirectory @samp{html} relative to the current working directory.
-## The Octave commands are evaluated in a seperate context and any
+## The Octave commands are evaluated in a separate context and any
 ## figures created while executing the script file are included in the
 ## report.  All formatting syntax of @var{filename} is treated according
 ## to the specified output format and included in the report.
@@ -71,6 +71,7 @@
 ## @end group
 ## @end example
 ##
+## @noindent
 ## which is described below.  The same holds for using option-value-pairs
 ##
 ## @example
@@ -91,7 +92,7 @@
 ## @samp{xml}, or @samp{pdf}.
 ##
 ## The output formats @samp{doc}, @samp{ppt}, and @samp{xml} are currently
-## not supported. To generate a @samp{doc} report, open a generated
+## not supported.  To generate a @samp{doc} report, open a generated
 ## @samp{html} report with your office suite.
 ##
 ## @item
@@ -100,13 +101,13 @@
 ## in a subdirectory @samp{html} relative to the current working directory.
 ##
 ## @item
-## @samp{stylesheet} --- Not supported, only for Matlab compatibility.
+## @samp{stylesheet} --- Not supported, only for @sc{matlab} compatibility.
 ##
 ## @item
-## @samp{createThumbnail} --- Not supported, only for Matlab compatibility.
+## @samp{createThumbnail} --- Not supported, only for @sc{matlab} compatibility.
 ##
 ## @item
-## @samp{figureSnapMethod} --- Not supported, only for Matlab compatibility.
+## @samp{figureSnapMethod} --- Not supported, only for @sc{matlab} compatibility.
 ##
 ## @item
 ## @samp{imageFormat} --- Desired format for images produced, while
@@ -120,7 +121,7 @@
 ## @item @samp{latex} --- @samp{epsc2} (default), any other image format
 ## supported by Octave
 ##
-## @item @samp{pdf} --- @samp{jpg} (default) or @samp{bmp}, note Matlab
+## @item @samp{pdf} --- @samp{jpg} (default) or @samp{bmp}, note @sc{matlab}
 ## uses  @samp{bmp} as default
 ##
 ## @item @samp{doc} or @samp{ppt} --- @samp{png} (default), @samp{jpg},
@@ -183,10 +184,17 @@ function output_file = publish (file, varargin)
     error ("publish: FILE does not exist.");
   endif
 
-  ## Check file extension and for an Octave script
-  [~, file_name, file_ext] = fileparts (file);
-  file_info = __which__ (file_name);
+  ## Check file to be in Octave's load path
+  [file_path, file_name, file_ext] = fileparts (file);
+  if (isempty (file_path))
+    file_path = pwd;
+  endif
+  if (isempty (which ([file_name, file_ext])))
+    error (["publish: ", file, " is not in the load path."]);
+  endif
 
+  ## Check file extension and for an Octave script
+  file_info = __which__ (file_name);
   if ((! strcmp (file_ext, ".m")) || (! strcmp (file_info.type, "script")))
     error ("publish: Only Octave script files can be published.");
   endif
@@ -235,7 +243,7 @@ function output_file = publish (file, varargin)
   if (! isfield (options, "outputDir"))
     ## Matlab R2016a doc says default is "", but specifies to create a sub
     ## directory named "html" in the current working directory.
-    options.outputDir = "html";
+    options.outputDir = [file_path, filesep(), "html"];
   elseif (! ischar (options.outputDir))
     error ("publish: OUTPUTDIR must be a string");
   endif
@@ -720,7 +728,7 @@ function ofile = create_output (doc_struct, options)
 
   content = formatter ("header", title_str, ...
     format_output (doc_struct.intro, formatter, options), ...
-    get_toc (doc_struct.body));
+    get_toc (doc_struct.body, formatter));
   content = [content, format_output(doc_struct.body, formatter, options)];
   content = [content, formatter("footer", strjoin (doc_struct.m_source, "\n"))];
 
@@ -745,7 +753,7 @@ endfunction
 
 
 
-function toc_cstr = get_toc (cstr)
+function toc_cstr = get_toc (cstr, formatter)
   ## GET_TOC extracts the table of contents from a cellstring (e.g.
   ##   doc_struct.body) with each section headline as a cell in a returned
   ##   cellstring.
@@ -753,7 +761,7 @@ function toc_cstr = get_toc (cstr)
   toc_cstr = cell ();
   for i = 1:length(cstr)
     if (strcmp (cstr{i}.type, "section"))
-      toc_cstr{end + 1} = cstr{i}.content;
+      toc_cstr{end + 1} = format_text (cstr{i}.content, formatter);
     endif
   endfor
 endfunction
@@ -779,7 +787,7 @@ function str = format_output (cstr, formatter, options)
         if (options.evalCode)
           str = [str, formatter("code_output", cstr{i}.output)];
         endif
-      case "text"
+      case {"text", "section"}
         str = [str, formatter(cstr{i}.type, ...
           format_text (cstr{i}.content, formatter))];
       case {"bulleted_list", "numbered_list"}
@@ -799,31 +807,85 @@ function str = format_text (str, formatter)
   ##   These are: links, bold, italic, monospaced, (TM), (R)
   ##
 
-  ## Links "<http://www.someurl.com>"
-  str = regexprep (str, '<(\S{3,}[^\s<>]*)>', ...
-    formatter ("link", "$1", "$1"));
-  ## Links "<octave:Function TEXT>"
-  ## TODO: better pointer to the function documentation
-  str = regexprep (str, '<octave:([^\s<>]*) *([^<>$]*)>', ...
-    formatter ("link", ["https://www.gnu.org/software/octave/", ...
-      "doc/interpreter/Function-Index.html"], "$2"));
-  ## Links "<http://www.someurl.com TEXT>"
-  str = regexprep (str, '<(\S{3,}[^\s<>]*) *([^<>$]*)>', ...
-    formatter ("link", "$1", "$2"));
-  oldstr = str;
-  ## Loop because of inlined expressions, e.g. *BOLD _ITALIC_*
-  do
-    oldstr = str;
-    ## Bold
-    str = regexprep (str, '\*([^*$_|]*)\*', formatter ("bold", "$1"));
-    ## Italic
-    str = regexprep (str, '_([^_$|*]*)_', formatter ("italic", "$1"));
-    ## Monospaced
-    str = regexprep (str, '\|([^|$_*]*)\|', formatter ("monospaced", "$1"));
-  until (strcmp (str, oldstr))
+  ## Regular expressions for the formats:
+  ##
+  ## * Links "<http://www.someurl.com>"
+  ## * Links "<octave:Function TEXT>"
+  ## * Links "<http://www.someurl.com TEXT>"
+  ## * inline "$" and block "$$" LaTeX math
+  ##
+  regexes = {'<\S{3,}[^\s<>]*>', ...
+             '<octave:[^\s<>]* *[^<>$]*>', ...
+             '<\S{3,}[^\s<>]* *[^<>$]*>', ...
+             '\${1,2}.*?\${1,2}', ...
+             '\*[^*]*\*', ...  # Bold
+             '_[^_]*_', ...    # Italic
+             '\|[^|]*\|'};     # Monospaced
+
+  ##  Helper function to escape some special characters for the GNU Octave
+  ##  manual, see https://www.gnu.org/software/texinfo/manual/texinfo/html_node/HTML-Xref-Node-Name-Expansion.html
+  texinfo_esc = @(str) strrep (strrep (str, "-", "_002d"), "_", "_005f");
+
+  ## Substitute all occurances with placeholders
+  placeholder_cstr = {};
+  plh = 0;
+  for i = 1:length(regexes)
+    [~,~,~,cstr] = regexp (str, regexes{i});
+    for j = 1:length(cstr)
+      plh = plh + 1;
+      str = regexprep (str, regexes{i}, ...
+        ["PUBLISHPLACEHOLDER", num2str(plh)], "once");
+      switch (i)
+        case 1
+          # Links "<http://www.someurl.com>"
+          url = cstr{j};
+          cstr{j} = formatter ("link", url(2:end-1), url(2:end-1));
+        case 2
+          # Links "<octave:Function TEXT>"
+          idx = strfind (cstr{j}, " ");
+          url = cstr{j};
+          url = ["https://www.gnu.org/software/octave/doc/interpreter/", ...
+                 "XREF", texinfo_esc(url(9:idx-1)), ".html"];
+          txt = cstr{j};
+          txt = format_text (txt(idx+1:end-1), formatter);
+          cstr{j} = formatter ("link", url, txt);
+        case 3
+          # Links "<http://www.someurl.com TEXT>"
+          idx = strfind (cstr{j}, " ");
+          url = cstr{j};
+          url = url(2:idx-1);
+          txt = cstr{j};
+          txt = format_text (txt(idx+1:end-1), formatter);
+          cstr{j} = formatter ("link", url, txt);
+        case 4
+          # inline "$" and block "$$" LaTeX math --> do nothing
+        case 5
+          # Bold
+          txt = cstr{j};
+          cstr{j} = formatter ("bold", format_text (txt(2:end-1), formatter));
+        case 6
+          # Italic
+          txt = cstr{j};
+          cstr{j} = formatter ("italic", format_text (txt(2:end-1), formatter));
+        case 7
+          # Monospaced
+          txt = cstr{j};
+          cstr{j} = formatter ("monospaced", format_text (txt(2:end-1), ...
+            formatter));
+      endswitch
+    endfor
+    placeholder_cstr = [placeholder_cstr, cstr];
+  endfor
+
   ## Replace special symbols
   str = strrep (str, "(TM)", formatter("TM"));
   str = strrep (str, "(R)", formatter("R"));
+
+  ## Restore placeholders
+  for i = plh:-1:1
+    str = strrep (str, ["PUBLISHPLACEHOLDER", num2str(i)], ...
+      placeholder_cstr{i});
+  endfor
 endfunction
 
 

@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2013-2015 John W. Eaton
-Copyright (C) 2011-2015 Jacob Dawid
+Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2011-2016 Jacob Dawid
 
 This file is part of Octave.
 
@@ -131,7 +131,6 @@ public slots:
   void display_community_news (const QString& news);
   void open_bug_tracker_page (void);
   void open_octave_packages_page (void);
-  void open_agora_page (void);
   void open_contribute_page (void);
   void open_donate_page (void);
   void process_settings_dialog_request (const QString& desired_tab
@@ -169,7 +168,7 @@ public slots:
   void handle_delete_debugger_pointer_request (const QString& file, int line);
   void handle_update_breakpoint_marker_request (bool insert,
                                                 const QString& file, int line,
-						const QString& cond);
+                                                const QString& cond);
 
   void read_settings (void);
   void init_terminal_size (void);
@@ -225,7 +224,7 @@ public slots:
 
   // get the dockwidgets
   QList<octave_dock_widget *> get_dock_widget_list ()
-    { return dock_widget_list (); }
+  { return dock_widget_list (); }
 
 private slots:
   void disable_menu_shortcuts (bool disable);
@@ -362,7 +361,6 @@ private:
   QAction *_online_doc_action;
   QAction *_report_bug_action;
   QAction *_octave_packages_action;
-  QAction *_agora_action;
   QAction *_contribute_action;
   QAction *_developer_action;
   QAction *_about_octave_action;

@@ -60,9 +60,9 @@ Next: <a href="Iterative-Techniques.html#Iterative-Techniques" accesskey="n" rel
 
 <p>Octave includes a polymorphic solver for sparse matrices, where
 the exact solver used to factorize the matrix, depends on the properties
-of the sparse matrix itself.  Generally, the cost of determining the matrix type
-is small relative to the cost of factorizing the matrix itself, but in any
-case the matrix type is cached once it is calculated, so that it is not
+of the sparse matrix itself.  Generally, the cost of determining the matrix
+type is small relative to the cost of factorizing the matrix itself, but in
+any case the matrix type is cached once it is calculated, so that it is not
 re-determined each time it is used in a linear equation.
 </p>
 <p>The selection tree for how the linear equation is solve is
@@ -165,34 +165,37 @@ acceptable.
 
 
 <a name="XREFnormest1"></a><dl>
-<dt><a name="index-normest1"></a>Function File: <em><var>c</var> =</em> <strong>normest1</strong> <em>(<var>a</var>)</em></dt>
-<dt><a name="index-normest1-1"></a>Function File: <em><var>c</var> =</em> <strong>normest1</strong> <em>(<var>a</var>, <var>t</var>)</em></dt>
-<dt><a name="index-normest1-2"></a>Function File: <em><var>c</var> =</em> <strong>normest1</strong> <em>(<var>a</var>, <var>t</var>, <var>x0</var>)</em></dt>
-<dt><a name="index-normest1-3"></a>Function File: <em><var>c</var> =</em> <strong>normest1</strong> <em>(<var>afun</var>, <var>t</var>, <var>x0</var>, <var>p1</var>, <var>p2</var>, &hellip;)</em></dt>
-<dt><a name="index-normest1-4"></a>Function File: <em>[<var>c</var>, <var>v</var>] =</em> <strong>normest1</strong> <em>(<var>a</var>, &hellip;)</em></dt>
-<dt><a name="index-normest1-5"></a>Function File: <em>[<var>c</var>, <var>v</var>, <var>w</var>] =</em> <strong>normest1</strong> <em>(<var>a</var>, &hellip;)</em></dt>
-<dt><a name="index-normest1-6"></a>Function File: <em>[<var>c</var>, <var>v</var>, <var>w</var>, <var>it</var>] =</em> <strong>normest1</strong> <em>(<var>a</var>, &hellip;)</em></dt>
+<dt><a name="index-normest1"></a>: <em><var>c</var> =</em> <strong>normest1</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-normest1-1"></a>: <em><var>c</var> =</em> <strong>normest1</strong> <em>(<var>a</var>, <var>t</var>)</em></dt>
+<dt><a name="index-normest1-2"></a>: <em><var>c</var> =</em> <strong>normest1</strong> <em>(<var>a</var>, <var>t</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-normest1-3"></a>: <em><var>c</var> =</em> <strong>normest1</strong> <em>(<var>afun</var>, <var>t</var>, <var>x0</var>, <var>p1</var>, <var>p2</var>, &hellip;)</em></dt>
+<dt><a name="index-normest1-4"></a>: <em>[<var>c</var>, <var>v</var>] =</em> <strong>normest1</strong> <em>(<var>a</var>, &hellip;)</em></dt>
+<dt><a name="index-normest1-5"></a>: <em>[<var>c</var>, <var>v</var>, <var>w</var>] =</em> <strong>normest1</strong> <em>(<var>a</var>, &hellip;)</em></dt>
+<dt><a name="index-normest1-6"></a>: <em>[<var>c</var>, <var>v</var>, <var>w</var>, <var>it</var>] =</em> <strong>normest1</strong> <em>(<var>a</var>, &hellip;)</em></dt>
 <dd><p>Estimate the 1-norm of the matrix <var>a</var> using a block algorithm.
 </p>
 <p>For a medium size matrix <var>a</var>, <code>norm (<var>a</var>, 1)</code> should be
-used instead. For a large sparse matrix, when only an estimate of the norm
-is needed, <code>normest1 (<var>a</var>)</code> might be faster. Moreover, it can be
+used instead.  For a large sparse matrix, when only an estimate of the norm
+is needed, <code>normest1 (<var>a</var>)</code> might be faster.  Moreover, it can be
 used for the estimate of the 1-norm of a linear
 operator <var>a</var> when matrix-vector products <code><var>a</var> * <var>x</var></code> and
-<code><var>a</var>' * <var>x</var></code> can be cheaply computed. In this case,
+<code><var>a</var>' * <var>x</var></code> can be cheaply computed.  In this case,
 instead of the matrix <var>a</var>, a function
-<code><var>afun</var> (<var>flag</var>, <var>x</var>)</code> can be used. It should return:
+<code><var>afun</var> (<var>flag</var>, <var>x</var>)</code> can be used.  It should return:
 </p>
 <ul>
 <li> the dimension <var>n</var> of <var>a</var>, if <var>flag</var> is <code>&quot;dim&quot;</code>
+
 </li><li> true if <var>a</var> is a real operator, if <var>flag</var> is <code>&quot;real&quot;</code>
+
 </li><li> the result <code><var>a</var> * <var>x</var></code>, if <var>flag</var> is <code>&quot;notransp&quot;</code>
+
 </li><li> the result <code><var>a</var>' * <var>x</var></code>, if <var>flag</var> is <code>&quot;transp&quot;</code>
 </li></ul>
 
 <p>A typical case is <var>a</var> defined by <code><var>b</var> ^ <var>m</var></code>,
 in which the result <code><var>a</var> * <var>x</var></code> can be computed without
-even forming explicitely <code><var>b</var> ^ <var>m</var></code> by:
+even forming explicitly <code><var>b</var> ^ <var>m</var></code> by:
 </p>
 <div class="example">
 <pre class="example"><var>y</var> = <var>x</var>;
@@ -213,7 +216,7 @@ The default initial matrix <var>x0</var> has the first column
 <code>ones (<var>n</var>, 1) / <var>n</var></code>
 and, if <var>t</var> &gt;  1, the remaining columns with random elements
 <code>-1 / <var>n</var></code>, <code>1 / <var>n</var></code>, divided by <var>n</var>.
-Therefore, if consistent results are required, the &quot;state&quot; of the
+Therefore, if consistent results are required, the <code>&quot;state&quot;</code> of the
 random generator should be fixed before invoking <code>normest1</code>.
 </p>
 <p>On output, <var>c</var> is the desired estimate, <var>v</var> and <var>w</var>
@@ -226,7 +229,8 @@ the total number of products <code><var>a</var> * <var>x</var></code> or
 </p>
 <p>Reference: N. J. Higham and F. Tisseur,
 <cite>A block algorithm for matrix 1-norm estimation, with and
-application to 1-norm pseudospectra</cite>, SIAM J. Matrix Anal. Appl.,
+application to 1-norm pseudospectra</cite>,
+SIAM J. Matrix Anal. Appl.,
 pp. 1185&ndash;1201, Vol 21, No. 4, 2000.
 </p>
 
@@ -252,17 +256,26 @@ following functions:
 </p>
 <ul class="no-bullet">
 <li>- <var>afun</var> which should returns
+
 <ul>
-<li> the dimension <var>n</var> of <var>a</var>, if <var>flag</var> is &quot;dim&quot;
-</li><li> true if <var>a</var> is a real operator, if <var>flag</var> is &quot;real&quot;
+<li> the dimension <var>n</var> of <var>a</var>, if <var>flag</var> is <code>&quot;dim&quot;</code>
+
+</li><li> true if <var>a</var> is a real operator, if <var>flag</var> is <code>&quot;real&quot;</code>
+
 </li><li> the result <code><var>a</var> * <var>x</var></code>, if <var>flag</var> is &quot;notransp&quot;
+
 </li><li> the result <code><var>a</var>' * <var>x</var></code>, if <var>flag</var> is &quot;transp&quot;
 </li></ul>
+
 </li><li>- <var>solvefun</var> which should returns
+
 <ul>
-<li> the dimension <var>n</var> of <var>a</var>, if <var>flag</var> is &quot;dim&quot;
-</li><li> true if <var>a</var> is a real operator, if <var>flag</var> is &quot;real&quot;
+<li> the dimension <var>n</var> of <var>a</var>, if <var>flag</var> is <code>&quot;dim&quot;</code>
+
+</li><li> true if <var>a</var> is a real operator, if <var>flag</var> is <code>&quot;real&quot;</code>
+
 </li><li> the result <code><var>a</var> \ <var>x</var></code>, if <var>flag</var> is &quot;notransp&quot;
+
 </li><li> the result <code><var>a</var>' \ <var>x</var></code>, if <var>flag</var> is &quot;transp&quot;
 </li></ul>
 </li></ul>
@@ -273,8 +286,9 @@ and <code><var>solvefun</var> (<var>flag</var>, <var>x</var>, <var>p1</var>, <va
 &hellip;)</code>.
 </p>
 <p><code>condest</code> uses a randomized algorithm to approximate the
-1-norms. Therefore, if consistent results are required, the &quot;state&quot; of the
-random generator should be fixed before invoking <code>normest1</code>.
+1-norms.  Therefore, if consistent results are required, the
+<code>&quot;state&quot;</code> of the random generator should be fixed before invoking
+<code>normest1</code>.
 </p>
 <p><code>condest</code> returns the 1-norm condition estimate <var>est</var> and a vector
 <var>v</var> satisfying <code>norm (A*v, 1) == norm (A, 1) * norm

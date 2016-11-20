@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2015 Michael Goffioul
+Copyright (C) 2011-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -30,24 +30,25 @@ class graphics_object;
 namespace QtHandles
 {
 
-class Object;
+  class Object;
 
-class ObjectFactory : public QObject
-{
-  Q_OBJECT
+  class ObjectFactory : public QObject
+  {
+    Q_OBJECT
 
-public:
-  static ObjectFactory* instance (void);
+  public:
+    static ObjectFactory* instance (void);
 
-public slots:
-  void createObject (double handle);
+  public slots:
+    void createObject (double handle);
 
-private:
-  ObjectFactory (void)
-    : QObject ()
+  private:
+    ObjectFactory (void)
+      : QObject ()
     { }
-};
+  };
 
 };
 
 #endif
+

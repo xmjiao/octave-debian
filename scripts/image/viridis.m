@@ -1,7 +1,7 @@
-## Copyright (C) 2015 Eric Firing
-## Copyright (C) 2015 Nathaniel J. Smith
-## Copyright (C) 2015 Stefan van der Walt
-## Copyright (C) 2015 Carlo de Falco
+## Copyright (C) 2016 Eric Firing
+## Copyright (C) 2016 Nathaniel J. Smith
+## Copyright (C) 2016 Stefan van der Walt
+## Copyright (C) 2016 Carlo de Falco
 ##
 ## This file is part of Octave.
 ##
@@ -313,6 +313,6 @@ endfunction
 %! ## Show the 'viridis' colormap profile and as an image
 %! cmap = viridis (256);
 %! subplot (2, 1, 1);
-%! rgbplot (cmap, "composite");
+%!  rgbplot (cmap, "composite");
 %! subplot (2, 1, 2);
-%! rgbplot (cmap);
+%!  rgbplot (cmap);

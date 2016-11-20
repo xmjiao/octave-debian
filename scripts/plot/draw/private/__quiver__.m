@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2015 David Bateman
+## Copyright (C) 2007-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -23,7 +23,7 @@
 
 function hg = __quiver__ (varargin)
 
-  h = varargin{1};
+  hax = varargin{1};
   is3d = varargin{2};
 
   autoscale = 0.9;
@@ -147,7 +147,7 @@ function hg = __quiver__ (varargin)
     endif
   endif
 
-  hstate = get (h, "nextplot");
+  hstate = get (hax, "nextplot");
   unwind_protect
 
     if (have_line_spec)
@@ -167,7 +167,8 @@ function hg = __quiver__ (varargin)
       args = __add_datasource__ ("quiver", hg,
                                  {"x", "y", "z", "u", "v", "w"}, args{:});
     endif
-    hold on;
+
+    hold (hax, "on");
 
     addproperty ("xdata", hg, "data", x);
     addproperty ("ydata", hg, "data", y);
@@ -258,7 +259,6 @@ function hg = __quiver__ (varargin)
       h3 = plot (x, y, "linestyle", "none", "marker", mk, "parent", hg);
     endif
     if (have_filled)
-      ## FIXME: gnuplot doesn't respect the markerfacecolor field
       set (h3, "markerfacecolor", get (h1, "color"));
     endif
 
@@ -301,7 +301,7 @@ function hg = __quiver__ (varargin)
       set (hg, args{:});
     endif
   unwind_protect_cleanup
-    set (h, "nextplot", hstate);
+    set (hax, "nextplot", hstate);
   end_unwind_protect
 
 endfunction

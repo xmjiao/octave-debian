@@ -1,7 +1,7 @@
 // %NO_EDIT_WARNING%
 /*
 
-Copyright (C) 2012-2015 John W. Eaton
+Copyright (C) 2012-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -419,3 +419,4 @@ This is the developer documentation for Octave's own source code. It is
 intended to help for hacking Octave. It may also be useful for
 understanding the Octave API when writing your own .oct files.
 */
+

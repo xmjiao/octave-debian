@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -234,9 +234,6 @@ done:
 
   return status;
 }
-
-// Return nonzero if either NR or NC is zero.
-// Return -1 if this should be considered fatal; return 1 if this is ok.
 
 int
 empty_arg (const char * /* name */, octave_idx_type nr, octave_idx_type nc)
@@ -1204,7 +1201,7 @@ dims_to_numel (const dim_vector& dims, const octave_value_list& idx_arg)
 
                   retval *= jdx.length (dv(i));
                 }
-              catch (const index_exception& e)
+              catch (const octave::index_exception& e)
                 {
                   std::string idx = e.idx ();
                   std::string msg = e.details ();
@@ -1372,7 +1369,7 @@ character @nospell{"@xbackslashchar{}0"}, it will always be a valid index.
       else
         retval = true;
     }
-  catch (const octave_execution_exception&)
+  catch (const octave::execution_exception&)
     {
       recover_from_exception ();
 
@@ -1494,3 +1491,4 @@ Return true if running in the student edition of @sc{matlab}.
 
 %!error isstudent (1)
 */
+

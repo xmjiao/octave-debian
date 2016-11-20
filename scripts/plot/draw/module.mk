@@ -16,6 +16,7 @@ scripts_plot_draw_PRIVATE_FCN_FILES = \
   scripts/plot/draw/private/__pie__.m \
   scripts/plot/draw/private/__plt__.m \
   scripts/plot/draw/private/__quiver__.m \
+  scripts/plot/draw/private/__rotate_around_axis__.m \
   scripts/plot/draw/private/__scatter__.m \
   scripts/plot/draw/private/__stem__.m \
   scripts/plot/draw/private/__unite_shared_vertices__.m
@@ -24,6 +25,7 @@ scripts_plot_draw_FCN_FILES = \
   scripts/plot/draw/area.m \
   scripts/plot/draw/barh.m \
   scripts/plot/draw/bar.m \
+  scripts/plot/draw/camlight.m \
   scripts/plot/draw/colorbar.m \
   scripts/plot/draw/comet3.m \
   scripts/plot/draw/comet.m \
@@ -48,6 +50,7 @@ scripts_plot_draw_FCN_FILES = \
   scripts/plot/draw/fill.m \
   scripts/plot/draw/fplot.m \
   scripts/plot/draw/hist.m \
+  scripts/plot/draw/isocaps.m \
   scripts/plot/draw/isocolors.m \
   scripts/plot/draw/isonormals.m \
   scripts/plot/draw/isosurface.m \
@@ -72,6 +75,8 @@ scripts_plot_draw_FCN_FILES = \
   scripts/plot/draw/quiver3.m \
   scripts/plot/draw/quiver.m \
   scripts/plot/draw/rectangle.m \
+  scripts/plot/draw/reducepatch.m \
+  scripts/plot/draw/reducevolume.m \
   scripts/plot/draw/ribbon.m \
   scripts/plot/draw/rose.m \
   scripts/plot/draw/scatter3.m \

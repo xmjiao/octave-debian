@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 Jaroslav Hajek
+Copyright (C) 2008-2016 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -42,7 +42,8 @@ DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_float_complex_diag_matrix,
 static octave_base_value *
 default_numeric_conversion_function (const octave_base_value& a)
 {
-  const octave_float_complex_diag_matrix& v = dynamic_cast<const octave_float_complex_diag_matrix&> (a);
+  const octave_float_complex_diag_matrix& v =
+    dynamic_cast<const octave_float_complex_diag_matrix&> (a);
 
   return new octave_float_complex_matrix (v.float_complex_matrix_value ());
 }
@@ -113,6 +114,18 @@ octave_float_complex_diag_matrix::complex_diag_matrix_value (bool) const
 
 FloatComplexDiagMatrix
 octave_float_complex_diag_matrix::float_complex_diag_matrix_value (bool) const
+{
+  return matrix;
+}
+
+octave_value
+octave_float_complex_diag_matrix::as_double (void) const
+{
+  return ComplexDiagMatrix (matrix);
+}
+
+octave_value
+octave_float_complex_diag_matrix::as_single (void) const
 {
   return matrix;
 }
@@ -207,3 +220,4 @@ octave_float_complex_diag_matrix::chk_valid_scalar (const octave_value& val,
     x = val.float_complex_value ();
   return retval;
 }
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2015 John W. Eaton
+Copyright (C) 2012-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -46,3 +46,4 @@ octave_strncasecmp (const char *s1, const char *s2, size_t n);
 #endif
 
 #endif
+

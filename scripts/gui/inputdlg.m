@@ -1,4 +1,4 @@
-## Copyright (C) 2010, 2013 Martin Hepperle
+## Copyright (C) 2010-2016 Martin Hepperle
 ##
 ## This file is part of Octave.
 ##
@@ -21,6 +21,7 @@
 ## @deftypefnx {} {@var{cstr} =} inputdlg (@var{prompt}, @var{title})
 ## @deftypefnx {} {@var{cstr} =} inputdlg (@var{prompt}, @var{title}, @var{rowscols})
 ## @deftypefnx {} {@var{cstr} =} inputdlg (@var{prompt}, @var{title}, @var{rowscols}, @var{defaults})
+## @deftypefnx {} {@var{cstr} =} inputdlg (@var{prompt}, @var{title}, @var{rowscols}, @var{defaults}, @var{options})
 ## Return user input from a multi-textfield dialog box in a cell array of
 ## strings, or an empty cell array if the dialog is closed by the Cancel
 ## button.
@@ -49,6 +50,9 @@
 ## @item defaults
 ## A list of default values to place in each text fields.  It must be a cell
 ## array of strings with the same size as @var{prompt}.
+##
+## @item options
+## Not supported, only for @sc{matlab} compatibility.
 ## @end table
 ##
 ## Example:
@@ -67,7 +71,7 @@
 
 function cstr = inputdlg (prompt, varargin)
 
-  narginchk (1, 4);
+  narginchk (1, 5);
 
   if (iscell (prompt))
     ## Silently extract only char elements
@@ -96,6 +100,10 @@ function cstr = inputdlg (prompt, varargin)
     defaults = varargin{3};
   endif
 
+  if (nargin > 4)
+    warning ("inputdlg: 5th 'options' argument ignored");
+  endif
+
   ## specification of text field sizes as in Matlab
   ## Matlab requires a matrix for linespec, not a cell array...
   ## rc = [1,10; 2,20; 3,30];
@@ -113,20 +121,20 @@ function cstr = inputdlg (prompt, varargin)
     ## cols
     rowscols(:,2) = 25;
     rowscols(:,1) = linespec;
-  elseif (isvector (linespec))
-    if (numel (linespec) == numel (prompt))
-      ## only one column in lineTo, copy from vector linespec and add defaults
-      rowscols = zeros (numel (prompt), 2);
-      ## rows from colum vector linespec, columns are set to default
-      rowscols(:,2) = 25;
-      rowscols(:,1) = linespec(:);
-    else
-      error ("inputdlg: ROWSCOLS vector does not match size of PROMPT");
-    endif
   elseif (ismatrix (linespec))
     if (rows (linespec) == columns (prompt) && columns (linespec) == 2)
       ## (rows x columns) match, copy array linespec
       rowscols = linespec;
+    elseif (isvector (linespec))
+      if (numel (linespec) == numel (prompt))
+        ## only one column in lineTo, copy from vector linespec and add defaults
+        rowscols = zeros (numel (prompt), 2);
+        ## rows from colum vector linespec, columns are set to default
+        rowscols(:,2) = 25;
+        rowscols(:,1) = linespec(:);
+      else
+        error ("inputdlg: ROWSCOLS vector does not match size of PROMPT");
+      endif
     else
       error ("inputdlg: ROWSCOLS matrix does not match size of PROMPT");
     endif
@@ -161,7 +169,7 @@ endfunction
 %!                  str2num (dims{1}) * str2num (dims{3}));
 %!   helpdlg (sprintf ('Results:\nVolume = %.3f\nSurface = %.3f', ...
 %!                     volume, surface), 'Box Dimensions');
-%! end
+%! endif
 
 %!demo
 %! disp ('- test inputdlg with prescribed scalar (2 lines per text field) and defaults.');
@@ -178,7 +186,7 @@ endfunction
 %!                  str2num (dims{1}) * str2num (dims{3}));
 %!    helpdlg (sprintf ('Results:\nVolume = %.3f\nSurface = %.3f', ...
 %!                      volume, surface), 'Box Dimensions');
-%! end
+%! endif
 
 %!demo
 %! disp ('- test inputdlg with prescribed vector [1,2,3] for # of lines per text field and defaults.');
@@ -195,7 +203,7 @@ endfunction
 %!                  str2num (dims{1}) * str2num (dims{3}));
 %!   helpdlg (sprintf ('Results:\nVolume = %.3f\nSurface = %.3f', ...
 %!                     volume, surface), 'Box Dimensions');
-%! end
+%! endif
 
 %!demo
 %! disp ('- test inputdlg with prescribed row by column sizes and defaults.');
@@ -212,9 +220,20 @@ endfunction
 %!                  str2num (dims{1}) * str2num (dims{3}));
 %!   helpdlg (sprintf ('Results:\nVolume = %.3f\nSurface = %.3f', ...
 %!                     volume, surface), 'Box Dimensions');
-%! end
+%! endif
 
-%!error inputdlg (1, 2, 3, 4, 5)
+%!demo
+%! disp ('- test inputdlg with vector for a single item.');
+%! prompt = {'enter x value'};
+%! default = {1};
+%! answer = inputdlg (prompt,'Enter value', [1 10], default);
+%! if (isempty (answer))
+%!   helpdlg ('Canceled by user', 'Information');
+%! else
+%!   helpdlg (sprintf ('answer = %d', str2num(answer{1})), 'answer');
+%! endif
+
+%!error inputdlg (1, 2, 3, 4, 5, 6)
 %!error <PROMPT must be a character string> inputdlg (1)
 %!error <TITLE must be a character string> inputdlg ("msg", 1)
 %!error <ROWSCOLS must be numeric> inputdlg ("msg", "title", "1")

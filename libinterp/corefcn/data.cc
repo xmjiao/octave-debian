@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 Copyright (C) 2009 Jaroslav Hajek
 Copyright (C) 2009-2010 VZLU Prague
 Copyright (C) 2012 Carlo de Falco
@@ -207,7 +207,7 @@ Compute atan (@var{y} / @var{x}) for corresponding elements of @var{y}
 and @var{x}.
 
 @var{y} and @var{x} must match in size and orientation.  The signs of
-elements of @var{y} and @var{x} are used to determine the quadrats of each
+elements of @var{y} and @var{x} are used to determine the quadrants of each
 resulting value.
 
 This function is equivalent to @code{arg (complex (@var{x}, @var{y}))}.
@@ -558,8 +558,7 @@ $x = 0$, $f = e = 0$.
 %! assert (f, complex (zeros (3, 2), [0,-0.5; 0.5,-0.5; Inf,-Inf]));
 %! assert (e(1:2,:), [0,1; 2,3]);
 
-# bug #42583
-%!assert (all (log2 (pow2 (-1074:1023)) == -1074:1023))
+%!assert <42583> (all (log2 (pow2 (-1074:1023)) == -1074:1023))
 */
 
 DEFUN (rem, args, ,
@@ -725,12 +724,10 @@ periodic, @code{mod} is a better choice.
 %! assert (nnz (y), 1);
 %! assert (y, sparse ([NaN 0 0 0]));
 
-## Bug #45587
-%!assert (signbit (rem (-0, 1)))
-%!assert (! signbit (rem (0, 1)))
+%!assert <45587> (signbit (rem (-0, 1)))
+%!assert <45587> (! signbit (rem (0, 1)))
 
-## bug #42627
-%!assert (rem (0.94, 0.01), 0.0)
+%!assert <42627> (rem (0.94, 0.01), 0.0)
 
 %!error rem (uint (8), int8 (5))
 %!error rem (uint8 ([1, 2]), uint8 ([3, 4, 5]))
@@ -906,12 +903,10 @@ negative numbers or when the values are periodic.
 %!assert (mod (2.1, 0.1), 0)
 %!assert (mod (2.1, 0.2), 0.1, eps)
 
-## Bug #45587
-%!assert (signbit (mod (-0, 0)))
-%!assert (! signbit (mod (0, -0)))
+%!assert <45587> (signbit (mod (-0, 0)))
+%!assert <45587> (! signbit (mod (0, -0)))
 
-## Bug #42627
-%!assert (mod (0.94, 0.01), 0.0)
+%!assert <42627> (mod (0.94, 0.01), 0.0)
 */
 
 // FIXME: Macros NATIVE_REDUCTION_1 and NATIVE_REDUCTION seem to be unused.
@@ -1424,10 +1419,9 @@ Given a matrix argument, instead of a vector, @code{diag} extracts the
 %!assert (diag (int8 ([0, 1, 0, 0; 0, 0, 2, 0; 0, 0, 0, 3; 0, 0, 0, 0]), 1), int8 ([1; 2; 3]))
 %!assert (diag (int8 ([0, 0, 0, 0; 1, 0, 0, 0; 0, 2, 0, 0; 0, 0, 3, 0]), -1), int8 ([1; 2; 3]))
 
-## bug #37411
-%!assert (diag (diag ([5, 2, 3])(:,1)), diag([5 0 0 ]))
-%!assert (diag (diag ([5, 2, 3])(:,1), 2),  [0 0 5 0 0; zeros(4, 5)])
-%!assert (diag (diag ([5, 2, 3])(:,1), -2), [[0 0 5 0 0]', zeros(5, 4)])
+%!assert <37411> (diag (diag ([5, 2, 3])(:,1)), diag([5 0 0 ]))
+%!assert <37411> (diag (diag ([5, 2, 3])(:,1), 2),  [0 0 5 0 0; zeros(4, 5)])
+%!assert <37411> (diag (diag ([5, 2, 3])(:,1), -2), [[0 0 5 0 0]', zeros(5, 4)])
 
 ## Test non-square size
 %!assert (diag ([1,2,3], 6, 3), [1 0 0; 0 2 0; 0 0 3; 0 0 0; 0 0 0; 0 0 0])
@@ -1567,7 +1561,7 @@ in double precision even for single precision inputs.
 
 #undef MAKE_INT_BRANCH
 
-          // GAGME: Accursed Matlab compatibility...
+    // GAGME: Accursed Matlab compatibility...
     case btyp_char:
       retval = arg.array_value (true).prod (dim);
       break;
@@ -1799,7 +1793,7 @@ attempt_type_conversion (const octave_value& ov, std::string dtype)
         {
           result = fcn.do_multi_index_op (1, octave_value_list (1, ov));
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           error (e, "conversion from %s to %s failed", dtype.c_str (),
                  cname.c_str ());
@@ -1827,7 +1821,7 @@ attempt_type_conversion (const octave_value& ov, std::string dtype)
         {
           result = fcn.do_multi_index_op (1, octave_value_list (1, ov));
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           error (e, "%s constructor failed for %s argument", dtype.c_str (),
                  cname.c_str ());
@@ -1864,7 +1858,7 @@ do_class_concat (const octave_value_list& ovl, std::string cattype, int dim)
         {
           tmp2 = fcn.do_multi_index_op (1, ovl);
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           error (e, "%s/%s method failed", dtype.c_str (), cattype.c_str ());
         }
@@ -1960,7 +1954,7 @@ do_cat (const octave_value_list& xargs, int dim, std::string fname)
           if (all_real_p && ! args(i).is_real_type ())
             all_real_p = false;
           if (all_cmplx_p && ! (args(i).is_complex_type ()
-              || args(i).is_real_type ()))
+                                || args(i).is_real_type ()))
             all_cmplx_p = false;
           if (! any_sparse_p && args(i).is_sparse_type ())
             any_sparse_p = true;
@@ -2726,7 +2720,7 @@ will return 3 as the second row has three column entries.
 
 This method is also called when an object appears as lvalue with cs-list
 indexing, i.e., @code{object@{@dots{}@}} or @code{object(@dots{}).field}.
-@seealso{size}
+@seealso{size, length, ndims}
 @end deftypefn */)
 {
   int nargin = args.length ();
@@ -2750,28 +2744,33 @@ indexing, i.e., @code{object@{@dots{}@}} or @code{object(@dots{}).field}.
 
 DEFUN (size, args, nargout,
        doc: /* -*- texinfo -*-
-@deftypefn  {} {} size (@var{a})
-@deftypefnx {} {} size (@var{a}, @var{dim})
-Return the number of rows and columns of @var{a}.
+@deftypefn  {} {@var{sz} =} size (@var{a})
+@deftypefnx {} {@var{dim_sz} =} size (@var{a}, @var{dim})
+@deftypefnx {} {[@var{rows}, @var{cols}, @dots{}, @var{dim_N_sz}] =} size (@dots{})
+Return a row vector with the size (number of elements) of each dimension for
+the object @var{a}.
 
-With one input argument and one output argument, the result is returned
-in a row vector.  If there are multiple output arguments, the number of
-rows is assigned to the first, and the number of columns to the second,
-etc.  For example:
+When given a second argument, @var{dim}, return the size of the corresponding
+dimension.
+
+With a single output argument, @code{size} returns a row vector.  When called
+with multiple output arguments, @code{size} returns the size of dimension N
+in the Nth argument.  The number of rows, dimension 1, is returned in the
+first argument, the number of columns, dimension 2, is returned in the
+second argument, etc.  If there are more dimensions in @var{a} then there are
+output arguments, @code{size} returns the total number of elements in the
+remaining dimensions in the final output argument.
+
+Example 1: single row vector output
 
 @example
 @group
 size ([1, 2; 3, 4; 5, 6])
    @result{} [ 3, 2 ]
-
-[nr, nc] = size ([1, 2; 3, 4; 5, 6])
-    @result{} nr = 3
-    @result{} nc = 2
 @end group
 @end example
 
-If given a second argument, @code{size} will return the size of the
-corresponding dimension.  For example,
+Example 2: number of elements in 2nd dimension (columns)
 
 @example
 @group
@@ -2780,9 +2779,27 @@ size ([1, 2; 3, 4; 5, 6], 2)
 @end group
 @end example
 
-@noindent
-returns the number of columns in the given matrix.
-@seealso{numel, ndims, length, rows, columns}
+Example 3: number of output arguments == number of dimensions
+
+@example
+@group
+[nr, nc] = size ([1, 2; 3, 4; 5, 6])
+    @result{} nr = 3
+    @result{} nc = 2
+@end group
+@end example
+
+Example 4: number of output arguments != number of dimensions
+
+@example
+@group
+[nr, remainder] = size (ones (2, 3, 4, 5)
+    @result{} nr = 2
+    @result{} remainder = 60
+@end group
+@end example
+
+@seealso{numel, ndims, length, rows, columns, size_equal, common_size}
 @end deftypefn */)
 {
   octave_value_list retval;
@@ -2840,9 +2857,9 @@ DEFUN (size_equal, args, ,
 @deftypefn {} {} size_equal (@var{a}, @var{b}, @dots{})
 Return true if the dimensions of all arguments agree.
 
-Trailing singleton dimensions are ignored.
-When called with a single or no argument @code{size_equal} returns true.
-@seealso{size, numel, ndims}
+Trailing singleton dimensions are ignored.  When called with a single argument,
+or no argument, @code{size_equal} returns true.
+@seealso{size, numel, ndims, common_size}
 @end deftypefn */)
 {
   int nargin = args.length ();
@@ -3080,7 +3097,7 @@ inputs, @qcode{"extra"} is the same as @qcode{"double"}.  Otherwise,
 
 #undef MAKE_INT_BRANCH
 
-      // GAGME: Accursed Matlab compatibility...
+    // GAGME: Accursed Matlab compatibility...
     case btyp_char:
       if (isextra)
         retval = arg.array_value (true).xsum (dim);
@@ -3260,6 +3277,48 @@ Octave are double precision floating point values.
   return ovl (args(0).is_integer_type ());
 }
 
+/*
+%!assert (isinteger (int8 (16)))
+%!assert (isinteger (int16 (16)))
+%!assert (isinteger (int32 (16)))
+%!assert (isinteger (int64 (16)))
+
+%!assert (isinteger (uint8 (16)))
+%!assert (isinteger (uint16 (16)))
+%!assert (isinteger (uint32 (16)))
+%!assert (isinteger (uint64 (16)))
+
+%!assert (isinteger (intmax ("int8")))
+%!assert (isinteger (intmax ("int16")))
+%!assert (isinteger (intmax ("int32")))
+%!assert (isinteger (intmax ("int64")))
+
+%!assert (isinteger (intmax ("uint8")))
+%!assert (isinteger (intmax ("uint16")))
+%!assert (isinteger (intmax ("uint32")))
+%!assert (isinteger (intmax ("uint64")))
+
+%!assert (isinteger (intmin ("int8")))
+%!assert (isinteger (intmin ("int16")))
+%!assert (isinteger (intmin ("int32")))
+%!assert (isinteger (intmin ("int64")))
+
+%!assert (isinteger (intmin ("uint8")))
+%!assert (isinteger (intmin ("uint16")))
+%!assert (isinteger (intmin ("uint32")))
+%!assert (isinteger (intmin ("uint64")))
+
+%!assert (isinteger (uint8 ([1:10])))
+%!assert (isinteger (uint8 ([1:10; 1:10])))
+
+%!assert (! isinteger (16))
+%!assert (! isinteger ("parrot"))
+%!assert (! isinteger ([1, 2, 3]))
+
+%!error isinteger ()
+%!error isinteger ("multiple", "parameters")
+*/
+
 DEFUN (iscomplex, args, ,
        doc: /* -*- texinfo -*-
 @deftypefn {} {} iscomplex (@var{x})
@@ -3430,7 +3489,7 @@ complex ([1, 2], [3, 4])
 
               SparseComplexMatrix result;
               result = SparseComplexMatrix (re_val)
-                + Complex (0, 1) * SparseComplexMatrix (im_val);
+                       + Complex (0, 1) * SparseComplexMatrix (im_val);
               retval = octave_value (new octave_sparse_complex_matrix (result));
             }
         }
@@ -4260,7 +4319,7 @@ val = ones (m,n, "uint8")
 ## Matlab requires the size to be a row vector.  In that logic, it supports
 ## n to be a 1x0 vector (returns 0x0) but not a 0x1 vector.  Octave supports
 ## any vector and therefore must support 0x1, 1x0, and 0x0x1 (but not 0x1x1).
-%!test
+%!test <47298>
 %! funcs = {@zeros, @ones, @inf, @nan, @NA, @i, @pi, @e};
 %! for idx = 1:numel (funcs)
 %!   func = funcs{idx};
@@ -5196,17 +5255,17 @@ if fewer than two values are requested.
 
 ## Test support for vectors in BASE and LIMIT
 %!assert (linspace ([1 2 3], [7 8 9]),
-%!        [linspace(1, 7); linspace(2, 8); linspace(3, 9)])
+%!        [linspace(1, 7); linspace(2, 8); linspace(3, 9)], 10*eps)
 %!assert (linspace ([1 2 3]', [7 8 9]'),
-%!        [linspace(1, 7); linspace(2, 8); linspace(3, 9)])
+%!        [linspace(1, 7); linspace(2, 8); linspace(3, 9)], 10*eps)
 %!assert (linspace ([1 2 3], 9),
-%!        [linspace(1, 9); linspace(2, 9); linspace(3, 9)])
+%!        [linspace(1, 9); linspace(2, 9); linspace(3, 9)], 10*eps)
 %!assert (linspace ([1 2 3]', 9),
-%!        [linspace(1, 9); linspace(2, 9); linspace(3, 9)])
+%!        [linspace(1, 9); linspace(2, 9); linspace(3, 9)], 10*eps)
 %!assert (linspace (1, [7 8 9]),
-%!        [linspace(1, 7); linspace(1, 8); linspace(1, 9)])
+%!        [linspace(1, 7); linspace(1, 8); linspace(1, 9)], 10*eps)
 %!assert (linspace (1, [7 8 9]'),
-%!        [linspace(1, 7); linspace(1, 8); linspace(1, 9)])
+%!        [linspace(1, 7); linspace(1, 8); linspace(1, 9)], 10*eps)
 
 ## Test class of output
 %!assert (class (linspace (1, 2)), "double")
@@ -5757,8 +5816,8 @@ compute the norms of each column and return a row vector.
 %!assert (norm (q, [], "rows"), norm (q, 2, "rows"))
 %!assert (norm (q, [], "cols"), norm (q, 2, "cols"))
 
-%!test
-%! ## Test for norm returning NaN on sparse matrix (bug #30631)
+%!test <30631>
+%! ## Test for norm returning NaN on sparse matrix
 %! A = sparse (2,2);
 %! A(2,1) = 1;
 %! assert (norm (A), 1);
@@ -6922,7 +6981,7 @@ the ratio K/M is small; otherwise, it may be better to use @code{sort}.
             err_wrong_type_arg ("nth_element", argx);
         }
     }
-  catch (const index_exception& e)
+  catch (const octave::index_exception& e)
     {
       index_error ("nth_element: invalid N value %s. %s",
                    e.idx (), e.details ());
@@ -7007,7 +7066,7 @@ Undocumented internal function.
       else
         err_wrong_type_arg ("accumarray", vals);
     }
-  catch (const index_exception& e)
+  catch (const octave::index_exception& e)
     {
       index_error ("__accumarray_sum__: invalid IDX %s. %s",
                    e.idx (), e.details ());
@@ -7119,7 +7178,7 @@ do_accumarray_minmax_fun (const octave_value_list& args,
           err_wrong_type_arg ("accumarray", vals);
         }
     }
-  catch (const index_exception& e)
+  catch (const octave::index_exception& e)
     {
       index_error ("do_accumarray_minmax_fun: invalid index %s. %s",
                    e.idx (), e.details ());
@@ -7227,7 +7286,7 @@ Undocumented internal function.
       else
         err_wrong_type_arg ("accumdim", vals);
     }
-  catch (const index_exception& e)
+  catch (const octave::index_exception& e)
     {
       index_error ("__accumdim_sum__: invalid IDX %s. %s",
                    e.idx (), e.details ());
@@ -7385,14 +7444,14 @@ converted to logical.
                              fval.cell_value ());
         }
 
-        MAKE_INT_BRANCH (int8)
-        MAKE_INT_BRANCH (int16)
-        MAKE_INT_BRANCH (int32)
-        MAKE_INT_BRANCH (int64)
-        MAKE_INT_BRANCH (uint8)
-        MAKE_INT_BRANCH (uint16)
-        MAKE_INT_BRANCH (uint32)
-        MAKE_INT_BRANCH (uint64)
+      MAKE_INT_BRANCH (int8)
+      MAKE_INT_BRANCH (int16)
+      MAKE_INT_BRANCH (int32)
+      MAKE_INT_BRANCH (int64)
+      MAKE_INT_BRANCH (uint8)
+      MAKE_INT_BRANCH (uint16)
+      MAKE_INT_BRANCH (uint32)
+      MAKE_INT_BRANCH (uint64)
 
       else
         error ("merge: cannot merge %s with %s with array mask",
@@ -7420,7 +7479,7 @@ do_sparse_diff (const SparseT& array, octave_idx_type order,
         {
           idx_vector col1 (':'), col2 (':'), sl1 (1, k), sl2 (0, k-1);
           retval = SparseT (retval.index (col1, sl1))
-                 - SparseT (retval.index (col2, sl2));
+                   - SparseT (retval.index (col2, sl2));
           assert (retval.columns () == k-1);
           order--;
           k--;
@@ -7433,7 +7492,7 @@ do_sparse_diff (const SparseT& array, octave_idx_type order,
         {
           idx_vector col1 (':'), col2 (':'), sl1 (1, k), sl2 (0, k-1);
           retval = SparseT (retval.index (sl1, col1))
-                 - SparseT (retval.index (sl2, col2));
+                   - SparseT (retval.index (sl2, col2));
           assert (retval.rows () == k-1);
           order--;
           k--;
@@ -7884,3 +7943,4 @@ dimensions of the decoded array.
 %!error <input was not valid base64> base64_decode ("AQ=")
 %!error <incorrect input size> base64_decode ("AQ==")
 */
+

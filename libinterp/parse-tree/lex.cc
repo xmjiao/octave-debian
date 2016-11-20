@@ -747,10 +747,10 @@ static yyconst flex_int16_t yy_chk[875] =
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
-#line 1 "libinterp/parse-tree/lex.ll"
+#line 1 "../libinterp/parse-tree/lex.ll"
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -788,7 +788,7 @@ object) relevant global values before and after the nested call.
 
 
 
-#line 82 "libinterp/parse-tree/lex.ll"
+#line 82 "../libinterp/parse-tree/lex.ll"
 
 #include <cctype>
 #include <cstring>
@@ -1322,7 +1322,7 @@ YY_DECL
 		}
 
 	{
-#line 348 "libinterp/parse-tree/lex.ll"
+#line 348 "../libinterp/parse-tree/lex.ll"
 
 
 
@@ -1391,7 +1391,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 355 "libinterp/parse-tree/lex.ll"
+#line 355 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<INPUT_FILE_START>{ANY_INCLUDING_NL}");
 
@@ -1407,7 +1407,7 @@ YY_RULE_SETUP
   }
 	YY_BREAK
 case YY_STATE_EOF(INPUT_FILE_START):
-#line 369 "libinterp/parse-tree/lex.ll"
+#line 369 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<INPUT_FILE_START><<EOF>>");
 
@@ -1430,7 +1430,7 @@ case YY_STATE_EOF(INPUT_FILE_START):
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 390 "libinterp/parse-tree/lex.ll"
+#line 390 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<COMMAND_START>(\\.\\.\\.){ANY_EXCEPT_NL}*{NL}");
 
@@ -1448,7 +1448,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 405 "libinterp/parse-tree/lex.ll"
+#line 405 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<COMMAND_START>({CCHAR}{ANY_EXCEPT_NL}*)?{NL}");
 
@@ -1465,7 +1465,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 419 "libinterp/parse-tree/lex.ll"
+#line 419 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<COMMAND_START>[\\,\\;]");
 
@@ -1490,7 +1490,7 @@ YY_RULE_SETUP
 
 case 5:
 YY_RULE_SETUP
-#line 442 "libinterp/parse-tree/lex.ll"
+#line 442 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<COMMAND_START>[\\(\\[\\{]+");
 
@@ -1501,7 +1501,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 450 "libinterp/parse-tree/lex.ll"
+#line 450 "../libinterp/parse-tree/lex.ll"
 {
    curr_lexer->lexer_debug ("<COMMAND_START>[\\)\\]\\}]+");
 
@@ -1523,7 +1523,7 @@ YY_RULE_SETUP
 
 case 7:
 YY_RULE_SETUP
-#line 470 "libinterp/parse-tree/lex.ll"
+#line 470 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<COMMAND_START>[\\\"\\']");
 
@@ -1543,7 +1543,7 @@ YY_RULE_SETUP
 
 case 8:
 YY_RULE_SETUP
-#line 488 "libinterp/parse-tree/lex.ll"
+#line 488 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<COMMAND_START>{S}*");
 
@@ -1560,7 +1560,7 @@ YY_RULE_SETUP
 
 case 9:
 YY_RULE_SETUP
-#line 503 "libinterp/parse-tree/lex.ll"
+#line 503 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<COMMAND_START>([\\.]|[^#% \\t\\r\\n\\.\\,\\;\\\"\\'\\(\\[\\{\\}\\]\\)]*");
 
@@ -1570,7 +1570,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 510 "libinterp/parse-tree/lex.ll"
+#line 510 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<MATRIX_START>{S}*");
 
@@ -1580,7 +1580,7 @@ YY_RULE_SETUP
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 516 "libinterp/parse-tree/lex.ll"
+#line 516 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<MATRIX_START>{NL}");
 
@@ -1617,7 +1617,7 @@ YY_RULE_SETUP
 
 case 12:
 YY_RULE_SETUP
-#line 551 "libinterp/parse-tree/lex.ll"
+#line 551 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<MATRIX_START>\\]");
 
@@ -1636,7 +1636,7 @@ YY_RULE_SETUP
 
 case 13:
 YY_RULE_SETUP
-#line 568 "libinterp/parse-tree/lex.ll"
+#line 568 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<MATRIX_START>\\}*");
 
@@ -1652,7 +1652,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 581 "libinterp/parse-tree/lex.ll"
+#line 581 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("\\[");
 
@@ -1703,7 +1703,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 629 "libinterp/parse-tree/lex.ll"
+#line 629 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("\\]");
 
@@ -1728,7 +1728,7 @@ YY_RULE_SETUP
 case 16:
 /* rule 16 can match eol */
 YY_RULE_SETUP
-#line 652 "libinterp/parse-tree/lex.ll"
+#line 652 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("^{S}*{CCHAR}\\{{S}*{NL}");
 
@@ -1751,7 +1751,7 @@ YY_RULE_SETUP
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 671 "libinterp/parse-tree/lex.ll"
+#line 671 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<BLOCK_COMMENT_START>^{S}*{CCHAR}\\{{S}*{NL}");
 
@@ -1772,7 +1772,7 @@ YY_RULE_SETUP
 case 18:
 /* rule 18 can match eol */
 YY_RULE_SETUP
-#line 689 "libinterp/parse-tree/lex.ll"
+#line 689 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<BLOCK_COMMENT_START>^{S}*{CCHAR}\\}{S}*{NL}");
 
@@ -1800,7 +1800,7 @@ YY_RULE_SETUP
 case 19:
 /* rule 19 can match eol */
 YY_RULE_SETUP
-#line 714 "libinterp/parse-tree/lex.ll"
+#line 714 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<BLOCK_COMMENT_START>{ANY_EXCEPT_NL}*{NL}");
 
@@ -1815,7 +1815,7 @@ YY_RULE_SETUP
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 726 "libinterp/parse-tree/lex.ll"
+#line 726 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("{S}*{CCHAR}{ANY_EXCEPT_NL}*{NL}");
 
@@ -1826,7 +1826,7 @@ YY_RULE_SETUP
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 733 "libinterp/parse-tree/lex.ll"
+#line 733 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<LINE_COMMENT_START>{S}*{CCHAR}{ANY_EXCEPT_NL}*{NL}");
 
@@ -1911,7 +1911,7 @@ YY_RULE_SETUP
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
-#line 815 "libinterp/parse-tree/lex.ll"
+#line 815 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<LINE_COMMENT_START>{ANY_INCLUDING_NL}");
 
@@ -1926,7 +1926,7 @@ YY_RULE_SETUP
 // End of a block of full-line comments.
 
 case YY_STATE_EOF(LINE_COMMENT_START):
-#line 829 "libinterp/parse-tree/lex.ll"
+#line 829 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<LINE_COMMENT_START><<EOF>>");
 
@@ -1940,7 +1940,7 @@ case YY_STATE_EOF(LINE_COMMENT_START):
 
 case 23:
 YY_RULE_SETUP
-#line 841 "libinterp/parse-tree/lex.ll"
+#line 841 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\\\"\\\"");
 
@@ -1950,7 +1950,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 848 "libinterp/parse-tree/lex.ll"
+#line 848 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\\\"");
 
@@ -1976,7 +1976,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 871 "libinterp/parse-tree/lex.ll"
+#line 871 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\\\\[0-7]{1,3}");
 
@@ -2003,7 +2003,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 895 "libinterp/parse-tree/lex.ll"
+#line 895 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\\\\x[0-9a-fA-F]+");
 
@@ -2021,7 +2021,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 910 "libinterp/parse-tree/lex.ll"
+#line 910 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\"\\\\a\"");
 
@@ -2031,7 +2031,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 917 "libinterp/parse-tree/lex.ll"
+#line 917 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\"\\\\b\"");
 
@@ -2041,7 +2041,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 924 "libinterp/parse-tree/lex.ll"
+#line 924 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\"\\\\f\"");
 
@@ -2051,7 +2051,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 931 "libinterp/parse-tree/lex.ll"
+#line 931 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\"\\\\n\"");
 
@@ -2061,7 +2061,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 938 "libinterp/parse-tree/lex.ll"
+#line 938 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\"\\\\r\"");
 
@@ -2071,7 +2071,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 945 "libinterp/parse-tree/lex.ll"
+#line 945 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\"\\\\t\"");
 
@@ -2081,7 +2081,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 952 "libinterp/parse-tree/lex.ll"
+#line 952 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\"\\\\v\"");
 
@@ -2092,7 +2092,7 @@ YY_RULE_SETUP
 case 34:
 /* rule 34 can match eol */
 YY_RULE_SETUP
-#line 959 "libinterp/parse-tree/lex.ll"
+#line 959 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>(\\.\\.\\.){S}*{NL}");
 
@@ -2113,7 +2113,7 @@ YY_RULE_SETUP
 case 35:
 /* rule 35 can match eol */
 YY_RULE_SETUP
-#line 976 "libinterp/parse-tree/lex.ll"
+#line 976 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\\\\{S}+{NL}");
 
@@ -2134,7 +2134,7 @@ YY_RULE_SETUP
 case 36:
 /* rule 36 can match eol */
 YY_RULE_SETUP
-#line 993 "libinterp/parse-tree/lex.ll"
+#line 993 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\\\\{NL}");
 
@@ -2143,7 +2143,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 999 "libinterp/parse-tree/lex.ll"
+#line 999 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\\\\.");
 
@@ -2153,7 +2153,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 1006 "libinterp/parse-tree/lex.ll"
+#line 1006 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>\\.");
 
@@ -2163,7 +2163,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 1013 "libinterp/parse-tree/lex.ll"
+#line 1013 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>[^\\.\\\\\\r\\n\\\"]+");
 
@@ -2174,7 +2174,7 @@ YY_RULE_SETUP
 case 40:
 /* rule 40 can match eol */
 YY_RULE_SETUP
-#line 1020 "libinterp/parse-tree/lex.ll"
+#line 1020 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<DQ_STRING_START>{NL}");
 
@@ -2196,7 +2196,7 @@ YY_RULE_SETUP
 
 case 41:
 YY_RULE_SETUP
-#line 1040 "libinterp/parse-tree/lex.ll"
+#line 1040 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<SQ_STRING_START>\\'\\'");
 
@@ -2206,7 +2206,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 1047 "libinterp/parse-tree/lex.ll"
+#line 1047 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<SQ_STRING_START>\\'");
 
@@ -2232,7 +2232,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 1070 "libinterp/parse-tree/lex.ll"
+#line 1070 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<SQ_STRING_START>[^\\'\\n\\r]+");
 
@@ -2243,7 +2243,7 @@ YY_RULE_SETUP
 case 44:
 /* rule 44 can match eol */
 YY_RULE_SETUP
-#line 1077 "libinterp/parse-tree/lex.ll"
+#line 1077 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<SQ_STRING_START>{NL}");
 
@@ -2265,7 +2265,7 @@ YY_RULE_SETUP
 
 case 45:
 YY_RULE_SETUP
-#line 1097 "libinterp/parse-tree/lex.ll"
+#line 1097 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("<FQ_IDENT_START>{FQIDENT}");
     curr_lexer->pop_start_state ();
@@ -2282,7 +2282,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 1111 "libinterp/parse-tree/lex.ll"
+#line 1111 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->current_input_column += yyleng;
 
@@ -2291,7 +2291,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 1117 "libinterp/parse-tree/lex.ll"
+#line 1117 "../libinterp/parse-tree/lex.ll"
 {
     yyless (0);
     curr_lexer->pop_start_state ();
@@ -2302,7 +2302,7 @@ YY_RULE_SETUP
 
 case 48:
 YY_RULE_SETUP
-#line 1126 "libinterp/parse-tree/lex.ll"
+#line 1126 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("{NUMBER}{Im}");
 
@@ -2340,10 +2340,10 @@ case 49:
 *yy_cp = yyg->yy_hold_char; /* undo effects of setting up yytext */
 yyg->yy_c_buf_p = yy_cp -= 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
-#line 1161 "libinterp/parse-tree/lex.ll"
+#line 1161 "../libinterp/parse-tree/lex.ll"
 case 50:
 YY_RULE_SETUP
-#line 1161 "libinterp/parse-tree/lex.ll"
+#line 1161 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("{D}{D_}*/\\.[\\*/\\\\^\\']|{NUMBER}");
 
@@ -2379,7 +2379,7 @@ YY_RULE_SETUP
 
 case 51:
 YY_RULE_SETUP
-#line 1195 "libinterp/parse-tree/lex.ll"
+#line 1195 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->current_input_column += yyleng;
 
@@ -2392,7 +2392,7 @@ YY_RULE_SETUP
 case 52:
 /* rule 52 can match eol */
 YY_RULE_SETUP
-#line 1205 "libinterp/parse-tree/lex.ll"
+#line 1205 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("\\.\\.\\.{ANY_EXCEPT_NL}*{NL}");
 
@@ -2404,15 +2404,15 @@ YY_RULE_SETUP
 
 case 53:
 /* rule 53 can match eol */
-#line 1216 "libinterp/parse-tree/lex.ll"
+#line 1216 "../libinterp/parse-tree/lex.ll"
 case 54:
 /* rule 54 can match eol */
 YY_RULE_SETUP
-#line 1216 "libinterp/parse-tree/lex.ll"
+#line 1216 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("\\\\{S}*{NL}|\\\\{S}*{CCHAR}{ANY_EXCEPT_NL}*{NL}");
 
-    static const char *msg = "using continuation marker \\ outside of double quoted strings is deprecated and will be removed in a future version of Octave";
+    static const char *msg = "using continuation marker \\ outside of double quoted strings is deprecated and will be removed from a future version of Octave, use ... instead";
 
     std::string nm = curr_lexer->fcn_file_full_name;
 
@@ -2436,7 +2436,7 @@ case YY_STATE_EOF(BLOCK_COMMENT_START):
 case YY_STATE_EOF(DQ_STRING_START):
 case YY_STATE_EOF(SQ_STRING_START):
 case YY_STATE_EOF(FQ_IDENT_START):
-#line 1237 "libinterp/parse-tree/lex.ll"
+#line 1237 "../libinterp/parse-tree/lex.ll"
 {
    return curr_lexer->handle_end_of_input ();
   }
@@ -2449,14 +2449,14 @@ case YY_STATE_EOF(FQ_IDENT_START):
 
 case 55:
 YY_RULE_SETUP
-#line 1248 "libinterp/parse-tree/lex.ll"
+#line 1248 "../libinterp/parse-tree/lex.ll"
 {
     HANDLE_IDENTIFIER ("(set|get){S}*\\(", true);
   }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 1252 "libinterp/parse-tree/lex.ll"
+#line 1252 "../libinterp/parse-tree/lex.ll"
 {
     HANDLE_IDENTIFIER ("{IDENT}", false);
   }
@@ -2466,7 +2466,7 @@ YY_RULE_SETUP
 
 case 57:
 YY_RULE_SETUP
-#line 1260 "libinterp/parse-tree/lex.ll"
+#line 1260 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("{IDENT}@{FQIDENT}");
 
@@ -2493,7 +2493,7 @@ YY_RULE_SETUP
 
 case 58:
 YY_RULE_SETUP
-#line 1285 "libinterp/parse-tree/lex.ll"
+#line 1285 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("\\?{FQIDENT}");
 
@@ -2518,7 +2518,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 1307 "libinterp/parse-tree/lex.ll"
+#line 1307 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("@");
 
@@ -2561,7 +2561,7 @@ YY_RULE_SETUP
 case 60:
 /* rule 60 can match eol */
 YY_RULE_SETUP
-#line 1347 "libinterp/parse-tree/lex.ll"
+#line 1347 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("{NL}");
 
@@ -2606,7 +2606,7 @@ YY_RULE_SETUP
 
 case 61:
 YY_RULE_SETUP
-#line 1390 "libinterp/parse-tree/lex.ll"
+#line 1390 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("'");
 
@@ -2677,7 +2677,7 @@ YY_RULE_SETUP
 
 case 62:
 YY_RULE_SETUP
-#line 1459 "libinterp/parse-tree/lex.ll"
+#line 1459 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("\\\"");
 
@@ -2729,97 +2729,97 @@ YY_RULE_SETUP
 
 case 63:
 YY_RULE_SETUP
-#line 1509 "libinterp/parse-tree/lex.ll"
+#line 1509 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP (":", ':', true); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 1510 "libinterp/parse-tree/lex.ll"
+#line 1510 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP (".+", EPLUS, false); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 1511 "libinterp/parse-tree/lex.ll"
+#line 1511 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP (".-", EMINUS, false); }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 1512 "libinterp/parse-tree/lex.ll"
+#line 1512 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP (".*", EMUL, true); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 1513 "libinterp/parse-tree/lex.ll"
+#line 1513 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("./", EDIV, true); }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 1514 "libinterp/parse-tree/lex.ll"
+#line 1514 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP (".\\", ELEFTDIV, true); }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 1515 "libinterp/parse-tree/lex.ll"
+#line 1515 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP (".^", EPOW, true); }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 1516 "libinterp/parse-tree/lex.ll"
+#line 1516 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP (".**", EPOW, false); }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 1517 "libinterp/parse-tree/lex.ll"
+#line 1517 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("<=", EXPR_LE, true); }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 1518 "libinterp/parse-tree/lex.ll"
+#line 1518 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("==", EXPR_EQ, true); }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 1519 "libinterp/parse-tree/lex.ll"
+#line 1519 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("~=", EXPR_NE, true); }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 1520 "libinterp/parse-tree/lex.ll"
+#line 1520 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("!=", EXPR_NE, false); }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 1521 "libinterp/parse-tree/lex.ll"
+#line 1521 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP (">=", EXPR_GE, true); }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 1522 "libinterp/parse-tree/lex.ll"
+#line 1522 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("&", EXPR_AND, true); }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 1523 "libinterp/parse-tree/lex.ll"
+#line 1523 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("|", EXPR_OR, true); }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 1524 "libinterp/parse-tree/lex.ll"
+#line 1524 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("<", EXPR_LT, true); }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 1525 "libinterp/parse-tree/lex.ll"
+#line 1525 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP (">", EXPR_GT, true); }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 1526 "libinterp/parse-tree/lex.ll"
+#line 1526 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("*", '*', true); }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 1527 "libinterp/parse-tree/lex.ll"
+#line 1527 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("/", '/', true); }
 	YY_BREAK
 
@@ -2827,32 +2827,32 @@ YY_RULE_SETUP
 
 case 82:
 YY_RULE_SETUP
-#line 1533 "libinterp/parse-tree/lex.ll"
+#line 1533 "../libinterp/parse-tree/lex.ll"
 { return curr_lexer->handle_op ("\\", LEFTDIV); }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 1535 "libinterp/parse-tree/lex.ll"
+#line 1535 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("^", POW, true); }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 1536 "libinterp/parse-tree/lex.ll"
+#line 1536 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("**", POW, false); }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 1537 "libinterp/parse-tree/lex.ll"
+#line 1537 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("&&", EXPR_AND_AND, true); }
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 1538 "libinterp/parse-tree/lex.ll"
+#line 1538 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_OP ("||", EXPR_OR_OR, true); }
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 1540 "libinterp/parse-tree/lex.ll"
+#line 1540 "../libinterp/parse-tree/lex.ll"
 {
     bool at_beginning_of_statement
       = (! (curr_lexer->whitespace_is_significant ()
@@ -2863,27 +2863,27 @@ YY_RULE_SETUP
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 1548 "libinterp/parse-tree/lex.ll"
+#line 1548 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_UNARY_OP ("+", '+', true); }
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 1549 "libinterp/parse-tree/lex.ll"
+#line 1549 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_UNARY_OP ("-", '-', true); }
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 1551 "libinterp/parse-tree/lex.ll"
+#line 1551 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_UNARY_OP ("~", EXPR_NOT, true); }
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 1552 "libinterp/parse-tree/lex.ll"
+#line 1552 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_UNARY_OP ("!", EXPR_NOT, false); }
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 1554 "libinterp/parse-tree/lex.ll"
+#line 1554 "../libinterp/parse-tree/lex.ll"
 {
     bool at_beginning_of_statement
       = (! (curr_lexer->whitespace_is_significant ()
@@ -2894,24 +2894,24 @@ YY_RULE_SETUP
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 1562 "libinterp/parse-tree/lex.ll"
+#line 1562 "../libinterp/parse-tree/lex.ll"
 {
     return curr_lexer->handle_op (".'", TRANSPOSE, false);
   }
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 1566 "libinterp/parse-tree/lex.ll"
+#line 1566 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_UNARY_OP ("++", PLUS_PLUS, false); }
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 1567 "libinterp/parse-tree/lex.ll"
+#line 1567 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_UNARY_OP ("--", MINUS_MINUS, false); }
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 1569 "libinterp/parse-tree/lex.ll"
+#line 1569 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("(");
 
@@ -2957,7 +2957,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 1612 "libinterp/parse-tree/lex.ll"
+#line 1612 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug (")");
 
@@ -2980,7 +2980,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 1632 "libinterp/parse-tree/lex.ll"
+#line 1632 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug (".");
 
@@ -3004,7 +3004,7 @@ YY_RULE_SETUP
 
 case 99:
 YY_RULE_SETUP
-#line 1654 "libinterp/parse-tree/lex.ll"
+#line 1654 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->maybe_mark_previous_token_as_variable ();
 
@@ -3013,82 +3013,82 @@ YY_RULE_SETUP
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 1660 "libinterp/parse-tree/lex.ll"
+#line 1660 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP ("+=", ADD_EQ); }
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 1661 "libinterp/parse-tree/lex.ll"
+#line 1661 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP ("-=", SUB_EQ); }
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 1662 "libinterp/parse-tree/lex.ll"
+#line 1662 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP ("*=", MUL_EQ); }
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 1663 "libinterp/parse-tree/lex.ll"
+#line 1663 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP ("/=", DIV_EQ); }
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 1664 "libinterp/parse-tree/lex.ll"
+#line 1664 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP ("\\=", LEFTDIV_EQ); }
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 1665 "libinterp/parse-tree/lex.ll"
+#line 1665 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP (".+=", ADD_EQ); }
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 1666 "libinterp/parse-tree/lex.ll"
+#line 1666 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP (".-=", SUB_EQ); }
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 1667 "libinterp/parse-tree/lex.ll"
+#line 1667 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP (".*=", EMUL_EQ); }
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 1668 "libinterp/parse-tree/lex.ll"
+#line 1668 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP ("./=", EDIV_EQ); }
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 1669 "libinterp/parse-tree/lex.ll"
+#line 1669 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP (".\\=", ELEFTDIV_EQ); }
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 1670 "libinterp/parse-tree/lex.ll"
+#line 1670 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP ("^=", POW_EQ); }
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 1671 "libinterp/parse-tree/lex.ll"
+#line 1671 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP ("^=", POW_EQ); }
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 1672 "libinterp/parse-tree/lex.ll"
+#line 1672 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP (".^=", EPOW_EQ); }
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 1673 "libinterp/parse-tree/lex.ll"
+#line 1673 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP (".^=", EPOW_EQ); }
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 1674 "libinterp/parse-tree/lex.ll"
+#line 1674 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP ("&=", AND_EQ); }
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 1675 "libinterp/parse-tree/lex.ll"
+#line 1675 "../libinterp/parse-tree/lex.ll"
 { CMD_OR_COMPUTED_ASSIGN_OP ("|=", OR_EQ); }
 	YY_BREAK
 
@@ -3096,7 +3096,7 @@ YY_RULE_SETUP
 
 case 116:
 YY_RULE_SETUP
-#line 1681 "libinterp/parse-tree/lex.ll"
+#line 1681 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("{");
 
@@ -3142,7 +3142,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 1724 "libinterp/parse-tree/lex.ll"
+#line 1724 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug ("}");
 
@@ -3161,7 +3161,7 @@ YY_RULE_SETUP
 
 case 118:
 YY_RULE_SETUP
-#line 1741 "libinterp/parse-tree/lex.ll"
+#line 1741 "../libinterp/parse-tree/lex.ll"
 {
     curr_lexer->lexer_debug (".");
 
@@ -3209,7 +3209,7 @@ YY_RULE_SETUP
 
 case 119:
 YY_RULE_SETUP
-#line 1788 "libinterp/parse-tree/lex.ll"
+#line 1788 "../libinterp/parse-tree/lex.ll"
 ECHO;
 	YY_BREAK
 #line 3216 "libinterp/parse-tree/lex.cc"
@@ -4365,7 +4365,7 @@ static int yy_flex_strlen (yyconst char * s , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 1788 "libinterp/parse-tree/lex.ll"
+#line 1788 "../libinterp/parse-tree/lex.ll"
 
 
 

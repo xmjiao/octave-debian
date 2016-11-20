@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2015 David Bateman
+## Copyright (C) 2007-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -82,8 +82,8 @@ function h = quiver3 (varargin)
     hax = newplot (hax);
     htmp = __quiver__ (hax, true, varargin{:});
 
-    if (! ishold (hax))
-      set (hax, "view", [-37.5, 30], "box", "off",
+    if (! ishold ())
+      set (hax, "view", [-37.5, 30],
                 "xgrid", "on", "ygrid", "on", "zgrid", "on");
     endif
   unwind_protect_cleanup
@@ -101,27 +101,27 @@ endfunction
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! [x, y, z] = peaks (25);
 %! surf (x, y, z);
 %! hold on;
 %! [u, v, w] = surfnorm (x, y, z / 10);
 %! h = quiver3 (x, y, z, u, v, w);
-%! set (h, 'maxheadsize', 0.25);
+%! set (h, "maxheadsize", 0.25);
 %! hold off;
-%! title ('quiver3 of surface normals to peaks() function');
+%! title ("quiver3 of surface normals to peaks() function");
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! [x, y, z] = peaks (25);
 %! surf (x, y, z);
 %! hold on;
 %! [u, v, w] = surfnorm (x, y, z / 10);
 %! h = quiver3 (x, y, z, u, v, w);
-%! set (h, 'maxheadsize', 0.25);
+%! set (h, "maxheadsize", 0.25);
 %! hold off;
 %! shading interp;
-%! title ({'quiver3 of surface normals to peaks() function'; ...
+%! title ({"quiver3 of surface normals to peaks() function"; ...
 %!         'shading "interp"'});
 

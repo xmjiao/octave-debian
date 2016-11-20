@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2015 Pedro Gonnet
+Copyright (C) 2010-2016 Pedro Gonnet
 
 This file is part of Octave.
 
@@ -2222,3 +2222,4 @@ Mathematical Software, Vol. 37, Issue 3, Article No. 3, 2010.
 %!error (quadcc (@sin, 0, pi, 0))
 %!error (quadcc (@sin, 0, pi, 1e-6, [ i ]))
 */
+

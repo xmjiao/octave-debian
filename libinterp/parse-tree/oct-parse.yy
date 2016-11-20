@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 Copyright (C) 2009 David Grundberg
 Copyright (C) 2009-2010 VZLU Prague
 Copyright (C) 2016 Oliver Heimlich
@@ -2248,7 +2248,7 @@ namespace octave
 
                     retval = tc_retval;
                   }
-                catch (const octave_execution_exception&)
+                catch (const octave::execution_exception&)
                   {
                     recover_from_exception ();
                   }
@@ -3865,7 +3865,7 @@ namespace octave
 
             retval = tc_retval;
           }
-        catch (const octave_execution_exception&)
+        catch (const octave::execution_exception&)
           {
             recover_from_exception ();
           }
@@ -4032,7 +4032,7 @@ namespace octave
       {
         status = octave_pull_parse (pstate, *this);
       }
-    catch (octave_execution_exception& e)
+    catch (octave::execution_exception& e)
       {
         std::string file = lexer.fcn_file_full_name;
 
@@ -4041,7 +4041,7 @@ namespace octave
         else
           error (e, "parse error in %s", file.c_str ());
       }
-    catch (octave_interrupt_exception &)
+    catch (octave::interrupt_exception &)
       {
         throw;
       }
@@ -4092,7 +4092,7 @@ namespace octave
           {
             status = octave_push_parse (pstate, token, &lval, *this);
           }
-        catch (octave_execution_exception& e)
+        catch (octave::execution_exception& e)
           {
             std::string file = lexer.fcn_file_full_name;
 
@@ -4101,7 +4101,7 @@ namespace octave
             else
               error (e, "parse error in %s", file.c_str ());
           }
-        catch (octave_interrupt_exception &)
+        catch (octave::interrupt_exception &)
           {
             throw;
           }
@@ -4631,7 +4631,7 @@ source_file (const std::string& file_name, const std::string& context,
           fcn = parse_fcn_file (file_full_name, file_name, "", "",
                                 require_file, true, false, false, warn_for);
         }
-      catch (octave_execution_exception& e)
+      catch (octave::execution_exception& e)
         {
           error (e, "source: error sourcing file '%s'",
                  file_full_name.c_str ());
@@ -4765,11 +4765,17 @@ context of the function that called the present function
   return retval;
 }
 
-// Evaluate an Octave function (built-in or interpreted) and return
-// the list of result values.  NAME is the name of the function to
-// call.  ARGS are the arguments to the function.  NARGOUT is the
-// number of output arguments expected.
+/*!
+    Evaluate an Octave function (built-in or interpreted) and return
+    the list of result values.
 
+    @param name The name of the function to call.
+    @param args The arguments to the function.
+    @param nargout The number of output arguments expected.
+    @return A list of output values.  The length of the list is not
+      necessarily the same as @c nargout.
+
+*/
 octave_value_list
 feval (const std::string& name, const octave_value_list& args, int nargout)
 {
@@ -4780,16 +4786,7 @@ feval (const std::string& name, const octave_value_list& args, int nargout)
   if (fcn.is_defined ())
     retval = fcn.do_multi_index_op (nargout, args);
   else
-    {
-      try
-        {
-          maybe_missing_function_hook (name);
-        }
-      catch (octave_execution_exception& e)
-        {
-          error (e, "feval: function '%s' not found", name.c_str ());
-        }
-    }
+    error ("feval: function '%s' not found", name.c_str ());
 
   return retval;
 }
@@ -4811,13 +4808,18 @@ get_feval_args (const octave_value_list& args)
   return args.slice (1, args.length () - 1, true);
 }
 
+/*!
+    Evaluate an Octave function (built-in or interpreted) and return
+    the list of result values.
 
-// Evaluate an Octave function (built-in or interpreted) and return
-// the list of result values.  The first element of ARGS should be a
-// string containing the name of the function to call, then the rest
-// are the actual arguments to the function.  NARGOUT is the number of
-// output arguments expected.
-
+    @param args The first element of @c args is the function to call.
+      It may be the name of the function as a string, a function
+      handle, or an inline function.  The remaining arguments are
+      passed to the function.
+    @param nargout The number of output arguments expected.
+    @return A list of output values.  The length of the list is not
+      necessarily the same as @c nargout.
+*/
 octave_value_list
 feval (const octave_value_list& args, int nargout)
 {
@@ -5104,7 +5106,7 @@ does.
     {
       tmp = eval_string (args(0), nargout > 0, parse_status, nargout);
     }
-  catch (const octave_execution_exception&)
+  catch (const octave::execution_exception&)
     {
       recover_from_exception ();
 
@@ -5274,7 +5276,7 @@ Like @code{eval}, except that the expressions are evaluated in the context
       tmp = eval_string (args(1), nargout > 0,
                          parse_status, nargout);
     }
-  catch (const octave_execution_exception&)
+  catch (const octave::execution_exception&)
     {
       recover_from_exception ();
 
@@ -5306,6 +5308,30 @@ Like @code{eval}, except that the expressions are evaluated in the context
     }
 
   return retval;
+}
+
+static void
+maybe_print_last_error_message (bool *doit)
+{
+  if (doit && *doit)
+    // Print error message again, which was lost because of the stderr buffer
+    // Note: this keeps error_state and last_error_stack intact
+    message_with_id ("error", last_error_id ().c_str (),
+                     last_error_message ().c_str ());
+}
+
+static void
+restore_octave_stdout (std::streambuf *buf)
+{
+  octave_stdout.flush ();
+  octave_stdout.rdbuf (buf);
+}
+
+static void
+restore_octave_stderr (std::streambuf *buf)
+{
+  std::cerr.flush ();
+  std::cerr.rdbuf (buf);
 }
 
 DEFUN (evalc, args, nargout,
@@ -5354,38 +5380,20 @@ s = evalc ("t = 42"), t
   std::streambuf* old_out_buf = out_stream.rdbuf (buffer.rdbuf ());
   std::streambuf* old_err_buf = err_stream.rdbuf (buffer.rdbuf ());
 
+  bool eval_error_occurred = true;
+
+  octave::unwind_protect frame;
+
+  frame.add_fcn (maybe_print_last_error_message, &eval_error_occurred);
+  frame.add_fcn (restore_octave_stdout, old_out_buf);
+  frame.add_fcn (restore_octave_stderr, old_err_buf);
 
   // call standard eval function
   octave_value_list retval;
   int eval_nargout = std::max (0, nargout - 1);
 
-  const octave_execution_exception* eval_exception = 0;
-  try
-    {
-      retval = Feval (args, eval_nargout);
-    }
-  catch (const octave_execution_exception& e)
-    {
-      // hold back exception from eval until we have restored streams
-      eval_exception = &e;
-    }
-
-  // stop capturing buffer and restore stdout/stderr
-  out_stream.flush ();
-  err_stream.flush ();
-
-  out_stream.rdbuf (old_out_buf);
-  err_stream.rdbuf (old_err_buf);
-
-  if (eval_exception)
-    {
-      // Print error message again, which was lost because of the stderr buffer
-      // Note: this keeps error_state and last_error_stack intact
-      message_with_id ("error", last_error_id ().c_str (),
-                       last_error_message ().c_str ());
-      // rethrow original exception from above
-      throw *eval_exception;
-    }
+  retval = Feval (args, eval_nargout);
+  eval_error_occurred = false;
 
   retval.prepend (buffer.str ());
   return retval;

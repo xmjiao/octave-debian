@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2015 Jaroslav Hajek
+## Copyright (C) 2009-2016 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -297,12 +297,10 @@ endfunction
 %! assert (strsplit ("aa", "a"), {"", ""});
 %! assert (strsplit ("aaa", "a"), {"", ""});
 
-## Bug #44641
-%!assert (strsplit ("xxx<yyy", "<"), {"xxx", "yyy"})
-%!assert (strsplit ('xxx\yyy', '\'), {"xxx", "yyy"})
+%!assert <44641> (strsplit ("xxx<yyy", "<"), {"xxx", "yyy"})
+%!assert <44641> (strsplit ('xxx\yyy', '\'), {"xxx", "yyy"})
 
-## Bug #47403
-%!assert (strsplit ('xxx+yyy', '+'), {"xxx", "yyy"})
+%!assert <47403> (strsplit ('xxx+yyy', '+'), {"xxx", "yyy"})
 
 ## Test input validation
 %!error strsplit ()

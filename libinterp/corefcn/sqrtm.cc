@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001-2015 Ross Lippert and Paul Kienzle
+Copyright (C) 2001-2016 Ross Lippert and Paul Kienzle
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -234,9 +234,10 @@ Mathematics, Manchester, England, January 1999.
     retval(0) = arg.sqrt ();
   else if (arg.is_single_type ())
     retval(0) = do_sqrtm<FloatMatrix, FloatComplexMatrix,
-                         schur<FloatComplexMatrix> > (arg);
+                         octave::math::schur<FloatComplexMatrix> > (arg);
   else if (arg.is_numeric_type ())
-    retval(0) = do_sqrtm<Matrix, ComplexMatrix, schur<ComplexMatrix> > (arg);
+    retval(0) = do_sqrtm<Matrix, ComplexMatrix,
+                         octave::math::schur<ComplexMatrix> > (arg);
 
   if (nargout > 1)
     {
@@ -267,3 +268,4 @@ Mathematics, Manchester, England, January 1999.
 %! assert (y, z);
 %! assert (err, 0);   # Yes, this one has to hold exactly
 */
+

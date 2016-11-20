@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2015 Michael Goffioul
+Copyright (C) 2012-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -66,7 +66,7 @@ err_method_access (const std::string& from, const cdef_method& meth)
 OCTAVE_NORETURN static
 void
 err_property_access (const std::string& from, const cdef_property& prop,
-                       bool is_set = false)
+                     bool is_set = false)
 {
   octave_value acc = prop.get (is_set ? "SetAccess" : "GetAccess");
   std::string acc_s;
@@ -821,8 +821,8 @@ void
 octave_classdef::register_type (void)
 {
   t_id = octave_value_typeinfo::register_type
-    (octave_classdef::t_name, "<unknown>",
-     octave_value (new octave_classdef ()));
+         (octave_classdef::t_name, "<unknown>",
+          octave_value (new octave_classdef ()));
 }
 
 octave_value_list
@@ -1521,7 +1521,7 @@ cdef_object_array::subsref (const std::string& type,
               {
                 iv(i) = ival(i).index_vector ();
               }
-            catch (index_exception& e)
+            catch (octave::index_exception& e)
               {
                 // Rethrow to allow more info to be reported later.
                 e.set_pos_if_unset (ival.length (), i+1);
@@ -1617,7 +1617,7 @@ cdef_object_array::subsasgn (const std::string& type,
                 {
                   iv(i) = ival(i).index_vector ();
                 }
-              catch (index_exception& e)
+              catch (octave::index_exception& e)
                 {
                   e.set_pos_if_unset (ival.length (), i+1);
                   throw;   // var name set in pt-idx.cc / pt-assign.cc
@@ -1652,7 +1652,8 @@ cdef_object_array::subsasgn (const std::string& type,
 
           bool is_scalar = true;
 
-          Array<idx_vector> iv (dim_vector (1, std::max (ival.length (), 2)));
+          Array<idx_vector> iv (dim_vector (1, std::max (ival.length (),
+            static_cast<octave_idx_type> (2))));
 
           for (int i = 0; i < ival.length (); i++)
             {
@@ -1660,7 +1661,7 @@ cdef_object_array::subsasgn (const std::string& type,
                 {
                   iv(i) = ival(i).index_vector ();
                 }
-              catch (index_exception& e)
+              catch (octave::index_exception& e)
                 {
                   // Rethrow to allow more info to be reported later.
                   e.set_pos_if_unset (ival.length (), i+1);
@@ -1678,7 +1679,7 @@ cdef_object_array::subsasgn (const std::string& type,
           // Fill in trailing singleton dimensions so that
           // array.index doesn't create a new blank entry (bug #46660).
           for (int i = ival.length (); i < 2; i++)
-            iv(i) = 1;
+            iv(i) = static_cast<octave_idx_type> (1);
 
           Array<cdef_object> a = array.index (iv, true);
 
@@ -2019,7 +2020,7 @@ cdef_class::cdef_class_rep::install_method (const cdef_method& meth)
                 = a.get_constructor_list ();
 
               for (std::list<cdef_class>::const_iterator
-                     it = explicit_ctor_list.begin ();
+                   it = explicit_ctor_list.begin ();
                    it != explicit_ctor_list.end ();
                    ++it)
                 {
@@ -2053,7 +2054,7 @@ cdef_class::cdef_class_rep::get_methods (void)
   int idx = 0;
 
   for (std::map<std::string,cdef_method>::const_iterator
-         it = meths.begin (); it != meths.end (); ++it, ++idx)
+       it = meths.begin (); it != meths.end (); ++it, ++idx)
     c (idx, 0) = to_ov (it->second);
 
   return c;
@@ -2152,7 +2153,7 @@ cdef_class::cdef_class_rep::get_properties (int mode)
   int idx = 0;
 
   for (std::map<std::string,cdef_property>::const_iterator
-         it = props.begin (); it != props.end (); ++it, ++idx)
+       it = props.begin (); it != props.end (); ++it, ++idx)
     c (idx, 0) = to_ov (it->second);
 
   return c;
@@ -2271,12 +2272,7 @@ cdef_class::cdef_class_rep::get_names (void)
 
   find_names (names, false);
 
-  string_vector v (names.size ());
-
-  int idx = 0;
-  for (std::set<std::string>::const_iterator it = names.begin ();
-       it != names.end (); ++it, ++idx)
-    v[idx] = *it;
+  string_vector v (names);
 
   return v.sort (true);
 }
@@ -3474,9 +3470,11 @@ install_classdef (void)
   // meta.class methods
   meta_class.install_method (make_method (meta_class, "fromName", class_fromName,
                                           "public", true));
-  meta_class.install_method (make_method (meta_class, "fevalStatic", class_fevalStatic,
+  meta_class.install_method (make_method (meta_class, "fevalStatic",
+                                          class_fevalStatic,
                                           "public", false));
-  meta_class.install_method (make_method (meta_class, "getConstant", class_getConstant,
+  meta_class.install_method (make_method (meta_class, "getConstant",
+                                          class_getConstant,
                                           "public", false));
   meta_class.install_method (make_method (meta_class, "eq", class_eq));
   meta_class.install_method (make_method (meta_class, "ne", class_ne));
@@ -3719,7 +3717,7 @@ cdef_manager::do_find_package_symbol (const std::string& pack_name)
 
 DEFUN (__meta_get_package__, args, ,
        doc: /* -*- texinfo -*-
-@deftypefn  {} {} __meta_get_package__ ()
+@deftypefn {} {} __meta_get_package__ ()
 Undocumented internal function.
 @end deftypefn */)
 {
@@ -3779,3 +3777,4 @@ Returns the meta.class object corresponding to the class of @var{obj}.
 ;;; mode: C++ ***
 ;;; End: ***
 */
+

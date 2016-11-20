@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -52,19 +52,19 @@ namespace octave
 
     child (const child& oc)
       : pid (oc.pid), handler (oc.handler),
-      have_status (oc.have_status), status (oc.status) { }
+        have_status (oc.have_status), status (oc.status) { }
 
     child& operator = (const child& oc)
-      {
-        if (&oc != this)
-          {
-            pid = oc.pid;
-            handler = oc.handler;
-            have_status = oc.have_status;
-            status = oc.status;
-          }
-        return *this;
-      }
+    {
+      if (&oc != this)
+        {
+          pid = oc.pid;
+          handler = oc.handler;
+          have_status = oc.have_status;
+          status = oc.status;
+        }
+      return *this;
+    }
 
     ~child (void) { }
 
@@ -90,7 +90,7 @@ namespace octave
 
     child_list (void) { }
 
-    class child_list_rep : public octave_base_list<child>
+    class child_list_rep : public base_list<child>
     {
     public:
 
@@ -134,3 +134,4 @@ typedef octave::child_list octave_child_list;
 #endif
 
 #endif
+

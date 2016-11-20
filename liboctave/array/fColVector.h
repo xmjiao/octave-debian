@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2015 John W. Eaton
+Copyright (C) 1994-2016 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -126,3 +126,4 @@ extern OCTAVE_API FloatColumnVector imag (const FloatComplexColumnVector& a);
 MARRAY_FORWARD_DEFS (MArray, FloatColumnVector, float)
 
 #endif
+

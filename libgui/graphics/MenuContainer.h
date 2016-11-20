@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2015 Michael Goffioul
+Copyright (C) 2011-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -28,12 +28,13 @@ class QWidget;
 namespace QtHandles
 {
 
-class MenuContainer
-{
-public:
-  virtual QWidget* menu (void) = 0;
-};
+  class MenuContainer
+  {
+  public:
+    virtual QWidget* menu (void) = 0;
+  };
 
-}; // namespace QtHandles
+}
 
 #endif
+

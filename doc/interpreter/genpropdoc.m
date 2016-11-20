@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2015 Pantxo Diribarne
+## Copyright (C) 2014-2016 Pantxo Diribarne
 ##
 ## This program is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -389,7 +389,7 @@ value in the figure title bar.";
 properties depends upon __prop__.  The horizontal and vertical values for \
 @code{papersize} and @code{paperposition} reverse order \
 when __prop__ is switched between @code{\"portrait\"} and \
-@code{\"landscape\"}."
+@code{\"landscape\"}.";
 
       case "paperposition"
         s.doc = "Vector @code{[left bottom width height]} defining the \
@@ -438,6 +438,10 @@ units (ex: @code{\"inches\"}) and @code{\"pixels\"} is dependent on the \
         s.doc = doc_unused;
 
       case "position"
+        s.doc = "Specify the position and size of the figure.  \
+The four elements of the vector are the coordinates of the lower left corner \
+and width and height of the figure.  \
+@xref{XREFfigureunits, , @w{units property}}.";
         s.valid = valid_4elvec;
 
       case "renderer"
@@ -447,14 +451,14 @@ units (ex: @code{\"inches\"}) and @code{\"pixels\"} is dependent on the \
         s.doc = doc_unused;
 
       case "resizefcn"
-        s.doc = "__prop__ is deprecated.  Use @code{sizechangedfcn} instead."
+        s.doc = "__prop__ is deprecated.  Use @code{sizechangedfcn} instead.";
         s.valid = valid_fcn;
 
       case "selectiontype"
         ## FIXME: docstring explaining what "{normal}|open|alt|extend" mean.
 
       case "sizechangedfcn"
-        s.doc = "Callback triggered when the figure window size is changed."
+        s.doc = "Callback triggered when the figure window size is changed.";
         s.valid = valid_fcn;
 
       case "toolbar"
@@ -1646,7 +1650,7 @@ endfunction
 function str = warn_autogen ()
   str = "@c DO NOT EDIT!  Generated automatically by genpropdoc.m.\n\
 \n\
-@c Copyright (C) 2014-2015 Pantxo Diribarne\n\
+@c Copyright (C) 2014-2016 Pantxo Diribarne\n\
 @c\n\
 @c This file is part of Octave.\n\
 @c\n\

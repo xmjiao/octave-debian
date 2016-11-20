@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2015 John W. Eaton
+Copyright (C) 2004-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -56,3 +56,4 @@ along with Octave; see the file COPYING.  If not, see
 #undef OCTAVE_INT_BTYP
 
 #endif
+

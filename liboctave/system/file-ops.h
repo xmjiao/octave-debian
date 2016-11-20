@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -393,3 +393,4 @@ octave_canonicalize_file_name (const std::string& nm, std::string& msg)
 #endif
 
 #endif
+

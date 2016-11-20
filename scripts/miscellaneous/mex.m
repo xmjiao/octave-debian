@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2015 David Bateman
+## Copyright (C) 2006-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -29,7 +29,7 @@ function retval = mex (varargin)
   [output, status] = mkoctfile ("--mex", varargin{:});
 
   if (! isempty (output))
-    disp (output);
+    printf ("%s", output);
   endif
   if (nargout > 0)
     retval = status;

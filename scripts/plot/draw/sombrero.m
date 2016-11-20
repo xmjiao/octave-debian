@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2015 John W. Eaton
+## Copyright (C) 1993-2016 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -76,9 +76,9 @@ endfunction
 
 %!demo
 %! clf;
-%! colormap ('default');
+%! colormap ("default");
 %! sombrero ();
-%! title ('sombrero() function');
+%! title ("sombrero() function");
 
 ## Test input validation
 %!error sombrero (1,2,3)

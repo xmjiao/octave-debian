@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 Kurt Hornik
+@c Copyright (C) 1996-2016 Kurt Hornik
 @c
 @c This file is part of Octave.
 @c
@@ -161,7 +161,7 @@ Octave matrices and arrays.  The audioplayer object supports playback
 from various devices available to the system, blocking and non-blocking
 playback, convenient pausing and resuming and much more.
 
-@c @audioplayer/audioplayer scripts/scripts/audio/@audioplayer/audioplayer.m
+@c @audioplayer/audioplayer scripts/audio/@audioplayer/audioplayer.m
 @anchor{XREF@@audioplayer/audioplayer}
 @deftypefn  {} {@var{player} =} audioplayer (@var{y}, @var{fs})
 @deftypefnx {} {@var{player} =} audioplayer (@var{y}, @var{fs}, @var{nbits})
@@ -184,7 +184,7 @@ sample.
 
 @example
 @group
-y = randn (2, 44100) - 0.5;
+y = 0.25 * randn (2, 44100);
 player = audioplayer (y, 44100, 8);
 play (player);
 @end group
@@ -202,7 +202,7 @@ play (player);
 
 The following methods are used to control player playback.
 
-@c @audioplayer/play scripts/scripts/audio/@audioplayer/play.m
+@c @audioplayer/play scripts/audio/@audioplayer/play.m
 @anchor{XREF@@audioplayer/play}
 @deftypefn  {} {} play (@var{player})
 @deftypefnx {} {} play (@var{player}, @var{start})
@@ -215,7 +215,7 @@ at the number of seconds specified by the elements of the vector.
 @end deftypefn
 
 
-@c @audioplayer/playblocking scripts/scripts/audio/@audioplayer/playblocking.m
+@c @audioplayer/playblocking scripts/audio/@audioplayer/playblocking.m
 @anchor{XREF@@audioplayer/playblocking}
 @deftypefn  {} {} playblocking (@var{player})
 @deftypefnx {} {} playblocking (@var{player}, @var{start})
@@ -228,21 +228,21 @@ at the number of seconds specified by the elements of the vector.
 @end deftypefn
 
 
-@c @audioplayer/pause scripts/scripts/audio/@audioplayer/pause.m
+@c @audioplayer/pause scripts/audio/@audioplayer/pause.m
 @anchor{XREF@@audioplayer/pause}
 @deftypefn {} {} pause (@var{player})
 Pause the audioplayer @var{player}.
 @end deftypefn
 
 
-@c @audioplayer/resume scripts/scripts/audio/@audioplayer/resume.m
+@c @audioplayer/resume scripts/audio/@audioplayer/resume.m
 @anchor{XREF@@audioplayer/resume}
 @deftypefn {} {} resume (@var{player})
 Resume playback for the paused audioplayer object @var{player}.
 @end deftypefn
 
 
-@c @audioplayer/stop scripts/scripts/audio/@audioplayer/stop.m
+@c @audioplayer/stop scripts/audio/@audioplayer/stop.m
 @anchor{XREF@@audioplayer/stop}
 @deftypefn {} {} stop (@var{player})
 Stop the playback for the audioplayer @var{player} and reset the
@@ -250,7 +250,7 @@ relevant variables to their starting values.
 @end deftypefn
 
 
-@c @audioplayer/isplaying scripts/scripts/audio/@audioplayer/isplaying.m
+@c @audioplayer/isplaying scripts/audio/@audioplayer/isplaying.m
 @anchor{XREF@@audioplayer/isplaying}
 @deftypefn {} {} isplaying (@var{player})
 Return true if the audioplayer object @var{player} is currently playing back
@@ -264,7 +264,7 @@ audio and false otherwise.
 The remaining couple of methods are used to get and set various
 properties of the audioplayer object.
 
-@c @audioplayer/get scripts/scripts/audio/@audioplayer/get.m
+@c @audioplayer/get scripts/audio/@audioplayer/get.m
 @anchor{XREF@@audioplayer/get}
 @deftypefn  {} {@var{value} =} get (@var{player}, @var{name})
 @deftypefnx {} {@var{values} =} get (@var{player})
@@ -278,7 +278,7 @@ names.
 @end deftypefn
 
 
-@c @audioplayer/set scripts/scripts/audio/@audioplayer/set.m
+@c @audioplayer/set scripts/audio/@audioplayer/set.m
 @anchor{XREF@@audioplayer/set}
 @deftypefn  {} {} set (@var{player}, @var{name}, @var{value})
 @deftypefnx {} {} set (@var{player}, @var{properties})
@@ -303,7 +303,7 @@ retrieve that data or audioplayer objects created from that
 data.  Methods for blocking and non-blocking recording, pausing and
 resuming recording and much more is available.
 
-@c @audiorecorder/audiorecorder scripts/scripts/audio/@audiorecorder/audiorecorder.m
+@c @audiorecorder/audiorecorder scripts/audio/@audiorecorder/audiorecorder.m
 @anchor{XREF@@audiorecorder/audiorecorder}
 @deftypefn  {} {@var{recorder} =} audiorecorder ()
 @deftypefnx {} {@var{recorder} =} audiorecorder (@var{fs}, @var{nbits}, @var{channels})
@@ -329,7 +329,7 @@ function.
 
 The following methods control the recording process.
 
-@c @audiorecorder/record scripts/scripts/audio/@audiorecorder/record.m
+@c @audiorecorder/record scripts/audio/@audiorecorder/record.m
 @anchor{XREF@@audiorecorder/record}
 @deftypefn  {} {} record (@var{recorder})
 @deftypefnx {} {} record (@var{recorder}, @var{length})
@@ -341,7 +341,7 @@ Given the optional argument @var{length}, record for @var{length} seconds.
 @end deftypefn
 
 
-@c @audiorecorder/recordblocking scripts/scripts/audio/@audiorecorder/recordblocking.m
+@c @audiorecorder/recordblocking scripts/audio/@audiorecorder/recordblocking.m
 @anchor{XREF@@audiorecorder/recordblocking}
 @deftypefn {} {} recordblocking (@var{recorder}, @var{length})
 Record audio with blocking (synchronous I/O).
@@ -350,28 +350,28 @@ The length of the recording in seconds (@var{length}) must be specified.
 @end deftypefn
 
 
-@c @audiorecorder/pause scripts/scripts/audio/@audiorecorder/pause.m
+@c @audiorecorder/pause scripts/audio/@audiorecorder/pause.m
 @anchor{XREF@@audiorecorder/pause}
 @deftypefn {} {} pause (@var{recorder})
 Pause recording with audiorecorder object @var{recorder}.
 @end deftypefn
 
 
-@c @audiorecorder/resume scripts/scripts/audio/@audiorecorder/resume.m
+@c @audiorecorder/resume scripts/audio/@audiorecorder/resume.m
 @anchor{XREF@@audiorecorder/resume}
 @deftypefn {} {} resume (@var{recorder})
 Resume recording with the paused audiorecorder object @var{recorder}.
 @end deftypefn
 
 
-@c @audiorecorder/stop scripts/scripts/audio/@audiorecorder/stop.m
+@c @audiorecorder/stop scripts/audio/@audiorecorder/stop.m
 @anchor{XREF@@audiorecorder/stop}
 @deftypefn {} {} stop (@var{recorder})
 Stop the audiorecorder object @var{recorder} and clean up any audio streams.
 @end deftypefn
 
 
-@c @audiorecorder/isrecording scripts/scripts/audio/@audiorecorder/isrecording.m
+@c @audiorecorder/isrecording scripts/audio/@audiorecorder/isrecording.m
 @anchor{XREF@@audiorecorder/isrecording}
 @deftypefn {} {} isrecording (@var{recorder})
 Return true if the audiorecorder object @var{recorder} is currently
@@ -385,7 +385,7 @@ recording audio and false otherwise.
 The following methods allow you to retrieve recorded audio data in
 various ways.
 
-@c @audiorecorder/getaudiodata scripts/scripts/audio/@audiorecorder/getaudiodata.m
+@c @audiorecorder/getaudiodata scripts/audio/@audiorecorder/getaudiodata.m
 @anchor{XREF@@audiorecorder/getaudiodata}
 @deftypefn  {} {@var{data} =} getaudiodata (@var{recorder})
 @deftypefnx {} {@var{data} =} getaudiodata (@var{recorder}, @var{datatype})
@@ -398,7 +398,7 @@ to the specified type, which may be one of @qcode{"double"},
 @end deftypefn
 
 
-@c @audiorecorder/getplayer scripts/scripts/audio/@audiorecorder/getplayer.m
+@c @audiorecorder/getplayer scripts/audio/@audiorecorder/getplayer.m
 @anchor{XREF@@audiorecorder/getplayer}
 @deftypefn {} {@var{player} =} getplayer (@var{recorder})
 Return an audioplayer object with data recorded by the audiorecorder object
@@ -406,7 +406,7 @@ Return an audioplayer object with data recorded by the audiorecorder object
 @end deftypefn
 
 
-@c @audiorecorder/play scripts/scripts/audio/@audiorecorder/play.m
+@c @audiorecorder/play scripts/audio/@audiorecorder/play.m
 @anchor{XREF@@audiorecorder/play}
 @deftypefn  {} {@var{player} =} play (@var{recorder})
 @deftypefnx {} {@var{player} =} play (@var{recorder}, @var{start})
@@ -428,7 +428,7 @@ If the optional argument @var{end} is provided, stop playing at
 The remaining two methods allow you to read or alter the properties of
 audiorecorder objects.
 
-@c @audiorecorder/get scripts/scripts/audio/@audiorecorder/get.m
+@c @audiorecorder/get scripts/audio/@audiorecorder/get.m
 @anchor{XREF@@audiorecorder/get}
 @deftypefn  {} {@var{value} =} get (@var{recorder}, @var{name})
 @deftypefnx {} {@var{values} =} get (@var{recorder})
@@ -442,7 +442,7 @@ names.
 @end deftypefn
 
 
-@c @audiorecorder/set scripts/scripts/audio/@audiorecorder/set.m
+@c @audiorecorder/set scripts/audio/@audiorecorder/set.m
 @anchor{XREF@@audiorecorder/set}
 @deftypefn  {} {} set (@var{recorder}, @var{name}, @var{value})
 @deftypefnx {} {} set (@var{recorder}, @var{properties})
@@ -482,7 +482,7 @@ encoding have one of the extensions @file{lin} or @file{raw}, and that
 files holding data in mu-law encoding end in @file{au}, @file{mu}, or
 @file{snd}.
 
-@c lin2mu scripts/scripts/audio/lin2mu.m
+@c lin2mu scripts/audio/lin2mu.m
 @anchor{XREFlin2mu}
 @deftypefn {} {} lin2mu (@var{x}, @var{n})
 Convert audio data from linear to mu-law.
@@ -497,7 +497,7 @@ the range of values in @var{x}.
 @end deftypefn
 
 
-@c mu2lin scripts/scripts/audio/mu2lin.m
+@c mu2lin scripts/audio/mu2lin.m
 @anchor{XREFmu2lin}
 @deftypefn {} {} mu2lin (@var{x}, @var{n})
 Convert audio data from mu-law to linear.
@@ -511,7 +511,7 @@ If @var{n} is not specified it defaults to 0.
 @end deftypefn
 
 
-@c record scripts/scripts/audio/record.m
+@c record scripts/audio/record.m
 @anchor{XREFrecord}
 @deftypefn  {} {} record (@var{sec})
 @deftypefnx {} {} record (@var{sec}, @var{fs})
@@ -526,7 +526,7 @@ For more control over audio recording, use the @code{audiorecorder} class.
 @end deftypefn
 
 
-@c sound scripts/scripts/audio/sound.m
+@c sound scripts/audio/sound.m
 @anchor{XREFsound}
 @deftypefn  {} {} sound (@var{y})
 @deftypefnx {} {} sound (@var{y}, @var{fs})
@@ -548,7 +548,7 @@ For more control over audio playback, use the @code{audioplayer} class.
 @end deftypefn
 
 
-@c soundsc scripts/scripts/audio/soundsc.m
+@c soundsc scripts/audio/soundsc.m
 @anchor{XREFsoundsc}
 @deftypefn  {} {} soundsc (@var{y})
 @deftypefnx {} {} soundsc (@var{y}, @var{fs})

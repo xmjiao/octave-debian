@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -201,7 +201,7 @@ instead.
 A similar function @code{run} exists for calling user script files, that
 are not necessarily on the user path
 
-@c run scripts/scripts/miscellaneous/run.m
+@c run scripts/miscellaneous/run.m
 @anchor{XREFrun}
 @deftypefn  {} {} run @var{script}
 @deftypefnx {} {} run ("@var{script}")

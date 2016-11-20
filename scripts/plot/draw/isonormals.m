@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2015 Martin Helm
+## Copyright (C) 2009-2016 Martin Helm
 ##
 ## This file is part of Octave.
 ##
@@ -124,11 +124,11 @@ endfunction
 
 %!demo
 %! function isofinish (hp)
-%!   axis equal
-%!   set (hp, "VertexNormals", -get (hp, "VertexNormals")); # Revert normals
-%!   shading interp
-%!   set (hp, "FaceLighting", "gouraud");
-%!   set (hp, "BackFaceLighting", "unlit");
+%!   axis equal;
+%!   set (hp, "VertexNormals", -get (hp, "VertexNormals"));  # Revert normals
+%!   shading interp;
+%!   lighting gouraud;
+%!   set (hp, "BackFaceLighting", "lit");
 %!   light ();
 %! endfunction
 %!
@@ -139,30 +139,35 @@ endfunction
 %! val = (x-.5).^2 + (y-.5).^2 + (z-.5).^2;
 %! clf;
 %!
-%! subplot (2,2,1); view (-38, 20);
-%! [fac, vert, cdat] = isosurface (x, y, z, val, iso, y);
-%! hp = patch ("Faces", fac, "Vertices", vert, "FaceVertexCData", cdat);
-%! title ("without isonormals")
-%! isofinish (hp);  # Call user function isofinish
+%! subplot (2,2,1);
+%!  view (-38, 20);
+%!  [fac, vert, cdat] = isosurface (x, y, z, val, iso, y);
+%!  hp = patch ("Faces", fac, "Vertices", vert, "FaceVertexCData", cdat);
+%!  title ("without isonormals");
+%!  isofinish (hp);
+%!  set (hp, "VertexNormalsMode", "auto");  # for Matlab compatibility
 %!
-%! subplot (2,2,2); view (-38, 20);
-%! hp = patch ("Faces", fac, "Vertices", vert, "FaceVertexCData", cdat);
-%! title ("patch modified by isonormals")
-%! isonormals (x, y, z, val, hp); # Directly modify patch
-%! isofinish (hp);
+%! subplot (2,2,2);
+%!  view (-38, 20);
+%!  hp = patch ("Faces", fac, "Vertices", vert, "FaceVertexCData", cdat);
+%!  title ("patch modified by isonormals");
+%!  isonormals (x, y, z, val, hp);  # Directly modify patch
+%!  isofinish (hp);
 %!
-%! subplot (2,2,3); view (-38, 20);
-%! hp = patch ("Faces", fac, "Vertices", vert, "FaceVertexCData", cdat);
-%! vn = isonormals (x, y, z, val, vert); # Compute normals of isosurface
-%! set (hp, "VertexNormals", vn);    # Manually set vertex normals
-%! title ('''VertexNormals'' from isonormals manually set')
-%! isofinish (hp);
+%! subplot (2,2,3);
+%!  view (-38, 20);
+%!  hp = patch ("Faces", fac, "Vertices", vert, "FaceVertexCData", cdat);
+%!  vn = isonormals (x, y, z, val, vert);  # Compute normals of isosurface
+%!  set (hp, "VertexNormals", vn);         # Manually set vertex normals
+%!  title ('set "VertexNormals" from isonormals');
+%!  isofinish (hp);
 %!
-%! subplot (2,2,4); view (-38, 20);
-%! hp = patch ("Faces", fac, "Vertices", vert, "FaceVertexCData", cdat);
-%! isonormals (x, y, z, val, hp, "negate"); # Use reverse directly
-%! title ('patch modified by isonormals (..., ''negate'')')
-%! isofinish (hp);
+%! subplot (2,2,4);
+%!  view (-38, 20);
+%!  hp = patch ("Faces", fac, "Vertices", vert, "FaceVertexCData", cdat);
+%!  isonormals (x, y, z, val, hp, "negate");  # Use reverse directly
+%!  title ('patch modified by isonormals (..., "negate")');
+%!  isofinish (hp);
 
 %!shared x,y,z,val,vert
 %! [x, y, z] = meshgrid (0:.5:2, 0:.5:2, 0:.5:2);

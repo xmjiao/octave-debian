@@ -1,7 +1,7 @@
 // %NO_EDIT_WARNING%
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -239,3 +239,4 @@ extern OCTINTERP_API void
 set_image_path (const std::string& path = "");
 
 #endif
+

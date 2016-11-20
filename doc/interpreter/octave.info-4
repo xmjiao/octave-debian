@@ -21,6 +21,404 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Graphics Object Properties,  Next: Searching Properties,  Prev: Graphics Objects,  Up: Graphics Data Structures
+
+15.3.3 Graphics Object Properties
+---------------------------------
+
+* Menu:
+
+* Root Figure Properties::
+* Figure Properties::
+* Axes Properties::
+* Line Properties::
+* Text Properties::
+* Image Properties::
+* Patch Properties::
+* Surface Properties::
+* Light Properties::
+* Uimenu Properties::
+* Uibuttongroup Properties::
+* Uicontextmenu Properties::
+* Uipanel Properties::
+* Uicontrol Properties::
+* Uitoolbar Properties::
+* Uipushtool Properties::
+* Uitoggletool Properties::
+
+In this Section the graphics object properties are discussed in detail,
+starting with the root figure properties and continuing through the
+objects hierarchy.  The documentation about a specific graphics object
+can be displayed using ‘doc’ function, e.g., ‘doc ("axes properties")’
+will show *note Axes Properties::.
+
+   The allowed values for radio (string) properties can be retrieved
+programmatically or displayed using the one or two arguments call to
+‘set’ function.  *Note set: XREFset.
+
+   In the following documentation, default values are enclosed in { }.
+
+
+File: octave.info,  Node: Root Figure Properties,  Next: Figure Properties,  Up: Graphics Object Properties
+
+15.3.3.1 Root Figure Properties
+...............................
+
+The ‘root figure’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘beingdeleted’: {"off"} | "on"
+     ‘beingdeleted’ is unused.
+
+‘busyaction’: "cancel" | {"queue"}
+     ‘busyaction’ is unused.
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     ‘buttondownfcn’ is unused.
+
+‘callbackobject’ (read-only): graphics handle, def. ‘[](0x0)’
+     Graphics handle of the current object whose callback is executing.
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the root’s children.
+
+‘clipping’: "off" | {"on"}
+     ‘clipping’ is unused.
+
+‘commandwindowsize’ (read-only): def. ‘[0 0]’
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     ‘createfcn’ is unused.
+
+‘currentfigure’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the current figure.
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     ‘deletefcn’ is unused.
+
+‘fixedwidthfontname’: string, def. "Courier"
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     ‘handlevisibility’ is unused.
+
+‘hittest’: "off" | {"on"}
+     ‘hittest’ is unused.
+
+‘interruptible’: "off" | {"on"}
+     ‘interruptible’ is unused.
+
+‘monitorpositions’ (read-only):
+     ‘monitorpositions’ is unused.
+
+‘parent’: graphics handle, def. ‘[](0x0)’
+     Root figure has no parent graphics object.  ‘parent’ is always
+     empty.
+
+‘pointerlocation’: two-element vector, def. ‘[0 0]’
+     ‘pointerlocation’ is unused.
+
+‘pointerwindow’ (read-only): graphics handle, def. ‘0’
+     ‘pointerwindow’ is unused.
+
+‘screendepth’ (read-only): double
+
+‘screenpixelsperinch’ (read-only): double
+
+‘screensize’ (read-only): four-element vector
+
+‘selected’: {"off"} | "on"
+     ‘selected’ is unused.
+
+‘selectionhighlight’: "off" | {"on"}
+     ‘selectionhighlight’ is unused.
+
+‘showhiddenhandles’: {"off"} | "on"
+     If ‘showhiddenhandles’ is "on", all graphics objects handles are
+     visible in their parents’ children list, regardless of the value of
+     their ‘handlevisibility’ property.
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always "root"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     ‘uicontextmenu’ is unused.
+
+‘units’: "centimeters" | "inches" | "normalized" | {"pixels"} | "points"
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘visible’: "off" | {"on"}
+     ‘visible’ is unused.
+
+
+File: octave.info,  Node: Figure Properties,  Next: Axes Properties,  Prev: Root Figure Properties,  Up: Graphics Object Properties
+
+15.3.3.2 Figure Properties
+..........................
+
+The ‘figure’ properties are:
+
+‘__modified__’: "off" | {"on"}
+
+‘alphamap’: def. 64-by-1 double
+     Transparency is not yet implemented for figure objects.  ‘alphamap’
+     is unused.
+
+‘beingdeleted’: {"off"} | "on"
+
+‘busyaction’: "cancel" | {"queue"}
+
+‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+
+‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
+     Graphics handles of the figure’s children.
+
+‘clipping’: "off" | {"on"}
+     ‘clipping’ is unused.
+
+‘closerequestfcn’: string | function handle, def. "closereq"
+
+‘color’: colorspec, def. ‘[1 1 1]’
+     Color of the figure background.  *Note colorspec: Colors.
+
+‘colormap’: N-by-3 matrix, def. 64-by-3 double
+     A matrix containing the RGB color map for the current axes.
+
+‘createfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately after figure has been
+     created.  Function is set by using default property on root object,
+     e.g., ‘set (0, "defaultfigurecreatefcn", 'disp ("figure
+     created!")')’.
+
+‘currentaxes’: graphics handle, def. ‘[](0x0)’
+     Handle to the graphics object of the current axes.
+
+‘currentcharacter’ (read-only): def. ""
+     ‘currentcharacter’ is unused.
+
+‘currentobject’ (read-only): graphics handle, def. ‘[](0x0)’
+
+‘currentpoint’ (read-only): two-element vector, def. ‘[0; 0]’
+     A 1-by-2 matrix which holds the coordinates of the point over which
+     the mouse pointer was when a mouse event occurred.  The X and Y
+     coordinates are in units defined by the figure’s ‘units’ property
+     and their origin is the lower left corner of the plotting area.
+
+     Events which set ‘currentpoint’ are
+     A mouse button was pressed
+          always
+     A mouse button was released
+          only if the figure’s callback ‘windowbuttonupfcn’ is defined
+     The pointer was moved while pressing the mouse button (drag)
+          only if the figure’s callback ‘windowbuttonmotionfcn’ is
+          defined
+
+‘deletefcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed immediately before figure is deleted.
+
+‘dockcontrols’: {"off"} | "on"
+     ‘dockcontrols’ is unused.
+
+‘filename’: string, def. ""
+     The filename used when saving the plot figure.
+
+‘graphicssmoothing’: "off" | {"on"}
+     Use smoothing techniques to reduce the appearance of jagged lines.
+
+‘handlevisibility’: "callback" | "off" | {"on"}
+     If ‘handlevisibility’ is "off", the figure’s handle is not visible
+     in its parent’s "children" property.
+
+‘hittest’: "off" | {"on"}
+
+‘integerhandle’: "off" | {"on"}
+     Assign the next lowest unused integer as the Figure number.
+
+‘interruptible’: "off" | {"on"}
+
+‘inverthardcopy’: "off" | {"on"}
+     Replace the figure and axes background color with white when
+     printing.
+
+‘keypressfcn’: string | function handle, def. ‘[](0x0)’
+
+‘keyreleasefcn’: string | function handle, def. ‘[](0x0)’
+     With ‘keypressfcn’, the keyboard callback functions.  These
+     callback functions are called when a key is pressed/released
+     respectively.  The functions are called with two input arguments.
+     The first argument holds the handle of the calling figure.  The
+     second argument holds an event structure which has the following
+     members:
+     ‘Character:’
+          The ASCII value of the key
+     ‘Key:’
+          Lowercase value of the key
+     ‘Modifier:’
+          A cell array containing strings representing the modifiers
+          pressed with the key.
+
+‘menubar’: {"figure"} | "none"
+     Control the display of the figure menu bar in the upper left of the
+     figure.
+
+‘name’: string, def. ""
+     Name to be displayed in the figure title bar.  The name is
+     displayed to the right of any title determined by the ‘numbertitle’
+     property.
+
+‘nextplot’: {"add"} | "new" | "replace" | "replacechildren"
+
+‘numbertitle’: "off" | {"on"}
+     Display "Figure" followed by the numerical figure handle value in
+     the figure title bar.
+
+‘outerposition’: four-element vector, def. ‘[-1 -1 -1 -1]’
+
+‘paperorientation’: "landscape" | {"portrait"}
+     The value for the ‘papersize’, and ‘paperposition’ properties
+     depends upon ‘paperorientation’.  The horizontal and vertical
+     values for ‘papersize’ and ‘paperposition’ reverse order when
+     ‘paperorientation’ is switched between ‘"portrait"’ and
+     ‘"landscape"’.
+
+‘paperposition’: four-element vector, def. ‘[0.25000 2.50000 8.00000 6.00000]’
+     Vector ‘[left bottom width height]’ defining the position and size
+     of the figure (in ‘paperunits’ units) on the printed page.  The
+     position ‘[left bottom]’ defines the lower left corner of the
+     figure on the page, and the size is defined by ‘[width height]’.
+     For output formats not implicitly rendered on paper, ‘width’ and
+     ‘height’ define the size of the image and the position information
+     is ignored.  Setting ‘paperposition’ also forces the
+     ‘paperpositionmode’ property to be set to "manual".
+
+‘paperpositionmode’: "auto" | {"manual"}
+     If ‘paperpositionmode’ is set to "auto", the ‘paperposition’
+     property is automatically computed: the printed figure will have
+     the same size as the on-screen figure and will be centered on the
+     output page.  Setting the ‘paperpositionmode’ to ‘"auto"’ does not
+     modify the value of the ‘paperposition’ property.
+
+‘papersize’: two-element vector, def. ‘[8.5000 11.0000]’
+     Vector ‘[width height]’ defining the size of the paper for
+     printing.  Setting the ‘papersize’ property to a value, not
+     associated with one of the defined ‘papertypes’ and consistent with
+     the setting for ‘paperorientation’, forces the ‘papertype’ property
+     to the value "<custom>".  If ‘papersize’ is set to a value
+     associated with a supported ‘papertype’ and consistent with the
+     ‘paperorientation’, the ‘papertype’ value is modified to the
+     associated value.
+
+‘papertype’: "<custom>" | "a" | "a0" | "a1" | "a2" | "a3" | "a4" | "a5" | "arch-a" | "arch-b" | "arch-c" | "arch-d" | "arch-e" | "b" | "b0" | "b1" | "b2" | "b3" | "b4" | "b5" | "c" | "d" | "e" | "tabloid" | "uslegal" | {"usletter"}
+     Name of the paper used for printed output.  Setting ‘papertype’
+     also changes ‘papersize’, while maintaining consistency with the
+     ‘paperorientation’ property.
+
+‘paperunits’: "centimeters" | {"inches"} | "normalized" | "points"
+     The unit used to compute the ‘paperposition’ property.  For
+     ‘paperunits’ set to ‘"pixels"’, the conversion between physical
+     units (ex: ‘"inches"’) and ‘"pixels"’ is dependent on the
+     ‘screenpixelsperinch’ property of the root object.
+
+‘parent’: graphics handle, def. ‘0’
+     Handle of the parent graphics object.
+
+‘pointer’: {"arrow"} | "botl" | "botr" | "bottom" | "circle" | "cross" | "crosshair" | "custom" | "fleur" | "fullcrosshair" | "hand" | "ibeam" | "left" | "right" | "top" | "topl" | "topr" | "watch"
+     ‘pointer’ is unused.
+
+‘pointershapecdata’: def. 16-by-16 double
+     ‘pointershapecdata’ is unused.
+
+‘pointershapehotspot’: def. ‘[0 0]’
+     ‘pointershapehotspot’ is unused.
+
+‘position’: four-element vector, def. ‘[300 200 560 420]’
+     Specify the position and size of the figure.  The four elements of
+     the vector are the coordinates of the lower left corner and width
+     and height of the figure.  *Note units property: XREFfigureunits.
+
+‘renderer’: {"opengl"} | "painters"
+
+‘renderermode’: {"auto"} | "manual"
+
+‘resize’: "off" | {"on"}
+     ‘resize’ is unused.
+
+‘resizefcn’: string | function handle, def. ‘[](0x0)’
+     ‘resizefcn’ is deprecated.  Use ‘sizechangedfcn’ instead.
+
+‘selected’: {"off"} | "on"
+
+‘selectionhighlight’: "off" | {"on"}
+
+‘selectiontype’: "alt" | "extend" | {"normal"} | "open"
+
+‘sizechangedfcn’: string | function handle, def. ‘[](0x0)’
+     Callback triggered when the figure window size is changed.
+
+‘tag’: string, def. ""
+     A user-defined string to label the graphics object.
+
+‘toolbar’: {"auto"} | "figure" | "none"
+     Control the display of the toolbar along the bottom of the figure
+     window.  When set to "auto", the display is based on the value of
+     the ‘menubar’ property.
+
+‘type’ (read-only): string
+     Class name of the graphics object.  ‘type’ is always "figure"
+
+‘uicontextmenu’: graphics handle, def. ‘[](0x0)’
+     Graphics handle of the uicontextmenu object that is currently
+     associated to this figure object.
+
+‘units’: "centimeters" | "characters" | "inches" | "normalized" | {"pixels"} | "points"
+     The unit used to compute the ‘position’ and ‘outerposition’
+     properties.
+
+‘userdata’: Any Octave data, def. ‘[](0x0)’
+     User-defined data to associate with the graphics object.
+
+‘visible’: "off" | {"on"}
+     If ‘visible’ is "off", the figure is not rendered on screen.
+
+‘windowbuttondownfcn’: string | function handle, def. ‘[](0x0)’
+     *Note windowbuttonupfcn property: XREFfigurewindowbuttonupfcn.
+
+‘windowbuttonmotionfcn’: string | function handle, def. ‘[](0x0)’
+     *Note windowbuttonupfcn property: XREFfigurewindowbuttonupfcn.
+
+‘windowbuttonupfcn’: string | function handle, def. ‘[](0x0)’
+     With ‘windowbuttondownfcn’ and ‘windowbuttonmotionfcn’, the mouse
+     callback functions.  These callback functions are called when a
+     mouse button is pressed, dragged, or released respectively.  When
+     these callback functions are executed, the ‘currentpoint’ property
+     holds the current coordinates of the cursor.
+
+‘windowkeypressfcn’: string | function handle, def. ‘[](0x0)’
+
+‘windowkeyreleasefcn’: string | function handle, def. ‘[](0x0)’
+
+‘windowscrollwheelfcn’: string | function handle, def. ‘[](0x0)’
+
+‘windowstyle’: "docked" | "modal" | {"normal"}
+     The window style of a figure.  One of the following values:
+     ‘normal’
+          Set the window style as non modal.
+     ‘modal’
+          Set the window as modal so that it will stay on top of all
+          normal figures.
+     ‘docked’
+          Setting the window style as docked currently does not dock the
+          window.
+
+     Changing modes of a visible figure may cause the figure to close
+     and reopen.
+
+
 File: octave.info,  Node: Axes Properties,  Next: Line Properties,  Prev: Figure Properties,  Up: Graphics Object Properties
 
 15.3.3.3 Axes Properties
@@ -44,7 +442,7 @@ The ‘axes’ properties are:
 
 ‘beingdeleted’: {"off"} | "on"
 
-‘box’: "off" | {"on"}
+‘box’: {"off"} | "on"
      Control whether the axes has a surrounding box.
 
 ‘boxstyle’: {"back"} | "full"
@@ -284,9 +682,9 @@ The ‘axes’ properties are:
 ‘visible’: "off" | {"on"}
      If ‘visible’ is "off", the axes is not rendered on screen.
 
-‘xaxislocation’: {"bottom"} | "top" | "zero"
+‘xaxislocation’: {"bottom"} | "origin" | "top" | "zero"
 
-‘xcolor’: {colorspec} | "none", def. ‘[0 0 0]’
+‘xcolor’: {colorspec} | "none", def. ‘[0.15000 0.15000 0.15000]’
      Color of the x-axis.  *Note colorspec: Colors.
 
 ‘xcolormode’: {"auto"} | "manual"
@@ -329,9 +727,9 @@ The ‘axes’ properties are:
 
 ‘xtickmode’: {"auto"} | "manual"
 
-‘yaxislocation’: {"left"} | "right" | "zero"
+‘yaxislocation’: {"left"} | "origin" | "right" | "zero"
 
-‘ycolor’: {colorspec} | "none", def. ‘[0 0 0]’
+‘ycolor’: {colorspec} | "none", def. ‘[0.15000 0.15000 0.15000]’
      Color of the y-axis.  *Note colorspec: Colors.
 
 ‘ycolormode’: {"auto"} | "manual"
@@ -374,7 +772,7 @@ The ‘axes’ properties are:
 
 ‘ytickmode’: {"auto"} | "manual"
 
-‘zcolor’: {colorspec} | "none", def. ‘[0 0 0]’
+‘zcolor’: {colorspec} | "none", def. ‘[0.15000 0.15000 0.15000]’
      Color of the z-axis.  *Note colorspec: Colors.
 
 ‘zcolormode’: {"auto"} | "manual"
@@ -1229,7 +1627,7 @@ The ‘uimenu’ properties are:
 ‘parent’: graphics handle
      Handle of the parent graphics object.
 
-‘position’: def. ‘0’
+‘position’: def. ‘1’
 
 ‘selected’: {"off"} | "on"
 
@@ -1263,7 +1661,7 @@ The ‘uibuttongroup’ properties are:
 
 ‘__modified__’: "off" | {"on"}
 
-‘backgroundcolor’: def. ‘[1 1 1]’
+‘backgroundcolor’: def. ‘[0.90980 0.90980 0.90588]’
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -1302,7 +1700,7 @@ The ‘uibuttongroup’ properties are:
 
 ‘fontweight’: "bold" | "demi" | "light" | {"normal"}
 
-‘foregroundcolor’: def. ‘[0 0 0]’
+‘foregroundcolor’: def. ‘[0.18039 0.20392 0.21176]’
 
 ‘handlevisibility’: "callback" | "off" | {"on"}
      If ‘handlevisibility’ is "off", the uibuttongroup’s handle is not
@@ -1329,7 +1727,7 @@ The ‘uibuttongroup’ properties are:
 
 ‘selectionhighlight’: "off" | {"on"}
 
-‘shadowcolor’: def. ‘[0 0 0]’
+‘shadowcolor’: def. ‘[0.75816 0.75816 0.75489]’
 
 ‘sizechangedfcn’: def. ‘[](0x0)’
 
@@ -1436,7 +1834,7 @@ The ‘uipanel’ properties are:
 
 ‘__modified__’: "off" | {"on"}
 
-‘backgroundcolor’: def. ‘[1 1 1]’
+‘backgroundcolor’: def. ‘[0.90980 0.90980 0.90588]’
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -1474,7 +1872,7 @@ The ‘uipanel’ properties are:
 
 ‘fontweight’: "bold" | "demi" | "light" | {"normal"}
 
-‘foregroundcolor’: def. ‘[0 0 0]’
+‘foregroundcolor’: def. ‘[0.18039 0.20392 0.21176]’
 
 ‘handlevisibility’: "callback" | "off" | {"on"}
      If ‘handlevisibility’ is "off", the uipanel’s handle is not visible
@@ -1497,7 +1895,7 @@ The ‘uipanel’ properties are:
 
 ‘selectionhighlight’: "off" | {"on"}
 
-‘shadowcolor’: def. ‘[0 0 0]’
+‘shadowcolor’: def. ‘[0.75816 0.75816 0.75489]’
 
 ‘tag’: string, def. ""
      A user-defined string to label the graphics object.
@@ -1531,7 +1929,7 @@ The ‘uicontrol’ properties are:
 
 ‘__modified__’: "off" | {"on"}
 
-‘backgroundcolor’: def. ‘[1 1 1]’
+‘backgroundcolor’: def. ‘[0.90980 0.90980 0.90588]’
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -1573,7 +1971,7 @@ The ‘uicontrol’ properties are:
 
 ‘fontweight’: "bold" | "demi" | "light" | {"normal"}
 
-‘foregroundcolor’: def. ‘[0 0 0]’
+‘foregroundcolor’: def. ‘[0.18039 0.20392 0.21176]’
 
 ‘handlevisibility’: "callback" | "off" | {"on"}
      If ‘handlevisibility’ is "off", the uicontrol’s handle is not
@@ -1625,7 +2023,7 @@ The ‘uicontrol’ properties are:
 ‘userdata’: Any Octave data, def. ‘[](0x0)’
      User-defined data to associate with the graphics object.
 
-‘value’: def. ‘1’
+‘value’: def. ‘0’
 
 ‘verticalalignment’: "bottom" | {"middle"} | "top"
 
@@ -3309,7 +3707,7 @@ tests a random 5 by 5 matrix to see if all of its elements are less than
      See also: *note isinf: XREFisinf, *note isnan: XREFisnan, *note
      isna: XREFisna.
 
- -- : [ERR, Y1, ...] = common_size (X1, ...)
+ -- : [ERR, YI, ...] = common_size (XI, ...)
      Determine if all input arguments are either scalar or of common
      size.
 
@@ -3318,13 +3716,16 @@ tests a random 5 by 5 matrix to see if all of its elements are less than
      the inputs cannot be brought to a common size, ERR is 1, and YI is
      XI.  For example:
 
-          [errorcode, a, b] = common_size ([1 2; 3 4], 5)
-               ⇒ errorcode = 0
+          [err, a, b] = common_size ([1 2; 3 4], 5)
+               ⇒ err = 0
                ⇒ a = [ 1, 2; 3, 4 ]
                ⇒ b = [ 5, 5; 5, 5 ]
 
      This is useful for implementing functions where arguments can
      either be scalars or of common size.
+
+     See also: *note size: XREFsize, *note size_equal: XREFsize_equal,
+     *note numel: XREFnumel, *note ndims: XREFndims.
 
  -- : IDX = find (X)
  -- : IDX = find (X, N)
@@ -5440,7 +5841,7 @@ apparently do not distinguish -0.
      Compute atan (Y / X) for corresponding elements of Y and X.
 
      Y and X must match in size and orientation.  The signs of elements
-     of Y and X are used to determine the quadrats of each resulting
+     of Y and X are used to determine the quadrants of each resulting
      value.
 
      This function is equivalent to ‘arg (complex (X, Y))’.
@@ -6617,7 +7018,8 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
 
  -- : L = legendre (N, X)
  -- : L = legendre (N, X, NORMALIZATION)
-     Compute the Legendre function of degree N and order M = 0 ... N.
+     Compute the associated Legendre function of degree N and order M =
+     0 ... N.
 
      The value N must be a real non-negative integer.
 
@@ -6627,10 +7029,11 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      or "norm".  The default if no normalization is given is "unnorm".
 
      When the optional argument NORMALIZATION is "unnorm", compute the
-     Legendre function of degree N and order M and return all values for
-     M = 0 ... N.  The return value has one dimension more than X.
+     associated Legendre function of degree N and order M and return all
+     values for M = 0 ... N.  The return value has one dimension more
+     than X.
 
-     The Legendre Function of degree N and order M:
+     The associated Legendre function of degree N and order M:
 
            m         m      2  m/2   d^m
           P(x) = (-1) * (1-x  )    * ----  P(x)
@@ -6671,7 +7074,7 @@ File: octave.info,  Node: Special Functions,  Next: Rational Approximations,  Pr
      When the optional argument NORMALIZATION is "norm", compute the
      fully normalized associated Legendre function.  The fully
      normalized associated Legendre function is related to the
-     unnormalized Legendre functions by the following:
+     unnormalized associated Legendre functions by the following:
 
      For Legendre functions of degree N and order M
 
@@ -7273,12 +7676,49 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
  -- : LAMBDA = eig (A, B)
  -- : [V, LAMBDA] = eig (A)
  -- : [V, LAMBDA] = eig (A, B)
-     Compute the eigenvalues (and optionally the eigenvectors) of a
-     matrix or a pair of matrices
+ -- : [V, LAMBDA, W] = eig (A)
+ -- : [V, LAMBDA, W] = eig (A, B)
+ -- : [...] = eig (A, BALANCEOPTION)
+ -- : [...] = eig (A, B, ALGORITHM)
+ -- : [...] = eig (..., EIGVALOPTION)
+     Compute the right eigenvalues(V) and optionally the
+     eigenvectors(lambda) and the left eigenvalues(W) of a matrix or a
+     pair of matrices.
 
-     The algorithm used depends on whether there are one or two input
-     matrices, if they are real or complex, and if they are symmetric
-     (Hermitian if complex) or non-symmetric.
+     The flag BALANCEOPTION can be one of:
+
+     "balance"
+          Preliminary balancing is on.  (default)
+
+     "nobalance"
+          Disables preliminary balancing.
+
+     The flag EIGVALOPTION can be one of:
+
+     "matrix"
+          Return the eigenvalues in a diagonal matrix.  (default if 2 or
+          3 outputs are specified)
+
+     "vector"
+          Return the eigenvalues in a column vector.  (default if 1
+          output is specified, e.g.  LAMBDA = eig (A))
+
+     The flag ALGORITHM can be one of:
+
+     "chol"
+          Uses the Cholesky factorization of B. (default if A is
+          symmetric (Hermitian) and B is symmetric (Hermitian) positive
+          definite)
+
+     "qz"
+          Uses the QZ algorithm.  (When A or B are not symmetric always
+          the QZ algorithm will be used)
+
+                            no flag           chol              qz
+     -----------------------------------------------------------------------------
+     both are symmetric     "chol"            "chol"            "qz"
+     at least one is not    "qz"              "qz"              "qz"
+     symmetric
 
      The eigenvalues returned by ‘eig’ are not ordered.
 
@@ -7981,12 +8421,12 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
           x = R \ C
 
      If the final argument is the scalar 0 and the number of rows is
-     larger than the number of columns, then an ’economy’ factorization
+     larger than the number of columns, then an "economy" factorization
      is returned, omitting zeroes of R and the corresponding columns of
      Q.  That is, R will have only ‘size (A,1)’ rows.  In this case, P
      is a vector rather than a matrix.
 
-     If the final argument is the string ’vector’ then P is a
+     If the final argument is the string "vector" then P is a
      permutation vector instead of a permutation matrix.
 
      See also: *note chol: XREFchol, *note hess: XREFhess, *note lu:
@@ -8037,7 +8477,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      Given a QR factorization of a real or complex matrix A = Q*R,
      Q unitary and R upper trapezoidal, return the QR factorization of
      [A(:,1:j-1), U, A(:,j:n)], where U is a column vector to be
-     inserted into A (if ORIENT is \"col\"), or the QR factorization of
+     inserted into A (if ORIENT is "col"), or the QR factorization of
      [A(1:j-1,:);X;A(:,j:n)], where X is a row ORIENT is "row").  The
      default value of ORIENT is "col".
 
@@ -8365,357 +8805,4 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
      Reference: A. Hodel, P. Misra, ‘Partial Pivoting in the Computation
      of Krylov Subspaces of Large Sparse Systems’, Proceedings of the
      42nd IEEE Conference on Decision and Control, December 2003.
-
-
-File: octave.info,  Node: Functions of a Matrix,  Next: Specialized Solvers,  Prev: Matrix Factorizations,  Up: Linear Algebra
-
-18.4 Functions of a Matrix
-==========================
-
- -- : expm (A)
-     Return the exponential of a matrix.
-
-     The matrix exponential is defined as the infinite Taylor series
-
-          expm (A) = I + A + A^2/2! + A^3/3! + ...
-
-     However, the Taylor series is _not_ the way to compute the matrix
-     exponential; see Moler and Van Loan, ‘Nineteen Dubious Ways to
-     Compute the Exponential of a Matrix’, SIAM Review, 1978.  This
-     routine uses Ward’s diagonal Padé approximation method with three
-     step preconditioning (SIAM Journal on Numerical Analysis, 1977).
-     Diagonal Padé approximations are rational polynomials of matrices
-
-               -1
-          D (A)   N (A)
-
-     whose Taylor series matches the first ‘2q+1’ terms of the Taylor
-     series above; direct evaluation of the Taylor series (with the same
-     preconditioning steps) may be desirable in lieu of the Padé
-     approximation when ‘Dq(A)’ is ill-conditioned.
-
-     See also: *note logm: XREFlogm, *note sqrtm: XREFsqrtm.
-
- -- : S = logm (A)
- -- : S = logm (A, OPT_ITERS)
- -- : [S, ITERS] = logm (...)
-     Compute the matrix logarithm of the square matrix A.
-
-     The implementation utilizes a Padé approximant and the identity
-
-          logm (A) = 2^k * logm (A^(1 / 2^k))
-
-     The optional input OPT_ITERS is the maximum number of square roots
-     to compute and defaults to 100.
-
-     The optional output ITERS is the number of square roots actually
-     computed.
-
-     See also: *note expm: XREFexpm, *note sqrtm: XREFsqrtm.
-
- -- : S = sqrtm (A)
- -- : [S, ERROR_ESTIMATE] = sqrtm (A)
-     Compute the matrix square root of the square matrix A.
-
-     Ref: N.J. Higham.  ‘A New sqrtm for MATLAB’.  Numerical Analysis
-     Report No.  336, Manchester Centre for Computational Mathematics,
-     Manchester, England, January 1999.
-
-     See also: *note expm: XREFexpm, *note logm: XREFlogm.
-
- -- : kron (A, B)
- -- : kron (A1, A2, ...)
-     Form the Kronecker product of two or more matrices.
-
-     This is defined block by block as
-
-          x = [ a(i,j)*b ]
-
-     For example:
-
-          kron (1:4, ones (3, 1))
-               ⇒  1  2  3  4
-                   1  2  3  4
-                   1  2  3  4
-
-     If there are more than two input arguments A1, A2, ..., AN the
-     Kronecker product is computed as
-
-          kron (kron (A1, A2), ..., AN)
-
-     Since the Kronecker product is associative, this is well-defined.
-
- -- : blkmm (A, B)
-     Compute products of matrix blocks.
-
-     The blocks are given as 2-dimensional subarrays of the arrays A, B.
-     The size of A must have the form ‘[m,k,...]’ and size of B must be
-     ‘[k,n,...]’.  The result is then of size ‘[m,n,...]’ and is
-     computed as follows:
-
-          for i = 1:prod (size (A)(3:end))
-            C(:,:,i) = A(:,:,i) * B(:,:,i)
-          endfor
-
- -- : X = syl (A, B, C)
-     Solve the Sylvester equation
-
-          A X + X B = C
-
-     using standard LAPACK subroutines.
-
-     For example:
-
-          sylvester ([1, 2; 3, 4], [5, 6; 7, 8], [9, 10; 11, 12])
-             ⇒ [ 0.50000, 0.66667; 0.66667, 0.50000 ]
-
-
-File: octave.info,  Node: Specialized Solvers,  Prev: Functions of a Matrix,  Up: Linear Algebra
-
-18.5 Specialized Solvers
-========================
-
- -- : X = bicg (A, B, RTOL, MAXIT, M1, M2, X0)
- -- : X = bicg (A, B, RTOL, MAXIT, P)
- -- : [X, FLAG, RELRES, ITER, RESVEC] = bicg (A, B, ...)
-     Solve ‘A x = b’ using the Bi-conjugate gradient iterative method.
-
-        − RTOL is the relative tolerance, if not given or set to [] the
-          default value 1e-6 is used.
-
-        − MAXIT the maximum number of outer iterations, if not given or
-          set to [] the default value ‘min (20, numel (b))’ is used.
-
-        − X0 the initial guess, if not given or set to [] the default
-          value ‘zeros (size (b))’ is used.
-
-     A can be passed as a matrix or as a function handle or inline
-     function ‘f’ such that ‘f(x, "notransp") = A*x’ and ‘f(x, "transp")
-     = A'*x’.
-
-     The preconditioner P is given as ‘P = M1 * M2’.  Both M1 and M2 can
-     be passed as a matrix or as a function handle or inline function
-     ‘g’ such that ‘g(x, "notransp") = M1 \ x’ or ‘g(x, "notransp") = M2
-     \ x’ and ‘g(x, "transp") = M1' \ x’ or ‘g(x, "transp") = M2' \ x’.
-
-     If called with more than one output parameter
-
-        − FLAG indicates the exit status:
-
-             − 0: iteration converged to the within the chosen tolerance
-
-             − 1: the maximum number of iterations was reached before
-               convergence
-
-             − 3: the algorithm reached stagnation
-
-          (the value 2 is unused but skipped for compatibility).
-
-        − RELRES is the final value of the relative residual.
-
-        − ITER is the number of iterations performed.
-
-        − RESVEC is a vector containing the relative residual at each
-          iteration.
-
-     See also: *note bicgstab: XREFbicgstab, *note cgs: XREFcgs, *note
-     gmres: XREFgmres, *note pcg: XREFpcg, *note qmr: XREFqmr.
-
- -- : X = bicgstab (A, B, RTOL, MAXIT, M1, M2, X0)
- -- : X = bicgstab (A, B, RTOL, MAXIT, P)
- -- : [X, FLAG, RELRES, ITER, RESVEC] = bicgstab (A, B, ...)
-     Solve ‘A x = b’ using the stabilizied Bi-conjugate gradient
-     iterative method.
-
-        − RTOL is the relative tolerance, if not given or set to [] the
-          default value 1e-6 is used.
-
-        − MAXIT the maximum number of outer iterations, if not given or
-          set to [] the default value ‘min (20, numel (b))’ is used.
-
-        − X0 the initial guess, if not given or set to [] the default
-          value ‘zeros (size (b))’ is used.
-
-     A can be passed as a matrix or as a function handle or inline
-     function ‘f’ such that ‘f(x) = A*x’.
-
-     The preconditioner P is given as ‘P = M1 * M2’.  Both M1 and M2 can
-     be passed as a matrix or as a function handle or inline function
-     ‘g’ such that ‘g(x) = M1 \ x’ or ‘g(x) = M2 \ x’.
-
-     If called with more than one output parameter
-
-        − FLAG indicates the exit status:
-
-             − 0: iteration converged to the within the chosen tolerance
-
-             − 1: the maximum number of iterations was reached before
-               convergence
-
-             − 3: the algorithm reached stagnation
-
-          (the value 2 is unused but skipped for compatibility).
-
-        − RELRES is the final value of the relative residual.
-
-        − ITER is the number of iterations performed.
-
-        − RESVEC is a vector containing the relative residual at each
-          iteration.
-
-     See also: *note bicg: XREFbicg, *note cgs: XREFcgs, *note gmres:
-     XREFgmres, *note pcg: XREFpcg, *note qmr: XREFqmr.
-
- -- : X = cgs (A, B, RTOL, MAXIT, M1, M2, X0)
- -- : X = cgs (A, B, RTOL, MAXIT, P)
- -- : [X, FLAG, RELRES, ITER, RESVEC] = cgs (A, B, ...)
-     Solve ‘A x = b’, where A is a square matrix, using the Conjugate
-     Gradients Squared method.
-
-        − RTOL is the relative tolerance, if not given or set to [] the
-          default value 1e-6 is used.
-
-        − MAXIT the maximum number of outer iterations, if not given or
-          set to [] the default value ‘min (20, numel (b))’ is used.
-
-        − X0 the initial guess, if not given or set to [] the default
-          value ‘zeros (size (b))’ is used.
-
-     A can be passed as a matrix or as a function handle or inline
-     function ‘f’ such that ‘f(x) = A*x’.
-
-     The preconditioner P is given as ‘P = M1 * M2’.  Both M1 and M2 can
-     be passed as a matrix or as a function handle or inline function
-     ‘g’ such that ‘g(x) = M1 \ x’ or ‘g(x) = M2 \ x’.
-
-     If called with more than one output parameter
-
-        − FLAG indicates the exit status:
-
-             − 0: iteration converged to the within the chosen tolerance
-
-             − 1: the maximum number of iterations was reached before
-               convergence
-
-             − 3: the algorithm reached stagnation
-
-          (the value 2 is unused but skipped for compatibility).
-
-        − RELRES is the final value of the relative residual.
-
-        − ITER is the number of iterations performed.
-
-        − RESVEC is a vector containing the relative residual at each
-          iteration.
-
-     See also: *note pcg: XREFpcg, *note bicgstab: XREFbicgstab, *note
-     bicg: XREFbicg, *note gmres: XREFgmres, *note qmr: XREFqmr.
-
- -- : X = gmres (A, B, M, RTOL, MAXIT, M1, M2, X0)
- -- : X = gmres (A, B, M, RTOL, MAXIT, P)
- -- : [X, FLAG, RELRES, ITER, RESVEC] = gmres (...)
-     Solve ‘A x = b’ using the Preconditioned GMRES iterative method
-     with restart, a.k.a.  PGMRES(m).
-
-        − RTOL is the relative tolerance, if not given or set to [] the
-          default value 1e-6 is used.
-
-        − MAXIT is the maximum number of outer iterations, if not given
-          or set to [] the default value ‘min (10, numel (b) / restart)’
-          is used.
-
-        − X0 is the initial guess, if not given or set to [] the default
-          value ‘zeros (size (b))’ is used.
-
-        − M is the restart parameter, if not given or set to [] the
-          default value ‘numel (b)’ is used.
-
-     Argument A can be passed as a matrix, function handle, or inline
-     function ‘f’ such that ‘f(x) = A*x’.
-
-     The preconditioner P is given as ‘P = M1 * M2’.  Both M1 and M2 can
-     be passed as a matrix, function handle, or inline function ‘g’ such
-     that ‘g(x) = M1\x’ or ‘g(x) = M2\x’.
-
-     Besides the vector X, additional outputs are:
-
-        − FLAG indicates the exit status:
-
-          0 : iteration converged to within the specified tolerance
-
-          1 : maximum number of iterations exceeded
-
-          2 : unused, but skipped for compatibility
-
-          3 : algorithm reached stagnation (no change between iterations)
-
-        − RELRES is the final value of the relative residual.
-
-        − ITER is a vector containing the number of outer iterations and
-          total iterations performed.
-
-        − RESVEC is a vector containing the relative residual at each
-          iteration.
-
-     See also: *note bicg: XREFbicg, *note bicgstab: XREFbicgstab, *note
-     cgs: XREFcgs, *note pcg: XREFpcg, *note pcr: XREFpcr, *note qmr:
-     XREFqmr.
-
- -- : X = qmr (A, B, RTOL, MAXIT, M1, M2, X0)
- -- : X = qmr (A, B, RTOL, MAXIT, P)
- -- : [X, FLAG, RELRES, ITER, RESVEC] = qmr (A, B, ...)
-     Solve ‘A x = b’ using the Quasi-Minimal Residual iterative method
-     (without look-ahead).
-
-        − RTOL is the relative tolerance, if not given or set to [] the
-          default value 1e-6 is used.
-
-        − MAXIT the maximum number of outer iterations, if not given or
-          set to [] the default value ‘min (20, numel (b))’ is used.
-
-        − X0 the initial guess, if not given or set to [] the default
-          value ‘zeros (size (b))’ is used.
-
-     A can be passed as a matrix or as a function handle or inline
-     function ‘f’ such that ‘f(x, "notransp") = A*x’ and ‘f(x, "transp")
-     = A'*x’.
-
-     The preconditioner P is given as ‘P = M1 * M2’.  Both M1 and M2 can
-     be passed as a matrix or as a function handle or inline function
-     ‘g’ such that ‘g(x, "notransp") = M1 \ x’ or ‘g(x, "notransp") = M2
-     \ x’ and ‘g(x, "transp") = M1' \ x’ or ‘g(x, "transp") = M2' \ x’.
-
-     If called with more than one output parameter
-
-        − FLAG indicates the exit status:
-
-             − 0: iteration converged to the within the chosen tolerance
-
-             − 1: the maximum number of iterations was reached before
-               convergence
-
-             − 3: the algorithm reached stagnation
-
-          (the value 2 is unused but skipped for compatibility).
-
-        − RELRES is the final value of the relative residual.
-
-        − ITER is the number of iterations performed.
-
-        − RESVEC is a vector containing the residual norms at each
-          iteration.
-
-     References:
-
-       1. R. Freund and N. Nachtigal, ‘QMR: a quasi-minimal residual
-          method for non-Hermitian linear systems’, Numerische
-          Mathematik, 1991, 60, pp.  315-339.
-
-       2. R. Barrett, M. Berry, T. Chan, J. Demmel, J. Donato, J.
-          Dongarra, V. Eijkhour, R. Pozo, C. Romine, and H. van der
-          Vorst, ‘Templates for the solution of linear systems: Building
-          blocks for iterative methods’, SIAM, 2nd ed., 1994.
-
-     See also: *note bicg: XREFbicg, *note bicgstab: XREFbicgstab, *note
-     cgs: XREFcgs, *note gmres: XREFgmres, *note pcg: XREFpcg.
 

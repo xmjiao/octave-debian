@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2015 John W. Eaton
+Copyright (C) 2003-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -79,3 +79,4 @@ install_b_bm_ops (void)
 
   INSTALL_WIDENOP (octave_bool, octave_bool_matrix, bool_matrix_conv);
 }
+

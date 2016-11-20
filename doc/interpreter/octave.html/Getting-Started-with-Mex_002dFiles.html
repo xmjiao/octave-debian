@@ -100,9 +100,9 @@ mexFunction (int nlhs, mxArray *plhs[],
 <p>The first line <code>#include &quot;mex.h&quot;</code> makes available all of the definitions
 necessary for a mex-file.  One important difference between Octave and
 <small>MATLAB</small> is that the header file <code>&quot;matrix.h&quot;</code> is implicitly included
-through the inclusion of <code>&quot;mex.h&quot;</code>.  This is necessary to avoid a conflict
-with the Octave file <code>&quot;Matrix.h&quot;</code> for operating systems and compilers that
-don&rsquo;t distinguish between filenames in upper and lower case.
+through the inclusion of <code>&quot;mex.h&quot;</code>.  This is necessary to avoid a
+conflict with the Octave file <code>&quot;Matrix.h&quot;</code> for operating systems and
+compilers that don&rsquo;t distinguish between filenames in upper and lower case.
 </p>
 <p>The entry point into the mex-file is defined by <code>mexFunction</code>.  The
 function takes four arguments:

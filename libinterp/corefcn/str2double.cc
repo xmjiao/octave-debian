@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2015 Jaroslav Hajek
+Copyright (C) 2010-2016 Jaroslav Hajek
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -411,3 +411,4 @@ risk of using @code{eval} on unknown data.
 %!assert (str2double ([]), NaN)
 %!assert (str2double (char(zeros(3,0))), NaN)
 */
+

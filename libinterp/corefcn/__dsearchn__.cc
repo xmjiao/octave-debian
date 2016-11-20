@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2015 David Bateman
+Copyright (C) 2007-2016 David Bateman
 
 This file is part of Octave.
 
@@ -99,3 +99,4 @@ Undocumented internal function.
 ## No test needed for internal helper function.
 %!assert (1)
 */
+

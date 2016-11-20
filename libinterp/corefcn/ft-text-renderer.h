@@ -1,7 +1,7 @@
 /*
 
 Copyright (C) 2016 John W. Eaton
-Copyright (C) 2009-2015 Michael Goffioul
+Copyright (C) 2009-2016 Michael Goffioul
 
 This file is part of Octave.
 
@@ -26,8 +26,12 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "octave-config.h"
 
-class base_text_renderer;
+namespace octave
+{
+  class base_text_renderer;
 
-extern base_text_renderer *make_ft_text_renderer (void);
+  extern base_text_renderer *make_ft_text_renderer (void);
+}
 
 #endif
+

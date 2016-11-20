@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -111,7 +111,7 @@ private:
 };
 
 class
-tree_decl_init_list : public octave_base_list<tree_decl_elt *>
+tree_decl_init_list : public octave::base_list<tree_decl_elt *>
 {
 public:
 
@@ -243,3 +243,4 @@ private:
 };
 
 #endif
+

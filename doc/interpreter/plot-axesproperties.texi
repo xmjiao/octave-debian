@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by genpropdoc.m.
 
-@c Copyright (C) 2014-2015 Pantxo Diribarne
+@c Copyright (C) 2014-2016 Pantxo Diribarne
 @c
 @c This file is part of Octave.
 @c
@@ -58,7 +58,7 @@ Light is not yet implemented for axes objects.  @code{ambientlightcolor} is unus
 
 @anchor{XREFaxesbox}
 @cindex axes box
-@item @code{box}: @qcode{"off"} | @{@qcode{"on"}@}
+@item @code{box}: @{@qcode{"off"}@} | @qcode{"on"}
 Control whether the axes has a surrounding box.
 
 
@@ -521,13 +521,13 @@ If @code{visible} is @qcode{"off"}, the axes is not rendered on screen.
 
 @anchor{XREFaxesxaxislocation}
 @cindex axes xaxislocation
-@item @code{xaxislocation}: @{@qcode{"bottom"}@} | @qcode{"top"} | @qcode{"zero"}
+@item @code{xaxislocation}: @{@qcode{"bottom"}@} | @qcode{"origin"} | @qcode{"top"} | @qcode{"zero"}
 
 
 
 @anchor{XREFaxesxcolor}
 @cindex axes xcolor
-@item @code{xcolor}: @{colorspec@} | @qcode{"none"}, def. @code{[0   0   0]}
+@item @code{xcolor}: @{colorspec@} | @qcode{"none"}, def. @code{[0.15000   0.15000   0.15000]}
 Color of the x-axis.  @xref{Colors, , colorspec}.
 
 
@@ -617,13 +617,13 @@ Labels of x tick marks.  Setting @code{xticklabel} also forces the @code{xtickla
 
 @anchor{XREFaxesyaxislocation}
 @cindex axes yaxislocation
-@item @code{yaxislocation}: @{@qcode{"left"}@} | @qcode{"right"} | @qcode{"zero"}
+@item @code{yaxislocation}: @{@qcode{"left"}@} | @qcode{"origin"} | @qcode{"right"} | @qcode{"zero"}
 
 
 
 @anchor{XREFaxesycolor}
 @cindex axes ycolor
-@item @code{ycolor}: @{colorspec@} | @qcode{"none"}, def. @code{[0   0   0]}
+@item @code{ycolor}: @{colorspec@} | @qcode{"none"}, def. @code{[0.15000   0.15000   0.15000]}
 Color of the y-axis.  @xref{Colors, , colorspec}.
 
 
@@ -713,7 +713,7 @@ Labels of y tick marks.  Setting @code{yticklabel} also forces the @code{ytickla
 
 @anchor{XREFaxeszcolor}
 @cindex axes zcolor
-@item @code{zcolor}: @{colorspec@} | @qcode{"none"}, def. @code{[0   0   0]}
+@item @code{zcolor}: @{colorspec@} | @qcode{"none"}, def. @code{[0.15000   0.15000   0.15000]}
 Color of the z-axis.  @xref{Colors, , colorspec}.
 
 

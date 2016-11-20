@@ -1,7 +1,7 @@
 /*
 
 Copyright (C) 2016 John W. Eaton
-Copyright (C) 2005-2015 David Bateman
+Copyright (C) 2005-2016 David Bateman
 
 This file is part of Octave.
 
@@ -31,98 +31,105 @@ along with Octave; see the file COPYING.  If not, see
 #include "dSparse.h"
 #include "CSparse.h"
 
-// If the sparse matrix classes become templated on the element type
-// (i.e., sparse_matrix<double>), then it might be best to make the
-// template parameter of this class also be the element type instead
-// of the matrix type.
-
-template <typename SPARSE_T>
-class
-sparse_qr
+namespace octave
 {
-public:
+  namespace math
+  {
+    // If the sparse matrix classes become templated on the element type
+    // (i.e., sparse_matrix<double>), then it might be best to make the
+    // template parameter of this class also be the element type instead
+    // of the matrix type.
 
-  sparse_qr (void);
+    template <typename SPARSE_T>
+    class
+    sparse_qr
+    {
+    public:
 
-  sparse_qr (const SPARSE_T& a, int order = 0);
+      sparse_qr (void);
 
-  sparse_qr (const sparse_qr& a);
+      sparse_qr (const SPARSE_T& a, int order = 0);
 
-  ~sparse_qr (void);
+      sparse_qr (const sparse_qr& a);
 
-  sparse_qr& operator = (const sparse_qr& a);
+      ~sparse_qr (void);
 
-  bool ok (void) const;
+      sparse_qr& operator = (const sparse_qr& a);
 
-  SPARSE_T V (void) const;
+      bool ok (void) const;
 
-  ColumnVector Pinv (void) const;
+      SPARSE_T V (void) const;
 
-  ColumnVector P (void) const;
+      ColumnVector Pinv (void) const;
 
-  SPARSE_T R (bool econ = false) const;
+      ColumnVector P (void) const;
 
-  typename SPARSE_T::dense_matrix_type
-  C (const typename SPARSE_T::dense_matrix_type& b) const;
+      SPARSE_T R (bool econ = false) const;
 
-  typename SPARSE_T::dense_matrix_type
-  Q (void) const;
+      typename SPARSE_T::dense_matrix_type
+      C (const typename SPARSE_T::dense_matrix_type& b) const;
 
-  template <typename RHS_T, typename RET_T>
-  static RET_T
-  solve (const SPARSE_T& a, const RHS_T& b,
-         octave_idx_type& info);
+      typename SPARSE_T::dense_matrix_type
+      Q (void) const;
 
-private:
+      template <typename RHS_T, typename RET_T>
+      static RET_T
+      solve (const SPARSE_T& a, const RHS_T& b,
+             octave_idx_type& info);
 
-  class sparse_qr_rep;
+    private:
 
-  sparse_qr_rep *rep;
+      class sparse_qr_rep;
 
-  template <typename RHS_T, typename RET_T>
-  RET_T
-  tall_solve (const RHS_T& b, octave_idx_type& info) const;
+      sparse_qr_rep *rep;
 
-  template <typename RHS_T, typename RET_T>
-  RET_T
-  wide_solve (const RHS_T& b, octave_idx_type& info) const;
-};
+      template <typename RHS_T, typename RET_T>
+      RET_T
+      tall_solve (const RHS_T& b, octave_idx_type& info) const;
 
-// Provide qrsolve for backward compatibility.
+      template <typename RHS_T, typename RET_T>
+      RET_T
+      wide_solve (const RHS_T& b, octave_idx_type& info) const;
+    };
 
-extern Matrix
-qrsolve (const SparseMatrix& a, const MArray<double>& b,
-         octave_idx_type& info);
+    // Provide qrsolve for backward compatibility.
 
-extern SparseMatrix
-qrsolve (const SparseMatrix& a, const SparseMatrix& b,
-         octave_idx_type& info);
+    extern Matrix
+    qrsolve (const SparseMatrix& a, const MArray<double>& b,
+             octave_idx_type& info);
 
-extern ComplexMatrix
-qrsolve (const SparseMatrix& a, const MArray<Complex>& b,
-         octave_idx_type& info);
+    extern SparseMatrix
+    qrsolve (const SparseMatrix& a, const SparseMatrix& b,
+             octave_idx_type& info);
 
-extern SparseComplexMatrix
-qrsolve (const SparseMatrix& a, const SparseComplexMatrix& b,
-         octave_idx_type& info);
+    extern ComplexMatrix
+    qrsolve (const SparseMatrix& a, const MArray<Complex>& b,
+             octave_idx_type& info);
 
-extern ComplexMatrix
-qrsolve (const SparseComplexMatrix& a, const MArray<double>& b,
-         octave_idx_type& info);
+    extern SparseComplexMatrix
+    qrsolve (const SparseMatrix& a, const SparseComplexMatrix& b,
+             octave_idx_type& info);
 
-extern SparseComplexMatrix
-qrsolve (const SparseComplexMatrix& a, const SparseMatrix& b,
-         octave_idx_type& info);
+    extern ComplexMatrix
+    qrsolve (const SparseComplexMatrix& a, const MArray<double>& b,
+             octave_idx_type& info);
 
-extern ComplexMatrix
-qrsolve (const SparseComplexMatrix& a, const MArray<Complex>& b,
-         octave_idx_type& info);
+    extern SparseComplexMatrix
+    qrsolve (const SparseComplexMatrix& a, const SparseMatrix& b,
+             octave_idx_type& info);
 
-extern SparseComplexMatrix
-qrsolve (const SparseComplexMatrix& a, const SparseComplexMatrix& b,
-         octave_idx_type& info);
+    extern ComplexMatrix
+    qrsolve (const SparseComplexMatrix& a, const MArray<Complex>& b,
+             octave_idx_type& info);
 
-typedef sparse_qr<SparseMatrix> SparseQR;
-typedef sparse_qr<SparseComplexMatrix> SparseComplexQR;
+    extern SparseComplexMatrix
+    qrsolve (const SparseComplexMatrix& a, const SparseComplexMatrix& b,
+             octave_idx_type& info);
+
+    typedef sparse_qr<SparseMatrix> SparseQR;
+    typedef sparse_qr<SparseComplexMatrix> SparseComplexQR;
+  }
+}
 
 #endif
+

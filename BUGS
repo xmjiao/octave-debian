@@ -286,7 +286,7 @@ Octave bug tracker at <http://bugs.octave.org>.  But before you submit a
 bug report, please read <http://www.octave.org/bugs.html> to learn how
 to submit a useful bug report.
 
-1.D How to distinguish between Octave and Matlab
+1.D How to Distinguish Between Octave and Matlab
 ================================================
 
 Octave and MATLAB are very similar, but handle Java slightly different.

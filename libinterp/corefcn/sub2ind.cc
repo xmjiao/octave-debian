@@ -112,7 +112,7 @@ ind = sub2ind ([3, 3], s1, s2)
           if (j > 0 && args(j+1).dims () != args(1).dims ())
             error ("sub2ind: all subscripts must be of the same size");
         }
-      catch (index_exception& e)
+      catch (octave::index_exception& e)
         {
           e.set_pos_if_unset (nargin-1, j+1);
           e.set_var ();
@@ -234,10 +234,10 @@ r = ind2sub (dims, ind)
     {
       retval = Array<octave_value> (ind2sub (dv, args(1).index_vector ()));
     }
-  catch (const index_exception& e)
+  catch (const octave::index_exception& e)
     {
       error ("ind2sub: Invalid index %s. %s", e.idx ().c_str (),
-        e.details ().c_str ());
+             e.details ().c_str ());
     }
 
   return retval;
@@ -282,3 +282,4 @@ r = ind2sub (dims, ind)
 %!error <index out of range> ind2sub ([2, 2, 2], 1:9);
 %!error <Invalid index> ind2sub ([2, 2, 2], -1:8);
 */
+

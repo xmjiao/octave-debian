@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2015 David Bateman
+Copyright (C) 2006-2016 David Bateman
 
 This file is part of Octave.
 
@@ -306,7 +306,7 @@ used per default.
 #if defined (HAVE_FFTW3_THREADS)
         retval = octave_value (octave_fftw_planner::threads());
 #else
-      retval = 1;
+        retval = 1;
 #endif
     }
   else
@@ -372,8 +372,8 @@ used per default.
 %!   fftw ("threads", n);
 %! end_unwind_protect
 
-%!error <Invalid call to fftw> fftw ()
-%!error <Invalid call to fftw> fftw ("planner", "estimate", "measure")
+%!error <Invalid call to fftw|was unavailable or disabled> fftw ()
+%!error <Invalid call to fftw|was unavailable or disabled> fftw ("planner", "estimate", "measure")
 %!error fftw (3)
 %!error fftw ("invalid")
 %!error fftw ("planner", "invalid")
@@ -383,3 +383,4 @@ used per default.
 %!error fftw ("threads", "invalid")
 %!error fftw ("threads", -3)
  */
+

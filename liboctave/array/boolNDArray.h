@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2015 John W. Eaton
+Copyright (C) 2003-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -120,3 +120,4 @@ BSXFUN_OP_DECL (and, boolNDArray, OCTAVE_API);
 BSXFUN_OP_DECL (or, boolNDArray, OCTAVE_API);
 
 #endif
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2015 John W. Eaton
+Copyright (C) 1993-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,10 +28,10 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 
 #include "cmd-edit.h"
-#include "f77-fcn.h"
 #include "file-ops.h"
 #include "file-stat.h"
 #include "fpucw-wrappers.h"
+#include "lo-blas-proto.h"
 #include "lo-error.h"
 #include "oct-env.h"
 #include "str-vec.h"
@@ -80,14 +80,6 @@ bool octave_interpreter_ready = false;
 
 // TRUE means we've processed all the init code and we are good to go.
 bool octave_initialized = false;
-
-// Kluge.
-extern "C"
-{
-  F77_RET_T
-  F77_FUNC (xerbla, XERBLA) (F77_CONST_CHAR_ARG_DECL, const F77_INT&
-                             F77_CHAR_ARG_LEN_DECL);
-}
 
 DEFUN (__version_info__, args, ,
        doc: /* -*- texinfo -*-
@@ -370,24 +362,24 @@ safe_source_file (const std::string& file_name,
     {
       source_file (file_name, context, verbose, require_file, warn_for);
     }
-  catch (const index_exception& e)
+  catch (const octave::index_exception& e)
     {
       recover_from_exception ();
 
       std::cerr << "error: index exception in " << file_name << ": "
                 << e.message () << std::endl;
     }
-  catch (const octave_exit_exception& ex)
+  catch (const octave::exit_exception& ex)
     {
       recover_from_exception ();
 
       clean_up_and_exit (ex.exit_status (), ex.safe_to_return ());
     }
-  catch (const octave_interrupt_exception&)
+  catch (const octave::interrupt_exception&)
     {
       recover_from_exception ();
     }
-  catch (const octave_execution_exception&)
+  catch (const octave::execution_exception&)
     {
       recover_from_exception ();
 
@@ -404,24 +396,24 @@ execute_pkg_add (const std::string& dir)
     {
       load_path::execute_pkg_add (dir);
     }
-  catch (const index_exception& e)
+  catch (const octave::index_exception& e)
     {
       recover_from_exception ();
 
       std::cerr << "error: index exception in " << file_name << ": "
                 << e.message () << std::endl;
     }
-  catch (const octave_exit_exception& ex)
+  catch (const octave::exit_exception& ex)
     {
       recover_from_exception ();
 
       clean_up_and_exit (ex.exit_status (), ex.safe_to_return ());
     }
-  catch (const octave_interrupt_exception&)
+  catch (const octave::interrupt_exception&)
     {
       recover_from_exception ();
     }
-  catch (const octave_execution_exception&)
+  catch (const octave::execution_exception&)
     {
       recover_from_exception ();
 
@@ -686,7 +678,7 @@ namespace octave
           {
             parse_status = execute_eval_option_code (code_to_eval);
           }
-        catch (const octave_execution_exception&)
+        catch (const octave::execution_exception&)
           {
             recover_from_exception ();
 
@@ -719,7 +711,7 @@ namespace octave
 
             execute_command_line_file (script_args[0]);
           }
-        catch (const octave_execution_exception&)
+        catch (const octave::execution_exception&)
           {
             recover_from_exception ();
 
@@ -796,17 +788,17 @@ namespace octave
       {
         eval_string (code, false, parse_status, 0);
       }
-    catch (const octave_exit_exception& ex)
+    catch (const octave::exit_exception& ex)
       {
         recover_from_exception ();
 
         clean_up_and_exit (ex.exit_status (), ex.safe_to_return ());
       }
-    catch (const octave_interrupt_exception&)
+    catch (const octave::interrupt_exception&)
       {
         recover_from_exception ();
       }
-    catch (const octave_execution_exception&)
+    catch (const octave::execution_exception&)
       {
         recover_from_exception ();
 
@@ -922,13 +914,13 @@ namespace octave
                   break;
               }
           }
-        catch (const octave_exit_exception& ex)
+        catch (const octave::exit_exception& ex)
           {
             recover_from_exception ();
 
             clean_up_and_exit (ex.exit_status (), ex.safe_to_return ());
           }
-        catch (const octave_interrupt_exception&)
+        catch (const octave::interrupt_exception&)
           {
             recover_from_exception ();
 
@@ -936,7 +928,7 @@ namespace octave
             if (octave::application::interactive ())
               octave_stdout << "\n";
           }
-        catch (const index_exception& e)
+        catch (const octave::index_exception& e)
           {
             recover_from_exception ();
 
@@ -944,7 +936,7 @@ namespace octave
                       << e.message () << " -- trying to return to prompt"
                       << std::endl;
           }
-        catch (const octave_execution_exception& e)
+        catch (const octave::execution_exception& e)
           {
             std::string stack_trace = e.info ();
 
@@ -1078,15 +1070,17 @@ namespace octave
         else
           {
             // What should we do here?  We might be called from some
-            // location other than the end of octave_execute_interpreter,
+            // location other than the end of octave::interpreter::execute
             // so it might not be safe to return.
 
             // We have nothing else to do at this point, and the
             // octave_link::exit function is supposed to take care of
-            // exiting for us.  Assume that job won't take more than a
-            // day...
+            // exiting for us.  Hang here forever so we never return.
 
-            octave_sleep (86400); // FIXME: really needed?
+            while (true)
+              {
+                octave_sleep (1);
+              }
           }
       }
     else
@@ -1096,3 +1090,4 @@ namespace octave
       }
   }
 }
+

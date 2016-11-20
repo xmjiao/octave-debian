@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2007-2015 John W. Eaton and David Bateman
+@c Copyright (C) 2007-2016 John W. Eaton and David Bateman
 @c
 @c This file is part of Octave.
 @c
@@ -50,7 +50,7 @@ circum-circle.  However, in some cases, and in particular for the
 case of a regular grid, 4 or more points can be on a single
 circum-circle.  In this case the Delaunay triangulation is not unique.
 
-@c delaunay scripts/scripts/geometry/delaunay.m
+@c delaunay scripts/geometry/delaunay.m
 @anchor{XREFdelaunay}
 @deftypefn  {} {@var{tri} =} delaunay (@var{x}, @var{y})
 @deftypefnx {} {@var{tetr} =} delaunay (@var{x}, @var{y}, @var{z})
@@ -110,7 +110,7 @@ Delaunay circum-circle criteria.  Similarly, @code{delaunayn} returns the
 N-dimensional simplex satisfying the Delaunay circum-circle criteria.
 The N-dimensional extension of a triangulation is called a tessellation.
 
-@c delaunayn scripts/scripts/geometry/delaunayn.m
+@c delaunayn scripts/geometry/delaunayn.m
 @anchor{XREFdelaunayn}
 @deftypefn  {} {@var{T} =} delaunayn (@var{pts})
 @deftypefnx {} {@var{T} =} delaunayn (@var{pts}, @var{options})
@@ -184,7 +184,7 @@ Octave has the functions @code{triplot}, @code{trimesh}, and @code{trisurf}
 to plot the Delaunay triangulation of a 2-dimensional set of points.
 @code{tetramesh} will plot the triangulation of a 3-dimensional set of points.
 
-@c triplot scripts/scripts/plot/draw/triplot.m
+@c triplot scripts/plot/draw/triplot.m
 @anchor{XREFtriplot}
 @deftypefn  {} {} triplot (@var{tri}, @var{x}, @var{y})
 @deftypefnx {} {} triplot (@var{tri}, @var{x}, @var{y}, @var{linespec})
@@ -205,7 +205,7 @@ patch object.
 @end deftypefn
 
 
-@c trimesh scripts/scripts/plot/draw/trimesh.m
+@c trimesh scripts/plot/draw/trimesh.m
 @anchor{XREFtrimesh}
 @deftypefn  {} {} trimesh (@var{tri}, @var{x}, @var{y}, @var{z}, @var{c})
 @deftypefnx {} {} trimesh (@var{tri}, @var{x}, @var{y}, @var{z})
@@ -241,7 +241,7 @@ object.
 @end deftypefn
 
 
-@c trisurf scripts/scripts/plot/draw/trisurf.m
+@c trisurf scripts/plot/draw/trisurf.m
 @anchor{XREFtrisurf}
 @deftypefn  {} {} trisurf (@var{tri}, @var{x}, @var{y}, @var{z}, @var{c})
 @deftypefnx {} {} trisurf (@var{tri}, @var{x}, @var{y}, @var{z})
@@ -275,7 +275,7 @@ object.
 @end deftypefn
 
 
-@c tetramesh scripts/scripts/plot/draw/tetramesh.m
+@c tetramesh scripts/plot/draw/tetramesh.m
 @anchor{XREFtetramesh}
 @deftypefn  {} {} tetramesh (@var{T}, @var{X})
 @deftypefnx {} {} tetramesh (@var{T}, @var{X}, @var{C})
@@ -419,7 +419,7 @@ convex hull, @var{idx} is NaN.
 @end deftypefn
 
 
-@c tsearchn scripts/scripts/geometry/tsearchn.m
+@c tsearchn scripts/geometry/tsearchn.m
 @anchor{XREFtsearchn}
 @deftypefn  {} {@var{idx} =} tsearchn (@var{x}, @var{t}, @var{xi})
 @deftypefnx {} {[@var{idx}, @var{p}] =} tsearchn (@var{x}, @var{t}, @var{xi})
@@ -475,7 +475,7 @@ necessarily have to be in the tessellation, and even if it the returned
 point of the tessellation does not have to be one of the vertexes of the
 N-simplex within which the desired point is found.
 
-@c dsearch scripts/scripts/geometry/dsearch.m
+@c dsearch scripts/geometry/dsearch.m
 @anchor{XREFdsearch}
 @deftypefn  {} {@var{idx} =} dsearch (@var{x}, @var{y}, @var{tri}, @var{xi}, @var{yi})
 @deftypefnx {} {@var{idx} =} dsearch (@var{x}, @var{y}, @var{tri}, @var{xi}, @var{yi}, @var{s})
@@ -487,7 +487,7 @@ The variable @var{s} is accepted for compatibility but is ignored.
 @end deftypefn
 
 
-@c dsearchn scripts/scripts/geometry/dsearchn.m
+@c dsearchn scripts/geometry/dsearchn.m
 @anchor{XREFdsearchn}
 @deftypefn  {} {@var{idx} =} dsearchn (@var{x}, @var{tri}, @var{xi})
 @deftypefnx {} {@var{idx} =} dsearchn (@var{x}, @var{tri}, @var{xi}, @var{outval})
@@ -540,7 +540,7 @@ Delaunay triangulation of a set of points, in that the vertexes of the
 Voronoi tessellation are the centers of the circum-circles of the
 simplices of the Delaunay tessellation.
 
-@c voronoi scripts/scripts/geometry/voronoi.m
+@c voronoi scripts/geometry/voronoi.m
 @anchor{XREFvoronoi}
 @deftypefn  {} {} voronoi (@var{x}, @var{y})
 @deftypefnx {} {} voronoi (@var{x}, @var{y}, @var{options})
@@ -584,7 +584,7 @@ legend ("", "points", "hull");
 @end deftypefn
 
 
-@c voronoin scripts/scripts/geometry/voronoin.m
+@c voronoin scripts/geometry/voronoin.m
 @anchor{XREFvoronoin}
 @deftypefn  {} {[@var{C}, @var{F}] =} voronoin (@var{pts})
 @deftypefnx {} {[@var{C}, @var{F}] =} voronoin (@var{pts}, @var{options})
@@ -650,7 +650,7 @@ Additional information about the size of the facets of a Voronoi
 diagram, and which points of a set of points is in a polygon can be had
 with the @code{polyarea} and @code{inpolygon} functions respectively.
 
-@c polyarea scripts/scripts/general/polyarea.m
+@c polyarea scripts/general/polyarea.m
 @anchor{XREFpolyarea}
 @deftypefn  {} {} polyarea (@var{x}, @var{y})
 @deftypefnx {} {} polyarea (@var{x}, @var{y}, @var{dim})
@@ -687,7 +687,7 @@ Facets of the Voronoi diagram with a vertex at infinity have infinity
 area.  A simplified version of @code{polyarea} for rectangles is
 available with @code{rectint}
 
-@c rectint scripts/scripts/geometry/rectint.m
+@c rectint scripts/geometry/rectint.m
 @anchor{XREFrectint}
 @deftypefn {} {@var{area} =} rectint (@var{a}, @var{b})
 Compute area or volume of intersection of rectangles or N-D boxes.
@@ -711,7 +711,7 @@ j-th row of b.
 @end deftypefn
 
 
-@c inpolygon scripts/scripts/geometry/inpolygon.m
+@c inpolygon scripts/geometry/inpolygon.m
 @anchor{XREFinpolygon}
 @deftypefn  {} {@var{in} =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{yv})
 @deftypefnx {} {[@var{in}, @var{on}] =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{yv})
@@ -762,7 +762,7 @@ containing all of the points.  Octave has the functions @code{convhull}
 and @code{convhulln} to calculate the convex hull of 2-dimensional and
 N-dimensional sets of points.
 
-@c convhull scripts/scripts/geometry/convhull.m
+@c convhull scripts/geometry/convhull.m
 @anchor{XREFconvhull}
 @deftypefn  {} {@var{H} =} convhull (@var{x}, @var{y})
 @deftypefnx {} {@var{H} =} convhull (@var{x}, @var{y}, @var{options})
@@ -854,7 +854,7 @@ desired points are found are identified.  Finally the vertices of the simplices
 are used to interpolate to the desired points.  The functions that perform this
 interpolation are @code{griddata}, @code{griddata3} and @code{griddatan}.
 
-@c griddata scripts/scripts/geometry/griddata.m
+@c griddata scripts/geometry/griddata.m
 @anchor{XREFgriddata}
 @deftypefn  {} {@var{zi} =} griddata (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi})
 @deftypefnx {} {@var{zi} =} griddata (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi}, @var{method})
@@ -875,7 +875,7 @@ The interpolation method can be @qcode{"nearest"}, @qcode{"cubic"} or
 @end deftypefn
 
 
-@c griddata3 scripts/scripts/geometry/griddata3.m
+@c griddata3 scripts/geometry/griddata3.m
 @anchor{XREFgriddata3}
 @deftypefn  {} {@var{vi} =} griddata3 (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi})
 @deftypefnx {} {@var{vi} =} griddata3 (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi}, @var{method})
@@ -897,7 +897,7 @@ values.
 @end deftypefn
 
 
-@c griddatan scripts/scripts/geometry/griddatan.m
+@c griddatan scripts/geometry/griddatan.m
 @anchor{XREFgriddatan}
 @deftypefn  {} {@var{yi} =} griddatan (@var{x}, @var{y}, @var{xi})
 @deftypefnx {} {@var{yi} =} griddatan (@var{x}, @var{y}, @var{xi}, @var{method})

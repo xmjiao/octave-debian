@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2015 David Bateman
+Copyright (C) 2008-2016 David Bateman
 
 This file is part of Octave.
 
@@ -293,3 +293,4 @@ num2hex (single ([-1, 1, e, Inf]))
 %!error num2hex (1,2)
 %!error num2hex (1j)
 */
+

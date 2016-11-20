@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,7 +28,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "error.h"
 #include "errwarn.h"
 #include "ovl.h"
-#include "utils.h"
 #include "ops.h"
 #include "ov-re-diag.h"
 #include "ov-cx-diag.h"
@@ -61,11 +60,7 @@ where @code{sigma_max (@var{x})} is the maximal singular value of @var{x}.
 
   octave_value arg = args(0);
 
-  int arg_is_empty = empty_arg ("pinv", arg.rows (), arg.columns ());
-
-  if (arg_is_empty < 0)
-    return ovl ();
-  else if (arg_is_empty > 0)
+  if (arg.is_empty ())
     return ovl (Matrix ());
 
   octave_value retval;
@@ -195,3 +190,4 @@ where @code{sigma_max (@var{x})} is the maximal singular value of @var{x}.
 %! assert (diag (y), [1/3 1/2 0 0 0]');
 
 */
+

@@ -1,5 +1,7 @@
-## Copyright (C) 2013, Roberto Porcu' <roberto.porcu@polimi.it>
-## Copyright (C) 2006-2012, Thomas Treichl <treichl@users.sourceforge.net>
+## Copyright (C) 2016 Carlo de Falco
+## Copyright (C) 2016 Francesco Faccio <francesco.faccio@mail.polimi.it>
+## Copyright (C) 2013-2016 Roberto Porcu' <roberto.porcu@polimi.it>
+## Copyright (C) 2006-2012 Thomas Treichl <treichl@users.sourceforge.net>
 ##
 ## This file is part of Octave.
 ##
@@ -18,194 +20,183 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {} {} odeset ()
+## @deftypefn  {} {@var{odestruct} =} odeset ()
 ## @deftypefnx {} {@var{odestruct} =} odeset (@var{"field1"}, @var{value1}, @var{"field2"}, @var{value2}, @dots{})
 ## @deftypefnx {} {@var{odestruct} =} odeset (@var{oldstruct}, @var{"field1"}, @var{value1}, @var{"field2"}, @var{value2}, @dots{})
 ## @deftypefnx {} {@var{odestruct} =} odeset (@var{oldstruct}, @var{newstruct})
+## @deftypefnx {} {} odeset ()
 ##
 ## Create or modify an ODE options structure.
 ##
-## When called without an input argument, return a new ODE options structure
-## that contains all possible fields initialized to their default values.
+## When called with no input argument and one output argument, return a new ODE
+## options structure that contains all possible fields initialized to their
+## default values.  If no output argument is requested, display a list of
+## the common ODE solver options along with their default value.
 ##
-## If called with string input arguments @var{"field1"}, @var{"field2"},
-## @dots{} identifying valid ODE options then return a new ODE options
-## structure with all possible fields initialized @strong{and} set the values
-## of the fields @var{"field1"}, @var{"field2"}, @dots{} to the values
-## @var{value1}, @var{value2}, @dots{}
+## If called with name-value input argument pairs @var{"field1"},
+## @var{"value1"}, @var{"field2"}, @var{"value2"}, @dots{} return a new
+## ODE options structure with all the most common option fields
+## initialized, @strong{and} set the values of the fields @var{"field1"},
+## @var{"field2"}, @dots{} to the values @var{value1}, @var{value2},
+## @dots{}.
 ##
-## If called with an input structure @var{oldstruct} then overwrite the values
-## of the options @var{"field1"}, @var{"field2"}, @dots{} with new values
-## @var{value1}, @var{value2}, @dots{} and return the modified structure.
+## If called with an input structure @var{oldstruct} then overwrite the
+## values of the options @var{"field1"}, @var{"field2"}, @dots{} with
+## new values @var{value1}, @var{value2}, @dots{} and return the
+## modified structure.
 ##
 ## When called with two input ODE options structures @var{oldstruct} and
-## @var{newstruct} overwrite all values from the structure @var{oldstruct} with
-## new values from the structure @var{newstruct}.  Empty values in
-## @var{newstruct} will not overwrite values in @var{oldstruct}.
+## @var{newstruct} overwrite all values from the structure
+## @var{oldstruct} with new values from the structure @var{newstruct}.
+## Empty values in @var{newstruct} will not overwrite values in
+## @var{oldstruct}.
+##
+## The most commonly used ODE options, which are always assigned a value
+## by @qcode{odeset}, are the following:
+##
+## @table @asis
+## @item AbsTol
+## Absolute error tolerance.
+##
+## @item BDF
+## Use BDF formulas in implicit multistep methods.
+## @strong{Note:} This option is not yet implemented.
+##
+## @item Events
+## Event function. An event function must have the form
+## @code{[value, isterminal, direction] = my_events_f (t, y)}
+##
+## @item InitialSlope
+## Consistent initial slope vector for DAE solvers.
+##
+## @item InitialStep
+## Initial time step size.
+##
+## @item Jacobian
+## Jacobian matrix, specified as a constant matrix or a function of
+## time and state.
+##
+## @item JConstant
+## Specify whether the Jacobian is a constant matrix or depends on the
+## state.
+##
+## @item JPattern
+## If the Jacobian matrix is sparse and non-constant but maintains a
+## constant sparsity pattern, specify the sparsity pattern.
+##
+## @item Mass
+## Mass matrix, specified as a constant matrix or a function of
+## time and state.
+##
+## @item MassSingular
+## Specify whether the mass matrix is singular. Accepted values include
+## @qcode{"yes"}, @qcode{"no"}, @qcode{"maybe"}.
+##
+## @item MaxOrder
+## Maximum order of formula.
+##
+## @item MaxStep
+## Maximum time step value.
+##
+## @item MStateDependence
+## Specify whether the mass matrix depends on the state or only on time.
+##
+## @item MvPattern
+## If the mass matrix is sparse and non-constant but maintains a
+## constant sparsity pattern, specify the sparsity pattern.
+## @strong{Note:} This option is not yet implemented.
+##
+## @item NonNegative
+## Specify elements of the state vector that are expected to remain
+## nonnegative during the simulation.
+##
+## @item NormControl
+## Control error relative to the 2-norm of the solution, rather than its
+## absolute value.
+##
+## @item OutputFcn
+## Function to monitor the state during the simulation. For the form of
+## the function to use see @qcode{odeplot}.
+##
+## @item OutputSel
+## Indices of elements of the state vector to be passed to the output
+## monitoring function.
+##
+## @item Refine
+## Specify whether output should be returned only at the end of each
+## time step or also at intermediate time instances. The value should be
+## a scalar indicating the number of equally spaced time points to use
+## within each timestep at which to return output.
+## @strong{Note:} This option is not yet implemented.
+##
+## @item RelTol
+## Relative error tolerance.
+##
+## @item Stats
+## Print solver statistics after simulation.
+##
+## @item Vectorized
+## Specify whether @qcode{odefun} can be passed multiple values of the
+## state at once.
+##
+## @end table
+##
+## Field names that are not in the above list are also accepted and
+## added to the result structure.
+##
 ## @seealso{odeget}
 ## @end deftypefn
 
 function odestruct = odeset (varargin)
 
-  ## Column vector of all possible ODE options
-  persistent options = known_option_names ();
+  persistent p;
 
-  if (nargin == 0)
-    ## Special calling syntax to display defaults
-    if (nargout == 0)
-      print_options ();
-    else
-      odestruct = cell2struct (cell (numel (options), 1), options);
-    endif
-    return;
+  if (isempty (p))
+    ## FIXME: Add an inexact match option once it is available in inputParser.
+    ## See bug #49364.
+    p = inputParser ();
+    p.addParameter ("AbsTol", []);
+    p.addParameter ("BDF", []);
+    p.addParameter ("Events", []);
+    p.addParameter ("InitialSlope", []);
+    p.addParameter ("InitialStep", []);
+    p.addParameter ("Jacobian", []);
+    p.addParameter ("JConstant", []);
+    p.addParameter ("JPattern", []);
+    p.addParameter ("Mass", []);
+    p.addParameter ("MassSingular", []);
+    p.addParameter ("MaxOrder", []);
+    p.addParameter ("MaxStep", []);
+    p.addParameter ("MStateDependence", []);
+    p.addParameter ("MvPattern", []);
+    p.addParameter ("NonNegative", []);
+    p.addParameter ("NormControl", []);
+    p.addParameter ("OutputFcn", []);
+    p.addParameter ("OutputSel", []);
+    p.addParameter ("Refine", []);
+    p.addParameter ("RelTol", []);
+    p.addParameter ("Stats", []);
+    p.addParameter ("Vectorized", []);
+    p.KeepUnmatched = true;
   endif
 
-  ## initialize output
-  odestruct = cell2struct (cell (numel (options), 1), options);
-
-  if (isstruct (varargin{1}))
-    oldstruct = varargin{1};
-
-    ## Copy oldstruct values into output odestruct
-    for [val, name] = oldstruct
-
-      exactmatch = true;
-      match = find (strcmpi (name, options));
-      if (isempty (match))
-        match = find (strncmpi (name, options, length (name)));
-        exactmatch = false;
-      endif
-
-      if (isempty (match))
-        odestruct.(name) = val;
-      elseif (numel (match) == 1)
-        if (! exactmatch)
-          warning ("odeset:NoExactMatching",
-                   "no exact match for '%s'.  Assuming '%s'.",
-                   name, options{match});
-        endif
-        odestruct.(options{match}) = val;
-      else
-        error ("odeset: no exact match for '%s'.  Possible fields found: %s.",
-               name, strjoin (options(match), ", "));
-      endif
-
-      if (nargin == 1)
-        ## Check if all changes have resulted in a valid ODEOPT struct
-        ode_struct_value_check ("odeset", odestruct);
-        return;
-      endif
-
-    endfor
-
-    ## At this point, odestruct has been initialized with default values,
-    ## and if oldstruct was present it has overwritten fields in odestruct.
-
-    if (nargin == 2 && isstruct (varargin{2}))
-      newstruct = varargin{2};
-
-      ## Update the first struct with the values from the second one
-      for [val, name] = newstruct
-
-        exactmatch = true;
-        match = find (strcmpi (name, options));
-        if (isempty (match))
-          match = find (strncmpi (name, options, length (name)));
-          exactmatch = false;
-        endif
-
-        if (isempty (match))
-          odestruct.(name) = val;
-        elseif (numel (match) == 1)
-          if (! exactmatch)
-            warning ("odeset:NoExactMatching",
-                     "no exact match for '%s'.  Assuming '%s'.",
-                     name, options{match});
-          endif
-          odestruct.(options{match}) = val;
-        else
-          error ("odeset: no exact match for '%s'.  Possible fields found: %s.",
-                 name, strjoin (options(match), ", "));
-        endif
-      endfor
-
-      ## Check if all changes have resulted in a valid ODEOPT struct
-      ode_struct_value_check ("odeset", odestruct);
-      return;
-    endif
-
-    ## Second argument is not a struct
-    if (mod (nargin, 2) != 1)
-      error ("odeset: FIELD/VALUE arguments must occur in pairs");
-    endif
-    if (! all (cellfun ("isclass", varargin(2:2:end), "char")))
-      error ("odeset: All FIELD names must be strings");
-    endif
-
-    ## Write new field/value pairs into odestruct
-    for i = 2:2:nargin
-      name = varargin{i};
-
-      exactmatch = true;
-      match = find (strcmpi (name, options));
-      if (isempty (match))
-        match = find (strncmpi (name, options, length (name)));
-        exactmatch = false;
-      endif
-
-      if (isempty (match))
-        odestruct.(name) = varargin{i+1};
-      elseif (numel (match) == 1)
-        if (! exactmatch)
-          warning ("odeset:NoExactMatching",
-                   "no exact match for '%s'.  Assuming '%s'.",
-                   name, options{match});
-        endif
-        odestruct.(options{match}) = varargin{i+1};
-      else
-        error ("odeset: no exact match for '%s'.  Possible fields found: %s.",
-               name, strjoin (options(match), ", "));
-      endif
-    endfor
-
-    ## Check if all changes have resulted in a valid ODEOPT struct
-    ode_struct_value_check ("odeset", odestruct);
-
+  if (nargin == 0 && nargout == 0)
+    print_options ();
   else
-    ## First input argument was not a struct, must be field/value pairs
-    if (mod (nargin, 2) != 0)
-      error ("odeset: FIELD/VALUE arguments must occur in pairs");
-    elseif (! all (cellfun ("isclass", varargin(1:2:end), "char")))
-      error ("odeset: All FIELD names must be strings");
+    p.parse (varargin{:});
+    odestruct = p.Results;
+    odestruct_extra = p.Unmatched;
+
+    xtra_fields = fieldnames (odestruct_extra);
+    if (! isempty (xtra_fields))
+      ## Merge extra fields into existing odestruct
+      for fldname = sort (xtra_fields.')
+        fldname = fldname{1};
+        warning ("Octave:invalid-input-arg",
+                 "odeset: unknown option \"%s\"\n", fldname);
+        odestruct.(fldname) = odestruct_extra.(fldname);
+      endfor
     endif
-
-    for i = 1:2:nargin
-      name = varargin{i};
-
-      exactmatch = true;
-      match = find (strcmpi (name, options));
-      if (isempty (match))
-        match = find (strncmpi (name, options, length (name)));
-        exactmatch = false;
-      endif
-
-      if (isempty (match))
-        odestruct.(name) = varargin{i+1};
-      elseif (numel (match) == 1)
-        if (! exactmatch)
-          warning ("odeset:NoExactMatching",
-                   "no exact match for '%s'.  Assuming '%s'.",
-                   name, options{match});
-        endif
-        odestruct.(options{match}) = varargin{i+1};
-      else
-        error ("odeset: no exact match for '%s'.  Possible fields found: %s.",
-               name, strjoin (options(match), ", "));
-      endif
-    endfor
-
-    ## Check if all changes have resulted in a valid ODEOPT struct
-    ode_struct_value_check ("odeset", odestruct);
 
   endif
 
@@ -217,59 +208,54 @@ function print_options ()
   disp ("List of the most common ODE solver options.");
   disp ("Default values are in square brackets.");
   disp ("");
-  disp ("             AbsTol:  scalar or vector, >0, [1e-6]");
-  disp ("                BDF:  binary, {'on', ['off']}");
-  disp ("             Events:  function_handle, []");
-  disp ("       InitialSlope:  vector, []");
-  disp ("        InitialStep:  scalar, >0, []");
-  disp ("           Jacobian:  matrix or function_handle, []");
-  disp ("          JConstant:  binary, {'on', ['off']}");
-  disp ("           JPattern:  sparse matrix, []");
-  disp ("               Mass:  matrix or function_handle, []");
-  disp ("       MassConstant:  binary, {'on', ['off']}");
-  disp ("       MassSingular:  switch, {'yes', ['maybe'], 'no'}");
-  disp ("           MaxOrder:  switch, {1, 2, 3, 4, [5]}");
-  disp ("            MaxStep:  scalar, >0, []");
-  disp ("   MStateDependence:  switch, {'none', ['weak'], 'strong'}");
-  disp ("          MvPattern:  sparse matrix, []");
-  disp ("        NonNegative:  vector of integers, []");
-  disp ("        NormControl:  binary, {'on', ['off']}");
-  disp ("          OutputFcn:  function_handle, []");
-  disp ("          OutputSel:  scalar or vector, []");
-  disp ("             Refine:  scalar, integer, >0, []");
-  disp ("             RelTol:  scalar, >0, [1e-3]");
-  disp ("              Stats:  binary, {'on', ['off']}");
-  disp ("         Vectorized:  binary, {'on', ['off']}");
+  disp ('             AbsTol:  scalar or vector, >0, [1e-6]');
+  disp ('                BDF:  binary, {["off"], "on"}');
+  disp ('             Events:  function_handle, []');
+  disp ('       InitialSlope:  vector, []');
+  disp ('        InitialStep:  scalar, >0, []');
+  disp ('           Jacobian:  matrix or function_handle, []');
+  disp ('          JConstant:  binary, {["off"], "on"}');
+  disp ('           JPattern:  sparse matrix, []');
+  disp ('               Mass:  matrix or function_handle, []');
+  disp ('       MassSingular:  switch, {["maybe"], "no", "yes"}');
+  disp ('           MaxOrder:  switch, {[5], 1, 2, 3, 4, }');
+  disp ('            MaxStep:  scalar, >0, []');
+  disp ('   MStateDependence:  switch, {["weak"], "none", "strong"}');
+  disp ('          MvPattern:  sparse matrix, []');
+  disp ('        NonNegative:  vector of integers, []');
+  disp ('        NormControl:  binary, {["off"], "on"}');
+  disp ('          OutputFcn:  function_handle, []');
+  disp ('          OutputSel:  scalar or vector, []');
+  disp ('             Refine:  scalar, integer, >0, []');
+  disp ('             RelTol:  scalar, >0, [1e-3]');
+  disp ('              Stats:  binary, {["off"], "on"}');
+  disp ('         Vectorized:  binary, {["off"], "on"}');
 
 endfunction
 
 
 %!demo
-%! # A new ODE options structure with default values is created.
+%! ## A new ODE options structure with default values is created.
 %!
 %! odeoptA = odeset ();
 
 %!demo
-%! # A new ODE options structure with manually set options
-%! # for "AbsTol" and "RelTol" is created.
+%! ## A new ODE options structure with manually set options
+%! ## for "AbsTol" and "RelTol" is created.
 %!
 %! odeoptB = odeset ("AbsTol", 1e-2, "RelTol", 1e-1);
 
 %!demo
-%! # A new ODE options structure is created from odeoptB with
-%! # a modified value for option "NormControl".
+%! ## A new ODE options structure is created from odeoptB with
+%! ## a modified value for option "NormControl".
 %!
 %! odeoptB = odeset ("AbsTol", 1e-2, "RelTol", 1e-1);
 %! odeoptC = odeset (odeoptB, "NormControl", "on");
 
-## All tests that are needed to check if a valid option has been set are
-## implemented in ode_struct_value_check.m
-## FIXME: xtest currently fails as there are two extra options to control
-##        fixed step integration options.
-%!xtest
+%!test
 %! odeoptA = odeset ();
 %! assert (isstruct (odeoptA));
-%! assert (numfields (odeoptA), 23);
+%! assert (numfields (odeoptA), 22);
 %! assert (all (structfun ("isempty", odeoptA)));
 
 %!shared odeoptB, odeoptC
@@ -289,19 +275,18 @@ endfunction
 
 ## Test custom user-defined option
 %!test
-%! wstate = warning ("off", "Octave:invalid-input-arg");
-%! unwind_protect
-%!   odeopt = odeset ("NewtonTol", 3);
-%!   assert (odeopt.NewtonTol, 3);
-%! unwind_protect_cleanup
-%!   warning (wstate);
-%! end_unwind_protect
+%! warning ("off", "Octave:invalid-input-arg", "local");
+%! odeopt = odeset ("NewtonTol", 3);
+%! assert (odeopt.NewtonTol, 3);
+
+## FIXME: Add an inexact match option once it is available in inputParser.
+## See bug #49364.
+## %!warning <no exact match for 'Rel'.  Assuming 'RelTol'> odeset ("Rel", 1);
+## %!error <Possible fields found: InitialSlope, InitialStep> odeset ("Initial", 1)
 
 ## Test input validation
-%!error <FIELD/VALUE arguments must occur in pairs> odeset ("opt1")
-%!error <FIELD names must be strings> odeset (1, 1)
-%!error <FIELD/VALUE arguments must occur in pairs> odeset (odeset (), "opt1")
-%!error <FIELD names must be strings> odeset (odeset (), 1, 1)
-%!warning <no exact match for 'Rel'.  Assuming 'RelTol'> odeset ("Rel", 1);
-%!error <Possible fields found: InitialSlope, InitialStep> odeset ("Initial", 1)
+%!error <argument 'OPT1' is not a valid parameter> odeset ("opt1")
+%!error odeset (1, 1)
+%!error <argument 'OPT1' is not a valid parameter> odeset (odeset (), "opt1")
+%!error odeset (odeset (), 1, 1)
 

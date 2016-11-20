@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2015 Jacob Dawid
+Copyright (C) 2011-2016 Jacob Dawid
 
 This file is part of Octave.
 
@@ -31,6 +31,9 @@ along with Octave; see the file COPYING.  If not, see
 #include <QNetworkProxy>
 #include <QLibraryInfo>
 #include <QMessageBox>
+#if defined (HAVE_QT5)
+#  include <QStandardPaths>
+#endif
 #include <QTextCodec>
 
 #include "error.h"
@@ -52,7 +55,8 @@ default_qt_settings_file (void)
   std::string dsf = octave::sys::env::getenv ("OCTAVE_DEFAULT_QT_SETTINGS");
 
   if (dsf.empty ())
-    dsf = Voct_etc_dir + octave::sys::file_ops::dir_sep_str () + "default-qt-settings";
+    dsf = Voct_etc_dir + octave::sys::file_ops::dir_sep_str () +
+          "default-qt-settings";
 
   return QString::fromStdString (dsf);
 }
@@ -61,10 +65,13 @@ resource_manager::resource_manager (void)
   : settings_directory (), settings_file (), settings (0),
     default_settings (0)
 {
-  QDesktopServices desktopServices;
-
+#if defined (HAVE_QT4)
   QString home_path
-    = desktopServices.storageLocation (QDesktopServices::HomeLocation);
+    = QDesktopServices::storageLocation (QDesktopServices::HomeLocation);
+#else
+  QString home_path
+    = QStandardPaths::writableLocation (QStandardPaths::HomeLocation);
+#endif
 
   settings_directory = home_path + "/.config/octave";
 
@@ -135,7 +142,7 @@ resource_manager::instance_ok (void)
   bool retval = true;
 
   if (! instance)
-      instance = new resource_manager ();
+    instance = new resource_manager ();
 
   if (! instance)
     {
@@ -369,3 +376,4 @@ resource_manager::do_combo_encoding (QComboBox *combo, QString current)
 
   combo->setMaxVisibleItems (12);
 }
+

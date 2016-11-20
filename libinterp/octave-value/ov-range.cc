@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2015 John W. Eaton
+Copyright (C) 1996-2016 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,6 +25,17 @@ along with Octave; see the file COPYING.  If not, see
 #endif
 
 #include <iostream>
+
+#include "dNDArray.h"
+#include "fNDArray.h"
+#include "int8NDArray.h"
+#include "int16NDArray.h"
+#include "int32NDArray.h"
+#include "int64NDArray.h"
+#include "uint8NDArray.h"
+#include "uint16NDArray.h"
+#include "uint32NDArray.h"
+#include "uint64NDArray.h"
 
 #include "lo-ieee.h"
 #include "lo-utils.h"
@@ -137,7 +148,7 @@ octave_range::do_index_op (const octave_value_list& idx, bool resize_ok)
           else
             retval = range.index (i);
         }
-      catch (index_exception& e)
+      catch (octave::index_exception& e)
         {
           // More info may be added later before displaying error.
 
@@ -179,8 +190,6 @@ octave_range::index_vector (bool require_integers) const
 double
 octave_range::double_value (bool) const
 {
-  double retval = lo_ieee_nan_value ();
-
   octave_idx_type nel = range.numel ();
 
   if (nel == 0)
@@ -189,16 +198,12 @@ octave_range::double_value (bool) const
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "range", "real scalar");
 
-  retval = range.base ();
-
-  return retval;
+  return range.base ();
 }
 
 float
 octave_range::float_value (bool) const
 {
-  float retval = lo_ieee_float_nan_value ();
-
   octave_idx_type nel = range.numel ();
 
   if (nel == 0)
@@ -207,9 +212,7 @@ octave_range::float_value (bool) const
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "range", "real scalar");
 
-  retval = range.base ();
-
-  return retval;
+  return range.base ();
 }
 
 charNDArray
@@ -304,10 +307,6 @@ octave_range::is_true (void) const
 Complex
 octave_range::complex_value (bool) const
 {
-  double tmp = lo_ieee_nan_value ();
-
-  Complex retval (tmp, tmp);
-
   octave_idx_type nel = range.numel ();
 
   if (nel == 0)
@@ -316,9 +315,7 @@ octave_range::complex_value (bool) const
   warn_implicit_conversion ("Octave:array-to-scalar",
                             "range", "complex scalar");
 
-  retval = range.base ();
-
-  return retval;
+  return Complex (range.base (), 0);
 }
 
 FloatComplex
@@ -347,7 +344,7 @@ octave_range::bool_array_value (bool warn) const
   Matrix m = range.matrix_value ();
 
   if (m.any_element_is_nan ())
-    err_nan_to_logical_conversion ();
+    octave::err_nan_to_logical_conversion ();
   if (warn && m.any_element_not_one_or_zero ())
     warn_logical_conversion ();
 
@@ -370,6 +367,66 @@ octave_range::convert_to_str_internal (bool pad, bool force, char type) const
 {
   octave_value tmp (range.matrix_value ());
   return tmp.convert_to_str (pad, force, type);
+}
+
+octave_value
+octave_range::as_double (void) const
+{
+  return range;
+}
+
+octave_value
+octave_range::as_single (void) const
+{
+  return FloatMatrix (range.matrix_value ());
+}
+
+octave_value
+octave_range::as_int8 (void) const
+{
+  return int8NDArray (range.matrix_value ());
+}
+
+octave_value
+octave_range::as_int16 (void) const
+{
+  return int16NDArray (range.matrix_value ());
+}
+
+octave_value
+octave_range::as_int32 (void) const
+{
+  return int32NDArray (range.matrix_value ());
+}
+
+octave_value
+octave_range::as_int64 (void) const
+{
+  return int64NDArray (range.matrix_value ());
+}
+
+octave_value
+octave_range::as_uint8 (void) const
+{
+  return uint8NDArray (range.matrix_value ());
+}
+
+octave_value
+octave_range::as_uint16 (void) const
+{
+  return uint16NDArray (range.matrix_value ());
+}
+
+octave_value
+octave_range::as_uint32 (void) const
+{
+  return uint32NDArray (range.matrix_value ());
+}
+
+octave_value
+octave_range::as_uint64 (void) const
+{
+  return uint64NDArray (range.matrix_value ());
 }
 
 void
@@ -604,8 +661,9 @@ octave_range::save_hdf5 (octave_hdf5_id loc_id, const char *name,
   range_vals[1] = r.inc () != 0 ? r.limit () : r.numel ();
   range_vals[2] = r.inc ();
 
-  if (H5Dwrite (data_hid, type_hid, octave_H5S_ALL, octave_H5S_ALL, octave_H5P_DEFAULT,
-                range_vals) >= 0)
+  if (H5Dwrite (data_hid, type_hid, octave_H5S_ALL, octave_H5S_ALL,
+                octave_H5P_DEFAULT, range_vals)
+      >= 0)
     {
       octave_idx_type nel = r.numel ();
       retval = hdf5_add_scalar_attr (data_hid, H5T_NATIVE_IDX,
@@ -663,8 +721,9 @@ octave_range::load_hdf5 (octave_hdf5_id loc_id, const char *name)
     }
 
   double rangevals[3];
-  if (H5Dread (data_hid, range_type, octave_H5S_ALL, octave_H5S_ALL, octave_H5P_DEFAULT,
-               rangevals) >= 0)
+  if (H5Dread (data_hid, range_type, octave_H5S_ALL, octave_H5S_ALL,
+               octave_H5P_DEFAULT, rangevals)
+      >= 0)
     {
       retval = true;
       octave_idx_type nel;
@@ -769,3 +828,4 @@ The original variable value is restored when exiting the function.
 %!   warning (warn_state.state, warn_state.identifier);
 %! end_unwind_protect
 */
+
