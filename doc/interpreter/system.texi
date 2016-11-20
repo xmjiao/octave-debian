@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -82,6 +82,9 @@ Days since January 1 (0-365).
 @item isdst
 Daylight Savings Time flag.
 
+@item gmtoff
+Seconds offset from UTC.
+
 @item zone
 Time zone.
 @end table
@@ -92,7 +95,7 @@ referred to as a @var{tm_struct}.
 
 @c time libinterp/corefcn/time.cc
 @anchor{XREFtime}
-@deftypefn {Built-in Function} {@var{seconds} =} time ()
+@deftypefn {} {@var{seconds} =} time ()
 Return the current time as the number of seconds since the epoch.
 
 The epoch is referenced to 00:00:00 CUT (Coordinated Universal Time) 1 Jan
@@ -104,7 +107,7 @@ returned by @code{time} was 856163706.
 
 @c now scripts/time/now.m
 @anchor{XREFnow}
-@deftypefn {Function File} {t =} now ()
+@deftypefn {} {t =} now ()
 Return the current local date/time as a serial day number
 (see @code{datenum}).
 
@@ -118,7 +121,7 @@ The fractional part, @code{rem (now, 1)} corresponds to the current time.
 
 @c ctime scripts/time/ctime.m
 @anchor{XREFctime}
-@deftypefn {Function File} {} ctime (@var{t})
+@deftypefn {} {} ctime (@var{t})
 Convert a value returned from @code{time} (or any other non-negative
 integer), to the local time and return a string of the same form as
 @code{asctime}.
@@ -138,7 +141,7 @@ ctime (time ())
 
 @c gmtime libinterp/corefcn/time.cc
 @anchor{XREFgmtime}
-@deftypefn {Built-in Function} {@var{tm_struct} =} gmtime (@var{t})
+@deftypefn {} {@var{tm_struct} =} gmtime (@var{t})
 Given a value returned from @code{time}, or any non-negative integer,
 return a time structure corresponding to CUT (Coordinated Universal Time).
 
@@ -158,7 +161,8 @@ gmtime (time ())
            wday = 1
            yday = 47
            isdst = 0
-           zone = CST
+           gmtoff = 0
+           zone = GMT
         @}
 @end group
 @end example
@@ -168,7 +172,7 @@ gmtime (time ())
 
 @c localtime libinterp/corefcn/time.cc
 @anchor{XREFlocaltime}
-@deftypefn {Built-in Function} {@var{tm_struct} =} localtime (@var{t})
+@deftypefn {} {@var{tm_struct} =} localtime (@var{t})
 Given a value returned from @code{time}, or any non-negative integer,
 return a time structure corresponding to the local time zone.
 
@@ -186,6 +190,7 @@ localtime (time ())
            wday = 1
            yday = 47
            isdst = 0
+           gmtoff = -21600
            zone = CST
         @}
 @end group
@@ -196,7 +201,7 @@ localtime (time ())
 
 @c mktime libinterp/corefcn/time.cc
 @anchor{XREFmktime}
-@deftypefn {Built-in Function} {@var{seconds} =} mktime (@var{tm_struct})
+@deftypefn {} {@var{seconds} =} mktime (@var{tm_struct})
 Convert a time structure corresponding to the local time to the number of
 seconds since the epoch.
 
@@ -214,7 +219,7 @@ mktime (localtime (time ()))
 
 @c asctime scripts/time/asctime.m
 @anchor{XREFasctime}
-@deftypefn {Function File} {} asctime (@var{tm_struct})
+@deftypefn {} {} asctime (@var{tm_struct})
 Convert a time structure to a string using the following
 format: @qcode{"ddd mmm mm HH:MM:SS yyyy@xbackslashchar{}n"}.
 
@@ -234,7 +239,7 @@ This is equivalent to @code{ctime (time ())}.
 
 @c strftime libinterp/corefcn/time.cc
 @anchor{XREFstrftime}
-@deftypefn {Built-in Function} {} strftime (@var{fmt}, @var{tm_struct})
+@deftypefn {} {} strftime (@var{fmt}, @var{tm_struct})
 Format the time structure @var{tm_struct} in a flexible way using the format
 string @var{fmt} that contains @samp{%} substitutions similar to those in
 @code{printf}.
@@ -321,6 +326,10 @@ Time, 24-hour (hh:mm:ss).
 @item %X
 Locale's time representation (%H:%M:%S).
 
+@item %z
+Offset from UTC (±@nospell{hhmm}), or nothing if no time zone is
+determinable.
+
 @item %Z
 Time zone (EDT), or nothing if no time zone is determinable.
 @end table
@@ -389,12 +398,12 @@ Year (1970-).
 
 @c strptime libinterp/corefcn/time.cc
 @anchor{XREFstrptime}
-@deftypefn {Built-in Function} {[@var{tm_struct}, @var{nchars}] =} strptime (@var{str}, @var{fmt})
+@deftypefn {} {[@var{tm_struct}, @var{nchars}] =} strptime (@var{str}, @var{fmt})
 Convert the string @var{str} to the time structure @var{tm_struct} under
 the control of the format string @var{fmt}.
 
 If @var{fmt} fails to match, @var{nchars} is 0; otherwise, it is set to the
-position of last matched character plus 1. Always check for this unless
+position of last matched character plus 1.  Always check for this unless
 you're absolutely sure the date string will be parsed correctly.
 @seealso{@ref{XREFstrftime,,strftime}, @ref{XREFlocaltime,,localtime}, @ref{XREFgmtime,,gmtime}, @ref{XREFmktime,,mktime}, @ref{XREFtime,,time}, @ref{XREFnow,,now}, @ref{XREFdate,,date}, @ref{XREFclock,,clock}, @ref{XREFdatenum,,datenum}, @ref{XREFdatestr,,datestr}, @ref{XREFdatevec,,datevec}, @ref{XREFcalendar,,calendar}, @ref{XREFweekday,,weekday}}
 @end deftypefn
@@ -407,7 +416,7 @@ useful.
 
 @c clock scripts/time/clock.m
 @anchor{XREFclock}
-@deftypefn {Function File} {} clock ()
+@deftypefn {} {} clock ()
 Return the current local date and time as a date vector.
 
 The date vector contains the following fields: current year, month (1-12),
@@ -431,7 +440,7 @@ function.
 
 @c date scripts/time/date.m
 @anchor{XREFdate}
-@deftypefn {Function File} {} date ()
+@deftypefn {} {} date ()
 Return the current date as a character string in the form DD-MMM-YYYY@.
 
 For example:
@@ -448,7 +457,7 @@ date ()
 
 @c etime scripts/time/etime.m
 @anchor{XREFetime}
-@deftypefn {Function File} {} etime (@var{t2}, @var{t1})
+@deftypefn {} {} etime (@var{t2}, @var{t1})
 Return the difference in seconds between two time values returned from
 @code{clock} (@math{@var{t2} - @var{t1}}).
 
@@ -471,7 +480,7 @@ variable @code{t0} was set.
 
 @c cputime libinterp/corefcn/data.cc
 @anchor{XREFcputime}
-@deftypefn {Built-in Function} {[@var{total}, @var{user}, @var{system}] =} cputime ();
+@deftypefn {} {[@var{total}, @var{user}, @var{system}] =} cputime ();
 Return the CPU time used by your Octave session.
 
 The first output is the total time spent executing your process and is equal
@@ -491,8 +500,8 @@ CPU time used is nonzero.
 
 @c is_leap_year scripts/time/is_leap_year.m
 @anchor{XREFis_leap_year}
-@deftypefn  {Function File} {} is_leap_year ()
-@deftypefnx {Function File} {} is_leap_year (@var{year})
+@deftypefn  {} {} is_leap_year ()
+@deftypefnx {} {} is_leap_year (@var{year})
 Return true if @var{year} is a leap year and false otherwise.
 
 If no year is specified, @code{is_leap_year} uses the current year.
@@ -512,11 +521,11 @@ is_leap_year (2000)
 @anchor{XREFtoc}
 @c tic libinterp/corefcn/data.cc
 @anchor{XREFtic}
-@deftypefn  {Built-in Function} {} tic ()
-@deftypefnx {Built-in Function} {@var{id} =} tic ()
-@deftypefnx {Built-in Function} {} toc ()
-@deftypefnx {Built-in Function} {} toc (@var{id})
-@deftypefnx {Built-in Function} {@var{val} =} toc (@dots{})
+@deftypefn  {} {} tic ()
+@deftypefnx {} {@var{id} =} tic ()
+@deftypefnx {} {} toc ()
+@deftypefnx {} {} toc (@var{id})
+@deftypefnx {} {@var{val} =} toc (@dots{})
 Set or check a wall-clock timer.
 
 Calling @code{tic} without an output argument sets the internal timer state.
@@ -541,7 +550,7 @@ of type @code{uint64} that may be later passed to @code{toc}.
 
 @example
 @group
-id = tic; sleep (5); toc (id)
+id = tic; pause (5); toc (id)
       @result{} 5.0010
 @end group
 @end example
@@ -559,61 +568,49 @@ doing nothing at all.
 
 @c pause libinterp/corefcn/sysdep.cc
 @anchor{XREFpause}
-@deftypefn  {Built-in Function} {} pause ()
-@deftypefnx {Built-in Function} {} pause (@var{n})
+@deftypefn  {} {} pause ()
+@deftypefnx {} {} pause (@var{n})
 Suspend the execution of the program for @var{n} seconds.
-
-@var{n} is a positive real value and may be a fraction of a second.
 
 If invoked without an input arguments then the program is suspended until a
 character is typed.
+
+@var{n} is a positive real value and may be a fraction of a second,
+for example:
+
+@example
+@group
+tic; pause (0.05); toc
+     @print{} Elapsed time is 0.05039 seconds.
+@end group
+@end example
 
 The following example prints a message and then waits 5 seconds before
 clearing the screen.
 
 @example
 @group
-fprintf (stderr, "wait please...\n");
+disp ("wait please...");
 pause (5);
 clc;
 @end group
 @end example
-@seealso{@ref{XREFkbhit,,kbhit}, @ref{XREFsleep,,sleep}}
-@end deftypefn
 
-
-@c sleep libinterp/corefcn/sysdep.cc
-@anchor{XREFsleep}
-@deftypefn {Built-in Function} {} sleep (@var{seconds})
-Suspend the execution of the program for the given number of seconds.
-@seealso{@ref{XREFusleep,,usleep}, @ref{XREFpause,,pause}}
-@end deftypefn
-
-
-@c usleep libinterp/corefcn/sysdep.cc
-@anchor{XREFusleep}
-@deftypefn {Built-in Function} {} usleep (@var{microseconds})
-Suspend the execution of the program for the given number of
-microseconds.
-
-On systems where it is not possible to sleep for periods of time less than
-one second, @code{usleep} will pause the execution for @code{round
-(@var{microseconds} / 1e6)} seconds.
-@seealso{@ref{XREFsleep,,sleep}, @ref{XREFpause,,pause}}
+@seealso{@ref{XREFkbhit,,kbhit}}
 @end deftypefn
 
 
 @c datenum scripts/time/datenum.m
 @anchor{XREFdatenum}
-@deftypefn  {Function File} {@var{days} =} datenum (@var{datevec})
-@deftypefnx {Function File} {@var{days} =} datenum (@var{year}, @var{month}, @var{day})
-@deftypefnx {Function File} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour})
-@deftypefnx {Function File} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute})
-@deftypefnx {Function File} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute}, @var{second})
-@deftypefnx {Function File} {@var{days} =} datenum ("datestr")
-@deftypefnx {Function File} {@var{days} =} datenum ("datestr", @var{f})
-@deftypefnx {Function File} {@var{days} =} datenum ("datestr", @var{p})
-@deftypefnx {Function File} {[@var{days}, @var{secs}] =} datenum (@dots{})
+@deftypefn  {} {@var{days} =} datenum (@var{datevec})
+@deftypefnx {} {@var{days} =} datenum (@var{year}, @var{month}, @var{day})
+@deftypefnx {} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour})
+@deftypefnx {} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute})
+@deftypefnx {} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute}, @var{second})
+@deftypefnx {} {@var{days} =} datenum ("datestr")
+@deftypefnx {} {@var{days} =} datenum ("datestr", @var{f})
+@deftypefnx {} {@var{days} =} datenum ("datestr", @var{p})
+@deftypefnx {} {[@var{days}, @var{secs}] =} datenum (@dots{})
 Return the date/time input as a serial day number, with Jan 1, 0000
 defined as day 1.
 
@@ -677,9 +674,9 @@ available on the Wikipedia entry for leap seconds.
 
 @c datestr scripts/time/datestr.m
 @anchor{XREFdatestr}
-@deftypefn  {Function File} {@var{str} =} datestr (@var{date})
-@deftypefnx {Function File} {@var{str} =} datestr (@var{date}, @var{f})
-@deftypefnx {Function File} {@var{str} =} datestr (@var{date}, @var{f}, @var{p})
+@deftypefn  {} {@var{str} =} datestr (@var{date})
+@deftypefnx {} {@var{str} =} datestr (@var{date}, @var{f})
+@deftypefnx {} {@var{str} =} datestr (@var{date}, @var{f}, @var{p})
 Format the given date/time according to the format @code{f} and return
 the result in @var{str}.
 
@@ -713,9 +710,9 @@ formatted as follows:
 @item 11 @tab yy                     @tab 00
 @item 12 @tab mmmyy                  @tab Sep00
 @item 13 @tab HH:MM:SS               @tab 15:38:09
-@item 14 @tab HH:MM:SS PM            @tab 03:38:09 PM
+@item 14 @tab HH:MM:SS PM            @tab  3:38:09 PM
 @item 15 @tab HH:MM                  @tab 15:38
-@item 16 @tab HH:MM PM               @tab 03:38 PM
+@item 16 @tab HH:MM PM               @tab  3:38 PM
 @item 17 @tab QQ-YY                  @tab Q3-00
 @item 18 @tab QQ                     @tab Q3
 @item 19 @tab dd/mm                  @tab 07/09
@@ -747,8 +744,8 @@ If @var{f} is a format string, the following symbols are recognized:
 @item ddd  @tab Abbreviated weekday name                     @tab Sun
 @item dd   @tab Numeric day of month (padded with zeros)     @tab 11
 @item d    @tab First letter of weekday name (capitalized)   @tab S
-@item HH   @tab Hour of day, padded with zeros if PM is set  @tab 09:00
-@item      @tab and not padded with zeros otherwise          @tab 9:00 AM
+@item HH   @tab Hour of day, padded with zeros,              @tab 09:00
+@item      @tab or padded with spaces if PM is set           @tab  9:00 AM
 @item MM   @tab Minute of hour (padded with zeros)           @tab 10:05
 @item SS   @tab Second of minute (padded with zeros)         @tab 10:05:03
 @item FFF  @tab Milliseconds of second (padded with zeros)   @tab 10:05:03.012
@@ -770,11 +767,11 @@ is returned.
 
 @c datevec scripts/time/datevec.m
 @anchor{XREFdatevec}
-@deftypefn  {Function File} {@var{v} =} datevec (@var{date})
-@deftypefnx {Function File} {@var{v} =} datevec (@var{date}, @var{f})
-@deftypefnx {Function File} {@var{v} =} datevec (@var{date}, @var{p})
-@deftypefnx {Function File} {@var{v} =} datevec (@var{date}, @var{f}, @var{p})
-@deftypefnx {Function File} {[@var{y}, @var{m}, @var{d}, @var{h}, @var{mi}, @var{s}] =} datevec (@dots{})
+@deftypefn  {} {@var{v} =} datevec (@var{date})
+@deftypefnx {} {@var{v} =} datevec (@var{date}, @var{f})
+@deftypefnx {} {@var{v} =} datevec (@var{date}, @var{p})
+@deftypefnx {} {@var{v} =} datevec (@var{date}, @var{f}, @var{p})
+@deftypefnx {} {[@var{y}, @var{m}, @var{d}, @var{h}, @var{mi}, @var{s}] =} datevec (@dots{})
 Convert a serial date number (see @code{datenum}) or date string (see
 @code{datestr}) into a date vector.
 
@@ -798,7 +795,7 @@ will be referenced.  If not specified, it defaults to the current year minus
 
 @c addtodate scripts/time/addtodate.m
 @anchor{XREFaddtodate}
-@deftypefn {Function File} {@var{d} =} addtodate (@var{d}, @var{q}, @var{f})
+@deftypefn {} {@var{d} =} addtodate (@var{d}, @var{q}, @var{f})
 Add @var{q} amount of time (with units @var{f}) to the serial datenum,
 @var{d}.
 
@@ -811,10 +808,10 @@ Add @var{q} amount of time (with units @var{f}) to the serial datenum,
 
 @c calendar scripts/time/calendar.m
 @anchor{XREFcalendar}
-@deftypefn  {Function File} {@var{c} =} calendar ()
-@deftypefnx {Function File} {@var{c} =} calendar (@var{d})
-@deftypefnx {Function File} {@var{c} =} calendar (@var{y}, @var{m})
-@deftypefnx {Function File} {} calendar (@dots{})
+@deftypefn  {} {@var{c} =} calendar ()
+@deftypefnx {} {@var{c} =} calendar (@var{d})
+@deftypefnx {} {@var{c} =} calendar (@var{y}, @var{m})
+@deftypefnx {} {} calendar (@dots{})
 Return the current monthly calendar in a 6x7 matrix.
 
 If @var{d} is specified, return the calendar for the month containing the
@@ -831,9 +828,10 @@ instead of returning a matrix.
 
 @c weekday scripts/time/weekday.m
 @anchor{XREFweekday}
-@deftypefn  {Function File} {[@var{n}, @var{s}] =} weekday (@var{d})
-@deftypefnx {Function File} {[@var{n}, @var{s}] =} weekday (@var{d}, @var{format})
-Return the day of the week as a number in @var{n} and as a string in @var{s}.
+@deftypefn  {} {[@var{n}, @var{s}] =} weekday (@var{d})
+@deftypefnx {} {[@var{n}, @var{s}] =} weekday (@var{d}, @var{format})
+Return the day of the week as a number in @var{n} and as a string in
+@var{s}.
 
 The days of the week are numbered 1--7 with the first day being Sunday.
 
@@ -862,7 +860,7 @@ Table of return values based on @var{format}:
 
 @c eomday scripts/time/eomday.m
 @anchor{XREFeomday}
-@deftypefn {Function File} {@var{e} =} eomday (@var{y}, @var{m})
+@deftypefn {} {@var{e} =} eomday (@var{y}, @var{m})
 Return the last day of the month @var{m} for the year @var{y}.
 @seealso{@ref{XREFweekday,,weekday}, @ref{XREFdatenum,,datenum}, @ref{XREFdatevec,,datevec}, @ref{XREFis_leap_year,,is_leap_year}, @ref{XREFcalendar,,calendar}}
 @end deftypefn
@@ -870,20 +868,22 @@ Return the last day of the month @var{m} for the year @var{y}.
 
 @c datetick scripts/plot/appearance/datetick.m
 @anchor{XREFdatetick}
-@deftypefn  {Function File} {} datetick ()
-@deftypefnx {Function File} {} datetick (@var{form})
-@deftypefnx {Function File} {} datetick (@var{axis}, @var{form})
-@deftypefnx {Function File} {} datetick (@dots{}, "keeplimits")
-@deftypefnx {Function File} {} datetick (@dots{}, "keepticks")
-@deftypefnx {Function File} {} datetick (@var{hax}, @dots{})
+@deftypefn  {} {} datetick ()
+@deftypefnx {} {} datetick (@var{date_format})
+@deftypefnx {} {} datetick (@var{axis_str}, @var{date_format})
+@deftypefnx {} {} datetick (@dots{}, "keeplimits")
+@deftypefnx {} {} datetick (@dots{}, "keepticks")
+@deftypefnx {} {} datetick (@var{hax}, @dots{})
 Add date formatted tick labels to an axis.
 
-The axis to apply the ticks to is determined by @var{axis} which can take
-the values @qcode{"x"}, @qcode{"y"}, or @qcode{"z"}.  The default value is
-@qcode{"x"}.
+The axis to apply the ticks to is determined by @var{axis_str} which can
+take the values @qcode{"x"}, @qcode{"y"}, or @qcode{"z"}.  The default
+value is @qcode{"x"}.
 
-The formatting of the labels is determined by the variable @var{form}, which
-can either be a string or positive integer that @code{datestr} accepts.
+The formatting of the labels is determined by the variable
+@var{date_format}, which can either be a string or positive integer that
+@code{datestr} accepts.
+
 @seealso{@ref{XREFdatenum,,datenum}, @ref{XREFdatestr,,datestr}}
 @end deftypefn
 
@@ -897,16 +897,16 @@ status information on files; and for manipulating file and path names.
 
 @c movefile scripts/miscellaneous/movefile.m
 @anchor{XREFmovefile}
-@deftypefn  {Function File} {} movefile (@var{f1})
-@deftypefnx {Function File} {} movefile (@var{f1}, @var{f2})
-@deftypefnx {Function File} {} movefile (@var{f1}, @var{f2}, 'f')
-@deftypefnx {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} movefile (@dots{})
+@deftypefn  {} {} movefile (@var{f1})
+@deftypefnx {} {} movefile (@var{f1}, @var{f2})
+@deftypefnx {} {} movefile (@var{f1}, @var{f2}, 'f')
+@deftypefnx {} {[@var{status}, @var{msg}, @var{msgid}] =} movefile (@dots{})
 Move the source files or directories @var{f1} to the destination @var{f2}.
 
 The name @var{f1} may contain globbing patterns.  If @var{f1} expands to
-multiple file names, @var{f2} must be a directory.  If no destination
+multiple filenames, @var{f2} must be a directory.  If no destination
 @var{f2} is specified then the destination is the present working directory.
-If @var{f2} is a file name then @var{f1} is renamed to @var{f2}.
+If @var{f2} is a filename then @var{f1} is renamed to @var{f2}.
 
 When the force flag @qcode{'f'} is given any existing files will be
 overwritten without prompting.
@@ -922,8 +922,8 @@ identifier.  Note that the status code is exactly opposite that of the
 
 @c rename libinterp/corefcn/dirfns.cc
 @anchor{XREFrename}
-@deftypefn  {Built-in Function} {} rename @var{old} @var{new}
-@deftypefnx {Built-in Function} {[@var{err}, @var{msg}] =} rename (@var{old}, @var{new})
+@deftypefn  {} {} rename @var{old} @var{new}
+@deftypefnx {} {[@var{err}, @var{msg}] =} rename (@var{old}, @var{new})
 Change the name of file @var{old} to @var{new}.
 
 If successful, @var{err} is 0 and @var{msg} is an empty string.
@@ -935,12 +935,12 @@ error message.
 
 @c copyfile scripts/miscellaneous/copyfile.m
 @anchor{XREFcopyfile}
-@deftypefn  {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2})
-@deftypefnx {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2}, 'f')
+@deftypefn  {} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2})
+@deftypefnx {} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2}, 'f')
 Copy the source files or directories @var{f1} to the destination @var{f2}.
 
 The name @var{f1} may contain globbing patterns.  If @var{f1} expands to
-multiple file names, @var{f2} must be a directory.
+multiple filenames, @var{f2} must be a directory.
 
 When the force flag @qcode{'f'} is given any existing files will be
 overwritten without prompting.
@@ -956,7 +956,7 @@ identifier.  Note that the status code is exactly opposite that of the
 
 @c unlink libinterp/corefcn/syscalls.cc
 @anchor{XREFunlink}
-@deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} unlink (@var{file})
+@deftypefn {} {[@var{err}, @var{msg}] =} unlink (@var{file})
 Delete the file named @var{file}.
 
 If successful, @var{err} is 0 and @var{msg} is an empty string.
@@ -968,8 +968,8 @@ error message.
 
 @c link libinterp/corefcn/dirfns.cc
 @anchor{XREFlink}
-@deftypefn  {Built-in Function} {} link @var{old} @var{new}
-@deftypefnx {Built-in Function} {[@var{err}, @var{msg}] =} link (@var{old}, @var{new})
+@deftypefn  {} {} link @var{old} @var{new}
+@deftypefnx {} {[@var{err}, @var{msg}] =} link (@var{old}, @var{new})
 Create a new link (also known as a hard link) to an existing file.
 
 If successful, @var{err} is 0 and @var{msg} is an empty string.
@@ -981,8 +981,8 @@ error message.
 
 @c symlink libinterp/corefcn/dirfns.cc
 @anchor{XREFsymlink}
-@deftypefn  {Built-in Function} {} symlink @var{old} @var{new}
-@deftypefnx {Built-in Function} {[@var{err}, @var{msg}] =} symlink (@var{old}, @var{new})
+@deftypefn  {} {} symlink @var{old} @var{new}
+@deftypefnx {} {[@var{err}, @var{msg}] =} symlink (@var{old}, @var{new})
 Create a symbolic link @var{new} which contains the string @var{old}.
 
 If successful, @var{err} is 0 and @var{msg} is an empty string.
@@ -994,8 +994,8 @@ error message.
 
 @c readlink libinterp/corefcn/dirfns.cc
 @anchor{XREFreadlink}
-@deftypefn  {Built-in Function} {} readlink @var{symlink}
-@deftypefnx {Built-in Function} {[@var{result}, @var{err}, @var{msg}] =} readlink (@var{symlink})
+@deftypefn  {} {} readlink @var{symlink}
+@deftypefnx {} {[@var{result}, @var{err}, @var{msg}] =} readlink (@var{symlink})
 Read the value of the symbolic link @var{symlink}.
 
 If successful, @var{result} contains the contents of the symbolic link
@@ -1006,32 +1006,33 @@ error message.
 @end deftypefn
 
 
-@c mkdir libinterp/corefcn/dirfns.cc
+@c mkdir scripts/miscellaneous/mkdir.m
 @anchor{XREFmkdir}
-@deftypefn  {Built-in Function} {} mkdir @var{dir}
-@deftypefnx {Built-in Function} {} mkdir (@var{parent}, @var{dir})
-@deftypefnx {Built-in Function} {[@var{status}, @var{msg}, @var{msgid}] =} mkdir (@dots{})
-Create a directory named @var{dir} in the directory @var{parent}.
+@deftypefn  {} {} mkdir @var{dir}
+@deftypefnx {} {} mkdir (@var{parent}, @var{dir})
+@deftypefnx {} {[@var{status}, @var{msg}, @var{msgid}] =} mkdir (@dots{})
+Create a directory named @var{dir} in the directory @var{parent},
+creating any intermediate directories if necessary.
 
-If no @var{parent} directory is specified the present working directory is
-used.
+If @var{dir} is a relative path and no @var{parent} directory is specified
+then the present working directory is used.
 
-If successful, @var{status} is 1, and @var{msg}, @var{msgid} are empty
-character strings ("").  Otherwise, @var{status} is 0, @var{msg} contains a
+If successful, @var{status} is 1, and @var{msg} and @var{msgid} are empty
+strings ("").  Otherwise, @var{status} is 0, @var{msg} contains a
 system-dependent error message, and @var{msgid} contains a unique message
 identifier.
 
-When creating a directory permissions will be set to
-@code{0777 - @var{umask}}.
+When creating a directory permissions will be set to @code{0777 - UMASK}.
+
 @seealso{@ref{XREFrmdir,,rmdir}, @ref{XREFpwd,,pwd}, @ref{XREFcd,,cd}, @ref{XREFumask,,umask}}
 @end deftypefn
 
 
 @c rmdir libinterp/corefcn/dirfns.cc
 @anchor{XREFrmdir}
-@deftypefn  {Built-in Function} {} rmdir @var{dir}
-@deftypefnx {Built-in Function} {} rmdir (@var{dir}, "s")
-@deftypefnx {Built-in Function} {[@var{status}, @var{msg}, @var{msgid}] =} rmdir (@dots{})
+@deftypefn  {} {} rmdir @var{dir}
+@deftypefnx {} {} rmdir (@var{dir}, "s")
+@deftypefnx {} {[@var{status}, @var{msg}, @var{msgid}] =} rmdir (@dots{})
 Remove the directory named @var{dir}.
 
 If the optional second parameter is supplied with value @qcode{"s"},
@@ -1048,9 +1049,9 @@ identifier.
 
 @c confirm_recursive_rmdir libinterp/corefcn/dirfns.cc
 @anchor{XREFconfirm_recursive_rmdir}
-@deftypefn  {Built-in Function} {@var{val} =} confirm_recursive_rmdir ()
-@deftypefnx {Built-in Function} {@var{old_val} =} confirm_recursive_rmdir (@var{new_val})
-@deftypefnx {Built-in Function} {} confirm_recursive_rmdir (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} confirm_recursive_rmdir ()
+@deftypefnx {} {@var{old_val} =} confirm_recursive_rmdir (@var{new_val})
+@deftypefnx {} {} confirm_recursive_rmdir (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave
 will ask for confirmation before recursively removing a directory tree.
 
@@ -1063,13 +1064,12 @@ The original variable value is restored when exiting the function.
 
 @c mkfifo libinterp/corefcn/syscalls.cc
 @anchor{XREFmkfifo}
-@deftypefn  {Built-in Function} {@var{err} =} mkfifo (@var{name}, @var{mode})
-@deftypefnx {Built-in Function} {[@var{err}, @var{msg}] =} mkfifo (@var{name}, @var{mode})
+@deftypefn  {} {@var{err} =} mkfifo (@var{name}, @var{mode})
+@deftypefnx {} {[@var{err}, @var{msg}] =} mkfifo (@var{name}, @var{mode})
 Create a FIFO special file named @var{name} with file mode @var{mode}.
 
-@var{mode} is interpreted as a decimal number (@emph{not} octal) and is
-subject to umask processing.  The final calculated mode is
-@code{@var{mode} - @var{umask}}.
+@var{mode} is interpreted as an octal number and is subject to umask
+processing.  The final calculated mode is @code{@var{mode} - @var{umask}}.
 
 If successful, @var{err} is 0 and @var{msg} is an empty string.
 Otherwise, @var{err} is nonzero and @var{msg} contains a system-dependent
@@ -1080,7 +1080,7 @@ error message.
 
 @c umask libinterp/corefcn/file-io.cc
 @anchor{XREFumask}
-@deftypefn {Built-in Function} {} umask (@var{mask})
+@deftypefn {} {} umask (@var{mask})
 Set the permission mask for file creation.
 
 The parameter @var{mask} is an integer, interpreted as an octal number.
@@ -1100,10 +1100,10 @@ for the new object are @code{@var{mode} - @var{mask}}.
 @anchor{XREFlstat}
 @c stat libinterp/corefcn/syscalls.cc
 @anchor{XREFstat}
-@deftypefn  {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} stat (@var{file})
-@deftypefnx {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} stat (@var{fid})
-@deftypefnx {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} lstat (@var{file})
-@deftypefnx {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} lstat (@var{fid})
+@deftypefn  {} {[@var{info}, @var{err}, @var{msg}] =} stat (@var{file})
+@deftypefnx {} {[@var{info}, @var{err}, @var{msg}] =} stat (@var{fid})
+@deftypefnx {} {[@var{info}, @var{err}, @var{msg}] =} lstat (@var{file})
+@deftypefnx {} {[@var{info}, @var{err}, @var{msg}] =} lstat (@var{fid})
 Return a structure @var{info} containing the following information about
 @var{file} or file identifier @var{fid}.
 
@@ -1197,81 +1197,90 @@ For example:
 
 @c S_ISBLK libinterp/corefcn/syscalls.cc
 @anchor{XREFS_ISBLK}
-@deftypefn {Built-in Function} {} S_ISBLK (@var{mode})
+@deftypefn {} {} S_ISBLK (@var{mode})
 Return true if @var{mode} corresponds to a block device.
 
-The value of @var{mode} is assumed to be returned from a call to @code{stat}.
+The value of @var{mode} is assumed to be returned from a call to
+@code{stat}.
 @seealso{@ref{XREFstat,,stat}, @ref{XREFlstat,,lstat}}
 @end deftypefn
 
 
 @c S_ISCHR libinterp/corefcn/syscalls.cc
 @anchor{XREFS_ISCHR}
-@deftypefn {Built-in Function} {} S_ISCHR (@var{mode})
+@deftypefn {} {} S_ISCHR (@var{mode})
 Return true if @var{mode} corresponds to a character device.
 
-The value of @var{mode} is assumed to be returned from a call to @code{stat}.
+The value of @var{mode} is assumed to be returned from a call to
+@code{stat}.
 @seealso{@ref{XREFstat,,stat}, @ref{XREFlstat,,lstat}}
 @end deftypefn
 
 
 @c S_ISDIR libinterp/corefcn/syscalls.cc
 @anchor{XREFS_ISDIR}
-@deftypefn {Built-in Function} {} S_ISDIR (@var{mode})
+@deftypefn {} {} S_ISDIR (@var{mode})
 Return true if @var{mode} corresponds to a directory.
 
-The value of @var{mode} is assumed to be returned from a call to @code{stat}.
+The value of @var{mode} is assumed to be returned from a call to
+@code{stat}.
 @seealso{@ref{XREFstat,,stat}, @ref{XREFlstat,,lstat}}
 @end deftypefn
 
 
 @c S_ISFIFO libinterp/corefcn/syscalls.cc
 @anchor{XREFS_ISFIFO}
-@deftypefn {Built-in Function} {} S_ISFIFO (@var{mode})
+@deftypefn {} {} S_ISFIFO (@var{mode})
 Return true if @var{mode} corresponds to a fifo.
 
-The value of @var{mode} is assumed to be returned from a call to @code{stat}.
+The value of @var{mode} is assumed to be returned from a call to
+@code{stat}.
 @seealso{@ref{XREFstat,,stat}, @ref{XREFlstat,,lstat}}
 @end deftypefn
 
 
 @c S_ISLNK libinterp/corefcn/syscalls.cc
 @anchor{XREFS_ISLNK}
-@deftypefn {Built-in Function} {} S_ISLNK (@var{mode})
+@deftypefn {} {} S_ISLNK (@var{mode})
 Return true if @var{mode} corresponds to a symbolic link.
 
-The value of @var{mode} is assumed to be returned from a call to @code{stat}.
+The value of @var{mode} is assumed to be returned from a call to
+@code{stat}.
 @seealso{@ref{XREFstat,,stat}, @ref{XREFlstat,,lstat}}
 @end deftypefn
 
 
 @c S_ISREG libinterp/corefcn/syscalls.cc
 @anchor{XREFS_ISREG}
-@deftypefn {Built-in Function} {} S_ISREG (@var{mode})
+@deftypefn {} {} S_ISREG (@var{mode})
 Return true if @var{mode} corresponds to a regular file.
 
-The value of @var{mode} is assumed to be returned from a call to @code{stat}.
+The value of @var{mode} is assumed to be returned from a call to
+@code{stat}.
 @seealso{@ref{XREFstat,,stat}, @ref{XREFlstat,,lstat}}
 @end deftypefn
 
 
 @c S_ISSOCK libinterp/corefcn/syscalls.cc
 @anchor{XREFS_ISSOCK}
-@deftypefn {Built-in Function} {} S_ISSOCK (@var{mode})
+@deftypefn {} {} S_ISSOCK (@var{mode})
 Return true if @var{mode} corresponds to a socket.
 
-The value of @var{mode} is assumed to be returned from a call to @code{stat}.
+The value of @var{mode} is assumed to be returned from a call to
+@code{stat}.
 @seealso{@ref{XREFstat,,stat}, @ref{XREFlstat,,lstat}}
 @end deftypefn
 
 
 @c fileattrib scripts/miscellaneous/fileattrib.m
 @anchor{XREFfileattrib}
-@deftypefn {Function File} {[@var{status}, @var{result}, @var{msgid}] =} fileattrib (@var{file})
+@deftypefn  {} {} fileattrib (@var{file})
+@deftypefnx {} {} fileattrib ()
+@deftypefnx {} {[@var{status}, @var{msg}, @var{msgid}] =} fileattrib (@dots{})
 Return information about @var{file}.
 
-If successful, @var{status} is 1, with @var{result} containing a structure
-with the following fields:
+If successful, @var{status} is 1 and @var{msg} is a structure with the
+following fields:
 
 @table @code
 @item Name
@@ -1308,6 +1317,9 @@ True if the user (group; other users) has execute permission for @var{file}.
 If an attribute does not apply (i.e., archive on a Unix system) then the
 field is set to NaN.
 
+If @code{attrib} fails, @var{msg} is a non-empty string containing an
+error message and @var{msg_id} is the non-empty string @qcode{"fileattrib"}.
+
 With no input arguments, return information about the current directory.
 
 If @var{file} contains globbing characters, return information about all
@@ -1318,7 +1330,7 @@ the matching files.
 
 @c isdir scripts/general/isdir.m
 @anchor{XREFisdir}
-@deftypefn {Function File} {} isdir (@var{f})
+@deftypefn {} {} isdir (@var{f})
 Return true if @var{f} is a directory.
 @seealso{@ref{XREFexist,,exist}, @ref{XREFstat,,stat}, @ref{XREFis_absolute_filename,,is_absolute_filename}, @ref{XREFis_rooted_relative_filename,,is_rooted_relative_filename}}
 @end deftypefn
@@ -1326,8 +1338,8 @@ Return true if @var{f} is a directory.
 
 @c readdir libinterp/corefcn/dirfns.cc
 @anchor{XREFreaddir}
-@deftypefn  {Built-in Function} {@var{files} =} readdir (@var{dir})
-@deftypefnx {Built-in Function} {[@var{files}, @var{err}, @var{msg}] =} readdir (@var{dir})
+@deftypefn  {} {@var{files} =} readdir (@var{dir})
+@deftypefnx {} {[@var{files}, @var{err}, @var{msg}] =} readdir (@var{dir})
 Return the names of files in the directory @var{dir} as a cell array of
 strings.
 
@@ -1341,9 +1353,9 @@ error message.
 
 @c glob libinterp/corefcn/dirfns.cc
 @anchor{XREFglob}
-@deftypefn {Built-in Function} {} glob (@var{pattern})
+@deftypefn {} {} glob (@var{pattern})
 Given an array of pattern strings (as a char array or a cell array) in
-@var{pattern}, return a cell array of file names that match any of
+@var{pattern}, return a cell array of filenames that match any of
 them, or an empty cell array if no patterns match.
 
 The pattern strings are interpreted as filename globbing patterns (as they
@@ -1363,7 +1375,7 @@ matches any of the enclosed characters.
 @end table
 
 Tilde expansion is performed on each of the patterns before looking for
-matching file names.  For example:
+matching filenames.  For example:
 
 @example
 ls
@@ -1393,8 +1405,8 @@ glob ("file[12]")
 
 @c file_in_path libinterp/corefcn/utils.cc
 @anchor{XREFfile_in_path}
-@deftypefn  {Built-in Function} {} file_in_path (@var{path}, @var{file})
-@deftypefnx {Built-in Function} {} file_in_path (@var{path}, @var{file}, "all")
+@deftypefn  {} {} file_in_path (@var{path}, @var{file})
+@deftypefnx {} {} file_in_path (@var{path}, @var{file}, "all")
 Return the absolute name of @var{file} if it can be found in @var{path}.
 
 The value of @var{path} should be a colon-separated list of directories in
@@ -1420,8 +1432,8 @@ If no files are found, return an empty cell array.
 
 @c filesep libinterp/corefcn/dirfns.cc
 @anchor{XREFfilesep}
-@deftypefn  {Built-in Function} {} filesep ()
-@deftypefnx {Built-in Function} {} filesep ("all")
+@deftypefn  {} {} filesep ()
+@deftypefnx {} {} filesep ("all")
 Return the system-dependent character used to separate directory names.
 
 If @qcode{"all"} is given, the function returns all valid file separators
@@ -1434,11 +1446,11 @@ It is @samp{/} (forward slash) under UNIX or @w{Mac OS X}, @samp{/} and
 
 @c filemarker libinterp/corefcn/input.cc
 @anchor{XREFfilemarker}
-@deftypefn  {Built-in Function} {@var{val} =} filemarker ()
-@deftypefnx {Built-in Function} {@var{old_val} =} filemarker (@var{new_val})
-@deftypefnx {Built-in Function} {} filemarker (@var{new_val}, "local")
-Query or set the character used to separate the filename from the subfunction
-names contained within the file.
+@deftypefn  {} {@var{val} =} filemarker ()
+@deftypefnx {} {@var{old_val} =} filemarker (@var{new_val})
+@deftypefnx {} {} filemarker (@var{new_val}, "local")
+Query or set the character used to separate the filename from the
+subfunction names contained within the file.
 
 By default this is the character @samp{>}.
 This can be used in a generic manner to interact with subfunctions.
@@ -1471,7 +1483,7 @@ The original variable value is restored when exiting the function.
 
 @c fileparts scripts/miscellaneous/fileparts.m
 @anchor{XREFfileparts}
-@deftypefn {Function File} {[@var{dir}, @var{name}, @var{ext}] =} fileparts (@var{filename})
+@deftypefn {} {[@var{dir}, @var{name}, @var{ext}] =} fileparts (@var{filename})
 Return the directory, name, and extension components of @var{filename}.
 
 The input @var{filename} is a string which is parsed.  There is no attempt
@@ -1482,8 +1494,8 @@ to check whether the filename or directory specified actually exists.
 
 @c fullfile scripts/miscellaneous/fullfile.m
 @anchor{XREFfullfile}
-@deftypefn  {Function File} {@var{filename} =} fullfile (@var{dir1}, @var{dir2}, @dots{}, @var{file})
-@deftypefnx {Function File} {@var{filenames} =} fullfile (@dots{}, @var{files})
+@deftypefn  {} {@var{filename} =} fullfile (@var{dir1}, @var{dir2}, @dots{}, @var{file})
+@deftypefnx {} {@var{filenames} =} fullfile (@dots{}, @var{files})
 Build complete filename from separate parts.
 
 Joins any number of path components intelligently.  The return value is
@@ -1507,13 +1519,16 @@ On Windows systems, while forward slash file separators do work, they are
 replaced by backslashes; in addition drive letters are stripped of leading
 file separators to obtain a valid file path.
 
+Note: @code{fullfile} does not perform any validation of the resulting full
+filename.
 @seealso{@ref{XREFfileparts,,fileparts}, @ref{XREFfilesep,,filesep}}
 @end deftypefn
 
 
 @c tilde_expand libinterp/corefcn/sysdep.cc
 @anchor{XREFtilde_expand}
-@deftypefn {Built-in Function} {} tilde_expand (@var{string})
+@deftypefn  {} {} tilde_expand (@var{string})
+@deftypefnx {} {} tilde_expand (@var{cellstr})
 Perform tilde expansion on @var{string}.
 
 If @var{string} begins with a tilde character, (@samp{~}), all of the
@@ -1523,7 +1538,10 @@ characters up to the slash are replaced by the home directory of the named
 user.  If the tilde is followed immediately by a slash, the tilde is
 replaced by the home directory of the user running Octave.
 
-For example:
+If the input is a cell array of strings @var{cellstr} then tilde expansion
+is performed on each string element.
+
+Examples:
 
 @example
 @group
@@ -1538,7 +1556,7 @@ tilde_expand ("~/bin")
 
 @c canonicalize_file_name libinterp/corefcn/syscalls.cc
 @anchor{XREFcanonicalize_file_name}
-@deftypefn {Built-in Function} {[@var{cname}, @var{status}, @var{msg}] =} canonicalize_file_name (@var{fname})
+@deftypefn {} {[@var{cname}, @var{status}, @var{msg}] =} canonicalize_file_name (@var{fname})
 Return the canonical name of file @var{fname}.
 
 If the file does not exist the empty string ("") is returned.
@@ -1548,7 +1566,7 @@ If the file does not exist the empty string ("") is returned.
 
 @c make_absolute_filename libinterp/corefcn/utils.cc
 @anchor{XREFmake_absolute_filename}
-@deftypefn {Built-in Function} {} make_absolute_filename (@var{file})
+@deftypefn {} {} make_absolute_filename (@var{file})
 Return the full name of @var{file} beginning from the root of the file
 system.
 
@@ -1559,7 +1577,7 @@ No check is done for the existence of @var{file}.
 
 @c is_absolute_filename libinterp/corefcn/utils.cc
 @anchor{XREFis_absolute_filename}
-@deftypefn {Built-in Function} {} is_absolute_filename (@var{file})
+@deftypefn {} {} is_absolute_filename (@var{file})
 Return true if @var{file} is an absolute filename.
 @seealso{@ref{XREFis_rooted_relative_filename,,is_rooted_relative_filename}, @ref{XREFmake_absolute_filename,,make_absolute_filename}, @ref{XREFisdir,,isdir}}
 @end deftypefn
@@ -1567,7 +1585,7 @@ Return true if @var{file} is an absolute filename.
 
 @c is_rooted_relative_filename libinterp/corefcn/utils.cc
 @anchor{XREFis_rooted_relative_filename}
-@deftypefn {Built-in Function} {} is_rooted_relative_filename (@var{file})
+@deftypefn {} {} is_rooted_relative_filename (@var{file})
 Return true if @var{file} is a rooted-relative filename.
 @seealso{@ref{XREFis_absolute_filename,,is_absolute_filename}, @ref{XREFmake_absolute_filename,,make_absolute_filename}, @ref{XREFisdir,,isdir}}
 @end deftypefn
@@ -1575,8 +1593,8 @@ Return true if @var{file} is a rooted-relative filename.
 
 @c recycle scripts/miscellaneous/recycle.m
 @anchor{XREFrecycle}
-@deftypefn  {Function File} {@var{current_state} =} recycle ()
-@deftypefnx {Function File} {@var{old_state} =} recycle (@var{new_state})
+@deftypefn  {} {@var{current_state} =} recycle ()
+@deftypefnx {} {@var{old_state} =} recycle (@var{new_state})
 Query or set the preference for recycling deleted files.
 
 When recycling is enabled, commands which would permanently erase files
@@ -1595,8 +1613,8 @@ loss an error will be raised if an attempt is made to enable file recycling.
 
 @c bunzip2 scripts/miscellaneous/bunzip2.m
 @anchor{XREFbunzip2}
-@deftypefn  {Function File} {@var{filelist} =} bunzip2 (@var{bzfile})
-@deftypefnx {Function File} {@var{filelist} =} bunzip2 (@var{bzfile}, @var{dir})
+@deftypefn  {} {@var{filelist} =} bunzip2 (@var{bzfile})
+@deftypefnx {} {@var{filelist} =} bunzip2 (@var{bzfile}, @var{dir})
 Unpack the bzip2 archive @var{bzfile}.
 
 If @var{dir} is specified the files are unpacked in this directory rather
@@ -1607,10 +1625,10 @@ The optional output @var{filelist} is a list of the uncompressed files.
 @end deftypefn
 
 
-@c gzip scripts/miscellaneous/gzip.m
+@c gzip libinterp/dldfcn/gzip.cc
 @anchor{XREFgzip}
-@deftypefn  {Function File} {@var{filelist} =} gzip (@var{files})
-@deftypefnx {Function File} {@var{filelist} =} gzip (@var{files}, @var{dir})
+@deftypefn  {} {@var{filelist} =} gzip (@var{files})
+@deftypefnx {} {@var{filelist} =} gzip (@var{files}, @var{dir})
 Compress the list of files and directories specified in @var{files}.
 
 @var{files} is a character array or cell array of strings.  Shell wildcards
@@ -1623,6 +1641,10 @@ directory.
 
 If @var{dir} is defined the compressed files are placed in this directory,
 rather than the original directory where the uncompressed file resides.
+Note that this does not replicate a directory tree in @var{dir} which may
+lead to files overwriting each other if there are multiple files with the
+same name.
+
 If @var{dir} does not exist it is created.
 
 The optional output @var{filelist} is a list of the compressed files.
@@ -1632,8 +1654,8 @@ The optional output @var{filelist} is a list of the compressed files.
 
 @c gunzip scripts/miscellaneous/gunzip.m
 @anchor{XREFgunzip}
-@deftypefn  {Function File} {@var{filelist} =} gunzip (@var{gzfile})
-@deftypefnx {Function File} {@var{filelist} =} gunzip (@var{gzfile}, @var{dir})
+@deftypefn  {} {@var{filelist} =} gunzip (@var{gzfile})
+@deftypefnx {} {@var{filelist} =} gunzip (@var{gzfile}, @var{dir})
 Unpack the gzip archive @var{gzfile}.
 
 If @var{gzfile} is a directory, all gzfiles in the directory will be
@@ -1649,8 +1671,8 @@ The optional output @var{filelist} is a list of the uncompressed files.
 
 @c tar scripts/miscellaneous/tar.m
 @anchor{XREFtar}
-@deftypefn  {Function File} {@var{filelist} =} tar (@var{tarfile}, @var{files})
-@deftypefnx {Function File} {@var{filelist} =} tar (@var{tarfile}, @var{files}, @var{rootdir})
+@deftypefn  {} {@var{filelist} =} tar (@var{tarfile}, @var{files})
+@deftypefnx {} {@var{filelist} =} tar (@var{tarfile}, @var{files}, @var{rootdir})
 Pack the list of files and directories specified in @var{files} into the
 TAR archive @var{tarfile}.
 
@@ -1670,8 +1692,8 @@ in the archive.
 
 @c untar scripts/miscellaneous/untar.m
 @anchor{XREFuntar}
-@deftypefn  {Function File} {} untar (@var{tarfile})
-@deftypefnx {Function File} {} untar (@var{tarfile}, @var{dir})
+@deftypefn  {} {} untar (@var{tarfile})
+@deftypefnx {} {} untar (@var{tarfile}, @var{dir})
 Unpack the TAR archive @var{tarfile}.
 
 If @var{dir} is specified the files are unpacked in this directory rather
@@ -1684,8 +1706,8 @@ The optional output @var{filelist} is a list of the uncompressed files.
 
 @c zip scripts/miscellaneous/zip.m
 @anchor{XREFzip}
-@deftypefn  {Function File} {@var{filelist} =} zip (@var{zipfile}, @var{files})
-@deftypefnx {Function File} {@var{filelist} =} zip (@var{zipfile}, @var{files}, @var{rootdir})
+@deftypefn  {} {@var{filelist} =} zip (@var{zipfile}, @var{files})
+@deftypefnx {} {@var{filelist} =} zip (@var{zipfile}, @var{files}, @var{rootdir})
 Compress the list of files and directories specified in @var{files} into the
 ZIP archive @var{zipfile}.
 
@@ -1705,8 +1727,8 @@ in the archive.
 
 @c unzip scripts/miscellaneous/unzip.m
 @anchor{XREFunzip}
-@deftypefn  {Function File} {@var{filelist} =} unzip (@var{zipfile})
-@deftypefnx {Function File} {@var{filelist} =} unzip (@var{zipfile}, @var{dir})
+@deftypefn  {} {@var{filelist} =} unzip (@var{zipfile})
+@deftypefnx {} {@var{filelist} =} unzip (@var{zipfile}, @var{dir})
 Unpack the ZIP archive @var{zipfile}.
 
 If @var{dir} is specified the files are unpacked in this directory rather
@@ -1719,9 +1741,9 @@ The optional output @var{filelist} is a list of the uncompressed files.
 
 @c unpack scripts/miscellaneous/unpack.m
 @anchor{XREFunpack}
-@deftypefn  {Function File} {@var{files} =} unpack (@var{file})
-@deftypefnx {Function File} {@var{files} =} unpack (@var{file}, @var{dir})
-@deftypefnx {Function File} {@var{files} =} unpack (@var{file}, @var{dir}, @var{filetype})
+@deftypefn  {} {@var{files} =} unpack (@var{file})
+@deftypefnx {} {@var{files} =} unpack (@var{file}, @var{dir})
+@deftypefnx {} {@var{files} =} unpack (@var{file}, @var{dir}, @var{filetype})
 Unpack the archive @var{file} based on its extension to the directory
 @var{dir}.
 
@@ -1772,10 +1794,10 @@ The optional return value is a list of @var{files} unpacked.
 @end deftypefn
 
 
-@c bzip2 scripts/miscellaneous/bzip2.m
+@c bzip2 libinterp/dldfcn/gzip.cc
 @anchor{XREFbzip2}
-@deftypefn  {Function File} {@var{filelist} =} bzip2 (@var{files})
-@deftypefnx {Function File} {@var{filelist} =} bzip2 (@var{files}, @var{dir})
+@deftypefn  {} {@var{filelist} =} bzip2 (@var{files})
+@deftypefnx {} {@var{filelist} =} bzip2 (@var{files}, @var{dir})
 Compress the list of files specified in @var{files}.
 
 @var{files} is a character array or cell array of strings.  Shell wildcards
@@ -1786,6 +1808,10 @@ compressed files will be silently overwritten.
 
 If @var{dir} is defined the compressed files are placed in this directory,
 rather than the original directory where the uncompressed file resides.
+Note that this does not replicate a directory tree in @var{dir} which may
+lead to files overwriting each other if there are multiple files with the
+same name.
+
 If @var{dir} does not exist it is created.
 
 The optional output @var{filelist} is a list of the compressed files.
@@ -1804,7 +1830,7 @@ The optional output @var{filelist} is a list of the compressed files.
 
 @c gethostname libinterp/corefcn/syscalls.cc
 @anchor{XREFgethostname}
-@deftypefn {Built-in Function} {} gethostname ()
+@deftypefn {} {} gethostname ()
 Return the hostname of the system where Octave is running.
 @end deftypefn
 
@@ -1818,8 +1844,8 @@ connection.  All FTP functions take an FTP object as the first argument.
 
 @c @ftp/ftp scripts/@ftp/ftp.m
 @anchor{XREF@@ftp/ftp}
-@deftypefn  {Function File} {@var{f} =} ftp (@var{host})
-@deftypefnx {Function File} {@var{f} =} ftp (@var{host}, @var{username}, @var{password})
+@deftypefn  {} {@var{f} =} ftp (@var{host})
+@deftypefnx {} {@var{f} =} ftp (@var{host}, @var{username}, @var{password})
 Connect to the FTP server @var{host} with @var{username} and @var{password}.
 
 If @var{username} and @var{password} are not specified, user
@@ -1849,7 +1875,7 @@ require an FTP object as the first argument.
 
 @c @ftp/close scripts/@ftp/close.m
 @anchor{XREF@@ftp/close}
-@deftypefn {Function File} {} close (@var{f})
+@deftypefn {} {} close (@var{f})
 Close the FTP connection represented by the FTP object @var{f}.
 
 @var{f} is an FTP object returned by the @code{ftp} function.
@@ -1858,9 +1884,9 @@ Close the FTP connection represented by the FTP object @var{f}.
 
 @c @ftp/mget scripts/@ftp/mget.m
 @anchor{XREF@@ftp/mget}
-@deftypefn  {Function File} {} mget (@var{f}, @var{file})
-@deftypefnx {Function File} {} mget (@var{f}, @var{dir})
-@deftypefnx {Function File} {} mget (@var{f}, @var{remote_name}, @var{target})
+@deftypefn  {} {} mget (@var{f}, @var{file})
+@deftypefnx {} {} mget (@var{f}, @var{dir})
+@deftypefnx {} {} mget (@var{f}, @var{remote_name}, @var{target})
 Download a remote file @var{file} or directory @var{dir} to the local
 directory on the FTP connection @var{f}.
 
@@ -1869,15 +1895,15 @@ directory on the FTP connection @var{f}.
 The arguments @var{file} and @var{dir} can include wildcards and any
 files or directories on the remote server that match will be downloaded.
 
-If a third argument @var{target} is given, then a single file or
-directory will be downloaded to the local directory and the local name
-will be changed to @var{target}.
+If a third string argument @var{target} is given, then it must indicate
+the path to the local destination directory.  @var{target} may be a
+relative or absolute path.
 @end deftypefn
 
 
 @c @ftp/mput scripts/@ftp/mput.m
 @anchor{XREF@@ftp/mput}
-@deftypefn {Function File} {} mput (@var{f}, @var{file})
+@deftypefn {} {} mput (@var{f}, @var{file})
 Upload the local file @var{file} into the current remote directory on the
 FTP connection @var{f}.
 
@@ -1890,8 +1916,8 @@ files that match the wildcards in @var{file} will be uploaded.
 
 @c @ftp/cd scripts/@ftp/cd.m
 @anchor{XREF@@ftp/cd}
-@deftypefn  {Function File} {} cd (@var{f})
-@deftypefnx {Function File} {} cd (@var{f}, @var{path})
+@deftypefn  {} {} cd (@var{f})
+@deftypefnx {} {} cd (@var{f}, @var{path})
 Get or set the remote directory on the FTP connection @var{f}.
 
 @var{f} is an FTP object returned by the @code{ftp} function.
@@ -1907,7 +1933,7 @@ working directory is not changed.
 
 @c @ftp/dir scripts/@ftp/dir.m
 @anchor{XREF@@ftp/dir}
-@deftypefn {Function File} {@var{lst} =} dir (@var{f})
+@deftypefn {} {@var{lst} =} dir (@var{f})
 List the current directory in verbose form for the FTP connection @var{f}.
 
 @var{f} is an FTP object returned by the @code{ftp} function.
@@ -1916,7 +1942,7 @@ List the current directory in verbose form for the FTP connection @var{f}.
 
 @c @ftp/ascii scripts/@ftp/ascii.m
 @anchor{XREF@@ftp/ascii}
-@deftypefn {Function File} {} ascii (@var{f})
+@deftypefn {} {} ascii (@var{f})
 Set the FTP connection @var{f} to use ASCII mode for transfers.
 
 ASCII mode is only appropriate for text files as it will convert the
@@ -1929,7 +1955,7 @@ representation.
 
 @c @ftp/binary scripts/@ftp/binary.m
 @anchor{XREF@@ftp/binary}
-@deftypefn {Function File} {} binary (@var{f})
+@deftypefn {} {} binary (@var{f})
 Set the FTP connection @var{f} to use binary mode for transfers.
 
 In binary mode there is no conversion of newlines from the remote
@@ -1941,7 +1967,7 @@ representation to the local representation.
 
 @c @ftp/delete scripts/@ftp/delete.m
 @anchor{XREF@@ftp/delete}
-@deftypefn {Function File} {} delete (@var{f}, @var{file})
+@deftypefn {} {} delete (@var{f}, @var{file})
 Delete the remote file @var{file} over the FTP connection @var{f}.
 
 @var{f} is an FTP object returned by the @code{ftp} function.
@@ -1950,7 +1976,7 @@ Delete the remote file @var{file} over the FTP connection @var{f}.
 
 @c @ftp/rename scripts/@ftp/rename.m
 @anchor{XREF@@ftp/rename}
-@deftypefn {Function File} {} rename (@var{f}, @var{oldname}, @var{newname})
+@deftypefn {} {} rename (@var{f}, @var{oldname}, @var{newname})
 Rename or move the remote file or directory @var{oldname} to @var{newname},
 over the FTP connection @var{f}.
 
@@ -1960,7 +1986,7 @@ over the FTP connection @var{f}.
 
 @c @ftp/mkdir scripts/@ftp/mkdir.m
 @anchor{XREF@@ftp/mkdir}
-@deftypefn {Function File} {} mkdir (@var{f}, @var{path})
+@deftypefn {} {} mkdir (@var{f}, @var{path})
 Create the remote directory @var{path}, over the FTP connection @var{f}.
 
 @var{f} is an FTP object returned by the @code{ftp} function.
@@ -1969,7 +1995,7 @@ Create the remote directory @var{path}, over the FTP connection @var{f}.
 
 @c @ftp/rmdir scripts/@ftp/rmdir.m
 @anchor{XREF@@ftp/rmdir}
-@deftypefn {Function File} {} rmdir (@var{f}, @var{path})
+@deftypefn {} {} rmdir (@var{f}, @var{path})
 Remove the remote directory @var{path}, over the FTP connection @var{f}.
 
 @var{f} is an FTP object returned by the @code{ftp} function.
@@ -1981,10 +2007,10 @@ Remove the remote directory @var{path}, over the FTP connection @var{f}.
 
 @c urlread libinterp/corefcn/urlwrite.cc
 @anchor{XREFurlread}
-@deftypefn  {Loadable Function} {@var{s} =} urlread (@var{url})
-@deftypefnx {Loadable Function} {[@var{s}, @var{success}] =} urlread (@var{url})
-@deftypefnx {Loadable Function} {[@var{s}, @var{success}, @var{message}] =} urlread (@var{url})
-@deftypefnx {Loadable Function} {[@dots{}] =} urlread (@var{url}, @var{method}, @var{param})
+@deftypefn  {} {@var{s} =} urlread (@var{url})
+@deftypefnx {} {[@var{s}, @var{success}] =} urlread (@var{url})
+@deftypefnx {} {[@var{s}, @var{success}, @var{message}] =} urlread (@var{url})
+@deftypefnx {} {[@dots{}] =} urlread (@var{url}, @var{method}, @var{param})
 Download a remote file specified by its @var{url} and return its content
 in string @var{s}.
 
@@ -2001,7 +2027,7 @@ message.
 If no output argument is specified and an error occurs, then the error is
 signaled through Octave's error handling mechanism.
 
-This function uses libcurl.  Curl supports, among others, the HTTP, FTP and
+This function uses libcurl.  Curl supports, among others, the HTTP, FTP, and
 FILE protocols.  Username and password may be specified in the URL@.  For
 example:
 
@@ -2026,10 +2052,10 @@ s = urlread ("http://www.google.com/search", "get",
 
 @c urlwrite libinterp/corefcn/urlwrite.cc
 @anchor{XREFurlwrite}
-@deftypefn  {Loadable Function} {} urlwrite (@var{url}, @var{localfile})
-@deftypefnx {Loadable Function} {@var{f} =} urlwrite (@var{url}, @var{localfile})
-@deftypefnx {Loadable Function} {[@var{f}, @var{success}] =} urlwrite (@var{url}, @var{localfile})
-@deftypefnx {Loadable Function} {[@var{f}, @var{success}, @var{message}] =} urlwrite (@var{url}, @var{localfile})
+@deftypefn  {} {} urlwrite (@var{url}, @var{localfile})
+@deftypefnx {} {@var{f} =} urlwrite (@var{url}, @var{localfile})
+@deftypefnx {} {[@var{f}, @var{success}] =} urlwrite (@var{url}, @var{localfile})
+@deftypefnx {} {[@var{f}, @var{success}, @var{message}] =} urlwrite (@var{url}, @var{localfile})
 Download a remote file specified by its @var{url} and save it as
 @var{localfile}.
 
@@ -2050,7 +2076,7 @@ otherwise it is 0 in which case @var{message} contains an error message.
 If no output argument is specified and an error occurs, then the error is
 signaled through Octave's error handling mechanism.
 
-This function uses libcurl.  Curl supports, among others, the HTTP, FTP and
+This function uses libcurl.  Curl supports, among others, the HTTP, FTP, and
 FILE protocols.  Username and password may be specified in the URL, for
 example:
 
@@ -2085,7 +2111,7 @@ reception.
 
 @c base64_encode libinterp/corefcn/data.cc
 @anchor{XREFbase64_encode}
-@deftypefn {Built-in Function} {@var{s} =} base64_encode (@var{x})
+@deftypefn {} {@var{s} =} base64_encode (@var{x})
 Encode a double matrix or array @var{x} into the base64 format string
 @var{s}.
 
@@ -2095,8 +2121,8 @@ Encode a double matrix or array @var{x} into the base64 format string
 
 @c base64_decode libinterp/corefcn/data.cc
 @anchor{XREFbase64_decode}
-@deftypefn  {Built-in Function} {@var{x} =} base64_decode (@var{s})
-@deftypefnx {Built-in Function} {@var{x} =} base64_decode (@var{s}, @var{dims})
+@deftypefn  {} {@var{x} =} base64_decode (@var{s})
+@deftypefnx {} {@var{x} =} base64_decode (@var{s}, @var{dims})
 Decode the double matrix or array @var{x} from the base64 encoded string
 @var{s}.
 
@@ -2121,10 +2147,10 @@ higher-level functions.
 
 @c system libinterp/corefcn/toplev.cc
 @anchor{XREFsystem}
-@deftypefn  {Built-in Function} {} system ("@var{string}")
-@deftypefnx {Built-in Function} {} system ("@var{string}", @var{return_output})
-@deftypefnx {Built-in Function} {} system ("@var{string}", @var{return_output}, @var{type})
-@deftypefnx {Built-in Function} {[@var{status}, @var{output}] =} system (@dots{})
+@deftypefn  {} {} system ("@var{string}")
+@deftypefnx {} {} system ("@var{string}", @var{return_output})
+@deftypefnx {} {} system ("@var{string}", @var{return_output}, @var{type})
+@deftypefnx {} {[@var{status}, @var{output}] =} system (@dots{})
 Execute a shell command specified by @var{string}.
 
 If the optional argument @var{type} is @qcode{"async"}, the process is
@@ -2142,7 +2168,7 @@ to the standard output.  To send the output of a command executed with
 
 @example
 @group
-[output, text] = system ("cmd");
+[~, text] = system ("cmd");
 disp (text);
 @end group
 @end example
@@ -2174,10 +2200,10 @@ command shell that is started to run the command.
 
 @c unix scripts/miscellaneous/unix.m
 @anchor{XREFunix}
-@deftypefn  {Function File} {} unix ("@var{command}")
-@deftypefnx {Function File} {@var{status} =} unix ("@var{command}")
-@deftypefnx {Function File} {[@var{status}, @var{text}] =} unix ("@var{command}")
-@deftypefnx {Function File} {[@dots{}] =} unix ("@var{command}", "-echo")
+@deftypefn  {} {} unix ("@var{command}")
+@deftypefnx {} {@var{status} =} unix ("@var{command}")
+@deftypefnx {} {[@var{status}, @var{text}] =} unix ("@var{command}")
+@deftypefnx {} {[@dots{}] =} unix ("@var{command}", "-echo")
 Execute a system command if running under a Unix-like operating system,
 otherwise do nothing.
 
@@ -2192,10 +2218,10 @@ given, then @var{text} is also sent to standard output.
 
 @c dos scripts/miscellaneous/dos.m
 @anchor{XREFdos}
-@deftypefn  {Function File} {} dos ("@var{command}")
-@deftypefnx {Function File} {@var{status} =} dos ("@var{command}")
-@deftypefnx {Function File} {[@var{status}, @var{text}] =} dos ("@var{command"})
-@deftypefnx {Function File} {[@dots{}] =} dos ("@var{command}", "-echo")
+@deftypefn  {} {} dos ("@var{command}")
+@deftypefnx {} {@var{status} =} dos ("@var{command}")
+@deftypefnx {} {[@var{status}, @var{text}] =} dos ("@var{command"})
+@deftypefnx {} {[@dots{}] =} dos ("@var{command}", "-echo")
 Execute a system command if running under a Windows-like operating system,
 otherwise do nothing.
 
@@ -2210,10 +2236,10 @@ given, then @var{text} is also sent to standard output.
 
 @c open scripts/miscellaneous/open.m
 @anchor{XREFopen}
-@deftypefn  {Function File} {@var{output} =} open @var{file}
-@deftypefnx {Function File} {@var{output} =} open (@var{file})
+@deftypefn  {} {@var{output} =} open @var{file}
+@deftypefnx {} {@var{output} =} open (@var{file})
 Open the file @var{file} in Octave or in an external application based on
-the file type as determined by the file name extension.
+the file type as determined by the filename extension.
 
 Recognized file types are
 
@@ -2234,14 +2260,14 @@ Other file types are opened in the appropriate external application.
 
 @c perl scripts/miscellaneous/perl.m
 @anchor{XREFperl}
-@deftypefn  {Function File} {@var{output} =} perl (@var{scriptfile})
-@deftypefnx {Function File} {@var{output} =} perl (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
-@deftypefnx {Function File} {[@var{output}, @var{status}] =} perl (@dots{})
+@deftypefn  {} {@var{output} =} perl (@var{scriptfile})
+@deftypefnx {} {@var{output} =} perl (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
+@deftypefnx {} {[@var{output}, @var{status}] =} perl (@dots{})
 Invoke Perl script @var{scriptfile}, possibly with a list of command line
 arguments.
 
 Return output in @var{output} and optional status in @var{status}.  If
-@var{scriptfile} is not an absolute file name it is searched for in the
+@var{scriptfile} is not an absolute filename it is searched for in the
 current directory and then in the Octave loadpath.
 @seealso{@ref{XREFsystem,,system}, @ref{XREFpython,,python}}
 @end deftypefn
@@ -2249,14 +2275,14 @@ current directory and then in the Octave loadpath.
 
 @c python scripts/miscellaneous/python.m
 @anchor{XREFpython}
-@deftypefn  {Function File} {@var{output} =} python (@var{scriptfile})
-@deftypefnx {Function File} {@var{output} =} python (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
-@deftypefnx {Function File} {[@var{output}, @var{status}] =} python (@dots{})
+@deftypefn  {} {@var{output} =} python (@var{scriptfile})
+@deftypefnx {} {@var{output} =} python (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
+@deftypefnx {} {[@var{output}, @var{status}] =} python (@dots{})
 Invoke Python script @var{scriptfile}, possibly with a list of command line
 arguments.
 
 Return output in @var{output} and optional status in @var{status}.  If
-@var{scriptfile} is not an absolute file name it is searched for in the
+@var{scriptfile} is not an absolute filename it is searched for in the
 current directory and then in the Octave loadpath.
 @seealso{@ref{XREFsystem,,system}, @ref{XREFperl,,perl}}
 @end deftypefn
@@ -2264,13 +2290,13 @@ current directory and then in the Octave loadpath.
 
 @c popen libinterp/corefcn/file-io.cc
 @anchor{XREFpopen}
-@deftypefn {Built-in Function} {@var{fid} =} popen (@var{command}, @var{mode})
+@deftypefn {} {@var{fid} =} popen (@var{command}, @var{mode})
 Start a process and create a pipe.
 
 The name of the command to run is given by @var{command}.  The argument
 @var{mode} may be
 
-@table @code
+@table @asis
 @item @qcode{"r"}
 The pipe will be connected to the standard output of the process, and
 open for reading.
@@ -2303,7 +2329,7 @@ endwhile
 
 @c pclose libinterp/corefcn/file-io.cc
 @anchor{XREFpclose}
-@deftypefn {Built-in Function} {} pclose (@var{fid})
+@deftypefn {} {} pclose (@var{fid})
 Close a file identifier that was opened by @code{popen}.
 
 The function @code{fclose} may also be used for the same purpose.
@@ -2313,11 +2339,11 @@ The function @code{fclose} may also be used for the same purpose.
 
 @c popen2 libinterp/corefcn/syscalls.cc
 @anchor{XREFpopen2}
-@deftypefn {Built-in Function} {[@var{in}, @var{out}, @var{pid}] =} popen2 (@var{command}, @var{args})
+@deftypefn {} {[@var{in}, @var{out}, @var{pid}] =} popen2 (@var{command}, @var{args})
 Start a subprocess with two-way communication.
 
 The name of the process is given by @var{command}, and @var{args} is an
-array of strings containing options for the command.
+array or cell array of strings containing options for the command.
 
 The file identifiers for the input and output streams of the subprocess are
 returned in @var{in} and @var{out}.  If execution of the command is
@@ -2337,7 +2363,7 @@ do
   if (ischar (s))
     fputs (stdout, s);
   elseif (errno () == EAGAIN)
-    sleep (0.1);
+    pause (0.1);
     fclear (out);
   else
     done = true;
@@ -2352,8 +2378,8 @@ waitpid (pid);
    @print{} are
 @end example
 
-Note that @code{popen2}, unlike @code{popen}, will not @nospell{"reap"} the
-child process.  If you don't use @code{waitpid} to check the child's
+Note that @code{popen2}, unlike @code{popen}, will not @nospell{"reap"}
+the child process.  If you don't use @code{waitpid} to check the child's
 exit status, it will linger until Octave exits.
 @seealso{@ref{XREFpopen,,popen}, @ref{XREFwaitpid,,waitpid}}
 @end deftypefn
@@ -2361,9 +2387,9 @@ exit status, it will linger until Octave exits.
 
 @c EXEC_PATH libinterp/corefcn/defaults.cc
 @anchor{XREFEXEC_PATH}
-@deftypefn  {Built-in Function} {@var{val} =} EXEC_PATH ()
-@deftypefnx {Built-in Function} {@var{old_val} =} EXEC_PATH (@var{new_val})
-@deftypefnx {Built-in Function} {} EXEC_PATH (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} EXEC_PATH ()
+@deftypefnx {} {@var{old_val} =} EXEC_PATH (@var{new_val})
+@deftypefnx {} {} EXEC_PATH (@var{new_val}, "local")
 Query or set the internal variable that specifies a colon separated
 list of directories to append to the shell PATH when executing external
 programs.
@@ -2386,7 +2412,7 @@ they can be used, look at the definition of the function @code{popen2}.
 
 @c fork libinterp/corefcn/syscalls.cc
 @anchor{XREFfork}
-@deftypefn {Built-in Function} {[@var{pid}, @var{msg}] =} fork ()
+@deftypefn {} {[@var{pid}, @var{msg}] =} fork ()
 Create a copy of the current process.
 
 Fork can return one of the following values:
@@ -2410,7 +2436,7 @@ action.  A system dependent error message will be waiting in @var{msg}.
 
 @c exec libinterp/corefcn/syscalls.cc
 @anchor{XREFexec}
-@deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} exec (@var{file}, @var{args})
+@deftypefn {} {[@var{err}, @var{msg}] =} exec (@var{file}, @var{args})
 Replace current process with a new process.
 
 Calling @code{exec} without first calling @code{fork} will terminate your
@@ -2432,7 +2458,7 @@ error message.
 
 @c pipe libinterp/corefcn/syscalls.cc
 @anchor{XREFpipe}
-@deftypefn {Built-in Function} {[@var{read_fd}, @var{write_fd}, @var{err}, @var{msg}] =} pipe ()
+@deftypefn {} {[@var{read_fd}, @var{write_fd}, @var{err}, @var{msg}] =} pipe ()
 Create a pipe and return the reading and writing ends of the pipe into
 @var{read_fd} and @var{write_fd} respectively.
 
@@ -2445,7 +2471,7 @@ error message.
 
 @c dup2 libinterp/corefcn/syscalls.cc
 @anchor{XREFdup2}
-@deftypefn {Built-in Function} {[@var{fid}, @var{msg}] =} dup2 (@var{old}, @var{new})
+@deftypefn {} {[@var{fid}, @var{msg}] =} dup2 (@var{old}, @var{new})
 Duplicate a file descriptor.
 
 If successful, @var{fid} is greater than zero and contains the new file ID@.
@@ -2457,7 +2483,7 @@ error message.
 
 @c waitpid libinterp/corefcn/syscalls.cc
 @anchor{XREFwaitpid}
-@deftypefn {Built-in Function} {[@var{pid}, @var{status}, @var{msg}] =} waitpid (@var{pid}, @var{options})
+@deftypefn {} {[@var{pid}, @var{status}, @var{msg}] =} waitpid (@var{pid}, @var{options})
 Wait for process @var{pid} to terminate.
 
 The @var{pid} argument can be:
@@ -2505,7 +2531,7 @@ about the subprocess that exited.
 
 @c WCONTINUE libinterp/corefcn/syscalls.cc
 @anchor{XREFWCONTINUE}
-@deftypefn {Built-in Function} {} WCONTINUE ()
+@deftypefn {} {} WCONTINUE ()
 Return the numerical value of the option argument that may be
 passed to @code{waitpid} to indicate that it should also return if a stopped
 child has been resumed by delivery of a @code{SIGCONT} signal.
@@ -2515,7 +2541,7 @@ child has been resumed by delivery of a @code{SIGCONT} signal.
 
 @c WCOREDUMP libinterp/corefcn/syscalls.cc
 @anchor{XREFWCOREDUMP}
-@deftypefn {Built-in Function} {} WCOREDUMP (@var{status})
+@deftypefn {} {} WCOREDUMP (@var{status})
 Given @var{status} from a call to @code{waitpid}, return
 true if the child produced a core dump.
 
@@ -2528,7 +2554,7 @@ and is not available on some Unix implementations (e.g., AIX, SunOS).
 
 @c WEXITSTATUS libinterp/corefcn/syscalls.cc
 @anchor{XREFWEXITSTATUS}
-@deftypefn {Built-in Function} {} WEXITSTATUS (@var{status})
+@deftypefn {} {} WEXITSTATUS (@var{status})
 Given @var{status} from a call to @code{waitpid}, return
 the exit status of the child.
 
@@ -2539,7 +2565,7 @@ This function should only be employed if @code{WIFEXITED} returned true.
 
 @c WIFCONTINUED libinterp/corefcn/syscalls.cc
 @anchor{XREFWIFCONTINUED}
-@deftypefn {Built-in Function} {} WIFCONTINUED (@var{status})
+@deftypefn {} {} WIFCONTINUED (@var{status})
 Given @var{status} from a call to @code{waitpid}, return
 true if the child process was resumed by delivery of @code{SIGCONT}.
 @seealso{@ref{XREFwaitpid,,waitpid}, @ref{XREFWIFEXITED,,WIFEXITED}, @ref{XREFWEXITSTATUS,,WEXITSTATUS}, @ref{XREFWIFSIGNALED,,WIFSIGNALED}, @ref{XREFWTERMSIG,,WTERMSIG}, @ref{XREFWCOREDUMP,,WCOREDUMP}, @ref{XREFWIFSTOPPED,,WIFSTOPPED}, @ref{XREFWSTOPSIG,,WSTOPSIG}}
@@ -2548,7 +2574,7 @@ true if the child process was resumed by delivery of @code{SIGCONT}.
 
 @c WIFSIGNALED libinterp/corefcn/syscalls.cc
 @anchor{XREFWIFSIGNALED}
-@deftypefn {Built-in Function} {} WIFSIGNALED (@var{status})
+@deftypefn {} {} WIFSIGNALED (@var{status})
 Given @var{status} from a call to @code{waitpid}, return
 true if the child process was terminated by a signal.
 @seealso{@ref{XREFwaitpid,,waitpid}, @ref{XREFWIFEXITED,,WIFEXITED}, @ref{XREFWEXITSTATUS,,WEXITSTATUS}, @ref{XREFWTERMSIG,,WTERMSIG}, @ref{XREFWCOREDUMP,,WCOREDUMP}, @ref{XREFWIFSTOPPED,,WIFSTOPPED}, @ref{XREFWSTOPSIG,,WSTOPSIG}, @ref{XREFWIFCONTINUED,,WIFCONTINUED}}
@@ -2557,7 +2583,7 @@ true if the child process was terminated by a signal.
 
 @c WIFSTOPPED libinterp/corefcn/syscalls.cc
 @anchor{XREFWIFSTOPPED}
-@deftypefn {Built-in Function} {} WIFSTOPPED (@var{status})
+@deftypefn {} {} WIFSTOPPED (@var{status})
 Given @var{status} from a call to @code{waitpid}, return
 true if the child process was stopped by delivery of a signal.
 
@@ -2569,7 +2595,7 @@ the child is being traced (see ptrace(2)).
 
 @c WIFEXITED libinterp/corefcn/syscalls.cc
 @anchor{XREFWIFEXITED}
-@deftypefn {Built-in Function} {} WIFEXITED (@var{status})
+@deftypefn {} {} WIFEXITED (@var{status})
 Given @var{status} from a call to @code{waitpid}, return
 true if the child terminated normally.
 @seealso{@ref{XREFwaitpid,,waitpid}, @ref{XREFWEXITSTATUS,,WEXITSTATUS}, @ref{XREFWIFSIGNALED,,WIFSIGNALED}, @ref{XREFWTERMSIG,,WTERMSIG}, @ref{XREFWCOREDUMP,,WCOREDUMP}, @ref{XREFWIFSTOPPED,,WIFSTOPPED}, @ref{XREFWSTOPSIG,,WSTOPSIG}, @ref{XREFWIFCONTINUED,,WIFCONTINUED}}
@@ -2578,7 +2604,7 @@ true if the child terminated normally.
 
 @c WNOHANG libinterp/corefcn/syscalls.cc
 @anchor{XREFWNOHANG}
-@deftypefn {Built-in Function} {} WNOHANG ()
+@deftypefn {} {} WNOHANG ()
 Return the numerical value of the option argument that may be
 passed to @code{waitpid} to indicate that it should return its status
 immediately instead of waiting for a process to exit.
@@ -2588,7 +2614,7 @@ immediately instead of waiting for a process to exit.
 
 @c WSTOPSIG libinterp/corefcn/syscalls.cc
 @anchor{XREFWSTOPSIG}
-@deftypefn {Built-in Function} {} WSTOPSIG (@var{status})
+@deftypefn {} {} WSTOPSIG (@var{status})
 Given @var{status} from a call to @code{waitpid}, return
 the number of the signal which caused the child to stop.
 
@@ -2599,7 +2625,7 @@ This function should only be employed if @code{WIFSTOPPED} returned true.
 
 @c WTERMSIG libinterp/corefcn/syscalls.cc
 @anchor{XREFWTERMSIG}
-@deftypefn {Built-in Function} {} WTERMSIG (@var{status})
+@deftypefn {} {} WTERMSIG (@var{status})
 Given @var{status} from a call to @code{waitpid}, return
 the number of the signal that caused the child process to terminate.
 
@@ -2610,7 +2636,7 @@ This function should only be employed if @code{WIFSIGNALED} returned true.
 
 @c WUNTRACED libinterp/corefcn/syscalls.cc
 @anchor{XREFWUNTRACED}
-@deftypefn {Built-in Function} {} WUNTRACED ()
+@deftypefn {} {} WUNTRACED ()
 Return the numerical value of the option argument that may be
 passed to @code{waitpid} to indicate that it should also return if the child
 process has stopped but is not traced via the @code{ptrace} system call
@@ -2620,7 +2646,7 @@ process has stopped but is not traced via the @code{ptrace} system call
 
 @c fcntl libinterp/corefcn/syscalls.cc
 @anchor{XREFfcntl}
-@deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} fcntl (@var{fid}, @var{request}, @var{arg})
+@deftypefn {} {[@var{err}, @var{msg}] =} fcntl (@var{fid}, @var{request}, @var{arg})
 Change the properties of the open file @var{fid}.
 
 The following values may be passed as @var{request}:
@@ -2680,7 +2706,7 @@ message.
 
 @c kill libinterp/corefcn/syscalls.cc
 @anchor{XREFkill}
-@deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} kill (@var{pid}, @var{sig})
+@deftypefn {} {[@var{err}, @var{msg}] =} kill (@var{pid}, @var{sig})
 Send signal @var{sig} to process @var{pid}.
 
 If @var{pid} is positive, then signal @var{sig} is sent to @var{pid}.
@@ -2703,7 +2729,7 @@ Return 0 if successful, otherwise return -1.
 
 @c SIG libinterp/corefcn/sighandlers.cc
 @anchor{XREFSIG}
-@deftypefn {Built-in Function} {} SIG ()
+@deftypefn {} {} SIG ()
 Return a structure containing Unix signal names and their defined values.
 @end deftypefn
 
@@ -2713,14 +2739,14 @@ Return a structure containing Unix signal names and their defined values.
 
 @c getpgrp libinterp/corefcn/syscalls.cc
 @anchor{XREFgetpgrp}
-@deftypefn {Built-in Function} {pgid =} getpgrp ()
+@deftypefn {} {pgid =} getpgrp ()
 Return the process group id of the current process.
 @end deftypefn
 
 
 @c getpid libinterp/corefcn/syscalls.cc
 @anchor{XREFgetpid}
-@deftypefn {Built-in Function} {pid =} getpid ()
+@deftypefn {} {pid =} getpid ()
 Return the process id of the current process.
 @seealso{@ref{XREFgetppid,,getppid}}
 @end deftypefn
@@ -2728,7 +2754,7 @@ Return the process id of the current process.
 
 @c getppid libinterp/corefcn/syscalls.cc
 @anchor{XREFgetppid}
-@deftypefn {Built-in Function} {pid =} getppid ()
+@deftypefn {} {pid =} getppid ()
 Return the process id of the parent process.
 @seealso{@ref{XREFgetpid,,getpid}}
 @end deftypefn
@@ -2736,7 +2762,7 @@ Return the process id of the parent process.
 
 @c geteuid libinterp/corefcn/syscalls.cc
 @anchor{XREFgeteuid}
-@deftypefn {Built-in Function} {euid =} geteuid ()
+@deftypefn {} {euid =} geteuid ()
 Return the effective user id of the current process.
 @seealso{@ref{XREFgetuid,,getuid}}
 @end deftypefn
@@ -2744,7 +2770,7 @@ Return the effective user id of the current process.
 
 @c getuid libinterp/corefcn/syscalls.cc
 @anchor{XREFgetuid}
-@deftypefn {Built-in Function} {uid =} getuid ()
+@deftypefn {} {uid =} getuid ()
 Return the real user id of the current process.
 @seealso{@ref{XREFgeteuid,,geteuid}}
 @end deftypefn
@@ -2752,7 +2778,7 @@ Return the real user id of the current process.
 
 @c getegid libinterp/corefcn/syscalls.cc
 @anchor{XREFgetegid}
-@deftypefn {Built-in Function} {egid =} getegid ()
+@deftypefn {} {egid =} getegid ()
 Return the effective group id of the current process.
 @seealso{@ref{XREFgetgid,,getgid}}
 @end deftypefn
@@ -2760,7 +2786,7 @@ Return the effective group id of the current process.
 
 @c getgid libinterp/corefcn/syscalls.cc
 @anchor{XREFgetgid}
-@deftypefn {Built-in Function} {gid =} getgid ()
+@deftypefn {} {gid =} getgid ()
 Return the real group id of the current process.
 @seealso{@ref{XREFgetegid,,getegid}}
 @end deftypefn
@@ -2771,7 +2797,7 @@ Return the real group id of the current process.
 
 @c getenv libinterp/corefcn/sysdep.cc
 @anchor{XREFgetenv}
-@deftypefn {Built-in Function} {} getenv (@var{var})
+@deftypefn {} {} getenv (@var{var})
 Return the value of the environment variable @var{var}.
 
 For example,
@@ -2788,9 +2814,9 @@ returns a string containing the value of your path.
 
 @c setenv libinterp/corefcn/sysdep.cc
 @anchor{XREFsetenv}
-@deftypefn  {Built-in Function} {} setenv (@var{var}, @var{value})
-@deftypefnx {Built-in Function} {} setenv (@var{var})
-@deftypefnx {Built-in Function} {} putenv (@dots{})
+@deftypefn  {} {} setenv (@var{var}, @var{value})
+@deftypefnx {} {} setenv (@var{var})
+@deftypefnx {} {} putenv (@dots{})
 Set the value of the environment variable @var{var} to @var{value}.
 
 If no @var{value} is specified then the variable will be assigned the null
@@ -2801,7 +2827,7 @@ string.
 
 @c unsetenv libinterp/corefcn/sysdep.cc
 @anchor{XREFunsetenv}
-@deftypefn {Built-in Function} {@var{status} =} unsetenv (@var{var})
+@deftypefn {} {@var{status} =} unsetenv (@var{var})
 Delete the environment variable @var{var}.
 
 Return 0 if the variable was deleted, or did not exist, and -1 if an error
@@ -2812,7 +2838,7 @@ occurred.
 
 @c get_home_directory libinterp/corefcn/sysdep.cc
 @anchor{XREFget_home_directory}
-@deftypefn {Built-in Function} {@var{homedir} =} get_home_directory ()
+@deftypefn {} {@var{homedir} =} get_home_directory ()
 Return the current home directory.
 
 On most systems, this is equivalent to @code{getenv ("HOME")}.  On Windows
@@ -2828,10 +2854,10 @@ equivalent to
 
 @c cd libinterp/corefcn/dirfns.cc
 @anchor{XREFcd}
-@deftypefn  {Command} {} cd @var{dir}
-@deftypefnx {Command} {} cd
-@deftypefnx {Built-in Function} {@var{old_dir} =} cd (@var{dir})
-@deftypefnx {Command} {} chdir @dots{}
+@deftypefn  {} {} cd @var{dir}
+@deftypefnx {} {} cd
+@deftypefnx {} {@var{old_dir} =} cd (@var{dir})
+@deftypefnx {} {} chdir @dots{}
 Change the current working directory to @var{dir}.
 
 If @var{dir} is omitted, the current directory is changed to the user's home
@@ -2859,11 +2885,11 @@ present working directory rather than changing to the user's home directory.
 
 @c ls scripts/miscellaneous/ls.m
 @anchor{XREFls}
-@deftypefn  {Command} {} ls
-@deftypefnx {Command} {} ls @var{filenames}
-@deftypefnx {Command} {} ls @var{options}
-@deftypefnx {Command} {} ls @var{options} @var{filenames}
-@deftypefnx {Function File} {@var{list} =} ls (@dots{})
+@deftypefn  {} {} ls
+@deftypefnx {} {} ls @var{filenames}
+@deftypefnx {} {} ls @var{options}
+@deftypefnx {} {} ls @var{options} @var{filenames}
+@deftypefnx {} {@var{list} =} ls (@dots{})
 
 List directory contents.
 
@@ -2896,8 +2922,8 @@ ls -l
 
 @c ls_command scripts/miscellaneous/ls_command.m
 @anchor{XREFls_command}
-@deftypefn  {Function File} {@var{val} =} ls_command ()
-@deftypefnx {Function File} {@var{old_val} =} ls_command (@var{new_val})
+@deftypefn  {} {@var{val} =} ls_command ()
+@deftypefnx {} {@var{old_val} =} ls_command (@var{new_val})
 Query or set the shell command used by Octave's @code{ls} command.
 @seealso{@ref{XREFls,,ls}}
 @end deftypefn
@@ -2905,9 +2931,9 @@ Query or set the shell command used by Octave's @code{ls} command.
 
 @c dir scripts/miscellaneous/dir.m
 @anchor{XREFdir}
-@deftypefn  {Function File} {} dir
-@deftypefnx {Function File} {} dir (@var{directory})
-@deftypefnx {Function File} {[@var{list}] =} dir (@var{directory})
+@deftypefn  {} {} dir
+@deftypefnx {} {} dir (@var{directory})
+@deftypefnx {} {[@var{list}] =} dir (@var{directory})
 Display file listing for directory @var{directory}.
 
 If @var{directory} is not specified then list the present working directory.
@@ -2953,8 +2979,8 @@ information about the link.
 
 @c pwd libinterp/corefcn/dirfns.cc
 @anchor{XREFpwd}
-@deftypefn  {Built-in Function} {} pwd ()
-@deftypefnx {Built-in Function} {@var{dir} =} pwd ()
+@deftypefn  {} {} pwd ()
+@deftypefnx {} {@var{dir} =} pwd ()
 Return the current working directory.
 @seealso{@ref{XREFcd,,cd}, @ref{XREFdir,,dir}, @ref{XREFls,,ls}, @ref{XREFmkdir,,mkdir}, @ref{XREFrmdir,,rmdir}}
 @end deftypefn
@@ -2994,7 +3020,7 @@ referred to as a @var{pw_struct}.
 
 @c getpwent libinterp/corefcn/getpwent.cc
 @anchor{XREFgetpwent}
-@deftypefn {Built-in Function} {@var{pw_struct} =} getpwent ()
+@deftypefn {} {@var{pw_struct} =} getpwent ()
 Return a structure containing an entry from the password database,
 opening it if necessary.
 
@@ -3005,7 +3031,7 @@ Once the end of the data has been reached, @code{getpwent} returns 0.
 
 @c getpwuid libinterp/corefcn/getpwent.cc
 @anchor{XREFgetpwuid}
-@deftypefn {Built-in Function} {@var{pw_struct} =} getpwuid (@var{uid}).
+@deftypefn {} {@var{pw_struct} =} getpwuid (@var{uid}).
 Return a structure containing the first entry from the password database
 with the user ID @var{uid}.
 
@@ -3016,7 +3042,7 @@ If the user ID does not exist in the database, @code{getpwuid} returns 0.
 
 @c getpwnam libinterp/corefcn/getpwent.cc
 @anchor{XREFgetpwnam}
-@deftypefn {Built-in Function} {@var{pw_struct} =} getpwnam (@var{name})
+@deftypefn {} {@var{pw_struct} =} getpwnam (@var{name})
 Return a structure containing the first entry from the password database
 with the user name @var{name}.
 
@@ -3027,7 +3053,7 @@ If the user name does not exist in the database, @code{getpwname} returns 0.
 
 @c setpwent libinterp/corefcn/getpwent.cc
 @anchor{XREFsetpwent}
-@deftypefn {Built-in Function} {} setpwent ()
+@deftypefn {} {} setpwent ()
 Return the internal pointer to the beginning of the password database.
 @seealso{@ref{XREFgetpwent,,getpwent}, @ref{XREFendpwent,,endpwent}}
 @end deftypefn
@@ -3035,7 +3061,7 @@ Return the internal pointer to the beginning of the password database.
 
 @c endpwent libinterp/corefcn/getpwent.cc
 @anchor{XREFendpwent}
-@deftypefn {Built-in Function} {} endpwent ()
+@deftypefn {} {} endpwent ()
 Close the password database.
 @seealso{@ref{XREFgetpwent,,getpwent}, @ref{XREFsetpwent,,setpwent}}
 @end deftypefn
@@ -3066,7 +3092,7 @@ referred to as a @var{grp_struct}.
 
 @c getgrent libinterp/corefcn/getgrent.cc
 @anchor{XREFgetgrent}
-@deftypefn {Built-in Function} {@var{grp_struct} =} getgrent ()
+@deftypefn {} {@var{grp_struct} =} getgrent ()
 Return an entry from the group database, opening it if necessary.
 
 Once the end of data has been reached, @code{getgrent} returns 0.
@@ -3076,7 +3102,7 @@ Once the end of data has been reached, @code{getgrent} returns 0.
 
 @c getgrgid libinterp/corefcn/getgrent.cc
 @anchor{XREFgetgrgid}
-@deftypefn {Built-in Function} {@var{grp_struct} =} getgrgid (@var{gid}).
+@deftypefn {} {@var{grp_struct} =} getgrgid (@var{gid}).
 Return the first entry from the group database with the group ID
 @var{gid}.
 
@@ -3087,7 +3113,7 @@ If the group ID does not exist in the database, @code{getgrgid} returns 0.
 
 @c getgrnam libinterp/corefcn/getgrent.cc
 @anchor{XREFgetgrnam}
-@deftypefn {Built-in Function} {@var{grp_struct} =} getgrnam (@var{name})
+@deftypefn {} {@var{grp_struct} =} getgrnam (@var{name})
 Return the first entry from the group database with the group name
 @var{name}.
 
@@ -3098,7 +3124,7 @@ If the group name does not exist in the database, @code{getgrnam} returns 0.
 
 @c setgrent libinterp/corefcn/getgrent.cc
 @anchor{XREFsetgrent}
-@deftypefn {Built-in Function} {} setgrent ()
+@deftypefn {} {} setgrent ()
 Return the internal pointer to the beginning of the group database.
 @seealso{@ref{XREFgetgrent,,getgrent}, @ref{XREFendgrent,,endgrent}}
 @end deftypefn
@@ -3106,7 +3132,7 @@ Return the internal pointer to the beginning of the group database.
 
 @c endgrent libinterp/corefcn/getgrent.cc
 @anchor{XREFendgrent}
-@deftypefn {Built-in Function} {} endgrent ()
+@deftypefn {} {} endgrent ()
 Close the group database.
 @seealso{@ref{XREFgetgrent,,getgrent}, @ref{XREFsetgrent,,setgrent}}
 @end deftypefn
@@ -3117,11 +3143,11 @@ Close the group database.
 
 @c computer scripts/miscellaneous/computer.m
 @anchor{XREFcomputer}
-@deftypefn  {Function File} {} computer ()
-@deftypefnx {Function File} {@var{c} =} computer ()
-@deftypefnx {Function File} {[@var{c}, @var{maxsize}] =} computer ()
-@deftypefnx {Function File} {[@var{c}, @var{maxsize}, @var{endian}] =} computer ()
-@deftypefnx {Function File} {@var{arch} =} computer ("arch")
+@deftypefn  {} {} computer ()
+@deftypefnx {} {@var{c} =} computer ()
+@deftypefnx {} {[@var{c}, @var{maxsize}] =} computer ()
+@deftypefnx {} {[@var{c}, @var{maxsize}, @var{endian}] =} computer ()
+@deftypefnx {} {@var{arch} =} computer ("arch")
 Print or return a string of the form @var{cpu}-@var{vendor}-@var{os} that
 identifies the type of computer that Octave is running on.
 
@@ -3154,7 +3180,7 @@ architecture of the computer on which Octave is running.
 
 @c uname libinterp/corefcn/syscalls.cc
 @anchor{XREFuname}
-@deftypefn {Built-in Function} {[@var{uts}, @var{err}, @var{msg}] =} uname ()
+@deftypefn {} {[@var{uts}, @var{err}, @var{msg}] =} uname ()
 Return system information in the structure.
 
 For example:
@@ -3180,8 +3206,8 @@ system-dependent error message.
 
 @c nproc libinterp/corefcn/nproc.cc
 @anchor{XREFnproc}
-@deftypefn  {Built-in Function} {} nproc ()
-@deftypefnx {Built-in Function} {} nproc (@var{query})
+@deftypefn  {} {} nproc ()
+@deftypefnx {} {} nproc (@var{query})
 Return the current number of available processors.
 
 If called with the optional argument @var{query}, modify how processors
@@ -3195,15 +3221,15 @@ total number of processors.
 processors available to the current process.
 
 @item overridable
-same as @code{current}, but overridable through the @w{@env{OMP_NUM_THREADS}}
-environment variable.
+same as @code{current}, but overridable through the
+@w{@env{OMP_NUM_THREADS}} environment variable.
 @end table
 @end deftypefn
 
 
 @c ispc scripts/miscellaneous/ispc.m
 @anchor{XREFispc}
-@deftypefn {Function File} {} ispc ()
+@deftypefn {} {} ispc ()
 Return true if Octave is running on a Windows system and false otherwise.
 @seealso{@ref{XREFisunix,,isunix}, @ref{XREFismac,,ismac}}
 @end deftypefn
@@ -3211,7 +3237,7 @@ Return true if Octave is running on a Windows system and false otherwise.
 
 @c isunix scripts/miscellaneous/isunix.m
 @anchor{XREFisunix}
-@deftypefn {Function File} {} isunix ()
+@deftypefn {} {} isunix ()
 Return true if Octave is running on a Unix-like system and false otherwise.
 @seealso{@ref{XREFismac,,ismac}, @ref{XREFispc,,ispc}}
 @end deftypefn
@@ -3219,7 +3245,7 @@ Return true if Octave is running on a Unix-like system and false otherwise.
 
 @c ismac scripts/miscellaneous/ismac.m
 @anchor{XREFismac}
-@deftypefn {Function File} {} ismac ()
+@deftypefn {} {} ismac ()
 Return true if Octave is running on a Mac OS X system and false otherwise.
 @seealso{@ref{XREFisunix,,isunix}, @ref{XREFispc,,ispc}}
 @end deftypefn
@@ -3227,7 +3253,7 @@ Return true if Octave is running on a Mac OS X system and false otherwise.
 
 @c isieee libinterp/corefcn/sysdep.cc
 @anchor{XREFisieee}
-@deftypefn {Built-in Function} {} isieee ()
+@deftypefn {} {} isieee ()
 Return true if your computer @emph{claims} to conform to the IEEE standard
 for floating point calculations.
 
@@ -3237,7 +3263,7 @@ No actual tests are performed.
 
 @c isdeployed scripts/miscellaneous/isdeployed.m
 @anchor{XREFisdeployed}
-@deftypefn {Function File} {} isdeployed ()
+@deftypefn {} {} isdeployed ()
 Return true if the current program has been compiled and is running
 separately from the Octave interpreter and false if it is running in
 the Octave interpreter.
@@ -3248,7 +3274,7 @@ Currently, this function always returns false in Octave.
 
 @c isstudent libinterp/corefcn/utils.cc
 @anchor{XREFisstudent}
-@deftypefn {Built-in Function} {} isstudent ()
+@deftypefn {} {} isstudent ()
 Return true if running in the student edition of @sc{matlab}.
 
 @code{isstudent} always returns false in Octave.
@@ -3258,7 +3284,7 @@ Return true if running in the student edition of @sc{matlab}.
 
 @c OCTAVE_HOME libinterp/corefcn/defaults.cc
 @anchor{XREFOCTAVE_HOME}
-@deftypefn {Built-in Function} {} OCTAVE_HOME ()
+@deftypefn {} {} OCTAVE_HOME ()
 Return the name of the top-level Octave installation directory.
 @seealso{@ref{XREFEXEC_PATH,,EXEC_PATH}, @ref{XREFIMAGE_PATH,,IMAGE_PATH}}
 @end deftypefn
@@ -3266,7 +3292,7 @@ Return the name of the top-level Octave installation directory.
 
 @c matlabroot scripts/path/matlabroot.m
 @anchor{XREFmatlabroot}
-@deftypefn {Function File} {} matlabroot ()
+@deftypefn {} {} matlabroot ()
 Return the name of the top-level Octave installation directory.
 
 This is an alias for the function @w{@code{OCTAVE_HOME}} provided for
@@ -3277,7 +3303,7 @@ compatibility.
 
 @c OCTAVE_VERSION libinterp/corefcn/defaults.cc
 @anchor{XREFOCTAVE_VERSION}
-@deftypefn {Built-in Function} {} OCTAVE_VERSION ()
+@deftypefn {} {} OCTAVE_VERSION ()
 Return the version number of Octave as a string.
 @seealso{@ref{XREFver,,ver}, @ref{XREFversion,,version}}
 @end deftypefn
@@ -3285,21 +3311,52 @@ Return the version number of Octave as a string.
 
 @c version scripts/miscellaneous/version.m
 @anchor{XREFversion}
-@deftypefn {Function File} {} version ()
-Return the version number of Octave as a string.
+@deftypefn  {} {@var{v} =} version ()
+@deftypefnx {} {[@var{v}, @var{d}] =} version ()
+@deftypefnx {} {@var{v} =} version (@var{feature})
+Get version information for Octave.
 
-This is an alias for the function @w{@env{OCTAVE_VERSION}} provided for
-compatibility.
+If called without input argument, the first return value @var{v} gives the
+version number of Octave as a string.  The second return value @var{d} holds
+the release date as a string.
+
+The following options can be passed for @var{feature}:
+
+@table @asis
+@item @qcode{"-date"}
+for the release date of the running build,
+
+@item @qcode{"-description"}
+for a description of the release (always an empty string),
+
+@item @qcode{"-release"}
+for the name of the running build,
+
+@item @qcode{"-java"}
+for version information of the Java @nospell{VM},
+
+@item @qcode{"-fftw"}
+for version information for the linked @sc{fftw},
+
+@item @qcode{"-blas"}
+for version information for the linked @sc{blas} (not implemented),
+
+@item @qcode{"-lapack"}
+for version information for the linked @sc{lapack} (not implemented).
+@end table
+
+The variant with no input and output argument is an alias for the function
+@w{@env{OCTAVE_VERSION}} provided for compatibility.
 @seealso{@ref{XREFOCTAVE_VERSION,,OCTAVE_VERSION}, @ref{XREFver,,ver}}
 @end deftypefn
 
 
 @c ver scripts/miscellaneous/ver.m
 @anchor{XREFver}
-@deftypefn  {Function File} {} ver
-@deftypefnx {Function File} {} ver Octave
-@deftypefnx {Function File} {} ver @var{package}
-@deftypefnx {Function File} {v =} ver (@dots{})
+@deftypefn  {} {} ver
+@deftypefnx {} {} ver Octave
+@deftypefnx {} {} ver @var{package}
+@deftypefnx {} {v =} ver (@dots{})
 
 Display a header containing the current Octave version number, license
 string, and operating system.  The header is followed by a list of installed
@@ -3326,13 +3383,13 @@ Revision of the package.
 Date of the version/revision.
 @end table
 
-@seealso{@ref{XREFversion,,version}, @ref{XREFoctave_config_info,,octave_config_info}, @ref{XREFusejava,,usejava}, @ref{XREFpkg,,pkg}}
+@seealso{@ref{XREFversion,,version}, @ref{XREFusejava,,usejava}, @ref{XREFpkg,,pkg}}
 @end deftypefn
 
 
 @c compare_versions scripts/miscellaneous/compare_versions.m
 @anchor{XREFcompare_versions}
-@deftypefn {Function File} {} compare_versions (@var{v1}, @var{v2}, @var{operator})
+@deftypefn {} {} compare_versions (@var{v1}, @var{v2}, @var{operator})
 Compare two version strings using the given @var{operator}.
 
 This function assumes that versions @var{v1} and @var{v2} are arbitrarily
@@ -3387,14 +3444,14 @@ starts with a numeric part even though @code{double ("a")} is greater than
 
 @c license scripts/miscellaneous/license.m
 @anchor{XREFlicense}
-@deftypefn  {Command} {} license
-@deftypefnx {Command} {} license inuse
-@deftypefnx {Command} {} license inuse @var{feature}
-@deftypefnx {Function File} {} license ("inuse")
-@deftypefnx {Function File} {@var{retval} =} license ("inuse")
-@deftypefnx {Function File} {@var{retval} =} license ("test", @var{feature})
-@deftypefnx {Function File} {@var{retval} =} license ("checkout", @var{feature})
-@deftypefnx {Function File} {[@var{retval}, @var{errmsg}] =} license ("checkout", @var{feature})
+@deftypefn  {} {} license
+@deftypefnx {} {} license inuse
+@deftypefnx {} {} license inuse @var{feature}
+@deftypefnx {} {} license ("inuse")
+@deftypefnx {} {@var{retval} =} license ("inuse")
+@deftypefnx {} {@var{retval} =} license ("test", @var{feature})
+@deftypefnx {} {@var{retval} =} license ("checkout", @var{feature})
+@deftypefnx {} {[@var{retval}, @var{errmsg}] =} license ("checkout", @var{feature})
 Get license information for Octave and Octave packages.
 
 GNU Octave is free software distributed under the GNU General Public
@@ -3430,23 +3487,9 @@ installed.
 @end deftypefn
 
 
-@c octave_config_info libinterp/corefcn/toplev.cc
-@anchor{XREFoctave_config_info}
-@deftypefn  {Built-in Function} {} octave_config_info ()
-@deftypefnx {Built-in Function} {} octave_config_info (@var{option})
-Return a structure containing configuration and installation information for
-Octave.
-
-If @var{option} is a string, return the configuration information for the
-specified option.
-
-@seealso{@ref{XREFcomputer,,computer}}
-@end deftypefn
-
-
 @c getrusage libinterp/corefcn/getrusage.cc
 @anchor{XREFgetrusage}
-@deftypefn {Built-in Function} {} getrusage ()
+@deftypefn {} {} getrusage ()
 Return a structure containing a number of statistics about the current
 Octave process.
 
@@ -3511,39 +3554,83 @@ elements @code{sec} (seconds) @code{usec} (microseconds).
 @node Hashing Functions
 @section Hashing Functions
 
-It is often necessary to find if two strings or files are
-identical.  This might be done by comparing them character by character
-and looking for differences.  However, this can be slow, and so comparing
-a hash of the string or file can be a rapid way of finding if the files
-differ.
+It is often necessary to find if two strings or files are identical.
+This might be done by comparing them character by character and looking
+for differences.  However, this can be slow, and so comparing a hash of
+the string or file can be a rapid way of finding if the files differ.
 
 Another use of the hashing function is to check for file integrity.  The
 user can check the hash of the file against a known value and find if
 the file they have is the same as the one that the original hash was
 produced with.
 
-Octave supplies the @code{md5sum} function to perform MD5 hashes on
-strings and files.  An example of the use of @code{md5sum} function might
-be
+Octave supplies the @code{hash} function to calculate hash values of
+strings and files, the latter in combination with the @code{fileread}
+function.  The @code{hash} function supports the most common used
+cryptographic hash functions, namely MD5 and SHA-1.
+
+@c hash libinterp/corefcn/hash.cc
+@anchor{XREFhash}
+@deftypefn {} {} hash (@var{hfun}, @var{str})
+Calculate the hash value of the string @var{str} using the hash function
+@var{hfun}.
+
+The available hash functions are given in the table below.
+
+@table @samp
+@item MD2
+Message-Digest Algorithm 2 (RFC 1319).
+
+@item MD4
+Message-Digest Algorithm 4 (RFC 1320).
+
+@item MD5
+Message-Digest Algorithm 5 (RFC 1321).
+
+@item SHA1
+Secure Hash Algorithm 1 (RFC 3174)
+
+@item SHA224
+Secure Hash Algorithm 2 (224 Bits, RFC 3874)
+
+@item SHA256
+Secure Hash Algorithm 2 (256 Bits, RFC 6234)
+
+@item SHA384
+Secure Hash Algorithm 2 (384 Bits, RFC 6234)
+
+@item SHA512
+Secure Hash Algorithm 2 (512 Bits, RFC 6234)
+@end table
+
+To calculate for example the MD5 hash value of the string
+@nospell{@qcode{"abc"}} the @code{hash} function is called as follows:
 
 @example
 @group
-if exist (file, "file")
-  hash = md5sum (file);
-else
-  # Treat the variable "file" as a string
-  hash = md5sum (file, true);
-endif
+hash ("md5", "abc")
+     @print{} ans = 900150983cd24fb0d6963f7d28e17f72
 @end group
 @end example
 
-@c md5sum libinterp/corefcn/md5sum.cc
-@anchor{XREFmd5sum}
-@deftypefn  {Built-in Function} {} md5sum (@var{file})
-@deftypefnx {Built-in Function} {} md5sum (@var{str}, @var{opt})
-Calculate the MD5 sum of the file @var{file}.
+For the same string, the SHA-1 hash value is calculated with:
 
-If the second parameter @var{opt} exists and is true, then calculate the MD5
-sum of the string @var{str}.
+@example
+@group
+hash ("sha1", "abc")
+     @print{} ans = a9993e364706816aba3e25717850c26c9cd0d89d
+@end group
+@end example
+
+And to compute the hash value of a file, e.g., @code{file = "file.txt"},
+call @code{hash} in combination with the @code{fileread}:
+
+@example
+@group
+hash ("md5", fileread (file));
+@end group
+@end example
+
 @end deftypefn
+
 

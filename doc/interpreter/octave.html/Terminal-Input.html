@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -63,8 +64,8 @@ used for managing an interactive dialog with a user, and the
 <code>keyboard</code> function is normally used for doing simple debugging.
 </p>
 <a name="XREFinput"></a><dl>
-<dt><a name="index-input"></a>Built-in Function: <em><var>ans</var> =</em> <strong>input</strong> <em>(<var>prompt</var>)</em></dt>
-<dt><a name="index-input-1"></a>Built-in Function: <em><var>ans</var> =</em> <strong>input</strong> <em>(<var>prompt</var>, &quot;s&quot;)</em></dt>
+<dt><a name="index-input"></a>: <em><var>ans</var> =</em> <strong>input</strong> <em>(<var>prompt</var>)</em></dt>
+<dt><a name="index-input-1"></a>: <em><var>ans</var> =</em> <strong>input</strong> <em>(<var>prompt</var>, &quot;s&quot;)</em></dt>
 <dd><p>Print <var>prompt</var> and wait for user input.
 </p>
 <p>For example,
@@ -96,36 +97,37 @@ good idea to always call <code>fflush (stdout)</code> before calling <code>input
  This will ensure that all pending output is written to the screen before
 your prompt.
 </p>
-<p><strong>See also:</strong> <a href="#XREFyes_005for_005fno">yes_or_no</a>, <a href="#XREFkbhit">kbhit</a>, <a href="Timing-Utilities.html#XREFpause">pause</a>, <a href="#XREFmenu">menu</a>, <a href="Dialog-Box-Functions.html#XREFlistdlg">listdlg</a>.
+<p><strong>See also:</strong> <a href="#XREFyes_005for_005fno">yes_or_no</a>, <a href="#XREFkbhit">kbhit</a>, <a href="Timing-Utilities.html#XREFpause">pause</a>, <a href="#XREFmenu">menu</a>, <a href="I_002fO-Dialogs.html#XREFlistdlg">listdlg</a>.
 </p></dd></dl>
 
 
 <a name="XREFmenu"></a><dl>
-<dt><a name="index-menu"></a>Function File: <em><var>choice</var> =</em> <strong>menu</strong> <em>(<var>title</var>, <var>opt1</var>, &hellip;)</em></dt>
-<dt><a name="index-menu-1"></a>Function File: <em><var>choice</var> =</em> <strong>menu</strong> <em>(<var>title</var>, {<var>opt1</var>, &hellip;})</em></dt>
+<dt><a name="index-menu"></a>: <em><var>choice</var> =</em> <strong>menu</strong> <em>(<var>title</var>, <var>opt1</var>, &hellip;)</em></dt>
+<dt><a name="index-menu-1"></a>: <em><var>choice</var> =</em> <strong>menu</strong> <em>(<var>title</var>, {<var>opt1</var>, &hellip;})</em></dt>
 <dd><p>Display a menu with heading <var>title</var> and options <var>opt1</var>, &hellip;,
 and wait for user input.
 </p>
-<p>If the GUI is running, or Java is available, the menu is displayed
-graphically using <code>listdlg</code>.  Otherwise, the title and menu options
-are printed on the console.
+<p>If the GUI is running, the menu is displayed graphically using
+<code>listdlg</code>.  Otherwise, the title and menu options are printed on the
+console.
 </p>
 <p><var>title</var> is a string and the options may be input as individual strings
 or as a cell array of strings.
 </p>
 <p>The return value <var>choice</var> is the number of the option selected by the
-user counting from 1.
+user counting from 1.  If the user aborts the dialog or makes an invalid
+selection then 0 is returned.
 </p>
 <p>This function is useful for interactive programs.  There is no limit to the
 number of options that may be passed in, but it may be confusing to present
 more than will fit easily on one screen.
 </p>
-<p><strong>See also:</strong> <a href="#XREFinput">input</a>, <a href="Dialog-Box-Functions.html#XREFlistdlg">listdlg</a>.
+<p><strong>See also:</strong> <a href="#XREFinput">input</a>, <a href="I_002fO-Dialogs.html#XREFlistdlg">listdlg</a>.
 </p></dd></dl>
 
 
 <a name="XREFyes_005for_005fno"></a><dl>
-<dt><a name="index-yes_005for_005fno"></a>Built-in Function: <em><var>ans</var> =</em> <strong>yes_or_no</strong> <em>(&quot;<var>prompt</var>&quot;)</em></dt>
+<dt><a name="index-yes_005for_005fno"></a>: <em><var>ans</var> =</em> <strong>yes_or_no</strong> <em>(&quot;<var>prompt</var>&quot;)</em></dt>
 <dd><p>Ask the user a yes-or-no question.
 </p>
 <p>Return logical true if the answer is yes or false if the answer is no.
@@ -147,8 +149,8 @@ character from the keyboard without requiring the user to type a
 carriage return.
 </p>
 <a name="XREFkbhit"></a><dl>
-<dt><a name="index-kbhit"></a>Built-in Function: <em></em> <strong>kbhit</strong> <em>()</em></dt>
-<dt><a name="index-kbhit-1"></a>Built-in Function: <em></em> <strong>kbhit</strong> <em>(1)</em></dt>
+<dt><a name="index-kbhit"></a>: <em></em> <strong>kbhit</strong> <em>()</em></dt>
+<dt><a name="index-kbhit-1"></a>: <em></em> <strong>kbhit</strong> <em>(1)</em></dt>
 <dd><p>Read a single keystroke from the keyboard.
 </p>
 <p>If called with an argument, don&rsquo;t wait for a keypress.

@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -61,7 +62,7 @@ Previous: <a href="EOF-and-Errors.html#EOF-and-Errors" accesskey="p" rel="prev">
 the file pointer for a given file.
 </p>
 <a name="XREFftell"></a><dl>
-<dt><a name="index-ftell"></a>Built-in Function: <em><var>pos</var> =</em> <strong>ftell</strong> <em>(<var>fid</var>)</em></dt>
+<dt><a name="index-ftell"></a>: <em><var>pos</var> =</em> <strong>ftell</strong> <em>(<var>fid</var>)</em></dt>
 <dd><p>Return the position of the file pointer as the number of characters from the
 beginning of the file specified by file descriptor <var>fid</var>.
 </p>
@@ -70,9 +71,9 @@ beginning of the file specified by file descriptor <var>fid</var>.
 
 
 <a name="XREFfseek"></a><dl>
-<dt><a name="index-fseek"></a>Built-in Function: <em></em> <strong>fseek</strong> <em>(<var>fid</var>, <var>offset</var>)</em></dt>
-<dt><a name="index-fseek-1"></a>Built-in Function: <em></em> <strong>fseek</strong> <em>(<var>fid</var>, <var>offset</var>, <var>origin</var>)</em></dt>
-<dt><a name="index-fseek-2"></a>Built-in Function: <em><var>status</var> =</em> <strong>fseek</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-fseek"></a>: <em></em> <strong>fseek</strong> <em>(<var>fid</var>, <var>offset</var>)</em></dt>
+<dt><a name="index-fseek-1"></a>: <em></em> <strong>fseek</strong> <em>(<var>fid</var>, <var>offset</var>, <var>origin</var>)</em></dt>
+<dt><a name="index-fseek-2"></a>: <em><var>status</var> =</em> <strong>fseek</strong> <em>(&hellip;)</em></dt>
 <dd><p>Set the file pointer to the location <var>offset</var> within the file <var>fid</var>.
 </p>
 <p>The pointer is positioned <var>offset</var> characters from the <var>origin</var>,
@@ -90,9 +91,9 @@ be positive, negative, or zero but not all combinations of <var>origin</var> and
 
 
 <a name="XREFSEEK_005fSET"></a><dl>
-<dt><a name="index-SEEK_005fSET"></a>Built-in Function: <em></em> <strong>SEEK_SET</strong> <em>()</em></dt>
-<dt><a name="index-SEEK_005fCUR"></a>Built-in Function: <em></em> <strong>SEEK_CUR</strong> <em>()</em></dt>
-<dt><a name="index-SEEK_005fEND"></a>Built-in Function: <em></em> <strong>SEEK_END</strong> <em>()</em></dt>
+<dt><a name="index-SEEK_005fSET"></a>: <em></em> <strong>SEEK_SET</strong> <em>()</em></dt>
+<dt><a name="index-SEEK_005fCUR"></a>: <em></em> <strong>SEEK_CUR</strong> <em>()</em></dt>
+<dt><a name="index-SEEK_005fEND"></a>: <em></em> <strong>SEEK_END</strong> <em>()</em></dt>
 <dd><p>Return the numerical value to pass to <code>fseek</code> to perform one of the
 following actions:
 </p>
@@ -115,8 +116,8 @@ following actions:
 
 
 <a name="XREFfrewind"></a><dl>
-<dt><a name="index-frewind"></a>Built-in Function: <em></em> <strong>frewind</strong> <em>(<var>fid</var>)</em></dt>
-<dt><a name="index-frewind-1"></a>Built-in Function: <em><var>status</var> =</em> <strong>frewind</strong> <em>(<var>fid</var>)</em></dt>
+<dt><a name="index-frewind"></a>: <em></em> <strong>frewind</strong> <em>(<var>fid</var>)</em></dt>
+<dt><a name="index-frewind-1"></a>: <em><var>status</var> =</em> <strong>frewind</strong> <em>(<var>fid</var>)</em></dt>
 <dd><p>Move the file pointer to the beginning of the file specified by file
 descriptor <var>fid</var>.
 </p>

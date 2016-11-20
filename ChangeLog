@@ -1,3 +1,1384 @@
+2016-11-13  John W. Eaton  <jwe@octave.org>
+
+	Added tag release-4-2-0 for changeset 708a4fcb7382
+
+	Files: .hgtags
+
+	Version 4.2.0 released.
+
+	* configure.ac: Bump version to 4.2.0.
+	(OCTAVE_PATCH_VERSION): Set to 0.
+	(OCTAVE_RELEASE_DATE): Update.
+
+	Files: configure.ac
+
+2016-11-12  Rik  <rik@octave.org>
+
+	datetick.m: Fix unequal spacing of months and years (bug #39727).
+
+	* datetick.m: For else clauses covering months and years, construct an
+	appropriate datevec entity and then convert that with datenum.
+
+	Files: scripts/plot/appearance/datetick.m
+
+2016-11-10  Rik  <rik@octave.org>
+
+	Fix failing BIST test in toplev.cc (bug #49575).
+
+	* toplev.cc: Change BIST tests to check that __octave_config_info__ for
+	"version" returns the same string as OCTAVE_VERSION.
+
+	Files: libinterp/corefcn/toplev.cc
+
+2016-11-05  NVS Abhilash  <nvs232@gmail.com>
+
+	* data.cc (Fisinteger): Add BIST tests.
+
+	Files: libinterp/corefcn/data.cc
+
+2016-11-09  Markus Mützel  <markus.muetzel@gmx.de>
+
+	datenum.m: Treat months > 14 correctly (bug #49570).
+
+	* datenum.m: Treat months > 14 correctly.
+
+	Files: scripts/time/datenum.m
+
+2016-11-09  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-4-2-0-4 for changeset 69ac19073ae6
+
+	Files: .hgtags
+
+2016-11-08  John W. Eaton  <jwe@octave.org>
+
+	maint: Bump version number for 4.2.0-rc4.
+
+	Files: configure.ac
+
+2016-11-08  Rik  <rik@octave.org>
+
+	Don't re-parse file in editor if in middle of debug session (bug #49171).
+
+	* file-editor-tab.cc (file_editor_tab::save_file): Check Fisdebugmode() before
+	calling exit_debug_and_clear().
+
+	Files: libgui/src/m-editor/file-editor-tab.cc
+
+2016-11-07  Rik  <rik@octave.org>
+
+	Change publish.tst to use gnuplot on Windows platforms (bug #49501).
+
+	* publish.tst: Use unwind_protect to set/restore graphics_toolkit if running on
+	Windows platform.
+
+	Files: test/publish/publish.tst
+
+2016-11-04  Markus Mützel  <markus.muetzel@gmx.de>
+
+	Change codepage only for Windows 7 and newer (bug #49509).
+
+	* QWinTerminal.cpp: Set console codepage to 65001 (UTF-8) only for
+	Windows 7 and newer.
+
+	Files: libgui/qterminal/libqterminal/win32/QWinTerminalImpl.cpp
+
+2016-11-07  Mike Miller  <mtmiller@octave.org>
+
+	Stop segfault when popen2 called with invalid command (bug #49525).
+
+	* octave-popen2.c: Call _exit, rather than exit, when there is an error
+	in the child process.
+
+	Files: liboctave/wrappers/octave-popen2.c
+
+2016-11-06  Rik  <rik@octave.org>
+
+	interp2.m: Re-orient vector/vector indexing in "linear" to fix output sizie (bug #49506).
+
+	* interp2.m: Declare new anonymous function forient() and use it to reshape
+	coefficients before applying linear interpolation.  Add new BIST test for
+	bug #49506.
+
+	Files: scripts/general/interp2.m
+
+2016-11-04  Rik  <rik@octave.org>
+
+	doc: Use Texinfo dots macro to create ellipses.
+
+	* file-io.cc (Fferror): Use @dots Texinfo macro instead of keyword "dots".
+
+	Files: libinterp/corefcn/file-io.cc
+
+	Fix regexp handling of beginning/end word match for double-quoted pattern strings (bug #49451).
+
+	* regexp.cc (do_regexp_ptn_string_escapes): Add additional function input
+	"bool is_sq_str".  If is_sq_str, replace '\b' with backspace, otherwise leave
+	alone.
+	* regexp.cc (octregexp, octregexprep): Pass both single and double quoted pattern
+	strings through 'do_regexp_ptn_string_escapes' so that Matlab beginning/end word match
+	patterns can be replaced by their PCRCE equivalent.
+
+	Files: libinterp/corefcn/regexp.cc
+
+2016-11-03  Rik  <rik@octave.org>
+
+	doc: Don't create @tables of type @code with @qcode entries.
+
+	* mk-opts.pl: Change table type for generated options to @asis.
+
+	* file-io.cc (Fpopen): Change table type for options to @asis.
+
+	Files: build-aux/mk-opts.pl libinterp/corefcn/file-io.cc
+
+2016-11-02  Mike Miller  <mtmiller@octave.org>
+
+	Fix segfault / invalid state when exiting via GUI due to race (bug #49515)
+
+	* interpreter.cc (octave::interpreter::clean_up_and_exit): Ensure that the
+	function never returns when exiting via octave_link::exit.  After the exit
+	signal is sent over the octave_link, the interpreter state may be completely
+	invalidated.
+
+	Files: libinterp/corefcn/interpreter.cc
+
+2016-11-03  Rik  <rik@octave.org>
+
+	doc: Improve docstring for cellindexmat().
+
+	* cellfun.cc (Fcellindexmat): Improve docstring.
+
+	Files: libinterp/corefcn/cellfun.cc
+
+2016-10-30  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	doc: Remove deprecated header from embedded.cc example in Appendix A.
+
+	* examples/code/embedded.cc : include interpreter.h instead of toplev.h.
+
+	Files: examples/code/embedded.cc
+
+2016-11-03  Rik  <rik@octave.org>
+
+	doc: Fix incorrect example in container.txi (bug #49521).
+
+	* container.txi: Use correct output of Octave for indexing cell array.
+
+	Files: doc/interpreter/container.txi
+
+	doc: Clarify docstring for popen2 (bug #49524).
+
+	* syscalls.cc (Fpopen2): Document that second argument can be a
+	character matrix or cell array of strings.
+
+	Files: libinterp/corefcn/syscalls.cc
+
+	Fix regression in feval and emit an error when function does not exist (bug #49516).
+
+	* oct-parse.in.yy (feval): If fcn is not defined, call error() rather
+	than trying maybe_missing_function_hook which does not produce warning
+	or return a status code if function does not exist.
+
+	Files: libinterp/parse-tree/oct-parse.in.yy
+
+2016-11-01  John W. Eaton  <jwe@octave.org>
+
+	maint: Strip trailing whitespace from source files.
+
+	Files: scripts/general/publish.m scripts/geometry/voronoi.m
+	scripts/ode/ode23.m
+
+2016-10-31  Mike Miller  <mtmiller@octave.org>
+
+	Ignore continue statement when used outside of a loop (bug #48665)
+
+	* pt-eval.cc (octave::tree_evaluator::visit_continue_command): Only allow
+	continue statement to have an effect when used in a loop context.
+
+	Files: libinterp/parse-tree/pt-eval.cc
+
+2016-10-31  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	maint: libinterp/corefcn/fft.cc: minor style fixes for C++ code.
+
+	Files: libinterp/corefcn/fft.cc
+
+	avoid compilation error for 64-bit indexing
+
+	* libinterp/corefcn/fft.cc (Fdlmread): Cast literal integer argument to
+	octave_idx_type in the constructor of idx_vector.
+
+	Files: libinterp/corefcn/fft.cc
+
+2016-10-30  Rik  <rik@octave.org>
+
+	doc: Clarify behavior of size (bug #49478).
+
+	* data.cc (Fsize): Rewrite docstring and add more examples.
+
+	* deal.m: Delete extra space in @example block of docstring.
+
+	* cellfun.cc (Farrayfun): Correct example block so that it shows what Octave
+	actually produces.
+
+	Files: libinterp/corefcn/cellfun.cc libinterp/corefcn/data.cc
+	scripts/general/deal.m
+
+	voronoi.m: Overhaul function to produce correct number of edges (bug #38295).
+	Change algorithm to determine whether edges are inside/outside diagram from
+	comparing to a fixed box size to comparing to the radial distance from
+	center of points.
+	Reduce execution time by 50% through re-coding.
+
+	* voronoi.m: Remove ChangeLog information that is now kept in Mercurial.
+	Check that both X and Y inputs are vectors.  Replace cellfun call with
+	for loop which is faster.  Use diff() rather than indexing to speed-up
+	finding unique edges.  Calculate center of distribution and radius
+	which is square of distance from center.  Keep edges with at least one point
+	that is within this radius.  Add bug numbers to BIST tests.  Add two
+	new BIST tests to check two previously reported bugs.
+
+	Files: scripts/geometry/voronoi.m
+
+2016-10-28  John W. Eaton  <jwe@octave.org>
+
+	maint: Merge away extra head on stable branch.
+
+	Files: 
+
+2016-10-28  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	__publish_html_output__.m: Ensure </span> in any case in syntax highlighting.
+
+	Files: scripts/general/private/__publish_html_output__.m
+
+2016-10-27  John W. Eaton  <jwe@octave.org>
+
+	maint: Merge away extra head on default branch.
+
+	Files: 
+
+2016-10-27  Rik  <rik@octave.org>
+
+	odeplot.m: Fix typo in documentation.
+
+	* odeplot.m: 'end' -> 'done'.
+
+	Files: scripts/ode/odeplot.m
+
+2016-10-27  John W. Eaton  <jwe@octave.org>
+
+	maint: Bump version number for 4.2.0-rc3.
+
+	* configure.ac: Bump version to 4.2.0-rc3.
+
+	Files: configure.ac
+
+2016-10-21  Markus Mützel  <markus.muetzel@gmx.de>
+
+	Set codepage in console for windows to UTF-8 (bug #43099)
+
+	* QWinTerminalImpl.cpp: Set codepage to 65001 (UTF-8).
+
+	Files: libgui/qterminal/libqterminal/win32/QWinTerminalImpl.cpp
+
+2016-10-23  Hartmut Gimpel  <hg_code@gmx.de>
+
+	fix text encoding in qt4 under Linux (bug #49118)
+
+	* octave-gui.cc (gui_application::execute): For Qt4, restore call to
+	QTextCodec::setCodecForCStrings that was removed in changeset
+	2fd4f1a3f4a8.
+
+	Files: libgui/src/octave-gui.cc
+
+2016-10-27  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	minor improvements for publish.
+
+	* scripts/general/publish.m:
+	  - Add support of GNU Octave HTML manual URLs like <octave:plot TEXT>.
+	  - Avoid bad interleaved formatting with placeholders.
+	  - No formatting of the document title.
+
+	* scripts/general/__publish_html_output__.m: Improve the simple syntax
+	  highlighter.
+
+	* test/publish/test_script.m: Test the GNU Octave HTML manual URLs.
+
+	Files: scripts/general/private/__publish_html_output__.m
+	scripts/general/publish.m test/publish/test_script.m
+
+2016-10-26  John W. Eaton  <jwe@octave.org>
+
+	don't do percent encoding on info links (bug #49445)
+
+	* parser.cc (parser::replace_links, parser::node_text_to_html,
+	parser::global_search): Don't call toPercentEncoding on node and link
+	strings.
+
+	Files: libgui/src/qtinfo/parser.cc
+
+2016-10-26  Mike Miller  <mtmiller@octave.org>
+
+	fftshift: fix definition of frequency components in docstring (bug #49436)
+
+	* fftshift.m: Fix definition of df frequency spacing in docstring, factor out
+	of range expression for clarity.  Fix small typo.
+
+	Files: scripts/signal/fftshift.m
+
+2016-10-26  Rik  <rik@octave.org>
+
+	integrate_adaptive.m: Further refinement to orientation of approxvals (cset 7458bacc631a).
+
+	* integrate_adaptive.m: Don't transpose approxvals if there is only a single
+	evaluation time.
+
+	Files: scripts/ode/private/integrate_adaptive.m
+
+2016-10-25  Rik  <rik@octave.org>
+
+	Fix display of ticklabels for log axes in Windows (bug #49437).
+
+	* graphics.cc (axes::properties::calc_ticklabels): Correct typo and use
+	std::min to find minimum exponent.  For performance, calculate exponent
+	once and store in temporary variable exp.  Use a tolerance of 10*eps
+	to work around accuracy issues in powr() on Windows systems.
+	Change number format to be Mx10^{N} rather than M.10^{N}.
+
+	Files: libinterp/corefcn/graphics.cc
+
+2016-10-21  Rik  <rik@octave.org>
+
+	Fix segfault when calling fft on last dimension (bug #49026).
+
+	* fft.cc: New variable ndims to simplify code.
+	Add FIXME about strange unnecessary input validation.
+	Simplify code by using first_non_singleton() rather than hand-rolled for loop.
+	Check for number of FFT points equal to 1 and execute special case which
+	is simply indexing into the matrix.
+	Change '%%' to '##' in BIST tests to follow Octave coding conventions.
+
+	Files: libinterp/corefcn/fft.cc
+
+2016-10-24  Rik  <rik@octave.org>
+
+	Resolve FIXME notes in ode code base.
+
+	* ode23.m: Remove FIXME about constant mass matrices comment.
+
+	* odeset.m: Add notes to documentation for BDF, MvPattern, and Refine
+	that they are not yet implemented.
+
+	* runge_kutta_45_dorpri.m: Add correct reference for constants used in
+	calculation.
+
+	* runge_kutta_interpolate.m: Remove 4th order method which is never used.
+
+	Files: scripts/ode/ode23.m scripts/ode/odeset.m
+	scripts/ode/private/runge_kutta_45_dorpri.m
+	scripts/ode/private/runge_kutta_interpolate.m
+
+2016-10-24  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	Remove FIXME comment about missing tests for ignored ODE options.
+
+	* scripts/ode/ode{23,45}.m : remove tests for BIST options that
+	  are ignored by the solvers.
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m
+
+2016-10-23  Rik  <rik@octave.org>
+
+	Disable Refine option of ode solvers for certain input/output combinations (partial fix bug #49408).
+
+	* ode23.m: Set Refine field of odeopts to [] when a single output argument is
+	requested or when specific intermediate times are requested.
+
+	* ode45.m: Set Refine field of odeopts to [] when a single output argument is
+	requested or when specific intermediate times are requested.  Update BIST tests
+	to match new behavior.
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m
+
+	Return intermediate integration times when single output argument used in ode solver (bug #49417).
+
+	* ode23.m, ode45.m: If single output is requested then shorten integration
+	span to a 2-element vector which will cause integrate_adaptive to return
+	auto-selected timesteps.
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m
+
+2016-10-22  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	ode solvers: use ordinary transpose instead of Hermitian conjugate (bug #49410).
+
+	* ode23.m, ode45.m, ode_event_handler.m, runge_kutta_interpolate.m:
+	Use ordinary transpose instead of Hermitian conjugate.
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m
+	scripts/ode/private/ode_event_handler.m
+	scripts/ode/private/runge_kutta_interpolate.m
+
+2016-10-21  Sebastian Schöps  <sebastian@schoeps.org>
+
+	Change orientation of output fields in struct returned from ode solvers (bug #49402).
+
+	ode23.m, ode45.m: For Matlab compatibility, when a solution structure is the only
+	output argument from an ode solver, return the transpose of the regular outputs.
+	Update documentation with new behavior.
+	Modify BIST tests to pass with new behavior.
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m
+
+2016-10-20  Rik  <rik@octave.org>
+
+	odedefaults.m: Initialize properties InitialSlope and OutputSel each function call.
+
+	* odedefaults.m: For persistent variable defaults, initialize InitialSlope for
+	each function call.  For persistent variable attributes, initialize
+	InitialSlope and OutputSel for each function call.
+
+	Files: scripts/ode/private/odedefaults.m
+
+	integrate_adaptive.m: Fix orientation of approxvals when y is a vector.
+
+	* integrate_adaptive.m: After using interp1 to generate approximate values,
+	force vector outputs to be row vectors to match expected orientation in
+	calls to OutputFcn.
+
+	Files: scripts/ode/private/integrate_adaptive.m
+
+2016-10-19  Rik  <rik@octave.org>
+
+	ode_event_handler.m: Overhaul function.
+
+	* ode_event_handler.m: Rewrite docstring.
+	Place most common case first in if/elseif tree for performance.
+	Return an empty 1x4 cell array for the "init" and "done" cases.
+
+	Files: scripts/ode/private/ode_event_handler.m
+
+	Clean up demo and test blocks for ode functions.
+
+	* ode23.m, ode45.m: Re-order code in %!demo for better appearance when
+	executed.
+
+	* odeget.m: Use '##' in demo blocks for whole-line comments.
+	Disable "Octave:invalid-input-arg" temporarily when testing unknown option.
+
+	odeset.m: Use '##' in demo blocks for whole-line comments.
+	Disable "Octave:invalid-input-arg" temporarily when testing unknown option.
+	Fix BIST test that was incorrect now that MassConstant has been removed.
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m scripts/ode/odeget.m
+	scripts/ode/odeset.m
+
+	odeget.m: Remove unused 4th input to function.
+
+	odeget.m: Remove unused 4th input to function.
+
+	Files: scripts/ode/odeget.m
+
+	integrate_adaptive.m: Take strcmp call out of for loop for performance.
+
+	* integrate_adaptive.m: Calculate value of NormControl option
+	just once, rather than in every loop.
+	Fix cuddling of parenthesis to indicate indexing.
+
+	Files: scripts/ode/private/integrate_adaptive.m
+
+	Cleanup variable names, obsolete ChangeLog info in ode23, ode45.
+
+	* ode23.m: Remove FIXME and ancient ChangeLog material stored in
+	file.  Rename variable fvdb to fvdp for "Function Van der Pol".
+
+	* ode45.m: Rename variable fvdb to fvdp for "Function Van der Pol".
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m
+
+	Remove useless persistent declarations in ode23, ode45.
+
+	* ode23.m, ode45.m: Remove persistent attribute from variables defaults,
+	classes, attributes.
+
+	* odedefaults.m: Write calculation of MaxStep as (tf - t0) which is
+	more intuitive.
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m
+	scripts/ode/private/odedefaults.m
+
+	Remove property "MassConstant" from ode solvers.
+
+	* odeset.m: Remove property from do,string, remove from defaults, remove from
+	print_options.
+
+	* odedefaults.m: Remove property name from variables defaults, classes,
+	attributes.
+
+	Files: scripts/ode/odeset.m scripts/ode/private/odedefaults.m
+
+	odeset.m: emit warning for any unknown property (bug #49364).
+
+	* odeset.m: Call warning() from within for loop over unmatched fields.
+
+	Files: scripts/ode/odeset.m
+
+	odeset: Improve performance by using for loop for merging of unknown options.
+
+	* odeset.m: Only merge default odestruct with the list of unmatched
+	properties, odestruct_extra, if there are actually properties to be merged.
+	When merging, use a for loop rather to merge each additional property
+	rather than more complicated cellfun, cell array, struct() sequence.
+	Sort unmatched options so they are added in alphabetical order after
+	the list of known options.
+
+	Files: scripts/ode/odeset.m
+
+2016-10-18  Rik  <rik@octave.org>
+
+	More Matlab-compatible implementation of OutputFcn.  Clean up odeplot.m.
+
+	* ode23.m, ode45.m: Call OutputFcn with null inputs when using "done" flag.
+	Rewrite BIST OutputFcn fout to follow expected conventions.
+
+	* integrate_adaptive.m: Rename variable pltret to stop_solve.  Fix issue
+	where only final result of OutputFcn could stop integration.
+
+	* odeplot.m: Rewrite docstring.  Rename output variable to stop_solve.
+	Always return false from function since odeplot never interrupts integration.
+	Set x limits of plot in "init" for better performance.
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m scripts/ode/odeplot.m
+	scripts/ode/private/integrate_adaptive.m
+
+2016-10-17  Rik  <rik@octave.org>
+
+	odeplot.m: Recode for performance.
+
+	* odeplot.m: Rename output argument to "retval".  Rename Van der Pol
+	function to fvdp.  Remove unused varargin from function prototype.
+	Move most common case to be first in if/elseif tree.
+	Remove call to plot and instead just update the "xdata", "ydata"
+	properties of line objects.  Use a filled marker, '.', rather
+	than unfilled marker 'o'.  Clean up by setting variables to
+	empty matrix rather than using clear function.
+
+	Files: scripts/ode/odeplot.m
+
+2016-10-17  John W. Eaton  <jwe@octave.org>
+
+	maint: Strip trailing whitespace from source files.
+
+	Files: scripts/gui/inputdlg.m scripts/image/colormap.m scripts/ode/odeset.m
+	scripts/plot/draw/light.m scripts/plot/draw/private/__scatter__.m
+	scripts/plot/draw/rose.m scripts/plot/util/__gnuplot_drawnow__.m
+	scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-10-17  Nir Krakauer  <nkrakauer@ccny.cuny.edu>
+
+	Improve docstring of odeset.m
+
+	* scripts/ode/odeset.m : correct typos and reorganize
+	  in a more readable way.
+
+	Files: scripts/ode/odeset.m
+
+2016-10-17  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	Fix error in previous commit.
+
+	* scripts/ode/odeset.m : finish resolving conflicts in merge
+	  from revision b9f31d41ab66
+
+	Files: scripts/ode/odeset.m
+
+	Improve documentation for odeset.
+
+	* scripts/ode/odeset.m : List meaning of common ode options
+	  and document behaviour when non standard options are passed.
+
+	Files: scripts/ode/odeset.m
+
+2016-10-16  Rik  <rik@octave.org>
+
+	odeset.m: Update FIXME notes about non-exact matching (bug #49364).
+
+	* odeset.m: Add reference to bug #49364 in FIXME notes.  Document that eventual
+	fix will depend on support in inputParser class.
+
+	Files: scripts/ode/odeset.m
+
+	doc: Add list of built-in colormaps to colormap documentation (bug #49363).
+
+	* NEWS: Announce removal of 'list' option to colormap.
+
+	* colormap.m: Put a table of the built-in colormaps into the docstring.  Add
+	seealso links to all of the built-in colormaps.
+
+	Files: NEWS scripts/image/colormap.m
+
+	maint: Use 2-space indent in definition of BIST %!functions.
+
+	* randi.m, structfun.m, normest1.m, frame2im.m, im2frame.m, test.m:
+	Use 2-space indent in definition of BIST %!functions.
+
+	Files: scripts/general/randi.m scripts/general/structfun.m scripts/linear-
+	algebra/normest1.m scripts/plot/util/frame2im.m
+	scripts/plot/util/im2frame.m scripts/testfun/test.m
+
+2016-10-15  Rik  <rik@octave.org>
+
+	Further clean-up of ode functions.
+
+	* scripts/ode/private/AbsRel_Norm.m: Renamed to AbsRel_norm.m
+
+	* scripts/ode/module.mk: Add AbsRel_norm.m to build system.
+
+	* ode23.m, ode45.m: Remove extra comma from Copyright statement.
+	Add ode45 to @seealso links in docstring.
+	Add FIXME notes for questionable code.
+	Use numel instead of length for clarity.
+	Use space after function name and opening parenthesis.
+	Wrap long lines to less than 80 characters.
+	Change odemergeopts function call to match new prototype.
+	Use single quotes to simplify strings that contain double quotes.
+	Use 2-space indent in %!function blocks.
+
+	* odeget.m: Remove extra comma from Copyright statement.
+	Use double quote in preference to single quote.
+	Delete whitespace at end of lines.
+
+	* odeplot.m: Re-write docstring.  Include @seealso links in docstring.
+	Declare all persistent variables in a single declaration.
+	Use in-place += operator for efficiency.
+	Add FIXME notes for questionable code.
+
+	* odeset.m: Remove extra comma from Copyright statement.
+	Add additional calling form with 1 output and 0 inputs to docstring.
+	Add FIXME notes for questionable code.
+	Delete whitespace at end of lines.
+	* odeset.m(print_options): Use single quotes to simplify strings with double
+	quotes.  Put default value of option first in list.
+
+	* integrate_adaptive.m: Wrap long lines < 80 characters.
+	Delete whitespace at end of lines.
+	Correct indentation of declared values after '='.
+
+	* kahan.m: Reise docstring.
+
+	* ode_event_handler.m: Use retval in docstring to match functin prototype.
+	Delete unnecessary comments.
+
+	* odedefaults.m: Remove extra comma from Copyright statement.
+	Match variable names in docstring to function prototype.
+	Use space after function name and before opening parenthesis.
+	Delete whitespace at end of lines.
+
+	* odemergeopts.m: Remove extra comma from Copyright statement.
+	Delete extra space in function prototype.
+	Change function prototype to have "caller" as first argument to match rest of
+	Octave.
+
+	* runge_kutta_23.m: Clean up declaration of persistent variables.
+	Correct misspellings in comments.
+
+	* runge_kutta_45_dorpri.m: Put description of input arguments before output
+	arguments in docstring.
+	 Clean up declaration of persistent variables.
+
+	* runge_kutta_interpolate.m: Use double quotes in preference to single quotes.
+	Eliminate line continuations for code that would fit on a single line.
+	Remove obsolete code that calls non-existent functions.
+	Capitalize Hermite in comments.
+	Cleanup declaration of persistent variables.
+
+	* starting_stepsize.m: Replace calls to AbsRel_Norm with AbsRel_norm.
+
+	Files: scripts/ode/module.mk scripts/ode/ode23.m scripts/ode/ode45.m
+	scripts/ode/odeget.m scripts/ode/odeplot.m scripts/ode/odeset.m
+	scripts/ode/private/AbsRel_Norm.m scripts/ode/private/AbsRel_norm.m
+	scripts/ode/private/integrate_adaptive.m scripts/ode/private/kahan.m
+	scripts/ode/private/ode_event_handler.m
+	scripts/ode/private/odedefaults.m scripts/ode/private/odemergeopts.m
+	scripts/ode/private/runge_kutta_23.m
+	scripts/ode/private/runge_kutta_45_dorpri.m
+	scripts/ode/private/runge_kutta_interpolate.m
+	scripts/ode/private/starting_stepsize.m
+
+2016-10-15  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	Clean up ode options implementation to follow Octave coding standards.
+
+	* known_option_names.m: Delete file
+
+	* scripts/ode/module.mk: Remove known_option_names from build system.
+
+	* ode23.m, ode45.m: Fix typo in docstring.  Correct indentation.
+	Remove trailing whitespace.
+
+	* AbsRel_Norm.m: Use default for input argument to simplify function.
+	Remove input validation for private, internal function.
+
+	* odedefaults.m: Add docstring.  Use persistent variables for performance.
+
+	* odemergeopts.m: Fix indentation.
+
+	* starting_stepsize.m: Show input func as '@func' in docstring.
+
+	Files: scripts/ode/module.mk scripts/ode/ode23.m scripts/ode/ode45.m
+	scripts/ode/private/AbsRel_Norm.m
+	scripts/ode/private/known_option_names.m
+	scripts/ode/private/odedefaults.m scripts/ode/private/odemergeopts.m
+	scripts/ode/private/starting_stepsize.m
+
+2016-10-15  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Fix legend.m typo in demo example 23 (bug #49341).
+
+	* legend.m: For demo 23 illustrating "legend off", make the legend strings
+	  length 11 and replace double quote " (string) with single (quote transpose).
+	  Place a one second pause between showing the legend and turning off the
+	  legend, for dramatic effect.
+
+	Files: scripts/plot/appearance/legend.m
+
+2016-10-13  John D  <John D>
+
+	graphics: set uicontrol value default to 0 and handle special cases (Bug #48255)
+
+	* libinterp/corefcn/graphics.in.h
+	   (uicontrol::properties): set uicontrol value to 0
+
+	* libinterp/corefcn/graphics.cc
+	  (uicontrol::properties::set_style): if listbox or popupmenu, set value to 1
+
+	Files: libinterp/corefcn/graphics.cc libinterp/corefcn/graphics.in.h
+
+2016-10-12  Rik  <rik@octave.org>
+
+	Ensure user inputrc file overrides Octave's default inputrc (bug #49323).
+
+	* scripts/startup/version-rcfile: After reading Octave's default inputrc,
+	read in user's INPUTRC.
+
+	Files: scripts/startup/version-rcfile
+
+2016-10-11  John Donoghue  <john.donoghue@ieee.org>
+
+	gui: handle differences in text color for popmenu, checkbox and radiobutton (Bug #49247)
+
+	* libgui/graphics/BaseControl.cc
+	  (QtHandles::updatePalette): apply unique color settings for popmenu, checkbox and radiobutton.
+
+	Files: libgui/graphics/BaseControl.cc
+
+2016-10-11  John W. Eaton  <jwe@octave.org>
+
+	build -tst files with "make all" (bug #49310)
+
+	* liboctave/module.mk (OCTAVE_INTERPRETER_TARGETS): Add
+	$(LIBOCTAVE_TST_FILES) to the list.
+	* libinterp/module.mk (OCTAVE_INTERPRETER_TARGETS): Add
+	$(LIBINTERP_TST_FILES) to the list.
+
+	Files: libinterp/module.mk liboctave/module.mk
+
+2016-10-10  John D  <John D>
+
+	gui: style fixes for pushbutton, radiobutton and checkbox (Bug #49247)
+
+	* libgui/graphics/BaseControl.cc
+	  (QtHandles::updatePalette): handle radio and checkbox colors same as pushbutton and togglebutton
+
+	* libgui/src/octave-gui.cc
+	  (toplevel): Include <QStyleFactory>
+	  (gui_application::execute): call application setStyle(windows) in OS_WIN32
+
+	Files: libgui/graphics/BaseControl.cc libgui/src/octave-gui.cc
+
+2016-10-10  Eugenio Gianniti  <eugenio.gianniti@polimi.it>
+
+	it_IT.ts: Minor fixes for italian translation of GUI
+
+	Fix some typos and avoid title case.
+
+	Files: libgui/languages/it_IT.ts
+
+	it_IT.ts: Update italian translation of GUI
+
+
+	Reviewed and pushed by Andreas Weber <andy.weber.aw@gmail.com>
+
+	Files: libgui/languages/it_IT.ts
+
+2016-10-07  Mike Miller  <mtmiller@octave.org>
+
+	build: allow building Octave without FreeType available
+
+	* configure.ac: Allow configure to continue without FreeType, report
+	appropriate warning message.
+
+	Files: configure.ac
+
+2016-10-06  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	make sure the additional function arguments are always passed to odefun.
+
+	* scripts/ode/ode23.m : pass additional function arguments to odefun
+	* scripts/ode/ode45.m : pass additional function arguments to odefun
+	* scripts/ode/private/integrate_adaptive.m : do not use odeget but assume
+	  all required option fields exist
+	* scripts/ode/private/starting_stepsize.m : add default value for additional
+	  function arguments to odefun
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m
+	scripts/ode/private/integrate_adaptive.m
+	scripts/ode/private/starting_stepsize.m
+
+2016-10-06  John W. Eaton  <jwe@octave.org>
+
+	avoid gnulib waitpid replacement for Windows systems (bug #49211)
+
+	* wait-wrappers.c (octave_waitpid_wrapper): Always set status to 0 and
+	return -1 on Windows systems.
+
+	Files: liboctave/wrappers/wait-wrappers.c
+
+2016-10-06  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Use old syntax to fix GPVAL_TERM conditionals under gnuplot 4.4.0 (bug #49223).
+
+	* __gnuplot_draw_axes__.m: Place all 'unset obj 1' gnuplot commands after a
+	  GPVAL_TERM conditional test to avoid extraneous gnuplot warning messages.
+
+	* __gnuplot_draw_figure__.m: Drop newer conditional syntax "{ }" in favor of
+	  old gnuplot syntax.  Remove an extraneous 'unset' command that would simply
+	  cause a gnuplot warning message.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+	scripts/plot/util/private/__gnuplot_draw_figure__.m
+
+2016-10-06  John W. Eaton  <jwe@octave.org>
+
+	maint: minor style fixes for C++ code.
+
+	Files: libgui/src/m-editor/file-editor.h libinterp/corefcn/call-stack.cc
+	libinterp/corefcn/call-stack.h libinterp/corefcn/jit-typeinfo.cc
+	libinterp/corefcn/jit-typeinfo.h libinterp/octave-value/ov-
+	classdef.h liboctave/array/CMatrix.cc liboctave/array/Sparse.cc
+	liboctave/array/fCMatrix.cc
+
+	maint: strip tabs and trailing whitespace from C++ sources.
+
+	Files: libgui/src/main-window.cc libgui/src/main-window.h libgui/src
+	/octave-dock-widget.cc libinterp/corefcn/mex.cc
+	libinterp/corefcn/regexp.cc src/mkoctfile.in.cc
+
+2016-10-06  Avinoam Kalma  <a.kalma@gmail.com>
+
+	avoid invalid BLAS calls that then invoke xerbla (bug #39000)
+
+	* dMatrix.cc (Matrix::lssolve): Don't call dgelsd if norm is inf or nan.
+	* fMatrix.cc (FloatMatrix::lssolve): Likewise, for sgelsd.
+	* CMatrix.cc (ComplexMatrix::lssolve): Likewise, for zgelsd.
+	* fCMatrix.cc (FloatComplexMatrix::lssolve): Likewise, for cgelsd.
+
+	* test/bug-46330.tst: Don't avoid test on Windows systems.
+
+	Files: liboctave/array/CMatrix.cc liboctave/array/dMatrix.cc
+	liboctave/array/fCMatrix.cc liboctave/array/fMatrix.cc
+	test/bug-46330.tst
+
+2016-10-05  jcorno  <jacopo.corno@gmail.com>
+
+	fix missing function arguments in call to starting_stepsize
+
+	* scripts/ode/private/starting_stepsize.m : take additional function
+	  arguments as input
+
+	* scripts/ode/private/integrate_adaptive.m : pass additional arguments
+	  to starting_stepsize
+
+	Files: scripts/ode/private/integrate_adaptive.m
+	scripts/ode/private/starting_stepsize.m
+
+2016-10-06  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	cleanup ode solvers
+
+	* changed scripts/ode/ode{23,45}.m : remove references
+	  to deleted functions in help
+
+	* scripts/ode/private/integrate_const.m : remove file
+
+	* scripts/ode/private/integrate_n_steps.m : remove file
+
+	* scripts/ode/private/ode_struct_value_check.m : remove file
+
+	* scripts/ode/module.mk : unlist removed files and list added ones
+
+	* scripts/ode/private/odedefaults.m : new file
+
+	* scripts/ode/private/odemergeopts.m : new file
+
+	Files: scripts/ode/module.mk scripts/ode/ode23.m scripts/ode/ode45.m
+	scripts/ode/private/integrate_adaptive.m
+	scripts/ode/private/integrate_const.m
+	scripts/ode/private/integrate_n_steps.m
+	scripts/ode/private/ode_struct_value_check.m
+	scripts/ode/private/odedefaults.m scripts/ode/private/odemergeopts.m
+
+	simplify options management in ode solvers
+
+	* scripts/ode/ode23.m : use new input parsing and validation
+	* scripts/ode/ode45.m : use new input parsing and validation
+	* scripts/ode/odeget.m : complete overhaul
+	* scripts/ode/odeset.m : complete overhaul
+	* scripts/ode/private/integrate_adaptive.m : use new style for option management
+
+	Files: scripts/ode/ode23.m scripts/ode/ode45.m scripts/ode/odeget.m
+	scripts/ode/odeset.m scripts/ode/private/integrate_adaptive.m
+
+2016-10-05  John W. Eaton  <jwe@octave.org>
+
+	fix complex svd (bug #49232)
+
+	* liboctave/numeric/svd.cc (svd<T>::svd): Use hermitian, not transpose.
+	* libinterp/corefcn/svd.cc: New test for complex svd.
+
+	Files: libinterp/corefcn/svd.cc liboctave/numeric/svd.cc
+
+2016-10-05  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	Update of translation files (*.ts)
+
+	de_DE.ts, en_US.ts, es_ES.ts, fr_FR.ts: Updated the complete translations.
+	  The others *.ts had incomplete translations or an update would have
+	  removed many translated strings.
+	  Used call was "lupdate -recursive -no-obsolete -locations relative
+	                 src qterminal graphics -ts languages/*ts"
+
+	Files: libgui/languages/de_DE.ts libgui/languages/en_US.ts
+	libgui/languages/es_ES.ts libgui/languages/fr_FR.ts
+
+2016-10-04  Kai T. Ohlhus  <k.ohlhus@gmail.com>
+
+	gui: remove "Share Code" menu entry for offline agora.octave.org (bug #49210)
+
+	* libgui/src/shortcut-manager.cc: Remove Agora shortcut entry
+
+	* libgui/src/main-window{.h/.cc}: Remove Agora related functions and pointers
+	for the menu entry.
+
+	Files: libgui/src/main-window.cc libgui/src/main-window.h libgui/src
+	/shortcut-manager.cc
+
+2016-10-03  Carnë Draug  <carandraug@octave.org>
+
+	__unimplemented__.m: re-add gsvd to list of unimplemented functions for 4.2 release.
+
+	Files: scripts/help/__unimplemented__.m
+
+2016-10-03  Rik  <rik@octave.org>
+
+	Fix regression with '@' character in gnuplot text fields (bug #49260).
+
+	* __gnuplot_draw_axes__.m: Change regexprep replacement pattern from
+	'\@' to '\\@' since Matlab requires one round of interpretation despite
+	the single quotes.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-10-02  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Use gnuplot terminal background rather than draw text-obscuring rectangle (bug #49223).
+
+	* __gnuplot_draw_figure__.m: Do not use rectangle for background, except for
+	  gnuplot's Qt terminal which has no 'background' option.  Do the conditional
+	  inside gnuplot code rather than in Octave code.
+
+	* __gnuplot_print__.m: Use figure 'color' property to set gnuplot terminal
+	  background color option.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_figure__.m
+	scripts/plot/util/private/__gnuplot_print__.m
+
+2016-09-30  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Use colormap, not truecolor data, for surfaces under gnuplot toolkit (bug #49194).
+
+	* __gnuplot_draw_axes__.m: For "surface", if a single color then add that color
+	  to the color map and use the extended index for zz data rather than convert
+	  to 24-bit RGB.  No longer append "linecolor rgb variable" as a pm3d option.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-10-02  Rik  <rik@octave.org>
+
+	__gnuplot_draw_axes__.m: Remove obsolete code applying to gnuplot 4.2.5.
+
+	* __gnuplot_draw_axes__.m: Remove FIXME note and 'set border back' code that
+	was a workaround in 4.2.5, and which is no longer necessary.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-10-01  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Do not transform RGB color data for patches in gnuplot toolkit (bug #47974).
+
+	* __gnuplot_draw_axes__.m: Move the mapping of color data in one or two levels
+	  for the patch 'facecolor' and 'edgecolor' property processing.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-10-01  Rik  <rik@octave.org>
+
+	Fix printing when axes has color "none" (bug #49243).
+
+	* print.m: Check whether list of top-level axes objects that need to change
+	color to white for the inverthardcopy option is empty before using said list.
+
+	Files: scripts/plot/util/print.m
+
+	Use a default font of Arial for gnuplot on Windows systems (Bug #49135).
+
+	* __gnuplot_draw_axes__.m: Use a default font of "Arial", rather than
+	"Helvetica", since that is widely available on Windows systems.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-10-01  Carnë Draug  <carandraug@octave.org>
+
+	maint: revert accidental merging of default into stable.
+
+	Files: configure.ac
+
+	maint: merge stable to default
+
+	Files: 
+
+	gsvd: remove function from the upcoming 4.2 release (bug #48807)
+
+	* libinterp/corefcn/gsvd.cc: remove Octave gsvd function because it is
+	unfinished work and still has Matlab incompatibility issues whose later
+	fix would become backwards compatibility issues.
+	* liboctave/numeric/gsvd.cc, liboctave/numeric/gsvd.h,
+	liboctave/numeric/lo-lapack-proto.h, liboctave/operators/mx-defs.h,
+	liboctave/operators/mx-ext.h: remove liboctave gsvd class for same
+	reason.
+	* libinterp/corefcn/module.mk, liboctave/numeric/module.mk: remove
+	files from build system.
+	* doc/interpreter/linalg.txi: remove reference to gsvd on manual.
+	* NEWS: remove mention of gsvd
+
+	Files: NEWS doc/interpreter/linalg.txi libinterp/corefcn/gsvd.cc
+	libinterp/corefcn/module.mk liboctave/numeric/gsvd.cc
+	liboctave/numeric/gsvd.h liboctave/numeric/lo-lapack-proto.h
+	liboctave/numeric/module.mk liboctave/operators/mx-defs.h
+	liboctave/operators/mx-ext.h
+
+	gsvd: backout cset 73a85c6cacd1.
+
+	* libinterp/corefcn/gsvd.cc, libinterp/corefcn/__gsvd__.cc: bring back
+	gsvd.cc renamed from __gsvd.cc
+	* libinterp/corefcn/module.mk: update filename.
+	* scripts/linear-algebra/module.mk: remove gsvd.m.
+	* scripts/linear-algebra/gsvd.m: remove file.
+
+	Files: libinterp/corefcn/__gsvd__.cc libinterp/corefcn/gsvd.cc
+	libinterp/corefcn/module.mk scripts/linear-algebra/gsvd.m scripts
+	/linear-algebra/module.mk
+
+2016-09-30  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Make "pdflatex" an alias of "pdfcairolatex" for gnuplot toolkit print (bug #49223).
+
+	* print.m: Add carriage returns to Xfig documentation string.
+
+	* __gnuplot_print__.m: Add "pdflatexstandalone" and "pdflatex" to case where
+	  cairolatex gnuplot terminal is used.  Add "pdf" option if terminal contains
+	  "pdflatex".  Replace "pdflatex" in term string with "cairolatex".
+	  (font_spec): Add "pdflatexstandalone" and "pdflatex" to case where
+	  cairolatex terminal font specs are processed.
+
+	* __print_parse_opts__.m: Add "epscairo", "cairolatex", "pdfcairolatex",
+	  "pdfcairolatexstandalone", "epscairolatex", and "epscairolatexstandalone"
+	  along with associated extension strings to the dev_list and suffixes cell
+	  arrays, respectively.
+
+	Files: scripts/plot/util/print.m
+	scripts/plot/util/private/__gnuplot_print__.m
+	scripts/plot/util/private/__print_parse_opts__.m
+
+2016-09-30  Mike Miller  <mtmiller@octave.org>
+
+	gui: pass Page Up and Page Down keys to terminal correctly with Qt 5 (bug #49234)
+
+	* Vt102Emulation.cpp (Vt102Emulation::sendKeyEvent): Handle Page Up and Page
+	Down key events and pass the appropriate control sequence to the terminal.
+	Adapted from https://github.com/lxde/qtermwidget/commit/58c4da34.
+
+	Files: libgui/qterminal/libqterminal/unix/Vt102Emulation.cpp
+
+2016-09-30  Rik  <rik@octave.org>
+
+	__gnuplot_draw_axes__.m: Handle case where clim range is 0.
+
+	* __gnuplot_draw_axes__.m (mapcdata): If clim range (clim(2) - clim(1)) is
+	zero, then all cdata takes on the maximum possible value.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-09-30  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Use 'color' property when 'markeredgecolor' is 'auto' for gnuplot toolkit (bug #47974).
+
+	* __gnuplot_draw_axes__.m (do_linestyle_command): Check if obj.markeredgecolor
+	  is "auto" and use obj.color if it is to assign an RGB color rather than use
+	  palette input data.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-09-30  Rik  <rik@octave.org>
+
+	Use fix, rather than round, for "direct" image data which is not an integer.
+
+	* graphics.cc (convert_cdata_2): Use octave::math::fix instead of round on
+	"direct", real data.
+
+	Files: libinterp/corefcn/graphics.cc
+
+	Better Matlab compatibility for images created with gnuplot (bug #49130).
+
+	* __gnuplot_draw_axes__.m (mapcdata): Don't do conversion to
+	double->uint8->double to achieve clamping of RGB values.  Keep cdata as double
+	and use indexing to find and clamp values outside range [0, 255].
+	For scaled data, use scaling factor of colormap_size rather than
+	colormap_size-1 for compatibility.
+	For "direct" integer data, convert range from zero-based indices to ones-based.
+	For "direct" float data, truncate using "fix" rather than "round" for
+	compatibility.
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-09-28  Daniel J Sebald  <daniel.sebald@ieee.org>
+
+	Use a common function for color scaling in gnuplot toolkit (bug #49130)
+
+	* __gnuplot_draw_axes__.m: Remove code lines that set 'colormap', 'clim' and
+	  'climmode' properties of graphics objects (post logical data bug fix).
+	  Replace all color data transformations and associated conditional code with
+	  a function call to mapcdata().
+	  (mapcdata): Added.  Pay careful attention to data class for proper scaling
+	  and clamping arithmetic under various scenarios.  In true-color case, apply
+	  an inverse mapping of gnuplot's cbrange formula which also applies to RGB
+	  images (bug fix).
+
+	Files: scripts/plot/util/private/__gnuplot_draw_axes__.m
+
+2016-09-30  Carlo de Falco  <carlo.defalco@polimi.it>
+
+	inputParser reset more parse results before new parse. (bug #49198)
+
+	* scripts/general/inputParser.m(parse) : reset Unmatched and UsingDefaults before doing
+	  a new parse.
+
+	Files: scripts/general/inputParser.m
+
+2016-09-29  Rik  <rik@octave.org>
+
+	test: Change tests w/imread to use names without spaces (bug #49219).
+
+	* imfinfo.m, imread.m: Change filename in BIST tests to
+	"I_sure_hope_this_file_does_not_exist.jpg".
+
+	Files: scripts/image/imfinfo.m scripts/image/imread.m
+
+	doc: Correctly get last entry from DOCSTRINGS file (bug #49224).
+
+	* help.cc (raw_help_from_docstrings_file): If eof is hit, seek the file pointer
+	back to the end of the data in the file.  Compute the length of the last
+	DOCSTRING entry as the difference between the end of the file and the start of
+	the last entry.  Reset the eof flag manually so that the while loop will exit.
+
+	Files: libinterp/corefcn/help.cc
+
+2016-09-29  John D  <John D>
+
+	* libgui/qterminal/libqterminal/win32/QWinTerminalImpl.cpp: added include QMimeData
+
+	Files: libgui/qterminal/libqterminal/win32/QWinTerminalImpl.cpp
+
+2016-09-29  John W. Eaton  <jwe@octave.org>
+
+	generate gzip and lzip dist files
+
+	* configure.ac (AC_INIT_AUTOMAKE): Use dist-lzip option.
+
+	Files: configure.ac
+
+2016-09-28  John W. Eaton  <jwe@octave.org>
+
+	maint: Merge default to stable for upcoming 4.2 release.
+
+	Files: .gitignore .hgsubstate build-aux/common.mk doc/Makefile.am
+	doc/doxyhtml/Makefile.am doc/interpreter/Makefile.am
+	doc/interpreter/contrib.txi doc/interpreter/emacs.txi
+	doc/interpreter/find-docstring-files.sh doc/interpreter/java-
+	images/image001.png doc/interpreter/java-images/image002.png
+	doc/interpreter/java-images/image003.png doc/interpreter/java-
+	images/image004.png doc/interpreter/java-images/image005.png
+	doc/interpreter/java-images/image006.png doc/interpreter/java-
+	images/image007.png doc/interpreter/java-images/image008.png
+	doc/interpreter/java-images/image009.png doc/interpreter/java.txi
+	doc/interpreter/mk_doc_cache.m doc/interpreter/tips.txi
+	doc/liboctave/Makefile.am doc/refcard/Makefile.am
+	etc/icons/Makefile.am examples/Makefile.am
+	examples/code/@FIRfilter/module.mk
+	examples/code/@polynomial/module.mk examples/code/Makefile.am
+	examples/data/Makefile.am libgui/Makefile.am libgui/link-deps.mk
+	libinterp/Makefile.am libinterp/config-features.sh
+	libinterp/corefcn/cdisplay.h libinterp/corefcn/cutils.c
+	libinterp/corefcn/cutils.h libinterp/corefcn/gl2ps-renderer.cc
+	libinterp/corefcn/gl2ps-renderer.h libinterp/corefcn/ls-oct-ascii.cc
+	libinterp/corefcn/ls-oct-ascii.h libinterp/corefcn/luinc.cc
+	libinterp/corefcn/matherr.c libinterp/corefcn/md5sum.cc
+	libinterp/corefcn/oct-hdf5-id.cc libinterp/corefcn/oct-hdf5-id.h
+	libinterp/corefcn/oct-obj.cc libinterp/corefcn/siglist.c
+	libinterp/corefcn/siglist.h libinterp/corefcn/txt-eng-ft.cc
+	libinterp/corefcn/txt-eng-ft.h libinterp/corefcn/xgl2ps.c libinterp
+	/find-defun-files.sh libinterp/link-deps.mk libinterp/mkbuiltins
+	libinterp/mkdefs libinterp/mkdocs libinterp/oct-conf.in.h libinterp
+	/octave-value/ov-type-conv.h libinterp/operators/op-double-conv.cc
+	libinterp/operators/op-float-conv.cc libinterp/operators/op-int-
+	conv.cc libinterp/template-inst/Array-os.cc liboctave/Makefile.am
+	liboctave/array/MArray-decl.h liboctave/array/MArray-defs.h
+	liboctave/array/MSparse-defs.h liboctave/cruft/mkf77def.in liboctave
+	/link-deps.mk liboctave/numeric/CmplxAEPBAL.cc
+	liboctave/numeric/CmplxAEPBAL.h liboctave/numeric/CmplxCHOL.cc
+	liboctave/numeric/CmplxCHOL.h liboctave/numeric/CmplxGEPBAL.cc
+	liboctave/numeric/CmplxGEPBAL.h liboctave/numeric/CmplxHESS.cc
+	liboctave/numeric/CmplxHESS.h liboctave/numeric/CmplxLU.cc
+	liboctave/numeric/CmplxLU.h liboctave/numeric/CmplxQR.cc
+	liboctave/numeric/CmplxQR.h liboctave/numeric/CmplxQRP.cc
+	liboctave/numeric/CmplxQRP.h liboctave/numeric/CmplxSCHUR.cc
+	liboctave/numeric/CmplxSCHUR.h liboctave/numeric/CmplxSVD.cc
+	liboctave/numeric/CmplxSVD.h liboctave/numeric/SparseCmplxCHOL.cc
+	liboctave/numeric/SparseCmplxCHOL.h
+	liboctave/numeric/SparseCmplxLU.cc liboctave/numeric/SparseCmplxLU.h
+	liboctave/numeric/SparseCmplxQR.cc liboctave/numeric/SparseCmplxQR.h
+	liboctave/numeric/SparseQR.cc liboctave/numeric/SparseQR.h
+	liboctave/numeric/SparsedbleCHOL.cc
+	liboctave/numeric/SparsedbleCHOL.h liboctave/numeric/SparsedbleLU.cc
+	liboctave/numeric/SparsedbleLU.h liboctave/numeric/base-aepbal.h
+	liboctave/numeric/base-lu.cc liboctave/numeric/base-lu.h
+	liboctave/numeric/base-qr.cc liboctave/numeric/base-qr.h
+	liboctave/numeric/dbleAEPBAL.cc liboctave/numeric/dbleAEPBAL.h
+	liboctave/numeric/dbleCHOL.cc liboctave/numeric/dbleCHOL.h
+	liboctave/numeric/dbleGEPBAL.cc liboctave/numeric/dbleGEPBAL.h
+	liboctave/numeric/dbleHESS.cc liboctave/numeric/dbleHESS.h
+	liboctave/numeric/dbleLU.cc liboctave/numeric/dbleLU.h
+	liboctave/numeric/dbleQR.cc liboctave/numeric/dbleQR.h
+	liboctave/numeric/dbleQRP.cc liboctave/numeric/dbleQRP.h
+	liboctave/numeric/dbleSCHUR.cc liboctave/numeric/dbleSCHUR.h
+	liboctave/numeric/dbleSVD.cc liboctave/numeric/dbleSVD.h
+	liboctave/numeric/fCmplxAEPBAL.cc liboctave/numeric/fCmplxAEPBAL.h
+	liboctave/numeric/fCmplxCHOL.cc liboctave/numeric/fCmplxCHOL.h
+	liboctave/numeric/fCmplxGEPBAL.cc liboctave/numeric/fCmplxGEPBAL.h
+	liboctave/numeric/fCmplxHESS.cc liboctave/numeric/fCmplxHESS.h
+	liboctave/numeric/fCmplxLU.cc liboctave/numeric/fCmplxLU.h
+	liboctave/numeric/fCmplxQR.cc liboctave/numeric/fCmplxQR.h
+	liboctave/numeric/fCmplxQRP.cc liboctave/numeric/fCmplxQRP.h
+	liboctave/numeric/fCmplxSCHUR.cc liboctave/numeric/fCmplxSCHUR.h
+	liboctave/numeric/fCmplxSVD.cc liboctave/numeric/fCmplxSVD.h
+	liboctave/numeric/floatAEPBAL.cc liboctave/numeric/floatAEPBAL.h
+	liboctave/numeric/floatCHOL.cc liboctave/numeric/floatCHOL.h
+	liboctave/numeric/floatGEPBAL.cc liboctave/numeric/floatGEPBAL.h
+	liboctave/numeric/floatHESS.cc liboctave/numeric/floatHESS.h
+	liboctave/numeric/floatLU.cc liboctave/numeric/floatLU.h
+	liboctave/numeric/floatQR.cc liboctave/numeric/floatQR.h
+	liboctave/numeric/floatQRP.cc liboctave/numeric/floatQRP.h
+	liboctave/numeric/floatSCHUR.cc liboctave/numeric/floatSCHUR.h
+	liboctave/numeric/floatSVD.cc liboctave/numeric/floatSVD.h
+	liboctave/numeric/randgamma.c liboctave/numeric/randmtzig.c
+	liboctave/numeric/randpoisson.c liboctave/numeric/sparse-base-
+	chol.cc liboctave/numeric/sparse-base-chol.h liboctave/numeric
+	/sparse-base-lu.cc liboctave/numeric/sparse-base-lu.h
+	liboctave/operators/sparse-mk-ops.awk liboctave/system/oct-openmp.h
+	liboctave/system/pathlen.h liboctave/system/sysdir.h
+	liboctave/system/syswait.h liboctave/util/oct-md5.cc liboctave/util
+	/oct-md5.h liboctave/util/statdefs.h oct-conf-post.in.h
+	scripts/Makefile.am scripts/audio/wavread.m scripts/audio/wavwrite.m
+	scripts/deprecated/default_save_options.m
+	scripts/deprecated/gen_doc_cache.m scripts/deprecated/interp1q.m
+	scripts/deprecated/isequalwithequalnans.m
+	scripts/deprecated/java_convert_matrix.m
+	scripts/deprecated/java_debug.m scripts/deprecated/java_invoke.m
+	scripts/deprecated/java_new.m
+	scripts/deprecated/java_unsigned_conversion.m
+	scripts/deprecated/javafields.m scripts/deprecated/javamethods.m
+	scripts/deprecated/re_read_readline_init_file.m
+	scripts/deprecated/read_readline_init_file.m
+	scripts/deprecated/saving_history.m scripts/general/profexplore.m
+	scripts/general/profile.m scripts/general/profshow.m
+	scripts/gui/private/message_dialog.m scripts/io/textscan.m
+	scripts/java/org/octave/DlgListener.java
+	scripts/java/org/octave/JDialogBox.java
+	scripts/java/org/octave/TeXcode.java
+	scripts/java/org/octave/TeXtranslator.java
+	scripts/java/org/octave/images/error.png
+	scripts/java/org/octave/images/information.png
+	scripts/java/org/octave/images/octave.png
+	scripts/java/org/octave/images/question.png
+	scripts/java/org/octave/images/warning.png scripts/linear-
+	algebra/onenormest.m scripts/miscellaneous/ans.m
+	scripts/miscellaneous/bzip2.m scripts/miscellaneous/comma.m
+	scripts/miscellaneous/error_ids.m scripts/miscellaneous/gzip.m
+	scripts/miscellaneous/paren.m
+	scripts/miscellaneous/private/__xzip__.m
+	scripts/miscellaneous/semicolon.m
+	scripts/miscellaneous/warning_ids.m scripts/optimization/glpktest1
+	scripts/optimization/glpktest2 scripts/pkg/pkg.m
+	scripts/pkg/private/copy_files.m
+	scripts/pkg/private/create_pkgadddel.m
+	scripts/pkg/private/extract_pkg.m
+	scripts/pkg/private/finish_installation.m
+	scripts/pkg/private/fix_depends.m scripts/pkg/private/fix_version.m
+	scripts/pkg/private/generate_lookfor_cache.m
+	scripts/pkg/private/getarchprefix.m
+	scripts/pkg/private/is_architecture_dependent.m
+	scripts/pkg/private/load_package_dirs.m
+	scripts/pkg/private/packinfo_copy_file.m
+	scripts/pkg/private/parse_pkg_idx.m
+	scripts/pkg/private/prepare_installation.m
+	scripts/pkg/private/print_package_description.m
+	scripts/pkg/private/repackage.m scripts/pkg/private/shell.m
+	scripts/pkg/private/verify_directory.m
+	scripts/pkg/private/write_index.m
+	scripts/plot/draw/private/__errcomm__.m
+	scripts/plot/util/gnuplot_binary.in
+	scripts/plot/util/private/__go_draw_axes__.m
+	scripts/plot/util/private/__go_draw_figure__.m
+	scripts/plot/util/private/__tight_eps_bbox__.m
+	scripts/prefs/prefdir.m scripts/sparse/private/__sprand_impl__.m
+	scripts/startup/local-rcfile scripts/startup/main-rcfile
+	scripts/statistics/base/mahalanobis.m src/Makefile.am
+	test/Makefile.am test/bug-35448/module.mk test/bug-36025/module.mk
+	test/bug-38236/module.mk test/bug-38691/module.mk test/class-
+	concat/module.mk test/classdef/module.mk test/ctor-vs-
+	method/module.mk test/fcn-handle-derived-resolution/module.mk
+	test/nest/module.mk
+
+2016-07-06  Rik  <rik@octave.org>
+
+	Link Z_LIB to liboctinterp (bug #48407).
+
+	* libinterp/link-deps.mk: Add $Z_LIBS to link dependencies for liboctinterp.
+
+	Files: libinterp/link-deps.mk
+
 2016-07-01  John W. Eaton  <jwe@octave.org>
 
 	Added tag release-4-0-3 for changeset 00f7b278defd
@@ -2909,6 +4290,16 @@
 
 	Files: 
 
+2015-04-28  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-4-0-0-4 for changeset 42bb3a776c9f
+
+	Files: .hgtags
+
+	maint: Bump version number for 4.0.0-rc4.
+
+	Files: configure.ac
+
 2015-04-28  Rik  <rik@octave.org>
 
 	Don't save "warning: " prefix in lastwarn() message.
@@ -2926,14 +4317,6 @@
 	Files: libinterp/corefcn/error.cc scripts/testfun/fail.m
 
 2015-04-28  John W. Eaton  <jwe@octave.org>
-
-	Added tag rc-4-0-0-4 for changeset 42bb3a776c9f
-
-	Files: .hgtags
-
-	maint: Bump version number for 4.0.0-rc4.
-
-	Files: configure.ac
 
 	maint: Merge default to stable in preparation for 4.0.0 release.
 
@@ -7556,15 +8939,6 @@
 
 	Files: 
 
-2013-02-13  Rik  <rik@octave.org>
-
-	Fix building when --disable-docs argument given.
-
-	* scripts/Makefile.am: use AMCOND_BUILD_DOCS to decide
-	whether to build .DOCSTRINGS
-
-	Files: scripts/Makefile.am
-
 2013-02-11  John W. Eaton  <jwe@octave.org>
 
 	Added tag rc-3-6-4-2 for changeset cc5a7d1233f3
@@ -7582,6 +8956,15 @@
 	* sqp.m: Relax tolerance in test.
 
 	Files: scripts/optimization/sqp.m
+
+2013-02-13  Rik  <rik@octave.org>
+
+	Fix building when --disable-docs argument given.
+
+	* scripts/Makefile.am: use AMCOND_BUILD_DOCS to decide
+	whether to build .DOCSTRINGS
+
+	Files: scripts/Makefile.am
 
 2013-02-11  Stefan Mahr  <dac922@gmx.de>
 

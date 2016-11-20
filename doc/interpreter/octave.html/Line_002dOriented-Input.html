@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -72,15 +73,16 @@ fclose (fid);
 the line &lsquo;<samp>Free Software is needed for Free Science</samp>&rsquo;.
 </p>
 <a name="XREFfgetl"></a><dl>
-<dt><a name="index-fgetl"></a>Built-in Function: <em><var>str</var> =</em> <strong>fgetl</strong> <em>(<var>fid</var>)</em></dt>
-<dt><a name="index-fgetl-1"></a>Built-in Function: <em><var>str</var> =</em> <strong>fgetl</strong> <em>(<var>fid</var>, <var>len</var>)</em></dt>
+<dt><a name="index-fgetl"></a>: <em><var>str</var> =</em> <strong>fgetl</strong> <em>(<var>fid</var>)</em></dt>
+<dt><a name="index-fgetl-1"></a>: <em><var>str</var> =</em> <strong>fgetl</strong> <em>(<var>fid</var>, <var>len</var>)</em></dt>
 <dd><p>Read characters from a file, stopping after a newline, or EOF,
 or <var>len</var> characters have been read.
 </p>
 <p>The characters read, excluding the possible trailing newline, are returned
 as a string.
 </p>
-<p>If <var>len</var> is omitted, <code>fgetl</code> reads until the next newline character.
+<p>If <var>len</var> is omitted, <code>fgetl</code> reads until the next newline
+character.
 </p>
 <p>If there are no more characters to read, <code>fgetl</code> returns -1.
 </p>
@@ -91,15 +93,16 @@ as a string.
 
 
 <a name="XREFfgets"></a><dl>
-<dt><a name="index-fgets"></a>Built-in Function: <em><var>str</var> =</em> <strong>fgets</strong> <em>(<var>fid</var>)</em></dt>
-<dt><a name="index-fgets-1"></a>Built-in Function: <em><var>str</var> =</em> <strong>fgets</strong> <em>(<var>fid</var>, <var>len</var>)</em></dt>
+<dt><a name="index-fgets"></a>: <em><var>str</var> =</em> <strong>fgets</strong> <em>(<var>fid</var>)</em></dt>
+<dt><a name="index-fgets-1"></a>: <em><var>str</var> =</em> <strong>fgets</strong> <em>(<var>fid</var>, <var>len</var>)</em></dt>
 <dd><p>Read characters from a file, stopping after a newline, or EOF,
 or <var>len</var> characters have been read.
 </p>
 <p>The characters read, including the possible trailing newline, are returned
 as a string.
 </p>
-<p>If <var>len</var> is omitted, <code>fgets</code> reads until the next newline character.
+<p>If <var>len</var> is omitted, <code>fgets</code> reads until the next newline
+character.
 </p>
 <p>If there are no more characters to read, <code>fgets</code> returns -1.
 </p>
@@ -110,14 +113,14 @@ as a string.
 
 
 <a name="XREFfskipl"></a><dl>
-<dt><a name="index-fskipl"></a>Built-in Function: <em><var>nlines</var> =</em> <strong>fskipl</strong> <em>(<var>fid</var>)</em></dt>
-<dt><a name="index-fskipl-1"></a>Built-in Function: <em><var>nlines</var> =</em> <strong>fskipl</strong> <em>(<var>fid</var>, <var>count</var>)</em></dt>
-<dt><a name="index-fskipl-2"></a>Built-in Function: <em><var>nlines</var> =</em> <strong>fskipl</strong> <em>(<var>fid</var>, Inf)</em></dt>
+<dt><a name="index-fskipl"></a>: <em><var>nlines</var> =</em> <strong>fskipl</strong> <em>(<var>fid</var>)</em></dt>
+<dt><a name="index-fskipl-1"></a>: <em><var>nlines</var> =</em> <strong>fskipl</strong> <em>(<var>fid</var>, <var>count</var>)</em></dt>
+<dt><a name="index-fskipl-2"></a>: <em><var>nlines</var> =</em> <strong>fskipl</strong> <em>(<var>fid</var>, Inf)</em></dt>
 <dd><p>Read and skip <var>count</var> lines from the file specified by the file
 descriptor <var>fid</var>.
 </p>
-<p><code>fskipl</code> discards characters until an end-of-line is encountered exactly
-<var>count</var>-times, or until the end-of-file marker is found.
+<p><code>fskipl</code> discards characters until an end-of-line is encountered
+exactly <var>count</var>-times, or until the end-of-file marker is found.
 </p>
 <p>If <var>count</var> is omitted, it defaults to 1.  <var>count</var> may also be
 <code>Inf</code>, in which case lines are skipped until the end of the file.

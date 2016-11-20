@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -208,34 +209,29 @@ methods that are of interest only for matrices such as <code>transpose</code>,
 
 DEFUN_DLD (addtwomatrices, args, , &quot;Add A to B&quot;)
 {
-  int nargin = args.length ();
-
-  if (nargin != 2)
+  if (args.length () != 2)
     print_usage ();
-  else
-    {
-      NDArray A = args(0).array_value ();
-      NDArray B = args(1).array_value ();
-      if (! error_state)
-        return octave_value (A + B);
-    }
 
-  return octave_value_list ();
+  NDArray A = args(0).array_value ();
+  NDArray B = args(1).array_value ();
+
+  return octave_value (A + B);
 }
-</pre><pre class="example">
-
 </pre></div>
 
 <p>To avoid segmentation faults causing Octave to abort this function
 explicitly checks that there are sufficient arguments available before
 accessing these arguments.  It then obtains two multi-dimensional arrays
 of type <code>NDArray</code> and adds these together.  Note that the array_value
-method is called without using the <code>is_matrix_type</code> type, and instead the
-error_state is checked before returning <code>A + B</code>.  The reason to
+method is called without using the <code>is_matrix_type</code> type.  If an
+error occurs when attempting to extract the value, Octave will print a
+message and throw an exception.  The reason to
 prefer this is that the arguments might be a type that is not an
 <code>NDArray</code>, but it would make sense to convert it to one.  The
 <code>array_value</code> method allows this conversion to be performed
-transparently if possible, and sets <code>error_state</code> if it is not.
+transparently if possible.  If you need to catch errors like this and
+perform some kind of cleanup or other operation, you can catch the
+<code>octave_execution_error</code> exception.
 </p>
 <p><code>A + B</code>, operating on two <code>NDArray</code>&rsquo;s returns an
 <code>NDArray</code>, which is cast to an <code>octave_value</code> on the return

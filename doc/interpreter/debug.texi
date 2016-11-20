@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -54,9 +54,9 @@ the functions @code{debug_on_interrupt}, @code{debug_on_warning}, and
 
 @c debug_on_interrupt libinterp/corefcn/sighandlers.cc
 @anchor{XREFdebug_on_interrupt}
-@deftypefn  {Built-in Function} {@var{val} =} debug_on_interrupt ()
-@deftypefnx {Built-in Function} {@var{old_val} =} debug_on_interrupt (@var{new_val})
-@deftypefnx {Built-in Function} {} debug_on_interrupt (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} debug_on_interrupt ()
+@deftypefnx {} {@var{old_val} =} debug_on_interrupt (@var{new_val})
+@deftypefnx {} {} debug_on_interrupt (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will try
 to enter debugging mode when it receives an interrupt signal (typically
 generated with @kbd{C-c}).
@@ -73,9 +73,9 @@ The original variable value is restored when exiting the function.
 
 @c debug_on_warning libinterp/corefcn/error.cc
 @anchor{XREFdebug_on_warning}
-@deftypefn  {Built-in Function} {@var{val} =} debug_on_warning ()
-@deftypefnx {Built-in Function} {@var{old_val} =} debug_on_warning (@var{new_val})
-@deftypefnx {Built-in Function} {} debug_on_warning (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} debug_on_warning ()
+@deftypefnx {} {@var{old_val} =} debug_on_warning (@var{new_val})
+@deftypefnx {} {} debug_on_warning (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will try
 to enter the debugger when a warning is encountered.
 
@@ -88,9 +88,9 @@ The original variable value is restored when exiting the function.
 
 @c debug_on_error libinterp/corefcn/error.cc
 @anchor{XREFdebug_on_error}
-@deftypefn  {Built-in Function} {@var{val} =} debug_on_error ()
-@deftypefnx {Built-in Function} {@var{old_val} =} debug_on_error (@var{new_val})
-@deftypefnx {Built-in Function} {} debug_on_error (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} debug_on_error ()
+@deftypefnx {} {@var{old_val} =} debug_on_error (@var{new_val})
+@deftypefnx {} {} debug_on_error (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will try
 to enter the debugger when an error is encountered.
 
@@ -112,7 +112,7 @@ continue the normal execution of the script.
 
 @c dbcont libinterp/corefcn/debug.cc
 @anchor{XREFdbcont}
-@deftypefn {Command} {} dbcont
+@deftypefn {} {} dbcont
 Leave command-line debugging mode and continue code execution normally.
 @seealso{@ref{XREFdbstep,,dbstep}, @ref{XREFdbquit,,dbquit}}
 @end deftypefn
@@ -123,7 +123,7 @@ any additional code use @code{dbquit}.
 
 @c dbquit libinterp/corefcn/debug.cc
 @anchor{XREFdbquit}
-@deftypefn {Command} {} dbquit
+@deftypefn {} {} dbquit
 Quit debugging mode immediately without further code execution and return to
 the Octave prompt.
 @seealso{@ref{XREFdbcont,,dbcont}, @ref{XREFdbstep,,dbstep}}
@@ -141,36 +141,91 @@ function.
 
 @c dbstop libinterp/corefcn/debug.cc
 @anchor{XREFdbstop}
-@deftypefn  {Command} {} dbstop @var{func}
-@deftypefnx {Command} {} dbstop @var{func} @var{line}
-@deftypefnx {Command} {} dbstop @var{func} @var{line1} @var{line2} @dots{}
-@deftypefnx {Command} {} dbstop @var{line} @dots{}
-@deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}")
-@deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}", @var{line})
-@deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}", @var{line1}, @var{line2}, @dots{})
-@deftypefnx {Built-in Function} {} dbstop ("@var{func}", [@var{line1}, @dots{}])
-@deftypefnx {Built-in Function} {} dbstop (@var{line}, @dots{})
-Set a breakpoint at line number @var{line} in function @var{func}.
+@deftypefn  {} {} dbstop @var{func}
+@deftypefnx {} {} dbstop @var{func} @var{line}
+@deftypefnx {} {} dbstop @var{func} @var{line1} @var{line2} @dots{}
+@deftypefnx {} {} dbstop @var{line1} @dots{}
+@deftypefnx {} {} dbstop in @var{func}
+@deftypefnx {} {} dbstop in @var{func} at @var{line}
+@deftypefnx {} {} dbstop in @var{func} at @var{line} if "@var{condition}"
+@deftypefnx {} {} dbstop if @var{event}
+@deftypefnx {} {} dbstop if @var{event} @var{ID}
+@deftypefnx {} {} dbstop (@var{bp_struct})
+@deftypefnx {} {@var{rline} =} dbstop @dots{}
 
-Arguments are
+Set breakpoints for the built-in debugger.
 
-@table @var
-@item func
-Function name as a string variable.  When already in debug mode this argument
-can be omitted and the current function will be used.
+@var{func} is the name of a function on the current @code{path}.  When
+already in debug mode the @var{func} argument can be omitted and the current
+function will be used.  Breakpoints at subfunctions are set with the scope
+operator @samp{>}.  For example, If @file{file.m} has a subfunction
+@code{func2}, then a breakpoint in @code{func2} can be specified by
+@code{file>func2}.
 
-@item line
-Line number where the breakpoint should be set.  Multiple lines may be given
-as separate arguments or as a vector.
+@var{line} is the line number at which to break.  If @var{line} is not
+specified, it defaults to the first executable line in the file
+@file{func.m}.  Multiple lines can be specified in a single command; when
+function syntax is used, the lines may also be passed as a single vector
+argument (@code{[@var{line1}, @var{line2}, @dots{}]}).
+
+@var{condition} is any Octave expression that can be evaluated in the code
+context that exists at the breakpoint.  When the breakpoint is encountered,
+@var{condition} will be evaluated, and execution will stop if
+@var{condition} is true.  If @var{condition} cannot be evaluated, for
+example because it refers to an undefined variable, an error will be thrown.
+ Expressions with side effects (such as @code{y++ > 1}) will alter
+variables, and should generally be avoided.  Conditions containing quotes
+(@samp{"}, @samp{'}) or comment characters (@samp{#}, @samp{%}) must be
+enclosed in quotes.  (This does not apply to conditions entered from the
+editor's context menu.)  For example:
+
+@example
+dbstop in strread at 209 if 'any (format == "%f")'
+@end example
+
+The form specifying @var{event} does not cause a specific breakpoint at a
+given function and line number.  Instead it causes debug mode to be entered
+when certain unexpected events are encountered.  Possible values are
+
+@table @code
+@item error
+Stop when an error is reported.  This is equivalent to specifying
+both @code{debug_on_error (true)} and @code{debug_on_interrupt (true)}.
+
+@item caught error
+Stop when an error is caught by a try-catch block (not yet implemented).
+
+@item interrupt
+Stop when an interrupt (@kbd{Ctrl-C}) occurs.
+
+@item naninf
+Stop when code returns a non-finite value (not yet implemented).
+
+@item warning
+Stop when a warning is reported.  This is equivalent to specifying
+@code{debug_on_warning (true)}.
 @end table
 
-When called with a single argument @var{func}, the breakpoint is set at the
-first executable line in the named function.
+The events @code{error}, @code{caught error}, and @code{warning} can all be
+followed by a string specifying an error ID or warning ID@.  If that is
+done, only errors with the specified ID will cause execution to stop.  To
+stop on one of a set of IDs, multiple @code{dbstop} commands must be
+issued.
+
+Breakpoints and events can be removed using the @code{dbclear} command with
+the same syntax.
+
+It is possible to save all breakpoints and restore them at once by issuing
+the commands @code{bp_state = dbstatus; @dots{}; dbstop (bp_state)}.
 
 The optional output @var{rline} is the real line number where the breakpoint
 was set.  This can differ from the specified line if the line is not
 executable.  For example, if a breakpoint attempted on a blank line then
 Octave will set the real breakpoint at the next executable line.
+
+When a file is re-parsed, such as when it is modified outside the GUI,
+all breakpoints within the file are cleared.
+
 @seealso{@ref{XREFdbclear,,dbclear}, @ref{XREFdbstatus,,dbstatus}, @ref{XREFdbstep,,dbstep}, @ref{XREFdebug_on_error,,debug_on_error}, @ref{XREFdebug_on_warning,,debug_on_warning}, @ref{XREFdebug_on_interrupt,,debug_on_interrupt}}
 @end deftypefn
 
@@ -200,9 +255,9 @@ be queried with @code{dbstatus}.
 
 @c dbstatus libinterp/corefcn/debug.cc
 @anchor{XREFdbstatus}
-@deftypefn  {Built-in Function} {} dbstatus ()
-@deftypefnx {Built-in Function} {@var{brk_list} =} dbstatus ()
-@deftypefnx {Built-in Function} {@var{brk_list} =} dbstatus ("@var{func}")
+@deftypefn  {} {} dbstatus
+@deftypefnx {} {} dbstatus @var{func}
+@deftypefnx {} {@var{bp_list} =} dbstatus @dots{}
 Report the location of active breakpoints.
 
 When called with no input or output arguments, print the list of all
@@ -210,26 +265,37 @@ functions with breakpoints and the line numbers where those breakpoints are
 set.
 
 If a function name @var{func} is specified then only report breakpoints
-for the named function.
+for the named function and its subfunctions.
 
-The optional return argument @var{brk_list} is a struct array with the
+The optional return argument @var{bp_list} is a struct array with the
 following fields.
 
 @table @asis
 @item name
-The name of the function with a breakpoint.
+The name of the function with a breakpoint.  A subfunction, say @code{func2}
+within an m-file, say @file{file.m}, is specified as @code{file>func2}.
 
 @item file
 The name of the m-file where the function code is located.
 
 @item line
-A line number, or vector of line numbers, with a breakpoint.
+The line number with the breakpoint.
+
+@item cond
+The condition that must be satisfied for the breakpoint to be active, or
+the empty string for unconditional breakpoints.
 @end table
 
-Note: When @code{dbstatus} is called from the debug prompt within a function,
-the list of breakpoints is automatically trimmed to the breakpoints in the
-current function.
-@seealso{@ref{XREFdbclear,,dbclear}, @ref{XREFdbwhere,,dbwhere}}
+@c Note: When @code{dbstatus} is called from the debug prompt within a function,
+@c the list of breakpoints is automatically trimmed to the breakpoints in the
+@c current function.
+If @code{dbstop if error} is true but no explicit IDs are specified, the
+return value will have an empty field called @qcode{"errs"}.  If IDs are
+specified, the @code{errs} field will have one row per ID@.  If
+@code{dbstop if error} is false, there is no @qcode{"errs"} field.
+The @qcode{"warn"} field is set similarly by @code{dbstop if warning}.
+
+@seealso{@ref{XREFdbstop,,dbstop}, @ref{XREFdbclear,,dbclear}, @ref{XREFdbwhere,,dbwhere}, @ref{XREFdblist,,dblist}, @ref{XREFdbstack,,dbstack}}
 @end deftypefn
 
 
@@ -240,29 +306,36 @@ function.
 
 @c dbclear libinterp/corefcn/debug.cc
 @anchor{XREFdbclear}
-@deftypefn  {Command} {} dbclear @var{func}
-@deftypefnx {Command} {} dbclear @var{func} @var{line}
-@deftypefnx {Command} {} dbclear @var{func} @var{line1} @var{line2} @dots{}
-@deftypefnx {Command} {} dbclear @var{line} @dots{}
-@deftypefnx {Command} {} dbclear all
-@deftypefnx {Built-in Function} {} dbclear ("@var{func}")
-@deftypefnx {Built-in Function} {} dbclear ("@var{func}", @var{line})
-@deftypefnx {Built-in Function} {} dbclear ("@var{func}", @var{line1}, @var{line2}, @dots{})
-@deftypefnx {Built-in Function} {} dbclear ("@var{func}", [@var{line1}, @dots{}])
-@deftypefnx {Built-in Function} {} dbclear (@var{line}, @dots{})
-@deftypefnx {Built-in Function} {} dbclear ("all")
+@deftypefn  {} {} dbclear @var{func}
+@deftypefnx {} {} dbclear @var{func} @var{line}
+@deftypefnx {} {} dbclear @var{func} @var{line1} @var{line2} @dots{}
+@deftypefnx {} {} dbclear @var{line} @dots{}
+@deftypefnx {} {} dbclear all
+@deftypefnx {} {} dbclear in @var{func}
+@deftypefnx {} {} dbclear in @var{func} at @var{line}
+@deftypefnx {} {} dbclear if @var{event}
+@deftypefnx {} {} dbclear ("@var{func}")
+@deftypefnx {} {} dbclear ("@var{func}", @var{line})
+@deftypefnx {} {} dbclear ("@var{func}", @var{line1}, @var{line2}, @dots{})
+@deftypefnx {} {} dbclear ("@var{func}", @var{line1}, @dots{})
+@deftypefnx {} {} dbclear (@var{line}, @dots{})
+@deftypefnx {} {} dbclear ("all")
 Delete a breakpoint at line number @var{line} in the function @var{func}.
 
 Arguments are
 
 @table @var
 @item func
-Function name as a string variable.  When already in debug mode this argument
-can be omitted and the current function will be used.
+Function name as a string variable.  When already in debug mode this
+argument can be omitted and the current function will be used.
 
 @item line
 Line number from which to remove a breakpoint.  Multiple lines may be given
 as separate arguments or as a vector.
+
+@item event
+An event such as @code{error}, @code{interrupt}, or @code{warning}
+(@pxref{XREFdbstop,,dbstop} for details).
 @end table
 
 When called without a line number specification all breakpoints in the named
@@ -316,8 +389,8 @@ use of the @code{keyboard} function.
 
 @c keyboard libinterp/corefcn/input.cc
 @anchor{XREFkeyboard}
-@deftypefn  {Built-in Function} {} keyboard ()
-@deftypefnx {Built-in Function} {} keyboard ("@var{prompt}")
+@deftypefn  {} {} keyboard ()
+@deftypefnx {} {} keyboard ("@var{prompt}")
 Stop m-file execution and enter debug mode.
 
 When the @code{keyboard} function is executed, Octave prints a prompt and
@@ -348,23 +421,23 @@ Octave entered debug mode.
 
 @c dbwhere libinterp/corefcn/debug.cc
 @anchor{XREFdbwhere}
-@deftypefn {Command} {} dbwhere
+@deftypefn {} {} dbwhere
 In debugging mode, report the current file and line number where execution
 is stopped.
-@seealso{@ref{XREFdbstatus,,dbstatus}, @ref{XREFdbcont,,dbcont}, @ref{XREFdbstep,,dbstep}, @ref{XREFdbup,,dbup}}
+@seealso{@ref{XREFdbstack,,dbstack}, @ref{XREFdblist,,dblist}, @ref{XREFdbstatus,,dbstatus}, @ref{XREFdbcont,,dbcont}, @ref{XREFdbstep,,dbstep}, @ref{XREFdbup,,dbup}, @ref{XREFdbdown,,dbdown}}
 @end deftypefn
 
 
 @c dbtype libinterp/corefcn/debug.cc
 @anchor{XREFdbtype}
-@deftypefn  {Command} {} dbtype
-@deftypefnx {Command} {} dbtype @var{lineno}
-@deftypefnx {Command} {} dbtype @var{startl:endl}
-@deftypefnx {Command} {} dbtype @var{startl:end}
-@deftypefnx {Command} {} dbtype @var{func}
-@deftypefnx {Command} {} dbtype @var{func} @var{lineno}
-@deftypefnx {Command} {} dbtype @var{func} @var{startl:endl}
-@deftypefnx {Command} {} dbtype @var{func} @var{startl:end}
+@deftypefn  {} {} dbtype
+@deftypefnx {} {} dbtype @var{lineno}
+@deftypefnx {} {} dbtype @var{startl:endl}
+@deftypefnx {} {} dbtype @var{startl:end}
+@deftypefnx {} {} dbtype @var{func}
+@deftypefnx {} {} dbtype @var{func} @var{lineno}
+@deftypefnx {} {} dbtype @var{func} @var{startl:endl}
+@deftypefnx {} {} dbtype @var{func} @var{startl:end}
 Display a script file with line numbers.
 
 When called with no arguments in debugging mode, display the script file
@@ -376,19 +449,19 @@ specification for the last line of the file.
 
 When called with the name of a function, list that script file with line
 numbers.
-@seealso{@ref{XREFdbwhere,,dbwhere}, @ref{XREFdbstatus,,dbstatus}, @ref{XREFdbstop,,dbstop}}
+@seealso{@ref{XREFdblist,,dblist}, @ref{XREFdbwhere,,dbwhere}, @ref{XREFdbstatus,,dbstatus}, @ref{XREFdbstop,,dbstop}}
 @end deftypefn
 
 
 @c dblist libinterp/corefcn/debug.cc
 @anchor{XREFdblist}
-@deftypefn  {Command} {} dblist
-@deftypefnx {Command} {} dblist @var{n}
+@deftypefn  {} {} dblist
+@deftypefnx {} {} dblist @var{n}
 In debugging mode, list @var{n} lines of the function being debugged
 centered around the current line to be executed.
 
 If unspecified @var{n} defaults to 10 (+/- 5 lines)
-@seealso{@ref{XREFdbwhere,,dbwhere}, @ref{XREFdbtype,,dbtype}}
+@seealso{@ref{XREFdbwhere,,dbwhere}, @ref{XREFdbtype,,dbtype}, @ref{XREFdbstack,,dbstack}}
 @end deftypefn
 
 
@@ -397,7 +470,7 @@ currently active.
 
 @c isdebugmode libinterp/corefcn/debug.cc
 @anchor{XREFisdebugmode}
-@deftypefn {Built-in Function} {} isdebugmode ()
+@deftypefn {} {} isdebugmode ()
 Return true if in debugging mode, otherwise false.
 @seealso{@ref{XREFdbwhere,,dbwhere}, @ref{XREFdbstack,,dbstack}, @ref{XREFdbstatus,,dbstatus}}
 @end deftypefn
@@ -408,11 +481,11 @@ the command @code{dbstep}.
 
 @c dbstep libinterp/corefcn/debug.cc
 @anchor{XREFdbstep}
-@deftypefn  {Command} {} dbstep
-@deftypefnx {Command} {} dbstep @var{n}
-@deftypefnx {Command} {} dbstep in
-@deftypefnx {Command} {} dbstep out
-@deftypefnx {Command} {} dbnext @dots{}
+@deftypefn  {} {} dbstep
+@deftypefnx {} {} dbstep @var{n}
+@deftypefnx {} {} dbstep in
+@deftypefnx {} {} dbstep out
+@deftypefnx {} {} dbnext @dots{}
 In debugging mode, execute the next @var{n} lines of code.
 
 If @var{n} is omitted, execute the next single line of code.  If the next
@@ -447,16 +520,16 @@ series of function calls and at what level debugging is currently taking place.
 
 @c dbstack libinterp/corefcn/debug.cc
 @anchor{XREFdbstack}
-@deftypefn  {Command} {} dbstack
-@deftypefnx {Command} {} dbstack @var{n}
-@deftypefnx {Command} {} dbstack @var{-completenames}
-@deftypefnx {Built-in Function} {[@var{stack}, @var{idx}] =} dbstack (@dots{})
+@deftypefn  {} {} dbstack
+@deftypefnx {} {} dbstack @var{n}
+@deftypefnx {} {} dbstack @var{-completenames}
+@deftypefnx {} {[@var{stack}, @var{idx}] =} dbstack (@dots{})
 Display or return current debugging function stack information.
 
 With optional argument @var{n}, omit the @var{n} innermost stack frames.
 
 Although accepted, the argument @var{-completenames} is silently ignored.
-Octave always returns absolute file names.
+Octave always returns absolute filenames.
 
 The arguments @var{n} and @var{-completenames} can be both specified in any
 order.
@@ -486,14 +559,14 @@ Undocumented.
 
 The return argument @var{idx} specifies which element of the @var{stack}
 struct array is currently active.
-@seealso{@ref{XREFdbup,,dbup}, @ref{XREFdbdown,,dbdown}, @ref{XREFdbwhere,,dbwhere}, @ref{XREFdbstatus,,dbstatus}}
+@seealso{@ref{XREFdbup,,dbup}, @ref{XREFdbdown,,dbdown}, @ref{XREFdbwhere,,dbwhere}, @ref{XREFdblist,,dblist}, @ref{XREFdbstatus,,dbstatus}}
 @end deftypefn
 
 
 @c dbup libinterp/corefcn/debug.cc
 @anchor{XREFdbup}
-@deftypefn  {Command} {} dbup
-@deftypefnx {Command} {} dbup @var{n}
+@deftypefn  {} {} dbup
+@deftypefnx {} {} dbup @var{n}
 In debugging mode, move up the execution stack @var{n} frames.
 
 If @var{n} is omitted, move up one frame.
@@ -503,8 +576,8 @@ If @var{n} is omitted, move up one frame.
 
 @c dbdown libinterp/corefcn/debug.cc
 @anchor{XREFdbdown}
-@deftypefn  {Command} {} dbdown
-@deftypefnx {Command} {} dbdown @var{n}
+@deftypefn  {} {} dbdown
+@deftypefnx {} {} dbdown @var{n}
 In debugging mode, move down the execution stack @var{n} frames.
 
 If @var{n} is omitted, move down one frame.
@@ -531,14 +604,14 @@ start or stop the profiler and also to query collected data afterwards.
 The data is returned in an Octave data structure which can then be
 examined or further processed by other routines or tools.
 
-@c profile scripts/general/profile.m
+@c profile scripts/profiler/profile.m
 @anchor{XREFprofile}
-@deftypefn  {Command} {} profile on
-@deftypefnx {Command} {} profile off
-@deftypefnx {Command} {} profile resume
-@deftypefnx {Command} {} profile clear
-@deftypefnx {Function File} {@var{S} =} profile ("status")
-@deftypefnx {Function File} {@var{T} =} profile ("info")
+@deftypefn  {} {} profile on
+@deftypefnx {} {} profile off
+@deftypefnx {} {} profile resume
+@deftypefnx {} {} profile clear
+@deftypefnx {} {@var{S} =} profile ("status")
+@deftypefnx {} {@var{T} =} profile ("info")
 Control the built-in profiler.
 
 @table @code
@@ -557,9 +630,9 @@ Restart profiling without clearing the old data.  All newly collected
 statistics are added to the existing ones.
 
 @item @var{S} = profile ("status")
-Return a structure with information about the current status of the profiler.
-At the moment, the only field is @code{ProfilerStatus} which is either
-@qcode{"on"} or @qcode{"off"}.
+Return a structure with information about the current status of the
+profiler.  At the moment, the only field is @code{ProfilerStatus} which is
+either @qcode{"on"} or @qcode{"off"}.
 
 @item @var{T} = profile ("info")
 Return the collected profiling statistics in the structure @var{T}.  The
@@ -595,12 +668,12 @@ This shows that most of the run time was spent executing the function
 operators.  Furthermore, it is shown how often the function was called
 and the profiler also records that it is recursive.
 
-@c profshow scripts/general/profshow.m
+@c profshow scripts/profiler/profshow.m
 @anchor{XREFprofshow}
-@deftypefn  {Function File} {} profshow (@var{data})
-@deftypefnx {Function File} {} profshow (@var{data}, @var{n})
-@deftypefnx {Function File} {} profshow ()
-@deftypefnx {Function File} {} profshow (@var{n})
+@deftypefn  {} {} profshow (@var{data})
+@deftypefnx {} {} profshow (@var{data}, @var{n})
+@deftypefnx {} {} profshow ()
+@deftypefnx {} {} profshow (@var{n})
 Display flat per-function profiler results.
 
 Print out profiler data (execution time, number of calls) for the most
@@ -617,10 +690,33 @@ for all other function types.
 @end deftypefn
 
 
-@c profexplore scripts/general/profexplore.m
+@c profexport scripts/profiler/profexport.m
+@anchor{XREFprofexport}
+@deftypefn  {} {} profexport (@var{dir})
+@deftypefnx {} {} profexport (@var{dir}, @var{data})
+@deftypefnx {} {} profexport (@var{dir}, @var{name})
+@deftypefnx {} {} profexport (@var{dir}, @var{name}, @var{data})
+
+Export profiler data as HTML.
+
+Export the profiling data in @var{data} into a series of HTML files in
+the folder @var{dir}.  The initial file will be
+@file{@var{data}/index.html}.
+
+If @var{name} is specified, it must be a string that contains a ``name''
+for the profile being exported.  This name is included in the HTML.
+
+The input @var{data} is the structure returned by @code{profile ("info")}.
+If unspecified, @code{profexport} will use the current profile dataset.
+
+@seealso{@ref{XREFprofshow,,profshow}, @ref{XREFprofexplore,,profexplore}, @ref{XREFprofile,,profile}}
+@end deftypefn
+
+
+@c profexplore scripts/profiler/profexplore.m
 @anchor{XREFprofexplore}
-@deftypefn  {Function File} {} profexplore ()
-@deftypefnx {Function File} {} profexplore (@var{data})
+@deftypefn  {} {} profexplore ()
+@deftypefnx {} {} profexplore (@var{data})
 Interactively explore hierarchical profiler output.
 
 Assuming @var{data} is the structure with profile data returned by

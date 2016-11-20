@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2007-2015 Søren Hauberg
+@c Copyright (C) 2007-2016 Søren Hauberg
 @c
 @c This file is part of Octave.
 @c
@@ -111,11 +111,13 @@ to disable dependency checking.
 
 @c pkg scripts/pkg/pkg.m
 @anchor{XREFpkg}
-@deftypefn  {Command} {} pkg @var{command} @var{pkg_name}
-@deftypefnx {Command} {} pkg @var{command} @var{option} @var{pkg_name}
-Manage packages (groups of add-on functions) for Octave.
+@deftypefn  {} {} pkg @var{command} @var{pkg_name}
+@deftypefnx {} {} pkg @var{command} @var{option} @var{pkg_name}
+@deftypefnx {} {[@var{out1}, @dots{}] =} pkg (@var{command}, @dots{} )
+Manage or query packages (groups of add-on functions) for Octave.
 
-Different actions are available depending on the value of @var{command}.
+Different actions are available depending on the value of @var{command}
+and on return arguments.
 
 Available commands:
 
@@ -140,14 +142,6 @@ The package manager will disable dependency checking.  With this option it
 is possible to install a package even when it depends on another package
 which is not installed on the system.  @strong{Use this option with care.}
 
-@item -noauto
-The package manager will not automatically load the installed package
-when starting Octave.  This overrides any setting within the package.
-
-@item -auto
-The package manager will automatically load the installed package when
-starting Octave.  This overrides any setting within the package.
-
 @item -local
 A local installation (package available only to current user) is forced,
 even if the user has system privileges.
@@ -159,6 +153,12 @@ the user doesn't normally have system privileges.
 @item -forge
 Install a package directly from the Octave-Forge repository.  This
 requires an internet connection and the cURL library.
+
+@emph{Security risk}: no verification of the package is performed
+before the installation.  There are no signature for packages, or
+checksums to confirm the correct file was downloaded.  It has the
+same security issues as manually downloading the package from the
+Octave Forge repository and installing it.
 
 @item -verbose
 The package manager will print the output of all commands as
@@ -195,22 +195,11 @@ pkg load image
 @end example
 
 @noindent
-adds the @code{image} package to the path.  It is possible to load all
-installed packages at once with the keyword @samp{all}.  Usage:
-
-@example
-pkg load all
-@end example
+adds the @code{image} package to the path.
 
 @item unload
 Remove named packages from the path.  After unloading a package it is
-no longer possible to use the functions provided by the package.  It is
-possible to unload all installed packages at once with the keyword
-@samp{all}.  Usage:
-
-@example
-pkg unload all
-@end example
+no longer possible to use the functions provided by the package.
 
 @item list
 Show the list of currently installed packages.  For example,
@@ -253,15 +242,22 @@ oct_forge_pkgs = pkg ("list", "-forge")
 @end example
 
 @item describe
-Show a short description of the named installed packages, with the option
-@qcode{"-verbose"} also list functions provided by the package.  For example,
+Show a short description of installed packages.  With the option
+@qcode{"-verbose"} also list functions provided by the package.  For
+example,
 
 @example
-pkg describe -verbose all
+pkg describe -verbose
 @end example
 
 @noindent
 will describe all installed packages and the functions they provide.
+Display can be limited to a set of packages:
+
+@example
+pkg describe control signal # describe control and signal packages
+@end example
+
 If one output is requested a cell of structure containing the
 description and list of functions of each package is returned as
 output rather than printed on screen:
@@ -356,15 +352,6 @@ all other options are ignored.
 @item rebuild
 Rebuild the package database from the installed directories.  This can
 be used in cases where the package database has been corrupted.
-It can also take the @option{-auto} and @option{-noauto} options to allow the
-autoloading state of a package to be changed.  For example,
-
-@example
-pkg rebuild -noauto image
-@end example
-
-@noindent
-will remove the autoloading status of the image package.
 
 @end table
 @seealso{@ref{XREFver,,ver}, @ref{XREFnews,,news}}
@@ -648,13 +635,6 @@ Optional list of known problems.
 @item Url
 Optional list of homepages related to the package.
 
-@item Autoload
-Optional field that sets the default loading behavior for the package.
-If set to @code{yes}, @code{true} or @code{on}, then Octave will
-automatically load the package when starting.  Otherwise the package
-must be manually loaded with the pkg load command.  This default
-behavior can be overridden when the package is installed.
-
 @item Depends
 A list of other Octave packages that this package depends on.  This can
 include dependencies on particular versions, with a format
@@ -849,9 +829,9 @@ the package maintainer and registered with Octave using
 
 @c missing_component_hook libinterp/corefcn/variables.cc
 @anchor{XREFmissing_component_hook}
-@deftypefn  {Built-in Function} {@var{val} =} missing_component_hook ()
-@deftypefnx {Built-in Function} {@var{old_val} =} missing_component_hook (@var{new_val})
-@deftypefnx {Built-in Function} {} missing_component_hook (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} missing_component_hook ()
+@deftypefnx {} {@var{old_val} =} missing_component_hook (@var{new_val})
+@deftypefnx {} {} missing_component_hook (@var{new_val}, "local")
 Query or set the internal variable that specifies the function to call when
 a component of Octave is missing.
 

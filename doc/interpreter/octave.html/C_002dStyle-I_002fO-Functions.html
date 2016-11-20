@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -62,7 +63,7 @@ functionality of the C programming language&rsquo;s standard I/O library.  The
 argument lists for some of the input functions are slightly different,
 however, because Octave has no way of passing arguments by reference.
 </p>
-<p>In the following, <var>file</var> refers to a file name and <code>fid</code> refers
+<p>In the following, <var>file</var> refers to a filename and <code>fid</code> refers
 to an integer file number, as returned by <code>fopen</code>.
 </p>
 <p>There are three files that are always available.  Although these files
@@ -71,7 +72,7 @@ always use the symbolic names given in the table below, since it will
 make your programs easier to understand.
 </p>
 <a name="XREFstdin"></a><dl>
-<dt><a name="index-stdin"></a>Built-in Function: <em></em> <strong>stdin</strong> <em>()</em></dt>
+<dt><a name="index-stdin"></a>: <em></em> <strong>stdin</strong> <em>()</em></dt>
 <dd><p>Return the numeric value corresponding to the standard input stream.
 </p>
 <p>When Octave is used interactively, stdin is filtered through the command
@@ -82,7 +83,7 @@ line editing functions.
 
 
 <a name="XREFstdout"></a><dl>
-<dt><a name="index-stdout"></a>Built-in Function: <em></em> <strong>stdout</strong> <em>()</em></dt>
+<dt><a name="index-stdout"></a>: <em></em> <strong>stdout</strong> <em>()</em></dt>
 <dd><p>Return the numeric value corresponding to the standard output stream.
 </p>
 <p>Data written to the standard output is normally filtered through the pager.
@@ -92,7 +93,7 @@ line editing functions.
 
 
 <a name="XREFstderr"></a><dl>
-<dt><a name="index-stderr"></a>Built-in Function: <em></em> <strong>stderr</strong> <em>()</em></dt>
+<dt><a name="index-stderr"></a>: <em></em> <strong>stderr</strong> <em>()</em></dt>
 <dd><p>Return the numeric value corresponding to the standard error stream.
 </p>
 <p>Even if paging is turned on, the standard error is not sent to the pager.

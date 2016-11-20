@@ -14,7 +14,7 @@
 <link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="External-Code-Interface.html#External-Code-Interface" rel="up" title="External Code Interface">
-<link href="Test-and-Demo-Functions.html#Test-and-Demo-Functions" rel="next" title="Test and Demo Functions">
+<link href="Java-Interface.html#Java-Interface" rel="next" title="Java Interface">
 <link href="Calling-Other-Functions-in-Mex_002dFiles.html#Calling-Other-Functions-in-Mex_002dFiles" rel="prev" title="Calling Other Functions in Mex-Files">
 <style type="text/css">
 <!--
@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -51,7 +52,7 @@ ul.no-bullet {list-style: none}
 <a name="Standalone-Programs"></a>
 <div class="header">
 <p>
-Previous: <a href="Mex_002dFiles.html#Mex_002dFiles" accesskey="p" rel="prev">Mex-Files</a>, Up: <a href="External-Code-Interface.html#External-Code-Interface" accesskey="u" rel="up">External Code Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Java-Interface.html#Java-Interface" accesskey="n" rel="next">Java Interface</a>, Previous: <a href="Mex_002dFiles.html#Mex_002dFiles" accesskey="p" rel="prev">Mex-Files</a>, Up: <a href="External-Code-Interface.html#External-Code-Interface" accesskey="u" rel="up">External Code Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <a name="Standalone-Programs-1"></a>
@@ -83,8 +84,6 @@ main (void)
 
   return 0;
 }
-</pre><pre class="example">
-
 </pre></div>
 
 <p>mkoctfile can be used to build a standalone application with a
@@ -112,7 +111,7 @@ seen in the code
 #include &lt;octave/oct.h&gt;
 #include &lt;octave/octave.h&gt;
 #include &lt;octave/parse.h&gt;
-#include &lt;octave/toplev.h&gt;
+#include &lt;octave/interpreter.h&gt;
 
 int
 main (void)
@@ -131,7 +130,7 @@ main (void)
 
   octave_value_list out = feval (&quot;gcd&quot;, in, 1);
 
-  if (! error_state &amp;&amp; out.length () &gt; 0)
+  if (out.length () &gt; 0)
     std::cout &lt;&lt; &quot;GCD of [&quot;
               &lt;&lt; in(0).int_value ()
               &lt;&lt; &quot;, &quot;
@@ -143,8 +142,6 @@ main (void)
 
   clean_up_and_exit (0);
 }
-</pre><pre class="example">
-
 </pre></div>
 
 <p>which, as before, is compiled and run as a standalone application with
@@ -198,8 +195,6 @@ main (void)
 
   return 0;
 }
-</pre><pre class="example">
-
 </pre></div>
 
 <p>which, again, is compiled and run as a standalone application with
@@ -216,12 +211,10 @@ This is the norm of the matrix:
 $
 </pre></div>
 
-
-
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Mex_002dFiles.html#Mex_002dFiles" accesskey="p" rel="prev">Mex-Files</a>, Up: <a href="External-Code-Interface.html#External-Code-Interface" accesskey="u" rel="up">External Code Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Java-Interface.html#Java-Interface" accesskey="n" rel="next">Java Interface</a>, Previous: <a href="Mex_002dFiles.html#Mex_002dFiles" accesskey="p" rel="prev">Mex-Files</a>, Up: <a href="External-Code-Interface.html#External-Code-Interface" accesskey="u" rel="up">External Code Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

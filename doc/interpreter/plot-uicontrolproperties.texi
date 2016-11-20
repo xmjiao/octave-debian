@@ -1,0 +1,280 @@
+@c DO NOT EDIT!  Generated automatically by genpropdoc.m.
+
+@c Copyright (C) 2014-2016 Pantxo Diribarne
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@table @asis
+
+@anchor{XREFuicontrol__modified__}
+@cindex uicontrol __modified__
+@item @code{__modified__}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuicontrolbackgroundcolor}
+@cindex uicontrol backgroundcolor
+@item @code{backgroundcolor}: def. @code{[0.90980   0.90980   0.90588]}
+
+
+
+@anchor{XREFuicontrolbeingdeleted}
+@cindex uicontrol beingdeleted
+@item @code{beingdeleted}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuicontrolbusyaction}
+@cindex uicontrol busyaction
+@item @code{busyaction}: @qcode{"cancel"} | @{@qcode{"queue"}@}
+
+
+
+@anchor{XREFuicontrolbuttondownfcn}
+@cindex uicontrol buttondownfcn
+@item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
+
+
+
+@anchor{XREFuicontrolcallback}
+@cindex uicontrol callback
+@item @code{callback}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuicontrolcdata}
+@cindex uicontrol cdata
+@item @code{cdata}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuicontrolchildren}
+@cindex uicontrol children
+@item @code{children} (read-only): vector of graphics handles, def. @code{[](0x1)}
+Graphics handles of the uicontrol's children.
+
+
+@anchor{XREFuicontrolclipping}
+@cindex uicontrol clipping
+@item @code{clipping}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{clipping} is @qcode{"on"}, the uicontrol is clipped in its parent axes limits.
+
+
+@anchor{XREFuicontrolcreatefcn}
+@cindex uicontrol createfcn
+@item @code{createfcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately after uicontrol has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultuicontrolcreatefcn", 'disp ("uicontrol created!")')}.
+
+
+@anchor{XREFuicontroldeletefcn}
+@cindex uicontrol deletefcn
+@item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately before uicontrol is deleted.
+
+
+@anchor{XREFuicontrolenable}
+@cindex uicontrol enable
+@item @code{enable}: @qcode{"inactive"} | @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuicontrolextent}
+@cindex uicontrol extent
+@item @code{extent} (read-only): def. @code{[0   0   0   0]}
+
+
+
+@anchor{XREFuicontrolfontangle}
+@cindex uicontrol fontangle
+@item @code{fontangle}: @qcode{"italic"} | @{@qcode{"normal"}@} | @qcode{"oblique"}
+
+
+
+@anchor{XREFuicontrolfontname}
+@cindex uicontrol fontname
+@item @code{fontname}: def. @qcode{"*"}
+
+
+
+@anchor{XREFuicontrolfontsize}
+@cindex uicontrol fontsize
+@item @code{fontsize}: def. @code{10}
+
+
+
+@anchor{XREFuicontrolfontunits}
+@cindex uicontrol fontunits
+@item @code{fontunits}: @qcode{"centimeters"} | @qcode{"inches"} | @qcode{"normalized"} | @qcode{"pixels"} | @{@qcode{"points"}@}
+
+
+
+@anchor{XREFuicontrolfontweight}
+@cindex uicontrol fontweight
+@item @code{fontweight}: @qcode{"bold"} | @qcode{"demi"} | @qcode{"light"} | @{@qcode{"normal"}@}
+
+
+
+@anchor{XREFuicontrolforegroundcolor}
+@cindex uicontrol foregroundcolor
+@item @code{foregroundcolor}: def. @code{[0.18039   0.20392   0.21176]}
+
+
+
+@anchor{XREFuicontrolhandlevisibility}
+@cindex uicontrol handlevisibility
+@item @code{handlevisibility}: @qcode{"callback"} | @qcode{"off"} | @{@qcode{"on"}@}
+If @code{handlevisibility} is @qcode{"off"}, the uicontrol's handle is not visible in its parent's "children" property.
+
+
+@anchor{XREFuicontrolhittest}
+@cindex uicontrol hittest
+@item @code{hittest}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuicontrolhorizontalalignment}
+@cindex uicontrol horizontalalignment
+@item @code{horizontalalignment}: @{@qcode{"center"}@} | @qcode{"left"} | @qcode{"right"}
+
+
+
+@anchor{XREFuicontrolinterruptible}
+@cindex uicontrol interruptible
+@item @code{interruptible}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuicontrolkeypressfcn}
+@cindex uicontrol keypressfcn
+@item @code{keypressfcn}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuicontrollistboxtop}
+@cindex uicontrol listboxtop
+@item @code{listboxtop}: def. @code{1}
+
+
+
+@anchor{XREFuicontrolmax}
+@cindex uicontrol max
+@item @code{max}: def. @code{1}
+
+
+
+@anchor{XREFuicontrolmin}
+@cindex uicontrol min
+@item @code{min}: def. @code{0}
+
+
+
+@anchor{XREFuicontrolparent}
+@cindex uicontrol parent
+@item @code{parent}: graphics handle
+Handle of the parent graphics object.
+
+
+@anchor{XREFuicontrolposition}
+@cindex uicontrol position
+@item @code{position}: def. @code{[0    0   80   30]}
+
+
+
+@anchor{XREFuicontrolselected}
+@cindex uicontrol selected
+@item @code{selected}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuicontrolselectionhighlight}
+@cindex uicontrol selectionhighlight
+@item @code{selectionhighlight}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuicontrolsliderstep}
+@cindex uicontrol sliderstep
+@item @code{sliderstep}: def. @code{[0.010000   0.100000]}
+
+
+
+@anchor{XREFuicontrolstring}
+@cindex uicontrol string
+@item @code{string}: def. @qcode{""}
+
+
+
+@anchor{XREFuicontrolstyle}
+@cindex uicontrol style
+@item @code{style}: @qcode{"checkbox"} | @qcode{"edit"} | @qcode{"frame"} | @qcode{"listbox"} | @qcode{"popupmenu"} | @{@qcode{"pushbutton"}@} | @qcode{"radiobutton"} | @qcode{"slider"} | @qcode{"text"} | @qcode{"togglebutton"}
+
+
+
+@anchor{XREFuicontroltag}
+@cindex uicontrol tag
+@item @code{tag}: string, def. @qcode{""}
+A user-defined string to label the graphics object.
+
+
+@anchor{XREFuicontroltooltipstring}
+@cindex uicontrol tooltipstring
+@item @code{tooltipstring}: def. @qcode{""}
+
+
+
+@anchor{XREFuicontroltype}
+@cindex uicontrol type
+@item @code{type} (read-only): string
+Class name of the graphics object.  @code{type} is always @qcode{"uicontrol"}
+
+
+@anchor{XREFuicontroluicontextmenu}
+@cindex uicontrol uicontextmenu
+@item @code{uicontextmenu}: graphics handle, def. @code{[](0x0)}
+Graphics handle of the uicontextmenu object that is currently associated to this uicontrol object.
+
+
+@anchor{XREFuicontrolunits}
+@cindex uicontrol units
+@item @code{units}: @qcode{"centimeters"} | @qcode{"characters"} | @qcode{"inches"} | @qcode{"normalized"} | @{@qcode{"pixels"}@} | @qcode{"points"}
+
+
+
+@anchor{XREFuicontroluserdata}
+@cindex uicontrol userdata
+@item @code{userdata}: Any Octave data, def. @code{[](0x0)}
+User-defined data to associate with the graphics object.
+
+
+@anchor{XREFuicontrolvalue}
+@cindex uicontrol value
+@item @code{value}: def. @code{0}
+
+
+
+@anchor{XREFuicontrolverticalalignment}
+@cindex uicontrol verticalalignment
+@item @code{verticalalignment}: @qcode{"bottom"} | @{@qcode{"middle"}@} | @qcode{"top"}
+
+
+
+@anchor{XREFuicontrolvisible}
+@cindex uicontrol visible
+@item @code{visible}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{visible} is @qcode{"off"}, the uicontrol is not rendered on screen.
+
+@end table

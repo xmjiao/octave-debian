@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -80,7 +81,7 @@ c = cellstr (a)
 </pre></div>
 
 <a name="XREFcellstr"></a><dl>
-<dt><a name="index-cellstr"></a>Built-in Function: <em><var>cstr</var> =</em> <strong>cellstr</strong> <em>(<var>strmat</var>)</em></dt>
+<dt><a name="index-cellstr"></a>: <em><var>cstr</var> =</em> <strong>cellstr</strong> <em>(<var>strmat</var>)</em></dt>
 <dd><p>Create a new cell array object from the elements of the string array
 <var>strmat</var>.
 </p>
@@ -112,13 +113,15 @@ strcmp (&quot;hello&quot;, c)
 <code>char</code>, <code>strvcat</code>, <code>strcat</code> (see <a href="Concatenating-Strings.html#Concatenating-Strings">Concatenating Strings</a>), <code>strcmp</code>, <code>strncmp</code>, <code>strcmpi</code>,
 <code>strncmpi</code> (see <a href="Comparing-Strings.html#Comparing-Strings">Comparing Strings</a>), <code>str2double</code>,
 <code>deblank</code>, <code>strtrim</code>, <code>strtrunc</code>, <code>strfind</code>,
-<code>strmatch</code>, , <code>regexp</code>, <code>regexpi</code> (see <a href="Manipulating-Strings.html#Manipulating-Strings">Manipulating Strings</a>) and <code>str2double</code> (see <a href="String-Conversions.html#String-Conversions">String Conversions</a>).
+<code>strmatch</code>, , <code>regexp</code>, <code>regexpi</code>
+(see <a href="Manipulating-Strings.html#Manipulating-Strings">Manipulating Strings</a>) and <code>str2double</code>
+(see <a href="String-Conversions.html#String-Conversions">String Conversions</a>).
 </p>
 <p>The function <code>iscellstr</code> can be used to test if an object is a
 cell array of strings.
 </p>
 <a name="XREFiscellstr"></a><dl>
-<dt><a name="index-iscellstr"></a>Built-in Function: <em></em> <strong>iscellstr</strong> <em>(<var>cell</var>)</em></dt>
+<dt><a name="index-iscellstr"></a>: <em></em> <strong>iscellstr</strong> <em>(<var>cell</var>)</em></dt>
 <dd><p>Return true if every element of the cell array <var>cell</var> is a character
 string.
 </p>

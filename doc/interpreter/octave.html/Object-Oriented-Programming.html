@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -57,21 +58,21 @@ Next: <a href="GUI-Development.html#GUI-Development" accesskey="n" rel="next">GU
 <a name="Object-Oriented-Programming-1"></a>
 <h2 class="chapter">34 Object Oriented Programming</h2>
 
-<p>Octave includes the capability to include user classes, including the
-features of operator and function overloading.  Equally a user class
-can be used to encapsulate certain properties of the class so that
-they cannot be altered accidentally and can be set up to address the
-issue of class precedence in mixed class operations.
+<p>Octave has the ability to create user-defined classes&mdash;including the
+capabilities of operator and function overloading.  Classes can protect
+internal properties so that they may not be altered accidentally which
+facilitates data encapsulation.  In addition, rules can be created to address
+the issue of class precedence in mixed class operations.
 </p>
-<p>This chapter discussions the means of constructing a user class with
-the example of a polynomial class, how to query and set the properties
-of this class, together with the means to overload operators and
-functions.
+<p>This chapter discusses the means of constructing a user class, how to query and
+set the properties of a class, and how to overload operators and functions.
+Throughout this chapter real code examples are given using a class designed
+for polynomials.
 </p>
 <table class="menu" border="0" cellspacing="0">
 <tr><td align="left" valign="top">&bull; <a href="Creating-a-Class.html#Creating-a-Class" accesskey="1">Creating a Class</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Manipulating-Classes.html#Manipulating-Classes" accesskey="2">Manipulating Classes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Class-Methods.html#Class-Methods" accesskey="2">Class Methods</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="Indexing-Objects.html#Indexing-Objects" accesskey="3">Indexing Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>

@@ -14,7 +14,7 @@
 <link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Graphics-Object-Properties.html#Graphics-Object-Properties" rel="up" title="Graphics Object Properties">
-<link href="Searching-Properties.html#Searching-Properties" rel="next" title="Searching Properties">
+<link href="Light-Properties.html#Light-Properties" rel="next" title="Light Properties">
 <link href="Patch-Properties.html#Patch-Properties" rel="prev" title="Patch Properties">
 <style type="text/css">
 <!--
@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -51,7 +52,7 @@ ul.no-bullet {list-style: none}
 <a name="Surface-Properties"></a>
 <div class="header">
 <p>
-Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="prev">Patch Properties</a>, Up: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="u" rel="up">Graphics Object Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Light-Properties.html#Light-Properties" accesskey="n" rel="next">Light Properties</a>, Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="prev">Patch Properties</a>, Up: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="u" rel="up">Graphics Object Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <a name="Surface-Properties-1"></a>
@@ -84,14 +85,14 @@ Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="pr
 
 <a name="XREFsurfaceambientstrength"></a><a name="index-surface-ambientstrength"></a>
 </dd>
-<dt><code>ambientstrength</code>: def. <code>0.30000</code></dt>
-<dd><p>Light is not yet implemented for surface objects.  <code>ambientstrength</code> is unused.
+<dt><code>ambientstrength</code>: scalar, def. <code>0.30000</code></dt>
+<dd><p>Strength of the ambient light. Value between 0.0 and 1.0
 </p>
 
 <a name="XREFsurfacebackfacelighting"></a><a name="index-surface-backfacelighting"></a>
 </dd>
 <dt><code>backfacelighting</code>: <code>&quot;lit&quot;</code> | {<code>&quot;reverselit&quot;</code>} | <code>&quot;unlit&quot;</code></dt>
-<dd><p>Light is not yet implemented for surface objects.  <code>backfacelighting</code> is unused.
+<dd><p><code>&quot;lit&quot;</code>: The normals are used as is for lighting. <code>&quot;reverselit&quot;</code>: The normals are always oriented towards the point of view. <code>&quot;unlit&quot;</code>: Faces with normals pointing away from the point of view are unlit.
 </p>
 
 <a name="XREFsurfacebeingdeleted"></a><a name="index-surface-beingdeleted"></a>
@@ -156,8 +157,8 @@ Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="pr
 
 <a name="XREFsurfacediffusestrength"></a><a name="index-surface-diffusestrength"></a>
 </dd>
-<dt><code>diffusestrength</code>: def. <code>0.60000</code></dt>
-<dd><p>Light is not yet implemented for surface objects.  <code>diffusestrength</code> is unused.
+<dt><code>diffusestrength</code>: scalar, def. <code>0.60000</code></dt>
+<dd><p>Strength of the diffuse reflex. Value between 0.0 (no diffuse reflex) and 1.0 (full diffuse reflex).
 </p>
 
 <a name="XREFsurfacedisplayname"></a><a name="index-surface-displayname"></a>
@@ -181,13 +182,7 @@ Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="pr
 <a name="XREFsurfaceedgelighting"></a><a name="index-surface-edgelighting"></a>
 </dd>
 <dt><code>edgelighting</code>: <code>&quot;flat&quot;</code> | <code>&quot;gouraud&quot;</code> | {<code>&quot;none&quot;</code>} | <code>&quot;phong&quot;</code></dt>
-<dd><p>Light is not yet implemented for surface objects.  <code>edgelighting</code> is unused.
-</p>
-
-<a name="XREFsurfaceerasemode"></a><a name="index-surface-erasemode"></a>
-</dd>
-<dt><code>erasemode</code>: <code>&quot;background&quot;</code> | <code>&quot;none&quot;</code> | {<code>&quot;normal&quot;</code>} | <code>&quot;xor&quot;</code></dt>
-<dd><p><code>erasemode</code> is unused.
+<dd><p>When set to a value other than <code>&quot;none&quot;</code>, the edges of the object are drawn with light and shadow effects.  Supported values are <code>&quot;none&quot;</code> (no lighting effects), <code>&quot;flat&quot;</code> (facetted look) and <code>&quot;gouraud&quot;</code> (linear interpolation of the lighting effects between the vertices). <code>&quot;phong&quot;</code> is deprecated and has the same effect as <code>&quot;gouraud&quot;</code>.
 </p>
 
 <a name="XREFsurfacefacealpha"></a><a name="index-surface-facealpha"></a>
@@ -204,9 +199,21 @@ Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="pr
 
 <a name="XREFsurfacefacelighting"></a><a name="index-surface-facelighting"></a>
 </dd>
-<dt><code>facelighting</code>: <code>&quot;flat&quot;</code> | <code>&quot;gouraud&quot;</code> | {<code>&quot;none&quot;</code>} | <code>&quot;phong&quot;</code></dt>
-<dd><p>Light is not yet implemented for surface objects.  <code>facelighting</code> is unused.
+<dt><code>facelighting</code>: {<code>&quot;flat&quot;</code>} | <code>&quot;gouraud&quot;</code> | <code>&quot;none&quot;</code> | <code>&quot;phong&quot;</code></dt>
+<dd><p>When set to a value other than <code>&quot;none&quot;</code>, the faces of the object are drawn with light and shadow effects.  Supported values are <code>&quot;none&quot;</code> (no lighting effects), <code>&quot;flat&quot;</code> (facetted look) and <code>&quot;gouraud&quot;</code> (linear interpolation of the lighting effects between the vertices). <code>&quot;phong&quot;</code> is deprecated and has the same effect as <code>&quot;gouraud&quot;</code>.
 </p>
+
+<a name="XREFsurfacefacenormals"></a><a name="index-surface-facenormals"></a>
+</dd>
+<dt><code>facenormals</code>: def. <code>[](0x0)</code></dt>
+<dd>
+
+
+<a name="XREFsurfacefacenormalsmode"></a><a name="index-surface-facenormalsmode"></a>
+</dd>
+<dt><code>facenormalsmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd>
+
 
 <a name="XREFsurfacehandlevisibility"></a><a name="index-surface-handlevisibility"></a>
 </dd>
@@ -274,12 +281,6 @@ Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="pr
 <dd>
 
 
-<a name="XREFsurfacenormalmode"></a><a name="index-surface-normalmode"></a>
-</dd>
-<dt><code>normalmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
-<dd>
-
-
 <a name="XREFsurfaceparent"></a><a name="index-surface-parent"></a>
 </dd>
 <dt><code>parent</code>: graphics handle</dt>
@@ -300,20 +301,20 @@ Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="pr
 
 <a name="XREFsurfacespecularcolorreflectance"></a><a name="index-surface-specularcolorreflectance"></a>
 </dd>
-<dt><code>specularcolorreflectance</code>: def. <code>1</code></dt>
-<dd><p>Light is not yet implemented for surface objects.  <code>specularcolorreflectance</code> is unused.
+<dt><code>specularcolorreflectance</code>: scalar, def. <code>1</code></dt>
+<dd><p>Reflectance for specular color. Value between 0.0 (color of underlying face) and 1.0 (color of light source).
 </p>
 
 <a name="XREFsurfacespecularexponent"></a><a name="index-surface-specularexponent"></a>
 </dd>
-<dt><code>specularexponent</code>: def. <code>10</code></dt>
-<dd><p>Light is not yet implemented for surface objects.  <code>specularexponent</code> is unused.
+<dt><code>specularexponent</code>: scalar, def. <code>10</code></dt>
+<dd><p>Exponent for the specular reflex. The lower the value, the more the reflex is spread out.
 </p>
 
 <a name="XREFsurfacespecularstrength"></a><a name="index-surface-specularstrength"></a>
 </dd>
-<dt><code>specularstrength</code>: def. <code>0.90000</code></dt>
-<dd><p>Light is not yet implemented for surface objects.  <code>specularstrength</code> is unused.
+<dt><code>specularstrength</code>: scalar, def. <code>0.90000</code></dt>
+<dd><p>Strength of the specular reflex. Value between 0.0 (no specular reflex) and 1.0 (full specular reflex).
 </p>
 
 <a name="XREFsurfacetag"></a><a name="index-surface-tag"></a>
@@ -343,6 +344,12 @@ Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="pr
 <a name="XREFsurfacevertexnormals"></a><a name="index-surface-vertexnormals"></a>
 </dd>
 <dt><code>vertexnormals</code>: def. 3-by-3-by-3 double</dt>
+<dd>
+
+
+<a name="XREFsurfacevertexnormalsmode"></a><a name="index-surface-vertexnormalsmode"></a>
+</dd>
+<dt><code>vertexnormalsmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
 <dd>
 
 
@@ -391,7 +398,7 @@ Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="pr
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="prev">Patch Properties</a>, Up: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="u" rel="up">Graphics Object Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Light-Properties.html#Light-Properties" accesskey="n" rel="next">Light Properties</a>, Previous: <a href="Patch-Properties.html#Patch-Properties" accesskey="p" rel="prev">Patch Properties</a>, Up: <a href="Graphics-Object-Properties.html#Graphics-Object-Properties" accesskey="u" rel="up">Graphics Object Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

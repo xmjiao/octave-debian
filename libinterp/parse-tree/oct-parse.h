@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_OCTAVE_PARSE_TREE_OCT_PARSE_H_INCLUDED
-# define YY_OCTAVE_PARSE_TREE_OCT_PARSE_H_INCLUDED
+#ifndef YY_OCTAVE_LIBINTERP_PARSE_TREE_OCT_PARSE_H_INCLUDED
+# define YY_OCTAVE_LIBINTERP_PARSE_TREE_OCT_PARSE_H_INCLUDED
 /* Debug traces.  */
 #ifndef OCTAVE_DEBUG
 # if defined YYDEBUG
@@ -65,76 +65,72 @@ extern int octave_debug;
     EPOW_EQ = 267,
     AND_EQ = 268,
     OR_EQ = 269,
-    LSHIFT_EQ = 270,
-    RSHIFT_EQ = 271,
-    LSHIFT = 272,
-    RSHIFT = 273,
-    EXPR_AND_AND = 274,
-    EXPR_OR_OR = 275,
-    EXPR_AND = 276,
-    EXPR_OR = 277,
-    EXPR_NOT = 278,
-    EXPR_LT = 279,
-    EXPR_LE = 280,
-    EXPR_EQ = 281,
-    EXPR_NE = 282,
-    EXPR_GE = 283,
-    EXPR_GT = 284,
-    LEFTDIV = 285,
-    EMUL = 286,
-    EDIV = 287,
-    ELEFTDIV = 288,
-    EPLUS = 289,
-    EMINUS = 290,
-    HERMITIAN = 291,
-    TRANSPOSE = 292,
-    PLUS_PLUS = 293,
-    MINUS_MINUS = 294,
-    POW = 295,
-    EPOW = 296,
-    NUM = 297,
-    IMAG_NUM = 298,
-    STRUCT_ELT = 299,
-    NAME = 300,
-    END = 301,
-    DQ_STRING = 302,
-    SQ_STRING = 303,
-    FOR = 304,
-    PARFOR = 305,
-    WHILE = 306,
-    DO = 307,
-    UNTIL = 308,
-    IF = 309,
-    ELSEIF = 310,
-    ELSE = 311,
-    SWITCH = 312,
-    CASE = 313,
-    OTHERWISE = 314,
-    BREAK = 315,
-    CONTINUE = 316,
-    FUNC_RET = 317,
-    UNWIND = 318,
-    CLEANUP = 319,
-    TRY = 320,
-    CATCH = 321,
-    GLOBAL = 322,
-    PERSISTENT = 323,
-    FCN_HANDLE = 324,
-    CLASSDEF = 325,
-    PROPERTIES = 326,
-    METHODS = 327,
-    EVENTS = 328,
-    ENUMERATION = 329,
-    METAQUERY = 330,
-    SUPERCLASSREF = 331,
-    FQ_IDENT = 332,
-    GET = 333,
-    SET = 334,
-    FCN = 335,
-    END_OF_INPUT = 336,
-    LEXICAL_ERROR = 337,
-    INPUT_FILE = 338,
-    UNARY = 339
+    EXPR_AND_AND = 270,
+    EXPR_OR_OR = 271,
+    EXPR_AND = 272,
+    EXPR_OR = 273,
+    EXPR_NOT = 274,
+    EXPR_LT = 275,
+    EXPR_LE = 276,
+    EXPR_EQ = 277,
+    EXPR_NE = 278,
+    EXPR_GE = 279,
+    EXPR_GT = 280,
+    LEFTDIV = 281,
+    EMUL = 282,
+    EDIV = 283,
+    ELEFTDIV = 284,
+    EPLUS = 285,
+    EMINUS = 286,
+    HERMITIAN = 287,
+    TRANSPOSE = 288,
+    PLUS_PLUS = 289,
+    MINUS_MINUS = 290,
+    POW = 291,
+    EPOW = 292,
+    NUM = 293,
+    IMAG_NUM = 294,
+    STRUCT_ELT = 295,
+    NAME = 296,
+    END = 297,
+    DQ_STRING = 298,
+    SQ_STRING = 299,
+    FOR = 300,
+    PARFOR = 301,
+    WHILE = 302,
+    DO = 303,
+    UNTIL = 304,
+    IF = 305,
+    ELSEIF = 306,
+    ELSE = 307,
+    SWITCH = 308,
+    CASE = 309,
+    OTHERWISE = 310,
+    BREAK = 311,
+    CONTINUE = 312,
+    FUNC_RET = 313,
+    UNWIND = 314,
+    CLEANUP = 315,
+    TRY = 316,
+    CATCH = 317,
+    GLOBAL = 318,
+    PERSISTENT = 319,
+    FCN_HANDLE = 320,
+    CLASSDEF = 321,
+    PROPERTIES = 322,
+    METHODS = 323,
+    EVENTS = 324,
+    ENUMERATION = 325,
+    METAQUERY = 326,
+    SUPERCLASSREF = 327,
+    FQ_IDENT = 328,
+    GET = 329,
+    SET = 330,
+    FCN = 331,
+    LEXICAL_ERROR = 332,
+    END_OF_INPUT = 333,
+    INPUT_FILE = 334,
+    UNARY = 335
   };
 #endif
 /* Tokens.  */
@@ -150,83 +146,79 @@ extern int octave_debug;
 #define EPOW_EQ 267
 #define AND_EQ 268
 #define OR_EQ 269
-#define LSHIFT_EQ 270
-#define RSHIFT_EQ 271
-#define LSHIFT 272
-#define RSHIFT 273
-#define EXPR_AND_AND 274
-#define EXPR_OR_OR 275
-#define EXPR_AND 276
-#define EXPR_OR 277
-#define EXPR_NOT 278
-#define EXPR_LT 279
-#define EXPR_LE 280
-#define EXPR_EQ 281
-#define EXPR_NE 282
-#define EXPR_GE 283
-#define EXPR_GT 284
-#define LEFTDIV 285
-#define EMUL 286
-#define EDIV 287
-#define ELEFTDIV 288
-#define EPLUS 289
-#define EMINUS 290
-#define HERMITIAN 291
-#define TRANSPOSE 292
-#define PLUS_PLUS 293
-#define MINUS_MINUS 294
-#define POW 295
-#define EPOW 296
-#define NUM 297
-#define IMAG_NUM 298
-#define STRUCT_ELT 299
-#define NAME 300
-#define END 301
-#define DQ_STRING 302
-#define SQ_STRING 303
-#define FOR 304
-#define PARFOR 305
-#define WHILE 306
-#define DO 307
-#define UNTIL 308
-#define IF 309
-#define ELSEIF 310
-#define ELSE 311
-#define SWITCH 312
-#define CASE 313
-#define OTHERWISE 314
-#define BREAK 315
-#define CONTINUE 316
-#define FUNC_RET 317
-#define UNWIND 318
-#define CLEANUP 319
-#define TRY 320
-#define CATCH 321
-#define GLOBAL 322
-#define PERSISTENT 323
-#define FCN_HANDLE 324
-#define CLASSDEF 325
-#define PROPERTIES 326
-#define METHODS 327
-#define EVENTS 328
-#define ENUMERATION 329
-#define METAQUERY 330
-#define SUPERCLASSREF 331
-#define FQ_IDENT 332
-#define GET 333
-#define SET 334
-#define FCN 335
-#define END_OF_INPUT 336
-#define LEXICAL_ERROR 337
-#define INPUT_FILE 338
-#define UNARY 339
+#define EXPR_AND_AND 270
+#define EXPR_OR_OR 271
+#define EXPR_AND 272
+#define EXPR_OR 273
+#define EXPR_NOT 274
+#define EXPR_LT 275
+#define EXPR_LE 276
+#define EXPR_EQ 277
+#define EXPR_NE 278
+#define EXPR_GE 279
+#define EXPR_GT 280
+#define LEFTDIV 281
+#define EMUL 282
+#define EDIV 283
+#define ELEFTDIV 284
+#define EPLUS 285
+#define EMINUS 286
+#define HERMITIAN 287
+#define TRANSPOSE 288
+#define PLUS_PLUS 289
+#define MINUS_MINUS 290
+#define POW 291
+#define EPOW 292
+#define NUM 293
+#define IMAG_NUM 294
+#define STRUCT_ELT 295
+#define NAME 296
+#define END 297
+#define DQ_STRING 298
+#define SQ_STRING 299
+#define FOR 300
+#define PARFOR 301
+#define WHILE 302
+#define DO 303
+#define UNTIL 304
+#define IF 305
+#define ELSEIF 306
+#define ELSE 307
+#define SWITCH 308
+#define CASE 309
+#define OTHERWISE 310
+#define BREAK 311
+#define CONTINUE 312
+#define FUNC_RET 313
+#define UNWIND 314
+#define CLEANUP 315
+#define TRY 316
+#define CATCH 317
+#define GLOBAL 318
+#define PERSISTENT 319
+#define FCN_HANDLE 320
+#define CLASSDEF 321
+#define PROPERTIES 322
+#define METHODS 323
+#define EVENTS 324
+#define ENUMERATION 325
+#define METAQUERY 326
+#define SUPERCLASSREF 327
+#define FQ_IDENT 328
+#define GET 329
+#define SET 330
+#define FCN 331
+#define LEXICAL_ERROR 332
+#define END_OF_INPUT 333
+#define INPUT_FILE 334
+#define UNARY 335
 
 /* Value type.  */
 #if ! defined OCTAVE_STYPE && ! defined OCTAVE_STYPE_IS_DECLARED
 
 union OCTAVE_STYPE
 {
-#line 150 "parse-tree/oct-parse.yy" /* yacc.c:1909  */
+#line 141 "libinterp/parse-tree/oct-parse.yy" /* yacc.c:1909  */
 
   int dummy_type;
 
@@ -284,7 +276,7 @@ union OCTAVE_STYPE
   tree_classdef_enum_list* tree_classdef_enum_list_type;
   tree_classdef_enum_block* tree_classdef_enum_block_type;
 
-#line 288 "parse-tree/oct-parse.h" /* yacc.c:1909  */
+#line 280 "libinterp/parse-tree/oct-parse.h" /* yacc.c:1909  */
 };
 
 typedef union OCTAVE_STYPE OCTAVE_STYPE;
@@ -301,10 +293,10 @@ enum { YYPUSH_MORE = 4 };
 
 typedef struct octave_pstate octave_pstate;
 
-int octave_parse (octave_base_parser& parser);
-int octave_push_parse (octave_pstate *ps, int pushed_char, OCTAVE_STYPE const *pushed_val, octave_base_parser& parser);
-int octave_pull_parse (octave_pstate *ps, octave_base_parser& parser);
+int octave_parse (octave::base_parser& parser);
+int octave_push_parse (octave_pstate *ps, int pushed_char, OCTAVE_STYPE const *pushed_val, octave::base_parser& parser);
+int octave_pull_parse (octave_pstate *ps, octave::base_parser& parser);
 octave_pstate * octave_pstate_new (void);
 void octave_pstate_delete (octave_pstate *ps);
 
-#endif /* !YY_OCTAVE_PARSE_TREE_OCT_PARSE_H_INCLUDED  */
+#endif /* !YY_OCTAVE_LIBINTERP_PARSE_TREE_OCT_PARSE_H_INCLUDED  */

@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -75,8 +76,8 @@ An example is <code>speye (1e6)</code> which will create a matrix with a million
 rows and columns, but only a million nonzero elements.  Therefore the
 number of rows by the number of columns in this case is more than two
 hundred times the maximum value that can be represented by an unsigned int.
-The use of <code>numel</code> should therefore be avoided useless it is known
-it won&rsquo;t overflow.
+The use of <code>numel</code> should therefore be avoided unless it is known
+that it will not overflow.
 </p>
 <p>Extreme care must be take with the elem method and the <code>&quot;()&quot;</code> operator,
 which perform basically the same function.  The reason is that if a

@@ -1,0 +1,184 @@
+@c DO NOT EDIT!  Generated automatically by genpropdoc.m.
+
+@c Copyright (C) 2014-2016 Pantxo Diribarne
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@table @asis
+
+@anchor{XREFuimenu__modified__}
+@cindex uimenu __modified__
+@item @code{__modified__}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuimenuaccelerator}
+@cindex uimenu accelerator
+@item @code{accelerator}: def. @qcode{""}
+
+
+
+@anchor{XREFuimenubeingdeleted}
+@cindex uimenu beingdeleted
+@item @code{beingdeleted}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuimenubusyaction}
+@cindex uimenu busyaction
+@item @code{busyaction}: @qcode{"cancel"} | @{@qcode{"queue"}@}
+
+
+
+@anchor{XREFuimenubuttondownfcn}
+@cindex uimenu buttondownfcn
+@item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
+@code{buttondownfcn} is unused.
+
+
+@anchor{XREFuimenucallback}
+@cindex uimenu callback
+@item @code{callback}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuimenuchecked}
+@cindex uimenu checked
+@item @code{checked}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuimenuchildren}
+@cindex uimenu children
+@item @code{children} (read-only): vector of graphics handles, def. @code{[](0x1)}
+Graphics handles of the uimenu's children.
+
+
+@anchor{XREFuimenuclipping}
+@cindex uimenu clipping
+@item @code{clipping}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{clipping} is @qcode{"on"}, the uimenu is clipped in its parent axes limits.
+
+
+@anchor{XREFuimenucreatefcn}
+@cindex uimenu createfcn
+@item @code{createfcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately after uimenu has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultuimenucreatefcn", 'disp ("uimenu created!")')}.
+
+
+@anchor{XREFuimenudeletefcn}
+@cindex uimenu deletefcn
+@item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately before uimenu is deleted.
+
+
+@anchor{XREFuimenuenable}
+@cindex uimenu enable
+@item @code{enable}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuimenuforegroundcolor}
+@cindex uimenu foregroundcolor
+@item @code{foregroundcolor}: def. @code{[0   0   0]}
+
+
+
+@anchor{XREFuimenuhandlevisibility}
+@cindex uimenu handlevisibility
+@item @code{handlevisibility}: @qcode{"callback"} | @qcode{"off"} | @{@qcode{"on"}@}
+If @code{handlevisibility} is @qcode{"off"}, the uimenu's handle is not visible in its parent's "children" property.
+
+
+@anchor{XREFuimenuhittest}
+@cindex uimenu hittest
+@item @code{hittest}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuimenuinterruptible}
+@cindex uimenu interruptible
+@item @code{interruptible}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuimenulabel}
+@cindex uimenu label
+@item @code{label}: def. @qcode{""}
+
+
+
+@anchor{XREFuimenuparent}
+@cindex uimenu parent
+@item @code{parent}: graphics handle
+Handle of the parent graphics object.
+
+
+@anchor{XREFuimenuposition}
+@cindex uimenu position
+@item @code{position}: def. @code{1}
+
+
+
+@anchor{XREFuimenuselected}
+@cindex uimenu selected
+@item @code{selected}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuimenuselectionhighlight}
+@cindex uimenu selectionhighlight
+@item @code{selectionhighlight}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuimenuseparator}
+@cindex uimenu separator
+@item @code{separator}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuimenutag}
+@cindex uimenu tag
+@item @code{tag}: string, def. @qcode{""}
+A user-defined string to label the graphics object.
+
+
+@anchor{XREFuimenutype}
+@cindex uimenu type
+@item @code{type} (read-only): string
+Class name of the graphics object.  @code{type} is always @qcode{"uimenu"}
+
+
+@anchor{XREFuimenuuicontextmenu}
+@cindex uimenu uicontextmenu
+@item @code{uicontextmenu}: graphics handle, def. @code{[](0x0)}
+Graphics handle of the uicontextmenu object that is currently associated to this uimenu object.
+
+
+@anchor{XREFuimenuuserdata}
+@cindex uimenu userdata
+@item @code{userdata}: Any Octave data, def. @code{[](0x0)}
+User-defined data to associate with the graphics object.
+
+
+@anchor{XREFuimenuvisible}
+@cindex uimenu visible
+@item @code{visible}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{visible} is @qcode{"off"}, the uimenu is not rendered on screen.
+
+@end table

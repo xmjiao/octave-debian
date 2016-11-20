@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2015 Carnë Draug
+## Copyright (C) 2014-2016 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -17,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} im2frame (@var{rgb})
-## @deftypefnx {Function File} {} im2frame (@var{x}, @var{map})
+## @deftypefn  {} {} im2frame (@var{rgb})
+## @deftypefnx {} {} im2frame (@var{x}, @var{map})
 ## Convert image to movie frame.
 ##
 ## A movie frame is simply a struct with the fields @qcode{"cdata"} and
@@ -64,15 +64,16 @@ function [frame] = im2frame (x, map = [])
   endif
 
   frame = struct ("cdata", x, "colormap", map);
+
 endfunction
 
 
 %!function f = make_rgb_f ()
-%! f = randi ([0 255], 10, 20, 3);
+%!  f = randi ([0 255], 10, 20, 3);
 %!endfunction
 
 %!function f = make_ind_f ()
-%! f = randi ([1 100], 10, 20, 3);
+%!  f = randi ([1 100], 10, 20, 3);
 %!endfunction
 
 %!test

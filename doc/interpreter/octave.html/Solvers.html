@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -70,8 +71,8 @@ point must be provided.  This also has the consequence that
 convergence is not guaranteed even if a solution exists.
 </p>
 <a name="XREFfsolve"></a><dl>
-<dt><a name="index-fsolve"></a>Function File: <em></em> <strong>fsolve</strong> <em>(<var>fcn</var>, <var>x0</var>, <var>options</var>)</em></dt>
-<dt><a name="index-fsolve-1"></a>Function File: <em>[<var>x</var>, <var>fvec</var>, <var>info</var>, <var>output</var>, <var>fjac</var>] =</em> <strong>fsolve</strong> <em>(<var>fcn</var>, &hellip;)</em></dt>
+<dt><a name="index-fsolve"></a>: <em></em> <strong>fsolve</strong> <em>(<var>fcn</var>, <var>x0</var>, <var>options</var>)</em></dt>
+<dt><a name="index-fsolve-1"></a>: <em>[<var>x</var>, <var>fvec</var>, <var>info</var>, <var>output</var>, <var>fjac</var>] =</em> <strong>fsolve</strong> <em>(<var>fcn</var>, &hellip;)</em></dt>
 <dd><p>Solve a system of nonlinear equations defined by the function <var>fcn</var>.
 </p>
 <p><var>fcn</var> should accept a vector (array) defining the unknown variables,
@@ -104,9 +105,9 @@ it may sometimes deliver unexpected (though mathematically correct) results.
 </p>
 <p>If <code>&quot;Updating&quot;</code> is <code>&quot;on&quot;</code>, the function will attempt to use
 Broyden updates to update the Jacobian, in order to reduce the
-amount of Jacobian calculations.  If your user function always calculates the
-Jacobian (regardless of number of output arguments) then this option provides
-no advantage and should be set to false.
+amount of Jacobian calculations.  If your user function always calculates
+the Jacobian (regardless of number of output arguments) then this option
+provides no advantage and should be set to false.
 </p>
 <p><code>&quot;ComplexEqn&quot;</code> is <code>&quot;on&quot;</code>, <code>fsolve</code> will attempt to solve
 complex equations in complex variables, assuming that the equations possess
@@ -264,9 +265,9 @@ endfunction
 <p>which gives the same solution as before.
 </p>
 <a name="XREFfzero"></a><dl>
-<dt><a name="index-fzero"></a>Function File: <em></em> <strong>fzero</strong> <em>(<var>fun</var>, <var>x0</var>)</em></dt>
-<dt><a name="index-fzero-1"></a>Function File: <em></em> <strong>fzero</strong> <em>(<var>fun</var>, <var>x0</var>, <var>options</var>)</em></dt>
-<dt><a name="index-fzero-2"></a>Function File: <em>[<var>x</var>, <var>fval</var>, <var>info</var>, <var>output</var>] =</em> <strong>fzero</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-fzero"></a>: <em></em> <strong>fzero</strong> <em>(<var>fun</var>, <var>x0</var>)</em></dt>
+<dt><a name="index-fzero-1"></a>: <em></em> <strong>fzero</strong> <em>(<var>fun</var>, <var>x0</var>, <var>options</var>)</em></dt>
+<dt><a name="index-fzero-2"></a>: <em>[<var>x</var>, <var>fval</var>, <var>info</var>, <var>output</var>] =</em> <strong>fzero</strong> <em>(&hellip;)</em></dt>
 <dd><p>Find a zero of a univariate function.
 </p>
 <p><var>fun</var> is a function handle, inline function, or string containing the
@@ -321,10 +322,12 @@ The algorithm may have converged to a singular point.
  Number of function evaluations.
 
 </li><li> bracketx
- A two-element vector with the final bracketing of the zero along the x-axis.
+ A two-element vector with the final bracketing of the zero along the
+x-axis.
 
 </li><li> brackety
- A two-element vector with the final bracketing of the zero along the y-axis.
+ A two-element vector with the final bracketing of the zero along the
+y-axis.
 </li></ul>
 
 <p><strong>See also:</strong> <a href="Linear-Least-Squares.html#XREFoptimset">optimset</a>, <a href="#XREFfsolve">fsolve</a>.

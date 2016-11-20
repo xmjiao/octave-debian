@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -67,8 +68,8 @@ providing the <code>mkoctfile</code> command with which to build oct-files.  The
 command is available from within Octave or at the shell command line.
 </p>
 <a name="XREFmkoctfile"></a><dl>
-<dt><a name="index-mkoctfile-1"></a>Command: <em></em> <strong>mkoctfile</strong> <em>[-options] file &hellip;</em></dt>
-<dt><a name="index-mkoctfile-2"></a>Function File: <em>[<var>output</var>, <var>status</var>] =</em> <strong>mkoctfile</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-mkoctfile-1"></a>: <em></em> <strong>mkoctfile</strong> <em>[-options] file &hellip;</em></dt>
+<dt><a name="index-mkoctfile-2"></a>: <em>[<var>output</var>, <var>status</var>] =</em> <strong>mkoctfile</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>The <code>mkoctfile</code> function compiles source code written in C, C++, or
 Fortran.  Depending on the options used with <code>mkoctfile</code>, the
@@ -81,7 +82,7 @@ the shell prompt.  The output is stored in the <var>output</var> variable and
 the exit status in the <var>status</var> variable.
 </p>
 <p><code>mkoctfile</code> accepts the following options, all of which are optional
-except for the file name of the code you wish to compile:
+except for the filename of the code you wish to compile:
 </p>
 <dl compact="compact">
 <dt>&lsquo;<samp>-I DIR</samp>&rsquo;</dt>
@@ -129,7 +130,7 @@ separators.
 </dd>
 <dt>&lsquo;<samp>-o FILE</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>--output FILE</samp>&rsquo;</dt>
-<dd><p>Output file name.  Default extension is .oct (or .mex if &lsquo;<samp>--mex</samp>&rsquo; is
+<dd><p>Output filename.  Default extension is .oct (or .mex if &lsquo;<samp>--mex</samp>&rsquo; is
 specified) unless linking a stand-alone executable.
 </p>
 </dd>
@@ -217,16 +218,12 @@ writing a C++ function that can be linked to Octave.
 DEFUN_DLD (helloworld, args, nargout,
            &quot;Hello World Help String&quot;)
 {
-  int nargin = args.length ();
-
   octave_stdout &lt;&lt; &quot;Hello World has &quot;
-                &lt;&lt; nargin &lt;&lt; &quot; input arguments and &quot;
+                &lt;&lt; args.length () &lt;&lt; &quot; input arguments and &quot;
                 &lt;&lt; nargout &lt;&lt; &quot; output arguments.\n&quot;;
 
   return octave_value_list ();
 }
-</pre><pre class="example">
-
 </pre></div>
 
 <p>The first critical line is <code>#include &lt;octave/oct.h&gt;</code> which

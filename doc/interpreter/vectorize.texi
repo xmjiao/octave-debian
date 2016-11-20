@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2012-2015 Jordi Gutiérrez Hermoso
+@c Copyright (C) 2012-2016 Jordi Gutiérrez Hermoso
 @c
 @c This file is part of Octave.
 @c
@@ -138,7 +138,7 @@ automatically.
 
 @c vectorize libinterp/octave-value/ov-fcn-inline.cc
 @anchor{XREFvectorize}
-@deftypefn {Built-in Function} {} vectorize (@var{fun})
+@deftypefn {} {} vectorize (@var{fun})
 Create a vectorized version of the inline function @var{fun} by replacing
 all occurrences of @code{*}, @code{/}, etc., with @code{.*}, @code{./}, etc.
 
@@ -388,7 +388,7 @@ For functions that are not written with broadcasting semantics,
 
 @c bsxfun libinterp/corefcn/bsxfun.cc
 @anchor{XREFbsxfun}
-@deftypefn {Built-in Function} {} bsxfun (@var{f}, @var{A}, @var{B})
+@deftypefn {} {} bsxfun (@var{f}, @var{A}, @var{B})
 The binary singleton expansion function performs broadcasting,
 that is, it applies a binary function @var{f} element-by-element to two
 array arguments @var{A} and @var{B}, and expands as necessary
@@ -523,12 +523,12 @@ array, cell, or struct.
 
 @c arrayfun libinterp/corefcn/cellfun.cc
 @anchor{XREFarrayfun}
-@deftypefn  {Function File} {} arrayfun (@var{func}, @var{A})
-@deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{A})
-@deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{A}, @var{b}, @dots{})
-@deftypefnx {Function File} {[@var{x}, @var{y}, @dots{}] =} arrayfun (@var{func}, @var{A}, @dots{})
-@deftypefnx {Function File} {} arrayfun (@dots{}, "UniformOutput", @var{val})
-@deftypefnx {Function File} {} arrayfun (@dots{}, "ErrorHandler", @var{errfunc})
+@deftypefn  {} {} arrayfun (@var{func}, @var{A})
+@deftypefnx {} {@var{x} =} arrayfun (@var{func}, @var{A})
+@deftypefnx {} {@var{x} =} arrayfun (@var{func}, @var{A}, @var{b}, @dots{})
+@deftypefnx {} {[@var{x}, @var{y}, @dots{}] =} arrayfun (@var{func}, @var{A}, @dots{})
+@deftypefnx {} {} arrayfun (@dots{}, "UniformOutput", @var{val})
+@deftypefnx {} {} arrayfun (@dots{}, "ErrorHandler", @var{errfunc})
 
 Execute a function on each element of an array.
 
@@ -540,7 +540,7 @@ The first input argument @var{func} can be a string, a function
 handle, an inline function, or an anonymous function.  The input
 argument @var{A} can be a logic array, a numeric array, a string
 array, a structure array, or a cell array.  By a call of the function
-@command{arrayfun} all elements of @var{A} are passed on to the named
+@code{arrayfun} all elements of @var{A} are passed on to the named
 function @var{func} individually.
 
 The named function can also take more than two input arguments, with
@@ -552,7 +552,7 @@ example:
 @example
 @group
 arrayfun (@@atan2, [1, 0], [0, 1])
-     @result{} [ 1.5708   0.0000 ]
+     @result{} [ 1.57080   0.00000 ]
 @end group
 @end example
 
@@ -639,7 +639,7 @@ arrayfun (@@str2num, [1234],
 
 @c spfun scripts/sparse/spfun.m
 @anchor{XREFspfun}
-@deftypefn {Function File} {@var{y} =} spfun (@var{f}, @var{S})
+@deftypefn {} {@var{y} =} spfun (@var{f}, @var{S})
 Compute @code{f(@var{S})} for the nonzero values of @var{S}.
 
 This results in a sparse matrix with the same structure as @var{S}.  The
@@ -651,14 +651,14 @@ inline function.
 
 @c cellfun libinterp/corefcn/cellfun.cc
 @anchor{XREFcellfun}
-@deftypefn  {Built-in Function} {} cellfun (@var{name}, @var{C})
-@deftypefnx {Built-in Function} {} cellfun ("size", @var{C}, @var{k})
-@deftypefnx {Built-in Function} {} cellfun ("isclass", @var{C}, @var{class})
-@deftypefnx {Built-in Function} {} cellfun (@var{func}, @var{C})
-@deftypefnx {Built-in Function} {} cellfun (@var{func}, @var{C}, @var{D})
-@deftypefnx {Built-in Function} {[@var{a}, @dots{}] =} cellfun (@dots{})
-@deftypefnx {Built-in Function} {} cellfun (@dots{}, "ErrorHandler", @var{errfunc})
-@deftypefnx {Built-in Function} {} cellfun (@dots{}, "UniformOutput", @var{val})
+@deftypefn  {} {} cellfun (@var{name}, @var{C})
+@deftypefnx {} {} cellfun ("size", @var{C}, @var{k})
+@deftypefnx {} {} cellfun ("isclass", @var{C}, @var{class})
+@deftypefnx {} {} cellfun (@var{func}, @var{C})
+@deftypefnx {} {} cellfun (@var{func}, @var{C}, @var{D})
+@deftypefnx {} {[@var{a}, @dots{}] =} cellfun (@dots{})
+@deftypefnx {} {} cellfun (@dots{}, "ErrorHandler", @var{errfunc})
+@deftypefnx {} {} cellfun (@dots{}, "UniformOutput", @var{val})
 
 Evaluate the function named @var{name} on the elements of the cell array
 @var{C}.
@@ -710,9 +710,9 @@ cellfun ("atan2", @{1, 0@}, @{0, 1@})
 @end group
 @end example
 
-The number of output arguments of @code{cellfun} matches the number of output
-arguments of the function.  The outputs of the function will be collected
-into the output arguments of @code{cellfun} like this:
+The number of output arguments of @code{cellfun} matches the number of
+output arguments of the function.  The outputs of the function will be
+collected into the output arguments of @code{cellfun} like this:
 
 @example
 @group
@@ -757,7 +757,7 @@ function [@dots{}] = errfunc (@var{s}, @dots{})
 @noindent
 where there is an additional input argument to @var{errfunc} relative to
 @var{func}, given by @var{s}.  This is a structure with the elements
-@qcode{"identifier"}, @qcode{"message"} and @qcode{"index"}, giving
+@qcode{"identifier"}, @qcode{"message"}, and @qcode{"index"} giving
 respectively the error identifier, the error message, and the index into the
 input arguments of the element that caused the error.  For example:
 
@@ -790,10 +790,10 @@ v = cellfun (@@det, a); # faster
 
 @c structfun scripts/general/structfun.m
 @anchor{XREFstructfun}
-@deftypefn  {Function File} {} structfun (@var{func}, @var{S})
-@deftypefnx {Function File} {[@var{A}, @dots{}] =} structfun (@dots{})
-@deftypefnx {Function File} {} structfun (@dots{}, "ErrorHandler", @var{errfunc})
-@deftypefnx {Function File} {} structfun (@dots{}, "UniformOutput", @var{val})
+@deftypefn  {} {} structfun (@var{func}, @var{S})
+@deftypefnx {} {[@var{A}, @dots{}] =} structfun (@dots{})
+@deftypefnx {} {} structfun (@dots{}, "ErrorHandler", @var{errfunc})
+@deftypefnx {} {} structfun (@dots{}, "UniformOutput", @var{val})
 
 Evaluate the function named @var{name} on the fields of the structure
 @var{S}.  The fields of @var{S} are passed to the function @var{func}
@@ -862,8 +862,8 @@ useful.
 
 @c accumarray scripts/general/accumarray.m
 @anchor{XREFaccumarray}
-@deftypefn  {Function File} {} accumarray (@var{subs}, @var{vals}, @var{sz}, @var{func}, @var{fillval}, @var{issparse})
-@deftypefnx {Function File} {} accumarray (@var{subs}, @var{vals}, @dots{})
+@deftypefn  {} {} accumarray (@var{subs}, @var{vals}, @var{sz}, @var{func}, @var{fillval}, @var{issparse})
+@deftypefnx {} {} accumarray (@var{subs}, @var{vals}, @dots{})
 
 Create an array by accumulating the elements of a vector into the
 positions defined by their subscripts.
@@ -973,7 +973,7 @@ accumarray calls and compute the results in a vectorized manner.
 
 @c accumdim scripts/general/accumdim.m
 @anchor{XREFaccumdim}
-@deftypefn {Function File} {} accumdim (@var{subs}, @var{vals}, @var{dim}, @var{n}, @var{func}, @var{fillval})
+@deftypefn {} {} accumdim (@var{subs}, @var{vals}, @var{dim}, @var{n}, @var{func}, @var{fillval})
 Create an array by accumulating the slices of an array into the
 positions defined by their subscripts along a specified dimension.
 
@@ -1044,9 +1044,9 @@ to anyone not working directly on the implementation of the JIT compiler.
 
 @c jit_enable libinterp/corefcn/pt-jit.cc
 @anchor{XREFjit_enable}
-@deftypefn  {Built-in Function} {@var{val} =} jit_enable ()
-@deftypefnx {Built-in Function} {@var{old_val} =} jit_enable (@var{new_val})
-@deftypefnx {Built-in Function} {} jit_enable (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} jit_enable ()
+@deftypefnx {} {@var{old_val} =} jit_enable (@var{new_val})
+@deftypefnx {} {} jit_enable (@var{new_val}, "local")
 Query or set the internal variable that enables Octave's JIT compiler.
 
 When called from inside a function with the @qcode{"local"} option, the
@@ -1058,9 +1058,9 @@ The original variable value is restored when exiting the function.
 
 @c jit_startcnt libinterp/corefcn/pt-jit.cc
 @anchor{XREFjit_startcnt}
-@deftypefn  {Built-in Function} {@var{val} =} jit_startcnt ()
-@deftypefnx {Built-in Function} {@var{old_val} =} jit_startcnt (@var{new_val})
-@deftypefnx {Built-in Function} {} jit_startcnt (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} jit_startcnt ()
+@deftypefnx {} {@var{old_val} =} jit_startcnt (@var{new_val})
+@deftypefnx {} {} jit_startcnt (@var{new_val}, "local")
 Query or set the internal variable that determines whether JIT compilation
 will take place for a specific loop.
 
@@ -1077,9 +1077,9 @@ The original variable value is restored when exiting the function.
 
 @c jit_failcnt libinterp/corefcn/pt-jit.cc
 @anchor{XREFjit_failcnt}
-@deftypefn  {Built-in Function} {@var{val} =} jit_failcnt ()
-@deftypefnx {Built-in Function} {@var{old_val} =} jit_failcnt (@var{new_val})
-@deftypefnx {Built-in Function} {} jit_failcnt (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} jit_failcnt ()
+@deftypefnx {} {@var{old_val} =} jit_failcnt (@var{new_val})
+@deftypefnx {} {} jit_failcnt (@var{new_val}, "local")
 Query or set the internal variable that counts the number of JIT fail
 exceptions for Octave's JIT compiler.
 
@@ -1092,9 +1092,9 @@ The original variable value is restored when exiting the function.
 
 @c debug_jit libinterp/corefcn/pt-jit.cc
 @anchor{XREFdebug_jit}
-@deftypefn  {Built-in Function} {@var{val} =} debug_jit ()
-@deftypefnx {Built-in Function} {@var{old_val} =} debug_jit (@var{new_val})
-@deftypefnx {Built-in Function} {} debug_jit (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} debug_jit ()
+@deftypefnx {} {@var{old_val} =} debug_jit (@var{new_val})
+@deftypefnx {} {} debug_jit (@var{new_val}, "local")
 Query or set the internal variable that determines whether
 debugging/tracing is enabled for Octave's JIT compiler.
 
@@ -1239,8 +1239,8 @@ statement instead.  @xref{The try Statement}.
 @item Use @code{ignore_function_time_stamp} when appropriate.
 If you are calling lots of functions, and none of them will need to change
 during your run, set the variable @code{ignore_function_time_stamp} to
-@qcode{"all"}.  This will stop Octave from checking the time stamp of a function
-file to see if it has been updated while the program is being run.
+@qcode{"all"}.  This will stop Octave from checking the time stamp of a
+function file to see if it has been updated while the program is being run.
 @end itemize
 
 @node Examples

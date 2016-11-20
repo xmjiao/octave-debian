@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -102,8 +103,14 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 
 <a name="XREFaxesbox"></a><a name="index-axes-box"></a>
 </dd>
-<dt><code>box</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dt><code>box</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
 <dd><p>Control whether the axes has a surrounding box.
+</p>
+
+<a name="XREFaxesboxstyle"></a><a name="index-axes-boxstyle"></a>
+</dd>
+<dt><code>boxstyle</code>: {<code>&quot;back&quot;</code>} | <code>&quot;full&quot;</code></dt>
+<dd><p><code>boxstyle</code> is unused.
 </p>
 
 <a name="XREFaxesbusyaction"></a><a name="index-axes-busyaction"></a>
@@ -190,6 +197,12 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <dd><p><code>clipping</code> is unused.
 </p>
 
+<a name="XREFaxesclippingstyle"></a><a name="index-axes-clippingstyle"></a>
+</dd>
+<dt><code>clippingstyle</code>: {<code>&quot;3dbox&quot;</code>} | <code>&quot;rectangle&quot;</code></dt>
+<dd><p><code>clippingstyle</code> is unused.
+</p>
+
 <a name="XREFaxescolor"></a><a name="index-axes-color"></a>
 </dd>
 <dt><code>color</code>: colorspec, def. <code>[1   1   1]</code></dt>
@@ -200,6 +213,12 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 </dd>
 <dt><code>colororder</code>: N-by-3 RGB matrix, def. 7-by-3 double</dt>
 <dd><p>RGB values used by plot function for automatic line coloring.
+</p>
+
+<a name="XREFaxescolororderindex"></a><a name="index-axes-colororderindex"></a>
+</dd>
+<dt><code>colororderindex</code>: def. <code>1</code></dt>
+<dd><p><code>colororderindex</code> is unused.
 </p>
 
 <a name="XREFaxescreatefcn"></a><a name="index-axes-createfcn"></a>
@@ -240,7 +259,7 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 
 <a name="XREFaxesfontangle"></a><a name="index-axes-fontangle"></a>
 </dd>
-<dt><code>fontangle</code>: <code>&quot;italic&quot;</code> | {<code>&quot;normal&quot;</code>} | <code>&quot;oblique&quot;</code></dt>
+<dt><code>fontangle</code>: <code>&quot;italic&quot;</code> | {<code>&quot;normal&quot;</code>}</dt>
 <dd>
 
 
@@ -256,6 +275,12 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <dd><p>Size of the font used for axes annotations.  See <a href="#XREFaxesfontunits">fontunits&nbsp;property<!-- /@w --></a>.
 </p>
 
+<a name="XREFaxesfontsmoothing"></a><a name="index-axes-fontsmoothing"></a>
+</dd>
+<dt><code>fontsmoothing</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p><code>fontsmoothing</code> is unused.
+</p>
+
 <a name="XREFaxesfontunits"></a><a name="index-axes-fontunits"></a>
 </dd>
 <dt><code>fontunits</code>: <code>&quot;centimeters&quot;</code> | <code>&quot;inches&quot;</code> | <code>&quot;normalized&quot;</code> | <code>&quot;pixels&quot;</code> | {<code>&quot;points&quot;</code>}</dt>
@@ -264,13 +289,37 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 
 <a name="XREFaxesfontweight"></a><a name="index-axes-fontweight"></a>
 </dd>
-<dt><code>fontweight</code>: <code>&quot;bold&quot;</code> | <code>&quot;demi&quot;</code> | <code>&quot;light&quot;</code> | {<code>&quot;normal&quot;</code>}</dt>
+<dt><code>fontweight</code>: <code>&quot;bold&quot;</code> | {<code>&quot;normal&quot;</code>}</dt>
 <dd>
 
 
+<a name="XREFaxesgridalpha"></a><a name="index-axes-gridalpha"></a>
+</dd>
+<dt><code>gridalpha</code>: def. <code>0.15000</code></dt>
+<dd><p>Transparency is not yet implemented for axes objects.  <code>gridalpha</code> is unused.
+</p>
+
+<a name="XREFaxesgridalphamode"></a><a name="index-axes-gridalphamode"></a>
+</dd>
+<dt><code>gridalphamode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd><p><code>gridalphamode</code> is unused.
+</p>
+
+<a name="XREFaxesgridcolor"></a><a name="index-axes-gridcolor"></a>
+</dd>
+<dt><code>gridcolor</code>: def. <code>[0.15000   0.15000   0.15000]</code></dt>
+<dd><p><code>gridcolor</code> is unused.
+</p>
+
+<a name="XREFaxesgridcolormode"></a><a name="index-axes-gridcolormode"></a>
+</dd>
+<dt><code>gridcolormode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd><p><code>gridcolormode</code> is unused.
+</p>
+
 <a name="XREFaxesgridlinestyle"></a><a name="index-axes-gridlinestyle"></a>
 </dd>
-<dt><code>gridlinestyle</code>: <code>&quot;-&quot;</code> | <code>&quot;--&quot;</code> | <code>&quot;-.&quot;</code> | {<code>&quot;:&quot;</code>} | <code>&quot;none&quot;</code></dt>
+<dt><code>gridlinestyle</code>: {<code>&quot;-&quot;</code>} | <code>&quot;--&quot;</code> | <code>&quot;-.&quot;</code> | <code>&quot;:&quot;</code> | <code>&quot;none&quot;</code></dt>
 <dd>
 
 
@@ -286,17 +335,17 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <dd>
 
 
-<a name="XREFaxesinterpreter"></a><a name="index-axes-interpreter"></a>
-</dd>
-<dt><code>interpreter</code>: <code>&quot;latex&quot;</code> | {<code>&quot;none&quot;</code>} | <code>&quot;tex&quot;</code></dt>
-<dd>
-
-
 <a name="XREFaxesinterruptible"></a><a name="index-axes-interruptible"></a>
 </dd>
 <dt><code>interruptible</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
 <dd>
 
+
+<a name="XREFaxeslabelfontsizemultiplier"></a><a name="index-axes-labelfontsizemultiplier"></a>
+</dd>
+<dt><code>labelfontsizemultiplier</code>: def. <code>1.1000</code></dt>
+<dd><p><code>labelfontsizemultiplier</code> is unused.
+</p>
 
 <a name="XREFaxeslayer"></a><a name="index-axes-layer"></a>
 </dd>
@@ -307,14 +356,44 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <a name="XREFaxeslinestyleorder"></a><a name="index-axes-linestyleorder"></a>
 </dd>
 <dt><code>linestyleorder</code>: def. <code>&quot;-&quot;</code></dt>
-<dd>
+<dd><p><code>linestyleorder</code> is unused.
+</p>
 
+<a name="XREFaxeslinestyleorderindex"></a><a name="index-axes-linestyleorderindex"></a>
+</dd>
+<dt><code>linestyleorderindex</code>: def. <code>1</code></dt>
+<dd><p><code>linestyleorderindex</code> is unused.
+</p>
 
 <a name="XREFaxeslinewidth"></a><a name="index-axes-linewidth"></a>
 </dd>
 <dt><code>linewidth</code>: def. <code>0.50000</code></dt>
 <dd>
 
+
+<a name="XREFaxesminorgridalpha"></a><a name="index-axes-minorgridalpha"></a>
+</dd>
+<dt><code>minorgridalpha</code>: def. <code>0.25000</code></dt>
+<dd><p>Transparency is not yet implemented for axes objects.  <code>minorgridalpha</code> is unused.
+</p>
+
+<a name="XREFaxesminorgridalphamode"></a><a name="index-axes-minorgridalphamode"></a>
+</dd>
+<dt><code>minorgridalphamode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd><p><code>minorgridalphamode</code> is unused.
+</p>
+
+<a name="XREFaxesminorgridcolor"></a><a name="index-axes-minorgridcolor"></a>
+</dd>
+<dt><code>minorgridcolor</code>: def. <code>[0.10000   0.10000   0.10000]</code></dt>
+<dd><p><code>minorgridcolor</code> is unused.
+</p>
+
+<a name="XREFaxesminorgridcolormode"></a><a name="index-axes-minorgridcolormode"></a>
+</dd>
+<dt><code>minorgridcolormode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd><p><code>minorgridcolormode</code> is unused.
+</p>
 
 <a name="XREFaxesminorgridlinestyle"></a><a name="index-axes-minorgridlinestyle"></a>
 </dd>
@@ -346,6 +425,12 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <dd><p>Handle of the parent graphics object.
 </p>
 
+<a name="XREFaxespickableparts"></a><a name="index-axes-pickableparts"></a>
+</dd>
+<dt><code>pickableparts</code>: <code>&quot;all&quot;</code> | <code>&quot;none&quot;</code> | {<code>&quot;visible&quot;</code>}</dt>
+<dd><p><code>pickableparts</code> is unused.
+</p>
+
 <a name="XREFaxesplotboxaspectratio"></a><a name="index-axes-plotboxaspectratio"></a>
 </dd>
 <dt><code>plotboxaspectratio</code>: def. <code>[1   1   1]</code></dt>
@@ -367,8 +452,8 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <a name="XREFaxesprojection"></a><a name="index-axes-projection"></a>
 </dd>
 <dt><code>projection</code>: {<code>&quot;orthographic&quot;</code>} | <code>&quot;perspective&quot;</code></dt>
-<dd>
-
+<dd><p><code>projection</code> is unused.
+</p>
 
 <a name="XREFaxesselected"></a><a name="index-axes-selected"></a>
 </dd>
@@ -381,6 +466,12 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <dt><code>selectionhighlight</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
 <dd>
 
+
+<a name="XREFaxessortmethod"></a><a name="index-axes-sortmethod"></a>
+</dd>
+<dt><code>sortmethod</code>: <code>&quot;childorder&quot;</code> | {<code>&quot;depth&quot;</code>}</dt>
+<dd><p><code>sortmethod</code> is unused.
+</p>
 
 <a name="XREFaxestag"></a><a name="index-axes-tag"></a>
 </dd>
@@ -400,6 +491,13 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <dd>
 
 
+<a name="XREFaxesticklabelinterpreter"></a><a name="index-axes-ticklabelinterpreter"></a>
+</dd>
+<dt><code>ticklabelinterpreter</code>: <code>&quot;latex&quot;</code> | <code>&quot;none&quot;</code> | {<code>&quot;tex&quot;</code>}</dt>
+<dd><p>Control the way x/y/zticklabel properties are interpreted.
+See <a href="Use-of-the-interpreter-Property.html#XREFinterpreterusage">Use&nbsp;of&nbsp;the&nbsp;interpreter&nbsp;property<!-- /@w --></a>.
+</p>
+
 <a name="XREFaxesticklength"></a><a name="index-axes-ticklength"></a>
 </dd>
 <dt><code>ticklength</code>: two-element vector, def. <code>[0.010000   0.025000]</code></dt>
@@ -416,6 +514,18 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 </dd>
 <dt><code>title</code>: graphics handle</dt>
 <dd><p>Graphics handle of the title text object.
+</p>
+
+<a name="XREFaxestitlefontsizemultiplier"></a><a name="index-axes-titlefontsizemultiplier"></a>
+</dd>
+<dt><code>titlefontsizemultiplier</code>: def. <code>1.1000</code></dt>
+<dd><p><code>titlefontsizemultiplier</code> is unused.
+</p>
+
+<a name="XREFaxestitlefontweight"></a><a name="index-axes-titlefontweight"></a>
+</dd>
+<dt><code>titlefontweight</code>: {<code>&quot;bold&quot;</code>} | <code>&quot;normal&quot;</code></dt>
+<dd><p><code>titlefontweight</code> is unused.
 </p>
 
 <a name="XREFaxestype"></a><a name="index-axes-type"></a>
@@ -456,14 +566,20 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 
 <a name="XREFaxesxaxislocation"></a><a name="index-axes-xaxislocation"></a>
 </dd>
-<dt><code>xaxislocation</code>: {<code>&quot;bottom&quot;</code>} | <code>&quot;top&quot;</code> | <code>&quot;zero&quot;</code></dt>
+<dt><code>xaxislocation</code>: {<code>&quot;bottom&quot;</code>} | <code>&quot;origin&quot;</code> | <code>&quot;top&quot;</code> | <code>&quot;zero&quot;</code></dt>
 <dd>
 
 
 <a name="XREFaxesxcolor"></a><a name="index-axes-xcolor"></a>
 </dd>
-<dt><code>xcolor</code>: {colorspec} | <code>&quot;none&quot;</code>, def. <code>[0   0   0]</code></dt>
+<dt><code>xcolor</code>: {colorspec} | <code>&quot;none&quot;</code>, def. <code>[0.15000   0.15000   0.15000]</code></dt>
 <dd><p>Color of the x-axis.  See <a href="Colors.html#Colors">colorspec</a>.
+</p>
+
+<a name="XREFaxesxcolormode"></a><a name="index-axes-xcolormode"></a>
+</dd>
+<dt><code>xcolormode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd><p><code>xcolormode</code> is unused.
 </p>
 
 <a name="XREFaxesxdir"></a><a name="index-axes-xdir"></a>
@@ -532,6 +648,12 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <dd>
 
 
+<a name="XREFaxesxticklabelrotation"></a><a name="index-axes-xticklabelrotation"></a>
+</dd>
+<dt><code>xticklabelrotation</code>: def. <code>0</code></dt>
+<dd><p><code>xticklabelrotation</code> is unused.
+</p>
+
 <a name="XREFaxesxtickmode"></a><a name="index-axes-xtickmode"></a>
 </dd>
 <dt><code>xtickmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
@@ -540,14 +662,20 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 
 <a name="XREFaxesyaxislocation"></a><a name="index-axes-yaxislocation"></a>
 </dd>
-<dt><code>yaxislocation</code>: {<code>&quot;left&quot;</code>} | <code>&quot;right&quot;</code> | <code>&quot;zero&quot;</code></dt>
+<dt><code>yaxislocation</code>: {<code>&quot;left&quot;</code>} | <code>&quot;origin&quot;</code> | <code>&quot;right&quot;</code> | <code>&quot;zero&quot;</code></dt>
 <dd>
 
 
 <a name="XREFaxesycolor"></a><a name="index-axes-ycolor"></a>
 </dd>
-<dt><code>ycolor</code>: {colorspec} | <code>&quot;none&quot;</code>, def. <code>[0   0   0]</code></dt>
+<dt><code>ycolor</code>: {colorspec} | <code>&quot;none&quot;</code>, def. <code>[0.15000   0.15000   0.15000]</code></dt>
 <dd><p>Color of the y-axis.  See <a href="Colors.html#Colors">colorspec</a>.
+</p>
+
+<a name="XREFaxesycolormode"></a><a name="index-axes-ycolormode"></a>
+</dd>
+<dt><code>ycolormode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd><p><code>ycolormode</code> is unused.
 </p>
 
 <a name="XREFaxesydir"></a><a name="index-axes-ydir"></a>
@@ -616,6 +744,12 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <dd>
 
 
+<a name="XREFaxesyticklabelrotation"></a><a name="index-axes-yticklabelrotation"></a>
+</dd>
+<dt><code>yticklabelrotation</code>: def. <code>0</code></dt>
+<dd><p><code>yticklabelrotation</code> is unused.
+</p>
+
 <a name="XREFaxesytickmode"></a><a name="index-axes-ytickmode"></a>
 </dd>
 <dt><code>ytickmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
@@ -624,8 +758,14 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 
 <a name="XREFaxeszcolor"></a><a name="index-axes-zcolor"></a>
 </dd>
-<dt><code>zcolor</code>: {colorspec} | <code>&quot;none&quot;</code>, def. <code>[0   0   0]</code></dt>
+<dt><code>zcolor</code>: {colorspec} | <code>&quot;none&quot;</code>, def. <code>[0.15000   0.15000   0.15000]</code></dt>
 <dd><p>Color of the z-axis.  See <a href="Colors.html#Colors">colorspec</a>.
+</p>
+
+<a name="XREFaxeszcolormode"></a><a name="index-axes-zcolormode"></a>
+</dd>
+<dt><code>zcolormode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
+<dd><p><code>zcolormode</code> is unused.
 </p>
 
 <a name="XREFaxeszdir"></a><a name="index-axes-zdir"></a>
@@ -693,6 +833,12 @@ Next: <a href="Line-Properties.html#Line-Properties" accesskey="n" rel="next">Li
 <dt><code>zticklabelmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
 <dd>
 
+
+<a name="XREFaxeszticklabelrotation"></a><a name="index-axes-zticklabelrotation"></a>
+</dd>
+<dt><code>zticklabelrotation</code>: def. <code>0</code></dt>
+<dd><p><code>zticklabelrotation</code> is unused.
+</p>
 
 <a name="XREFaxesztickmode"></a><a name="index-axes-ztickmode"></a>
 </dd>

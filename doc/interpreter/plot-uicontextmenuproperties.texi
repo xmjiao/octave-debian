@@ -1,0 +1,148 @@
+@c DO NOT EDIT!  Generated automatically by genpropdoc.m.
+
+@c Copyright (C) 2014-2016 Pantxo Diribarne
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@table @asis
+
+@anchor{XREFuicontextmenu__modified__}
+@cindex uicontextmenu __modified__
+@item @code{__modified__}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuicontextmenubeingdeleted}
+@cindex uicontextmenu beingdeleted
+@item @code{beingdeleted}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuicontextmenubusyaction}
+@cindex uicontextmenu busyaction
+@item @code{busyaction}: @qcode{"cancel"} | @{@qcode{"queue"}@}
+
+
+
+@anchor{XREFuicontextmenubuttondownfcn}
+@cindex uicontextmenu buttondownfcn
+@item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
+@code{buttondownfcn} is unused.
+
+
+@anchor{XREFuicontextmenucallback}
+@cindex uicontextmenu callback
+@item @code{callback}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuicontextmenuchildren}
+@cindex uicontextmenu children
+@item @code{children} (read-only): vector of graphics handles, def. @code{[](0x1)}
+Graphics handles of the uicontextmenu's children.
+
+
+@anchor{XREFuicontextmenuclipping}
+@cindex uicontextmenu clipping
+@item @code{clipping}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{clipping} is @qcode{"on"}, the uicontextmenu is clipped in its parent axes limits.
+
+
+@anchor{XREFuicontextmenucreatefcn}
+@cindex uicontextmenu createfcn
+@item @code{createfcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately after uicontextmenu has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultuicontextmenucreatefcn", 'disp ("uicontextmenu created!")')}.
+
+
+@anchor{XREFuicontextmenudeletefcn}
+@cindex uicontextmenu deletefcn
+@item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately before uicontextmenu is deleted.
+
+
+@anchor{XREFuicontextmenuhandlevisibility}
+@cindex uicontextmenu handlevisibility
+@item @code{handlevisibility}: @qcode{"callback"} | @qcode{"off"} | @{@qcode{"on"}@}
+If @code{handlevisibility} is @qcode{"off"}, the uicontextmenu's handle is not visible in its parent's "children" property.
+
+
+@anchor{XREFuicontextmenuhittest}
+@cindex uicontextmenu hittest
+@item @code{hittest}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuicontextmenuinterruptible}
+@cindex uicontextmenu interruptible
+@item @code{interruptible}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuicontextmenuparent}
+@cindex uicontextmenu parent
+@item @code{parent}: graphics handle
+Handle of the parent graphics object.
+
+
+@anchor{XREFuicontextmenuposition}
+@cindex uicontextmenu position
+@item @code{position}: def. @code{[0   0]}
+
+
+
+@anchor{XREFuicontextmenuselected}
+@cindex uicontextmenu selected
+@item @code{selected}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuicontextmenuselectionhighlight}
+@cindex uicontextmenu selectionhighlight
+@item @code{selectionhighlight}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuicontextmenutag}
+@cindex uicontextmenu tag
+@item @code{tag}: string, def. @qcode{""}
+A user-defined string to label the graphics object.
+
+
+@anchor{XREFuicontextmenutype}
+@cindex uicontextmenu type
+@item @code{type} (read-only): string
+Class name of the graphics object.  @code{type} is always @qcode{"uicontextmenu"}
+
+
+@anchor{XREFuicontextmenuuicontextmenu}
+@cindex uicontextmenu uicontextmenu
+@item @code{uicontextmenu}: graphics handle, def. @code{[](0x0)}
+Graphics handle of the uicontextmenu object that is currently associated to this uicontextmenu object.
+
+
+@anchor{XREFuicontextmenuuserdata}
+@cindex uicontextmenu userdata
+@item @code{userdata}: Any Octave data, def. @code{[](0x0)}
+User-defined data to associate with the graphics object.
+
+
+@anchor{XREFuicontextmenuvisible}
+@cindex uicontextmenu visible
+@item @code{visible}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{visible} is @qcode{"off"}, the uicontextmenu is not rendered on screen.
+
+@end table

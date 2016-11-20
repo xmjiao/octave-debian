@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by genpropdoc.m.
 
-@c Copyright (C) 2014-2015 Pantxo Diribarne
+@c Copyright (C) 2014-2016 Pantxo Diribarne
 @c
 @c This file is part of Octave.
 @c
@@ -98,12 +98,6 @@ Background area is not yet implemented for text objects.  @code{edgecolor} is un
 
 
 
-@anchor{XREFtexterasemode}
-@cindex text erasemode
-@item @code{erasemode}: @qcode{"background"} | @qcode{"none"} | @{@qcode{"normal"}@} | @qcode{"xor"}
-@code{erasemode} is unused.
-
-
 @anchor{XREFtextextent}
 @cindex text extent
 @item @code{extent} (read-only): def. @code{[0.000000  -0.005843   0.000000   0.032136]}
@@ -161,7 +155,8 @@ If @code{handlevisibility} is @qcode{"off"}, the text's handle is not visible in
 @anchor{XREFtextinterpreter}
 @cindex text interpreter
 @item @code{interpreter}: @qcode{"latex"} | @qcode{"none"} | @{@qcode{"tex"}@}
-
+Control the way the @qcode{"string"} property is interpreted.
+@xref{XREFinterpreterusage, , @w{Use of the interpreter property}}.
 
 
 @anchor{XREFtextinterruptible}

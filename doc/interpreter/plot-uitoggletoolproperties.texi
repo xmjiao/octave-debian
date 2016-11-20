@@ -1,0 +1,184 @@
+@c DO NOT EDIT!  Generated automatically by genpropdoc.m.
+
+@c Copyright (C) 2014-2016 Pantxo Diribarne
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@table @asis
+
+@anchor{XREFuitoggletool__modified__}
+@cindex uitoggletool __modified__
+@item @code{__modified__}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuitoggletoolbeingdeleted}
+@cindex uitoggletool beingdeleted
+@item @code{beingdeleted}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuitoggletoolbusyaction}
+@cindex uitoggletool busyaction
+@item @code{busyaction}: @qcode{"cancel"} | @{@qcode{"queue"}@}
+
+
+
+@anchor{XREFuitoggletoolbuttondownfcn}
+@cindex uitoggletool buttondownfcn
+@item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
+@code{buttondownfcn} is unused.
+
+
+@anchor{XREFuitoggletoolcdata}
+@cindex uitoggletool cdata
+@item @code{cdata}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuitoggletoolchildren}
+@cindex uitoggletool children
+@item @code{children} (read-only): vector of graphics handles, def. @code{[](0x1)}
+Graphics handles of the uitoggletool's children.
+
+
+@anchor{XREFuitoggletoolclickedcallback}
+@cindex uitoggletool clickedcallback
+@item @code{clickedcallback}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuitoggletoolclipping}
+@cindex uitoggletool clipping
+@item @code{clipping}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{clipping} is @qcode{"on"}, the uitoggletool is clipped in its parent axes limits.
+
+
+@anchor{XREFuitoggletoolcreatefcn}
+@cindex uitoggletool createfcn
+@item @code{createfcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately after uitoggletool has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultuitoggletoolcreatefcn", 'disp ("uitoggletool created!")')}.
+
+
+@anchor{XREFuitoggletooldeletefcn}
+@cindex uitoggletool deletefcn
+@item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
+Callback function executed immediately before uitoggletool is deleted.
+
+
+@anchor{XREFuitoggletoolenable}
+@cindex uitoggletool enable
+@item @code{enable}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuitoggletoolhandlevisibility}
+@cindex uitoggletool handlevisibility
+@item @code{handlevisibility}: @qcode{"callback"} | @qcode{"off"} | @{@qcode{"on"}@}
+If @code{handlevisibility} is @qcode{"off"}, the uitoggletool's handle is not visible in its parent's "children" property.
+
+
+@anchor{XREFuitoggletoolhittest}
+@cindex uitoggletool hittest
+@item @code{hittest}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuitoggletoolinterruptible}
+@cindex uitoggletool interruptible
+@item @code{interruptible}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuitoggletooloffcallback}
+@cindex uitoggletool offcallback
+@item @code{offcallback}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuitoggletooloncallback}
+@cindex uitoggletool oncallback
+@item @code{oncallback}: def. @code{[](0x0)}
+
+
+
+@anchor{XREFuitoggletoolparent}
+@cindex uitoggletool parent
+@item @code{parent}: graphics handle
+Handle of the parent graphics object.
+
+
+@anchor{XREFuitoggletoolselected}
+@cindex uitoggletool selected
+@item @code{selected}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuitoggletoolselectionhighlight}
+@cindex uitoggletool selectionhighlight
+@item @code{selectionhighlight}: @qcode{"off"} | @{@qcode{"on"}@}
+
+
+
+@anchor{XREFuitoggletoolseparator}
+@cindex uitoggletool separator
+@item @code{separator}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuitoggletoolstate}
+@cindex uitoggletool state
+@item @code{state}: @{@qcode{"off"}@} | @qcode{"on"}
+
+
+
+@anchor{XREFuitoggletooltag}
+@cindex uitoggletool tag
+@item @code{tag}: string, def. @qcode{""}
+A user-defined string to label the graphics object.
+
+
+@anchor{XREFuitoggletooltooltipstring}
+@cindex uitoggletool tooltipstring
+@item @code{tooltipstring}: def. @qcode{""}
+
+
+
+@anchor{XREFuitoggletooltype}
+@cindex uitoggletool type
+@item @code{type} (read-only): string
+Class name of the graphics object.  @code{type} is always @qcode{"uitoggletool"}
+
+
+@anchor{XREFuitoggletooluicontextmenu}
+@cindex uitoggletool uicontextmenu
+@item @code{uicontextmenu}: graphics handle, def. @code{[](0x0)}
+Graphics handle of the uicontextmenu object that is currently associated to this uitoggletool object.
+
+
+@anchor{XREFuitoggletooluserdata}
+@cindex uitoggletool userdata
+@item @code{userdata}: Any Octave data, def. @code{[](0x0)}
+User-defined data to associate with the graphics object.
+
+
+@anchor{XREFuitoggletoolvisible}
+@cindex uitoggletool visible
+@item @code{visible}: @qcode{"off"} | @{@qcode{"on"}@}
+If @code{visible} is @qcode{"off"}, the uitoggletool is not rendered on screen.
+
+@end table

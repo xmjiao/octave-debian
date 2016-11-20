@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -164,8 +164,8 @@ use @code{citation}.
 
 @c citation scripts/miscellaneous/citation.m
 @anchor{XREFcitation}
-@deftypefn  {Command} {} citation
-@deftypefnx {Command} {} citation @var{package}
+@deftypefn  {} {} citation
+@deftypefnx {} {} citation @var{package}
 Display instructions for citing GNU Octave or its packages in publications.
 
 When called without an argument, display information on how to cite the core
@@ -191,8 +191,8 @@ when you use them.
 There are a number of ways that you can contribute to help make Octave a
 better system.  Perhaps the most important way to contribute is to write
 high-quality code for solving new problems, and to make your code freely
-available for others to use.  @xref{Contributing Guidelines}, for detailed
-information on contributing new code.
+available for others to use.  See @url{http://www.octave.org/get-involved.html}
+for detailed information.
 
 If you find Octave useful, consider providing additional funding to
 continue its development.  Even a modest amount of additional funding

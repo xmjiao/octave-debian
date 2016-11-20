@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -164,10 +165,10 @@ quadcc (f, 0, Inf)
 </pre></div>
 
 <a name="XREFquad"></a><dl>
-<dt><a name="index-quad"></a>Built-in Function: <em><var>q</var> =</em> <strong>quad</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>)</em></dt>
-<dt><a name="index-quad-1"></a>Built-in Function: <em><var>q</var> =</em> <strong>quad</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>)</em></dt>
-<dt><a name="index-quad-2"></a>Built-in Function: <em><var>q</var> =</em> <strong>quad</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>sing</var>)</em></dt>
-<dt><a name="index-quad-3"></a>Built-in Function: <em>[<var>q</var>, <var>ier</var>, <var>nfun</var>, <var>err</var>] =</em> <strong>quad</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-quad"></a>: <em><var>q</var> =</em> <strong>quad</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>)</em></dt>
+<dt><a name="index-quad-1"></a>: <em><var>q</var> =</em> <strong>quad</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-quad-2"></a>: <em><var>q</var> =</em> <strong>quad</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>sing</var>)</em></dt>
+<dt><a name="index-quad-3"></a>: <em>[<var>q</var>, <var>ier</var>, <var>nfun</var>, <var>err</var>] =</em> <strong>quad</strong> <em>(&hellip;)</em></dt>
 <dd><p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var> using
 Fortran routines from <small>QUADPACK</small><!-- /@w -->.
 </p>
@@ -211,9 +212,9 @@ variable by routines <code>dblquad</code> and <code>triplequad</code>.
 
 
 <a name="XREFquad_005foptions"></a><dl>
-<dt><a name="index-quad_005foptions"></a>Built-in Function: <em></em> <strong>quad_options</strong> <em>()</em></dt>
-<dt><a name="index-quad_005foptions-1"></a>Built-in Function: <em>val =</em> <strong>quad_options</strong> <em>(<var>opt</var>)</em></dt>
-<dt><a name="index-quad_005foptions-2"></a>Built-in Function: <em></em> <strong>quad_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
+<dt><a name="index-quad_005foptions"></a>: <em></em> <strong>quad_options</strong> <em>()</em></dt>
+<dt><a name="index-quad_005foptions-1"></a>: <em>val =</em> <strong>quad_options</strong> <em>(<var>opt</var>)</em></dt>
+<dt><a name="index-quad_005foptions-2"></a>: <em></em> <strong>quad_options</strong> <em>(<var>opt</var>, <var>val</var>)</em></dt>
 <dd><p>Query or set options for the function <code>quad</code>.
 </p>
 <p>When called with no arguments, the names of all available options and
@@ -227,22 +228,22 @@ their current values are displayed.
 <p>Options include
 </p>
 <dl compact="compact">
-<dt><code><code>&quot;absolute tolerance&quot;</code></code></dt>
+<dt><code>&quot;absolute tolerance&quot;</code></dt>
 <dd><p>Absolute tolerance; may be zero for pure relative error test.
 </p>
 </dd>
-<dt><code><code>&quot;relative tolerance&quot;</code></code></dt>
+<dt><code>&quot;relative tolerance&quot;</code></dt>
 <dd><p>Non-negative relative tolerance.  If the absolute tolerance is zero,
 the relative tolerance must be greater than or equal to
 <code>max&nbsp;(50*eps,&nbsp;<span class="nolinebreak">0.5e-28)</span></code><!-- /@w -->.
 </p>
 </dd>
-<dt><code><code>&quot;single precision absolute tolerance&quot;</code></code></dt>
+<dt><code>&quot;single precision absolute tolerance&quot;</code></dt>
 <dd><p>Absolute tolerance for single precision; may be zero for pure relative
 error test.
 </p>
 </dd>
-<dt><code><code>&quot;single precision relative tolerance&quot;</code></code></dt>
+<dt><code>&quot;single precision relative tolerance&quot;</code></dt>
 <dd><p>Non-negative relative tolerance for single precision.  If the absolute
 tolerance is zero, the relative tolerance must be greater than or equal to
 <code>max&nbsp;(50*eps,&nbsp;<span class="nolinebreak">0.5e-28)</span></code><!-- /@w -->.
@@ -252,11 +253,11 @@ tolerance is zero, the relative tolerance must be greater than or equal to
 
 
 <a name="XREFquadv"></a><dl>
-<dt><a name="index-quadv"></a>Function File: <em><var>q</var> =</em> <strong>quadv</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>)</em></dt>
-<dt><a name="index-quadv-1"></a>Function File: <em><var>q</var> =</em> <strong>quadv</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>)</em></dt>
-<dt><a name="index-quadv-2"></a>Function File: <em><var>q</var> =</em> <strong>quadv</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>trace</var>)</em></dt>
-<dt><a name="index-quadv-3"></a>Function File: <em><var>q</var> =</em> <strong>quadv</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>trace</var>, <var>p1</var>, <var>p2</var>, &hellip;)</em></dt>
-<dt><a name="index-quadv-4"></a>Function File: <em>[<var>q</var>, <var>nfun</var>] =</em> <strong>quadv</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-quadv"></a>: <em><var>q</var> =</em> <strong>quadv</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>)</em></dt>
+<dt><a name="index-quadv-1"></a>: <em><var>q</var> =</em> <strong>quadv</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-quadv-2"></a>: <em><var>q</var> =</em> <strong>quadv</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>trace</var>)</em></dt>
+<dt><a name="index-quadv-3"></a>: <em><var>q</var> =</em> <strong>quadv</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>trace</var>, <var>p1</var>, <var>p2</var>, &hellip;)</em></dt>
+<dt><a name="index-quadv-4"></a>: <em>[<var>q</var>, <var>nfun</var>] =</em> <strong>quadv</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var>
 using an adaptive Simpson&rsquo;s rule.
@@ -283,9 +284,10 @@ integrals display: (1) the total number of function evaluations,
 <var>f</var>.  To use default values for <var>tol</var> and <var>trace</var>, one may pass
 empty matrices ([]).
 </p>
-<p>The result of the integration is returned in <var>q</var>
+<p>The result of the integration is returned in <var>q</var>.
 </p>
-<p><var>nfun</var> indicates the number of function evaluations that were made.
+<p>The optional output <var>nfun</var> indicates the total number of function
+evaluations performed.
 </p>
 <p>Note: <code>quadv</code> is written in Octave&rsquo;s scripting language and can be
 used recursively in <code>dblquad</code> and <code>triplequad</code>, unlike the
@@ -296,10 +298,11 @@ used recursively in <code>dblquad</code> and <code>triplequad</code>, unlike the
 
 
 <a name="XREFquadl"></a><dl>
-<dt><a name="index-quadl"></a>Function File: <em><var>q</var> =</em> <strong>quadl</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>)</em></dt>
-<dt><a name="index-quadl-1"></a>Function File: <em><var>q</var> =</em> <strong>quadl</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>)</em></dt>
-<dt><a name="index-quadl-2"></a>Function File: <em><var>q</var> =</em> <strong>quadl</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>trace</var>)</em></dt>
-<dt><a name="index-quadl-3"></a>Function File: <em><var>q</var> =</em> <strong>quadl</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>trace</var>, <var>p1</var>, <var>p2</var>, &hellip;)</em></dt>
+<dt><a name="index-quadl"></a>: <em><var>q</var> =</em> <strong>quadl</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>)</em></dt>
+<dt><a name="index-quadl-1"></a>: <em><var>q</var> =</em> <strong>quadl</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-quadl-2"></a>: <em><var>q</var> =</em> <strong>quadl</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>trace</var>)</em></dt>
+<dt><a name="index-quadl-3"></a>: <em><var>q</var> =</em> <strong>quadl</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>trace</var>, <var>p1</var>, <var>p2</var>, &hellip;)</em></dt>
+<dt><a name="index-quadl-4"></a>: <em>[<var>q</var>, <var>nfun</var>] =</em> <strong>quadl</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var> using
 an adaptive Lobatto rule.
@@ -311,17 +314,23 @@ return a vector of output values when given a vector of input values.
 <p><var>a</var> and <var>b</var> are the lower and upper limits of integration.  Both
 limits must be finite.
 </p>
-<p>The optional argument <var>tol</var> defines the relative tolerance with which
-to perform the integration.  The default value is <code>eps</code>.
+<p>The optional argument <var>tol</var> defines the absolute tolerance with which
+to perform the integration.  The default value is <em>1e-6</em>.
 </p>
 <p>The algorithm used by <code>quadl</code> involves recursively subdividing the
 integration interval.  If <var>trace</var> is defined then for each subinterval
-display: (1) the left end of the subinterval, (2) the length of the
-subinterval, (3) the approximation of the integral over the subinterval.
+display: (1) the total number of function evaluations, (2) the left end of
+the subinterval, (3) the length of the subinterval, (4) the approximation of
+the integral over the subinterval.
 </p>
 <p>Additional arguments <var>p1</var>, etc., are passed directly to the function
 <var>f</var>.  To use default values for <var>tol</var> and <var>trace</var>, one may pass
 empty matrices ([]).
+</p>
+<p>The result of the integration is returned in <var>q</var>.
+</p>
+<p>The optional output <var>nfun</var> indicates the total number of function
+evaluations performed.
 </p>
 <p>Reference: W. Gander and W. Gautschi, <cite>Adaptive Quadrature -
 Revisited</cite>, BIT Vol. 40, No. 1, March 2000, pp. 84&ndash;101.
@@ -332,11 +341,11 @@ Revisited</cite>, BIT Vol. 40, No. 1, March 2000, pp. 84&ndash;101.
 
 
 <a name="XREFquadgk"></a><dl>
-<dt><a name="index-quadgk"></a>Function File: <em><var>q</var> =</em> <strong>quadgk</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>)</em></dt>
-<dt><a name="index-quadgk-1"></a>Function File: <em><var>q</var> =</em> <strong>quadgk</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>abstol</var>)</em></dt>
-<dt><a name="index-quadgk-2"></a>Function File: <em><var>q</var> =</em> <strong>quadgk</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>abstol</var>, <var>trace</var>)</em></dt>
-<dt><a name="index-quadgk-3"></a>Function File: <em><var>q</var> =</em> <strong>quadgk</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
-<dt><a name="index-quadgk-4"></a>Function File: <em>[<var>q</var>, <var>err</var>] =</em> <strong>quadgk</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-quadgk"></a>: <em><var>q</var> =</em> <strong>quadgk</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>)</em></dt>
+<dt><a name="index-quadgk-1"></a>: <em><var>q</var> =</em> <strong>quadgk</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>abstol</var>)</em></dt>
+<dt><a name="index-quadgk-2"></a>: <em><var>q</var> =</em> <strong>quadgk</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>abstol</var>, <var>trace</var>)</em></dt>
+<dt><a name="index-quadgk-3"></a>: <em><var>q</var> =</em> <strong>quadgk</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-quadgk-4"></a>: <em>[<var>q</var>, <var>err</var>] =</em> <strong>quadgk</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var>
 using adaptive Gauss-Konrod quadrature.
@@ -373,12 +382,12 @@ pairs <code>&quot;<var>prop</var>&quot;, <var>val</var></code>.  Valid propertie
 <dl compact="compact">
 <dt><code>AbsTol</code></dt>
 <dd><p>Define the absolute error tolerance for the quadrature.  The default
-absolute tolerance is 1e-10.
+absolute tolerance is 1e-10 (1e-5 for single).
 </p>
 </dd>
 <dt><code>RelTol</code></dt>
 <dd><p>Define the relative error tolerance for the quadrature.  The default
-relative tolerance is 1e-5.
+relative tolerance is 1e-6 (1e-4 for single).
 </p>
 </dd>
 <dt><code>MaxIntervalCount</code></dt>
@@ -441,10 +450,10 @@ Feb 2008.
 
 
 <a name="XREFquadcc"></a><dl>
-<dt><a name="index-quadcc"></a>Function File: <em><var>q</var> =</em> <strong>quadcc</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>)</em></dt>
-<dt><a name="index-quadcc-1"></a>Function File: <em><var>q</var> =</em> <strong>quadcc</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>)</em></dt>
-<dt><a name="index-quadcc-2"></a>Function File: <em><var>q</var> =</em> <strong>quadcc</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>sing</var>)</em></dt>
-<dt><a name="index-quadcc-3"></a>Function File: <em>[<var>q</var>, <var>err</var>, <var>nr_points</var>] =</em> <strong>quadcc</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-quadcc"></a>: <em><var>q</var> =</em> <strong>quadcc</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>)</em></dt>
+<dt><a name="index-quadcc-1"></a>: <em><var>q</var> =</em> <strong>quadcc</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-quadcc-2"></a>: <em><var>q</var> =</em> <strong>quadcc</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>sing</var>)</em></dt>
+<dt><a name="index-quadcc-3"></a>: <em>[<var>q</var>, <var>err</var>, <var>nr_points</var>] =</em> <strong>quadcc</strong> <em>(&hellip;)</em></dt>
 <dd><p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var>
 using doubly-adaptive Clenshaw-Curtis quadrature.
 </p>
@@ -480,7 +489,8 @@ For the example above, which has a discontinuity at x=1, the call to
 </p>
 <p><var>err</var> is an estimate of the absolute integration error.
 </p>
-<p><var>nr_points</var> is the number of points at which the integrand was evaluated.
+<p><var>nr_points</var> is the number of points at which the integrand was
+evaluated.
 </p>
 <p>If the adaptive integration did not converge, the value of <var>err</var> will be
 larger than the requested tolerance.  Therefore, it is recommended to verify
@@ -548,14 +558,14 @@ trapz (x, y)
 </pre></div>
 
 <p>In general there may be no way of knowing the best distribution of points ahead
-of time.  Or the points may come from an experiment where there is no freedom to
-select the best distribution.  In any case, one must remain aware of this
+of time.  Or the points may come from an experiment where there is no freedom
+to select the best distribution.  In any case, one must remain aware of this
 issue when using <code>trapz</code>.
 </p>
 <a name="XREFtrapz"></a><dl>
-<dt><a name="index-trapz"></a>Function File: <em><var>q</var> =</em> <strong>trapz</strong> <em>(<var>y</var>)</em></dt>
-<dt><a name="index-trapz-1"></a>Function File: <em><var>q</var> =</em> <strong>trapz</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
-<dt><a name="index-trapz-2"></a>Function File: <em><var>q</var> =</em> <strong>trapz</strong> <em>(&hellip;, <var>dim</var>)</em></dt>
+<dt><a name="index-trapz"></a>: <em><var>q</var> =</em> <strong>trapz</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-trapz-1"></a>: <em><var>q</var> =</em> <strong>trapz</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-trapz-2"></a>: <em><var>q</var> =</em> <strong>trapz</strong> <em>(&hellip;, <var>dim</var>)</em></dt>
 <dd>
 <p>Numerically evaluate the integral of points <var>y</var> using the trapezoidal
 method.
@@ -592,9 +602,9 @@ trapz (x, y)
 
 
 <a name="XREFcumtrapz"></a><dl>
-<dt><a name="index-cumtrapz"></a>Function File: <em><var>q</var> =</em> <strong>cumtrapz</strong> <em>(<var>y</var>)</em></dt>
-<dt><a name="index-cumtrapz-1"></a>Function File: <em><var>q</var> =</em> <strong>cumtrapz</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
-<dt><a name="index-cumtrapz-2"></a>Function File: <em><var>q</var> =</em> <strong>cumtrapz</strong> <em>(&hellip;, <var>dim</var>)</em></dt>
+<dt><a name="index-cumtrapz"></a>: <em><var>q</var> =</em> <strong>cumtrapz</strong> <em>(<var>y</var>)</em></dt>
+<dt><a name="index-cumtrapz-1"></a>: <em><var>q</var> =</em> <strong>cumtrapz</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-cumtrapz-2"></a>: <em><var>q</var> =</em> <strong>cumtrapz</strong> <em>(&hellip;, <var>dim</var>)</em></dt>
 <dd><p>Cumulative numerical integration of points <var>y</var> using the trapezoidal
 method.
 </p>
@@ -606,7 +616,8 @@ value at each point of <var>y</var>.
 <p>When the argument <var>x</var> is omitted an equally spaced <var>x</var> vector with
 unit spacing (1) is assumed.  <code>cumtrapz (<var>x</var>, <var>y</var>)</code> evaluates
 the integral with respect to the spacing in <var>x</var> and the values in
-<var>y</var>.  This is useful if the points in <var>y</var> have been sampled unevenly.
+<var>y</var>.  This is useful if the points in <var>y</var> have been sampled
+unevenly.
 </p>
 <p>If the optional <var>dim</var> argument is given, operate along this dimension.
 </p>

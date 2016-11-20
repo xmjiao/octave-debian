@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_OCTAVE_TEX_COREFCN_OCT_TEX_PARSER_H_INCLUDED
-# define YY_OCTAVE_TEX_COREFCN_OCT_TEX_PARSER_H_INCLUDED
+#ifndef YY_OCTAVE_TEX_LIBINTERP_COREFCN_OCT_TEX_PARSER_H_INCLUDED
+# define YY_OCTAVE_TEX_LIBINTERP_COREFCN_OCT_TEX_PARSER_H_INCLUDED
 /* Debug traces.  */
 #ifndef OCTAVE_TEX_DEBUG
 # if defined YYDEBUG
@@ -48,10 +48,10 @@
 extern int octave_tex_debug;
 #endif
 /* "%code requires" blocks.  */
-#line 54 "corefcn/oct-tex-parser.yy" /* yacc.c:1909  */
+#line 56 "libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1909  */
 #include <string>
 
-#line 55 "corefcn/oct-tex-parser.h" /* yacc.c:1909  */
+#line 55 "libinterp/corefcn/oct-tex-parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef OCTAVE_TEX_TOKENTYPE
@@ -101,21 +101,21 @@ extern int octave_tex_debug;
 
 union OCTAVE_TEX_STYPE
 {
-#line 56 "corefcn/oct-tex-parser.yy" /* yacc.c:1909  */
+#line 59 "libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1909  */
 
-  /* Leaf symbols produced by the scanner */
+  // Leaf symbols produced by the scanner.
   char                       ch;
   double                     num;
   int                        sym;
 
-  /* Used for string buffering */
+  // Used for string buffering.
   std::string*               str;
 
-  /* Objects produced by the parser */
+  // Objects produced by the parser.
   text_element*              e_base;
   text_element_list*         e_list;
 
-#line 119 "corefcn/oct-tex-parser.h" /* yacc.c:1909  */
+#line 119 "libinterp/corefcn/oct-tex-parser.h" /* yacc.c:1909  */
 };
 
 typedef union OCTAVE_TEX_STYPE OCTAVE_TEX_STYPE;
@@ -127,4 +127,4 @@ typedef union OCTAVE_TEX_STYPE OCTAVE_TEX_STYPE;
 
 int octave_tex_parse (text_parser_tex& parser);
 
-#endif /* !YY_OCTAVE_TEX_COREFCN_OCT_TEX_PARSER_H_INCLUDED  */
+#endif /* !YY_OCTAVE_TEX_LIBINTERP_COREFCN_OCT_TEX_PARSER_H_INCLUDED  */

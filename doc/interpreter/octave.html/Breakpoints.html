@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -61,39 +62,97 @@ Next: <a href="Debug-Mode.html#Debug-Mode" accesskey="n" rel="next">Debug Mode</
 function.
 </p>
 <a name="XREFdbstop"></a><dl>
-<dt><a name="index-dbstop"></a>Command: <em></em> <strong>dbstop</strong> <em><var>func</var></em></dt>
-<dt><a name="index-dbstop-1"></a>Command: <em></em> <strong>dbstop</strong> <em><var>func</var> <var>line</var></em></dt>
-<dt><a name="index-dbstop-2"></a>Command: <em></em> <strong>dbstop</strong> <em><var>func</var> <var>line1</var> <var>line2</var> &hellip;</em></dt>
-<dt><a name="index-dbstop-3"></a>Command: <em></em> <strong>dbstop</strong> <em><var>line</var> &hellip;</em></dt>
-<dt><a name="index-dbstop-4"></a>Built-in Function: <em><var>rline</var> =</em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;)</em></dt>
-<dt><a name="index-dbstop-5"></a>Built-in Function: <em><var>rline</var> =</em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;, <var>line</var>)</em></dt>
-<dt><a name="index-dbstop-6"></a>Built-in Function: <em><var>rline</var> =</em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;, <var>line1</var>, <var>line2</var>, &hellip;)</em></dt>
-<dt><a name="index-dbstop-7"></a>Built-in Function: <em></em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;, [<var>line1</var>, &hellip;])</em></dt>
-<dt><a name="index-dbstop-8"></a>Built-in Function: <em></em> <strong>dbstop</strong> <em>(<var>line</var>, &hellip;)</em></dt>
-<dd><p>Set a breakpoint at line number <var>line</var> in function <var>func</var>.
+<dt><a name="index-dbstop"></a>: <em></em> <strong>dbstop</strong> <em><var>func</var></em></dt>
+<dt><a name="index-dbstop-1"></a>: <em></em> <strong>dbstop</strong> <em><var>func</var> <var>line</var></em></dt>
+<dt><a name="index-dbstop-2"></a>: <em></em> <strong>dbstop</strong> <em><var>func</var> <var>line1</var> <var>line2</var> &hellip;</em></dt>
+<dt><a name="index-dbstop-3"></a>: <em></em> <strong>dbstop</strong> <em><var>line1</var> &hellip;</em></dt>
+<dt><a name="index-dbstop-4"></a>: <em></em> <strong>dbstop</strong> <em>in <var>func</var></em></dt>
+<dt><a name="index-dbstop-5"></a>: <em></em> <strong>dbstop</strong> <em>in <var>func</var> at <var>line</var></em></dt>
+<dt><a name="index-dbstop-6"></a>: <em></em> <strong>dbstop</strong> <em>in <var>func</var> at <var>line</var> if &quot;<var>condition</var>&quot;</em></dt>
+<dt><a name="index-dbstop-7"></a>: <em></em> <strong>dbstop</strong> <em>if <var>event</var></em></dt>
+<dt><a name="index-dbstop-8"></a>: <em></em> <strong>dbstop</strong> <em>if <var>event</var> <var>ID</var></em></dt>
+<dt><a name="index-dbstop-9"></a>: <em></em> <strong>dbstop</strong> <em>(<var>bp_struct</var>)</em></dt>
+<dt><a name="index-dbstop-10"></a>: <em><var>rline</var> =</em> <strong>dbstop</strong> <em>&hellip;</em></dt>
+<dd>
+<p>Set breakpoints for the built-in debugger.
 </p>
-<p>Arguments are
+<p><var>func</var> is the name of a function on the current <code>path</code>.  When
+already in debug mode the <var>func</var> argument can be omitted and the current
+function will be used.  Breakpoints at subfunctions are set with the scope
+operator &lsquo;<samp>&gt;</samp>&rsquo;.  For example, If <samp>file.m</samp> has a subfunction
+<code>func2</code>, then a breakpoint in <code>func2</code> can be specified by
+<code>file&gt;func2</code>.
+</p>
+<p><var>line</var> is the line number at which to break.  If <var>line</var> is not
+specified, it defaults to the first executable line in the file
+<samp>func.m</samp>.  Multiple lines can be specified in a single command; when
+function syntax is used, the lines may also be passed as a single vector
+argument (<code>[<var>line1</var>, <var>line2</var>, &hellip;]</code>).
+</p>
+<p><var>condition</var> is any Octave expression that can be evaluated in the code
+context that exists at the breakpoint.  When the breakpoint is encountered,
+<var>condition</var> will be evaluated, and execution will stop if
+<var>condition</var> is true.  If <var>condition</var> cannot be evaluated, for
+example because it refers to an undefined variable, an error will be thrown.
+ Expressions with side effects (such as <code>y++ &gt; 1</code>) will alter
+variables, and should generally be avoided.  Conditions containing quotes
+(&lsquo;<samp>&quot;</samp>&rsquo;, &lsquo;<samp>'</samp>&rsquo;) or comment characters (&lsquo;<samp>#</samp>&rsquo;, &lsquo;<samp>%</samp>&rsquo;) must be
+enclosed in quotes.  (This does not apply to conditions entered from the
+editor&rsquo;s context menu.)  For example:
+</p>
+<div class="example">
+<pre class="example">dbstop in strread at 209 if 'any (format == &quot;%f&quot;)'
+</pre></div>
+
+<p>The form specifying <var>event</var> does not cause a specific breakpoint at a
+given function and line number.  Instead it causes debug mode to be entered
+when certain unexpected events are encountered.  Possible values are
 </p>
 <dl compact="compact">
-<dt><var>func</var></dt>
-<dd><p>Function name as a string variable.  When already in debug mode this argument
-can be omitted and the current function will be used.
+<dt><code>error</code></dt>
+<dd><p>Stop when an error is reported.  This is equivalent to specifying
+both <code>debug_on_error (true)</code> and <code>debug_on_interrupt (true)</code>.
 </p>
 </dd>
-<dt><var>line</var></dt>
-<dd><p>Line number where the breakpoint should be set.  Multiple lines may be given
-as separate arguments or as a vector.
+<dt><code>caught error</code></dt>
+<dd><p>Stop when an error is caught by a try-catch block (not yet implemented).
+</p>
+</dd>
+<dt><code>interrupt</code></dt>
+<dd><p>Stop when an interrupt (<kbd>Ctrl-C</kbd>) occurs.
+</p>
+</dd>
+<dt><code>naninf</code></dt>
+<dd><p>Stop when code returns a non-finite value (not yet implemented).
+</p>
+</dd>
+<dt><code>warning</code></dt>
+<dd><p>Stop when a warning is reported.  This is equivalent to specifying
+<code>debug_on_warning (true)</code>.
 </p></dd>
 </dl>
 
-<p>When called with a single argument <var>func</var>, the breakpoint is set at the
-first executable line in the named function.
+<p>The events <code>error</code>, <code>caught error</code>, and <code>warning</code> can all be
+followed by a string specifying an error ID or warning ID.  If that is
+done, only errors with the specified ID will cause execution to stop.  To
+stop on one of a set of IDs, multiple <code>dbstop</code> commands must be
+issued.
+</p>
+<p>Breakpoints and events can be removed using the <code>dbclear</code> command with
+the same syntax.
+</p>
+<p>It is possible to save all breakpoints and restore them at once by issuing
+the commands <code>bp_state = dbstatus; &hellip;; dbstop (bp_state)</code>.
 </p>
 <p>The optional output <var>rline</var> is the real line number where the breakpoint
 was set.  This can differ from the specified line if the line is not
 executable.  For example, if a breakpoint attempted on a blank line then
 Octave will set the real breakpoint at the next executable line.
 </p>
+<p>When a file is re-parsed, such as when it is modified outside the GUI,
+all breakpoints within the file are cleared.
+</p>
+
 <p><strong>See also:</strong> <a href="#XREFdbclear">dbclear</a>, <a href="#XREFdbstatus">dbstatus</a>, <a href="Debug-Mode.html#XREFdbstep">dbstep</a>, <a href="Entering-Debug-Mode.html#XREFdebug_005fon_005ferror">debug_on_error</a>, <a href="Entering-Debug-Mode.html#XREFdebug_005fon_005fwarning">debug_on_warning</a>, <a href="Entering-Debug-Mode.html#XREFdebug_005fon_005finterrupt">debug_on_interrupt</a>.
 </p></dd></dl>
 
@@ -118,9 +177,9 @@ effectively set to line 29.  The status of breakpoints in a function can
 be queried with <code>dbstatus</code>.
 </p>
 <a name="XREFdbstatus"></a><dl>
-<dt><a name="index-dbstatus"></a>Built-in Function: <em></em> <strong>dbstatus</strong> <em>()</em></dt>
-<dt><a name="index-dbstatus-1"></a>Built-in Function: <em><var>brk_list</var> =</em> <strong>dbstatus</strong> <em>()</em></dt>
-<dt><a name="index-dbstatus-2"></a>Built-in Function: <em><var>brk_list</var> =</em> <strong>dbstatus</strong> <em>(&quot;<var>func</var>&quot;)</em></dt>
+<dt><a name="index-dbstatus"></a>: <em></em> <strong>dbstatus</strong></dt>
+<dt><a name="index-dbstatus-1"></a>: <em></em> <strong>dbstatus</strong> <em><var>func</var></em></dt>
+<dt><a name="index-dbstatus-2"></a>: <em><var>bp_list</var> =</em> <strong>dbstatus</strong> <em>&hellip;</em></dt>
 <dd><p>Report the location of active breakpoints.
 </p>
 <p>When called with no input or output arguments, print the list of all
@@ -128,14 +187,15 @@ functions with breakpoints and the line numbers where those breakpoints are
 set.
 </p>
 <p>If a function name <var>func</var> is specified then only report breakpoints
-for the named function.
+for the named function and its subfunctions.
 </p>
-<p>The optional return argument <var>brk_list</var> is a struct array with the
+<p>The optional return argument <var>bp_list</var> is a struct array with the
 following fields.
 </p>
 <dl compact="compact">
 <dt>name</dt>
-<dd><p>The name of the function with a breakpoint.
+<dd><p>The name of the function with a breakpoint.  A subfunction, say <code>func2</code>
+within an m-file, say <samp>file.m</samp>, is specified as <code>file&gt;func2</code>.
 </p>
 </dd>
 <dt>file</dt>
@@ -143,15 +203,23 @@ following fields.
 </p>
 </dd>
 <dt>line</dt>
-<dd><p>A line number, or vector of line numbers, with a breakpoint.
+<dd><p>The line number with the breakpoint.
+</p>
+</dd>
+<dt>cond</dt>
+<dd><p>The condition that must be satisfied for the breakpoint to be active, or
+the empty string for unconditional breakpoints.
 </p></dd>
 </dl>
 
-<p>Note: When <code>dbstatus</code> is called from the debug prompt within a function,
-the list of breakpoints is automatically trimmed to the breakpoints in the
-current function.
+<p>If <code>dbstop if error</code> is true but no explicit IDs are specified, the
+return value will have an empty field called <code>&quot;errs&quot;</code>.  If IDs are
+specified, the <code>errs</code> field will have one row per ID.  If
+<code>dbstop if error</code> is false, there is no <code>&quot;errs&quot;</code> field.
+The <code>&quot;warn&quot;</code> field is set similarly by <code>dbstop if warning</code>.
 </p>
-<p><strong>See also:</strong> <a href="#XREFdbclear">dbclear</a>, <a href="Debug-Mode.html#XREFdbwhere">dbwhere</a>.
+
+<p><strong>See also:</strong> <a href="#XREFdbstop">dbstop</a>, <a href="#XREFdbclear">dbclear</a>, <a href="Debug-Mode.html#XREFdbwhere">dbwhere</a>, <a href="Debug-Mode.html#XREFdblist">dblist</a>, <a href="Call-Stack.html#XREFdbstack">dbstack</a>.
 </p></dd></dl>
 
 
@@ -160,30 +228,38 @@ current function.
 function.
 </p>
 <a name="XREFdbclear"></a><dl>
-<dt><a name="index-dbclear"></a>Command: <em></em> <strong>dbclear</strong> <em><var>func</var></em></dt>
-<dt><a name="index-dbclear-1"></a>Command: <em></em> <strong>dbclear</strong> <em><var>func</var> <var>line</var></em></dt>
-<dt><a name="index-dbclear-2"></a>Command: <em></em> <strong>dbclear</strong> <em><var>func</var> <var>line1</var> <var>line2</var> &hellip;</em></dt>
-<dt><a name="index-dbclear-3"></a>Command: <em></em> <strong>dbclear</strong> <em><var>line</var> &hellip;</em></dt>
-<dt><a name="index-dbclear-4"></a>Command: <em></em> <strong>dbclear</strong> <em>all</em></dt>
-<dt><a name="index-dbclear-5"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;)</em></dt>
-<dt><a name="index-dbclear-6"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;, <var>line</var>)</em></dt>
-<dt><a name="index-dbclear-7"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;, <var>line1</var>, <var>line2</var>, &hellip;)</em></dt>
-<dt><a name="index-dbclear-8"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;, [<var>line1</var>, &hellip;])</em></dt>
-<dt><a name="index-dbclear-9"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(<var>line</var>, &hellip;)</em></dt>
-<dt><a name="index-dbclear-10"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;all&quot;)</em></dt>
+<dt><a name="index-dbclear"></a>: <em></em> <strong>dbclear</strong> <em><var>func</var></em></dt>
+<dt><a name="index-dbclear-1"></a>: <em></em> <strong>dbclear</strong> <em><var>func</var> <var>line</var></em></dt>
+<dt><a name="index-dbclear-2"></a>: <em></em> <strong>dbclear</strong> <em><var>func</var> <var>line1</var> <var>line2</var> &hellip;</em></dt>
+<dt><a name="index-dbclear-3"></a>: <em></em> <strong>dbclear</strong> <em><var>line</var> &hellip;</em></dt>
+<dt><a name="index-dbclear-4"></a>: <em></em> <strong>dbclear</strong> <em>all</em></dt>
+<dt><a name="index-dbclear-5"></a>: <em></em> <strong>dbclear</strong> <em>in <var>func</var></em></dt>
+<dt><a name="index-dbclear-6"></a>: <em></em> <strong>dbclear</strong> <em>in <var>func</var> at <var>line</var></em></dt>
+<dt><a name="index-dbclear-7"></a>: <em></em> <strong>dbclear</strong> <em>if <var>event</var></em></dt>
+<dt><a name="index-dbclear-8"></a>: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;)</em></dt>
+<dt><a name="index-dbclear-9"></a>: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;, <var>line</var>)</em></dt>
+<dt><a name="index-dbclear-10"></a>: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;, <var>line1</var>, <var>line2</var>, &hellip;)</em></dt>
+<dt><a name="index-dbclear-11"></a>: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;, <var>line1</var>, &hellip;)</em></dt>
+<dt><a name="index-dbclear-12"></a>: <em></em> <strong>dbclear</strong> <em>(<var>line</var>, &hellip;)</em></dt>
+<dt><a name="index-dbclear-13"></a>: <em></em> <strong>dbclear</strong> <em>(&quot;all&quot;)</em></dt>
 <dd><p>Delete a breakpoint at line number <var>line</var> in the function <var>func</var>.
 </p>
 <p>Arguments are
 </p>
 <dl compact="compact">
 <dt><var>func</var></dt>
-<dd><p>Function name as a string variable.  When already in debug mode this argument
-can be omitted and the current function will be used.
+<dd><p>Function name as a string variable.  When already in debug mode this
+argument can be omitted and the current function will be used.
 </p>
 </dd>
 <dt><var>line</var></dt>
 <dd><p>Line number from which to remove a breakpoint.  Multiple lines may be given
 as separate arguments or as a vector.
+</p>
+</dd>
+<dt><var>event</var></dt>
+<dd><p>An event such as <code>error</code>, <code>interrupt</code>, or <code>warning</code>
+(see <a href="#XREFdbstop">dbstop</a> for details).
 </p></dd>
 </dl>
 
@@ -232,8 +308,8 @@ be
 use of the <code>keyboard</code> function.
 </p>
 <a name="XREFkeyboard"></a><dl>
-<dt><a name="index-keyboard"></a>Built-in Function: <em></em> <strong>keyboard</strong> <em>()</em></dt>
-<dt><a name="index-keyboard-1"></a>Built-in Function: <em></em> <strong>keyboard</strong> <em>(&quot;<var>prompt</var>&quot;)</em></dt>
+<dt><a name="index-keyboard"></a>: <em></em> <strong>keyboard</strong> <em>()</em></dt>
+<dt><a name="index-keyboard-1"></a>: <em></em> <strong>keyboard</strong> <em>(&quot;<var>prompt</var>&quot;)</em></dt>
 <dd><p>Stop m-file execution and enter debug mode.
 </p>
 <p>When the <code>keyboard</code> function is executed, Octave prints a prompt and

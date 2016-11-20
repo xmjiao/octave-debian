@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -67,10 +67,10 @@ the central tendency of the data.
 
 @c mean scripts/statistics/base/mean.m
 @anchor{XREFmean}
-@deftypefn  {Function File} {} mean (@var{x})
-@deftypefnx {Function File} {} mean (@var{x}, @var{dim})
-@deftypefnx {Function File} {} mean (@var{x}, @var{opt})
-@deftypefnx {Function File} {} mean (@var{x}, @var{dim}, @var{opt})
+@deftypefn  {} {} mean (@var{x})
+@deftypefnx {} {} mean (@var{x}, @var{dim})
+@deftypefnx {} {} mean (@var{x}, @var{opt})
+@deftypefnx {} {} mean (@var{x}, @var{dim}, @var{opt})
 Compute the mean of the elements of the vector @var{x}.
 
 The mean is defined as
@@ -112,8 +112,8 @@ may appear first.
 
 @c median scripts/statistics/base/median.m
 @anchor{XREFmedian}
-@deftypefn  {Function File} {} median (@var{x})
-@deftypefnx {Function File} {} median (@var{x}, @var{dim})
+@deftypefn  {} {} median (@var{x})
+@deftypefnx {} {} median (@var{x}, @var{dim})
 Compute the median value of the elements of the vector @var{x}.
 
 When the elements of @var{x} are sorted, the median is defined as
@@ -135,6 +135,9 @@ median (x) =
 @end example
 
 @end ifnottex
+If @var{x} is of a discrete type such as integer or logical, then
+the case of even N rounds up (or toward @code{true}).
+
 If @var{x} is a matrix, compute the median value for each column and
 return them in a row vector.
 
@@ -145,9 +148,9 @@ If the optional @var{dim} argument is given, operate along this dimension.
 
 @c mode scripts/statistics/base/mode.m
 @anchor{XREFmode}
-@deftypefn  {Function File} {} mode (@var{x})
-@deftypefnx {Function File} {} mode (@var{x}, @var{dim})
-@deftypefnx {Function File} {[@var{m}, @var{f}, @var{c}] =} mode (@dots{})
+@deftypefn  {} {} mode (@var{x})
+@deftypefnx {} {} mode (@var{x}, @var{dim})
+@deftypefnx {} {[@var{m}, @var{f}, @var{c}] =} mode (@dots{})
 Compute the most frequently occurring value in a dataset (mode).
 
 @code{mode} determines the frequency of values along the first non-singleton
@@ -172,8 +175,8 @@ measuring dispersion.
 
 @c range scripts/statistics/base/range.m
 @anchor{XREFrange}
-@deftypefn  {Function File} {} range (@var{x})
-@deftypefnx {Function File} {} range (@var{x}, @var{dim})
+@deftypefn  {} {} range (@var{x})
+@deftypefnx {} {} range (@var{x}, @var{dim})
 Return the range, i.e., the difference between the maximum and the minimum
 of the input data.
 
@@ -191,8 +194,8 @@ is less accurate than @code{iqr} if there are outlying data points.
 
 @c iqr scripts/statistics/base/iqr.m
 @anchor{XREFiqr}
-@deftypefn  {Function File} {} iqr (@var{x})
-@deftypefnx {Function File} {} iqr (@var{x}, @var{dim})
+@deftypefn  {} {} iqr (@var{x})
+@deftypefnx {} {} iqr (@var{x}, @var{dim})
 Return the interquartile range, i.e., the difference between the upper
 and lower quartile of the input data.
 
@@ -209,8 +212,8 @@ outliers than either @code{range} or @code{std}.
 
 @c meansq scripts/statistics/base/meansq.m
 @anchor{XREFmeansq}
-@deftypefn  {Function File} {} meansq (@var{x})
-@deftypefnx {Function File} {} meansq (@var{x}, @var{dim})
+@deftypefn  {} {} meansq (@var{x})
+@deftypefnx {} {} meansq (@var{x}, @var{dim})
 Compute the mean square of the elements of the vector @var{x}.
 
 The mean square is defined as
@@ -239,9 +242,9 @@ If the optional argument @var{dim} is given, operate along this dimension.
 
 @c std scripts/statistics/base/std.m
 @anchor{XREFstd}
-@deftypefn  {Function File} {} std (@var{x})
-@deftypefnx {Function File} {} std (@var{x}, @var{opt})
-@deftypefnx {Function File} {} std (@var{x}, @var{opt}, @var{dim})
+@deftypefn  {} {} std (@var{x})
+@deftypefnx {} {} std (@var{x}, @var{opt})
+@deftypefnx {} {} std (@var{x}, @var{opt}, @var{dim})
 Compute the standard deviation of the elements of the vector @var{x}.
 
 The standard deviation is defined as
@@ -292,9 +295,9 @@ measures to be developed.
 
 @c var scripts/statistics/base/var.m
 @anchor{XREFvar}
-@deftypefn  {Function File} {} var (@var{x})
-@deftypefnx {Function File} {} var (@var{x}, @var{opt})
-@deftypefnx {Function File} {} var (@var{x}, @var{opt}, @var{dim})
+@deftypefn  {} {} var (@var{x})
+@deftypefnx {} {} var (@var{x}, @var{opt})
+@deftypefnx {} {} var (@var{x}, @var{opt}, @var{dim})
 Compute the variance of the elements of the vector @var{x}.
 
 The variance is defined as
@@ -338,9 +341,9 @@ If the optional argument @var{dim} is given, operate along this dimension.
 
 @c skewness scripts/statistics/base/skewness.m
 @anchor{XREFskewness}
-@deftypefn  {Function File} {} skewness (@var{x})
-@deftypefnx {Function File} {} skewness (@var{x}, @var{flag})
-@deftypefnx {Function File} {} skewness (@var{x}, @var{flag}, @var{dim})
+@deftypefn  {} {} skewness (@var{x})
+@deftypefnx {} {} skewness (@var{x}, @var{flag})
+@deftypefnx {} {} skewness (@var{x}, @var{flag}, @var{dim})
 Compute the sample skewness of the elements of @var{x}.
 
 The sample skewness is defined as
@@ -399,9 +402,9 @@ the skewness along the first non-singleton dimension.  If the optional
 
 @c kurtosis scripts/statistics/base/kurtosis.m
 @anchor{XREFkurtosis}
-@deftypefn  {Function File} {} kurtosis (@var{x})
-@deftypefnx {Function File} {} kurtosis (@var{x}, @var{flag})
-@deftypefnx {Function File} {} kurtosis (@var{x}, @var{flag}, @var{dim})
+@deftypefn  {} {} kurtosis (@var{x})
+@deftypefnx {} {} kurtosis (@var{x}, @var{flag})
+@deftypefnx {} {} kurtosis (@var{x}, @var{flag}, @var{dim})
 Compute the sample kurtosis of the elements of @var{x}.
 
 The sample kurtosis is defined as
@@ -461,11 +464,11 @@ the kurtosis along the first non-singleton dimension.  If the optional
 
 @c moment scripts/statistics/base/moment.m
 @anchor{XREFmoment}
-@deftypefn  {Function File} {} moment (@var{x}, @var{p})
-@deftypefnx {Function File} {} moment (@var{x}, @var{p}, @var{type})
-@deftypefnx {Function File} {} moment (@var{x}, @var{p}, @var{dim})
-@deftypefnx {Function File} {} moment (@var{x}, @var{p}, @var{type}, @var{dim})
-@deftypefnx {Function File} {} moment (@var{x}, @var{p}, @var{dim}, @var{type})
+@deftypefn  {} {} moment (@var{x}, @var{p})
+@deftypefnx {} {} moment (@var{x}, @var{p}, @var{type})
+@deftypefnx {} {} moment (@var{x}, @var{p}, @var{dim})
+@deftypefnx {} {} moment (@var{x}, @var{p}, @var{type}, @var{dim})
+@deftypefnx {} {} moment (@var{x}, @var{p}, @var{dim}, @var{type})
 Compute the @var{p}-th central moment of the vector @var{x}.
 
 @tex
@@ -557,10 +560,10 @@ If both @var{type} and @var{dim} are given they may appear in any order.
 
 @c quantile scripts/statistics/base/quantile.m
 @anchor{XREFquantile}
-@deftypefn  {Function File} {@var{q} =} quantile (@var{x})
-@deftypefnx {Function File} {@var{q} =} quantile (@var{x}, @var{p})
-@deftypefnx {Function File} {@var{q} =} quantile (@var{x}, @var{p}, @var{dim})
-@deftypefnx {Function File} {@var{q} =} quantile (@var{x}, @var{p}, @var{dim}, @var{method})
+@deftypefn  {} {@var{q} =} quantile (@var{x})
+@deftypefnx {} {@var{q} =} quantile (@var{x}, @var{p})
+@deftypefnx {} {@var{q} =} quantile (@var{x}, @var{p}, @var{dim})
+@deftypefnx {} {@var{q} =} quantile (@var{x}, @var{p}, @var{dim}, @var{method})
 For a sample, @var{x}, calculate the quantiles, @var{q}, corresponding to
 the cumulative probability values in @var{p}.  All non-numeric values (NaNs)
 of @var{x} are ignored.
@@ -621,7 +624,7 @@ References:
 
 @itemize @bullet
 @item @nospell{Becker, R. A., Chambers, J. M. and Wilks, A. R.} (1988)
-The New S Language.  Wadsworth & Brooks/Cole.
+The New S Language.  @nospell{Wadsworth & Brooks/Cole}.
 
 @item @nospell{Hyndman, R. J. and Fan, Y.} (1996) Sample quantiles in
 statistical packages, American Statistician, 50, 361--365.
@@ -646,9 +649,9 @@ q = quantile (x, [0.25 0.5 0.75]); # Return quartiles of distribution
 
 @c prctile scripts/statistics/base/prctile.m
 @anchor{XREFprctile}
-@deftypefn  {Function File} {@var{q} =} prctile (@var{x})
-@deftypefnx {Function File} {@var{q} =} prctile (@var{x}, @var{p})
-@deftypefnx {Function File} {@var{q} =} prctile (@var{x}, @var{p}, @var{dim})
+@deftypefn  {} {@var{q} =} prctile (@var{x})
+@deftypefnx {} {@var{q} =} prctile (@var{x}, @var{p})
+@deftypefnx {} {@var{q} =} prctile (@var{x}, @var{p}, @var{dim})
 For a sample @var{x}, compute the quantiles, @var{q}, corresponding
 to the cumulative probability values, @var{p}, in percent.
 
@@ -672,8 +675,8 @@ A summary view of a data set can be generated quickly with the
 
 @c statistics scripts/statistics/base/statistics.m
 @anchor{XREFstatistics}
-@deftypefn  {Function File} {} statistics (@var{x})
-@deftypefnx {Function File} {} statistics (@var{x}, @var{dim})
+@deftypefn  {} {} statistics (@var{x})
+@deftypefnx {} {} statistics (@var{x}, @var{dim})
 Return a vector with the minimum, first quartile, median, third quartile,
 maximum, mean, standard deviation, skewness, and kurtosis of the elements of
 the vector @var{x}.
@@ -695,8 +698,8 @@ different measures from those of the basic descriptive statistics.
 
 @c center scripts/statistics/base/center.m
 @anchor{XREFcenter}
-@deftypefn  {Function File} {} center (@var{x})
-@deftypefnx {Function File} {} center (@var{x}, @var{dim})
+@deftypefn  {} {} center (@var{x})
+@deftypefnx {} {} center (@var{x}, @var{dim})
 Center data by subtracting its mean.
 
 If @var{x} is a vector, subtract its mean.
@@ -716,10 +719,10 @@ performed, and then the mean added back to obtain the final answer.
 
 @c zscore scripts/statistics/base/zscore.m
 @anchor{XREFzscore}
-@deftypefn  {Function File} {@var{z} =} zscore (@var{x})
-@deftypefnx {Function File} {@var{z} =} zscore (@var{x}, @var{opt})
-@deftypefnx {Function File} {@var{z} =} zscore (@var{x}, @var{opt}, @var{dim})
-@deftypefnx {Function File} {[@var{z}, @var{mu}, @var{sigma}] =} zscore (@dots{})
+@deftypefn  {} {@var{z} =} zscore (@var{x})
+@deftypefnx {} {@var{z} =} zscore (@var{x}, @var{opt})
+@deftypefnx {} {@var{z} =} zscore (@var{x}, @var{opt}, @var{dim})
+@deftypefnx {} {[@var{z}, @var{mu}, @var{sigma}] =} zscore (@dots{})
 Compute the Z score of @var{x}
 
 If @var{x} is a vector, subtract its mean and divide by its standard
@@ -742,16 +745,16 @@ deviation.
 
 @c histc scripts/statistics/base/histc.m
 @anchor{XREFhistc}
-@deftypefn  {Function File} {@var{n} =} histc (@var{x}, @var{edges})
-@deftypefnx {Function File} {@var{n} =} histc (@var{x}, @var{edges}, @var{dim})
-@deftypefnx {Function File} {[@var{n}, @var{idx}] =} histc (@dots{})
+@deftypefn  {} {@var{n} =} histc (@var{x}, @var{edges})
+@deftypefnx {} {@var{n} =} histc (@var{x}, @var{edges}, @var{dim})
+@deftypefnx {} {[@var{n}, @var{idx}] =} histc (@dots{})
 Compute histogram counts.
 
 When @var{x} is a vector, the function counts the number of elements of
-@var{x} that fall in the histogram bins defined by @var{edges}.  This must be
-a vector of monotonically increasing values that define the edges of the
-histogram bins.  @code{@var{n}(k)} contains the number of elements in
-@var{x} for which @code{@var{edges}(k) <= @var{x} < @var{edges}(k+1)}.
+@var{x} that fall in the histogram bins defined by @var{edges}.  This
+must be a vector of monotonically increasing values that define the edges
+of the histogram bins.  @code{@var{n}(k)} contains the number of elements
+in @var{x} for which @code{@var{edges}(k) <= @var{x} < @var{edges}(k+1)}.
 The final element of @var{n} contains the number of elements of @var{x}
 exactly equal to the last element of @var{edges}.
 
@@ -760,20 +763,21 @@ out along dimension @var{dim}.  If not specified @var{dim} defaults to the
 first non-singleton dimension.
 
 When a second output argument is requested an index matrix is also returned.
-The @var{idx} matrix has the same size as @var{x}.  Each element of @var{idx}
-contains the index of the histogram bin in which the corresponding element
-of @var{x} was counted.
+The @var{idx} matrix has the same size as @var{x}.  Each element of
+@var{idx} contains the index of the histogram bin in which the
+corresponding element of @var{x} was counted.
 @seealso{@ref{XREFhist,,hist}}
 @end deftypefn
 
 
-@c FIXME: really want to put a reference to unique here
-@c @DOCSTRING(values)
+@noindent
+@code{unique} function documented at @ref{XREFunique,,unique} is often
+useful for statistics.
 
 @c nchoosek scripts/specfun/nchoosek.m
 @anchor{XREFnchoosek}
-@deftypefn  {Function File} {@var{c} =} nchoosek (@var{n}, @var{k})
-@deftypefnx {Function File} {@var{c} =} nchoosek (@var{set}, @var{k})
+@deftypefn  {} {@var{c} =} nchoosek (@var{n}, @var{k})
+@deftypefnx {} {@var{c} =} nchoosek (@var{set}, @var{k})
 
 Compute the binomial coefficient of @var{n} or list all possible
 combinations of a @var{set} of items.
@@ -841,7 +845,7 @@ coefficients at once with vector inputs for @var{n} or @var{k}.
 
 @c perms scripts/specfun/perms.m
 @anchor{XREFperms}
-@deftypefn {Function File} {} perms (@var{v})
+@deftypefn {} {} perms (@var{v})
 Generate all permutations of @var{v} with one row per permutation.
 
 The result has size @code{factorial (@var{n}) * @var{n}}, where @var{n}
@@ -870,7 +874,7 @@ equal to 10 to limit memory consumption.
 
 @c ranks scripts/statistics/base/ranks.m
 @anchor{XREFranks}
-@deftypefn {Function File} {} ranks (@var{x}, @var{dim})
+@deftypefn {} {} ranks (@var{x}, @var{dim})
 Return the ranks of @var{x} along the first non-singleton dimension
 adjusted for ties.
 
@@ -881,8 +885,8 @@ If the optional argument @var{dim} is given, operate along this dimension.
 
 @c run_count scripts/statistics/base/run_count.m
 @anchor{XREFrun_count}
-@deftypefn  {Function File} {} run_count (@var{x}, @var{n})
-@deftypefnx {Function File} {} run_count (@var{x}, @var{n}, @var{dim})
+@deftypefn  {} {} run_count (@var{x}, @var{n})
+@deftypefnx {} {} run_count (@var{x}, @var{n}, @var{dim})
 Count the upward runs along the first non-singleton dimension of @var{x}
 of length 1, 2, @dots{}, @var{n}-1 and greater than or equal to @var{n}.
 
@@ -894,8 +898,8 @@ dimension.
 
 @c runlength scripts/statistics/base/runlength.m
 @anchor{XREFrunlength}
-@deftypefn  {Function File} {count =} runlength (@var{x})
-@deftypefnx {Function File} {[count, value] =} runlength (@var{x})
+@deftypefn  {} {count =} runlength (@var{x})
+@deftypefnx {} {[count, value] =} runlength (@var{x})
 Find the lengths of all sequences of common values.
 
 @var{count} is a vector with the lengths of each repeated value.
@@ -915,7 +919,7 @@ runlength ([2, 2, 0, 4, 4, 4, 0, 1, 1, 1, 1])
 
 @c probit scripts/statistics/base/probit.m
 @anchor{XREFprobit}
-@deftypefn {Function File} {} probit (@var{p})
+@deftypefn {} {} probit (@var{p})
 Return the probit (the quantile of the standard normal distribution) for
 each element of @var{p}.
 @seealso{@ref{XREFlogit,,logit}}
@@ -924,7 +928,7 @@ each element of @var{p}.
 
 @c logit scripts/statistics/base/logit.m
 @anchor{XREFlogit}
-@deftypefn {Function File} {} logit (@var{p})
+@deftypefn {} {} logit (@var{p})
 Compute the logit for each value of @var{p}
 
 The logit is defined as
@@ -946,7 +950,7 @@ logit (@var{p}) = log (@var{p} / (1-@var{p}))
 
 @c cloglog scripts/statistics/base/cloglog.m
 @anchor{XREFcloglog}
-@deftypefn {Function File} {} cloglog (@var{x})
+@deftypefn {} {} cloglog (@var{x})
 Return the complementary log-log function of @var{x}.
 
 The complementary log-log function is defined as
@@ -965,21 +969,10 @@ cloglog (x) = - log (- log (@var{x}))
 @end deftypefn
 
 
-@c mahalanobis scripts/statistics/base/mahalanobis.m
-@anchor{XREFmahalanobis}
-@deftypefn {Function File} {} mahalanobis (@var{x}, @var{y})
-Return the Mahalanobis' D-square distance between the multivariate
-samples @var{x} and @var{y}.
-
-The data @var{x} and @var{y} must have the same number of components
-(columns), but may have a different number of observations (rows).
-@end deftypefn
-
-
 @c table scripts/statistics/base/table.m
 @anchor{XREFtable}
-@deftypefn  {Function File} {[@var{t}, @var{l_x}] =} table (@var{x})
-@deftypefnx {Function File} {[@var{t}, @var{l_x}, @var{l_y}] =} table (@var{x}, @var{y})
+@deftypefn  {} {[@var{t}, @var{l_x}] =} table (@var{x})
+@deftypefnx {} {[@var{t}, @var{l_x}, @var{l_y}] =} table (@var{x}, @var{y})
 Create a contingency table @var{t} from data vectors.
 
 The @var{l_x} and @var{l_y} vectors are the corresponding levels.
@@ -1004,11 +997,11 @@ using the @code{hist} function as described in
 
 @c qqplot scripts/statistics/base/qqplot.m
 @anchor{XREFqqplot}
-@deftypefn  {Function File} {[@var{q}, @var{s}] =} qqplot (@var{x})
-@deftypefnx {Function File} {[@var{q}, @var{s}] =} qqplot (@var{x}, @var{y})
-@deftypefnx {Function File} {[@var{q}, @var{s}] =} qqplot (@var{x}, @var{dist})
-@deftypefnx {Function File} {[@var{q}, @var{s}] =} qqplot (@var{x}, @var{y}, @var{params})
-@deftypefnx {Function File} {} qqplot (@dots{})
+@deftypefn  {} {[@var{q}, @var{s}] =} qqplot (@var{x})
+@deftypefnx {} {[@var{q}, @var{s}] =} qqplot (@var{x}, @var{y})
+@deftypefnx {} {[@var{q}, @var{s}] =} qqplot (@var{x}, @var{dist})
+@deftypefnx {} {[@var{q}, @var{s}] =} qqplot (@var{x}, @var{y}, @var{params})
+@deftypefnx {} {} qqplot (@dots{})
 Perform a QQ-plot (quantile plot).
 
 If F is the CDF of the distribution @var{dist} with parameters
@@ -1043,7 +1036,7 @@ If no output arguments are given, the data are plotted directly.
 
 @c ppplot scripts/statistics/base/ppplot.m
 @anchor{XREFppplot}
-@deftypefn {Function File} {[@var{p}, @var{y}] =} ppplot (@var{x}, @var{dist}, @var{params})
+@deftypefn {} {[@var{p}, @var{y}] =} ppplot (@var{x}, @var{dist}, @var{params})
 Perform a PP-plot (probability plot).
 
 If F is the CDF of the distribution @var{dist} with parameters
@@ -1080,10 +1073,10 @@ If no output is requested then the data are plotted immediately.
 
 @c cov scripts/statistics/base/cov.m
 @anchor{XREFcov}
-@deftypefn  {Function File} {} cov (@var{x})
-@deftypefnx {Function File} {} cov (@var{x}, @var{opt})
-@deftypefnx {Function File} {} cov (@var{x}, @var{y})
-@deftypefnx {Function File} {} cov (@var{x}, @var{y}, @var{opt})
+@deftypefn  {} {} cov (@var{x})
+@deftypefnx {} {} cov (@var{x}, @var{opt})
+@deftypefnx {} {} cov (@var{x}, @var{y})
+@deftypefnx {} {} cov (@var{x}, @var{y}, @var{opt})
 Compute the covariance matrix.
 
 If each row of @var{x} and @var{y} is an observation, and each column is
@@ -1119,20 +1112,22 @@ covariance [default]
   normalize with @math{N}, this provides the second moment around the mean
 @end table
 
-Compatibility Note:: Octave always computes the covariance matrix.
-For two inputs, however, @sc{matlab} will calculate
-@code{cov (@var{x}(:), @var{y}(:))} whenever the number of elements in
-@var{x} and @var{y} are equal.  This will result in a scalar rather than
-a matrix output.  Code relying on this odd definition will need to be
-changed when running in Octave.
+Compatibility Note:: Octave always treats rows of @var{x} and @var{y}
+as multivariate random variables.
+For two inputs, however, @sc{matlab} treats @var{x} and @var{y} as two
+univariate distributions regardless of their shapes, and will calculate
+@code{cov ([@var{x}(:), @var{y}(:)])} whenever the number of elements in
+@var{x} and @var{y} are equal.  This will result in a 2x2 matrix.
+Code relying on @sc{matlab}'s definition will need to be changed when
+running in Octave.
 @seealso{@ref{XREFcorr,,corr}}
 @end deftypefn
 
 
 @c corr scripts/statistics/base/corr.m
 @anchor{XREFcorr}
-@deftypefn  {Function File} {} corr (@var{x})
-@deftypefnx {Function File} {} corr (@var{x}, @var{y})
+@deftypefn  {} {} corr (@var{x})
+@deftypefnx {} {} corr (@var{x}, @var{y})
 Compute matrix of correlation coefficients.
 
 If each row of @var{x} and @var{y} is an observation and each column is
@@ -1159,8 +1154,8 @@ the correlation between the columns of @var{x}.
 
 @c spearman scripts/statistics/base/spearman.m
 @anchor{XREFspearman}
-@deftypefn  {Function File} {} spearman (@var{x})
-@deftypefnx {Function File} {} spearman (@var{x}, @var{y})
+@deftypefn  {} {} spearman (@var{x})
+@deftypefnx {} {} spearman (@var{x}, @var{y})
 @cindex Spearman's Rho
 Compute Spearman's rank correlation coefficient @var{rho}.
 
@@ -1179,8 +1174,8 @@ normally distributed.
 
 @c kendall scripts/statistics/base/kendall.m
 @anchor{XREFkendall}
-@deftypefn  {Function File} {} kendall (@var{x})
-@deftypefnx {Function File} {} kendall (@var{x}, @var{y})
+@deftypefn  {} {} kendall (@var{x})
+@deftypefnx {} {} kendall (@var{x}, @var{y})
 @cindex Kendall's Tau
 Compute Kendall's @var{tau}.
 
@@ -1233,7 +1228,7 @@ ${2 (2n+5) \over 9n(n-1)}$.
 
 @c logistic_regression scripts/statistics/models/logistic_regression.m
 @anchor{XREFlogistic_regression}
-@deftypefn {Function File} {[@var{theta}, @var{beta}, @var{dev}, @var{dl}, @var{d2l}, @var{p}] =} logistic_regression (@var{y}, @var{x}, @var{print}, @var{theta}, @var{beta})
+@deftypefn {} {[@var{theta}, @var{beta}, @var{dev}, @var{dl}, @var{d2l}, @var{p}] =} logistic_regression (@var{y}, @var{x}, @var{print}, @var{theta}, @var{beta})
 Perform ordinal logistic regression.
 
 Suppose @var{y} takes values in @var{k} ordered categories, and let
@@ -1440,7 +1435,7 @@ alphabetical order).
 
 @c betapdf scripts/statistics/distributions/betapdf.m
 @anchor{XREFbetapdf}
-@deftypefn {Function File} {} betapdf (@var{x}, @var{a}, @var{b})
+@deftypefn {} {} betapdf (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the Beta distribution with parameters @var{a} and @var{b}.
 @end deftypefn
@@ -1448,7 +1443,7 @@ at @var{x} of the Beta distribution with parameters @var{a} and @var{b}.
 
 @c betacdf scripts/statistics/distributions/betacdf.m
 @anchor{XREFbetacdf}
-@deftypefn {Function File} {} betacdf (@var{x}, @var{a}, @var{b})
+@deftypefn {} {} betacdf (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the Beta distribution with parameters @var{a} and
 @var{b}.
@@ -1457,7 +1452,7 @@ For each element of @var{x}, compute the cumulative distribution function
 
 @c betainv scripts/statistics/distributions/betainv.m
 @anchor{XREFbetainv}
-@deftypefn {Function File} {} betainv (@var{x}, @var{a}, @var{b})
+@deftypefn {} {} betainv (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the Beta distribution with parameters @var{a} and @var{b}.
 @end deftypefn
@@ -1465,7 +1460,7 @@ at @var{x} of the Beta distribution with parameters @var{a} and @var{b}.
 
 @c binopdf scripts/statistics/distributions/binopdf.m
 @anchor{XREFbinopdf}
-@deftypefn {Function File} {} binopdf (@var{x}, @var{n}, @var{p})
+@deftypefn {} {} binopdf (@var{x}, @var{n}, @var{p})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the binomial distribution with parameters @var{n} and @var{p},
 where @var{n} is the number of trials and @var{p} is the probability of
@@ -1475,7 +1470,7 @@ success.
 
 @c binocdf scripts/statistics/distributions/binocdf.m
 @anchor{XREFbinocdf}
-@deftypefn {Function File} {} binocdf (@var{x}, @var{n}, @var{p})
+@deftypefn {} {} binocdf (@var{x}, @var{n}, @var{p})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the binomial distribution with parameters @var{n} and
 @var{p}, where @var{n} is the number of trials and @var{p} is the
@@ -1485,7 +1480,7 @@ probability of success.
 
 @c binoinv scripts/statistics/distributions/binoinv.m
 @anchor{XREFbinoinv}
-@deftypefn {Function File} {} binoinv (@var{x}, @var{n}, @var{p})
+@deftypefn {} {} binoinv (@var{x}, @var{n}, @var{p})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the binomial distribution with parameters
 @var{n} and @var{p}, where @var{n} is the number of trials and
@@ -1495,8 +1490,8 @@ at @var{x} of the binomial distribution with parameters
 
 @c cauchy_pdf scripts/statistics/distributions/cauchy_pdf.m
 @anchor{XREFcauchy_pdf}
-@deftypefn  {Function File} {} cauchy_pdf (@var{x})
-@deftypefnx {Function File} {} cauchy_pdf (@var{x}, @var{location}, @var{scale})
+@deftypefn  {} {} cauchy_pdf (@var{x})
+@deftypefnx {} {} cauchy_pdf (@var{x}, @var{location}, @var{scale})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the Cauchy distribution with location parameter
 @var{location} and scale parameter @var{scale} > 0.
@@ -1507,8 +1502,8 @@ Default values are @var{location} = 0, @var{scale} = 1.
 
 @c cauchy_cdf scripts/statistics/distributions/cauchy_cdf.m
 @anchor{XREFcauchy_cdf}
-@deftypefn  {Function File} {} cauchy_cdf (@var{x})
-@deftypefnx {Function File} {} cauchy_cdf (@var{x}, @var{location}, @var{scale})
+@deftypefn  {} {} cauchy_cdf (@var{x})
+@deftypefnx {} {} cauchy_cdf (@var{x}, @var{location}, @var{scale})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the Cauchy distribution with location parameter
 @var{location} and scale parameter @var{scale}.
@@ -1519,8 +1514,8 @@ Default values are @var{location} = 0, @var{scale} = 1.
 
 @c cauchy_inv scripts/statistics/distributions/cauchy_inv.m
 @anchor{XREFcauchy_inv}
-@deftypefn  {Function File} {} cauchy_inv (@var{x})
-@deftypefnx {Function File} {} cauchy_inv (@var{x}, @var{location}, @var{scale})
+@deftypefn  {} {} cauchy_inv (@var{x})
+@deftypefnx {} {} cauchy_inv (@var{x}, @var{location}, @var{scale})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the Cauchy distribution with location parameter
 @var{location} and scale parameter @var{scale}.
@@ -1531,7 +1526,7 @@ Default values are @var{location} = 0, @var{scale} = 1.
 
 @c chi2pdf scripts/statistics/distributions/chi2pdf.m
 @anchor{XREFchi2pdf}
-@deftypefn {Function File} {} chi2pdf (@var{x}, @var{n})
+@deftypefn {} {} chi2pdf (@var{x}, @var{n})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the chi-square distribution with @var{n} degrees of freedom.
 @end deftypefn
@@ -1539,7 +1534,7 @@ at @var{x} of the chi-square distribution with @var{n} degrees of freedom.
 
 @c chi2cdf scripts/statistics/distributions/chi2cdf.m
 @anchor{XREFchi2cdf}
-@deftypefn {Function File} {} chi2cdf (@var{x}, @var{n})
+@deftypefn {} {} chi2cdf (@var{x}, @var{n})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the chi-square distribution with @var{n} degrees of
 freedom.
@@ -1548,7 +1543,7 @@ freedom.
 
 @c chi2inv scripts/statistics/distributions/chi2inv.m
 @anchor{XREFchi2inv}
-@deftypefn {Function File} {} chi2inv (@var{x}, @var{n})
+@deftypefn {} {} chi2inv (@var{x}, @var{n})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the chi-square distribution with @var{n} degrees of freedom.
 @end deftypefn
@@ -1556,7 +1551,7 @@ at @var{x} of the chi-square distribution with @var{n} degrees of freedom.
 
 @c discrete_pdf scripts/statistics/distributions/discrete_pdf.m
 @anchor{XREFdiscrete_pdf}
-@deftypefn {Function File} {} discrete_pdf (@var{x}, @var{v}, @var{p})
+@deftypefn {} {} discrete_pdf (@var{x}, @var{v}, @var{p})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of a univariate discrete distribution which assumes the values
 in @var{v} with probabilities @var{p}.
@@ -1565,7 +1560,7 @@ in @var{v} with probabilities @var{p}.
 
 @c discrete_cdf scripts/statistics/distributions/discrete_cdf.m
 @anchor{XREFdiscrete_cdf}
-@deftypefn {Function File} {} discrete_cdf (@var{x}, @var{v}, @var{p})
+@deftypefn {} {} discrete_cdf (@var{x}, @var{v}, @var{p})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of a univariate discrete distribution which assumes the
 values in @var{v} with probabilities @var{p}.
@@ -1574,7 +1569,7 @@ values in @var{v} with probabilities @var{p}.
 
 @c discrete_inv scripts/statistics/distributions/discrete_inv.m
 @anchor{XREFdiscrete_inv}
-@deftypefn {Function File} {} discrete_inv (@var{x}, @var{v}, @var{p})
+@deftypefn {} {} discrete_inv (@var{x}, @var{v}, @var{p})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the univariate distribution which assumes the values in
 @var{v} with probabilities @var{p}.
@@ -1583,7 +1578,7 @@ at @var{x} of the univariate distribution which assumes the values in
 
 @c empirical_pdf scripts/statistics/distributions/empirical_pdf.m
 @anchor{XREFempirical_pdf}
-@deftypefn {Function File} {} empirical_pdf (@var{x}, @var{data})
+@deftypefn {} {} empirical_pdf (@var{x}, @var{data})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the empirical distribution obtained from the
 univariate sample @var{data}.
@@ -1592,7 +1587,7 @@ univariate sample @var{data}.
 
 @c empirical_cdf scripts/statistics/distributions/empirical_cdf.m
 @anchor{XREFempirical_cdf}
-@deftypefn {Function File} {} empirical_cdf (@var{x}, @var{data})
+@deftypefn {} {} empirical_cdf (@var{x}, @var{data})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the empirical distribution obtained from
 the univariate sample @var{data}.
@@ -1601,7 +1596,7 @@ the univariate sample @var{data}.
 
 @c empirical_inv scripts/statistics/distributions/empirical_inv.m
 @anchor{XREFempirical_inv}
-@deftypefn {Function File} {} empirical_inv (@var{x}, @var{data})
+@deftypefn {} {} empirical_inv (@var{x}, @var{data})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the empirical distribution obtained from the
 univariate sample @var{data}.
@@ -1610,7 +1605,7 @@ univariate sample @var{data}.
 
 @c exppdf scripts/statistics/distributions/exppdf.m
 @anchor{XREFexppdf}
-@deftypefn {Function File} {} exppdf (@var{x}, @var{lambda})
+@deftypefn {} {} exppdf (@var{x}, @var{lambda})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the exponential distribution with mean @var{lambda}.
 @end deftypefn
@@ -1618,7 +1613,7 @@ at @var{x} of the exponential distribution with mean @var{lambda}.
 
 @c expcdf scripts/statistics/distributions/expcdf.m
 @anchor{XREFexpcdf}
-@deftypefn {Function File} {} expcdf (@var{x}, @var{lambda})
+@deftypefn {} {} expcdf (@var{x}, @var{lambda})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the exponential distribution with mean @var{lambda}.
 
@@ -1628,7 +1623,7 @@ The arguments can be of common size or scalars.
 
 @c expinv scripts/statistics/distributions/expinv.m
 @anchor{XREFexpinv}
-@deftypefn {Function File} {} expinv (@var{x}, @var{lambda})
+@deftypefn {} {} expinv (@var{x}, @var{lambda})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the exponential distribution with mean @var{lambda}.
 @end deftypefn
@@ -1636,15 +1631,16 @@ at @var{x} of the exponential distribution with mean @var{lambda}.
 
 @c fpdf scripts/statistics/distributions/fpdf.m
 @anchor{XREFfpdf}
-@deftypefn {Function File} {} fpdf (@var{x}, @var{m}, @var{n})
+@deftypefn {} {} fpdf (@var{x}, @var{m}, @var{n})
 For each element of @var{x}, compute the probability density function (PDF)
-at @var{x} of the F distribution with @var{m} and @var{n} degrees of freedom.
+at @var{x} of the F distribution with @var{m} and @var{n} degrees of
+freedom.
 @end deftypefn
 
 
 @c fcdf scripts/statistics/distributions/fcdf.m
 @anchor{XREFfcdf}
-@deftypefn {Function File} {} fcdf (@var{x}, @var{m}, @var{n})
+@deftypefn {} {} fcdf (@var{x}, @var{m}, @var{n})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the F distribution with @var{m} and @var{n} degrees of
 freedom.
@@ -1653,15 +1649,16 @@ freedom.
 
 @c finv scripts/statistics/distributions/finv.m
 @anchor{XREFfinv}
-@deftypefn {Function File} {} finv (@var{x}, @var{m}, @var{n})
+@deftypefn {} {} finv (@var{x}, @var{m}, @var{n})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
-at @var{x} of the F distribution with @var{m} and @var{n} degrees of freedom.
+at @var{x} of the F distribution with @var{m} and @var{n} degrees of
+freedom.
 @end deftypefn
 
 
 @c gampdf scripts/statistics/distributions/gampdf.m
 @anchor{XREFgampdf}
-@deftypefn {Function File} {} gampdf (@var{x}, @var{a}, @var{b})
+@deftypefn {} {} gampdf (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, return the probability density function
 (PDF) at @var{x} of the Gamma distribution with shape parameter @var{a} and
 scale @var{b}.
@@ -1670,7 +1667,7 @@ scale @var{b}.
 
 @c gamcdf scripts/statistics/distributions/gamcdf.m
 @anchor{XREFgamcdf}
-@deftypefn {Function File} {} gamcdf (@var{x}, @var{a}, @var{b})
+@deftypefn {} {} gamcdf (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the Gamma distribution with shape parameter @var{a} and
 scale @var{b}.
@@ -1679,7 +1676,7 @@ scale @var{b}.
 
 @c gaminv scripts/statistics/distributions/gaminv.m
 @anchor{XREFgaminv}
-@deftypefn {Function File} {} gaminv (@var{x}, @var{a}, @var{b})
+@deftypefn {} {} gaminv (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the Gamma distribution with shape parameter @var{a} and
 scale @var{b}.
@@ -1688,7 +1685,7 @@ scale @var{b}.
 
 @c geopdf scripts/statistics/distributions/geopdf.m
 @anchor{XREFgeopdf}
-@deftypefn {Function File} {} geopdf (@var{x}, @var{p})
+@deftypefn {} {} geopdf (@var{x}, @var{p})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the geometric distribution with parameter @var{p}.
 
@@ -1699,7 +1696,7 @@ Bernoulli trial with probability @var{p} before the first success (@var{x}).
 
 @c geocdf scripts/statistics/distributions/geocdf.m
 @anchor{XREFgeocdf}
-@deftypefn {Function File} {} geocdf (@var{x}, @var{p})
+@deftypefn {} {} geocdf (@var{x}, @var{p})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the geometric distribution with parameter @var{p}.
 
@@ -1710,7 +1707,7 @@ Bernoulli trial with probability @var{p} before the first success (@var{x}).
 
 @c geoinv scripts/statistics/distributions/geoinv.m
 @anchor{XREFgeoinv}
-@deftypefn {Function File} {} geoinv (@var{x}, @var{p})
+@deftypefn {} {} geoinv (@var{x}, @var{p})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the geometric distribution with parameter @var{p}.
 
@@ -1721,7 +1718,7 @@ Bernoulli trial with probability @var{p} before the first success (@var{x}).
 
 @c hygepdf scripts/statistics/distributions/hygepdf.m
 @anchor{XREFhygepdf}
-@deftypefn {Function File} {} hygepdf (@var{x}, @var{t}, @var{m}, @var{n})
+@deftypefn {} {} hygepdf (@var{x}, @var{t}, @var{m}, @var{n})
 Compute the probability density function (PDF) at @var{x} of the
 hypergeometric distribution with parameters @var{t}, @var{m}, and @var{n}.
 
@@ -1736,7 +1733,7 @@ with @var{m} and @var{n} not greater than @var{t}.
 
 @c hygecdf scripts/statistics/distributions/hygecdf.m
 @anchor{XREFhygecdf}
-@deftypefn {Function File} {} hygecdf (@var{x}, @var{t}, @var{m}, @var{n})
+@deftypefn {} {} hygecdf (@var{x}, @var{t}, @var{m}, @var{n})
 Compute the cumulative distribution function (CDF) at @var{x} of the
 hypergeometric distribution with parameters @var{t}, @var{m}, and @var{n}.
 
@@ -1751,7 +1748,7 @@ with @var{m} and @var{n} not greater than @var{t}.
 
 @c hygeinv scripts/statistics/distributions/hygeinv.m
 @anchor{XREFhygeinv}
-@deftypefn {Function File} {} hygeinv (@var{x}, @var{t}, @var{m}, @var{n})
+@deftypefn {} {} hygeinv (@var{x}, @var{t}, @var{m}, @var{n})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the hypergeometric distribution with parameters
 @var{t}, @var{m}, and @var{n}.
@@ -1767,7 +1764,7 @@ with @var{m} and @var{n} not greater than @var{t}.
 
 @c kolmogorov_smirnov_cdf scripts/statistics/distributions/kolmogorov_smirnov_cdf.m
 @anchor{XREFkolmogorov_smirnov_cdf}
-@deftypefn {Function File} {} kolmogorov_smirnov_cdf (@var{x}, @var{tol})
+@deftypefn {} {} kolmogorov_smirnov_cdf (@var{x}, @var{tol})
 Return the cumulative distribution function (CDF) at @var{x} of the
 Kolmogorov-Smirnov distribution.
 
@@ -1796,7 +1793,7 @@ the series should be evaluated; the default is @var{tol} = @code{eps}.
 
 @c laplace_pdf scripts/statistics/distributions/laplace_pdf.m
 @anchor{XREFlaplace_pdf}
-@deftypefn {Function File} {} laplace_pdf (@var{x})
+@deftypefn {} {} laplace_pdf (@var{x})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the Laplace distribution.
 @end deftypefn
@@ -1804,7 +1801,7 @@ at @var{x} of the Laplace distribution.
 
 @c laplace_cdf scripts/statistics/distributions/laplace_cdf.m
 @anchor{XREFlaplace_cdf}
-@deftypefn {Function File} {} laplace_cdf (@var{x})
+@deftypefn {} {} laplace_cdf (@var{x})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the Laplace distribution.
 @end deftypefn
@@ -1812,7 +1809,7 @@ For each element of @var{x}, compute the cumulative distribution function
 
 @c laplace_inv scripts/statistics/distributions/laplace_inv.m
 @anchor{XREFlaplace_inv}
-@deftypefn {Function File} {} laplace_inv (@var{x})
+@deftypefn {} {} laplace_inv (@var{x})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the Laplace distribution.
 @end deftypefn
@@ -1820,7 +1817,7 @@ at @var{x} of the Laplace distribution.
 
 @c logistic_pdf scripts/statistics/distributions/logistic_pdf.m
 @anchor{XREFlogistic_pdf}
-@deftypefn {Function File} {} logistic_pdf (@var{x})
+@deftypefn {} {} logistic_pdf (@var{x})
 For each element of @var{x}, compute the PDF at @var{x} of the
 logistic distribution.
 @end deftypefn
@@ -1828,7 +1825,7 @@ logistic distribution.
 
 @c logistic_cdf scripts/statistics/distributions/logistic_cdf.m
 @anchor{XREFlogistic_cdf}
-@deftypefn {Function File} {} logistic_cdf (@var{x})
+@deftypefn {} {} logistic_cdf (@var{x})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the logistic distribution.
 @end deftypefn
@@ -1836,7 +1833,7 @@ For each element of @var{x}, compute the cumulative distribution function
 
 @c logistic_inv scripts/statistics/distributions/logistic_inv.m
 @anchor{XREFlogistic_inv}
-@deftypefn {Function File} {} logistic_inv (@var{x})
+@deftypefn {} {} logistic_inv (@var{x})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the logistic distribution.
 @end deftypefn
@@ -1844,8 +1841,8 @@ at @var{x} of the logistic distribution.
 
 @c lognpdf scripts/statistics/distributions/lognpdf.m
 @anchor{XREFlognpdf}
-@deftypefn  {Function File} {} lognpdf (@var{x})
-@deftypefnx {Function File} {} lognpdf (@var{x}, @var{mu}, @var{sigma})
+@deftypefn  {} {} lognpdf (@var{x})
+@deftypefnx {} {} lognpdf (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the lognormal distribution with parameters
 @var{mu} and @var{sigma}.
@@ -1859,8 +1856,8 @@ Default values are @var{mu} = 0, @var{sigma} = 1.
 
 @c logncdf scripts/statistics/distributions/logncdf.m
 @anchor{XREFlogncdf}
-@deftypefn  {Function File} {} logncdf (@var{x})
-@deftypefnx {Function File} {} logncdf (@var{x}, @var{mu}, @var{sigma})
+@deftypefn  {} {} logncdf (@var{x})
+@deftypefnx {} {} logncdf (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the lognormal distribution with parameters
 @var{mu} and @var{sigma}.
@@ -1874,8 +1871,8 @@ Default values are @var{mu} = 0, @var{sigma} = 1.
 
 @c logninv scripts/statistics/distributions/logninv.m
 @anchor{XREFlogninv}
-@deftypefn  {Function File} {} logninv (@var{x})
-@deftypefnx {Function File} {} logninv (@var{x}, @var{mu}, @var{sigma})
+@deftypefn  {} {} logninv (@var{x})
+@deftypefnx {} {} logninv (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the lognormal distribution with parameters
 @var{mu} and @var{sigma}.
@@ -1889,7 +1886,7 @@ Default values are @var{mu} = 0, @var{sigma} = 1.
 
 @c nbinpdf scripts/statistics/distributions/nbinpdf.m
 @anchor{XREFnbinpdf}
-@deftypefn {Function File} {} nbinpdf (@var{x}, @var{n}, @var{p})
+@deftypefn {} {} nbinpdf (@var{x}, @var{n}, @var{p})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the negative binomial distribution with parameters
 @var{n} and @var{p}.
@@ -1904,7 +1901,7 @@ The number of failures in a Bernoulli experiment with success probability
 
 @c nbincdf scripts/statistics/distributions/nbincdf.m
 @anchor{XREFnbincdf}
-@deftypefn {Function File} {} nbincdf (@var{x}, @var{n}, @var{p})
+@deftypefn {} {} nbincdf (@var{x}, @var{n}, @var{p})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the negative binomial distribution with parameters
 @var{n} and @var{p}.
@@ -1919,7 +1916,7 @@ The number of failures in a Bernoulli experiment with success probability
 
 @c nbininv scripts/statistics/distributions/nbininv.m
 @anchor{XREFnbininv}
-@deftypefn {Function File} {} nbininv (@var{x}, @var{n}, @var{p})
+@deftypefn {} {} nbininv (@var{x}, @var{n}, @var{p})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the negative binomial distribution with parameters
 @var{n} and @var{p}.
@@ -1934,8 +1931,8 @@ The number of failures in a Bernoulli experiment with success probability
 
 @c normpdf scripts/statistics/distributions/normpdf.m
 @anchor{XREFnormpdf}
-@deftypefn  {Function File} {} normpdf (@var{x})
-@deftypefnx {Function File} {} normpdf (@var{x}, @var{mu}, @var{sigma})
+@deftypefn  {} {} normpdf (@var{x})
+@deftypefnx {} {} normpdf (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the normal distribution with mean @var{mu} and
 standard deviation @var{sigma}.
@@ -1946,8 +1943,8 @@ Default values are @var{mu} = 0, @var{sigma} = 1.
 
 @c normcdf scripts/statistics/distributions/normcdf.m
 @anchor{XREFnormcdf}
-@deftypefn  {Function File} {} normcdf (@var{x})
-@deftypefnx {Function File} {} normcdf (@var{x}, @var{mu}, @var{sigma})
+@deftypefn  {} {} normcdf (@var{x})
+@deftypefnx {} {} normcdf (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the normal distribution with mean @var{mu} and
 standard deviation @var{sigma}.
@@ -1958,8 +1955,8 @@ Default values are @var{mu} = 0, @var{sigma} = 1.
 
 @c norminv scripts/statistics/distributions/norminv.m
 @anchor{XREFnorminv}
-@deftypefn  {Function File} {} norminv (@var{x})
-@deftypefnx {Function File} {} norminv (@var{x}, @var{mu}, @var{sigma})
+@deftypefn  {} {} norminv (@var{x})
+@deftypefnx {} {} norminv (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the normal distribution with mean @var{mu} and
 standard deviation @var{sigma}.
@@ -1970,7 +1967,7 @@ Default values are @var{mu} = 0, @var{sigma} = 1.
 
 @c poisspdf scripts/statistics/distributions/poisspdf.m
 @anchor{XREFpoisspdf}
-@deftypefn {Function File} {} poisspdf (@var{x}, @var{lambda})
+@deftypefn {} {} poisspdf (@var{x}, @var{lambda})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the Poisson distribution with parameter @var{lambda}.
 @end deftypefn
@@ -1978,7 +1975,7 @@ at @var{x} of the Poisson distribution with parameter @var{lambda}.
 
 @c poisscdf scripts/statistics/distributions/poisscdf.m
 @anchor{XREFpoisscdf}
-@deftypefn {Function File} {} poisscdf (@var{x}, @var{lambda})
+@deftypefn {} {} poisscdf (@var{x}, @var{lambda})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the Poisson distribution with parameter @var{lambda}.
 @end deftypefn
@@ -1986,7 +1983,7 @@ For each element of @var{x}, compute the cumulative distribution function
 
 @c poissinv scripts/statistics/distributions/poissinv.m
 @anchor{XREFpoissinv}
-@deftypefn {Function File} {} poissinv (@var{x}, @var{lambda})
+@deftypefn {} {} poissinv (@var{x}, @var{lambda})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the Poisson distribution with parameter @var{lambda}.
 @end deftypefn
@@ -1994,7 +1991,7 @@ at @var{x} of the Poisson distribution with parameter @var{lambda}.
 
 @c stdnormal_pdf scripts/statistics/distributions/stdnormal_pdf.m
 @anchor{XREFstdnormal_pdf}
-@deftypefn {Function File} {} stdnormal_pdf (@var{x})
+@deftypefn {} {} stdnormal_pdf (@var{x})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the standard normal distribution
 (mean = 0, standard deviation = 1).
@@ -2003,7 +2000,7 @@ at @var{x} of the standard normal distribution
 
 @c stdnormal_cdf scripts/statistics/distributions/stdnormal_cdf.m
 @anchor{XREFstdnormal_cdf}
-@deftypefn {Function File} {} stdnormal_cdf (@var{x})
+@deftypefn {} {} stdnormal_cdf (@var{x})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the standard normal distribution
 (mean = 0, standard deviation = 1).
@@ -2012,7 +2009,7 @@ For each element of @var{x}, compute the cumulative distribution function
 
 @c stdnormal_inv scripts/statistics/distributions/stdnormal_inv.m
 @anchor{XREFstdnormal_inv}
-@deftypefn {Function File} {} stdnormal_inv (@var{x})
+@deftypefn {} {} stdnormal_inv (@var{x})
 For each element of @var{x}, compute the quantile (the
 inverse of the CDF) at @var{x} of the standard normal distribution
 (mean = 0, standard deviation = 1).
@@ -2021,7 +2018,7 @@ inverse of the CDF) at @var{x} of the standard normal distribution
 
 @c tpdf scripts/statistics/distributions/tpdf.m
 @anchor{XREFtpdf}
-@deftypefn {Function File} {} tpdf (@var{x}, @var{n})
+@deftypefn {} {} tpdf (@var{x}, @var{n})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the @var{t} (Student) distribution with
 @var{n} degrees of freedom.
@@ -2030,7 +2027,7 @@ at @var{x} of the @var{t} (Student) distribution with
 
 @c tcdf scripts/statistics/distributions/tcdf.m
 @anchor{XREFtcdf}
-@deftypefn {Function File} {} tcdf (@var{x}, @var{n})
+@deftypefn {} {} tcdf (@var{x}, @var{n})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the t (Student) distribution with
 @var{n} degrees of freedom.
@@ -2039,7 +2036,7 @@ For each element of @var{x}, compute the cumulative distribution function
 
 @c tinv scripts/statistics/distributions/tinv.m
 @anchor{XREFtinv}
-@deftypefn {Function File} {} tinv (@var{x}, @var{n})
+@deftypefn {} {} tinv (@var{x}, @var{n})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the t (Student) distribution with @var{n}
 degrees of freedom.
@@ -2051,20 +2048,20 @@ single-tailed distribution.
 
 @c unidpdf scripts/statistics/distributions/unidpdf.m
 @anchor{XREFunidpdf}
-@deftypefn {Function File} {} unidpdf (@var{x}, @var{n})
+@deftypefn {} {} unidpdf (@var{x}, @var{n})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of a discrete uniform distribution which assumes
 the integer values 1--@var{n} with equal probability.
 
 Warning: The underlying implementation uses the double class and will only
-be accurate for @var{n} @leq{} @code{bitmax} (@w{@math{2^{53} - 1}} on
+be accurate for @var{n} < @code{flintmax} (@w{@math{2^{53}}} on
 IEEE 754 compatible systems).
 @end deftypefn
 
 
 @c unidcdf scripts/statistics/distributions/unidcdf.m
 @anchor{XREFunidcdf}
-@deftypefn {Function File} {} unidcdf (@var{x}, @var{n})
+@deftypefn {} {} unidcdf (@var{x}, @var{n})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of a discrete uniform distribution which assumes
 the integer values 1--@var{n} with equal probability.
@@ -2073,7 +2070,7 @@ the integer values 1--@var{n} with equal probability.
 
 @c unidinv scripts/statistics/distributions/unidinv.m
 @anchor{XREFunidinv}
-@deftypefn {Function File} {} unidinv (@var{x}, @var{n})
+@deftypefn {} {} unidinv (@var{x}, @var{n})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the discrete uniform distribution which assumes
 the integer values 1--@var{n} with equal probability.
@@ -2082,8 +2079,8 @@ the integer values 1--@var{n} with equal probability.
 
 @c unifpdf scripts/statistics/distributions/unifpdf.m
 @anchor{XREFunifpdf}
-@deftypefn  {Function File} {} unifpdf (@var{x})
-@deftypefnx {Function File} {} unifpdf (@var{x}, @var{a}, @var{b})
+@deftypefn  {} {} unifpdf (@var{x})
+@deftypefnx {} {} unifpdf (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, compute the probability density function (PDF)
 at @var{x} of the uniform distribution on the interval [@var{a}, @var{b}].
 
@@ -2093,8 +2090,8 @@ Default values are @var{a} = 0, @var{b} = 1.
 
 @c unifcdf scripts/statistics/distributions/unifcdf.m
 @anchor{XREFunifcdf}
-@deftypefn  {Function File} {} unifcdf (@var{x})
-@deftypefnx {Function File} {} unifcdf (@var{x}, @var{a}, @var{b})
+@deftypefn  {} {} unifcdf (@var{x})
+@deftypefnx {} {} unifcdf (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, compute the cumulative distribution function
 (CDF) at @var{x} of the uniform distribution on the interval
 [@var{a}, @var{b}].
@@ -2105,8 +2102,8 @@ Default values are @var{a} = 0, @var{b} = 1.
 
 @c unifinv scripts/statistics/distributions/unifinv.m
 @anchor{XREFunifinv}
-@deftypefn  {Function File} {} unifinv (@var{x})
-@deftypefnx {Function File} {} unifinv (@var{x}, @var{a}, @var{b})
+@deftypefn  {} {} unifinv (@var{x})
+@deftypefnx {} {} unifinv (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, compute the quantile (the inverse of the CDF)
 at @var{x} of the uniform distribution on the interval [@var{a}, @var{b}].
 
@@ -2116,9 +2113,9 @@ Default values are @var{a} = 0, @var{b} = 1.
 
 @c wblpdf scripts/statistics/distributions/wblpdf.m
 @anchor{XREFwblpdf}
-@deftypefn  {Function File} {} wblpdf (@var{x})
-@deftypefnx {Function File} {} wblpdf (@var{x}, @var{scale})
-@deftypefnx {Function File} {} wblpdf (@var{x}, @var{scale}, @var{shape})
+@deftypefn  {} {} wblpdf (@var{x})
+@deftypefnx {} {} wblpdf (@var{x}, @var{scale})
+@deftypefnx {} {} wblpdf (@var{x}, @var{scale}, @var{shape})
 Compute the probability density function (PDF) at @var{x} of the
 Weibull distribution with scale parameter @var{scale} and
 shape parameter @var{shape}.
@@ -2143,9 +2140,9 @@ Default values are @var{scale} = 1, @var{shape} = 1.
 
 @c wblcdf scripts/statistics/distributions/wblcdf.m
 @anchor{XREFwblcdf}
-@deftypefn  {Function File} {} wblcdf (@var{x})
-@deftypefnx {Function File} {} wblcdf (@var{x}, @var{scale})
-@deftypefnx {Function File} {} wblcdf (@var{x}, @var{scale}, @var{shape})
+@deftypefn  {} {} wblcdf (@var{x})
+@deftypefnx {} {} wblcdf (@var{x}, @var{scale})
+@deftypefnx {} {} wblcdf (@var{x}, @var{scale}, @var{shape})
 Compute the cumulative distribution function (CDF) at @var{x} of the
 Weibull distribution with scale parameter @var{scale} and shape
 parameter @var{shape}.
@@ -2171,9 +2168,9 @@ Default values are @var{scale} = 1, @var{shape} = 1.
 
 @c wblinv scripts/statistics/distributions/wblinv.m
 @anchor{XREFwblinv}
-@deftypefn  {Function File} {} wblinv (@var{x})
-@deftypefnx {Function File} {} wblinv (@var{x}, @var{scale})
-@deftypefnx {Function File} {} wblinv (@var{x}, @var{scale}, @var{shape})
+@deftypefn  {} {} wblinv (@var{x})
+@deftypefnx {} {} wblinv (@var{x}, @var{scale})
+@deftypefnx {} {} wblinv (@var{x}, @var{scale}, @var{shape})
 Compute the quantile (the inverse of the CDF) at @var{x} of the
 Weibull distribution with scale parameter @var{scale} and
 shape parameter @var{shape}.
@@ -2253,7 +2250,7 @@ if the p-value exceeds 0.05.
 
 @c anova scripts/statistics/tests/anova.m
 @anchor{XREFanova}
-@deftypefn {Function File} {[@var{pval}, @var{f}, @var{df_b}, @var{df_w}] =} anova (@var{y}, @var{g})
+@deftypefn {} {[@var{pval}, @var{f}, @var{df_b}, @var{df_w}] =} anova (@var{y}, @var{g})
 Perform a one-way analysis of variance (ANOVA).
 
 The goal is to test whether the population means of data taken from
@@ -2281,7 +2278,7 @@ If no output argument is given, the standard one-way ANOVA table is printed.
 
 @c bartlett_test scripts/statistics/tests/bartlett_test.m
 @anchor{XREFbartlett_test}
-@deftypefn {Function File} {[@var{pval}, @var{chisq}, @var{df}] =} bartlett_test (@var{x1}, @dots{})
+@deftypefn {} {[@var{pval}, @var{chisq}, @var{df}] =} bartlett_test (@var{x1}, @dots{})
 Perform a Bartlett test for the homogeneity of variances in the data
 vectors @var{x1}, @var{x2}, @dots{}, @var{xk}, where @var{k} > 1.
 
@@ -2298,7 +2295,7 @@ If no output argument is given, the p-value is displayed.
 
 @c chisquare_test_homogeneity scripts/statistics/tests/chisquare_test_homogeneity.m
 @anchor{XREFchisquare_test_homogeneity}
-@deftypefn {Function File} {[@var{pval}, @var{chisq}, @var{df}] =} chisquare_test_homogeneity (@var{x}, @var{y}, @var{c})
+@deftypefn {} {[@var{pval}, @var{chisq}, @var{df}] =} chisquare_test_homogeneity (@var{x}, @var{y}, @var{c})
 Given two samples @var{x} and @var{y}, perform a chisquare test for
 homogeneity of the null hypothesis that @var{x} and @var{y} come from
 the same distribution, based on the partition induced by the
@@ -2317,7 +2314,7 @@ If no output argument is given, the p-value is displayed.
 
 @c chisquare_test_independence scripts/statistics/tests/chisquare_test_independence.m
 @anchor{XREFchisquare_test_independence}
-@deftypefn {Function File} {[@var{pval}, @var{chisq}, @var{df}] =} chisquare_test_independence (@var{x})
+@deftypefn {} {[@var{pval}, @var{chisq}, @var{df}] =} chisquare_test_independence (@var{x})
 Perform a chi-square test for independence based on the contingency table
 @var{x}.
 
@@ -2333,7 +2330,7 @@ If no output argument is given, the p-value is displayed.
 
 @c cor_test scripts/statistics/tests/cor_test.m
 @anchor{XREFcor_test}
-@deftypefn {Function File} {} cor_test (@var{x}, @var{y}, @var{alt}, @var{method})
+@deftypefn {} {} cor_test (@var{x}, @var{y}, @var{alt}, @var{method})
 Test whether two samples @var{x} and @var{y} come from uncorrelated
 populations.
 
@@ -2344,7 +2341,7 @@ two-sided case.
 
 The optional argument string @var{method} specifies which correlation
 coefficient to use for testing.  If @var{method} is @qcode{"pearson"}
-(default), the (usual) Pearson's produt moment correlation coefficient is
+(default), the (usual) Pearson's product moment correlation coefficient is
 used.  In this case, the data should come from a bivariate normal
 distribution.  Otherwise, the other two methods offer nonparametric
 alternatives.  If @var{method} is @qcode{"kendall"}, then Kendall's rank
@@ -2380,7 +2377,7 @@ If no output argument is given, the p-value is displayed.
 
 @c f_test_regression scripts/statistics/tests/f_test_regression.m
 @anchor{XREFf_test_regression}
-@deftypefn {Function File} {[@var{pval}, @var{f}, @var{df_num}, @var{df_den}] =} f_test_regression (@var{y}, @var{x}, @var{rr}, @var{r})
+@deftypefn {} {[@var{pval}, @var{f}, @var{df_num}, @var{df_den}] =} f_test_regression (@var{y}, @var{x}, @var{rr}, @var{r})
 Perform an F test for the null hypothesis @nospell{rr * b = r} in a
 classical normal regression model y = X * b + e.
 
@@ -2398,7 +2395,7 @@ If no output argument is given, the p-value is displayed.
 
 @c hotelling_test scripts/statistics/tests/hotelling_test.m
 @anchor{XREFhotelling_test}
-@deftypefn {Function File} {[@var{pval}, @var{tsq}] =} hotelling_test (@var{x}, @var{m})
+@deftypefn {} {[@var{pval}, @var{tsq}] =} hotelling_test (@var{x}, @var{m})
 For a sample @var{x} from a multivariate normal distribution with unknown
 mean and covariance matrix, test the null hypothesis that
 @code{mean (@var{x}) == @var{m}}.
@@ -2416,7 +2413,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c hotelling_test_2 scripts/statistics/tests/hotelling_test_2.m
 @anchor{XREFhotelling_test_2}
-@deftypefn {Function File} {[@var{pval}, @var{tsq}] =} hotelling_test_2 (@var{x}, @var{y})
+@deftypefn {} {[@var{pval}, @var{tsq}] =} hotelling_test_2 (@var{x}, @var{y})
 For two samples @var{x} from multivariate normal distributions with
 the same number of variables (columns), unknown means and unknown
 equal covariance matrices, test the null hypothesis @code{mean
@@ -2448,7 +2445,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c kolmogorov_smirnov_test scripts/statistics/tests/kolmogorov_smirnov_test.m
 @anchor{XREFkolmogorov_smirnov_test}
-@deftypefn {Function File} {[@var{pval}, @var{ks}] =} kolmogorov_smirnov_test (@var{x}, @var{dist}, @var{params}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{ks}] =} kolmogorov_smirnov_test (@var{x}, @var{dist}, @var{params}, @var{alt})
 Perform a Kolmogorov-Smirnov test of the null hypothesis that the
 sample @var{x} comes from the (continuous) distribution @var{dist}.
 
@@ -2485,7 +2482,7 @@ If no output argument is given, the p-value is displayed.
 
 @c kolmogorov_smirnov_test_2 scripts/statistics/tests/kolmogorov_smirnov_test_2.m
 @anchor{XREFkolmogorov_smirnov_test_2}
-@deftypefn {Function File} {[@var{pval}, @var{ks}, @var{d}] =} kolmogorov_smirnov_test_2 (@var{x}, @var{y}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{ks}, @var{d}] =} kolmogorov_smirnov_test_2 (@var{x}, @var{y}, @var{alt})
 Perform a 2-sample Kolmogorov-Smirnov test of the null hypothesis that the
 samples @var{x} and @var{y} come from the same (continuous) distribution.
 
@@ -2513,7 +2510,7 @@ If no output argument is given, the p-value is displayed.
 
 @c kruskal_wallis_test scripts/statistics/tests/kruskal_wallis_test.m
 @anchor{XREFkruskal_wallis_test}
-@deftypefn {Function File} {[@var{pval}, @var{k}, @var{df}] =} kruskal_wallis_test (@var{x1}, @dots{})
+@deftypefn {} {[@var{pval}, @var{k}, @var{df}] =} kruskal_wallis_test (@var{x1}, @dots{})
 Perform a @nospell{Kruskal-Wallis} one-factor analysis of variance.
 
 Suppose a variable is observed for @var{k} > 1 different groups, and let
@@ -2533,7 +2530,8 @@ ties where @var{t} is the number of ties in the group and @var{n} is the
 total number of values in the input data.  For more info on this
 adjustment see @nospell{William H. Kruskal and W. Allen Wallis},
 @cite{Use of Ranks in One-Criterion Variance Analysis},
-Journal of the American Statistical Association, Vol. 47, No. 260 (Dec 1952).
+Journal of the American Statistical Association, Vol. 47, No. 260 (Dec
+1952).
 
 The p-value (1 minus the CDF of this distribution at @var{k}) is returned
 in @var{pval}.
@@ -2544,7 +2542,7 @@ If no output argument is given, the p-value is displayed.
 
 @c manova scripts/statistics/tests/manova.m
 @anchor{XREFmanova}
-@deftypefn {Function File} {} manova (@var{x}, @var{g})
+@deftypefn {} {} manova (@var{x}, @var{g})
 Perform a one-way multivariate analysis of variance (MANOVA).
 
 The goal is to test whether the p-dimensional population means of data
@@ -2564,7 +2562,7 @@ computed and displayed.
 
 @c mcnemar_test scripts/statistics/tests/mcnemar_test.m
 @anchor{XREFmcnemar_test}
-@deftypefn {Function File} {[@var{pval}, @var{chisq}, @var{df}] =} mcnemar_test (@var{x})
+@deftypefn {} {[@var{pval}, @var{chisq}, @var{df}] =} mcnemar_test (@var{x})
 For a square contingency table @var{x} of data cross-classified on the row
 and column variables, @nospell{McNemar's} test can be used for testing the
 null hypothesis of symmetry of the classification probabilities.
@@ -2581,7 +2579,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c prop_test_2 scripts/statistics/tests/prop_test_2.m
 @anchor{XREFprop_test_2}
-@deftypefn {Function File} {[@var{pval}, @var{z}] =} prop_test_2 (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{z}] =} prop_test_2 (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{alt})
 If @var{x1} and @var{n1} are the counts of successes and trials in one
 sample, and @var{x2} and @var{n2} those in a second one, test the null
 hypothesis that the success probabilities @var{p1} and @var{p2} are the
@@ -2605,7 +2603,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c run_test scripts/statistics/tests/run_test.m
 @anchor{XREFrun_test}
-@deftypefn {Function File} {[@var{pval}, @var{chisq}] =} run_test (@var{x})
+@deftypefn {} {[@var{pval}, @var{chisq}] =} run_test (@var{x})
 Perform a chi-square test with 6 degrees of freedom based on the upward
 runs in the columns of @var{x}.
 
@@ -2620,7 +2618,7 @@ If no output argument is given, the p-value is displayed.
 
 @c sign_test scripts/statistics/tests/sign_test.m
 @anchor{XREFsign_test}
-@deftypefn {Function File} {[@var{pval}, @var{b}, @var{n}] =} sign_test (@var{x}, @var{y}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{b}, @var{n}] =} sign_test (@var{x}, @var{y}, @var{alt})
 For two matched-pair samples @var{x} and @var{y}, perform a sign test
 of the null hypothesis
 PROB (@var{x} > @var{y}) == PROB (@var{x} < @var{y}) == 1/2.
@@ -2646,7 +2644,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c t_test scripts/statistics/tests/t_test.m
 @anchor{XREFt_test}
-@deftypefn {Function File} {[@var{pval}, @var{t}, @var{df}] =} t_test (@var{x}, @var{m}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{t}, @var{df}] =} t_test (@var{x}, @var{m}, @var{alt})
 For a sample @var{x} from a normal distribution with unknown mean and
 variance, perform a t-test of the null hypothesis
 @code{mean (@var{x}) == @var{m}}.
@@ -2670,7 +2668,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c t_test_2 scripts/statistics/tests/t_test_2.m
 @anchor{XREFt_test_2}
-@deftypefn {Function File} {[@var{pval}, @var{t}, @var{df}] =} t_test_2 (@var{x}, @var{y}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{t}, @var{df}] =} t_test_2 (@var{x}, @var{y}, @var{alt})
 For two samples x and y from normal distributions with unknown means and
 unknown equal variances, perform a two-sample t-test of the null
 hypothesis of equal means.
@@ -2694,7 +2692,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c t_test_regression scripts/statistics/tests/t_test_regression.m
 @anchor{XREFt_test_regression}
-@deftypefn {Function File} {[@var{pval}, @var{t}, @var{df}] =} t_test_regression (@var{y}, @var{x}, @var{rr}, @var{r}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{t}, @var{df}] =} t_test_regression (@var{y}, @var{x}, @var{rr}, @var{r}, @var{alt})
 Perform a t test for the null hypothesis
 @nospell{@code{@var{rr} * @var{b} = @var{r}}} in a classical normal
 regression model @code{@var{y} = @var{x} * @var{b} + @var{e}}.
@@ -2720,7 +2718,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c u_test scripts/statistics/tests/u_test.m
 @anchor{XREFu_test}
-@deftypefn {Function File} {[@var{pval}, @var{z}] =} u_test (@var{x}, @var{y}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{z}] =} u_test (@var{x}, @var{y}, @var{alt})
 For two samples @var{x} and @var{y}, perform a Mann-Whitney U-test of
 the null hypothesis
 PROB (@var{x} > @var{y}) == 1/2 == PROB (@var{x} < @var{y}).
@@ -2745,7 +2743,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c var_test scripts/statistics/tests/var_test.m
 @anchor{XREFvar_test}
-@deftypefn {Function File} {[@var{pval}, @var{f}, @var{df_num}, @var{df_den}] =} var_test (@var{x}, @var{y}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{f}, @var{df_num}, @var{df_den}] =} var_test (@var{x}, @var{y}, @var{alt})
 For two samples @var{x} and @var{y} from normal distributions with
 unknown means and unknown variances, perform an F-test of the null
 hypothesis of equal variances.
@@ -2769,7 +2767,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c welch_test scripts/statistics/tests/welch_test.m
 @anchor{XREFwelch_test}
-@deftypefn {Function File} {[@var{pval}, @var{t}, @var{df}] =} welch_test (@var{x}, @var{y}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{t}, @var{df}] =} welch_test (@var{x}, @var{y}, @var{alt})
 For two samples @var{x} and @var{y} from normal distributions with
 unknown means and unknown and not necessarily equal variances,
 perform a Welch test of the null hypothesis of equal means.
@@ -2793,7 +2791,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c wilcoxon_test scripts/statistics/tests/wilcoxon_test.m
 @anchor{XREFwilcoxon_test}
-@deftypefn {Function File} {[@var{pval}, @var{z}] =} wilcoxon_test (@var{x}, @var{y}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{z}] =} wilcoxon_test (@var{x}, @var{y}, @var{alt})
 For two matched-pair sample vectors @var{x} and @var{y}, perform a
 Wilcoxon signed-rank test of the null hypothesis
 PROB (@var{x} > @var{y}) == 1/2.
@@ -2820,7 +2818,7 @@ If no output argument is given, the p-value of the test is displayed.
 
 @c z_test scripts/statistics/tests/z_test.m
 @anchor{XREFz_test}
-@deftypefn {Function File} {[@var{pval}, @var{z}] =} z_test (@var{x}, @var{m}, @var{v}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{z}] =} z_test (@var{x}, @var{m}, @var{v}, @var{alt})
 Perform a Z-test of the null hypothesis @code{mean (@var{x}) == @var{m}}
 for a sample @var{x} from a normal distribution with unknown mean and known
 variance @var{v}.
@@ -2846,7 +2844,7 @@ with some information.
 
 @c z_test_2 scripts/statistics/tests/z_test_2.m
 @anchor{XREFz_test_2}
-@deftypefn {Function File} {[@var{pval}, @var{z}] =} z_test_2 (@var{x}, @var{y}, @var{v_x}, @var{v_y}, @var{alt})
+@deftypefn {} {[@var{pval}, @var{z}] =} z_test_2 (@var{x}, @var{y}, @var{v_x}, @var{v_y}, @var{alt})
 For two samples @var{x} and @var{y} from normal distributions with unknown
 means and known variances @var{v_x} and @var{v_y}, perform a Z-test of the
 hypothesis of equal means.
@@ -2947,10 +2945,10 @@ The following table summarizes the available random number generators
 
 @c betarnd scripts/statistics/distributions/betarnd.m
 @anchor{XREFbetarnd}
-@deftypefn  {Function File} {} betarnd (@var{a}, @var{b})
-@deftypefnx {Function File} {} betarnd (@var{a}, @var{b}, @var{r})
-@deftypefnx {Function File} {} betarnd (@var{a}, @var{b}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} betarnd (@var{a}, @var{b}, [@var{sz}])
+@deftypefn  {} {} betarnd (@var{a}, @var{b})
+@deftypefnx {} {} betarnd (@var{a}, @var{b}, @var{r})
+@deftypefnx {} {} betarnd (@var{a}, @var{b}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} betarnd (@var{a}, @var{b}, [@var{sz}])
 Return a matrix of random samples from the Beta distribution with parameters
 @var{a} and @var{b}.
 
@@ -2967,10 +2965,10 @@ If no size arguments are given then the result matrix is the common size of
 
 @c binornd scripts/statistics/distributions/binornd.m
 @anchor{XREFbinornd}
-@deftypefn  {Function File} {} binornd (@var{n}, @var{p})
-@deftypefnx {Function File} {} binornd (@var{n}, @var{p}, @var{r})
-@deftypefnx {Function File} {} binornd (@var{n}, @var{p}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} binornd (@var{n}, @var{p}, [@var{sz}])
+@deftypefn  {} {} binornd (@var{n}, @var{p})
+@deftypefnx {} {} binornd (@var{n}, @var{p}, @var{r})
+@deftypefnx {} {} binornd (@var{n}, @var{p}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} binornd (@var{n}, @var{p}, [@var{sz}])
 Return a matrix of random samples from the binomial distribution with
 parameters @var{n} and @var{p}, where @var{n} is the number of trials
 and @var{p} is the probability of success.
@@ -2988,10 +2986,10 @@ If no size arguments are given then the result matrix is the common size of
 
 @c cauchy_rnd scripts/statistics/distributions/cauchy_rnd.m
 @anchor{XREFcauchy_rnd}
-@deftypefn  {Function File} {} cauchy_rnd (@var{location}, @var{scale})
-@deftypefnx {Function File} {} cauchy_rnd (@var{location}, @var{scale}, @var{r})
-@deftypefnx {Function File} {} cauchy_rnd (@var{location}, @var{scale}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} cauchy_rnd (@var{location}, @var{scale}, [@var{sz}])
+@deftypefn  {} {} cauchy_rnd (@var{location}, @var{scale})
+@deftypefnx {} {} cauchy_rnd (@var{location}, @var{scale}, @var{r})
+@deftypefnx {} {} cauchy_rnd (@var{location}, @var{scale}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} cauchy_rnd (@var{location}, @var{scale}, [@var{sz}])
 Return a matrix of random samples from the Cauchy distribution with
 parameters @var{location} and @var{scale}.
 
@@ -3008,10 +3006,10 @@ If no size arguments are given then the result matrix is the common size of
 
 @c chi2rnd scripts/statistics/distributions/chi2rnd.m
 @anchor{XREFchi2rnd}
-@deftypefn  {Function File} {} chi2rnd (@var{n})
-@deftypefnx {Function File} {} chi2rnd (@var{n}, @var{r})
-@deftypefnx {Function File} {} chi2rnd (@var{n}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} chi2rnd (@var{n}, [@var{sz}])
+@deftypefn  {} {} chi2rnd (@var{n})
+@deftypefnx {} {} chi2rnd (@var{n}, @var{r})
+@deftypefnx {} {} chi2rnd (@var{n}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} chi2rnd (@var{n}, [@var{sz}])
 Return a matrix of random samples from the chi-square distribution with
 @var{n} degrees of freedom.
 
@@ -3028,10 +3026,10 @@ If no size arguments are given then the result matrix is the size of
 
 @c discrete_rnd scripts/statistics/distributions/discrete_rnd.m
 @anchor{XREFdiscrete_rnd}
-@deftypefn  {Function File} {} discrete_rnd (@var{v}, @var{p})
-@deftypefnx {Function File} {} discrete_rnd (@var{v}, @var{p}, @var{r})
-@deftypefnx {Function File} {} discrete_rnd (@var{v}, @var{p}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} discrete_rnd (@var{v}, @var{p}, [@var{sz}])
+@deftypefn  {} {} discrete_rnd (@var{v}, @var{p})
+@deftypefnx {} {} discrete_rnd (@var{v}, @var{p}, @var{r})
+@deftypefnx {} {} discrete_rnd (@var{v}, @var{p}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} discrete_rnd (@var{v}, @var{p}, [@var{sz}])
 Return a matrix of random samples from the univariate distribution which
 assumes the values in @var{v} with probabilities @var{p}.
 
@@ -3048,10 +3046,10 @@ If no size arguments are given then the result matrix is the common size of
 
 @c empirical_rnd scripts/statistics/distributions/empirical_rnd.m
 @anchor{XREFempirical_rnd}
-@deftypefn  {Function File} {} empirical_rnd (@var{data})
-@deftypefnx {Function File} {} empirical_rnd (@var{data}, @var{r})
-@deftypefnx {Function File} {} empirical_rnd (@var{data}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} empirical_rnd (@var{data}, [@var{sz}])
+@deftypefn  {} {} empirical_rnd (@var{data})
+@deftypefnx {} {} empirical_rnd (@var{data}, @var{r})
+@deftypefnx {} {} empirical_rnd (@var{data}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} empirical_rnd (@var{data}, [@var{sz}])
 Return a matrix of random samples from the empirical distribution obtained
 from the univariate sample @var{data}.
 
@@ -3068,10 +3066,10 @@ of the sample @var{data}.
 
 @c exprnd scripts/statistics/distributions/exprnd.m
 @anchor{XREFexprnd}
-@deftypefn  {Function File} {} exprnd (@var{lambda})
-@deftypefnx {Function File} {} exprnd (@var{lambda}, @var{r})
-@deftypefnx {Function File} {} exprnd (@var{lambda}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} exprnd (@var{lambda}, [@var{sz}])
+@deftypefn  {} {} exprnd (@var{lambda})
+@deftypefnx {} {} exprnd (@var{lambda}, @var{r})
+@deftypefnx {} {} exprnd (@var{lambda}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} exprnd (@var{lambda}, [@var{sz}])
 Return a matrix of random samples from the exponential distribution with
 mean @var{lambda}.
 
@@ -3088,10 +3086,10 @@ If no size arguments are given then the result matrix is the size of
 
 @c frnd scripts/statistics/distributions/frnd.m
 @anchor{XREFfrnd}
-@deftypefn  {Function File} {} frnd (@var{m}, @var{n})
-@deftypefnx {Function File} {} frnd (@var{m}, @var{n}, @var{r})
-@deftypefnx {Function File} {} frnd (@var{m}, @var{n}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} frnd (@var{m}, @var{n}, [@var{sz}])
+@deftypefn  {} {} frnd (@var{m}, @var{n})
+@deftypefnx {} {} frnd (@var{m}, @var{n}, @var{r})
+@deftypefnx {} {} frnd (@var{m}, @var{n}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} frnd (@var{m}, @var{n}, [@var{sz}])
 Return a matrix of random samples from the F distribution with
 @var{m} and @var{n} degrees of freedom.
 
@@ -3108,10 +3106,10 @@ If no size arguments are given then the result matrix is the common size of
 
 @c gamrnd scripts/statistics/distributions/gamrnd.m
 @anchor{XREFgamrnd}
-@deftypefn  {Function File} {} gamrnd (@var{a}, @var{b})
-@deftypefnx {Function File} {} gamrnd (@var{a}, @var{b}, @var{r})
-@deftypefnx {Function File} {} gamrnd (@var{a}, @var{b}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} gamrnd (@var{a}, @var{b}, [@var{sz}])
+@deftypefn  {} {} gamrnd (@var{a}, @var{b})
+@deftypefnx {} {} gamrnd (@var{a}, @var{b}, @var{r})
+@deftypefnx {} {} gamrnd (@var{a}, @var{b}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} gamrnd (@var{a}, @var{b}, [@var{sz}])
 Return a matrix of random samples from the Gamma distribution with
 shape parameter @var{a} and scale @var{b}.
 
@@ -3128,10 +3126,10 @@ If no size arguments are given then the result matrix is the common size of
 
 @c geornd scripts/statistics/distributions/geornd.m
 @anchor{XREFgeornd}
-@deftypefn  {Function File} {} geornd (@var{p})
-@deftypefnx {Function File} {} geornd (@var{p}, @var{r})
-@deftypefnx {Function File} {} geornd (@var{p}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} geornd (@var{p}, [@var{sz}])
+@deftypefn  {} {} geornd (@var{p})
+@deftypefnx {} {} geornd (@var{p}, @var{r})
+@deftypefnx {} {} geornd (@var{p}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} geornd (@var{p}, [@var{sz}])
 Return a matrix of random samples from the geometric distribution with
 parameter @var{p}.
 
@@ -3151,10 +3149,10 @@ Bernoulli trial with probability @var{p} before the first success (@var{x}).
 
 @c hygernd scripts/statistics/distributions/hygernd.m
 @anchor{XREFhygernd}
-@deftypefn  {Function File} {} hygernd (@var{t}, @var{m}, @var{n})
-@deftypefnx {Function File} {} hygernd (@var{t}, @var{m}, @var{n}, @var{r})
-@deftypefnx {Function File} {} hygernd (@var{t}, @var{m}, @var{n}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} hygernd (@var{t}, @var{m}, @var{n}, [@var{sz}])
+@deftypefn  {} {} hygernd (@var{t}, @var{m}, @var{n})
+@deftypefnx {} {} hygernd (@var{t}, @var{m}, @var{n}, @var{r})
+@deftypefnx {} {} hygernd (@var{t}, @var{m}, @var{n}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} hygernd (@var{t}, @var{m}, @var{n}, [@var{sz}])
 Return a matrix of random samples from the hypergeometric distribution
 with parameters @var{t}, @var{m}, and @var{n}.
 
@@ -3174,9 +3172,9 @@ If no size arguments are given then the result matrix is the common size of
 
 @c laplace_rnd scripts/statistics/distributions/laplace_rnd.m
 @anchor{XREFlaplace_rnd}
-@deftypefn  {Function File} {} laplace_rnd (@var{r})
-@deftypefnx {Function File} {} laplace_rnd (@var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} laplace_rnd ([@var{sz}])
+@deftypefn  {} {} laplace_rnd (@var{r})
+@deftypefnx {} {} laplace_rnd (@var{r}, @var{c}, @dots{})
+@deftypefnx {} {} laplace_rnd ([@var{sz}])
 Return a matrix of random samples from the Laplace distribution.
 
 When called with a single size argument, return a square matrix with
@@ -3189,9 +3187,9 @@ be specified with a vector of dimensions @var{sz}.
 
 @c logistic_rnd scripts/statistics/distributions/logistic_rnd.m
 @anchor{XREFlogistic_rnd}
-@deftypefn  {Function File} {} logistic_rnd (@var{r})
-@deftypefnx {Function File} {} logistic_rnd (@var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} logistic_rnd ([@var{sz}])
+@deftypefn  {} {} logistic_rnd (@var{r})
+@deftypefnx {} {} logistic_rnd (@var{r}, @var{c}, @dots{})
+@deftypefnx {} {} logistic_rnd ([@var{sz}])
 Return a matrix of random samples from the logistic distribution.
 
 When called with a single size argument, return a square matrix with
@@ -3204,10 +3202,10 @@ be specified with a vector of dimensions @var{sz}.
 
 @c lognrnd scripts/statistics/distributions/lognrnd.m
 @anchor{XREFlognrnd}
-@deftypefn  {Function File} {} lognrnd (@var{mu}, @var{sigma})
-@deftypefnx {Function File} {} lognrnd (@var{mu}, @var{sigma}, @var{r})
-@deftypefnx {Function File} {} lognrnd (@var{mu}, @var{sigma}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} lognrnd (@var{mu}, @var{sigma}, [@var{sz}])
+@deftypefn  {} {} lognrnd (@var{mu}, @var{sigma})
+@deftypefnx {} {} lognrnd (@var{mu}, @var{sigma}, @var{r})
+@deftypefnx {} {} lognrnd (@var{mu}, @var{sigma}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} lognrnd (@var{mu}, @var{sigma}, [@var{sz}])
 Return a matrix of random samples from the lognormal distribution with
 parameters @var{mu} and @var{sigma}.
 
@@ -3224,10 +3222,10 @@ If no size arguments are given then the result matrix is the common size of
 
 @c nbinrnd scripts/statistics/distributions/nbinrnd.m
 @anchor{XREFnbinrnd}
-@deftypefn  {Function File} {} nbinrnd (@var{n}, @var{p})
-@deftypefnx {Function File} {} nbinrnd (@var{n}, @var{p}, @var{r})
-@deftypefnx {Function File} {} nbinrnd (@var{n}, @var{p}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} nbinrnd (@var{n}, @var{p}, [@var{sz}])
+@deftypefn  {} {} nbinrnd (@var{n}, @var{p})
+@deftypefnx {} {} nbinrnd (@var{n}, @var{p}, @var{r})
+@deftypefnx {} {} nbinrnd (@var{n}, @var{p}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} nbinrnd (@var{n}, @var{p}, [@var{sz}])
 Return a matrix of random samples from the negative binomial distribution
 with parameters @var{n} and @var{p}.
 
@@ -3244,10 +3242,10 @@ If no size arguments are given then the result matrix is the common size of
 
 @c normrnd scripts/statistics/distributions/normrnd.m
 @anchor{XREFnormrnd}
-@deftypefn  {Function File} {} normrnd (@var{mu}, @var{sigma})
-@deftypefnx {Function File} {} normrnd (@var{mu}, @var{sigma}, @var{r})
-@deftypefnx {Function File} {} normrnd (@var{mu}, @var{sigma}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} normrnd (@var{mu}, @var{sigma}, [@var{sz}])
+@deftypefn  {} {} normrnd (@var{mu}, @var{sigma})
+@deftypefnx {} {} normrnd (@var{mu}, @var{sigma}, @var{r})
+@deftypefnx {} {} normrnd (@var{mu}, @var{sigma}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} normrnd (@var{mu}, @var{sigma}, [@var{sz}])
 Return a matrix of random samples from the normal distribution with
 parameters mean @var{mu} and standard deviation @var{sigma}.
 
@@ -3264,10 +3262,10 @@ If no size arguments are given then the result matrix is the common size of
 
 @c poissrnd scripts/statistics/distributions/poissrnd.m
 @anchor{XREFpoissrnd}
-@deftypefn  {Function File} {} poissrnd (@var{lambda})
-@deftypefnx {Function File} {} poissrnd (@var{lambda}, @var{r})
-@deftypefnx {Function File} {} poissrnd (@var{lambda}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} poissrnd (@var{lambda}, [@var{sz}])
+@deftypefn  {} {} poissrnd (@var{lambda})
+@deftypefnx {} {} poissrnd (@var{lambda}, @var{r})
+@deftypefnx {} {} poissrnd (@var{lambda}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} poissrnd (@var{lambda}, [@var{sz}])
 Return a matrix of random samples from the Poisson distribution with
 parameter @var{lambda}.
 
@@ -3284,9 +3282,9 @@ If no size arguments are given then the result matrix is the size of
 
 @c stdnormal_rnd scripts/statistics/distributions/stdnormal_rnd.m
 @anchor{XREFstdnormal_rnd}
-@deftypefn  {Function File} {} stdnormal_rnd (@var{r})
-@deftypefnx {Function File} {} stdnormal_rnd (@var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} stdnormal_rnd ([@var{sz}])
+@deftypefn  {} {} stdnormal_rnd (@var{r})
+@deftypefnx {} {} stdnormal_rnd (@var{r}, @var{c}, @dots{})
+@deftypefnx {} {} stdnormal_rnd ([@var{sz}])
 Return a matrix of random samples from the standard normal distribution
 (mean = 0, standard deviation = 1).
 
@@ -3300,10 +3298,10 @@ be specified with a vector of dimensions @var{sz}.
 
 @c trnd scripts/statistics/distributions/trnd.m
 @anchor{XREFtrnd}
-@deftypefn  {Function File} {} trnd (@var{n})
-@deftypefnx {Function File} {} trnd (@var{n}, @var{r})
-@deftypefnx {Function File} {} trnd (@var{n}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} trnd (@var{n}, [@var{sz}])
+@deftypefn  {} {} trnd (@var{n})
+@deftypefnx {} {} trnd (@var{n}, @var{r})
+@deftypefnx {} {} trnd (@var{n}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} trnd (@var{n}, [@var{sz}])
 Return a matrix of random samples from the t (Student) distribution with
 @var{n} degrees of freedom.
 
@@ -3320,10 +3318,10 @@ If no size arguments are given then the result matrix is the size of
 
 @c unidrnd scripts/statistics/distributions/unidrnd.m
 @anchor{XREFunidrnd}
-@deftypefn  {Function File} {} unidrnd (@var{n})
-@deftypefnx {Function File} {} unidrnd (@var{n}, @var{r})
-@deftypefnx {Function File} {} unidrnd (@var{n}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} unidrnd (@var{n}, [@var{sz}])
+@deftypefn  {} {} unidrnd (@var{n})
+@deftypefnx {} {} unidrnd (@var{n}, @var{r})
+@deftypefnx {} {} unidrnd (@var{n}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} unidrnd (@var{n}, [@var{sz}])
 Return a matrix of random samples from the discrete uniform distribution
 which assumes the integer values 1--@var{n} with equal probability.
 
@@ -3342,10 +3340,10 @@ If no size arguments are given then the result matrix is the size of
 
 @c unifrnd scripts/statistics/distributions/unifrnd.m
 @anchor{XREFunifrnd}
-@deftypefn  {Function File} {} unifrnd (@var{a}, @var{b})
-@deftypefnx {Function File} {} unifrnd (@var{a}, @var{b}, @var{r})
-@deftypefnx {Function File} {} unifrnd (@var{a}, @var{b}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} unifrnd (@var{a}, @var{b}, [@var{sz}])
+@deftypefn  {} {} unifrnd (@var{a}, @var{b})
+@deftypefnx {} {} unifrnd (@var{a}, @var{b}, @var{r})
+@deftypefnx {} {} unifrnd (@var{a}, @var{b}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} unifrnd (@var{a}, @var{b}, [@var{sz}])
 Return a matrix of random samples from the uniform distribution on
 [@var{a}, @var{b}].
 
@@ -3362,10 +3360,10 @@ If no size arguments are given then the result matrix is the common size of
 
 @c wblrnd scripts/statistics/distributions/wblrnd.m
 @anchor{XREFwblrnd}
-@deftypefn  {Function File} {} wblrnd (@var{scale}, @var{shape})
-@deftypefnx {Function File} {} wblrnd (@var{scale}, @var{shape}, @var{r})
-@deftypefnx {Function File} {} wblrnd (@var{scale}, @var{shape}, @var{r}, @var{c}, @dots{})
-@deftypefnx {Function File} {} wblrnd (@var{scale}, @var{shape}, [@var{sz}])
+@deftypefn  {} {} wblrnd (@var{scale}, @var{shape})
+@deftypefnx {} {} wblrnd (@var{scale}, @var{shape}, @var{r})
+@deftypefnx {} {} wblrnd (@var{scale}, @var{shape}, @var{r}, @var{c}, @dots{})
+@deftypefnx {} {} wblrnd (@var{scale}, @var{shape}, [@var{sz}])
 Return a matrix of random samples from the Weibull distribution with
 parameters @var{scale} and @var{shape}.
 
@@ -3382,7 +3380,7 @@ If no size arguments are given then the result matrix is the common size of
 
 @c wienrnd scripts/statistics/distributions/wienrnd.m
 @anchor{XREFwienrnd}
-@deftypefn {Function File} {} wienrnd (@var{t}, @var{d}, @var{n})
+@deftypefn {} {} wienrnd (@var{t}, @var{d}, @var{n})
 Return a simulated realization of the @var{d}-dimensional Wiener Process
 on the interval [0, @var{t}].
 

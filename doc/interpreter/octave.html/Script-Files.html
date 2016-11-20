@@ -14,7 +14,7 @@
 <link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Functions-and-Scripts.html#Functions-and-Scripts" rel="up" title="Functions and Scripts">
-<link href="Function-Handles-Anonymous-Functions-Inline-Functions.html#Function-Handles-Anonymous-Functions-Inline-Functions" rel="next" title="Function Handles Anonymous Functions Inline Functions">
+<link href="Publish-Octave-Script-Files.html#Publish-Octave-Script-Files" rel="next" title="Publish Octave Script Files">
 <link href="Function-Precedence.html#Function-Precedence" rel="prev" title="Function Precedence">
 <style type="text/css">
 <!--
@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -150,15 +151,28 @@ the name <samp><var>file</var>.m</samp>, you can use the function <code>source</
 execute commands from any file.
 </p>
 <a name="XREFsource"></a><dl>
-<dt><a name="index-source"></a>Built-in Function: <em></em> <strong>source</strong> <em>(<var>file</var>)</em></dt>
+<dt><a name="index-source"></a>: <em></em> <strong>source</strong> <em>(<var>file</var>)</em></dt>
+<dt><a name="index-source-1"></a>: <em></em> <strong>source</strong> <em>(<var>file</var>, <var>context</var>)</em></dt>
 <dd><p>Parse and execute the contents of <var>file</var>.
 </p>
-<p>This is equivalent to executing commands from a script file, but without
-requiring the file to be named <samp><var>file</var>.m</samp>.
+<p>Without specifying <var>context</var>, this is equivalent to executing commands
+from a script file, but without requiring the file to be named
+<samp><var>file</var>.m</samp> or to be on the execution path.
+</p>
+<p>Instead of the current context, the script may be executed in either the
+context of the function that called the present function
+(<code>&quot;caller&quot;</code>), or the top-level context (<code>&quot;base&quot;</code>).
 </p>
 <p><strong>See also:</strong> <a href="Calling-a-Function-by-its-Name.html#XREFrun">run</a>.
 </p></dd></dl>
 
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Publish-Octave-Script-Files.html#Publish-Octave-Script-Files" accesskey="1">Publish Octave Script Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Publishing-Markup.html#Publishing-Markup" accesskey="2">Publishing Markup</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
 
 <hr>
 <div class="header">

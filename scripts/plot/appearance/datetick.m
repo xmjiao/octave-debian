@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2015 David Bateman
+## Copyright (C) 2008-2016 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,20 +17,22 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} datetick ()
-## @deftypefnx {Function File} {} datetick (@var{form})
-## @deftypefnx {Function File} {} datetick (@var{axis}, @var{form})
-## @deftypefnx {Function File} {} datetick (@dots{}, "keeplimits")
-## @deftypefnx {Function File} {} datetick (@dots{}, "keepticks")
-## @deftypefnx {Function File} {} datetick (@var{hax}, @dots{})
+## @deftypefn  {} {} datetick ()
+## @deftypefnx {} {} datetick (@var{date_format})
+## @deftypefnx {} {} datetick (@var{axis_str}, @var{date_format})
+## @deftypefnx {} {} datetick (@dots{}, "keeplimits")
+## @deftypefnx {} {} datetick (@dots{}, "keepticks")
+## @deftypefnx {} {} datetick (@var{hax}, @dots{})
 ## Add date formatted tick labels to an axis.
 ##
-## The axis to apply the ticks to is determined by @var{axis} which can take
-## the values @qcode{"x"}, @qcode{"y"}, or @qcode{"z"}.  The default value is
-## @qcode{"x"}.
+## The axis to apply the ticks to is determined by @var{axis_str} which can
+## take the values @qcode{"x"}, @qcode{"y"}, or @qcode{"z"}.  The default
+## value is @qcode{"x"}.
 ##
-## The formatting of the labels is determined by the variable @var{form}, which
-## can either be a string or positive integer that @code{datestr} accepts.
+## The formatting of the labels is determined by the variable
+## @var{date_format}, which can either be a string or positive integer that
+## @code{datestr} accepts.
+##
 ## @seealso{datenum, datestr}
 ## @end deftypefn
 
@@ -67,22 +69,24 @@ endfunction
 %! pop = [76.094, 92.407, 106.461, 123.077 131.954, 151.868, 179.979, ...
 %!        203.984, 227.225, 249.623, 282.224];
 %! plot (datenum (yr, 1, 1), pop);
-%! title ('US population (millions)');
-%! xlabel ('Year');
-%! datetick ('x', 'YYYY');
+%! xlabel ("Year");
+%! ylabel ("US population (millions)");
+%! title ("datetick() with 4-digit year format");
+%! datetick ("x", "YYYY");
 
 %!demo
 %! clf;
 %! yr = 1988:2:2002;
 %! yr = datenum (yr,1,1);
 %! pr = [12.1 13.3 12.6 13.1 13.3 14.1 14.4 15.2];
-%! plot (yr, pr, '-o');
-%! xlabel ('year');
-%! ylabel ('average price');
+%! plot (yr, pr, "-o");
+%! xlabel ("year");
+%! ylabel ("average price");
+%! title ("datetick() with MM/DD/YY format");
 %! ax = gca;
-%! set (ax, 'xtick', datenum (1990:5:2005,1,1));
-%! datetick (2, 'x', 'keepticks');
-%! set (ax, 'ytick', 12:16);
+%! set (ax, "xtick", datenum (1990:5:2005,1,1));
+%! datetick ("x", 2, "keepticks");
+%! set (ax, "ytick", 12:16);
 
 ## Remove from test statistics.  No real tests possible.
 %!assert (1)
@@ -132,10 +136,10 @@ function __datetick__ (varargin)
   if (! isempty (form))
     if (isnumeric (form))
       if (! isscalar (form) || form < 0 || form != fix (form))
-        error ("datetick: expecting FORM argument to be a positive integer");
+        error ("datetick: FORM argument must be a positive integer");
       endif
     elseif (! ischar (form))
-      error ("datetick: expecting valid date format string");
+      error ("datetick: FORM argument must be a valid date format string");
     endif
   endif
 
@@ -143,18 +147,23 @@ function __datetick__ (varargin)
     ticks = get (gca (), [ax "tick"]);
   else
     ## Need to do our own axis tick position calculation as
-    ## year, etc, don't fallback on nice datenum values.
-    objs = findall (gca ());
-    xmax = NaN;
-    xmin = NaN;
-    for i = 1 : length (objs)
-      fld = get (objs (i));
-      if (isfield (fld, [ax "data"]))
-        xdata = getfield (fld, [ax "data"])(:);
-        xmin = min (xmin, min (xdata));
-        xmax = max (xmax, max (xdata));
-      endif
-    endfor
+    ## year, etc., don't fall back to nice datenum values.
+    if (keeplimits)
+      limits = get (gca (), [ax "lim"]);
+      xmin = limits(1);
+      xmax = limits(2);
+    else
+      objs = findall (gca ());
+      xmin = xmax = NaN;
+      for i = 1 : numel (objs)
+        fld = get (objs(i));
+        if (isfield (fld, [ax "data"]))
+          xdata = getfield (fld, [ax "data"])(:);
+          xmin = min (xmin, min (xdata));
+          xmax = max (xmax, max (xdata));
+        endif
+      endfor
+    endif
 
     if (isnan (xmin) || isnan (xmax))
       xmin = 0;
@@ -179,6 +188,7 @@ function __datetick__ (varargin)
       nticks = (xmax - xmin) / sep + 1;
       xmin *= scl;
       xmax *= scl;
+      ticks = xmin + [0 : nticks - 1] / (nticks - 1) * (xmax - xmin);
     else
       [ymin, mmin, dmin] = datevec (xmin);
       [ymax, mmax, dmax] = datevec (xmax);
@@ -192,19 +202,25 @@ function __datetick__ (varargin)
         xmin = sep * floor (xmin / sep);
         xmax = sep * ceil (xmax / sep);
         nticks = (xmax - xmin) / sep + 1;
+        ticks = xmin + [0 : nticks - 1] / (nticks - 1) * (xmax - xmin);
       elseif (maxyear - minyear < N)
-        sep = __calc_tick_sep__ (minmonth , maxmonth);
-        xmin = datenum (ymin, sep * floor (minmonth / sep), 1);
-        xmax = datenum (ymax, sep * ceil (maxmonth / sep), 1);
-        nticks = ceil (maxmonth / sep) - floor (minmonth / sep) + 1;
+        sep = __calc_tick_sep__ (minmonth, maxmonth);
+        minyear = floor (minyear);
+        minmonth = sep * floor (minmonth / sep);
+        minmonth = ifelse (minmonth == 0, 1, minmonth);
+        maxmonth = sep * ceil (maxmonth / sep);
+        rangemonth = (minmonth:sep:maxmonth)';
+        ticks = datenum ([repmat(minyear, size(rangemonth)), ...
+                          rangemonth, ...
+                          ones(size (rangemonth))]);
       else
-        sep = __calc_tick_sep__ (minyear , maxyear);
-        xmin = datenum (sep * floor (minyear / sep), 1, 1);
-        xmax = datenum (sep * ceil (maxyear / sep), 1, 1);
-        nticks = ceil (maxyear / sep) - floor (minyear / sep) + 1;
+        sep = __calc_tick_sep__ (minyear, maxyear);
+        minyear = sep * floor (minyear / sep);
+        maxyear = sep * ceil (maxyear / sep);
+        rangeyear = (minyear:sep:maxyear)';
+        ticks = datenum ([rangeyear, ones(rows(rangeyear),2)]);
       endif
     endif
-    ticks = xmin + [0 : nticks - 1] / (nticks - 1) * (xmax - xmin);
   endif
 
   if (isempty (form))
@@ -266,12 +282,13 @@ function __datetick__ (varargin)
                    [ax "lim"], [min(ticks), max(ticks)]);
     endif
   endif
+
 endfunction
 
 function [a, b] = __magform__ (x)
+
   if (x == 0)
-    a = 0;
-    b = 0;
+    a = b = 0;
   else
     l = log10 (abs (x));
     r = rem (l, 1);
@@ -285,6 +302,7 @@ function [a, b] = __magform__ (x)
       a = -a;
     endif
   endif
+
 endfunction
 
 ## A translation from Tom Holoryd's python code at
@@ -312,6 +330,8 @@ function sep = __calc_tick_sep__ (lo, hi)
   else
     x = 10;
   endif
+
   sep = x * 10 .^ b;
+
 endfunction
 

@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by genpropdoc.m.
 
-@c Copyright (C) 2014-2015 Pantxo Diribarne
+@c Copyright (C) 2014-2016 Pantxo Diribarne
 @c
 @c This file is part of Octave.
 @c
@@ -78,12 +78,6 @@ Callback function executed immediately before line is deleted.
 @cindex line displayname
 @item @code{displayname}: string | cell array of strings, def. @qcode{""}
 Text for the legend entry corresponding to this line.
-
-
-@anchor{XREFlineerasemode}
-@cindex line erasemode
-@item @code{erasemode}: @qcode{"background"} | @qcode{"none"} | @{@qcode{"normal"}@} | @qcode{"xor"}
-@code{erasemode} is unused.
 
 
 @anchor{XREFlinehandlevisibility}

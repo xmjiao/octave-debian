@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -62,9 +63,9 @@ to plot the Delaunay triangulation of a 2-dimensional set of points.
 <code>tetramesh</code> will plot the triangulation of a 3-dimensional set of points.
 </p>
 <a name="XREFtriplot"></a><dl>
-<dt><a name="index-triplot"></a>Function File: <em></em> <strong>triplot</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>)</em></dt>
-<dt><a name="index-triplot-1"></a>Function File: <em></em> <strong>triplot</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>linespec</var>)</em></dt>
-<dt><a name="index-triplot-2"></a>Function File: <em><var>h</var> =</em> <strong>triplot</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-triplot"></a>: <em></em> <strong>triplot</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-triplot-1"></a>: <em></em> <strong>triplot</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>linespec</var>)</em></dt>
+<dt><a name="index-triplot-2"></a>: <em><var>h</var> =</em> <strong>triplot</strong> <em>(&hellip;)</em></dt>
 <dd><p>Plot a 2-D triangular mesh.
 </p>
 <p><var>tri</var> is typically the output of a Delaunay triangulation over the
@@ -83,11 +84,11 @@ patch object.
 
 
 <a name="XREFtrimesh"></a><dl>
-<dt><a name="index-trimesh"></a>Function File: <em></em> <strong>trimesh</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>, <var>c</var>)</em></dt>
-<dt><a name="index-trimesh-1"></a>Function File: <em></em> <strong>trimesh</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
-<dt><a name="index-trimesh-2"></a>Function File: <em></em> <strong>trimesh</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>)</em></dt>
-<dt><a name="index-trimesh-3"></a>Function File: <em></em> <strong>trimesh</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
-<dt><a name="index-trimesh-4"></a>Function File: <em><var>h</var> =</em> <strong>trimesh</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-trimesh"></a>: <em></em> <strong>trimesh</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>, <var>c</var>)</em></dt>
+<dt><a name="index-trimesh-1"></a>: <em></em> <strong>trimesh</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-trimesh-2"></a>: <em></em> <strong>trimesh</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-trimesh-3"></a>: <em></em> <strong>trimesh</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-trimesh-4"></a>: <em><var>h</var> =</em> <strong>trimesh</strong> <em>(&hellip;)</em></dt>
 <dd><p>Plot a 3-D triangular wireframe mesh.
 </p>
 <p>In contrast to <code>mesh</code>, which plots a mesh using rectangles,
@@ -119,10 +120,10 @@ object.
 
 
 <a name="XREFtrisurf"></a><dl>
-<dt><a name="index-trisurf"></a>Function File: <em></em> <strong>trisurf</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>, <var>c</var>)</em></dt>
-<dt><a name="index-trisurf-1"></a>Function File: <em></em> <strong>trisurf</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
-<dt><a name="index-trisurf-2"></a>Function File: <em></em> <strong>trisurf</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
-<dt><a name="index-trisurf-3"></a>Function File: <em><var>h</var> =</em> <strong>trisurf</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-trisurf"></a>: <em></em> <strong>trisurf</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>, <var>c</var>)</em></dt>
+<dt><a name="index-trisurf-1"></a>: <em></em> <strong>trisurf</strong> <em>(<var>tri</var>, <var>x</var>, <var>y</var>, <var>z</var>)</em></dt>
+<dt><a name="index-trisurf-2"></a>: <em></em> <strong>trisurf</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-trisurf-3"></a>: <em><var>h</var> =</em> <strong>trisurf</strong> <em>(&hellip;)</em></dt>
 <dd><p>Plot a 3-D triangular surface.
 </p>
 <p>In contrast to <code>surf</code>, which plots a surface mesh using rectangles,
@@ -153,11 +154,12 @@ object.
 
 
 <a name="XREFtetramesh"></a><dl>
-<dt><a name="index-tetramesh"></a>Function File: <em></em> <strong>tetramesh</strong> <em>(<var>T</var>, <var>X</var>)</em></dt>
-<dt><a name="index-tetramesh-1"></a>Function File: <em></em> <strong>tetramesh</strong> <em>(<var>T</var>, <var>X</var>, <var>C</var>)</em></dt>
-<dt><a name="index-tetramesh-2"></a>Function File: <em></em> <strong>tetramesh</strong> <em>(&hellip;, <var>property</var>, <var>val</var>, &hellip;)</em></dt>
-<dt><a name="index-tetramesh-3"></a>Function File: <em><var>h</var> =</em> <strong>tetramesh</strong> <em>(&hellip;)</em></dt>
-<dd><p>Display the tetrahedrons defined in the m-by-4 matrix <var>T</var> as 3-D patches.
+<dt><a name="index-tetramesh"></a>: <em></em> <strong>tetramesh</strong> <em>(<var>T</var>, <var>X</var>)</em></dt>
+<dt><a name="index-tetramesh-1"></a>: <em></em> <strong>tetramesh</strong> <em>(<var>T</var>, <var>X</var>, <var>C</var>)</em></dt>
+<dt><a name="index-tetramesh-2"></a>: <em></em> <strong>tetramesh</strong> <em>(&hellip;, <var>property</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-tetramesh-3"></a>: <em><var>h</var> =</em> <strong>tetramesh</strong> <em>(&hellip;)</em></dt>
+<dd><p>Display the tetrahedrons defined in the m-by-4 matrix <var>T</var> as 3-D
+patches.
 </p>
 <p><var>T</var> is typically the output of a Delaunay triangulation of a 3-D set
 of points.  Every row of <var>T</var> contains four indices into the n-by-3

@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -179,16 +180,16 @@ Next: <a href="Axes-Properties.html#Axes-Properties" accesskey="n" rel="next">Ax
 <dd><p><code>dockcontrols</code> is unused.
 </p>
 
-<a name="XREFfiguredoublebuffer"></a><a name="index-figure-doublebuffer"></a>
-</dd>
-<dt><code>doublebuffer</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
-<dd>
-
-
 <a name="XREFfigurefilename"></a><a name="index-figure-filename"></a>
 </dd>
 <dt><code>filename</code>: string, def. <code>&quot;&quot;</code></dt>
-<dd><p>The filename used when saving the plot figure
+<dd><p>The filename used when saving the plot figure.
+</p>
+
+<a name="XREFfiguregraphicssmoothing"></a><a name="index-figure-graphicssmoothing"></a>
+</dd>
+<dt><code>graphicssmoothing</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p>Use smoothing techniques to reduce the appearance of jagged lines.
 </p>
 
 <a name="XREFfigurehandlevisibility"></a><a name="index-figure-handlevisibility"></a>
@@ -217,9 +218,9 @@ Next: <a href="Axes-Properties.html#Axes-Properties" accesskey="n" rel="next">Ax
 
 <a name="XREFfigureinverthardcopy"></a><a name="index-figure-inverthardcopy"></a>
 </dd>
-<dt><code>inverthardcopy</code>: {<code>&quot;off&quot;</code>} | <code>&quot;on&quot;</code></dt>
-<dd>
-
+<dt><code>inverthardcopy</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
+<dd><p>Replace the figure and axes background color with white when printing.
+</p>
 
 <a name="XREFfigurekeypressfcn"></a><a name="index-figure-keypressfcn"></a>
 </dd>
@@ -250,12 +251,6 @@ Next: <a href="Axes-Properties.html#Axes-Properties" accesskey="n" rel="next">Ax
 <dd><p>Control the display of the figure menu bar in the upper left of the figure.
 </p>
 
-<a name="XREFfiguremincolormap"></a><a name="index-figure-mincolormap"></a>
-</dd>
-<dt><code>mincolormap</code>: def. <code>64</code></dt>
-<dd>
-
-
 <a name="XREFfigurename"></a><a name="index-figure-name"></a>
 </dd>
 <dt><code>name</code>: string, def. <code>&quot;&quot;</code></dt>
@@ -282,38 +277,38 @@ Next: <a href="Axes-Properties.html#Axes-Properties" accesskey="n" rel="next">Ax
 
 <a name="XREFfigurepaperorientation"></a><a name="index-figure-paperorientation"></a>
 </dd>
-<dt><code>paperorientation</code>: <code>&quot;landscape&quot;</code> | {<code>&quot;portrait&quot;</code>} | <code>&quot;rotated&quot;</code></dt>
-<dd>
-
+<dt><code>paperorientation</code>: <code>&quot;landscape&quot;</code> | {<code>&quot;portrait&quot;</code>}</dt>
+<dd><p>The value for the <code>papersize</code>, and <code>paperposition</code> properties depends upon <code>paperorientation</code>.  The horizontal and vertical values for <code>papersize</code> and <code>paperposition</code> reverse order when <code>paperorientation</code> is switched between <code>&quot;portrait&quot;</code> and <code>&quot;landscape&quot;</code>.
+</p>
 
 <a name="XREFfigurepaperposition"></a><a name="index-figure-paperposition"></a>
 </dd>
 <dt><code>paperposition</code>: four-element vector, def. <code>[0.25000   2.50000   8.00000   6.00000]</code></dt>
-<dd><p>Vector <code>[x0 y0 width height]</code> defining the position of the figure (in <code>paperunits</code> units) on the printed page.  Setting <code>paperposition</code> also forces the <code>paperpositionmode</code> property to be set to <code>&quot;manual&quot;</code>.
+<dd><p>Vector <code>[left bottom width height]</code> defining the position and size of the figure (in <code>paperunits</code> units) on the printed page.  The position <code>[left bottom]</code> defines the lower left corner of the figure on the page, and the size is defined by <code>[width height]</code>.  For output formats not implicitly rendered on paper, <code>width</code> and <code>height</code> define the size of the image and the position information is ignored.  Setting <code>paperposition</code> also forces the <code>paperpositionmode</code> property to be set to <code>&quot;manual&quot;</code>.
 </p>
 
 <a name="XREFfigurepaperpositionmode"></a><a name="index-figure-paperpositionmode"></a>
 </dd>
 <dt><code>paperpositionmode</code>: <code>&quot;auto&quot;</code> | {<code>&quot;manual&quot;</code>}</dt>
-<dd><p>If <code>paperpositionmode</code> is set to <code>&quot;auto&quot;</code>, the <code>paperposition</code> property is automatically computed: the printed figure will have the same size as the on-screen figure and will be centered on the output page.
+<dd><p>If <code>paperpositionmode</code> is set to <code>&quot;auto&quot;</code>, the <code>paperposition</code> property is automatically computed: the printed figure will have the same size as the on-screen figure and will be centered on the output page.  Setting the <code>paperpositionmode</code> to <code>&quot;auto&quot;</code> does not modify the value of the <code>paperposition</code> property.
 </p>
 
 <a name="XREFfigurepapersize"></a><a name="index-figure-papersize"></a>
 </dd>
 <dt><code>papersize</code>: two-element vector, def. <code>[8.5000   11.0000]</code></dt>
-<dd><p>Vector <code>[width height]</code> defining the size of the paper for printing.  Setting this property forces the <code>papertype</code> property to be set to <code>&quot;&lt;custom&gt;&quot;</code>.
+<dd><p>Vector <code>[width height]</code> defining the size of the paper for printing.  Setting the <code>papersize</code> property to a value, not associated with one of the defined <code>papertypes</code> and consistent with the setting for <code>paperorientation</code>, forces the <code>papertype</code> property to the value <code>&quot;&lt;custom&gt;&quot;</code>.  If <code>papersize</code> is set to a value associated with a supported <code>papertype</code> and consistent with the <code>paperorientation</code>, the <code>papertype</code> value is modified to the associated value.
 </p>
 
 <a name="XREFfigurepapertype"></a><a name="index-figure-papertype"></a>
 </dd>
 <dt><code>papertype</code>: <code>&quot;&lt;custom&gt;&quot;</code> | <code>&quot;a&quot;</code> | <code>&quot;a0&quot;</code> | <code>&quot;a1&quot;</code> | <code>&quot;a2&quot;</code> | <code>&quot;a3&quot;</code> | <code>&quot;a4&quot;</code> | <code>&quot;a5&quot;</code> | <code>&quot;arch-a&quot;</code> | <code>&quot;arch-b&quot;</code> | <code>&quot;arch-c&quot;</code> | <code>&quot;arch-d&quot;</code> | <code>&quot;arch-e&quot;</code> | <code>&quot;b&quot;</code> | <code>&quot;b0&quot;</code> | <code>&quot;b1&quot;</code> | <code>&quot;b2&quot;</code> | <code>&quot;b3&quot;</code> | <code>&quot;b4&quot;</code> | <code>&quot;b5&quot;</code> | <code>&quot;c&quot;</code> | <code>&quot;d&quot;</code> | <code>&quot;e&quot;</code> | <code>&quot;tabloid&quot;</code> | <code>&quot;uslegal&quot;</code> | {<code>&quot;usletter&quot;</code>}</dt>
-<dd><p>Name of the paper used for printed output.  Setting <code>papertype</code> also changes <code>papersize</code> accordingly.
+<dd><p>Name of the paper used for printed output.  Setting <code>papertype</code> also changes <code>papersize</code>, while maintaining consistency with the <code>paperorientation</code> property.
 </p>
 
 <a name="XREFfigurepaperunits"></a><a name="index-figure-paperunits"></a>
 </dd>
 <dt><code>paperunits</code>: <code>&quot;centimeters&quot;</code> | {<code>&quot;inches&quot;</code>} | <code>&quot;normalized&quot;</code> | <code>&quot;points&quot;</code></dt>
-<dd><p>The unit used to compute the <code>paperposition</code> property.
+<dd><p>The unit used to compute the <code>paperposition</code> property.  For <code>paperunits</code> set to <code>&quot;pixels&quot;</code>, the conversion between physical units (ex: <code>&quot;inches&quot;</code>) and <code>&quot;pixels&quot;</code> is dependent on the <code>screenpixelsperinch</code> property of the root object.
 </p>
 
 <a name="XREFfigureparent"></a><a name="index-figure-parent"></a>
@@ -343,12 +338,12 @@ Next: <a href="Axes-Properties.html#Axes-Properties" accesskey="n" rel="next">Ax
 <a name="XREFfigureposition"></a><a name="index-figure-position"></a>
 </dd>
 <dt><code>position</code>: four-element vector, def. <code>[300   200   560   420]</code></dt>
-<dd>
-
+<dd><p>Specify the position and size of the figure.  The four elements of the vector are the coordinates of the lower left corner and width and height of the figure.  See <a href="#XREFfigureunits">units&nbsp;property<!-- /@w --></a>.
+</p>
 
 <a name="XREFfigurerenderer"></a><a name="index-figure-renderer"></a>
 </dd>
-<dt><code>renderer</code>: <code>&quot;none&quot;</code> | <code>&quot;opengl&quot;</code> | {<code>&quot;painters&quot;</code>} | <code>&quot;zbuffer&quot;</code></dt>
+<dt><code>renderer</code>: {<code>&quot;opengl&quot;</code>} | <code>&quot;painters&quot;</code></dt>
 <dd>
 
 
@@ -361,14 +356,14 @@ Next: <a href="Axes-Properties.html#Axes-Properties" accesskey="n" rel="next">Ax
 <a name="XREFfigureresize"></a><a name="index-figure-resize"></a>
 </dd>
 <dt><code>resize</code>: <code>&quot;off&quot;</code> | {<code>&quot;on&quot;</code>}</dt>
-<dd>
-
+<dd><p><code>resize</code> is unused.
+</p>
 
 <a name="XREFfigureresizefcn"></a><a name="index-figure-resizefcn"></a>
 </dd>
 <dt><code>resizefcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
-<dd>
-
+<dd><p><code>resizefcn</code> is deprecated.  Use <code>sizechangedfcn</code> instead.
+</p>
 
 <a name="XREFfigureselected"></a><a name="index-figure-selected"></a>
 </dd>
@@ -385,7 +380,13 @@ Next: <a href="Axes-Properties.html#Axes-Properties" accesskey="n" rel="next">Ax
 <a name="XREFfigureselectiontype"></a><a name="index-figure-selectiontype"></a>
 </dd>
 <dt><code>selectiontype</code>: <code>&quot;alt&quot;</code> | <code>&quot;extend&quot;</code> | {<code>&quot;normal&quot;</code>} | <code>&quot;open&quot;</code></dt>
-<dd><p><code>selectiontype</code> is unused.
+<dd>
+
+
+<a name="XREFfiguresizechangedfcn"></a><a name="index-figure-sizechangedfcn"></a>
+</dd>
+<dt><code>sizechangedfcn</code>: string | function handle, def. <code>[](0x0)</code></dt>
+<dd><p>Callback triggered when the figure window size is changed.
 </p>
 
 <a name="XREFfiguretag"></a><a name="index-figure-tag"></a>
@@ -397,7 +398,7 @@ Next: <a href="Axes-Properties.html#Axes-Properties" accesskey="n" rel="next">Ax
 <a name="XREFfiguretoolbar"></a><a name="index-figure-toolbar"></a>
 </dd>
 <dt><code>toolbar</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;figure&quot;</code> | <code>&quot;none&quot;</code></dt>
-<dd><p><code>toolbar</code> is unused.
+<dd><p>Control the display of the toolbar along the bottom of the figure window.  When set to <code>&quot;auto&quot;</code>, the display is based on the value of the <code>menubar</code> property.
 </p>
 
 <a name="XREFfiguretype"></a><a name="index-figure-type"></a>
@@ -469,36 +470,22 @@ Next: <a href="Axes-Properties.html#Axes-Properties" accesskey="n" rel="next">Ax
 <a name="XREFfigurewindowstyle"></a><a name="index-figure-windowstyle"></a>
 </dd>
 <dt><code>windowstyle</code>: <code>&quot;docked&quot;</code> | <code>&quot;modal&quot;</code> | {<code>&quot;normal&quot;</code>}</dt>
-<dd>
+<dd><p>The window style of a figure.  One of the following values:
+</p><dl compact="compact">
+<dt><code>normal</code></dt>
+<dd><p>Set the window style as non modal.
+</p></dd>
+<dt><code>modal</code></dt>
+<dd><p>Set the window as modal so that it will stay on top of all normal figures.
+</p></dd>
+<dt><code>docked</code></dt>
+<dd><p>Setting the window style as docked currently does not dock the window.
+</p></dd>
+</dl>
 
-
-<a name="XREFfigurewvisual"></a><a name="index-figure-wvisual"></a>
+<p>Changing modes of a visible figure may cause the figure to close and reopen.
+</p>
 </dd>
-<dt><code>wvisual</code>: def. <code>&quot;&quot;</code></dt>
-<dd>
-
-
-<a name="XREFfigurewvisualmode"></a><a name="index-figure-wvisualmode"></a>
-</dd>
-<dt><code>wvisualmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
-<dd>
-
-
-<a name="XREFfigurexdisplay"></a><a name="index-figure-xdisplay"></a>
-</dd>
-<dt><code>xdisplay</code>: def. <code>&quot;&quot;</code></dt>
-<dd>
-
-
-<a name="XREFfigurexvisual"></a><a name="index-figure-xvisual"></a>
-</dd>
-<dt><code>xvisual</code>: def. <code>&quot;&quot;</code></dt>
-<dd>
-
-
-<a name="XREFfigurexvisualmode"></a><a name="index-figure-xvisualmode"></a>
-</dd>
-<dt><code>xvisualmode</code>: {<code>&quot;auto&quot;</code>} | <code>&quot;manual&quot;</code></dt>
 </dl>
 
 

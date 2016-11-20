@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2015 John W. Eaton
+@c Copyright (C) 1996-2016 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -171,9 +171,9 @@ contents of structure arrays.
 
 @c struct_levels_to_print libinterp/octave-value/ov-struct.cc
 @anchor{XREFstruct_levels_to_print}
-@deftypefn  {Built-in Function} {@var{val} =} struct_levels_to_print ()
-@deftypefnx {Built-in Function} {@var{old_val} =} struct_levels_to_print (@var{new_val})
-@deftypefnx {Built-in Function} {} struct_levels_to_print (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} struct_levels_to_print ()
+@deftypefnx {} {@var{old_val} =} struct_levels_to_print (@var{new_val})
+@deftypefnx {} {} struct_levels_to_print (@var{new_val}, "local")
 Query or set the internal variable that specifies the number of
 structure levels to display.
 
@@ -186,9 +186,9 @@ The original variable value is restored when exiting the function.
 
 @c print_struct_array_contents libinterp/octave-value/ov-struct.cc
 @anchor{XREFprint_struct_array_contents}
-@deftypefn  {Built-in Function} {@var{val} =} print_struct_array_contents ()
-@deftypefnx {Built-in Function} {@var{old_val} =} print_struct_array_contents (@var{new_val})
-@deftypefnx {Built-in Function} {} print_struct_array_contents (@var{new_val}, "local")
+@deftypefn  {} {@var{val} =} print_struct_array_contents ()
+@deftypefnx {} {@var{old_val} =} print_struct_array_contents (@var{new_val})
+@deftypefnx {} {} print_struct_array_contents (@var{new_val}, "local")
 Query or set the internal variable that specifies whether to print struct
 array contents.
 
@@ -530,9 +530,9 @@ struct ("field1", @{@{1, "one"@}@}, "field2", 2)
 
 @c struct libinterp/octave-value/ov-struct.cc
 @anchor{XREFstruct}
-@deftypefn  {Built-in Function} {@var{s} =} struct ()
-@deftypefnx {Built-in Function} {@var{s} =} struct (@var{field1}, @var{value1}, @var{field2}, @var{value2}, @dots{})
-@deftypefnx {Built-in Function} {@var{s} =} struct (@var{obj})
+@deftypefn  {} {@var{s} =} struct ()
+@deftypefnx {} {@var{s} =} struct (@var{field1}, @var{value1}, @var{field2}, @var{value2}, @dots{})
+@deftypefnx {} {@var{s} =} struct (@var{obj})
 
 Create a scalar or array structure and initialize its values.
 
@@ -542,7 +542,7 @@ can be of any type.
 
 If the values are cell arrays, create a structure array and initialize its
 values.  The dimensions of each cell array of values must match.  Singleton
-cells and non-cell values are repeated so that they fill the entire array. 
+cells and non-cell values are repeated so that they fill the entire array.
 If the cells are empty, create an empty structure array with the specified
 field names.
 
@@ -591,7 +591,7 @@ structure or a structure array.
 
 @c isstruct libinterp/octave-value/ov-struct.cc
 @anchor{XREFisstruct}
-@deftypefn {Built-in Function} {} isstruct (@var{x})
+@deftypefn {} {} isstruct (@var{x})
 Return true if @var{x} is a structure or a structure array.
 @seealso{@ref{XREFismatrix,,ismatrix}, @ref{XREFiscell,,iscell}, @ref{XREFisa,,isa}}
 @end deftypefn
@@ -604,7 +604,7 @@ Other functions that can manipulate the fields of a structure are given below.
 
 @c numfields libinterp/octave-value/ov-struct.cc
 @anchor{XREFnumfields}
-@deftypefn {Built-in Function} {} numfields (@var{s})
+@deftypefn {} {} numfields (@var{s})
 Return the number of fields of the structure @var{s}.
 @seealso{@ref{XREFfieldnames,,fieldnames}}
 @end deftypefn
@@ -612,10 +612,10 @@ Return the number of fields of the structure @var{s}.
 
 @c fieldnames scripts/general/fieldnames.m
 @anchor{XREFfieldnames}
-@deftypefn  {Function File} {@var{names} =} fieldnames (@var{struct})
-@deftypefnx {Function File} {@var{names} =} fieldnames (@var{obj})
-@deftypefnx {Function File} {@var{names} =} fieldnames (@var{javaobj})
-@deftypefnx {Function File} {@var{names} =} fieldnames ("@var{jclassname}")
+@deftypefn  {} {@var{names} =} fieldnames (@var{struct})
+@deftypefnx {} {@var{names} =} fieldnames (@var{obj})
+@deftypefnx {} {@var{names} =} fieldnames (@var{javaobj})
+@deftypefnx {} {@var{names} =} fieldnames ("@var{javaclassname}")
 Return a cell array of strings with the names of the fields in the
 specified input.
 
@@ -625,17 +625,17 @@ the structure.
 When the input is an Octave object @var{obj}, the names are the public
 properties of the object.
 
-When the input is a Java object @var{javaobj} or Java classname
-@var{jclassname} the name are the public data elements of the object or
-class.
+When the input is a Java object @var{javaobj} or a string containing the
+name of a Java class @var{javaclassname}, the names are the public fields
+(data members) of the object or class.
 @seealso{@ref{XREFnumfields,,numfields}, @ref{XREFisfield,,isfield}, @ref{XREForderfields,,orderfields}, @ref{XREFstruct,,struct}, @ref{XREFmethods,,methods}}
 @end deftypefn
 
 
 @c isfield libinterp/octave-value/ov-struct.cc
 @anchor{XREFisfield}
-@deftypefn  {Built-in Function} {} isfield (@var{x}, "@var{name}")
-@deftypefnx {Built-in Function} {} isfield (@var{x}, @var{name})
+@deftypefn  {} {} isfield (@var{x}, "@var{name}")
+@deftypefnx {} {} isfield (@var{x}, @var{name})
 Return true if the @var{x} is a structure and it includes an element named
 @var{name}.
 
@@ -647,8 +647,8 @@ dimension is returned.
 
 @c setfield scripts/miscellaneous/setfield.m
 @anchor{XREFsetfield}
-@deftypefn  {Function File} {@var{sout} =} setfield (@var{s}, @var{field}, @var{val})
-@deftypefnx {Function File} {@var{sout} =} setfield (@var{s}, @var{sidx1}, @var{field1}, @var{fidx1}, @var{sidx2}, @var{field2}, @var{fidx2}, @dots{}, @var{val})
+@deftypefn  {} {@var{sout} =} setfield (@var{s}, @var{field}, @var{val})
+@deftypefnx {} {@var{sout} =} setfield (@var{s}, @var{sidx1}, @var{field1}, @var{fidx1}, @var{sidx2}, @var{field2}, @var{fidx2}, @dots{}, @var{val})
 
 Return a @emph{copy} of the structure @var{s} with the field member
 @var{field} set to the value @var{val}.
@@ -741,8 +741,8 @@ Note that the same result as in the above example could be achieved by:
 
 @c getfield scripts/miscellaneous/getfield.m
 @anchor{XREFgetfield}
-@deftypefn  {Function File} {@var{val} =} getfield (@var{s}, @var{field})
-@deftypefnx {Function File} {@var{val} =} getfield (@var{s}, @var{sidx1}, @var{field1}, @var{fidx1}, @dots{})
+@deftypefn  {} {@var{val} =} getfield (@var{s}, @var{field})
+@deftypefnx {} {@var{val} =} getfield (@var{s}, @var{sidx1}, @var{field1}, @var{fidx1}, @dots{})
 Get the value of the field named @var{field} from a structure or nested
 structure @var{s}.
 
@@ -758,8 +758,8 @@ description of the syntax.
 
 @c rmfield libinterp/octave-value/ov-struct.cc
 @anchor{XREFrmfield}
-@deftypefn  {Built-in Function} {@var{sout} =} rmfield (@var{s}, "@var{f}")
-@deftypefnx {Built-in Function} {@var{sout} =} rmfield (@var{s}, @var{f})
+@deftypefn  {} {@var{sout} =} rmfield (@var{s}, "@var{f}")
+@deftypefnx {} {@var{sout} =} rmfield (@var{s}, @var{f})
 Return a @emph{copy} of the structure (array) @var{s} with the field @var{f}
 removed.
 
@@ -771,20 +771,20 @@ the named fields.
 
 @c orderfields scripts/miscellaneous/orderfields.m
 @anchor{XREForderfields}
-@deftypefn  {Function File} {@var{sout} =} orderfields (@var{s1})
-@deftypefnx {Function File} {@var{sout} =} orderfields (@var{s1}, @var{s2})
-@deftypefnx {Function File} {@var{sout} =} orderfields (@var{s1}, @{@var{cellstr}@})
-@deftypefnx {Function File} {@var{sout} =} orderfields (@var{s1}, @var{p})
-@deftypefnx {Function File} {[@var{sout}, @var{p}] =} orderfields (@dots{})
+@deftypefn  {} {@var{sout} =} orderfields (@var{s1})
+@deftypefnx {} {@var{sout} =} orderfields (@var{s1}, @var{s2})
+@deftypefnx {} {@var{sout} =} orderfields (@var{s1}, @{@var{cellstr}@})
+@deftypefnx {} {@var{sout} =} orderfields (@var{s1}, @var{p})
+@deftypefnx {} {[@var{sout}, @var{p}] =} orderfields (@dots{})
 Return a @emph{copy} of @var{s1} with fields arranged alphabetically, or as
 specified by the second input.
 
 Given one input struct @var{s1}, arrange field names alphabetically.
 
-If a second struct argument is given, arrange field names in @var{s1} as they
-appear in @var{s2}.  The second argument may also specify the order in a
-cell array of strings @var{cellstr}.  The second argument may also be a
-permutation vector.
+If a second struct argument is given, arrange field names in @var{s1} as
+they appear in @var{s2}.  The second argument may also specify the order
+in a cell array of strings @var{cellstr}.  The second argument may also
+be a permutation vector.
 
 The optional second output argument @var{p} is the permutation vector which
 converts the original name order to the new name order.
@@ -803,6 +803,9 @@ t1 = orderfields (s)
           d =  4
         @}
 @end group
+@end example
+
+@example
 @group
 t = struct ("d", @{@}, "c", @{@}, "b", @{@}, "a", @{@});
 t2 = orderfields (s, t)
@@ -814,6 +817,9 @@ t2 = orderfields (s, t)
           a =  1
         @}
 @end group
+@end example
+
+@example
 @group
 t3 = orderfields (s, [3, 2, 4, 1])
      @result{} t3 =
@@ -824,6 +830,9 @@ t3 = orderfields (s, [3, 2, 4, 1])
           d =  4
         @}
 @end group
+@end example
+
+@example
 @group
 [t4, p] = orderfields (s, @{"d", "c", "b", "a"@})
      @result{} t4 =
@@ -847,7 +856,7 @@ t3 = orderfields (s, [3, 2, 4, 1])
 
 @c substruct scripts/miscellaneous/substruct.m
 @anchor{XREFsubstruct}
-@deftypefn {Function File} {} substruct (@var{type}, @var{subs}, @dots{})
+@deftypefn {} {} substruct (@var{type}, @var{subs}, @dots{})
 Create a subscript structure for use with @code{subsref} or @code{subsasgn}.
 
 For example:
@@ -890,7 +899,7 @@ be converted to another type of container before being treated.
 
 @c struct2cell libinterp/octave-value/ov-cell.cc
 @anchor{XREFstruct2cell}
-@deftypefn {Built-in Function} {@var{c} =} struct2cell (@var{s})
+@deftypefn {} {@var{c} =} struct2cell (@var{s})
 Create a new cell array from the objects stored in the struct object.
 
 If @var{f} is the number of fields in the structure, the resulting cell
@@ -1010,8 +1019,8 @@ function.
 
 @c celldisp scripts/general/celldisp.m
 @anchor{XREFcelldisp}
-@deftypefn  {Function File} {} celldisp (@var{c})
-@deftypefnx {Function File} {} celldisp (@var{c}, @var{name})
+@deftypefn  {} {} celldisp (@var{c})
+@deftypefnx {} {} celldisp (@var{c}, @var{name})
 Recursively display the contents of a cell array.
 
 By default the values are displayed with the name of the variable @var{c}.
@@ -1054,7 +1063,7 @@ iscell (3)
 
 @c iscell libinterp/octave-value/ov-cell.cc
 @anchor{XREFiscell}
-@deftypefn {Built-in Function} {} iscell (@var{x})
+@deftypefn {} {} iscell (@var{x})
 Return true if @var{x} is a cell array object.
 @seealso{@ref{XREFismatrix,,ismatrix}, @ref{XREFisstruct,,isstruct}, @ref{XREFiscellstr,,iscellstr}, @ref{XREFisa,,isa}}
 @end deftypefn
@@ -1112,10 +1121,10 @@ object, such as @ref{XREFlength,,length}, @ref{XREFnumel,, numel},
 
 @c cell libinterp/octave-value/ov-cell.cc
 @anchor{XREFcell}
-@deftypefn  {Built-in Function} {} cell (@var{n})
-@deftypefnx {Built-in Function} {} cell (@var{m}, @var{n})
-@deftypefnx {Built-in Function} {} cell (@var{m}, @var{n}, @var{k}, @dots{})
-@deftypefnx {Built-in Function} {} cell ([@var{m} @var{n} @dots{}])
+@deftypefn  {} {} cell (@var{n})
+@deftypefnx {} {} cell (@var{m}, @var{n})
+@deftypefnx {} {} cell (@var{m}, @var{n}, @var{k}, @dots{})
+@deftypefnx {} {} cell ([@var{m} @var{n} @dots{}])
 Create a new cell array object.
 
 If invoked with a single scalar integer argument, return a square
@@ -1132,8 +1141,8 @@ is possible to convert numerical arrays into cell arrays using the
 
 @c num2cell libinterp/corefcn/cellfun.cc
 @anchor{XREFnum2cell}
-@deftypefn  {Built-in Function} {@var{C} =} num2cell (@var{A})
-@deftypefnx {Built-in Function} {@var{C} =} num2cell (@var{A}, @var{dim})
+@deftypefn  {} {@var{C} =} num2cell (@var{A})
+@deftypefnx {} {@var{C} =} num2cell (@var{A}, @var{dim})
 Convert the numeric matrix @var{A} to a cell array.
 
 If @var{dim} is defined, the value @var{C} is of dimension 1 in this
@@ -1169,9 +1178,9 @@ num2cell ([1,2;3,4],1)
 
 @c mat2cell libinterp/corefcn/cellfun.cc
 @anchor{XREFmat2cell}
-@deftypefn  {Built-in Function} {@var{C} =} mat2cell (@var{A}, @var{m}, @var{n})
-@deftypefnx {Built-in Function} {@var{C} =} mat2cell (@var{A}, @var{d1}, @var{d2}, @dots{})
-@deftypefnx {Built-in Function} {@var{C} =} mat2cell (@var{A}, @var{r})
+@deftypefn  {} {@var{C} =} mat2cell (@var{A}, @var{m}, @var{n})
+@deftypefnx {} {@var{C} =} mat2cell (@var{A}, @var{d1}, @var{d2}, @dots{})
+@deftypefnx {} {@var{C} =} mat2cell (@var{A}, @var{r})
 Convert the matrix @var{A} to a cell array.
 
 If @var{A} is 2-D, then it is required that
@@ -1215,7 +1224,7 @@ mat2cell (reshape (1:16,4,4), [3,1], [3,1])
 
 @c cellslices libinterp/corefcn/cellfun.cc
 @anchor{XREFcellslices}
-@deftypefn {Built-in Function} {@var{sl} =} cellslices (@var{x}, @var{lb}, @var{ub}, @var{dim})
+@deftypefn {} {@var{sl} =} cellslices (@var{x}, @var{lb}, @var{ub}, @var{dim})
 Given an array @var{x}, this function produces a cell array of slices from
 the array determined by the index vectors @var{lb}, @var{ub}, for lower and
 upper bounds, respectively.
@@ -1273,14 +1282,14 @@ with the following command:
 @example
 @group
 c(:, [1, 3]) = @{0@}
-     @result{}  =
+     @result{} =
         @{
           [1,1] = 0
           [2,1] = 0
           [3,1] = 0
           [1,2] = 2
-          [2,2] =  10
-          [3,2] =  20
+          [2,2] = y
+          [3,2] = 5
           [1,3] = 0
           [2,3] = 0
           [3,3] = 0
@@ -1371,12 +1380,13 @@ x(1, :) = @{[]@}
 @end example
 
 The indexing operations operate on the cell array and not on the objects
-within the cell array.  By contrast, @code{cellindexmat} applies matrix indexing
-to the objects within each cell array entry and returns the requested values.
+within the cell array.  By contrast, @code{cellindexmat} applies matrix
+indexing to the objects within each cell array entry and returns the requested
+values.
 
 @c cellindexmat libinterp/corefcn/cellfun.cc
 @anchor{XREFcellindexmat}
-@deftypefn {Built-in Function} {@var{y} =} cellindexmat (@var{x}, @var{varargin})
+@deftypefn {} {@var{y} =} cellindexmat (@var{x}, @var{varargin})
 Perform indexing of matrices in a cell array.
 
 Given a cell array of matrices @var{x}, this function computes
@@ -1385,10 +1395,14 @@ Given a cell array of matrices @var{x}, this function computes
 @group
 Y = cell (size (X));
 for i = 1:numel (X)
-  Y@{i@} = X@{i@}(varargin@{:@});
+  Y@{i@} = X@{i@}(varargin@{1@}, varargin@{2@}, @dots{}, varargin@{N@});
 endfor
 @end group
 @end example
+
+The indexing arguments may be scalar (@code{2}), arrays (@code{[1, 3]}),
+ranges (@code{1:3}), or the colon operator (@qcode{":"}).  However, the
+indexing keyword @code{end} is not available.
 @seealso{@ref{XREFcellslices,,cellslices}, @ref{XREFcellfun,,cellfun}}
 @end deftypefn
 
@@ -1422,7 +1436,7 @@ c = cellstr (a)
 
 @c cellstr libinterp/octave-value/ov-cell.cc
 @anchor{XREFcellstr}
-@deftypefn {Built-in Function} {@var{cstr} =} cellstr (@var{strmat})
+@deftypefn {} {@var{cstr} =} cellstr (@var{strmat})
 Create a new cell array object from the elements of the string array
 @var{strmat}.
 
@@ -1457,15 +1471,16 @@ The following string functions support cell arrays of strings:
 Strings}), @code{strcmp}, @code{strncmp}, @code{strcmpi},
 @code{strncmpi} (@pxref{Comparing Strings}), @code{str2double},
 @code{deblank}, @code{strtrim}, @code{strtrunc}, @code{strfind},
-@code{strmatch}, , @code{regexp}, @code{regexpi} (@pxref{Manipulating 
-Strings}) and @code{str2double} (@pxref{String Conversions}).
+@code{strmatch}, , @code{regexp}, @code{regexpi}
+(@pxref{Manipulating Strings}) and @code{str2double}
+(@pxref{String Conversions}).
 
 The function @code{iscellstr} can be used to test if an object is a
 cell array of strings.
 
 @c iscellstr libinterp/octave-value/ov-cell.cc
 @anchor{XREFiscellstr}
-@deftypefn {Built-in Function} {} iscellstr (@var{cell})
+@deftypefn {} {} iscellstr (@var{cell})
 Return true if every element of the cell array @var{cell} is a character
 string.
 @seealso{@ref{XREFischar,,ischar}}
@@ -1488,20 +1503,21 @@ using the @code{cell2mat} and @code{cell2struct} functions.
 
 @c cell2mat scripts/general/cell2mat.m
 @anchor{XREFcell2mat}
-@deftypefn {Function File} {@var{m} =} cell2mat (@var{c})
+@deftypefn {} {@var{m} =} cell2mat (@var{c})
 Convert the cell array @var{c} into a matrix by concatenating all
 elements of @var{c} into a hyperrectangle.
 
 Elements of @var{c} must be numeric, logical, or char matrices; or cell
-arrays; or structs; and @code{cat} must be able to concatenate them together.
+arrays; or structs; and @code{cat} must be able to concatenate them
+together.
 @seealso{@ref{XREFmat2cell,,mat2cell}, @ref{XREFnum2cell,,num2cell}}
 @end deftypefn
 
 
 @c cell2struct libinterp/octave-value/ov-struct.cc
 @anchor{XREFcell2struct}
-@deftypefn  {Built-in Function} {} cell2struct (@var{cell}, @var{fields})
-@deftypefnx {Built-in Function} {} cell2struct (@var{cell}, @var{fields}, @var{dim})
+@deftypefn  {} {} cell2struct (@var{cell}, @var{fields})
+@deftypefnx {} {} cell2struct (@var{cell}, @var{fields}, @var{dim})
 Convert @var{cell} to a structure.
 
 The number of fields in @var{fields} must match the number of elements in

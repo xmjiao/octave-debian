@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2015 Rik Wehbring
+## Copyright (C) 2010-2016 Rik Wehbring
 ##
 ## This file is part of Octave.
 ##
@@ -17,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} randi (@var{imax})
-## @deftypefnx {Function File} {} randi (@var{imax}, @var{n})
-## @deftypefnx {Function File} {} randi (@var{imax}, @var{m}, @var{n}, @dots{})
-## @deftypefnx {Function File} {} randi ([@var{imin} @var{imax}], @dots{})
-## @deftypefnx {Function File} {} randi (@dots{}, "@var{class}")
+## @deftypefn  {} {} randi (@var{imax})
+## @deftypefnx {} {} randi (@var{imax}, @var{n})
+## @deftypefnx {} {} randi (@var{imax}, @var{m}, @var{n}, @dots{})
+## @deftypefnx {} {} randi ([@var{imin} @var{imax}], @dots{})
+## @deftypefnx {} {} randi (@dots{}, "@var{class}")
 ## Return random integers in the range 1:@var{imax}.
 ##
 ## Additional arguments determine the shape of the return matrix.  When no
@@ -163,13 +163,13 @@ endfunction
 
 ## Test that no warning thrown if IMAX is exactly on the limits of the range
 %!function test_no_warning (func, varargin)
-%! state = warning ("query");
-%! unwind_protect
-%!   warning ("error", "all");
-%!   func (varargin{:});
-%! unwind_protect_cleanup
-%!   warning (state);
-%! end_unwind_protect
+%!  state = warning ("query");
+%!  unwind_protect
+%!    warning ("error", "all");
+%!    func (varargin{:});
+%!  unwind_protect_cleanup
+%!    warning (state);
+%!  end_unwind_protect
 %!endfunction
 %!test test_no_warning (@randi, max_int8, "int8");
 %!test test_no_warning (@randi, max_uint8, "uint8");

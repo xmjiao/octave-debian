@@ -2,7 +2,7 @@
 #include <octave/oct.h>
 #include <octave/octave.h>
 #include <octave/parse.h>
-#include <octave/toplev.h>
+#include <octave/interpreter.h>
 
 int
 main (void)
@@ -21,7 +21,7 @@ main (void)
 
   octave_value_list out = feval ("gcd", in, 1);
 
-  if (! error_state && out.length () > 0)
+  if (out.length () > 0)
     std::cout << "GCD of ["
               << in(0).int_value ()
               << ", "

@@ -43,6 +43,7 @@ span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 -->
 </style>
+<link rel="stylesheet" type="text/css" href="octave.css">
 
 
 </head>
@@ -60,7 +61,8 @@ Previous: <a href="Expressions-Involving-Diagonal-Matrices.html#Expressions-Invo
 <p>If <var>P</var> is a permutation matrix and <var>M</var> a matrix, the expression
 <code>P*M</code> will permute the rows of <var>M</var>.  Similarly, <code>M*P</code> will
 yield a column permutation.
-Matrix division <code>P\M</code> and <code>M/P</code> can be used to do inverse permutation.
+Matrix division <code>P\M</code> and <code>M/P</code> can be used to do inverse
+permutation.
 </p>
 <p>The previously described syntax for creating permutation matrices can actually
 help an user to understand the connection between a permutation matrix and
@@ -90,9 +92,9 @@ expressions for inverse permuting is completely up to the user&rsquo;s taste.
 </p>
 <p>Multiplication and division by permutation matrices works efficiently also when
 combined with sparse matrices, i.e., <code>P*S</code>, where <var>P</var> is a permutation
-matrix and <var>S</var> is a sparse matrix permutes the rows of the sparse matrix and
-returns a sparse matrix.  The expressions <code>S*P</code>, <code>P\S</code>, <code>S/P</code>
-work analogically.
+matrix and <var>S</var> is a sparse matrix permutes the rows of the sparse matrix
+and returns a sparse matrix.  The expressions <code>S*P</code>, <code>P\S</code>,
+<code>S/P</code> work analogically.
 </p>
 <p>Two permutation matrices can be multiplied or divided (if their sizes match),
 performing a composition of permutations.  Also a permutation matrix can be
