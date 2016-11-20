@@ -16,7 +16,7 @@ Build-Depends: automake,
   gawk,
   gfortran,
   ghostscript,
-  gnuplot-nox,
+  gnuplot-nox (>= 4.4),
   javahelper,
   less,
   libarpack2-dev (>= 2.1+parpack96.dfsg-2),
@@ -63,7 +63,7 @@ Package: octave
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:Version}),
          liboctave3v5 (= ${binary:Version})
-Recommends: gnuplot-x11 | gnuplot-qt, libopenblas-base | libatlas3-base,
+Recommends: gnuplot-x11 (>= 4.4) | gnuplot-qt (>= 4.4), libopenblas-base | libatlas3-base,
  pstoedit,
  default-jre-headless [!hppa !hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !m68k !mips !mipsel !sparc !sparc64],
  octave-info
