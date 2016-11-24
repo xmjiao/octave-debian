@@ -6,5 +6,4 @@ mkoctfile-mpi.diff
 always-build-octave-jar.patch
 hdf5-flags.patch
 hdf5-mkoctfile.patch
-gcc-6-abs-overload.patch
 gcc-6-include-math-stdlib.patch
