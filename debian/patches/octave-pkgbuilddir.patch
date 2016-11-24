@@ -1,5 +1,5 @@
 Description: Allow an unpacked source package to be compiled in place
-Author: Rafael Laboissiere <rafael@laboissiere.net>
+Author: Rafael Laboissière <rafael@debian.org>
 Origin: vendor, http://pkgs.fedoraproject.org/cgit/rpms/octave.git/tree/octave-pkgbuilddir.patch
 Forwarded: not-needed
 Last-Update: 2016-02-13

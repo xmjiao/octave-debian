@@ -16,7 +16,7 @@
 
 ## This file was modified for Debian from the original file available at:
 ## https://savannah.gnu.org/file/distro_missing_handler.m?file_id=29104
-## by Rafael Laboiissiere <rafael@laboissiere.net>
+## by Rafael Laboissière <rafael@debian.org>
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {@var{msg} =} debian_missing_handler (@var{name})
