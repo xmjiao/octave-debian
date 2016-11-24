@@ -62,7 +62,7 @@ Vcs-Browser: https://anonscm.debian.org/gitweb/?p=pkg-octave/octave.git
 Package: octave
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:Version}),
-         liboctave3v5 (= ${binary:Version})
+         liboctave4 (= ${binary:Version})
 Recommends: gnuplot-x11 (>= 4.4) | gnuplot-qt (>= 4.4), libopenblas-base | libatlas3-base,
  pstoedit,
  default-jre-headless [!hppa !hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !m68k !mips !mipsel !sparc !sparc64],
@@ -194,12 +194,10 @@ Description: GNU Info documentation on the GNU Octave language
  on the C++ classes used by Octave, as well as the main octave documentation
  which is needed for the 'help -i foo' command within Octave.
 
-Package: liboctave3v5
+Package: liboctave4
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Conflicts: liboctave3
-Replaces: liboctave3
 Multi-Arch: same
 Section: libs
 Description: Shared libraries of the GNU Octave language
@@ -212,7 +210,7 @@ Description: Shared libraries of the GNU Octave language
 Package: liboctave-dev
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
- liboctave3v5 (= ${binary:Version}), octave (= ${binary:Version}),
+ liboctave4 (= ${binary:Version}), octave (= ${binary:Version}),
  libreadline-dev | libreadline6-dev | libreadline5-dev, libncurses5-dev,
  libhdf5-dev (>= 1.8.8) | libhdf5-openmpi-dev (>= 1.8.8) | libhdf5-mpich-dev (>= 1.8.8),
  libgl1-mesa-dev | libgl-dev,
