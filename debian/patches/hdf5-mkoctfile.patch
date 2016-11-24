@@ -4,12 +4,13 @@ Author: Gilles Filippini <pini@debian.org>
 Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=756689
 Forwarded: no
 Reviewed-by: Sébastien Villemot <sebastien@debian.org>
-Last-Update: 2014-08-14
+Reviewed-by: Rafael Laboissière <rafael@debian.org>
+Last-Update: 2016-11-20
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/src/mkoctfile.in.cc
 +++ b/src/mkoctfile.in.cc
-@@ -139,6 +139,7 @@ initialize (void)
+@@ -151,6 +151,7 @@
      = "-I" + quote_path (vars["OCTINCLUDEDIR"] + "/..")
        + " -I" + quote_path (vars["OCTINCLUDEDIR"]);
  #endif
