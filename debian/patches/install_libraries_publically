@@ -5,29 +5,37 @@ Description: Install the Octave libraries publically in /usr/lib/
  in the future.
 Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
-Reviewed-by: Rafael Laboissiere <rafael@debian.org>
-Last-Update: 2016-07-03
---- a/liboctave/Makefile.am
-+++ b/liboctave/Makefile.am
-@@ -34,7 +34,8 @@
+Reviewed-by: Rafael Laboissière <rafael@debian.org>
+Last-Update: 2016-11-20
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -209,6 +209,7 @@ OCTAVE_CROSS_TOOLS =
+ OCTAVE_INTERPRETER_TARGETS =
  
- AM_CXXFLAGS += $(WARN_CXXFLAGS)
+ octlib_LTLIBRARIES =
++lib_LTLIBRARIES =
+ noinst_LTLIBRARIES =
  
--octlib_LTLIBRARIES = liboctave.la
-+lib_LTLIBRARIES = liboctave.la
-+octlib_LTLIBRARIES =
+ octinclude_HEADERS =
+--- a/liboctave/module.mk
++++ b/liboctave/module.mk
+@@ -22,7 +2,7 @@
  
- EXTRA_DIST =
+ liboctave_liboctave_la_CXXFLAGS = $(AM_CXXFLAGS) $(WARN_CXXFLAGS)
  
---- a/libinterp/Makefile.am
-+++ b/libinterp/Makefile.am
-@@ -40,7 +40,8 @@
+-octlib_LTLIBRARIES += liboctave/liboctave.la
++lib_LTLIBRARIES += liboctave/liboctave.la
  
- AM_CXXFLAGS += $(WARN_CXXFLAGS)
+ BUILT_INCS = \
+   $(BUILT_LIBOCTAVE_OPERATORS_INC) \
+--- a/libinterp/module.mk
++++ b/libinterp/module.mk
+@@ -27,7 +27,7 @@
  
--octlib_LTLIBRARIES = liboctinterp.la
-+lib_LTLIBRARIES = liboctinterp.la
-+octlib_LTLIBRARIES =
+ libinterp_liboctinterp_la_CXXFLAGS = $(AM_CXXFLAGS) $(WARN_CXXFLAGS)
  
- ## This is the subset of $(BUILT_SOURCES) that may be included by source
- ## files that are preprocessed to make $(DEF_FILES).  This ensures that
+-octlib_LTLIBRARIES += libinterp/liboctinterp.la
++lib_LTLIBRARIES += libinterp/liboctinterp.la
+ 
+ BUILT_SOURCES += \
+   libinterp/builtin-defun-decls.h \
