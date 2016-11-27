@@ -6,3 +6,4 @@ mkoctfile-mpi.diff
 always-build-octave-jar.patch
 hdf5-flags.patch
 hdf5-mkoctfile.patch
+drop-url-to-sf-logo.patch
