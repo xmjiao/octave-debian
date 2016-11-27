@@ -1,3 +1,30 @@
+octave (4.2.0-1) experimental; urgency=medium
+
+  * New upstream version 4.2.0 (Closes: #845112)
+  * d/copyright: Reflect upstream changes
+  * d/s/lintian-overrides: Drop unused override
+  * d/octave.lintian-overrides: Drop unused overrides
+  * d/u/metadata: Add citation
+  * d/watch: Add .gz as a possible extension for the upstream tarball
+  * d/control: (Build-)Depends on gnuplot >= 4.4
+  * Bump the SONAME liboctave3v5 to liboctave4
+  * Drop patches:
+    + d/p/no_pdf_in_print.diff: gnuplot can now export in PDF format
+    + d/p/gcc-6-abs-overload.patch: Octave compiles now with GCC v6
+    + d/p/gcc-6-include-math-stdlib.patch: ditto
+  * Refresh patches for new upstream version:
+    + d/p/always-build-octave-jar.patch
+    + d/p/drop_versioned_binaries.diff
+    + d/p/hdf5-flags.patch
+    + d/p/hdf5-mkoctfile.patch
+    + d/p/install_libraries_publically
+    + d/p/mkoctfile-mpi.diff
+  * d/octave.install: Do not use dh-exec
+  * d/rules: Avoid triggering the build of Bison-generated files
+  * d/p/drop-url-to-sf-logo.patch: New patch
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sun, 27 Nov 2016 21:34:38 -0200
+
 octave (4.0.3-2) unstable; urgency=medium
 
   [ Rafael Laboissiere ]
