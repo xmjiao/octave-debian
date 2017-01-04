@@ -1,3 +1,11 @@
+octave (4.2.0-2) experimental; urgency=medium
+
+  * d/octave.conf:
+    + Use recommended __octave_config_info__ function
+    + Remove deprecated package autoloading (Closes: #850002)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 03 Jan 2017 22:07:06 -0200
+
 octave (4.2.0-1) experimental; urgency=medium
 
   * New upstream version 4.2.0 (Closes: #845112)
