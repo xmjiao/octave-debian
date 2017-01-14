@@ -1,0 +1,20 @@
+Description: octave_hdf5_id type should be int64_t when building against hdf5 1.10
+Author: Gilles Filippini <pini@debian.org>
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=847974
+Reviewed-by: Sébastien Villemot <sebastien@debian.org>
+Last-Update: 2017-01-14
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+Index: octave-4.0.3/libinterp/corefcn/oct-hdf5-id.h
+===================================================================
+--- octave-4.0.3.orig/libinterp/corefcn/oct-hdf5-id.h
++++ octave-4.0.3/libinterp/corefcn/oct-hdf5-id.h
+@@ -23,7 +23,7 @@ along with Octave; see the file COPYING.
+ #if !defined (octave_oct_hdf5_id_h)
+ #define octave_oct_hdf5_id_h 1
+ 
+-typedef int octave_hdf5_id;
++typedef int64_t octave_hdf5_id;
+ 
+ extern bool check_hdf5_id_type (bool warn = true);
+ 
