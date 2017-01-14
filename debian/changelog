@@ -1,3 +1,19 @@
+octave (4.0.3-3) unstable; urgency=medium
+
+  [ Rafael Laboissiere ]
+  * d/s/lintian-overrides: Drop unused override
+  * d/u/metadata: Add citation
+  * d/octave.lintian-overrides: Drop unused overrides
+  * d/watch: Add .gz as a possible extension for the upstream tarball
+
+  [ Sébastien Villemot ]
+  * d/watch: bump to format version 4.
+  * New patch octave_hdf5_id.patch to fix octave_hdf5_id type.
+    It should be int64_t when building against hdf5 1.10.
+    Thanks to Gilles Filippini (Closes: #847974)
+
+ -- Sébastien Villemot <sebastien@debian.org>  Sat, 14 Jan 2017 10:45:31 +0100
+
 octave (4.0.3-2) unstable; urgency=medium
 
   [ Rafael Laboissiere ]
