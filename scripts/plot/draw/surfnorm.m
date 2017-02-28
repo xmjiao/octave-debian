@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -204,4 +204,3 @@ endfunction
 %!error <X, Y, and Z must have the same dimensions> surfnorm ([1 2], 1, 1)
 %!error <X, Y, and Z must have the same dimensions> surfnorm (1, [1 2], 1)
 %!error <X, Y, and Z must have the same dimensions> surfnorm (1, 1, [1 2])
-

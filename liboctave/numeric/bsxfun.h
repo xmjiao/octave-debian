@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2016 Jordi Gutiérrez Hermoso
+Copyright (C) 2012-2017 Jordi Gutiérrez Hermoso
 
 This file is part of Octave.
 
@@ -87,4 +87,3 @@ is_valid_inplace_bsxfun (const std::string& name, const dim_vector& dr,
 #include "bsxfun-defs.cc"
 
 #endif
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2016 Michael Goffioul
+Copyright (C) 2011-2017 Michael Goffioul
 
 This file is part of Octave.
 
@@ -136,4 +136,3 @@ namespace QtHandles
   }
 
 }
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -802,8 +802,7 @@ namespace octave
       {
         recover_from_exception ();
 
-        std::cerr << "error: unhandled execution exception -- eval failed"
-                  << std::endl;
+        parse_status = 1;
       }
 
     return parse_status;
@@ -1090,4 +1089,3 @@ namespace octave
       }
   }
 }
-

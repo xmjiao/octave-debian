@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -915,7 +915,7 @@ will cause @code{nargout} to return 2 inside the function @code{f}.
 In the second usage,
 
 @example
-nargout (@@histc) \% or nargout ("histc")
+nargout (@@histc)   # or nargout ("histc") using a string input
 @end example
 
 @noindent
@@ -1148,4 +1148,3 @@ element-by-element and a logical array is returned.  At the top level,
 %! [~, y] = c{2}();
 %! assert (y, -2);
 */
-

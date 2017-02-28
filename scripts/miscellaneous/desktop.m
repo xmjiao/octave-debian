@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 John W. Eaton
+## Copyright (C) 2013-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -47,4 +47,3 @@ endfunction
 ## Test input validation
 %!error <only one argument, "-inuse", is allowed> desktop (1,2)
 %!error desktop ("-invalid_option")
-

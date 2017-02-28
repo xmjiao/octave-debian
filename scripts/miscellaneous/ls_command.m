@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -66,4 +66,3 @@ endfunction
 %! endif
 
 %!error <argument must be a character string> ls_command (123)
-

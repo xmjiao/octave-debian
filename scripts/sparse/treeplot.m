@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Ivana Varekova
+## Copyright (C) 2005-2017 Ivana Varekova
 ##
 ## This file is part of Octave.
 ##
@@ -210,4 +210,3 @@ endfunction
 %! clf;
 %! treeplot ([2 4 2 0 6 4 6], "b+", "g");
 %! % Plot a simple tree plot defining the edge and node styles
-

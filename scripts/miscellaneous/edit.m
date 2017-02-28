@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2016 Paul Kienzle
+## Copyright (C) 2001-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -588,4 +588,3 @@ endfunction
 %! assert (edit ("get", "license"), s.license);
 %! assert (edit ("get", "editinplace"), s.editinplace);
 %! assert (edit ("get", "mode"), s.mode);
-

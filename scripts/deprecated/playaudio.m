@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 John W. Eaton
+## Copyright (C) 1995-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -96,4 +96,3 @@ endfunction
 %!error <X must be a vector> playaudio (magic (3))
 %!error <unsupported extension> playaudio ("file", "abc")
 %!error playaudio ({"abc"})
-

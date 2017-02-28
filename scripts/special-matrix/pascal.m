@@ -1,4 +1,4 @@
-## Copyright (C) 1999-2016 Peter Ekberg
+## Copyright (C) 1999-2017 Peter Ekberg
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -93,4 +93,3 @@ endfunction
 %!error <N and T must be scalars> pascal (1, [1 2])
 %!error <T must be -1> pascal (3,-2)
 %!error <T must be .* or 2> pascal (3,4)
-

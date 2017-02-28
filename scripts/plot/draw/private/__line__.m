@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 John W. Eaton
+## Copyright (C) 2005-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -126,4 +126,3 @@ function h = __line__ (p, varargin)
   endif
 
 endfunction
-

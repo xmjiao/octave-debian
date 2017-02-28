@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-Copyright (C) 2009-2016 Jason Riedy, Jaroslav Hajek
+Copyright (C) 2009-2017 Jason Riedy, Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -218,4 +218,3 @@ RT do_sub_sm_dm (const SM& a, const DM& d)
 }
 
 #endif
-

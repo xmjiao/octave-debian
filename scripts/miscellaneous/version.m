@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -36,7 +36,7 @@
 ## for a description of the release (always an empty string),
 ##
 ## @item @qcode{"-release"}
-## for the name of the running build,
+## for the name of the running build (always an empty string),
 ##
 ## @item @qcode{"-java"}
 ## for version information of the Java @nospell{VM},
@@ -117,6 +117,9 @@ endfunction
 
 %!assert (version ("-date"), __octave_config_info__ ("release_date"))
 
+%!assert (version ("-description"), "")
+%!assert (version ("-release"), "")
+
 ## Test input validation
 %!error version ("-date", "-release")
 %!error [v, d] = version ("-date")
@@ -124,4 +127,3 @@ endfunction
 %!warning <option '-blas' not implemented> version ("-blas");
 %!warning <option '-lapack' not implemented> version ("-lapack");
 %!error <invalid FEATURE> version ("-foobar")
-

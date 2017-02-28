@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 John W. Eaton
+## Copyright (C) 2014-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -108,4 +108,3 @@ endfunction
 %! opts.droptol = 1e-10;
 %! [l,u] = luinc (a, opts);
 %! assert (l*u, sparse ([1i,2,0,0;0,1,2,0;0,0,3,0;0,0,0,1]), 1e-10);
-

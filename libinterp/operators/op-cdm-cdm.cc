@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2016 Jaroslav Hajek
+Copyright (C) 2008-2017 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -114,4 +114,3 @@ install_cdm_cdm_ops (void)
   INSTALL_WIDENOP (octave_complex_diag_matrix, octave_complex_matrix,
                    complex_diag_matrix_to_complex_matrix);
 }
-

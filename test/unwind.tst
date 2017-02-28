@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -55,4 +55,3 @@
 %!test
 %! global g = -1;
 %! fail ("y = f (3);", "mismatch");
-

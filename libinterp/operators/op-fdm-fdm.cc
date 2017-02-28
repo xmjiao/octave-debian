@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2016 Jaroslav Hajek
+Copyright (C) 2008-2017 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -107,4 +107,3 @@ install_fdm_fdm_ops (void)
   INSTALL_WIDENOP (octave_float_diag_matrix, octave_float_matrix,
                    float_diag_matrix_to_float_matrix);
 }
-

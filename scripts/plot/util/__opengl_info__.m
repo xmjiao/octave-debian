@@ -1,4 +1,4 @@
-## Copyright (C) 2016 John Donoghue <john.donoghue@ieee.org>
+## Copyright (C) 2016-2017 John Donoghue <john.donoghue@ieee.org>
 ##
 ## This program is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -122,4 +122,3 @@ endfunction
 %! a = __opengl_info__ ();
 %! assert (! isempty (a))
 %! assert (isfield (a, "version"))
-

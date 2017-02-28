@@ -1,7 +1,7 @@
 // Matrix manipulations.
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague, a.s.
 
@@ -3126,4 +3126,3 @@ SM_BOOL_OPS (float, FloatMatrix)
 
 MM_CMP_OPS (FloatMatrix, FloatMatrix)
 MM_BOOL_OPS (FloatMatrix, FloatMatrix)
-

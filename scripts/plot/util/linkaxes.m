@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Willem Atsma
+## Copyright (C) 2014-2017 Willem Atsma
 ##
 ## This file is part of Octave.
 ##
@@ -164,4 +164,3 @@ endfunction
 %!error linkaxes ()
 %!error linkaxes (1,2,3)
 %!error <HAX must be a vector of axes handles> linkaxes ([pi, e])
-

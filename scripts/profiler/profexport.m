@@ -1,4 +1,4 @@
-## Copyright (C) 2015-2016 Daniel Kraft
+## Copyright (C) 2015-2017 Daniel Kraft
 ##
 ## This file is part of Octave.
 ##
@@ -314,4 +314,3 @@ endfunction
 %!error profexport (1, 2, 3, 4)
 %!error <DIR must be a string> profexport (5)
 %!error <NAME must be a string> profexport ("dir", 5)
-

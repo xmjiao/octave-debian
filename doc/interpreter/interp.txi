@@ -1,4 +1,4 @@
-@c Copyright (C) 2007-2016 John W. Eaton
+@c Copyright (C) 2007-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -175,4 +175,3 @@ The result of this code can be seen in @ref{fig:interpn}.
 @caption{Demonstration of the use of @code{interpn}}
 @end float
 @end ifnotinfo
-

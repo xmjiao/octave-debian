@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 John W. Eaton
+## Copyright (C) 2013-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -37,4 +37,3 @@ function retval = find_dir_in_path (varargin)
   retval = dir_in_loadpath (varargin{:});
 
 endfunction
-

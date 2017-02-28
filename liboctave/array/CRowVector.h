@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -142,4 +142,3 @@ OCTAVE_API ComplexRowVector linspace (const Complex& x1, const Complex& x2,
 MARRAY_FORWARD_DEFS (MArray, ComplexRowVector, Complex)
 
 #endif
-

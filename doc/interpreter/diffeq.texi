@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -349,6 +349,7 @@ Currently implemented solvers are:
 @deftypefnx {} {[@var{t}, @var{y}] =} ode45 (@var{fun}, @var{trange}, @var{init}, @var{ode_opt})
 @deftypefnx {} {[@var{t}, @var{y}, @var{te}, @var{ye}, @var{ie}] =} ode45 (@dots{})
 @deftypefnx {} {@var{solution} =} ode45 (@dots{})
+@deftypefnx {} {} ode45 (@dots{})
 
 Solve a set of non-stiff Ordinary Differential Equations (non-stiff ODEs)
 with the well known explicit @nospell{Dormand-Prince} method of order 4.
@@ -388,6 +389,10 @@ that each column corresponds to a time in @var{x}.
 Use @code{fieldnames (@var{solution})} to see the other fields and
 additional information returned.
 
+If no output arguments are requested, and no @code{OutputFcn} is
+specified in @var{ode_opt}, then the @code{OutputFcn} is set to
+@code{odeplot} and the results of the solver are plotted immediately.
+
 If using the @qcode{"Events"} option then three additional outputs may
 be returned.  @var{te} holds the time when an Event function returned a
 zero.  @var{ye} holds the value of the solution at time @var{te}.  @var{ie}
@@ -412,6 +417,7 @@ fvdp = @@(@var{t},@var{y}) [@var{y}(2); (1 - @var{y}(1)^2) * @var{y}(2) - @var{y
 @deftypefnx {} {[@var{t}, @var{y}] =} ode23 (@var{fun}, @var{trange}, @var{init}, @var{ode_opt})
 @deftypefnx {} {[@var{t}, @var{y}, @var{te}, @var{ye}, @var{ie}] =} ode23 (@dots{})
 @deftypefnx {} {@var{solution} =} ode23 (@dots{})
+@deftypefnx {} {} ode23 (@dots{})
 
 Solve a set of non-stiff Ordinary Differential Equations (non-stiff ODEs)
 with the well known explicit @nospell{Bogacki-Shampine} method of order 3.
@@ -453,18 +459,15 @@ that each column corresponds to a time in @var{x}.
 Use @code{fieldnames (@var{solution})} to see the other fields and
 additional information returned.
 
+If no output arguments are requested, and no @code{OutputFcn} is
+specified in @var{ode_opt}, then the @code{OutputFcn} is set to
+@code{odeplot} and the results of the solver are plotted immediately.
+
 If using the @qcode{"Events"} option then three additional outputs may
 be returned.  @var{te} holds the time when an Event function returned a
 zero.  @var{ye} holds the value of the solution at time @var{te}.  @var{ie}
 contains an index indicating which Event function was triggered in the case
 of multiple Event functions.
-
-This function can be called with two output arguments: @var{t} and @var{y}.
-Variable @var{t} is a column vector and contains the time stamps, instead
-@var{y} is a matrix in which each column refers to a different unknown of
-the problem and the rows number is the same of @var{t} rows number so
-that each row of @var{y} contains the values of all unknowns at the time
-value contained in the corresponding row in @var{t}.
 
 Example: Solve the @nospell{Van der Pol} equation
 

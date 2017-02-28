@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Bill Denney
+## Copyright (C) 2006-2017 Bill Denney
 ##
 ## This file is part of Octave.
 ##
@@ -52,4 +52,3 @@ endfunction
 ## Tests for this m-file are located in bzip2.m
 ## Remove from test statistics
 %!assert (1)
-

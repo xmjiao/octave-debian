@@ -1,7 +1,7 @@
 // Template array classes
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -145,4 +145,3 @@ DiagArray2<T>::check_idx (octave_idx_type r, octave_idx_type c) const
 
   return ok;
 }
-

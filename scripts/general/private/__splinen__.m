@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -49,4 +49,3 @@ function yi = __splinen__ (x, y, xi, extrapval, f)
   endif
 
 endfunction
-

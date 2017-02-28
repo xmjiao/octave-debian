@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2016 VZLU Prague
+Copyright (C) 2010-2017 VZLU Prague
 
 This file is part of Octave.
 
@@ -100,4 +100,3 @@ along with Octave; see the file COPYING.  If not, see
   OCT_ITERATE_PARAM_MACRO(OCT_MAKE_DECL_LIST_HELPER, PREFIX, NUM)
 
 #endif
-

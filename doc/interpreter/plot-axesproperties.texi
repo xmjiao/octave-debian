@@ -29,7 +29,7 @@
 @anchor{XREFaxesactivepositionproperty}
 @cindex axes activepositionproperty
 @item @code{activepositionproperty}: @{@qcode{"outerposition"}@} | @qcode{"position"}
-
+Specify which of @qcode{"position"} or @qcode{"outerposition"} properties takes precedence when axes annotations extent changes.  @xref{XREFaxesposition, , @w{position property}}, and @ref{XREFaxesposition, , @w{outerposition property}}.
 
 
 @anchor{XREFaxesalim}
@@ -47,7 +47,7 @@ Transparency is not yet implemented for axes objects.  @code{alim} is unused.
 @anchor{XREFaxesambientlightcolor}
 @cindex axes ambientlightcolor
 @item @code{ambientlightcolor}: def. @code{[1   1   1]}
-Light is not yet implemented for axes objects.  @code{ambientlightcolor} is unused.
+@code{ambientlightcolor} is unused.
 
 
 @anchor{XREFaxesbeingdeleted}
@@ -65,7 +65,7 @@ Control whether the axes has a surrounding box.
 @anchor{XREFaxesboxstyle}
 @cindex axes boxstyle
 @item @code{boxstyle}: @{@qcode{"back"}@} | @qcode{"full"}
-@code{boxstyle} is unused.
+For 3-D axes, control whether the @qcode{"full"} box is drawn or only the 3 @qcode{"back"} axes
 
 
 @anchor{XREFaxesbusyaction}
@@ -77,7 +77,7 @@ Control whether the axes has a surrounding box.
 @anchor{XREFaxesbuttondownfcn}
 @cindex axes buttondownfcn
 @item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
-
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFaxescameraposition}
@@ -181,6 +181,8 @@ RGB values used by plot function for automatic line coloring.
 @item @code{createfcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately after axes has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultaxescreatefcn", 'disp ("axes created!")')}.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
+
 
 @anchor{XREFaxescurrentpoint}
 @cindex axes currentpoint
@@ -191,7 +193,7 @@ Matrix @code{[xf, yf, zf; xb, yb, zb]} which holds the coordinates (in axes data
 @anchor{XREFaxesdataaspectratio}
 @cindex axes dataaspectratio
 @item @code{dataaspectratio}: three-element vector, def. @code{[1   1   1]}
-Specify the relative height and width of the data displayed in the axes.  Setting @code{dataaspectratio} to @w{@code{[1, 2]}} causes the length of one unit as displayed on the x-axis to be the same as the length of 2 units on the y-axis.  Setting @code{dataaspectratio} also forces the @code{dataaspectratiomode} property to be set to @qcode{"manual"}.
+Specify the relative height and width of the data displayed in the axes.  Setting @code{dataaspectratio} to @w{@code{[1, 2]}} causes the length of one unit as displayed on the x-axis to be the same as the length of 2 units on the y-axis.  @xref{XREFdaspect, , daspect function}.  Setting @code{dataaspectratio} also forces the @code{dataaspectratiomode} property to be set to @qcode{"manual"}.
 
 
 @anchor{XREFaxesdataaspectratiomode}
@@ -205,6 +207,8 @@ Specify the relative height and width of the data displayed in the axes.  Settin
 @item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately before axes is deleted.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
+
 
 @anchor{XREFaxesdrawmode}
 @cindex axes drawmode
@@ -215,7 +219,7 @@ Callback function executed immediately before axes is deleted.
 @anchor{XREFaxesfontangle}
 @cindex axes fontangle
 @item @code{fontangle}: @qcode{"italic"} | @{@qcode{"normal"}@}
-
+Control whether the font is italic or normal.
 
 
 @anchor{XREFaxesfontname}
@@ -245,7 +249,7 @@ Unit used to interpret @code{fontsize} property.
 @anchor{XREFaxesfontweight}
 @cindex axes fontweight
 @item @code{fontweight}: @qcode{"bold"} | @{@qcode{"normal"}@}
-
+Control variant of base font used: bold, demi, light, normal.
 
 
 @anchor{XREFaxesgridalpha}
@@ -299,7 +303,7 @@ If @code{handlevisibility} is @qcode{"off"}, the axes's handle is not visible in
 @anchor{XREFaxeslabelfontsizemultiplier}
 @cindex axes labelfontsizemultiplier
 @item @code{labelfontsizemultiplier}: def. @code{1.1000}
-@code{labelfontsizemultiplier} is unused.
+Ratio between the x/y/zlabel fontsize and the tick label fontsize
 
 
 @anchor{XREFaxeslayer}
@@ -323,7 +327,7 @@ Control whether the axes is drawn below child graphics objects (ticks, labels, e
 @anchor{XREFaxeslinewidth}
 @cindex axes linewidth
 @item @code{linewidth}: def. @code{0.50000}
-
+Width of the main axes lines
 
 
 @anchor{XREFaxesminorgridalpha}
@@ -365,7 +369,7 @@ Fraction of axes limits to zoom for each wheel movement.
 @anchor{XREFaxesnextplot}
 @cindex axes nextplot
 @item @code{nextplot}: @qcode{"add"} | @{@qcode{"replace"}@} | @qcode{"replacechildren"}
-
+@code{nextplot} is used by high level plotting functions to decide what to do with graphics objects already present in the axes.  @xref{XREFnewplot, , @w{newplot function}}.  The state of @code{nextplot} is typically controlled using the @code{hold} function.  @xref{XREFhold, , @w{hold function}}.
 
 
 @anchor{XREFaxesouterposition}
@@ -389,7 +393,7 @@ Handle of the parent graphics object.
 @anchor{XREFaxesplotboxaspectratio}
 @cindex axes plotboxaspectratio
 @item @code{plotboxaspectratio}: def. @code{[1   1   1]}
-
+@xref{XREFpbaspect, , pbaspect function}.  Setting @code{plotboxaspectratio} also forces the @code{plotboxaspectratiomode} property to be set to @qcode{"manual"}.
 
 
 @anchor{XREFaxesplotboxaspectratiomode}
@@ -437,7 +441,7 @@ A user-defined string to label the graphics object.
 @anchor{XREFaxestickdir}
 @cindex axes tickdir
 @item @code{tickdir}: @{@qcode{"in"}@} | @qcode{"out"}
-Control whether axes tick marks project "in" to the plot box or "out".
+Control whether axes tick marks project "in" to the plot box or "out".  Setting @code{tickdir} also forces the @code{tickdirmode} property to be set to @qcode{"manual"}.
 
 
 @anchor{XREFaxestickdirmode}
@@ -461,8 +465,8 @@ Two-element vector @code{[2Dlen 3Dlen]} specifying the length of the tickmarks r
 
 @anchor{XREFaxestightinset}
 @cindex axes tightinset
-@item @code{tightinset} (read-only): def. @code{[0.042857   0.038106   0.000000   0.023810]}
-
+@item @code{tightinset} (read-only): four-element vector, def. @code{[0.042857   0.038106   0.000000   0.023810]}
+Size of the @code{[left bottom right top]} margins around the axes that enclose labels and title annotations.
 
 
 @anchor{XREFaxestitle}
@@ -473,14 +477,14 @@ Graphics handle of the title text object.
 
 @anchor{XREFaxestitlefontsizemultiplier}
 @cindex axes titlefontsizemultiplier
-@item @code{titlefontsizemultiplier}: def. @code{1.1000}
-@code{titlefontsizemultiplier} is unused.
+@item @code{titlefontsizemultiplier}: positive scalar, def. @code{1.1000}
+Ratio between the title fontsize and the tick label fontsize
 
 
 @anchor{XREFaxestitlefontweight}
 @cindex axes titlefontweight
 @item @code{titlefontweight}: @{@qcode{"bold"}@} | @qcode{"normal"}
-@code{titlefontweight} is unused.
+Control variant of base font used for the axes title.
 
 
 @anchor{XREFaxestype}
@@ -498,7 +502,7 @@ Graphics handle of the uicontextmenu object that is currently associated to this
 @anchor{XREFaxesunits}
 @cindex axes units
 @item @code{units}: @qcode{"centimeters"} | @qcode{"characters"} | @qcode{"inches"} | @{@qcode{"normalized"}@} | @qcode{"pixels"} | @qcode{"points"}
-
+Units used to interpret the @qcode{"position"}, @qcode{"outerposition"}, and @qcode{"tightinset"} properties.
 
 
 @anchor{XREFaxesuserdata}
@@ -522,25 +526,25 @@ If @code{visible} is @qcode{"off"}, the axes is not rendered on screen.
 @anchor{XREFaxesxaxislocation}
 @cindex axes xaxislocation
 @item @code{xaxislocation}: @{@qcode{"bottom"}@} | @qcode{"origin"} | @qcode{"top"} | @qcode{"zero"}
-
+Control the x axis location.
 
 
 @anchor{XREFaxesxcolor}
 @cindex axes xcolor
 @item @code{xcolor}: @{colorspec@} | @qcode{"none"}, def. @code{[0.15000   0.15000   0.15000]}
-Color of the x-axis.  @xref{Colors, , colorspec}.
+Color of the x-axis.  @xref{Colors, , colorspec}.  Setting @code{xcolor} also forces the @code{xcolormode} property to be set to @qcode{"manual"}.
 
 
 @anchor{XREFaxesxcolormode}
 @cindex axes xcolormode
 @item @code{xcolormode}: @{@qcode{"auto"}@} | @qcode{"manual"}
-@code{xcolormode} is unused.
+
 
 
 @anchor{XREFaxesxdir}
 @cindex axes xdir
 @item @code{xdir}: @{@qcode{"normal"}@} | @qcode{"reverse"}
-
+Direction of the x axis: @qcode{"normal"} is left to right.
 
 
 @anchor{XREFaxesxgrid}
@@ -558,7 +562,7 @@ Graphics handle of the x label text object.
 @anchor{XREFaxesxlim}
 @cindex axes xlim
 @item @code{xlim}: two-element vector, def. @code{[0   1]}
-Two-element vector @code{[xmin xmax]} specifying the limits for the x-axis.  Setting @code{xlim} also forces the @code{xlimmode} property to be set to @qcode{"manual"}.  @xref{XREFxlim, , @w{xlim function}}.
+Two-element vector @code{[xmin xmax]} specifying the limits for the x-axis.  Setting @code{xlim} also forces the @code{xlimmode} property to be set to @qcode{"manual"}.   @xref{XREFxlim, , @w{xlim function}}.
 
 
 @anchor{XREFaxesxlimmode}
@@ -618,7 +622,7 @@ Labels of x tick marks.  Setting @code{xticklabel} also forces the @code{xtickla
 @anchor{XREFaxesyaxislocation}
 @cindex axes yaxislocation
 @item @code{yaxislocation}: @{@qcode{"left"}@} | @qcode{"origin"} | @qcode{"right"} | @qcode{"zero"}
-
+Control the y-axis location.
 
 
 @anchor{XREFaxesycolor}
@@ -630,13 +634,13 @@ Color of the y-axis.  @xref{Colors, , colorspec}.
 @anchor{XREFaxesycolormode}
 @cindex axes ycolormode
 @item @code{ycolormode}: @{@qcode{"auto"}@} | @qcode{"manual"}
-@code{ycolormode} is unused.
+
 
 
 @anchor{XREFaxesydir}
 @cindex axes ydir
 @item @code{ydir}: @{@qcode{"normal"}@} | @qcode{"reverse"}
-
+Direction of the y-axis: @qcode{"normal"} is bottom to top.
 
 
 @anchor{XREFaxesygrid}
@@ -720,7 +724,7 @@ Color of the z-axis.  @xref{Colors, , colorspec}.
 @anchor{XREFaxeszcolormode}
 @cindex axes zcolormode
 @item @code{zcolormode}: @{@qcode{"auto"}@} | @qcode{"manual"}
-@code{zcolormode} is unused.
+
 
 
 @anchor{XREFaxeszdir}

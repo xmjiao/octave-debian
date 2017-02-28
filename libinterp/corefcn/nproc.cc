@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2016 Iain Murray
+Copyright (C) 2012-2017 Iain Murray
 
 This file is part of Octave.
 
@@ -98,4 +98,3 @@ same as @code{current}, but overridable through the
 
 %!error nproc ("no_valid_option")
 */
-

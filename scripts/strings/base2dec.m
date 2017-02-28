@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Daniel Calvelo
+## Copyright (C) 2000-2017 Daniel Calvelo
 ##
 ## This file is part of Octave.
 ##
@@ -131,4 +131,3 @@ endfunction
 %!error base2dec ("11120", "12 3")
 %!error base2dec ("11120", ones (2))
 %!error base2dec ("11120", 37)
-

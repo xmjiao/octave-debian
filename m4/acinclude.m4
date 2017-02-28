@@ -1,6 +1,6 @@
 dnl aclocal.m4 -- extra macros for configuring Octave
 dnl
-dnl Copyright (C) 1995-2016 John W. Eaton
+dnl Copyright (C) 1995-2017 John W. Eaton
 dnl
 dnl This file is part of Octave.
 dnl
@@ -187,11 +187,8 @@ dnl
 AC_DEFUN([OCTAVE_CHECK_CXSPARSE_VERSION_OK], [
   AC_CACHE_CHECK([whether CXSparse is version 2.2 or later],
     [octave_cv_cxsparse_version_ok],
-    [AC_LANG_PUSH(C++)
-    ac_octave_save_CPPFLAGS="$CPPFLAGS"
-    ac_octave_save_CXXFLAGS="$CXXFLAGS"
-    CPPFLAGS="$QT_CPPFLAGS $CXXPICFLAG $CPPFLAGS"
-    CXXFLAGS="$CXXPICFLAG $CXXFLAGS"
+    [ac_octave_save_CPPFLAGS="$CPPFLAGS"
+    CPPFLAGS="$CXSPARSE_CPPFLAGS $CPPFLAGS"
     AC_PREPROC_IFELSE([AC_LANG_PROGRAM([[
         #if defined (HAVE_SUITESPARSE_CS_H)
         #include <suitesparse/cs.h>
@@ -213,8 +210,6 @@ AC_DEFUN([OCTAVE_CHECK_CXSPARSE_VERSION_OK], [
       octave_cv_cxsparse_version_ok=yes,
       octave_cv_cxsparse_version_ok=no)
     CPPFLAGS="$ac_octave_save_CPPFLAGS"
-    CXXFLAGS="$ac_octave_save_CXXFLAGS"
-    AC_LANG_POP(C++)
   ])
   if test $octave_cv_cxsparse_version_ok = yes; then
     AC_DEFINE(HAVE_CXSPARSE_VERSION_OK, 1,
@@ -499,7 +494,7 @@ AC_DEFUN([OCTAVE_CHECK_FUNC_SETPLACEHOLDERTEXT], [
     CPPFLAGS="$QT_CPPFLAGS $CXXPICFLAG $CPPFLAGS"
     CXXFLAGS="$CXXPICFLAG $CXXFLAGS"
     AC_PREPROC_IFELSE([AC_LANG_PROGRAM([[
-        #include <Qt/qglobal.h>
+        #include <qglobal.h>
         ]], [[
         #if QT_VERSION < 0x040700
         #error No SetPlacholderText function available.
@@ -1646,12 +1641,13 @@ AC_DEFUN([OCTAVE_CHECK_SIZEOF_FORTRAN_INTEGER], [
       AC_RUN_IFELSE([AC_LANG_PROGRAM([[
           #include <assert.h>
           #include <stdint.h>
-          ]], [[
           #if defined (OCTAVE_ENABLE_64)
             typedef int64_t octave_idx_type;
           #else
             typedef int octave_idx_type;
           #endif
+          void F77_FUNC(foo,FOO) (octave_idx_type*, octave_idx_type**, octave_idx_type**);
+          ]], [[
           octave_idx_type n = 2;
           octave_idx_type in[2];
           octave_idx_type out[2];
@@ -2738,4 +2734,3 @@ AC_DEFUN([OCTAVE_UMFPACK_SEPARATE_SPLIT], [
 dnl         End of macros written by Octave developers
 dnl ------------------------------------------------------------
 dnl
-

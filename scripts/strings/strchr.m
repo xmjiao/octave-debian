@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Jaroslav Hajek
+## Copyright (C) 2008-2017 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -79,4 +79,3 @@ endfunction
 %!error strchr (1)
 %!error <STR argument must be a string> strchr (1, "aeiou")
 %!error <CHARS argument must be a string> strchr ("aeiou", 1)
-

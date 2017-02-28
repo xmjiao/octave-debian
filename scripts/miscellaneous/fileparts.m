@@ -1,4 +1,4 @@
-## Copyright (C) 2003-2016 John W. Eaton
+## Copyright (C) 2003-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -108,4 +108,3 @@ endfunction
 %!error fileparts (1,2)
 %!error <FILENAME must be a single string> fileparts (1)
 %!error <FILENAME must be a single string> fileparts (["a"; "b"])
-

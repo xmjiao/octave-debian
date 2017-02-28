@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2016 David Bateman
+Copyright (C) 2007-2017 David Bateman
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -558,4 +558,3 @@ column vector.
 %!error bitunpack (1, 2)
 %!error bitunpack ({})
 */
-

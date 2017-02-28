@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 John W. Eaton
+## Copyright (C) 1996-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -144,4 +144,3 @@ endfunction
 %!error gls (ones (2,2), ones (2,2), ones (4,4,4))
 %!error gls (ones (1,2), ones (2,2), ones (2,2))
 %!error gls (ones (2,2), ones (2,2), ones (2,2))
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -289,4 +289,3 @@ endfunction
 %! plot (x, y);
 %! axis ([0 10 0 1]);
 %! title ({"Two random variables", "squeezed from 4-D arrays"});
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1999-2016 Kai Habel
+## Copyright (C) 1999-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -87,4 +87,3 @@ endfunction
 %! assert (sortrows (sort (delaunay3 (x, y, z), 2)), [1,2,3,4;1,2,4,5]);
 
 ## FIXME: Need input validation tests
-

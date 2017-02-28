@@ -1,4 +1,4 @@
-c Copyright (C) 2010-2016  VZLU Prague, a.s., Czech Republic
+c Copyright (C) 2010-2017  VZLU Prague, a.s., Czech Republic
 c
 c Author: Jaroslav Hajek <highegg@gmail.com>
 c
@@ -94,8 +94,3 @@ c apply a single rotation from the right to a pair of columns
          x(i) = t
        end do
        end subroutine
-
-
-
-
-

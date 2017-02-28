@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -137,4 +137,3 @@ endfunction
 %!assert (cumtrapz (y,3), reshape ([0,1.5,4;0,4.5,10],[1 2 3]))
 %!assert (cumtrapz (x1,y,3), reshape ([0,1.5,4;0,4.5,10],[1 2 3]))
 %!assert (cumtrapz (x2,y,3), reshape ([0,3,8;0,9,20],[1 2 3]))
-

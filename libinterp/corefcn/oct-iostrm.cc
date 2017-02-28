@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -88,4 +88,3 @@ octave_ostream::create (std::ostream *arg, const std::string& n)
 {
   return octave_stream (new octave_ostream (arg, n));
 }
-

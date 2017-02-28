@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Roberto Porcu' <roberto.porcu@polimi.it>
+## Copyright (C) 2013-2017 Roberto Porcu' <roberto.porcu@polimi.it>
 ##
 ## This file is part of Octave.
 ##
@@ -75,4 +75,3 @@ function h = starting_stepsize (order, func, t0, x0,
   h = min (100 * h0, h1);
 
 endfunction
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2016 David Bateman
+Copyright (C) 2005-2017 David Bateman
 
 This file is part of Octave.
 
@@ -130,4 +130,3 @@ EigsComplexNonSymmetricFunc (EigsComplexFunc fun, octave_idx_type n,
                              int disp, int maxit);
 
 #endif
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2016 Paul Kienzle
+## Copyright (C) 2001-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -54,4 +54,3 @@ endfunction
 %! fclose (fid);
 %! unlink (fname);
 %! assert (txt, "8.0,1.0,6.0\n3.0,5.0,7.0\n4.0,9.0,2.0\n");
-

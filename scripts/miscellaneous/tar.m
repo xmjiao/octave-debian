@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Søren Hauberg
+## Copyright (C) 2005-2017 Søren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -135,4 +135,3 @@ endfunction
 %!error tar (1,2,3,4)
 %!error <TARFILE must be a string> tar (1, "foobar")
 %!error <FILES must be a character array or cellstr> tar ("foobar", 1)
-

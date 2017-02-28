@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -757,4 +757,3 @@ octave_float_complex_matrix::map (unary_mapper_t umap) const
       return octave_base_value::map (umap);
     }
 }
-

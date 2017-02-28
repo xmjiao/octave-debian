@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -100,4 +100,3 @@ endfunction
 %!error <TITLE must be a string> menu (1, "opt1")
 %!error <All OPTIONS must be strings> menu ("title", "opt1", 1)
 %!error <OPTIONS must be string or cell array of strings> menu ("title", 1)
-

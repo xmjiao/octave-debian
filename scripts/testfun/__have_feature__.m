@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 John W. Eaton
+## Copyright (C) 2013-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -43,4 +43,3 @@ endfunction
 
 ## No test coverage for internal function.  It is tested through calling fcn.
 %!assert (1)
-

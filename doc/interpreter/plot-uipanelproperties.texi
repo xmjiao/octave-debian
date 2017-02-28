@@ -59,7 +59,7 @@
 @anchor{XREFuipanelbuttondownfcn}
 @cindex uipanel buttondownfcn
 @item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
-
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFuipanelchildren}
@@ -79,11 +79,15 @@ If @code{clipping} is @qcode{"on"}, the uipanel is clipped in its parent axes li
 @item @code{createfcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately after uipanel has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultuipanelcreatefcn", 'disp ("uipanel created!")')}.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
+
 
 @anchor{XREFuipaneldeletefcn}
 @cindex uipanel deletefcn
 @item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately before uipanel is deleted.
+
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFuipanelfontangle}

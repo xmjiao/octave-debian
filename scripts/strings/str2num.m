@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 Kurt Hornik
+## Copyright (C) 1996-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -81,4 +81,3 @@ endfunction
 %!error str2num ()
 %!error str2num ("string", 1)
 %!error <S must be a string> str2num ({"string"})
-

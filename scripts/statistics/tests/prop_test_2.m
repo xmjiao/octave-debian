@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 Kurt Hornik
+## Copyright (C) 1996-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -79,4 +79,3 @@ function [pval, z] = prop_test_2 (x1, n1, x2, n2, alt)
   endif
 
 endfunction
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1998-2016 Ariel Tankus
+## Copyright (C) 1998-2017 Ariel Tankus
 ##
 ## This file is part of Octave.
 ##
@@ -106,4 +106,3 @@ endfunction
 
 %!error deal ()
 %!error <nargin . 1 and nargin != nargout> y = deal (1, 2)
-

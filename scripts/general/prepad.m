@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -122,4 +122,3 @@ endfunction
 %!error <DIM must be an integer> prepad ([1,2], 2, 2, 1.1)
 %!error <L must be a positive scalar> prepad ([1,2], ones (2))
 %!error <L must be a positive scalar> prepad ([1,2], -1)
-

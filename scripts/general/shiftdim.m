@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 John Eaton and David Bateman
+## Copyright (C) 2004-2017 John Eaton and David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -99,4 +99,3 @@ endfunction
 %!error (shiftdim (1,2,3))
 %!error (shiftdim (1, ones (2)))
 %!error (shiftdim (1, 1.5))
-

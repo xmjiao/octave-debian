@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -441,4 +441,3 @@ endfunction
 ## Test input validation
 %!error speed ()
 %!error speed (1, 2, 3, 4, 5, 6, 7)
-

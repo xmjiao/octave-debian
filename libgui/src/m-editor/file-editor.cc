@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2016 Jacob Dawid
+Copyright (C) 2011-2017 Jacob Dawid
 
 This file is part of Octave.
 
@@ -1878,6 +1878,9 @@ file_editor::construct (void)
   setWidget (editor_widget);
 
   // signals
+  connect (this, SIGNAL (execute_command_in_terminal_signal (const QString&)),
+           main_win (), SLOT (execute_command_in_terminal (const QString&)));
+
   connect (this, SIGNAL (request_settings_dialog (const QString&)),
            main_win (),
            SLOT (process_settings_dialog_request (const QString&)));
@@ -2012,7 +2015,7 @@ file_editor::add_file_editor_tab (file_editor_tab *f, const QString& fn)
 
   // Signals from the file_editor non-trivial operations
   connect (this, SIGNAL (fetab_settings_changed (const QSettings *)),
-           f, SLOT (settings_changed (const QSettings *)));
+           f, SLOT (notice_settings (const QSettings *)));
 
   connect (this, SIGNAL (fetab_change_request (const QWidget*)),
            f, SLOT (change_editor_state (const QWidget*)));
@@ -2420,4 +2423,3 @@ file_editor::switch_tab (int direction, bool movetab)
 }
 
 #endif
-

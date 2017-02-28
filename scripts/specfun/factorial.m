@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -63,4 +63,3 @@ endfunction
 %!error <must be real non-negative integers> factorial (2i)
 %!error <must be real non-negative integers> factorial (-3)
 %!error <must be real non-negative integers> factorial (5.5)
-

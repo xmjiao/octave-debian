@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Markus Muetzel
+## Copyright (C) 2016-2017 Markus Muetzel
 ##
 ## This file is part of Octave.
 ##
@@ -89,4 +89,3 @@ function [faces, vertices, J] = __unite_shared_vertices__ (faces, vertices)
   endif
 
 endfunction
-

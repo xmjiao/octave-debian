@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2016 Paul Kienzle
+## Copyright (C) 2001-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -43,4 +43,3 @@ endfunction
 ## Tests for csvread() are in csvwrite()
 ## Mark file as being tested
 %!assert (1)
-

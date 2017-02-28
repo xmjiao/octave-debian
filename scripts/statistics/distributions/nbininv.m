@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Lachlan Andrew
+## Copyright (C) 2016-2017 Lachlan Andrew
 ## Copyright (C) 2012-2016 Rik Wehbring
 ## Copyright (C) 1995-2012 Kurt Hornik
 ##
@@ -168,4 +168,3 @@ endfunction
 %!error nbininv (i, 2, 2)
 %!error nbininv (2, i, 2)
 %!error nbininv (2, 2, i)
-

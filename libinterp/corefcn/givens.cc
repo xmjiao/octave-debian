@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -174,4 +174,3 @@ givens (1, 1)
 %!error givens (1)
 %!error [a,b,c] = givens (1, 1)
 */
-

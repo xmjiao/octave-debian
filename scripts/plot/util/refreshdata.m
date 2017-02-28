@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -117,4 +117,3 @@ endfunction
 %!   y = sin (x + 0.1 * i);
 %!   refreshdata (gcf, "caller");
 %! endfor
-

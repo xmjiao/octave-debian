@@ -1,4 +1,4 @@
-## Copyright (C) 2016 John Donoghue
+## Copyright (C) 2016-2017 John Donoghue
 ##
 ## This file is part of Octave.
 ##
@@ -122,5 +122,3 @@ function h = dialog (varargin)
   endif
 
 endfunction
-
-

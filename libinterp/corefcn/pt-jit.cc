@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2016 Max Brister
+Copyright (C) 2012-2017 Max Brister
 
 This file is part of Octave.
 
@@ -2605,4 +2605,3 @@ The original variable value is restored when exiting the function.
   return ovl ();
 #endif
 }
-

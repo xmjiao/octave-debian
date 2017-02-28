@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -150,4 +150,3 @@ endfunction
 %! [c, h] = contourf (peaks (), -7:6);
 %! clabel (c, h, -6:2:6, "fontsize", 12);
 %! title ("clabel() labeling every other contour");
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,4 +36,3 @@ octave_popen2 (const char *cmd, char *const *args, bool sync_mode,
 #endif
 
 #endif
-

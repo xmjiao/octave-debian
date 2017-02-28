@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -67,4 +67,3 @@ endfunction
 %!error list_primes (1, 2)
 %!error <N must be a real scalar> list_primes (i)
 %!error <N must be a real scalar> list_primes ([1 2])
-

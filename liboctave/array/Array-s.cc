@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1995-2016 John W. Eaton
+Copyright (C) 1995-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -47,4 +47,3 @@ INSTANTIATE_ARRAY (short, OCTAVE_API);
 #include "DiagArray2.cc"
 
 template class DiagArray2<short>;
-

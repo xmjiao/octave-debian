@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -56,4 +56,3 @@ endfunction
 
 %!error vech ()
 %!error vech (1, 2)
-

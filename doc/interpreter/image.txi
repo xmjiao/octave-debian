@@ -1,4 +1,4 @@
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -152,6 +152,10 @@ between 0 and 1.
 
 @DOCSTRING(ind2rgb)
 
+@DOCSTRING(frame2im)
+
+@DOCSTRING(im2frame)
+
 @DOCSTRING(colormap)
 
 @DOCSTRING(rgbplot)
@@ -255,5 +259,3 @@ and vice versa.
 @DOCSTRING(rgb2ntsc)
 
 @DOCSTRING(ntsc2rgb)
-
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -379,4 +379,3 @@ tree_multi_assignment::accept (tree_walker& tw)
 {
   tw.visit_multi_assignment (*this);
 }
-

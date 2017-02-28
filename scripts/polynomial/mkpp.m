@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -111,4 +111,3 @@ endfunction
 %!assert (pp.order, 2)
 %!assert (pp.dim, [2,3])
 %!assert (size (pp.coefs), [12,2])
-

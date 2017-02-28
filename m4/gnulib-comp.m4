@@ -117,6 +117,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module getlogin_r:
   # Code from module getopt-gnu:
   # Code from module getopt-posix:
+  # Code from module getprogname:
   # Code from module getrusage:
   # Code from module gettext-h:
   # Code from module gettimeofday:
@@ -132,6 +133,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module isnand-nolibm:
   # Code from module largefile:
   AC_REQUIRE([AC_SYS_LARGEFILE])
+  # Code from module limits-h:
   # Code from module link:
   # Code from module localcharset:
   # Code from module lock:
@@ -471,6 +473,7 @@ AC_SUBST([LTALLOCA])
     GNULIB_GL_UNISTD_H_GETOPT=1
   fi
   AC_SUBST([GNULIB_GL_UNISTD_H_GETOPT])
+  gl_FUNC_GETPROGNAME
   gl_FUNC_GETRUSAGE
   if test $HAVE_GETRUSAGE = 0; then
     AC_LIBOBJ([getrusage])
@@ -502,6 +505,7 @@ AC_SUBST([LTALLOCA])
     gl_PREREQ_ISNAND
   fi
   AC_REQUIRE([gl_LARGEFILE])
+  gl_LIMITS_H
   gl_FUNC_LINK
   if test $HAVE_LINK = 0 || test $REPLACE_LINK = 1; then
     AC_LIBOBJ([link])
@@ -1079,6 +1083,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/filename.h
   lib/filenamecat-lgpl.c
   lib/filenamecat.h
+  lib/flexmember.h
   lib/float+.h
   lib/float.c
   lib/float.in.h
@@ -1104,6 +1109,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/getopt.in.h
   lib/getopt1.c
   lib/getopt_int.h
+  lib/getprogname.c
+  lib/getprogname.h
   lib/getrusage.c
   lib/gettext.h
   lib/gettimeofday.c
@@ -1130,6 +1137,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/isnand-nolibm.h
   lib/isnand.c
   lib/itold.c
+  lib/limits.in.h
   lib/link.c
   lib/localcharset.c
   lib/localcharset.h
@@ -1346,6 +1354,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/gethostname.m4
   m4/getlogin_r.m4
   m4/getopt.m4
+  m4/getprogname.m4
   m4/getrusage.m4
   m4/gettimeofday.m4
   m4/gl-openssl.m4
@@ -1362,6 +1371,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/lib-ld.m4
   m4/lib-link.m4
   m4/lib-prefix.m4
+  m4/limits-h.m4
   m4/link.m4
   m4/localcharset.m4
   m4/locale-fr.m4

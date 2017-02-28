@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -113,4 +113,3 @@ endfunction
 %! subplot (1,2,2);
 %!  ezsurf (f, [-2,2], "circ");
 %!  title ({"x^2 + y^2"; 'plotted over circular disk with "circ"'});
-

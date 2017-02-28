@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2016 Mohamed Kamoun
+Copyright (C) 2005-2017 Mohamed Kamoun
 Copyright (C) 2006-2016 Bill Denney
 Copyright (C) 2009 Jaroslav Hajek
 Copyright (C) 2010 VZLU Prague
@@ -2393,4 +2393,3 @@ indexing keyword @code{end} is not available.
 
   return octave_value (y);
 }
-

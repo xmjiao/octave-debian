@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -162,4 +162,3 @@ typedef octave::unwind_protect_safe unwind_protect_safe;
 #endif
 
 #endif
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999-2016 Andy Adler
+Copyright (C) 1999-2017 Andy Adler
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -550,4 +550,3 @@ The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 %!error <SHAPE type not valid> convn (1,2, "NOT_A_SHAPE")
 %!error convn (rand (3), 1, 1)
 */
-

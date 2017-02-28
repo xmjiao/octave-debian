@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -143,4 +143,3 @@ endfunction
 %!error <A and B must be vectors> conv ([1, 2; 3, 4], 3)
 %!error <A and B must be vectors> conv (3, [1, 2; 3, 4])
 %!error <SHAPE argument must be> conv (2, 3, "INVALID_SHAPE")
-

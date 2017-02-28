@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 David Bateman and Andy Adler
+## Copyright (C) 2004-2017 David Bateman and Andy Adler
 ##
 ## This file is part of Octave.
 ##
@@ -59,4 +59,3 @@ endfunction
 %!assert (speye (2,4), sparse (1:2,1:2,1,2,4))
 %!assert (speye (4,2), sparse (1:2,1:2,1,4,2))
 %!assert (speye ([4,2]), sparse (1:2,1:2,1,4,2))
-

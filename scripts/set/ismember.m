@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -225,4 +225,3 @@ endfunction
 %! [result, s_idx] = ismember ([1:3; 5:7; 4:6; 0:2; 1:3; 2:4], [1:3], "rows");
 %! assert (result, logical ([1 0 0 0 1 0]'));
 %! assert (s_idx, [1 0 0 0 1 0]');
-

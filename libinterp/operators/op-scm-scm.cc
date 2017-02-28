@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -251,4 +251,3 @@ install_scm_scm_ops (void)
   INSTALL_ASSIGNOP (op_asn_eq, octave_sparse_complex_matrix,
                     octave_null_sq_str, null_assign);
 }
-

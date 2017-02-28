@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2016 Jacob Dawid
+Copyright (C) 2011-2017 Jacob Dawid
 
 This file is part of Octave.
 
@@ -363,4 +363,3 @@ void history_dock_widget::handle_visibility (bool visible)
       filter_activate (filter_state);
     }
 }
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Julien Bect
+## Copyright (C) 2013-2017 Julien Bect
 ## Copyright (C) 2000-2016 Gabriele Pannocchia.
 ##
 ## This file is part of Octave.
@@ -373,8 +373,8 @@ function [x, obj, INFO, lambda] = qp (x0, H, varargin)
             Atmp = [Ain, gamma];
             btmp = bin;
           endif
-          ctmp = [zeros(n, 1); ones(n_in, 1)];
-          lb = [-Inf(n,1); zeros(n_in,1)];
+          ctmp = [zeros(n-n_eq, 1); ones(n_in, 1)];
+          lb = [-Inf(n-n_eq,1); zeros(n_in,1)];
           ub = [];
           ctype = repmat ("L", n_in, 1);
           [P, dummy, status] = glpk (ctmp, Atmp, btmp, lb, ub, ctype);
@@ -431,4 +431,3 @@ endfunction
 %!
 %! assert (isstruct (INFO) && isfield (INFO, "info") && (INFO.info == 0));
 %! assert ([x obj_qp], [1.0 0.5], eps);
-

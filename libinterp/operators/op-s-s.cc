@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -175,4 +175,3 @@ install_s_s_ops (void)
   INSTALL_ASSIGNCONV (octave_scalar, octave_null_str, octave_matrix);
   INSTALL_ASSIGNCONV (octave_scalar, octave_null_sq_str, octave_matrix);
 }
-

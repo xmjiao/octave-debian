@@ -1,4 +1,4 @@
-## Copyright (C) 1997-2016 Vincent Cautaerts
+## Copyright (C) 1997-2017 Vincent Cautaerts
 ##
 ## This file is part of Octave.
 ##
@@ -152,4 +152,3 @@ endfunction
 %!error fftshift (1, 2, 3)
 %!error fftshift (0:3, -1)
 %!error fftshift (0:3, 0:3)
-

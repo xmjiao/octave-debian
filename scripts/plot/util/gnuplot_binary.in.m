@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 John W. Eaton
+## Copyright (C) 2008-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -65,4 +65,3 @@ endfunction
 %! assert (gnuplot_binary (), "__foobar__");
 %! gnuplot_binary (orig_val);
 %! assert (gnuplot_binary (), orig_val);
-

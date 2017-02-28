@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 David Bateman and Andy Adler
+## Copyright (C) 2004-2017 David Bateman and Andy Adler
 ##
 ## This file is part of Octave.
 ##
@@ -41,4 +41,3 @@ endfunction
 %!assert (issparse (spones ([1,2;3,0])))
 %!assert (spones ([1,2;3,0]), sparse ([1,1;1,0]))
 %!assert (spones (sparse ([1,2;3,0])), sparse ([1,1;1,0]))
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -132,4 +132,3 @@ endfunction
 %!error <C must be a vector> toeplitz ([1, 2; 3, 4])
 %!error <C and R must be vectors> toeplitz ([1, 2; 3, 4], 1)
 %!error <C and R must be vectors> toeplitz (1, [1, 2; 3, 4])
-

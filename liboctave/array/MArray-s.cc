@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1995-2016 John W. Eaton
+Copyright (C) 1995-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -46,4 +46,3 @@ INSTANTIATE_MARRAY_FRIENDS (short, OCTAVE_API)
 template class OCTAVE_API MDiagArray2<short>;
 
 INSTANTIATE_MDIAGARRAY2_FRIENDS (short, OCTAVE_API)
-

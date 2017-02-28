@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Andreas Weber
+## Copyright (C) 2014-2017 Andreas Weber
 ##
 ## This file is part of Octave.
 ##
@@ -118,4 +118,3 @@ function update_mouse_mode (hfig, arg)
   endif
 
 endfunction
-

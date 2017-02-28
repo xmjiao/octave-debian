@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2016 Paul Kienzle
+## Copyright (C) 2001-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -142,4 +142,3 @@ endfunction
 %!error <N must be a scalar integer> interpft (1,2.1)
 %!error <invalid dimension DIM> interpft (1,2,0)
 %!error <invalid dimension DIM> interpft (1,2,3)
-

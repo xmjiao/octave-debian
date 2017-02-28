@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -958,4 +958,3 @@ octave_sparse_complex_matrix::map (unary_mapper_t umap) const
       return octave_base_sparse<SparseComplexMatrix>::map (umap);
     }
 }
-

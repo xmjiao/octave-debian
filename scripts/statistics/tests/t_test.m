@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -112,4 +112,3 @@ endfunction
 %! tval = tinv (pval, n-1);
 %! unew = tval * std(x)/sqrt(n) + u0;
 %! assert (mean (x), unew, 100*eps);
-

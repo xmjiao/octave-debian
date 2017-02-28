@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Ben Abbott
+## Copyright (C) 2010-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -62,4 +62,3 @@ endfunction
 %!error isprop (1,2,3)
 %!error <H must be a graphics handle> isprop ({1}, "visible")
 %!error <PROP name must be a string> isprop (0, {"visible"})
-

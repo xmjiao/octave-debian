@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -809,4 +809,3 @@ whos ans
 %!error list_in_columns (["abc", "def"], 20, "  ", 3)
 %!error <list_in_columns: WIDTH must be an integer> list_in_columns (["abc", "def"], "a")
 */
-

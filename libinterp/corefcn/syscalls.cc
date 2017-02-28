@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -1597,4 +1597,3 @@ child has been resumed by delivery of a @code{SIGCONT} signal.
 {
   return const_value (args, octave::sys::wcontinue ());
 }
-

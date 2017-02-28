@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 Thomas Treichl
+## Copyright (C) 2007-2017 Thomas Treichl
 ##
 ## This file is part of Octave.
 ##
@@ -36,4 +36,3 @@ endfunction
 %!assert (islogical (ismac ()))
 
 %!error ismac (1)
-

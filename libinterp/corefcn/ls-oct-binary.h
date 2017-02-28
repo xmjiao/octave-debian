@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2016 John W. Eaton
+Copyright (C) 2003-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -37,4 +37,3 @@ read_binary_data (std::istream& is, bool swap,
                   octave_value& tc, std::string& doc);
 
 #endif
-

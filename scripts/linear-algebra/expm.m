@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Jaroslav Hajek, Marco Caliari
+## Copyright (C) 2008-2017 Jaroslav Hajek, Marco Caliari
 ##
 ## This file is part of Octave.
 ##
@@ -154,4 +154,3 @@ endfunction
 %!error expm ()
 %!error expm (1, 2)
 %!error <expm: A must be a square matrix> expm ([1 0;0 1; 2 2])
-

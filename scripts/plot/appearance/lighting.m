@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Markus Muetzel
+## Copyright (C) 2016-2017 Markus Muetzel
 ##
 ## This file is part of Octave.
 ##
@@ -224,4 +224,3 @@ endfunction
 %!error <MODE must be a string> lighting ({})
 %!error <Invalid MODE "foo"> lighting foo
 %!error <Invalid call to lighting> lighting (-1, "flat")
-

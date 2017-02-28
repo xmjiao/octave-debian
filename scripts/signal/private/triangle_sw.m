@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Friedrich Leisch
+## Copyright (C) 1995-2017 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -36,4 +36,3 @@ function retval = triangle_sw (n, b)
   retval(2:n) = b * (sin (l / (2*b)) ./ sin (l / 2)).^2;
 
 endfunction
-

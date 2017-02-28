@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 Paul Kienzle
+## Copyright (C) 2004-2017 Paul Kienzle
 ## Copyright (C) 2012 Jordi Gutiérrez Hermoso
 ##
 ## This file is part of Octave.
@@ -142,4 +142,3 @@ function S = __sprand__ (varargin)
   endif
 
 endfunction
-

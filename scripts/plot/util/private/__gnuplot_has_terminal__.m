@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Ben Abbott
+## Copyright (C) 2010-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -47,4 +47,3 @@ function gnuplot_supports_term = __gnuplot_has_terminal__ (term, plot_stream)
   gnuplot_supports_term = any (strcmp (term, available_terminals));
 
 endfunction
-

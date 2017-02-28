@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -3122,4 +3122,3 @@ It is useful for error messages and prompts.
 {
   return const_value ("stderr", args, stderr_file);
 }
-

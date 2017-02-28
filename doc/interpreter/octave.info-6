@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 6.1 from octave.texi.
+This is octave.info, produced by makeinfo version 6.3 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -19,6 +19,391 @@ permission notice identical to this one.
    Permission is granted to copy and distribute translations of this
 manual into another language, under the above conditions for modified
 versions.
+
+
+File: octave.info,  Node: Nonlinear Programming,  Next: Linear Least Squares,  Prev: Quadratic Programming,  Up: Optimization
+
+25.3 Nonlinear Programming
+==========================
+
+Octave can also perform general nonlinear minimization using a
+successive quadratic programming solver.
+
+ -- : [X, OBJ, INFO, ITER, NF, LAMBDA] = sqp (X0, PHI)
+ -- : [...] = sqp (X0, PHI, G)
+ -- : [...] = sqp (X0, PHI, G, H)
+ -- : [...] = sqp (X0, PHI, G, H, LB, UB)
+ -- : [...] = sqp (X0, PHI, G, H, LB, UB, MAXITER)
+ -- : [...] = sqp (X0, PHI, G, H, LB, UB, MAXITER, TOL)
+     Minimize an objective function using sequential quadratic
+     programming (SQP).
+
+     Solve the nonlinear program
+
+          min phi (x)
+           x
+
+     subject to
+
+          g(x)  = 0
+          h(x) >= 0
+          lb <= x <= ub
+
+     using a sequential quadratic programming method.
+
+     The first argument is the initial guess for the vector X0.
+
+     The second argument is a function handle pointing to the objective
+     function PHI.  The objective function must accept one vector
+     argument and return a scalar.
+
+     The second argument may also be a 2- or 3-element cell array of
+     function handles.  The first element should point to the objective
+     function, the second should point to a function that computes the
+     gradient of the objective function, and the third should point to a
+     function that computes the Hessian of the objective function.  If
+     the gradient function is not supplied, the gradient is computed by
+     finite differences.  If the Hessian function is not supplied, a
+     BFGS update formula is used to approximate the Hessian.
+
+     When supplied, the gradient function ‘PHI{2}’ must accept one
+     vector argument and return a vector.  When supplied, the Hessian
+     function ‘PHI{3}’ must accept one vector argument and return a
+     matrix.
+
+     The third and fourth arguments G and H are function handles
+     pointing to functions that compute the equality constraints and the
+     inequality constraints, respectively.  If the problem does not have
+     equality (or inequality) constraints, then use an empty matrix ([])
+     for G (or H).  When supplied, these equality and inequality
+     constraint functions must accept one vector argument and return a
+     vector.
+
+     The third and fourth arguments may also be 2-element cell arrays of
+     function handles.  The first element should point to the constraint
+     function and the second should point to a function that computes
+     the gradient of the constraint function:
+
+                      [ d f(x)   d f(x)        d f(x) ]
+          transpose ( [ ------   -----   ...   ------ ] )
+                      [  dx_1     dx_2          dx_N  ]
+
+     The fifth and sixth arguments, LB and UB, contain lower and upper
+     bounds on X.  These must be consistent with the equality and
+     inequality constraints G and H.  If the arguments are vectors then
+     X(i) is bound by LB(i) and UB(i).  A bound can also be a scalar in
+     which case all elements of X will share the same bound.  If only
+     one bound (lb, ub) is specified then the other will default to
+     (-REALMAX, +REALMAX).
+
+     The seventh argument MAXITER specifies the maximum number of
+     iterations.  The default value is 100.
+
+     The eighth argument TOL specifies the tolerance for the stopping
+     criteria.  The default value is ‘sqrt (eps)’.
+
+     The value returned in INFO may be one of the following:
+
+     101
+          The algorithm terminated normally.  All constraints meet the
+          specified tolerance.
+
+     102
+          The BFGS update failed.
+
+     103
+          The maximum number of iterations was reached.
+
+     104
+          The stepsize has become too small, i.e., delta X, is less than
+          ‘TOL * norm (x)’.
+
+     An example of calling ‘sqp’:
+
+          function r = g (x)
+            r = [ sumsq(x)-10;
+                  x(2)*x(3)-5*x(4)*x(5);
+                  x(1)^3+x(2)^3+1 ];
+          endfunction
+
+          function obj = phi (x)
+            obj = exp (prod (x)) - 0.5*(x(1)^3+x(2)^3+1)^2;
+          endfunction
+
+          x0 = [-1.8; 1.7; 1.9; -0.8; -0.8];
+
+          [x, obj, info, iter, nf, lambda] = sqp (x0, @phi, @g, [])
+
+          x =
+
+            -1.71714
+             1.59571
+             1.82725
+            -0.76364
+            -0.76364
+
+          obj = 0.053950
+          info = 101
+          iter = 8
+          nf = 10
+          lambda =
+
+            -0.0401627
+             0.0379578
+            -0.0052227
+
+     See also: *note qp: XREFqp.
+
+
+File: octave.info,  Node: Linear Least Squares,  Prev: Nonlinear Programming,  Up: Optimization
+
+25.4 Linear Least Squares
+=========================
+
+Octave also supports linear least squares minimization.  That is, Octave
+can find the parameter b such that the model y = x*b fits data (x,y) as
+well as possible, assuming zero-mean Gaussian noise.  If the noise is
+assumed to be isotropic the problem can be solved using the ‘\’ or ‘/’
+operators, or the ‘ols’ function.  In the general case where the noise
+is assumed to be anisotropic the ‘gls’ is needed.
+
+ -- : [BETA, SIGMA, R] = ols (Y, X)
+     Ordinary least squares estimation.
+
+     OLS applies to the multivariate model y = x*b + e with mean (e) = 0
+     and cov (vec (e)) = kron (s, I). where y is a t by p matrix, x is a
+     t by k matrix, b is a k by p matrix, and e is a t by p matrix.
+
+     Each row of Y and X is an observation and each column a variable.
+
+     The return values BETA, SIGMA, and R are defined as follows.
+
+     BETA
+          The OLS estimator for b.  BETA is calculated directly via ‘inv
+          (x'*x) * x' * y’ if the matrix ‘x'*x’ is of full rank.
+          Otherwise, ‘BETA = pinv (X) * Y’ where ‘pinv (X)’ denotes the
+          pseudoinverse of X.
+
+     SIGMA
+          The OLS estimator for the matrix S,
+
+               SIGMA = (Y-X*BETA)'
+                 * (Y-X*BETA)
+                 / (T-rank(X))
+
+     R
+          The matrix of OLS residuals, ‘R = Y - X*BETA’.
+
+     See also: *note gls: XREFgls, *note pinv: XREFpinv.
+
+ -- : [BETA, V, R] = gls (Y, X, O)
+     Generalized least squares model.
+
+     Perform a generalized least squares estimation for the multivariate
+     model y = x*b + e with mean (e) = 0 and cov (vec (e)) = (s^2) o,
+     where y is a t by p matrix, x is a t by k matrix, b is a k by p
+     matrix, e is a t by p matrix, and o is a t*p by t*p matrix.
+
+     Each row of Y and X is an observation and each column a variable.
+     The return values BETA, V, and R are defined as follows.
+
+     BETA
+          The GLS estimator for b.
+
+     V
+          The GLS estimator for s^2.
+
+     R
+          The matrix of GLS residuals, r = y - x*beta.
+
+     See also: *note ols: XREFols.
+
+ -- : X = lsqnonneg (C, D)
+ -- : X = lsqnonneg (C, D, X0)
+ -- : X = lsqnonneg (C, D, X0, OPTIONS)
+ -- : [X, RESNORM] = lsqnonneg (...)
+ -- : [X, RESNORM, RESIDUAL] = lsqnonneg (...)
+ -- : [X, RESNORM, RESIDUAL, EXITFLAG] = lsqnonneg (...)
+ -- : [X, RESNORM, RESIDUAL, EXITFLAG, OUTPUT] = lsqnonneg (...)
+ -- : [X, RESNORM, RESIDUAL, EXITFLAG, OUTPUT, LAMBDA] = lsqnonneg (...)
+     Minimize ‘norm (C*X - d)’ subject to ‘X >= 0’.
+
+     C and D must be real.
+
+     X0 is an optional initial guess for X.
+
+     Currently, ‘lsqnonneg’ recognizes these options: "MaxIter", "TolX".
+     For a description of these options, see *note optimset:
+     XREFoptimset.
+
+     Outputs:
+
+        • resnorm
+
+          The squared 2-norm of the residual: norm (C*X-D)^2
+
+        • residual
+
+          The residual: D-C*X
+
+        • exitflag
+
+          An indicator of convergence.  0 indicates that the iteration
+          count was exceeded, and therefore convergence was not reached;
+          >0 indicates that the algorithm converged.  (The algorithm is
+          stable and will converge given enough iterations.)
+
+        • output
+
+          A structure with two fields:
+
+             • "algorithm": The algorithm used ("nnls")
+
+             • "iterations": The number of iterations taken.
+
+        • lambda
+
+          Not implemented.
+
+     See also: *note optimset: XREFoptimset, *note pqpnonneg:
+     XREFpqpnonneg, *note lscov: XREFlscov.
+
+ -- : X = lscov (A, B)
+ -- : X = lscov (A, B, V)
+ -- : X = lscov (A, B, V, ALG)
+ -- : [X, STDX, MSE, S] = lscov (...)
+
+     Compute a generalized linear least squares fit.
+
+     Estimate X under the model B = AX + W, where the noise W is assumed
+     to follow a normal distribution with covariance matrix {\sigma^2}
+     V.
+
+     If the size of the coefficient matrix A is n-by-p, the size of the
+     vector/array of constant terms B must be n-by-k.
+
+     The optional input argument V may be a n-by-1 vector of positive
+     weights (inverse variances), or a n-by-n symmetric positive
+     semidefinite matrix representing the covariance of B.  If V is not
+     supplied, the ordinary least squares solution is returned.
+
+     The ALG input argument, a guidance on solution method to use, is
+     currently ignored.
+
+     Besides the least-squares estimate matrix X (p-by-k), the function
+     also returns STDX (p-by-k), the error standard deviation of
+     estimated X; MSE (k-by-1), the estimated data error covariance
+     scale factors (\sigma^2); and S (p-by-p, or p-by-p-by-k if k > 1),
+     the error covariance of X.
+
+     Reference: Golub and Van Loan (1996), ‘Matrix Computations (3rd
+     Ed.)’, Johns Hopkins, Section 5.6.3
+
+     See also: *note ols: XREFols, *note gls: XREFgls, *note lsqnonneg:
+     XREFlsqnonneg.
+
+ -- : optimset ()
+ -- : OPTIONS = optimset ()
+ -- : OPTIONS = optimset (PAR, VAL, ...)
+ -- : OPTIONS = optimset (OLD, PAR, VAL, ...)
+ -- : OPTIONS = optimset (OLD, NEW)
+     Create options structure for optimization functions.
+
+     When called without any input or output arguments, ‘optimset’
+     prints a list of all valid optimization parameters.
+
+     When called with one output and no inputs, return an options
+     structure with all valid option parameters initialized to ‘[]’.
+
+     When called with a list of parameter/value pairs, return an options
+     structure with only the named parameters initialized.
+
+     When the first input is an existing options structure OLD, the
+     values are updated from either the PAR/VAL list or from the options
+     structure NEW.
+
+     Valid parameters are:
+
+     AutoScaling
+
+     ComplexEqn
+
+     Display
+          Request verbose display of results from optimizations.  Values
+          are:
+
+          "off" [default]
+               No display.
+
+          "iter"
+               Display intermediate results for every loop iteration.
+
+          "final"
+               Display the result of the final loop iteration.
+
+          "notify"
+               Display the result of the final loop iteration if the
+               function has failed to converge.
+
+     FinDiffType
+
+     FunValCheck
+          When enabled, display an error if the objective function
+          returns an invalid value (a complex number, NaN, or Inf).
+          Must be set to "on" or "off" [default].  Note: the functions
+          ‘fzero’ and ‘fminbnd’ correctly handle Inf values and only
+          complex values or NaN will cause an error in this case.
+
+     GradObj
+          When set to "on", the function to be minimized must return a
+          second argument which is the gradient, or first derivative, of
+          the function at the point X.  If set to "off" [default], the
+          gradient is computed via finite differences.
+
+     Jacobian
+          When set to "on", the function to be minimized must return a
+          second argument which is the Jacobian, or first derivative, of
+          the function at the point X.  If set to "off" [default], the
+          Jacobian is computed via finite differences.
+
+     MaxFunEvals
+          Maximum number of function evaluations before optimization
+          stops.  Must be a positive integer.
+
+     MaxIter
+          Maximum number of algorithm iterations before optimization
+          stops.  Must be a positive integer.
+
+     OutputFcn
+          A user-defined function executed once per algorithm iteration.
+
+     TolFun
+          Termination criterion for the function output.  If the
+          difference in the calculated objective function between one
+          algorithm iteration and the next is less than ‘TolFun’ the
+          optimization stops.  Must be a positive scalar.
+
+     TolX
+          Termination criterion for the function input.  If the
+          difference in X, the current search point, between one
+          algorithm iteration and the next is less than ‘TolX’ the
+          optimization stops.  Must be a positive scalar.
+
+     TypicalX
+
+     Updating
+
+     See also: *note optimget: XREFoptimget.
+
+ -- : optimget (OPTIONS, PARNAME)
+ -- : optimget (OPTIONS, PARNAME, DEFAULT)
+     Return the specific option PARNAME from the optimization options
+     structure OPTIONS created by ‘optimset’.
+
+     If PARNAME is not defined then return DEFAULT if supplied,
+     otherwise return an empty matrix.
+
+     See also: *note optimset: XREFoptimset.
 
 
 File: octave.info,  Node: Statistics,  Next: Sets,  Prev: Optimization,  Up: Top
@@ -6122,6 +6507,33 @@ color map must be of class ‘double’ with values between 0 and 1.
      See also: *note rgb2ind: XREFrgb2ind, *note ind2gray: XREFind2gray,
      *note hsv2rgb: XREFhsv2rgb, *note ntsc2rgb: XREFntsc2rgb.
 
+ -- : [X, MAP] = frame2im (F)
+     Convert movie frame to indexed image.
+
+     A movie frame is simply a struct with the fields "cdata" and
+     "colormap".
+
+     Support for N-dimensional images or movies is given when F is a
+     struct array.  In such cases, X will be a MxNx1xK or MxNx3xK for
+     indexed and RGB movies respectively, with each frame concatenated
+     along the 4th dimension.
+
+     See also: *note im2frame: XREFim2frame.
+
+ -- : im2frame (RGB)
+ -- : im2frame (X, MAP)
+     Convert image to movie frame.
+
+     A movie frame is simply a struct with the fields "cdata" and
+     "colormap".
+
+     Support for N-dimensional images is given when each image
+     projection, matrix sizes of MxN and MxNx3 for RGB images, is
+     concatenated along the fourth dimension.  In such cases, the
+     returned value is a struct array.
+
+     See also: *note frame2im: XREFframe2im.
+
  -- : CMAP = colormap ()
  -- : CMAP = colormap (MAP)
  -- : CMAP = colormap ("default")
@@ -6607,8 +7019,8 @@ File: octave.info,  Node: Color Conversion,  Prev: Plotting on top of Images,  U
 Octave supports conversion from the RGB color system to NTSC and HSV and
 vice versa.
 
- -- : HSV_MAP = rgb2hsv (RGB)
- -- : HSV_MAP = rgb2hsv (RGB)
+ -- : HSV_MAP = rgb2hsv (RGB_MAP)
+ -- : HSV_IMG = rgb2hsv (RGB_IMG)
      Transform a colormap or image from RGB to HSV color space.
 
      A color in the RGB space consists of red, green, and blue
@@ -7747,284 +8159,4 @@ method.
 
      This function is equivalent to the operator syntax ‘base : limit’
      or ‘base : increment : limit’.
-
-
-File: octave.info,  Node: Indexed Assignment Optimization,  Prev: Defining Indexing And Indexed Assignment,  Up: Indexing Objects
-
-34.3.2 Indexed Assignment Optimization
---------------------------------------
-
-Octave’s ubiquitous lazily-copied pass-by-value semantics implies a
-problem for performance of user-defined ‘subsasgn’ methods.  Imagine the
-following call to ‘subsasgn’
-
-     ss = substruct ("()", {1});
-     x = subsasgn (x, ss, 1);
-
-where the corresponding method looking like this:
-
-     function x = subsasgn (x, ss, val)
-       ...
-       x.myfield (ss.subs{1}) = val;
-     endfunction
-
-   The problem is that on entry to the ‘subsasgn’ method, ‘x’ is still
-referenced from the caller’s scope, which means that the method will
-first need to unshare (copy) ‘x’ and ‘x.myfield’ before performing the
-assignment.  Upon completing the call, unless an error occurs, the
-result is immediately assigned to ‘x’ in the caller’s scope, so that the
-previous value of ‘x.myfield’ is forgotten.  Hence, the Octave language
-implies a copy of N elements (N being the size of ‘x.myfield’), where
-modifying just a single element would actually suffice.  In other words,
-a constant-time operation is degraded to linear-time one.  This may be a
-real problem for user classes that intrinsically store large arrays.
-
-   To partially solve the problem Octave uses a special optimization for
-user-defined ‘subsasgn’ methods coded as m-files.  When the method gets
-called as a result of the built-in assignment syntax (not a direct
-‘subsasgn’ call as shown above), i.e., ‘x(1) = 1’, AND if the ‘subsasgn’
-method is declared with identical input and output arguments, as in the
-example above, then Octave will ignore the copy of ‘x’ inside the
-caller’s scope; therefore, any changes made to ‘x’ during the method
-execution will directly affect the caller’s copy as well.  This allows,
-for instance, defining a polynomial class where modifying a single
-element takes constant time.
-
-   It is important to understand the implications that this optimization
-brings.  Since no extra copy of ‘x’ will exist in the caller’s scope, it
-is _solely_ the callee’s responsibility to not leave ‘x’ in an invalid
-state if an error occurs during the execution.  Also, if the method
-partially changes ‘x’ and then errors out, the changes _will_ affect ‘x’
-in the caller’s scope.  Deleting or completely replacing ‘x’ inside
-subsasgn will not do anything, however, only indexed assignments matter.
-
-   Since this optimization may change the way code works (especially if
-badly written), a built-in variable ‘optimize_subsasgn_calls’ is
-provided to control it.  It is on by default.  Another way to avoid the
-optimization is to declare subsasgn methods with different output and
-input arguments like this:
-
-     function y = subsasgn (x, ss, val)
-       ...
-     endfunction
-
-
-File: octave.info,  Node: Overloading Objects,  Next: Inheritance and Aggregation,  Prev: Indexing Objects,  Up: Object Oriented Programming
-
-34.4 Overloading Objects
-========================
-
-* Menu:
-
-* Function Overloading::
-* Operator Overloading::
-* Precedence of Objects::
-
-
-File: octave.info,  Node: Function Overloading,  Next: Operator Overloading,  Up: Overloading Objects
-
-34.4.1 Function Overloading
----------------------------
-
-Any Octave function can be overloaded, and this allows an
-object-specific version of a function to be called as needed.  A
-pertinent example for the polynomial class might be to overload the
-‘polyval’ function.
-
-     function [y, dy] = polyval (p, varargin)
-
-       if (nargout > 1)
-         [y, dy] = polyval (fliplr (p.poly), varargin{:});
-       else
-         y = polyval (fliplr (p.poly), varargin{:});
-       endif
-
-     endfunction
-
-   This function just hands off the work to the normal Octave ‘polyval’
-function.  Another interesting example of an overloaded function for the
-polynomial class is the ‘plot’ function.
-
-     function h = plot (p, varargin)
-
-       n = 128;
-       rmax = max (abs (roots (p.poly)));
-       x = [0 : (n - 1)] / (n - 1) * 2.2 * rmax - 1.1 * rmax;
-       if (nargout > 0)
-         h = plot (x, polyval (p, x), varargin{:});
-       else
-         plot (x, polyval (p, x), varargin{:});
-       endif
-
-     endfunction
-
-which allows polynomials to be plotted in the domain near the region of
-the roots of the polynomial.
-
-   Functions that are of particular interest for overloading are the
-class conversion functions such as ‘double’.  Overloading these
-functions allows the ‘cast’ function to work with a user class.  It can
-also can aid in the use of a class object with methods and functions
-from other classes since the object can be transformed to the requisite
-input form for the new function.  An example ‘double’ function for the
-polynomial class might look like
-
-     function a = double (p)
-       a = p.poly;
-     endfunction
-
-
-File: octave.info,  Node: Operator Overloading,  Next: Precedence of Objects,  Prev: Function Overloading,  Up: Overloading Objects
-
-34.4.2 Operator Overloading
----------------------------
-
-The following table shows, for each built-in numerical operation, the
-corresponding function name to use when providing an overloaded method
-for a user class.
-
-        Operation      Method         Description
-----------------------------------------------------------------------------
-        a + b          plus (a, b)    Binary addition
-        a - b          minus (a, b)   Binary subtraction operator
-        + a            uplus (a)      Unary addition operator
-        - a            uminus (a)     Unary subtraction operator
-        a .* b         times (a, b)   Element-wise multiplication
-                                      operator
-        a * b          mtimes (a,     Matrix multiplication
-                       b)             operator
-        a ./ b         rdivide (a,    Element-wise right division
-                       b)             operator
-        a / b          mrdivide (a,   Matrix right division
-                       b)             operator
-        a .\ b         ldivide (a,    Element-wise left division
-                       b)             operator
-        a \ b          mldivide (a,   Matrix left division
-                       b)             operator
-        a .^ b         power (a, b)   Element-wise power operator
-        a ^ b          mpower (a,     Matrix power operator
-                       b)
-        a < b          lt (a, b)      Less than operator
-        a <= b         le (a, b)      Less than or equal to
-                                      operator
-        a > b          gt (a, b)      Greater than operator
-        a >= b         ge (a, b)      Greater than or equal to
-                                      operator
-        a == b         eq (a, b)      Equal to operator
-        a != b         ne (a, b)      Not equal to operator
-        a & b          and (a, b)     Logical and operator
-        a | b          or (a, b)      Logical or operator
-        !  b           not (a)        Logical not operator
-        a’             ctranspose     Complex conjugate transpose
-                       (a)            operator
-        a.’            transpose      Transpose operator
-                       (a)
-        a : b          colon (a, b)   Two element range operator
-        a : b : c      colon (a, b,   Three element range
-                       c)             operator
-        [a, b]         horzcat (a,    Horizontal concatenation
-                       b)             operator
-        [a; b]         vertcat (a,    Vertical concatenation
-                       b)             operator
-        a(s_1, ...,    subsref (a,    Subscripted reference
-        s_n)           s)
-        a(s_1, ...,    subsasgn (a,   Subscripted assignment
-        s_n) = b       s, b)
-        b (a)          subsindex      Convert to zero-based index
-                       (a)
-        “display”      display (a)    Commandline display
-                                      function
-
-Table 34.1: Available overloaded operators and their corresponding class
-method
-
-   An example ‘mtimes’ method for the polynomial class might look like
-
-     function p = mtimes (a, b)
-       p = polynomial (conv (double (a), double (b)));
-     endfunction
-
-
-File: octave.info,  Node: Precedence of Objects,  Prev: Operator Overloading,  Up: Overloading Objects
-
-34.4.3 Precedence of Objects
-----------------------------
-
-Many functions and operators take two or more arguments and the
-situation can easily arise where these functions are called with objects
-of different classes.  It is therefore necessary to determine the
-precedence of which method from which class to call when there are mixed
-objects given to a function or operator.  To do this the ‘superiorto’
-and ‘inferiorto’ functions can be used
-
- -- : superiorto (CLASS_NAME, ...)
-     When called from a class constructor, mark the object currently
-     constructed as having a higher precedence than CLASS_NAME.
-
-     More that one such class can be specified in a single call.  This
-     function may _only_ be called from a class constructor.
-
-     See also: *note inferiorto: XREFinferiorto.
-
- -- : inferiorto (CLASS_NAME, ...)
-     When called from a class constructor, mark the object currently
-     constructed as having a lower precedence than CLASS_NAME.
-
-     More that one such class can be specified in a single call.  This
-     function may _only_ be called from a class constructor.
-
-     See also: *note superiorto: XREFsuperiorto.
-
-   With the polynomial class, consider the case
-
-     2 * polynomial ([1, 0, 1]);
-
-that mixes an object of the class "double" with an object of the class
-"polynomial".  In this case the return type should be "polynomial" and
-so the ‘superiorto’ function is used in the class constructor.  In
-particular the polynomial class constructor would be modified to
-
-     ## -*- texinfo -*-
-     ## @deftypefn  {} {} polynomial ()
-     ## @deftypefnx {} {} polynomial (@var{a})
-     ## Create a polynomial object representing the polynomial
-     ##
-     ## @example
-     ## a0 + a1 * x + a2 * x^2 + @dots{} + an * x^n
-     ## @end example
-     ##
-     ## @noindent
-     ## from a vector of coefficients [a0 a1 a2 @dots{} an].
-     ## @end deftypefn
-
-     function p = polynomial (a)
-
-       if (nargin > 1)
-         print_usage ();
-       endif
-
-       if (nargin == 0)
-         p.poly = [0];
-         p = class (p, "polynomial");
-       else
-         if (strcmp (class (a), "polynomial"))
-           p = a;
-         elseif (isreal (a) && isvector (a))
-           p.poly = a(:).';  # force row vector
-           p = class (p, "polynomial");
-         else
-           error ("@polynomial: A must be a real vector");
-         endif
-       endif
-
-       superiorto ("double");
-
-     endfunction
-
-   Note that user classes _always_ have higher precedence than built-in
-Octave types.  Thus, marking the polynomial class higher than the
-"double" class is not actually necessary.
-
-   When confronted with two objects of equal precedence, Octave will use
-the method of the object that appears first in the list of arguments.
 

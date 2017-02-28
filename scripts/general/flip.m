@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 David Bateman
+## Copyright (C) 2004-2017 David Bateman
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -103,4 +103,3 @@ endfunction
 %!error flip ()
 %!error flip (1, 2, 3)
 %!error <DIM must be a positive integer> flip (magic (3), -1)
-

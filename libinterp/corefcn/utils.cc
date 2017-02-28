@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -1491,4 +1491,3 @@ Return true if running in the student edition of @sc{matlab}.
 
 %!error isstudent (1)
 */
-

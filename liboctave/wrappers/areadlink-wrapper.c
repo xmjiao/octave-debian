@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -39,4 +39,3 @@ octave_areadlink_wrapper (const char *name)
 {
   return areadlink (name);
 }
-

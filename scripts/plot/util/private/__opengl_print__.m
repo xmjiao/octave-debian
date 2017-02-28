@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Shai Ayal
+## Copyright (C) 2010-2017 Shai Ayal
 ##
 ## This file is part of Octave.
 ##
@@ -178,4 +178,3 @@ function opts = __opengl_print__ (opts)
   endif
 
 endfunction
-

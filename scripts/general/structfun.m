@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ## Copyright (C) 2010 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -144,4 +144,3 @@ endfunction
 %! [aa, bb] = structfun (@__twoouts, s, "UniformOutput", false);
 %! assert (aa, c);
 %! assert (bb, d);
-

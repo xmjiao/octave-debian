@@ -16,7 +16,7 @@
 
 # Makefile for Octave
 #
-# Copyright (C) 1993-2016 John W. Eaton
+# Copyright (C) 1993-2017 John W. Eaton
 #
 # This file is part of Octave.
 #
@@ -438,8 +438,8 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/getcwd-path-max.m4 $(top_srcdir)/m4/getcwd.m4 \
 	$(top_srcdir)/m4/getdtablesize.m4 \
 	$(top_srcdir)/m4/gethostname.m4 $(top_srcdir)/m4/getlogin_r.m4 \
-	$(top_srcdir)/m4/getopt.m4 $(top_srcdir)/m4/getrusage.m4 \
-	$(top_srcdir)/m4/gettimeofday.m4 \
+	$(top_srcdir)/m4/getopt.m4 $(top_srcdir)/m4/getprogname.m4 \
+	$(top_srcdir)/m4/getrusage.m4 $(top_srcdir)/m4/gettimeofday.m4 \
 	$(top_srcdir)/m4/gl-openssl.m4 $(top_srcdir)/m4/glibc21.m4 \
 	$(top_srcdir)/m4/glob.m4 $(top_srcdir)/m4/gnulib-common.m4 \
 	$(top_srcdir)/m4/gnulib-comp.m4 \
@@ -449,23 +449,24 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/isnand.m4 $(top_srcdir)/m4/largefile.m4 \
 	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
 	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/link.m4 $(top_srcdir)/m4/localcharset.m4 \
-	$(top_srcdir)/m4/locale-fr.m4 $(top_srcdir)/m4/locale-ja.m4 \
-	$(top_srcdir)/m4/locale-zh.m4 $(top_srcdir)/m4/lock.m4 \
-	$(top_srcdir)/m4/longlong.m4 $(top_srcdir)/m4/lseek.m4 \
-	$(top_srcdir)/m4/lstat.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/malloc.m4 \
-	$(top_srcdir)/m4/malloca.m4 $(top_srcdir)/m4/math_h.m4 \
-	$(top_srcdir)/m4/mathfunc.m4 $(top_srcdir)/m4/mbrtowc.m4 \
-	$(top_srcdir)/m4/mbsinit.m4 $(top_srcdir)/m4/mbsrtowcs.m4 \
-	$(top_srcdir)/m4/mbstate_t.m4 $(top_srcdir)/m4/md4.m4 \
-	$(top_srcdir)/m4/md5.m4 $(top_srcdir)/m4/memchr.m4 \
-	$(top_srcdir)/m4/mempcpy.m4 $(top_srcdir)/m4/memrchr.m4 \
-	$(top_srcdir)/m4/minmax.m4 $(top_srcdir)/m4/mkdir.m4 \
-	$(top_srcdir)/m4/mkfifo.m4 $(top_srcdir)/m4/mkostemp.m4 \
-	$(top_srcdir)/m4/mktime.m4 $(top_srcdir)/m4/mmap-anon.m4 \
-	$(top_srcdir)/m4/mode_t.m4 $(top_srcdir)/m4/msvc-inval.m4 \
+	$(top_srcdir)/m4/limits-h.m4 $(top_srcdir)/m4/link.m4 \
+	$(top_srcdir)/m4/localcharset.m4 $(top_srcdir)/m4/locale-fr.m4 \
+	$(top_srcdir)/m4/locale-ja.m4 $(top_srcdir)/m4/locale-zh.m4 \
+	$(top_srcdir)/m4/lock.m4 $(top_srcdir)/m4/longlong.m4 \
+	$(top_srcdir)/m4/lseek.m4 $(top_srcdir)/m4/lstat.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/malloc.m4 $(top_srcdir)/m4/malloca.m4 \
+	$(top_srcdir)/m4/math_h.m4 $(top_srcdir)/m4/mathfunc.m4 \
+	$(top_srcdir)/m4/mbrtowc.m4 $(top_srcdir)/m4/mbsinit.m4 \
+	$(top_srcdir)/m4/mbsrtowcs.m4 $(top_srcdir)/m4/mbstate_t.m4 \
+	$(top_srcdir)/m4/md4.m4 $(top_srcdir)/m4/md5.m4 \
+	$(top_srcdir)/m4/memchr.m4 $(top_srcdir)/m4/mempcpy.m4 \
+	$(top_srcdir)/m4/memrchr.m4 $(top_srcdir)/m4/minmax.m4 \
+	$(top_srcdir)/m4/mkdir.m4 $(top_srcdir)/m4/mkfifo.m4 \
+	$(top_srcdir)/m4/mkostemp.m4 $(top_srcdir)/m4/mktime.m4 \
+	$(top_srcdir)/m4/mmap-anon.m4 $(top_srcdir)/m4/mode_t.m4 \
+	$(top_srcdir)/m4/msvc-inval.m4 \
 	$(top_srcdir)/m4/msvc-nothrow.m4 $(top_srcdir)/m4/multiarch.m4 \
 	$(top_srcdir)/m4/nanosleep.m4 $(top_srcdir)/m4/nocrash.m4 \
 	$(top_srcdir)/m4/nproc.m4 $(top_srcdir)/m4/off_t.m4 \
@@ -3939,6 +3940,7 @@ HAVE_ATANF = @HAVE_ATANF@
 HAVE_ATANL = @HAVE_ATANL@
 HAVE_ATOLL = @HAVE_ATOLL@
 HAVE_BTOWC = @HAVE_BTOWC@
+HAVE_C99_STDINT_H = @HAVE_C99_STDINT_H@
 HAVE_CANONICALIZE_FILE_NAME = @HAVE_CANONICALIZE_FILE_NAME@
 HAVE_CBRT = @HAVE_CBRT@
 HAVE_CBRTF = @HAVE_CBRTF@
@@ -4132,6 +4134,7 @@ HAVE_PTHREAD_SIGMASK = @HAVE_PTHREAD_SIGMASK@
 HAVE_PTSNAME = @HAVE_PTSNAME@
 HAVE_PTSNAME_R = @HAVE_PTSNAME_R@
 HAVE_PWRITE = @HAVE_PWRITE@
+HAVE_QSORT_R = @HAVE_QSORT_R@
 HAVE_RAISE = @HAVE_RAISE@
 HAVE_RANDOM = @HAVE_RANDOM@
 HAVE_RANDOM_H = @HAVE_RANDOM_H@
@@ -4306,6 +4309,7 @@ LIBTOOL = @LIBTOOL@
 LIB_CRYPTO = @LIB_CRYPTO@
 LIB_NANOSLEEP = @LIB_NANOSLEEP@
 LIB_SELECT = @LIB_SELECT@
+LIMITS_H = @LIMITS_H@
 LIPO = @LIPO@
 LLVM_CONFIG = @LLVM_CONFIG@
 LLVM_CPPFLAGS = @LLVM_CPPFLAGS@
@@ -4349,6 +4353,7 @@ NEXT_AS_FIRST_DIRECTIVE_ERRNO_H = @NEXT_AS_FIRST_DIRECTIVE_ERRNO_H@
 NEXT_AS_FIRST_DIRECTIVE_FCNTL_H = @NEXT_AS_FIRST_DIRECTIVE_FCNTL_H@
 NEXT_AS_FIRST_DIRECTIVE_FLOAT_H = @NEXT_AS_FIRST_DIRECTIVE_FLOAT_H@
 NEXT_AS_FIRST_DIRECTIVE_GETOPT_H = @NEXT_AS_FIRST_DIRECTIVE_GETOPT_H@
+NEXT_AS_FIRST_DIRECTIVE_LIMITS_H = @NEXT_AS_FIRST_DIRECTIVE_LIMITS_H@
 NEXT_AS_FIRST_DIRECTIVE_MATH_H = @NEXT_AS_FIRST_DIRECTIVE_MATH_H@
 NEXT_AS_FIRST_DIRECTIVE_SIGNAL_H = @NEXT_AS_FIRST_DIRECTIVE_SIGNAL_H@
 NEXT_AS_FIRST_DIRECTIVE_STDDEF_H = @NEXT_AS_FIRST_DIRECTIVE_STDDEF_H@
@@ -4376,6 +4381,7 @@ NEXT_ERRNO_H = @NEXT_ERRNO_H@
 NEXT_FCNTL_H = @NEXT_FCNTL_H@
 NEXT_FLOAT_H = @NEXT_FLOAT_H@
 NEXT_GETOPT_H = @NEXT_GETOPT_H@
+NEXT_LIMITS_H = @NEXT_LIMITS_H@
 NEXT_MATH_H = @NEXT_MATH_H@
 NEXT_SIGNAL_H = @NEXT_SIGNAL_H@
 NEXT_STDDEF_H = @NEXT_STDDEF_H@
@@ -4993,19 +4999,20 @@ BUILT_SOURCES = libgnu/libgnu.la $(BUILT_INCS) \
 	$(am__append_63) $(am__append_64)
 TEST_FILES = test/fntests.m test/args.tst test/bug-31371.tst \
 	test/bug-38565.tst test/bug-38576.tst test/bug-46330.tst \
-	test/colormaps.tst test/command.tst test/complex.tst \
-	test/diag-perm.tst test/error.tst test/eval-catch.tst \
-	test/for.tst test/func.tst test/global.tst test/if.tst \
-	test/index.tst test/io.tst test/jit.tst test/line-continue.tst \
-	test/logical-index.tst test/null-assign.tst test/parser.tst \
-	test/prefer.tst test/range.tst test/recursion.tst \
-	test/return.tst test/slice.tst test/struct.tst test/switch.tst \
-	test/system.tst test/transpose.tst test/try.tst \
-	test/unwind.tst test/while.tst $(bug_35448_TEST_FILES) \
-	$(bug_36025_TEST_FILES) $(bug_38236_TEST_FILES) \
-	$(bug_38691_TEST_FILES) $(bug_44940_TEST_FILES) \
-	$(class_concat_TEST_FILES) $(classdef_TEST_FILES) \
-	$(classes_TEST_FILES) $(ctor_vs_method_TEST_FILES) \
+	test/bug-49904.tst test/colormaps.tst test/command.tst \
+	test/complex.tst test/diag-perm.tst test/error.tst \
+	test/eval-catch.tst test/for.tst test/func.tst test/global.tst \
+	test/if.tst test/index.tst test/io.tst test/jit.tst \
+	test/line-continue.tst test/logical-index.tst \
+	test/null-assign.tst test/parser.tst test/prefer.tst \
+	test/range.tst test/recursion.tst test/return.tst \
+	test/slice.tst test/struct.tst test/switch.tst test/system.tst \
+	test/transpose.tst test/try.tst test/unwind.tst test/while.tst \
+	$(bug_35448_TEST_FILES) $(bug_36025_TEST_FILES) \
+	$(bug_38236_TEST_FILES) $(bug_38691_TEST_FILES) \
+	$(bug_44940_TEST_FILES) $(class_concat_TEST_FILES) \
+	$(classdef_TEST_FILES) $(classes_TEST_FILES) \
+	$(ctor_vs_method_TEST_FILES) \
 	$(fcn_handle_derived_resolution_TEST_FILES) $(nest_TEST_FILES) \
 	$(publish_TEST_FILES)
 DOC_IMAGES_SRC = $(am__append_58)
@@ -6627,7 +6634,7 @@ EXTRA_liboctave_liboctave_la_SOURCES = liboctave/.dummy_force_cxx_link.cc
 liboctave_liboctave_current = 4
 liboctave_liboctave_revision = 0
 liboctave_liboctave_age = 0
-liboctave_liboctave_version_info = $(liboctave_liboctave_current):$(liboctave_liboctave_revision):$(liboctave_age)
+liboctave_liboctave_version_info = $(liboctave_liboctave_current):$(liboctave_liboctave_revision):$(liboctave_liboctave_age)
 liboctave_liboctave_la_LDFLAGS = \
   -version-info $(liboctave_liboctave_version_info) \
   $(NO_UNDEFINED_LDFLAG) \
@@ -8355,19 +8362,21 @@ scripts_image_FCN_FILES = \
   scripts/image/copper.m \
   scripts/image/cubehelix.m \
   scripts/image/flag.m \
+  scripts/image/frame2im.m \
   scripts/image/gray.m \
   scripts/image/gray2ind.m \
   scripts/image/hot.m \
   scripts/image/hsv.m \
   scripts/image/hsv2rgb.m \
-  scripts/image/iscolormap.m \
   scripts/image/im2double.m \
+  scripts/image/im2frame.m \
   scripts/image/image.m \
   scripts/image/imagesc.m \
   scripts/image/imfinfo.m \
   scripts/image/imformats.m \
   scripts/image/imread.m \
   scripts/image/imshow.m \
+  scripts/image/iscolormap.m \
   scripts/image/imwrite.m \
   scripts/image/ind2gray.m \
   scripts/image/ind2rgb.m \
@@ -8815,7 +8824,6 @@ scripts_plot_util_FCN_FILES = \
   scripts/plot/util/findall.m \
   scripts/plot/util/findfigs.m \
   scripts/plot/util/findobj.m \
-  scripts/plot/util/frame2im.m \
   scripts/plot/util/gca.m \
   scripts/plot/util/gcbf.m \
   scripts/plot/util/gcbo.m \
@@ -8828,7 +8836,6 @@ scripts_plot_util_FCN_FILES = \
   scripts/plot/util/hgload.m \
   scripts/plot/util/hgsave.m \
   scripts/plot/util/hold.m \
-  scripts/plot/util/im2frame.m \
   scripts/plot/util/isaxes.m \
   scripts/plot/util/isfigure.m \
   scripts/plot/util/ishghandle.m \
@@ -9672,7 +9679,10 @@ classdef_TEST_FILES = \
   test/classdef/foo_method_changes_property_size.m \
   test/classdef/foo_static_method_constant_property.m \
   test/classdef/foo_value_class.m \
-  test/classdef/classdef.tst
+  test/classdef/classdef.tst \
+  test/classdef/plist_t1.m \
+  test/classdef/plist_t2.m \
+  test/classdef/plist_t3.m
 
 class_Blork_TEST_FILES = \
   test/classes/@Blork/Blork.m \

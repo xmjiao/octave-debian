@@ -53,7 +53,7 @@ Transparency is not yet implemented for image objects.  @code{alphadatamapping} 
 @anchor{XREFimagebuttondownfcn}
 @cindex image buttondownfcn
 @item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
-
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFimagecdata}
@@ -85,11 +85,15 @@ If @code{clipping} is @qcode{"on"}, the image is clipped in its parent axes limi
 @item @code{createfcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately after image has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultimagecreatefcn", 'disp ("image created!")')}.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
+
 
 @anchor{XREFimagedeletefcn}
 @cindex image deletefcn
 @item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately before image is deleted.
+
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFimagedisplayname}

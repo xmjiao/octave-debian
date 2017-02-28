@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Michael Goffioul
+## Copyright (C) 2012-2017 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -60,4 +60,3 @@ function hui = uipanel (varargin)
   hui = __go_uipanel__ (h, args{:});
 
 endfunction
-

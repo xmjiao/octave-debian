@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 John W. Eaton
+## Copyright (C) 1996-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -78,4 +78,3 @@ endfunction
 %!error etime ()
 %!error etime (1)
 %!error etime (1, 2, 3)
-

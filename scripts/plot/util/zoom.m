@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 John W. Eaton
+## Copyright (C) 2014-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -197,4 +197,3 @@ endfunction
 %! pause (1);
 %! ## return to zoom level set by last call to "zoom reset"
 %! zoom out;
-

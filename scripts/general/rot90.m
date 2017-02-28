@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -140,4 +140,3 @@ endfunction
 %!error rot90 (1, ones (2))
 %!error rot90 (1, 1.5)
 %!error rot90 (1, 1+i)
-

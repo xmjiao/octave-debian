@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 John W. Eaton
+Copyright (C) 2009-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -1240,4 +1240,3 @@ The original variable value is restored when exiting the function.
 
 %!error (silent_functions (1, 2))
 */
-

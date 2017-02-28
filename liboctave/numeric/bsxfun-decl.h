@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 Jaroslav Hajek
+Copyright (C) 2009-2017 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -59,4 +59,3 @@ along with Octave; see the file COPYING.  If not, see
   BSXFUN_REL_DECL (ge, ARRAY, API)
 
 #endif
-

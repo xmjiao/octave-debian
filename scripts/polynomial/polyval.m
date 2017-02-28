@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -163,4 +163,3 @@ endfunction
 %!error <S input is missing required fields>
 %!  [y, dy] = polyval (1, 1, struct ("T", 0, "normr", 1, "df", 2))
 %!error <S input must be a structure> [y, dy] = polyval (1, 1, 2)
-

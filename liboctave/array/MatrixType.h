@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2016 David Bateman
+Copyright (C) 2006-2017 David Bateman
 Copyright (C) 2006 Andy Adler
 
 This file is part of Octave.
@@ -186,4 +186,3 @@ private:
 };
 
 #endif
-

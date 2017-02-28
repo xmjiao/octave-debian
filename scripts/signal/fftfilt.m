@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -189,4 +189,3 @@ endfunction
 %!error fftfilt (ones (2), 1)
 %!error fftfilt (2, ones (3,3,3))
 %!error fftfilt (2, 1, ones (2))
-

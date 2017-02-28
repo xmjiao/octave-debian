@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Martin Helm
+## Copyright (C) 2009-2017 Martin Helm
 ##
 ## This file is part of Octave.
 ##
@@ -587,4 +587,3 @@ endfunction
 ## FIXME: private function cannot be tested, unless bug #38776 is resolved.
 %!test <38776>
 %! assert (__calc_isovalue_from_data__ (1:5), 3.02);
-

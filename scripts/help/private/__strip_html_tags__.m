@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Søren Hauberg
+## Copyright (C) 2009-2017 Søren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -83,4 +83,3 @@ function text = strip_superfluous_endlines (text)
   text = text(keep);
 
 endfunction
-

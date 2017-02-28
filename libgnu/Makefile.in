@@ -148,8 +148,8 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/getcwd-path-max.m4 $(top_srcdir)/m4/getcwd.m4 \
 	$(top_srcdir)/m4/getdtablesize.m4 \
 	$(top_srcdir)/m4/gethostname.m4 $(top_srcdir)/m4/getlogin_r.m4 \
-	$(top_srcdir)/m4/getopt.m4 $(top_srcdir)/m4/getrusage.m4 \
-	$(top_srcdir)/m4/gettimeofday.m4 \
+	$(top_srcdir)/m4/getopt.m4 $(top_srcdir)/m4/getprogname.m4 \
+	$(top_srcdir)/m4/getrusage.m4 $(top_srcdir)/m4/gettimeofday.m4 \
 	$(top_srcdir)/m4/gl-openssl.m4 $(top_srcdir)/m4/glibc21.m4 \
 	$(top_srcdir)/m4/glob.m4 $(top_srcdir)/m4/gnulib-common.m4 \
 	$(top_srcdir)/m4/gnulib-comp.m4 \
@@ -159,23 +159,24 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/isnand.m4 $(top_srcdir)/m4/largefile.m4 \
 	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
 	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/link.m4 $(top_srcdir)/m4/localcharset.m4 \
-	$(top_srcdir)/m4/locale-fr.m4 $(top_srcdir)/m4/locale-ja.m4 \
-	$(top_srcdir)/m4/locale-zh.m4 $(top_srcdir)/m4/lock.m4 \
-	$(top_srcdir)/m4/longlong.m4 $(top_srcdir)/m4/lseek.m4 \
-	$(top_srcdir)/m4/lstat.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/malloc.m4 \
-	$(top_srcdir)/m4/malloca.m4 $(top_srcdir)/m4/math_h.m4 \
-	$(top_srcdir)/m4/mathfunc.m4 $(top_srcdir)/m4/mbrtowc.m4 \
-	$(top_srcdir)/m4/mbsinit.m4 $(top_srcdir)/m4/mbsrtowcs.m4 \
-	$(top_srcdir)/m4/mbstate_t.m4 $(top_srcdir)/m4/md4.m4 \
-	$(top_srcdir)/m4/md5.m4 $(top_srcdir)/m4/memchr.m4 \
-	$(top_srcdir)/m4/mempcpy.m4 $(top_srcdir)/m4/memrchr.m4 \
-	$(top_srcdir)/m4/minmax.m4 $(top_srcdir)/m4/mkdir.m4 \
-	$(top_srcdir)/m4/mkfifo.m4 $(top_srcdir)/m4/mkostemp.m4 \
-	$(top_srcdir)/m4/mktime.m4 $(top_srcdir)/m4/mmap-anon.m4 \
-	$(top_srcdir)/m4/mode_t.m4 $(top_srcdir)/m4/msvc-inval.m4 \
+	$(top_srcdir)/m4/limits-h.m4 $(top_srcdir)/m4/link.m4 \
+	$(top_srcdir)/m4/localcharset.m4 $(top_srcdir)/m4/locale-fr.m4 \
+	$(top_srcdir)/m4/locale-ja.m4 $(top_srcdir)/m4/locale-zh.m4 \
+	$(top_srcdir)/m4/lock.m4 $(top_srcdir)/m4/longlong.m4 \
+	$(top_srcdir)/m4/lseek.m4 $(top_srcdir)/m4/lstat.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/malloc.m4 $(top_srcdir)/m4/malloca.m4 \
+	$(top_srcdir)/m4/math_h.m4 $(top_srcdir)/m4/mathfunc.m4 \
+	$(top_srcdir)/m4/mbrtowc.m4 $(top_srcdir)/m4/mbsinit.m4 \
+	$(top_srcdir)/m4/mbsrtowcs.m4 $(top_srcdir)/m4/mbstate_t.m4 \
+	$(top_srcdir)/m4/md4.m4 $(top_srcdir)/m4/md5.m4 \
+	$(top_srcdir)/m4/memchr.m4 $(top_srcdir)/m4/mempcpy.m4 \
+	$(top_srcdir)/m4/memrchr.m4 $(top_srcdir)/m4/minmax.m4 \
+	$(top_srcdir)/m4/mkdir.m4 $(top_srcdir)/m4/mkfifo.m4 \
+	$(top_srcdir)/m4/mkostemp.m4 $(top_srcdir)/m4/mktime.m4 \
+	$(top_srcdir)/m4/mmap-anon.m4 $(top_srcdir)/m4/mode_t.m4 \
+	$(top_srcdir)/m4/msvc-inval.m4 \
 	$(top_srcdir)/m4/msvc-nothrow.m4 $(top_srcdir)/m4/multiarch.m4 \
 	$(top_srcdir)/m4/nanosleep.m4 $(top_srcdir)/m4/nocrash.m4 \
 	$(top_srcdir)/m4/nproc.m4 $(top_srcdir)/m4/off_t.m4 \
@@ -244,13 +245,14 @@ am_libgnu_la_OBJECTS = allocator.lo areadlink.lo \
 	md5.lo sha1.lo sha256.lo sha512.lo dirname.lo basename.lo \
 	dirname-lgpl.lo basename-lgpl.lo stripslash.lo exitfail.lo \
 	fd-hook.lo file-set.lo filemode.lo filenamecat-lgpl.lo \
-	hard-locale.lo hash.lo hash-pjw.lo hash-triple.lo \
-	localcharset.lo glthread/lock.lo malloca.lo math.lo nproc.lo \
-	openat-die.lo progname.lo same.lo save-cwd.lo sig-handler.lo \
-	sockets.lo strftime.lo strnlen1.lo sys_socket.lo tempname.lo \
-	glthread/threadlib.lo glthread/tls.lo tmpdir.lo u64.lo \
-	unistd.lo dup-safer.lo fd-safer.lo pipe-safer.lo wctype-h.lo \
-	xmalloc.lo xalloc-die.lo xgetcwd.lo xsize.lo xstrndup.lo
+	getprogname.lo hard-locale.lo hash.lo hash-pjw.lo \
+	hash-triple.lo localcharset.lo glthread/lock.lo malloca.lo \
+	math.lo nproc.lo openat-die.lo progname.lo same.lo save-cwd.lo \
+	sig-handler.lo sockets.lo strftime.lo strnlen1.lo \
+	sys_socket.lo tempname.lo glthread/threadlib.lo \
+	glthread/tls.lo tmpdir.lo u64.lo unistd.lo dup-safer.lo \
+	fd-safer.lo pipe-safer.lo wctype-h.lo xmalloc.lo xalloc-die.lo \
+	xgetcwd.lo xsize.lo xstrndup.lo
 libgnu_la_OBJECTS = $(am_libgnu_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -897,6 +899,7 @@ HAVE_ATANF = @HAVE_ATANF@
 HAVE_ATANL = @HAVE_ATANL@
 HAVE_ATOLL = @HAVE_ATOLL@
 HAVE_BTOWC = @HAVE_BTOWC@
+HAVE_C99_STDINT_H = @HAVE_C99_STDINT_H@
 HAVE_CANONICALIZE_FILE_NAME = @HAVE_CANONICALIZE_FILE_NAME@
 HAVE_CBRT = @HAVE_CBRT@
 HAVE_CBRTF = @HAVE_CBRTF@
@@ -1090,6 +1093,7 @@ HAVE_PTHREAD_SIGMASK = @HAVE_PTHREAD_SIGMASK@
 HAVE_PTSNAME = @HAVE_PTSNAME@
 HAVE_PTSNAME_R = @HAVE_PTSNAME_R@
 HAVE_PWRITE = @HAVE_PWRITE@
+HAVE_QSORT_R = @HAVE_QSORT_R@
 HAVE_RAISE = @HAVE_RAISE@
 HAVE_RANDOM = @HAVE_RANDOM@
 HAVE_RANDOM_H = @HAVE_RANDOM_H@
@@ -1264,6 +1268,7 @@ LIBTOOL = @LIBTOOL@
 LIB_CRYPTO = @LIB_CRYPTO@
 LIB_NANOSLEEP = @LIB_NANOSLEEP@
 LIB_SELECT = @LIB_SELECT@
+LIMITS_H = @LIMITS_H@
 LIPO = @LIPO@
 LLVM_CONFIG = @LLVM_CONFIG@
 LLVM_CPPFLAGS = @LLVM_CPPFLAGS@
@@ -1307,6 +1312,7 @@ NEXT_AS_FIRST_DIRECTIVE_ERRNO_H = @NEXT_AS_FIRST_DIRECTIVE_ERRNO_H@
 NEXT_AS_FIRST_DIRECTIVE_FCNTL_H = @NEXT_AS_FIRST_DIRECTIVE_FCNTL_H@
 NEXT_AS_FIRST_DIRECTIVE_FLOAT_H = @NEXT_AS_FIRST_DIRECTIVE_FLOAT_H@
 NEXT_AS_FIRST_DIRECTIVE_GETOPT_H = @NEXT_AS_FIRST_DIRECTIVE_GETOPT_H@
+NEXT_AS_FIRST_DIRECTIVE_LIMITS_H = @NEXT_AS_FIRST_DIRECTIVE_LIMITS_H@
 NEXT_AS_FIRST_DIRECTIVE_MATH_H = @NEXT_AS_FIRST_DIRECTIVE_MATH_H@
 NEXT_AS_FIRST_DIRECTIVE_SIGNAL_H = @NEXT_AS_FIRST_DIRECTIVE_SIGNAL_H@
 NEXT_AS_FIRST_DIRECTIVE_STDDEF_H = @NEXT_AS_FIRST_DIRECTIVE_STDDEF_H@
@@ -1334,6 +1340,7 @@ NEXT_ERRNO_H = @NEXT_ERRNO_H@
 NEXT_FCNTL_H = @NEXT_FCNTL_H@
 NEXT_FLOAT_H = @NEXT_FLOAT_H@
 NEXT_GETOPT_H = @NEXT_GETOPT_H@
+NEXT_LIMITS_H = @NEXT_LIMITS_H@
 NEXT_MATH_H = @NEXT_MATH_H@
 NEXT_SIGNAL_H = @NEXT_SIGNAL_H@
 NEXT_STDDEF_H = @NEXT_STDDEF_H@
@@ -1798,15 +1805,16 @@ EXTRA_DIST = alloca.c alloca.in.h allocator.h areadlink.h areadlink.h \
 	sha512.h dirent.in.h dirfd.c stripslash.c dirname.h dosname.h \
 	dup.c dup2.c errno.in.h error.c error.h exitfail.h fchdir.c \
 	fcntl.c fcntl.in.h fd-hook.h fdopendir.c file-set.h filemode.h \
-	filename.h filenamecat.h float.c float.in.h itold.c fnmatch.c \
-	fnmatch.in.h fnmatch_loop.c fpucw.h frexp.c frexpf.c fseek.c \
-	fseeko.c stdio-impl.h fstat.c at-func.c fstatat.c ftell.c \
-	ftello.c stdio-impl.h ftruncate.c getcwd.c getcwd-lgpl.c \
-	getdtablesize.c gethostname.c w32sock.h getlogin_r.c getopt.c \
-	getopt.in.h getopt1.c getopt_int.h getrusage.c gettimeofday.c \
-	glob-libc.h glob.c glob.in.h hard-locale.h hash.h \
-	hash-triple.h $(top_srcdir)/build-aux/config.rpath intprops.h \
-	isatty.c float+.h isnan.c isnand-nolibm.h isnand.c link.c \
+	filename.h filenamecat.h flexmember.h float.c float.in.h \
+	itold.c fnmatch.c fnmatch.in.h fnmatch_loop.c fpucw.h frexp.c \
+	frexpf.c fseek.c fseeko.c stdio-impl.h fstat.c at-func.c \
+	fstatat.c ftell.c ftello.c stdio-impl.h ftruncate.c getcwd.c \
+	getcwd-lgpl.c getdtablesize.c gethostname.c w32sock.h \
+	getlogin_r.c getopt.c getopt.in.h getopt1.c getopt_int.h \
+	getrusage.c gettimeofday.c glob-libc.h glob.c glob.in.h \
+	hard-locale.h hash.h hash-triple.h \
+	$(top_srcdir)/build-aux/config.rpath intprops.h isatty.c \
+	float+.h isnan.c isnand-nolibm.h isnand.c limits.in.h link.c \
 	config.charset ref-add.sin ref-del.sin lseek.c lstat.c \
 	malloc.c malloc.c malloca.h malloca.valgrind math.in.h \
 	mbrtowc.c mbsinit.c mbsrtowcs-impl.h mbsrtowcs-state.c \
@@ -1849,27 +1857,29 @@ EXTRA_DIST = alloca.c alloca.in.h allocator.h areadlink.h areadlink.h \
 # present in all Makefile.am that need it. This is ensured by the applicability
 # 'all' defined above.
 BUILT_SOURCES = $(ALLOCA_H) configmake.h dirent.h $(ERRNO_H) fcntl.h \
-	$(FLOAT_H) $(FNMATCH_H) $(GETOPT_H) $(GLOB_H) math.h signal.h \
-	arg-nonnull.h c++defs.h warn-on-use.h $(STDALIGN_H) \
-	$(STDBOOL_H) $(STDDEF_H) $(STDINT_H) stdio.h stdlib.h string.h \
-	strings.h sys/resource.h sys/select.h sys/socket.h sys/stat.h \
-	sys/time.h sys/times.h sys/types.h sys/uio.h sys/utsname.h \
-	sys/wait.h time.h unistd.h wchar.h wctype.h
+	$(FLOAT_H) $(FNMATCH_H) $(GETOPT_H) $(GLOB_H) $(LIMITS_H) \
+	math.h signal.h arg-nonnull.h c++defs.h warn-on-use.h \
+	$(STDALIGN_H) $(STDBOOL_H) $(STDDEF_H) $(STDINT_H) stdio.h \
+	stdlib.h string.h strings.h sys/resource.h sys/select.h \
+	sys/socket.h sys/stat.h sys/time.h sys/times.h sys/types.h \
+	sys/uio.h sys/utsname.h sys/wait.h time.h unistd.h wchar.h \
+	wctype.h
 SUFFIXES = .sed .sin
 MOSTLYCLEANFILES = core *.stackdump alloca.h alloca.h-t dirent.h \
 	dirent.h-t errno.h errno.h-t fcntl.h fcntl.h-t float.h \
 	float.h-t fnmatch.h fnmatch.h-t getopt.h getopt.h-t glob.h \
-	glob.h-t math.h math.h-t signal.h signal.h-t arg-nonnull.h \
-	arg-nonnull.h-t c++defs.h c++defs.h-t warn-on-use.h \
-	warn-on-use.h-t stdalign.h stdalign.h-t stdbool.h stdbool.h-t \
-	stddef.h stddef.h-t stdint.h stdint.h-t stdio.h stdio.h-t \
-	stdlib.h stdlib.h-t string.h string.h-t strings.h strings.h-t \
-	sys/resource.h sys/resource.h-t sys/select.h sys/select.h-t \
-	sys/socket.h sys/socket.h-t sys/stat.h sys/stat.h-t sys/time.h \
-	sys/time.h-t sys/times.h sys/times.h-t sys/types.h \
-	sys/types.h-t sys/uio.h sys/uio.h-t sys/utsname.h \
-	sys/utsname.h-t sys/wait.h sys/wait.h-t time.h time.h-t \
-	unistd.h unistd.h-t wchar.h wchar.h-t wctype.h wctype.h-t
+	glob.h-t limits.h limits.h-t math.h math.h-t signal.h \
+	signal.h-t arg-nonnull.h arg-nonnull.h-t c++defs.h c++defs.h-t \
+	warn-on-use.h warn-on-use.h-t stdalign.h stdalign.h-t \
+	stdbool.h stdbool.h-t stddef.h stddef.h-t stdint.h stdint.h-t \
+	stdio.h stdio.h-t stdlib.h stdlib.h-t string.h string.h-t \
+	strings.h strings.h-t sys/resource.h sys/resource.h-t \
+	sys/select.h sys/select.h-t sys/socket.h sys/socket.h-t \
+	sys/stat.h sys/stat.h-t sys/time.h sys/time.h-t sys/times.h \
+	sys/times.h-t sys/types.h sys/types.h-t sys/uio.h sys/uio.h-t \
+	sys/utsname.h sys/utsname.h-t sys/wait.h sys/wait.h-t time.h \
+	time.h-t unistd.h unistd.h-t wchar.h wchar.h-t wctype.h \
+	wctype.h-t
 MOSTLYCLEANDIRS = sys sys sys sys sys sys sys sys
 CLEANFILES = configmake.h configmake.h-t charset.alias ref-add.sed \
 	ref-del.sed
@@ -1882,16 +1892,16 @@ libgnu_la_SOURCES = allocator.c areadlink.c areadlink-with-size.c \
 	canonicalize.c careadlinkat.c cloexec.c md2.c md4.c md5.c \
 	sha1.c sha256.c sha512.c dirname.c basename.c dirname-lgpl.c \
 	basename-lgpl.c stripslash.c exitfail.c fd-hook.c file-set.c \
-	filemode.c filenamecat-lgpl.c gettext.h hard-locale.c hash.c \
-	hash-pjw.h hash-pjw.c hash-triple.c localcharset.h \
-	localcharset.c glthread/lock.h glthread/lock.c malloca.c \
-	math.c minmax.h nproc.c openat-die.c progname.h progname.c \
-	same.c save-cwd.c sig-handler.c size_max.h sockets.h sockets.c \
-	strftime.c strnlen1.h strnlen1.c sys_socket.c tempname.c \
-	glthread/threadlib.c glthread/tls.h glthread/tls.c tmpdir.h \
-	tmpdir.c u64.c unistd.c dup-safer.c fd-safer.c pipe-safer.c \
-	wctype-h.c xmalloc.c xalloc-die.c xgetcwd.c xsize.h xsize.c \
-	xstrndup.h xstrndup.c
+	filemode.c filenamecat-lgpl.c getprogname.h getprogname.c \
+	gettext.h hard-locale.c hash.c hash-pjw.h hash-pjw.c \
+	hash-triple.c localcharset.h localcharset.c glthread/lock.h \
+	glthread/lock.c malloca.c math.c minmax.h nproc.c openat-die.c \
+	progname.h progname.c same.c save-cwd.c sig-handler.c \
+	size_max.h sockets.h sockets.c strftime.c strnlen1.h \
+	strnlen1.c sys_socket.c tempname.c glthread/threadlib.c \
+	glthread/tls.h glthread/tls.c tmpdir.h tmpdir.c u64.c unistd.c \
+	dup-safer.c fd-safer.c pipe-safer.c wctype-h.c xmalloc.c \
+	xalloc-die.c xgetcwd.c xsize.h xsize.c xstrndup.h xstrndup.c
 libgnu_la_LIBADD = $(gl_LTLIBOBJS) @LTALLOCA@
 libgnu_la_DEPENDENCIES = $(gl_LTLIBOBJS) @LTALLOCA@
 EXTRA_libgnu_la_SOURCES = alloca.c openat-proc.c chdir-long.c close.c \
@@ -2057,6 +2067,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getlogin_r.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getopt.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getopt1.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getprogname.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getrusage.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gettimeofday.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glob.Plo@am__quote@
@@ -2680,6 +2691,22 @@ getopt.h: getopt.in.h $(top_builddir)/config.status $(ARG_NONNULL_H)
 @GL_GENERATE_GLOB_H_FALSE@glob.h: $(top_builddir)/config.status
 @GL_GENERATE_GLOB_H_FALSE@	rm -f $@
 
+# We need the following in order to create <limits.h> when the system
+# doesn't have one that is compatible with GNU.
+@GL_GENERATE_LIMITS_H_TRUE@limits.h: limits.in.h $(top_builddir)/config.status
+@GL_GENERATE_LIMITS_H_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
+@GL_GENERATE_LIMITS_H_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
+@GL_GENERATE_LIMITS_H_TRUE@	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+@GL_GENERATE_LIMITS_H_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+@GL_GENERATE_LIMITS_H_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+@GL_GENERATE_LIMITS_H_TRUE@	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+@GL_GENERATE_LIMITS_H_TRUE@	      -e 's|@''NEXT_LIMITS_H''@|$(NEXT_LIMITS_H)|g' \
+@GL_GENERATE_LIMITS_H_TRUE@	      < $(srcdir)/limits.in.h; \
+@GL_GENERATE_LIMITS_H_TRUE@	} > $@-t && \
+@GL_GENERATE_LIMITS_H_TRUE@	mv $@-t $@
+@GL_GENERATE_LIMITS_H_FALSE@limits.h: $(top_builddir)/config.status
+@GL_GENERATE_LIMITS_H_FALSE@	rm -f $@
+
 # We need the following in order to install a simple file in $(libdir)
 # which is shared with other installed packages. We use a list of referencing
 # packages so that "make uninstall" will remove the file if and only if it
@@ -3124,6 +3151,7 @@ warn-on-use.h: $(top_srcdir)/build-aux/snippet/warn-on-use.h
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's|@''NEXT_STDINT_H''@|$(NEXT_STDINT_H)|g' \
+@GL_GENERATE_STDINT_H_TRUE@	      -e 's/@''HAVE_C99_STDINT_H''@/$(HAVE_C99_STDINT_H)/g' \
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's/@''HAVE_SYS_TYPES_H''@/$(HAVE_SYS_TYPES_H)/g' \
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's/@''HAVE_INTTYPES_H''@/$(HAVE_INTTYPES_H)/g' \
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's/@''HAVE_SYS_INTTYPES_H''@/$(HAVE_SYS_INTTYPES_H)/g' \
@@ -3329,6 +3357,7 @@ stdlib.h: stdlib.in.h $(top_builddir)/config.status $(CXXDEFS_H) \
 	      -e 's|@''HAVE_POSIX_OPENPT''@|$(HAVE_POSIX_OPENPT)|g' \
 	      -e 's|@''HAVE_PTSNAME''@|$(HAVE_PTSNAME)|g' \
 	      -e 's|@''HAVE_PTSNAME_R''@|$(HAVE_PTSNAME_R)|g' \
+	      -e 's|@''HAVE_QSORT_R''@|$(HAVE_QSORT_R)|g' \
 	      -e 's|@''HAVE_RANDOM''@|$(HAVE_RANDOM)|g' \
 	      -e 's|@''HAVE_RANDOM_H''@|$(HAVE_RANDOM_H)|g' \
 	      -e 's|@''HAVE_RANDOM_R''@|$(HAVE_RANDOM_R)|g' \

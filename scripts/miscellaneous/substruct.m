@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ## Copyright (C) 2010 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -90,4 +90,3 @@ endfunction
 %!error substruct ("x", 1)
 %!error substruct ("()", [1,2,3])
 %!error substruct (".", {1,2,3})
-

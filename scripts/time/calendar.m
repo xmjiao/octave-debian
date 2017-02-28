@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 Paul Kienzle
+## Copyright (C) 2004-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -101,4 +101,3 @@ endfunction
 
 ## Test input validation
 %!error calendar (1,2,3)
-

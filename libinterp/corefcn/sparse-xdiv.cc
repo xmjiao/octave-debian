@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -631,4 +631,3 @@ xleftdiv (const ComplexDiagMatrix& d, const SparseComplexMatrix& a,
 {
   return do_leftdiv_dm_sm<SparseComplexMatrix> (d, a);
 }
-

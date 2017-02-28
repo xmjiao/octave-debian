@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ## Copyright (C) 2016 Lachlan Andrew
 ## Copyright (C) 2014 Mike Giles
 ## Copyright (C) 2012 Rik Wehbring
@@ -210,4 +210,3 @@ endfunction
 %!error poissinv (ones (2), ones (3))
 %!error poissinv (i, 2)
 %!error poissinv (2, i)
-

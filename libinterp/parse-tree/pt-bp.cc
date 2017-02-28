@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001-2016 Ben Sapp
+Copyright (C) 2001-2017 Ben Sapp
 
 This file is part of Octave.
 
@@ -508,4 +508,3 @@ tree_breakpoint::take_action (tree_statement& stmt)
   else
     panic_impossible ();
 }
-

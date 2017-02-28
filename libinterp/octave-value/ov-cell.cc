@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999-2016 John W. Eaton
+Copyright (C) 1999-2017 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -1414,4 +1414,3 @@ octave_cell::map (unary_mapper_t umap) const
       return octave_base_value::map (umap);
     }
 }
-

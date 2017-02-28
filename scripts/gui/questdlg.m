@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Martin Hepperle
+## Copyright (C) 2010-2017 Martin Hepperle
 ##
 ## This file is part of Octave.
 ##
@@ -188,4 +188,3 @@ endfunction
 %! questdlg ("msg", "title", "btn1", "btn2", "ABC");
 %!error <DEFAULT must match one of the button>
 %! questdlg ("msg", "title", "btn1", "btn2", "btn3", "ABC");
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -137,4 +137,3 @@ endfunction
 %! assert (rank (A,0.0009), 1);
 %! assert (rank (A,0.0006), 2);
 %! assert (rank (A,0.00000002), 3);
-

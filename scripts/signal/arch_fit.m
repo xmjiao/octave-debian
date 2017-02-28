@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -118,4 +118,3 @@ function [a, b] = arch_fit (y, x, p, iter, gamma, a0, b0)
   endfor
 
 endfunction
-

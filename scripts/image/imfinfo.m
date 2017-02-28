@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Soren Hauberg
+## Copyright (C) 2008-2017 Soren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -181,4 +181,3 @@ endfunction
 %!   imformats ("update", "jpg", fmt_ori);
 %! end_unwind_protect
 %! assert (error_thrown, true);
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ## Copyright (C) 2008 Marco Caliari
 ##
 ## This file is part of Octave.
@@ -318,4 +318,3 @@ endfunction
 %!error <in the range -1 .= X .= 1> legendre (1, [-2, 0, 1])
 %!error <in the range -1 .= X .= 1> legendre (1, [-1, 0, 2])
 %!error <NORMALIZATION option must be> legendre (1, [-1, 0, 1], "badnorm")
-

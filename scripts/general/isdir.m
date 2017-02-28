@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 Alois Schloegl
+## Copyright (C) 2004-2017 Alois Schloegl
 ##
 ## This file is part of Octave.
 ##
@@ -39,4 +39,3 @@ endfunction
 
 %!error isdir ()
 %!error isdir (1, 2)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Radek Salac
+## Copyright (C) 2008-2017 Radek Salac
 ## Copyright (C) 2012 Carlo de Falco
 ##
 ## This file is part of Octave.
@@ -220,4 +220,3 @@ endfunction
 %! b = sum (A, 2);
 %! [x, flag, relres, iter, resvec] = cgs (A, b, tol, [], diag (diag (A)));
 %! assert (x, ones (size (b)), 1e-7);
-

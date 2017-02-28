@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -203,4 +203,3 @@ void defun_isargout (int nargout, int nout, bool *isargout)
   for (int i = std::max (nargout, 1); i < nout; i++)
     isargout[i] = false;
 }
-

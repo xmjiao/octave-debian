@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -49,13 +49,26 @@ function display (obj)
   endif
 
   ## Only reason we got here is that there was no overloaded display function.
-  ## This may mean it is a built-in class.
-  str = disp (obj);
-  if (isempty (strfind (str, "<class ")))
-    disp (str);
+  ## Rely on built-in functions to display whatever obj is.
+
+  varname = inputname (1);
+  if (! isempty (varname))
+    evalin ("caller", varname);
   else
-    error ('display: not defined for class "%s"', class (obj));
+    disp (obj);
   endif
 
 endfunction
 
+
+%!test
+%! str = evalc ("x = 1.1; display (x)");
+%! assert (str, "x =  1.1000\n");
+
+%!test
+%! str = evalc ("display (1.1)");
+%! assert (str, " 1.1000\n");
+
+## Test input validation
+%!error display ()
+%!error display (1,2)

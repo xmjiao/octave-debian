@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Jordi Gutiérrez Hermoso
+## Copyright (C) 2012-2017 Jordi Gutiérrez Hermoso
 ##
 ## This file is part of Octave.
 ##
@@ -114,4 +114,3 @@ endfunction
 %! m = magic (5);
 %!assert (nthargout ([1,2], @ind2sub, size (m), nthargout (2, @max, m(:))), {5,3})
 %!assert (nthargout (3, @find, m(m>20)), [23, 24, 25, 21, 22]')
-

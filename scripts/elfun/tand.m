@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 David Bateman
+## Copyright (C) 2006-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -48,4 +48,3 @@ endfunction
 
 %!error tand ()
 %!error tand (1, 2)
-

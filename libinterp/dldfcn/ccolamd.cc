@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2016 David Bateman
+Copyright (C) 2005-2017 David Bateman
 
 This file is part of Octave.
 
@@ -573,4 +573,3 @@ ccolamd, csymamd, amd, colamd, symamd, and other related orderings.
 
 #endif
 }
-

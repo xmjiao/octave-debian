@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 John W. Eaton and David Bateman
+## Copyright (C) 2007-2017 John W. Eaton and David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -157,4 +157,3 @@ function image_as_txt (d, nm)
   fputs (fid, "+---------------------------------+\n");
   fclose (fid);
 endfunction
-

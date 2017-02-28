@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Alexander Barth
+## Copyright (C) 2006-2017 Alexander Barth
 ## Copyright (C) 2010 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -130,4 +130,3 @@ endfunction
 %!error <needs odd number of arguments> parseparams ({1}, "linewidth")
 %!error <must be given as name-value pairs> parseparams ({1, "color"}, "linewidth", 5)
 %!error <unrecognized option: color> parseparams ({1, "color", 5}, "linewidth", 5)
-

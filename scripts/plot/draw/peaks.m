@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 Paul Kienzle
+## Copyright (C) 2007-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -95,4 +95,3 @@ function [X_out, Y_out, Z_out] = peaks (x, y)
   endif
 
 endfunction
-

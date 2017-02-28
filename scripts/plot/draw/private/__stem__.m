@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Michel D. Schmid
+## Copyright (C) 2006-2017 Michel D. Schmid
 ##
 ## This file is part of Octave.
 ##
@@ -470,4 +470,3 @@ function update_data (h, ~)
   set (kids(1), "xdata", x, "ydata", y, "zdata", z);
 
 endfunction
-

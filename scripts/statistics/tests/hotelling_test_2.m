@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 Kurt Hornik
+## Copyright (C) 1996-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -84,4 +84,3 @@ function [pval, Tsq] = hotelling_test_2 (x, y)
   endif
 
 endfunction
-

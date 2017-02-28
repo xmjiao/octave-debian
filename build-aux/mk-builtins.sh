@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Copyright (C) 1996-2016 John W. Eaton
+# Copyright (C) 1996-2017 John W. Eaton
 #
 # This file is part of Octave.
 #
@@ -182,10 +182,12 @@ EOF
       const=false
       case $type in
         fun)
+          ## We use the name appended to the "external-doc" tag to find
+          ## the docstring for aliases to this function.
           if $const; then
-            echo "  install_builtin_function ($fname, \"$name\", file, \"external-doc\", true);"
+            echo "  install_builtin_function ($fname, \"$name\", file, \"external-doc:$name\", true);"
           else
-            echo "  install_builtin_function ($fname, \"$name\", file, \"external-doc\");"
+            echo "  install_builtin_function ($fname, \"$name\", file, \"external-doc:$name\");"
           fi
           unset type fname name const
         ;;

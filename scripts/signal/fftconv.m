@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -104,4 +104,3 @@ endfunction
 %!error fftconv ([1, 2; 3, 4], 3)
 %!error fftconv (2, [])
 %!error fftconv ([1,1], [2,2] , [3, 4])
-

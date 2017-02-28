@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002-2016 John W. Eaton
+Copyright (C) 2002-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -133,4 +133,3 @@ namespace octave
 }
 
 #endif
-

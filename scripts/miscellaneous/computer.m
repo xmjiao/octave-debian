@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 John W. Eaton
+## Copyright (C) 2004-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -107,4 +107,3 @@ endfunction
 
 %!error computer (1,2)
 %!error <"arch" is only valid argument> computer ("xyz")
-

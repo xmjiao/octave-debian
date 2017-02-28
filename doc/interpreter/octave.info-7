@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 6.1 from octave.texi.
+This is octave.info, produced by makeinfo version 6.3 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -19,6 +19,268 @@ permission notice identical to this one.
    Permission is granted to copy and distribute translations of this
 manual into another language, under the above conditions for modified
 versions.
+
+
+File: octave.info,  Node: Indexed Assignment Optimization,  Prev: Defining Indexing And Indexed Assignment,  Up: Indexing Objects
+
+34.3.2 Indexed Assignment Optimization
+--------------------------------------
+
+Octave’s ubiquitous lazily-copied pass-by-value semantics implies a
+problem for performance of user-defined ‘subsasgn’ methods.  Imagine the
+following call to ‘subsasgn’
+
+     ss = substruct ("()", {1});
+     x = subsasgn (x, ss, 1);
+
+where the corresponding method looking like this:
+
+     function x = subsasgn (x, ss, val)
+       ...
+       x.myfield (ss.subs{1}) = val;
+     endfunction
+
+   The problem is that on entry to the ‘subsasgn’ method, ‘x’ is still
+referenced from the caller’s scope, which means that the method will
+first need to unshare (copy) ‘x’ and ‘x.myfield’ before performing the
+assignment.  Upon completing the call, unless an error occurs, the
+result is immediately assigned to ‘x’ in the caller’s scope, so that the
+previous value of ‘x.myfield’ is forgotten.  Hence, the Octave language
+implies a copy of N elements (N being the size of ‘x.myfield’), where
+modifying just a single element would actually suffice.  In other words,
+a constant-time operation is degraded to linear-time one.  This may be a
+real problem for user classes that intrinsically store large arrays.
+
+   To partially solve the problem Octave uses a special optimization for
+user-defined ‘subsasgn’ methods coded as m-files.  When the method gets
+called as a result of the built-in assignment syntax (not a direct
+‘subsasgn’ call as shown above), i.e., ‘x(1) = 1’, AND if the ‘subsasgn’
+method is declared with identical input and output arguments, as in the
+example above, then Octave will ignore the copy of ‘x’ inside the
+caller’s scope; therefore, any changes made to ‘x’ during the method
+execution will directly affect the caller’s copy as well.  This allows,
+for instance, defining a polynomial class where modifying a single
+element takes constant time.
+
+   It is important to understand the implications that this optimization
+brings.  Since no extra copy of ‘x’ will exist in the caller’s scope, it
+is _solely_ the callee’s responsibility to not leave ‘x’ in an invalid
+state if an error occurs during the execution.  Also, if the method
+partially changes ‘x’ and then errors out, the changes _will_ affect ‘x’
+in the caller’s scope.  Deleting or completely replacing ‘x’ inside
+subsasgn will not do anything, however, only indexed assignments matter.
+
+   Since this optimization may change the way code works (especially if
+badly written), a built-in variable ‘optimize_subsasgn_calls’ is
+provided to control it.  It is on by default.  Another way to avoid the
+optimization is to declare subsasgn methods with different output and
+input arguments like this:
+
+     function y = subsasgn (x, ss, val)
+       ...
+     endfunction
+
+
+File: octave.info,  Node: Overloading Objects,  Next: Inheritance and Aggregation,  Prev: Indexing Objects,  Up: Object Oriented Programming
+
+34.4 Overloading Objects
+========================
+
+* Menu:
+
+* Function Overloading::
+* Operator Overloading::
+* Precedence of Objects::
+
+
+File: octave.info,  Node: Function Overloading,  Next: Operator Overloading,  Up: Overloading Objects
+
+34.4.1 Function Overloading
+---------------------------
+
+Any Octave function can be overloaded, and this allows an
+object-specific version of a function to be called as needed.  A
+pertinent example for the polynomial class might be to overload the
+‘polyval’ function.
+
+     function [y, dy] = polyval (p, varargin)
+
+       if (nargout > 1)
+         [y, dy] = polyval (fliplr (p.poly), varargin{:});
+       else
+         y = polyval (fliplr (p.poly), varargin{:});
+       endif
+
+     endfunction
+
+   This function just hands off the work to the normal Octave ‘polyval’
+function.  Another interesting example of an overloaded function for the
+polynomial class is the ‘plot’ function.
+
+     function h = plot (p, varargin)
+
+       n = 128;
+       rmax = max (abs (roots (p.poly)));
+       x = [0 : (n - 1)] / (n - 1) * 2.2 * rmax - 1.1 * rmax;
+       if (nargout > 0)
+         h = plot (x, polyval (p, x), varargin{:});
+       else
+         plot (x, polyval (p, x), varargin{:});
+       endif
+
+     endfunction
+
+which allows polynomials to be plotted in the domain near the region of
+the roots of the polynomial.
+
+   Functions that are of particular interest for overloading are the
+class conversion functions such as ‘double’.  Overloading these
+functions allows the ‘cast’ function to work with a user class.  It can
+also can aid in the use of a class object with methods and functions
+from other classes since the object can be transformed to the requisite
+input form for the new function.  An example ‘double’ function for the
+polynomial class might look like
+
+     function a = double (p)
+       a = p.poly;
+     endfunction
+
+
+File: octave.info,  Node: Operator Overloading,  Next: Precedence of Objects,  Prev: Function Overloading,  Up: Overloading Objects
+
+34.4.2 Operator Overloading
+---------------------------
+
+The following table shows, for each built-in numerical operation, the
+corresponding function name to use when providing an overloaded method
+for a user class.
+
+Operation              Method                 Description
+----------------------------------------------------------------------------
+‘a + b’                ‘plus (a, b)’          Binary addition
+‘a - b’                ‘minus (a, b)’         Binary subtraction
+‘+a’                   ‘uplus (a)’            Unary addition
+‘-a’                   ‘uminus (a)’           Unary subtraction
+‘a .* b’               ‘times (a, b)’         Element-wise multiplication
+‘a * b’                ‘mtimes (a, b)’        Matrix multiplication
+‘a ./ b’               ‘rdivide (a, b)’       Element-wise right division
+‘a / b’                ‘mrdivide (a, b)’      Matrix right division
+‘a .\ b’               ‘ldivide (a, b)’       Element-wise left division
+‘a \ b’                ‘mldivide (a, b)’      Matrix left division
+‘a .^ b’               ‘power (a, b)’         Element-wise power
+‘a ^ b’                ‘mpower (a, b)’        Matrix power
+‘a < b’                ‘lt (a, b)’            Less than
+‘a <= b’               ‘le (a, b)’            Less than or equal to
+‘a > b’                ‘gt (a, b)’            Greater than
+‘a >= b’               ‘ge (a, b)’            Greater than or equal to
+‘a == b’               ‘eq (a, b)’            Equal to
+‘a != b’               ‘ne (a, b)’            Not equal to
+‘a & b’                ‘and (a, b)’           Logical and
+‘a | b’                ‘or (a, b)’            Logical or
+‘!a’                   ‘not (a)’              Logical not
+‘a'’                   ‘ctranspose (a)’       Complex conjugate transpose
+‘a.'’                  ‘transpose (a)’        Transpose
+‘a:b’                  ‘colon (a, b)’         Two element range
+‘a:b:c’                ‘colon (a, b, c)’      Three element range
+‘[a, b]’               ‘horzcat (a, b)’       Horizontal concatenation
+‘[a; b]’               ‘vertcat (a, b)’       Vertical concatenation
+‘a(s_1,...,s_n)’       ‘subsref (a, s)’       Subscripted reference
+‘a(s_1,...,s_n) = b’   ‘subsasgn (a, s, b)’   Subscripted assignment
+‘b(a)’                 ‘subsindex (a)’        Convert object to index
+‘display’              ‘display (a)’          Object display
+
+Table 34.1: Available overloaded operators and their corresponding class
+method
+
+   An example ‘mtimes’ method for the polynomial class might look like
+
+     function p = mtimes (a, b)
+       p = polynomial (conv (double (a), double (b)));
+     endfunction
+
+
+File: octave.info,  Node: Precedence of Objects,  Prev: Operator Overloading,  Up: Overloading Objects
+
+34.4.3 Precedence of Objects
+----------------------------
+
+Many functions and operators take two or more arguments and the
+situation can easily arise where these functions are called with objects
+of different classes.  It is therefore necessary to determine the
+precedence of which method from which class to call when there are mixed
+objects given to a function or operator.  To do this the ‘superiorto’
+and ‘inferiorto’ functions can be used
+
+ -- : superiorto (CLASS_NAME, ...)
+     When called from a class constructor, mark the object currently
+     constructed as having a higher precedence than CLASS_NAME.
+
+     More that one such class can be specified in a single call.  This
+     function may _only_ be called from a class constructor.
+
+     See also: *note inferiorto: XREFinferiorto.
+
+ -- : inferiorto (CLASS_NAME, ...)
+     When called from a class constructor, mark the object currently
+     constructed as having a lower precedence than CLASS_NAME.
+
+     More that one such class can be specified in a single call.  This
+     function may _only_ be called from a class constructor.
+
+     See also: *note superiorto: XREFsuperiorto.
+
+   With the polynomial class, consider the case
+
+     2 * polynomial ([1, 0, 1]);
+
+that mixes an object of the class "double" with an object of the class
+"polynomial".  In this case the return type should be "polynomial" and
+so the ‘superiorto’ function is used in the class constructor.  In
+particular the polynomial class constructor would be modified to
+
+     ## -*- texinfo -*-
+     ## @deftypefn  {} {} polynomial ()
+     ## @deftypefnx {} {} polynomial (@var{a})
+     ## Create a polynomial object representing the polynomial
+     ##
+     ## @example
+     ## a0 + a1 * x + a2 * x^2 + @dots{} + an * x^n
+     ## @end example
+     ##
+     ## @noindent
+     ## from a vector of coefficients [a0 a1 a2 @dots{} an].
+     ## @end deftypefn
+
+     function p = polynomial (a)
+
+       if (nargin > 1)
+         print_usage ();
+       endif
+
+       if (nargin == 0)
+         p.poly = [0];
+         p = class (p, "polynomial");
+       else
+         if (strcmp (class (a), "polynomial"))
+           p = a;
+         elseif (isreal (a) && isvector (a))
+           p.poly = a(:).';  # force row vector
+           p = class (p, "polynomial");
+         else
+           error ("@polynomial: A must be a real vector");
+         endif
+       endif
+
+       superiorto ("double");
+
+     endfunction
+
+   Note that user classes _always_ have higher precedence than built-in
+Octave types.  Thus, marking the polynomial class higher than the
+"double" class is not actually necessary.
+
+   When confronted with two objects of equal precedence, Octave will use
+the method of the object that appears first in the list of arguments.
 
 
 File: octave.info,  Node: Inheritance and Aggregation,  Prev: Overloading Objects,  Up: Object Oriented Programming
@@ -1283,7 +1545,7 @@ File: octave.info,  Node: User-Defined Preferences,  Prev: GUI Utility Functions
      *note ispref: XREFispref, *note rmpref: XREFrmpref.
 
  -- : setpref ("GROUP", "PREF", VAL)
- -- : addpref ("GROUP", {"PREF1", "PREF2", ...}, {VAL1, VAL2, ...})
+ -- : setpref ("GROUP", {"PREF1", "PREF2", ...}, {VAL1, VAL2, ...})
      Set the preference PREF to the given VAL in the named preference
      group GROUP.
 
@@ -3276,7 +3538,7 @@ higher-level functions.
      See also: *note unix: XREFunix, *note system: XREFsystem, *note
      isunix: XREFisunix, *note ismac: XREFismac, *note ispc: XREFispc.
 
- -- : OUTPUT = open FILE
+ -- : open FILE
  -- : OUTPUT = open (FILE)
      Open the file FILE in Octave or in an external application based on
      the file type as determined by the filename extension.
@@ -4208,7 +4470,7 @@ File: octave.info,  Node: System Information,  Next: Hashing Functions,  Prev: G
           for a description of the release (always an empty string),
 
      "-release"
-          for the name of the running build,
+          for the name of the running build (always an empty string),
 
      "-java"
           for version information of the Java VM,
@@ -5177,8 +5439,9 @@ File: octave.info,  Node: External Code Interface,  Next: Test and Demo Function
 Appendix A External Code Interface
 **********************************
 
-"The sum of human wisdom is not contained in any one language" —Ezra
-Pound
+"The sum of human wisdom is not contained in any one language"
+
+   — Ezra Pound
 
    Octave is a fantastic language for solving many problems in science
 and engineering.  However, it is not the only computer language and
@@ -5282,7 +5545,7 @@ A.1 Oct-Files
 * Allocating Local Memory in Oct-Files::
 * Input Parameter Checking in Oct-Files::
 * Exception and Error Handling in Oct-Files::
-* Documentation and Test of Oct-Files::
+* Documentation and Testing of Oct-Files::
 
 
 File: octave.info,  Node: Getting Started with Oct-Files,  Next: Matrices and Arrays in Oct-Files,  Up: Oct-Files
@@ -5443,8 +5706,8 @@ creates a dynamically loaded function.  This macro takes four arguments:
 
   2. The list of arguments to the function of type ‘octave_value_list’,
 
-  3. The number of output arguments, which can and often is omitted if
-     not used, and
+  3. The number of output arguments, which can be—and often is—omitted
+     if not used, and
 
   4. The string to use for the help text of the function.
 
@@ -5470,19 +5733,19 @@ of the functions defined in the source code with the ‘DEFUN_DLD’ macro
 or the ‘autoload’ (*note Function Files::) function should be used.
 
    The rest of the function shows how to find the number of input
-arguments, how to print through the Octave pager, and return from the
-function.  After compiling this function as above, an example of its use
-is
+arguments, how to print through the Octave pager, and how to return from
+the function.  After compiling this function as above, an example of its
+use is
 
      helloworld (1, 2, 3)
      ⊣ Hello World has 3 input arguments and 0 output arguments.
 
    Subsequent sections show how to use specific classes from Octave’s
-core internals.  Base classes like dMatrix (a matrix of double values)
+core internals.  Base classes like ‘dMatrix’ (a matrix of double values)
 are found in the directory ‘liboctave/array’.  The definitive reference
 for how to use a particular class is the header file itself.  However,
-it is often enough just to study the examples in the manual in order to
-be able to use the class.
+it is often enough simply to study the examples in the manual in order
+to be able to use a class.
 
 
 File: octave.info,  Node: Matrices and Arrays in Oct-Files,  Next: Character Strings in Oct-Files,  Prev: Getting Started with Oct-Files,  Up: Oct-Files
@@ -5491,18 +5754,18 @@ A.1.2 Matrices and Arrays in Oct-Files
 --------------------------------------
 
 Octave supports a number of different array and matrix classes, the
-majority of which are based on the Array class.  The exception is the
+majority of which are based on the ‘Array’ class.  The exception are the
 sparse matrix types discussed separately below.  There are three basic
-matrix types
+matrix types:
 
 ‘Matrix’
-     A double precision matrix class defined in ‘dMatrix.h’,
+     A double precision matrix class defined in ‘dMatrix.h’
 
 ‘ComplexMatrix’
-     A complex matrix class defined in ‘CMatrix.h’, and
+     A complex matrix class defined in ‘CMatrix.h’
 
 ‘BoolMatrix’
-     A boolean matrix class defined in ‘boolMatrix.h’.
+     A boolean matrix class defined in ‘boolMatrix.h’
 
    These are the basic two-dimensional matrix types of Octave.  In
 addition there are a number of multi-dimensional array types including
@@ -5548,13 +5811,13 @@ can
           dim_vector dv (2, 3);  // 2 rows, 3 columns
           Matrix a (dv);
 
-     This can be used on all matrix and array types.
+     This can be used for all matrix and array types.
 
    • Define the number of rows and columns in the matrix.  For example:
 
           Matrix a (2, 2)
 
-     However, this constructor can only be used with matrix types.
+     This constructor can *only* be used with matrix types.
 
    These types all share a number of basic methods and operators.  Many
 bear a resemblance to functions that exist in the interpreter.  A
@@ -5563,15 +5826,15 @@ selection of useful methods include
  -- Method: T& operator () (octave_idx_type)
  -- Method: T& elem (octave_idx_type)
      The ‘()’ operator or ‘elem’ method allow the values of the matrix
-     or array to be read or set.  These can take a single argument,
+     or array to be read or set.  These methods take a single argument,
      which is of type ‘octave_idx_type’, that is the index into the
      matrix or array.  Additionally, the matrix type allows two argument
-     versions of the ‘()’ operator and elem method, giving the row and
-     column index of the value to obtain or set.
+     versions of the ‘()’ operator and ‘elem’ method, giving the row and
+     column index of the value to get or set.
 
    Note that these functions do significant error checking and so in
 some circumstances the user might prefer to access the data of the array
-or matrix directly through the fortran_vec method discussed below.
+or matrix directly through the ‘fortran_vec’ method discussed below.
 
  -- Method: octave_idx_type numel (void) const
      The total number of elements in the matrix or array.
@@ -5580,15 +5843,17 @@ or matrix directly through the fortran_vec method discussed below.
      The number of bytes used to store the matrix or array.
 
  -- Method: dim_vector dims (void) const
-     The dimensions of the matrix or array in value of type dim_vector.
+     The dimensions of the matrix or array in value of type
+     ‘dim_vector’.
 
  -- Method: int ndims (void) const
-     The number of dimensions of the matrix or array.  Matrices are 2-D,
-     but arrays can be N-dimensional.
+     The number of dimensions of the matrix or array.  Matrices are
+     always 2-D, but arrays can be N-dimensional.
 
  -- Method: void resize (const dim_vector&)
-     A method taking either an argument of type ‘dim_vector’, or in the
-     case of a matrix two arguments of type ‘octave_idx_type’ defining
+ -- Method: void resize (nrows, ncols)
+     A method taking either an argument of type ‘dim_vector’, or, in the
+     case of a matrix, two arguments of type ‘octave_idx_type’ defining
      the number of rows and columns in the matrix.
 
  -- Method: T* fortran_vec (void)
@@ -5596,7 +5861,7 @@ or matrix directly through the fortran_vec method discussed below.
      or array so that it can be manipulated directly, either within
      Octave or by an external library.
 
-   Operators such an ‘+’, ‘-’, or ‘*’ can be used on the majority of the
+   Operators such as ‘+’, ‘-’, or ‘*’ can be used on the majority of the
 matrix and array types.  In addition there are a number of methods that
 are of interest only for matrices such as ‘transpose’, ‘hermitian’,
 ‘solve’, etc.
@@ -5617,22 +5882,23 @@ of ‘DEFUN_DLD’ function is as follows
        return octave_value (A + B);
      }
 
-   To avoid segmentation faults causing Octave to abort this function
+   To avoid segmentation faults causing Octave to abort, this function
 explicitly checks that there are sufficient arguments available before
 accessing these arguments.  It then obtains two multi-dimensional arrays
-of type ‘NDArray’ and adds these together.  Note that the array_value
-method is called without using the ‘is_matrix_type’ type.  If an error
+of type ‘NDArray’ and adds these together.  Note that the ‘array_value’
+method is called without using the ‘is_matrix_type’ method.  If an error
 occurs when attempting to extract the value, Octave will print a message
-and throw an exception.  The reason to prefer this is that the arguments
-might be a type that is not an ‘NDArray’, but it would make sense to
-convert it to one.  The ‘array_value’ method allows this conversion to
-be performed transparently if possible.  If you need to catch errors
-like this and perform some kind of cleanup or other operation, you can
-catch the ‘octave_execution_error’ exception.
+and throw an exception.  The reason to prefer this coding structure is
+that the arguments might be a type which is not an ‘NDArray’, but for
+which it would make sense to convert them to one.  The ‘array_value’
+method allows this conversion to be performed transparently when
+possible.  If you need to catch errors like this, and perform some kind
+of cleanup or other operation, you can catch the
+‘octave_execution_error’ exception.
 
-   ‘A + B’, operating on two ‘NDArray’’s returns an ‘NDArray’, which is
-cast to an ‘octave_value’ on the return from the function.  An example
-of the use of this demonstration function is
+   ‘A + B’, operating on two ‘NDArray’ objects returns an ‘NDArray’,
+which is cast to an ‘octave_value’ on the return from the function.  An
+example of the use of this demonstration function is
 
      addtwomatrices (ones (2, 2), eye (2, 2))
            ⇒  2  1
@@ -5735,7 +6001,7 @@ of string should be specified.  For example:
      charNDArray ch;
      ...
      // Create single quoted string
-     retval(1) = octave_value (ch);        // default constructor is sq_string
+     retval(1) = octave_value (ch);   // default constructor is sq_string
                 OR
      retval(1) = octave_value (ch, '\'');  // explicitly create sq_string
 
@@ -5749,8 +6015,8 @@ A.1.4 Cell Arrays in Oct-Files
 ------------------------------
 
 Octave’s cell type is also available from within oct-files.  A cell
-array is just an array of ‘octave_value’s, and thus each element of the
-cell array can be treated just like any other ‘octave_value’.  A simple
+array is just an ‘Array’ of ‘octave_value’s, and thus each element of
+the cell array can be treated like any other ‘octave_value’.  A simple
 example is
 
      #include <octave/oct.h>
@@ -5778,7 +6044,7 @@ example is
    Note that cell arrays are used less often in standard oct-files and
 so the ‘Cell.h’ header file must be explicitly included.  The rest of
 the example extracts the ‘octave_value’s one by one from the cell array
-and returns them as individual return arguments.  For example:
+and returns them as individual output arguments.  For example:
 
      [b1, b2, b3] = celldemo ({1, [1, 2], "test"})
      ⇒
@@ -5843,18 +6109,18 @@ is
      ⇒ selected = test
 
    The example above specifically uses the ‘octave_scalar_map’ class
-which is for representing a single struct.  For structure arrays the
+which is for representing a single struct.  For structure arrays, the
 ‘octave_map’ class is used instead.  The commented code shows how the
-demo could be modified to handle a structure array.  In that case the
+demo could be modified to handle a structure array.  In that case, the
 ‘contents’ method returns a ‘Cell’ which may have more than one element.
-Therefore, to obtain the underlying ‘octave_value’ in this single-struct
-example we write
+Therefore, to obtain the underlying ‘octave_value’ in the single struct
+example we would write
 
      octave_value tmp = arg0.contents (arg1)(0);
 
-where the trailing (0) is the () operator on the ‘Cell’ object.  If this
-were a true structure array with multiple elements we could iterate over
-the elements using the () operator.
+where the trailing ‘(0)’ is the ‘()’ operator on the ‘Cell’ object.  If
+this were a true structure array with multiple elements we could iterate
+over the elements using the ‘()’ operator.
 
    Structures are a relatively complex data container and there are more
 functions available in ‘oct-map.h’ which make coding with them easier
@@ -5880,17 +6146,17 @@ user.
 
    All of these classes inherit from the ‘Sparse<T>’ template class, and
 so all have similar capabilities and usage.  The ‘Sparse<T>’ class was
-based on Octave’s ‘Array<T>’ class, and so users familiar with Octave’s
+based on Octave’s ‘Array<T>’ class and users familiar with Octave’s
 ‘Array’ classes will be comfortable with the use of the sparse classes.
 
    The sparse classes will not be entirely described in this section,
 due to their similarity with the existing ‘Array’ classes.  However,
-there are a few differences due the different nature of sparse objects,
-and these will be described.  First, although it is fundamentally
-possible to have N-dimensional sparse objects, the Octave sparse classes
-do not allow them at this time; All instances of the sparse classes must
-be 2-dimensional.  This means that ‘SparseMatrix’ is actually more
-similar to Octave’s ‘Matrix’ class than its ‘NDArray’ class.
+there are a few differences due the nature of sparse objects, and these
+will be described.  First, although it is fundamentally possible to have
+N-dimensional sparse objects, the Octave sparse classes do not allow
+them at this time; All instances of the sparse classes *must* be
+2-dimensional.  This means that ‘SparseMatrix’ is actually more similar
+to Octave’s ‘Matrix’ class than it is to the ‘NDArray’ class.
 
 * Menu:
 
@@ -5905,63 +6171,64 @@ A.1.6.1 Array and Sparse Class Differences
 ..........................................
 
 The number of elements in a sparse matrix is considered to be the number
-of nonzero elements rather than the product of the dimensions.
-Therefore
+of nonzero elements, rather than the product of the dimensions.
+Therefore,
 
      SparseMatrix sm;
      ...
-     int nel = sm.nelem ();
+     int nnz = sm.nelem ();
 
-returns the number of nonzero elements.  If the user really requires the
-number of elements in the matrix, including the nonzero elements, they
-should use ‘numel’ rather than ‘nelem’.  Note that for very large
-matrices, where the product of the two dimensions is larger than the
-representation of an unsigned int, then ‘numel’ can overflow.  An
-example is ‘speye (1e6)’ which will create a matrix with a million rows
-and columns, but only a million nonzero elements.  Therefore the number
-of rows by the number of columns in this case is more than two hundred
-times the maximum value that can be represented by an unsigned int.  The
-use of ‘numel’ should therefore be avoided unless it is known that it
-will not overflow.
+returns the number of nonzero elements (like the interpreter function
+‘nnz’).  If the user really requires the number of elements in the
+matrix, including the nonzero elements, they should use ‘numel’ rather
+than ‘nelem’.  Note that for very large matrices, where the product of
+the two dimensions is larger than the representation of an unsigned int,
+‘numel’ can overflow.  An example is ‘speye (1e6)’ which will create a
+matrix with a million rows and columns, but only a million nonzero
+elements.  In this case, the number of rows multiplied by the number of
+columns is more than two hundred times the maximum value that can be
+represented by an unsigned 32-bit int.  The use of ‘numel’ should,
+therefore, be avoided unless it is known that it will not overflow.
 
-   Extreme care must be take with the elem method and the "()" operator,
-which perform basically the same function.  The reason is that if a
-sparse object is non-const, then Octave will assume that a request for a
-zero element in a sparse matrix is in fact a request to create this
-element so it can be filled.  Therefore a piece of code like
+   Extreme care is also required when using the ‘elem’ method or the ()
+operator which perform essentially the same function.  The reason is
+that if a sparse object is non-const, then Octave will assume that a
+request for a zero element in a sparse matrix is in fact a request to
+create this element so it can be filled.  Therefore, a piece of code
+like
 
      SparseMatrix sm;
      ...
      for (int j = 0; j < nc; j++)
        for (int i = 0; i < nr; i++)
-         std::cerr << " (" << i << "," << j << "): " << sm(i,j) << std::endl;
+         std::cerr << " (" << i << "," << j << "): " << sm(i,j) << "\n";
 
-is a great way of turning the sparse matrix into a dense one, and a very
-slow way at that since it reallocates the sparse object at each zero
+is a great way of turning a sparse matrix into a dense one, and a very
+slow way at that since it reallocates the sparse object for each zero
 element in the matrix.
 
-   An easy way of preventing the above from happening is to create a
+   A simple way of preventing the above from happening is to create a
 temporary constant version of the sparse matrix.  Note that only the
 container for the sparse matrix will be copied, while the actual
 representation of the data will be shared between the two versions of
-the sparse matrix.  So this is not a costly operation.  For example, the
-above would become
+the sparse matrix; This is not a costly operation.  The example above,
+re-written to prevent sparse-to-dense conversion, is
 
      SparseMatrix sm;
      ...
      const SparseMatrix tmp (sm);
      for (int j = 0; j < nc; j++)
        for (int i = 0; i < nr; i++)
-         std::cerr << " (" << i << "," << j << "): " << tmp(i,j) << std::endl;
+         std::cerr << " (" << i << "," << j << "): " << tmp(i,j) << "\n";
 
-   Finally, as the sparse types aren’t represented by a contiguous block
-of memory, the ‘fortran_vec’ method of the ‘Array<T>’ is not available.
-It is, however, replaced by three separate methods ‘ridx’, ‘cidx’ and
-‘data’, that access the raw compressed column format that Octave sparse
-matrices are stored in.  These methods can be used in a manner similar
-to ‘elem’ to allow the matrix to be accessed or filled.  However, in
-that case it is up to the user to respect the sparse matrix compressed
-column format.
+   Finally, because the sparse types aren’t represented by a contiguous
+block of memory, the ‘fortran_vec’ method of ‘Array<T>’ is not
+available.  It is, however, replaced by three separate methods ‘ridx’,
+‘cidx’, and ‘data’, that access the raw compressed column format that
+Octave sparse matrices are stored in.  These methods can be used in a
+manner similar to ‘elem’ to allow the matrix to be accessed or filled.
+However, it is up to the user to respect the sparse matrix compressed
+column format or the matrix will become corrupted.
 
 
 File: octave.info,  Node: Creating Sparse Matrices in Oct-Files,  Next: Using Sparse Matrices in Oct-Files,  Prev: Array and Sparse Class Differences,  Up: Sparse Matrices in Oct-Files
@@ -5969,12 +6236,12 @@ File: octave.info,  Node: Creating Sparse Matrices in Oct-Files,  Next: Using Sp
 A.1.6.2 Creating Sparse Matrices in Oct-Files
 .............................................
 
-There are several useful alternatives for creating a sparse matrix.  The
-first is to create three vectors representing the row index, column
-index, and data values, and from these create the matrix.  The second
-alternative is to create a sparse matrix with the appropriate amount of
-space and then fill in the values.  Both techniques have their
-advantages and disadvantages.
+There are two useful strategies for creating a sparse matrix.  The first
+is to create three vectors representing the row index, column index, and
+data values, and from these create the matrix.  The second alternative
+is to create a sparse matrix with the appropriate amount of space, and
+then fill in the values.  Both techniques have their advantages and
+disadvantages.
 
    Below is an example of creating a small sparse matrix using the first
 technique
@@ -6021,7 +6288,7 @@ strictly necessary, it is significantly faster if the sparse matrix is
 created and the elements are added in column-major ordering.  The reason
 for this is that when elements are inserted at the end of the current
 list of known elements then no element in the matrix needs to be moved
-to allow the new element to be inserted; Only the column indexes need to
+to allow the new element to be inserted; Only the column indices need to
 be updated.
 
    There are a few further points to note about this method of creating
@@ -6035,22 +6302,22 @@ fewer elements than are actually inserted in the matrix.  Therefore,
 
 is perfectly valid.  However, it is a very bad idea because as each new
 element is added to the sparse matrix the matrix needs to request more
-space and reallocate memory.  This is an expensive operation, that will
-significantly slow this means of creating a sparse matrix.  Furthermore,
-it is possible to create a sparse matrix with too much storage, so
-having NZ greater than 4 is also valid.  The disadvantage is that the
-matrix occupies more memory than strictly needed.
+space and reallocate memory.  This is an expensive operation that will
+significantly slow this means of creating a sparse matrix.  It is
+possible to create a sparse matrix with excess storage, so having NZ
+greater than 4 in this example is also valid.  The disadvantage is that
+the matrix occupies more memory than strictly needed.
 
-   It is not always possible to know the number of nonzero elements
-prior to filling a matrix.  For this reason the additional unused
-storage of a sparse matrix can be removed after its creation with the
-‘maybe_compress’ function.  In addition, ‘maybe_compress’ can deallocate
-the unused storage, but it can also remove zero elements from the
-matrix.  The removal of zero elements from the matrix is controlled by
-setting the argument of the ‘maybe_compress’ function to be ‘true’.
-However, the cost of removing the zeros is high because it implies
-re-sorting the elements.  If possible, it is better if the user does not
-add the unnecessary zeros in the first place.  An example of the use of
+   Of course, it is not always possible to know the number of nonzero
+elements prior to filling a matrix.  For this reason the additional
+unused storage of a sparse matrix can be removed after its creation with
+the ‘maybe_compress’ function.  In addition to deallocating unused
+storage, ‘maybe_compress’ can also remove zero elements from the matrix.
+The removal of zero elements from the matrix is controlled by setting
+the argument of the ‘maybe_compress’ function to be ‘true’.  However,
+the cost of removing the zeros is high because it implies re-sorting the
+elements.  If possible, it is better for the user to avoid adding the
+unnecessary zeros in the first place.  An example of the use of
 ‘maybe_compress’ is
 
      int nz, nr, nc;
@@ -6058,7 +6325,7 @@ add the unnecessary zeros in the first place.  An example of the use of
 
      SparseMatrix sm1 (nr, nc, nz);
      sm1(0,0) = 1; sm1(0,1) = 2; sm1(1,3) = 3; sm1(2,3) = 4;
-     sm1.maybe_compress ();  // No zero elements were added
+     sm1.maybe_compress ();   // No zero elements were added
 
      SparseMatrix sm2 (nr, nc, nz);
      sm2(0,0) = 1; sm2(0,1) = 2; sm(0,2) = 0; sm(1,2) = 0;
@@ -6069,8 +6336,8 @@ add the unnecessary zeros in the first place.  An example of the use of
 possible as it will slow the creation of the matrix.
 
    A third means of creating a sparse matrix is to work directly with
-the data in compressed row format.  An example of this technique might
-be
+the data in compressed row format.  An example of this advanced
+technique might be
 
      octave_value arg;
      ...
@@ -6085,7 +6352,7 @@ be
        {
          for (int i = 0; i < nr; i++)
            {
-             double tmp = foo (m(i,j));
+             double tmp = m(i,j);
              if (tmp != 0.)
                {
                  sm.data(ii) = tmp;
@@ -6099,15 +6366,15 @@ be
 
 which is probably the most efficient means of creating a sparse matrix.
 
-   Finally, it might sometimes arise that the amount of storage
-initially created is insufficient to completely store the sparse matrix.
+   Finally, it may sometimes arise that the amount of storage initially
+created is insufficient to completely store the sparse matrix.
 Therefore, the method ‘change_capacity’ exists to reallocate the sparse
 memory.  The above example would then be modified as
 
      octave_value arg;
      ...
      int nz, nr, nc;
-     nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
+     nz = 6, nr = 3, nc = 4;   // Guess the number of nz elements
      SparseMatrix sm (nr, nc, nz);
      Matrix m = arg.matrix_value ();
 
@@ -6117,7 +6384,7 @@ memory.  The above example would then be modified as
        {
          for (int i = 0; i < nr; i++)
            {
-             double tmp = foo (m(i,j));
+             double tmp = m(i,j);
              if (tmp != 0.)
                {
                  if (ii == nz)
@@ -6132,13 +6399,13 @@ memory.  The above example would then be modified as
            }
          sm.cidx(j+1) = ii;
       }
-     sm.maybe_mutate ();  // If don't know a priori the final # of nz.
+     sm.maybe_compress ();  // If don't know a priori the final # of nz.
 
    Note that both increasing and decreasing the number of nonzero
 elements in a sparse matrix is expensive as it involves memory
-reallocation.  Also as parts of the matrix, though not its entirety,
-exist as old and new copies at the same time, additional memory is
-needed.  Therefore, if possible this should be avoided.
+reallocation.  Also because parts of the matrix, though not its
+entirety, exist as old and new copies at the same time, additional
+memory is needed.  Therefore, if possible avoid changing capacity.
 
 
 File: octave.info,  Node: Using Sparse Matrices in Oct-Files,  Prev: Creating Sparse Matrices in Oct-Files,  Up: Sparse Matrices in Oct-Files
@@ -6146,17 +6413,16 @@ File: octave.info,  Node: Using Sparse Matrices in Oct-Files,  Prev: Creating Sp
 A.1.6.3 Using Sparse Matrices in Oct-Files
 ..........................................
 
-Most of the same operators and functions on sparse matrices that are
-available from the Octave command line are also available within
+Most of the same operators and functions for sparse matrices that are
+available from the Octave interpeter are also available within
 oct-files.  The basic means of extracting a sparse matrix from an
-‘octave_value’ and returning it as an ‘octave_value’, can be seen in the
-following example.
+‘octave_value’, and returning it as an ‘octave_value’, can be seen in
+the following example.
 
      octave_value_list retval;
 
      SparseMatrix sm = args(0).sparse_matrix_value ();
-     SparseComplexMatrix scm =
-         args(1).sparse_complex_matrix_value ();
+     SparseComplexMatrix scm = args(1).sparse_complex_matrix_value ();
      SparseBoolMatrix sbm = args(2).sparse_bool_matrix_value ();
      ...
      retval(2) = sbm;
@@ -6174,7 +6440,7 @@ A.1.7 Accessing Global Variables in Oct-Files
 
 Global variables allow variables in the global scope to be accessed.
 Global variables can be accessed within oct-files by using the support
-functions ‘get_global_value’ and ‘set_global_value’.  ‘get_global_value’
+functions ‘get_global_value’ and ‘set_global_value’. ‘get_global_value’
 takes two arguments, the first is a string representing the variable
 name to obtain.  The second argument is a boolean argument specifying
 what to do if no global variable of the desired name is found.  An
@@ -6223,10 +6489,10 @@ A.1.8 Calling Octave Functions from Oct-Files
 There is often a need to be able to call another Octave function from
 within an oct-file, and there are many examples of such within Octave
 itself.  For example, the ‘quad’ function is an oct-file that calculates
-the definite integral by quadrature over a user supplied function.
+the definite integral by quadrature over a user-supplied function.
 
-   There are also many ways in which a function might be passed.  It
-might be passed as one of
+   There are also many ways in which a function could be given as input.
+It might be passed as one of
 
   1. Function Handle
 
@@ -6236,8 +6502,8 @@ might be passed as one of
 
   4. String
 
-   The example below demonstrates an example that accepts all four means
-of passing a function to an oct-file.
+   The code below demonstrates all four methods of passing a function to
+an oct-file.
 
      #include <octave/oct.h>
      #include <octave/parse.h>
@@ -6274,17 +6540,16 @@ of passing a function to an oct-file.
        return retval;
      }
 
-   The first argument to this demonstration is the user-supplied
-function and the remaining arguments are all passed to the user
-function.
+   The first input to the demonstration code is a user-supplied function
+and the remaining arguments are all passed to the function.
 
-     funcdemo (@sin,1)
+     funcdemo (@sin, 1)
      ⇒ 0.84147
      funcdemo (@(x) sin (x), 1)
      ⇒ 0.84147
      funcdemo (inline ("sin (x)"), 1)
      ⇒ 0.84147
-     funcdemo ("sin",1)
+     funcdemo ("sin", 1)
      ⇒ 0.84147
      funcdemo (@atan2, 1, 1)
      ⇒ 0.78540
@@ -6309,8 +6574,8 @@ demonstrated below.
 number of input arguments to the user function is fixed, and in the
 above example is a single argument.  Second, to avoid leaving the
 temporary function in the Octave symbol table it should be cleared after
-use.  Also, by convention internal function names begin and end with the
-character sequence ‘__’.
+use.  Also, by convention all internal function names begin and end with
+the character sequence ‘__’.
 
 
 File: octave.info,  Node: Calling External Code from Oct-Files,  Next: Allocating Local Memory in Oct-Files,  Prev: Calling Octave Functions from Oct-Files,  Up: Oct-Files
@@ -6336,8 +6601,8 @@ to ensure that the C++ compiler treats these declarations as C code is
 
    Calling Fortran code, however, can pose more difficulties.  This is
 due to differences in the manner in which compilers treat the linking of
-Fortran code with C or C++ code.  Octave supplies a number of macros
-that allow consistent behavior across a number of compilers.
+Fortran code with C or C++ code.  Octave supplies several macros that
+allow consistent behavior across a number of compilers.
 
    The underlying Fortran code should use the ‘XSTOPX’ function to
 replace the Fortran ‘STOP’ function.  ‘XSTOPX’ uses the Octave exception
@@ -6411,7 +6676,6 @@ and the Fortran function is
            return
            end
 
-
    This example demonstrates most of the features needed to link to an
 external Fortran function, including passing arrays and strings, as well
 as exception handling.  Both the Fortran and C++ files need to be
@@ -6431,7 +6695,7 @@ File: octave.info,  Node: Allocating Local Memory in Oct-Files,  Next: Input Par
 A.1.10 Allocating Local Memory in Oct-Files
 -------------------------------------------
 
-Allocating memory within an oct-file might seem easy as the C++
+Allocating memory within an oct-file might seem easy, as the C++
 new/delete operators can be used.  However, in that case great care must
 be taken to avoid memory leaks.  The preferred manner in which to
 allocate memory for use locally is to use the ‘OCTAVE_LOCAL_BUFFER’
@@ -6441,7 +6705,7 @@ macro.  An example of its use is
 
 that returns a pointer ‘tmp’ of type ‘double *’ of length ‘len’.
 
-   In this case Octave itself will worry about reference counting and
+   In this case, Octave itself will worry about reference counting and
 variable scope and will properly free memory without programmer
 intervention.
 
@@ -6451,7 +6715,7 @@ File: octave.info,  Node: Input Parameter Checking in Oct-Files,  Next: Exceptio
 A.1.11 Input Parameter Checking in Oct-Files
 --------------------------------------------
 
-As oct-files are compiled functions they open up the possibility of
+Because oct-files are compiled functions they open up the possibility of
 crashing Octave through careless function calls or memory faults.  It is
 quite important that each and every function have a sufficient level of
 parameter checking to ensure that Octave behaves well.
@@ -6467,11 +6731,11 @@ oct-files often need additional input parameter checking.
 
    There are several functions within Octave that can be useful for the
 purposes of parameter checking.  These include the methods of the
-octave_value class like ‘is_real_matrix’, ‘is_numeric_type’, etc.
-Often, with a knowledge of the Octave m-file language, you can guess at
-what the corresponding C++ routine will.  In addition there are some
-more specialized input validation functions of which a few are
-demonstrated below.
+‘octave_value’ class like ‘is_real_matrix’, ‘is_numeric_type’, etc.
+(See ‘ov.h’).  Often, with a knowledge of the Octave m-file language,
+you can guess at what the corresponding C++ routine will.  In addition
+there are some more specialized input validation functions of which a
+few are demonstrated below.
 
      #include <octave/oct.h>
 
@@ -6514,17 +6778,19 @@ An example of its use is:
           includes only int, Inf or NaN values
 
 
-File: octave.info,  Node: Exception and Error Handling in Oct-Files,  Next: Documentation and Test of Oct-Files,  Prev: Input Parameter Checking in Oct-Files,  Up: Oct-Files
+File: octave.info,  Node: Exception and Error Handling in Oct-Files,  Next: Documentation and Testing of Oct-Files,  Prev: Input Parameter Checking in Oct-Files,  Up: Oct-Files
 
 A.1.12 Exception and Error Handling in Oct-Files
 ------------------------------------------------
 
 Another important feature of Octave is its ability to react to the user
-typing <Control-C> even during calculations.  This ability is based on
-the C++ exception handler, where memory allocated by the C++ new/delete
-methods are automatically released when the exception is treated.  When
-writing an oct-file, to allow Octave to treat the user typing
-<Control-C>, the ‘OCTAVE_QUIT’ macro is supplied.  For example:
+typing <Control-C> during extended calculations.  This ability is based
+on the C++ exception handler, where memory allocated by the C++
+new/delete methods is automatically released when the exception is
+treated.  When writing an oct-file which may run for a long time the
+programmer must periodically use the macro ‘OCTAVE_QUIT’, in order to
+allow Octave to check and possibly respond to a user typing <Control-C>.
+For example:
 
      for (octave_idx_type i = 0; i < a.nelem (); i++)
        {
@@ -6533,19 +6799,19 @@ writing an oct-file, to allow Octave to treat the user typing
        }
 
    The presence of the ‘OCTAVE_QUIT’ macro in the inner loop allows
-Octave to treat the user request with the <Control-C>.  Without this
-macro, the user must either wait for the function to return before the
-interrupt is processed, or press <Control-C> three times to force Octave
-to exit.
+Octave to detect and acknowledge a <Control-C> key sequence.  Without
+this macro, the user must either wait for the oct-file function to
+return before the interrupt is processed, or the user must press
+<Control-C> three times which will force Octave to exit completely.
 
-   The ‘OCTAVE_QUIT’ macro does impose a very small speed penalty, and
-so for loops that are known to be small it might not make sense to
-include ‘OCTAVE_QUIT’.
+   The ‘OCTAVE_QUIT’ macro does impose a very small performance penalty;
+For loops that are known to be small it may not make sense to include
+‘OCTAVE_QUIT’.
 
-   When creating an oct-file that uses an external libraries, the
-function might spend a significant portion of its time in the external
-library.  It is not generally possible to use the ‘OCTAVE_QUIT’ macro in
-this case.  The alternative in this case is
+   When creating an oct-file that uses an external library, the function
+might spend a significant portion of its time in the external library.
+It is not generally possible to use the ‘OCTAVE_QUIT’ macro in this
+case.  The alternative code in this case is
 
      BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE;
      ...  some code that calls a "foreign" function ...
@@ -6555,13 +6821,13 @@ this case.  The alternative in this case is
 memory internally, then this memory might be lost during an interrupt,
 without being deallocated.  Therefore, ideally Octave itself should
 allocate any memory that is needed by the foreign code, with either the
-fortran_vec method or the ‘OCTAVE_LOCAL_BUFFER’ macro.
+‘fortran_vec’ method or the ‘OCTAVE_LOCAL_BUFFER’ macro.
 
-   The Octave unwind_protect mechanism (*note The unwind_protect
+   The Octave ‘unwind_protect’ mechanism (*note The unwind_protect
 Statement::) can also be used in oct-files.  In conjunction with the
-exception handling of Octave, it is important to enforce that certain
-code is run to allow variables, etc. to be restored even if an exception
-occurs.  An example of the use of this mechanism is
+exception handling of Octave, it ensures that certain recovery code is
+always run even if an exception occurs.  An example of the use of this
+mechanism is
 
      #include <octave/oct.h>
      #include <octave/unwind-prot.h>
@@ -6613,20 +6879,21 @@ occurs.  An example of the use of this mechanism is
 disabled in the ‘unwinddemo’ function.
 
 
-File: octave.info,  Node: Documentation and Test of Oct-Files,  Prev: Exception and Error Handling in Oct-Files,  Up: Oct-Files
+File: octave.info,  Node: Documentation and Testing of Oct-Files,  Prev: Exception and Error Handling in Oct-Files,  Up: Oct-Files
 
-A.1.13 Documentation and Test of Oct-Files
-------------------------------------------
+A.1.13 Documentation and Testing of Oct-Files
+---------------------------------------------
 
-The documentation of an oct-file is the fourth string parameter of the
-‘DEFUN_DLD’ macro.  This string can be formatted in the same manner as
-the help strings for user functions, however there are some issue that
-are particular to the formatting of help strings within oct-files.
+The documentation for an oct-file is contained in the fourth string
+parameter of the ‘DEFUN_DLD’ macro.  This string can be formatted in the
+same manner as the help strings for user functions, however there are
+some issues that are particular to the formatting of help strings within
+oct-files.
 
    The major issue is that the help string will typically be longer than
-a single line of text, and so the formatting of long help strings needs
-to be taken into account.  There are several possible solutions, but the
-most common is illustrated in the following example,
+a single line of text, and so the formatting of long multi-line help
+strings needs to be taken into account.  There are several possible
+solutions, but the most common is illustrated in the following example,
 
      DEFUN_DLD (do_what_i_want, args, nargout,
        "-*- texinfo -*-\n\
@@ -6638,10 +6905,9 @@ most common is illustrated in the following example,
      ...
      }
 
-where, as can be seen, each line of text is terminated by ‘\n\’ which is
-an embedded new-line in the string together with a C++ string
-continuation character.  Note that the final ‘\’ must be the last
-character on the line.
+where each line of text is terminated by ‘\n\’ which is an embedded
+newline in the string together with a C++ string continuation character.
+Note that the final ‘\’ must be the last character on the line.
 
    Octave also includes the ability to embed test and demonstration code
 for a function within the code itself (*note Test and Demo Functions::).
@@ -6652,8 +6918,8 @@ demonstration code.  This is a requirement for oct-files as well.  In
 addition, the test and demonstration code must be wrapped in a comment
 block to avoid it being interpreted by the compiler.  Finally, the
 Octave test and demonstration code must have access to the original
-source code of the oct-file and not just the compiled code as the tests
-are stripped from the compiled code.  An example in an oct-file might be
+source code of the oct-file—not just the compiled code—as the tests are
+stripped from the compiled code.  An example in an oct-file might be
 
      /*
      %!assert (sin ([1,2]), [sin(1),sin(2)])
@@ -6668,15 +6934,15 @@ A.2 Mex-Files
 =============
 
 Octave includes an interface to allow legacy mex-files to be compiled
-and used with Octave.  This interface can also be used to share code
-between Octave and MATLAB users.  However, as mex-files expose MATLAB’s
-internal API, and the internal structure of Octave is different, a
-mex-file can never have the same performance in Octave as the equivalent
-oct-file.  In particular, to support the manner in which variables are
-passed to mex functions there are a significant number of additional
-copies of memory blocks when calling or returning from a mex-file
-function.  For this reason, it is recommended that any new code be
-written with the oct-file interface previously discussed.
+and used with Octave.  This interface can also be used to share compiled
+code between Octave and MATLAB users.  However, as mex-files expose
+MATLAB’s internal API, and the internal structure of Octave is
+different, a mex-file can never have the same performance in Octave as
+the equivalent oct-file.  In particular, to support the manner in which
+variables are passed to mex functions there are a significant number of
+additional copies of memory blocks when invoking or returning from a
+mex-file function.  For this reason, it is recommended that any new code
+be written with the oct-file interface previously discussed.
 
 * Menu:
 
@@ -6696,9 +6962,9 @@ A.2.1 Getting Started with Mex-Files
 
 The basic command to build a mex-file is either ‘mkoctfile --mex’ or
 ‘mex’.  The first command can be used either from within Octave or from
-the command line.  However, to avoid issues with MATLAB’s own ‘mex’
-command, the use of the command ‘mex’ is limited to within Octave.
-Compiled mex-files have the extension ‘.mex’.
+the command line.  To avoid issues with MATLAB’s own ‘mex’ command, the
+use of the command ‘mex’ is limited to within Octave.  Compiled
+mex-files have the extension ‘.mex’.
 
  -- : mex [options] file ...
      Compile source code written in C, C++, or Fortran, to a MEX file.
@@ -6747,9 +7013,8 @@ function takes four arguments:
    Note that the function name definition is not explicitly included in
 ‘mexFunction’ and so there can only be a single ‘mexFunction’ entry
 point per file.  Instead, the name of the function as seen in Octave is
-determined by the name of the mex-file itself minus the extension.
-Therefore, if the above function is in the file ‘myhello.c’, it can be
-compiled with
+determined by the name of the mex-file itself minus the extension.  If
+the above function is in the file ‘myhello.c’, it can be compiled with
 
      mkoctfile --mex myhello.c
 
@@ -6760,11 +7025,10 @@ Octave as
      ⇒ Hello, World!
      ⇒ I have 3 inputs and 0 outputs
 
-   It should be noted that the mex-file contains no help string for the
-functions it contains.  To document mex-files, there should exist an
-m-file in the same directory as the mex-file itself.  Taking the above
-as an example, we would therefore have a file ‘myhello.m’ that might
-contain the text
+   It should be noted that the mex-file contains no help string.  To
+document mex-files, there should exist an m-file in the same directory
+as the mex-file itself.  Taking the above as an example, there would
+need to be a file ‘myhello.m’ which might contain the text
 
      %MYHELLO Simple test of the functionality of a mex-file.
 
@@ -6794,7 +7058,7 @@ mex-file based on the function name.  For example, if
        return;
      }
 
-is in file ‘myfunc.c’, and it is compiled with
+is in the file ‘myfunc.c’, and is compiled with
 
      mkoctfile --mex myfunc.c
      ln -s myfunc.mex myfunc2.mex
@@ -6807,7 +7071,7 @@ then as can be seen by
      myfunc2 ()
      ⇒ You called function: myfunc2
 
-the behavior of the mex-file can be altered depending on the functions
+the behavior of the mex-file can be altered depending on the function’s
 name.
 
    Although the user should only include ‘mex.h’ in their code, Octave
@@ -6821,9 +7085,10 @@ A.2.2 Working with Matrices and Arrays in Mex-Files
 ---------------------------------------------------
 
 The basic mex type of all variables is ‘mxArray’.  Any object, such as a
-matrix, cell array, or structure is stored in this basic type.  As such,
-‘mxArray’ serves basically the same purpose as the octave_value class in
-oct-files in that it acts as a container for the more specialized types.
+matrix, cell array, or structure, is stored in this basic type.
+‘mxArray’ serves essentially the same purpose as the ‘octave_value’
+class in oct-files in that it acts as a container for all the more
+specialized types.
 
    The ‘mxArray’ structure contains at a minimum, the name of the
 variable it represents, its dimensions, its type, and whether the
@@ -6833,13 +7098,13 @@ functions to create ‘mxArray’ structures, including
 ‘mxCreateDoubleMatrix’, ‘mxCreateCellArray’, ‘mxCreateSparse’, and the
 generic ‘mxCreateNumericArray’.
 
-   The basic function to access the data contained in an array is
-‘mxGetPr’.  As the mex interface assumes that real and imaginary parts
-of a complex array are stored separately, there is an equivalent
-function ‘mxGetPi’ that gets the imaginary part.  Both of these
-functions are only for use with double precision matrices.  The generic
-functions ‘mxGetData’ and ‘mxGetImagData’ perform the same operation on
-all matrix types.  For example:
+   The basic function to access the data in an array is ‘mxGetPr’.
+Because the mex interface assumes that real and imaginary parts of a
+complex array are stored separately, there is an equivalent function
+‘mxGetPi’ that gets the imaginary part.  Both of these functions are
+only for use with double precision matrices.  The generic functions
+‘mxGetData’ and ‘mxGetImagData’ perform the same operation for all
+matrix types.  For example:
 
      mxArray *m;
      mwSize *dims;
@@ -6905,7 +7170,7 @@ below.
          }
      }
 
-with an example of its use
+An example of its use is
 
      b = randn (4,1) + 1i * randn (4,1);
      all (b.^2 == mypow2 (b))
@@ -6915,7 +7180,7 @@ with an example of its use
 ‘mxGetNumberOfElements’, and ‘mxGetNumberOfDimensions’ to work with the
 dimensions of multi-dimensional arrays.  The functions ‘mxGetM’, and
 ‘mxGetN’ are also available to find the number of rows and columns in a
-2-D matrix.
+2-D matrix (MxN matrix).
 
 
 File: octave.info,  Node: Character Strings in Mex-Files,  Next: Cell Arrays with Mex-Files,  Prev: Working with Matrices and Arrays in Mex-Files,  Up: Mex-Files
@@ -6924,10 +7189,10 @@ A.2.3 Character Strings in Mex-Files
 ------------------------------------
 
 As mex-files do not make the distinction between single and double
-quoted strings within Octave, there is perhaps less complexity in the
-use of strings and character matrices in mex-files.  An example of their
-use that parallels the demo in ‘stringdemo.cc’ is given in the file
-‘mystring.c’, as shown below.
+quoted strings that Octave does, there is perhaps less complexity in the
+use of strings and character matrices.  An example of their use that
+parallels the demo in ‘stringdemo.cc’ is given in the file ‘mystring.c’,
+as shown below.
 
      #include <string.h>
      #include "mex.h"
@@ -6965,7 +7230,7 @@ An example of its expected output is
 are ‘mxCreateString’, ‘mxArrayToString’, and
 ‘mxCreateCharMatrixFromStrings’.  In a mex-file, a character string is
 considered to be a vector rather than a matrix.  This is perhaps an
-arbitrary distinction as the data in the mxArray for the matrix is
+arbitrary distinction as the data in the ‘mxArray’ for the matrix is
 consecutive in any case.
 
 
@@ -6975,7 +7240,7 @@ A.2.4 Cell Arrays with Mex-Files
 --------------------------------
 
 One can perform exactly the same operations on Cell arrays in mex-files
-as in oct-files.  An example that reduplicates the function of the
+as in oct-files.  An example that duplicates the function of the
 ‘celldemo.cc’ oct-file in a mex-file is given by ‘mycell.c’ as shown
 below.
 
@@ -7126,9 +7391,10 @@ A.2.6 Sparse Matrices with Mex-Files
 ------------------------------------
 
 The Octave format for sparse matrices is identical to the mex format in
-that it is a compressed column sparse format.  Also in both, sparse
-matrices are required to be two-dimensional.  The only difference is
-that the real and imaginary parts of the matrix are stored separately.
+that it is a compressed column sparse format.  Also, in both
+implementations sparse matrices are required to be two-dimensional.  The
+only difference of importance to the programmer is that the real and
+imaginary parts of the matrix are stored separately.
 
    The mex-file interface, in addition to using ‘mxGetM’, ‘mxGetN’,
 ‘mxSetM’, ‘mxSetN’, ‘mxGetPr’, ‘mxGetPi’, ‘mxSetPr’, and ‘mxSetPi’, also
@@ -7347,7 +7613,7 @@ File: octave.info,  Node: Standalone Programs,  Next: Java Interface,  Prev: Mex
 A.3 Standalone Programs
 =======================
 
-The libraries Octave itself uses can be utilized in standalone
+The libraries Octave uses itself can be utilized in standalone
 applications.  These applications then have access, for example, to the
 array and matrix classes, as well as to all of the Octave algorithms.
 The following C++ program, uses class Matrix from ‘liboctave.a’ or
@@ -7387,7 +7653,7 @@ like
 against the Octave libraries and any Octave support libraries.  The
 above allows the Octave math libraries to be used by an application.  It
 does not, however, allow the script files, oct-files, or built-in
-functions of Octave to be used by the application.  To do that the
+functions of Octave to be used by the application.  To do that, the
 Octave interpreter needs to be initialized first.  An example of how to
 do this can then be seen in the code
 
@@ -7434,18 +7700,18 @@ which, as before, is compiled and run as a standalone application with
      GCD of [10, 15] is 5
      $
 
-   It is worth noting that, if only built-in functions are to be called
-from a C++ standalone program, then it does not need to initialize the
-interpreter to do so.  The general rule is that, for a built-in function
-named ‘function_name’ in the interpreter, there will be a C++ function
-named ‘Ffunction_name’ (note the prepended capital ‘F’) accessible in
-the C++ API.  The declarations for all built-in functions are collected
-in the header file ‘builtin-defun-decls.h’.  This feature should be used
-with care as the list of built-in functions can change.  No guarantees
-can be made that a function that is currently built in won’t be
-implemented as a .m file or as a dynamically linked function in the
-future.  An example of how to call built-in functions from C++ can be
-seen in the code
+   It is worth re-iterating that, if only built-in functions are to be
+called from a C++ standalone program then it does not need to initialize
+the interpreter.  The general rule is that for a built-in function named
+‘function_name’ in the interpreter, there will be a C++ function named
+‘Ffunction_name’ (note the prepended capital ‘F’) accessible in the C++
+API.  The declarations for all built-in functions are collected in the
+header file ‘builtin-defun-decls.h’.  This feature should be used with
+care as the list of built-in functions can change.  No guarantees can be
+made that a function that is currently a built-in won’t be implemented
+as a .m file or as a dynamically linked function in the future.  An
+example of how to call built-in functions from C++ can be seen in the
+code
 
      #include <iostream>
      #include <octave/oct.h>
@@ -7476,7 +7742,7 @@ seen in the code
        return 0;
      }
 
-which, again, is compiled and run as a standalone application with
+which is compiled and run as a standalone application with
 
      $ mkoctfile --link-stand-alone standalonebuiltin.cc -o standalonebuiltin
      $ ./standalonebuiltin
@@ -7502,15 +7768,300 @@ Java, try a library like ‘javaOctave’
 
 * Menu:
 
-* Java Interface Functions::
 * Making Java Classes Available::
-* Creating an Instance of a Java Class::
-* Handling Java Memory Limitations::
+* How to use Java from within Octave::
+* Passing parameters to the JVM::
+* Java Interface Functions::
 
 
-File: octave.info,  Node: Java Interface Functions,  Next: Making Java Classes Available,  Up: Java Interface
+File: octave.info,  Node: Making Java Classes Available,  Next: How to use Java from within Octave,  Up: Java Interface
 
-A.4.1 Java Interface Functions
+A.4.1 Making Java Classes Available
+-----------------------------------
+
+Java finds classes by searching a CLASSPATH which is a list of Java
+archive files and/or directories containing class files.  In Octave the
+CLASSPATH is composed of two parts:
+
+   • the STATIC CLASSPATH is initialized once at startup of the JVM, and
+
+   • the DYNAMIC CLASSPATH which can be modified at runtime.
+
+   Octave searches the STATIC CLASSPATH first, and then the DYNAMIC
+CLASSPATH.  Classes appearing in the STATIC CLASSPATH, as well as in the
+DYNAMIC CLASSPATH, will therefore be found in the STATIC CLASSPATH and
+loaded from this location.  Classes which will be used frequently, or
+must be available to all users, should be added to the STATIC CLASSPATH.
+The STATIC CLASSPATH is populated once from the contents of a plain text
+file named ‘javaclasspath.txt’ (or ‘classpath.txt’ historically) when
+the Java Virtual Machine starts.  This file contains one line for each
+individual classpath to be added to the STATIC CLASSPATH.  These lines
+can identify directories containing class files, or Java archives with
+complete class file hierarchies.  Comment lines starting with a ‘#’ or a
+‘%’ character are ignored.
+
+   The search rules for the file ‘javaclasspath.txt’ (or
+‘classpath.txt’) are:
+
+   • First, Octave tries to locate it in the current directory (where
+     Octave was started from).  If such a file is found, it is read and
+     defines the initial STATIC CLASSPATH.  Thus, it is possible to
+     define a static classpath on a ’per Octave invocation’ basis.
+
+   • Next, Octave searches in the user’s home directory.  If a file
+     ‘javaclasspath.txt’ exists here, its contents are appended to the
+     static classpath (if any).  Thus, it is possible to build an
+     initial static classpath on a ’per user’ basis.
+
+   • Finally, Octave looks for a ‘javaclasspath.txt’ in the m-file
+     directory where Octave Java functions live.  This is where the
+     function ‘javaclasspath.m’ resides, usually something like
+     ‘OCTAVE_HOME/share/octave/OCTAVE_VERSION/m/java/’.  You can find
+     this directory by executing the command
+
+          which javaclasspath
+
+     If this file exists here, its contents are also appended to the
+     STATIC CLASSPATH.  Note that the archives and class directories
+     defined in this last step will affect all users.
+
+   Classes which are used only by a specific script should be placed in
+the DYNAMIC CLASSPATH.  This portion of the classpath can be modified at
+runtime using the ‘javaaddpath’ and ‘javarmpath’ functions.
+
+   Example:
+
+     octave> base_path = "C:/Octave/java_files";
+
+     octave> # add two JAR archives to the dynamic classpath
+     octave> javaaddpath ([base_path, "/someclasses.jar"]);
+     octave> javaaddpath ([base_path, "/moreclasses.jar"]);
+
+     octave> # check the dynamic classpath
+     octave> p = javaclasspath;
+     octave> disp (p{1});
+     C:/Octave/java_files/someclasses.jar
+     octave> disp (p{2});
+     C:/Octave/java_files/moreclasses.jar
+
+     octave> # remove the first element from the classpath
+     octave> javarmpath ([base_path, "/someclasses.jar"]);
+     octave> p = javaclasspath;
+     octave> disp (p{1});
+     C:/Octave/java_files/moreclasses.jar
+
+     octave> # provoke an error
+     octave> disp (p{2});
+     error: A(I): Index exceeds matrix dimension.
+
+   Another way to add files to the DYNAMIC CLASSPATH exclusively for
+your user account is to use the file ‘.octaverc’ which is stored in your
+home directory.  All Octave commands in this file are executed each time
+you start a new instance of Octave.  The following example adds the
+directory ‘octave’ to Octave’s search path and the archive
+‘myclasses.jar’ in this directory to the Java search path.
+
+     # contents of .octaverc:
+     addpath ("~/octave");
+     javaaddpath ("~/octave/myclasses.jar");
+
+
+File: octave.info,  Node: How to use Java from within Octave,  Next: Passing parameters to the JVM,  Prev: Making Java Classes Available,  Up: Java Interface
+
+A.4.2 How to use Java from within Octave
+----------------------------------------
+
+The function *note javaObject: XREFjavaObject. creates Java objects.  In
+fact it invokes the public constructor of the class with the given name
+and with the given parameters.
+
+   The following example shows how to invoke the constructors
+‘BigDecimal(double)’ and ‘BigDecimal(String)’ of the builtin Java class
+‘java.math.BigDecimal’.
+
+     javaObject ("java.math.BigDecimal",  1.001 );
+     javaObject ("java.math.BigDecimal", "1.001");
+
+   Note that parameters of the Octave type ‘double’ are implicitly
+converted into the Java type ‘double’ and the Octave type (array of)
+‘char’ is converted into the java type ‘String’.  A Java object created
+by *note javaObject: XREFjavaObject. is never automatically converted
+into an Octave type but remains a Java object.  It can be assigned to an
+Octave variable.
+
+     a = 1.001;
+     b = javaObject ("java.math.BigDecimal", a);
+
+   Using *note isjava: XREFisjava, it is possible to check whether a
+variable is a Java object and its class can be determined as well.  In
+addition to the previous example:
+
+     isjava (a)
+     ⇒ ans = 0
+     class (a)
+     ⇒ ans = double
+     isjava (b)
+     ⇒ ans = 1
+     class (b)
+     ⇒ ans = java.math.BigDecimal
+
+   The example above can be carried out using only Java objects:
+
+     a = javaObject ("java.lang.Double", 1.001);
+     b = javaObject ("java.math.BigDecimal", a);
+
+     isjava (a)
+     ⇒ ans = 1
+     class (a)
+     ⇒ ans = java.lang.Double
+     isjava (b)
+     ⇒ ans = 1
+     class (b)
+     ⇒ ans = java.math.BigDecimal
+
+   One can see, that even a ‘java.lang.Double’ is not converted to an
+Octave ‘double’, when created by *note javaObject: XREFjavaObject.  But
+ambiguities might arise, if the Java classes ‘java.lang.Double’ or
+‘double’ are parameters of a method (or a constructor).  In this case
+they can be converted into one another, depending on the context.
+
+   Via *note javaObject: XREFjavaObject. one may create all kinds of
+Java objects but arrays.  The latter are created through *note
+javaArray: XREFjavaArray.
+
+   It is possible to invoke public member methods on Java objects in
+Java syntax:
+
+     a.toString
+     ⇒ ans = 1.001
+     b.toString
+     ⇒ ans = 1.000999999999999889865...
+
+   The second result may be surprising, but simply comes from the fact,
+that ‘1.001’ cannot exactly be represented as ‘double’, due to rounding.
+Note that unlike in Java, in Octave methods without arguments can be
+invoked with and without parentheses ‘()’.
+
+   Currently it is not possible to invoke static methods with a Java
+like syntax from within Octave.  Instead, one has to use the function
+*note javaMethod: XREFjavaMethod. as in the following example:
+
+     java.math.BigDecimal.valueOf(1.001);                    # does not work
+     javaMethod ("valueOf", "java.math.BigDecimal", 1.001);  # workaround
+
+   As mentioned before, method and constructor parameters are converted
+automatically between Octave and Java types, if appropriate.  For
+functions this is also true with return values, whereas for constructors
+this is not.
+
+   It is also possible to access public fields of Java objects from
+within Octave using Java syntax, with the limitation of static fields:
+
+     java.math.BigDecimal.ONE;                  # does not work
+     java_get ("java.math.BigDecimal", "ONE");  # workaround
+
+   Accordingly, with *note java_set: XREFjava_set. the value of a field
+can be set.  Note that only public Java fields are accessible from
+within Octave.
+
+   The following example indicates that in Octave empty brackets ‘[]’
+represent Java’s ‘null’ value and how Java exceptions are represented.
+
+     javaObject ("java.math.BigDecimal", []);
+     ⇒ error: [java] java.lang.NullPointerException
+
+   It is not recommended to represent Java’s ‘null’ value by empty
+brackets ‘[]’, because ‘null’ has no type whereas ‘[]’ has type
+‘double’.
+
+   In Octave it is possible to provide limited Java reflection by
+listing the public fields and methods of a Java object, both static or
+not.
+
+     fieldnames (<Java object>)
+     methods (<Java object>)
+
+   Finally, an examples is shown how to access the stack trace from
+within Octave, where the function *note debug_java: XREFdebug_java. is
+used to set and to get the current debug state.  In debug mode, the Java
+error and the stack trace are displayed.
+
+     debug_java (true)  # use "false" to omit display of stack trace
+     debug_java ()
+     ⇒ ans = 1
+     javaObject ("java.math.BigDecimal", "1") ...
+       .divide (javaObject ("java.math.BigDecimal", "0"))
+
+
+File: octave.info,  Node: Passing parameters to the JVM,  Next: Java Interface Functions,  Prev: How to use Java from within Octave,  Up: Java Interface
+
+A.4.3 Passing parameters to the JVM
+-----------------------------------
+
+In order to execute Java code Octave creates a Java Virtual Machine
+(JVM). Such a JVM allocates a fixed amount of initial memory and may
+expand this pool up to a fixed maximum memory limit.  The default values
+depend on the Java version (*note javamem: XREFjavamem.).  The memory
+pool is shared by all Java objects running in the JVM.  This strict
+memory limit is intended mainly to avoid runaway applications inside web
+browsers or in enterprise servers which can consume all memory and crash
+the system.  When the maximum memory limit is hit, Java code will throw
+exceptions so that applications will fail or behave unexpectedly.
+
+   You can specify options for the creation of the JVM inside a file
+named ‘java.opts’.  This is a text file where enter you enter lines
+containing ‘-X’ and ‘-D’ options that are then passed to the JVM during
+initialization.
+
+   The directory where the Java options file is located is specified by
+the environment variable ‘OCTAVE_JAVA_DIR’.  If unset the directory
+where ‘javaclasspath.m’ resides is used instead (typically
+‘OCTAVE_HOME/share/octave/OCTAVE_VERSION/m/java/’).  You can find this
+directory by executing
+
+     which javaclasspath
+
+   The ‘-X’ options allow you to increase the maximum amount of memory
+available to the JVM.  The following example allows up to 256 Megabytes
+to be used by adding the following line to the ‘java.opts’ file:
+
+     -Xmx256m
+
+   The maximum possible amount of memory depends on your system.  On a
+Windows system with 2 Gigabytes main memory you should be able to set
+this maximum to about 1 Gigabyte.
+
+   If your application requires a large amount of memory from the
+beginning, you can also specify the initial amount of memory allocated
+to the JVM.  Adding the following line to the ‘java.opts’ file starts
+the JVM with 64 Megabytes of initial memory:
+
+     -Xms64m
+
+   For more details on the available ‘-X’ options of your Java Virtual
+Machine issue the command ‘java -X’ at the operating system command
+prompt and consult the Java documentation.
+
+   The ‘-D’ options can be used to define system properties which can
+then be used by Java classes inside Octave.  System properties can be
+retrieved by using the ‘getProperty()’ methods of the ‘java.lang.System’
+class.  The following example line defines the property MYPROPERTY and
+assigns it the string ‘12.34’.
+
+     -DMyProperty=12.34
+
+   The value of this property can then be retrieved as a string by a
+Java object or in Octave:
+
+     octave> javaMethod ("getProperty", "java.lang.System", "MyProperty");
+     ans = 12.34
+
+See also: javamem.
+
+
+File: octave.info,  Node: Java Interface Functions,  Prev: Passing parameters to the JVM,  Up: Java Interface
+
+A.4.4 Java Interface Functions
 ------------------------------
 
 The following functions are the core of the Java Interface.  They
@@ -7551,7 +8102,7 @@ call Java methods which return results to Octave.
 
      See also: *note javaObject: XREFjavaObject.
 
-   There are many different variable types in Octave but only ones
+   There are many different variable types in Octave, but only ones
 created through ‘javaObject’ can use Java functions.  Before using Java
 with an unknown object the type can be checked with ‘isjava’.
 
@@ -7562,7 +8113,7 @@ with an unknown object the type can be checked with ‘isjava’.
      *note isa: XREFisa, *note javaObject: XREFjavaObject.
 
    Once an object has been created it is natural to find out what fields
-the object has and to read (get) and write (set) them.
+the object has, and to read (get) and write (set) them.
 
    In Octave the ‘fieldnames’ function for structures has been
 overloaded to return the fields of a Java object.  For example:
@@ -7671,7 +8222,7 @@ styles is shown below.
 
    The following three functions are used to display and modify the
 class path used by the Java Virtual Machine.  This is entirely separate
-from Octave’s PATH variable and is used by the JVM to find the correct
+from Octave’s ‘PATH’ variable and is used by the JVM to find the correct
 code to execute.
 
  -- : javaclasspath ()
@@ -7902,672 +8453,4 @@ interface between Octave and the Java Virtual Machine.
      See also: *note java_matrix_autoconversion:
      XREFjava_matrix_autoconversion, *note java_unsigned_autoconversion:
      XREFjava_unsigned_autoconversion.
-
-
-File: octave.info,  Node: Making Java Classes Available,  Next: Creating an Instance of a Java Class,  Prev: Java Interface Functions,  Up: Java Interface
-
-A.4.2 Making Java Classes Available
------------------------------------
-
-Java finds classes by searching a CLASSPATH.  This is a list of Java
-archive files and/or directories containing class files.  In Octave the
-CLASSPATH is composed of two parts:
-
-   • the STATIC CLASSPATH is initialized once at startup of the JVM, and
-
-   • the DYNAMIC CLASSPATH which can be modified at runtime.
-
-   Octave searches the STATIC CLASSPATH first, then the DYNAMIC
-CLASSPATH.  Classes appearing in the STATIC as well as in the DYNAMIC
-CLASSPATH will therefore be found in the STATIC CLASSPATH and loaded
-from this location.  Classes which will be used frequently or must be
-available to all users should be added to the STATIC CLASSPATH.  The
-STATIC CLASSPATH is populated once from the contents of a plain text
-file named ‘javaclasspath.txt’ (or ‘classpath.txt’ historically) when
-the Java Virtual Machine starts.  This file contains one line for each
-individual classpath to be added to the STATIC CLASSPATH.  These lines
-can identify single class files, directories containing class files, or
-Java archives with complete class file hierarchies.  Comment lines
-starting with a ‘#’ or a ‘%’ character are ignored.
-
-   The search rules for the file ‘javaclasspath.txt’ (or
-‘classpath.txt’) are:
-
-   • First, Octave tries to locate it in the current directory (where
-     Octave was started from).  If such a file is found, it is read and
-     defines the initial STATIC CLASSPATH.  Thus, it is possible to
-     define a static classpath on a ’per Octave invocation’ basis.
-
-   • Next, Octave searches in the user’s home directory.  If a file
-     ‘javaclasspath.txt’ exists here, its contents are appended to the
-     static classpath (if any).  Thus, it is possible to build an
-     initial static classpath on a ’per user’ basis.
-
-   • Finally, Octave looks for a next occurrence of file
-     ‘javaclasspath.txt’ in the m-files directory where Octave Java
-     functions live.  This is where ‘javaclasspath.m’ resides, usually
-     something like ‘OCTAVE_HOME/share/octave/OCTAVE_VERSION/m/java/’.
-     You can find this directory by executing the command
-
-          which javaclasspath
-
-     If this file exists here, its contents are also appended to the
-     static classpath.  Note that the archives and class directories
-     defined in this last step will affect all users.
-
-   Classes which are used only by a specific script should be placed in
-the DYNAMIC CLASSPATH.  This portion of the classpath can be modified at
-runtime using the ‘javaaddpath’ and ‘javarmpath’ functions.
-
-   Example:
-
-     octave> base_path = "C:/Octave/java_files";
-
-     octave> % add two JARchives to the dynamic classpath
-     octave> javaaddpath ([base_path, "/someclasses.jar"]);
-     octave> javaaddpath ([base_path, "/moreclasses.jar"]);
-
-     octave> % check the dynamic classpath
-     octave> p = javaclasspath;
-     octave> disp (p{1});
-     C:/Octave/java_files/someclasses.jar
-     octave> disp (p{2});
-     C:/Octave/java_files/moreclasses.jar
-
-     octave> % remove the first element from the classpath
-     octave> javarmpath ([base_path, "/someclasses.jar"]);
-     octave> p = javaclasspath;
-     octave> disp (p{1});
-     C:/Octave/java_files/moreclasses.jar
-
-     octave> % provoke an error
-     octave> disp (p{2});
-     error: A(I): Index exceeds matrix dimension.
-
-   Another way to add files to the DYNAMIC CLASSPATH exclusively for
-your user account is to use the file ‘.octaverc’ which is stored in your
-home directory.  All Octave commands in this file are executed each time
-you start a new instance of Octave.  The following example adds the
-directory ‘octave’ to Octave’s search path and the archive
-‘myclasses.jar’ in this directory to the Java search path.
-
-     % contents of .octaverc:
-     addpath ("~/octave");
-     javaaddpath ("~/octave/myclasses.jar");
-
-
-File: octave.info,  Node: Creating an Instance of a Java Class,  Next: Handling Java Memory Limitations,  Prev: Making Java Classes Available,  Up: Java Interface
-
-A.4.3 Creating an Instance of a Java Class
-------------------------------------------
-
-The function ‘javaObject’ can be used to create Java objects.
-
-   Example:
-
-     Passenger = javaObject ("package.FirstClass", row, seat);
-
-
-File: octave.info,  Node: Handling Java Memory Limitations,  Prev: Creating an Instance of a Java Class,  Up: Java Interface
-
-A.4.4 Handling Java Memory Limitations
---------------------------------------
-
-In order to execute Java code Octave creates a Java Virtual Machine
-(JVM). Such a JVM allocates a fixed amount of initial memory and may
-expand this pool up to a fixed maximum memory limit.  The default values
-depend on the Java version (*note javamem: XREFjavamem.).  The memory
-pool is shared by all Java objects running in the JVM.  This strict
-memory limit is intended mainly to avoid that runaway applications
-inside web browsers or in enterprise servers can consume all memory and
-crash the system.  When the maximum memory limit is hit, Java code will
-throw exceptions so that applications will fail or behave unexpectedly.
-
-   You can specify options for the creation of the JVM inside a file
-named ‘java.opts’.  This is a text file where you can enter lines
-containing ‘-X’ and ‘-D’ options handed to the JVM during
-initialization.
-
-   The directory where the Java options file is located is specified by
-the environment variable ‘OCTAVE_JAVA_DIR’.  If unset the directory
-where ‘javaclasspath.m’ resides is used instead (typically
-‘OCTAVE_HOME/share/octave/OCTAVE_VERSION/m/java/’).  You can find this
-directory by executing
-
-     which javaclasspath
-
-   The ‘-X’ options allow you to increase the maximum amount of memory
-available to the JVM.  The following example allows up to 256 Megabytes
-to be used by adding the following line to the ‘java.opts’ file:
-
-     -Xmx256m
-
-   The maximum possible amount of memory depends on your system.  On a
-Windows system with 2 Gigabytes main memory you should be able to set
-this maximum to about 1 Gigabyte.
-
-   If your application requires a large amount of memory from the
-beginning, you can also specify the initial amount of memory allocated
-to the JVM.  Adding the following line to the ‘java.opts’ file starts
-the JVM with 64 Megabytes of initial memory:
-
-     -Xms64m
-
-   For more details on the available ‘-X’ options of your Java Virtual
-Machine issue the command ‘java -X’ at the operating system command
-prompt and consult the Java documentation.
-
-   The ‘-D’ options can be used to define system properties which can
-then be used by Java classes inside Octave.  System properties can be
-retrieved by using the ‘getProperty()’ methods of the ‘java.lang.System’
-class.  The following example line defines the property MYPROPERTY and
-assigns it the string ‘12.34’.
-
-     -DMyProperty=12.34
-
-   The value of this property can then be retrieved as a string by a
-Java object or in Octave:
-
-     octave> javaMethod ("getProperty", "java.lang.System", "MyProperty");
-     ans = 12.34
-
-See also: javamem.
-
-
-File: octave.info,  Node: Test and Demo Functions,  Next: Obsolete Functions,  Prev: External Code Interface,  Up: Top
-
-Appendix B Test and Demo Functions
-**********************************
-
-Octave includes a number of functions to allow the integration of
-testing and demonstration code in the source code of the functions
-themselves.
-
-* Menu:
-
-* Test Functions::
-* Demonstration Functions::
-
-
-File: octave.info,  Node: Test Functions,  Next: Demonstration Functions,  Up: Test and Demo Functions
-
-B.1 Test Functions
-==================
-
- -- : test NAME
- -- : test NAME quiet|normal|verbose
- -- : test ("NAME", "quiet|normal|verbose", FID)
- -- : test ("NAME", "quiet|normal|verbose", FNAME)
- -- : SUCCESS = test (...)
- -- : [N, NMAX, NXFAIL, NSKIP] = test (...)
- -- : [CODE, IDX] = test ("NAME", "grabdemo")
- -- : test ([], "explain", FID)
- -- : test ([], "explain", FNAME)
-
-     Perform built-in self-tests from the first file in the loadpath
-     matching NAME.
-
-     ‘test’ can be called in either command or functional form.  The
-     exact operation of test is determined by a combination of mode
-     (interactive or batch), reporting level ("quiet", "normal",
-     "verbose"), and whether a logfile or summary output variable is
-     used.
-
-     The default mode when ‘test’ is called from the command line is
-     interactive.  In this mode, tests will be run until the first error
-     is encountered, or all tests complete successfully.  In batch mode,
-     all tests are run regardless of any failures, and the results are
-     collected for reporting.  Tests which require user interaction,
-     i.e., demo blocks, are never run in batch mode.
-
-     Batch mode is enabled by either 1) specifying a logfile using the
-     third argument FNAME or FID, or 2) requesting an output argument
-     such as SUCCESS, N, etc.
-
-     The optional second argument determines the amount of output to
-     generate and which types of tests to run.  The default value is
-     "normal".  Requesting an output argument will suppress printing the
-     final summary message and any intermediate warnings, unless verbose
-     reporting is enabled.
-
-     "quiet"
-          Print a summary message when all tests pass, or print an error
-          with the results of the first bad test when a failure occurs.
-          Don’t run tests which require user interaction.
-
-     "normal"
-          Display warning messages about skipped tests or failing xtests
-          during test execution.  Print a summary message when all tests
-          pass, or print an error with the results of the first bad test
-          when a failure occurs.  Don’t run tests which require user
-          interaction.
-
-     "verbose"
-          Display tests before execution.  Print all warning messages.
-          In interactive mode, run all tests including those which
-          require user interaction.
-
-     The optional third input argument specifies a logfile where results
-     of the tests should be written.  The logfile may be a character
-     string (FNAME) or an open file descriptor ID (FID).  To enable
-     batch processing, but still print the results to the screen, use
-     ‘stdout’ for FID.
-
-     When called with just a single output argument SUCCESS, ‘test’
-     returns true if all of the tests were successful.  If called with
-     more than one output argument then the number of successful tests
-     (N), the total number of tests in the file (NMAX), the number of
-     xtest failures (NXFAIL), and the number of skipped tests (NSKIP)
-     are returned.
-
-     Example
-
-          test sind
-          ⇒
-          PASSES 5 out of 5 tests
-
-          [n, nmax] = test ("sind")
-          ⇒
-          n =  5
-          nmax =  5
-
-     Additional Calling Syntaxes
-
-     If the second argument is the string "grabdemo", the contents of
-     any built-in demo blocks are extracted but not executed.  The text
-     for all code blocks is concatenated and returned as CODE with IDX
-     being a vector of positions of the ends of each demo block.  For an
-     easier way to extract demo blocks from files, *Note example:
-     XREFexample.
-
-     If the second argument is "explain" then NAME is ignored and an
-     explanation of the line markers used in ‘test’ output reports is
-     written to the file specified by FNAME or FID.
-
-     See also: *note assert: XREFassert, *note fail: XREFfail, *note
-     demo: XREFdemo, *note example: XREFexample, *note error: XREFerror.
-
-   ‘test’ scans the named script file looking for lines which start with
-the identifier ‘%!’.  The prefix is stripped off and the rest of the
-line is processed through the Octave interpreter.  If the code generates
-an error, then the test is said to fail.
-
-   Since ‘eval()’ will stop at the first error it encounters, you must
-divide your tests up into blocks, with anything in a separate block
-evaluated separately.  Blocks are introduced by valid keywords like
-‘test’, ‘function’, or ‘assert’ immediately following ‘%!’.  A block is
-defined by indentation as in Python.  Lines beginning with
-‘%!<whitespace>’ are part of the preceeding block.
-
-   For example:
-
-     %!test error ("this test fails!")
-     %!test "test doesn't fail.  it doesn't generate an error"
-
-   When a test fails, you will see something like:
-
-       ***** test error ("this test fails!")
-     !!!!! test failed
-     this test fails!
-
-   Generally, to test if something works, you want to assert that it
-produces a correct value.  A real test might look something like
-
-     %!test
-     %! A = [1, 2, 3; 4, 5, 6]; B = [1; 2];
-     %! expect = [ A ; 2*A ];
-     %! get = kron (B, A);
-     %! if (any (size (expect) != size (get)))
-     %!   error ("wrong size: expected %d,%d but got %d,%d",
-     %!          size (expect), size (get));
-     %! elseif (any (any (expect != get)))
-     %!   error ("didn't get what was expected.");
-     %! endif
-
-   To make the process easier, use the ‘assert’ function.  For example,
-with ‘assert’ the previous test is reduced to:
-
-     %!test
-     %! A = [1, 2, 3; 4, 5, 6]; B = [1; 2];
-     %! assert (kron (B, A), [ A; 2*A ]);
-
-   ‘assert’ can accept a tolerance so that you can compare results
-absolutely or relatively.  For example, the following all succeed:
-
-     %!test assert (1+eps, 1, 2*eps)           # absolute error
-     %!test assert (100+100*eps, 100, -2*eps)  # relative error
-
-   You can also do the comparison yourself, but still have assert
-generate the error:
-
-     %!test assert (isempty ([]))
-     %!test assert ([1, 2; 3, 4] > 0)
-
-   Because ‘assert’ is so frequently used alone in a test block, there
-is a shorthand form:
-
-     %!assert (...)
-
-which is equivalent to:
-
-     %!test assert (...)
-
-   Occasionally a block of tests will depend on having optional
-functionality in Octave.  Before testing such blocks the availability of
-the required functionality must be checked.  A ‘%!testif HAVE_XXX’ block
-will only be run if Octave was compiled with functionality ‘HAVE_XXX’.
-For example, the sparse single value decomposition, ‘svds()’, depends on
-having the ARPACK library.  All of the tests for ‘svds’ begin with
-
-     %!testif HAVE_ARPACK
-
-Review ‘config.h’ or ‘__octave_config_info__ ("build_features")’ to see
-some of the possible values to check.
-
-   Sometimes during development there is a test that should work but is
-known to fail.  You still want to leave the test in because when the
-final code is ready the test should pass, but you may not be able to fix
-it immediately.  To avoid unnecessary bug reports for these known
-failures, mark the block with ‘xtest’ rather than ‘test’:
-
-     %!xtest assert (1==0)
-     %!xtest fail ("success=1", "error")
-
-In this case, the test will run and any failure will be reported.
-However, testing is not aborted and subsequent test blocks will be
-processed normally.  Another use of ‘xtest’ is for statistical tests
-which should pass most of the time but are known to fail occasionally.
-
-   Each block is evaluated in its own function environment, which means
-that variables defined in one block are not automatically shared with
-other blocks.  If you do want to share variables, then you must declare
-them as ‘shared’ before you use them.  For example, the following
-declares the variable A, gives it an initial value (default is empty),
-and then uses it in several subsequent tests.
-
-     %!shared A
-     %! A = [1, 2, 3; 4, 5, 6];
-     %!assert (kron ([1; 2], A), [ A; 2*A ])
-     %!assert (kron ([1, 2], A), [ A, 2*A ])
-     %!assert (kron ([1,2; 3,4], A), [ A,2*A; 3*A,4*A ])
-
-   You can share several variables at the same time:
-
-     %!shared A, B
-
-   You can also share test functions:
-
-     %!function A = fn (B)
-     %!  A = 2*B;
-     %!endfunction
-     %!assert (fn(2), 4)
-
-   Note that all previous variables and values are lost when a new
-shared block is declared.
-
-   Remember that ‘%!function’ begins a new block and that
-‘%!endfunction’ ends this block.  Be aware that until a new block is
-started, lines starting with ‘%!<space>’ will be discarded as comments.
-The following is nearly identical to the example above, but does
-nothing.
-
-     %!function A = fn (B)
-     %!  A = 2*B;
-     %!endfunction
-     %!assert (fn(2), 4)
-
-Because there is a space after ‘%!’ the ‘assert’ statement does not
-begin a new block and this line is treated as a comment.
-
-   Error and warning blocks are like test blocks, but they only succeed
-if the code generates an error.  You can check the text of the error is
-correct using an optional regular expression ‘<pattern>’.  For example:
-
-     %!error <passes!> error ("this test passes!")
-
-   If the code doesn’t generate an error, the test fails.  For example:
-
-     %!error "this is an error because it succeeds."
-
-produces
-
-       ***** error "this is an error because it succeeds."
-     !!!!! test failed: no error
-
-   It is important to automate the tests as much as possible, however
-some tests require user interaction.  These can be isolated into demo
-blocks, which if you are in batch mode, are only run when called with
-‘demo’ or the ‘verbose’ option to ‘test’.  The code is displayed before
-it is executed.  For example,
-
-     %!demo
-     %! T = [0:0.01:2*pi]; X = sin (T);
-     %! plot (T, X);
-     %! # you should now see a sine wave in your figure window
-
-produces
-
-     funcname example 1:
-      T = [0:0.01:2*pi]; X = sin (T);
-      plot (T, X);
-      # you should now see a sine wave in your figure window
-
-     Press <enter> to continue:
-
-   Note that demo blocks cannot use any shared variables.  This is so
-that they can be executed by themselves, ignoring all other tests.
-
-   If you want to temporarily disable a test block, put ‘#’ in place of
-the block type.  This creates a comment block which is echoed in the log
-file but not executed.  For example:
-
-     %!#demo
-     %! T = [0:0.01:2*pi]; X = sin (T);
-     %! plot (T, X);
-     %! # you should now see a sine wave in your figure window
-
-The following trivial code snippet provides examples for the use of
-fail, assert, error, and xtest:
-
-     function output = must_be_zero (INPUT)
-       if (INPUT != 0)
-         error ("Nonzero input!")
-       endif
-       output = input;
-     endfunction
-
-     %!fail ("must_be_zero (1)")
-     %!assert (must_be_zero (0), 0)
-     %!error <Nonzero> must_be_zero (1)
-     %!xtest error ("This code generates an error")
-
-When putting this in a file ‘must_be_zero.m’, and running the test, we
-see
-
-     test must_be_zero verbose
-
-     ⇒
-     >>>>> /path/to/must_be_zero.m
-     ***** fail ("must_be_zero (1)")
-     ***** assert (must_be_zero (0), 0)
-     ***** error <Nonzero> must_be_zero (1)
-     ***** xtest error ("This code generates an error")
-     !!!!! known failure
-     This code generates an error
-     PASSES 3 out of 4 tests (1 expected failure)
-
-Block type summary:
-...................
-
-‘%!test’
-‘%!test <MESSAGE>’
-     Check that entire block is correct.  If ‘<MESSAGE>’ is present, the
-     test block is interpreted as for ‘xtest’.
-
-‘%!testif HAVE_XXX’
-‘%!testif HAVE_XXX, HAVE_YYY, ...’
-‘%!testif ... <MESSAGE>’
-     Check block only if Octave was compiled with feature HAVE_XXX. If
-     ‘<MESSAGE>’ is present, the test block is interpreted as for
-     ‘xtest’.
-
-‘%!xtest’
-‘%!xtest <MESSAGE>’
-     Check block, report a test failure but do not abort testing.  If
-     ‘<MESSAGE>’ is present, then the text of the message is displayed
-     if the test fails, like this:
-
-          !!!!! Known bug:  MESSAGE
-
-     If the message is an integer, it is interpreted as a bug ID for the
-     Octave bug tracker and reported as
-
-          !!!!! Known bug: http://octave.org/testfailure/?BUG-ID
-
-     in which BUG-ID is the integer bug number.  The intent is to allow
-     clearer documentation of known problems.
-
-‘%!error’
-‘%!error <MESSAGE>’
-‘%!warning’
-‘%!warning <MESSAGE>’
-     Check for correct error or warning message.  If ‘<MESSAGE>’ is
-     supplied it is interpreted as a regular expression pattern that is
-     expected to match the error or warning message.
-
-‘%!demo’
-     Demo only executes in interactive mode.
-
-‘%!#’
-     Comment.  Ignore everything within the block
-
-‘%!shared x,y,z’
-     Declare variables for use in multiple tests.
-
-‘%!function’
-     Define a function for use in multiple tests.
-
-‘%!endfunction’
-     Close a function definition.
-
-‘%!assert (x, y, tol)’
-‘%!assert <MESSAGE> (x, y, tol)’
-‘%!fail (CODE, PATTERN)’
-‘%!fail <MESSAGE> (CODE, PATTERN)’
-     Shorthand for ‘%!test assert (x, y, tol)’ or ‘%!test fail (CODE,
-     PATTERN)’.  If ‘<MESSAGE>’ is present, the test block is
-     interpreted as for ‘xtest’.
-
-   When coding tests the Octave convention is that lines that begin with
-a block type do not have a semicolon at the end.  Any code that is
-within a block, however, is normal Octave code and usually will have a
-trailing semicolon.  For example,
-
-     ## bare block instantiation
-     %!assert (sin (0), 0)
-
-but
-
-     ## test block with normal Octave code
-     %!test
-     %! assert (sin (0), 0);
-
-   You can also create test scripts for built-in functions and your own
-C++ functions.  To do so, put a file with the bare function name (no .m
-extension) in a directory in the load path and it will be discovered by
-the ‘test’ function.  Alternatively, you can embed tests directly in
-your C++ code:
-
-     /*
-     %!test disp ("this is a test")
-     */
-
-or
-
-     #if 0
-     %!test disp ("this is a test")
-     #endif
-
-However, in this case the raw source code will need to be on the load
-path and the user will have to remember to type ‘test ("funcname.cc")’.
-
- -- : assert (COND)
- -- : assert (COND, ERRMSG)
- -- : assert (COND, ERRMSG, ...)
- -- : assert (COND, MSG_ID, ERRMSG, ...)
- -- : assert (OBSERVED, EXPECTED)
- -- : assert (OBSERVED, EXPECTED, TOL)
-
-     Produce an error if the specified condition is not met.
-
-     ‘assert’ can be called in three different ways.
-
-     ‘assert (COND)’
-     ‘assert (COND, ERRMSG)’
-     ‘assert (COND, ERRMSG, ...)’
-     ‘assert (COND, MSG_ID, ERRMSG, ...)’
-          Called with a single argument COND, ‘assert’ produces an error
-          if COND is false (numeric zero).
-
-          Any additional arguments are passed to the ‘error’ function
-          for processing.
-
-     ‘assert (OBSERVED, EXPECTED)’
-          Produce an error if observed is not the same as expected.
-
-          Note that OBSERVED and EXPECTED can be scalars, vectors,
-          matrices, strings, cell arrays, or structures.
-
-     ‘assert (OBSERVED, EXPECTED, TOL)’
-          Produce an error if observed is not the same as expected but
-          equality comparison for numeric data uses a tolerance TOL.
-
-          If TOL is positive then it is an absolute tolerance which will
-          produce an error if ‘abs (OBSERVED - EXPECTED) > abs (TOL)’.
-
-          If TOL is negative then it is a relative tolerance which will
-          produce an error if ‘abs (OBSERVED - EXPECTED) > abs (TOL *
-          EXPECTED)’.
-
-          If EXPECTED is zero TOL will always be interpreted as an
-          absolute tolerance.
-
-          If TOL is not scalar its dimensions must agree with those of
-          OBSERVED and EXPECTED and tests are performed on an
-          element-by-element basis.
-
-     See also: *note fail: XREFfail, *note test: XREFtest, *note error:
-     XREFerror, *note isequal: XREFisequal.
-
- -- : fail (CODE)
- -- : fail (CODE, PATTERN)
- -- : fail (CODE, "warning")
- -- : fail (CODE, "warning", PATTERN)
-
-     Return true if CODE fails with an error message matching PATTERN,
-     otherwise produce an error.
-
-     CODE must be in the form of a string that is passed to the Octave
-     interpreter via the ‘evalin’ function, i.e., a (quoted) string
-     constant or a string variable.
-
-     Note that if CODE runs successfully, rather than failing, the error
-     printed is:
-
-                    expected error <.> but got none
-
-     If called with two arguments, the return value will be true only if
-     CODE fails with an error message containing PATTERN (case
-     sensitive).  If the code fails with a different error than the one
-     specified in PATTERN then the message produced is:
-
-                    expected <PATTERN>
-                    but got <text of actual error>
-
-     The angle brackets are not part of the output.
-
-     When called with the "warning" option ‘fail’ will produce an error
-     if executing the code produces no warning.
-
-     See also: *note assert: XREFassert, *note error: XREFerror.
 

@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ## Copyright (C) 2009 VZLU Prague
 ## Copyright (C) 2009 Jaroslav Hajek
 ##
@@ -101,4 +101,3 @@ endfunction
 
 %!error common_size ()
 %!error common_size (1)
-

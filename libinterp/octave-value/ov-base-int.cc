@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 John W. Eaton
+Copyright (C) 2004-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -788,4 +788,3 @@ octave_base_int_scalar<T>::load_hdf5 (octave_hdf5_id loc_id, const char *name)
   return false;
 #endif
 }
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -97,4 +97,3 @@ endfunction
 %!error statistics (1, 0)
 %!error statistics (1, 3)
 %!error statistics (1)
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -152,4 +152,3 @@ elements @code{sec} (seconds) @code{usec} (microseconds).
 %! assert (isfield (r.utime, "sec"));
 %! assert (isfield (r.utime, "usec"));
 */
-

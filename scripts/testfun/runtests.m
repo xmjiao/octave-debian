@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 John W. Eaton
+## Copyright (C) 2010-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -162,4 +162,3 @@ endfunction
 
 %!error runtests ("foo", 1)
 %!error <DIRECTORY argument> runtests ("#_TOTALLY_/_INVALID_/_PATHNAME_#")
-

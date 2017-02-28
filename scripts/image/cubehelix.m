@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Carnë Draug
+## Copyright (C) 2014-2017 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -84,4 +84,3 @@ endfunction
 %!  rgbplot (cmap, "composite");
 %! subplot (2, 1, 2);
 %!  rgbplot (cmap);
-

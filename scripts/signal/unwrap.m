@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Bill Lash
+## Copyright (C) 2000-2017 Bill Lash
 ##
 ## This file is part of Octave.
 ##
@@ -150,4 +150,3 @@ endfunction
 %!error unwrap ()
 %!error unwrap (1,2,3,4)
 %!error unwrap ("foo")
-

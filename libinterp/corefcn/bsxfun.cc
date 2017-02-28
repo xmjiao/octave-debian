@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2016 David Bateman
+Copyright (C) 2007-2017 David Bateman
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -821,4 +821,3 @@ dimensionality as the other array.
 %! assert (a, zeros (0, 3));
 
 */
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2016 Jaroslav Hajek
+Copyright (C) 2008-2017 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -220,4 +220,3 @@ octave_float_complex_diag_matrix::chk_valid_scalar (const octave_value& val,
     x = val.float_complex_value ();
   return retval;
 }
-

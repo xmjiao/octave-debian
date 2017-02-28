@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -59,4 +59,3 @@ endfunction
 %!assert (dsearchn (x,tri,[1/3,1]), 2)
 %!assert (dsearchn (x,tri,[1/3,1],NaN), NaN)
 %!assert (dsearchn (x,tri,[1/3,1],NA), NA)
-

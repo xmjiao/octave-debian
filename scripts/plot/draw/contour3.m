@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David BAteman
+## Copyright (C) 2007-2017 David BAteman
 ##
 ## This file is part of Octave.
 ##
@@ -104,4 +104,3 @@ endfunction
 %! zlim auto;
 %! view (315, 17);
 %! title ({"contour3 of peaks() function", "gray surf() shows peaks function"});
-

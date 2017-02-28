@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Ben Abbott
+## Copyright (C) 2010-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -94,4 +94,3 @@ endfunction
 %!error <H must be a scalar .* graphic handle> getappdata (-1, "hello")
 %!error <NAME must be a string> getappdata (0, 1)
 %!error <Only one handle H may be used when fetching appdata> getappdata ([0 0])
-

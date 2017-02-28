@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Friedrich Leisch
+## Copyright (C) 1995-2017 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -76,4 +76,3 @@ endfunction
 %!error spectral_xdf (1, 2, 3, 4)
 %!error spectral_xdf (1, 2)
 %!error spectral_xdf (1, "invalid")
-

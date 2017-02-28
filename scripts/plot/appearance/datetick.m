@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -334,4 +334,3 @@ function sep = __calc_tick_sep__ (lo, hi)
   sep = x * 10 .^ b;
 
 endfunction
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ## Copyright (C) 2007 Ben Abbott
 ##
 ## This file is part of Octave.
@@ -433,4 +433,3 @@ endfunction
 %! [br, ar] = residue (r, p, k, e);
 %! assert (br, b, 1e-8);
 %! assert (ar, a, 1e-8);
-

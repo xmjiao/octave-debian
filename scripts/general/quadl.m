@@ -1,4 +1,4 @@
-## Copyright (C) 1998-2016 Walter Gautschi
+## Copyright (C) 1998-2017 Walter Gautschi
 ##
 ## This file is part of Octave.
 ##
@@ -189,4 +189,3 @@ endfunction
 %!error quadl (@sin)
 %!error quadl (@sin,1)
 %!error <TOL must be a scalar> quadl (@sin, 0, 1, ones (2,2))
-

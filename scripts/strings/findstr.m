@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 Kurt Hornik
+## Copyright (C) 1996-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -141,4 +141,3 @@ endfunction
 %!error findstr ()
 %!error findstr ("foo", "bar", 3, 4)
 %!error <must have only one non-singleton dimension> findstr (["AB" ; "CD"], "C")
-

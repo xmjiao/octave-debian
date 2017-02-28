@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Ivana Varekova & Radek Salac
+## Copyright (C) 2008-2017 Ivana Varekova & Radek Salac
 ##
 ## This file is part of Octave.
 ##
@@ -231,4 +231,3 @@ endfunction
 %! assert (y, [0, 0, 0, 3]);
 %! assert (h, 0);
 %! assert (s, 1);
-

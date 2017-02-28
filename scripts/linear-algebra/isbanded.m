@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Massimiliano Fasi
+## Copyright (C) 2014-2017 Massimiliano Fasi
 ##
 ## This file is part of Octave.
 ##
@@ -83,4 +83,3 @@ endfunction
 %!error <LOWER and UPPER must be non-negative> isbanded (1, 1, -1)
 %!error <LOWER and UPPER must be non-negative> isbanded (1, {1}, 1)
 %!error <LOWER and UPPER must be non-negative> isbanded (1, 1, {1})
-

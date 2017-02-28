@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {} {} usleep (@var{microseconds})\n\
+## @deftypefn {} {} usleep (@var{microseconds})
 ##
 ## @code{usleep} is deprecated and will be removed in Octave version 4.6.
 ## Use @code{pause} instead.
@@ -51,4 +51,3 @@ endfunction
 
 %!error (usleep ())
 %!error (usleep (1, 2))
-

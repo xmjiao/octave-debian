@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -105,4 +105,3 @@ endfunction
 %!error int2str ()
 %!error int2str (1, 2)
 %!error <N must be a numeric> int2str ({1})
-

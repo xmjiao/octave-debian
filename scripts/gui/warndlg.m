@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Martin Hepperle
+## Copyright (C) 2010-2017 Martin Hepperle
 ##
 ## This file is part of Octave.
 ##
@@ -76,4 +76,3 @@ endfunction
 %!error warndlg (1, 2, 3, 4)
 %!error <MSG must be a character string> warndlg (1)
 %!error <TITLE must be a character string> warndlg ("msg", 1)
-

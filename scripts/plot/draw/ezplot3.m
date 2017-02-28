@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -85,4 +85,3 @@ endfunction
 %! fy = @(t) sin (t);
 %! fz = @(t) t;
 %! ezplot3 (fx, fy, fz, [0, 5*pi], 100, "animate");
-

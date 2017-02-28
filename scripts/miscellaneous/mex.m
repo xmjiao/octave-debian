@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 David Bateman
+## Copyright (C) 2006-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -40,4 +40,3 @@ endfunction
 
 ## Remove from test statistics.  All real tests are in mkoctfile.
 %!assert (1)
-

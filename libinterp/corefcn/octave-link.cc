@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2013-2017 John W. Eaton
 Copyright (C) 2011-2016 Jacob Dawid
 Copyright (C) 2011-2016 John P. Swensen
 
@@ -395,4 +395,3 @@ Undocumented internal function.
 
   return ovl (octave_link::show_doc (file));
 }
-

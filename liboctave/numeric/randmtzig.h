@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2016 John W. Eaton
+Copyright (C) 2006-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -94,4 +94,3 @@ extern OCTAVE_API void oct_fill_float_randn (octave_idx_type n, float *p);
 extern OCTAVE_API void oct_fill_float_rande (octave_idx_type n, float *p);
 
 #endif
-

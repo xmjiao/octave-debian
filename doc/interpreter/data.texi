@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -114,7 +114,8 @@ belongs to.
 @deftypefn {} {} cast (@var{val}, "@var{type}")
 Convert @var{val} to data type @var{type}.
 
-@var{val} must be one of the numeric classes:
+Both @var{val} and @var{type} are typically one of the following built-in
+classes:
 
 @example
 @group
@@ -144,6 +145,18 @@ cast (-5, "uint8")
 cast (300, "int8")
    @result{} 127
 @end group
+@end example
+
+Programming Note: This function relies on the object @var{val} having a
+conversion method named @var{type}.  User-defined classes may implement only
+a subset of the full list of types shown above.  In that case, it may be
+necessary to call cast twice in order to reach the desired type.
+For example, the conversion to double is nearly always implemented, but
+the conversion to uint8 might not be.  In that case, the following code will
+work
+
+@example
+cast (cast (@var{user_defined_val}, "double"), "uint8")
 @end example
 
 @seealso{@ref{XREFtypecast,,typecast}, @ref{XREFint8,,int8}, @ref{XREFuint8,,uint8}, @ref{XREFint16,,int16}, @ref{XREFuint16,,uint16}, @ref{XREFint32,,int32}, @ref{XREFuint32,,uint32}, @ref{XREFint64,,int64}, @ref{XREFuint64,,uint64}, @ref{XREFdouble,,double}, @ref{XREFsingle,,single}, @ref{XREFlogical,,logical}, @ref{XREFchar,,char}, @ref{XREFclass,,class}, @ref{XREFtypeinfo,,typeinfo}}
@@ -584,7 +597,7 @@ Example 4: number of output arguments != number of dimensions
 
 @example
 @group
-[nr, remainder] = size (ones (2, 3, 4, 5)
+[nr, remainder] = size (ones (2, 3, 4, 5))
     @result{} nr = 2
     @result{} remainder = 60
 @end group

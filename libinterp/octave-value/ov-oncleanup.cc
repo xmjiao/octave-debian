@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2016 VZLU Prague
+Copyright (C) 2010-2017 VZLU Prague
 
 This file is part of Octave.
 
@@ -95,6 +95,11 @@ octave_oncleanup::~octave_oncleanup (void)
       warning ("onCleanup: error caught while executing cleanup function:\n%s\n",
                msg.c_str ());
 
+    }
+  catch (const octave::exit_exception&)
+    {
+      // This shouldn't happen since we disabled quit above.
+      warning ("onCleanup: exit disabled while executing cleanup function");
     }
   catch (...) // Yes, the black hole.  We're in a d-tor.
     {
@@ -208,4 +213,3 @@ For similar functionality @xref{The unwind_protect Statement}.
 %!   warning (old_wstate);
 %! end_unwind_protect
 */
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2002-2016 Paul Kienzle
+## Copyright (C) 2002-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -216,4 +216,3 @@ endfunction
 %!
 %! assert (f1,",,\n, 1.00, 2.00\n, 3.00, 4.00\n");
 %! assert (f2,",,\n, 1.00, 2.00\n, 3.00, 4.00\n, 5.00, 6.00\n");
-

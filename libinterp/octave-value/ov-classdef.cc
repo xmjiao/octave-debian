@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2016 Michael Goffioul
+Copyright (C) 2012-2017 Michael Goffioul
 
 This file is part of Octave.
 
@@ -3777,4 +3777,3 @@ Returns the meta.class object corresponding to the class of @var{obj}.
 ;;; mode: C++ ***
 ;;; End: ***
 */
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -117,4 +117,3 @@ endfunction
 %! zval = norminv (pval);
 %! unew = zval * sqrt (v/n) + u0;
 %! assert (mean (x), unew, 100*eps);
-

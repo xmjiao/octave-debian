@@ -47,7 +47,7 @@ Background area is not yet implemented for text objects.  @code{backgroundcolor}
 @anchor{XREFtextbuttondownfcn}
 @cindex text buttondownfcn
 @item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
-
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFtextchildren}
@@ -73,11 +73,15 @@ Color of the text.  @xref{Colors, ,colorspec}.
 @item @code{createfcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately after text has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaulttextcreatefcn", 'disp ("text created!")')}.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
+
 
 @anchor{XREFtextdeletefcn}
 @cindex text deletefcn
 @item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately before text is deleted.
+
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFtextdisplayname}
@@ -95,19 +99,19 @@ Background area is not yet implemented for text objects.  @code{edgecolor} is un
 @anchor{XREFtextediting}
 @cindex text editing
 @item @code{editing}: @{@qcode{"off"}@} | @qcode{"on"}
-
+@code{editing} is unused.
 
 
 @anchor{XREFtextextent}
 @cindex text extent
-@item @code{extent} (read-only): def. @code{[0.000000  -0.005843   0.000000   0.032136]}
-
+@item @code{extent} (read-only): four-element vector, def. @code{[0.000000  -0.005843   0.000000   0.032136]}
+Vector @code{[x0 y0 width height]} indicating the size and location of the text string.
 
 
 @anchor{XREFtextfontangle}
 @cindex text fontangle
 @item @code{fontangle}: @qcode{"italic"} | @{@qcode{"normal"}@} | @qcode{"oblique"}
-Flag whether the font is italic or normal.  @code{fontangle} is currently unused.
+Control whether the font is italic or normal.  @code{fontangle} is currently unused.
 
 
 @anchor{XREFtextfontname}

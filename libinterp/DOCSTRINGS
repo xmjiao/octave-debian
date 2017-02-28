@@ -740,9 +740,10 @@ In addition, some function types may return more information in additional
 fields.
 
 @strong{Warning:} @code{functions} is provided for debugging purposes only.
-Its behavior may change in the future and programs should not depend on a
-particular output.
+Its behavior may change in the future and programs should not depend on any
+particular output format.
 
+@seealso{func2str, str2func}
 @end deftypefn
 func2str
 @c func2str libinterp/octave-value/ov-fcn-handle.cc
@@ -761,7 +762,7 @@ Return a function handle constructed from the string @var{fcn_name}.
 
 If the optional @qcode{"global"} argument is passed, locally visible
 functions are ignored in the lookup.
-@seealso{func2str, inline}
+@seealso{func2str, inline, functions}
 @end deftypefn
 is_function_handle
 @c is_function_handle libinterp/octave-value/ov-fcn-handle.cc
@@ -1309,7 +1310,7 @@ will cause @code{nargout} to return 2 inside the function @code{f}.
 In the second usage,
 
 @example
-nargout (@@histc) \% or nargout ("histc")
+nargout (@@histc)   # or nargout ("histc") using a string input
 @end example
 
 @noindent
@@ -3594,7 +3595,7 @@ Example 4: number of output arguments != number of dimensions
 
 @example
 @group
-[nr, remainder] = size (ones (2, 3, 4, 5)
+[nr, remainder] = size (ones (2, 3, 4, 5))
     @result{} nr = 2
     @result{} remainder = 60
 @end group
@@ -4431,7 +4432,7 @@ or a range.
 @deftypefnx {} {} norm (@var{A}, @var{p}, @var{opt})
 Compute the p-norm of the matrix @var{A}.
 
-If the second argument is missing, @w{@code{p = 2}} is assumed.
+If the second argument is not given, @w{@code{p = 2}} is used.
 
 If @var{A} is a matrix (or sparse matrix):
 
@@ -4468,7 +4469,7 @@ If @var{A} is a vector or a scalar:
 Frobenius norm of @var{A}, @code{sqrt (sumsq (abs (A)))}.
 
 @item @var{p} = 0
-Hamming norm - the number of nonzero elements.
+Hamming norm---the number of nonzero elements.
 
 @item other @var{p}, @code{@var{p} > 1}
 p-norm of @var{A}, @code{(sum (abs (@var{A}) .^ @var{p})) ^ (1/@var{p})}.
@@ -4481,7 +4482,7 @@ If @var{opt} is the value @qcode{"rows"}, treat each row as a vector and
 compute its norm.  The result is returned as a column vector.
 Similarly, if @var{opt} is @qcode{"columns"} or @qcode{"cols"} then
 compute the norms of each column and return a row vector.
-@seealso{cond, svd}
+@seealso{normest, normest1, cond, svd}
 @end deftypefn
 not
 @c not libinterp/corefcn/data.cc
@@ -5991,14 +5992,13 @@ function h () nargin == 1 || error ("nargin != 1"); end
 
 @noindent
 calling the function @code{f} will result in a list of messages that
-can help you to quickly locate the exact location of the error:
+can help you to quickly find the exact location of the error:
 
 @example
 @group
 f ()
 error: nargin != 1
 error: called from:
-error:   error at line -1, column -1
 error:   h at line 1, column 27
 error:   g at line 1, column 15
 error:   f at line 1, column 15
@@ -8903,6 +8903,8 @@ functions.
 
 @noindent
 With no arguments, @code{echo} toggles the current echo state.
+
+@seealso{echo_executing_commands}
 @end deftypefn
 __echostate__
 @c __echostate__ libinterp/corefcn/input.cc
@@ -9094,6 +9096,8 @@ command or the command line option @option{--echo-commands}.
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
+
+@seealso{echo}
 @end deftypefn
 __request_drawnow__
 @c __request_drawnow__ libinterp/corefcn/input.cc
@@ -9489,8 +9493,8 @@ Force Octave to assume the file is in Octave's text format.
 @deftypefnx {} {} save options file
 @deftypefnx {} {} save options file @var{v1} @var{v2} @dots{}
 @deftypefnx {} {} save options file -struct @var{STRUCT} @var{f1} @var{f2} @dots{}
-@deftypefnx {} {} save @code{"-"} @var{v1} @var{v2} @dots{}
-@deftypefnx {} {@var{s} =} save (@code{"-"} @var{v1} @var{v2} @dots{})
+@deftypefnx {} {} save - @var{v1} @var{v2} @dots{}
+@deftypefnx {} {@var{str} =} save ("-", @qcode{"@var{v1}"}, @qcode{"@var{v2}"}, @dots{})
 Save the named variables @var{v1}, @var{v2}, @dots{}, in the file
 @var{file}.
 
@@ -13500,11 +13504,20 @@ whos ans
 @deftypefnx {} {@var{ind} =} sub2ind (@var{dims}, @var{s1}, @var{s2}, @dots{}, @var{sN})
 Convert subscripts to linear indices.
 
-Assume the following 3-by-3 matrices.  The left matrix contains the
-subscript tuples for each matrix element.  Those are converted to
-linear indices shown in the right matrix.  The matrices are linearly
-indexed moving from one column to next, filling up all rows in each
-column.
+The input @var{dims} is a dimension vector where each element is the size of
+the array in the respective dimension (@pxref{XREFsize,,size}).  The remaining
+inputs are scalars or vectors of subscripts to be converted.
+
+The output vector @var{ind} contains the converted linear indices.
+
+Background: Array elements can be specified either by a linear index which
+starts at 1 and runs through the number of elements in the array, or they may
+be specified with subscripts for the row, column, page, etc.  The functions
+@code{ind2sub} and @code{sub2ind} interconvert between the two forms.
+
+The linear index traverses dimension 1 (rows), then dimension 2 (columns), then
+dimension 3 (pages), etc. until it has numbered all of the elements.  Consider
+the following 3-by-3 matrices:
 
 @example
 @group
@@ -13514,18 +13527,23 @@ column.
 @end group
 @end example
 
+@noindent
+The left matrix contains the subscript tuples for each matrix element.  The
+right matrix shows the linear indices for the same matrix.
+
 The following example shows how to convert the two-dimensional indices
-@code{(2,1)} and @code{(2,3)} of a 3-by-3 matrix to a linear index.
+@code{(2,1)} and @code{(2,3)} of a 3-by-3 matrix to linear indices with a
+single call to @code{sub2ind}.
 
 @example
 @group
 s1 = [2, 2];
 s2 = [1, 3];
 ind = sub2ind ([3, 3], s1, s2)
-@result{} ind =  2   8
+    @result{} ind =  2   8
 @end group
 @end example
-@seealso{ind2sub}
+@seealso{ind2sub, size}
 @end deftypefn
 ind2sub
 @c ind2sub libinterp/corefcn/sub2ind.cc
@@ -13533,11 +13551,20 @@ ind = sub2ind ([3, 3], s1, s2)
 @deftypefn {} {[@var{s1}, @var{s2}, @dots{}, @var{sN}] =} ind2sub (@var{dims}, @var{ind})
 Convert linear indices to subscripts.
 
-Assume the following 3-by-3 matrices.  The left matrix contains
-the linear indices @var{ind} for each matrix element.  Those are
-converted to subscript tuples shown in the right matrix.  The
-matrices are linearly indexed moving from one column to next,
-filling up all rows in each column.
+The input @var{dims} is a dimension vector where each element is the size of
+the array in the respective dimension (@pxref{XREFsize,,size}).  The second
+input @var{ind} contains linear indies to be converted.
+
+The outputs @var{s1}, @dots{}, @var{sN} contain the converted subscripts.
+
+Background: Array elements can be specified either by a linear index which
+starts at 1 and runs through the number of elements in the array, or they may
+be specified with subscripts for the row, column, page, etc.  The functions
+@code{ind2sub} and @code{sub2ind} interconvert between the two forms.
+
+The linear index traverses dimension 1 (rows), then dimension 2 (columns), then
+dimension 3 (pages), etc. until it has numbered all of the elements.  Consider
+the following 3-by-3 matrices:
 
 @example
 @group
@@ -13547,8 +13574,16 @@ filling up all rows in each column.
 @end group
 @end example
 
-The following example shows how to convert the linear indices
-@code{2} and @code{8} in a 3-by-3 matrix into a subscripts.
+@noindent
+The left matrix contains the linear indices for each matrix element.  The right
+matrix shows the subscript tuples for the same matrix.
+
+The following example shows how to convert the two-dimensional indices
+@code{(2,1)} and @code{(2,3)} of a 3-by-3 matrix to linear indices with a
+single call to @code{sub2ind}.
+
+The following example shows how to convert the linear indices @code{2} and
+@code{8} in a 3-by-3 matrix into subscripts.
 
 @example
 @group
@@ -13559,26 +13594,27 @@ ind = [2, 8];
 @end group
 @end example
 
-If the number of subscripts exceeds the number of dimensions, the
-exceeded dimensions are treated as @code{1}.  On the other hand,
-if less subscripts than dimensions are provided, the exceeding
-dimensions are merged.  For clarity see the following examples:
+If the number of output subscripts exceeds the number of dimensions, the
+exceeded dimensions are set to @code{1}.  On the other hand, if fewer
+subscripts than dimensions are provided, the exceeding dimensions are merged
+into the final requested dimension.  For clarity, consider the following
+examples:
 
 @example
 @group
-ind = [2, 8];
+ind  = [2, 8];
 dims = [3, 3];
-% same as dims = [3, 3, 1]
+## same as dims = [3, 3, 1]
 [r, c, s] = ind2sub (dims, ind)
     @result{} r =  2   2
     @result{} c =  1   3
     @result{} s =  1   1
-% same as dims = 9
+## same as dims = [9]
 r = ind2sub (dims, ind)
     @result{} r =  2   8
 @end group
 @end example
-@seealso{sub2ind}
+@seealso{ind2sub, size}
 @end deftypefn
 svd
 @c svd libinterp/corefcn/svd.cc

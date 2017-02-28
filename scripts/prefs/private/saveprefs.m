@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 John W. Eaton
+## Copyright (C) 2012-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -30,4 +30,3 @@ function saveprefs (s)
   save (prefsfile (), "prefs");
 
 endfunction
-

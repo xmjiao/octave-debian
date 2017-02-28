@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 Ben Abbott
+## Copyright (C) 2007-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -120,4 +120,3 @@ endfunction
 %!test
 %! [mp, n] = mpoles ([0 0], 0.01);
 %! assert (mp, [1; 2]);
-

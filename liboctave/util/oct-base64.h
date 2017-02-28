@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2016 John W. Eaton
+Copyright (C) 2012-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,4 +36,3 @@ extern OCTAVE_API Array<double>
 octave_base64_decode (const std::string& str);
 
 #endif
-

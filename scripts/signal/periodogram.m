@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Friedrich Leisch
+## Copyright (C) 1995-2017 Friedrich Leisch
 ## Copyright (C) 2010 Alois Schloegl
 ## Copyright (C) 2014-2016 Drew Abbot
 ##
@@ -216,4 +216,3 @@ endfunction
 %!error <NFFT must be a scalar> periodogram (1:5, 1:5, 1:5)
 %!error <FS must be a scalar> periodogram (1:5, [], [], 1:5)
 %!error <"centered" range type is not implemented> periodogram (1:5, "centered")
-

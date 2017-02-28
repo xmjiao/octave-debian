@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 Copyright (C) 2016 Barbara Lócsi
 
 This file is part of Octave.
@@ -754,4 +754,3 @@ EIG::hermitian_init (const ComplexMatrix& a, const ComplexMatrix& b,
 
   return info;
 }
-

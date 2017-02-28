@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -1092,5 +1092,4 @@ autocovariances @code{[gamma_0, @dots{}, gamma_p]}.
 Returns the AR coefficients, @var{a}, and the variance of white noise,
 @var{v}.
 @end deftypefn
-
 

@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 6.1 from octave.texi.
+This is octave.info, produced by makeinfo version 6.3 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 4.2.0.
+corresponds to GNU Octave version 4.2.1.
 
 * Menu:
 
@@ -740,7 +740,7 @@ Oct-Files
 * Allocating Local Memory in Oct-Files::
 * Input Parameter Checking in Oct-Files::
 * Exception and Error Handling in Oct-Files::
-* Documentation and Test of Oct-Files::
+* Documentation and Testing of Oct-Files::
 
 Sparse Matrices in Oct-Files
 
@@ -760,10 +760,10 @@ Mex-Files
 
 Java Interface
 
-* Java Interface Functions::
 * Making Java Classes Available::
-* Creating an Instance of a Java Class::
-* Handling Java Memory Limitations::
+* How to use Java from within Octave::
+* Passing parameters to the JVM::
+* Java Interface Functions::
 
 Test and Demo Functions
 
@@ -1145,15 +1145,17 @@ File: octave.info,  Node: Introduction,  Next: Getting Started,  Prev: Preface, 
 1 A Brief Introduction to Octave
 ********************************
 
-GNU Octave is a high-level language, primarily intended for numerical
+GNU Octave is a high-level language primarily intended for numerical
 computations.  It is typically used for such problems as solving linear
 and nonlinear equations, numerical linear algebra, statistical analysis,
 and for performing other numerical experiments.  It may also be used as
 a batch-oriented language for automated data processing.
 
-   Until recently GNU Octave provided a command-line interface only with
-graphical plots displayed in separate windows.  However, by default the
-current version runs with a graphical user interface.
+   The current version of Octave executes in a graphical user interface
+(GUI). The GUI hosts an Integrated Development Environment (IDE) which
+includes a code editor with syntax highlighting, built-in debugger,
+documentation browser, as well as the interpreter for the language
+itself.  A command-line interface for Octave is also available.
 
    GNU Octave is freely redistributable software.  You may redistribute
 it and/or modify it under the terms of the GNU General Public License as
@@ -1164,7 +1166,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 4.2.0.
+   This document corresponds to Octave version 4.2.1.
 
 * Menu:
 
@@ -1179,12 +1181,13 @@ File: octave.info,  Node: Running Octave,  Next: Simple Examples,  Up: Introduct
 ==================
 
 On most systems, Octave is started with the shell command ‘octave’.
-This starts the graphical user interface (GUI). The central window in
-the GUI is the Octave command-line interface.  In this window Octave
-displays an initial message and then a prompt indicating it is ready to
-accept input.  If you have chosen the traditional command-line interface
-then only the command prompt appears in the same window that was running
-a shell.  In any case, you can immediately begin typing Octave commands.
+This starts the graphical user interface.  The central window in the GUI
+is the Octave command-line interface.  In this window Octave displays an
+initial message and then a prompt indicating it is ready to accept
+input.  If you have chosen the traditional command-line interface then
+only the command prompt appears in the same window that was running a
+shell.  In either case, you can immediately begin typing Octave
+commands.
 
    If you get into trouble, you can usually interrupt Octave by typing
 ‘Control-C’ (written ‘C-c’ for short).  ‘C-c’ gets its name from the
@@ -1261,9 +1264,10 @@ matrix ‘B’, type the command
 1.2.3 Matrix Arithmetic
 -----------------------
 
-Octave has a convenient operator notation for performing matrix
-arithmetic.  For example, to multiply the matrix ‘A’ by a scalar value,
-type the command
+Octave uses standard mathematical notation with the advantage over
+low-level languages that operators may act on scalars, vector, matrices,
+or N-dimensional arrays.  For example, to multiply the matrix ‘A’ by a
+scalar value, type the command
 
      octave:4> 2 * A
 
@@ -1374,8 +1378,7 @@ command
 
      octave:1> plot (t, x)
 
-If you are using a graphical user interface, Octave will automatically
-create a separate window to display the plot.
+Octave will automatically create a separate window to display the plot.
 
    To save a plot once it has been displayed on the screen, use the
 print command.  For example,
@@ -1390,21 +1393,7 @@ current plot in Portable Document Format.  The command
 explains more options for the ‘print’ command and provides a list of
 additional output file formats.
 
-1.2.7 Editing What You Have Typed
----------------------------------
-
-At the Octave prompt, you can recall, edit, and reissue previous
-commands using Emacs- or vi-style editing commands.  The default
-keybindings use Emacs-style commands.  For example, to recall the
-previous command, press ‘Control-p’ (written ‘C-p’ for short).  Doing
-this will normally bring back the previous line of input.  ‘C-n’ will
-bring up the next line of input, ‘C-b’ will move the cursor backward on
-the line, ‘C-f’ will move the cursor forward on the line, etc.
-
-   A complete description of the command line editing capability is
-given in this manual, *note Command Line Editing::.
-
-1.2.8 Help and Documentation
+1.2.7 Help and Documentation
 ----------------------------
 
 Octave has an extensive help facility.  The same documentation that is
@@ -1438,6 +1427,20 @@ separate program called Info.  When you invoke Info you will be put into
 a menu driven program that contains the entire Octave manual.  Help for
 using Info is provided in this manual, *note Getting Help::.
 
+1.2.8 Editing What You Have Typed
+---------------------------------
+
+At the Octave prompt, you can recall, edit, and reissue previous
+commands using Emacs- or vi-style editing commands.  The default
+keybindings use Emacs-style commands.  For example, to recall the
+previous command, press ‘Control-p’ (written ‘C-p’ for short).  Doing
+this will normally bring back the previous line of input.  ‘C-n’ will
+bring up the next line of input, ‘C-b’ will move the cursor backward on
+the line, ‘C-f’ will move the cursor forward on the line, etc.
+
+   A complete description of the command line editing capability is
+given in this manual, *note Command Line Editing::.
+
 
 File: octave.info,  Node: Conventions,  Prev: Simple Examples,  Up: Introduction
 
@@ -1465,9 +1468,9 @@ Examples of Octave code appear in this font or form: ‘svd (a)’.  Names
 that represent variables or function arguments appear in this font or
 form: FIRST-NUMBER.  Commands that you type at the shell prompt appear
 in this font or form: ‘octave --no-init-file’.  Commands that you type
-at the Octave prompt sometimes appear in this font or form: ‘foo --bar
---baz’.  Specific keys on your keyboard appear in this font or form:
-<RET>.
+at the Octave prompt sometimes appear in this font or form:
+‘foo --bar --baz’.  Specific keys on your keyboard appear in this font
+or form: <RET>.
 
 
 File: octave.info,  Node: Evaluation Notation,  Next: Printing Notation,  Prev: Fonts,  Up: Conventions
@@ -1578,10 +1581,11 @@ references to related functions.
  -- : foo (X)
  -- : foo (X, Y)
  -- : foo (X, Y, ...)
-     The function ‘foo’ subtracts X from Y, then adds the remaining
-     arguments to the result.
+     Subtract X from Y, then add any remaining arguments to the result.
 
-     If Y is not supplied, then the number 19 is used by default.
+     The input X must be a numeric scalar, vector, or array.
+
+     The optional input Y defaults to 19 if it is not supplied.
 
      Example:
 
@@ -1604,29 +1608,6 @@ be of any type.  Parameters with other sorts of names (e.g., NEW_FILE)
 are discussed specifically in the description of the function.  In some
 sections, features common to parameters of several functions are
 described at the beginning.
-
-   Functions in Octave may be defined in several different ways:
-
-Function File
-     The function described is defined using Octave commands stored in a
-     text file.  *Note Function Files::.
-
-Built-in Function
-     The function described is written in a language like C++, C, or
-     Fortran, and is part of the compiled Octave binary.
-
-Loadable Function
-     The function described is written in a language like C++, C, or
-     Fortran.  On systems that support dynamic linking of user-supplied
-     functions, it may be automatically linked while Octave is running,
-     but only if it is needed.  *Note External Code Interface::.
-
-Mapping Function
-     The function described works element-by-element for matrix and
-     vector arguments.
-
-   Use ‘which’ or ‘exist’ to determine the category of a function and
-where it resides.
 
 
 File: octave.info,  Node: A Sample Command Description,  Prev: A Sample Function Description,  Up: Format of Descriptions
@@ -1660,7 +1641,7 @@ Octave’s ‘diary’ command:
 
      With no arguments, ‘diary’ toggles the current diary state.
 
-     See also: history.
+     See also: history, evalc.
 
 
 File: octave.info,  Node: Getting Started,  Next: Data Types,  Prev: Introduction,  Up: Top
@@ -2071,8 +2052,8 @@ variables.  *Note Function Files::, for more information about how to
 document the functions you write.
 
  -- : help NAME
- -- : help ‘--list’
- -- : help ‘.’
+ -- : help --list
+ -- : help .
  -- : help
      Display the help text for NAME.
 
@@ -3093,6 +3074,9 @@ some kinds of problems.
 
      With no arguments, ‘echo’ toggles the current echo state.
 
+     See also: *note echo_executing_commands:
+     XREFecho_executing_commands.
+
  -- : VAL = echo_executing_commands ()
  -- : OLD_VAL = echo_executing_commands (NEW_VAL)
  -- : echo_executing_commands (NEW_VAL, "local")
@@ -3119,6 +3103,8 @@ some kinds of problems.
      variable is changed locally for the function and any subroutines it
      calls.  The original variable value is restored when exiting the
      function.
+
+     See also: *note echo: XREFecho.
 
 
 File: octave.info,  Node: Errors,  Next: Executable Octave Programs,  Prev: Command Line Editing,  Up: Getting Started
@@ -3464,7 +3450,8 @@ use of the following functions.
  -- : cast (VAL, "TYPE")
      Convert VAL to data type TYPE.
 
-     VAL must be one of the numeric classes:
+     Both VAL and TYPE are typically one of the following built-in
+     classes:
 
           "double"
           "single"
@@ -3488,6 +3475,16 @@ use of the following functions.
              ⇒ 0
           cast (300, "int8")
              ⇒ 127
+
+     Programming Note: This function relies on the object VAL having a
+     conversion method named TYPE.  User-defined classes may implement
+     only a subset of the full list of types shown above.  In that case,
+     it may be necessary to call cast twice in order to reach the
+     desired type.  For example, the conversion to double is nearly
+     always implemented, but the conversion to uint8 might not be.  In
+     that case, the following code will work
+
+          cast (cast (USER_DEFINED_VAL, "double"), "uint8")
 
      See also: *note typecast: XREFtypecast, *note int8: XREFint8, *note
      uint8: XREFuint8, *note int16: XREFint16, *note uint16: XREFuint16,
@@ -3847,7 +3844,7 @@ functions return −1 for structure arguments.
 
      Example 4: number of output arguments != number of dimensions
 
-          [nr, remainder] = size (ones (2, 3, 4, 5)
+          [nr, remainder] = size (ones (2, 3, 4, 5))
               ⇒ nr = 2
               ⇒ remainder = 60
 
@@ -3910,44 +3907,55 @@ File: octave.info,  Node: Numeric Data Types,  Next: Strings,  Prev: Data Types,
 A “numeric constant” may be a scalar, a vector, or a matrix, and it may
 contain complex values.
 
-   The simplest form of a numeric constant, a scalar, is a single number
-that can be an integer, a decimal fraction, a number in scientific
-(exponential) notation, or a complex number.  Note that by default
-numeric constants are represented within Octave in double-precision
-floating point format (complex constants are stored as pairs of
-double-precision floating point values).  It is, however, possible to
-represent real integers as described in *note Integer Data Types::.
-Here are some examples of real-valued numeric constants, which all have
-the same value:
+   The simplest form of a numeric constant, a scalar, is a single
+number.  Note that by default numeric constants are represented within
+Octave by IEEE 754 double precision (binary64) floating-point format
+(complex constants are stored as pairs of binary64 values).  It is,
+however, possible to represent real integers as described in *note
+Integer Data Types::.
 
-     105
-     1.05e+2
-     1050e-1
+   If the numeric constant is a real integer, it can be defined in
+decimal, hexadecimal, or binary notation.  Hexadecimal notation starts
+with ‘0x’ or ‘0X’, binary notation starts with ‘0b’ or ‘0B’, otherwise
+decimal notation is assumed.  As a consequence, ‘0b’ is not a
+hexadecimal number, in fact, it is not a valid number at all.
 
-   To specify complex constants, you can write an expression of the form
+   For better readability, digits may be partitioned by the underscore
+separator ‘_’, which is ignored by the Octave interpreter.  Here are
+some examples of real-valued integer constants, which all represent the
+same value and are internally stored as binary64:
 
-     3 + 4i
-     3.0 + 4.0i
-     0.3e1 + 40e-1i
+     42            # decimal notation
+     0x2A          # hexadecimal notation
+     0b101010      # binary notation
+     0b10_1010     # underscore notation
+     round (42.1)  # also binary64
 
-all of which are equivalent.  The letter ‘i’ in the previous example
-stands for the pure imaginary constant, defined as ‘sqrt (-1)’.
+   In decimal notation, the numeric constant may be denoted as decimal
+fraction or even in scientific (exponential) notation.  Note that this
+is not possible for hexadecimal or binary notation.  Again, in the
+following example all numeric constants represent the same value:
 
-   For Octave to recognize a value as the imaginary part of a complex
-constant, a space must not appear between the number and the ‘i’.  If it
-does, Octave will print an error message, like this:
+     .105
+     1.05e-1
+     .00105e+2
 
-     octave:13> 3 + 4 i
+   Unlike most programming languages, complex numeric constants are
+denoted as the sum of real and imaginary parts.  The imaginary part is
+denoted by a real-valued numeric constant followed immediately by a
+complex value indicator (‘i’, ‘j’, ‘I’, or ‘J’ which represents ‘sqrt
+(-1)’).  No spaces are allowed between the numeric constant and the
+complex value indicator.  Some examples of complex numeric constants
+that all represent the same value:
 
-     parse error:
-
-       syntax error
-
-     >>> 3 + 4 i
-               ^
-
-You may also use ‘j’, ‘I’, or ‘J’ in place of the ‘i’ above.  All four
-forms are equivalent.
+     3 + 42i
+     3 + 42j
+     3 + 42I
+     3 + 42J
+     3.0 + 42.0i
+     3.0 + 0x2Ai
+     3.0 + 0b10_1010i
+     0.3e1 + 420e-1i
 
  -- : double (X)
      Convert X to double precision type.
@@ -8624,21 +8632,27 @@ cell arrays of an arbitrary size:
    If used on the left-hand side of an assignment, a comma separated
 list generated with ‘{}’ can be assigned to.  An example is
 
-     in{1} = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+     in{1} = [10, 20, 30];
      in{2} = inf;
      in{3} = "last";
      in{4} = "first";
      out = cell (4, 1);
-     [out{1:3}] = find (in{1 : 3});
-     [out{4:6}] = find (in{[1, 2, 4]})
+     [out{1:3}] = in{1 : 3};
+     [out{4:6}] = in{[1, 2, 4]})
           ⇒ out =
              {
-               [1,1] = 1
-               [2,1] = 9
-               [3,1] = 90
-               [4,1] = 1
-               [3,1] = 1
-               [4,1] = 10
+                [1,1] =
+
+                   10   20   30
+
+                [2,1] = Inf
+                [3,1] = last
+                [4,1] =
+
+                   10   20   30
+
+                [5,1] = Inf
+                [6,1] = first
              }
 
 
@@ -8974,418 +8988,4 @@ variable will be cleared by a simple ‘clear’ command as the entire
 function definition will be removed from memory.  If you do not want a
 persistent variable to be removed from memory even if the function is
 cleared, you should use the ‘mlock’ function (*note Function Locking::).
-
-
-File: octave.info,  Node: Status of Variables,  Prev: Persistent Variables,  Up: Variables
-
-7.3 Status of Variables
-=======================
-
-When creating simple one-shot programs it can be very convenient to see
-which variables are available at the prompt.  The function ‘who’ and its
-siblings ‘whos’ and ‘whos_line_format’ will show different information
-about what is in memory, as the following shows.
-
-     str = "A random string";
-     who -variables
-          ⊣ *** local user variables:
-          ⊣
-          ⊣ __nargin__  str
-
- -- : who
- -- : who pattern ...
- -- : who option pattern ...
- -- : C = who ("pattern", ...)
-     List currently defined variables matching the given patterns.
-
-     Valid pattern syntax is the same as described for the ‘clear’
-     command.  If no patterns are supplied, all variables are listed.
-
-     By default, only variables visible in the local scope are
-     displayed.
-
-     The following are valid options, but may not be combined.
-
-     ‘global’
-          List variables in the global scope rather than the current
-          scope.
-
-     ‘-regexp’
-          The patterns are considered to be regular expressions when
-          matching the variables to display.  The same pattern syntax
-          accepted by the ‘regexp’ function is used.
-
-     ‘-file’
-          The next argument is treated as a filename.  All variables
-          found within the specified file are listed.  No patterns are
-          accepted when reading variables from a file.
-
-     If called as a function, return a cell array of defined variable
-     names matching the given patterns.
-
-     See also: *note whos: XREFwhos, *note isglobal: XREFisglobal, *note
-     isvarname: XREFisvarname, *note exist: XREFexist, *note regexp:
-     XREFregexp.
-
- -- : whos
- -- : whos pattern ...
- -- : whos option pattern ...
- -- : S = whos ("pattern", ...)
-     Provide detailed information on currently defined variables
-     matching the given patterns.
-
-     Options and pattern syntax are the same as for the ‘who’ command.
-
-     Extended information about each variable is summarized in a table
-     with the following default entries.
-
-     Attr
-          Attributes of the listed variable.  Possible attributes are:
-
-          blank
-               Variable in local scope
-
-          ‘a’
-               Automatic variable.  An automatic variable is one created
-               by the interpreter, for example ‘argn’.
-
-          ‘c’
-               Variable of complex type.
-
-          ‘f’
-               Formal parameter (function argument).
-
-          ‘g’
-               Variable with global scope.
-
-          ‘p’
-               Persistent variable.
-
-     Name
-          The name of the variable.
-
-     Size
-          The logical size of the variable.  A scalar is 1x1, a vector
-          is 1xN or Nx1, a 2-D matrix is MxN.
-
-     Bytes
-          The amount of memory currently used to store the variable.
-
-     Class
-          The class of the variable.  Examples include double, single,
-          char, uint16, cell, and struct.
-
-     The table can be customized to display more or less information
-     through the function ‘whos_line_format’.
-
-     If ‘whos’ is called as a function, return a struct array of defined
-     variable names matching the given patterns.  Fields in the
-     structure describing each variable are: name, size, bytes, class,
-     global, sparse, complex, nesting, persistent.
-
-     See also: *note who: XREFwho, *note whos_line_format:
-     XREFwhos_line_format.
-
- -- : VAL = whos_line_format ()
- -- : OLD_VAL = whos_line_format (NEW_VAL)
- -- : whos_line_format (NEW_VAL, "local")
-     Query or set the format string used by the command ‘whos’.
-
-     A full format string is:
-
-          %[modifier]<command>[:width[:left-min[:balance]]];
-
-     The following command sequences are available:
-
-     ‘%a’
-          Prints attributes of variables (g=global, p=persistent,
-          f=formal parameter, a=automatic variable).
-
-     ‘%b’
-          Prints number of bytes occupied by variables.
-
-     ‘%c’
-          Prints class names of variables.
-
-     ‘%e’
-          Prints elements held by variables.
-
-     ‘%n’
-          Prints variable names.
-
-     ‘%s’
-          Prints dimensions of variables.
-
-     ‘%t’
-          Prints type names of variables.
-
-     Every command may also have an alignment modifier:
-
-     ‘l’
-          Left alignment.
-
-     ‘r’
-          Right alignment (default).
-
-     ‘c’
-          Column-aligned (only applicable to command %s).
-
-     The ‘width’ parameter is a positive integer specifying the minimum
-     number of columns used for printing.  No maximum is needed as the
-     field will auto-expand as required.
-
-     The parameters ‘left-min’ and ‘balance’ are only available when the
-     column-aligned modifier is used with the command ‘%s’.  ‘balance’
-     specifies the column number within the field width which will be
-     aligned between entries.  Numbering starts from 0 which indicates
-     the leftmost column.  ‘left-min’ specifies the minimum field width
-     to the left of the specified balance column.
-
-     The default format is:
-
-     " %a:4; %ln:6; %cs:16:6:1; %rb:12; %lc:-1;\n"
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note whos: XREFwhos.
-
-   Instead of displaying which variables are in memory, it is possible
-to determine if a given variable is available.  That way it is possible
-to alter the behavior of a program depending on the existence of a
-variable.  The following example illustrates this.
-
-     if (! exist ("meaning", "var"))
-       disp ("The program has no 'meaning'");
-     endif
-
- -- : C = exist (NAME)
- -- : C = exist (NAME, TYPE)
-     Check for the existence of NAME as a variable, function, file,
-     directory, or class.
-
-     The return code C is one of
-
-     1
-          NAME is a variable.
-
-     2
-          NAME is an absolute filename, an ordinary file in Octave’s
-          ‘path’, or (after appending ‘.m’) a function file in Octave’s
-          ‘path’.
-
-     3
-          NAME is a ‘.oct’ or ‘.mex’ file in Octave’s ‘path’.
-
-     5
-          NAME is a built-in function.
-
-     7
-          NAME is a directory.
-
-     103
-          NAME is a function not associated with a file (entered on the
-          command line).
-
-     0
-          NAME does not exist.
-
-     If the optional argument TYPE is supplied, check only for symbols
-     of the specified type.  Valid types are
-
-     "var"
-          Check only for variables.
-
-     "builtin"
-          Check only for built-in functions.
-
-     "dir"
-          Check only for directories.
-
-     "file"
-          Check only for files and directories.
-
-     "class"
-          Check only for classes.  (Note: This option is accepted, but
-          not currently implemented)
-
-     If no type is given, and there are multiple possible matches for
-     name, ‘exist’ will return a code according to the following
-     priority list: variable, built-in function, oct-file, directory,
-     file, class.
-
-     ‘exist’ returns 2 if a regular file called NAME is present in
-     Octave’s search path.  If you want information about other types of
-     files not on the search path you should use some combination of the
-     functions ‘file_in_path’ and ‘stat’ instead.
-
-     Programming Note: If NAME is implemented by a buggy .oct/.mex file,
-     calling EXIST may cause Octave to crash.  To maintain high
-     performance, Octave trusts .oct/.mex files instead of sandboxing
-     them.
-
-     See also: *note file_in_loadpath: XREFfile_in_loadpath, *note
-     file_in_path: XREFfile_in_path, *note dir_in_loadpath:
-     XREFdir_in_loadpath, *note stat: XREFstat.
-
-   Usually Octave will manage the memory, but sometimes it can be
-practical to remove variables from memory manually.  This is usually
-needed when working with large variables that fill a substantial part of
-the memory.  On a computer that uses the IEEE floating point format, the
-following program allocates a matrix that requires around 128 MB memory.
-
-     large_matrix = zeros (4000, 4000);
-
-Since having this variable in memory might slow down other computations,
-it can be necessary to remove it manually from memory.  The ‘clear’
-function allows this.
-
- -- : clear [options] pattern ...
-     Delete the names matching the given patterns from the symbol table.
-
-     The pattern may contain the following special characters:
-
-     ‘?’
-          Match any single character.
-
-     ‘*’
-          Match zero or more characters.
-
-     ‘[ LIST ]’
-          Match the list of characters specified by LIST.  If the first
-          character is ‘!’ or ‘^’, match all characters except those
-          specified by LIST.  For example, the pattern ‘[a-zA-Z]’ will
-          match all lowercase and uppercase alphabetic characters.
-
-     For example, the command
-
-          clear foo b*r
-
-     clears the name ‘foo’ and all names that begin with the letter ‘b’
-     and end with the letter ‘r’.
-
-     If ‘clear’ is called without any arguments, all user-defined
-     variables (local and global) are cleared from the symbol table.
-
-     If ‘clear’ is called with at least one argument, only the visible
-     names matching the arguments are cleared.  For example, suppose you
-     have defined a function ‘foo’, and then hidden it by performing the
-     assignment ‘foo = 2’.  Executing the command ‘clear foo’ once will
-     clear the variable definition and restore the definition of ‘foo’
-     as a function.  Executing ‘clear foo’ a second time will clear the
-     function definition.
-
-     The following options are available in both long and short form
-
-     ‘-all, -a’
-          Clear all local and global user-defined variables and all
-          functions from the symbol table.
-
-     ‘-exclusive, -x’
-          Clear the variables that don’t match the following pattern.
-
-     ‘-functions, -f’
-          Clear the function names and the built-in symbols names.
-
-     ‘-global, -g’
-          Clear global symbol names.
-
-     ‘-variables, -v’
-          Clear local variable names.
-
-     ‘-classes, -c’
-          Clears the class structure table and clears all objects.
-
-     ‘-regexp, -r’
-          The arguments are treated as regular expressions as any
-          variables that match will be cleared.
-
-     With the exception of ‘exclusive’, all long options can be used
-     without the dash as well.
-
-     See also: *note who: XREFwho, *note whos: XREFwhos, *note exist:
-     XREFexist.
-
- -- : pack ()
-     Consolidate workspace memory in MATLAB.
-
-     This function is provided for compatibility, but does nothing in
-     Octave.
-
-     See also: *note clear: XREFclear.
-
-   Information about a function or variable such as its location in the
-file system can also be acquired from within Octave.  This is usually
-only useful during development of programs, and not within a program.
-
- -- : type NAME ...
- -- : type -q NAME ...
- -- : text = type ("NAME", ...)
-     Display the contents of NAME which may be a file, function
-     (m-file), variable, operator, or keyword.
-
-     ‘type’ normally prepends a header line describing the category of
-     NAME such as function or variable; The ‘-q’ option suppresses this
-     behavior.
-
-     If no output variable is used the contents are displayed on screen.
-     Otherwise, a cell array of strings is returned, where each element
-     corresponds to the contents of each requested function.
-
- -- : which name ...
-     Display the type of each NAME.
-
-     If NAME is defined from a function file, the full name of the file
-     is also displayed.
-
-     See also: *note help: XREFhelp, *note lookfor: XREFlookfor.
-
- -- : what
- -- : what DIR
- -- : w = what (DIR)
-     List the Octave specific files in directory DIR.
-
-     If DIR is not specified then the current directory is used.
-
-     If a return argument is requested, the files found are returned in
-     the structure W.  The structure contains the following fields:
-
-     path
-          Full path to directory DIR
-
-     m
-          Cell array of m-files
-
-     mat
-          Cell array of mat files
-
-     mex
-          Cell array of mex files
-
-     oct
-          Cell array of oct files
-
-     mdl
-          Cell array of mdl files
-
-     slx
-          Cell array of slx files
-
-     p
-          Cell array of p-files
-
-     classes
-          Cell array of class directories (‘@CLASSNAME/’)
-
-     packages
-          Cell array of package directories (‘+PKGNAME/’)
-
-     Compatibility Note: Octave does not support mdl, slx, and p files;
-     nor does it support package directories.  ‘what’ will always return
-     an empty list for these categories.
-
-     See also: *note which: XREFwhich, *note ls: XREFls, *note exist:
-     XREFexist.
 

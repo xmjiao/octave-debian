@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2016 Jaroslav Hajek
+Copyright (C) 2008-2017 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -94,4 +94,3 @@ install_dm_dm_ops (void)
   INSTALL_ASSIGNCONV (octave_diag_matrix, octave_matrix, octave_matrix);
   INSTALL_WIDENOP (octave_diag_matrix, octave_matrix, diag_matrix_to_matrix);
 }
-

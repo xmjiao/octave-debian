@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2016 VZLU Prague
+Copyright (C) 2010-2017 VZLU Prague
 
 This file is part of Octave.
 
@@ -197,4 +197,3 @@ bool octave_lazy_index::load_binary (std::istream& is, bool swap,
 
   return true;
 }
-

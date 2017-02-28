@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 Copyright (C) 2007-2010 D. Martin
 Copyright (C) 2010 Jaroslav Hajek
 Copyright (C) 2010 VZLU Prague
@@ -3974,4 +3974,3 @@ Array<double> betaincinv (const Array<double>& x, const Array<double>& a, double
 Array<double> betaincinv (const Array<double>& x, const Array<double>& a, const Array<double>& b) { return octave::math::betaincinv (x, a, b); }
 
 #endif
-

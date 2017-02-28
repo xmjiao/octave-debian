@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -94,4 +94,3 @@ octave_sha512_buffer_wrapper (const char *buf, size_t len, void *res)
 {
   return sha512_buffer (buf, len, res);
 }
-

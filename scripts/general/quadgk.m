@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -487,4 +487,3 @@ endfunction
 %!error <ABSTOL must be a scalar .=0> quadgk (@sin, 0, 1, -1)
 %!error <RELTOL must be a scalar> quadgk (@sin, 0, 1, "RelTol", ones (2,2))
 %!error <RELTOL must be a scalar> quadgk (@sin, 0, 1, "RelTol", -1)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -111,4 +111,3 @@ endfunction
 
 %!error [b, r] = deconv ([3, 6], [1, 2; 3, 4])
 %!error [b, r] = deconv ([3, 6; 1, 2], [1, 2, 3])
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 Benjamin Lindner
+Copyright (C) 2009-2017 Benjamin Lindner
 
 This file is part of Octave.
 
@@ -171,4 +171,3 @@ read_until_newline (std::istream& is, bool keep_newline)
 
   return buf.str ();
 }
-

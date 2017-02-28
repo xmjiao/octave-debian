@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -164,4 +164,3 @@ endfunction
 %! [th, r] = rose ([1 2 2 4 4 4], 2);
 %!warning <bin 1 and bin 3 are not centered>
 %! [th, r] = rose ([1 2 2 4 4 4], [1 2 3]);
-

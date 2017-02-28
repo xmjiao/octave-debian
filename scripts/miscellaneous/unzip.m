@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Søren Hauberg
+## Copyright (C) 2005-2017 Søren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -53,4 +53,3 @@ endfunction
 ## Tests for this m-file are located in zip.m
 ## Remove from test statistics
 %!assert (1)
-

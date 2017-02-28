@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 6.1 from octave.texi.
+This is octave.info, produced by makeinfo version 6.3 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -174,6 +174,8 @@ The ‘figure’ properties are:
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
      Graphics handles of the figure’s children.
@@ -182,6 +184,11 @@ The ‘figure’ properties are:
      ‘clipping’ is unused.
 
 ‘closerequestfcn’: string | function handle, def. "closereq"
+     Function that is executed when a figure is deleted.  *Note closereq
+     function: XREFclosereq.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘color’: colorspec, def. ‘[1 1 1]’
      Color of the figure background.  *Note colorspec: Colors.
@@ -194,6 +201,9 @@ The ‘figure’ properties are:
      created.  Function is set by using default property on root object,
      e.g., ‘set (0, "defaultfigurecreatefcn", 'disp ("figure
      created!")')’.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘currentaxes’: graphics handle, def. ‘[](0x0)’
      Handle to the graphics object of the current axes.
@@ -221,6 +231,9 @@ The ‘figure’ properties are:
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before figure is deleted.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘dockcontrols’: {"off"} | "on"
      ‘dockcontrols’ is unused.
 
@@ -246,6 +259,11 @@ The ‘figure’ properties are:
      printing.
 
 ‘keypressfcn’: string | function handle, def. ‘[](0x0)’
+     Callback function executed when a keystroke event happens while the
+     figure has focus.  The actual key that was pressed can be retrieved
+     using the second argument ’evt’ of the function.  For information
+     on how to write graphics listener functions see *note
+     Callbacks section: Callbacks.
 
 ‘keyreleasefcn’: string | function handle, def. ‘[](0x0)’
      With ‘keypressfcn’, the keyboard callback functions.  These
@@ -262,8 +280,11 @@ The ‘figure’ properties are:
           A cell array containing strings representing the modifiers
           pressed with the key.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘menubar’: {"figure"} | "none"
-     Control the display of the figure menu bar in the upper left of the
+     Control the display of the figure menu bar at the top of the
      figure.
 
 ‘name’: string, def. ""
@@ -272,12 +293,19 @@ The ‘figure’ properties are:
      property.
 
 ‘nextplot’: {"add"} | "new" | "replace" | "replacechildren"
+     ‘nextplot’ is used by high level plotting functions to decide what
+     to do with axes already present in the figure.  *Note
+     newplot function: XREFnewplot.
 
 ‘numbertitle’: "off" | {"on"}
      Display "Figure" followed by the numerical figure handle value in
      the figure title bar.
 
 ‘outerposition’: four-element vector, def. ‘[-1 -1 -1 -1]’
+     Specify the position and size of the figure including the top
+     menubar and the bottom status bar.  The four elements of the vector
+     are the coordinates of the lower left corner and width and height
+     of the figure.  *Note units property: XREFfigureunits.
 
 ‘paperorientation’: "landscape" | {"portrait"}
      The value for the ‘papersize’, and ‘paperposition’ properties
@@ -337,13 +365,16 @@ The ‘figure’ properties are:
      ‘pointershapehotspot’ is unused.
 
 ‘position’: four-element vector, def. ‘[300 200 560 420]’
-     Specify the position and size of the figure.  The four elements of
-     the vector are the coordinates of the lower left corner and width
-     and height of the figure.  *Note units property: XREFfigureunits.
+     Specify the position and size of the figure canvas.  The four
+     elements of the vector are the coordinates of the lower left corner
+     and width and height of the figure.  *Note units property:
+     XREFfigureunits.
 
 ‘renderer’: {"opengl"} | "painters"
+     ‘renderer’ is unused.
 
 ‘renderermode’: {"auto"} | "manual"
+     ‘renderermode’ is unused.
 
 ‘resize’: "off" | {"on"}
      ‘resize’ is unused.
@@ -360,13 +391,16 @@ The ‘figure’ properties are:
 ‘sizechangedfcn’: string | function handle, def. ‘[](0x0)’
      Callback triggered when the figure window size is changed.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘tag’: string, def. ""
      A user-defined string to label the graphics object.
 
 ‘toolbar’: {"auto"} | "figure" | "none"
-     Control the display of the toolbar along the bottom of the figure
-     window.  When set to "auto", the display is based on the value of
-     the ‘menubar’ property.
+     Control the display of the toolbar (along the bottom of the
+     menubar) and the status bar.  When set to "auto", the display is
+     based on the value of the ‘menubar’ property.
 
 ‘type’ (read-only): string
      Class name of the graphics object.  ‘type’ is always "figure"
@@ -398,11 +432,25 @@ The ‘figure’ properties are:
      these callback functions are executed, the ‘currentpoint’ property
      holds the current coordinates of the cursor.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘windowkeypressfcn’: string | function handle, def. ‘[](0x0)’
+     Function that is executed when a key is pressed and the figure has
+     focus.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘windowkeyreleasefcn’: string | function handle, def. ‘[](0x0)’
+     Function that is executed when a key is released and the figure has
+     focus.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘windowscrollwheelfcn’: string | function handle, def. ‘[](0x0)’
+     ‘windowscrollwheelfcn’ is unused.
 
 ‘windowstyle’: "docked" | "modal" | {"normal"}
      The window style of a figure.  One of the following values:
@@ -429,6 +477,10 @@ The ‘axes’ properties are:
 ‘__modified__’: "off" | {"on"}
 
 ‘activepositionproperty’: {"outerposition"} | "position"
+     Specify which of "position" or "outerposition" properties takes
+     precedence when axes annotations extent changes.  *Note
+     position property: XREFaxesposition, and *note
+     outerposition property: XREFaxesposition.
 
 ‘alim’: def. ‘[0 1]’
      Transparency is not yet implemented for axes objects.  ‘alim’ is
@@ -437,8 +489,7 @@ The ‘axes’ properties are:
 ‘alimmode’: {"auto"} | "manual"
 
 ‘ambientlightcolor’: def. ‘[1 1 1]’
-     Light is not yet implemented for axes objects.  ‘ambientlightcolor’
-     is unused.
+     ‘ambientlightcolor’ is unused.
 
 ‘beingdeleted’: {"off"} | "on"
 
@@ -446,11 +497,14 @@ The ‘axes’ properties are:
      Control whether the axes has a surrounding box.
 
 ‘boxstyle’: {"back"} | "full"
-     ‘boxstyle’ is unused.
+     For 3-D axes, control whether the "full" box is drawn or only the 3
+     "back" axes
 
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘cameraposition’: three-element vector, def. ‘[0.50000 0.50000 9.16025]’
 
@@ -498,6 +552,9 @@ The ‘axes’ properties are:
      Function is set by using default property on root object, e.g.,
      ‘set (0, "defaultaxescreatefcn", 'disp ("axes created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘currentpoint’: 2-by-3 matrix, def. 2-by-3 double
      Matrix ‘[xf, yf, zf; xb, yb, zb]’ which holds the coordinates (in
      axes data units) of the point over which the mouse pointer was when
@@ -512,17 +569,22 @@ The ‘axes’ properties are:
      Specify the relative height and width of the data displayed in the
      axes.  Setting ‘dataaspectratio’ to ‘[1, 2]’ causes the length of
      one unit as displayed on the x-axis to be the same as the length of
-     2 units on the y-axis.  Setting ‘dataaspectratio’ also forces the
-     ‘dataaspectratiomode’ property to be set to "manual".
+     2 units on the y-axis.  *Note daspect function: XREFdaspect.
+     Setting ‘dataaspectratio’ also forces the ‘dataaspectratiomode’
+     property to be set to "manual".
 
 ‘dataaspectratiomode’: {"auto"} | "manual"
 
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before axes is deleted.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘drawmode’: "fast" | {"normal"}
 
 ‘fontangle’: "italic" | {"normal"}
+     Control whether the font is italic or normal.
 
 ‘fontname’: string, def. "*"
      Name of the font used for axes annotations.
@@ -538,6 +600,7 @@ The ‘axes’ properties are:
      Unit used to interpret ‘fontsize’ property.
 
 ‘fontweight’: "bold" | {"normal"}
+     Control variant of base font used: bold, demi, light, normal.
 
 ‘gridalpha’: def. ‘0.15000’
      Transparency is not yet implemented for axes objects.  ‘gridalpha’
@@ -563,7 +626,7 @@ The ‘axes’ properties are:
 ‘interruptible’: "off" | {"on"}
 
 ‘labelfontsizemultiplier’: def. ‘1.1000’
-     ‘labelfontsizemultiplier’ is unused.
+     Ratio between the x/y/zlabel fontsize and the tick label fontsize
 
 ‘layer’: {"bottom"} | "top"
      Control whether the axes is drawn below child graphics objects
@@ -576,6 +639,7 @@ The ‘axes’ properties are:
      ‘linestyleorderindex’ is unused.
 
 ‘linewidth’: def. ‘0.50000’
+     Width of the main axes lines
 
 ‘minorgridalpha’: def. ‘0.25000’
      Transparency is not yet implemented for axes objects.
@@ -596,6 +660,11 @@ The ‘axes’ properties are:
      Fraction of axes limits to zoom for each wheel movement.
 
 ‘nextplot’: "add" | {"replace"} | "replacechildren"
+     ‘nextplot’ is used by high level plotting functions to decide what
+     to do with graphics objects already present in the axes.  *Note
+     newplot function: XREFnewplot.  The state of ‘nextplot’ is
+     typically controlled using the ‘hold’ function.  *Note
+     hold function: XREFhold.
 
 ‘outerposition’: four-element vector, def. ‘[0 0 1 1]’
      Specify the position of the plot including titles, axes, and
@@ -613,6 +682,9 @@ The ‘axes’ properties are:
      ‘pickableparts’ is unused.
 
 ‘plotboxaspectratio’: def. ‘[1 1 1]’
+     *Note pbaspect function: XREFpbaspect.  Setting
+     ‘plotboxaspectratio’ also forces the ‘plotboxaspectratiomode’
+     property to be set to "manual".
 
 ‘plotboxaspectratiomode’: {"auto"} | "manual"
 
@@ -640,7 +712,8 @@ The ‘axes’ properties are:
 
 ‘tickdir’: {"in"} | "out"
      Control whether axes tick marks project "in" to the plot box or
-     "out".
+     "out".  Setting ‘tickdir’ also forces the ‘tickdirmode’ property to
+     be set to "manual".
 
 ‘tickdirmode’: {"auto"} | "manual"
 
@@ -652,16 +725,18 @@ The ‘axes’ properties are:
      Two-element vector ‘[2Dlen 3Dlen]’ specifying the length of the
      tickmarks relative to the longest visible axis.
 
-‘tightinset’ (read-only): def. ‘[0.042857 0.038106 0.000000 0.023810]’
+‘tightinset’ (read-only): four-element vector, def. ‘[0.042857 0.038106 0.000000 0.023810]’
+     Size of the ‘[left bottom right top]’ margins around the axes that
+     enclose labels and title annotations.
 
 ‘title’: graphics handle
      Graphics handle of the title text object.
 
-‘titlefontsizemultiplier’: def. ‘1.1000’
-     ‘titlefontsizemultiplier’ is unused.
+‘titlefontsizemultiplier’: positive scalar, def. ‘1.1000’
+     Ratio between the title fontsize and the tick label fontsize
 
 ‘titlefontweight’: {"bold"} | "normal"
-     ‘titlefontweight’ is unused.
+     Control variant of base font used for the axes title.
 
 ‘type’ (read-only): string
      Class name of the graphics object.  ‘type’ is always "axes"
@@ -671,6 +746,8 @@ The ‘axes’ properties are:
      associated to this axes object.
 
 ‘units’: "centimeters" | "characters" | "inches" | {"normalized"} | "pixels" | "points"
+     Units used to interpret the "position", "outerposition", and
+     "tightinset" properties.
 
 ‘userdata’: Any Octave data, def. ‘[](0x0)’
      User-defined data to associate with the graphics object.
@@ -683,14 +760,16 @@ The ‘axes’ properties are:
      If ‘visible’ is "off", the axes is not rendered on screen.
 
 ‘xaxislocation’: {"bottom"} | "origin" | "top" | "zero"
+     Control the x axis location.
 
 ‘xcolor’: {colorspec} | "none", def. ‘[0.15000 0.15000 0.15000]’
-     Color of the x-axis.  *Note colorspec: Colors.
+     Color of the x-axis.  *Note colorspec: Colors.  Setting ‘xcolor’
+     also forces the ‘xcolormode’ property to be set to "manual".
 
 ‘xcolormode’: {"auto"} | "manual"
-     ‘xcolormode’ is unused.
 
 ‘xdir’: {"normal"} | "reverse"
+     Direction of the x axis: "normal" is left to right.
 
 ‘xgrid’: {"off"} | "on"
      Control whether major x grid lines are displayed.
@@ -728,14 +807,15 @@ The ‘axes’ properties are:
 ‘xtickmode’: {"auto"} | "manual"
 
 ‘yaxislocation’: {"left"} | "origin" | "right" | "zero"
+     Control the y-axis location.
 
 ‘ycolor’: {colorspec} | "none", def. ‘[0.15000 0.15000 0.15000]’
      Color of the y-axis.  *Note colorspec: Colors.
 
 ‘ycolormode’: {"auto"} | "manual"
-     ‘ycolormode’ is unused.
 
 ‘ydir’: {"normal"} | "reverse"
+     Direction of the y-axis: "normal" is bottom to top.
 
 ‘ygrid’: {"off"} | "on"
      Control whether major y grid lines are displayed.
@@ -776,7 +856,6 @@ The ‘axes’ properties are:
      Color of the z-axis.  *Note colorspec: Colors.
 
 ‘zcolormode’: {"auto"} | "manual"
-     ‘zcolormode’ is unused.
 
 ‘zdir’: {"normal"} | "reverse"
 
@@ -830,6 +909,8 @@ The ‘line’ properties are:
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
      ‘children’ is unused.
@@ -846,8 +927,14 @@ The ‘line’ properties are:
      Function is set by using default property on root object, e.g.,
      ‘set (0, "defaultlinecreatefcn", 'disp ("line created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before line is deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘displayname’: string | cell array of strings, def. ""
      Text for the legend entry corresponding to this line.
@@ -946,6 +1033,8 @@ The ‘text’ properties are:
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
      ‘children’ is unused.
@@ -962,8 +1051,14 @@ The ‘text’ properties are:
      Function is set by using default property on root object, e.g.,
      ‘set (0, "defaulttextcreatefcn", 'disp ("text created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before text is deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘displayname’: def. ""
 
@@ -972,11 +1067,14 @@ The ‘text’ properties are:
      ‘edgecolor’ is unused.
 
 ‘editing’: {"off"} | "on"
+     ‘editing’ is unused.
 
-‘extent’ (read-only): def. ‘[0.000000 -0.005843 0.000000 0.032136]’
+‘extent’ (read-only): four-element vector, def. ‘[0.000000 -0.005843 0.000000 0.032136]’
+     Vector ‘[x0 y0 width height]’ indicating the size and location of
+     the text string.
 
 ‘fontangle’: "italic" | {"normal"} | "oblique"
-     Flag whether the font is italic or normal.  ‘fontangle’ is
+     Control whether the font is italic or normal.  ‘fontangle’ is
      currently unused.
 
 ‘fontname’: string, def. "*"
@@ -1078,6 +1176,8 @@ The ‘image’ properties are:
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘cdata’: matrix, def. 64-by-64 double
 
@@ -1096,8 +1196,14 @@ The ‘image’ properties are:
      e.g., ‘set (0, "defaultimagecreatefcn", 'disp ("image
      created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before image is deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘displayname’: string | cell array of strings, def. ""
      Text for the legend entry corresponding to this image.
@@ -1174,6 +1280,8 @@ The ‘patch’ properties are:
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘cdata’: scalar | matrix, def. ‘[](0x0)’
      Data defining the patch object color.  Patch color can be defined
@@ -1203,8 +1311,14 @@ The ‘patch’ properties are:
      e.g., ‘set (0, "defaultpatchcreatefcn", 'disp ("patch
      created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before patch is deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘diffusestrength’: scalar, def. ‘0.60000’
      Strength of the diffuse reflex.  Value between 0.0 (no diffuse
@@ -1356,6 +1470,8 @@ The ‘surface’ properties are:
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘cdata’: matrix, def. 3-by-3 double
 
@@ -1376,8 +1492,14 @@ The ‘surface’ properties are:
      e.g., ‘set (0, "defaultsurfacecreatefcn", 'disp ("surface
      created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before surface is deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘diffusestrength’: scalar, def. ‘0.60000’
      Strength of the diffuse reflex.  Value between 0.0 (no diffuse
@@ -1512,6 +1634,8 @@ The ‘light’ properties are:
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
      ‘children’ is unused.
@@ -1529,8 +1653,14 @@ The ‘light’ properties are:
      e.g., ‘set (0, "defaultlightcreatefcn", 'disp ("light
      created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before light is deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘handlevisibility’: "callback" | "off" | {"on"}
      If ‘handlevisibility’ is "off", the light’s handle is not visible
@@ -1607,8 +1737,14 @@ The ‘uimenu’ properties are:
      e.g., ‘set (0, "defaultuimenucreatefcn", 'disp ("uimenu
      created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before uimenu is deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘enable’: "off" | {"on"}
 
@@ -1672,6 +1808,8 @@ The ‘uibuttongroup’ properties are:
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
      Graphics handles of the uibuttongroup’s children.
@@ -1686,9 +1824,15 @@ The ‘uibuttongroup’ properties are:
      e.g., ‘set (0, "defaultuibuttongroupcreatefcn", 'disp
      ("uibuttongroup created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before uibuttongroup is
      deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘fontangle’: "italic" | {"normal"} | "oblique"
 
@@ -1786,9 +1930,15 @@ The ‘uicontextmenu’ properties are:
      e.g., ‘set (0, "defaultuicontextmenucreatefcn", 'disp
      ("uicontextmenu created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before uicontextmenu is
      deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘handlevisibility’: "callback" | "off" | {"on"}
      If ‘handlevisibility’ is "off", the uicontextmenu’s handle is not
@@ -1845,6 +1995,8 @@ The ‘uipanel’ properties are:
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘children’ (read-only): vector of graphics handles, def. ‘[](0x1)’
      Graphics handles of the uipanel’s children.
@@ -1859,8 +2011,14 @@ The ‘uipanel’ properties are:
      e.g., ‘set (0, "defaultuipanelcreatefcn", 'disp ("uipanel
      created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before uipanel is deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘fontangle’: "italic" | {"normal"} | "oblique"
 
@@ -1936,6 +2094,8 @@ The ‘uicontrol’ properties are:
 ‘busyaction’: "cancel" | {"queue"}
 
 ‘buttondownfcn’: string | function handle, def. ‘[](0x0)’
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘callback’: def. ‘[](0x0)’
 
@@ -1954,8 +2114,14 @@ The ‘uicontrol’ properties are:
      e.g., ‘set (0, "defaultuicontrolcreatefcn", 'disp ("uicontrol
      created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before uicontrol is deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘enable’: "inactive" | "off" | {"on"}
 
@@ -2060,8 +2226,14 @@ The ‘uitoolbar’ properties are:
      e.g., ‘set (0, "defaultuitoolbarcreatefcn", 'disp ("uitoolbar
      created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before uitoolbar is deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘handlevisibility’: "callback" | "off" | {"on"}
      If ‘handlevisibility’ is "off", the uitoolbar’s handle is not
@@ -2128,9 +2300,15 @@ The ‘uipushtool’ properties are:
      e.g., ‘set (0, "defaultuipushtoolcreatefcn", 'disp ("uipushtool
      created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before uipushtool is
      deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘enable’: "off" | {"on"}
 
@@ -2203,9 +2381,15 @@ The ‘uitoggletool’ properties are:
      e.g., ‘set (0, "defaultuitoggletoolcreatefcn", 'disp ("uitoggletool
      created!")')’.
 
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
+
 ‘deletefcn’: string | function handle, def. ‘[](0x0)’
      Callback function executed immediately before uitoggletool is
      deleted.
+
+     For information on how to write graphics listener functions see
+     *note Callbacks section: Callbacks.
 
 ‘enable’: "off" | {"on"}
 
@@ -2518,16 +2702,23 @@ Callback functions can be associated with graphics objects and triggered
 after certain events occur.  The basic structure of all callback
 function is
 
-     function mycallback (src, data)
+     function mycallback (hsrc, evt)
      ...
      endfunction
 
-where ‘src’ gives a handle to the source of the callback, and ‘code’
-gives some event specific data.  This can then be associated with an
-object either at the objects creation or later with the ‘set’ function.
-For example,
+where ‘hsrc’ is a handle to the source of the callback, and ‘evt’ gives
+some event specific data.
 
-     plot (x, "DeleteFcn", @(s, e) disp ("Window Deleted"))
+   The function can be provided as a function handle to a plain Octave
+function, as an anonymous function or as a string representing an Octvae
+command.  The latter syntax is not recommended since syntax errors will
+only occur when the string is evaluated.  *Note Function Handles
+section: Function Handles Anonymous Functions Inline Functions.
+
+   This can then be associated with an object either at the objects
+creation or later with the ‘set’ function.  For example,
+
+     plot (x, "DeleteFcn", @(h, e) disp ("Window Deleted"))
 
 where at the moment that the plot is deleted, the message "Window
 Deleted" will be displayed.
@@ -2537,25 +2728,35 @@ will be passed after the 2 default arguments.  For example:
 
      plot (x, "DeleteFcn", {@mycallback, "1"})
      ...
-     function mycallback (src, data, a1)
+     function mycallback (h, e, a1)
        fprintf ("Closing plot %d\n", a1);
      endfunction
 
    The basic callback functions that are available for all graphics
 objects are
 
-   • CreateFcn This is the callback that is called at the moment of the
-     objects creation.  It is not called if the object is altered in any
-     way, and so it only makes sense to define this callback in the
-     function call that defines the object.  Callbacks that are added to
-     ‘CreateFcn’ later with the ‘set’ function will never be executed.
+   • CreateFcn: called at the moment of the objects creation.  It is not
+     called if the object is altered in any way, and so it only makes
+     sense to define this callback in the function call that defines the
+     object.  Callbacks that are added to ‘CreateFcn’ later with the
+     ‘set’ function will never be executed.
 
-   • DeleteFcn This is the callback that is called at the moment an
-     object is deleted.
+   • DeleteFcn: called at the moment an object is deleted.
 
-   • ButtonDownFcn This is the callback that is called if a mouse button
-     is pressed while the pointer is over this object.  Note, that the
-     gnuplot interface does not respect this callback.
+   • ButtonDownFcn: called if a mouse button is pressed while the
+     pointer is over this object.  Note, that the gnuplot interface does
+     not respect this callback.
+
+   *Caution:* the second ‘evt’ argument in callback functions is only
+loosely implemented in the Qt graphics toolkit:
+
+   • Mouse click events: ‘evt’ is a class ‘double’ value, 1 for left, 2
+     for middle and 3 for right click.
+
+   • Key press events: ‘evt’ is a structure with fields ‘Key’ (string),
+     ‘Character’ (string) and ‘Modifier’ (cell array of strings).
+
+   • Other events: ‘evt’ is a class ‘double’ empty matrix.
 
    The object and figure that the event occurred in that resulted in the
 callback being called can be found with the ‘gcbo’ and ‘gcbf’ functions.
@@ -6485,6 +6686,7 @@ File: octave.info,  Node: Utility Functions,  Next: Special Functions,  Prev: Su
 
      If BASE is not specified it defaults to 10.
 
+          format long
           chop (-pi, 5, 10)
              ⇒ -3.14200000000000
           chop (-pi, 5, 5)
@@ -7912,7 +8114,7 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
  -- : norm (A, P, OPT)
      Compute the p-norm of the matrix A.
 
-     If the second argument is missing, ‘p = 2’ is assumed.
+     If the second argument is not given, ‘p = 2’ is used.
 
      If A is a matrix (or sparse matrix):
 
@@ -7944,7 +8146,7 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
           Frobenius norm of A, ‘sqrt (sumsq (abs (A)))’.
 
      P = 0
-          Hamming norm - the number of nonzero elements.
+          Hamming norm—the number of nonzero elements.
 
      other P, ‘P > 1’
           p-norm of A, ‘(sum (abs (A) .^ P)) ^ (1/P)’.
@@ -7957,7 +8159,8 @@ File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations, 
      if OPT is "columns" or "cols" then compute the norms of each column
      and return a row vector.
 
-     See also: *note cond: XREFcond, *note svd: XREFsvd.
+     See also: *note normest: XREFnormest, *note normest1: XREFnormest1,
+     *note cond: XREFcond, *note svd: XREFsvd.
 
  -- : null (A)
  -- : null (A, TOL)

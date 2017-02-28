@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -138,4 +138,3 @@ endfunction
 %!assert (trapz (0:0.5:2,[(1:5)',(1:5)']), [6, 6])
 %!assert (trapz (0:0.5:2,[(1:5);(1:5)],2), [6; 6])
 %!assert (trapz (0:0.5:2,repmat (reshape (1:5,1,1,5),2,2),3), [6 6; 6 6])
-

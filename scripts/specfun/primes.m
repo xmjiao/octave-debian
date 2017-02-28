@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -106,4 +106,3 @@ endfunction
 %!error primes ()
 %!error primes (1, 2)
 %!error <N must be a scalar> primes (ones (2,2))
-

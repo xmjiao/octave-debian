@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -135,4 +135,3 @@ endfunction
 %!error compass (1, "-r", 2)
 %!error <invalid linestyle STYLE> compass (1, "abc")
 %!error <invalid linestyle STYLE> compass (1, {1})
-

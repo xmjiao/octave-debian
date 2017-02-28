@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 David Bateman
+## Copyright (C) 2005-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -31,4 +31,3 @@ endfunction
 
 ## No test coverage for internal function.  It is tested through calling fcn.
 %!assert (1)
-

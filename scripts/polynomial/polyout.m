@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Auburn University.  All rights reserved.
+## Copyright (C) 1995-2017 Auburn University.  All rights reserved.
 ##
 ## This file is part of Octave.
 ##
@@ -109,4 +109,3 @@ endfunction
 %!assert (polyout ([5 4 3 2 1], "1"),"5*1^4 + 4*1^3 + 3*1^2 + 2*1^1 + 1")
 
 %!error polyout ([])
-

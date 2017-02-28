@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2016 Jacob Dawid
+Copyright (C) 2011-2017 Jacob Dawid
 
 This file is part of Octave.
 
@@ -78,4 +78,3 @@ private:
 };
 
 #endif
-

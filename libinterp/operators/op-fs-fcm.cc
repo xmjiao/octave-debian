@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -183,4 +183,3 @@ install_fs_fcm_ops (void)
   INSTALL_WIDENOP (octave_float_scalar, octave_float_complex_matrix,
                    float_complex_matrix_conv);
 }
-

@@ -1,7 +1,7 @@
 // Matrix manipulations.
 /*
 
-Copyright (C) 1995-2016 John W. Eaton
+Copyright (C) 1995-2017 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -138,4 +138,3 @@ SM_BOOL_OPS (char, charMatrix)
 
 MM_CMP_OPS (charMatrix, charMatrix)
 MM_BOOL_OPS (charMatrix, charMatrix)
-

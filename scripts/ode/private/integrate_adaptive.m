@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Carlo de Falco
+## Copyright (C) 2016-2017 Carlo de Falco
 ## Copyright (C) 2013 Roberto Porcu' <roberto.porcu@polimi.it>
 ##
 ## This file is part of Octave.
@@ -102,7 +102,7 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
 
   ## Initialize the EventFcn
   if (! isempty (options.Events))
-    ode_event_handler (options.Events, tspan(end), x,
+    ode_event_handler (options.Events, tspan(1), x,
                        "init", options.funarguments{:});
   endif
 
@@ -331,4 +331,3 @@ function solution = integrate_adaptive (stepper, order, func, tspan, x0,
   solution.x = x.';
 
 endfunction
-

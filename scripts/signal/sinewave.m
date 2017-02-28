@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Andreas Weingessel
+## Copyright (C) 1995-2017 Andreas Weingessel
 ##
 ## This file is part of Octave.
 ##
@@ -55,4 +55,3 @@ endfunction
 %!assert (sinewave (3, 4), sinewave (3, 4, 0))
 
 %!error sinewave ()
-

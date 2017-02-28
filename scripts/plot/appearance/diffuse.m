@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Kai Habel
+## Copyright (C) 2009-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -56,4 +56,3 @@ function retval = diffuse (sx, sy, sz, lv)
   retval(retval < 0) = 0;
 
 endfunction
-

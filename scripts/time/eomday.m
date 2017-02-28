@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 Paul Kienzle
+## Copyright (C) 2004-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -61,4 +61,3 @@ endfunction
 %!error eomday ()
 %!error eomday (1)
 %!error eomday (1,2,3)
-

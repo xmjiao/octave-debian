@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Rik Wehbring
+## Copyright (C) 2012-2017 Rik Wehbring
 ## Copyright (C) 2012-2016 Carnë Draug
 ##
 ## This file is part of Octave.
@@ -91,4 +91,3 @@ endfunction
 %!error <CMAP must be a valid colormap> rgbplot ({0 1 0})
 %!error <STYLE must be a string> rgbplot ([0 1 0], 2)
 %!error <unknown style 'nostyle'> rgbplot ([0 1 0], "nostyle")
-

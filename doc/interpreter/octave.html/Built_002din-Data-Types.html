@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.3, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Built-in Data Types</title>
 
@@ -118,7 +118,8 @@ belongs to.
 <dt><a name="index-cast"></a>: <em></em> <strong>cast</strong> <em>(<var>val</var>, &quot;<var>type</var>&quot;)</em></dt>
 <dd><p>Convert <var>val</var> to data type <var>type</var>.
 </p>
-<p><var>val</var> must be one of the numeric classes:
+<p>Both <var>val</var> and <var>type</var> are typically one of the following built-in
+classes:
 </p>
 <div class="example">
 <pre class="example">&quot;double&quot;
@@ -144,6 +145,18 @@ belongs to.
    &rArr; 0
 cast (300, &quot;int8&quot;)
    &rArr; 127
+</pre></div>
+
+<p>Programming Note: This function relies on the object <var>val</var> having a
+conversion method named <var>type</var>.  User-defined classes may implement only
+a subset of the full list of types shown above.  In that case, it may be
+necessary to call cast twice in order to reach the desired type.
+For example, the conversion to double is nearly always implemented, but
+the conversion to uint8 might not be.  In that case, the following code will
+work
+</p>
+<div class="example">
+<pre class="example">cast (cast (<var>user_defined_val</var>, &quot;double&quot;), &quot;uint8&quot;)
 </pre></div>
 
 

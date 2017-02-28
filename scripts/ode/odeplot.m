@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Thomas Treichl <treichl@users.sourceforge.net>
+## Copyright (C) 2006-2017 Thomas Treichl <treichl@users.sourceforge.net>
 ##
 ## This file is part of Octave.
 ##
@@ -118,4 +118,3 @@ endfunction
 %! fvdp = @(t,y) [y(2); (1 - y(1)^2) * y(2) - y(1)];
 %! opt = odeset ("OutputFcn", @odeplot, "RelTol", 1e-6);
 %! sol = ode45 (fvdp, [0 20], [2 0], opt);
-

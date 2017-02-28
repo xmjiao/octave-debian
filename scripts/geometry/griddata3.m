@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -100,4 +100,3 @@ endfunction
 %! vi = griddata3 (x, y, z, v, xi, yi, zi, "nearest");
 %! vv = vi - xi.^2 - yi.^2 - zi.^2;
 %! assert (max (abs (vv(:))), 0, 0.1);
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2016 John W. Eaton
+## Copyright (C) 2016-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -86,4 +86,3 @@ function [retval, build_env_cell] = octave_config_info (option)
   endif
 
 endfunction
-

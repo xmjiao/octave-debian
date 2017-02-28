@@ -1,4 +1,4 @@
-## Copyright (C) 2002-2016 Rolf Fabian
+## Copyright (C) 2002-2017 Rolf Fabian
 ##
 ## This file is part of Octave.
 ##
@@ -150,4 +150,3 @@ endfunction
 %!error mat2str (["Hello"])
 %!error <X must be two dimensional> mat2str (ones (3,3,2))
 %!error <N must have only 1 or 2 elements> mat2str (ones (3,3), [1 2 3])
-

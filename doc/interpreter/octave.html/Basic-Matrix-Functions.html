@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.3, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Basic Matrix Functions</title>
 
@@ -491,7 +491,7 @@ LU&nbsp;factorization.  Once the matrix has been factorized,
 <dt><a name="index-norm-2"></a>: <em></em> <strong>norm</strong> <em>(<var>A</var>, <var>p</var>, <var>opt</var>)</em></dt>
 <dd><p>Compute the p-norm of the matrix <var>A</var>.
 </p>
-<p>If the second argument is missing, <code>p&nbsp;=&nbsp;2</code><!-- /@w --> is assumed.
+<p>If the second argument is not given, <code>p&nbsp;=&nbsp;2</code><!-- /@w --> is used.
 </p>
 <p>If <var>A</var> is a matrix (or sparse matrix):
 </p>
@@ -536,7 +536,7 @@ LU&nbsp;factorization.  Once the matrix has been factorized,
 </p>
 </dd>
 <dt><var>p</var> = 0</dt>
-<dd><p>Hamming norm - the number of nonzero elements.
+<dd><p>Hamming norm&mdash;the number of nonzero elements.
 </p>
 </dd>
 <dt>other <var>p</var>, <code><var>p</var> &gt; 1</code></dt>
@@ -553,7 +553,7 @@ compute its norm.  The result is returned as a column vector.
 Similarly, if <var>opt</var> is <code>&quot;columns&quot;</code> or <code>&quot;cols&quot;</code> then
 compute the norms of each column and return a row vector.
 </p>
-<p><strong>See also:</strong> <a href="#XREFcond">cond</a>, <a href="Matrix-Factorizations.html#XREFsvd">svd</a>.
+<p><strong>See also:</strong> <a href="Sparse-Linear-Algebra.html#XREFnormest">normest</a>, <a href="Sparse-Linear-Algebra.html#XREFnormest1">normest1</a>, <a href="#XREFcond">cond</a>, <a href="Matrix-Factorizations.html#XREFsvd">svd</a>.
 </p></dd></dl>
 
 

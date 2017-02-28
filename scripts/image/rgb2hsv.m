@@ -1,4 +1,4 @@
-## Copyright (C) 1999-2016 Kai Habel
+## Copyright (C) 1999-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {} {@var{hsv_map} =} rgb2hsv (@var{rgb})
-## @deftypefnx {} {@var{hsv_map} =} rgb2hsv (@var{rgb})
+## @deftypefn  {} {@var{hsv_map} =} rgb2hsv (@var{rgb_map})
+## @deftypefnx {} {@var{hsv_img} =} rgb2hsv (@var{rgb_img})
 ## Transform a colormap or image from RGB to HSV color space.
 ##
 ## A color in the RGB space consists of red, green, and blue intensities.
@@ -173,4 +173,3 @@ endfunction
 %! assert (rgb2hsv (rgb_double), expected);
 %! assert (rgb2hsv (rgb_uint8), expected, 0.005);
 %! assert (rgb2hsv (single (rgb_double)), single (expected));
-

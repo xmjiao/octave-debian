@@ -1,4 +1,4 @@
-## Copyright (C) 2015-2016 Carlo de Falco
+## Copyright (C) 2015-2017 Carlo de Falco
 ## Copyright (C) 2015-2016 Jacopo Corno <jacopo.corno@gmail.com>
 ##
 ## This file is part of Octave.
@@ -108,4 +108,3 @@ function x_out = hermite_quartic_interpolation (t, x, der, t_out)
           (         s.^2 -  3*s.^3 +  2*s.^4) .* (dt * der(:,end));
 
 endfunction
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Carlo de Falco
+## Copyright (C) 2016-2017 Carlo de Falco
 ## Copyright (C) 2013 Roberto Porcu' <roberto.porcu@polimi.it>
 ##
 ## This file is part of Octave.
@@ -110,4 +110,3 @@ function [t_next, x_next, x_est, k] = runge_kutta_45_dorpri (f, t, x, dt,
   endif
 
 endfunction
-

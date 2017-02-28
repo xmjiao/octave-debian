@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -125,4 +125,3 @@ endfunction
 %!assert (idivide (a, bf, "round"), int8 ([-1, 1]))
 
 %!error (idivide (uint8 (1), int8 (1)))
-

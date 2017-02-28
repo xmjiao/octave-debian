@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Andreas Weingessel
+## Copyright (C) 1995-2017 Andreas Weingessel
 ##
 ## This file is part of Octave.
 ##
@@ -90,4 +90,3 @@ endfunction
 %!error blackman (-1)
 %!error blackman (ones (1,4))
 %!error blackman (1, "invalid")
-

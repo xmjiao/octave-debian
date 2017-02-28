@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 Jason Riedy
+Copyright (C) 2009-2017 Jason Riedy
 
 This file is part of Octave.
 
@@ -103,4 +103,3 @@ install_pm_scm_ops (void)
   INSTALL_BINOP (op_div, octave_sparse_complex_matrix, octave_perm_matrix,
                  div_scm_pm);
 }
-

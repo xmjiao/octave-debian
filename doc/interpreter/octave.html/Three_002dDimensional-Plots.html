@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.3, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Three-Dimensional Plots</title>
 
@@ -67,6 +67,10 @@ Next: <a href="Plot-Annotations.html#Plot-Annotations" accesskey="n" rel="next">
 r = sqrt (xx .^ 2 + yy .^ 2) + eps;
 tz = sin (r) ./ r;
 mesh (tx, ty, tz);
+xlabel (&quot;tx&quot;);
+ylabel (&quot;ty&quot;);
+zlabel (&quot;tz&quot;);
+title (&quot;3-D Sombrero plot&quot;);
 </pre></div>
 
 <p>produces the familiar &ldquo;sombrero&rdquo; plot shown in <a href="#fig_003amesh">Figure 15.5</a>.  Note
@@ -88,7 +92,11 @@ without requiring it to form a surface.  For example,
 <pre class="example">t = 0:0.1:10*pi;
 r = linspace (0, 1, numel (t));
 z = linspace (0, 1, numel (t));
-plot3 (r.*sin(t), r.*cos(t), z);
+plot3 (r.*sin (t), r.*cos (t), z);
+xlabel (&quot;r.*sin (t)&quot;);
+ylabel (&quot;r.*cos (t)&quot;);
+zlabel (&quot;z&quot;);
+title (&quot;plot3 display of 3-D helix&quot;);
 </pre></div>
 
 <p>displays the spiral in three dimensions shown in <a href="#fig_003aplot3">Figure 15.6</a>.

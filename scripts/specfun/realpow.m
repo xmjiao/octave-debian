@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -51,4 +51,3 @@ endfunction
 %!error realpow (1)
 %!error realpow (1,2,3)
 %!error <produced complex result> realpow (-1, 1/2)
-

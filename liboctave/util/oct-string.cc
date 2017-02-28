@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2016 Carnë Draug
+Copyright (C) 2016-2017 Carnë Draug
 
 This file is part of Octave.
 
@@ -204,4 +204,3 @@ INSTANTIATE_OCTAVE_STRING(std::string)
 INSTANTIATE_OCTAVE_STRING(Array<char>)
 
 #undef INSTANTIATE_OCTAVE_STRING
-

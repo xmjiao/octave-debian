@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -72,4 +72,3 @@ endfunction
 %!error table (ones (2,2), ones (2,1))
 %!error table (ones (2,1), ones (2,2))
 %!error table (ones (2,1), ones (3,1))
-

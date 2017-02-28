@@ -1,4 +1,4 @@
-## Copyright (C) 1998-2016 Andy Adler
+## Copyright (C) 1998-2017 Andy Adler
 ##
 ## This file is part of Octave.
 ##
@@ -76,4 +76,3 @@ endfunction
 
 ## Mark graphical function as tested by demo block
 %!assert (1)
-

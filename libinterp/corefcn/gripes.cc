@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -465,4 +465,3 @@ gripe_wrong_type_arg_for_unary_op (const octave_value& op)
   std::string type = op.type_name ();
   error ("invalid operand '%s' for unary operator", type.c_str ());
 }
-

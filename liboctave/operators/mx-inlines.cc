@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 Copyright (C) 2009 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague
 
@@ -1699,4 +1699,3 @@ mx_inline_xsum (const T *v, T *r,
 OP_RED_FCNN (mx_inline_xsum, T, T)
 
 #endif
-

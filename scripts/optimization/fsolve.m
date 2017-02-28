@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 VZLU Prague, a.s.
+## Copyright (C) 2008-2017 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
 ##
@@ -623,4 +623,3 @@ function x = __dogleg__ (r, b, d, delta)
   endif
 
 endfunction
-

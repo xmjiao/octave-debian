@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001-2016 Ross Lippert and Paul Kienzle
+Copyright (C) 2001-2017 Ross Lippert and Paul Kienzle
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -268,4 +268,3 @@ Mathematics, Manchester, England, January 1999.
 %! assert (y, z);
 %! assert (err, 0);   # Yes, this one has to hold exactly
 */
-

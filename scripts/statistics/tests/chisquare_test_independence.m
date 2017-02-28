@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -52,4 +52,3 @@ function [pval, chisq, df] = chisquare_test_independence (x)
   endif
 
 endfunction
-

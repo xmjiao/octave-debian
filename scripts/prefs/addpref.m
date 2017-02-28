@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 John W. Eaton
+## Copyright (C) 2012-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -109,4 +109,3 @@ endfunction
 %!error addpref (1,2,3,4)
 %!error <GROUP must be a string> addpref (1, "pref1", 2)
 %!error <PREF must be a string> addpref ("group1", 1, 2)
-

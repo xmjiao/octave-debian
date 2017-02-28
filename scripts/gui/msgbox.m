@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Martin Hepperle
+## Copyright (C) 2010-2017 Martin Hepperle
 ##
 ## This file is part of Octave.
 ##
@@ -125,4 +125,3 @@ endfunction
 %!error <TITLE must be a character string> msgbox ("msg", 1)
 %!error <ICON is not a valid type> msgbox ("msg", "title", 1)
 %!error <CREATEMODE is not a valid> msgbox ("msg", "title", "help", "wrong")
-

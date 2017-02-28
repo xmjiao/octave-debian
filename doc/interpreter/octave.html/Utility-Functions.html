@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.3, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Utility Functions</title>
 
@@ -598,7 +598,8 @@ resulting numbers are exactly divisible by <var>base</var>.
 <p>If <var>base</var> is not specified it defaults to 10.
 </p>
 <div class="example">
-<pre class="example">chop (-pi, 5, 10)
+<pre class="example">format long
+chop (-pi, 5, 10)
    &rArr; -3.14200000000000
 chop (-pi, 5, 5)
    &rArr; -3.14150000000000

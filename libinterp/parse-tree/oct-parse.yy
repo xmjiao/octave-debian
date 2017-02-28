@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 Copyright (C) 2009 David Grundberg
 Copyright (C) 2009-2010 VZLU Prague
 Copyright (C) 2016 Oliver Heimlich
@@ -1742,7 +1742,7 @@ properties_block
 property_list
                 : class_property
                   { $$ = new tree_classdef_property_list ($1); }
-                | property_list opt_sep class_property
+                | property_list sep class_property
                   {
                     YYUSE ($2);
 
@@ -1753,7 +1753,7 @@ property_list
 
 class_property  : identifier
                   { $$ = new tree_classdef_property ($1); }
-                | identifier '=' decl_param_init expression ';'
+                | identifier '=' decl_param_init expression
                   {
                     YYUSE ($2);
 
@@ -4041,6 +4041,10 @@ namespace octave
         else
           error (e, "parse error in %s", file.c_str ());
       }
+    catch (const octave::exit_exception&)
+      {
+        throw;
+      }
     catch (octave::interrupt_exception &)
       {
         throw;
@@ -4100,6 +4104,10 @@ namespace octave
               error (e, "parse error");
             else
               error (e, "parse error in %s", file.c_str ());
+          }
+        catch (const octave::exit_exception&)
+          {
+            throw;
           }
         catch (octave::interrupt_exception &)
           {

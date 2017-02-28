@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -119,4 +119,3 @@ endfunction
 %!error <N must be a scalar integer> example ("example", 1.5)
 %!warning <no function .* found> example ("_%NOT_A_FUNCTION%_");
 %!warning <only 2 examples available for example> example ("example", 10);
-

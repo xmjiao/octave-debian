@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Carnë Draug
+## Copyright (C) 2013-2017 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -123,4 +123,3 @@ function varargout = imageIO (func, core_func, fieldname, filename, varargin)
   end_unwind_protect
 
 endfunction
-

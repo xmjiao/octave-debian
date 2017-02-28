@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 John W. Eaton
+## Copyright (C) 1996-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -128,4 +128,3 @@ endfunction
 %!error <DIM must be an integer> std (1, [], ones (2,2))
 %!error <DIM must be an integer> std (1, [], 1.5)
 %!error <DIM must be .* a valid dimension> std (1, [], 0)
-

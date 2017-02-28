@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Friedrich Leisch
+## Copyright (C) 1995-2017 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -58,4 +58,3 @@ endfunction
 
 
 %!assert (size (sinetone (18e6, 150e6, 19550/150e6, 1)), [19550, 1])
-

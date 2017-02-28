@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Jaroslav Hajek
+## Copyright (C) 2010-2017 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -112,4 +112,3 @@ endfunction
 %!error <"rows" not valid for cell arrays> powerset ({1}, "rows")
 %!error <cell arrays can only be used for character> powerset ({1})
 %!error <not implemented for more than 32 elements> powerset (1:33)
-

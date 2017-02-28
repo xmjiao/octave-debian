@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2016 Paul Kienzle
+## Copyright (C) 2001-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -57,4 +57,3 @@ function y = filter2 (b, x, shape)
   y = conv2 (x, b(nr:-1:1, nc:-1:1), shape);
 
 endfunction
-

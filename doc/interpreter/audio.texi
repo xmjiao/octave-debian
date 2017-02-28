@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 Kurt Hornik
+@c Copyright (C) 1996-2017 Kurt Hornik
 @c
 @c This file is part of Octave.
 @c
@@ -574,5 +574,4 @@ are scaled to the range [-1, 1] instead.
 For more control over audio playback, use the @code{audioplayer} class.
 @seealso{@ref{XREFsound,,sound}, @ref{XREFrecord,,record}}
 @end deftypefn
-
 

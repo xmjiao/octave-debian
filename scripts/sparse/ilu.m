@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Eduardo Ramos Fernández <eduradical951@gmail.com>
+## Copyright (C) 2014-2017 Eduardo Ramos Fernández <eduradical951@gmail.com>
 ## Copyright (C) 2013-2016 Kai T. Ohlhus <k.ohlhus@gmail.com>
 ##
 ## This file is part of Octave.
@@ -534,4 +534,3 @@ endfunction
 %! fail ("ilu (A_tiny, opts)", "THRESH must be a scalar");
 %! opts.thresh = [];
 %! fail ("ilu (A_tiny, opts)", "THRESH must be a scalar");
-

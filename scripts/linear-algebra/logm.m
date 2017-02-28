@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 N. J. Higham
+## Copyright (C) 2008-2017 N. J. Higham
 ## Copyright (C) 2010 Richard T. Guy
 ## Copyright (C) 2010 Marco Caliari
 ##
@@ -181,4 +181,3 @@ endfunction
 %!error logm ()
 %!error logm (1, 2, 3)
 %!error <logm: A must be a square matrix> logm ([1 0;0 1; 2 2])
-

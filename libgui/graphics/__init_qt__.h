@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2016 Michael Goffioul
+Copyright (C) 2011-2017 Michael Goffioul
 
 This file is part of Octave.
 
@@ -33,4 +33,3 @@ namespace QtHandles
 extern void install___init_qt___functions (void);
 
 #endif
-

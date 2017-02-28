@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Juan Pablo Carbajal
+## Copyright (C) 2012-2017 Juan Pablo Carbajal
 ##
 ## This file is part of Octave.
 ##
@@ -53,4 +53,3 @@ endfunction
 
 ## Mark file as being tested.  No real test needed for a documentation .m file
 %!assert (1)
-

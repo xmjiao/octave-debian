@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Paul Kienzle
+## Copyright (C) 2005-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -70,4 +70,3 @@ endfunction
 %!error runlength (1, 2)
 %!error runlength (['A'; 'B'])
 %!error runlength (ones (2,2))
-

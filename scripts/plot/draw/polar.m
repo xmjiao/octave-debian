@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -440,4 +440,3 @@ endfunction
 %! polar (theta, rho);
 %! set (gca, "rtick", 0.2:0.2:1);
 %! title ("polar() plot");
-

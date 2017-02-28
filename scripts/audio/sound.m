@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Mike Miller
+## Copyright (C) 2016-2017 Mike Miller
 ##
 ## This file is part of Octave.
 ##
@@ -68,4 +68,3 @@ endfunction
 %!error sound (1,2,3,4)
 %!error sound (1, -1)
 %!error sound (1, [], 2)
-

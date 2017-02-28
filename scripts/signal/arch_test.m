@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -94,4 +94,3 @@ function [pval, lm] = arch_test (y, x, p)
   pval = 1 - chi2cdf (lm, p);
 
 endfunction
-

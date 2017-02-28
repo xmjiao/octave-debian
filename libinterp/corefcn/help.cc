@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -485,8 +485,17 @@ raw_help (const std::string& nm, bool& symbol_found)
   if (! found)
     found = raw_help_from_file (nm, h, f, symbol_found);
 
-  if (! found || h == "external-doc")
-    raw_help_from_docstrings_file (nm, h, symbol_found);
+  bool external_doc = h.compare (0, 12, "external-doc") == 0;
+
+  if (! found || external_doc)
+    {
+      std::string tmp_nm = nm;
+
+      if (external_doc && h.length () > 12 && h[12] == ':')
+        tmp_nm = h.substr (13);
+
+      raw_help_from_docstrings_file (tmp_nm, h, symbol_found);
+    }
 
   return h;
 }
@@ -1045,4 +1054,3 @@ The original variable value is restored when exiting the function.
 {
   return SET_INTERNAL_VARIABLE (suppress_verbose_help_message);
 }
-

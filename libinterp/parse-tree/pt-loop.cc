@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -151,4 +151,3 @@ tree_complex_for_command::accept (tree_walker& tw)
 {
   tw.visit_complex_for_command (*this);
 }
-

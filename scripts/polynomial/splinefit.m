@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Ben Abbott, Jonas Lundgren
+## Copyright (C) 2012-2017 Ben Abbott, Jonas Lundgren
 ##
 ## This file is part of Octave.
 ##
@@ -242,4 +242,3 @@ endfunction
 %!test
 %! y = interp1 (xb, yb, x, "spline");
 %! assert (ppval (splinefit (x, y, xb), x), y, 15 * eps ());
-

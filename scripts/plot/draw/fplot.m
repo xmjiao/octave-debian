@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Paul Kienzle
+## Copyright (C) 2005-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -254,4 +254,3 @@ endfunction
 %!error <invalid function FN>
 %! fn = @(x) [x;x];
 %! fplot (fn, [-1,1]);
-

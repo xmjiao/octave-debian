@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 Mike Miller
+Copyright (C) 2016-2017 Mike Miller
 
 This file is part of Octave.
 
@@ -28,4 +28,3 @@ along with Octave; see the file COPYING.  If not, see
 #warning "config.h has been deprecated; there is no need to include it directly"
 
 #endif
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -203,4 +203,3 @@ function [h, ax, p, pax] = __plotmatrix__ (bigax, varargin)
   endfor
 
 endfunction
-

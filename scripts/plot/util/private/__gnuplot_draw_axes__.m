@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 John W. Eaton
+## Copyright (C) 2005-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -2887,4 +2887,3 @@ function retval = mapcdata (cdata, mode, clim, cmap_sz)
     retval = max (1, min (cdata, cmap_sz));
   endif
 endfunction
-

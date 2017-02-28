@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Martin Helm
+## Copyright (C) 2009-2017 Martin Helm
 ##
 ## This file is part of Octave.
 ##
@@ -178,4 +178,3 @@ endfunction
 %! cdat = isocolors (x, y, z, c, v);
 %! assert (rows (cdat) == rows (v));
 ## Can't create a patch handle for tests without a figure
-

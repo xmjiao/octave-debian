@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 Sébastien Villemot <sebastien@debian.org>
+Copyright (C) 2016-2017 Sébastien Villemot <sebastien@debian.org>
 
 This file is part of Octave.
 
@@ -211,4 +211,3 @@ is in the upper left corner, by doing:
 %! assert (diag (T)(3:4), diag (TS)(1:2), sqrt (eps ("single")));
 
 */
-

@@ -1,7 +1,7 @@
 // %NO_EDIT_WARNING%
 /*
 
-Copyright (C) 2012-2016 John W. Eaton
+Copyright (C) 2012-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -138,25 +138,6 @@ install_signal_handlers (void)
 
   gui_driver_set_signal_handler ("SIGXCPU", gui_driver_sig_handler);
   gui_driver_set_signal_handler ("SIGXFSZ", gui_driver_sig_handler);
-}
-
-static bool
-have_controlling_terminal (void)
-{
-  int retval = false;
-
-  const char *ctty = octave_ctermid_wrapper ();
-
-  int fd = octave_open_wrapper (ctty, octave_o_rdwr_wrapper (), 0);
-
-  if (fd >= 0)
-    {
-      octave_close_wrapper (fd);
-
-      retval = true;
-    }
-
-  return retval;
 }
 
 #endif
@@ -325,8 +306,18 @@ main (int argc, char **argv)
 
 #if defined (HAVE_OCTAVE_QT_GUI) && ! defined (OCTAVE_USE_WINDOWS_API)
 
-  if (gui_libs && start_gui && have_controlling_terminal ())
+  if (gui_libs && start_gui)
     {
+      // Fork and exec when starting the GUI so that we will call
+      // setsid to give up the controlling terminal (if any) and so that
+      // the GUI process will be in a separate process group.
+      //
+      // The GUI process must be in a separate process group so that we
+      // can send an interrupt signal to all child processes when
+      // interrupting the interpreter.  See also bug #49609 and the
+      // function pthread_thread_manager::interrupt in the file
+      // libgui/src/thread-manager.cc.
+
       install_signal_handlers ();
 
       gui_pid = octave_fork_wrapper ();
@@ -419,4 +410,3 @@ This is the developer documentation for Octave's own source code. It is
 intended to help for hacking Octave. It may also be useful for
 understanding the Octave API when writing your own .oct files.
 */
-

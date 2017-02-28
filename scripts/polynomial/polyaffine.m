@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Tony Richardson, Jaroslav Hajek
+## Copyright (C) 2009-2017 Tony Richardson, Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -85,4 +85,3 @@ endfunction
 %! g = polyaffine (f, mu);
 %! x = linspace (-4,4,100);
 %! assert (polyval (f, x, [], mu), polyval (g, x), 1e-10);
-

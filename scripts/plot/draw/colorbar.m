@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -758,4 +758,3 @@ endfunction
 %! plot ([0, 2]);
 %! colorbar ("eastoutside");
 %! axis equal;
-

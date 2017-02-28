@@ -1,4 +1,4 @@
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -551,4 +551,3 @@ function.  The @code{hash} function supports the most common used
 cryptographic hash functions, namely MD5 and SHA-1.
 
 @DOCSTRING(hash)
-

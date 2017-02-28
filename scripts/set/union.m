@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ## Copyright (C) 2008-2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -120,4 +120,3 @@ endfunction
 %!error <A and B must be arrays or cell arrays> union (@sin, 1, "rows")
 %!error <A and B must be 2-dimensional matrices> union (rand(2,2,2), 1, "rows")
 %!error <number of columns in A and B must match> union ([1 2], 1, "rows")
-

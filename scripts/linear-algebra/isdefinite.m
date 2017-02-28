@@ -1,4 +1,4 @@
-## Copyright (C) 2003-2016 Gabriele Pannocchia
+## Copyright (C) 2003-2017 Gabriele Pannocchia
 ##
 ## This file is part of Octave.
 ##
@@ -85,4 +85,3 @@ endfunction
 %!error isdefinite ()
 %!error isdefinite (1,2,3)
 %!error <A must be a Hermitian matrix> isdefinite ([1 2; 3 4])
-

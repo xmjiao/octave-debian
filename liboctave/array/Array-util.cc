@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2016 John W. Eaton
+Copyright (C) 2003-2017 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -668,4 +668,3 @@ permute_vector_compare (const void *a, const void *b)
 
   return pva->pidx > pvb->pidx;
 }
-

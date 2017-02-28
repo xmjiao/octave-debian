@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Søren Hauberg
+## Copyright (C) 2005-2017 Søren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -126,4 +126,3 @@ endfunction
 %! if (exist (ifile) != 2 && exist (sprintf ("%s.gz", ifile)) != 2)
 %!   error ("Info file %s or %s.gz does not exist!", ifile, ifile);
 %! endif
-

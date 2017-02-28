@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Ben Abbott
+## Copyright (C) 2010-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -182,5 +182,3 @@ function [gs_cmd, cleanup_cmd] = __ghostscript__ (varargin);
   gs_cmd = cmd;
 
 endfunction
-
-

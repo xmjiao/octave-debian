@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Carlo de Falco
+## Copyright (C) 2016-2017 Carlo de Falco
 ## Copyright (C) 2016 Francesco Faccio <francesco.faccio@mail.polimi.it>
 ## Copyright (C) 2014-2016 Jacopo Corno <jacopo.corno@gmail.com>
 ## Copyright (C) 2013-2016 Roberto Porcu' <roberto.porcu@polimi.it>
@@ -25,6 +25,7 @@
 ## @deftypefnx {} {[@var{t}, @var{y}] =} ode45 (@var{fun}, @var{trange}, @var{init}, @var{ode_opt})
 ## @deftypefnx {} {[@var{t}, @var{y}, @var{te}, @var{ye}, @var{ie}] =} ode45 (@dots{})
 ## @deftypefnx {} {@var{solution} =} ode45 (@dots{})
+## @deftypefnx {} {} ode45 (@dots{})
 ##
 ## Solve a set of non-stiff Ordinary Differential Equations (non-stiff ODEs)
 ## with the well known explicit @nospell{Dormand-Prince} method of order 4.
@@ -63,6 +64,10 @@
 ## that each column corresponds to a time in @var{x}.
 ## Use @code{fieldnames (@var{solution})} to see the other fields and
 ## additional information returned.
+##
+## If no output arguments are requested, and no @code{OutputFcn} is
+## specified in @var{ode_opt}, then the @code{OutputFcn} is set to
+## @code{odeplot} and the results of the solver are plotted immediately.
 ##
 ## If using the @qcode{"Events"} option then three additional outputs may
 ## be returned.  @var{te} holds the time when an Event function returned a
@@ -273,7 +278,7 @@ function varargout = ode45 (fun, trange, init, varargin)
       varargout{1}.stats.ndecomps = ndecomps;
       varargout{1}.stats.nlinsols = nlinsols;
     endif
-  elseif (nargout == 5)
+  elseif (nargout > 2)
     varargout = cell (1,5);
     varargout{1} = solution.t;
     varargout{2} = solution.x;
@@ -513,4 +518,3 @@ endfunction
 %!error <INIT must be a numeric> ode45 (@fpol, [0 25], {[3 15 1]})
 %!error <INIT must be a .* vector> ode45 (@fpol, [0 25], [3 15 1; 3 15 1])
 %!error <FUN must be a valid function handle> ode45 (1, [0 25], [3 15 1])
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2016 Jaroslav Hajek
+Copyright (C) 2008-2017 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -503,4 +503,3 @@ octave_perm_matrix::fast_elem_extract (octave_idx_type n) const
   else
     return octave_value ();
 }
-

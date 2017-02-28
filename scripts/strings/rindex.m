@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 Kurt Hornik
+## Copyright (C) 1996-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -67,4 +67,3 @@ endfunction
 %!error rindex ()
 %!error rindex ("foo")
 %!error rindex ("foo", "bar", "last")
-

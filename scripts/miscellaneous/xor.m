@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -60,7 +60,7 @@ function z = xor (x, y, varargin)
   z = __xor__ (x, y);
 
   ## Slow expansion to multiple arguments.
-  ## Probably okay number of elements ## will be small.
+  ## Probably okay number of elements will be small.
   if (! isempty (varargin))
     for i = 1:numel (varargin)
       z = __xor__ (z, varargin{i});
@@ -98,4 +98,3 @@ endfunction
 %!error xor ()
 %!error xor (1)
 %!error <X and Y must be of compatible size> xor (ones (3,2), ones (2,3))
-

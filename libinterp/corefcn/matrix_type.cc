@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2016 David Bateman
+Copyright (C) 2005-2017 David Bateman
 
 This file is part of Octave.
 
@@ -557,4 +557,3 @@ LU@tie{}factorization.  Once the matrix has been factorized,
 %! a = matrix_type (ones (10,10), "Singular");
 %! assert (matrix_type (a), "Singular");
 */
-

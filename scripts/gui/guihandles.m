@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Michael Goffioul
+## Copyright (C) 2012-2017 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -77,4 +77,3 @@ function hdata = __make_guihandles_struct__ (h, hdata)
   endfor
 
 endfunction
-

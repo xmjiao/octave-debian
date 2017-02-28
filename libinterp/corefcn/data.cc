@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 Copyright (C) 2009 Jaroslav Hajek
 Copyright (C) 2009-2010 VZLU Prague
 Copyright (C) 2012 Carlo de Falco
@@ -2793,7 +2793,7 @@ Example 4: number of output arguments != number of dimensions
 
 @example
 @group
-[nr, remainder] = size (ones (2, 3, 4, 5)
+[nr, remainder] = size (ones (2, 3, 4, 5))
     @result{} nr = 2
     @result{} remainder = 60
 @end group
@@ -5620,7 +5620,7 @@ DEFUN (norm, args, ,
 @deftypefnx {} {} norm (@var{A}, @var{p}, @var{opt})
 Compute the p-norm of the matrix @var{A}.
 
-If the second argument is missing, @w{@code{p = 2}} is assumed.
+If the second argument is not given, @w{@code{p = 2}} is used.
 
 If @var{A} is a matrix (or sparse matrix):
 
@@ -5657,7 +5657,7 @@ If @var{A} is a vector or a scalar:
 Frobenius norm of @var{A}, @code{sqrt (sumsq (abs (A)))}.
 
 @item @var{p} = 0
-Hamming norm - the number of nonzero elements.
+Hamming norm---the number of nonzero elements.
 
 @item other @var{p}, @code{@var{p} > 1}
 p-norm of @var{A}, @code{(sum (abs (@var{A}) .^ @var{p})) ^ (1/@var{p})}.
@@ -5670,12 +5670,12 @@ If @var{opt} is the value @qcode{"rows"}, treat each row as a vector and
 compute its norm.  The result is returned as a column vector.
 Similarly, if @var{opt} is @qcode{"columns"} or @qcode{"cols"} then
 compute the norms of each column and return a row vector.
-@seealso{cond, svd}
+@seealso{normest, normest1, cond, svd}
 @end deftypefn */)
 {
   int nargin = args.length ();
 
-  if (nargin < 1 && nargin > 3)
+  if (nargin < 1 || nargin > 3)
     print_usage ();
 
   octave_value x_arg = args(0);
@@ -5821,6 +5821,15 @@ compute the norms of each column and return a row vector.
 %! A = sparse (2,2);
 %! A(2,1) = 1;
 %! assert (norm (A), 1);
+
+## Test input validation
+%!error norm ()
+%!error norm (1,2,3,4)
+%!error <unrecognized option> norm (1, "invalid")
+%!error <unrecognized option> norm (1, "rows", "invalid")
+%!error <unrecognized option> norm (1, "invalid", "rows")
+%!error <invalid combination of options> norm (1, "cols", "rows")
+%!error <invalid combination of options> norm (1, "rows", "rows")
 */
 
 static octave_value
@@ -7021,7 +7030,7 @@ Undocumented internal function.
 {
   int nargin = args.length ();
 
-  if (nargin < 2 && nargin > 3)
+  if (nargin < 2 || nargin > 3)
     print_usage ();
 
   if (! args(0).is_numeric_type ())
@@ -7110,7 +7119,7 @@ do_accumarray_minmax_fun (const octave_value_list& args,
 {
   int nargin = args.length ();
 
-  if (nargin < 3 && nargin > 4)
+  if (nargin < 3 || nargin > 4)
     print_usage ();
 
   if (! args(0).is_numeric_type ())
@@ -7244,7 +7253,7 @@ Undocumented internal function.
 {
   int nargin = args.length ();
 
-  if (nargin < 2 && nargin > 4)
+  if (nargin < 2 || nargin > 4)
     print_usage ();
 
   if (! args(0).is_numeric_type ())
@@ -7943,4 +7952,3 @@ dimensions of the decoded array.
 %!error <input was not valid base64> base64_decode ("AQ=")
 %!error <incorrect input size> base64_decode ("AQ==")
 */
-

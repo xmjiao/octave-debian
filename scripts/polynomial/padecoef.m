@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Endre Kozma
+## Copyright (C) 2014-2017 Endre Kozma
 ##
 ## This file is part of Octave.
 ##
@@ -174,4 +174,3 @@ endfunction
 %!error <N must be a non-negative scalar> padecoef (1, [1,2])
 %!error <N must be a non-negative scalar> padecoef (1, {1})
 %!error <N must be a non-negative scalar> padecoef (1, -1)
-

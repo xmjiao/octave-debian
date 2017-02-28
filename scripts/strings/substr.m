@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 Kurt Hornik
+## Copyright (C) 1996-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -110,4 +110,3 @@ endfunction
 %!error substr ("foo", 1, 5)
 %!error substr ("foo", -1, 5)
 %!error substr ("foo", 2, -5)
-

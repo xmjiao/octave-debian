@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2003-2016 David Bateman
+Copyright (C) 2003-2017 David Bateman
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -345,4 +345,3 @@ public:
   octave_idx_type indx;
 };
 #endif
-

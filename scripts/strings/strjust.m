@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -110,4 +110,3 @@ endfunction
 %!error <Invalid call to strjust> strjust (["a";"ab"], "center", 1)
 %!error <S must be a string> strjust (ones (3,3))
 %!error <S must be a string> strjust (char (ones (3,3,3)))
-

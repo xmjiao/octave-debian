@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -313,6 +313,22 @@
 function print (varargin)
 
   opts = __print_parse_opts__ (varargin{:});
+
+  folder = fileparts (opts.name);
+  if (! isempty (folder) && ! exist (folder, "dir"))
+    error ("print: directory %s does not exist", folder);
+  endif
+
+  ## Check the requested file is writable
+  do_unlink = (exist (opts.name, "file") != 2);
+  fid = fopen (opts.name, "a");
+  if (fid == -1)
+    error ("print: cannot open file %s for writing", opts.name);
+  endif
+  fclose (fid);
+  if (do_unlink)
+    unlink (opts.name);
+  endif
 
   opts.pstoedit_cmd = @pstoedit;
   opts.fig2dev_cmd = @fig2dev;
@@ -825,4 +841,3 @@ function cmd = pstoedit (opts, devopt)
   endif
 
 endfunction
-

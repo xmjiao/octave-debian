@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -92,4 +92,3 @@ endfunction
 %!error spearman (ones (2,2,2))
 %!error spearman (ones (2,2), ones (2,2,2))
 %!error spearman (ones (2,2), ones (3,2))
-

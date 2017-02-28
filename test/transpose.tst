@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -83,4 +83,3 @@
 %!test
 %! matrix = single ([1,2;3,4]*i);
 %! assert (matrix', single ([-1i,-3i;-2i,-4i]));
-

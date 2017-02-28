@@ -1,4 +1,4 @@
-% Copyright (C) 1996-2016 John W. Eaton
+% Copyright (C) 1996-2017 John W. Eaton
 %
 % This file is part of Octave.
 %
@@ -92,7 +92,7 @@ modified versions.
 @title GNU Octave
 @subtitle A high-level interactive language for numerical computations
 @subtitle Edition 4 for Octave version @value{VERSION}
-@subtitle September 2016
+@subtitle November 2016
 @sp 2
 @multitable @columnfractions 0.4 0.025 0.65
 @item
@@ -857,7 +857,7 @@ Oct-Files
 * Allocating Local Memory in Oct-Files::
 * Input Parameter Checking in Oct-Files::
 * Exception and Error Handling in Oct-Files::
-* Documentation and Test of Oct-Files::
+* Documentation and Testing of Oct-Files::
 
 Sparse Matrices in Oct-Files
 
@@ -877,10 +877,10 @@ Mex-Files
 
 Java Interface
 
-* Java Interface Functions::
 * Making Java Classes Available::
-* Creating an Instance of a Java Class::
-* Handling Java Memory Limitations::
+* How to use Java from within Octave::
+* Passing parameters to the JVM::
+* Java Interface Functions::
 
 Test and Demo Functions
 

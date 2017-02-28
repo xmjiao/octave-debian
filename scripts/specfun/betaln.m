@@ -1,4 +1,4 @@
-## Copyright (C) 1998-2016 Nicol N. Schraudolph
+## Copyright (C) 1998-2017 Nicol N. Schraudolph
 ##
 ## This file is part of Octave.
 ##
@@ -73,4 +73,3 @@ endfunction
 %!error <A and B must have consistent sizes> betaln ([1 2], [1 2 3])
 %!error <A and B must have consistent sizes> betaln ([1 2 3], [1 2])
 %!error <A and B must have consistent sizes> betaln ([1 2 3], [1 2 3]')
-

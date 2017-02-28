@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -113,4 +113,3 @@ endfunction
 %! [idx, p] = tsearchn (x,tri,[1,1]);
 %! assert (idx, NaN);
 %! assert (p, [NaN, NaN, NaN]);
-

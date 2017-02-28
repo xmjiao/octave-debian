@@ -1,4 +1,4 @@
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -89,6 +89,9 @@ linear axes.  For example,
 @group
 x = -10:0.1:10;
 plot (x, sin (x));
+xlabel ("x");
+ylabel ("sin (x)");
+title ("Simple 2-D Plot");
 @end group
 @end example
 
@@ -123,13 +126,20 @@ are useful for displaying discrete data.  For example,
 
 @example
 @group
+randn ("state", 1);
 hist (randn (10000, 1), 30);
+xlabel ("Value");
+ylabel ("Count");
+title ("Histogram of 10,000 normally distributed random numbers");
 @end group
 @end example
 
 @noindent
 produces the histogram of 10,000 normally distributed random numbers
-shown in @ref{fig:hist}.
+shown in @ref{fig:hist}.  Note that, @code{randn ("state", 1);}, initializes
+the random number generator for @code{randn} to a known value so that the
+returned values are reproducible; This guarantees that the figure produced
+is identical to the one in this manual.
 
 @float Figure,fig:hist
 @center @image{hist,4in}
@@ -177,11 +187,16 @@ example,
 
 @example
 @group
+rand ("state", 2);
 x = 0:0.1:10;
 y = sin (x);
 lerr = 0.1 .* rand (size (x));
 uerr = 0.1 .* rand (size (x));
 errorbar (x, y, lerr, uerr);
+axis ([0, 10, -1.1, 1.1]);
+xlabel ("x");
+ylabel ("sin (x)");
+title ("Errorbar plot of sin (x)");
 @end group
 @end example
 
@@ -207,6 +222,7 @@ and linear.  For example,
 
 @example
 polar (0:0.1:10*pi, 0:0.1:10*pi);
+title ("Example polar plot from 0 to 10*pi");
 @end example
 
 @noindent
@@ -240,10 +256,6 @@ produces the spiral plot shown in @ref{fig:polar}.
 @DOCSTRING(comet)
 
 @DOCSTRING(comet3)
-
-@DOCSTRING(frame2im)
-
-@DOCSTRING(im2frame)
 
 @node Axis Configuration
 @subsubsection Axis Configuration
@@ -322,6 +334,10 @@ tx = ty = linspace (-8, 8, 41)';
 r = sqrt (xx .^ 2 + yy .^ 2) + eps;
 tz = sin (r) ./ r;
 mesh (tx, ty, tz);
+xlabel ("tx");
+ylabel ("ty");
+zlabel ("tz");
+title ("3-D Sombrero plot");
 @end group
 @end example
 
@@ -347,7 +363,11 @@ without requiring it to form a surface.  For example,
 t = 0:0.1:10*pi;
 r = linspace (0, 1, numel (t));
 z = linspace (0, 1, numel (t));
-plot3 (r.*sin(t), r.*cos(t), z);
+plot3 (r.*sin (t), r.*cos (t), z);
+xlabel ("r.*sin (t)");
+ylabel ("r.*cos (t)");
+zlabel ("z");
+title ("plot3 display of 3-D helix");
 @end group
 @end example
 
@@ -529,11 +549,13 @@ fplot (@@cos, [-10, 10]);
 @end example
 
 @noindent
-creates a figure with two separate axes, one displaying a sine wave and
-the other a cosine wave.  The first call to subplot divides the figure
-into two plotting areas (two rows and one column) and makes the first plot
-area active.  The grid of plot areas created by @code{subplot} is
-numbered in column-major order (top to bottom, left to right).
+creates a figure with two separate axes, one displaying a sine wave and the
+other a cosine wave.  The first call to subplot divides the figure into two
+plotting areas (two rows and one column) and makes the first plot area active.
+The grid of plot areas created by @code{subplot} is numbered in row-major order
+(left to right, top to bottom).  After plotting a sine wave, the next call to
+subplot activates the second subplot area, but does not re-partition the
+figure.
 
 @DOCSTRING(subplot)
 
@@ -1775,20 +1797,28 @@ is
 
 @example
 @group
-function mycallback (src, data)
+function mycallback (hsrc, evt)
 @dots{}
 endfunction
 @end group
 @end example
 
 @noindent
-where @code{src} gives a handle to the source of the callback, and
-@code{code} gives some event specific data.  This can then be associated
+where @code{hsrc} is a handle to the source of the callback, and @code{evt} 
+gives some event specific data.  
+
+The function can be provided as a function handle to a plain Octave function, 
+as an anonymous function or as a string representing an Octvae command. The 
+latter syntax is not recommended since syntax errors will only occur when the 
+string is evaluated.  
+@xref{Function Handles Anonymous Functions Inline Functions, , Function Handles section}.
+
+This can then be associated
 with an object either at the objects creation or later with the
 @code{set} function.  For example,
 
 @example
-plot (x, "DeleteFcn", @@(s, e) disp ("Window Deleted"))
+plot (x, "DeleteFcn", @@(h, e) disp ("Window Deleted"))
 @end example
 
 @noindent
@@ -1802,7 +1832,7 @@ be passed after the 2 default arguments.  For example:
 @group
 plot (x, "DeleteFcn", @{@@mycallback, "1"@})
 @dots{}
-function mycallback (src, data, a1)
+function mycallback (h, e, a1)
   fprintf ("Closing plot %d\n", a1);
 endfunction
 @end group
@@ -1812,21 +1842,32 @@ The basic callback functions that are available for all graphics objects
 are
 
 @itemize @bullet
-@item CreateFcn
-This is the callback that is called at the moment of the objects
-creation.  It is not called if the object is altered in any way, and so
-it only makes sense to define this callback in the function call that
-defines the object.  Callbacks that are added to @code{CreateFcn} later with
-the @code{set} function will never be executed.
+@item CreateFcn: 
+called at the moment of the objects creation.  It is not called if the object is altered in any way, and so it only makes sense to define this callback in the function call that defines the object.  Callbacks that are added to @code{CreateFcn} later with the @code{set} function will never be executed.
 
-@item DeleteFcn
-This is the callback that is called at the moment an object is deleted.
+@item DeleteFcn: 
+called at the moment an object is deleted.
 
-@item ButtonDownFcn
-This is the callback that is called if a mouse button is pressed while
-the pointer is over this object.  Note, that the gnuplot interface does
-not respect this callback.
+@item ButtonDownFcn: 
+called if a mouse button is pressed while the pointer is over this object.  Note, that the gnuplot interface does not respect this callback.
 @end itemize
+
+@strong{Caution:} the second @code{evt} argument in callback functions is only 
+loosely implemented in the Qt graphics toolkit:
+
+@itemize @bullet
+@item Mouse click events:
+@code{evt} is a class @code{double} value, 1 for left, 2 for middle and 3 
+for right click.
+
+@item Key press events:
+@code{evt} is a structure with fields @code{Key} (string), @code{Character} 
+(string) and @code{Modifier} (cell array of strings).
+
+@item Other events:
+@code{evt} is a class @code{double} empty matrix.
+@end itemize
+
 
 The object and figure that the event occurred in that resulted in the
 callback being called can be found with the @code{gcbo} and @code{gcbf}

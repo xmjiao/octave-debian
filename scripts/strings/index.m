@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 Kurt Hornik
+## Copyright (C) 1996-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -115,4 +115,3 @@ endfunction
 %!error index ("a", "b", "first", "d")
 %!error index (1, "bar")
 %!error index ("foo", "bar", 3)
-

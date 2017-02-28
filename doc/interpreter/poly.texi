@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -1223,8 +1223,4 @@ Reduce a polynomial coefficient vector to a minimum number of terms by
 stripping off any leading zeros.
 @seealso{@ref{XREFpolyout,,polyout}}
 @end deftypefn
-
-
-
-
 

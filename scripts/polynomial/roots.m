@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -137,4 +137,3 @@ endfunction
 %!error roots ([1, 2; 3, 4])
 %!error <inputs must not contain Inf or NaN> roots ([1 Inf 1])
 %!error <inputs must not contain Inf or NaN> roots ([1 NaN 1])
-

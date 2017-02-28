@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 Paul Kienzle
+## Copyright (C) 2004-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -64,4 +64,3 @@ endfunction
 %! assert (n, sparse ([4,2]));
 %! assert (m, sparse ([10/4,3/2]), 10*eps);
 %! assert (v, sparse ([5/3,1/2]), 10*eps);
-

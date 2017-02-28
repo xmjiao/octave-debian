@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -105,4 +105,3 @@ install_struct_ops (void)
   INSTALL_CATOP (octave_struct, octave_matrix, struct_matrix);
   INSTALL_CATOP (octave_matrix, octave_struct, matrix_struct);
 }
-

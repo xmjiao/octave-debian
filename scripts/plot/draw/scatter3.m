@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -126,4 +126,3 @@ endfunction
 %! scatter3 (x(:), y(:), z(:), 20*z(:), z(:), "s");
 %! title ({"scatter3() plot", ...
 %!         "marker is square, size and color determined by Z"});
-

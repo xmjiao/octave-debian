@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 Rik Wehbring
+Copyright (C) 2016-2017 Rik Wehbring
 
 This file is part of Octave.
 
@@ -35,4 +35,3 @@ along with Octave; see the file COPYING.  If not, see
 #include "ovl.h"
 
 #endif
-

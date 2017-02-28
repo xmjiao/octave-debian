@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Andreas Weingessel
+## Copyright (C) 1995-2017 Andreas Weingessel
 ##
 ## This file is part of Octave.
 ##
@@ -63,4 +63,3 @@ endfunction
 %!error bartlett (0.5)
 %!error bartlett (-1)
 %!error bartlett (ones (1,4))
-

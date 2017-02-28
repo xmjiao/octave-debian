@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -42,4 +42,3 @@ extern template class OCTAVE_API Array<octave_idx_type>;
 template class OCTAVE_API octave_sort<std::string>;
 
 INSTANTIATE_ARRAY (std::string, OCTAVE_API);
-

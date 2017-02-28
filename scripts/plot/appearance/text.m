@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 John W. Eaton
+## Copyright (C) 2007-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -347,4 +347,3 @@ endfunction
 %!error <Invalid combination> text ([1 2], [3, 4], {'a', 'b', 'c'})
 %!error <STRING must be a character string> text (1, 2, 3)
 %!error text ("abc")
-

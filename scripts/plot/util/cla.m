@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Ben Abbott
+## Copyright (C) 2008-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -105,4 +105,3 @@ endfunction
 %! unwind_protect_cleanup
 %!   close (hf);
 %! end_unwind_protect
-

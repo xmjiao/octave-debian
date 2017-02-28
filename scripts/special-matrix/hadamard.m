@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 Paul Kienzle
+## Copyright (C) 1993-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -173,4 +173,3 @@ endfunction
 %!error hadamard ()
 %!error hadamard (1,2)
 %!error <N must be 2\^k\*p> hadamard (5)
-

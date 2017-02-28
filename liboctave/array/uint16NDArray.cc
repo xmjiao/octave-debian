@@ -1,7 +1,7 @@
 // N-D Array manipulations.
 /*
 
-Copyright (C) 2004-2016 John W. Eaton
+Copyright (C) 2004-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -57,4 +57,3 @@ BSXFUN_STDREL_DEFS_MXLOOP (uint16NDArray)
 
 BSXFUN_OP_DEF_MXLOOP (pow, uint16NDArray, mx_inline_pow)
 BSXFUN_POW_MIXED_MXLOOP (uint16NDArray)
-

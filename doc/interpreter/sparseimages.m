@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 David Bateman
+## Copyright (C) 2006-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -269,4 +269,3 @@ endfunction
 function hide_output ()
   hf = figure (1, "visible", "off");
 endfunction
-

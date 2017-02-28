@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Mike Miller
+## Copyright (C) 2016-2017 Mike Miller
 ##
 ## This file is part of Octave.
 ##
@@ -107,4 +107,3 @@ endfunction
 %!error soundsc (1, 8000, [1 2 3])
 %!error soundsc (1, 8000, 8, [2 1])
 %!error soundsc (1, 8000, 8, [1 2 3])
-

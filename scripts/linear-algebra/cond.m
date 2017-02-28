@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -95,4 +95,3 @@ endfunction
 %!error <A must be a 2-D matrix> cond (ones (1,3,3))
 %!error <A must not contain Inf or NaN value> cond ([1, 2;Inf 4])
 %!error <A must not contain Inf or NaN value> cond ([1, 2;NaN 4])
-

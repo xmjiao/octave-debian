@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Mike Miller
+## Copyright (C) 2016-2017 Mike Miller
 ## Copyright (C) 2005-2016 Michael Zeising
 ##
 ## This file is part of Octave.
@@ -126,4 +126,3 @@ endfunction
 %!error wavread ("foo.wav", "foo")
 %!error wavread ("foo.wav", -1)
 %!error wavread ("foo.wav", [1, Inf], "foo")
-

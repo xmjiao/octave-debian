@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2013-2017 John W. Eaton
 Copyright (C) 2013-2016 Daniel J. Sebald
 
 This file is part of Octave.
@@ -265,4 +265,3 @@ private slots:
 };
 
 #endif
-

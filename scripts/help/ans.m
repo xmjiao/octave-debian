@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -34,4 +34,3 @@
 
 ## Mark file as being tested.  No real test needed for a documentation .m file
 %!assert (1)
-

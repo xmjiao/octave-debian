@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -101,4 +101,3 @@ endfunction
 %! assert (convhull (x, y), [1;7;13;12;11;10;4;3;2;1]);
 
 ## FIXME: Need input validation tests
-

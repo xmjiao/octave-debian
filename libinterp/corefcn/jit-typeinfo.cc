@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2016 Max Brister
+Copyright (C) 2012-2017 Max Brister
 
 This file is part of Octave.
 
@@ -2241,4 +2241,3 @@ jit_typeinfo::do_type_of (const octave_value &ov) const
 }
 
 #endif
-

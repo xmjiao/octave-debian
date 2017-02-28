@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -115,4 +115,3 @@ endfunction
 %! axis equal tight;
 %! hold on; plot (x,y,"r"); hold off;
 %! title ("quiver() with scaled arrows");
-

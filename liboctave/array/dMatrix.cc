@@ -1,7 +1,7 @@
 // Matrix manipulations.
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 Copyright (C) 2008 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague, a.s.
 
@@ -3118,4 +3118,3 @@ SM_BOOL_OPS (double, Matrix)
 
 MM_CMP_OPS (Matrix, Matrix)
 MM_BOOL_OPS (Matrix, Matrix)
-

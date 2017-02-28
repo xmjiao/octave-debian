@@ -1,7 +1,7 @@
 // Matrix manipulations.
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague, a.s.
 
@@ -2716,8 +2716,8 @@ ComplexMatrix::operator += (const DiagMatrix& a)
   octave_idx_type nr = rows ();
   octave_idx_type nc = cols ();
 
-  octave_idx_type a_nr = rows ();
-  octave_idx_type a_nc = cols ();
+  octave_idx_type a_nr = a.rows ();
+  octave_idx_type a_nc = a.cols ();
 
   if (nr != a_nr || nc != a_nc)
     octave::err_nonconformant ("operator +=", nr, nc, a_nr, a_nc);
@@ -2734,8 +2734,8 @@ ComplexMatrix::operator -= (const DiagMatrix& a)
   octave_idx_type nr = rows ();
   octave_idx_type nc = cols ();
 
-  octave_idx_type a_nr = rows ();
-  octave_idx_type a_nc = cols ();
+  octave_idx_type a_nr = a.rows ();
+  octave_idx_type a_nc = a.cols ();
 
   if (nr != a_nr || nc != a_nc)
     octave::err_nonconformant ("operator -=", nr, nc, a_nr, a_nc);
@@ -2752,8 +2752,8 @@ ComplexMatrix::operator += (const ComplexDiagMatrix& a)
   octave_idx_type nr = rows ();
   octave_idx_type nc = cols ();
 
-  octave_idx_type a_nr = rows ();
-  octave_idx_type a_nc = cols ();
+  octave_idx_type a_nr = a.rows ();
+  octave_idx_type a_nc = a.cols ();
 
   if (nr != a_nr || nc != a_nc)
     octave::err_nonconformant ("operator +=", nr, nc, a_nr, a_nc);
@@ -2770,8 +2770,8 @@ ComplexMatrix::operator -= (const ComplexDiagMatrix& a)
   octave_idx_type nr = rows ();
   octave_idx_type nc = cols ();
 
-  octave_idx_type a_nr = rows ();
-  octave_idx_type a_nc = cols ();
+  octave_idx_type a_nr = a.rows ();
+  octave_idx_type a_nc = a.cols ();
 
   if (nr != a_nr || nc != a_nc)
     octave::err_nonconformant ("operator -=", nr, nc, a_nr, a_nc);
@@ -3720,4 +3720,3 @@ SM_BOOL_OPS (Complex, ComplexMatrix)
 
 MM_CMP_OPS (ComplexMatrix, ComplexMatrix)
 MM_BOOL_OPS (ComplexMatrix, ComplexMatrix)
-

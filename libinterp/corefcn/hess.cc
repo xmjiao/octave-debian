@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -148,4 +148,3 @@ IEEE Transactions on Automatic Control, 1979).
 %!error hess ([1, 2; 3, 4], 2)
 %!error <must be a square matrix> hess ([1, 2; 3, 4; 5, 6])
 */
-

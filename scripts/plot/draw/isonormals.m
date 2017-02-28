@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Martin Helm
+## Copyright (C) 2009-2017 Martin Helm
 ##
 ## This file is part of Octave.
 ##
@@ -194,4 +194,3 @@ endfunction
 %!error <Unknown option 'foo'> n = isonormals (x, y, z, val, vert, "foo")
 %!error <input must be a list of vertices or a patch handle>
 %! n = isonormals (x, y, z, val, x);
-

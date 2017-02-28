@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 William Poetra Yoga Hadisoeseno
+## Copyright (C) 2005-2017 William Poetra Yoga Hadisoeseno
 ##
 ## This file is part of Octave.
 ##
@@ -49,4 +49,3 @@ endfunction
 ## Input validation
 %!error isequaln ()
 %!error isequaln (1)
-

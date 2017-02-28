@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -3392,5 +3392,4 @@ The optional parameter @var{n} defines the number of summands used for
 simulating the process over an interval of length 1.  If @var{n} is
 omitted, @var{n} = 1000 is used.
 @end deftypefn
-
 

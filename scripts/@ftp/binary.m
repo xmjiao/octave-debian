@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 David Bateman
+## Copyright (C) 2009-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -33,4 +33,3 @@ endfunction
 
 ## No test possible for interactive function.
 %!assert (1)
-

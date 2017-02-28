@@ -1,4 +1,4 @@
-@c Copyright (C) 2012-2016 Jordi Gutiérrez Hermoso
+@c Copyright (C) 2012-2017 Jordi Gutiérrez Hermoso
 @c
 @c This file is part of Octave.
 @c
@@ -718,4 +718,3 @@ Note the usage of colon indexing to flatten an intermediate result into
 a column vector.  This is a common vectorization trick.
 
 @end itemize
-

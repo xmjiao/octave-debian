@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -187,4 +187,3 @@ endfunction
 %!error <numeric arrays of the same size> cart2pol ([1,2,3], [1,2,3], {1,2,3})
 %!error <numeric arrays of the same size> cart2pol (ones (3,3,3), 1, ones (3,2,3))
 %!error <numeric arrays of the same size> cart2pol (ones (3,3,3), ones (3,2,3), 1)
-

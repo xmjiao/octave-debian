@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 John W. Eaton
+## Copyright (C) 2012-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -111,4 +111,3 @@ endfunction
 %!error rmpref (1,2,3)
 %!error <GROUP must be a string> rmpref (1)
 %!error <PREF must be a string> rmpref ("group1", 1)
-

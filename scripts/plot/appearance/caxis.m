@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -39,7 +39,13 @@
 ## this axis rather than the current axes returned by @code{gca}.
 ##
 ## Called without arguments the current color axis limits are returned.
-## @seealso{colormap}
+##
+## Programming Note: The color axis affects the display of image, patch, and
+## surface graphics objects, but @strong{only} if the @qcode{"cdata"} property
+## has indexed data and the @qcode{"cdatamapping"} property is set to
+## @qcode{"scaled"}.  Graphic objects with true color @code{cdata}, or
+## @qcode{"direct"} @code{cdatamapping} are not affected.
+## @seealso{colormap, axis}
 ## @end deftypefn
 
 function limits = caxis (varargin)
@@ -94,4 +100,3 @@ function limits = __caxis__ (ca, ax, varargin)
   endif
 
 endfunction
-

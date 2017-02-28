@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,4 +34,3 @@ event_queue_safe::warn_unhandled_exception (void) const
            "It is a bug in Octave for this to happen.  "
            "Please help improve Octave by reporting it.");
 }
-

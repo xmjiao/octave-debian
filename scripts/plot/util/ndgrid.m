@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Alexander Barth
+## Copyright (C) 2006-2017 Alexander Barth
 ##
 ## This file is part of Octave.
 ##
@@ -126,4 +126,3 @@ endfunction
 %!error ndgrid ()
 %!error <wrong number of input arguments> [a,b,c] = ndgrid (1:3,1:3)
 %!error <arguments must be vectors> ndgrid (ones (2,2))
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 Piotr Krzyzanowski
+## Copyright (C) 2004-2017 Piotr Krzyzanowski
 ##
 ## This file is part of Octave.
 ##
@@ -443,4 +443,3 @@ endfunction
 %! assert (relres < 1e-6);
 %! assert (flag, 0);
 %! assert (iter, 1); # should converge in one iteration
-

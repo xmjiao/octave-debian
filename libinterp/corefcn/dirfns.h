@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,4 +35,3 @@ along with Octave; see the file COPYING.  If not, see
 extern octave::sys::time Vlast_chdir_time;
 
 #endif
-

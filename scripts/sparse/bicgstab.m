@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Radek Salac
+## Copyright (C) 2008-2017 Radek Salac
 ## Copyright (C) 2012 Carlo de Falco
 ##
 ## This file is part of Octave.
@@ -247,4 +247,3 @@ endfunction
 %! b = A * [1; 1];
 %! [x, flag, relres, iter, resvec] = bicgstab (A, b);
 %! assert (x, [1; 1], 1e-6);
-

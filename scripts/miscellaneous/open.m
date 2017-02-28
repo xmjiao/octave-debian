@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 John W. Eaton
+## Copyright (C) 2014-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {} {@var{output} =} open @var{file}
+## @deftypefn  {} {} open @var{file}
 ## @deftypefnx {} {@var{output} =} open (@var{file})
 ## Open the file @var{file} in Octave or in an external application based on
 ## the file type as determined by the filename extension.
@@ -77,4 +77,3 @@ endfunction
 %!error open ()
 %!error open ("abc", "def")
 %!error <FILE must be a string> open (1)
-

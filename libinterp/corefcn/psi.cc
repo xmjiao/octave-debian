@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 Carnë Draug
+Copyright (C) 2016-2017 Carnë Draug
 
 This file is part of Octave.
 
@@ -229,4 +229,3 @@ can have any value real or complex value.  However, for polygamma functions
 %!error <Z must be real value for polygamma> psi (5, 5i)
 
 */
-

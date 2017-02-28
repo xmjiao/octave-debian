@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2016 VZLU Prague
+Copyright (C) 2010-2017 VZLU Prague
 
 This file is part of Octave.
 
@@ -490,4 +490,3 @@ binmap (const Sparse<T>& xa, const R& y, U (*fcn) (T, const R&))
 { return binmap<U, T, R, U (*) (T, const R&)> (xa, y, fcn); }
 
 #endif
-

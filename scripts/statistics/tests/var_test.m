@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -78,4 +78,3 @@ function [pval, f, df_num, df_den] = var_test (x, y, alt)
   endif
 
 endfunction
-

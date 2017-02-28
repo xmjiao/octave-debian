@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Rik Wehbring
+## Copyright (C) 2010-2017 Rik Wehbring
 ##
 ## This file is part of Octave.
 ##
@@ -210,4 +210,3 @@ endfunction
 %!error <IMIN and IMAX must be smaller than flintmax\(\)> randi (flintmax ())
 %!error <range must be smaller than flintmax\(\)-1> randi ([-1, flintmax() - 1])
 %!error <unknown requested output class 'foo'> randi (10, "foo")
-

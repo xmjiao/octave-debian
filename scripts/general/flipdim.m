@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 David Bateman
+## Copyright (C) 2004-2017 David Bateman
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -37,4 +37,3 @@ endfunction
 
 ## No tests needed for alias.  All tests for functionality are in flip.m
 %!assert (1)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -202,4 +202,3 @@ endfunction
 %! c = [1 2 3 4]';
 %! fill (x, y, [c c]);
 %! title ({"fill() function"; 'cdata = column vector produces FaceColor = "interp"'});
-

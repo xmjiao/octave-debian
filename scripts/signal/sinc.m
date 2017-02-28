@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -54,4 +54,3 @@ endfunction
 %!assert (sinc (1/2), 2/pi, 1e-6)
 
 %!error sinc()
-

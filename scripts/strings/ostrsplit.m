@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Jaroslav Hajek
+## Copyright (C) 2009-2017 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -117,4 +117,3 @@ endfunction
 %!error <S and SEP must be string values> ostrsplit (123, "b")
 %!error <S and SEP must be string values> ostrsplit ("abc", 1)
 %!error <STRIP_EMPTY must be a scalar value> ostrsplit ("abc", "def", ones (3,3))
-

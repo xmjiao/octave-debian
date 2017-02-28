@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -262,4 +262,3 @@ endfunction
 %!error <PRECISION must be a scalar integer .= 0> num2str (1+1i, ones (2))
 %!error <PRECISION must be a scalar integer .= 0> num2str (1+1i, -1)
 %!error <PRECISION must be a scalar integer .= 0> num2str (1+1i, 1.5)
-

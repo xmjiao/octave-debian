@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -95,4 +95,3 @@ extern std::string
 kpse_path_search (const std::string& path, const std::string& name);
 
 #endif
-

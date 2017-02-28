@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 John W. Eaton
+## Copyright (C) 2007-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -115,4 +115,3 @@
 
 %!assert (sort (r, "descend"), [9 7 5 3 1])
 %!assert (sort (rrev, "ascend"), [2 4 6 8 10])
-

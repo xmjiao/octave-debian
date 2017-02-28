@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 John W. Eaton
+Copyright (C) 2004-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -316,4 +316,3 @@ install_int_concat_ops (void)
   OCTAVE_INSTALL_CHAR_INT_CONCAT_FN (uint32);
   OCTAVE_INSTALL_CHAR_INT_CONCAT_FN (uint64);
 }
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999-2016 John W. Eaton
+Copyright (C) 1999-2017 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -353,4 +353,3 @@ Cell::diag (octave_idx_type m, octave_idx_type n) const
 {
   return Array<octave_value>::diag (m, n);
 }
-

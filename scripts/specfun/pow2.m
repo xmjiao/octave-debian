@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -68,4 +68,3 @@ endfunction
 
 %!error pow2 ()
 %!error pow2 (1,2,3)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 David Bateman
+## Copyright (C) 2006-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -309,4 +309,3 @@ endfunction
 %!test
 %! ## Restore random number generator seed at end of tests
 %! rand ("state", rand_state);
-

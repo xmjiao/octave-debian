@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Søren Hauberg
+## Copyright (C) 2005-2017 Søren Hauberg
 ## Copyright (C) 2010 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
@@ -26,4 +26,3 @@ function [url, local_file] = get_forge_download (name)
   [ver, url] = get_forge_pkg (name);
   local_file = [name "-" ver ".tar.gz"];
 endfunction
-

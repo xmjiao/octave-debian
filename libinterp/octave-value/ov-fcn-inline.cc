@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 
 This file is part of Octave.
 
@@ -991,4 +991,3 @@ quadv (fcn, 0, 3)
 %!error vectorize (1, 2)
 %!error <FUN must be a string or inline function> vectorize (1)
 */
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -97,4 +97,3 @@ endfunction
 
 ## Test with ties
 %!assert (abs (kruskal_wallis_test ([86 86], [74]) - 0.157299207050285) < 0.0000000000001)
-

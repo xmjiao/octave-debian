@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Carnë Draug
+## Copyright (C) 2013-2017 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -66,4 +66,3 @@ function [filename, ext, cmap, options] = imwrite_filename (varargin)
   options = varargin(options_idx:end);
 
 endfunction
-

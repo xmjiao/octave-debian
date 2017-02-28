@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 John W. Eaton
+## Copyright (C) 2012-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +18,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn  {} {} setpref ("@var{group}", "@var{pref}", @var{val})
-## @deftypefnx {} {} addpref ("@var{group}", @{"@var{pref1}", "@var{pref2}", @dots{}@}, @{@var{val1}, @var{val2}, @dots{}@})
+## @deftypefnx {} {} setpref ("@var{group}", @{"@var{pref1}", "@var{pref2}", @dots{}@}, @{@var{val1}, @var{val2}, @dots{}@})
 ## Set the preference @var{pref} to the given @var{val} in the named preference
 ## group @var{group}.
 ##
@@ -102,4 +102,3 @@ endfunction
 %!error setpref (1,2,3,4)
 %!error <GROUP must be a string> setpref (1, "pref1", 2)
 %!error <PREF must be a string> setpref ("group1", 1, 2)
-

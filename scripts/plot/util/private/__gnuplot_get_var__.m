@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Ben Abbott
+## Copyright (C) 2009-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -146,4 +146,3 @@ function gp_var_value = __gnuplot_get_var__ (h, gp_var_name, fmt = "")
   end_unwind_protect
 
 endfunction
-

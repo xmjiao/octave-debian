@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Carnë Draug <carandraug+dev@gmail.com>
+## Copyright (C) 2016-2017 Carnë Draug <carandraug+dev@gmail.com>
 ##
 ## This file is part of Octave.
 ##
@@ -34,4 +34,3 @@ function rv = colorspace_conversion_revert (rv, sz, is_im, is_nd)
   endif
 
 endfunction
-

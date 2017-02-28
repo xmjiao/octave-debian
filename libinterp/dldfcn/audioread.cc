@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2016 Vytautas Jančauskas
+Copyright (C) 2013-2017 Vytautas Jančauskas
 Copyright (C) 2016 Damjan Angelovski
 
 This file is part of Octave.
@@ -604,4 +604,3 @@ with names that start with @var{format}.
 
   return octave_value ();
 }
-

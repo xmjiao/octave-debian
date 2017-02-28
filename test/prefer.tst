@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -188,4 +188,3 @@
 %! b = 0;
 %! fail ("isinf (a/b);", "warning", "division by zero");
 %! warning (wdbz.state, "Octave:divide-by-zero");
-

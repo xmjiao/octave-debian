@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -62,4 +62,3 @@ endfunction
 %!error autoreg_matrix ()
 %!error autoreg_matrix (1)
 %!error autoreg_matrix (ones (4,1), 5)
-

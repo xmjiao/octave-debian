@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 John W. Eaton
+## Copyright (C) 1995-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -75,4 +75,3 @@ function y = lin2mu (x, n)
   y = 64 * sig - 16 * e - fix (32 * f) + 335;
 
 endfunction
-

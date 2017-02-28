@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -97,4 +97,3 @@ extern void octave_prepare_hdf5 (void);
 extern void octave_finalize_hdf5 (void);
 
 #endif
-

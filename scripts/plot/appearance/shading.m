@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Kai Habel
+## Copyright (C) 2006-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -301,4 +301,3 @@ endfunction
 %!error <MODE must be a valid string> shading (-1)
 %!error <MODE must be a valid string> shading ({})
 %!error <Invalid MODE "foo"> shading foo
-
