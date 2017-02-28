@@ -5,10 +5,9 @@ Maintainer: Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
 Uploaders: Sébastien Villemot <sebastien@debian.org>,
   Rafael Laboissiere <rafael@debian.org>
 Build-Depends: automake,
-  debhelper (>= 9.20160114~),
+  debhelper (>= 10),
   default-jdk,
   desktop-file-utils,
-  dh-autoreconf,
   dh-exec,
   dpkg-dev (>= 1.16.1),
   epstool,

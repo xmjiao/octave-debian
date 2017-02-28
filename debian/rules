@@ -43,10 +43,7 @@ ifneq ($(wildcard /usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial/libhdf5.so),)
 endif
 
 %:
-	dh $@ --with autoreconf --parallel
-
-clean:
-	dh clean --with autoreconf
+	dh $@
 
 override_dh_auto_configure:
 	# override normal dh_auto_configure call to pass OpenMP flag to it (#631831)
@@ -61,7 +58,7 @@ override_dh_auto_test:
 # override normal dh_compress call to avoid compressing .pdf files
 # also, avoid the compression of the info files (see Bug#762078)
 override_dh_compress:
-	dh_compress -O--parallel --exclude=.pdf
+	dh_compress --exclude=.pdf
 
 # override this call, so we do not pass the --parallel option to it; 
 # "make -j2 install" does not work as of now
@@ -90,7 +87,7 @@ override_dh_strip:
 # Cannot be done in dh_fixperms, as then dh_strip and dh_shlibdeps don't take the
 # .oct files into account
 override_dh_shlibdeps:
-	dh_shlibdeps -O--parallel
+	dh_shlibdeps
 	find debian/octave -name '*.oct' -print0 2>/dev/null | xargs -0r chmod 644
 
 # Avoid useless call of ldconfig in the triggers script of the octave
