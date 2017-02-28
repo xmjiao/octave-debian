@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -98,4 +98,3 @@ endfunction
 %!error hankel (1, 2, 3)
 %!error <C must be a vector> hankel ([1, 2; 3, 4])
 %!error <C and R must be vectors> hankel (1:4, [1, 2; 3, 4])
-

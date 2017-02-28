@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Erik Kjellson
+## Copyright (C) 2012-2017 Erik Kjellson
 ##
 ## This file is part of Octave.
 ##
@@ -565,4 +565,3 @@ endfunction
 %!error <HEADER_ROWS must be an integer> importdata ("foo", " ", 1.5)
 %!error <not implemented for file format .au> importdata ("foo.au")
 %!error <not implemented for file format .avi> importdata ("foo.avi")
-

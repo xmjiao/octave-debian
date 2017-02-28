@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 David Bateman
+## Copyright (C) 2012-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -89,4 +89,3 @@ endfunction
 %!error colstyle ()
 %!error colstyle (1, 2)
 %!error <STYLE must be a string> colstyle (1.5)
-

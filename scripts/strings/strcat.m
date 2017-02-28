@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -159,4 +159,3 @@ endfunction
 %!assert (strcat ("", 2), strcat ([], char (2)))
 
 %!assert (strcat (), "")
-

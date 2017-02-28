@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 6.1 from octave.texi.
+This is octave.info, produced by makeinfo version 6.3 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -19,6 +19,420 @@ permission notice identical to this one.
    Permission is granted to copy and distribute translations of this
 manual into another language, under the above conditions for modified
 versions.
+
+
+File: octave.info,  Node: Status of Variables,  Prev: Persistent Variables,  Up: Variables
+
+7.3 Status of Variables
+=======================
+
+When creating simple one-shot programs it can be very convenient to see
+which variables are available at the prompt.  The function ‘who’ and its
+siblings ‘whos’ and ‘whos_line_format’ will show different information
+about what is in memory, as the following shows.
+
+     str = "A random string";
+     who -variables
+          ⊣ *** local user variables:
+          ⊣
+          ⊣ __nargin__  str
+
+ -- : who
+ -- : who pattern ...
+ -- : who option pattern ...
+ -- : C = who ("pattern", ...)
+     List currently defined variables matching the given patterns.
+
+     Valid pattern syntax is the same as described for the ‘clear’
+     command.  If no patterns are supplied, all variables are listed.
+
+     By default, only variables visible in the local scope are
+     displayed.
+
+     The following are valid options, but may not be combined.
+
+     ‘global’
+          List variables in the global scope rather than the current
+          scope.
+
+     ‘-regexp’
+          The patterns are considered to be regular expressions when
+          matching the variables to display.  The same pattern syntax
+          accepted by the ‘regexp’ function is used.
+
+     ‘-file’
+          The next argument is treated as a filename.  All variables
+          found within the specified file are listed.  No patterns are
+          accepted when reading variables from a file.
+
+     If called as a function, return a cell array of defined variable
+     names matching the given patterns.
+
+     See also: *note whos: XREFwhos, *note isglobal: XREFisglobal, *note
+     isvarname: XREFisvarname, *note exist: XREFexist, *note regexp:
+     XREFregexp.
+
+ -- : whos
+ -- : whos pattern ...
+ -- : whos option pattern ...
+ -- : S = whos ("pattern", ...)
+     Provide detailed information on currently defined variables
+     matching the given patterns.
+
+     Options and pattern syntax are the same as for the ‘who’ command.
+
+     Extended information about each variable is summarized in a table
+     with the following default entries.
+
+     Attr
+          Attributes of the listed variable.  Possible attributes are:
+
+          blank
+               Variable in local scope
+
+          ‘a’
+               Automatic variable.  An automatic variable is one created
+               by the interpreter, for example ‘argn’.
+
+          ‘c’
+               Variable of complex type.
+
+          ‘f’
+               Formal parameter (function argument).
+
+          ‘g’
+               Variable with global scope.
+
+          ‘p’
+               Persistent variable.
+
+     Name
+          The name of the variable.
+
+     Size
+          The logical size of the variable.  A scalar is 1x1, a vector
+          is 1xN or Nx1, a 2-D matrix is MxN.
+
+     Bytes
+          The amount of memory currently used to store the variable.
+
+     Class
+          The class of the variable.  Examples include double, single,
+          char, uint16, cell, and struct.
+
+     The table can be customized to display more or less information
+     through the function ‘whos_line_format’.
+
+     If ‘whos’ is called as a function, return a struct array of defined
+     variable names matching the given patterns.  Fields in the
+     structure describing each variable are: name, size, bytes, class,
+     global, sparse, complex, nesting, persistent.
+
+     See also: *note who: XREFwho, *note whos_line_format:
+     XREFwhos_line_format.
+
+ -- : VAL = whos_line_format ()
+ -- : OLD_VAL = whos_line_format (NEW_VAL)
+ -- : whos_line_format (NEW_VAL, "local")
+     Query or set the format string used by the command ‘whos’.
+
+     A full format string is:
+
+          %[modifier]<command>[:width[:left-min[:balance]]];
+
+     The following command sequences are available:
+
+     ‘%a’
+          Prints attributes of variables (g=global, p=persistent,
+          f=formal parameter, a=automatic variable).
+
+     ‘%b’
+          Prints number of bytes occupied by variables.
+
+     ‘%c’
+          Prints class names of variables.
+
+     ‘%e’
+          Prints elements held by variables.
+
+     ‘%n’
+          Prints variable names.
+
+     ‘%s’
+          Prints dimensions of variables.
+
+     ‘%t’
+          Prints type names of variables.
+
+     Every command may also have an alignment modifier:
+
+     ‘l’
+          Left alignment.
+
+     ‘r’
+          Right alignment (default).
+
+     ‘c’
+          Column-aligned (only applicable to command %s).
+
+     The ‘width’ parameter is a positive integer specifying the minimum
+     number of columns used for printing.  No maximum is needed as the
+     field will auto-expand as required.
+
+     The parameters ‘left-min’ and ‘balance’ are only available when the
+     column-aligned modifier is used with the command ‘%s’.  ‘balance’
+     specifies the column number within the field width which will be
+     aligned between entries.  Numbering starts from 0 which indicates
+     the leftmost column.  ‘left-min’ specifies the minimum field width
+     to the left of the specified balance column.
+
+     The default format is:
+
+     " %a:4; %ln:6; %cs:16:6:1; %rb:12; %lc:-1;\n"
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+     See also: *note whos: XREFwhos.
+
+   Instead of displaying which variables are in memory, it is possible
+to determine if a given variable is available.  That way it is possible
+to alter the behavior of a program depending on the existence of a
+variable.  The following example illustrates this.
+
+     if (! exist ("meaning", "var"))
+       disp ("The program has no 'meaning'");
+     endif
+
+ -- : C = exist (NAME)
+ -- : C = exist (NAME, TYPE)
+     Check for the existence of NAME as a variable, function, file,
+     directory, or class.
+
+     The return code C is one of
+
+     1
+          NAME is a variable.
+
+     2
+          NAME is an absolute filename, an ordinary file in Octave’s
+          ‘path’, or (after appending ‘.m’) a function file in Octave’s
+          ‘path’.
+
+     3
+          NAME is a ‘.oct’ or ‘.mex’ file in Octave’s ‘path’.
+
+     5
+          NAME is a built-in function.
+
+     7
+          NAME is a directory.
+
+     103
+          NAME is a function not associated with a file (entered on the
+          command line).
+
+     0
+          NAME does not exist.
+
+     If the optional argument TYPE is supplied, check only for symbols
+     of the specified type.  Valid types are
+
+     "var"
+          Check only for variables.
+
+     "builtin"
+          Check only for built-in functions.
+
+     "dir"
+          Check only for directories.
+
+     "file"
+          Check only for files and directories.
+
+     "class"
+          Check only for classes.  (Note: This option is accepted, but
+          not currently implemented)
+
+     If no type is given, and there are multiple possible matches for
+     name, ‘exist’ will return a code according to the following
+     priority list: variable, built-in function, oct-file, directory,
+     file, class.
+
+     ‘exist’ returns 2 if a regular file called NAME is present in
+     Octave’s search path.  If you want information about other types of
+     files not on the search path you should use some combination of the
+     functions ‘file_in_path’ and ‘stat’ instead.
+
+     Programming Note: If NAME is implemented by a buggy .oct/.mex file,
+     calling EXIST may cause Octave to crash.  To maintain high
+     performance, Octave trusts .oct/.mex files instead of sandboxing
+     them.
+
+     See also: *note file_in_loadpath: XREFfile_in_loadpath, *note
+     file_in_path: XREFfile_in_path, *note dir_in_loadpath:
+     XREFdir_in_loadpath, *note stat: XREFstat.
+
+   Usually Octave will manage the memory, but sometimes it can be
+practical to remove variables from memory manually.  This is usually
+needed when working with large variables that fill a substantial part of
+the memory.  On a computer that uses the IEEE floating point format, the
+following program allocates a matrix that requires around 128 MB memory.
+
+     large_matrix = zeros (4000, 4000);
+
+Since having this variable in memory might slow down other computations,
+it can be necessary to remove it manually from memory.  The ‘clear’
+function allows this.
+
+ -- : clear [options] pattern ...
+     Delete the names matching the given patterns from the symbol table.
+
+     The pattern may contain the following special characters:
+
+     ‘?’
+          Match any single character.
+
+     ‘*’
+          Match zero or more characters.
+
+     ‘[ LIST ]’
+          Match the list of characters specified by LIST.  If the first
+          character is ‘!’ or ‘^’, match all characters except those
+          specified by LIST.  For example, the pattern ‘[a-zA-Z]’ will
+          match all lowercase and uppercase alphabetic characters.
+
+     For example, the command
+
+          clear foo b*r
+
+     clears the name ‘foo’ and all names that begin with the letter ‘b’
+     and end with the letter ‘r’.
+
+     If ‘clear’ is called without any arguments, all user-defined
+     variables (local and global) are cleared from the symbol table.
+
+     If ‘clear’ is called with at least one argument, only the visible
+     names matching the arguments are cleared.  For example, suppose you
+     have defined a function ‘foo’, and then hidden it by performing the
+     assignment ‘foo = 2’.  Executing the command ‘clear foo’ once will
+     clear the variable definition and restore the definition of ‘foo’
+     as a function.  Executing ‘clear foo’ a second time will clear the
+     function definition.
+
+     The following options are available in both long and short form
+
+     ‘-all, -a’
+          Clear all local and global user-defined variables and all
+          functions from the symbol table.
+
+     ‘-exclusive, -x’
+          Clear the variables that don’t match the following pattern.
+
+     ‘-functions, -f’
+          Clear the function names and the built-in symbols names.
+
+     ‘-global, -g’
+          Clear global symbol names.
+
+     ‘-variables, -v’
+          Clear local variable names.
+
+     ‘-classes, -c’
+          Clears the class structure table and clears all objects.
+
+     ‘-regexp, -r’
+          The arguments are treated as regular expressions as any
+          variables that match will be cleared.
+
+     With the exception of ‘exclusive’, all long options can be used
+     without the dash as well.
+
+     See also: *note who: XREFwho, *note whos: XREFwhos, *note exist:
+     XREFexist.
+
+ -- : pack ()
+     Consolidate workspace memory in MATLAB.
+
+     This function is provided for compatibility, but does nothing in
+     Octave.
+
+     See also: *note clear: XREFclear.
+
+   Information about a function or variable such as its location in the
+file system can also be acquired from within Octave.  This is usually
+only useful during development of programs, and not within a program.
+
+ -- : type NAME ...
+ -- : type -q NAME ...
+ -- : text = type ("NAME", ...)
+     Display the contents of NAME which may be a file, function
+     (m-file), variable, operator, or keyword.
+
+     ‘type’ normally prepends a header line describing the category of
+     NAME such as function or variable; The ‘-q’ option suppresses this
+     behavior.
+
+     If no output variable is used the contents are displayed on screen.
+     Otherwise, a cell array of strings is returned, where each element
+     corresponds to the contents of each requested function.
+
+ -- : which name ...
+     Display the type of each NAME.
+
+     If NAME is defined from a function file, the full name of the file
+     is also displayed.
+
+     See also: *note help: XREFhelp, *note lookfor: XREFlookfor.
+
+ -- : what
+ -- : what DIR
+ -- : w = what (DIR)
+     List the Octave specific files in directory DIR.
+
+     If DIR is not specified then the current directory is used.
+
+     If a return argument is requested, the files found are returned in
+     the structure W.  The structure contains the following fields:
+
+     path
+          Full path to directory DIR
+
+     m
+          Cell array of m-files
+
+     mat
+          Cell array of mat files
+
+     mex
+          Cell array of mex files
+
+     oct
+          Cell array of oct files
+
+     mdl
+          Cell array of mdl files
+
+     slx
+          Cell array of slx files
+
+     p
+          Cell array of p-files
+
+     classes
+          Cell array of class directories (‘@CLASSNAME/’)
+
+     packages
+          Cell array of package directories (‘+PKGNAME/’)
+
+     Compatibility Note: Octave does not support mdl, slx, and p files;
+     nor does it support package directories.  ‘what’ will always return
+     an empty list for these categories.
+
+     See also: *note which: XREFwhich, *note ls: XREFls, *note exist:
+     XREFexist.
 
 
 File: octave.info,  Node: Expressions,  Next: Evaluation,  Prev: Variables,  Up: Top
@@ -247,64 +661,99 @@ result.
  -- : IND = sub2ind (DIMS, S1, S2, ..., SN)
      Convert subscripts to linear indices.
 
-     Assume the following 3-by-3 matrices.  The left matrix contains the
-     subscript tuples for each matrix element.  Those are converted to
-     linear indices shown in the right matrix.  The matrices are
-     linearly indexed moving from one column to next, filling up all
-     rows in each column.
+     The input DIMS is a dimension vector where each element is the size
+     of the array in the respective dimension (*note size: XREFsize.).
+     The remaining inputs are scalars or vectors of subscripts to be
+     converted.
+
+     The output vector IND contains the converted linear indices.
+
+     Background: Array elements can be specified either by a linear
+     index which starts at 1 and runs through the number of elements in
+     the array, or they may be specified with subscripts for the row,
+     column, page, etc.  The functions ‘ind2sub’ and ‘sub2ind’
+     interconvert between the two forms.
+
+     The linear index traverses dimension 1 (rows), then dimension 2
+     (columns), then dimension 3 (pages), etc.  until it has numbered
+     all of the elements.  Consider the following 3-by-3 matrices:
 
           [(1,1), (1,2), (1,3)]     [1, 4, 7]
           [(2,1), (2,2), (2,3)] ==> [2, 5, 8]
           [(3,1), (3,2), (3,3)]     [3, 6, 9]
 
+     The left matrix contains the subscript tuples for each matrix
+     element.  The right matrix shows the linear indices for the same
+     matrix.
+
      The following example shows how to convert the two-dimensional
-     indices ‘(2,1)’ and ‘(2,3)’ of a 3-by-3 matrix to a linear index.
+     indices ‘(2,1)’ and ‘(2,3)’ of a 3-by-3 matrix to linear indices
+     with a single call to ‘sub2ind’.
 
           s1 = [2, 2];
           s2 = [1, 3];
           ind = sub2ind ([3, 3], s1, s2)
-          ⇒ ind =  2   8
+              ⇒ ind =  2   8
 
-     See also: *note ind2sub: XREFind2sub.
+     See also: *note ind2sub: XREFind2sub, *note size: XREFsize.
 
  -- : [S1, S2, ..., SN] = ind2sub (DIMS, IND)
      Convert linear indices to subscripts.
 
-     Assume the following 3-by-3 matrices.  The left matrix contains the
-     linear indices IND for each matrix element.  Those are converted to
-     subscript tuples shown in the right matrix.  The matrices are
-     linearly indexed moving from one column to next, filling up all
-     rows in each column.
+     The input DIMS is a dimension vector where each element is the size
+     of the array in the respective dimension (*note size: XREFsize.).
+     The second input IND contains linear indies to be converted.
+
+     The outputs S1, ..., SN contain the converted subscripts.
+
+     Background: Array elements can be specified either by a linear
+     index which starts at 1 and runs through the number of elements in
+     the array, or they may be specified with subscripts for the row,
+     column, page, etc.  The functions ‘ind2sub’ and ‘sub2ind’
+     interconvert between the two forms.
+
+     The linear index traverses dimension 1 (rows), then dimension 2
+     (columns), then dimension 3 (pages), etc.  until it has numbered
+     all of the elements.  Consider the following 3-by-3 matrices:
 
           [1, 4, 7]     [(1,1), (1,2), (1,3)]
           [2, 5, 8] ==> [(2,1), (2,2), (2,3)]
           [3, 6, 9]     [(3,1), (3,2), (3,3)]
 
+     The left matrix contains the linear indices for each matrix
+     element.  The right matrix shows the subscript tuples for the same
+     matrix.
+
+     The following example shows how to convert the two-dimensional
+     indices ‘(2,1)’ and ‘(2,3)’ of a 3-by-3 matrix to linear indices
+     with a single call to ‘sub2ind’.
+
      The following example shows how to convert the linear indices ‘2’
-     and ‘8’ in a 3-by-3 matrix into a subscripts.
+     and ‘8’ in a 3-by-3 matrix into subscripts.
 
           ind = [2, 8];
           [r, c] = ind2sub ([3, 3], ind)
               ⇒ r =  2   2
               ⇒ c =  1   3
 
-     If the number of subscripts exceeds the number of dimensions, the
-     exceeded dimensions are treated as ‘1’.  On the other hand, if less
-     subscripts than dimensions are provided, the exceeding dimensions
-     are merged.  For clarity see the following examples:
+     If the number of output subscripts exceeds the number of
+     dimensions, the exceeded dimensions are set to ‘1’.  On the other
+     hand, if fewer subscripts than dimensions are provided, the
+     exceeding dimensions are merged into the final requested dimension.
+     For clarity, consider the following examples:
 
-          ind = [2, 8];
+          ind  = [2, 8];
           dims = [3, 3];
-          % same as dims = [3, 3, 1]
+          ## same as dims = [3, 3, 1]
           [r, c, s] = ind2sub (dims, ind)
               ⇒ r =  2   2
               ⇒ c =  1   3
               ⇒ s =  1   1
-          % same as dims = 9
+          ## same as dims = [9]
           r = ind2sub (dims, ind)
               ⇒ r =  2   8
 
-     See also: *note sub2ind: XREFsub2ind.
+     See also: *note ind2sub: XREFind2sub, *note size: XREFsize.
 
  -- : isindex (IND)
  -- : isindex (IND, N)
@@ -2765,7 +3214,7 @@ along with a warning.
 
      In the second usage,
 
-          nargout (@histc) \% or nargout ("histc")
+          nargout (@histc)   # or nargout ("histc") using a string input
 
      will return 2, because ‘histc’ has two outputs, whereas
 
@@ -3254,10 +3703,42 @@ value should be ignored and not stored to any variable.
 
    The value of ‘nargin’ is not affected by using this declaration.
 
-   Return arguments can also be ignored using the same syntax.
-Functions may take advantage of ignored outputs to reduce the number of
-calculations performed.  To do so, use the ‘isargout’ function to query
-whether the output argument is wanted.  For example:
+   Return arguments can also be ignored using the same syntax.  For
+example, the sort function returns both the sorted values, and an index
+vector for the original input which will result in a sorted output.
+Ignoring the second output is simple—don’t request more than one output.
+But ignoring the first, and calculating just the second output, requires
+the use of the ‘~’ placeholder.
+
+     x = [2, 3, 1];
+     [s, i] = sort (x)
+     ⇒
+     s =
+
+        1   2   3
+
+     i =
+
+        3   1   2
+
+     [~, i] = sort (x)
+     ⇒
+     i =
+
+        3   1   2
+
+   When using the ‘~’ placeholder, commas—not whitespace—must be used to
+separate output arguments.  Otherwise, the interpreter will view ‘~’ as
+the logical not operator.
+
+     [~ i] = sort (x)
+     parse error:
+
+       invalid left hand side of assignment
+
+   Functions may take advantage of ignored outputs to reduce the number
+of calculations performed.  To do so, use the ‘isargout’ function to
+query whether the output argument is wanted.  For example:
 
      function [out1, out2] = long_function (x, y, z)
        if (isargout (1))
@@ -4908,7 +5389,10 @@ list.  If there are no arguments, you must use an empty argument list
 
      *Warning:* ‘functions’ is provided for debugging purposes only.
      Its behavior may change in the future and programs should not
-     depend on a particular output.
+     depend on any particular output format.
+
+     See also: *note func2str: XREFfunc2str, *note str2func:
+     XREFstr2func.
 
  -- : func2str (FCN_HANDLE)
      Return a string containing the name of the function referenced by
@@ -4924,7 +5408,8 @@ list.  If there are no arguments, you must use an empty argument list
      If the optional "global" argument is passed, locally visible
      functions are ignored in the lookup.
 
-     See also: *note func2str: XREFfunc2str, *note inline: XREFinline.
+     See also: *note func2str: XREFfunc2str, *note inline: XREFinline,
+     *note functions: XREFfunctions.
 
 
 File: octave.info,  Node: Anonymous Functions,  Next: Inline Functions,  Prev: Function Handles,  Up: Function Handles Anonymous Functions Inline Functions
@@ -5298,12 +5783,11 @@ user’s own errors.
           function h () nargin == 1 || error ("nargin != 1"); end
 
      calling the function ‘f’ will result in a list of messages that can
-     help you to quickly locate the exact location of the error:
+     help you to quickly find the exact location of the error:
 
           f ()
           error: nargin != 1
           error: called from:
-          error:   error at line -1, column -1
           error:   h at line 1, column 27
           error:   g at line 1, column 15
           error:   f at line 1, column 15
@@ -6020,7 +6504,7 @@ warnings.
 ‘Octave:resize-on-range-error’
      If the ‘Octave:resize-on-range-error’ warning is enabled, print a
      warning when a matrix is resized by an indexed assignment with
-     indices outside the current bounds.  By default, the ##
+     indices outside the current bounds.  By default, the
      ‘Octave:resize-on-range-error’ warning is disabled.
 
 ‘Octave:separator-insert’
@@ -7453,8 +7937,8 @@ read into memory using the ‘load’ command.
  -- : save options file
  -- : save options file V1 V2 ...
  -- : save options file -struct STRUCT F1 F2 ...
- -- : save ‘"-"’ V1 V2 ...
- -- : S = save (‘"-"’ V1 V2 ...)
+ -- : save - V1 V2 ...
+ -- : STR = save ("-", "V1", "V2", ...)
      Save the named variables V1, V2, ..., in the file FILE.
 
      The special filename ‘-’ may be used to return the content of the

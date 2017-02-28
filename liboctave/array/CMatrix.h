@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -469,4 +469,3 @@ MM_BOOL_OP_DECLS (ComplexMatrix, ComplexMatrix, OCTAVE_API)
 MARRAY_FORWARD_DEFS (MArray, ComplexMatrix, Complex)
 
 #endif
-

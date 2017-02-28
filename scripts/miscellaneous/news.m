@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 John W. Eaton
+## Copyright (C) 2007-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -42,4 +42,3 @@ endfunction
 %!error news (1, 2)
 %!error <news: PACKAGE must be a string> news (1)
 %!error <news: package .* is not installed> news ("__NOT_A_VALID_PKG_NAME__")
-

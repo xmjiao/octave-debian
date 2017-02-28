@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2016 Rolf Fabian and Paul Kienzle
+## Copyright (C) 2001-2017 Rolf Fabian and Paul Kienzle
 ## Copyright (C) 2008 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -162,4 +162,3 @@ endfunction
 %!error <N must be a non-negative integer .= K> nchoosek (-100, 45)
 %!error <N must be a non-negative integer .= K> nchoosek (100.5, 45)
 %!warning <possible loss of precision> nchoosek (100, 45);
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 Copyright (C) 2005-2016 David Bateman
 
 This file is part of Octave.
@@ -2357,4 +2357,3 @@ namespace octave
     template class sparse_qr<SparseComplexMatrix>;
   }
 }
-

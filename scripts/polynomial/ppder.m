@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 VZLU Prague, a.s., Czech Republic
+## Copyright (C) 2008-2017 VZLU Prague, a.s., Czech Republic
 ##
 ## This file is part of Octave.
 ##
@@ -72,4 +72,3 @@ endfunction
 %!assert (ppd.pieces, 1)
 %!assert (size (ppd.coefs), [2, 1])
 %!assert (ppval (ppd,x), zeros (size (y)), 1e-14)
-

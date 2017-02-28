@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -138,4 +138,3 @@ do_simple_cellfun (octave_value_list (*fun) (const octave_value_list&, int),
                    const char *fun_name, const octave_value_list& args);
 
 #endif
-

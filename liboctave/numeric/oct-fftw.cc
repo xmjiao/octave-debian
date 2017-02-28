@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001-2016 John W. Eaton
+Copyright (C) 2001-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -1153,4 +1153,3 @@ octave_fftwf_version (void)
   return "none";
 #endif
 }
-

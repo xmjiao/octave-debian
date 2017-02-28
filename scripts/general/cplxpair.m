@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -166,4 +166,3 @@ endfunction
 %!error <TOL must be .* positive> cplxpair (1, -1)
 %!error <TOL must be .* scalar number> cplxpair (1, ones (2,2))
 %!error <invalid dimension DIM> cplxpair (1, [], 3)
-

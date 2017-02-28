@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001-2016 John W. Eaton and Paul Kienzle
+Copyright (C) 2001-2017 John W. Eaton and Paul Kienzle
 
 This file is part of Octave.
 
@@ -110,4 +110,3 @@ Undocumented internal function.
 ## No test needed for internal helper function.
 %!assert (1)
 */
-

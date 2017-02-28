@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Thomas Treichl <treichl@users.sourceforge.net>
+## Copyright (C) 2006-2017 Thomas Treichl <treichl@users.sourceforge.net>
 ##
 ## This file is part of Octave.
 ##
@@ -154,4 +154,3 @@ function retval = ode_event_handler (evtfun, t, y, flag = "", varargin)
   endif
 
 endfunction
-

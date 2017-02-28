@@ -1,4 +1,4 @@
-## Copyright (C) 1998-2016 John W. Eaton
+## Copyright (C) 1998-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -40,4 +40,3 @@ endfunction
 
 %!error isletter ()
 %!error isletter ("a", "b")
-

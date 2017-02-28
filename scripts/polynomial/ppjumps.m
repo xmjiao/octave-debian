@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 VZLU Prague, a.s., Czech Republic
+## Copyright (C) 2008-2017 VZLU Prague, a.s., Czech Republic
 ##
 ## This file is part of Octave.
 ##
@@ -83,4 +83,3 @@ endfunction
 %! pp = mkpp (breaks, [pp1;pp2]);
 %! j  = - 2 * polyval (pp1, 1);
 %! assert (ppjumps (pp), j, eps);
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 Michael Goffioul
+## Copyright (C) 2007-2017 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -51,4 +51,3 @@ function retval = javaArray (classname, varargin)
                         classname, [varargin{:}]);
 
 endfunction
-

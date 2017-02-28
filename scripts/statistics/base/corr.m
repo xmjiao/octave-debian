@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 John W. Eaton
+## Copyright (C) 1996-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -109,4 +109,3 @@ endfunction
 %!error corr ([1; 2], ["A", "B"])
 %!error corr (ones (2,2,2))
 %!error corr (ones (2,2), ones (2,2,2))
-

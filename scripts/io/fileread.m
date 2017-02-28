@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 VZLU Prague
+## Copyright (C) 2010-2017 VZLU Prague
 ##
 ## This file is part of Octave.
 ##
@@ -60,4 +60,3 @@ endfunction
 %!error fileread ()
 %!error fileread (1, 2)
 %!error <FILENAME argument must be a string> fileread (1)
-

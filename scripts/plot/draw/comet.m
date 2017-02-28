@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Ben Abbott
+## Copyright (C) 2008-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -102,4 +102,3 @@ endfunction
 %! y = sin (2*t) .* (sin (t).^2);
 %! comet (x, y, 0.05);
 %! hold off;
-

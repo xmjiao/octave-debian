@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Teemu Ikonen
+## Copyright (C) 2000-2017 Teemu Ikonen
 ##
 ## This file is part of Octave.
 ##
@@ -257,4 +257,3 @@ endfunction
 ## Close figure used for testing
 %!test
 %! close (hf);
-

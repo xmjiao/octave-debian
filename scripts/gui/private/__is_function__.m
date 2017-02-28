@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Michael Goffioul
+## Copyright (C) 2012-2017 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -29,4 +29,3 @@ function result = __is_function__ (func)
   result = (existval == 2 || existval == 3 || existval == 5);
 
 endfunction
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 Rik Wehbring
+Copyright (C) 2016-2017 Rik Wehbring
 
 This file is part of Octave.
 
@@ -329,4 +329,3 @@ namespace octave
 }
 
 /* Tests in test/index.tst */
-

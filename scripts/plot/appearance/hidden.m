@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 Michael Goffioul
+## Copyright (C) 2007-2017 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -85,4 +85,3 @@ endfunction
 function retval = is_white (color)
   retval = all (color == 1);
 endfunction
-

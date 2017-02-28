@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2016 VZLU Prague, a.s.
+Copyright (C) 2008-2017 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -596,4 +596,3 @@ DEFINE_COLROW_NORM_FUNCS(FloatComplex, Float, float)
 
 DEFINE_COLROW_NORM_FUNCS(Sparse, , double)
 DEFINE_COLROW_NORM_FUNCS(SparseComplex, , double)
-

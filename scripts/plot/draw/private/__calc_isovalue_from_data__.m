@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Markus Muetzel
+## Copyright (C) 2016-2017 Markus Muetzel
 ##
 ## This file is part of Octave.
 ##
@@ -57,4 +57,3 @@ function isoval = __calc_isovalue_from_data__ (data)
   isoval = bin_centers(floor (numel (bin_centers) / 2));
 
 endfunction
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2003-2016 John W. Eaton
+## Copyright (C) 2003-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -38,4 +38,3 @@ function retval = isstr (varargin)
   retval = ischar (varargin{:});
 
 endfunction
-

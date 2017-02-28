@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 John W. Eaton
+Copyright (C) 2009-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -179,4 +179,3 @@ octave_get_display_info (int *ht, int *wd, int *dp, double *rx, double *ry,
 
   return msg;
 }
-

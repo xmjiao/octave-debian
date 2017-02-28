@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -172,4 +172,3 @@ endfunction
 %! C = sqrt (fx.^2 + fy.^2);
 %! meshz (X,Y,Z,C);
 %! title ("meshz() plot with color determined by gradient");
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Mike Miller
+## Copyright (C) 2016-2017 Mike Miller
 ## Copyright (C) 2005-2016 Michael Zeising
 ##
 ## This file is part of Octave.
@@ -191,4 +191,3 @@ endfunction
 %!error wavwrite (1)
 %!error wavwrite (1,2,3,4,5)
 %!error wavwrite ([], "foo.wav")
-

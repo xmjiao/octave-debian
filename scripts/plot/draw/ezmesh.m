@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -101,4 +101,3 @@ endfunction
 %! fy = @(s,t) sin (s) .* cos (t);
 %! fz = @(s,t) sin (t);
 %! ezmesh (fx, fy, fz, [-pi,pi,-pi/2,pi/2], 20);
-

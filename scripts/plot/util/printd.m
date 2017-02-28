@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Michael D. Godfrey
+## Copyright (C) 2013-2017 Michael D. Godfrey
 ##
 ## This file is part of Octave.
 ##
@@ -111,4 +111,3 @@ endfunction
 %! delete ("test_p.txt");
 %! r2 = disp (r2);
 %! assert (r4, r2);
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -339,4 +339,3 @@ Note also that @var{U} and @var{T} are not unique.
 %! [U, T] = rsf2csf (u,t);
 %! assert (U * T * U', A, 1e-14);
 */
-

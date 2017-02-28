@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Ben Abbott
+## Copyright (C) 2010-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -121,4 +121,3 @@ endfunction
 %!error untabify ()
 %!error untabify (1,2,3,4)
 %!error <must be a string> untabify (1)
-

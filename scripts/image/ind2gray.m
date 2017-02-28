@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -92,4 +92,3 @@ endfunction
 %!warning <contains colors outside of colormap> ind2gray ([0 1 2], gray (5));
 %!warning <contains colors outside of colormap> ind2gray ([1 2 6], gray (5));
 %!warning <contains colors outside of colormap> ind2gray (uint8 ([1 2 5]), gray (5));
-

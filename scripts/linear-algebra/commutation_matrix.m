@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -118,4 +118,3 @@ endfunction
 %!error <M must be a positive integer> commutation_matrix (0,0)
 %!error <N must be a positive integer> commutation_matrix (1,0)
 %!error <M must be a positive integer> commutation_matrix (0,1)
-

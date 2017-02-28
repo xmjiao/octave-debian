@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -62,4 +62,3 @@ INSTANTIATE_SPARSE (Complex, OCTAVE_API);
 #if 0
 template std::ostream& operator << (std::ostream&, const Sparse<Complex>&);
 #endif
-

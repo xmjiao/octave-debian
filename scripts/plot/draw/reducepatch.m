@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Markus Muetzel
+## Copyright (C) 2016-2017 Markus Muetzel
 ##
 ## This file is part of Octave.
 ##
@@ -454,4 +454,3 @@ endfunction
 %! faces_new = faces;
 %! faces_new(1,3) = size (vertices, 1) + 1;
 %! reducepatch (faces_new, vertices);
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2016 Leopoldo Cerbaro <redbliss@libero.it>
+Copyright (C) 2013-2017 Leopoldo Cerbaro <redbliss@libero.it>
 
 This file is part of Octave.
 
@@ -844,4 +844,3 @@ and 16.15), Dover, 1965.
 %!error <Invalid size combination for U and M> ellipj (complex (1:4,1:4), [1:3])
 
 */
-

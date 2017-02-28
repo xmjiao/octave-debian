@@ -59,7 +59,7 @@ Strength of the ambient light. Value between 0.0 and 1.0
 @anchor{XREFpatchbuttondownfcn}
 @cindex patch buttondownfcn
 @item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
-
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFpatchcdata}
@@ -98,11 +98,15 @@ If @code{clipping} is @qcode{"on"}, the patch is clipped in its parent axes limi
 @item @code{createfcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately after patch has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultpatchcreatefcn", 'disp ("patch created!")')}.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
+
 
 @anchor{XREFpatchdeletefcn}
 @cindex patch deletefcn
 @item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately before patch is deleted.
+
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFpatchdiffusestrength}

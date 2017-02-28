@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 VZLU Prague
+Copyright (C) 2009-2017 VZLU Prague
 
 This file is part of Octave.
 
@@ -355,4 +355,3 @@ endfor
 %!error <A and B must be numeric> blkmm ({1,2}, [3,4])
 %!error <A and B must be numeric> blkmm ([3,4], {1,2})
 */
-

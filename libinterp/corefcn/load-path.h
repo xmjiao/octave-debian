@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2016 John W. Eaton
+Copyright (C) 2006-2017 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -740,4 +740,3 @@ extern std::string
 genpath (const std::string& dir, const string_vector& skip = "private");
 
 #endif
-

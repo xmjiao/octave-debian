@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 David Bateman and Andy Adler
+## Copyright (C) 2004-2017 David Bateman and Andy Adler
 ## Copyright (C) 2012 Jordi Gutiérrez Hermoso
 ##
 ## This file is part of Octave.
@@ -174,4 +174,3 @@ endfunction
 %!error sprandsym (0, 0.5)
 %!error sprandsym (3, -1)
 %!error sprandsym (3, 2)
-

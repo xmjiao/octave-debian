@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000-2016 John W. Eaton
+Copyright (C) 2000-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -84,4 +84,3 @@ extern void octave_replace_history_entry (int, const char *);
 #endif
 
 #endif
-

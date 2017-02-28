@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -1545,6 +1545,7 @@ If @var{base} is not specified it defaults to 10.
 
 @example
 @group
+format long
 chop (-pi, 5, 10)
    @result{} -3.14200000000000
 chop (-pi, 5, 5)

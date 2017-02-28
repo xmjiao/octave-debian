@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -295,7 +295,7 @@
 ## If the @code{Octave:resize-on-range-error} warning is enabled, print a
 ## warning when a matrix is resized by an indexed assignment with
 ## indices outside the current bounds.
-## By default, the ## @code{Octave:resize-on-range-error} warning is disabled.
+## By default, the @code{Octave:resize-on-range-error} warning is disabled.
 ##
 ## @item Octave:separator-insert
 ## Print warning if commas or semicolons might be inserted
@@ -355,4 +355,3 @@ endfunction
 
 ## Mark file as being tested.  No real test needed for a documentation .m file
 %!assert (1)
-

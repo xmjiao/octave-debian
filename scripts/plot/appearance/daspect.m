@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Ben Abbott
+## Copyright (C) 2010-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -140,4 +140,3 @@ endfunction
 %! title ("square plot box with axis limits [0, 4, -1, 1]");
 
 ## FIXME: need some input validation tests
-

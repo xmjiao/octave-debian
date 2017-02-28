@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -190,4 +190,3 @@ install_fcm_fm_ops (void)
   INSTALL_ASSIGNOP (op_asn_eq, octave_complex_matrix,
                     octave_float_matrix, dbl_assign);
 }
-

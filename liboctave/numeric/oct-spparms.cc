@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -220,4 +220,3 @@ octave_sparse_params::do_print_info (std::ostream& os,
   for (int i = 0; i < OCTAVE_SPARSE_CONTROLS_SIZE; i++)
     os << prefix << keys(i) << ": " << params(i) << "\n";
 }
-

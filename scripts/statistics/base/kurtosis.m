@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Julien Bect
+## Copyright (C) 2013-2017 Julien Bect
 ## Copyright (C) 1996-2016 John W. Eaton
 ##
 ## This file is part of Octave.
@@ -166,4 +166,3 @@ endfunction
 %!error <DIM must be an integer> kurtosis (1, [], ones (2,2))
 %!error <DIM must be an integer> kurtosis (1, [], 1.5)
 %!error <DIM must be .* a valid dimension> kurtosis (1, [], 0)
-

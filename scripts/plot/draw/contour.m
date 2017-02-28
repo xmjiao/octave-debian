@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 Shai Ayal
+## Copyright (C) 1993-2017 Shai Ayal
 ##
 ## This file is part of Octave.
 ##
@@ -143,4 +143,3 @@ endfunction
 %! unwind_protect_cleanup
 %!   close (hf);
 %! end_unwind_protect
-

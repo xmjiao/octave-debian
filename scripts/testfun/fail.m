@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Paul Kienzle
+## Copyright (C) 2005-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -155,4 +155,3 @@ endfunction
 %!error fail ()
 %!error fail (1,2,3,4)
 %!error fail (1, "nowarning", "foo")
-

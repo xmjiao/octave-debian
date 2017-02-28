@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 John W. Eaton
+## Copyright (C) 2014-2017 John W. Eaton
 ## Copyright (C) 2016 Colin B. Macdonald
 ##
 ## This file is part of Octave.
@@ -56,4 +56,3 @@ function [xr, yr, zr] = __rotate_around_axis__ (x, y, z, angle, dir, origin);
   endif
 
 endfunction
-

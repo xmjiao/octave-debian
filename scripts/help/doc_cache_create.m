@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Søren Hauberg
+## Copyright (C) 2009-2017 Søren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -168,4 +168,3 @@ endfunction
 ## No true tests desirable for this function.
 ## Test input validation
 %!error doc_cache_create (1)
-

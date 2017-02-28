@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2008-2009 VZLU Prague
 
@@ -1641,4 +1641,3 @@ of @w{@var{A}(:,p)}, where @w{p} is the permutation @*
 %! assert (norm (vec (triu (R) - R), Inf) == 0);
 %! assert (norm (vec (Q*R - AA(:,p)), Inf) < norm (AA)*1e1*eps ("single"));
 */
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Ivana Varekova
+## Copyright (C) 2005-2017 Ivana Varekova
 ##
 ## This file is part of Octave.
 ##
@@ -36,4 +36,3 @@ function etreeplot (A, varargin)
   treeplot (etree (A+A'), varargin{:});
 
 endfunction
-

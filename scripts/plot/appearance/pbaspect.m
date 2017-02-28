@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Ben Abbott
+## Copyright (C) 2010-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -119,4 +119,3 @@ endfunction
 %! daspect ([1 1 1]);
 %! pbaspect ([2 1 1]);
 %! title ("plot box is 2x1, and axes [0 4 -1 1]");
-

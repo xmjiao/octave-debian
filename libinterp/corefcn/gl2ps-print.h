@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 Shai Ayal
+Copyright (C) 2009-2017 Shai Ayal
 
 This file is part of Octave.
 
@@ -48,4 +48,3 @@ gl2ps_print (const graphics_object& fig, const std::string& stream,
 #endif
 
 #endif
-

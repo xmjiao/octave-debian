@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 John W. Eaton
+## Copyright (C) 2008-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -114,4 +114,3 @@ endfunction
 
 %!error rundemos ("foo", 1)
 %!error <DIRECTORY argument> rundemos ("#_TOTALLY_/_INVALID_/_PATHNAME_#")
-

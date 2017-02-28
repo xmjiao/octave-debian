@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Michael D. Godfrey
+## Copyright (C) 2013-2017 Michael D. Godfrey
 ##
 ## This file is part of Octave.
 ##
@@ -591,4 +591,3 @@ endfunction
 %!error <STEM_SZ must be a real integer> stemleaf (1, "", ones (2,2))
 %!error <STEM_SZ must be a real integer> stemleaf (1, "", -1)
 %!error <STEM_SZ must be a real integer> stemleaf (1, "", 1+i)
-

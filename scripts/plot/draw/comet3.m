@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Ben Abbott and John W. Eaton
+## Copyright (C) 2010-2017 Ben Abbott and John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -102,4 +102,3 @@ endfunction
 %! t = 0:pi/20:5*pi;
 %! comet3 (cos (t), sin (t), t, 0.05);
 %! hold off;
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Carl Osterwisch
+## Copyright (C) 2013-2017 Carl Osterwisch
 ## Copyright (C) 2007-2016 John W. Eaton
 ##
 ## This file is part of Octave.
@@ -79,4 +79,3 @@ endfunction
 %! unwind_protect_cleanup
 %!   close (hf);
 %! end_unwind_protect
-

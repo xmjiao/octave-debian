@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Carnë Draug
+## Copyright (C) 2013-2017 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -419,4 +419,3 @@ endfunction
 %!   error_thrown = true;
 %! end_try_catch
 %! assert (error_thrown, true);
-

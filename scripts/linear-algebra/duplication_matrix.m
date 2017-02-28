@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -119,4 +119,3 @@ endfunction
 %!error duplication_matrix (0.5)
 %!error duplication_matrix (-1)
 %!error duplication_matrix (ones (1,4))
-

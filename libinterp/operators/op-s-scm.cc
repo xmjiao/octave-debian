@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -183,4 +183,3 @@ install_s_scm_ops (void)
   INSTALL_WIDENOP (octave_scalar, octave_sparse_complex_matrix,
                    sparse_complex_matrix_conv);
 }
-

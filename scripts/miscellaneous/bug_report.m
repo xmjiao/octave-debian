@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -47,4 +47,3 @@ endfunction
 
 ## Mark file as being tested.  No real test needed for this function.
 %!assert (1)
-

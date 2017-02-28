@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000-2016 John W. Eaton
+Copyright (C) 2000-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -224,4 +224,3 @@ typedef c_file_ptr_stream<std::iostream, gzFile, c_zfile_ptr_buf>
 #endif
 
 #endif
-

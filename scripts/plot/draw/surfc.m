@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 John W. Eaton
+## Copyright (C) 1996-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -145,4 +145,3 @@ endfunction
 %! shading interp;
 %! title ({"surfc() plot of peaks() function"; ...
 %!         "facecolor is interpolated, color determined by Y-gradient of Z"});
-

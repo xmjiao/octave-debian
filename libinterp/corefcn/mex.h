@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001-2016 Paul Kienzle
+Copyright (C) 2001-2017 Paul Kienzle
 
 This file is part of Octave.
 
@@ -171,4 +171,3 @@ void mexFunction (int nlhs, mxArray* plhs[], int nrhs, const mxArray *prhs[]);
 #endif
 
 #endif
-

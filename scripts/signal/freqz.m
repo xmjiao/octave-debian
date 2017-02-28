@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -230,4 +230,3 @@ endfunction
 
 ## Test input validation
 ## FIXME: Need to put tests here and simplify input validation in the main code.
-

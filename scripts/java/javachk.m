@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Philip Nienhuis
+## Copyright (C) 2014-2017 Philip Nienhuis
 ##
 ## This file is part of Octave.
 ##
@@ -149,4 +149,3 @@ endfunction
 
 ## Test input validation
 %!error <javachk: unrecognized feature 'foobar'> javachk ("foobar")
-

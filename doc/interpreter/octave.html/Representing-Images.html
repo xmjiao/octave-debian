@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.3, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Representing Images</title>
 
@@ -223,6 +223,41 @@ supported.
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFrgb2ind">rgb2ind</a>, <a href="#XREFind2gray">ind2gray</a>, <a href="Color-Conversion.html#XREFhsv2rgb">hsv2rgb</a>, <a href="Color-Conversion.html#XREFntsc2rgb">ntsc2rgb</a>.
+</p></dd></dl>
+
+
+<a name="XREFframe2im"></a><dl>
+<dt><a name="index-frame2im"></a>: <em>[<var>x</var>, <var>map</var>] =</em> <strong>frame2im</strong> <em>(<var>f</var>)</em></dt>
+<dd><p>Convert movie frame to indexed image.
+</p>
+<p>A movie frame is simply a struct with the fields <code>&quot;cdata&quot;</code> and
+<code>&quot;colormap&quot;</code>.
+</p>
+<p>Support for N-dimensional images or movies is given when <var>f</var> is a
+struct array.  In such cases, <var>x</var> will be a MxNx1xK or MxNx3xK
+for indexed and RGB movies respectively, with each frame concatenated
+along the 4th dimension.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFim2frame">im2frame</a>.
+</p></dd></dl>
+
+
+<a name="XREFim2frame"></a><dl>
+<dt><a name="index-im2frame"></a>: <em></em> <strong>im2frame</strong> <em>(<var>rgb</var>)</em></dt>
+<dt><a name="index-im2frame-1"></a>: <em></em> <strong>im2frame</strong> <em>(<var>x</var>, <var>map</var>)</em></dt>
+<dd><p>Convert image to movie frame.
+</p>
+<p>A movie frame is simply a struct with the fields <code>&quot;cdata&quot;</code> and
+<code>&quot;colormap&quot;</code>.
+</p>
+<p>Support for N-dimensional images is given when each image projection,
+matrix sizes of MxN and MxNx3 for RGB images, is concatenated
+along the fourth dimension.  In such cases, the returned value is a struct
+array.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFframe2im">frame2im</a>.
 </p></dd></dl>
 
 

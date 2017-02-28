@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -55,4 +55,3 @@ endfunction
 %!error polyreduce (1, 2)
 %!error <C must be a non-empty vector> polyreduce ([1, 2; 3, 4])
 %!error <C must be a non-empty vector> polyreduce ([])
-

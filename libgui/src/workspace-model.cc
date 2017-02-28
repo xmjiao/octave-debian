@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2013-2017 John W. Eaton
 Copyright (C) 2011-2016 Jacob Dawid
 
 This file is part of Octave.
@@ -292,4 +292,3 @@ workspace_model::notice_settings (const QSettings *settings)
       _storage_class_colors.replace (i,setting_color);
     }
 }
-

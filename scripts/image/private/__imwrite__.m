@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 John W. Eaton
+## Copyright (C) 2008-2017 John W. Eaton
 ## Copyright (C) 2013-2016 Carnë Draug
 ##
 ## This file is part of Octave.
@@ -215,4 +215,3 @@ function __imwrite__ (img, varargin)
   __magick_write__ (filename, ext, img, map, options);
 
 endfunction
-

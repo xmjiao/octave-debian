@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 #
-# Copyright (C) 2002-2016 John W. Eaton
+# Copyright (C) 2002-2017 John W. Eaton
 #
 # This file is part of Octave.
 #
@@ -1064,4 +1064,3 @@ _END_OF_USAGE_
 
   exit(1);    # exit with error code
 }
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Nir Krakauer
+## Copyright (C) 2014-2017 Nir Krakauer
 ## Copyright (C) 2000-2016 Paul Kienzle
 ## Copyright (C) 2009 VZLU Prague
 ##
@@ -794,4 +794,3 @@ endfunction
 %!error <discontinuities not supported> interp1 ([1 1],[1 2],1, "cubic")
 %!error <discontinuities not supported> interp1 ([1 1],[1 2],1, "spline")
 %!error <invalid method 'invalid'> interp1 (1:2,1:2,1, "invalid")
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 William Poetra Yoga Hadisoeseno
+## Copyright (C) 2005-2017 William Poetra Yoga Hadisoeseno
 ##
 ## This file is part of Octave.
 ##
@@ -162,4 +162,3 @@ endfunction
 %!error isequal ()
 %!error isequal (1)
 %!error isequal ([1,1])
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Søren Hauberg
+## Copyright (C) 2010-2017 Søren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -299,4 +299,3 @@ function dump_helper_fcns (fid)
   fprintf (fid, "\n%s\n", repmat ("%", [1, 60]));
 
 endfunction
-

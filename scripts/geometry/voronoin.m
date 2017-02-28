@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -83,4 +83,3 @@ endfunction
 %!error voronoin ()
 %!error voronoin (1,2,3)
 %!error <number of points must be greater than their dimension> voronoin ([1 2])
-

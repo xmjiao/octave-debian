@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -159,4 +159,3 @@ install_m_s_ops (void)
   INSTALL_ASSIGNOP (op_mul_eq, octave_matrix, octave_scalar, assign_mul);
   INSTALL_ASSIGNOP (op_div_eq, octave_matrix, octave_scalar, assign_div);
 }
-

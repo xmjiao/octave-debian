@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Søren Hauberg
+## Copyright (C) 2009-2017 Søren Hauberg
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -174,4 +174,3 @@ endfunction
 %!error histc ([1:10 1+i], 2)
 %!error histc (1:10, [])
 %!error histc (1, 1, 3)
-

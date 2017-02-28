@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -88,4 +88,3 @@ function [pval, z] = z_test_2 (x, y, v_x, v_y, alt)
   endif
 
 endfunction
-

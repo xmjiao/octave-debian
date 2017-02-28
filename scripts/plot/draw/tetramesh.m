@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Martin Helm
+## Copyright (C) 2012-2017 Martin Helm
 ##
 ## This file is part of Octave.
 ##
@@ -156,4 +156,3 @@ endfunction
 %! view (30, 20);
 %! title ({"tetramesh() plot", ...
 %!         "colormap = gray (256) with white edges"});
-

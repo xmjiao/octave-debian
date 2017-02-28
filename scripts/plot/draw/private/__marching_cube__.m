@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Martin Helm
+## Copyright (C) 2009-2017 Martin Helm
 ##
 ## This file is part of Octave.
 ##
@@ -535,4 +535,3 @@ function [edge_table, tri_table] = init_mc ()
   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ] + 1;
 
 endfunction
-

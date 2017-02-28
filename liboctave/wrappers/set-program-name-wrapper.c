@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -40,4 +40,3 @@ octave_set_program_name_wrapper (const char *pname)
   // Let gnulib strip off things like the "lt-" prefix from libtool.
   return program_name;
 }
-

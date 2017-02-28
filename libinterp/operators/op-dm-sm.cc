@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 Jason Riedy, Jaroslav Hajek
+Copyright (C) 2009-2017 Jason Riedy, Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -202,4 +202,3 @@ install_dm_sm_ops (void)
   INSTALL_BINOP (op_sub, octave_sparse_matrix, octave_diag_matrix, sub_sm_dm);
   INSTALL_BINOP (op_div, octave_sparse_matrix, octave_diag_matrix, div_sm_dm);
 }
-

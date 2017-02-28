@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -138,4 +138,3 @@ endfunction
 %!error <argument must be a pp-form structure> ppval (1,2)
 %!error <argument must be a pp-form structure> ppval (struct ("a", 1), 2)
 %!error <argument must be a pp-form structure> ppval (struct ("form", "ab"), 2)
-

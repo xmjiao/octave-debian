@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2013-2017 John W. Eaton
 Copyright (C) 2011-2016 Jacob Dawid
 
 This file is part of Octave.
@@ -1373,6 +1373,8 @@ main_window::construct (void)
                doc_browser_window, SLOT (save_settings ()));
       connect (qApp, SIGNAL (aboutToQuit ()),
                workspace_window, SLOT (save_settings ()));
+      connect (qApp, SIGNAL (aboutToQuit ()),
+               editor_window, SLOT (save_settings ()));
       connect (qApp, SIGNAL (aboutToQuit ()),
                this, SLOT (prepare_to_exit ()));
       connect (qApp, SIGNAL (aboutToQuit ()),

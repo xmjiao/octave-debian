@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -83,4 +83,3 @@ endfunction
 %! colormap ("default");
 %! f = @(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
 %! ezsurfc (f, [-3, 3]);
-

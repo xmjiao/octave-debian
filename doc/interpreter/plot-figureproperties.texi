@@ -47,7 +47,7 @@ Transparency is not yet implemented for figure objects.  @code{alphamap} is unus
 @anchor{XREFfigurebuttondownfcn}
 @cindex figure buttondownfcn
 @item @code{buttondownfcn}: string | function handle, def. @code{[](0x0)}
-
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFfigurechildren}
@@ -65,7 +65,9 @@ Graphics handles of the figure's children.
 @anchor{XREFfigurecloserequestfcn}
 @cindex figure closerequestfcn
 @item @code{closerequestfcn}: string | function handle, def. @qcode{"closereq"}
+Function that is executed when a figure is deleted.  @xref{XREFclosereq, , closereq function}.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFfigurecolor}
@@ -84,6 +86,8 @@ A matrix containing the RGB color map for the current axes.
 @cindex figure createfcn
 @item @code{createfcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately after figure has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultfigurecreatefcn", 'disp ("figure created!")')}.
+
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFfigurecurrentaxes}
@@ -124,6 +128,8 @@ only if the figure's callback @code{windowbuttonmotionfcn} is defined
 @cindex figure deletefcn
 @item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately before figure is deleted.
+
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFfiguredockcontrols}
@@ -177,7 +183,7 @@ Replace the figure and axes background color with white when printing.
 @anchor{XREFfigurekeypressfcn}
 @cindex figure keypressfcn
 @item @code{keypressfcn}: string | function handle, def. @code{[](0x0)}
-
+Callback function executed when a keystroke event happens while the figure has focus. The actual key that was pressed can be retrieved using the second argument 'evt' of the function.  For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFfigurekeyreleasefcn}
@@ -193,11 +199,13 @@ Lowercase value of the key
 A cell array containing strings representing the modifiers pressed with the key.
 @end table
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
+
 
 @anchor{XREFfiguremenubar}
 @cindex figure menubar
 @item @code{menubar}: @{@qcode{"figure"}@} | @qcode{"none"}
-Control the display of the figure menu bar in the upper left of the figure.
+Control the display of the figure menu bar at the top of the figure.
 
 
 @anchor{XREFfigurename}
@@ -209,7 +217,7 @@ Name to be displayed in the figure title bar.  The name is displayed to the righ
 @anchor{XREFfigurenextplot}
 @cindex figure nextplot
 @item @code{nextplot}: @{@qcode{"add"}@} | @qcode{"new"} | @qcode{"replace"} | @qcode{"replacechildren"}
-
+@code{nextplot} is used by high level plotting functions to decide what to do with axes already present in the figure.  @xref{XREFnewplot, , @w{newplot function}}.
 
 
 @anchor{XREFfigurenumbertitle}
@@ -221,7 +229,7 @@ Display "Figure" followed by the numerical figure handle value in the figure tit
 @anchor{XREFfigureouterposition}
 @cindex figure outerposition
 @item @code{outerposition}: four-element vector, def. @code{[-1  -1  -1  -1]}
-
+Specify the position and size of the figure including the top menubar and the bottom status bar.  The four elements of the vector are the coordinates of the lower left corner and width and height of the figure.  @xref{XREFfigureunits, , @w{units property}}.
 
 
 @anchor{XREFfigurepaperorientation}
@@ -287,19 +295,19 @@ Handle of the parent graphics object.
 @anchor{XREFfigureposition}
 @cindex figure position
 @item @code{position}: four-element vector, def. @code{[300   200   560   420]}
-Specify the position and size of the figure.  The four elements of the vector are the coordinates of the lower left corner and width and height of the figure.  @xref{XREFfigureunits, , @w{units property}}.
+Specify the position and size of the figure canvas.  The four elements of the vector are the coordinates of the lower left corner and width and height of the figure.  @xref{XREFfigureunits, , @w{units property}}.
 
 
 @anchor{XREFfigurerenderer}
 @cindex figure renderer
 @item @code{renderer}: @{@qcode{"opengl"}@} | @qcode{"painters"}
-
+@code{renderer} is unused.
 
 
 @anchor{XREFfigurerenderermode}
 @cindex figure renderermode
 @item @code{renderermode}: @{@qcode{"auto"}@} | @qcode{"manual"}
-
+@code{renderermode} is unused.
 
 
 @anchor{XREFfigureresize}
@@ -337,6 +345,8 @@ Specify the position and size of the figure.  The four elements of the vector ar
 @item @code{sizechangedfcn}: string | function handle, def. @code{[](0x0)}
 Callback triggered when the figure window size is changed.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
+
 
 @anchor{XREFfiguretag}
 @cindex figure tag
@@ -347,7 +357,7 @@ A user-defined string to label the graphics object.
 @anchor{XREFfiguretoolbar}
 @cindex figure toolbar
 @item @code{toolbar}: @{@qcode{"auto"}@} | @qcode{"figure"} | @qcode{"none"}
-Control the display of the toolbar along the bottom of the figure window.  When set to @qcode{"auto"}, the display is based on the value of the @code{menubar} property.
+Control the display of the toolbar (along the bottom of the menubar) and the status bar.  When set to @qcode{"auto"}, the display is based on the value of the @code{menubar} property.
 
 
 @anchor{XREFfiguretype}
@@ -397,23 +407,29 @@ If @code{visible} is @qcode{"off"}, the figure is not rendered on screen.
 @item @code{windowbuttonupfcn}: string | function handle, def. @code{[](0x0)}
 With @code{windowbuttondownfcn} and @code{windowbuttonmotionfcn}, the mouse callback functions.  These callback functions are called when a mouse button is pressed, dragged, or released respectively.  When these callback functions are executed, the @code{currentpoint} property holds the current coordinates of the cursor.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
+
 
 @anchor{XREFfigurewindowkeypressfcn}
 @cindex figure windowkeypressfcn
 @item @code{windowkeypressfcn}: string | function handle, def. @code{[](0x0)}
+Function that is executed when a key is pressed and the figure has focus.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFfigurewindowkeyreleasefcn}
 @cindex figure windowkeyreleasefcn
 @item @code{windowkeyreleasefcn}: string | function handle, def. @code{[](0x0)}
+Function that is executed when a key is released and the figure has focus.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFfigurewindowscrollwheelfcn}
 @cindex figure windowscrollwheelfcn
 @item @code{windowscrollwheelfcn}: string | function handle, def. @code{[](0x0)}
-
+@code{windowscrollwheelfcn} is unused.
 
 
 @anchor{XREFfigurewindowstyle}

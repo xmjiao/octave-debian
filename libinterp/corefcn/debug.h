@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001-2016 Ben Sapp
+Copyright (C) 2001-2017 Ben Sapp
 
 This file is part of Octave.
 
@@ -201,4 +201,3 @@ private:
 extern std::string get_file_line (const std::string& fname, size_t line);
 
 #endif
-

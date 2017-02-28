@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -112,4 +112,3 @@ endfunction
 %! assert (null (A,tol), zeros (2,0));
 
 %!error null ()
-

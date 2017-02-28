@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2016 David Bateman
+Copyright (C) 2006-2017 David Bateman
 Copyright (C) 2006 Andy Adler
 Copyright (C) 2009 VZLU Prague
 
@@ -982,4 +982,3 @@ MatrixType::transpose (void) const
 
 template MatrixType::MatrixType (const MSparse<double>&);
 template MatrixType::MatrixType (const MSparse<Complex>&);
-

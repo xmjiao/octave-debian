@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 David Bateman
+## Copyright (C) 2010-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -48,4 +48,3 @@ endfunction
 
 ## No test needed for internal helper function.
 %!assert (1)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 William Poetra Yoga Hadisoeseno
+## Copyright (C) 2005-2017 William Poetra Yoga Hadisoeseno
 ## Copyright (C) 2014-2016 Carnë Draug
 ##
 ## This file is part of Octave.
@@ -185,4 +185,3 @@ endfunction
 %!error license ("not_inuse")
 %!error license ("not_test", "octave", "enable")
 %!error <TOGGLE must be enable or disable> license ("test", "octave", "invalid_toggle")
-

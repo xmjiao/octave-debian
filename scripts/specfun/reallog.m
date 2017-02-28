@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -47,4 +47,3 @@ endfunction
 %!error reallog (1,2)
 %!error <produced complex result> reallog (2i)
 %!error <produced complex result> reallog (-1)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Andreas Weingessel
+## Copyright (C) 1995-2017 Andreas Weingessel
 ##
 ## This file is part of Octave.
 ##
@@ -69,4 +69,3 @@ function x = synthesis (y, c)
   x = reshape (z, inc * nc, 1);
 
 endfunction
-

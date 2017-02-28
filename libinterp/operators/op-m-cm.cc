@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -177,4 +177,3 @@ install_m_cm_ops (void)
 
   INSTALL_WIDENOP (octave_matrix, octave_complex_matrix, complex_matrix_conv);
 }
-

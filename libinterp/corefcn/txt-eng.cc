@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2016 Michael Goffioul
+Copyright (C) 2013-2017 Michael Goffioul
 
 This file is part of Octave.
 
@@ -37,4 +37,3 @@ text_element_symbol::get_symbol_code (void) const
 
   return code;
 }
-

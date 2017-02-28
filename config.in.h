@@ -779,6 +779,10 @@
    don't. */
 #undef HAVE_DECL__SYS_SIGLIST
 
+/* Define to 1 if you have the declaration of `__argv', and to 0 if you don't.
+   */
+#undef HAVE_DECL___ARGV
+
 /* Define to 1 if the system has the type `dev_t'. */
 #undef HAVE_DEV_T
 
@@ -931,6 +935,9 @@
 /* Define to 1 if you have the `geteuid' function. */
 #undef HAVE_GETEUID
 
+/* Define to 1 if you have the `getexecname' function. */
+#undef HAVE_GETEXECNAME
+
 /* Define to 1 if you have the `getgid' function. */
 #undef HAVE_GETGID
 
@@ -966,6 +973,9 @@
 
 /* Define to 1 if you have the `getppid' function. */
 #undef HAVE_GETPPID
+
+/* Define to 1 if you have the `getprogname' function. */
+#undef HAVE_GETPROGNAME
 
 /* Define to 1 if you have the `getpwent' function. */
 #undef HAVE_GETPWENT
@@ -1121,6 +1131,9 @@
 
 /* Define to 1 if you have the <libutil.h> header file. */
 #undef HAVE_LIBUTIL_H
+
+/* Define to 1 if you have the <limits.h> header file. */
+#undef HAVE_LIMITS_H
 
 /* Define to 1 if you have the `link' function. */
 #undef HAVE_LINK
@@ -1926,6 +1939,9 @@
 
 /* Define to 1 if pwrite is declared even after undefining macros. */
 #undef HAVE_RAW_DECL_PWRITE
+
+/* Define to 1 if qsort_r is declared even after undefining macros. */
+#undef HAVE_RAW_DECL_QSORT_R
 
 /* Define to 1 if random is declared even after undefining macros. */
 #undef HAVE_RAW_DECL_RANDOM
@@ -2734,6 +2750,9 @@
 /* Define to 1 if you have the <util.h> header file. */
 #undef HAVE_UTIL_H
 
+/* Define if you have a global __progname variable */
+#undef HAVE_VAR___PROGNAME
+
 /* Define to 1 if you have the `vasnprintf' function. */
 #undef HAVE_VASNPRINTF
 
@@ -2883,6 +2902,12 @@
 
 /* Define if the mbrtowc function returns a wrong return value. */
 #undef MBRTOWC_RETVAL_BUG
+
+/* Use GNU style printf and scanf.  */
+#ifndef __USE_MINGW_ANSI_STDIO
+# undef __USE_MINGW_ANSI_STDIO
+#endif
+
 
 /* Define to 1 if mkfifo does not reject trailing slash */
 #undef MKFIFO_TRAILING_SLASH_BUG
@@ -3106,7 +3131,7 @@
 #ifndef _ALL_SOURCE
 # undef _ALL_SOURCE
 #endif
-/* Enable general extensions on OS X.  */
+/* Enable general extensions on macOS.  */
 #ifndef _DARWIN_C_SOURCE
 # undef _DARWIN_C_SOURCE
 #endif
@@ -3114,13 +3139,37 @@
 #ifndef _GNU_SOURCE
 # undef _GNU_SOURCE
 #endif
-/* Use GNU style printf and scanf.  */
-#ifndef __USE_MINGW_ANSI_STDIO
-# undef __USE_MINGW_ANSI_STDIO
-#endif
 /* Enable threading extensions on Solaris.  */
 #ifndef _POSIX_PTHREAD_SEMANTICS
 # undef _POSIX_PTHREAD_SEMANTICS
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-5:2014.  */
+#ifndef __STDC_WANT_IEC_60559_ATTRIBS_EXT__
+# undef __STDC_WANT_IEC_60559_ATTRIBS_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-1:2014.  */
+#ifndef __STDC_WANT_IEC_60559_BFP_EXT__
+# undef __STDC_WANT_IEC_60559_BFP_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-2:2015.  */
+#ifndef __STDC_WANT_IEC_60559_DFP_EXT__
+# undef __STDC_WANT_IEC_60559_DFP_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-4:2015.  */
+#ifndef __STDC_WANT_IEC_60559_FUNCS_EXT__
+# undef __STDC_WANT_IEC_60559_FUNCS_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-3:2015.  */
+#ifndef __STDC_WANT_IEC_60559_TYPES_EXT__
+# undef __STDC_WANT_IEC_60559_TYPES_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TR 24731-2:2010.  */
+#ifndef __STDC_WANT_LIB_EXT2__
+# undef __STDC_WANT_LIB_EXT2__
+#endif
+/* Enable extensions specified by ISO/IEC 24747:2009.  */
+#ifndef __STDC_WANT_MATH_SPEC_FUNCS__
+# undef __STDC_WANT_MATH_SPEC_FUNCS__
 #endif
 /* Enable extensions on HP NonStop.  */
 #ifndef _TANDEM_SOURCE

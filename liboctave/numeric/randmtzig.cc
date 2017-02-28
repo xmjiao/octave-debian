@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2016 John W. Eaton
+Copyright (C) 2006-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -864,4 +864,3 @@ oct_fill_float_rande (octave_idx_type n, float *p)
   for (i = 0; i < n; i++)
     p[i] = oct_float_rande ();
 }
-

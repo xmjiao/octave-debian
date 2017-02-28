@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Jaroslav Hajek
+## Copyright (C) 2008-2017 Jaroslav Hajek
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -76,4 +76,3 @@ endfunction
 %!error optimget (struct (), 2)
 %!warning <unrecognized option: foobar> (optimget (opts, "foobar"));
 %!warning <ambiguous option: Max> (optimget (opts, "Max"));
-

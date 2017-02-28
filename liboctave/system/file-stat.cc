@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -167,6 +167,15 @@ namespace octave
 
     // Private stuff:
 
+    file_stat::file_stat (const std::string& n, bool fl)
+        : base_file_stat (), file_name (n), follow_links (fl)
+      {
+        if (! file_name.empty ())
+          update_internal ();
+      }
+
+    inline file_stat::~file_stat () { }
+
     void
     file_stat::update_internal (bool force)
     {
@@ -249,4 +258,3 @@ namespace octave
     }
   }
 }
-

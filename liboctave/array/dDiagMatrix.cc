@@ -1,7 +1,7 @@
 // DiagMatrix manipulations.
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -345,4 +345,3 @@ operator << (std::ostream& os, const DiagMatrix& a)
     }
   return os;
 }
-

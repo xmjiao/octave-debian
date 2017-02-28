@@ -1,7 +1,7 @@
 // RowVector manipulations.
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -311,4 +311,3 @@ operator * (const RowVector& v, const ComplexColumnVector& a)
   ComplexRowVector tmp (v);
   return tmp * a;
 }
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -89,4 +89,3 @@ endfunction
 %!assert (poly ([1, 2; 3, 4]), [1, -5, -2], sqrt (eps))
 
 %!error poly ([1, 2, 3; 4, 5, 6])
-

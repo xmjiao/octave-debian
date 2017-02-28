@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Søren Hauberg
+## Copyright (C) 2005-2017 Søren Hauberg
 ## Copyright (C) 2010 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
@@ -137,4 +137,3 @@ function [status, output] = shell (cmd, verbose)
   endif
 
 endfunction
-

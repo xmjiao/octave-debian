@@ -79,11 +79,15 @@ If @code{clipping} is @qcode{"on"}, the uimenu is clipped in its parent axes lim
 @item @code{createfcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately after uimenu has been created.  Function is set by using default property on root object, e.g., @code{set (0, "defaultuimenucreatefcn", 'disp ("uimenu created!")')}.
 
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
+
 
 @anchor{XREFuimenudeletefcn}
 @cindex uimenu deletefcn
 @item @code{deletefcn}: string | function handle, def. @code{[](0x0)}
 Callback function executed immediately before uimenu is deleted.
+
+For information on how to write graphics listener functions see @ref{Callbacks, , @w{Callbacks section}}.
 
 
 @anchor{XREFuimenuenable}

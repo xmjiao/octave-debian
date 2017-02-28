@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 John W. Eaton
+Copyright (C) 2004-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -72,4 +72,3 @@ template class octave_base_int_scalar<octave_uint16>;
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_uint16_scalar,
                                      "uint16 scalar", "uint16");
-

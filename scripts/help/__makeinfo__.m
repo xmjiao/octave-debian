@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Søren Hauberg
+## Copyright (C) 2009-2017 Søren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -160,4 +160,3 @@ endfunction
 
 ## No test needed for internal helper function.
 %!assert (1)
-

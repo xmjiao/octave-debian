@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2016 John W. Eaton
+Copyright (C) 2003-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -64,4 +64,3 @@ sig_atomic_t octave_exit_exception_status = 0;
 sig_atomic_t octave_exit_exception_safe_to_return = 0;
 
 volatile sig_atomic_t octave_signal_caught = 0;
-

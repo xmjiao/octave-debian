@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 Dirk Laurie
+## Copyright (C) 1993-2017 Dirk Laurie
 ##
 ## This file is part of Octave.
 ##
@@ -126,4 +126,3 @@ endfunction
 %!error invhilb ()
 %!error invhilb (1, 2)
 %!error <N must be a scalar integer> invhilb ([1, 2])
-

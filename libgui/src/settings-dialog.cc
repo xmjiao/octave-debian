@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2011-2016 Jacob Dawid
+Copyright (C) 2011-2017 Jacob Dawid
 
 This file is part of Octave.
 
@@ -1052,4 +1052,3 @@ settings_dialog::default_shortcut_set ()
 {
   shortcut_manager::import_export (shortcut_manager::OSC_DEFAULT);
 }
-

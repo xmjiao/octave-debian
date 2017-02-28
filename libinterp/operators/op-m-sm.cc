@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -169,4 +169,3 @@ install_m_sm_ops (void)
   INSTALL_WIDENOP (octave_matrix, octave_sparse_matrix,
                    sparse_matrix_conv);
 }
-

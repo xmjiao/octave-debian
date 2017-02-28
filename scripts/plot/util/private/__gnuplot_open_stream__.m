@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Ben Abbott
+## Copyright (C) 2009-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -47,4 +47,3 @@ function plot_stream = __gnuplot_open_stream__ (npipes, h)
   endif
 
 endfunction
-

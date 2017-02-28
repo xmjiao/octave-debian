@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -52,4 +52,3 @@ INSTANTIATE_ARRAY (octave_value, OCTINTERP_API);
 
 NO_INSTANTIATE_ARRAY_SORT (cdef_object);
 INSTANTIATE_ARRAY (cdef_object, OCTINTERP_API);
-

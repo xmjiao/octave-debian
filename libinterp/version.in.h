@@ -1,7 +1,7 @@
 // %NO_EDIT_WARNING%
 /*
 
-Copyright (C) 1992-2016 John W. Eaton
+Copyright (C) 1992-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -69,4 +69,3 @@ octave_name_version_copyright_copying_warranty_and_bugs
 extern OCTINTERP_API std::string octave_startup_message (bool html = false);
 
 #endif
-

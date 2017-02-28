@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -94,4 +94,3 @@ endfunction
 %!error run ()
 %!error run ("a", "b")
 %!error <SCRIPT must exist> run ("__A_very_#unlikely#_file_name__")
-

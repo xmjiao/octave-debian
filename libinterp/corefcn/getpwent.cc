@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -172,4 +172,3 @@ Close the password database.
 
   return ovl (static_cast<double> (status), msg);
 }
-

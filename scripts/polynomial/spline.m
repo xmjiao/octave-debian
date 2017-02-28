@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ## Copyright (C) 2006 David Bateman
 ##
 ## This file is part of Octave.
@@ -295,4 +295,3 @@ endfunction
 %! [x,P] = unmkpp (pp);
 %! assert (P, [-1,2,0,0;0,-1,1,1;1,-1,-1,1], abserr);
 %! assert (pp2, pp);
-

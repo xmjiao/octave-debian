@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 Jaroslav Hajek
+Copyright (C) 2009-2017 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -73,4 +73,3 @@ CONV_DECLS (FloatComplex, Float);
 CONV_DECLS (FloatComplex, FloatComplex);
 
 #endif
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -119,4 +119,3 @@ OCTAVE_API RowVector linspace (double x1, double x2, octave_idx_type n);
 MARRAY_FORWARD_DEFS (MArray, RowVector, double)
 
 #endif
-

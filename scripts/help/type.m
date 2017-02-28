@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Søren Hauberg
+## Copyright (C) 2009-2017 Søren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -151,4 +151,3 @@ endfunction
 
 %!error type ()
 %!error <'__NO_NAME__' undefined> type ('__NO_NAME__')
-

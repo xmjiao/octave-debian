@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Julian Schnidder
+## Copyright (C) 2008-2017 Julian Schnidder
 ## Copyright (C) 2012 Carnë Draug
 ##
 ## This file is part of Octave.
@@ -52,4 +52,3 @@ endfunction
 
 
 %!error <invalid arguments> python (123)
-

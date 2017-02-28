@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Carnë Draug
+## Copyright (C) 2012-2017 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -69,4 +69,3 @@ endfunction
 %! f([1,1]);
 %!test
 %! f([1,5], 2, 3, 4, 5);
-

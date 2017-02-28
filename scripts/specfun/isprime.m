@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ## Copyright (C) 2010 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -171,4 +171,3 @@ endfunction
 %!error isprime (1, 2)
 %!error <X contains non-integer entries> isprime (0.5i)
 %!error <X contains non-integer entries> isprime (0.5)
-

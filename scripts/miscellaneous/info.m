@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Julian Schnidder
+## Copyright (C) 2008-2017 Julian Schnidder
 ##
 ## This file is part of Octave.
 ##
@@ -49,4 +49,3 @@ endfunction
 
 ## Mark file as being tested.  No real test needed for a documentation .m file
 %!assert (1)
-

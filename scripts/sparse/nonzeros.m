@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 Paul Kienzle
+## Copyright (C) 2004-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -39,4 +39,3 @@ endfunction
 %!assert (nonzeros ([1,2,3,0]), [1;2;3])
 %!assert (nonzeros (sparse ([1,2;3,0])), [1;3;2])
 %!assert (nonzeros (sparse ([1,2,3,0])), [1;2;3])
-

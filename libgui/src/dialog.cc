@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013-2016 John W. Eaton
+Copyright (C) 2013-2017 John W. Eaton
 Copyright (C) 2013-2016 Daniel J. Sebald
 
 This file is part of Octave.
@@ -530,4 +530,3 @@ void FileDialog::acceptSelection (void)
   // send the selected info
   emit finish_input (string_result, path, idx);
 }
-

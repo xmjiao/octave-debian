@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -101,4 +101,3 @@ endfunction
 
 ## Input validation tests
 %!error delaunayn ()
-

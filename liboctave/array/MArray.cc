@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -359,4 +359,3 @@ operator - (const MArray<T>& a)
 {
   return do_mx_unary_op<T, T> (a, mx_inline_uminus);
 }
-

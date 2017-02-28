@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Massimiliano Fasi
+## Copyright (C) 2014-2017 Massimiliano Fasi
 ##
 ## This file is part of Octave.
 ##
@@ -66,4 +66,3 @@ endfunction
 %!error hgload ()
 %!error hgload (1, 2)
 %!error <unable to locate file> hgload ("%%_A_REALLY_UNLIKELY_FILENAME_%%")
-

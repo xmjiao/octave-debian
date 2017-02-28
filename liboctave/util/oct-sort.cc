@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2016 David Bateman
+Copyright (C) 2003-2017 David Bateman
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2009-2010 VZLU Prague
 
@@ -1964,4 +1964,3 @@ octave_sort<T>::descending_compare (typename ref_param<T>::type x,
 {
   return x > y;
 }
-

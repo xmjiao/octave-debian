@@ -1,7 +1,7 @@
 // N-D Array manipulations.
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
@@ -168,4 +168,3 @@ mx_el_or_assign (boolNDArray& a, const boolNDArray& b)
 
 BSXFUN_OP_DEF_MXLOOP (and, boolNDArray, mx_inline_and)
 BSXFUN_OP_DEF_MXLOOP (or, boolNDArray, mx_inline_or)
-

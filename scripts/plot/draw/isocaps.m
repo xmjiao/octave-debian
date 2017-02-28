@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Markus Muetzel
+## Copyright (C) 2016-2017 Markus Muetzel
 ##
 ## This file is part of Octave.
 ##
@@ -572,4 +572,3 @@ endfunction
 %! fvc = isocaps (xx, yy, zz, val, iso);
 %!error <ISOVAL must be a scalar> isocaps (val, [iso iso])
 %!error <ISOVAL must be a scalar> isocaps (val, {iso})
-

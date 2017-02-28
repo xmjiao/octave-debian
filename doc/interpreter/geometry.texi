@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2007-2016 John W. Eaton and David Bateman
+@c Copyright (C) 2007-2017 John W. Eaton and David Bateman
 @c
 @c This file is part of Octave.
 @c

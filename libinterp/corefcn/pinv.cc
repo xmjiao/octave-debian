@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -190,4 +190,3 @@ where @code{sigma_max (@var{x})} is the maximal singular value of @var{x}.
 %! assert (diag (y), [1/3 1/2 0 0 0]');
 
 */
-

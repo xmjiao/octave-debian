@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Mike Miller
+## Copyright (C) 2013-2017 Mike Miller
 ##
 ## This file is part of Octave.
 ##
@@ -64,4 +64,3 @@ endfunction
 %!error __gripe_missing_component__ ()
 %!error __gripe_missing_component__ ("fcn")
 %!error __gripe_missing_component__ ("fcn", 1 , 2)
-

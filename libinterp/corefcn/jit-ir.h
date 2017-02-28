@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2016 Max Brister
+Copyright (C) 2012-2017 Max Brister
 
 This file is part of Octave.
 
@@ -1442,4 +1442,3 @@ jit_const<T, EXTRACT_T, PASS_T, QUOTE>::accept (jit_ir_walker& walker)
 
 #endif
 #endif
-

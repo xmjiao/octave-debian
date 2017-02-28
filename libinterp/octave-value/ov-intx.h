@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 John W. Eaton
+Copyright (C) 2004-2017 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -676,4 +676,3 @@ private:
 
   DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA
 };
-

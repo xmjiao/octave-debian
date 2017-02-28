@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2016 Michael Goffioul
+Copyright (C) 2007-2017 Michael Goffioul
 
 This file is part of Octave.
 
@@ -3271,4 +3271,3 @@ Return true if @var{x} is a Java object.
 %! assert (javaMethod ("binarySearch", "java.util.Arrays", {"aaa", "bbb", "ccc", "zzz"}, "zzz"), 3);
 %! assert (javaMethod ("binarySearch", "java.util.Arrays", {"aaa", "bbb", "ccc", "zzz"}, "hhh") < 0);
 */
-

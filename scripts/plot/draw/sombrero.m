@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -83,4 +83,3 @@ endfunction
 ## Test input validation
 %!error sombrero (1,2,3)
 %!error <N must be greater than 1> sombrero (1)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Kai Habel
+## Copyright (C) 2009-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -91,4 +91,3 @@ function retval = specular (sx, sy, sz, lv, vv, se)
   retval .^= se;
 
 endfunction
-

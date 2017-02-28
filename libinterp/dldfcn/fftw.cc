@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2016 David Bateman
+Copyright (C) 2006-2017 David Bateman
 
 This file is part of Octave.
 
@@ -383,4 +383,3 @@ used per default.
 %!error fftw ("threads", "invalid")
 %!error fftw ("threads", -3)
  */
-

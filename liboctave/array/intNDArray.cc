@@ -1,7 +1,7 @@
 // N-D Array manipulations.
 /*
 
-Copyright (C) 2004-2016 John W. Eaton
+Copyright (C) 2004-2017 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
@@ -299,4 +299,3 @@ intNDArray<T>::diff (octave_idx_type order, int dim) const
 {
   return do_mx_diff_op<T> (*this, dim, order, mx_inline_diff);
 }
-

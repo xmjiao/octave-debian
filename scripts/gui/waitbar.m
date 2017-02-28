@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 John W. Eaton
+## Copyright (C) 2012-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -301,4 +301,3 @@ endfunction
 %!error <FRAC must be between 0 and 1> waitbar (1.5)
 %!error <MSG must be a character string> waitbar (0.5, struct ())
 %!error <invalid number of property/value pairs> waitbar (0.5, "msg", "Name")
-

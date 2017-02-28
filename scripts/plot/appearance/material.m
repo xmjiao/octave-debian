@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Markus Muetzel
+## Copyright (C) 2016-2017 Markus Muetzel
 ##
 ## This file is part of Octave.
 ##
@@ -314,4 +314,3 @@ endfunction
 %! unwind_protect_cleanup
 %!   close (hf);
 %! end_unwind_protect
-

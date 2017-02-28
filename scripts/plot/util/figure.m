@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 John W. Eaton
+## Copyright (C) 1996-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -140,4 +140,3 @@ endfunction
 %!error <N must be figure handle or figure number> figure ([1 2])
 %!error <N must be figure handle or figure number> figure (-1)
 %!error <N must be figure handle or figure number> figure (1.5)
-

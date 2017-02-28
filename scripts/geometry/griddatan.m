@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -109,4 +109,3 @@ endfunction
 %! zz = griddatan (x,y,xi,"nearest");
 %! zz2 = griddata (x(:,1),x(:,2),y,xi(:,1),xi(:,2),"nearest");
 %! assert (zz, zz2, 1e-10);
-

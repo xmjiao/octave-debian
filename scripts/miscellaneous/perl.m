@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Julian Schnidder
+## Copyright (C) 2008-2017 Julian Schnidder
 ##
 ## This file is part of Octave.
 ##
@@ -53,4 +53,3 @@ endfunction
 
 
 %!error <invalid arguments> perl (123)
-

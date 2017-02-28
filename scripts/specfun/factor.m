@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -114,4 +114,3 @@ endfunction
 %!error <Q must be a real integer> factor (6i)
 %!error <Q must be a real integer> factor ([1,2])
 %!error <Q must be a real integer> factor (1.5)
-

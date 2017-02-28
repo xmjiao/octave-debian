@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Rik Wehbring
+## Copyright (C) 2016-2017 Rik Wehbring
 ##
 ## This file is part of Octave.
 ##
@@ -64,4 +64,3 @@ endfunction
 %!error deg2rad (1, 2)
 %!error <DEG must be a floating point class> deg2rad (uint8 (1))
 %!error <DEG must be a floating point class> deg2rad ("A")
-

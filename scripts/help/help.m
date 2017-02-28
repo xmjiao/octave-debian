@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Søren Hauberg
+## Copyright (C) 2009-2017 Søren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -18,8 +18,8 @@
 
 ## -*- texinfo -*-
 ## @deftypefn  {} {} help @var{name}
-## @deftypefnx {} {} help @code{--list}
-## @deftypefnx {} {} help @code{.}
+## @deftypefnx {} {} help --list
+## @deftypefnx {} {} help .
 ## @deftypefnx {} {} help
 ## Display the help text for @var{name}.
 ##
@@ -53,7 +53,7 @@ function retval = help (name)
     help NAME\n\
 \n\
   (replace NAME with the name of the command or function you would\n\
-  like to learn more about; for an operator, enclose NAME in quotes).\n\
+  like to learn more about; for an operator, enclose \"NAME\" in quotes).\n\
 \n\
   For a more detailed introduction to GNU Octave, consult the manual.\n\
   The manual may be read from the prompt by typing\n\
@@ -141,7 +141,7 @@ function retval = do_list_functions ()
   operators = do_list_operators ();
 
   keywords = sprintf ("*** keywords:\n\n%s\n\n",
-                      list_in_columns (__keywords__ ()));
+                      list_in_columns (iskeyword ()));
 
   builtins = sprintf ("*** builtins:\n\n%s\n\n",
                       list_in_columns (__builtins__ ()));
@@ -217,4 +217,3 @@ endfunction
 %!error <invalid input> help (42)
 %!error <invalid input> help ("abc", "def")
 %!error <'_! UNLIKELY_FCN! _' not found> help ("_! UNLIKELY_FCN! _")
-

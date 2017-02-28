@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -61,4 +61,3 @@
 %! eval ("eval (\"clear a; a; str='';\",\"error (cstrcat (\\\"rethrow: \\\", lasterr));str='';\");",
 %! "str=lasterr;");
 %! assert (str(1:22), "rethrow: 'a' undefined");
-

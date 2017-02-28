@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 Copyright (C) 2016 Barbara Lócsi
 
 This file is part of Octave.
@@ -641,4 +641,3 @@ The eigenvalues returned by @code{eig} are not ordered.
 %!error <wrong type argument>
 %!  eig ([1 2 ; 2 3], [1 2 ; 2 3], [1 2 ; 2 3])
 */
-

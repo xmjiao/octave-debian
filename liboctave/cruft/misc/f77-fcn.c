@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -68,4 +68,3 @@ F77_FUNC (xstopx, XSTOPX) (const char *s, F77_CHAR_ARG_LEN_TYPE slen)
 
   F77_NORETURN (0)
 }
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2016 John W. Eaton
+Copyright (C) 2007-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -155,4 +155,3 @@ install_class_ops (void)
   INSTALL_CLASS_BINOP (op_el_and, and);
   INSTALL_CLASS_BINOP (op_el_or, or);
 }
-

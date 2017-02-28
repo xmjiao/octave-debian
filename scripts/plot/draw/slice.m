@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 Kai Habel, David Bateman
+## Copyright (C) 2007-2017 Kai Habel, David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -216,4 +216,3 @@ endfunction
 %! [xi, yi] = meshgrid (linspace (-7, 7));
 %! zi = xi + yi;
 %! slice (x, y, z, v, xi, yi, zi);
-

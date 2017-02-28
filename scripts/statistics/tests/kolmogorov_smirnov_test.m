@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -125,4 +125,3 @@ endfunction
 %! kolmogorov_smirnov_test (1, "not_a_dist");
 %!error <alternative foo not recognized>
 %! kolmogorov_smirnov_test (1, "unif", 2, 4, "foo");
-

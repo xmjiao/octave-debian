@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Carlo de Falco
+## Copyright (C) 2014-2017 Carlo de Falco
 ##
 ## This file is part of Octave.
 ##
@@ -38,4 +38,3 @@ function [prefix, archprefix] = default_prefix (global_install, desc)
   endif
 
 endfunction
-

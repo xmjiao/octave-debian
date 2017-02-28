@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Friedrich Leisch
+## Copyright (C) 1995-2017 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -33,4 +33,3 @@ function retval = rectangle_lw (n, b)
   retval(1:t, 1) = ones (t, 1);
 
 endfunction
-

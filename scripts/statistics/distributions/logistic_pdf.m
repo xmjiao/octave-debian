@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -53,4 +53,3 @@ endfunction
 %!error logistic_pdf ()
 %!error logistic_pdf (1,2)
 %!error logistic_pdf (i)
-

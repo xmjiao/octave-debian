@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1995-2016 John W. Eaton
+Copyright (C) 1995-2017 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -110,4 +110,3 @@ MM_CMP_OP_DECLS (charMatrix, charMatrix, OCTAVE_API)
 MM_BOOL_OP_DECLS (charMatrix, charMatrix, OCTAVE_API)
 
 #endif
-

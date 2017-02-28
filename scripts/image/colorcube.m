@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Rik Wehbring
+## Copyright (C) 2012-2017 Rik Wehbring
 ##
 ## This file is part of Octave.
 ##
@@ -96,4 +96,3 @@ endfunction
 %! axis ([1, 64, 0, 1], "xy");
 %! set (gca, "xtick", []);
 %! colormap (colorcube (64));
-

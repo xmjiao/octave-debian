@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Ben Abbott
+## Copyright (C) 2010-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -68,4 +68,3 @@ endfunction
 %!error isappdata (1,2,3)
 %!error <H must be a scalar .* graphic handle> isappdata (-1, "hello")
 %!error <NAME must be a string> isappdata (0, 1)
-

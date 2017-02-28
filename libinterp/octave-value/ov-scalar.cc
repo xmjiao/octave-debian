@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -469,4 +469,3 @@ octave_scalar::fast_elem_insert_self (void *where, builtin_type_t btyp) const
   else
     return false;
 }
-

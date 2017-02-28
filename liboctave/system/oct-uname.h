@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2016 John W. Eaton
+Copyright (C) 2005-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -102,4 +102,3 @@ typedef octave::sys::uname octave_uname;
 #endif
 
 #endif
-

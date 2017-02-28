@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 Rik Wehbring
+Copyright (C) 2016-2017 Rik Wehbring
 
 This file is part of Octave.
 
@@ -363,4 +363,3 @@ warn_wrong_type_arg (const char *name, const octave_value& tc)
 
   warning ("%s: wrong type argument '%s'", name, type.c_str ());
 }
-

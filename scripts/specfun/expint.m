@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Sylvain Pelissier
+## Copyright (C) 2006-2017 Sylvain Pelissier
 ##
 ## This file is part of Octave.
 ##
@@ -263,5 +263,3 @@ endfunction
 ## Test input validation
 %!error expint ()
 %!error expint (1,2)
-
-

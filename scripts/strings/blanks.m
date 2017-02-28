@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 Kurt Hornik
+## Copyright (C) 1996-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -64,4 +64,3 @@ endfunction
 %!error blanks (ones (2))
 %!error blanks (2.1)
 %!error blanks (-2)
-

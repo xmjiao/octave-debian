@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Philip Nienhuis
+## Copyright (C) 2016-2017 Philip Nienhuis
 ##
 ## This file is part of Octave.
 ##
@@ -69,4 +69,3 @@ endfunction
 ##%!   assert (__w2mpth__ ('relative\path\to\file.dat'),
 ##%!                       'relative/path/to/file.dat')
 ##%! endif
-

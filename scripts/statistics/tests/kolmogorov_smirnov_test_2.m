@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -102,4 +102,3 @@ function [pval, ks, d] = kolmogorov_smirnov_test_2 (x, y, alt)
   endif
 
 endfunction
-

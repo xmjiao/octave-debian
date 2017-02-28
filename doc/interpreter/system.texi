@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -2236,7 +2236,7 @@ given, then @var{text} is also sent to standard output.
 
 @c open scripts/miscellaneous/open.m
 @anchor{XREFopen}
-@deftypefn  {} {@var{output} =} open @var{file}
+@deftypefn  {} {} open @var{file}
 @deftypefnx {} {@var{output} =} open (@var{file})
 Open the file @var{file} in Octave or in an external application based on
 the file type as determined by the filename extension.
@@ -3330,7 +3330,7 @@ for the release date of the running build,
 for a description of the release (always an empty string),
 
 @item @qcode{"-release"}
-for the name of the running build,
+for the name of the running build (always an empty string),
 
 @item @qcode{"-java"}
 for version information of the Java @nospell{VM},
@@ -3632,5 +3632,4 @@ hash ("md5", fileread (file));
 @end example
 
 @end deftypefn
-
 

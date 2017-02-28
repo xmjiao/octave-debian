@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -71,4 +71,3 @@ octave_end_long_double_rounding (unsigned int oldcw)
 {
   END_LONG_DOUBLE_ROUNDING ();
 }
-

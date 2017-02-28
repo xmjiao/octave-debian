@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2016 Jonathan Stickel
+Copyright (C) 2008-2017 Jonathan Stickel
 Copyright (C) 2010 Jaroslav Hajek
 
 This file is part of Octave.
@@ -506,4 +506,3 @@ such as text, are also replaced by the @qcode{"emptyvalue"}.
 %!test
 %! unlink (file);
 */
-

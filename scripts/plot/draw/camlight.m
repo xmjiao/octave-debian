@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Colin B. Macdonald
+## Copyright (C) 2016-2017 Colin B. Macdonald
 ##
 ## This file is part of Octave.
 ##
@@ -299,4 +299,3 @@ endfunction
 %!error <Invalid call> camlight (rand (), 1, 2, 3)
 %!error <invalid light position 'foobar'> camlight ("foobar")
 %!error <invalid light position 'foobar'> camlight ("foobar", "local")
-

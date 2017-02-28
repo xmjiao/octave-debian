@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -225,4 +225,3 @@ endfunction
 %!error <HAX argument must be an axes object> voronoi (0, ones (3,1), ones (3,1))
 %!error <X and Y must be vectors of the same length> voronoi (ones (3,1), ones (4,1))
 %!error <minimum of 2 points required> voronoi (2.5, 3.5)
-

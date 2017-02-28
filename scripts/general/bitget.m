@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 David Bateman
+## Copyright (C) 2004-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -116,4 +116,3 @@ endfunction
 
 %!error bitget (1)
 %!error bitget (1, 2, 3)
-

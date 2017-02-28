@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 Carlo de Falco
+Copyright (C) 2009-2017 Carlo de Falco
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -141,4 +141,3 @@ On exit, @var{y} is a unit vector such that:
 %! endfor
 %! assert (a' * a, eye (5), 1e10);
 */
-

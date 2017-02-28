@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Martin Hepperle
+## Copyright (C) 2010-2017 Martin Hepperle
 ##
 ## This file is part of Octave.
 ##
@@ -239,4 +239,3 @@ endfunction
 %!error <ROWSCOLS must be numeric> inputdlg ("msg", "title", "1")
 %!error <ROWSCOLS vector does not match size>
 %! inputdlg ({"a1", "a2"}, "title", [1, 2, 3]);
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Arno Onken <asnelt@asnelt.org>
+## Copyright (C) 2006-2017 Arno Onken <asnelt@asnelt.org>
 ##
 ## This file is part of Octave.
 ##
@@ -132,4 +132,3 @@ endfunction
 %!error <A must be a square numeric matrix> condeig ({1})
 %!error <A must be a square numeric matrix> condeig (ones (3,2))
 %!error <A must be a square numeric matrix> condeig (ones (2,2,2))
-

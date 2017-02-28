@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Kai Habel
+## Copyright (C) 2009-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -208,4 +208,3 @@ endfunction
 %! surfl (X,Y,Z, [62.50,30], [0.2 0.6 0.4 25]);
 %! shading interp;
 %! title ("surfl() with lighting vector and material properties");
-

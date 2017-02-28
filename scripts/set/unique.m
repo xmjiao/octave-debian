@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ## Copyright (C) 2008-2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -227,4 +227,3 @@ endfunction
 %!error <invalid option> unique ({"a", "b", "c"}, "rows", "UnknownOption2")
 %!error <invalid option> unique ({"a", "b", "c"}, "UnknownOption1", "last")
 %!warning <"rows" is ignored for cell arrays> unique ({"1"}, "rows");
-

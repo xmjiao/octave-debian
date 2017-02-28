@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -2957,4 +2957,3 @@ extern OCTINTERP_API std::string
 get_dispatch_type (const octave_value_list& args, builtin_type_t& builtin_type);
 
 #endif
-

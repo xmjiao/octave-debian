@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Michael Goffioul
+## Copyright (C) 2012-2017 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -33,4 +33,3 @@ function dirname = __uigetdir_fltk__ (start_path, dialog_title)
                                 start_path, [240, 120], "dir");
 
 endfunction
-

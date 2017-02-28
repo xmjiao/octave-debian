@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -40,4 +40,3 @@ const octave_hdf5_id octave_H5P_DEFAULT = H5P_DEFAULT;
 const octave_hdf5_id octave_H5S_ALL = H5S_ALL;
 
 #endif
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -342,4 +342,3 @@ endfunction
 
 ## Test input validation
 %!warning <ignoring unsupported '\*' flag> interpn (rand (3,3), 1, "*linear");
-

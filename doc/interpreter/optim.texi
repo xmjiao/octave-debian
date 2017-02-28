@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -671,7 +671,7 @@ The problem is infeasible.
 @deftypefnx {} {[@var{x}, @var{minval}, @var{exitflag}, @var{output}, @var{lambda}] =} pqpnonneg (@dots{})
 Minimize @code{1/2*x'*c*x + d'*x} subject to @code{@var{x} >= 0}.
 
-@var{c} ## and @var{d} must be real, and @var{c} must be symmetric and
+@var{c} and @var{d} must be real, and @var{c} must be symmetric and
 positive definite.
 
 @var{x0} is an optional initial guess for @var{x}.

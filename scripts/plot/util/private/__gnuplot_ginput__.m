@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 Petr Mikulik
+## Copyright (C) 2004-2017 Petr Mikulik
 ##
 ## This file is part of Octave.
 ##
@@ -146,4 +146,3 @@ function [x, y, button] = __gnuplot_ginput__ (f, n)
   end_unwind_protect
 
 endfunction
-

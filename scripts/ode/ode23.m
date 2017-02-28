@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Carlo de Falco
+## Copyright (C) 2016-2017 Carlo de Falco
 ## Copyright (C) 2016 Francesco Faccio <francesco.faccio@mail.polimi.it>
 ## Copyright (C) 2014-2016 Jacopo Corno <jacopo.corno@gmail.com>
 ## Copyright (C) 2013-2016 Roberto Porcu' <roberto.porcu@polimi.it>
@@ -25,6 +25,7 @@
 ## @deftypefnx {} {[@var{t}, @var{y}] =} ode23 (@var{fun}, @var{trange}, @var{init}, @var{ode_opt})
 ## @deftypefnx {} {[@var{t}, @var{y}, @var{te}, @var{ye}, @var{ie}] =} ode23 (@dots{})
 ## @deftypefnx {} {@var{solution} =} ode23 (@dots{})
+## @deftypefnx {} {} ode23 (@dots{})
 ##
 ## Solve a set of non-stiff Ordinary Differential Equations (non-stiff ODEs)
 ## with the well known explicit @nospell{Bogacki-Shampine} method of order 3.
@@ -66,18 +67,15 @@
 ## Use @code{fieldnames (@var{solution})} to see the other fields and
 ## additional information returned.
 ##
+## If no output arguments are requested, and no @code{OutputFcn} is
+## specified in @var{ode_opt}, then the @code{OutputFcn} is set to
+## @code{odeplot} and the results of the solver are plotted immediately.
+##
 ## If using the @qcode{"Events"} option then three additional outputs may
 ## be returned.  @var{te} holds the time when an Event function returned a
 ## zero.  @var{ye} holds the value of the solution at time @var{te}.  @var{ie}
 ## contains an index indicating which Event function was triggered in the case
 ## of multiple Event functions.
-##
-## This function can be called with two output arguments: @var{t} and @var{y}.
-## Variable @var{t} is a column vector and contains the time stamps, instead
-## @var{y} is a matrix in which each column refers to a different unknown of
-## the problem and the rows number is the same of @var{t} rows number so
-## that each row of @var{y} contains the values of all unknowns at the time
-## value contained in the corresponding row in @var{t}.
 ##
 ## Example: Solve the @nospell{Van der Pol} equation
 ##
@@ -279,7 +277,7 @@ function varargout = ode23 (fun, trange, init, varargin)
       varargout{1}.stats.ndecomps = ndecomps;
       varargout{1}.stats.nlinsols = nlinsols;
     endif
-  elseif (nargout == 5)
+  elseif (nargout > 2)
     varargout = cell (1,5);
     varargout{1} = solution.t;
     varargout{2} = solution.x;
@@ -503,4 +501,3 @@ endfunction
 %!error <INIT must be a numeric> ode23 (@fpol, [0 25], {[3 15 1]})
 %!error <INIT must be a .* vector> ode23 (@fpol, [0 25], [3 15 1; 3 15 1])
 %!error <FUN must be a valid function handle> ode23 (1, [0 25], [3 15 1])
-

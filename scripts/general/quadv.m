@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ## Copyright (C) 2012 Alexander Klein
 ##
 ## This file is part of Octave.
@@ -172,4 +172,3 @@ endfunction
 %!error quadv (@sin)
 %!error quadv (@sin,1)
 %!error <TOL must be a scalar> quadv (@sin,0,1, ones (2,2))
-

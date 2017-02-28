@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 William Poetra Yoga Hadisoeseno
+## Copyright (C) 2005-2017 William Poetra Yoga Hadisoeseno
 ##
 ## This file is part of Octave.
 ##
@@ -135,4 +135,3 @@ endfunction
 %!test
 %! result = ver ("%_an_unknown_package_%");
 %! assert (isempty (result), true);
-

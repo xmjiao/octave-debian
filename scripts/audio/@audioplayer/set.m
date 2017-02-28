@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Vytautas Jančauskas
+## Copyright (C) 2013-2017 Vytautas Jančauskas
 ##
 ## This file is part of Octave.
 ##
@@ -75,4 +75,3 @@ function setproperty (player, property, value)
   endswitch
 
 endfunction
-

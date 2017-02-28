@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 Michael Goffioul
+## Copyright (C) 2012-2017 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -73,4 +73,3 @@ function hui = uipushtool (varargin)
   hui = __go_uipushtool__ (h, args{:});
 
 endfunction
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -106,4 +106,3 @@ operator - (const MDiagArray2<T>& a)
   return MDiagArray2<T> (do_mx_unary_op<T, T> (a, mx_inline_uminus),
                          a.d1, a.d2);
 }
-

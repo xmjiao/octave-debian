@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 Copyright (C) 2008 Jaroslav Hajek
 
@@ -184,4 +184,3 @@ class SparseBoolMatrix;
   SPARSE_SMM_BOOL_OP_DECLS (M1, M2, API)
 
 #endif
-

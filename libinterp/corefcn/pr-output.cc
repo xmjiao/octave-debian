@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -4203,4 +4203,3 @@ The original variable value is restored when exiting the function.
   return SET_INTERNAL_VARIABLE_WITH_LIMITS (output_precision, -1,
                                             std::numeric_limits<int>::max ());
 }
-

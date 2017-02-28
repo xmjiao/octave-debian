@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Michael Goffioul
+## Copyright (C) 2008-2017 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -130,4 +130,3 @@ endfunction
 %! endswitch
 %! assert (graphics_toolkit (new_toolkit), old_toolkit);
 %! assert (graphics_toolkit (old_toolkit), new_toolkit);
-

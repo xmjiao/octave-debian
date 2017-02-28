@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ## Copyright (C) 2007 David Bateman
 ##
 ## This file is part of Octave.
@@ -320,4 +320,3 @@ endfunction
 %! assert (b, flip (b,1));
 %! assert (b, flip (b,2));
 %! assert (b, flip (b,3));
-

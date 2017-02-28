@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 VZLU Prague
+## Copyright (C) 2010-2017 VZLU Prague
 ##
 ## This file is part of Octave.
 ##
@@ -171,4 +171,3 @@ endfunction
 %!error <indices must be positive integers> accumdim ([-1 1], ones (2,2))
 %!error <N index out of range> accumdim ([1 2], ones (2,2), 1, 1)
 %!error <dimension mismatch> accumdim ([1], ones (2,2))
-

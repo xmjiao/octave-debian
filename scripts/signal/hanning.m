@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Andreas Weingessel
+## Copyright (C) 1995-2017 Andreas Weingessel
 ##
 ## This file is part of Octave.
 ##
@@ -88,4 +88,3 @@ endfunction
 %!error hanning (-1)
 %!error hanning (ones (1,4))
 %!error hanning (1, "invalid")
-

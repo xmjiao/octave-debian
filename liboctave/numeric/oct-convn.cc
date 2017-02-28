@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2016 VZLU Prague
+Copyright (C) 2010-2017 VZLU Prague
 
 This file is part of Octave.
 
@@ -190,4 +190,3 @@ CONV_DEFS (Complex, Complex)
 CONV_DEFS (Float, Float)
 CONV_DEFS (FloatComplex, Float)
 CONV_DEFS (FloatComplex, FloatComplex)
-

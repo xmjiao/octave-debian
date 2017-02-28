@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Ben Abbott and Jaroslav Hajek
+## Copyright (C) 2008-2017 Ben Abbott and Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -444,4 +444,3 @@ function inv = __quantile__ (x, p, method = 5)
   endif
 
 endfunction
-

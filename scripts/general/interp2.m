@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -599,4 +599,3 @@ endfunction
 %!error <XI, YI must have uniform spacing> interp2 (1:2, 1:2, ones (2), [1 2 4], [1 2 3], "spline")
 %!error <XI, YI must have uniform spacing> interp2 (1:2, 1:2, ones (2), [1 2 3], [1 2 4], "spline")
 %!error interp2 (1, 1, 1, 1, 1, "foobar")
-

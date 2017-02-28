@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 John W. Eaton
+## Copyright (C) 1996-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -89,4 +89,3 @@ endfunction
 %! set (h(2), "facecolor", "g");
 %! set (h(3), "facecolor", "b");
 %! title ("barh() graph w/multiple bars");
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Teemu Ikonen
+## Copyright (C) 2000-2017 Teemu Ikonen
 ##
 ## This file is part of Octave.
 ##
@@ -94,4 +94,3 @@ endfunction
 %! xlim ([0 10]);
 %! title ({"semilogyerr(): semilogy() plot with errorbars", ...
 %!         "Y-axis is logarithmic"});
-

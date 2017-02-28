@@ -1,7 +1,7 @@
 // %NO_EDIT_WARNING%
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -308,4 +308,3 @@ namespace octave
     const char *config_opts = %OCTAVE_CONF_config_opts%;
   }
 }
-

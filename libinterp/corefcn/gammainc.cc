@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1997-2016 John W. Eaton
+Copyright (C) 1997-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -211,4 +211,3 @@ gammainc (@var{x}, @var{a}) @equiv{} 1 - gammainc (@var{x}, @var{a}, "upper")
 %!        single (1)-gammainc (single (0:4), single (0.5)),
 %!        single (1e-7))
 */
-

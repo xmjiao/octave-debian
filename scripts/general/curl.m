@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Kai Habel
+## Copyright (C) 2009-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -141,4 +141,3 @@ endfunction
 %! assert (all (cz(:) == 4));
 %! assert (all (av(:) == 2));
 %! assert (size_equal (X,Y,cz,av));
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 John W. Eaton
+## Copyright (C) 1996-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -63,4 +63,3 @@ endfunction
 
 ## No test needed for internal helper function.
 %!assert (1)
-

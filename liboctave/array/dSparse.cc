@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 Copyright (C) 2010 VZLU Prague
 
@@ -5115,9 +5115,9 @@ SparseMatrix::bsolve (MatrixType &mattype, const ComplexMatrix& b,
                   Array<octave_idx_type> iz (dim_vector (nr, 1));
                   octave_idx_type *piz = iz.fortran_vec ();
 
-                  F77_XFCN (dpbcon, DPBCON,
+                  F77_XFCN (dgbcon, DGBCON,
                             (F77_CONST_CHAR_ARG2 (&job, 1),
-                             nr, n_lower, tmp_data, ldm,
+                             nc, n_lower, n_upper, tmp_data, ldm, pipvt,
                              anorm, rcond, pz, piz, err
                              F77_CHAR_ARG_LEN (1)));
 
@@ -7889,4 +7889,3 @@ SPARSE_SSM_BOOL_OPS (double, SparseMatrix, 0.0)
 
 SPARSE_SMSM_CMP_OPS (SparseMatrix, 0.0, , SparseMatrix, 0.0, )
 SPARSE_SMSM_BOOL_OPS (SparseMatrix, SparseMatrix, 0.0)
-

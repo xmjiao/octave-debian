@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -114,14 +114,13 @@ function h () nargin == 1 || error ("nargin != 1"); end
 
 @noindent
 calling the function @code{f} will result in a list of messages that
-can help you to quickly locate the exact location of the error:
+can help you to quickly find the exact location of the error:
 
 @example
 @group
 f ()
 error: nargin != 1
 error: called from:
-error:   error at line -1, column -1
 error:   h at line 1, column 27
 error:   g at line 1, column 15
 error:   f at line 1, column 15
@@ -967,7 +966,7 @@ By default, the @code{Octave:reload-forces-clear} warning is enabled.
 If the @code{Octave:resize-on-range-error} warning is enabled, print a
 warning when a matrix is resized by an indexed assignment with
 indices outside the current bounds.
-By default, the ## @code{Octave:resize-on-range-error} warning is disabled.
+By default, the @code{Octave:resize-on-range-error} warning is disabled.
 
 @item Octave:separator-insert
 Print warning if commas or semicolons might be inserted
@@ -1049,5 +1048,3 @@ warning ("example:non-negative-variable",
          "'a' must be non-negative.  Setting 'a' to zero.");
 @end group
 @end example
-
-

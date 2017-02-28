@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Sylvain Pelissier
+## Copyright (C) 2006-2017 Sylvain Pelissier
 ##
 ## This file is part of Octave.
 ##
@@ -131,4 +131,3 @@ endfunction
 %!error zip (1,2,3,4)
 %!error <ZIPFILE must be a string> zip (1, "foobar")
 %!error <FILES must be a character array or cellstr> zip ("foobar", 1)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Bill Denney, Robert Platt
+## Copyright (C) 2008-2017 Bill Denney, Robert Platt
 ##
 ## This file is part of Octave.
 ##
@@ -217,4 +217,3 @@ endfunction
 %!error <STR must be a string or cellstr> genvarname (1)
 %!error <more than one exclusion is given, it must be a cellstr> genvarname ("x", char ("a", "b", "c"))
 %!error <EXCLUSIONS must be a string or cellstr> genvarname ("x", 1)
-

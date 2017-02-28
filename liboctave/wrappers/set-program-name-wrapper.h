@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,4 +34,3 @@ extern const char *octave_set_program_name_wrapper (const char *pname);
 #endif
 
 #endif
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999-2016 John W. Eaton
+Copyright (C) 1999-2017 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -145,4 +145,3 @@ inline Cell octave_value_extract<Cell> (const octave_value& v)
 { return v.cell_value (); }
 
 #endif
-

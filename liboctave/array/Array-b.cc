@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -126,4 +126,3 @@ template OCTAVE_API std::ostream& operator << (std::ostream&,
 #include "DiagArray2.cc"
 
 template class OCTAVE_API DiagArray2<bool>;
-

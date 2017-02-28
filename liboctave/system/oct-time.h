@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999-2016 John W. Eaton
+Copyright (C) 1999-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -541,4 +541,3 @@ typedef octave::sys::strptime octave_strptime;
 #endif
 
 #endif
-

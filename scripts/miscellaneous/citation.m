@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Carnë Draug
+## Copyright (C) 2013-2017 Carnë Draug
 ##
 ## This file is part of Octave.
 ##
@@ -53,4 +53,3 @@ endfunction
 %!error citation (1, 2)
 %!error <citation: PACKAGE must be a string> citation (1)
 %!error <citation: package .* is not installed> citation ("__NOT_A_VALID_PKG_NAME__")
-

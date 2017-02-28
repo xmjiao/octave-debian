@@ -1,4 +1,4 @@
-## Copyright (C) 1999-2016 Peter Ekberg
+## Copyright (C) 1999-2017 Peter Ekberg
 ##
 ## This file is part of Octave.
 ##
@@ -59,4 +59,3 @@ endfunction
 %!error <N must be a non-negative integer> wilkinson (ones (2))
 %!error <N must be a non-negative integer> wilkinson (-1)
 %!error <N must be a non-negative integer> wilkinson (1.5)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 David Bateman
+## Copyright (C) 2005-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -122,10 +122,10 @@ function [pass, fail, xfail, skip] = __run_test_suite__ (fcndirs, fixedtestdirs)
   end_unwind_protect
 
   if (nargout > 0)
-    pass = np;
+    pass = dp;
     fail = nfail;
     xfail = dxf;
-    skip = xsk;
+    skip = dsk;
   endif
 
 endfunction
@@ -304,4 +304,3 @@ endfunction
 
 ## No test coverage for internal function.  It is tested through calling fcn.
 %!assert (1)
-

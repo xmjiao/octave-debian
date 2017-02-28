@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -97,4 +97,3 @@ endfunction
 %!error logspace ([1, 2; 3, 4], 5, 6)
 %!error logspace (1, [1, 2; 3, 4], 6)
 %!error logspace (1, 2, [1, 2; 3, 4])
-

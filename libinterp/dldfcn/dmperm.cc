@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2016 David Bateman
+Copyright (C) 2005-2017 David Bateman
 Copyright (C) 1998-2005 Andy Adler
 
 This file is part of Octave.
@@ -210,4 +210,3 @@ such the numerical rank of the matrix @var{S} is bounded by
 
 %!error sprank (1,2)
 */
-

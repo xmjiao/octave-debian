@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ## Copyright (C) 2012 Carnë Draug
 ##
 ## This file is part of Octave.
@@ -179,4 +179,3 @@ endfunction
 %!error <all MAP values must be in the range> colormap ([-1 0 0])
 %!error <all MAP values must be in the range> colormap ([2 0 0])
 %!error <failed to set MAP .invalid_map_name.> colormap ("invalid_map_name")
-

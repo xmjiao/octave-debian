@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 Copyright (C) 2010 VZLU Prague
 
@@ -7772,4 +7772,3 @@ SPARSE_SSM_BOOL_OPS (Complex, SparseComplexMatrix, 0.0)
 SPARSE_SMSM_CMP_OPS (SparseComplexMatrix, 0.0, real, SparseComplexMatrix,
                      0.0, real)
 SPARSE_SMSM_BOOL_OPS (SparseComplexMatrix, SparseComplexMatrix, 0.0)
-

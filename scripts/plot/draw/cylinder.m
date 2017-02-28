@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 Michael Goffioul and Kai Habel
+## Copyright (C) 2007-2017 Michael Goffioul and Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -106,4 +106,3 @@ endfunction
 %! [x, y, z] = cylinder (10:-1:0, 50);
 %! surf (x, y, z);
 %! title ("cylinder() with linearly shrinking radius produces a cone");
-

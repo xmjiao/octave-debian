@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -66,4 +66,3 @@ endfunction
 %! image (1:6, linspace (0, 1, 6), repmat ((1:6)', 1, 6));
 %! axis ([1, 6, 0, 1], "ticy", "xy");
 %! colormap (gmap40 (6));
-

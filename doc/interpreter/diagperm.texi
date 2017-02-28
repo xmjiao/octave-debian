@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2009-2016 Jaroslav Hajek
+@c Copyright (C) 2009-2017 Jaroslav Hajek
 @c
 @c This file is part of Octave.
 @c
@@ -632,4 +632,3 @@ sparse (1:3,1:3,1:3) * [NaN; 1; 1]
    NaN
 @end group
 @end example
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Massimiliano Fasi
+## Copyright (C) 2014-2017 Massimiliano Fasi
 ##
 ## This file is part of Octave.
 ##
@@ -127,4 +127,3 @@ endfunction
 %!error hgsave ()
 %!error hgsave (1, 2, 3, 4)
 %!error hgsave ("abc", "def")
-

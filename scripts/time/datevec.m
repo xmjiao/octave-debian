@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -379,4 +379,3 @@ endfunction
 %!error datevec (1,2,3,4)
 %!error <none of the standard formats match> datevec ("foobar")
 %!error <DATE not parsed correctly with given format> datevec ("foobar", "%d")
-

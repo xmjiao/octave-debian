@@ -1,4 +1,4 @@
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -385,5 +385,3 @@ warning ("example:non-negative-variable",
          "'a' must be non-negative.  Setting 'a' to zero.");
 @end group
 @end example
-
-

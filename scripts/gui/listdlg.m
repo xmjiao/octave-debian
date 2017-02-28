@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2016 Martin Hepperle
+## Copyright (C) 2010-2017 Martin Hepperle
 ##
 ## This file is part of Octave.
 ##
@@ -197,4 +197,3 @@ endfunction
 %!error <ListString must not be empty> listdlg ("ListString", {})
 %!error <invalid SelectionMode>
 %! listdlg ("ListString", {"A"}, "SelectionMode", "foobar");
-

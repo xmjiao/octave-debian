@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Hoxide Ma
+## Copyright (C) 2005-2017 Hoxide Ma
 ##
 ## This file is part of Octave.
 ##
@@ -257,4 +257,3 @@ endfunction
 %!               fliplr (xx2), flipud (yy2), "spline");
 %! z2 = fliplr (flipud (z2));
 %! assert (z1, z2, 100 * eps ());
-

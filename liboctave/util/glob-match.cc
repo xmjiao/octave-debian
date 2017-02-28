@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -56,4 +56,3 @@ glob_match::opts_to_fnmatch_flags (unsigned int xopts) const
 
   return retval;
 }
-

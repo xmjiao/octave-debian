@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -513,8 +513,8 @@ about how to document the functions you write.
 @c help scripts/help/help.m
 @anchor{XREFhelp}
 @deftypefn  {} {} help @var{name}
-@deftypefnx {} {} help @code{--list}
-@deftypefnx {} {} help @code{.}
+@deftypefnx {} {} help --list
+@deftypefnx {} {} help .
 @deftypefnx {} {} help
 Display the help text for @var{name}.
 
@@ -1632,6 +1632,8 @@ functions.
 
 @noindent
 With no arguments, @code{echo} toggles the current echo state.
+
+@seealso{@ref{XREFecho_executing_commands,,echo_executing_commands}}
 @end deftypefn
 
 
@@ -1664,6 +1666,8 @@ command or the command line option @option{--echo-commands}.
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
+
+@seealso{@ref{XREFecho,,echo}}
 @end deftypefn
 
 

@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 John W. Eaton
+## Copyright (C) 2008-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -134,4 +134,3 @@ endfunction
 %!error isstrprop ("abc123")
 %!error isstrprop ("abc123", "alpha", "alpha")
 %!error <invalid string property> isstrprop ("abc123", "foo")
-

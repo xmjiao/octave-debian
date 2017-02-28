@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Bill Denney
+## Copyright (C) 2008-2017 Bill Denney
 ##
 ## This file is part of Octave.
 ##
@@ -65,4 +65,3 @@ endfunction
 %!   close (hf);
 %!   graphics_toolkit (toolkit);
 %! end_unwind_protect
-

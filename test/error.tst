@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -111,3 +111,33 @@
 
 %!error <foo> usage ("foo\n")
 
+%!error <ERR struct must contain the fields> rethrow (struct ())
+
+%!error <STACK struct must contain the fields>
+%! rethrow (struct ("message", "foo", "identifier", "", "stack", struct ()))
+
+%!test
+%! try
+%!   union ({'a'}, 1);
+%! catch
+%!   x = lasterror ();
+%!   try
+%!     rethrow (lasterror ());
+%!   catch
+%!     assert (x, lasterror ());
+%!   end_try_catch
+%! end_try_catch
+
+%!test
+%! try
+%!   union ({'a'}, 1);
+%! catch
+%!   x = lasterror ();
+%!   try
+%!     y = struct ("message", "msg", "identifier", "", "stack",
+%!                 struct ("file", "foo.m", "name", "foo", "line", 13));
+%!     rethrow (y);
+%!   catch
+%!     assert (y, lasterror ());
+%!   end_try_catch
+%! end_try_catch

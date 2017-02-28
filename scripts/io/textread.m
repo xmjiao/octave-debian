@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2016 Eric Chassande-Mottin, CNRS (France)
+## Copyright (C) 2009-2017 Eric Chassande-Mottin, CNRS (France)
 ##
 ## This file is part of Octave.
 ##
@@ -507,4 +507,3 @@ endfunction
 #%!error <missing or invalid value for> textread (file_in_loadpath ("textread.m"), "", "headerlines")
 #%!error <missing or invalid value for> textread (file_in_loadpath ("textread.m"), "", "headerlines", 'hh')
 #%!error <character value required for> textread (file_in_loadpath ("textread.m"), "%s", "endofline", true)
-

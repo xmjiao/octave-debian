@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 John W. Eaton
+## Copyright (C) 2005-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -177,4 +177,3 @@ endfunction
 
 %!error fileattrib (1, 2)
 %!error <FILE must be a string> fileattrib (1)
-

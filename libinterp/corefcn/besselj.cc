@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1997-2016 John W. Eaton
+Copyright (C) 1997-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -1159,4 +1159,3 @@ Table 10.4 - j and y for various integer orders and arguments.
 %! assert (j, jt, -1e-9);
 %! assert (y, yt, -1e-9);
 */
-

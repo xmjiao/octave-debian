@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -98,4 +98,3 @@ endfunction
 %!error iqr (1)
 %!error iqr (['A'; 'B'])
 %!error iqr (1:10, 3)
-

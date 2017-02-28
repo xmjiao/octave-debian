@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -100,4 +100,3 @@ endfunction
 %!error polyder ([])
 %!error polyder (1,2,3)
 %!error <argument must be a vector> polyder ([1, 2; 3, 4])
-

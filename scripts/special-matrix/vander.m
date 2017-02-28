@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -93,4 +93,3 @@ endfunction
 %!error vander ()
 %!error vander (1, 2, 3)
 %!error <polynomial C must be a vector> vander ([1, 2; 3, 4])
-

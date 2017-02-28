@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Friedrich Leisch
+## Copyright (C) 1995-2017 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -54,4 +54,3 @@ function retval = wienrnd (t, d, n)
   retval = [((1: n*t)' / n), retval];
 
 endfunction
-

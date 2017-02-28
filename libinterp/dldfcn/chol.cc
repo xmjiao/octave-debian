@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2008-2009 VZLU Prague
 
@@ -1322,4 +1322,3 @@ triangular, return the Cholesky@tie{}factorization of
 %! assert (norm (triu (R1)-R1, Inf), 0);
 %! assert (norm (R1'*R1 - single (Ac(p,p)), Inf) < 1e1*eps ("single"));
 */
-

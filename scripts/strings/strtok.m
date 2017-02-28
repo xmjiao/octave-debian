@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -226,4 +226,3 @@ endfunction
 %!error strtok ("a", "b", "c")
 %!error <STR must be a string> strtok (1, "b")
 %!error <STR cannot be a 2-D> strtok (char ("hello", "world"), "l")
-

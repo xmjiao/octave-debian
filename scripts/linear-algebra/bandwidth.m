@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Massimiliano Fasi
+## Copyright (C) 2014-2017 Massimiliano Fasi
 ##
 ## This file is part of Octave.
 ##
@@ -106,4 +106,3 @@ endfunction
 %!error <A must be a 2-D numeric or logical> bandwidth (ones (3,3,3), "lower")
 %!error <TYPE must be "lower" or "upper"> bandwidth (ones (2), "uper")
 %!error <TYPE must be "lower" or "upper"> bandwidth (ones (2), "uppper")
-

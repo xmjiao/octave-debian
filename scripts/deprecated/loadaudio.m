@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 John W. Eaton
+## Copyright (C) 1995-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -90,4 +90,3 @@ function X = loadaudio (name, ext, bps)
   fclose (num);
 
 endfunction
-

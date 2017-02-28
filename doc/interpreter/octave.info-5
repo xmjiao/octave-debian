@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 6.1 from octave.texi.
+This is octave.info, produced by makeinfo version 6.3 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -3797,9 +3797,9 @@ matrix.  However, it should be noted that identifying the type of the
 matrix incorrectly will lead to unpredictable results, and so
 ‘matrix_type’ should be used with care.
 
- -- : N = normest (A)
- -- : N = normest (A, TOL)
- -- : [N, C] = normest (...)
+ -- : NEST = normest (A)
+ -- : NEST = normest (A, TOL)
+ -- : [NEST, ITER] = normest (...)
      Estimate the 2-norm of the matrix A using a power series analysis.
 
      This is typically used for large matrices, where the cost of
@@ -3809,25 +3809,28 @@ matrix incorrectly will lead to unpredictable results, and so
      TOL is the tolerance to which the 2-norm is calculated.  By default
      TOL is 1e-6.
 
-     The optional output C returns the number of iterations needed for
-     ‘normest’ to converge.
+     The optional output ITER returns the number of iterations that were
+     required for ‘normest’ to converge.
 
- -- : C = normest1 (A)
- -- : C = normest1 (A, T)
- -- : C = normest1 (A, T, X0)
- -- : C = normest1 (AFUN, T, X0, P1, P2, ...)
- -- : [C, V] = normest1 (A, ...)
- -- : [C, V, W] = normest1 (A, ...)
- -- : [C, V, W, IT] = normest1 (A, ...)
+     See also: *note normest1: XREFnormest1, *note norm: XREFnorm, *note
+     cond: XREFcond, *note condest: XREFcondest.
+
+ -- : NEST = normest1 (A)
+ -- : NEST = normest1 (A, T)
+ -- : NEST = normest1 (A, T, X0)
+ -- : NEST = normest1 (AFUN, T, X0, P1, P2, ...)
+ -- : [NEST, V] = normest1 (A, ...)
+ -- : [NEST, V, W] = normest1 (A, ...)
+ -- : [NEST, V, W, ITER] = normest1 (A, ...)
      Estimate the 1-norm of the matrix A using a block algorithm.
 
-     For a medium size matrix A, ‘norm (A, 1)’ should be used instead.
-     For a large sparse matrix, when only an estimate of the norm is
-     needed, ‘normest1 (A)’ might be faster.  Moreover, it can be used
+     ‘normest1’ is best for large sparse matrices where only an estimate
+     of the norm is required.  For small to medium sized matrices,
+     consider using ‘norm (A, 1)’.  In addition, ‘normest1’ can be used
      for the estimate of the 1-norm of a linear operator A when
      matrix-vector products ‘A * X’ and ‘A' * X’ can be cheaply
      computed.  In this case, instead of the matrix A, a function ‘AFUN
-     (FLAG, X)’ can be used.  It should return:
+     (FLAG, X)’ is used; it must return:
 
         • the dimension N of A, if FLAG is "dim"
 
@@ -3854,39 +3857,43 @@ matrix incorrectly will lead to unpredictable results, and so
      The initial matrix X0 should have columns of unit 1-norm.  The
      default initial matrix X0 has the first column ‘ones (N, 1) / N’
      and, if T > 1, the remaining columns with random elements ‘-1 / N’,
-     ‘1 / N’, divided by N.  Therefore, if consistent results are
-     required, the "state" of the random generator should be fixed
-     before invoking ‘normest1’.
+     ‘1 / N’, divided by N.
 
-     On output, C is the desired estimate, V and W vectors such that ‘W
-     = A * V’, with ‘norm (W, 1)’ = ‘C * norm (V, 1)’.  IT contains in
-     ‘IT(1)’ the number of iterations (the maximum number is hardcoded
-     to 5) and in ‘IT(2)’ the total number of products ‘A * X’ or ‘A' *
-     X’ performed by the algorithm.
+     On output, NEST is the desired estimate, V and W are vectors such
+     that ‘W = A * V’, with ‘norm (W, 1)’ = ‘C * norm (V, 1)’.  ITER
+     contains in ‘ITER(1)’ the number of iterations (the maximum is
+     hardcoded to 5) and in ‘ITER(2)’ the total number of products ‘A *
+     X’ or ‘A' * X’ performed by the algorithm.
+
+     Algorithm Note: ‘normest1’ uses random numbers during evaluation.
+     Therefore, if consistent results are required, the "state" of the
+     random generator should be fixed before invoking ‘normest1’.
 
      Reference: N. J. Higham and F. Tisseur, ‘A block algorithm for
      matrix 1-norm estimation, with and application to 1-norm
      pseudospectra’, SIAM J. Matrix Anal.  Appl., pp.  1185–1201, Vol
      21, No.  4, 2000.
 
-     See also: *note normest: XREFnormest, *note rand: XREFrand.
+     See also: *note normest: XREFnormest, *note norm: XREFnorm, *note
+     cond: XREFcond, *note condest: XREFcondest.
 
- -- : condest (A)
- -- : condest (A, T)
- -- : [EST, V] = condest (...)
- -- : [EST, V] = condest (A, SOLVEFUN, T, P1, P2, ...)
- -- : [EST, V] = condest (AFUN, SOLVEFUN, T, P1, P2, ...)
+ -- : CEST = condest (A)
+ -- : CEST = condest (A, T)
+ -- : CEST = condest (A, SOLVEFUN, T, P1, P2, ...)
+ -- : CEST = condest (AFCN, SOLVEFUN, T, P1, P2, ...)
+ -- : [CEST, V] = condest (...)
 
-     Estimate the 1-norm condition number of a matrix A using T test
-     vectors using a randomized 1-norm estimator.
+     Estimate the 1-norm condition number of a square matrix A using T
+     test vectors and a randomized 1-norm estimator.
 
-     If T exceeds 5, then only 5 test vectors are used.
+     The optional input T specifies the number of test vectors (default
+     5).
 
      If the matrix is not explicit, e.g., when estimating the condition
      number of A given an LU factorization, ‘condest’ uses the following
      functions:
 
-        − AFUN which should returns
+        − AFCN which must return
 
              • the dimension N of A, if FLAG is "dim"
 
@@ -3896,7 +3903,7 @@ matrix incorrectly will lead to unpredictable results, and so
 
              • the result ‘A' * X’, if FLAG is "transp"
 
-        − SOLVEFUN which should returns
+        − SOLVEFUN which must return
 
              • the dimension N of A, if FLAG is "dim"
 
@@ -3906,16 +3913,19 @@ matrix incorrectly will lead to unpredictable results, and so
 
              • the result ‘A' \ X’, if FLAG is "transp"
 
-     The parameters P1, P2, ... are arguments of ‘AFUN (FLAG, X, P1, P2,
-     ...)’ and ‘SOLVEFUN (FLAG, X, P1, P2, ...)’.
+     The parameters P1, P2, ... are arguments of ‘AFCN (FLAG, X, P1, P2,
+     ...)’ and ‘SOLVEFCN (FLAG, X, P1, P2, ...)’.
 
-     ‘condest’ uses a randomized algorithm to approximate the 1-norms.
-     Therefore, if consistent results are required, the "state" of the
-     random generator should be fixed before invoking ‘normest1’.
+     The principal output is the 1-norm condition number estimate CEST.
 
-     ‘condest’ returns the 1-norm condition estimate EST and a vector V
-     satisfying ‘norm (A*v, 1) == norm (A, 1) * norm (V, 1) / EST’.
-     When EST is large, V is an approximate null vector.
+     The optional second output is an approximate null vector when CEST
+     is large; it satisfies the equation ‘norm (A*v, 1) == norm (A, 1) *
+     norm (V, 1) / EST’.
+
+     Algorithm Note: ‘condest’ uses a randomized algorithm to
+     approximate the 1-norms.  Therefore, if consistent results are
+     required, the "state" of the random generator should be fixed
+     before invoking ‘condest’.
 
      References:
 
@@ -3929,7 +3939,7 @@ matrix incorrectly will lead to unpredictable results, and so
           Pseudospectra’.  <http://citeseer.ist.psu.edu/223007.html>
 
      See also: *note cond: XREFcond, *note norm: XREFnorm, *note
-     normest1: XREFnormest1.
+     normest1: XREFnormest1, *note normest: XREFnormest.
 
  -- : spparms ()
  -- : VALS = spparms ()
@@ -5945,6 +5955,7 @@ The options for this class of methods are set using the functions.
  -- : [T, Y] = ode45 (FUN, TRANGE, INIT, ODE_OPT)
  -- : [T, Y, TE, YE, IE] = ode45 (...)
  -- : SOLUTION = ode45 (...)
+ -- : ode45 (...)
 
      Solve a set of non-stiff Ordinary Differential Equations (non-stiff
      ODEs) with the well known explicit Dormand-Prince method of order
@@ -5985,6 +5996,10 @@ The options for this class of methods are set using the functions.
      (SOLUTION)’ to see the other fields and additional information
      returned.
 
+     If no output arguments are requested, and no ‘OutputFcn’ is
+     specified in ODE_OPT, then the ‘OutputFcn’ is set to ‘odeplot’ and
+     the results of the solver are plotted immediately.
+
      If using the "Events" option then three additional outputs may be
      returned.  TE holds the time when an Event function returned a
      zero.  YE holds the value of the solution at time TE.  IE contains
@@ -6003,6 +6018,7 @@ The options for this class of methods are set using the functions.
  -- : [T, Y] = ode23 (FUN, TRANGE, INIT, ODE_OPT)
  -- : [T, Y, TE, YE, IE] = ode23 (...)
  -- : SOLUTION = ode23 (...)
+ -- : ode23 (...)
 
      Solve a set of non-stiff Ordinary Differential Equations (non-stiff
      ODEs) with the well known explicit Bogacki-Shampine method of order
@@ -6044,18 +6060,15 @@ The options for this class of methods are set using the functions.
      (SOLUTION)’ to see the other fields and additional information
      returned.
 
+     If no output arguments are requested, and no ‘OutputFcn’ is
+     specified in ODE_OPT, then the ‘OutputFcn’ is set to ‘odeplot’ and
+     the results of the solver are plotted immediately.
+
      If using the "Events" option then three additional outputs may be
      returned.  TE holds the time when an Event function returned a
      zero.  YE holds the value of the solution at time TE.  IE contains
      an index indicating which Event function was triggered in the case
      of multiple Event functions.
-
-     This function can be called with two output arguments: T and Y.
-     Variable T is a column vector and contains the time stamps, instead
-     Y is a matrix in which each column refers to a different unknown of
-     the problem and the rows number is the same of T rows number so
-     that each row of Y contains the values of all unknowns at the time
-     value contained in the corresponding row in T.
 
      Example: Solve the Van der Pol equation
 
@@ -7298,7 +7311,7 @@ Octave can also solve Quadratic Programming problems, this is
  -- : [X, MINVAL, EXITFLAG, OUTPUT, LAMBDA] = pqpnonneg (...)
      Minimize ‘1/2*x'*c*x + d'*x’ subject to ‘X >= 0’.
 
-     C ## and D must be real, and C must be symmetric and positive
+     C and D must be real, and C must be symmetric and positive
      definite.
 
      X0 is an optional initial guess for X.
@@ -7330,389 +7343,4 @@ Octave can also solve Quadratic Programming problems, this is
 
      See also: *note optimset: XREFoptimset, *note lsqnonneg:
      XREFlsqnonneg, *note qp: XREFqp.
-
-
-File: octave.info,  Node: Nonlinear Programming,  Next: Linear Least Squares,  Prev: Quadratic Programming,  Up: Optimization
-
-25.3 Nonlinear Programming
-==========================
-
-Octave can also perform general nonlinear minimization using a
-successive quadratic programming solver.
-
- -- : [X, OBJ, INFO, ITER, NF, LAMBDA] = sqp (X0, PHI)
- -- : [...] = sqp (X0, PHI, G)
- -- : [...] = sqp (X0, PHI, G, H)
- -- : [...] = sqp (X0, PHI, G, H, LB, UB)
- -- : [...] = sqp (X0, PHI, G, H, LB, UB, MAXITER)
- -- : [...] = sqp (X0, PHI, G, H, LB, UB, MAXITER, TOL)
-     Minimize an objective function using sequential quadratic
-     programming (SQP).
-
-     Solve the nonlinear program
-
-          min phi (x)
-           x
-
-     subject to
-
-          g(x)  = 0
-          h(x) >= 0
-          lb <= x <= ub
-
-     using a sequential quadratic programming method.
-
-     The first argument is the initial guess for the vector X0.
-
-     The second argument is a function handle pointing to the objective
-     function PHI.  The objective function must accept one vector
-     argument and return a scalar.
-
-     The second argument may also be a 2- or 3-element cell array of
-     function handles.  The first element should point to the objective
-     function, the second should point to a function that computes the
-     gradient of the objective function, and the third should point to a
-     function that computes the Hessian of the objective function.  If
-     the gradient function is not supplied, the gradient is computed by
-     finite differences.  If the Hessian function is not supplied, a
-     BFGS update formula is used to approximate the Hessian.
-
-     When supplied, the gradient function ‘PHI{2}’ must accept one
-     vector argument and return a vector.  When supplied, the Hessian
-     function ‘PHI{3}’ must accept one vector argument and return a
-     matrix.
-
-     The third and fourth arguments G and H are function handles
-     pointing to functions that compute the equality constraints and the
-     inequality constraints, respectively.  If the problem does not have
-     equality (or inequality) constraints, then use an empty matrix ([])
-     for G (or H).  When supplied, these equality and inequality
-     constraint functions must accept one vector argument and return a
-     vector.
-
-     The third and fourth arguments may also be 2-element cell arrays of
-     function handles.  The first element should point to the constraint
-     function and the second should point to a function that computes
-     the gradient of the constraint function:
-
-                      [ d f(x)   d f(x)        d f(x) ]
-          transpose ( [ ------   -----   ...   ------ ] )
-                      [  dx_1     dx_2          dx_N  ]
-
-     The fifth and sixth arguments, LB and UB, contain lower and upper
-     bounds on X.  These must be consistent with the equality and
-     inequality constraints G and H.  If the arguments are vectors then
-     X(i) is bound by LB(i) and UB(i).  A bound can also be a scalar in
-     which case all elements of X will share the same bound.  If only
-     one bound (lb, ub) is specified then the other will default to
-     (-REALMAX, +REALMAX).
-
-     The seventh argument MAXITER specifies the maximum number of
-     iterations.  The default value is 100.
-
-     The eighth argument TOL specifies the tolerance for the stopping
-     criteria.  The default value is ‘sqrt (eps)’.
-
-     The value returned in INFO may be one of the following:
-
-     101
-          The algorithm terminated normally.  All constraints meet the
-          specified tolerance.
-
-     102
-          The BFGS update failed.
-
-     103
-          The maximum number of iterations was reached.
-
-     104
-          The stepsize has become too small, i.e., delta X, is less than
-          ‘TOL * norm (x)’.
-
-     An example of calling ‘sqp’:
-
-          function r = g (x)
-            r = [ sumsq(x)-10;
-                  x(2)*x(3)-5*x(4)*x(5);
-                  x(1)^3+x(2)^3+1 ];
-          endfunction
-
-          function obj = phi (x)
-            obj = exp (prod (x)) - 0.5*(x(1)^3+x(2)^3+1)^2;
-          endfunction
-
-          x0 = [-1.8; 1.7; 1.9; -0.8; -0.8];
-
-          [x, obj, info, iter, nf, lambda] = sqp (x0, @phi, @g, [])
-
-          x =
-
-            -1.71714
-             1.59571
-             1.82725
-            -0.76364
-            -0.76364
-
-          obj = 0.053950
-          info = 101
-          iter = 8
-          nf = 10
-          lambda =
-
-            -0.0401627
-             0.0379578
-            -0.0052227
-
-     See also: *note qp: XREFqp.
-
-
-File: octave.info,  Node: Linear Least Squares,  Prev: Nonlinear Programming,  Up: Optimization
-
-25.4 Linear Least Squares
-=========================
-
-Octave also supports linear least squares minimization.  That is, Octave
-can find the parameter b such that the model y = x*b fits data (x,y) as
-well as possible, assuming zero-mean Gaussian noise.  If the noise is
-assumed to be isotropic the problem can be solved using the ‘\’ or ‘/’
-operators, or the ‘ols’ function.  In the general case where the noise
-is assumed to be anisotropic the ‘gls’ is needed.
-
- -- : [BETA, SIGMA, R] = ols (Y, X)
-     Ordinary least squares estimation.
-
-     OLS applies to the multivariate model y = x*b + e with mean (e) = 0
-     and cov (vec (e)) = kron (s, I). where y is a t by p matrix, x is a
-     t by k matrix, b is a k by p matrix, and e is a t by p matrix.
-
-     Each row of Y and X is an observation and each column a variable.
-
-     The return values BETA, SIGMA, and R are defined as follows.
-
-     BETA
-          The OLS estimator for b.  BETA is calculated directly via ‘inv
-          (x'*x) * x' * y’ if the matrix ‘x'*x’ is of full rank.
-          Otherwise, ‘BETA = pinv (X) * Y’ where ‘pinv (X)’ denotes the
-          pseudoinverse of X.
-
-     SIGMA
-          The OLS estimator for the matrix S,
-
-               SIGMA = (Y-X*BETA)'
-                 * (Y-X*BETA)
-                 / (T-rank(X))
-
-     R
-          The matrix of OLS residuals, ‘R = Y - X*BETA’.
-
-     See also: *note gls: XREFgls, *note pinv: XREFpinv.
-
- -- : [BETA, V, R] = gls (Y, X, O)
-     Generalized least squares model.
-
-     Perform a generalized least squares estimation for the multivariate
-     model y = x*b + e with mean (e) = 0 and cov (vec (e)) = (s^2) o,
-     where y is a t by p matrix, x is a t by k matrix, b is a k by p
-     matrix, e is a t by p matrix, and o is a t*p by t*p matrix.
-
-     Each row of Y and X is an observation and each column a variable.
-     The return values BETA, V, and R are defined as follows.
-
-     BETA
-          The GLS estimator for b.
-
-     V
-          The GLS estimator for s^2.
-
-     R
-          The matrix of GLS residuals, r = y - x*beta.
-
-     See also: *note ols: XREFols.
-
- -- : X = lsqnonneg (C, D)
- -- : X = lsqnonneg (C, D, X0)
- -- : X = lsqnonneg (C, D, X0, OPTIONS)
- -- : [X, RESNORM] = lsqnonneg (...)
- -- : [X, RESNORM, RESIDUAL] = lsqnonneg (...)
- -- : [X, RESNORM, RESIDUAL, EXITFLAG] = lsqnonneg (...)
- -- : [X, RESNORM, RESIDUAL, EXITFLAG, OUTPUT] = lsqnonneg (...)
- -- : [X, RESNORM, RESIDUAL, EXITFLAG, OUTPUT, LAMBDA] = lsqnonneg (...)
-     Minimize ‘norm (C*X - d)’ subject to ‘X >= 0’.
-
-     C and D must be real.
-
-     X0 is an optional initial guess for X.
-
-     Currently, ‘lsqnonneg’ recognizes these options: "MaxIter", "TolX".
-     For a description of these options, see *note optimset:
-     XREFoptimset.
-
-     Outputs:
-
-        • resnorm
-
-          The squared 2-norm of the residual: norm (C*X-D)^2
-
-        • residual
-
-          The residual: D-C*X
-
-        • exitflag
-
-          An indicator of convergence.  0 indicates that the iteration
-          count was exceeded, and therefore convergence was not reached;
-          >0 indicates that the algorithm converged.  (The algorithm is
-          stable and will converge given enough iterations.)
-
-        • output
-
-          A structure with two fields:
-
-             • "algorithm": The algorithm used ("nnls")
-
-             • "iterations": The number of iterations taken.
-
-        • lambda
-
-          Not implemented.
-
-     See also: *note optimset: XREFoptimset, *note pqpnonneg:
-     XREFpqpnonneg, *note lscov: XREFlscov.
-
- -- : X = lscov (A, B)
- -- : X = lscov (A, B, V)
- -- : X = lscov (A, B, V, ALG)
- -- : [X, STDX, MSE, S] = lscov (...)
-
-     Compute a generalized linear least squares fit.
-
-     Estimate X under the model B = AX + W, where the noise W is assumed
-     to follow a normal distribution with covariance matrix {\sigma^2}
-     V.
-
-     If the size of the coefficient matrix A is n-by-p, the size of the
-     vector/array of constant terms B must be n-by-k.
-
-     The optional input argument V may be a n-by-1 vector of positive
-     weights (inverse variances), or a n-by-n symmetric positive
-     semidefinite matrix representing the covariance of B.  If V is not
-     supplied, the ordinary least squares solution is returned.
-
-     The ALG input argument, a guidance on solution method to use, is
-     currently ignored.
-
-     Besides the least-squares estimate matrix X (p-by-k), the function
-     also returns STDX (p-by-k), the error standard deviation of
-     estimated X; MSE (k-by-1), the estimated data error covariance
-     scale factors (\sigma^2); and S (p-by-p, or p-by-p-by-k if k > 1),
-     the error covariance of X.
-
-     Reference: Golub and Van Loan (1996), ‘Matrix Computations (3rd
-     Ed.)’, Johns Hopkins, Section 5.6.3
-
-     See also: *note ols: XREFols, *note gls: XREFgls, *note lsqnonneg:
-     XREFlsqnonneg.
-
- -- : optimset ()
- -- : OPTIONS = optimset ()
- -- : OPTIONS = optimset (PAR, VAL, ...)
- -- : OPTIONS = optimset (OLD, PAR, VAL, ...)
- -- : OPTIONS = optimset (OLD, NEW)
-     Create options structure for optimization functions.
-
-     When called without any input or output arguments, ‘optimset’
-     prints a list of all valid optimization parameters.
-
-     When called with one output and no inputs, return an options
-     structure with all valid option parameters initialized to ‘[]’.
-
-     When called with a list of parameter/value pairs, return an options
-     structure with only the named parameters initialized.
-
-     When the first input is an existing options structure OLD, the
-     values are updated from either the PAR/VAL list or from the options
-     structure NEW.
-
-     Valid parameters are:
-
-     AutoScaling
-
-     ComplexEqn
-
-     Display
-          Request verbose display of results from optimizations.  Values
-          are:
-
-          "off" [default]
-               No display.
-
-          "iter"
-               Display intermediate results for every loop iteration.
-
-          "final"
-               Display the result of the final loop iteration.
-
-          "notify"
-               Display the result of the final loop iteration if the
-               function has failed to converge.
-
-     FinDiffType
-
-     FunValCheck
-          When enabled, display an error if the objective function
-          returns an invalid value (a complex number, NaN, or Inf).
-          Must be set to "on" or "off" [default].  Note: the functions
-          ‘fzero’ and ‘fminbnd’ correctly handle Inf values and only
-          complex values or NaN will cause an error in this case.
-
-     GradObj
-          When set to "on", the function to be minimized must return a
-          second argument which is the gradient, or first derivative, of
-          the function at the point X.  If set to "off" [default], the
-          gradient is computed via finite differences.
-
-     Jacobian
-          When set to "on", the function to be minimized must return a
-          second argument which is the Jacobian, or first derivative, of
-          the function at the point X.  If set to "off" [default], the
-          Jacobian is computed via finite differences.
-
-     MaxFunEvals
-          Maximum number of function evaluations before optimization
-          stops.  Must be a positive integer.
-
-     MaxIter
-          Maximum number of algorithm iterations before optimization
-          stops.  Must be a positive integer.
-
-     OutputFcn
-          A user-defined function executed once per algorithm iteration.
-
-     TolFun
-          Termination criterion for the function output.  If the
-          difference in the calculated objective function between one
-          algorithm iteration and the next is less than ‘TolFun’ the
-          optimization stops.  Must be a positive scalar.
-
-     TolX
-          Termination criterion for the function input.  If the
-          difference in X, the current search point, between one
-          algorithm iteration and the next is less than ‘TolX’ the
-          optimization stops.  Must be a positive scalar.
-
-     TypicalX
-
-     Updating
-
-     See also: *note optimget: XREFoptimget.
-
- -- : optimget (OPTIONS, PARNAME)
- -- : optimget (OPTIONS, PARNAME, DEFAULT)
-     Return the specific option PARNAME from the optimization options
-     structure OPTIONS created by ‘optimset’.
-
-     If PARNAME is not defined then return DEFAULT if supplied,
-     otherwise return an empty matrix.
-
-     See also: *note optimset: XREFoptimset.
 

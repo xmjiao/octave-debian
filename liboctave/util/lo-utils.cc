@@ -1,7 +1,7 @@
 // utils.cc
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -429,4 +429,3 @@ octave_write_float_complex (std::ostream& os, const FloatComplex& c)
   octave_write_float (os, imag (c));
   os << ")";
 }
-

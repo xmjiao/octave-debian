@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 John W. Eaton
+Copyright (C) 2016-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -73,4 +73,3 @@ extern int octave_raise_wrapper (int signum);
 #endif
 
 #endif
-

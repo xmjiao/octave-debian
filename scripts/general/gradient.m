@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Kai Habel
+## Copyright (C) 2000-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -306,4 +306,3 @@ endfunction
 %! [dx, dy] = gradient (f, xy);
 %! assert (dx, df_dx (xy (:, 1), xy (:, 2)), 0.1);
 %! assert (dy, df_dy (xy (:, 1), xy (:, 2)), 0.1);
-

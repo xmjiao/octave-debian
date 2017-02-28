@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 David Bateman
+## Copyright (C) 2007-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -69,4 +69,3 @@ endfunction
 %!demo
 %! clf;
 %! ezpolar (@(t) sin (5/4 * t), [0, 8*pi]);
-

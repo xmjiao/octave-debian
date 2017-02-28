@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2016 John W. Eaton
+## Copyright (C) 1993-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -56,4 +56,3 @@ endfunction
 %!error trace ()
 %!error trace (1, 2)
 %!error <only valid on 2-D objects> trace (reshape (1:9,[1,3,3]))
-

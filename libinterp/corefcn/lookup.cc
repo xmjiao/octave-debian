@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2016 VZLU Prague a.s., Czech Republic
+Copyright (C) 2008-2017 VZLU Prague a.s., Czech Republic
 
 This file is part of Octave.
 
@@ -386,4 +386,3 @@ at most n-1).
 %!assert (lookup ({"apple","lemon","orange"}, "potato"), 3)
 %!assert (lookup ({"orange","lemon","apple"}, "potato"), 0)
 */
-

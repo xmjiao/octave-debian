@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -177,4 +177,3 @@ extern OCTAVE_API Range operator * (double x, const Range& r);
 extern OCTAVE_API Range operator * (const Range& r, double x);
 
 #endif
-

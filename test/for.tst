@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -122,4 +122,3 @@
 %! endparfor
 %! __printf_assert__ ("\n");
 %! assert (__prog_output_assert__ ("1234"));
-

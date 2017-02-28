@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Massimiliano Fasi
+## Copyright (C) 2014-2017 Massimiliano Fasi
 ##
 ## This file is part of Octave.
 ##
@@ -56,4 +56,3 @@ endfunction
 ## Test input validation
 %!error isdiag ()
 %!error isdiag (1,2)
-

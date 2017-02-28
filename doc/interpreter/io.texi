@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2016 John W. Eaton
+@c Copyright (C) 1996-2017 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -611,8 +611,8 @@ A
 @deftypefnx {} {} save options file
 @deftypefnx {} {} save options file @var{v1} @var{v2} @dots{}
 @deftypefnx {} {} save options file -struct @var{STRUCT} @var{f1} @var{f2} @dots{}
-@deftypefnx {} {} save @code{"-"} @var{v1} @var{v2} @dots{}
-@deftypefnx {} {@var{s} =} save (@code{"-"} @var{v1} @var{v2} @dots{})
+@deftypefnx {} {} save - @var{v1} @var{v2} @dots{}
+@deftypefnx {} {@var{str} =} save ("-", @qcode{"@var{v1}"}, @qcode{"@var{v2}"}, @dots{})
 Save the named variables @var{v1}, @var{v2}, @dots{}, in the file
 @var{file}.
 
@@ -3184,4 +3184,3 @@ fourch = fgets (myfile, 4);
 fseek (myfile, marker, SEEK_SET);
 @end group
 @end example
-

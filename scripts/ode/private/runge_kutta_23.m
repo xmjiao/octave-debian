@@ -1,4 +1,4 @@
-## Copyright (C) 2013-2016 Jacopo Corno <jacopo.corno@gmail.com>
+## Copyright (C) 2013-2017 Jacopo Corno <jacopo.corno@gmail.com>
 ## Copyright (C) 2013-2016 Roberto Porcu' <roberto.porcu@polimi.it>
 ##
 ## This file is part of Octave.
@@ -105,4 +105,3 @@ function [t_next, x_next, x_est, k] = runge_kutta_23 (f, t, x, dt,
   endif
 
 endfunction
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -40,4 +40,3 @@ extern template class OCTAVE_API Array<octave_idx_type>;
 NO_INSTANTIATE_ARRAY_SORT (void *);
 
 INSTANTIATE_ARRAY (void *, OCTAVE_API);
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2016 Paul Kienzle
+## Copyright (C) 2004-2017 Paul Kienzle
 ## Copyright (C) 2010 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -108,4 +108,3 @@ endfunction
 %!error <N must be a real nonzero scalar> nthroot (1, [1 2])
 %!error <N must be a real nonzero scalar> nthroot (1, 0)
 %!error <N must be an odd integer> nthroot (-1, 2)
-

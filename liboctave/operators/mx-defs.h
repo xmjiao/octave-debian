@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -116,4 +116,3 @@ get_blas_char (blas_trans_type transt)
 #  endif
 
 #endif
-

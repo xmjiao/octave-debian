@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2016 John W. Eaton
+Copyright (C) 1993-2017 John W. Eaton
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2009-2010 VZLU Prague
 
@@ -1329,4 +1329,3 @@ INSTANTIATE_SCALAR_VECTOR_REP_CONST (octave_uint64)
 %!assert ((1:3)(find ([1,0,1] != 0)), [1,3])
 
 */
-

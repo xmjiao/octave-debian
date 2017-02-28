@@ -1,7 +1,7 @@
 // ColumnVector manipulations.
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -300,4 +300,3 @@ operator >> (std::istream& is, FloatColumnVector& a)
     }
   return is;
 }
-

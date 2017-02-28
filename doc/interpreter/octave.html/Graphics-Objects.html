@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.3, http://www.gnu.org/software/texinfo/ -->
 <head>
 <title>GNU Octave: Graphics Objects</title>
 
@@ -281,52 +281,52 @@ surface object.
 
 <a name="XREFlight"></a><dl>
 <dt><a name="index-light"></a>: <em></em> <strong>light</strong> <em>()</em></dt>
-<dt><a name="index-light-1"></a>: <em></em> <strong>light</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-light-1"></a>: <em></em> <strong>light</strong> <em>(&hellip;, &quot;<var>prop</var>&quot;, <var>val</var>, &hellip;)</em></dt>
 <dt><a name="index-light-2"></a>: <em></em> <strong>light</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
 <dt><a name="index-light-3"></a>: <em><var>h</var> =</em> <strong>light</strong> <em>(&hellip;)</em></dt>
-<dd><p>Create light object in the current axes or for axes <var>hax</var>.
+<dd><p>Create a light object in the current axes or for axes <var>hax</var>.
 </p>
-<p>When a light object is present in an axes object and the properties
+<p>When a light object is present in an axes object, and the properties
 <code>&quot;EdgeLighting&quot;</code> or <code>&quot;FaceLighting&quot;</code> of a <code>patch</code> or
 <code>surface</code> object are set to a value other than <code>&quot;none&quot;</code>, these
-objects are drawn with light and shadow effects.  Supported values for these
-properties are <code>&quot;none&quot;</code> (no lighting effects), <code>&quot;flat&quot;</code>
-(faceted look of the objects) and <code>&quot;gouraud&quot;</code> (linear interpolation
-of the lighting effects between the vertices).
-For <code>patch</code> objects, the normals must be set manually (property
-<code>&quot;VertexNormals&quot;</code>).
+objects are drawn with light and shadow effects.  Supported values for
+Lighting properties are <code>&quot;none&quot;</code> (no lighting effects), <code>&quot;flat&quot;</code>
+(faceted look of the objects), and <code>&quot;gouraud&quot;</code> (linear interpolation
+of the lighting effects between the vertices).  For <code>patch</code> objects,
+the normals must be set manually (property <code>&quot;VertexNormals&quot;</code>).
 </p>
 <p>Up to eight light objects are supported per axes.
 </p>
-<p>Lighting is only supported for graphics toolkits supporting OpenGL (i.e.
-<code>&quot;fltk&quot;</code> and <code>&quot;qt&quot;</code>).
+<p>Lighting is only supported for OpenGL graphic toolkits (i.e., <code>&quot;fltk&quot;</code>
+and <code>&quot;qt&quot;</code>).
 </p>
-<p>The following properties specific to the light object can be passed with
-their respective values:
+<p>A light object has the following properties which alter the appearance of
+the plot.
 </p>
 <dl compact="compact">
-<dt><code>&quot;Color&quot;:</code> The color of the light object can be passed as an</dt>
+<dt><code>&quot;Color&quot;:</code> The color of the light can be passed as an</dt>
 <dd><p>RGB-vector (e.g., <code>[1 0 0]</code> for red) or as a string (e.g., <code>&quot;r&quot;</code>
 for red).  The default color is white (<code>[1 1 1]</code>).
 </p>
 </dd>
-<dt><code>&quot;Position&quot;:</code> The direction from which the light emanates as an</dt>
+<dt><code>&quot;Position&quot;:</code> The direction from which the light emanates as a</dt>
 <dd><p>1x3-vector.  The default direction is <code>[1 0 1]</code>.
 </p>
 </dd>
 <dt><code>&quot;Style&quot;:</code> This string defines whether the light emanates from a</dt>
 <dd><p>light source at infinite distance (<code>&quot;infinite&quot;</code>) or from a local point
-source (<code>&quot;local&quot;</code>).
+source (<code>&quot;local&quot;</code>).  The default is <code>&quot;infinite&quot;</code>.
 </p></dd>
 </dl>
 
-<p>If <code>light</code> is called with an axes handle <var>hax</var>, it must be passed
-as the first argument.
+<p>If the first argument <var>hax</var> is an axes handle, then add the light object
+to this axes, rather than the current axes returned by <code>gca</code>.
 </p>
-<p>Optionally, the handle to the light object is returned in <var>h</var>.
+<p>The optional return value <var>h</var> is a graphics handle to the created light
+object.
 </p>
 
-<p><strong>See also:</strong> <a href="#XREFget">get</a>, <a href="#XREFset">set</a>, <a href="#XREFpatch">patch</a>, <a href="#XREFsurface">surface</a>, <a href="Three_002dDimensional-Plots.html#XREFlighting">lighting</a>, <a href="Three_002dDimensional-Plots.html#XREFmaterial">material</a>.
+<p><strong>See also:</strong> <a href="Three_002dDimensional-Plots.html#XREFlighting">lighting</a>, <a href="Three_002dDimensional-Plots.html#XREFmaterial">material</a>, <a href="#XREFpatch">patch</a>, <a href="#XREFsurface">surface</a>.
 </p></dd></dl>
 
 

@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Soren Hauberg
+## Copyright (C) 2008-2017 Soren Hauberg
 ## Copyright (C) 2013-2016 Carnë Draug
 ##
 ## This file is part of Octave.
@@ -35,4 +35,3 @@ function info = __imfinfo__ (filename)
   info = __magick_finfo__ (filename);
 
 endfunction
-

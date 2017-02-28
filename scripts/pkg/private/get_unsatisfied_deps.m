@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2016 Søren Hauberg
+## Copyright (C) 2005-2017 Søren Hauberg
 ## Copyright (C) 2010 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
@@ -54,4 +54,3 @@ function bad_deps = get_unsatisfied_deps (desc, installed_pkgs_lst)
   endfor
 
 endfunction
-

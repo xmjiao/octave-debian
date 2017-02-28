@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Andreas Weingessel
+## Copyright (C) 1995-2017 Andreas Weingessel
 ##
 ## This file is part of Octave.
 ##
@@ -113,4 +113,3 @@ function [y, c] = stft (x, win_size = 80, inc = 24, num_coef = 64, win_type = 1)
   endif
 
 endfunction
-

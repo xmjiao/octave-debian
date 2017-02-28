@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2012-2016 Richard Crozier
+Copyright (C) 2012-2017 Richard Crozier
 Copyright (C) 2013-2016 Torsten <ttl@justmail.de>
 
 This file is part of Octave.
@@ -498,4 +498,3 @@ octave_dock_widget::closeEvent (QCloseEvent *e)
   set_focus_predecessor ();
   QDockWidget::closeEvent (e);
 }
-

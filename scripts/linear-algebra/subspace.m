@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 VZLU Prague, a.s., Czech Republic
+## Copyright (C) 2008-2017 VZLU Prague, a.s., Czech Republic
 ##
 ## This file is part of Octave.
 ##
@@ -74,4 +74,3 @@ endfunction
 %! ## For random matrices
 %! M = rand (3, 3);
 %! assert (0, subspace (M, M'), 100*eps);
-

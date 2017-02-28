@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2016 David Bateman
+Copyright (C) 2004-2017 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -32,4 +32,3 @@ along with Octave; see the file COPYING.  If not, see
 template class OCTAVE_API MSparse<Complex>;
 
 INSTANTIATE_SPARSE_FRIENDS (Complex, OCTAVE_API);
-

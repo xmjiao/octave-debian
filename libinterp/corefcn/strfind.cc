@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 Jaroslav Hajek
+Copyright (C) 2009-2017 Jaroslav Hajek
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -453,4 +453,3 @@ strrep ("This is a test string", "is", "&%$")
 %!error strrep ()
 %!error strrep ("foo", "bar", 3, 4)
 */
-

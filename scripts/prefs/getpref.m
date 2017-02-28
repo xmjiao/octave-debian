@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2016 John W. Eaton
+## Copyright (C) 2012-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -152,4 +152,3 @@ endfunction
 %!error getpref (1,2,3,4)
 %!error <GROUP must be a string> getpref (1)
 %!error <PREF must be a string> getpref ("group1", 1, 2)
-

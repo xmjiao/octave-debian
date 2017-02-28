@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000-2016 John W. Eaton
+Copyright (C) 2000-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -99,4 +99,3 @@ OCTAVE_API extern void
 gripe_singular_matrix (double rcond = 0.0);
 
 #endif
-

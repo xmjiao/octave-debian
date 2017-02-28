@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Paul Kienzle
+## Copyright (C) 2000-2017 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -124,4 +124,3 @@ endfunction
 %! [n, s] = weekday ("25-Dec-1994", "long");
 %! assert (n, 1);
 %! assert (s, "Sunday");
-

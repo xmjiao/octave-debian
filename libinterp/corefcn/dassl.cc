@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -529,4 +529,3 @@ parameters for @code{dassl}.
 
 %!error dassl_options ("foo", 1, 2)
 */
-

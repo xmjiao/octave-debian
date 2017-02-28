@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 VZLU Prague, a.s., Czech Republic
+## Copyright (C) 2008-2017 VZLU Prague, a.s., Czech Republic
 ##
 ## This file is part of Octave.
 ##
@@ -61,4 +61,3 @@ endfunction
 %! ppi = ppint (pp);
 %!assert (ppval (ppi, x), [x; 0.5*x.^2 + x], 1e-14)
 %!assert (ppi.order, 5)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -187,4 +187,3 @@ endfunction
 %! imagesc (img);
 %! colormap (prism (10));
 %! title ("10 vertical color bars");
-

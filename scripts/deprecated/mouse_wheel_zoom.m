@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 Shai Ayal
+## Copyright (C) 2007-2017 Shai Ayal
 ##
 ## This file is part of Octave.
 ##
@@ -52,4 +52,3 @@ function retval = mouse_wheel_zoom (val)
   endif
 
 endfunction
-

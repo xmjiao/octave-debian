@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Bill Denney
+## Copyright (C) 2008-2017 Bill Denney
 ## Copyright (C) 2012 Carnë Draug
 ##
 ## This file is part of Octave.
@@ -122,4 +122,3 @@ endfunction
 %!assert (nargoutchk (0, 1, 1, "struct"), stnul)
 %!assert (nargoutchk (1, 1, 0, "struct"), stmin)
 %!assert (nargoutchk (0, 1, 2, "struct"), stmax)
-

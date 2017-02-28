@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2016 Kurt Hornik
+## Copyright (C) 1996-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -88,4 +88,3 @@ endfunction
 %!error <Invalid call to strtrim> strtrim ("abc", "def")
 %!error <argument must be a string> strtrim (1)
 %!error <argument must be a string> strtrim ({[]})
-

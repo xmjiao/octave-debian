@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 Bill Denney
+## Copyright (C) 2006-2017 Bill Denney
 ##
 ## This file is part of Octave.
 ##
@@ -240,4 +240,3 @@ endfunction
 %!error <cannot contain not and greater than> compare_versions ("0.1", "0.1", "!<")
 %!error <equality OPERATOR is "=="> compare_versions ("0.1", "0.1", "=")
 %!error <no valid OPERATOR> compare_versions ("0.1", "0.1", "aa")
-

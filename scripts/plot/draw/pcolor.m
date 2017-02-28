@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 Kai Habel
+## Copyright (C) 2007-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -155,4 +155,3 @@ endfunction
 %! shading interp;
 %! axis tight;
 %! title ("pcolor() of peaks with interp shading");
-

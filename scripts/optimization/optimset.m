@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 John W. Eaton
+## Copyright (C) 2007-2017 John W. Eaton
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -189,4 +189,3 @@ endfunction
 %!error <no defaults for function> optimset ("%NOT_A_REAL_FUNCTION_NAME%")
 %!warning <unrecognized option: foobar> optimset ("foobar", 13);
 %!warning <ambiguous option: Max> optimset ("Max", 10);
-

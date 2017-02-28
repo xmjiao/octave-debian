@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Michael Goffioul
+## Copyright (C) 2008-2017 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -68,4 +68,3 @@ endfunction
 %! unwind_protect_cleanup
 %!   close (hf);
 %! end_unwind_protect
-

@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2016 John W. Eaton
+## Copyright (C) 2006-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -131,4 +131,3 @@ endfunction
 %!error <all arguments must be character strings> ls (1)
 ## Test below is valid, but produces confusing output on screen
 %!#error <command exited abnormally> ls ("-!")
-

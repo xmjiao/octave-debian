@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Friedrich Leisch
+## Copyright (C) 1995-2017 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -81,4 +81,3 @@ function x = arma_rnd (a, b, v, t, n)
   x = x(n + 1 : t + n);
 
 endfunction
-

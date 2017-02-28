@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-Copyright (C) 2009-2016 Jason Riedy
+Copyright (C) 2009-2017 Jason Riedy
 
 This file is part of Octave.
 
@@ -155,4 +155,3 @@ SM octinternal_do_mul_sm_pm (const SM& a, const PermMatrix& p)
 }
 
 #endif
-

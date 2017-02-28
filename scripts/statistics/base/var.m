@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2016 Kurt Hornik
+## Copyright (C) 1995-2017 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -124,4 +124,3 @@ endfunction
 %!error <DIM must be an integer> var (1, [], 1.5)
 %!error <DIM must be .* a valid dimension> var (1, [], 0)
 %!error <X must not be empty> var ([], 1)
-

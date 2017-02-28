@@ -1,4 +1,4 @@
-## Copyright (C) 2014-2016 Rik Wehbring
+## Copyright (C) 2014-2017 Rik Wehbring
 ##
 ## This file is part of Octave.
 ##
@@ -50,4 +50,3 @@ function [filelines, startline, endline] = getsavepath (file)
   endif
 
 endfunction
-

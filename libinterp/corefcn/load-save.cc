@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2016 John W. Eaton
+Copyright (C) 1994-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -1450,8 +1450,8 @@ DEFUN (save, args, nargout,
 @deftypefnx {} {} save options file
 @deftypefnx {} {} save options file @var{v1} @var{v2} @dots{}
 @deftypefnx {} {} save options file -struct @var{STRUCT} @var{f1} @var{f2} @dots{}
-@deftypefnx {} {} save @code{"-"} @var{v1} @var{v2} @dots{}
-@deftypefnx {} {@var{s} =} save (@code{"-"} @var{v1} @var{v2} @dots{})
+@deftypefnx {} {} save - @var{v1} @var{v2} @dots{}
+@deftypefnx {} {@var{str} =} save ("-", @qcode{"@var{v1}"}, @qcode{"@var{v2}"}, @dots{})
 Save the named variables @var{v1}, @var{v2}, @dots{}, in the file
 @var{file}.
 
@@ -1844,4 +1844,3 @@ The original variable value is restored when exiting the function.
 {
   return SET_INTERNAL_VARIABLE (save_header_format_string);
 }
-

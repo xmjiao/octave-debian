@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2016 Kai Habel
+## Copyright (C) 2007-2017 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -70,4 +70,3 @@ endfunction
 %! axis off;
 %! title ("Rotate color bars to the right");
 %! spinmap (3, 1);
-

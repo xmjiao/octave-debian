@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Ben Abbott
+## Copyright (C) 2008-2017 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -184,4 +184,3 @@ endfunction
 %!error prctile (1, 1, 1.5)
 %!error prctile (1, 1, 0)
 %!error prctile (1, 1, 3)
-

@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2016 John W. Eaton
+## Copyright (C) 1994-2017 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -59,4 +59,3 @@ endfunction
 %!error lcm (1)
 %!error <same size or scalar> lcm ([1 2], [1 2 3])
 %!error <arguments must be numeric> lcm ([1 2], {1 2})
-

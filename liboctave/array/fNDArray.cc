@@ -1,7 +1,7 @@
 // N-D Array manipulations.
 /*
 
-Copyright (C) 1996-2016 John W. Eaton
+Copyright (C) 1996-2017 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
@@ -872,4 +872,3 @@ BSXFUN_OP2_DEF_MXLOOP (pow, FloatComplexNDArray, FloatComplexNDArray,
                        FloatNDArray, mx_inline_pow)
 BSXFUN_OP2_DEF_MXLOOP (pow, FloatComplexNDArray, FloatNDArray,
                        FloatComplexNDArray, mx_inline_pow)
-

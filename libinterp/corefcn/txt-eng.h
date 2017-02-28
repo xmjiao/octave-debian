@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2016 Michael Goffioul
+Copyright (C) 2009-2017 Michael Goffioul
 
 This file is part of Octave.
 
@@ -453,4 +453,3 @@ text_parser::parse (const std::string& s, const caseless_str& interpreter)
 }
 
 #endif
-

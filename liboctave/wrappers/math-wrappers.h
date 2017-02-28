@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2016 Mike Miller
+Copyright (C) 2016-2017 Mike Miller
 
 This file is part of Octave.
 
@@ -38,4 +38,3 @@ octave_frexpf_wrapper (float x, int *expptr);
 #endif
 
 #endif
-

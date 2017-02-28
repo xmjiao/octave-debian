@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002-2016 John W. Eaton
+Copyright (C) 2002-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -55,4 +55,3 @@ octave_cs_list::subsref (const std::string&,
 {
   err_indexed_cs_list ();
 }
-

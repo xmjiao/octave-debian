@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 Bill Denney
+## Copyright (C) 2008-2017 Bill Denney
 ##
 ## This file is part of Octave.
 ##
@@ -123,4 +123,3 @@ endfunction
 %!error <F must be a single character string> addtodate (1,2,3)
 %!error <F must be a single character string> addtodate (1,2,"month"')
 %!error <Invalid time unit> addtodate (1,2,"abc")
-

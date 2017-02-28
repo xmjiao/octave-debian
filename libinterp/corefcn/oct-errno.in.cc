@@ -1,7 +1,7 @@
 // DO NOT EDIT!  Generated automatically from oct-errno.in.cc by configure
 /*
 
-Copyright (C) 2005-2016 John W. Eaton
+Copyright (C) 2005-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -339,4 +339,3 @@ octave_errno::do_list (void)
 
   return retval;
 }
-

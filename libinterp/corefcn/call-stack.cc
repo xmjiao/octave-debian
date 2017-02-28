@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1995-2016 John W. Eaton
+Copyright (C) 1995-2017 John W. Eaton
 
 This file is part of Octave.
 
@@ -585,4 +585,3 @@ octave_call_stack::do_goto_base_frame (void)
 
   symbol_table::set_scope_and_context (tmp.m_scope, tmp.m_context);
 }
-

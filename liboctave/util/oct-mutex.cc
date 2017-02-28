@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2016 Michael Goffioul
+Copyright (C) 2008-2017 Michael Goffioul
 
 This file is part of Octave.
 
@@ -173,4 +173,3 @@ init_rep (void)
 }
 
 octave_mutex::octave_mutex (void) : rep (init_rep ()) { }
-

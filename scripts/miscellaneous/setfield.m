@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2016 Etienne Grossmann
+## Copyright (C) 2000-2017 Etienne Grossmann
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -146,4 +146,3 @@ endfunction
 %!error setfield (1)
 %!error setfield (1,2)
 %!error <invalid index> setfield (1,2,3)
-

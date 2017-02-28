@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2016 David Bateman
+## Copyright (C) 2008-2017 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -85,4 +85,3 @@ endfunction
 %!error <Invalid call to regexptranslate> regexptranslate ("a", "b", "c")
 %!error <invalid operation> regexptranslate ("foo", "abc")
 %!error <operation OP must be a string> regexptranslate (10, "abc")
-
