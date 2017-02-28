@@ -6,7 +6,7 @@ Reviewed-by: Rafael Laboissière <rafael@debian.org>
 Last-Update: 2016-11-20
 --- a/src/module.mk
 +++ b/src/module.mk
-@@ -215,7 +215,7 @@
+@@ -215,7 +215,7 @@ src/octave-build-info.cc: src/octave-bui
  
  ALL_LOCAL_TARGETS += $(OCTAVE_CROSS_TOOLS)
  
@@ -17,7 +17,7 @@ Last-Update: 2016-11-20
  
 --- a/scripts/miscellaneous/mkoctfile.m
 +++ b/scripts/miscellaneous/mkoctfile.m
-@@ -148,7 +148,7 @@
+@@ -148,7 +148,7 @@ function [output, status] = mkoctfile (v
    ext = __octave_config_info__ ("EXEEXT");
  
    shell_script = fullfile (bindir,
@@ -28,7 +28,7 @@ Last-Update: 2016-11-20
      __gripe_missing_component__ ("mkoctfile", "mkoctfile");
 --- a/scripts/pkg/private/configure_make.m
 +++ b/scripts/pkg/private/configure_make.m
-@@ -31,10 +31,10 @@
+@@ -31,10 +31,10 @@ function configure_make (desc, packdir,
      ver = version ();
      ext = __octave_config_info__ ("EXEEXT");
      mkoctfile_program = fullfile (octave_bindir, ...
@@ -44,7 +44,7 @@ Last-Update: 2016-11-20
        __gripe_missing_component__ ("pkg", "mkoctfile");
 --- a/src/main.in.cc
 +++ b/src/main.in.cc
-@@ -221,7 +221,7 @@
+@@ -202,7 +202,7 @@ main (int argc, char **argv)
    std::string octave_bindir = get_octave_bindir ();
    std::string octave_archlibdir = get_octave_archlibdir ();
    std::string octave_cli
