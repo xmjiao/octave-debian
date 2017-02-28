@@ -1,3 +1,13 @@
+octave (4.2.1-1) experimental; urgency=medium
+
+  * New upstream version 4.2.1
+  * d/copyright: reflect upstream changes.
+  * d/p/drop-url-to-sf-logo.patch: drop patch, no longer needed.
+  * d/watch: bump to format version 4.
+  * Bump to debhelper compat level 10.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Tue, 28 Feb 2017 12:28:25 +0100
+
 octave (4.2.0-2) experimental; urgency=medium
 
   * d/octave.conf:
