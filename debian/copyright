@@ -4,51 +4,49 @@ Upstream-Contact: John W. Eaton <jwe@octave.org>
 Source: http://www.octave.org
 
 Files: *
-Copyright: 1992-2016 John W. Eaton <jwe@octave.org>
+Copyright: 1992-2017 John W. Eaton <jwe@octave.org>
            1984-1985, 1987-2016 Free Software Foundation, Inc
-           1997-2016 David Bateman
-           2008-2015 VZLU Prague, a.s., Czech Republic
-           1995-2016 Kurt Hornik
-           2010-2016 Rik Wehbring
-           2008-2016 Jaroslav Hajek
-           1998-2015 Andy Adler
-           1999-2015 Kai Habel
-           1993-2015 Paul Kienzle
-           2007-2015 Michael Goffioul
-           1995-2015 Friedrich Leisch
-           2007-2015 Ben Abbott
-           2005-2015 Bill Denney
-           1993-2015 Shai Ayal
-           1995-2015 Andreas Weingessel
-           1996-2015 Daniel Calvelo
-           2005-2015 Søren Hauberg <hauberg@gmail.com>
-           2000-2015 Teemu Ikonen
-           2012-2015 Daniel Kraft
-           2009-2015 Martin Helm
-           2005-2015 William Poetra Yoga Hadisoeseno
-           1993-2015 Auburn University
-           2001-2015 Ben Sapp
-           2000-2015 Gabriele Pannocchia
-           2005-2015 Ivana Varekova
-           2009-2015 Jason Riedy
-           2005-2015 Nicolo' Giorgetti
-           1996-2015 A. S. Hodel
-           1993-2015 A. Scottedward Hodel
-           2006-2015 Alexander Barth
-           2009-2015 Benjamin Lindner
-           2008-2015 Radek Salac
-           2009-2015 Carlo de Falco
-           2000-2015 Etienne Grossmann
-           2008-2015 Julian Schnidder
-           2005-2015 Ludwig Schwardt, Kevin Ruland
-           2005-2015 Michael Zeising
-           2006-2015 Michel D. Schmid
-           1999-2015 Peter Ekberg
-           2004-2015 Piotr Krzyzanowski
-           2007-2015 Regents of the University of California
-           2006-2015 Sylvain Pelissier
-           2008-2015 Thorsten Meyer
-           1997-2015 Vincent Cautaerts
+           1997-2017 David Bateman
+           2008-2017 VZLU Prague, a.s., Czech Republic
+           1995-2017 Kurt Hornik
+           2010-2017 Rik Wehbring
+           2008-2017 Jaroslav Hajek
+           1998-2017 Andy Adler
+           1999-2017 Kai Habel
+           1993-2017 Paul Kienzle
+           2007-2017 Michael Goffioul
+           1995-2017 Friedrich Leisch
+           2007-2017 Ben Abbott
+           2005-2017 Bill Denney
+           1993-2017 Shai Ayal
+           1995-2017 Andreas Weingessel
+           1996-2017 Daniel Calvelo
+           2005-2017 Søren Hauberg <hauberg@gmail.com>
+           2000-2017 Teemu Ikonen
+           2012-2017 Daniel Kraft
+           2009-2017 Martin Helm
+           2005-2017 William Poetra Yoga Hadisoeseno
+           1993-2017 Auburn University
+           2001-2017 Ben Sapp
+           2000-2017 Gabriele Pannocchia
+           2005-2017 Ivana Varekova
+           2009-2017 Jason Riedy
+           2005-2017 Nicolo' Giorgetti
+           1996-2017 A. S. Hodel
+           1993-2017 A. Scottedward Hodel
+           2006-2017 Alexander Barth
+           2009-2017 Benjamin Lindner
+           2008-2017 Radek Salac
+           2009-2017 Carlo de Falco
+           2000-2017 Etienne Grossmann
+           2008-2017 Julian Schnidder
+           2005-2017 Ludwig Schwardt, Kevin Ruland
+           2006-2017 Michel D. Schmid
+           1999-2017 Peter Ekberg
+           2004-2017 Piotr Krzyzanowski
+           2007-2017 Regents of the University of California
+           2006-2017 Sylvain Pelissier
+           1997-2017 Vincent Cautaerts
            1995, 2000-2001 Maurice LeBrun
            2000, 2002 Joao Cardoso
            2000-2002, 2004 Alan W. Irwin
@@ -56,91 +54,101 @@ Copyright: 1992-2016 John W. Eaton <jwe@octave.org>
            2004 Victor Munoz
            2003 Alberto Terruzzi
            2012 Alexander Klein
-           2004-2015 Alois Schloegl
-           2002-2015 Andreas Stahel
-           2008-2015 Thomas L. Scofield <scofield@calvin.edu>
+           2004-2017 Alois Schloegl
+           2002-2017 Andreas Stahel
+           2008-2016 Thomas L. Scofield <scofield@calvin.edu>
            2010 David Grundberg
            2005 Stefan van der Walt <stefan@sun.ac.za>
            2006 Thomas Weber <tweber@debian.ors>
            2007-2009 John Swensen
-           2011-2015 John P. Swensen
-           1998-2015 Ariel Tankus
-           2012-2015 Carnë Draug
-           2005-2015 Mohamed Kamoun
-           2008-2015 Robert Platt
-           2000-2015 Bill Lash
-           2001-2015 Cai Jianming
+           2011-2017 John P. Swensen
+           1998-2017 Ariel Tankus
+           2012-2017 Carnë Draug
+           2005-2017 Mohamed Kamoun
+           2008-2017 Robert Platt
+           2000-2017 Bill Lash
+           2001-2017 Cai Jianming
            2010 Christos Dimitrakakis
-           1999-2015 Daniel Heiserer
-           2001, 2005-2015 Laurent Mazet
-           2006-2015 Daniel Sebald
-           2007-2015 Jordi Gutiérrez Hermoso <jordigh@octave.org>
-           2006-2015 Marco Caliari <marco.caliari@univr.it>
-           1999-2015 David M. Doolin
-           1993-2015 Dirk Laurie
-           2009-2015 E. Jason Riedy
-           2009-2015 Eric Chassande-Mottin, CNRS (France)
-           2012-2015 Philip Nienhuis
-           2006-2015 Frederick (Rick) A Niles
-           2005-2015 Hoxide Ma
-           2012-2015 Iain Murray
-           2012-2015 Jarno Rajahalme
-           2008-2015 Jonathan Stickel
-           2001-2015 Rolf Fabian
+           1999-2017 Daniel Heiserer
+           2001, 2005-2017 Laurent Mazet
+           2006-2017 Daniel Sebald
+           2007-2017 Jordi Gutiérrez Hermoso <jordigh@octave.org>
+           2006-2017 Marco Caliari <marco.caliari@univr.it>
+           1999-2017 David M. Doolin
+           1993-2017 Dirk Laurie
+           2009-2017 E. Jason Riedy
+           2009-2017 Eric Chassande-Mottin, CNRS (France)
+           2012-2017 Philip Nienhuis
+           2006-2017 Frederick (Rick) A Niles
+           2005-2017 Hoxide Ma
+           2012-2017 Iain Murray
+           2012-2017 Jarno Rajahalme
+           2008-2017 Jonathan Stickel
+           2001-2017 Rolf Fabian
            2007 Stallmanfacts.com
-           2006-2015 Keith Goodman
-           2008-2015 N.J. Higham
+           2006-2017 Keith Goodman
+           2008-2017 N.J. Higham
            2010 Richard T. Guy <guyrt7@wfu.edu>
-           2007-2015 Michael Weitzel
-           1998-2015 Nicol N. Schraudolph
-           2010-2015 Pedro Gonnet
-           2004-2015 Petr Mikulik
-           2001-2015 Ross Lippert
-           2007-2015 Thomas Treichl
-           2009-2015 Tony Richardson
-           1998-2015 Walter Gautschi
+           2007-2017 Michael Weitzel
+           1998-2017 Nicol N. Schraudolph
+           2010-2017 Pedro Gonnet
+           2004-2017 Petr Mikulik
+           2001-2017 Ross Lippert
+           2007-2017 Thomas Treichl
+           2009-2017 Tony Richardson
+           1998-2017 Walter Gautschi
            1997-2002 Makoto Matsumoto and Takuji Nishimura
-           2011-2015 Jacob Dawid
-           2012-2015 Max Brister
-           2010-2015 Martin Hepperle
-           2013-2015 John Donoghue
+           2011-2017 Jacob Dawid
+           2012-2017 Max Brister
+           2010-2017 Martin Hepperle
+           2013-2017 John Donoghue
            2009 P. L. Lucas
-           2012-2016 Pantxo Diribarne
+           2012-2017 Pantxo Diribarne
            2009 Nokia Corporation and/or its subsidiary(-ies)
-           2012-2015 Torsten <ttl@justmail.de>
+           2012-2017 Torsten <ttl@justmail.de>
            2008 Kristian Rumberg
-           2013-2015 Julien Bect
+           2013-2017 Julien Bect
            2004 Josep Mones i Teixidor
-           2013-2015 Michael D. Godfrey
-           2013-2015 Mike Miller
-           2013-2015 Sébastien Villemot <sebastien@debian.org>
+           2013-2017 Michael D. Godfrey
+           2013-2017 Mike Miller
+           2013-2017 Sébastien Villemot <sebastien@debian.org>
            2007 Muthiah Annamalai
-           2013-2015 Carl Osterwisch
-           2001, 2013 David Billinghurst
+           2013-2017 Carl Osterwisch
+           2001-2017 David Billinghurst
            2003, 2013 Jaakko Ruohio
-           2012-2015 Erik Kjellson
-           2012-2015 Fotios Kasolis
+           2012-2017 Erik Kjellson
+           2012-2017 Fotios Kasolis
            1993-1998 Karl Berry
-           2012-2015 Juan Pablo Carbajal
-           2013-2015 Leopoldo Cerbaro <redbliss@libero.it>
-           2012-2015 Richard Crozier
+           2012-2017 Juan Pablo Carbajal
+           2013-2017 Leopoldo Cerbaro <redbliss@libero.it>
+           2012-2017 Richard Crozier
            2007 Paul Thomas
            2007 Christoph Spiel
-           2000-2016 Dirk Eddelbuettel
-           2012-2015 Jonas Lundgren
-           2014-2015 Eduardo Ramos Fernández <eduradical951@gmail.com>
-           2013-2015 Kai T. Ohlhus <k.ohlhus@gmail.com>
-           2014-2015 Andreas Weber
-           2013-2015 Vytautas Jančauskas
-           2014-2015 Nir Krakauer
-           2014-2015 Markus Bergholz
-           2014-2015 Colin Foster
-           2014-2015 Massimiliano Fasi
-           2013-2015 Arun Giridhar
-           2014-2015 Willem Atsma
-           2014-2015 Nathan Podlich
-           2009-2015 Robert T. Short
-           2016 Oliver Heimlich
+           2000-2017 Dirk Eddelbuettel
+           2012-2017 Jonas Lundgren
+           2014-2017 Eduardo Ramos Fernández <eduradical951@gmail.com>
+           2013-2017 Kai T. Ohlhus <k.ohlhus@gmail.com>
+           2014-2017 Andreas Weber
+           2013-2017 Vytautas Jančauskas
+           2014-2017 Nir Krakauer
+           2014-2017 Markus Bergholz
+           2014-2017 Massimiliano Fasi
+           2014-2017 Willem Atsma
+           2014-2017 Nathan Podlich
+           2009-2016 Robert T. Short
+           2016-2017 Oliver Heimlich
+           2016-2017 Andrew Thornton
+           2016-2017 M. Muetzel
+           2016 Barbara Lócsi
+           2017 Colin B. Macdonald
+           2016-2017 Eric Firing
+           2006-2017 Arno Onken <asnelt@asnelt.org>
+           2016-2017 Lachlan Andrew
+           2014-2017 Jacopo Corno <jacopo.corno@gmail.com>
+           2013-2017 Roberto Porcu' <roberto.porcu@polimi.it>
+           2016-2017 Francesco Faccio <francesco.faccio@mail.polimi.it>
+           2012-2017 pdiribarne
+           2014-2017 Endre Kozma
 License: GPL-3+
 
 Files: debian/*
@@ -149,7 +157,7 @@ Copyright: Andrew D. Fernandes <adfernan@cnd.mcgill.ca>
            Dirk Eddelbuettel <edd@debian.org>
            2005-2009, 2012-2015 Rafael Laboissiere <rafael@debian.org>
            2006-2013 Thomas Weber <tweber@debian.org>
-           2011-2015 Sébastien Villemot <sebastien@debian.org>
+           2011-2017 Sébastien Villemot <sebastien@debian.org>
            2013-2014 Mike Miller <mtmiller@debian.org>
 License: GPL-3+           
 
