@@ -1,6 +1,7 @@
 #!/usr/bin/dh-exec
 
 usr/share/octave /usr/share/
+usr/share/icons
 
 # install the configuration file we copied into the built tmp tree
 /etc/octave.conf /etc
