@@ -1,7 +1,6 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-# Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 
 # This has to be exported to make some magic below work.
@@ -36,7 +35,8 @@ endif
 # libraries, for example the mesa graphics stack which also uses LLVM.
 JIT_FLAG := --disable-jit
 
-# HDF5 paths
+# Needed to force the serial version of HDF5 even if other flavours are
+# installed.
 ifneq ($(wildcard /usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial/libhdf5.so),)
   HDF5_FLAGS := --with-hdf5-includedir=/usr/include/hdf5/serial \
 	--with-hdf5-libdir=/usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial
@@ -56,15 +56,13 @@ override_dh_auto_test:
 	xvfb-run make check
 
 # override normal dh_compress call to avoid compressing .pdf files
-# also, avoid the compression of the info files (see Bug#762078)
 override_dh_compress:
 	dh_compress --exclude=.pdf
 
-# override this call, so we do not pass the --parallel option to it; 
-# "make -j2 install" does not work as of now
 override_dh_auto_install:
 	# Smuggle our configuration file into the installed files
 	mkdir -p debian/tmp/etc && cp debian/octave.conf debian/tmp/etc/
+	# Parallel install does not work as of now, so disable it
 	dh_auto_install --max-parallel=1
 	# Delete .la files (for liboctgui)
 	find debian/tmp -name '*.la' -delete
