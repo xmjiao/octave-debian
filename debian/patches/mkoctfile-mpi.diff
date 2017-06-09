@@ -1,7 +1,7 @@
 Description: Include MPI headers when building Oct/MEX-files
-Author: Thomas Weber <tweber@debian.org>
-Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=598227
+Bug-Debian: https://bugs.debian.org/598227
 Forwarded: not-needed
+Author: Thomas Weber <tweber@debian.org>
 Reviewed-by: Rafael Laboissière <rafael@debian.org>
 Last-Update: 2016-11-20
 ---

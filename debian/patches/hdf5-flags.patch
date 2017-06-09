@@ -1,7 +1,7 @@
 Description: Propagate HDF5 flags to various places
-Author: Gilles Filippini <pini@debian.org>
-Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=756689
+Bug-Debian: https://bugs.debian.org/756689
 Forwarded: no
+Author: Gilles Filippini <pini@debian.org>
 Reviewed-by: Sébastien Villemot <sebastien@debian.org>
 Reviewed-by: Rafael Laboissière <rafael@debian.org>
 Last-Update: 2016-11-20
