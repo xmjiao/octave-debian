@@ -3,9 +3,6 @@
 
 export DH_VERBOSE=1
 
-# This has to be exported to make some magic below work.
-export DH_OPTIONS
-
 # Needed by octave-common.links
 include /usr/share/dpkg/pkg-info.mk
 DEB_VERSION_UPSTREAM := $(subst ~rc,-rc,$(DEB_VERSION_UPSTREAM))
