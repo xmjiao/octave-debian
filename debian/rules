@@ -39,12 +39,18 @@ ifneq ($(wildcard /usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial/libhdf5.so),)
 	--with-hdf5-libdir=/usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial
 endif
 
+# Support the nodoc flag of DEB_BUILD_OPTIONS
+ifneq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+override_dh_auto_configure:
+DOC_FLAG := --disable-docs
+endif
+
 %:
 	dh $@
 
 override_dh_auto_configure:
 	# override normal dh_auto_configure call to pass OpenMP flag to it (#631831)
-	dh_auto_configure -- --enable-openmp $(WITH_JAVA_FLAGS) $(JIT_FLAG) $(HDF5_FLAGS)
+	dh_auto_configure -- --enable-openmp $(WITH_JAVA_FLAGS) $(JIT_FLAG) $(HDF5_FLAGS) $(DOC_FLAG)
 	# Avoid triggering the build of oct-gperf.h
 	touch libinterp/parse-tree/oct-gperf.h libinterp/parse-tree/oct-parse.h
 
