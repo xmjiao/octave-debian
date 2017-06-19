@@ -65,8 +65,6 @@ override_dh_compress:
 	dh_compress --exclude=.pdf
 
 override_dh_auto_install:
-	# Smuggle our configuration file into the installed files
-	mkdir -p debian/tmp/etc && cp debian/octave.conf debian/tmp/etc/
 	# Parallel install does not work as of now, so disable it
 	# (see #861627, workaround implemented in debhelper 10.3)
 	dh_auto_install --max-parallel=1
