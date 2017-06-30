@@ -1,3 +1,39 @@
+octave (4.2.1-2) unstable; urgency=medium
+
+  [ Sébastien Villemot ]
+  * Add missing icons in octave-common.
+  * Ship AppStream metadata.
+    In particular, introduce new patch d/p/appstream-upgrade-spec.patch to
+    conform with most recent AppStream specification. (Closes: #825803)
+  * d/copyright: use secure URL for format.
+  * d/control:
+    + Replace the long list of versioned Breaks with a Breaks against
+      liboctave3v5.
+    + Remove several unnecessary versioned dependencies.
+    + Drop obsolete libcurl4-dev alternative in Build-Depends.
+    + Replace libreadline{5,6}-dev by libreadline-gplv2-dev in liboctave-dev
+      deps.
+    + Mark octave-{common,doc,htmldoc,info} as M-A foreign.
+    + Bump Standards-Version to 4.0.0.
+  * octave-htmldoc: install HTML files using dh_installdocs.
+    Incidentally, this implies a change in the path for this
+    documentation.
+  * d/rules:
+    + Support the "nodoc" tag of DEB_BUILD_OPTIONS.
+    + Support the "nocheck" tag of DEB_BUILD_OPTIONS.
+  * Minor simplifications to {liboctave-dev,octave-common}.install.
+  * d/octave.triggers: Use a -noawait type of trigger.
+    So far the trigger for Octave Forge packages was implicitly of the -await
+    type. Lintian now complains about this, and asks to explicitly make a choice
+    between the -await and -noawait types (the latter being easier to manage for
+    dpkg). Since Octave Forge packages can be configured before the trigger is
+    activated, we go for the -noawait type.
+
+  [ Rafael Laboissiere ]
+  * d/control: Use cgit instead of gitweb in Vcs-Browser URL
+
+ -- Sébastien Villemot <sebastien@debian.org>  Fri, 30 Jun 2017 12:57:58 +0200
+
 octave (4.2.1-1) experimental; urgency=medium
 
   * New upstream version 4.2.1
