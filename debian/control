@@ -84,6 +84,7 @@ Description: GNU Octave language for numerical computations
 Package: octave-common
 Architecture: all
 Depends: ${misc:Depends}
+Multi-Arch: foreign
 Description: architecture-independent files for octave
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
@@ -100,6 +101,7 @@ Section: doc
 Depends: ${misc:Depends}
 Suggests: octave,
           xpdf | pdf-viewer
+Multi-Arch: foreign
 Description: PDF documentation on the GNU Octave language
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
@@ -116,6 +118,7 @@ Section: doc
 Depends: ${misc:Depends}
 Suggests: octave,
           lynx-cur | www-browser
+Multi-Arch: foreign
 Description: HTML documentation on the GNU Octave language
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
@@ -130,6 +133,7 @@ Architecture: all
 Section: doc
 Depends: info,
          ${misc:Depends}
+Multi-Arch: foreign
 Description: GNU Info documentation on the GNU Octave language
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
