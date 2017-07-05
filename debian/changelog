@@ -1,3 +1,9 @@
+octave (4.2.1-2xmjiao~ubuntu16.04.2) xenial; urgency=medium
+  [ Xiangmin Jiao ]
+  * Changed to build for Ubuntu 16.04
+
+ -- Xiangmin Jiao <xmjiao@gmail.com>  Tue, 04 Jul 2017 19:14:08 -0400
+
 octave (4.2.1-2) unstable; urgency=medium
 
   [ Sébastien Villemot ]
