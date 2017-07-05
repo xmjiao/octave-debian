@@ -1,8 +1,8 @@
-octave (4.2.1-2xmjiao~ubuntu16.04.2) xenial; urgency=medium
+octave (4.2.1-2qt5~ubuntu16.04.2) xenial; urgency=medium
   [ Xiangmin Jiao ]
-  * Changed to build for Ubuntu 16.04
+  * Changed to build for Ubuntu 16.04 using QT5
 
- -- Xiangmin Jiao <xmjiao@gmail.com>  Tue, 04 Jul 2017 19:14:08 -0400
+ -- Xiangmin Jiao <xmjiao@gmail.com>  Tue, 04 Jul 2017 22:15:03 -0400
 
 octave (4.2.1-2) unstable; urgency=medium
 
